@@ -13,7 +13,7 @@
 	
 	<property name="test.dir" value="test" />
 	<property name="test.src.dir" value="${test.dir}" />
-	<property name="test.lib.dir" value="${test.dir}" />
+	<property name="test.lib.dir" value="${test.dir}/lib" />
 	<property name="test.build.dir" value="${build.dir}/test" />
 	
 	<property name="schema.dir" value="schema" />
