@@ -1,0 +1,6 @@
+build
+javadocs
+*.jar
+*.zip
+
+/nbproject/private/
