@@ -1,32 +1,32 @@
-# libSBOL: SBOL Java library
+# libSBOLj: SBOL Java library
 
-[libSBOL](https://github.com/SynBioDex/libSBOLcore) provides the core Java interfaces and their implementation for 
+[libSBOLj](https://github.com/SynBioDex/libSBOLj) provides the core Java interfaces and their implementation for 
 the [Synthetic Biology Open Language (SBOL)](http://www.sbolstandard.org/specification). The library provides an API to 
 work with SBOL objects, the functionality to read and write SBOL documents as XML files, and a validator to check the 
 correctness of SBOL models. 
 
-## Building libSBOL
+## Building libSBOLj
 
 First, clone the repository:
 
-    git clone git://github.com/SynBioDex/libSBOL.git
+    git clone git://github.com/SynBioDex/libSBOLj.git
 
-To build libSBOL use the following command:
+To build libSBOLj use the following command:
 
     ant clean jar teat
 
-This command will clean any previous binaries, create a libSBOL.jar in the same directory and also run the unit tests 
+This command will clean any previous binaries, create a libSBOLj.jar in the same directory and also run the unit tests 
 to make sure that there are on errors in the library.    
 
-## Using libSBOL
+## Using libSBOLj
 
 
-### libSBOL command line
+### libSBOLj command line
 
-libSBOL comes with a command-line interface (CLI) that can be used to validate SBOL files. After you build the 
-libSBOL.jar as described above, you can use it to validate files as follows:
+libSBOLj comes with a command-line interface (CLI) that can be used to validate SBOL files. After you build the 
+libSBOLj.jar as described above, you can use it to validate files as follows:
 
-    java -jar libSBOL.jar examples/data/BBa_I0462.xml
+    java -jar libSBOLj.jar examples/data/BBa_I0462.xml
     
 If validation is successful, the program will print the contents of the SBOL document. Use --quite option if you want to
 suppress this output. 
@@ -34,29 +34,29 @@ suppress this output.
 If validation fails with an error, there will be a message printed about the validation error. To see an example, try
 the following command: 
     
-    java -jar libSBOL.jar test/data/invalid01_missing_displayId.xml
+    java -jar libSBOLj.jar test/data/invalid01_missing_displayId.xml
     
-### libSBOL API    
+### libSBOLj API    
 
-The programs provided under [examples/src](https://github.com/SynBioDex/libSBOLcore/tree/master/examples/src/org/sbolstandard/core/examples) 
-directory show various examples of using libSBOL library. You can compile these examples by running:
+The programs provided under [examples/src](https://github.com/SynBioDex/libSBOLj/tree/master/examples/src/org/sbolstandard/core/examples) 
+directory show various examples of using libSBOLj library. You can compile these examples by running:
 
     ant examples
 
-This will create libSBOL-examples.jar in the same directory and an example program can be run as follows: 
+This will create libSBOLj-examples.jar in the same directory and an example program can be run as follows: 
     
-    java -cp libSBOL-examples.jar org.sbolstandard.core.examples.Example01_Basics
+    java -cp libSBOLj-examples.jar org.sbolstandard.core.examples.Example01_Basics
 
-More detailed information about libSBOL API can be found in the javadocs. To generate the libSBOL javadocs run:
+More detailed information about libSBOLj API can be found in the javadocs. To generate the libSBOLj javadocs run:
 
     ant javadoc
     
 The javadoc output will be written to "javadocs" directory. 
     
-## Serialization in libSBOL
+## Serialization in libSBOLj
 
-libSBOL provides support for reading and writing libSBOL documents in XML syntax. The structure of the documents is 
-defined in an XML schema file that can be found in the [schema](https://github.com/SynBioDex/libSBOLcore/tree/master/schema) directory. 
+libSBOLj provides support for reading and writing libSBOLj documents in XML syntax. The structure of the documents is 
+defined in an XML schema file that can be found in the [schema](https://github.com/SynBioDex/libSBOLj/tree/master/schema) directory. 
     
 A very simple SBOL document looks like this in XML:
     
@@ -69,16 +69,16 @@ A very simple SBOL document looks like this in XML:
         </DnaComponent>
     </rdf:RDF>
     
-A more complete example can be found in [examples/data](https://github.com/SynBioDex/libSBOLcore/tree/master/examples/data)
+A more complete example can be found in [examples/data](https://github.com/SynBioDex/libSBOLj/tree/master/examples/data)
 directory.     
 
 Note that, the XML serialization of SBOL documents have been designed to be compatible with 
-[Resource Description Format (RDF)](http://www.w3.org/RDF/). Any valid libSBOL XML file can be parsed by a standard RDF
+[Resource Description Format (RDF)](http://www.w3.org/RDF/). Any valid SBOL XML file can be parsed by a standard RDF
 tool that supports [RDF/XML syntax](http://www.w3.org/TR/REC-rdf-syntax/). But different RDF serializations will not be
-valid if they do not match the constraints defined in the SBOL XML schema and cannot be read by libSBOL. 
+valid if they do not match the constraints defined in the SBOL XML schema and cannot be read by libSBOLj. 
         
-libSBOL provides also a more readable, human-friendly output format that aligns more closely with the libSBOL object 
-mode. The above example would look as follows in this syntax:
+libSBOLj provides also a more readable, human-friendly output format that aligns more closely with the SBOL object 
+model defined in the specification. The above example would look as follows in this syntax:
      
     SBOLDocument [
        DnaComponent [
@@ -88,5 +88,5 @@ mode. The above example would look as follows in this syntax:
        ]
     ]  
     
-This format is only intended for presentation purposes and not to exchange libSBOL structures and the library does not 
+This format is only intended for presentation purposes and not to exchange libSBOLj structures and the library does not 
 provide any means to read this syntax.    

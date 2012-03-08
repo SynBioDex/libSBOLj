@@ -36,11 +36,11 @@ public class SBOLValidate {
 	}
 	
 	private static void usage() {		
-		System.err.println("SBOL version " + SBOLVersion.getInstance().getVersionString());
+		System.err.println("libSBOLj version " + SBOLVersion.getInstance().getVersionString());
 		System.err.println("Description: Validates the contents of an SBOL document and prints the document contents if "
 		                   + "validation succeeds");
 		System.err.println("Usage:");
-		System.err.println("\tjava --jar libSBOL.jar [--quiet] <filename.xml>");
+		System.err.println("\tjava --jar libSBOLj.jar [--quiet] <filename.xml>");
 		System.exit(1);
 	}
 

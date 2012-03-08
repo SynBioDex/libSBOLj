@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
-<project name="libSBOL" default="jar" basedir=".">
+<project name="libSBOLj" default="jar" basedir=".">
 	<property name="build.dir" value="build" />
 	
 	<property name="core.src.dir" value="src" />
 	<property name="core.build.dir" value="${build.dir}/core" />
-	<property name="core.jar" value="libSBOL.jar" />
+	<property name="core.jar" value="${ant.project.name}.jar" />
 
 	<property name="examples.dir" value="examples" />
 	<property name="examples.src.dir" value="${examples.dir}/src" />
 	<property name="examples.build.dir" value="${build.dir}/examples" />
-	<property name="examples.jar" value="libSBOL-examples.jar" />
+	<property name="examples.jar" value="${ant.project.name}-examples.jar" />
 	
 	<property name="test.dir" value="test" />
 	<property name="test.src.dir" value="${test.dir}" />
@@ -22,7 +22,7 @@
 	<!-- the following will set the org.sbolstandard.core.version property -->
 	<property file="${core.src.dir}/version.properties"/>
 	
-	<property name="zip.dir" value="libSBOL-${org.sbolstandard.core.version}"/>
+	<property name="zip.dir" value="${ant.project.name}-${org.sbolstandard.core.version}"/>
 	<property name="zip.name" value="${zip.dir}.zip"/>
 
 
@@ -40,7 +40,7 @@
 		<javac srcdir="${core.src.dir}" destdir="${core.build.dir}" includeantruntime='false' />
 	</target>
 
-	<target name="jar" depends="build" description="Compiles the source files and creates the libSBOL.jar">
+	<target name="jar" depends="build" description="Compiles the source files and creates ${ant.project.name}.jar">
 		<jar jarfile="${core.jar}">
 			<fileset dir="${core.build.dir}" />
 			<fileset dir="${core.src.dir}" includes="version.properties" />
@@ -62,8 +62,8 @@
 		</jar>
 	</target>
 
-	<target name="javadoc" depends="build" description="Creates the libSBOL javadocs">
-		<javadoc destdir="${javadoc.dir}" access="public" use="true" author="true" version="true" doctitle="libSBOL API" windowtitle="libSBOL API">
+	<target name="javadoc" depends="build" description="Creates the javadocs">
+		<javadoc destdir="${javadoc.dir}" access="public" use="true" author="true" version="true" doctitle="${ant.project.name}" windowtitle="${ant.project.name} API">
 			<link href="http://docs.oracle.com/javase/6/docs/api/" />
 			<packageset dir="${core.src.dir}" defaultexcludes="yes">
 				<include name="org/sbolstandard/core/**" />
