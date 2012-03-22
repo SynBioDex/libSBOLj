@@ -5,6 +5,6 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({SBOLReaderTests.class, SBOLWriterTests.class, SBOLValidatorTests.class})
+@SuiteClasses({SBOLReaderTests.class, SBOLWriterTests.class, SBOLValidatorTests.class, SBOLDuplicateObjectTests.class})
 public class SBOLTestSuite {
 }

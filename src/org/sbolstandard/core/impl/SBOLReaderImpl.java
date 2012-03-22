@@ -18,19 +18,29 @@ package org.sbolstandard.core.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.UnmarshalException;
 import javax.xml.bind.Unmarshaller;
 
+import org.sbolstandard.core.Collection;
 import org.sbolstandard.core.DnaComponent;
+import org.sbolstandard.core.DnaSequence;
 import org.sbolstandard.core.SBOLDocument;
+import org.sbolstandard.core.SBOLObject;
 import org.sbolstandard.core.SBOLReader;
 import org.sbolstandard.core.SBOLValidationException;
 import org.sbolstandard.core.SequenceAnnotation;
 import org.sbolstandard.core.impl.SequenceAnnotationImpl.PrecedeReference;
 import org.sbolstandard.core.util.SBOLBaseVisitor;
+import org.sbolstandard.core.util.SBOLDeepEquality;
 
 public class SBOLReaderImpl implements SBOLReader {
 	private final boolean validate;
@@ -54,6 +64,7 @@ public class SBOLReaderImpl implements SBOLReader {
 	        SBOLDocument doc = (SBOLDocument) unmarshaller.unmarshal(in);
 	        
 	        doc.accept(new PrecedeReferenceFinder());
+	        doc.accept(new DuplicateRemover());
 
 	        if (validate) {
 	        	new SBOLValidatorImpl().validateWithoutSchema(doc);
@@ -104,5 +115,96 @@ public class SBOLReaderImpl implements SBOLReader {
 	        }
 	        super.visit(annotation);        
 	    }
+	}
+	
+	private static class DuplicateRemover extends SBOLBaseVisitor {
+		private Map<URI, SBOLObject> map = new HashMap<URI, SBOLObject>();
+		private Set<SBOLObject> duplicates = new HashSet<SBOLObject>();
+
+		private void add(SBOLObject obj) {
+			URI uri = obj.getURI();
+			SBOLObject prev = map.get(uri);
+			if (prev == null) {
+				map.put(uri, obj);
+			}
+			else if (SBOLDeepEquality.isDeepEqual(obj, prev)) {
+				duplicates.add(obj);
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+        private <T extends SBOLObject> T map(T obj) {
+			return duplicates.contains(obj) ? (T) map.get(obj.getURI()) : obj;
+		}
+	     
+        private <T extends SBOLObject> void removeDuplicates(java.util.Collection<T> objects) {
+        	if (objects instanceof List<?>) {
+        		removeDuplicates((List) objects); 
+        	}
+        	
+        	List<T> newObjs = new ArrayList<T>();
+	        Iterator<T> i = objects.iterator();
+	        while (i.hasNext()) {
+	        	T obj = i.next();
+	        	i.remove();
+	            if (duplicates.contains(obj)) {
+	            	obj = map(obj);
+	            }
+	            newObjs.add(obj);
+            }
+	        
+	        for (T newObj : newObjs) {
+	            objects.add(newObj);
+            }
+        }
+	     
+        private <T extends SBOLObject> void removeDuplicates(List<T> objects) {
+	        ListIterator<T> i = objects.listIterator();
+	        while (i.hasNext()) {
+	        	T obj = i.next();
+	            if (duplicates.contains(obj)) { 
+	            	i.set(map(obj));
+	            }
+            }
+        }
+
+		@Override
+        public void visit(SBOLDocument doc) {
+	        super.visit(doc);
+	        removeDuplicates(doc.getContents());
+		}
+		
+		@Override
+		public void visit(Collection coll) {
+			super.visit(coll);
+			add(coll);			
+			removeDuplicates(coll.getComponents());
+		}
+
+		@Override
+		public void visit(DnaComponent component) {
+			super.visit(component);
+			add(component);
+			if (duplicates.contains(component)) {
+				component.setDnaSequence(map(component.getDnaSequence()));
+			}
+			removeDuplicates(component.getAnnotations());
+		}
+
+		@Override
+		public void visit(DnaSequence sequence) {
+			super.visit(sequence);
+			add(sequence);
+		}
+
+		@Override
+		public void visit(SequenceAnnotation annotation) {
+			super.visit(annotation);
+			add(annotation);
+			if (duplicates.contains(annotation.getSubComponent())) {
+				annotation.setSubComponent(map(annotation.getSubComponent()));
+			}
+		}
+
 	}
 }

@@ -19,10 +19,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.sbolstandard.core.Collection;
 import org.sbolstandard.core.DnaComponent;
@@ -59,7 +57,7 @@ public class SBOLValidatorImpl implements SBOLValidator {
 	}
 
 	private static class Validator extends SBOLBaseVisitor {
-		private Set<SBOLObject> visited = new HashSet<SBOLObject>();
+		private LinkedHashSet<SBOLObject> visited = new LinkedHashSet<SBOLObject>();
 		private Map<URI, SBOLObject> uris = new HashMap<URI, SBOLObject>();
 		private Map<String, SBOLObject> displayIds = new HashMap<String, SBOLObject>();
 		private DnaComponent parentComponent;
@@ -77,10 +75,14 @@ public class SBOLValidatorImpl implements SBOLValidator {
 		}
 
 		private void markVisited(SBOLObject obj) {
-			assertTrue(visited.add(obj), "Same object used multiple times", obj);
+			assertTrue(visited.add(obj), "Cyclic object reference", visited);
 
 			SBOLObject prev = uris.put(obj.getURI(), obj);
 			assertTrue(prev == null || prev.equals(obj), "Multiple objects with same URI", obj);
+		}
+
+		private void unmarkVisited(SBOLObject obj) {
+			visited.remove(obj);
 		}
 
 		private void checkDisplayId(String displayId, SBOLObject obj) {
@@ -137,13 +139,17 @@ public class SBOLValidatorImpl implements SBOLValidator {
 			checkDisplayId(coll.getDisplayId(), coll);
 
 			super.visit(coll);
+			
+			unmarkVisited(coll);
 		}
 
 		@Override
 		public void visit(DnaSequence sequence) {
 			markVisited(sequence);
-
+			
 			super.visit(sequence);
+			
+			unmarkVisited(sequence);
 		}
 
 		@Override
@@ -155,6 +161,7 @@ public class SBOLValidatorImpl implements SBOLValidator {
 			parentComponent = component;
 			super.visit(component);
 			parentComponent = previous;
+			unmarkVisited(component);
 		}
 
 		@Override
@@ -165,6 +172,8 @@ public class SBOLValidatorImpl implements SBOLValidator {
 			checkPositionConsistency(annotation);
 
 			super.visit(annotation);
+			
+			unmarkVisited(annotation);
 		}
 	}
 }

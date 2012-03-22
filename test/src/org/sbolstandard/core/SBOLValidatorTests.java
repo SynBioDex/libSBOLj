@@ -1,9 +1,7 @@
 package org.sbolstandard.core;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.FileInputStream;
+import static org.sbolstandard.core.SBOLTestUtils.assertInvalid;
+import static org.sbolstandard.core.SBOLTestUtils.assertValid;
 
 import org.junit.Test;
 
@@ -75,7 +73,8 @@ public class SBOLValidatorTests {
 
 	@Test
 	public void invalid01() throws Exception {
-		assertInvalid("test/data/invalid01_missing_displayId.xml", "Invalid content was found starting with element 'description'");
+		assertInvalid("test/data/invalid01_missing_displayId.xml",
+		                "Invalid content was found starting with element 'description'");
 	}
 
 	@Test
@@ -100,7 +99,8 @@ public class SBOLValidatorTests {
 
 	@Test
 	public void invalid06() throws Exception {
-		assertInvalid("test/data/invalid06_missing_nucleotides.xml", "The content of element 'DnaSequence' is not complete");
+		assertInvalid("test/data/invalid06_missing_nucleotides.xml",
+		                "The content of element 'DnaSequence' is not complete");
 	}
 
 	@Test
@@ -110,12 +110,14 @@ public class SBOLValidatorTests {
 
 	@Test
 	public void invalid08() throws Exception {
-		assertInvalid("test/data/invalid08_bioStart_exists_bioEnd_missing.xml", "Invalid content was found starting with element 'strand'");
+		assertInvalid("test/data/invalid08_bioStart_exists_bioEnd_missing.xml",
+		                "Invalid content was found starting with element 'strand'");
 	}
 
 	@Test
 	public void invalid09() throws Exception {
-		assertInvalid("test/data/invalid09_multiple_bioStart.xml", "Invalid content was found starting with element 'bioStart'");
+		assertInvalid("test/data/invalid09_multiple_bioStart.xml",
+		                "Invalid content was found starting with element 'bioStart'");
 	}
 
 	@Test
@@ -125,17 +127,20 @@ public class SBOLValidatorTests {
 
 	@Test
 	public void invalid11() throws Exception {
-		assertInvalid("test/data/invalid11_standalone_sequence_annotation.xml", "Invalid content was found starting with element 'SequenceAnnotation'");
+		assertInvalid("test/data/invalid11_standalone_sequence_annotation.xml",
+		                "Invalid content was found starting with element 'SequenceAnnotation'");
 	}
 
 	@Test
 	public void invalid12() throws Exception {
-		assertInvalid("test/data/invalid12_subComponent_missing.xml", "The content of element 'SequenceAnnotation' is not complete");
+		assertInvalid("test/data/invalid12_subComponent_missing.xml",
+		                "The content of element 'SequenceAnnotation' is not complete");
 	}
 
 	@Test
 	public void invalid13() throws Exception {
-		assertInvalid("test/data/invalid13_type_not_so.xml", "Value 'http://partsregistry.org/type/signalling' is not facet-valid");
+		assertInvalid("test/data/invalid13_type_not_so.xml",
+		                "Value 'http://partsregistry.org/type/signalling' is not facet-valid");
 	}
 
 	@Test
@@ -155,37 +160,18 @@ public class SBOLValidatorTests {
 
 	@Test
 	public void invalid17() throws Exception {
-		assertInvalid("test/data/invalid17_annotation_dna_sequence_length.xml", "DnaSequence length does not match bioStart and bioEnd values");
+		assertInvalid("test/data/invalid17_annotation_dna_sequence_length.xml",
+		                "DnaSequence length does not match bioStart and bioEnd values");
 	}
-
 
 	@Test
 	public void invalid18() throws Exception {
-		assertInvalid("test/data/invalid18_annotation_dna_sequence_contents.xml", "Sequence in the annotation does not match the parent DnaComponent sequence");
+		assertInvalid("test/data/invalid18_annotation_dna_sequence_contents.xml",
+		                "Sequence in the annotation does not match the parent DnaComponent sequence");
 	}
 
 	@Test
 	public void invalid19() throws Exception {
 		assertInvalid("test/data/invalid19_no_uri.xml", "Attribute 'about' must appear on element 'DnaComponent'");
-	}
-
-	public void assertInvalid(final String fileName, String expectedMessage) throws Exception {
-		try {
-			assertValid(fileName);
-			fail("Invalid file passed validation: " + fileName);
-		}
-		catch (SBOLValidationException e) {
-			String msgFormat = "Validation exception message does not contain expected message:%n  Expected=%s%n  Actual=%s";
-			String msg = String.format(msgFormat, expectedMessage, e.getMessage());
-			assertTrue(msg, e.getMessage().contains(expectedMessage));
-		}
-		catch (Exception e) {
-			throw e;
-		}
-	}
-
-	public void assertValid(final String fileName) throws Exception {
-		// reading the document ensures validity
-		SBOLFactory.read(new FileInputStream(fileName));
 	}
 }

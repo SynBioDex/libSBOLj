@@ -1,46 +1,14 @@
 package org.sbolstandard.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.net.URI;
-import java.util.Iterator;
+import static org.sbolstandard.core.SBOLTestUtils.createCollection;
+import static org.sbolstandard.core.SBOLTestUtils.createDnaComponent;
+import static org.sbolstandard.core.SBOLTestUtils.createDnaSequence;
+import static org.sbolstandard.core.SBOLTestUtils.createSequenceAnnotation;
+import static org.sbolstandard.core.SBOLTestUtils.uri;
 
 import org.junit.Test;
-import org.sbolstandard.core.util.SBOLBaseVisitor;
 
 public abstract class SBOLAbstractTests {
-	public Collection createCollection(int id) {
-		Collection coll1 = SBOLFactory.createCollection();
-		coll1.setURI(uri("http://example.com/collection" + id));
-		coll1.setDisplayId("Coll" + id);
-		coll1.setName("Collection" + id);
-		return coll1;
-	}
-	
-	public DnaComponent createDnaComponent(int id) {
-		DnaComponent comp1 = SBOLFactory.createDnaComponent();
-		comp1.setURI(uri("http://example.com/dc" + id));
-		comp1.setDisplayId("DC" + id);
-		comp1.setName("DnaComponent" + id);
-		return comp1;
-	}
-	
-	public DnaSequence createDnaSequence(int id) {
-		DnaSequence ds1 = SBOLFactory.createDnaSequence();
-		ds1.setURI(uri("http://example.com/ds" + id));
-		ds1.setNucleotides("tccctatcagtgat");
-		return ds1;
-	}
-	
-	public SequenceAnnotation createSequenceAnnotation(int id) {
-		SequenceAnnotation sa = SBOLFactory.createSequenceAnnotation();
-		sa.setURI(uri("http://example.com/sa" + id));
-		return sa;
-	}
-	
-	
 	@Test
 	public void valid01() throws Exception {
 		DnaComponent comp1 = createDnaComponent(1);
@@ -142,17 +110,5 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/valid11_collection_components.xml", coll1);
 	}
 	
-	public SBOLDocument createDocument(SBOLRootObject... contents) {
-		SBOLDocument doc = SBOLFactory.createDocument();
-		for (SBOLRootObject obj : contents) {
-	        doc.addContent(obj);
-        }
-		return doc;
-	}
-	
-	public URI uri(String uri) {
-		return URI.create(uri);
-	}
-
 	public abstract void runTest(final String fileName, final SBOLRootObject... contents) throws Exception;
 }
