@@ -18,4 +18,11 @@
  */
 // an annotation to make sure the class file is created for this source file so ant won't compile this file every time
 @javax.annotation.Generated(value={})
+// an annotation to bind namespace prefixes
+@XmlSchema(
+        namespace = "http://sbol.org/v1#",
+        xmlns = { @XmlNs(prefix = "rdf", namespaceURI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#")})
 package org.sbolstandard.core;
+
+import javax.xml.bind.annotation.XmlNs;
+import javax.xml.bind.annotation.XmlSchema;
