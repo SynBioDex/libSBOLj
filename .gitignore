@@ -2,5 +2,7 @@ build
 javadocs
 *.jar
 *.zip
+.idea
+*.iml
 
 /nbproject/private/
