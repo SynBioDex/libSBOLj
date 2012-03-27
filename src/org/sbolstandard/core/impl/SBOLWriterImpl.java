@@ -26,8 +26,6 @@ import org.sbolstandard.core.SBOLDocument;
 import org.sbolstandard.core.SBOLValidationException;
 import org.sbolstandard.core.SBOLWriter;
 
-import com.sun.xml.internal.bind.marshaller.NamespacePrefixMapper;
-
 public class SBOLWriterImpl implements SBOLWriter {
 	private final boolean validate;
 	
@@ -47,8 +45,7 @@ public class SBOLWriterImpl implements SBOLWriter {
 	        
 	        Marshaller marshaller = JAXB.CONTEXT.createMarshaller();
 	        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-	        marshaller.setProperty("com.sun.xml.internal.bind.namespacePrefixMapper", new SBOLPrefixMapper());
-			
+
 	        if (validate) {
 		        marshaller.setSchema(JAXB.SCHEMA);
 		        
@@ -76,16 +73,4 @@ public class SBOLWriterImpl implements SBOLWriter {
         	throw new IOException(e);
         }
 	}	
-
-	static class SBOLPrefixMapper extends NamespacePrefixMapper {
-		@Override
-		public String getPreferredPrefix(String namespaceUri, String suggestion, boolean requirePrefix) {
-			if (namespaceUri.equals("http://www.w3.org/1999/02/22-rdf-syntax-ns#"))
-				return "rdf";
-			if (namespaceUri.equals("http://sbols.org/v1#"))
-				return "";
-			return suggestion;
-		}
-
-	}
 }
