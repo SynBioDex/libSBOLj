@@ -28,7 +28,7 @@ import java.util.List;
  * a SBOL Collection object.
  */
 
-public interface DnaComponent extends SBOLRootObject {
+public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
     /**
      * Positions and directions of <code>SequenceFeature</code>[s] that describe
      * the DNA sequence.
