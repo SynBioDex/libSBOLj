@@ -15,7 +15,8 @@
 	<property name="test.src.dir" value="${test.dir}" />
 	<property name="test.lib.dir" value="${test.dir}/lib" />
 	<property name="test.build.dir" value="${build.dir}/test" />
-	
+	<property name="lib.dir" value="lib" />
+
 	<property name="schema.dir" value="schema" />
 	<property name="javadoc.dir" value="javadoc" />
 	
@@ -35,13 +36,14 @@
 		<delete file="${zip.name}" />
 	</target>
 
-	<target name="build">
-		<mkdir dir="${core.build.dir}" />
-		<javac srcdir="${core.src.dir}" destdir="${core.build.dir}" includeantruntime='false' />
+	<target name="build">		
+<mkdir dir="${core.build.dir}" />
+		<javac srcdir="${core.src.dir}" destdir="${core.build.dir}" classpathref="lib.classpath" includeantruntime='false' />
+		
 	</target>
 
 	<target name="jar" depends="build" description="Compiles the source files and creates ${ant.project.name}.jar">
-		<jar jarfile="${core.jar}">
+		<jar jarfile="${core.jar}">			
 			<fileset dir="${core.build.dir}" />
 			<fileset dir="${core.src.dir}" includes="version.properties" />
 			<fileset dir="${schema.dir}" />
@@ -100,6 +102,12 @@
 			<include name="*.jar" />
 		</fileset>
 		<pathelement location="${test.build.dir}" />
+	</path>
+
+	<path id="lib.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="*.jar" />
+		</fileset>
 	</path>
 
 	<target name="build-test" depends="jar">
