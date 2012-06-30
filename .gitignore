@@ -1,8 +1,10 @@
-build
+﻿build
 javadocs
 *.jar
 *.zip
 .idea
 *.iml
-
-/nbproject/private/
+.gitignore
+.gitattributes
+/sand
+/nbproject/
