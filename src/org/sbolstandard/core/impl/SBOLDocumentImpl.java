@@ -15,11 +15,12 @@
 
 package org.sbolstandard.core.impl;
 
-import java.beans.Transient;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
