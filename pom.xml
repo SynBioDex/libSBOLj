@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>sbolstandard.org</groupId>
+    <artifactId>libSBOLj</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <url>https://github.com/SynBioDex/libSBOLj</url>
+    <scm>
+        <connection>scm:git:git@github.com:SynBioDex/libSBOLj.git</connection>
+        <developerConnection>scm:git:git@github.com:SynBioDex/libSBOLj.git</developerConnection>
+        <url>https://github.com/SynBioDex/libSBOLj</url>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/SynBioDex/libSBOLj/issues</url>
+    </issueManagement>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <properties>
+        <!-- We have to make sure we're building on the same charset on all platforms or bad things happen. -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!-- settings for javac. -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+
+            <!-- todo: add any other plugins needed here -->
+        </plugins>
+
+        <resources>
+            <resource>
+                <!-- Enable substitution of ${foo} maven variables in resource files. -->
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <!-- dependencies used by libSBOLj -->
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>javax.persistence</artifactId>
+            <!-- This version says that we can use any version of javax.persistence from 2.0 (inclusive) to 3.0
+            (exclusive). We just need the @Transient annotation, and the semantics of this will be stable over this
+            range of releases. -->
+            <version>[2.0, 3.0)</version>
+        </dependency>
+
+        <!-- test dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.9</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Places to look for jars -->
+    <repositories>
+        <repository>
+            <id>EclipseLink</id>
+            <url>http://www.eclipse.org/downloads/download.php?r=1&amp;nf=1&amp;file=/rt/eclipselink/maven.repo</url>
+        </repository>
+    </repositories>
+</project>

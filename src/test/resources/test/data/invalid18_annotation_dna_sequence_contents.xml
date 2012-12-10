@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:so="http://purl.obolibrary.org/obo/" xmlns="http://sbols.org/v1#" 
+   >
+
+   <DnaComponent rdf:about="http://example.com/dc1">
+      <displayId>DC1</displayId>
+      <dnaSequence>
+         <DnaSequence rdf:about="http://example.com/ds1">
+            <nucleotides>tccctatcagtgat</nucleotides>
+         </DnaSequence>
+      </dnaSequence>
+      <annotation>
+         <SequenceAnnotation rdf:about="http://example.com/sa1">
+            <bioStart>1</bioStart>
+            <bioEnd>3</bioEnd>
+            <subComponent>
+               <DnaComponent rdf:about="http://example.com/dc2">
+                  <displayId>DC2</displayId>
+                  <name>DnaComponent2</name>
+			      <dnaSequence>
+			         <DnaSequence rdf:about="http://example.com/ds2">
+			            <nucleotides>tca</nucleotides>
+			         </DnaSequence>
+			      </dnaSequence>
+               </DnaComponent>
+            </subComponent>
+         </SequenceAnnotation>
+      </annotation>
+   </DnaComponent>
+</rdf:RDF>
+

@@ -6,5 +6,6 @@ javadocs
 *.iml
 .gitignore
 .gitattributes
+/target
 /sand
 /nbproject/
