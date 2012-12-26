@@ -3,10 +3,7 @@ package org.sbolstandard.core;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 
 public class SBOLTestUtils {
@@ -83,7 +80,12 @@ public class SBOLTestUtils {
 
 	public static void assertValid(final String fileName) throws Exception {
 		// reading the document ensures validity
-		SBOLFactory.read(new FileInputStream(fileName));
+        InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
+        if(resourceAsStream == null) resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/" + fileName);
+
+        assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
+
+		SBOLFactory.read(resourceAsStream);
 	}
 
 	public static void assertInvalid(final SBOLDocument doc, String expectedMessage) throws Exception {

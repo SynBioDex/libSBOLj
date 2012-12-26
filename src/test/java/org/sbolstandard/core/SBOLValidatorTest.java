@@ -5,7 +5,7 @@ import static org.sbolstandard.core.SBOLTestUtils.assertValid;
 
 import org.junit.Test;
 
-public class SBOLValidatorTests {
+public class SBOLValidatorTest {
 	@Test
 	public void valid01() throws Exception {
 		assertValid("test/data/valid01_dna_component_empty.xml");

@@ -60,7 +60,9 @@ public class JAXB {
 			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 			URL sbolSchema = SBOLFactory.class.getResource("/sbol.xsd");
-			URL rdfSchema = SBOLFactory.class.getResource("/rdf.xsd");			 
+            assert sbolSchema != null : "Could not locate the sbol schema resource '/sbol.xsd'";
+			URL rdfSchema = SBOLFactory.class.getResource("/rdf.xsd");
+            assert rdfSchema != null : "Could not loate the rdf schema resoure '/sbol.xsd'";
 			
 			Source[] sources= { 
 				new StreamSource(sbolSchema.openStream(), sbolSchema.toString()), 
