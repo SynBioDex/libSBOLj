@@ -6,7 +6,7 @@ import static org.sbolstandard.core.SBOLTestUtils.writeAndRead;
 
 import org.sbolstandard.core.util.SBOLDeepEquality;
 
-public class SBOLWriterTests extends SBOLAbstractTests {
+public class SBOLWriterTest extends SBOLAbstractTests {
 	public void runTest(final String fileName, final SBOLRootObject... contents) throws Exception {
 		SBOLDocument expected = createDocument(contents);
 		SBOLDocument actual = writeAndRead(expected); 

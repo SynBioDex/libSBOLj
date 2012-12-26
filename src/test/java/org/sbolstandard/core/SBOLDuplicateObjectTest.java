@@ -15,7 +15,7 @@ import org.sbolstandard.core.util.SBOLDeepEquality;
  * 
  * @author Evren Sirin
  */
-public class SBOLDuplicateObjectTests {	
+public class SBOLDuplicateObjectTest {
 	@Test
 	public void cyclicComponent() throws Exception {
 		DnaComponent comp1 = createDnaComponent(1);

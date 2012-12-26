@@ -21,7 +21,7 @@
 	<property name="javadoc.dir" value="javadoc" />
 	
 	<!-- the following will set the org.sbolstandard.core.version property -->
-	<property file="${core.src.dir}/version.properties"/>
+	<property file="src/main/resources/version.properties"/>
 	
 	<property name="zip.dir" value="${ant.project.name}-${org.sbolstandard.core.version}"/>
 	<property name="zip.name" value="${zip.dir}.zip"/>
