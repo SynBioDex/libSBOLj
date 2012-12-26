@@ -37,7 +37,7 @@
 	</target>
 
 	<target name="build">		
-<mkdir dir="${core.build.dir}" />
+                <mkdir dir="${core.build.dir}" />
 		<javac srcdir="${core.src.dir}" destdir="${core.build.dir}" classpathref="lib.classpath" includeantruntime='false' />
 		
 	</target>
@@ -89,6 +89,7 @@
 				<include name="${schema.dir}/**"/>
 				<include name="${test.dir}/**"/>
 				<include name="${javadoc.dir}/**"/>
+                                <include name="${lib.dir}/**"/>
 			</fileset>
 		</copy>
 		<zip destfile="${zip.name}">
