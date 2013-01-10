@@ -110,5 +110,10 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/valid11_collection_components.xml", coll1);
 	}
 	
+	@Test
+	public void test() throws Exception {
+		runTest("examples/data/BBa_T9002.xml");
+	}
+	
 	public abstract void runTest(final String fileName, final SBOLRootObject... contents) throws Exception;
 }
