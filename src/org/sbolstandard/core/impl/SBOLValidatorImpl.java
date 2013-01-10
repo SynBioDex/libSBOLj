@@ -78,7 +78,7 @@ public class SBOLValidatorImpl implements SBOLValidator {
 			assertTrue(visited.add(obj), "Cyclic object reference", visited);
 
 			SBOLObject prev = uris.put(obj.getURI(), obj);
-			assertTrue(prev == null || prev.equals(obj), "Multiple objects with same URI", obj);
+			//assertTrue(prev == null || prev.equals(obj), "Multiple objects with same URI", obj);
 		}
 
 		private void unmarkVisited(SBOLObject obj) {
