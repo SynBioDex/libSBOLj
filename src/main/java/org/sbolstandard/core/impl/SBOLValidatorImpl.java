@@ -22,15 +22,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
-import org.sbolstandard.core.Collection;
-import org.sbolstandard.core.DnaComponent;
-import org.sbolstandard.core.DnaSequence;
-import org.sbolstandard.core.SBOLDocument;
-import org.sbolstandard.core.SBOLFactory;
-import org.sbolstandard.core.SBOLObject;
-import org.sbolstandard.core.SBOLValidationException;
-import org.sbolstandard.core.SBOLValidator;
-import org.sbolstandard.core.SequenceAnnotation;
+import org.sbolstandard.core.*;
 import org.sbolstandard.core.util.SBOLBaseVisitor;
 
 public class SBOLValidatorImpl implements SBOLValidator {
@@ -56,7 +48,7 @@ public class SBOLValidatorImpl implements SBOLValidator {
 		validator.visit(doc);
 	}
 
-	private static class Validator extends SBOLBaseVisitor {
+	private static class Validator extends SBOLBaseVisitor<SBOLValidationException> {
 		private LinkedHashSet<SBOLObject> visited = new LinkedHashSet<SBOLObject>();
 		private Map<URI, SBOLObject> uris = new HashMap<URI, SBOLObject>();
 		private Map<String, SBOLObject> displayIds = new HashMap<String, SBOLObject>();
@@ -77,8 +69,16 @@ public class SBOLValidatorImpl implements SBOLValidator {
 		private void markVisited(SBOLObject obj) {
 			assertTrue(visited.add(obj), "Cyclic object reference", visited);
 
-			SBOLObject prev = uris.put(obj.getURI(), obj);
+			SBOLObject prev = uris.get(obj.getURI());
 			//assertTrue(prev == null || prev.equals(obj), "Multiple objects with same URI", obj);
+            MergeVisitor merger = new MergeVisitor(prev);
+            try {
+                obj.accept(merger);
+            } catch (MergerException e) {
+                throw new SBOLValidationException("Multiple objects with same URI", e, obj, prev);
+            }
+            SBOLObject merged = merger.getMerged();
+            uris.put(merged.getURI(), merged);
 		}
 
 		private void unmarkVisited(SBOLObject obj) {
@@ -86,9 +86,11 @@ public class SBOLValidatorImpl implements SBOLValidator {
 		}
 
 		private void checkDisplayId(String displayId, SBOLObject obj) {
-			SBOLObject prev = displayIds.put(displayId, obj);
-			assertTrue(prev == null || prev.equals(obj), "Multiple objects with same displayId: " + displayId, obj,
-			           prev);
+            if(displayId != null) {
+                SBOLObject prev = displayIds.put(displayId, obj);
+             			assertTrue(prev == null || prev.getURI().equals(obj.getURI()), "Multiple objects with same displayId: " + displayId, obj,
+             			           prev);
+            }
 		}
 
 		private void checkPrecedeCycle(SequenceAnnotation annotation, LinkedHashSet<SequenceAnnotation> path) {

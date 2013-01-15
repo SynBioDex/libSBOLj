@@ -128,7 +128,7 @@ public class CollectionImpl extends SBOLObjectImpl implements Collection {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void accept(SBOLVisitor visitor) {
+	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
 		visitor.visit(this);
 	}
 

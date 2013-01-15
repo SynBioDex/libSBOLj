@@ -1,6 +1,7 @@
 package org.sbolstandard.core.impl;
 
 import org.sbolstandard.core.Merger;
+import org.sbolstandard.core.MergerException;
 
 import java.util.Collection;
 
@@ -11,11 +12,13 @@ import java.util.Collection;
  */
 public abstract class AbstractMerger<E> implements Merger<E> {
 
-    protected <A> A nullSafeIdentical(A a1, A a2, String fieldName) {
+    protected <A> A nullSafeIdentical(A a1, A a2, String fieldName) throws MergerException {
         return nullSafeMerge(a1, a2, fieldName, new MergeIdentical<A>());
     }
 
-    protected <A, C extends Collection<A>> C nullSafeCollectionMerge(C c1, C c2, String fieldName, C empty, Merger<A> merger) {
+    protected <A, C extends Collection<A>> C nullSafeCollectionMerge(C c1, C c2, String fieldName, C empty, Merger<A> merger)
+            throws MergerException
+    {
         OUTER:
         for(A a1 : c1) {
             for(A a2 : c2) {
@@ -37,7 +40,9 @@ public abstract class AbstractMerger<E> implements Merger<E> {
         return empty;
     }
 
-    protected <A> A nullSafeMerge(A a1, A a2, String fieldName, Merger<A> merger) {
+    protected <A> A nullSafeMerge(A a1, A a2, String fieldName, Merger<A> merger)
+            throws MergerException
+    {
         if(a1 != null && a2 != null) {
             try {
                 return merger.merge(a1, a2);

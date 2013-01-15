@@ -112,7 +112,7 @@ public abstract class SBOLAbstractTests {
 	
 	@Test
 	public void test() throws Exception {
-		runTest("examples/data/BBa_T9002.xml");
+		runTest("test/data/BBa_T9002.xml", (SBOLRootObject[]) null);
 	}
 	
 	public abstract void runTest(final String fileName, final SBOLRootObject... contents) throws Exception;

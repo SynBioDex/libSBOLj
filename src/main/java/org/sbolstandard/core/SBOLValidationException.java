@@ -44,7 +44,12 @@ public class SBOLValidationException extends RuntimeException {
 		this.objects = Collections.unmodifiableList(new ArrayList<SBOLObject>(objects));
 	}
 
-	/**
+    public SBOLValidationException(String message, Throwable cause, SBOLObject ... objects) {
+        super(message, cause);
+        this.objects = Collections.unmodifiableList(Arrays.asList(objects));
+    }
+
+    /**
 	 * Creates a new exception instance with the given cause but no specific objects for the problem.
 	 */
 	public SBOLValidationException(Throwable cause) {

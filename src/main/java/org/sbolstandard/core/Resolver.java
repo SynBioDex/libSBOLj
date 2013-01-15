@@ -13,5 +13,5 @@ public interface Resolver<E, ID> {
      * @param id    the identifier
      * @return      the resolution of the identifier, or null if it could not be resolved
      */
-    public E resolve(ID id);
+    public E resolve(ID id) throws MergerException;
 }
