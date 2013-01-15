@@ -2,6 +2,7 @@ package org.sbolstandard.core.impl;
 
 
 import org.sbolstandard.core.Merger;
+import org.sbolstandard.core.MergerException;
 import org.sbolstandard.core.Resolver;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public abstract class AggregatingResolver<E, ID> implements Resolver<E, ID> {
     }
 
     @Override
-    public E resolve(ID id) {
+    public E resolve(ID id) throws MergerException {
         E found = null;
 
         for(Resolver<E, ID> r : resolvers) {

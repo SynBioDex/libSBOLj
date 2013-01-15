@@ -88,7 +88,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
      * {@inheritDoc}
      */
     @Override
-    public void accept(SBOLVisitor visitor) {
+    public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
 	    visitor.visit(this);
     }
 
@@ -100,7 +100,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
             public Collection resolve(final URI uri) {
                 final List<Collection> found = new ArrayList<Collection>();
 
-                accept(new SBOLBaseVisitor() {
+                accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override
                     public void visit(Collection coll) {
                         if(coll.getURI().equals(uri))
@@ -122,7 +122,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
             public DnaComponent resolve(final URI uri) {
                 final List<DnaComponent> found = new ArrayList<DnaComponent>();
 
-                accept(new SBOLBaseVisitor() {
+                accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override
                     public void visit(DnaComponent dc) {
                         if(dc.getURI().equals(uri))
@@ -144,7 +144,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
             public DnaSequence resolve(final URI uri) {
                 final List<DnaSequence> found = new ArrayList<DnaSequence>();
 
-                accept(new SBOLBaseVisitor() {
+                accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override
                     public void visit(DnaSequence ds) {
                         if(ds.getURI().equals(uri))
@@ -166,7 +166,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
             public SequenceAnnotation resolve(final URI uri) {
                 final List<SequenceAnnotation> found = new ArrayList<SequenceAnnotation>();
 
-                accept(new SBOLBaseVisitor() {
+                accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override
                     public void visit(SequenceAnnotation annotation) {
                         if(annotation.getURI().equals(uri))
@@ -188,7 +188,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
             public Collection resolve(final String displayId) {
                 final List<Collection> found = new ArrayList<Collection>();
 
-                accept(new SBOLBaseVisitor() {
+                accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override
                     public void visit(Collection coll) {
                         if(coll.getDisplayId().equals(displayId))
@@ -210,7 +210,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
             public DnaComponent resolve(final String displayId) {
                 final List<DnaComponent> found = new ArrayList<DnaComponent>();
 
-                accept(new SBOLBaseVisitor() {
+                accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override
                     public void visit(DnaComponent component) {
                         if(component.getDisplayId().equals(displayId))

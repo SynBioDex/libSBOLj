@@ -23,14 +23,14 @@ package org.sbolstandard.core;
  * @see SBOLVisitable
  * @author Evren Sirin
  */
-public interface SBOLVisitor {
-	public void visit(SBOLDocument doc);
+public interface SBOLVisitor<T extends Throwable> {
+	public void visit(SBOLDocument doc) throws T;
 
-	public void visit(Collection coll);
+	public void visit(Collection coll) throws T;
 
-	public void visit(DnaComponent component);
+	public void visit(DnaComponent component) throws T;
 
-	public void visit(DnaSequence sequence);
+	public void visit(DnaSequence sequence) throws T;
 
-	public void visit(SequenceAnnotation annotation);
+	public void visit(SequenceAnnotation annotation) throws T;
 }

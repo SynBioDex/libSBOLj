@@ -31,11 +31,11 @@ import org.sbolstandard.core.SequenceAnnotation;
  * 
  * @author Evren Sirin
  */
-public class SBOLBaseVisitor implements SBOLVisitor {
+public class SBOLBaseVisitor<T extends Throwable> implements SBOLVisitor<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void visit(SBOLDocument doc) {
+	public void visit(SBOLDocument doc) throws T {
 		for (SBOLRootObject rootObj : doc.getContents()) {
 			rootObj.accept(this);
 		}
@@ -44,7 +44,7 @@ public class SBOLBaseVisitor implements SBOLVisitor {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void visit(Collection coll) {
+	public void visit(Collection coll) throws T {
 		for (DnaComponent component : coll.getComponents()) {
 			visit(component);
 		}
@@ -53,7 +53,7 @@ public class SBOLBaseVisitor implements SBOLVisitor {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void visit(DnaComponent component) {
+	public void visit(DnaComponent component) throws T {
 		for (SequenceAnnotation sequenceAnnotation : component.getAnnotations()) {
 			visit(sequenceAnnotation);
 		}
@@ -65,14 +65,14 @@ public class SBOLBaseVisitor implements SBOLVisitor {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void visit(DnaSequence sequence) {
+	public void visit(DnaSequence sequence) throws T {
 		// nothing to do here
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public void visit(SequenceAnnotation annotation) {
+	public void visit(SequenceAnnotation annotation) throws T {
 		if (annotation.getSubComponent() != null) {
 			visit(annotation.getSubComponent());
 		}

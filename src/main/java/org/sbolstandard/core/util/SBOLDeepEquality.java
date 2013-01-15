@@ -52,13 +52,27 @@ public class SBOLDeepEquality {
         }
 	}
 	
-	private static class NotEqualException extends RuntimeException {		
-	}
+	public static class NotEqualException extends Exception {
+//        private NotEqualException() {
+//        }
 
-	private static class EqualityTester extends SBOLBaseVisitor {
+        private NotEqualException(String message) {
+            super(message);
+        }
+
+        private NotEqualException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        private NotEqualException(Throwable cause) {
+            super(cause);
+        }
+    }
+
+	public static class EqualityTester extends SBOLBaseVisitor<NotEqualException> {
 		private SBOLVisitable currentObj;
 
-		public void assertEqual(SBOLVisitable obj1, SBOLVisitable obj2) {
+		public void assertEqual(SBOLVisitable obj1, SBOLVisitable obj2) throws NotEqualException {
 			SBOLVisitable prevObj = currentObj;
 			currentObj = obj1;
 			obj2.accept(this);
@@ -66,65 +80,69 @@ public class SBOLDeepEquality {
 		}
 		
 		@Override
-        public void visit(SBOLDocument doc) {
+        public void visit(SBOLDocument doc) throws NotEqualException {
             assertEqual(castCurrentAs(SBOLDocument.class), doc);
         } 				
 		
 		@Override
-        public void visit(Collection coll) {
+        public void visit(Collection coll) throws NotEqualException {
             assertEqual(castCurrentAs(Collection.class), coll);
         }
 
 		@Override
-        public void visit(DnaComponent component) {
+        public void visit(DnaComponent component) throws NotEqualException {
 			assertEqual(castCurrentAs(DnaComponent.class), component);
         }
 
 		@Override
-        public void visit(DnaSequence sequence) {
+        public void visit(DnaSequence sequence) throws NotEqualException {
 			assertEqual(castCurrentAs(DnaSequence.class), sequence);
         }
 
 		@Override
-        public void visit(SequenceAnnotation annotation) {
+        public void visit(SequenceAnnotation annotation) throws NotEqualException {
 			assertEqual(castCurrentAs(SequenceAnnotation.class), annotation);
         }		
 		
-		private <T> T castCurrentAs(Class<T> cls) {
+		private <T> T castCurrentAs(Class<T> cls) throws NotEqualException {
 			try {
 	            return cls.cast(currentObj);
             }
             catch (Exception e) {
-	            throw new NotEqualException();
+	            throw new NotEqualException(e);
             }
 		}
 		
-		private boolean isBothNullOrSame(Object obj1, Object obj2) {
+		private boolean isBothNullOrSame(Object obj1, Object obj2) throws NotEqualException {
 			if (obj1 == obj2) {
 				return true;
 			}
 			
 			if (obj1 == null || obj2 == null) {
-				throw new NotEqualException();
+				throw new NotEqualException("One of the objects is null");
 			}
 			
 			return false;			
 		}
 		
-		private void assertEquals(Object obj1, Object obj2) {
+		private void assertEquals(Object obj1, Object obj2) throws NotEqualException {
 			if (!isBothNullOrSame(obj1, obj2) && !obj1.equals(obj2)) {
-				throw new NotEqualException();
+				throw new NotEqualException("Objects are not equal:\n" + obj1 + "\n" + obj2);
 			}
 		}
 		
-		public void assertEqual(SBOLDocument doc1, SBOLDocument doc2) {
+		public void assertEqual(SBOLDocument doc1, SBOLDocument doc2) throws NotEqualException {
 			if (isBothNullOrSame(doc1, doc2)) {
 				return;
 			}
 			
 			java.util.Collection<SBOLRootObject> components1 = doc1.getContents();
 			java.util.Collection<SBOLRootObject> components2 = doc2.getContents();
-			assertEquals(components1.size(), components2.size());
+			try {
+                assertEquals(components1.size(), components2.size());
+            } catch (NotEqualException e) {
+                throw new NotEqualException("Components not the same size for\n" + doc1 + "\n" + doc2);
+            }
 			Iterator<SBOLRootObject> iter1 = components1.iterator();
 			Iterator<SBOLRootObject> iter2 = components2.iterator();
 			while (iter1.hasNext()) {
@@ -132,7 +150,7 @@ public class SBOLDeepEquality {
 			}
 		}
 
-		public void assertEqual(Collection collection1, Collection collection2) {
+		public void assertEqual(Collection collection1, Collection collection2) throws NotEqualException {
 			if (isBothNullOrSame(collection1, collection2)) {
 				return;
 			}
@@ -152,7 +170,7 @@ public class SBOLDeepEquality {
 			}
 		}
 
-		public void assertEqual(DnaComponent component1, DnaComponent component2) {
+		public void assertEqual(DnaComponent component1, DnaComponent component2) throws NotEqualException {
 			if (isBothNullOrSame(component1, component2)) {
 				return;
 			}
@@ -172,7 +190,7 @@ public class SBOLDeepEquality {
 			}
 		}
 
-		public void assertEqual(DnaSequence sequence1, DnaSequence sequence2) {
+		public void assertEqual(DnaSequence sequence1, DnaSequence sequence2) throws NotEqualException {
 			if (isBothNullOrSame(sequence1, sequence2)) {
 				return;
 			}
@@ -181,7 +199,7 @@ public class SBOLDeepEquality {
 			assertEquals(sequence1.getNucleotides(), sequence2.getNucleotides());
 		}
 
-		public void assertEqual(SequenceAnnotation annotation1, SequenceAnnotation annotation2) {
+		public void assertEqual(SequenceAnnotation annotation1, SequenceAnnotation annotation2) throws NotEqualException {
 			assertEquals(annotation1.getURI(), annotation2.getURI());
 			assertEquals(annotation1.getBioStart(), annotation2.getBioStart());
 			assertEquals(annotation1.getBioEnd(), annotation2.getBioEnd());
