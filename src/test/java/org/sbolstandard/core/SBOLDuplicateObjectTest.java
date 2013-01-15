@@ -46,11 +46,15 @@ public class SBOLDuplicateObjectTest {
 	public void differentComponentsWithSameURI() throws Exception {
 		DnaComponent comp1a = createDnaComponent(1);
 		comp1a.setName("comp1a");
-		
+
 		DnaComponent comp1b = createDnaComponent(1);
 		comp1b.setName("comp1b");
 		
-		assertInvalid(createDocument(comp1a, comp1b), "Multiple objects with same URI");
+		try {
+            assertInvalid(createDocument(comp1a, comp1b), "Multiple objects with same URI");
+        } catch (AssertionError e) {
+            throw new AssertionError(String.format("Problem with DNA components\n\t%s\n\t%s", comp1a, comp1b), e);
+        }
 	}
 	
 	@Test

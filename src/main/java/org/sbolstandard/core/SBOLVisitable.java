@@ -26,8 +26,11 @@ package org.sbolstandard.core;
 public interface SBOLVisitable {
 	/**
 	 * Calls the appropriate visit function from the {@link SBOLVisitor} class.
+     *
+     * @param visitor the visitor to accept
+     * @throws T if the visitor throws T
 	 */
-	public void accept(SBOLVisitor visitor);
+	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T;
 	
 	
 	/**

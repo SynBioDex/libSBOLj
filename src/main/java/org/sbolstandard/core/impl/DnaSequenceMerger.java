@@ -1,6 +1,8 @@
 package org.sbolstandard.core.impl;
 
 import org.sbolstandard.core.DnaSequence;
+import org.sbolstandard.core.Merger;
+import org.sbolstandard.core.MergerException;
 
 /**
  * Merge DNA sequences.
@@ -8,8 +10,11 @@ import org.sbolstandard.core.DnaSequence;
  * @author Matthew Pocock
  */
 public class DnaSequenceMerger extends AbstractMerger<DnaSequence> {
+
+    public static Merger<DnaSequence> IDENTITY = new MergeIdentical<DnaSequence>();
+
     @Override
-    public DnaSequence merge(DnaSequence e1, DnaSequence e2) {
+    public DnaSequence merge(DnaSequence e1, DnaSequence e2) throws MergerException {
         DnaSequenceImpl m = new DnaSequenceImpl();
 
         m.setURI(nullSafeIdentical(e1.getURI(), e2.getURI(), "uri"));

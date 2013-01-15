@@ -71,7 +71,9 @@ public class SBOLTestUtils {
 		catch (SBOLValidationException e) {
 			String msgFormat = "Validation exception message does not contain expected message:%n  Expected=%s%n  Actual=%s";
 			String msg = String.format(msgFormat, expectedMessage, e.getMessage());
-			assertTrue(msg, e.getMessage().contains(expectedMessage));
+			if(!e.getMessage().contains(expectedMessage) && (e.getCause() == null || !e.getCause().getMessage().contains(expectedMessage))) {
+                throw(AssertionError) new AssertionError(msg).initCause(e);
+            }
 		}
 		catch (Exception e) {
 			throw e;
@@ -85,7 +87,13 @@ public class SBOLTestUtils {
 
         assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
 
-		SBOLFactory.read(resourceAsStream);
+        try {
+            SBOLFactory.read(resourceAsStream);
+        } catch (IOException e) {
+            throw new AssertionError("Failed to validate " + fileName, e);
+        } catch (SBOLValidationException e) {
+            throw new SBOLValidationException("Failed to validate " + fileName, e);
+        }
 	}
 
 	public static void assertInvalid(final SBOLDocument doc, String expectedMessage) throws Exception {
@@ -96,10 +104,9 @@ public class SBOLTestUtils {
 		catch (SBOLValidationException e) {
 			String msgFormat = "Validation exception message does not contain expected message:%n  Expected=%s%n  Actual=%s";
 			String msg = String.format(msgFormat, expectedMessage, e.getMessage());
-			assertTrue(msg, e.getMessage().contains(expectedMessage));
-		}
-		catch (Exception e) {
-			throw e;
+            if(!e.getMessage().contains(expectedMessage)) {
+                throw new AssertionError(msg, e);
+            }
 		}
 	}
 

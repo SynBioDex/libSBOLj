@@ -57,7 +57,7 @@ public class SBOLPrettyWriter implements SBOLWriter {
 	 *  
 	 * @author Evren Sirin
 	 */
-	private static class Writer extends SBOLBaseVisitor {
+	private static class Writer extends SBOLBaseVisitor<RuntimeException> {
 		private static final String INDENT = "   ";
 
 		private final PrintStream out;

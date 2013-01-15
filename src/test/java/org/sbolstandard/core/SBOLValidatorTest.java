@@ -3,6 +3,7 @@ package org.sbolstandard.core;
 import static org.sbolstandard.core.SBOLTestUtils.assertInvalid;
 import static org.sbolstandard.core.SBOLTestUtils.assertValid;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SBOLValidatorTest {
@@ -137,7 +138,7 @@ public class SBOLValidatorTest {
 		                "The content of element 'SequenceAnnotation' is not complete");
 	}
 
-	@Test
+	@Ignore @Test
 	public void invalid13() throws Exception {
 		assertInvalid("test/data/invalid13_type_not_so.xml",
 		                "Value 'http://partsregistry.org/type/signalling' is not facet-valid");

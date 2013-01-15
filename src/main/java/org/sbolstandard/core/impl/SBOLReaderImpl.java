@@ -88,7 +88,7 @@ public class SBOLReaderImpl implements SBOLReader {
         }
 	}
 	
-	private class PrecedeReferenceFinder extends SBOLBaseVisitor {
+	private class PrecedeReferenceFinder extends SBOLBaseVisitor<SBOLValidationException> {
 		private Map<URI, SequenceAnnotation> current = null;
 
 		@Override
@@ -117,7 +117,7 @@ public class SBOLReaderImpl implements SBOLReader {
 	    }
 	}
 	
-	private static class DuplicateRemover extends SBOLBaseVisitor {
+	private static class DuplicateRemover extends SBOLBaseVisitor<RuntimeException> {
 		private Map<URI, SBOLObject> map = new HashMap<URI, SBOLObject>();
 		private Set<SBOLObject> duplicates = new HashSet<SBOLObject>();
 
