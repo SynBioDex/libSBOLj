@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2012 Clark & Parsia, LLC. <http://www.clarkparsia.com>
+ 
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+ 
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+--> 
+
+<schema targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	elementFormDefault="qualified" attributeFormDefault="qualified"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:sbol="http://sbols.org/v1#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+	<xsd:import namespace="http://sbols.org/v1#" schemaLocation="sbol.xsd" />
+
+	<xsd:annotation>
+		<xsd:documentation>
+			Constrained XML Schema for RDF in use with SBOL
+			documents. Contains definitions for only those RDF
+			elements that are relevant for SBOL.
+		</xsd:documentation>
+	</xsd:annotation>
+
+   <xsd:element name="RDF">
+      <xsd:annotation>
+         <xsd:documentation>
+            Top level RDF document. We only allow selected SBOL types to be the children of this node. 
+         </xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence maxOccurs="unbounded">
+            <group ref="sbol:SBOLTopLevelType"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+
+   <xsd:group name="UnrestrictedType">
+      <xsd:annotation>
+         <xsd:documentation>
+            Element for rdf:type with no restrictions on the value. We define this as a singleton sequence instead
+            of a global element by itself because we don't want it to be a valid top level element.  
+         </xsd:documentation>
+      </xsd:annotation>
+      <xsd:sequence>
+         <xsd:element name="type" type="rdf:Reference"/>
+      </xsd:sequence>
+   </xsd:group>
+
+   <xsd:group name="SequenceOntologyType">
+      <xsd:annotation>
+         <xsd:documentation>
+            An extension of UnrestrictedType but restricts the type URI to belong to Sequence Ontology
+            namespace.
+         </xsd:documentation>
+      </xsd:annotation>
+      <xsd:sequence>
+         <xsd:element name="type">
+            <xsd:complexType>
+               <xsd:complexContent>
+                  <xsd:restriction base="xsd:anyType">
+                     <!--<xsd:attribute name="resource" type="rdf:SequenceOntologyURI" use="required"/>-->
+                      <xsd:attribute name="resource" type="xsd:anyURI"/> <!-- This restriction was too tight -->
+                  </xsd:restriction>
+               </xsd:complexContent>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+   </xsd:group>
+
+   <xsd:simpleType name="SequenceOntologyURI">
+      <xsd:annotation>
+         <xsd:documentation>
+            Type for URIs that belong to Sequence Ontology namespace. Unfortunately, the Sequence Ontology uses a
+            generic OBO namespace for its URIs so this is not as restrictive as we want. The local names for 
+            sequence ontology types all start with the prefix 'SO_' so we might encode this in the URI pattern
+            though relying on naming scheme is not robust. 
+         </xsd:documentation>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:anyURI">
+         <xsd:pattern value="http://purl.obolibrary.org/obo/(\c)*" />
+      </xsd:restriction>
+   </xsd:simpleType>
+
+   <xsd:complexType name="Reference">
+      <xsd:annotation>
+         <xsd:documentation>
+            Generic type for RDF style-reference. The reference element should have an rdF:resource attribute and
+            no child nodes.  
+         </xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:restriction base="xsd:anyType">
+            <xsd:attribute name="resource" use="required"/>
+         </xsd:restriction>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <attribute name="resource" type="xsd:anyURI"/>
+
+   <attribute name="about" type="xsd:anyURI"/>
+</schema>

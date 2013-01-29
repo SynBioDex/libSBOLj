@@ -13,7 +13,7 @@ First, clone the repository:
 
 To build libSBOLj use the following command:
 
-    ant clean jar teat
+    ant clean jar test
 
 This command will clean any previous binaries, create a libSBOLj.jar in the same directory and also run the unit tests 
 to make sure that there are on errors in the library.    

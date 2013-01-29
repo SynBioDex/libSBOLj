@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2012 Clark & Parsia, LLC. <http://www.clarkparsia.com>
+ 
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+ 
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+--> 
+
+<xsd:schema targetNamespace="http://sbols.org/v1#" elementFormDefault="qualified" attributeFormDefault="qualified"
+   xmlns="http://sbols.org/v1#" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   version="0.3">
+
+   <xsd:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#" schemaLocation="rdf.xsd"/>
+
+   <xsd:annotation>
+      <xsd:documentation>
+         XML Schema for SBOL core data model that is compatible with RDF/XML serialization.
+         <dc:date>2012-01-19</dc:date>
+         <dc:creator>Evren Sirin</dc:creator>
+         <dc:contributor>Michal Galdzicki</dc:contributor>
+      </xsd:documentation>
+   </xsd:annotation>
+
+   <xsd:group id="SBOLTopLevelType" name="SBOLTopLevelType">
+      <xsd:annotation>
+         <xsd:documentation>
+            Top level SBOL types that are allowed to occur as the children of root RDF document.  
+         </xsd:documentation>
+      </xsd:annotation>
+      <xsd:choice>
+         <xsd:element name="Collection" type="CollectionType"/>
+         <xsd:element name="DnaComponent" type="DnaComponentType"/>
+         <xsd:element name="DnaSequence" type="DnaSequenceType"/>
+      </xsd:choice>
+   </xsd:group>
+
+   <xsd:complexType name="CollectionType">
+      <xsd:annotation>
+         <xsd:documentation>
+            Collection type from SBOL core data model. Additional elements from other namespaces can be added
+            at the end of the element's children.
+         </xsd:documentation>
+      </xsd:annotation>   
+      <xsd:sequence>
+         <xsd:element name="displayId" type="DisplayIdType" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="name" type="NameType" minOccurs="0" maxOccurs="1"/>                
+         <xsd:element name="description" type="DescriptionType" minOccurs="0" maxOccurs="1"/> 
+         <xsd:element name="component" minOccurs="0" maxOccurs="unbounded">
+             <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="DnaComponent" type="DnaComponentType" minOccurs="1" maxOccurs="1"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>        
+         <xsd:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute ref="rdf:about" use="required"/>
+   </xsd:complexType>
+
+   <xsd:complexType name="DnaComponentType">
+      <xsd:annotation>
+         <xsd:documentation>
+            DnaComponent type from SBOL core data model. Only displayId element is required for this
+            element; all the other elements are optional.
+         </xsd:documentation>
+      </xsd:annotation>
+      <xsd:sequence>
+         <xsd:group ref="rdf:SequenceOntologyType" minOccurs="0" maxOccurs="unbounded"/>
+         <xsd:element name="displayId" type="DisplayIdType" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="name" type="NameType" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="description" type="DescriptionType" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="dnaSequence" minOccurs="0" maxOccurs="1">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="DnaSequence" type="DnaSequenceType" minOccurs="1" maxOccurs="1"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="annotation" minOccurs="0" maxOccurs="unbounded">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="SequenceAnnotation" type="SequenceAnnotationType" minOccurs="1" maxOccurs="1"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute ref="rdf:about" use="required"/>
+   </xsd:complexType>
+
+   <xsd:complexType name="DnaSequenceType">
+      <xsd:annotation>
+         <xsd:documentation>
+            DnaSequence type from SBOL core data model. The nucleotides element is required.
+         </xsd:documentation>
+      </xsd:annotation>
+      <xsd:sequence>
+         <xsd:element name="nucleotides" minOccurs="1" maxOccurs="1" type="NucleotideType"/>
+         <xsd:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute ref="rdf:about" use="required"/>
+   </xsd:complexType>
+
+   <xsd:complexType name="SequenceAnnotationType">
+      <xsd:annotation>
+         <xsd:documentation>
+            SequenceAnnotation type from SBOL core data model. The subComponent element is required. Other 
+            elements are optional.
+         </xsd:documentation>
+      </xsd:annotation>   
+      <xsd:sequence>
+         <xsd:element name="precedes" type="rdf:Reference" minOccurs="0" maxOccurs="unbounded"/>
+         <xsd:group ref="BioStartBioEndGroup" minOccurs="0" maxOccurs="1"/>
+         <xsd:element name="strand" type="StrandType" minOccurs="0"/>
+         <xsd:element name="subComponent" minOccurs="1" maxOccurs="1">
+            <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="DnaComponent" type="DnaComponentType" minOccurs="1" maxOccurs="1"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>   
+         <xsd:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute ref="rdf:about" use="required"/>
+   </xsd:complexType>
+
+   <xsd:group name="BioStartBioEndGroup">
+      <xsd:annotation>
+         <xsd:documentation>
+            The start and end coordinates are optional but if they exist, they should exist together so
+            they are defined together in a group.
+         </xsd:documentation>
+      </xsd:annotation>    
+      <xsd:sequence>
+         <xsd:element name="bioStart" type="xsd:positiveInteger" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="bioEnd" type="xsd:positiveInteger" minOccurs="1" maxOccurs="1"/>
+      </xsd:sequence>
+   </xsd:group>
+
+   <xsd:simpleType name="DisplayIdType">
+      <xsd:restriction base="xsd:string"/>
+   </xsd:simpleType>
+
+   <xsd:simpleType name="NameType">
+      <xsd:restriction base="xsd:string"/>
+   </xsd:simpleType>
+
+   <xsd:simpleType name="DescriptionType">
+      <xsd:restriction base="xsd:string"/>
+   </xsd:simpleType>
+
+   <xsd:simpleType name="StrandType">
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="+"/>
+         <xsd:enumeration value="-"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+   <xsd:simpleType name="NucleotideType">
+      <xsd:restriction base="xsd:string">
+         <xsd:pattern value="[acgtrykmswbdhvn]+"/>
+         <xsd:minLength value="1"/>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+</xsd:schema>
