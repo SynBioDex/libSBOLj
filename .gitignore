@@ -1,4 +1,7 @@
-﻿build
+﻿/build
+/target
+*~
+*.swp
 javadocs
 *.jar
 *.zip
@@ -6,5 +9,7 @@ javadocs
 *.iml
 .gitignore
 .gitattributes
+/target
 /sand
 /nbproject/
+/javadoc
