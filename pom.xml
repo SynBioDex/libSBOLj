@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -43,7 +44,20 @@
                     <showDeprecation>true</showDeprecation>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <!-- Build an executable JAR -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>org.sbolstandard.core.cli.SBOLValidate</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
             <!-- todo: add any other plugins needed here -->
         </plugins>
 
