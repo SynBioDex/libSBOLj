@@ -1,11 +1,18 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> e36eb7bed27724bd1e108375b6b3f03e1a9f1ac7
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>sbolstandard.org</groupId>
     <artifactId>libSBOLj</artifactId>
+<<<<<<< HEAD
+    <version>0.7.0-SNAPSHOT</version>
+=======
     <version>0.7.0-mgaldzic</version>
+>>>>>>> e36eb7bed27724bd1e108375b6b3f03e1a9f1ac7
     <packaging>jar</packaging>
     <url>https://github.com/SynBioDex/libSBOLj</url>
     <scm>
@@ -43,7 +50,10 @@
                     <target>1.6</target>
                     <showDeprecation>true</showDeprecation>
                 </configuration>
+<<<<<<< HEAD
             </plugin>
+=======
+>>>>>>> e36eb7bed27724bd1e108375b6b3f03e1a9f1ac7
             <plugin>
                 <!-- Build an executable JAR -->
                 <groupId>org.apache.maven.plugins</groupId>
@@ -58,6 +68,10 @@
                     </archive>
                 </configuration>
             </plugin>
+<<<<<<< HEAD
+=======
+            
+>>>>>>> e36eb7bed27724bd1e108375b6b3f03e1a9f1ac7
             <!-- todo: add any other plugins needed here -->
         </plugins>
 
