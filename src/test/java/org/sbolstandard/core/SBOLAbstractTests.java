@@ -112,12 +112,12 @@ public abstract class SBOLAbstractTests {
 	}
         
         @Test
-	public void valid12() throws Exception {
+	public void valid14() throws Exception {
 		DnaComponent comp1 = createDnaComponent(1);
-		comp1.setDescription("DnaComponent with very long sequence information");
+		comp1.setDescription("DnaComponent with very long sequence information 44,550bp");
 		comp1.setDnaSequence(createDnaSequenceLong(1));
 
-		runTest("test/data/valid12_dna_component_sequence_long.xml", comp1);
+		runTest("test/data/valid14_dna_component_sequence_long.xml", comp1);
 	}
 	
 	@Test
