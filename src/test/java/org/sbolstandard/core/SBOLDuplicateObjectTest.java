@@ -53,7 +53,7 @@ public class SBOLDuplicateObjectTest {
 		try {
             assertInvalid(createDocument(comp1a, comp1b), "Multiple objects with same URI");
         } catch (AssertionError e) {
-            throw new AssertionError(String.format("Problem with DNA components\n\t%s\n\t%s", comp1a, comp1b), e);
+            throw new AssertionError(String.format("Problem with DNA components\n\t%s\n\t%s", comp1a, comp1b));
         }
 	}
 	

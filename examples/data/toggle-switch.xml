@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:RDF xmlns="http://sbols.org/v1#" xmlns:ns2="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <DnaComponent ns2:about="http://org.sbolstandard/ToggleSwitch">
+        <displayId>Toggle Switch</displayId>
+        <name>Toggle Switch</name>
+        <description>Toggle Switch</description>
+        <annotation>
+            <SequenceAnnotation ns2:about="http://org.sbolstandard/ToggleSwitch/anot#repressor2">
+                <subComponent>
+                    <DnaComponent ns2:about="http://org.sbolstandard/ToggleSwitch/repressor2">
+                        <displayId>repressor2</displayId>
+                        <name>repressor2</name>
+                    </DnaComponent>
+                </subComponent>
+            </SequenceAnnotation>
+        </annotation>
+        <annotation>
+            <SequenceAnnotation ns2:about="http://org.sbolstandard/ToggleSwitch/anot#promoter1">
+                <subComponent>
+                    <DnaComponent ns2:about="http://org.sbolstandard/ToggleSwitch/promoter1">
+                        <displayId>promoter1</displayId>
+                        <name>promoter1</name>
+                    </DnaComponent>
+                </subComponent>
+            </SequenceAnnotation>
+        </annotation>
+        <annotation>
+            <SequenceAnnotation ns2:about="http://org.sbolstandard/ToggleSwitch/anot#promoter2">
+                <subComponent>
+                    <DnaComponent ns2:about="http://org.sbolstandard/ToggleSwitch/promoter2">
+                        <displayId>promoter2</displayId>
+                        <name>promoter2</name>
+                    </DnaComponent>
+                </subComponent>
+            </SequenceAnnotation>
+        </annotation>
+        <annotation>
+            <SequenceAnnotation ns2:about="http://org.sbolstandard/ToggleSwitch/anot#repressor1">
+                <subComponent>
+                    <DnaComponent ns2:about="http://org.sbolstandard/ToggleSwitch/repressor1">
+                        <displayId>repressor1</displayId>
+                        <name>repressor1</name>
+                    </DnaComponent>
+                </subComponent>
+            </SequenceAnnotation>
+        </annotation>
+        <annotation>
+            <SequenceAnnotation ns2:about="http://org.sbolstandard/ToggleSwitch/anot#reporter">
+                <subComponent>
+                    <DnaComponent ns2:about="http://org.sbolstandard/ToggleSwitch/reporter">
+                        <displayId>reporter</displayId>
+                        <name>reporter</name>
+                    </DnaComponent>
+                </subComponent>
+            </SequenceAnnotation>
+        </annotation>
+    </DnaComponent>
+</ns2:RDF>

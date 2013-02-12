@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:so="http://purl.obolibrary.org/obo/" xmlns="http://sbols.org/v1#" 
+   >
+
+   <Collection rdf:about="http://example.com/collection1">
+      <displayId>Coll1</displayId>
+      <name>Collection1</name>
+      <description>A collection may contain multiple components</description>
+      <component>
+         <DnaComponent rdf:about="http://example.com/dc1">
+            <displayId>DC1</displayId>
+            <name>DnaComponent1</name>
+            <dnaSequence>
+               <DnaSequence rdf:about="http://example.com/ds1">
+                  <nucleotides>tccctatcagtgat</nucleotides>
+               </DnaSequence>
+            </dnaSequence>
+         </DnaComponent>
+      </component>
+      <component>
+         <DnaComponent rdf:about="http://example.com/dc2">
+            <displayId>DC2</displayId>
+            <name>DnaComponent2</name>
+         </DnaComponent>
+      </component>
+   </Collection>
+
+</rdf:RDF>
+

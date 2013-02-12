@@ -20,8 +20,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.sbolstandard.core.impl.CollectionImpl;
+import org.sbolstandard.core.impl.DeviceImpl;
 import org.sbolstandard.core.impl.DnaComponentImpl;
 import org.sbolstandard.core.impl.DnaSequenceImpl;
+import org.sbolstandard.core.impl.PrimitiveDeviceImpl;
 import org.sbolstandard.core.impl.SBOLDocumentImpl;
 import org.sbolstandard.core.impl.SBOLReaderImpl;
 import org.sbolstandard.core.impl.SBOLValidatorImpl;
@@ -131,6 +133,27 @@ public class SBOLFactory {
 		return new CollectionImpl();
 	}
 
+	/**
+	 * Creates a new empty {@link Device} instance.
+	 */
+	public static Device createDevice() {
+		return new DeviceImpl();
+	}
+	
+	/**
+	 * Creates a new empty {@link PrimitiveDevice} instance.
+	 */
+	public static PrimitiveDevice createPrimitiveDevice() {
+		return new PrimitiveDeviceImpl();
+	}
+	
+	/**
+	 * Creates a new empty {@link CompositeDevice} instance.
+	 */
+	//public static CompositeDevice createCompositeDevice() {
+	//	return new CompositeDeviceImpl();
+	//}
+	
 	/**
 	 * Creates a new empty {@link DnaComponent} instance. 
 	 */

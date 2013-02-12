@@ -40,6 +40,7 @@
          <xsd:element name="Collection" type="CollectionType"/>
          <xsd:element name="DnaComponent" type="DnaComponentType"/>
          <xsd:element name="DnaSequence" type="DnaSequenceType"/>
+         <xsd:element name="PrimitiveDevice" type="PrimitiveDeviceType"/>
       </xsd:choice>
    </xsd:group>
 
@@ -128,6 +129,28 @@
                </xsd:sequence>
             </xsd:complexType>
          </xsd:element>   
+         <xsd:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute ref="rdf:about" use="required"/>
+   </xsd:complexType>
+
+   <xsd:complexType name="PrimitiveDeviceType">
+      <xsd:annotation>
+         <xsd:documentation>
+            Primitive Device
+         </xsd:documentation>
+      </xsd:annotation>   
+      <xsd:sequence>
+         <xsd:element name="displayId" type="DisplayIdType" minOccurs="1" maxOccurs="1"/>
+         <xsd:element name="name" type="NameType" minOccurs="0" maxOccurs="1"/>                
+         <xsd:element name="description" type="DescriptionType" minOccurs="0" maxOccurs="1"/> 
+         <xsd:element name="components" minOccurs="0" maxOccurs="unbounded">
+             <xsd:complexType>
+               <xsd:sequence>
+                  <xsd:element name="DnaComponent" type="DnaComponentType" minOccurs="1" maxOccurs="1"/>
+               </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>        
          <xsd:any namespace="##other" processContents="skip" minOccurs="0" maxOccurs="unbounded"/>
       </xsd:sequence>
       <xsd:attribute ref="rdf:about" use="required"/>

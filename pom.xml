@@ -76,11 +76,12 @@
         </dependency>
     </dependencies>
 
-    <!-- Places to look for jars -->
+    <!-- Places to look for jars
     <repositories>
         <repository>
             <id>EclipseLink</id>
             <url>http://www.eclipse.org/downloads/download.php?r=1&amp;nf=1&amp;file=/rt/eclipselink/maven.repo</url>
         </repository>
     </repositories>
+     -->
 </project>

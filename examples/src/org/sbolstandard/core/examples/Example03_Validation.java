@@ -32,7 +32,8 @@ import org.sbolstandard.core.SequenceAnnotation;
  */
 public class Example03_Validation {
 	public static void main(String[] args) throws Exception {
-		String file = "examples/data/BBa_I0462.xml";
+		//String file = "examples/data/BBa_I0462.xml";
+		String file = "examples/data/BBa_T9002.xml";
 
 		// read the BBa_I0462 example from file
 		SBOLDocument document = SBOLFactory.read(new FileInputStream(file));

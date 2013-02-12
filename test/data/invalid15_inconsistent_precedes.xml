@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+   xmlns:so="http://purl.obolibrary.org/obo/" xmlns="http://sbols.org/v1#" 
+   >
+
+   <DnaComponent rdf:about="http://example.com/dc1">
+      <displayId>DC1</displayId>
+      <name>DnaComponent1</name>
+      <description>Various sequence annotations</description>
+      <dnaSequence>
+         <DnaSequence rdf:about="http://example.com/ds1">
+            <nucleotides>tccctatcagtgat</nucleotides>
+         </DnaSequence>
+      </dnaSequence>
+      <annotation>
+         <SequenceAnnotation rdf:about="http://example.com/sa1">
+            <precedes rdf:resource="http://example.com/sa2"/>
+            <bioStart>1</bioStart>
+            <bioEnd>6</bioEnd>
+            <subComponent>
+               <DnaComponent rdf:about="http://example.com/dc2">
+                  <displayId>DC2</displayId>
+                  <name>DnaComponent2</name>
+               </DnaComponent>
+            </subComponent>
+         </SequenceAnnotation>
+      </annotation>
+      <annotation>
+         <SequenceAnnotation rdf:about="http://example.com/sa2">
+            <bioStart>4</bioStart>
+            <bioEnd>5</bioEnd>
+            <strand>+</strand>
+            <subComponent>
+               <DnaComponent rdf:about="http://example.com/dc3">
+                  <displayId>DC3</displayId>
+                  <name>DnaComponent3</name>
+               </DnaComponent>
+            </subComponent>
+         </SequenceAnnotation>
+      </annotation>
+   </DnaComponent>
+</rdf:RDF>
+

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" 
+	xmlns:so="http://purl.obolibrary.org/obo/" 
+	xmlns="http://sbols.org/v1#"
+	
+	>
+
+	<!-- Valid because only required field for a DNAComponent is displayId -->
+	<DnaComponent rdf:about="http://example.com/dc1">
+		<displayId>DC1</displayId>
+	</DnaComponent>
+</rdf:RDF>
+

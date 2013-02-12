@@ -90,7 +90,7 @@ public class SBOLTestUtils {
         try {
             SBOLFactory.read(resourceAsStream);
         } catch (IOException e) {
-            throw new AssertionError("Failed to validate " + fileName, e);
+            throw new AssertionError("Failed to validate " + fileName);
         } catch (SBOLValidationException e) {
             throw new SBOLValidationException("Failed to validate " + fileName, e);
         }
@@ -105,7 +105,7 @@ public class SBOLTestUtils {
 			String msgFormat = "Validation exception message does not contain expected message:%n  Expected=%s%n  Actual=%s";
 			String msg = String.format(msgFormat, expectedMessage, e.getMessage());
             if(!e.getMessage().contains(expectedMessage)) {
-                throw new AssertionError(msg, e);
+                throw new AssertionError(msg);
             }
 		}
 	}
