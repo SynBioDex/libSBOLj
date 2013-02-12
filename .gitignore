@@ -8,7 +8,9 @@ javadocs
 .idea
 *.iml
 .gitignore
+.settings
 .gitattributes
+/bin
 /target
 /sand
 /nbproject/
