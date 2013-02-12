@@ -18,10 +18,18 @@
  */
 @XmlSchema(
 	namespace = "http://sbols.org/v1#", 
-	elementFormDefault = XmlNsForm.QUALIFIED
+	elementFormDefault = XmlNsForm.QUALIFIED,
+        xmlns = {
+    @XmlNs(prefix = "rdf", namespaceURI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"),
+    @XmlNs(prefix = "so", namespaceURI = "http://purl.obolibrary.org/obo/"),
+    @XmlNs(prefix = "s", namespaceURI = "http://sbols.org/v1#")
+} //,
+//elementFormDefault = XmlNsForm.UNQUALIFIED,
+//attributeFormDefault = XmlNsForm.UNSET
 )
 package org.sbolstandard.core.impl;
 
+import javax.xml.bind.annotation.XmlNs;
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchema;
 

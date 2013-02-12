@@ -71,7 +71,12 @@ public class SBOLValidatorTest {
 	public void valid13() throws Exception {
 		assertValid("test/data/valid13_dna_sequence.xml");
 	}
-
+        
+        @Test
+	public void valid14() throws Exception {
+		assertValid("test/data/valid14_dna_component_sequence_long.xml");
+	}
+        
 	@Test
 	public void invalid01() throws Exception {
 		assertInvalid("test/data/invalid01_missing_displayId.xml",
