@@ -72,14 +72,6 @@
 
     <dependencies>
         <!-- dependencies used by libSBOLj -->
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>javax.persistence</artifactId>
-            <!-- This version says that we can use any version of javax.persistence from 2.0 (inclusive) to 3.0
-            (exclusive). We just need the @Transient annotation, and the semantics of this will be stable over this
-            range of releases. -->
-            <version>[2.0, 3.0)</version>
-        </dependency>
 
         <!-- test dependencies -->
         <dependency>
