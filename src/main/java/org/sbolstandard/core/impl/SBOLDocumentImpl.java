@@ -20,12 +20,12 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.sbolstandard.core.*;
@@ -93,7 +93,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
     }
 
     @Override
-    @Transient
+    @XmlTransient
     public UriResolver<Collection> getCollectionUriResolver() {
         return new UriResolver<Collection>() {
             @Override
@@ -115,7 +115,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
     }
 
     @Override
-    @Transient
+    @XmlTransient
     public UriResolver<DnaComponent> getComponentUriResolver() {
         return new UriResolver<DnaComponent>() {
             @Override
@@ -137,7 +137,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
     }
 
     @Override
-    @Transient
+    @XmlTransient
     public UriResolver<DnaSequence> getSequenceUriResolver() {
         return new UriResolver<DnaSequence>() {
             @Override
@@ -159,7 +159,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
     }
 
     @Override
-    @Transient
+    @XmlTransient
     public UriResolver<SequenceAnnotation> getAnnotationUriResolver() {
         return new UriResolver<SequenceAnnotation>() {
             @Override
@@ -181,7 +181,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
     }
 
     @Override
-    @Transient
+    @XmlTransient
     public DisplayIdResolver<Collection> getCollectionDisplayIdResolver() {
         return new DisplayIdResolver<Collection>() {
             @Override
@@ -203,7 +203,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
     }
 
     @Override
-    @Transient
+    @XmlTransient
     public DisplayIdResolver<DnaComponent> getComponentDisplayIdResolver() {
         return new DisplayIdResolver<DnaComponent>() {
             @Override
