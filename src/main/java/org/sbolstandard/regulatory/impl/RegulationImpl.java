@@ -74,4 +74,17 @@ public class RegulationImpl
 		this.regulationType = regulationType;
 		this.rightAnnotation = rightAnnotation;
 	}
+	
+	public SequenceAnnotation getLeftAnnotation() {
+		return this.leftAnnotation;
+	}
+	
+	public RegulationType getRegulationType() {
+		return this.regulationType;
+	}
+	
+	public SequenceAnnotation getRightAnnotation() {
+		return this.rightAnnotation;
+	}
+	
 }

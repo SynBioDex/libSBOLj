@@ -1,12 +1,14 @@
 package org.sbolstandard.regulatory.usecases;
 
-import java.io.FileOutputStream;
 import java.net.URI;
 
+import org.cidarlab.pigeon.PigeonGenerator;
+import org.cidarlab.pigeon.WeyekinPoster;
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.SBOLDocument;
 import org.sbolstandard.core.SBOLFactory;
 import org.sbolstandard.core.SequenceAnnotation;
+import org.sbolstandard.core.util.SequenceOntology;
 import org.sbolstandard.regulatory.Regulation;
 import org.sbolstandard.regulatory.RegulationTypes;
 import org.sbolstandard.regulatory.RegulatoryDevice;
@@ -16,7 +18,7 @@ import org.sbolstandard.regulatory.RegulatoryFactory;
  * In this example, we create a toggle switch device
  * the device, it's components, and annotations are created
  * furthermore, we define regulatory interactions
- * finally, we serialize it to XML/RDF
+ * finally, visualize the Toggle switch using Pigeon
  */
 public class ToggleSwitch {
 
@@ -42,6 +44,7 @@ public class ToggleSwitch {
 		repressor2.setURI(URI.create("http://org.sbolstandard/ToggleSwitch/repressor2"));
 		repressor2.setDisplayId("repressor2");
 		repressor2.setName("repressor2");
+		repressor2.getTypes().add(SequenceOntology.CDS);
 		saRepressor2.setSubComponent(repressor2);
 		toggleSwitch.getAnnotations().add(saRepressor2);
 
@@ -51,6 +54,7 @@ public class ToggleSwitch {
 		promoter1.setURI(URI.create("http://org.sbolstandard/ToggleSwitch/promoter1"));
 		promoter1.setDisplayId("promoter1");
 		promoter1.setName("promoter1");
+		promoter1.getTypes().add(SequenceOntology.PROMOTER);
 		saPromoter1.setSubComponent(promoter1);
 		toggleSwitch.getAnnotations().add(saPromoter1);
 
@@ -60,6 +64,7 @@ public class ToggleSwitch {
 		promoter2.setURI(URI.create("http://org.sbolstandard/ToggleSwitch/promoter2"));
 		promoter2.setDisplayId("promoter2");
 		promoter2.setName("promoter2");
+		promoter2.getTypes().add(SequenceOntology.PROMOTER);
 		saPromoter2.setSubComponent(promoter2);
 		toggleSwitch.getAnnotations().add(saPromoter2);
 
@@ -69,6 +74,7 @@ public class ToggleSwitch {
 		repressor1.setURI(URI.create("http://org.sbolstandard/ToggleSwitch/repressor1"));
 		repressor1.setDisplayId("repressor1");
 		repressor1.setName("repressor1");
+		repressor1.getTypes().add(SequenceOntology.CDS);
 		saRepressor1.setSubComponent(repressor1);
 		toggleSwitch.addAnnotation(saRepressor1);
 
@@ -78,13 +84,14 @@ public class ToggleSwitch {
 		reporter.setURI(URI.create("http://org.sbolstandard/ToggleSwitch/reporter"));
 		reporter.setDisplayId("reporter");
 		reporter.setName("reporter");
+		reporter.getTypes().add(SequenceOntology.CDS);
 		saReporter.setSubComponent(reporter);
 		toggleSwitch.getAnnotations().add(saReporter);
 		
-
 		// add the toggle switch DNA component to the document
 		toggleSwitchDoc.addContent(toggleSwitch);
-		
+				
+
 		// REGULATORY INTERACTIONS
 		
 		// 1. Repressor1 represses Promoter1
@@ -103,10 +110,34 @@ public class ToggleSwitch {
 		// add the regulations to the toggle switch SBOL document
 		//toggleSwitchDoc.addContent(regDev);
 		
-		// Serialization
+		// Serialization -- TODO
+		//SBOLFactory.write(toggleSwitchDoc, 
+		//		new FileOutputStream("./examples/data/toggle-switch.xml"));				
+
+		// Visualization of the Toggle Switch and its regulatory interactions
+		String NEWLINE = System.getProperty("line.separator");
+		String sPigeon = PigeonGenerator.toPigeon(toggleSwitch);
+		sPigeon += "# Arcs"+NEWLINE;
 		
-		SBOLFactory.write(toggleSwitchDoc, 
-			new FileOutputStream("./examples/data/toggle-switch.xml"));				
+		for(Regulation reg:regDev.getRegulations()) {
+			sPigeon += reg.getLeftAnnotation().getSubComponent().getName()+" "+
+					toPigeonArc(reg.getRegulationType().getName())+" "+
+					reg.getRightAnnotation().getSubComponent().getName()+NEWLINE;
+		}
+
+		System.out.println(sPigeon);
+
+		WeyekinPoster.setPigeonText(sPigeon);
+		WeyekinPoster.postMyBird();
+	}
+	
+	private static String toPigeonArc(String sSBOLRegulation) {
+		if("REPRESSION".equals(sSBOLRegulation)) {
+			return "rep";
+		} else if ("INDUCTION".equals(sSBOLRegulation)) {
+			return "ind";
+		}
+		return (String)null;
 	}
 
 }

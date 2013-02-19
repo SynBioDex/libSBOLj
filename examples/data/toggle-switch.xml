@@ -8,6 +8,7 @@
             <SequenceAnnotation ns2:about="http://org.sbolstandard/ToggleSwitch/anot#repressor2">
                 <subComponent>
                     <DnaComponent ns2:about="http://org.sbolstandard/ToggleSwitch/repressor2">
+                        <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
                         <displayId>repressor2</displayId>
                         <name>repressor2</name>
                     </DnaComponent>
@@ -18,6 +19,7 @@
             <SequenceAnnotation ns2:about="http://org.sbolstandard/ToggleSwitch/anot#promoter1">
                 <subComponent>
                     <DnaComponent ns2:about="http://org.sbolstandard/ToggleSwitch/promoter1">
+                        <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
                         <displayId>promoter1</displayId>
                         <name>promoter1</name>
                     </DnaComponent>
@@ -28,6 +30,7 @@
             <SequenceAnnotation ns2:about="http://org.sbolstandard/ToggleSwitch/anot#promoter2">
                 <subComponent>
                     <DnaComponent ns2:about="http://org.sbolstandard/ToggleSwitch/promoter2">
+                        <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
                         <displayId>promoter2</displayId>
                         <name>promoter2</name>
                     </DnaComponent>
@@ -38,6 +41,7 @@
             <SequenceAnnotation ns2:about="http://org.sbolstandard/ToggleSwitch/anot#repressor1">
                 <subComponent>
                     <DnaComponent ns2:about="http://org.sbolstandard/ToggleSwitch/repressor1">
+                        <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
                         <displayId>repressor1</displayId>
                         <name>repressor1</name>
                     </DnaComponent>
@@ -48,6 +52,7 @@
             <SequenceAnnotation ns2:about="http://org.sbolstandard/ToggleSwitch/anot#reporter">
                 <subComponent>
                     <DnaComponent ns2:about="http://org.sbolstandard/ToggleSwitch/reporter">
+                        <ns2:type ns2:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
                         <displayId>reporter</displayId>
                         <name>reporter</name>
                     </DnaComponent>

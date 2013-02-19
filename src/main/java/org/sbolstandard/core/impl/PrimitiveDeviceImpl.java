@@ -18,30 +18,21 @@ package org.sbolstandard.core.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-
 import org.sbolstandard.core.DnaComponent;
 import org.sbolstandard.core.PrimitiveDevice;
 
 /**
  * @author Ernst Oberortner
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "PrimitiveDevice")
 public class PrimitiveDeviceImpl 
 		extends DeviceImpl 
 		implements PrimitiveDevice {
 
-	@XmlElement(name = "component")
 	protected final List<DnaComponentWrapper> components = 
 		new ArrayList<DnaComponentWrapper>();
 	
-	@XmlTransient
-	protected final WrappedList<DnaComponentImpl, DnaComponentWrapper> wrappedComponents = new WrappedList<DnaComponentImpl, DnaComponentWrapper>(
+	protected final WrappedList<DnaComponentImpl, DnaComponentWrapper> wrappedComponents = 
+			new WrappedList<DnaComponentImpl, DnaComponentWrapper>(
 	                DnaComponentWrapper.class, components);
 
 	/**
@@ -68,10 +59,7 @@ public class PrimitiveDeviceImpl
 		getComponents().remove(component);
 	}
 	
-	@XmlAccessorType(XmlAccessType.PROPERTY)
-	@XmlType(name = "")
 	public static class DnaComponentWrapper extends WrappedValue<DnaComponentImpl> {
-		@XmlElement(name = "DnaComponent")
 		@Override
 		public DnaComponentImpl getValue() {
 			return super.getValue();

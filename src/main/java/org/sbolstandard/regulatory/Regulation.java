@@ -29,4 +29,7 @@ public interface Regulation extends SBOLNamedObject, SBOLRootObject {
 			SequenceAnnotation left, 
 			RegulationType type, 
 			SequenceAnnotation right);
+	public SequenceAnnotation getLeftAnnotation();	
+	public RegulationType getRegulationType();	
+	public SequenceAnnotation getRightAnnotation();
 } 

@@ -74,6 +74,13 @@
             <version>4.9</version>
             <scope>test</scope>
         </dependency>
+        
+        <!--  dependency for the Pigeon Generator -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.3</version>
+		</dependency>
     </dependencies>
 
     <!-- Places to look for jars
