@@ -25,7 +25,7 @@ public class RegulationExtension implements ExtensionProvider<Device> {
     }
 
     @Override
-    public ExtendedAs<Device> extend(final Device device) {
+    public AsRegulations extend(final Device device) {
         // todo: replace stub with something that tracks regulations associated with the device
         return new AsRegulationsImpl(device, new ArrayList<Regulation>());
     }
