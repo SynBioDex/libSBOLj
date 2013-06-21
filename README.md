@@ -17,7 +17,7 @@ correctness of SBOL models.
 
 5. Change to your libSBOLj directory via the command line and execute the following command:
 
-mvn package
+    mvn package
 
 This will create the libSBOLj JAR file and place it into a sub-directory named target. [link](http://maven.apache.org/guides/getting-started/index.html)
 
