@@ -58,7 +58,7 @@ The javadoc output will be written to "javadocs" directory.
     
 ## Serialization in libSBOLj
 
-libSBOLj provides support for reading and writing libSBOLj documents in XML syntax. The structure of the documents is defined in two XML schema files that can be found in the [resources](https://github.com/SynBioDex/libSBOLj/tree/master/src/main/resources) directory.
+libSBOLj provides support for reading and writing libSBOLj documents in XML syntax. The structure of the documents is defined in two XML schema (XSD) files that can be found in the [resources](https://github.com/SynBioDex/libSBOLj/tree/master/src/main/resources) directory.
 
 A very simple SBOL document looks like this in XML:
     
