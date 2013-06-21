@@ -39,7 +39,7 @@ the following command:
     
     java -jar libSBOLj-0.7.0-SNAPSHOT.jar target/test-classes/test/data/invalid01_missing_displayId.xml
     
-### libSBOLj API (note this section may be out of date)    
+### libSBOLj API (note the commands for this section are out of date)    
 
 The programs provided under [examples/src](https://github.com/SynBioDex/libSBOLj/tree/master/examples/src/org/sbolstandard/core/examples) 
 directory show various examples of using libSBOLj library. You can compile these examples by running:
