@@ -13,6 +13,9 @@ The easiest way to get the libSBOLj source is to Clone the github repository:
 
 ## Building libSBOLj
 
+The libSBOLj library is built using maven:
+
+    maven install
 
 To build libSBOLj use the following command:
 
