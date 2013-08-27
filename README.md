@@ -5,11 +5,14 @@ the [Synthetic Biology Open Language (SBOL)](http://www.sbolstandard.org/specifi
 work with SBOL objects, the functionality to read and write SBOL documents as XML files, and a validator to check the 
 correctness of SBOL models. 
 
-## Building libSBOLj
+## Getting the libSBOLj source
 
-First, clone the repository:
+The easiest way to get the libSBOLj source is to Clone the github repository:
 
     git clone git://github.com/SynBioDex/libSBOLj.git
+
+## Building libSBOLj
+
 
 To build libSBOLj use the following command:
 
