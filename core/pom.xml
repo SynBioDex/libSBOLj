@@ -11,6 +11,8 @@
 
     <artifactId>core</artifactId>
 
+    <packaging>jar</packaging>
+
     <dependencies>
         <!-- dependencies used by libSBOLj -->
 
