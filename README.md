@@ -17,7 +17,7 @@ The libSBOLj library is built using maven:
 
     maven install
 
-To build libSBOLj use the following command:
+To build libSBOLj make sure that you do not use the following command:
 
     ant clean jar test
 
