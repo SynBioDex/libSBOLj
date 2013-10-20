@@ -115,7 +115,7 @@ public class SBOLValidatorImpl implements SBOLValidator {
 					String sequence;
 					if (annotation.getStrand() != null && 
 							annotation.getStrand().getSymbol().equals(StrandType.NEGATIVE.getSymbol()))
-						sequence = dnaSequence.getReverseComplementaryNucleotides();
+						sequence = ((DnaSequenceImpl) dnaSequence).getReverseComplementaryNucleotides();
 					else
 						sequence = dnaSequence.getNucleotides();
 
