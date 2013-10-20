@@ -58,7 +58,7 @@ public class DnaSequenceImpl extends SBOLObjectImpl implements DnaSequence {
      * {@inheritDoc}
      */
 	@Override
-	public String getComplementaryNucleotides() {
+	public String getReverseComplementaryNucleotides() {
 		StringBuilder complementary = new StringBuilder(nucleotides.length());
 		for (int i = nucleotides.length() - 1; i >= 0; i--) {
 			char nucleotide = nucleotides.charAt(i);

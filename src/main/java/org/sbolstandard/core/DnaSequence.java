@@ -38,7 +38,7 @@ public interface DnaSequence extends SBOLRootObject {
      * those which are described.
      * @return a string representation of the complementary DNA base-pair sequence
      */
-    public String getComplementaryNucleotides();
+    public String getReverseComplementaryNucleotides();
 
     /**
      * The sequence of DNA base pairs which are going to be described.
