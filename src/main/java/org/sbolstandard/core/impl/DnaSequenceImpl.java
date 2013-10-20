@@ -53,6 +53,48 @@ public class DnaSequenceImpl extends SBOLObjectImpl implements DnaSequence {
     public String getNucleotides() {
         return nucleotides;
     }
+	
+	/**
+     * {@inheritDoc}
+     */
+	@Override
+	public String getComplementaryNucleotides() {
+		StringBuilder complementary = new StringBuilder(nucleotides.length());
+		for (int i = nucleotides.length() - 1; i >= 0; i--) {
+			char nucleotide = nucleotides.charAt(i);
+			if (nucleotide == 'a')
+				complementary.append('t');
+			else if (nucleotide == 't')
+				complementary.append('a');
+			else if (nucleotide == 'g')
+				complementary.append('c');
+			else if (nucleotide == 'c')
+				complementary.append('g');
+			else if (nucleotide == 'm')
+				complementary.append('k');
+			else if (nucleotide == 'r')
+				complementary.append('y');
+			else if (nucleotide == 'w')
+				complementary.append('w');
+			else if (nucleotide == 's')
+				complementary.append('s');
+			else if (nucleotide == 'y')
+				complementary.append('r');
+			else if (nucleotide == 'k')
+				complementary.append('m');
+			else if (nucleotide == 'v')
+				complementary.append('b');
+			else if (nucleotide == 'h')
+				complementary.append('d');
+			else if (nucleotide == 'd')
+				complementary.append('h');
+			else if (nucleotide == 'b')
+				complementary.append('v');
+			else if (nucleotide == 'n')
+				complementary.append('n');
+		}
+		return complementary.toString();
+	}
 
 	/**
      * {@inheritDoc}

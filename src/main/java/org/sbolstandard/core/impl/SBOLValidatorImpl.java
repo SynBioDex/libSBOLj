@@ -112,7 +112,12 @@ public class SBOLValidatorImpl implements SBOLValidator {
 
 				DnaSequence dnaSequence = annotation.getSubComponent().getDnaSequence();
 				if (dnaSequence != null) {
-					String sequence = dnaSequence.getNucleotides();
+					String sequence;
+					if (annotation.getStrand() != null && 
+							annotation.getStrand().getSymbol().equals(StrandType.NEGATIVE.getSymbol()))
+						sequence = dnaSequence.getComplementaryNucleotides();
+					else
+						sequence = dnaSequence.getNucleotides();
 
 					assertTrue(expectedLength == sequence.length(),
 					           "DnaSequence length does not match bioStart and bioEnd values", annotation);
