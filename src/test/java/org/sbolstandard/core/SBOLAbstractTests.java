@@ -3,6 +3,7 @@ package org.sbolstandard.core;
 import static org.sbolstandard.core.SBOLTestUtils.createCollection;
 import static org.sbolstandard.core.SBOLTestUtils.createDnaComponent;
 import static org.sbolstandard.core.SBOLTestUtils.createDnaSequence;
+import static org.sbolstandard.core.SBOLTestUtils.createDnaSequenceLong;
 import static org.sbolstandard.core.SBOLTestUtils.createSequenceAnnotation;
 import static org.sbolstandard.core.SBOLTestUtils.uri;
 
@@ -108,6 +109,15 @@ public abstract class SBOLAbstractTests {
 		coll1.addComponent(comp2);
 
 		runTest("test/data/valid11_collection_components.xml", coll1);
+	}
+        
+        @Test
+	public void valid14() throws Exception {
+		DnaComponent comp1 = createDnaComponent(1);
+		comp1.setDescription("DnaComponent with very long sequence information 44,550bp");
+		comp1.setDnaSequence(createDnaSequenceLong(1));
+
+		runTest("test/data/valid14_dna_component_sequence_long.xml", comp1);
 	}
 	
 	@Test
