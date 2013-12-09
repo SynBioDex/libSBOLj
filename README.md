@@ -5,7 +5,7 @@ the [Synthetic Biology Open Language (SBOL)](http://www.sbolstandard.org/sbolsta
 work with SBOL objects, the functionality to read and write SBOL documents as XML files, and a validator to check the 
 correctness of SBOL models. 
 
-## Building libSBOLj
+## Getting the libSBOLj source
 
 1. Create a GitHub account. [link](https://github.com/)
 

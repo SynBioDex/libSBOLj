@@ -1,5 +1,5 @@
 ﻿/build
-/target
+**/target
 *~
 *.swp
 javadocs
