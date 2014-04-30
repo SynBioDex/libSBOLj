@@ -19,7 +19,7 @@ correctness of SBOL models.
 
     mvn package
 
-This will create the libSBOLj JAR file and place it into a sub-directory named target. [link](http://maven.apache.org/guides/getting-started/index.html)
+This will create the libSBOLj JAR file (core-0.8.0-SNAPSHOT.jar) and place it into the core\target subdirectory. [link](http://maven.apache.org/guides/getting-started/index.html)
 
 ## Using libSBOLj
 
@@ -27,9 +27,9 @@ This will create the libSBOLj JAR file and place it into a sub-directory named t
 ### libSBOLj command line
 
 libSBOLj comes with a command-line interface (CLI) that can be used to validate SBOL files. After you build the 
-libSBOLj-0.7.0-SNAPSHOT.jar as described above, you can use it to validate files as follows:
+libSBOLj-0.7.0-SNAPSHOT.jar as described above, you can use it to validate files as follows after changing to the core\target subdirectory:
 
-    java -jar libSBOLj-0.7.0-SNAPSHOT.jar target/test-classes/test/data/BBa_I0462.xml
+    java -jar core-0.8.0-SNAPSHOT.jar test-classes\test\data\BBa_I0462.xml
     
 If validation is successful, the program will print the contents of the SBOL document. Use --quit option if you want to
 suppress this output. 
@@ -37,24 +37,7 @@ suppress this output.
 If validation fails with an error, there will be a message printed about the validation error. To see an example, try
 the following command: 
     
-    java -jar libSBOLj-0.7.0-SNAPSHOT.jar target/test-classes/test/data/invalid01_missing_displayId.xml
-    
-### libSBOLj API (note the commands for this section are out of date)    
-
-The programs provided under [examples/src](https://github.com/SynBioDex/libSBOLj/tree/master/examples/src/org/sbolstandard/core/examples) 
-directory show various examples of using libSBOLj library. You can compile these examples by running:
-
-    ant examples
-
-This will create libSBOLj-examples.jar in the same directory and an example program can be run as follows: 
-    
-    java -cp libSBOLj-examples.jar org.sbolstandard.core.examples.Example01_Basics
-
-More detailed information about libSBOLj API can be found in the javadocs. To generate the libSBOLj javadocs run:
-
-    ant javadoc
-    
-The javadoc output will be written to "javadocs" directory. 
+    java -jar core-0.8.0-SNAPSHOT.jar test-classes\test\data\invalid01_missing_displayId.xml
     
 ## Serialization in libSBOLj
 
