@@ -19,7 +19,7 @@ correctness of SBOL models.
 
     mvn package
 
-This will create the libSBOLj JAR file (core-0.8.0-SNAPSHOT.jar) and place it into the core\target subdirectory. [link](http://maven.apache.org/guides/getting-started/index.html)
+This will create the libSBOLj JAR file (core-1.0.0-SNAPSHOT.jar) and place it into the core/target subdirectory. [link](http://maven.apache.org/guides/getting-started/index.html)
 
 ## Using libSBOLj
 
@@ -27,9 +27,9 @@ This will create the libSBOLj JAR file (core-0.8.0-SNAPSHOT.jar) and place it in
 ### libSBOLj command line
 
 libSBOLj comes with a command-line interface (CLI) that can be used to validate SBOL files. After you build the 
-libSBOLj-0.7.0-SNAPSHOT.jar as described above, you can use it to validate files as follows after changing to the core\target subdirectory:
+libSBOLj-1.0.0-SNAPSHOT.jar as described above, you can use it to validate files as follows after changing to the core/target subdirectory:
 
-    java -jar core-0.8.0-SNAPSHOT.jar test-classes\test\data\BBa_I0462.xml
+    java -jar core-1.0.0-SNAPSHOT.jar test-classes/test/data/BBa_I0462.xml
     
 If validation is successful, the program will print the contents of the SBOL document. Use --quit option if you want to
 suppress this output. 
@@ -37,7 +37,7 @@ suppress this output.
 If validation fails with an error, there will be a message printed about the validation error. To see an example, try
 the following command: 
     
-    java -jar core-0.8.0-SNAPSHOT.jar test-classes\test\data\invalid01_missing_displayId.xml
+    java -jar core-1.0.0-SNAPSHOT.jar test-classes/test/data/invalid01_missing_displayId.xml
     
 ## Serialization in libSBOLj
 
@@ -75,3 +75,4 @@ model defined in the specification. The above example would look as follows in t
     
 This format is only intended for presentation purposes and not to exchange libSBOLj structures and the library does not 
 provide any means to read this syntax.    
+
