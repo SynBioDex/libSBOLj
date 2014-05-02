@@ -11,13 +11,13 @@
 
     <packaging>jar</packaging>
 
-    <artifactId>examples</artifactId>
+    <artifactId>${parent.artifactId}-examples</artifactId>
 
     <dependencies>
         <!-- dependencies used by libSBOLj -->
         <dependency>
             <groupId>${parent.groupId}</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>${parent.artifactId}-core</artifactId>
             <version>${parent.version}</version>
         </dependency>
 
