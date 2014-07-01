@@ -130,7 +130,7 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a new {@link SBOLCollection} instance. 
+	 * Create a new {@link SBOLCollection} instance.
 	 * @param identity
 	 * @param displayId
 	 * @return
