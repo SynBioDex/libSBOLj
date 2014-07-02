@@ -13,3 +13,7 @@ javadocs
 /sand
 /nbproject/
 /javadoc
+**/.settings
+**/.classpath
+**/.project
+.git
