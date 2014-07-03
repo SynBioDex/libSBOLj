@@ -59,7 +59,6 @@
     <modules>
         <module>core</module>
         <module>examples</module>
-        <module>core2</module>
     </modules>
 
     <build>
