@@ -2,63 +2,62 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import org.sbolstandard.core2.Documented;
+import org.sbolstandard.core2.abstract_classes.Documented;
 
 /**
  * @author Ernst Oberortner
  * @author Nicholas Roehner
+ * @version 2.0
  */
-public class Model extends Documented {
-
+public class Model extends TopLevel {
+		
 	private URI source;
 	private URI language;
 	private URI framework;
-	private URI role;
-	
-	/**
-	 * 
-	 * @param identity an identity for the model
-	 * @param displayId a displayId for the model
-	 * @param source a source for the model
-	 * @param language a language for the model
-	 * @param framework a framework for the model
-	 * @param role a role for the model
-	 */
-	public Model(URI identity, String displayId, URI source, URI language, URI framework, 
-			URI role) {
-		super(identity, displayId);
+	private URI roles;
+
+	public Model(URI identity, URI persistentIdentity, String version,
+			String displayId, String name, String description, URI source,
+			URI language, URI framework, URI roles) {
+		super(identity, persistentIdentity, version, displayId, name, description);
 		this.source = source;
 		this.language = language;
 		this.framework = framework;
-		this.role = role;
+		this.roles = roles;
 	}
 
-	/**
-	 * @return the model's source
-	 */
 	public URI getSource() {
 		return source;
 	}
 
-	/**
-	 * @return the model's language
-	 */
+	public void setSource(URI source) {
+		this.source = source;
+	}
+
 	public URI getLanguage() {
 		return language;
 	}
 
-	/**
-	 * @return the model's framework
-	 */
+	public void setLanguage(URI language) {
+		this.language = language;
+	}
+
 	public URI getFramework() {
 		return framework;
 	}
 
-	/**
-	 * @return the model's role
-	 */
-	public URI getRole() {
-		return role;
+	public void setFramework(URI framework) {
+		this.framework = framework;
 	}
+
+	public URI getRoles() {
+		return roles;
+	}
+
+	public void setRoles(URI roles) {
+		this.roles = roles;
+	}
+
+
 
 }
