@@ -1,4 +1,4 @@
-package org.sbolstandard.core2;
+package org.sbolstandard.core2.abstract_classes;
 
 import java.net.URI;
 
@@ -6,6 +6,7 @@ import java.net.URI;
  * 
  * @author Ernst Oberortner
  * @author Nicholas Roehner
+ * @version 2.0
  */
 public abstract class Documented extends Identified {
 
@@ -18,11 +19,14 @@ public abstract class Documented extends Identified {
 	 * @param identity an identity for the documented object
 	 * @param displayID a display ID for the documented object
 	 */
-	public Documented(URI identity, String displayId) {
-		super(identity);
+	public Documented(URI identity, URI persistentIdentity, String version,
+				String displayId, String name, String description) {
+		super(identity, persistentIdentity, version);
 		this.displayId = displayId;
+		this.name = name;
+		this.description = description;
 	}
-	
+
 	/**
 	 * 
 	 * @return the documented object's display ID
@@ -61,6 +65,15 @@ public abstract class Documented extends Identified {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	/**
+	 * Created for backward compatibility to 1.1. 
+	 * @param value
+	 * @deprecated
+	 */
+	public void setDisplayId(String value) {
+		this.displayId = value;
 	}
 
 }
