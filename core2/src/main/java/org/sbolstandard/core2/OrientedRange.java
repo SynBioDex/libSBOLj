@@ -6,9 +6,8 @@ public class OrientedRange extends Range{
 	
 	private Orientation orientation;
 	
-	public OrientedRange(URI identity, URI persistentIdentity, String version,
-			Integer start, Integer end, Orientation orientation) {
-		super(identity, identity, version, start, end);
+	public OrientedRange(URI identity, Integer start, Integer end, Orientation orientation) {
+		super(identity, start, end);
 		this.orientation = orientation;		
 	}
 

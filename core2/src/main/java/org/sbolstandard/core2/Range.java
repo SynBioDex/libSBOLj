@@ -10,9 +10,8 @@ public class Range extends Location{
 	
 	protected Integer end;
 	
-	public Range(URI identity, URI persistentIdentity, String version,
-			Integer start, Integer end) {
-		super(identity, persistentIdentity, version);
+	public Range(URI identity, Integer start, Integer end) {
+		super(identity);
 		this.start = start;
 		this.end = end;
 		
@@ -34,13 +33,5 @@ public class Range extends Location{
 		end = value;
 		
 	}
-
-	@Override
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 
 }

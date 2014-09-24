@@ -1,23 +1,23 @@
-package org.sbolstandard.core2;
+package org.sbolstandard.core2.abstract_classes;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.sbolstandard.core2.abstract_classes.Documented;
+import org.sbolstandard.core2.AccessType;
+import org.sbolstandard.core2.Component;
+import org.sbolstandard.core2.RefersTo;
 
-public class ComponentInstantiation extends Documented {
+public abstract class ComponentInstantiation extends Documented {
 	
 	private AccessType access;
-	private List<Component> instantiatedComponent;
+	private Component instantiatedComponent;
 	private List<RefersTo> references;
 	
-	public ComponentInstantiation(URI identity, URI persistentIdentity,
-			String version, String displayId, String name, String description,
-			AccessType access) {
-		super(identity, persistentIdentity, version, displayId, name, description);
+	public ComponentInstantiation(URI identity, URI componentIdentity, AccessType access, List<URI> type, List<URI> roles) {
+		super(identity);
 		this.access = access;	
-		this.instantiatedComponent = new ArrayList<Component>();
+		this.instantiatedComponent = new Component(componentIdentity, type, roles);
 		this.references = new ArrayList<RefersTo>();
 	}
 	
@@ -29,11 +29,11 @@ public class ComponentInstantiation extends Documented {
 		this.access = access;
 	}
 
-	public List<Component> getInstantiatedComponent() {
+	public Component getInstantiatedComponent() {
 		return instantiatedComponent;
 	}
 
-	public void setInstantiatedComponent(List<Component> instantiatedComponent) {
+	public void setInstantiatedComponent(Component instantiatedComponent) {
 		this.instantiatedComponent = instantiatedComponent;
 	}
 
@@ -43,11 +43,6 @@ public class ComponentInstantiation extends Documented {
 
 	public void setReferences(List<RefersTo> references) {
 		this.references = references;
-	}
-
-	@Override
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
-		// TODO Auto-generated method stub
 	}
 	
 //	private Component instantiatedComponent;

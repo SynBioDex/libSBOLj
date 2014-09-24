@@ -4,8 +4,8 @@ import java.net.URI;
 
 public abstract class Location extends Identified{
 
-	public Location(URI identity, URI persistentIdentity, String version) {
-		super(identity, persistentIdentity, version);		
+	public Location(URI identity) {
+		super(identity);		
 	}
 
 }

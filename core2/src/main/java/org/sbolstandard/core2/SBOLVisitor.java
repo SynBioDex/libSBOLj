@@ -26,13 +26,13 @@ import org.sbolstandard.core2.abstract_classes.SBOLVisitable;
  * @author Evren Sirin
  */
 public interface SBOLVisitor<T extends Throwable> {
-	public void visit(SBOLDocument doc) throws T;
-
-	//public void visit(SBOLCollection coll) throws T;
-
-	public void visit(SequenceComponent component) throws T;
-
-	public void visit(Sequence sequence) throws T;
-
-	public void visit(StructuralAnnotation annotation) throws T;
+//	public void visit(SBOLDocument doc) throws T;
+//
+//	//public void visit(SBOLCollection coll) throws T;
+//
+//	public void visit(SequenceComponent component) throws T;
+//
+//	public void visit(Sequence sequence) throws T;
+//
+//	public void visit(StructuralAnnotation annotation) throws T;
 }

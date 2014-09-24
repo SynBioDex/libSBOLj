@@ -1,16 +1,17 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.List;
+
+import org.sbolstandard.core2.abstract_classes.ComponentInstantiation;
 
 public class FunctionalInstantiation extends ComponentInstantiation{
 		
 	private DirectionType direction;
 	
-	public FunctionalInstantiation(URI identity, URI persistentIdentity,
-			String version, String displayId, String name, String description,
-			AccessType access, DirectionType direction) {
-		super(identity, persistentIdentity, version, displayId, name, description,
-				access);
+	public FunctionalInstantiation(URI identity, URI componentIdentity, AccessType access, 
+			List<URI> type, List<URI> roles, DirectionType direction) {
+		super(identity, componentIdentity, access, type, roles);
 		this.direction = direction;
 	}
 

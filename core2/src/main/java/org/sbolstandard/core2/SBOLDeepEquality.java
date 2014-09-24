@@ -15,10 +15,6 @@
 
 package org.sbolstandard.core2;
 
-import java.util.Iterator;
-
-import org.sbolstandard.core2.abstract_classes.SBOLVisitable;
-
 //import org.sbolstandard.core.Collection;
 //import org.sbolstandard.core.DnaComponent;
 //import org.sbolstandard.core.DnaSequence;

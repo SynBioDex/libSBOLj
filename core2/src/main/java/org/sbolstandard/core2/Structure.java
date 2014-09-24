@@ -12,9 +12,8 @@ public class Structure extends TopLevel{
 //		this.encoding = encoding;
 //	}
 	
-	public Structure(URI identity, URI persistentIdentity, String version,
-			String displayId, String name, String description, String elements, URI encoding) {
-		super(identity, persistentIdentity, version, displayId, name, description);
+	public Structure(URI identity, String elements, URI encoding) {
+		super(identity);
 		this.elements = elements;
 		this.encoding = encoding;
 	}

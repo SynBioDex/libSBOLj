@@ -11,16 +11,14 @@ import java.util.List;
  */
 public class Module extends TopLevel {
 	
-	private URI roles;
+	private List<URI> roles;
 	private List<ModuleInstantiation> moduleInstantiations;
 	private List<Interaction> interactions;
 	private List<FunctionalInstantiation> functionalInstantiations;
 	private List<Model> models;
 	
-	public Module(URI identity, URI persistentIdentity, String version,
-			String displayId, String name, String description,
-			URI roles) {
-		super(identity, persistentIdentity, version, displayId, name, description);
+	public Module(URI identity, List<URI> roles) {
+		super(identity);
 		this.roles = roles;
 		this.moduleInstantiations = new ArrayList<ModuleInstantiation>();
 		this.interactions = new ArrayList<Interaction>();
@@ -28,11 +26,11 @@ public class Module extends TopLevel {
 		this.models = new ArrayList<Model>();		
 	}
 
-	public URI getRoles() {
+	public List<URI> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(URI roles) {
+	public void setRoles(List<URI> roles) {
 		this.roles = roles;
 	}
 
@@ -176,6 +174,4 @@ public class Module extends TopLevel {
 //		ports.add(port);
 //	}
 	
-	
-
 }

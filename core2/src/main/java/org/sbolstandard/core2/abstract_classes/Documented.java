@@ -19,12 +19,8 @@ public abstract class Documented extends Identified {
 	 * @param identity an identity for the documented object
 	 * @param displayID a display ID for the documented object
 	 */
-	public Documented(URI identity, URI persistentIdentity, String version,
-				String displayId, String name, String description) {
-		super(identity, persistentIdentity, version);
-		this.displayId = displayId;
-		this.name = name;
-		this.description = description;
+	public Documented(URI identity) {
+		super(identity);
 	}
 
 	/**
@@ -70,7 +66,6 @@ public abstract class Documented extends Identified {
 	/**
 	 * Created for backward compatibility to 1.1. 
 	 * @param value
-	 * @deprecated
 	 */
 	public void setDisplayId(String value) {
 		this.displayId = value;

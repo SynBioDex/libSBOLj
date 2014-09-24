@@ -3,11 +3,9 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
-import org.sbolstandard.core2.ComponentInstantiation;
+import org.sbolstandard.core2.abstract_classes.ComponentInstantiation;
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Location;
 
@@ -27,10 +25,8 @@ public class StructuralAnnotation extends Documented {
 //	private Orientation orientation;	
 //	private Collection<StructuralAnnotation> precededAnnotations;
 	
-	public StructuralAnnotation(URI identity, URI persistentIdentity,
-			String version, String displayId, String name, String description,
-			Location location) {
-		super(identity, persistentIdentity, version, displayId, name, description);
+	public StructuralAnnotation(URI identity, String description, Location location) {
+		super(identity);
 		this.location = location;
 		this.structuralInstantiation = new ArrayList<StructuralInstantiation>();
 	}
@@ -265,11 +261,6 @@ public class StructuralAnnotation extends Documented {
 		if (location instanceof Range) {
 			((Range) location).setEnd(value);
 		}
-	}
-
-	@Override
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
-		// TODO Auto-generated method stub		
 	}
 
 	public Location getLocation() {

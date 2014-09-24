@@ -17,18 +17,10 @@ public class ModuleInstantiation extends Documented {
 	private List<RefersTo> references;
 	private Module instantiatedModule;
 	
-	public ModuleInstantiation(URI identity, URI persistentIdentity,
-			String version, String displayId, String name, String description,
-			Module instantiatedModule) {
-		super(identity, persistentIdentity, version, displayId, name, description);
+	public ModuleInstantiation(URI identity, Module instantiatedModule) {
+		super(identity);
 		this.instantiatedModule = instantiatedModule;
 		this.references = new ArrayList<RefersTo>();
-	}
-
-	@Override
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public Module getInstantiatedModule() {

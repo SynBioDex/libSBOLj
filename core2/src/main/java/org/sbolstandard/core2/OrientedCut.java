@@ -6,9 +6,8 @@ public class OrientedCut extends Cut {
 	
 	private Orientation orientation;
 	
-	public OrientedCut(URI identity, URI persistentIdentity, String version,
-			Integer at, Orientation orientation) {
-		super(identity, persistentIdentity, version, at);
+	public OrientedCut(URI identity, Integer at, Orientation orientation) {
+		super(identity, at);
 		this.orientation = orientation;
 	}
 

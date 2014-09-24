@@ -10,9 +10,9 @@ public class StructuralConstraint extends Identified {
 	private StructuralInstantiation subject;
 	private StructuralInstantiation object;
 	
-	public StructuralConstraint(URI identity, URI persistentIdentity, String version,
-			URI restriction, StructuralInstantiation subject, StructuralInstantiation object) {
-		super(identity, persistentIdentity, version);
+	public StructuralConstraint(URI identity, URI restriction, 
+			StructuralInstantiation subject, StructuralInstantiation object) {
+		super(identity);
 		this.restriction = restriction;
 		this.subject = subject;
 		this.object = object;
@@ -40,12 +40,6 @@ public class StructuralConstraint extends Identified {
 
 	public void setObject(StructuralInstantiation object) {
 		this.object = object;
-	}
-
-	@Override
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
