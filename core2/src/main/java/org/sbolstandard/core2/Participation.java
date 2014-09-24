@@ -1,8 +1,8 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.List;
 
-import org.sbolstandard.core2.ComponentInstantiation;
 import org.sbolstandard.core2.abstract_classes.Identified;
 
 /**
@@ -13,21 +13,20 @@ import org.sbolstandard.core2.abstract_classes.Identified;
  */
 public class Participation extends Identified {
 	
-	private URI role;
+	private List<URI> role;
 	private FunctionalInstantiation participant;
 	
-	public Participation(URI identity, URI persistentIdentity, 
-			String version, URI role, FunctionalInstantiation participant) {
-		super(identity, persistentIdentity, version);
+	public Participation(URI identity, List<URI> role, FunctionalInstantiation participant) {
+		super(identity);
 		this.role = role;
 		this.participant = participant;
 	}
 
-	public URI getRole() {
+	public List<URI> getRole() {
 		return role;
 	}
 
-	public void setRole(URI role) {
+	public void setRole(List<URI> role) {
 		this.role = role;
 	}
 
@@ -37,12 +36,6 @@ public class Participation extends Identified {
 
 	public void setParticipant(FunctionalInstantiation participant) {
 		this.participant = participant;
-	}
-	
-	@Override
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
-		// TODO Auto-generated method stub
-
 	}
 
 //	private URI role;

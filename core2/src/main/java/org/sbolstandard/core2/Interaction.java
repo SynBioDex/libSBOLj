@@ -2,7 +2,6 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.sbolstandard.core2.Participation;
@@ -16,7 +15,7 @@ import org.sbolstandard.core2.abstract_classes.Documented;
  */
 public class Interaction extends Documented {
 
-	private URI type;
+	private List<URI> type;
 	private List<Participation> participations;
 	
 	/**
@@ -26,18 +25,17 @@ public class Interaction extends Documented {
 	 * @param type a type for the interaction
 	 * @param participations a collection of participations for the interaction
 	 */
-	public Interaction(URI identity, String displayId, URI type, 
-			Collection<Participation> participations) {
-		super(identity, type, displayId, displayId, displayId, displayId);
+	public Interaction(URI identity, List<URI> type) {
+		super(identity);
 		this.type = type;
 		this.participations = new ArrayList<Participation>();
 	}
 
-	public URI getType() {
+	public List<URI> getType() {
 		return type;
 	}
 
-	public void setType(URI type) {
+	public void setType(List<URI> type) {
 		this.type = type;
 	}
 
@@ -47,12 +45,6 @@ public class Interaction extends Documented {
 
 	public void setParticipations(List<Participation> participations) {
 		this.participations = participations;
-	}
-	
-	@Override
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

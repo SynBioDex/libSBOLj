@@ -112,13 +112,7 @@ public class Sequence extends Identified {
 //	}
 
 	public Sequence(URI identity, URI persistentIdentity, String version) {
-		super(identity, persistentIdentity, version);
+		super(identity);
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -8,15 +8,9 @@ public class Cut extends Location{
 	
 	private Integer at;
 	
-	public Cut(URI identity, URI persistentIdentity, String version, Integer at) {
-		super(identity, persistentIdentity, version);
+	public Cut(URI identity, Integer at) {
+		super(identity);
 		this.at = at;
-	}
-
-	@Override
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
-		// TODO Auto-generated method stub
-
 	}
 
 	public Integer getAt() {

@@ -6,4 +6,25 @@ public class Annotation {
 
 	private URI relation;
 	private Turtle literal;
+	
+	public Annotation(URI relation, Turtle literal) {
+		this.relation = relation;
+		this.literal = literal;
+	}
+
+	public URI getRelation() {
+		return relation;
+	}
+
+	public void setRelation(URI relation) {
+		this.relation = relation;
+	}
+
+	public Turtle getLiteral() {
+		return literal;
+	}
+
+	public void setLiteral(Turtle literal) {
+		this.literal = literal;
+	}
 }

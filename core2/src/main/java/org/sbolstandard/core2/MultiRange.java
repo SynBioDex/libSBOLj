@@ -11,13 +11,17 @@ public class MultiRange extends Location{
 
 	public MultiRange(URI identity, URI persistentIdentity, String version, 
 			List<Range> ranges) {
-		super(identity, persistentIdentity, version);
+		super(identity);
 		this.ranges = ranges;
 	}
+	
 
-	@Override
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
-		// TODO add a visit method here.		
+	public List<Range> getRanges() {
+		return ranges;
+	}
+
+	public void setRanges(List<Range> ranges) {
+		this.ranges = ranges;
 	}
 
 }

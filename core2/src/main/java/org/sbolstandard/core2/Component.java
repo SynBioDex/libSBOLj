@@ -1,10 +1,7 @@
 package org.sbolstandard.core2;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import org.sbolstandard.core2.abstract_classes.Documented;
 
 /**
  * 
@@ -15,17 +12,15 @@ import org.sbolstandard.core2.abstract_classes.Documented;
 
 public class Component extends TopLevel {
 
-	private URI type;
-	private URI roles;
+	private List<URI> type;
+	private List<URI> roles;
 	private List<StructuralInstantiation> structuralInstantiations;
 	private List<Structure> structure;
 	private List<StructuralAnnotation> structuralAnnotations;
 	private List<StructuralConstraint> structuralConstraints;
 	
-	public Component(URI identity, URI persistentIdentity, String version,
-			String displayId, String name, String description,
-			URI type, URI roles) {
-		super(identity, persistentIdentity, version, displayId, name, description);
+	public Component(URI identity, List<URI> type, List<URI> roles) {
+		super(identity);
 		this.type = type;
 		this.roles = roles;
 		this.structuralInstantiations = new ArrayList<StructuralInstantiation>(); 
@@ -34,19 +29,19 @@ public class Component extends TopLevel {
 		this.structuralConstraints = new ArrayList<StructuralConstraint>();
 	}
 
-	public URI getType() {
+	public List<URI> getType() {
 		return type;
 	}
 
-	public void setType(URI type) {
+	public void setType(List<URI> type) {
 		this.type = type;
 	}
 
-	public URI getRoles() {
+	public List<URI> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(URI roles) {
+	public void setRoles(List<URI> roles) {
 		this.roles = roles;
 	}
 

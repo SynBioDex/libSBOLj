@@ -14,18 +14,17 @@ import org.sbolstandard.core2.Annotation;
  * @author Nicholas Roehner
  * @version 2.0
  */
-public abstract class Identified extends SBOLVisitable{
+//public abstract class Identified extends SBOLVisitable{
+public abstract class Identified {
 	
-	private URI identity;
+	protected URI identity;
 	private URI persistentIdentity;
 	private String version;
 	private Timestamp timeStamp;
 	private List<Annotation> annotations;
 	
-	public Identified(URI identity, URI persistentIdentity, String version) {
+	public Identified(URI identity) {
 		this.identity = identity;
-		this.persistentIdentity = persistentIdentity;
-		this.version = version;
 		this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 		this.annotations = new ArrayList<Annotation>();
 	}

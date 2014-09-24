@@ -2,18 +2,139 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-
-import org.sbolstandard.core2.abstract_classes.Identified;
-import org.sbolstandard.core2.abstract_classes.SBOLVisitable;
 
 /**
  * @author Zhen Zhang
  * @version 2.0
  *
  */
-public class SBOLDocument extends SBOLVisitable {
+
+public class SBOLDocument {
+	
+	private List<TopLevel> topLevelList;
+	private List<Collection> collectionList;
+	private List<Component> componentList;
+	private List<Model> modelList;
+	private List<Module> moduleList;
+	private List<Structure> structureList;
+
+	public SBOLDocument() {
+		topLevelList = new ArrayList<TopLevel>();
+		collectionList = new ArrayList<Collection>();
+		componentList = new ArrayList<Component>();
+		modelList = new ArrayList<Model>();
+		moduleList = new ArrayList<Module>();
+	}
+	
+	/**
+	 * Create a new {@link Module} instance.
+	 * @param identity
+	 * @param roles
+	 * @return
+	 */
+	public Module createModule(URI identity, List<URI> roles) {
+		Module newModule = new Module(identity, roles);
+		moduleList.add(newModule);
+		return newModule;
+	}
+	
+	
+	public void addModule(Module moduleToAdd) {
+		// Check if moduleToAdd's URI exists already.
+		for (Module mod : moduleList) {
+			if (mod.getIdentity().equals(moduleToAdd.getIdentity())) {
+				System.err.println("Identical URI for module " + mod.getDisplayId() + " already exists in the module list.");
+				break;
+			}
+		}
+		moduleList.add(moduleToAdd);
+	}
+	
+	/**
+	 * Remove a module from the module list by matching its URI to those in the list. 
+	 * @param moduleToRemove
+	 */
+	public void removeModule(Module moduleToRemove) {
+		for (Module mod : moduleList) {
+			if (mod.getIdentity().equals(moduleToRemove.getIdentity())) {
+				moduleList.remove(mod);
+			}
+		}					
+	}
+	
+	public Module getModule(URI id) {
+		for (Module mod : moduleList) {
+			if (mod.getIdentity().equals(id)) {
+				return mod;
+			}			
+		}
+		return null;
+	}
+	
+		/**
+	 * Create a new {@link Collection} instance.
+	 * @param identity
+	 * @return
+	 */
+	public Collection createCollection(URI identity) {
+		Collection newCollection = new Collection(identity);
+		collectionList.add(newCollection);
+		return newCollection;
+	}
+	
+	/**
+	 * Create a new {@link Model} instance.
+	 * @param identity
+	 * @param displayId
+	 * @return
+	 */
+	public Model createModel(URI identity, URI source, URI language, URI framework, List<URI> roles) {
+		Model newModel = new Model(identity, source, language, framework, roles);
+		modelList.add(newModel);
+		return newModel;
+	}
+	
+	/**
+	 * Create a new {@link Component} instance.
+	 * @param identity
+	 * @param displayId
+	 * @return
+	 */
+	public Component createComponent(URI identity, List<URI> type, List<URI> roles) {
+		Component newComponent = new Component(identity, type, roles);
+		componentList.add(newComponent);
+		return newComponent;
+	}
+	
+	/**
+	 * Create a new {@link Structure} instance.
+	 * @param identity
+	 * @param displayId
+	 * @return
+	 */
+	public Structure createStructure(URI identity, String elements, URI encoding) {
+		Structure newStructure = new Structure(identity, elements, encoding);
+		structureList.add(newStructure);
+		return newStructure;
+	}
+	
+	/**
+	 * Create a new {@link TopLevel} instance.
+	 * @param identity
+	 * @param displayId
+	 * @return
+	 */
+	public TopLevel createTopLevel(URI identity) {
+		TopLevel newTopLevel = new TopLevel(identity);
+		topLevelList.add(newTopLevel);
+		return newTopLevel;
+	}
+	
+}
+
+
+//public class SBOLDocument extends SBOLVisitable {
 	
 //	private	Collection<Context> context;
 //	private Collection<GenericComponent> genericComponent;
@@ -335,13 +456,6 @@ public class SBOLDocument extends SBOLVisitable {
 //        };
 //    }
 //
-	@Override
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T {
-		// TODO Auto-generated method stub
-		
-	}
 
 	
-	
-	
-}
+//}

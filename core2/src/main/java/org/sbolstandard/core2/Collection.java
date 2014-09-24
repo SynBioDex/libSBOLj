@@ -8,9 +8,8 @@ public class Collection extends TopLevel{
 	
 	private List<TopLevel> members;
 	
-	public Collection(URI identity, URI persistentIdentity, String version,
-			String displayId, String name, String description) {
-		super(identity, persistentIdentity, version, displayId, name, description);
+	public Collection(URI identity) {
+		super(identity);
 		this.members = new ArrayList<TopLevel>();
 	}
 

@@ -1,8 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-
-import org.sbolstandard.core2.abstract_classes.Documented;
+import java.util.List;
 
 /**
  * @author Ernst Oberortner
@@ -14,12 +13,10 @@ public class Model extends TopLevel {
 	private URI source;
 	private URI language;
 	private URI framework;
-	private URI roles;
+	private List<URI> roles;
 
-	public Model(URI identity, URI persistentIdentity, String version,
-			String displayId, String name, String description, URI source,
-			URI language, URI framework, URI roles) {
-		super(identity, persistentIdentity, version, displayId, name, description);
+	public Model(URI identity,URI source, URI language, URI framework, List<URI> roles) {
+		super(identity);
 		this.source = source;
 		this.language = language;
 		this.framework = framework;
@@ -50,11 +47,11 @@ public class Model extends TopLevel {
 		this.framework = framework;
 	}
 
-	public URI getRoles() {
+	public List<URI> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(URI roles) {
+	public void setRoles(List<URI> roles) {
 		this.roles = roles;
 	}
 
