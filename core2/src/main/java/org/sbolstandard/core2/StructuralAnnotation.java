@@ -19,7 +19,7 @@ import org.sbolstandard.core2.abstract_classes.Location;
 public class StructuralAnnotation extends Documented {
 
 	private Location location;
-	private List<StructuralInstantiation> structuralInstantiation;
+	private StructuralInstantiation structuralInstantiation;
 //	private int start;
 //	private int end;
 //	private Orientation orientation;	
@@ -28,7 +28,13 @@ public class StructuralAnnotation extends Documented {
 	public StructuralAnnotation(URI identity, String description, Location location) {
 		super(identity);
 		this.location = location;
-		this.structuralInstantiation = new ArrayList<StructuralInstantiation>();
+	}
+	
+	public boolean isSet_structuralInstantiation() {
+		if (structuralInstantiation == null)
+			return false;
+		else
+			return true;
 	}
 
 	
@@ -272,13 +278,12 @@ public class StructuralAnnotation extends Documented {
 	}
 
 
-	public List<StructuralInstantiation> getStructuralInstantiation() {
+	public StructuralInstantiation getStructuralInstantiation() {
 		return structuralInstantiation;
 	}
 
 
-	public void setStructuralInstantiation(
-			List<StructuralInstantiation> structuralInstantiation) {
+	public void setStructuralInstantiation(StructuralInstantiation structuralInstantiation) {
 		this.structuralInstantiation = structuralInstantiation;
 	}
 
