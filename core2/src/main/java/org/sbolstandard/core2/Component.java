@@ -15,7 +15,7 @@ public class Component extends TopLevel {
 	private List<URI> type;
 	private List<URI> roles;
 	private List<StructuralInstantiation> structuralInstantiations;
-	private List<Structure> structure;
+	private Structure structure;
 	private List<StructuralAnnotation> structuralAnnotations;
 	private List<StructuralConstraint> structuralConstraints;
 	
@@ -23,10 +23,17 @@ public class Component extends TopLevel {
 		super(identity);
 		this.type = type;
 		this.roles = roles;
-		this.structuralInstantiations = new ArrayList<StructuralInstantiation>(); 
-		this.structure = new ArrayList<Structure>();
+		this.structuralInstantiations = new ArrayList<StructuralInstantiation>(); 		
 		this.structuralAnnotations = new ArrayList<StructuralAnnotation>();
 		this.structuralConstraints = new ArrayList<StructuralConstraint>();
+	}
+	
+	
+	public boolean isSet_structure() {
+		if (structure == null)
+			return false;
+		else
+			return true;
 	}
 
 	public List<URI> getType() {
@@ -54,11 +61,11 @@ public class Component extends TopLevel {
 		this.structuralInstantiations = structuralInstantiations;
 	}
 
-	public List<Structure> getStructure() {
+	public Structure getStructure() {
 		return structure;
 	}
 
-	public void setStructure(List<Structure> structure) {
+	public void setStructure(Structure structure) {
 		this.structure = structure;
 	}
 
