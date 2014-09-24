@@ -15,10 +15,6 @@
 
 package org.sbolstandard.core2;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
 //import org.sbolstandard.core.impl.CollectionImpl;
 //import org.sbolstandard.core.impl.DnaComponentImpl;
 //import org.sbolstandard.core.impl.DnaSequenceImpl;
