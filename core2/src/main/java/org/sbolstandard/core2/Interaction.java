@@ -1,20 +1,22 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.sbolstandard.core2.Documented;
 import org.sbolstandard.core2.Participation;
+import org.sbolstandard.core2.abstract_classes.Documented;
 
 /**
  * 
  * @author Ernst Oberortner
  * @author Nicholas Roehner
+ * @version 2.0
  */
 public class Interaction extends Documented {
 
-	private URI type;
-	private Collection<Participation> participations;
+	private List<URI> type;
+	private List<Participation> participations;
 	
 	/**
 	 * 
@@ -23,26 +25,26 @@ public class Interaction extends Documented {
 	 * @param type a type for the interaction
 	 * @param participations a collection of participations for the interaction
 	 */
-	public Interaction(URI identity, String displayId, URI type, 
-			Collection<Participation> participations) {
-		super(identity, displayId);
+	public Interaction(URI identity, List<URI> type) {
+		super(identity);
 		this.type = type;
-		this.participations = participations;
+		this.participations = new ArrayList<Participation>();
 	}
 
-	/**
-	 * @return the interaction's type
-	 */
-	public URI getType() {
+	public List<URI> getType() {
 		return type;
 	}
 
+	public void setType(List<URI> type) {
+		this.type = type;
+	}
 
-	/**
-	 * @return the interaction's participations
-	 */
-	public Collection<Participation> getParticipations() {
+	public List<Participation> getParticipations() {
 		return participations;
+	}
+
+	public void setParticipations(List<Participation> participations) {
+		this.participations = participations;
 	}
 
 }

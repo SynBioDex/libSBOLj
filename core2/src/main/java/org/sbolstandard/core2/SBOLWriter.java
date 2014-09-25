@@ -34,6 +34,11 @@ import javanet.staxutils.IndentingXMLStreamWriter;
 
 import javax.xml.stream.XMLOutputFactory;
 
+/**
+ * @author Zhen Zhang
+ * @version 2.0
+ *
+ */
 public class SBOLWriter {
 	  
 	  //NOTE: create Module()
