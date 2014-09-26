@@ -14,13 +14,13 @@ import org.sbolstandard.core2.abstract_classes.Documented;
  */
 public class ModuleInstantiation extends Documented {
 	
-	private List<RefersTo> references;
+	private List<MapsTo> references;
 	private Module instantiatedModule;
 	
 	public ModuleInstantiation(URI identity, Module instantiatedModule) {
 		super(identity);
 		this.instantiatedModule = instantiatedModule;
-		this.references = new ArrayList<RefersTo>();
+		this.references = new ArrayList<MapsTo>();
 	}
 
 	public Module getInstantiatedModule() {
@@ -31,11 +31,11 @@ public class ModuleInstantiation extends Documented {
 		this.instantiatedModule = instantiatedModule;
 	}
 
-	public List<RefersTo> getReferences() {
+	public List<MapsTo> getReferences() {
 		return references;
 	}
 
-	public void setReferences(List<RefersTo> references) {
+	public void setReferences(List<MapsTo> references) {
 		this.references = references;
 	}
 
