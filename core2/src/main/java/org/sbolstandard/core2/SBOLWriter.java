@@ -46,11 +46,10 @@ public class SBOLWriter {
 		
 		List <TopLevelDocument<QName>> topLevelDoc = new ArrayList<TopLevelDocument<QName>>();
 		
-		List<NamedProperty<QName, Literal>> t = new ArrayList<NamedProperty<QName, Literal>>(); 
-		NamedProper
+		
 		for (Module m : doc.getModule())
 		{
-			List<NamedProperty<QName, PropertyValue>> properties = new ArrayList<NamedProperty<QName, PropertyValue>>(); 
+			List<NamedProperty<QName>> properties = new ArrayList<NamedProperty<QName>>(); 
 			
 			getComponentInstantiations(m.getComponentInstantiations(),properties);			
 			getInteractions(m.getInteractions(),properties); 
@@ -59,18 +58,23 @@ public class SBOLWriter {
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Module.Module, m.getIdentity(), NamedProperties(properties)));
 		}
-//		DocumentRoot
+//		DocumentRoot<QName> root = DocumentRoot(
+//				NamespaceBindings(Sbol2Terms.sbol2),
+//				  TopLevelDocuments(topLevelDoc)
+//				);
 //		DocumentRoot(TopLevelDocuments(topLevelDoc));
+		DocumentRoot<QName> root = DocumentRoot(
+				  TopLevelDocuments(topLevelDoc)
+				);
 	
-		return DocumentRoot(NamespaceBindings(Sbol2Terms.sbol2),  TopLevelDocuments(topLevelDoc), properties);
+//		return DocumentRoot(NamespaceBindings(Sbol2Terms.sbol2),  TopLevelDocuments(topLevelDoc), properties);
 		
 	}//end of write()
 	
 	public void getComponentInstantiations(Collection<ComponentInstantiation> componentInstantiation,
-			List<NamedProperty<QName, PropertyValue>> properties)
+			List<NamedProperty<QName>> properties)
 	{
-		List<NamedProperty<QName, PropertyValue>> list = new ArrayList<NamedProperty<QName, 
-				PropertyValue>>();
+		List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 		
 		for(ComponentInstantiation c : componentInstantiation)
 		{	
@@ -82,20 +86,19 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.Documented.name, c.getName()));
 
 			properties.add(NamedProperty(Sbol2Terms.Module.hasfunctionalInstantiations, 
-					NestedDocument( Sbol2Terms.FunctionalInstantiations.FunctionalInstantiations, 
+					NestedDocument( Sbol2Terms.FunctionalInstantiation.FunctionalInstantiation, 
 					c.getIdentity(), NamedProperties(list))));
 		}
 	}
 	
 	
 	public void getInteractions (Collection<Interaction> interactions,
-			List<NamedProperty<QName, PropertyValue>> properties)
+			List<NamedProperty<QName>> properties)
 	{
 		
 		for(Interaction i : interactions)
 		{
-			List<NamedProperty<QName, PropertyValue>> list = new ArrayList<NamedProperty<QName, 
-					PropertyValue>>();
+			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			
 			if(i.getDescription() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.description, i.getDescription()));
@@ -104,17 +107,16 @@ public class SBOLWriter {
 			if(i.getName() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.name, i.getName()));
 			
-			properties.add(NamedProperty(Sbol2Terms.Module.nteraction, 
+			properties.add(NamedProperty(Sbol2Terms.Module.hasInteractions, 
 					NestedDocument( Sbol2Terms.Interaction.Interaction, 
 					i.getIdentity(), NamedProperties(list))));
 		}
 	}
 	
 	public void getModel (Collection<Model> model,
-			List<NamedProperty<QName, PropertyValue>> properties)
+			List<NamedProperty<QName>> properties)
 	{
-		List<NamedProperty<QName, PropertyValue>> list = new ArrayList<NamedProperty<QName, 
-				PropertyValue>>();
+		List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 		
 		for(Model m : model)
 		{	
@@ -132,10 +134,9 @@ public class SBOLWriter {
 	}
 	
 	public void getModuleInstantiation (Collection<ModuleInstantiation> moduleInstantiation, 
-			List<NamedProperty<QName, PropertyValue>> properties)
+			List<NamedProperty<QName>> properties)
 	{
-		List<NamedProperty<QName, PropertyValue>> list = new ArrayList<NamedProperty<QName, 
-				PropertyValue>>();
+		List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 		
 		for(ModuleInstantiation m : moduleInstantiation)
 		{	
