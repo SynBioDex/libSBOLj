@@ -2,8 +2,6 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.sbolstandard.core2.abstract_classes.ComponentInstantiation;
 import org.sbolstandard.core2.abstract_classes.Documented;
@@ -286,9 +284,5 @@ public class StructuralAnnotation extends Documented {
 	public void setStructuralInstantiation(StructuralInstantiation structuralInstantiation) {
 		this.structuralInstantiation = structuralInstantiation;
 	}
-
-
-	
-
 
 }

@@ -6,19 +6,19 @@ import java.util.List;
 
 import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.Component;
-import org.sbolstandard.core2.RefersTo;
+import org.sbolstandard.core2.MapsTo;
 
 public abstract class ComponentInstantiation extends Documented {
 	
 	private AccessType access;
 	private Component instantiatedComponent;
-	private List<RefersTo> references;
+	private List<MapsTo> references;
 	
 	public ComponentInstantiation(URI identity, URI componentIdentity, AccessType access, List<URI> type, List<URI> roles) {
 		super(identity);
 		this.access = access;	
 		this.instantiatedComponent = new Component(componentIdentity, type, roles);
-		this.references = new ArrayList<RefersTo>();
+		this.references = new ArrayList<MapsTo>();
 	}
 	
 	public AccessType getAccess() {
@@ -37,11 +37,11 @@ public abstract class ComponentInstantiation extends Documented {
 		this.instantiatedComponent = instantiatedComponent;
 	}
 
-	public List<RefersTo> getReferences() {
+	public List<MapsTo> getReferences() {
 		return references;
 	}
 
-	public void setReferences(List<RefersTo> references) {
+	public void setReferences(List<MapsTo> references) {
 		this.references = references;
 	}
 	

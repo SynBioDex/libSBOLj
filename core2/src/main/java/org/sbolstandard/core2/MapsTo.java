@@ -5,13 +5,13 @@ import java.net.URI;
 import org.sbolstandard.core2.abstract_classes.ComponentInstantiation;
 import org.sbolstandard.core2.abstract_classes.Identified;
 
-public class RefersTo extends Identified{
+public class MapsTo extends Identified{
 	
 	private RefinementType refinement;
 	private ComponentInstantiation local;
 	private ComponentInstantiation remote;
 
-	public RefersTo(URI identity, RefinementType refinement, 
+	public MapsTo(URI identity, RefinementType refinement, 
 			ComponentInstantiation local, ComponentInstantiation remote) {
 		super(identity);
 		this.refinement = refinement;

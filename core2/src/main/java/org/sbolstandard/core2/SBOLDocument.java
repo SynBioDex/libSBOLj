@@ -130,6 +130,54 @@ public class SBOLDocument {
 		topLevelList.add(newTopLevel);
 		return newTopLevel;
 	}
+
+	public List<TopLevel> getTopLevelList() {
+		return topLevelList;
+	}
+
+	public void setTopLevelList(List<TopLevel> topLevelList) {
+		this.topLevelList = topLevelList;
+	}
+
+	public List<Collection> getCollectionList() {
+		return collectionList;
+	}
+
+	public void setCollectionList(List<Collection> collectionList) {
+		this.collectionList = collectionList;
+	}
+
+	public List<Component> getComponentList() {
+		return componentList;
+	}
+
+	public void setComponentList(List<Component> componentList) {
+		this.componentList = componentList;
+	}
+
+	public List<Model> getModelList() {
+		return modelList;
+	}
+
+	public void setModelList(List<Model> modelList) {
+		this.modelList = modelList;
+	}
+
+	public List<Module> getModuleList() {
+		return moduleList;
+	}
+
+	public void setModuleList(List<Module> moduleList) {
+		this.moduleList = moduleList;
+	}
+
+	public List<Structure> getStructureList() {
+		return structureList;
+	}
+
+	public void setStructureList(List<Structure> structureList) {
+		this.structureList = structureList;
+	}
 	
 }
 
