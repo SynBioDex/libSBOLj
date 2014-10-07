@@ -41,17 +41,17 @@
              <dependency>
              	<groupId>uk.ac.ncl.intbio</groupId>
              	<artifactId>sbol-data-examples</artifactId>
-             	<version>1.0-SNAPSHOT</version>
+             	<version>0.1.0</version>
              </dependency>
              <dependency>
              	<groupId>uk.ac.ncl.intbio</groupId>
              	<artifactId>sbol-data-io-RDF</artifactId>
-             	<version>0.1.0-SNAPSHOT</version>
+             	<version>0.1.0</version>
              </dependency>
              <dependency>
              	<groupId>uk.ac.ncl.intbio</groupId>
              	<artifactId>sbol-data-nativeSbol</artifactId>
-             	<version>1.0-SNAPSHOT</version>
+             	<version>0.1.0</version>
              </dependency>
     </dependencies>
     

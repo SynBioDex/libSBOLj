@@ -154,23 +154,24 @@ public class StructuralAnnotation extends Documented {
 //		return structuralInstantiation;
 //	}
 	
+	// TRAMY - PUT BACK
 	/**
 	 * @return
 	 * @deprecated As of release 2.0, replaced by {@link #getSubComponentInstantiation()}
 	 */
-	public SequenceComponent getSubComponent() {
-//		if (structuralInstantiation != null) {
-//			Component tmp = structuralInstantiation.getInstantiatedComponent();
-//			if (tmp instanceof SequenceComponent) {
-//				return (SequenceComponent) tmp;
-//			}
-//			else {
-//				// TODO Throw proper exception.
-//				return null;				
-//			}
-//		}
-		return null;
-	}
+//	public SequenceComponent getSubComponent() {
+////		if (structuralInstantiation != null) {
+////			Component tmp = structuralInstantiation.getInstantiatedComponent();
+////			if (tmp instanceof SequenceComponent) {
+////				return (SequenceComponent) tmp;
+////			}
+////			else {
+////				// TODO Throw proper exception.
+////				return null;				
+////			}
+////		}
+//		return null;
+//	}
 	
 //	/**
 //	 * 
@@ -185,14 +186,14 @@ public class StructuralAnnotation extends Documented {
 	 * Make sure they do not conflict with existing ones.
 	 * @throws URISyntaxException 
 	 * @deprecated As of release 2.0, replaced by {@link #setSubComponentInstantiation(ComponentInstantiation)}
-	 * 
+	 * // TRAMY - PUT BACK
 	 */
-	public void setSubComponent(SequenceComponent subComponent) {
-//		String identityStr = getIdentity().toString() + "/" + subComponent.getDisplayId();
-//		URI identity = URI.create(identityStr);
-//		String displayId = getDisplayId() + "_" + subComponent.getDisplayId();				
-//		this.structuralInstantiation = new ComponentInstantiation(identity, displayId, subComponent);
-	}
+//	public void setSubComponent(SequenceComponent subComponent) {
+////		String identityStr = getIdentity().toString() + "/" + subComponent.getDisplayId();
+////		URI identity = URI.create(identityStr);
+////		String displayId = getDisplayId() + "_" + subComponent.getDisplayId();				
+////		this.structuralInstantiation = new ComponentInstantiation(identity, displayId, subComponent);
+//	}
 
 //	/**
 //	 * 
