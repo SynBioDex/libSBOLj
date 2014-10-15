@@ -23,19 +23,30 @@ public class StructuralAnnotation extends Documented {
 //	private Orientation orientation;	
 //	private Collection<StructuralAnnotation> precededAnnotations;
 	
-	public StructuralAnnotation(URI identity, String description, Location location) {
+	public StructuralAnnotation(URI identity, Location location) {
 		super(identity);
-		this.location = location;
+		setLocation(location);		
 	}
 	
-	public boolean isSet_structuralInstantiation() {
+	/**
+	 * Check whether optional field variable <code>structuralInstantiation</code> is set or not.
+	 * @return <code>true</code> if it is not null.
+	 */
+	public boolean isSetStructuralInstantiation() {
 		if (structuralInstantiation == null)
 			return false;
 		else
 			return true;
 	}
-
 	
+	
+	/**
+	 * Set optional field variable <code>structuralInstantiation</code> to null.
+	 */
+	public void unsetStructuralInstantiation() {
+		structuralInstantiation = null;
+	}
+
 //	/**
 //	 * 
 //	 * @param identity an identity for the sequence annotation

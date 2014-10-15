@@ -11,16 +11,42 @@ import org.sbolstandard.core2.MapsTo;
 public abstract class ComponentInstantiation extends Documented {
 	
 	private AccessType access;
-	private Component instantiatedComponent;
+	private URI instantiatedComponent;
 	private List<MapsTo> references;
 	
-	public ComponentInstantiation(URI identity, URI componentIdentity, AccessType access, List<URI> type, List<URI> roles) {
+//	public ComponentInstantiation(URI identity, URI componentIdentity, AccessType access, List<URI> type, List<URI> roles) {
+//		super(identity);
+//		setAccess(access);
+//		//setInstantiatedComponent(instantiatedComponent);
+//		this.instantiatedComponent = new Component(componentIdentity, type, roles);
+//		this.references = new ArrayList<MapsTo>();
+//	}
+	
+	public ComponentInstantiation(URI identity, AccessType access, URI instantiatedComponent) {
 		super(identity);
-		this.access = access;	
-		this.instantiatedComponent = new Component(componentIdentity, type, roles);
+		setAccess(access);
+		setInstantiatedComponent(instantiatedComponent);		
 		this.references = new ArrayList<MapsTo>();
 	}
 	
+	/**
+	 * Check whether optional field variable <code>references</code> is set or not.
+	 * @return <code>true</code> if it is not an empty list
+	 */
+	public boolean isSetReferences() {
+		if (references.isEmpty())
+			return false;
+		else
+			return true;
+	}	
+	
+	/**
+	 * Set optional field variable <code>references</code> to an empty list.
+	 */
+	public void unsetReferences() {
+		references.clear();
+	}
+ 	
 	public AccessType getAccess() {
 		return access;
 	}
@@ -29,11 +55,11 @@ public abstract class ComponentInstantiation extends Documented {
 		this.access = access;
 	}
 
-	public Component getInstantiatedComponent() {
+	public URI getInstantiatedComponent() {
 		return instantiatedComponent;
 	}
 
-	public void setInstantiatedComponent(Component instantiatedComponent) {
+	public void setInstantiatedComponent(URI instantiatedComponent) {
 		this.instantiatedComponent = instantiatedComponent;
 	}
 

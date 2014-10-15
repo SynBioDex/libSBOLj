@@ -10,7 +10,7 @@ public class Cut extends Location{
 	
 	public Cut(URI identity, Integer at) {
 		super(identity);
-		this.at = at;
+		setAt(at);
 	}
 
 	public Integer getAt() {

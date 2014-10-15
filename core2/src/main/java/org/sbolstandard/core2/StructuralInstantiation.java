@@ -7,11 +7,7 @@ import org.sbolstandard.core2.abstract_classes.ComponentInstantiation;
 
 public class StructuralInstantiation extends ComponentInstantiation{
 
-	public StructuralInstantiation(URI identity, URI componentIdentity, AccessType access, 
-			List<URI> type, List<URI> roles, DirectionType direction) {
-		super(identity, componentIdentity, access, type, roles);		
+	public StructuralInstantiation(URI identity, AccessType access, URI instantiatedComponent) {
+		super(identity, access, instantiatedComponent);
 	}
-
-
-
 }

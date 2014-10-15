@@ -15,15 +15,87 @@ public class Module extends TopLevel {
 	private List<ModuleInstantiation> moduleInstantiations;
 	private List<Interaction> interactions;
 	private List<FunctionalInstantiation> functionalInstantiations;
-	private List<Model> models;
+	private List<URI> models;
 	
 	public Module(URI identity, List<URI> roles) {
 		super(identity);
-		this.roles = roles;
+		setRoles(roles);
 		this.moduleInstantiations = new ArrayList<ModuleInstantiation>();
 		this.interactions = new ArrayList<Interaction>();
 		this.functionalInstantiations = new ArrayList<FunctionalInstantiation>();
-		this.models = new ArrayList<Model>();		
+		this.models = new ArrayList<URI>();		
+	}
+	
+	/**
+	 * Check whether field variable <code>moduleInstantiations</code> is set or not.
+	 * @return <code>true</code> if it is not an empty list.
+	 */
+	public boolean isSetModuleInstantiations() {
+		if (moduleInstantiations.isEmpty())
+			return false;
+		else
+			return true;					
+	}
+	
+	/**
+	 * Check whether field variable <code>interactions</code> is set or not.
+	 * @return <code>true</code> if it is not an empty list.
+	 */		
+	public boolean isSetInteractions() {
+		if (interactions.isEmpty())
+			return false;
+		else
+			return true;
+	}
+	
+	/**
+	 * Check whether field variable <code>functionalInstantiations</code> is set or not.
+	 * @return <code>true</code> if it is not an empty list.
+	 */
+	public boolean isSetFunctionalInstantiations() {
+		if (functionalInstantiations.isEmpty()) 
+			return false;
+		else
+			return true;
+	}
+ 	
+	/**
+	 * Check whether field variable <code>models</code> is set or not.
+	 * @return <code>true</code> if it is not an empty list.
+	 */
+	public boolean isSetModels() {
+		if (models.isEmpty())
+			return false;
+		else
+			return true;					
+	}
+	
+	/**
+	 * Set optional field variable <code>moduleInstantiations</code> to an empty list.
+	 */
+	public void unsetModuleInstantiations() {
+		moduleInstantiations.clear();
+	}
+	
+	/**
+	 * Set optional field variable <code>interactions</code> to an empty list.
+	 */
+	public void unsetInteractions() {
+		interactions.clear();
+	}
+	
+	/**
+	 * Set optional field variable <code>functionalInstantiations</code> to an empty list.
+	 */
+	public void unsetFunctionalInstantiations() {
+		functionalInstantiations.clear();
+	}
+	
+	/**
+	 * Set optional field variable <code>models</code> to an empty list.
+	 */
+	public void unsetModels() {
+		models.clear();
 	}
 
 	public List<URI> getRoles() {
@@ -60,11 +132,11 @@ public class Module extends TopLevel {
 		this.functionalInstantiations = functionalInstantiations;
 	}
 
-	public List<Model> getModels() {
+	public List<URI> getModels() {
 		return models;
 	}
 
-	public void setModels(List<Model> models) {
+	public void setModels(List<URI> models) {
 		this.models = models;
 	}
 	

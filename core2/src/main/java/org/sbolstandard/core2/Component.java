@@ -5,35 +5,117 @@ import java.util.List;
 
 /**
  * 
- * @author Ernst Oberortner
+ * @author Zhen Zhang
  * @author Nicholas Roehner
  * @version 2.0
  */
 
+/**
+ * @author zhangz
+ *
+ */
 public class Component extends TopLevel {
 
 	private List<URI> type;
 	private List<URI> roles;
+	private URI structure;
 	private List<StructuralInstantiation> structuralInstantiations;
-	private Structure structure;
 	private List<StructuralAnnotation> structuralAnnotations;
 	private List<StructuralConstraint> structuralConstraints;
 	
 	public Component(URI identity, List<URI> type, List<URI> roles) {
 		super(identity);
-		this.type = type;
-		this.roles = roles;
+		setType(type);
+		setRoles(roles);		
 		this.structuralInstantiations = new ArrayList<StructuralInstantiation>(); 		
 		this.structuralAnnotations = new ArrayList<StructuralAnnotation>();
 		this.structuralConstraints = new ArrayList<StructuralConstraint>();
 	}
 	
+//	public boolean isSet_type() {
+//		if (type == null || type.isEmpty()) {
+//			return false;
+//		}
+//		return true;
+//	}
+//	
+//	public boolean isSet_roles() {
+//		if (roles == null || roles.isEmpty()) {
+//			return false;
+//		}
+//		return true;
+//	}
 	
-	public boolean isSet_structure() {
+	/**
+	 * Check whether the optional field variable <code>structure</code> is set or not.
+	 * @return <code>true</code> if the field variable is not <code>null</code>
+	 */
+	public boolean isSetStructure() {
 		if (structure == null)
 			return false;
 		else
 			return true;
+	}
+	
+	/**
+	 * Check whether the optional field variable <code>structuralInstantiations</code> is set or not.
+	 * @return <code>true</code> if the field variable is not an empty list
+	 */
+	public boolean isSetStructuralInstantiations() {
+		if (structuralInstantiations.isEmpty())
+			return false;
+		else
+			return true;
+	}
+	
+	/**
+	 * Check whether the optional field variable <code>structuralAnnotations</code> is set or not.
+	 * @return <code>true</code> if the field variable is not an empty list
+	 */
+	public boolean isSetStructuralAnnotations() {
+		if (structuralAnnotations.isEmpty())
+			return false;
+		else
+			return true;					
+	}
+	
+	/**
+	 * Check whether the optional field variable <code>structuralConstraints</code> is set or not.
+	 * @return <code>true</code> if the field variable is not an empty list
+	 */
+	public boolean isSetStructuralConstraints() {
+		if (structuralConstraints.isEmpty())
+			return false;
+		else
+			return true;
+	}
+	
+	/**
+	 * Set the optional field variable <code>structure</code> to <code>null</code>.
+	 */
+	public void unsetStructure() {
+		structure = null;
+	}
+	
+	/**
+	 * Set the optional field variable <code>structuralInstantiations</code> to an empty list.
+	 */
+	public void unsetStructuralInstantiations() {
+		structuralInstantiations.clear();
+	}
+	
+	/**
+	 * Set the optional field variable <code>structuralAnnotations</code> to an empty list.
+	 */
+	public void unsetStructuralAnnotations() {
+		structuralAnnotations.clear();
+	}
+	
+	/**
+	 * Set the optional field variable <code>structuralConstraints</code> to an empty list.
+	 */
+	public void unsetStructuralConstraints() {
+		structuralConstraints.clear(); 
 	}
 
 	public List<URI> getType() {
@@ -61,11 +143,11 @@ public class Component extends TopLevel {
 		this.structuralInstantiations = structuralInstantiations;
 	}
 
-	public Structure getStructure() {
+	public URI getStructure() {
 		return structure;
 	}
 
-	public void setStructure(Structure structure) {
+	public void setStructure(URI structure) {
 		this.structure = structure;
 	}
 

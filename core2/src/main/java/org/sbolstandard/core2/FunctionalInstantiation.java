@@ -9,10 +9,16 @@ public class FunctionalInstantiation extends ComponentInstantiation{
 		
 	private DirectionType direction;
 	
-	public FunctionalInstantiation(URI identity, URI componentIdentity, AccessType access, 
-			List<URI> type, List<URI> roles, DirectionType direction) {
-		super(identity, componentIdentity, access, type, roles);
-		this.direction = direction;
+//	public FunctionalInstantiation(URI identity, URI componentIdentity, AccessType access, 
+//			List<URI> type, List<URI> roles, DirectionType direction) {
+//		super(identity, componentIdentity, access, type, roles);
+//		this.direction = direction;
+//	}
+	
+	public FunctionalInstantiation(URI identity, AccessType access, 
+			URI instantiatedComponent, DirectionType direction) {
+		super(identity,access, instantiatedComponent);
+		setDirection(direction);
 	}
 
 	public DirectionType getDirection() {
