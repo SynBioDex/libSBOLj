@@ -20,15 +20,14 @@ public class Interaction extends Documented {
 	
 	/**
 	 * 
-	 * @param identity an identity for the interaction
-	 * @param displayId a display ID for the interaction
+	 * @param identity an identity for the interaction	 
 	 * @param type a type for the interaction
 	 * @param participations a collection of participations for the interaction
 	 */
-	public Interaction(URI identity, List<URI> type) {
+	public Interaction(URI identity, List<URI> type, List<Participation> participations) {
 		super(identity);
-		this.type = type;
-		this.participations = new ArrayList<Participation>();
+		setType(type);
+		setParticipations(participations);
 	}
 
 	public List<URI> getType() {

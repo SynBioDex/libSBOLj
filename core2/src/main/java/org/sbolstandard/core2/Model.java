@@ -16,11 +16,11 @@ public class Model extends TopLevel {
 	private List<URI> roles;
 
 	public Model(URI identity,URI source, URI language, URI framework, List<URI> roles) {
-		super(identity);
-		this.source = source;
-		this.language = language;
-		this.framework = framework;
-		this.roles = roles;
+		super(identity);		
+		setSource(source);
+		setLanguage(language);
+		setFramework(framework);
+		setRoles(roles);
 	}
 
 	public URI getSource() {
@@ -54,7 +54,5 @@ public class Model extends TopLevel {
 	public void setRoles(List<URI> roles) {
 		this.roles = roles;
 	}
-
-
 
 }

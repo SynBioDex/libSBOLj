@@ -8,8 +8,8 @@ public class Annotation {
 	private Turtle literal;
 	
 	public Annotation(URI relation, Turtle literal) {
-		this.relation = relation;
-		this.literal = literal;
+		setRelation(relation);
+		setLiteral(literal);
 	}
 
 	public URI getRelation() {

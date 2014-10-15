@@ -22,7 +22,61 @@ public abstract class Documented extends Identified {
 	public Documented(URI identity) {
 		super(identity);
 	}
-
+	
+	/**
+	 * Check whether optional field variable <code>displayId</code> is set or not.
+	 * @return <code>true</code> if it is not null
+	 */
+	public boolean isSetDisplayId() {
+		if (displayId == null)
+			return false;
+		else 
+			return true;
+	}
+	
+	/**
+	 * Check whether optional field variable <code>name</code> is set or not
+	 * @return <code>true</code> if it is not null
+	 */
+	public boolean isSetName() {
+		if (name == null)
+			return false;
+		else 
+			return true;
+	}
+	
+	/**
+	 * Check whether optional field variable <code>description</code> is set or not
+	 * @return <code>true</code> if it is not null
+	 */
+	public boolean isSetDescription() {
+		if (description == null)
+			return false;
+		else 
+			return true;
+	}
+	
+	/**
+	 * Set optional field variable <code>displayId</code> to <code>null</code>.
+	 */
+	public void unsetDisplayId() {
+		displayId = null;
+	}
+	
+	/**
+	 * Set optional field variable <code>name</code> to <code>null</code>.
+	 */
+	public void unsetName() {
+		name = null;
+	}
+	
+	/**
+	 * Set optional field variable <code>description</code> to <code>null</code>.
+	 */
+	public void unsetDescription() {
+		description = null;
+	}
+	
 	/**
 	 * 
 	 * @return the documented object's display ID

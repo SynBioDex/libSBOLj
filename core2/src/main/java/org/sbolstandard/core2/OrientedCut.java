@@ -8,7 +8,7 @@ public class OrientedCut extends Cut {
 	
 	public OrientedCut(URI identity, Integer at, Orientation orientation) {
 		super(identity, at);
-		this.orientation = orientation;
+		setOrientation(orientation);
 	}
 
 	public Orientation getOrientation() {

@@ -6,18 +6,18 @@ import java.util.List;
 
 public class Collection extends TopLevel{
 	
-	private List<TopLevel> members;
+	private List<URI> members;
 	
 	public Collection(URI identity) {
 		super(identity);
-		this.members = new ArrayList<TopLevel>();
+		this.members = new ArrayList<URI>();
 	}
 
-	public List<TopLevel> getMembers() {
+	public List<URI> getMembers() {
 		return members;
 	}
 
-	public void setMembers(List<TopLevel> members) {
+	public void setMembers(List<URI> members) {
 		this.members = members;
 	}
 }

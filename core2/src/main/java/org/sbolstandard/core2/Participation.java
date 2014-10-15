@@ -14,12 +14,12 @@ import org.sbolstandard.core2.abstract_classes.Identified;
 public class Participation extends Identified {
 	
 	private List<URI> role;
-	private FunctionalInstantiation participant;
+	private URI participant;
 	
-	public Participation(URI identity, List<URI> role, FunctionalInstantiation participant) {
+	public Participation(URI identity, List<URI> role, URI participant) {
 		super(identity);
-		this.role = role;
-		this.participant = participant;
+		setRole(role);
+		setParticipant(participant);
 	}
 
 	public List<URI> getRole() {
@@ -29,12 +29,16 @@ public class Participation extends Identified {
 	public void setRole(List<URI> role) {
 		this.role = role;
 	}
+	
+	public void clearRole() {
+		role.clear();
+	}
 
-	public FunctionalInstantiation getParticipant() {
+	public URI getParticipant() {
 		return participant;
 	}
 
-	public void setParticipant(FunctionalInstantiation participant) {
+	public void setParticipant(URI participant) {
 		this.participant = participant;
 	}
 

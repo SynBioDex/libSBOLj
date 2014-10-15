@@ -12,9 +12,8 @@ public class Range extends Location{
 	
 	public Range(URI identity, Integer start, Integer end) {
 		super(identity);
-		this.start = start;
-		this.end = end;
-		
+		setStart(start);
+		setEnd(end);
 	}
 	
 	public void setStart(Integer value) {
@@ -31,7 +30,6 @@ public class Range extends Location{
 
 	public void setEnd(Integer value) {
 		end = value;
-		
 	}
 
 }
