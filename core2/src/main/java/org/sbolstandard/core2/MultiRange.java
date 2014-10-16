@@ -7,20 +7,19 @@ import org.sbolstandard.core2.abstract_classes.Location;
 
 public class MultiRange extends Location{
 	
-	private List<Range> ranges;
+	private List<URI> ranges;
 
 	public MultiRange(URI identity, URI persistentIdentity, String version, 
-			List<Range> ranges) {
+			List<URI> ranges) {
 		super(identity);
 		this.ranges = ranges;
 	}
 	
-
-	public List<Range> getRanges() {
+	public List<URI> getRanges() {
 		return ranges;
 	}
 
-	public void setRanges(List<Range> ranges) {
+	public void setRanges(List<URI> ranges) {
 		this.ranges = ranges;
 	}
 

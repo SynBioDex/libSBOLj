@@ -14,8 +14,8 @@ public class Structure extends TopLevel{
 	
 	public Structure(URI identity, String elements, URI encoding) {
 		super(identity);
-		this.elements = elements;
-		this.encoding = encoding;
+		setElements(elements);
+		setEncoding(encoding);
 	}
 	
 	public String getElements() {

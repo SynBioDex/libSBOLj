@@ -10,11 +10,11 @@ import org.sbolstandard.core2.Annotation;
 
 /**
  * 
- * @author Ernst Oberortner
+ * @author Zhen Zhang
  * @author Nicholas Roehner
  * @version 2.0
  */
-//public abstract class Identified extends SBOLVisitable{
+
 public abstract class Identified {
 	
 	protected URI identity;
@@ -24,9 +24,81 @@ public abstract class Identified {
 	private List<Annotation> annotations;
 	
 	public Identified(URI identity) {
-		this.identity = identity;
+		setIdentity(identity);
 		this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 		this.annotations = new ArrayList<Annotation>();
+	}
+	
+	/**
+	 * Check whether optional field variable <code>persistentIdentity</code> is set or not.
+	 * @return <code>true</code> if it is not <code>null</code>
+	 */
+	public boolean isSetPersistentIdentity() {
+		if (persistentIdentity == null)
+			return false;
+		else
+			return true;
+	}
+	
+	/**
+	 * Check whether optional field variable <code>version</code> is set or not.
+	 * @return <code>true</code> if it is not <code>null</code>
+	 */
+	public boolean isSetVersion() {
+		if (version == null)
+			return false;
+		else
+			return true;					
+	}
+		
+	/**
+	 * Check whether optional field variable <code>timeStamp</code> is set or not.
+	 * @return <code>true</code> if it is not <code>null</code>
+	 */
+	public boolean isSetTimeStamp() {
+		if (timeStamp == null)
+			return false;
+		else
+			return true;
+	}
+ 	
+	/**
+	 * Check whether optional field variable <code>annotations</code> is set or not.
+	 * @return <code>true</code> if it is not an empty list
+	 */
+	public boolean isSetAnnotations() {
+		if (annotations.isEmpty())
+			return false;
+		else
+			return true;					
+	}
+	
+	/**
+	 * Set optional field variable <code>persistentIdentity</code> to null.
+	 */
+	public void unsetPersistentIdentity() {
+		persistentIdentity = null;
+	}
+	
+	/**
+	 * Set optional field variable <code>version</code> to null.
+	 */
+	public void unsetVersion() {
+		version = null;
+	}
+	
+	/**
+	 * Set optional field variable <code>timeStamp</code> to null.
+	 */
+	public void unsetTimeStamp() {
+		timeStamp = null;
+	}
+	
+	/**
+	 * Set optional field variable <code>annotations</code> to null.
+	 */
+	public void unsetAnnotations() {
+		annotations = null;
 	}
 
 	public URI getIdentity() {

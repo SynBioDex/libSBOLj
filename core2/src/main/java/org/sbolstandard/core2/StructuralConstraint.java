@@ -7,15 +7,15 @@ import org.sbolstandard.core2.abstract_classes.Identified;
 public class StructuralConstraint extends Identified {
 
 	private URI restriction;
-	private StructuralInstantiation subject;
-	private StructuralInstantiation object;
+	private URI subject;
+	private URI object;
 	
 	public StructuralConstraint(URI identity, URI restriction, 
-			StructuralInstantiation subject, StructuralInstantiation object) {
+			URI subject, URI object) {
 		super(identity);
-		this.restriction = restriction;
-		this.subject = subject;
-		this.object = object;
+		setRestriction(restriction);
+		setSubject(subject);
+		setObject(object);
 	}
 
 	public URI getRestriction() {
@@ -26,19 +26,19 @@ public class StructuralConstraint extends Identified {
 		this.restriction = restriction;
 	}
 
-	public StructuralInstantiation getSubject() {
+	public URI getSubject() {
 		return subject;
 	}
 
-	public void setSubject(StructuralInstantiation subject) {
+	public void setSubject(URI subject) {
 		this.subject = subject;
 	}
 
-	public StructuralInstantiation getObject() {
+	public URI getObject() {
 		return object;
 	}
 
-	public void setObject(StructuralInstantiation object) {
+	public void setObject(URI object) {
 		this.object = object;
 	}
 

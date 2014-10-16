@@ -348,7 +348,6 @@ public class mainTester {
 		s.setDescription(description);
 		s.setPersistentIdentity(persistentIdentity);
 		s.setVersion(version);
-		
 		List<StructuralInstantiation> structuralInstantiation = new ArrayList<StructuralInstantiation>(); 
 		structuralInstantiation.add(s);
 		return structuralInstantiation; 

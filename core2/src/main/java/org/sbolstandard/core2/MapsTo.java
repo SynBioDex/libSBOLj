@@ -8,15 +8,15 @@ import org.sbolstandard.core2.abstract_classes.Identified;
 public class MapsTo extends Identified{
 	
 	private RefinementType refinement;
-	private ComponentInstantiation local;
-	private ComponentInstantiation remote;
+	private URI local; // URI of a local component instantiation.
+	private URI remote; // URI of a remote component instantiation
 
 	public MapsTo(URI identity, RefinementType refinement, 
-			ComponentInstantiation local, ComponentInstantiation remote) {
+			URI local, URI remote) {
 		super(identity);
-		this.refinement = refinement;
-		this.local = local;
-		this.remote = remote;
+		setRefinement(refinement);
+		setLocal(local);
+		setRemote(remote);		
 	}
 
 	public RefinementType getRefinement() {
@@ -27,19 +27,25 @@ public class MapsTo extends Identified{
 		this.refinement = refinement;
 	}
 
-	public ComponentInstantiation getLocal() {
+	/**
+	 * @return the URI of the local <code>ComponentInstantiation</code> instance.
+	 */
+	public URI getLocal() {
 		return local;
 	}
 
-	public void setLocal(ComponentInstantiation local) {
+	public void setLocal(URI local) {
 		this.local = local;
 	}
 
-	public ComponentInstantiation getRemote() {
+	/**
+	 * @return the URI of the remote <code>ComponentInstantiation</code> instance.
+	 */
+	public URI getRemote() {
 		return remote;
 	}
 
-	public void setRemote(ComponentInstantiation remote) {
+	public void setRemote(URI remote) {
 		this.remote = remote;
 	}
 	

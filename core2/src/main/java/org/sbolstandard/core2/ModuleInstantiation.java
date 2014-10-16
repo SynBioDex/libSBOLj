@@ -15,19 +15,37 @@ import org.sbolstandard.core2.abstract_classes.Documented;
 public class ModuleInstantiation extends Documented {
 	
 	private List<MapsTo> references;
-	private Module instantiatedModule;
+	private URI instantiatedModule;
 	
-	public ModuleInstantiation(URI identity, Module instantiatedModule) {
+	public ModuleInstantiation(URI identity, URI instantiatedModule) {
 		super(identity);
-		this.instantiatedModule = instantiatedModule;
+		setInstantiatedModule(instantiatedModule);
 		this.references = new ArrayList<MapsTo>();
 	}
+	
+	/**
+	 * Check whether optional field variable <code>references</code> is set or not.
+	 * @return <code>true</code> if it is not an empty list
+	 */
+	public boolean isSetReferences() {
+		if (references.isEmpty())
+			return false;
+		else
+			return true;
+	}
+	
+	/**
+	 * Set optional field variable <code>references</code> to an empty list.
+	 */
+	public void unsetReferences() {
+		references.clear();
+	}
 
-	public Module getInstantiatedModule() {
+	public URI getInstantiatedModule() {
 		return instantiatedModule;
 	}
 
-	public void setInstantiatedModule(Module instantiatedModule) {
+	public void setInstantiatedModule(URI instantiatedModule) {
 		this.instantiatedModule = instantiatedModule;
 	}
 
