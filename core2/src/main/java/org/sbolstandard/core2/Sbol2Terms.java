@@ -9,8 +9,7 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
  *
  */
 public class Sbol2Terms
-{
-	
+{	
 	/**
 	 * The namespace binding for SBOL2.0 
 	 */
@@ -34,13 +33,13 @@ public class Sbol2Terms
 		  public static final QName Collection		   = sbol2.withLocalPart("Collection");
 		  public static final QName hasMembers		   = sbol2.withLocalPart("members"); 
 //		  public static final QName access 			   = sbol2.withLocalPart("access"); 
-		  public static final QName displayId 	   	   = sbol2.withLocalPart("displayId"); //Documented
-		  public static final QName name 			   = sbol2.withLocalPart("name");
-		  public static final QName description 	   = sbol2.withLocalPart("description");
-		  public static final QName identity 		   = sbol2.withLocalPart("identity");  //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 	   	   = sbol2.withLocalPart("version");
-		  public static final QName timeStamp 	   	   = sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 	   	   = Documented.displayId;  
+		  public static final QName name 			   = Documented.name;
+		  public static final QName description 	   = Documented.description;
+		  public static final QName identity 		   = Identified.identity;  
+		  public static final QName persistentIdentity = Identified.persistentIdentity;
+		  public static final QName version 	   	   = Identified.version;
+		  public static final QName timeStamp 	   	   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -55,13 +54,13 @@ public class Sbol2Terms
 		  public static final QName hasStructuralAnnotations 	= sbol2.withLocalPart("structuralAnnotations");
 		  public static final QName hasStructuralConstraints 	= sbol2.withLocalPart("structuralConstraints");
 		  public static final QName hasStructuralInstantiations = sbol2.withLocalPart("structuralInstantiations");
-		  public static final QName displayId 		   			= sbol2.withLocalPart("displayId"); //documented
-		  public static final QName name 			   			= sbol2.withLocalPart("name");
-		  public static final QName description 	   			= sbol2.withLocalPart("description");
-		  public static final QName identity 					= sbol2.withLocalPart("identity"); //identified
-		  public static final QName persistentIdentity 			= sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 	   				= sbol2.withLocalPart("version");
-		  public static final QName timeStamp 	   				= sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 		   			= Documented.displayId;  
+		  public static final QName name 			   			= Documented.name;
+		  public static final QName description 	   			= Documented.description;
+		  public static final QName identity 					= Identified.identity; 
+		  public static final QName persistentIdentity 			= Identified.persistentIdentity;
+		  public static final QName version 	   				= Identified.version;
+		  public static final QName timeStamp 	   				= Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -73,13 +72,13 @@ public class Sbol2Terms
 		  public static final QName access 					 = sbol2.withLocalPart("access");  
 		  public static final QName hasInstantiatedComponent = sbol2.withLocalPart("instantiatedComponent");
 		  public static final QName hasReferences 			 = sbol2.withLocalPart("references"); 
-		  public static final QName displayId 		   		 = sbol2.withLocalPart("displayId"); //documented
-		  public static final QName name 			   		 = sbol2.withLocalPart("name");
-		  public static final QName description 	   		 = sbol2.withLocalPart("description");
-		  public static final QName identity 		   		 = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity 		 = sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 		   		 = sbol2.withLocalPart("version");
-		  public static final QName timeStamp 		   		 = sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 		   		 = Documented.displayId;  
+		  public static final QName name 			   		 = Documented.name;
+		  public static final QName description 	   		 = Documented.description;
+		  public static final QName identity 		   		 = Identified.identity; 
+		  public static final QName persistentIdentity 		 = Identified.persistentIdentity;
+		  public static final QName version 		   		 = Identified.version;
+		  public static final QName timeStamp 		   		 = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -89,10 +88,10 @@ public class Sbol2Terms
 	  public static final class Cut {
 		  public static final QName Cut = sbol2.withLocalPart("Cut");
 		  public static final QName at 	= sbol2.withLocalPart("at");
-		  public static final QName identity   	   	   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity"); 
-		  public static final QName version   	  	   = sbol2.withLocalPart("version"); 
-		  public static final QName timeStamp   	   = sbol2.withLocalPart("timeStamp"); 
+		  public static final QName identity   	   	   = Identified.identity; 
+		  public static final QName persistentIdentity = Identified.persistentIdentity; 
+		  public static final QName version   	  	   = Identified.version; 
+		  public static final QName timeStamp   	   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -104,10 +103,10 @@ public class Sbol2Terms
 		  public static final QName displayId 		   = sbol2.withLocalPart("displayId");
 		  public static final QName name 			   = sbol2.withLocalPart("name");
 		  public static final QName description 	   = sbol2.withLocalPart("description");
-		  public static final QName identity 		   = sbol2.withLocalPart("identity");
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 		   = sbol2.withLocalPart("version");
-		  public static final QName timeStamp 		   = sbol2.withLocalPart("timeStamp");
+		  public static final QName identity 		   = Identified.identity;
+		  public static final QName persistentIdentity = Identified.persistentIdentity;
+		  public static final QName version 		   = Identified.version;
+		  public static final QName timeStamp 		   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -118,13 +117,13 @@ public class Sbol2Terms
 		  public static final QName FunctionalInstantiation = sbol2.withLocalPart("FunctionalInstantiation");
 		  public static final QName direction 				= sbol2.withLocalPart("direction");
 		  public static final QName access 					= sbol2.withLocalPart("access"); 
-		  public static final QName displayId 		   		= sbol2.withLocalPart("displayId"); //documented
-		  public static final QName name 			   		= sbol2.withLocalPart("name");
-		  public static final QName description 	   		= sbol2.withLocalPart("description");
-		  public static final QName identity 				= sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity 		= sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 	   			= sbol2.withLocalPart("version");
-		  public static final QName timeStamp 	   			= sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 		   		= Documented.displayId;  
+		  public static final QName name 			   		= Documented.name;
+		  public static final QName description 	   		= Documented.description;
+		  public static final QName identity 		   		= Identified.identity; 
+		  public static final QName persistentIdentity 		= Identified.persistentIdentity;
+		  public static final QName version 	   			= Identified.version;
+		  public static final QName timeStamp 	   			= Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -134,9 +133,9 @@ public class Sbol2Terms
 	  public static final class Identified {
 		  public static final QName Identified 	   	   = sbol2.withLocalPart("Identified"); 
 		  public static final QName identity   	   	   = sbol2.withLocalPart("identity"); 
-		  public static final QName hasAnnotations 	   = sbol2.withLocalPart("annotations");
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity"); 
-		  public static final QName version   	  	   = sbol2.withLocalPart("version"); 
+//		  public static final QName hasAnnotations 	   = sbol2.withLocalPart("annotations");
+		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity");
+		  public static final QName version   	  	   = sbol2.withLocalPart("version");
 		  public static final QName timeStamp   	   = sbol2.withLocalPart("timeStamp"); 
 	  }
 	  
@@ -148,13 +147,13 @@ public class Sbol2Terms
 		  public static final QName Interaction 	   = sbol2.withLocalPart("Interaction");
 		  public static final QName type 			   = sbol2.withLocalPart("type");
 		  public static final QName hasParticipations  = sbol2.withLocalPart("participations");
-		  public static final QName displayId 		   = sbol2.withLocalPart("displayId"); //documented
-		  public static final QName name 			   = sbol2.withLocalPart("name");
-		  public static final QName description 	   = sbol2.withLocalPart("description");
-		  public static final QName identity 		   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 		   = sbol2.withLocalPart("version");
-		  public static final QName timeStamp 		   = sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 		   = Documented.displayId;  
+		  public static final QName name 			   = Documented.name;
+		  public static final QName description 	   = Documented.description;
+		  public static final QName identity 		   = Identified.identity; 
+		  public static final QName persistentIdentity = Identified.persistentIdentity;
+		  public static final QName version 		   = Identified.version;
+		  public static final QName timeStamp 		   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -163,10 +162,10 @@ public class Sbol2Terms
 	   */
 	  public static final class Location {
 		  public static final QName Location   		   = sbol2.withLocalPart("Location");
-		  public static final QName identity   	   	   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity"); 
-		  public static final QName version   	  	   = sbol2.withLocalPart("version"); 
-		  public static final QName timeStamp   	   = sbol2.withLocalPart("timeStamp"); 
+		  public static final QName identity   	   	   = Identified.identity;
+		  public static final QName persistentIdentity = Identified.persistentIdentity; 
+		  public static final QName version   	  	   = Identified.version; 
+		  public static final QName timeStamp   	   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -179,13 +178,13 @@ public class Sbol2Terms
 		  public static final QName language 		   = sbol2.withLocalPart("language");
 		  public static final QName framework 		   = sbol2.withLocalPart("framework");
 		  public static final QName roles			   = sbol2.withLocalPart("roles");
-		  public static final QName displayId 		   = sbol2.withLocalPart("displayId"); //Documented
-		  public static final QName name 			   = sbol2.withLocalPart("name");
-		  public static final QName description        = sbol2.withLocalPart("description");
-		  public static final QName identity 		   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 	       = sbol2.withLocalPart("version");
-		  public static final QName timeStamp 	       = sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 		   = Documented.displayId;  
+		  public static final QName name 			   = Documented.name;
+		  public static final QName description        = Documented.description;
+		  public static final QName identity 		   = Identified.identity; 
+		  public static final QName persistentIdentity = Identified.persistentIdentity;
+		  public static final QName version 	       = Identified.version;
+		  public static final QName timeStamp 	       = Identified.timeStamp;
 		
 	  }
 	  
@@ -200,13 +199,13 @@ public class Sbol2Terms
 		  public static final QName hasInteractions 			= sbol2.withLocalPart("interaction");
 		  public static final QName hasModels 					= sbol2.withLocalPart("model");
 		  public static final QName hasfunctionalInstantiations = sbol2.withLocalPart("functionalInstantiation");
-		  public static final QName displayId 		   			= sbol2.withLocalPart("displayId"); //documented
-		  public static final QName name 			   			= sbol2.withLocalPart("name");
-		  public static final QName description 	   			= sbol2.withLocalPart("description");
-		  public static final QName identity 					= sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity 			= sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 	   				= sbol2.withLocalPart("version");
-		  public static final QName timeStamp 	   				= sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 		   			= Documented.displayId;  
+		  public static final QName name 			   			= Documented.name;
+		  public static final QName description 	   			= Documented.description;
+		  public static final QName identity 					= Identified.identity; 
+		  public static final QName persistentIdentity 			= Identified.persistentIdentity;
+		  public static final QName version 	   				= Identified.version;
+		  public static final QName timeStamp 	   				= Identified.timeStamp;
 		  
 	  }
 	  
@@ -218,13 +217,13 @@ public class Sbol2Terms
 		  public static final QName ModuleInstantiation 	= sbol2.withLocalPart("ModuleInstantiation");
 		  public static final QName hasReferences			= sbol2.withLocalPart("references");
 		  public static final QName hasInstantiatedModule	= sbol2.withLocalPart("instantiatedModule");
-		  public static final QName displayId 		   		= sbol2.withLocalPart("displayId"); //documented
-		  public static final QName name 			   		= sbol2.withLocalPart("name");
-		  public static final QName description 	   		= sbol2.withLocalPart("description"); 
-		  public static final QName identity 		   		= sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity 		= sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 		   		= sbol2.withLocalPart("version");
-		  public static final QName timeStamp 		   		= sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 		   		= Documented.displayId;  
+		  public static final QName name 			   		= Documented.name;
+		  public static final QName description 	   		= Documented.description; 
+		  public static final QName identity 		   		= Identified.identity; 
+		  public static final QName persistentIdentity 		= Identified.persistentIdentity;
+		  public static final QName version 		   		= Identified.version;
+		  public static final QName timeStamp 		   		= Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -233,10 +232,10 @@ public class Sbol2Terms
 	   */
 	  public static final class Moeity {
 		  public static final QName Moeity 			   = sbol2.withLocalPart("Moeity");
-		  public static final QName identity   	   	   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity"); 
-		  public static final QName version   	  	   = sbol2.withLocalPart("version"); 
-		  public static final QName timeStamp   	   = sbol2.withLocalPart("timeStamp"); 
+		  public static final QName identity   	   	   = Identified.identity; 
+		  public static final QName persistentIdentity = Identified.persistentIdentity; 
+		  public static final QName version   	  	   = Identified.version; 
+		  public static final QName timeStamp   	   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -246,10 +245,10 @@ public class Sbol2Terms
 	  public static final class MultiRange {
 		  public static final QName MultiRange 		   = sbol2.withLocalPart("MultiRange");
 		  public static final QName hasRanges 		   = sbol2.withLocalPart("ranges");
-		  public static final QName identity   	   	   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity"); 
-		  public static final QName version   	  	   = sbol2.withLocalPart("version"); 
-		  public static final QName timeStamp   	   = sbol2.withLocalPart("timeStamp"); 
+		  public static final QName identity   	   	   = Identified.identity; 
+		  public static final QName persistentIdentity = Identified.persistentIdentity; 
+		  public static final QName version   	  	   = Identified.version; 
+		  public static final QName timeStamp   	   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -261,10 +260,10 @@ public class Sbol2Terms
 		  public static final QName orientation 	   = sbol2.withLocalPart("orientation");
 		  public static final QName at				   = sbol2.withLocalPart("at");
 		  public static final QName Integer 		   = sbol2.withLocalPart("Integer");
-		  public static final QName identity   	   	   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity"); 
-		  public static final QName version   	  	   = sbol2.withLocalPart("version"); 
-		  public static final QName timeStamp   	   = sbol2.withLocalPart("timeStamp"); 
+		  public static final QName identity   	   	   = Identified.identity; 
+		  public static final QName persistentIdentity = Identified.persistentIdentity; 
+		  public static final QName version   	  	   = Identified.version; 
+		  public static final QName timeStamp   	   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -276,10 +275,10 @@ public class Sbol2Terms
 		  public static final QName orientation   	   = sbol2.withLocalPart("orientation");
 		  public static final QName start 			   = sbol2.withLocalPart("start");
 		  public static final QName end   			   = sbol2.withLocalPart("end");
-		  public static final QName identity   	   	   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity"); 
-		  public static final QName version   	  	   = sbol2.withLocalPart("version"); 
-		  public static final QName timeStamp   	   = sbol2.withLocalPart("timeStamp"); 
+		  public static final QName identity   	   	   = Identified.identity; 
+		  public static final QName persistentIdentity = Identified.persistentIdentity; 
+		  public static final QName version   	  	   = Identified.version; 
+		  public static final QName timeStamp   	   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -290,10 +289,10 @@ public class Sbol2Terms
 		  public static final QName Participation  	   = sbol2.withLocalPart("Participation");
 		  public static final QName role 		   	   = sbol2.withLocalPart("role");
 		  public static final QName hasParticipant 	   = sbol2.withLocalPart("participant");
-		  public static final QName identity   	   	   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity"); 
-		  public static final QName version   	  	   = sbol2.withLocalPart("version"); 
-		  public static final QName timeStamp   	   = sbol2.withLocalPart("timeStamp"); 
+		  public static final QName identity   	   	   = Identified.identity; 
+		  public static final QName persistentIdentity = Identified.persistentIdentity; 
+		  public static final QName version   	  	   = Identified.version; 
+		  public static final QName timeStamp   	   = Identified.timeStamp;
 		  
 	  }
 	  
@@ -305,10 +304,10 @@ public class Sbol2Terms
 		  public static final QName Range 			   = sbol2.withLocalPart("Range");
 		  public static final QName start 			   = sbol2.withLocalPart("start");
 		  public static final QName end   			   = sbol2.withLocalPart("end");
-		  public static final QName identity   	   	   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity"); 
-		  public static final QName version   	  	   = sbol2.withLocalPart("version"); 
-		  public static final QName timeStamp   	   = sbol2.withLocalPart("timeStamp"); 
+		  public static final QName identity   	   	   = Identified.identity; 
+		  public static final QName persistentIdentity = Identified.persistentIdentity; 
+		  public static final QName version   	  	   = Identified.version; 
+		  public static final QName timeStamp   	   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -320,10 +319,10 @@ public class Sbol2Terms
 		  public static final QName refinement 		   = sbol2.withLocalPart("refinement");
 		  public static final QName hasRemote 		   = sbol2.withLocalPart("remote"); 
 		  public static final QName hasLocal 		   = sbol2.withLocalPart("local");
-		  public static final QName identity   	   	   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity"); 
-		  public static final QName version   	  	   = sbol2.withLocalPart("version"); 
-		  public static final QName timeStamp   	   = sbol2.withLocalPart("timeStamp"); 
+		  public static final QName identity   	   	   = Identified.identity; 
+		  public static final QName persistentIdentity = Identified.persistentIdentity; 
+		  public static final QName version   	  	   = Identified.version; 
+		  public static final QName timeStamp   	   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -334,13 +333,13 @@ public class Sbol2Terms
 		  public static final QName Structure 		   = sbol2.withLocalPart("Structure"); 
 		  public static final QName elements  		   = sbol2.withLocalPart("elements"); 
 		  public static final QName encoding  		   = sbol2.withLocalPart("encoding"); 
-		  public static final QName displayId 		   = sbol2.withLocalPart("displayId"); //Documented
-		  public static final QName name 			   = sbol2.withLocalPart("name");
-		  public static final QName description 	   = sbol2.withLocalPart("description");
-		  public static final QName identity 		   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 	   	   = sbol2.withLocalPart("version");
-		  public static final QName timeStamp 	   	   = sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 		   = Documented.displayId;  
+		  public static final QName name 			   = Documented.name;
+		  public static final QName description 	   = Documented.description;
+		  public static final QName identity 		   = Identified.identity;
+		  public static final QName persistentIdentity = Identified.persistentIdentity;
+		  public static final QName version 	   	   = Identified.version;
+		  public static final QName timeStamp 	   	   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -351,13 +350,13 @@ public class Sbol2Terms
 		  public static final QName StructuralAnnotation 	   = sbol2.withLocalPart("StructuralAnnotation");
 		  public static final QName hasStructuralInstantiation = sbol2.withLocalPart("structuralInstantiation"); 
 		  public static final QName hasLocation 			   = sbol2.withLocalPart("location"); 
-		  public static final QName displayId 		   		   = sbol2.withLocalPart("displayId"); //Documented
-		  public static final QName name 			   		   = sbol2.withLocalPart("name");
-		  public static final QName description 	   		   = sbol2.withLocalPart("description");
-		  public static final QName identity 		   		   = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity 		   = sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 		   		   = sbol2.withLocalPart("version");
-		  public static final QName timeStamp 		   		   = sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 		   		   = Documented.displayId;  
+		  public static final QName name 			   		   = Documented.name;
+		  public static final QName description 	   		   = Documented.description;
+		  public static final QName identity 		   		   = Identified.identity; 
+		  public static final QName persistentIdentity 		   = Identified.persistentIdentity;
+		  public static final QName version 		   		   = Identified.version;
+		  public static final QName timeStamp 		   		   = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -369,10 +368,10 @@ public class Sbol2Terms
 		  public static final QName restriction 		 = sbol2.withLocalPart("restriction"); 
 		  public static final QName hasSubject 			 = sbol2.withLocalPart("subject"); 
 		  public static final QName hasObject 			 = sbol2.withLocalPart("object"); 
-		  public static final QName identity   	   	     = sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity   = sbol2.withLocalPart("persistentIdentity"); 
-		  public static final QName version   	  	     = sbol2.withLocalPart("version"); 
-		  public static final QName timeStamp   	     = sbol2.withLocalPart("timeStamp"); 
+		  public static final QName identity   	   	     = Identified.identity; 
+		  public static final QName persistentIdentity   = Identified.persistentIdentity; 
+		  public static final QName version   	  	     = Identified.version; 
+		  public static final QName timeStamp   	     = Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -382,13 +381,13 @@ public class Sbol2Terms
 	  public static final class StructuralInstantiation {
 		  public static final QName StructuralInstantiation = sbol2.withLocalPart("StructuralInstantiation"); 
 		  public static final QName access 					= sbol2.withLocalPart("access"); 
-		  public static final QName displayId 		   		= sbol2.withLocalPart("displayId");  //documented
-		  public static final QName name 			   		= sbol2.withLocalPart("name");
-		  public static final QName description 	   		= sbol2.withLocalPart("description");
-		  public static final QName identity 				= sbol2.withLocalPart("identity"); //Identified
-		  public static final QName persistentIdentity 		= sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 	   			= sbol2.withLocalPart("version");
-		  public static final QName timeStamp 	   			= sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 		   		= Documented.displayId;   
+		  public static final QName name 			   		= Documented.name;
+		  public static final QName description 	   		= Documented.description;
+		  public static final QName identity 		   		= Identified.identity; 
+		  public static final QName persistentIdentity 		= Identified.persistentIdentity;
+		  public static final QName version 	   			= Identified.version;
+		  public static final QName timeStamp 	   			= Identified.timeStamp;
 	  }
 	  
 	  /**
@@ -397,13 +396,13 @@ public class Sbol2Terms
 	   */
 	  public static final class TopLevel {
 		  public static final QName TopLevel 		   = sbol2.withLocalPart("TopLevel"); 
-		  public static final QName displayId 		   = sbol2.withLocalPart("displayId"); //Documented
-		  public static final QName name 			   = sbol2.withLocalPart("name");
-		  public static final QName description 	   = sbol2.withLocalPart("description");
-		  public static final QName identity 		   = sbol2.withLocalPart("identity");  //Identified
-		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity");
-		  public static final QName version 	   	   = sbol2.withLocalPart("version");
-		  public static final QName timeStamp 	   	   = sbol2.withLocalPart("timeStamp");
+		  public static final QName displayId 		   = Documented.displayId; 
+		  public static final QName name 			   = Documented.name;
+		  public static final QName description 	   = Documented.description;
+		  public static final QName identity 		   = Identified.identity;  
+		  public static final QName persistentIdentity = Identified.persistentIdentity;
+		  public static final QName version 	   	   = Identified.version;
+		  public static final QName timeStamp 	   	   = Identified.timeStamp;
 	  }
 	  
 }

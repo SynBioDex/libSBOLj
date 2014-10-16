@@ -25,6 +25,7 @@ public class SBOLDocument {
 		componentList = new ArrayList<Component>();
 		modelList = new ArrayList<Model>();
 		moduleList = new ArrayList<Module>();
+		structureList = new ArrayList<Structure>();
 	}
 	
 	/**
