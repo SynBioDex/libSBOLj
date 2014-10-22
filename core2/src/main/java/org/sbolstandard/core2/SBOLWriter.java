@@ -74,16 +74,18 @@ public class SBOLWriter {
 		for(Collection c : collections)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			if(c.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, c.getDescription()));
-			if(c.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, c.getDisplayId()));
-			if(c.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, c.getName()));
+			if(c.getIdentity() != null)
+				list.add(NamedProperty(Sbol2Terms.Identified.identity, c.getIdentity()));
 			if(c.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, c.getPersistentIdentity()));
 			if(c.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.version, c.getVersion()));
+			if(c.getDisplayId() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.displayId, c.getDisplayId()));
+			if(c.getName() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.name, c.getName()));
+			if(c.getDescription() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.description, c.getDescription()));
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Collection.Collection, c.getIdentity(), NamedProperties(list)));
 		}
@@ -94,16 +96,18 @@ public class SBOLWriter {
 		for(Component c : components)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			if(c.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, c.getDescription()));
-			if(c.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, c.getDisplayId()));
-			if(c.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, c.getName()));
+			if(c.getIdentity() != null)
+				list.add(NamedProperty(Sbol2Terms.Identified.identity, c.getIdentity()));
 			if(c.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, c.getPersistentIdentity()));
 			if(c.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.version, c.getVersion()));
+			if(c.getDisplayId() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.displayId, c.getDisplayId()));
+			if(c.getName() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.name, c.getName()));
+			if(c.getDescription() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.description, c.getDescription()));
 			if(c.getRoles() != null)
 				list.add(NamedProperty(Sbol2Terms.Component.roles, c.getRoles().toString())); //TODO: iterate through each roles and types
 			if(c.getType() != null)
@@ -129,16 +133,18 @@ public class SBOLWriter {
 		for(Model m : models)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			if(m.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, m.getDescription()));
-			if(m.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, m.getDisplayId()));
-			if(m.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, m.getName()));
+			if(m.getIdentity() != null)
+				list.add(NamedProperty(Sbol2Terms.Identified.identity, m.getIdentity()));
 			if(m.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, m.getPersistentIdentity()));
 			if(m.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.version, m.getVersion()));
+			if(m.getDisplayId() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.displayId, m.getDisplayId()));
+			if(m.getName() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.name, m.getName()));
+			if(m.getDescription() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.description, m.getDescription()));
 			if(m.getSource() != null)
 				list.add(NamedProperty(Sbol2Terms.Model.source, m.getSource()));
 			if(m.getLanguage() != null)
@@ -155,17 +161,19 @@ public class SBOLWriter {
 		for (Module m : module)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			
-			if(m.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, m.getDescription()));
-			if(m.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, m.getDisplayId()));
-			if(m.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, m.getName()));
+			if(m.getIdentity() != null)
+				list.add(NamedProperty(Sbol2Terms.Identified.identity, m.getIdentity()));
 			if(m.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, m.getPersistentIdentity()));
 			if(m.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.version, m.getVersion()));
+			if(m.getDisplayId() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.displayId, m.getDisplayId()));
+			if(m.getName() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.name, m.getName()));
+			if(m.getDescription() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.description, m.getDescription()));
+
 			if(m.getRoles() != null)
 			{
 				for (URI roles : m.getRoles())
@@ -188,16 +196,18 @@ public class SBOLWriter {
 		for(Structure s : structures)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			if(s.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, s.getDescription()));
-			if(s.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, s.getDisplayId()));
-			if(s.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, s.getName()));
+			if(s.getIdentity() != null)
+				list.add(NamedProperty(Sbol2Terms.Identified.identity, s.getIdentity()));
 			if(s.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, s.getPersistentIdentity()));
 			if(s.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.version, s.getVersion()));
+			if(s.getDisplayId() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.displayId, s.getDisplayId()));
+			if(s.getName() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.name, s.getName()));
+			if(s.getDescription() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.description, s.getDescription()));
 			if(s.getElements() != null)
 				list.add(NamedProperty(Sbol2Terms.Structure.elements, s.getElements()));
 			if(s.getEncoding() != null)
@@ -220,16 +230,19 @@ public class SBOLWriter {
 		for(FunctionalInstantiation f : functionalInstantiation)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			if(f.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, f.getDescription()));
-			if(f.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, f.getDisplayId()));
-			if(f.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, f.getName()));
+			if(f.getIdentity() != null)
+				list.add(NamedProperty(Sbol2Terms.Identified.identity, f.getIdentity()));
 			if(f.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, f.getPersistentIdentity()));
 			if(f.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.version, f.getVersion()));
+			if(f.getDisplayId() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.displayId, f.getDisplayId()));
+			if(f.getName() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.name, f.getName()));
+			if(f.getDescription() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.description, f.getDescription()));
+			
 			if(f.getTimeStamp() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.timeStamp, f.getTimeStamp().toString()));
 //			if(f.getInstantiatedComponent() != null) 
@@ -256,16 +269,20 @@ public class SBOLWriter {
 		for(Interaction i : interactions)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			if(i.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, i.getDescription()));
-			if(i.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, i.getDisplayId()));
-			if(i.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, i.getName()));
+			if(i.getIdentity() != null)
+				list.add(NamedProperty(Sbol2Terms.Identified.identity, i.getIdentity()));
 			if(i.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, i.getPersistentIdentity()));
 			if(i.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.version, i.getVersion()));
+			
+			if(i.getDisplayId() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.displayId, i.getDisplayId()));
+			if(i.getName() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.name, i.getName()));
+			if(i.getDescription() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.description, i.getDescription()));
+			
 			if (i.getParticipations() != null)
 				list.add(NamedProperty(Sbol2Terms.Interaction.type, i.getParticipations().toString()));
 			//TODO: is getParticipation() == getType() because Interaction does not have a getType(). 
@@ -296,16 +313,20 @@ public class SBOLWriter {
 		for(ModuleInstantiation m : moduleInstantiation)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			if(m.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, m.getDescription()));
-			if(m.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, m.getDisplayId()));
-			if(m.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, m.getName()));
+			if(m.getIdentity() != null)
+				list.add(NamedProperty(Sbol2Terms.Identified.identity, m.getIdentity()));
 			if(m.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, m.getPersistentIdentity()));
 			if(m.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.version, m.getVersion()));
+
+			if(m.getDisplayId() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.displayId, m.getDisplayId()));
+			if(m.getName() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.name, m.getName()));
+			if(m.getDescription() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.description, m.getDescription()));
+			
 //			if(m.getInstantiatedModule() != null) //TODO
 				
 			properties.add(NamedProperty(Sbol2Terms.Module.hasModuleInstantiations, 
@@ -328,16 +349,19 @@ public class SBOLWriter {
 		for(StructuralAnnotation s : structuralAnnotations)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			if(s.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, s.getDescription()));
-			if(s.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, s.getDisplayId()));
-			if(s.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, s.getName()));
+			if(s.getIdentity() != null)
+				list.add(NamedProperty(Sbol2Terms.Identified.identity, s.getIdentity()));
 			if(s.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, s.getPersistentIdentity()));
 			if(s.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.version, s.getVersion()));
+			if(s.getDisplayId() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.displayId, s.getDisplayId()));
+			if(s.getName() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.name, s.getName()));
+			if(s.getDescription() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.description, s.getDescription()));
+			
 
 			properties.add(NamedProperty(Sbol2Terms.Component.hasStructuralAnnotations, 
 					NestedDocument( Sbol2Terms.StructuralAnnotation.StructuralAnnotation, 
@@ -356,7 +380,9 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.Documented.identity, s.getIdentity()));
 			if(s.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, s.getPersistentIdentity()));
-
+			if(s.getVersion() != null)
+				list.add(NamedProperty(Sbol2Terms.Identified.identity, s.getVersion()));
+			
 			properties.add(NamedProperty(Sbol2Terms.Component.hasStructuralConstraints, 
 					NestedDocument( Sbol2Terms.StructuralConstraint.StructuralConstraint, 
 					s.getIdentity(), NamedProperties(list))));
@@ -370,16 +396,19 @@ public class SBOLWriter {
 		for(StructuralInstantiation s : structuralInstantiations)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			if(s.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, s.getDescription()));
-			if(s.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, s.getDisplayId()));
-			if(s.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, s.getName()));
+			if(s.getIdentity() != null)
+				list.add(NamedProperty(Sbol2Terms.Identified.identity, s.getIdentity()));
 			if(s.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, s.getPersistentIdentity()));
 			if(s.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.version, s.getVersion()));
+			if(s.getDisplayId() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.displayId, s.getDisplayId()));
+			if(s.getName() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.name, s.getName()));
+			if(s.getDescription() != null)
+				list.add(NamedProperty(Sbol2Terms.Documented.description, s.getDescription()));
+		
 
 			properties.add(NamedProperty(Sbol2Terms.Component.hasStructuralInstantiations, 
 					NestedDocument( Sbol2Terms.StructuralInstantiation.StructuralInstantiation, 
