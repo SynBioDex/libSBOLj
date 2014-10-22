@@ -34,6 +34,7 @@ public class SBOLWriter {
 	 * TODO:
 	 * make contract headers for PUBLIC methods only
 	 * make various types of write() with diff. params.
+	 * 
 	 */
 	
 	/**
@@ -42,13 +43,15 @@ public class SBOLWriter {
 	 * @param out
 	 */
 	public static void write(SBOLDocument doc, OutputStream out) {
-		
+	
 		List<TopLevelDocument<QName>> topLevelDoc = new ArrayList<TopLevelDocument<QName>>();
-		formatCollections(doc.getCollectionList(), topLevelDoc);//soon to be getCollections
-		formatModules(doc.getModuleList(), topLevelDoc); 		//soon to be getModules
-		formatModels(doc.getModelList(), topLevelDoc); 			//soon to be getModels
-		formatComponents(doc.getComponentList(), topLevelDoc);  //soon to be getComponents
-		formatStructures(doc.getStructureList(), topLevelDoc);  //soon to be getStructures
+		formatCollections(doc.getCollections(), topLevelDoc);
+		formatModules(doc.getModules(), topLevelDoc); 		
+		formatModels(doc.getModels(), topLevelDoc); 			
+		formatComponents(doc.getComponents(), topLevelDoc);  
+		formatStructures(doc.getStructures(), topLevelDoc); 
+
+		//TODO: add formatTopLevels();
 		
 		try {
 			write(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
@@ -205,6 +208,7 @@ public class SBOLWriter {
 		
 	}
 	
+	
 	/**
 	 * getFunctionalInstantiations for Module
 	 * @param functionalInstantiation
@@ -273,11 +277,11 @@ public class SBOLWriter {
 		}
 	}
 	
-	private static void getModels(List<Model> models, List<NamedProperty<QName>> list)
+	private static void getModels(List<URI> models, List<NamedProperty<QName>> list)
 	{
-		for(Model m : models)
+		for(URI m : models)
 		{
-			list.add(NamedProperty(Sbol2Terms.Module.hasModels, m.getIdentity()));
+			list.add(NamedProperty(Sbol2Terms.Module.hasModels, m));
 		}
 	}
 	
@@ -302,18 +306,19 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, m.getPersistentIdentity()));
 			if(m.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.version, m.getVersion()));
-			
+//			if(m.getInstantiatedModule() != null) //TODO
+				
 			properties.add(NamedProperty(Sbol2Terms.Module.hasModuleInstantiations, 
 					NestedDocument( Sbol2Terms.ModuleInstantiation.ModuleInstantiation, 
 					m.getIdentity(), NamedProperties(list))));
 		}
 	}
 	
-	private static void getStructure(Structure structure, List<NamedProperty<QName>> list)
+	private static void getStructure(URI structure, List<NamedProperty<QName>> list)
 	{
-//		for(Structure s : structures)
+//		for(URI s : structures)
 //		{
-			list.add(NamedProperty(Sbol2Terms.Component.hasStructure, structure.getIdentity()));
+			list.add(NamedProperty(Sbol2Terms.Component.hasStructure, structure));
 //		}
 	}
 	

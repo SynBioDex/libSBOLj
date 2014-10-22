@@ -23,8 +23,8 @@ public class mainTester {
 		createModuleData(SBOL2Doc_test,
 				getData("module_identity","module_persistentIdentity","module_displayId", "module_name", "module_description", "0.1"), 
 				getListOfURI("module_roles", "module_roles2"),
-				getData("ModuleInstantiation_identity", "persistentIdentity_moduleInstantiation", "LacI", "LacI_moduleInstantiation_Name", "moduleInstantiation_description", "0.1"),
-				getData("LacI_identity", "persistentIdentity_functionalInstantiation","LacI","LacI_functionInstantiation_Name", "functionalInstantiation_description", "0.1", "component_Identity"),
+				getData("ModuleInstantiation_identity", "persistentIdentity_moduleInstantiation", "moduleInstantiation_displayId", "moduleInstantiation_Name", "moduleInstantiation_description", "0.1", "instantiatedModule"),
+				getData("identity_functionalInstantiation", "persistentIdentity_functionalInstantiation","displayId_functionalInstantiation","LacI_functionInstantiation_Name", "functionalInstantiation_description", "0.1", "component_Identity", "instantiatedComponent"),
 				getData("LacI_Repression_interactionIdentity", "persistentIdentity_Interaction","LacI_Repression","LacI_Repression_Interaction_Name","Interaction_description", "0.1"),
 				getData("LacI_identity","persistentIdentity_Model", "LacI_Inverter", "LacI_Inverter_Model_Name","Model_description", "0.1", "LacI_Inverter.xml", "SBML", "ODE"),
 				getListOfURI("functionalInstantiation_type1"),
@@ -39,7 +39,7 @@ public class mainTester {
 		
 		createComponentData(SBOL2Doc_test, 
 				getData("component_identity","component_persistentIdentity","component_displayId","component_name", "component_description", "0.1"),
-				getData("structuralInstantiation_displayId", "structuralInstantiation_name", "structuralInstantiation_description","structuralInstantiation_identity", "structuralInstantiation_persistentIdentity", "0.1", "structuralInstantiation_componentIdentity"),
+				getData("structuralInstantiation_displayId", "structuralInstantiation_name", "structuralInstantiation_description","structuralInstantiation_identity", "structuralInstantiation_persistentIdentity", "0.1", "structuralInstantiation_componentIdentity", "instantiatedComponent"),
 				getData("structuralAnnotation_displayId", "structuralAnnotation_name", "structuralAnnotation_description", "structuralAnnotation_identity", "structuralAnnotation_persistentIdentity", "0.1"), 
 				getData("structuralConstraint_identity", "structuralConstraint_persistentIdentity", "0.1", "structuralConstraint_restriction", "structuralConstraint_componentIdentity"), 
 				getData("structure_identity", "structure_elements", "structure_encoding"), 
@@ -124,8 +124,8 @@ public class mainTester {
 				structuralInstant_direction));
 		
 		c.setStructuralAnnotations(generateStructuralAnnotation(structuralAnnotations_data));
-		c.setStructuralConstraints(generateStructuralConstraint(structuralConstraints_data, structuralConstraint_access, type, roles, structuralConstraint_direction));
-		c.setStructure(generateStructure(structure_data));
+//		c.setStructuralConstraints(generateStructuralConstraint(structuralConstraints_data, structuralConstraint_access, type, roles, structuralConstraint_direction));
+		//c.setStructure(generateStructure(structure_data));
 	}
 
 	private static void createModuleData(SBOLDocument SBOL2Doc_test, 
@@ -156,8 +156,9 @@ public class mainTester {
 		
 		m.setFunctionalInstantiations(
 				generateFunctionalInstantiation(roles, fi_type, functionalInstantiation_data, access, direction));
-		m.setModels(
-				generateModel(SBOL2Doc_test, roles, model_data));
+		
+//		m.setModels(
+//				generateModel(SBOL2Doc_test, roles, model_data));
 		m.setInteractions(
 				generateInteraction(interactionData, interaction_type));
 		m.setModuleInstantiations(
@@ -197,7 +198,11 @@ public class mainTester {
 		String description 	   = data.get(4); 
 		String version 		   = data.get(5);
 		
-		Interaction interactions = new Interaction(identity, type);
+		Participation p = new Participation(identity, type, persistentIdentity);
+		List<Participation> part = new ArrayList<Participation>(); 
+		part.add(p);
+		Interaction interactions = new Interaction(identity, type, part );
+//				new Interaction(identity, type);
 		interactions.setDisplayId(displayId);
 		interactions.setName(name);
 		interactions.setDescription(description);
@@ -270,11 +275,13 @@ public class mainTester {
 		String name 		   = data.get(3); 
 		String description 	   = data.get(4); 
 		String version 		   = data.get(5); 
+		URI instantiatedModule = getURI(data.get(6));
 		
 		//TODO: make sure ModuleInstantiation should keep track of identities from the Module that it is referencing.
-		Module instantiatedModule = new Module(identity, roles); 
+//		Module instantiatedModule = new Module(identity, roles); 
 		
-		ModuleInstantiation modInstantiation = new ModuleInstantiation(identity, instantiatedModule); //TODO: instantiatedModule should be passing in a URI
+		ModuleInstantiation modInstantiation = new ModuleInstantiation(identity, instantiatedModule);
+//				new ModuleInstantiation(identity, instantiatedModule); //TODO: instantiatedModule should be passing in a URI
 		modInstantiation.setDisplayId(displayId);
 		modInstantiation.setName(name);
 		modInstantiation.setDescription(description);
@@ -312,10 +319,12 @@ public class mainTester {
 		String description 	   = data.get(4); 
 		String version 		   = data.get(5); 
 		URI componentIdentity  = getURI(data.get(6)); 
+		URI instantiatedComponent = getURI(data.get(7));
 		
 		//TODO: Why does creating an object of FunctionalInstantiation requires a component identity? 
 		//getInstantiatedComponent
-		FunctionalInstantiation f = new FunctionalInstantiation(identity, componentIdentity, access, type, roles, direction); 
+		FunctionalInstantiation f = new FunctionalInstantiation(persistentIdentity, access, instantiatedComponent, direction);
+		//new FunctionalInstantiation(identity, componentIdentity, access, type, roles, direction); 
 		f.setDisplayId(displayId);
 		f.setName(name);
 		f.setDescription(description);
@@ -338,11 +347,11 @@ public class mainTester {
 		URI persistentIdentity = getURI(structuralInstantiations_data.get(4));
 		String version 		   = structuralInstantiations_data.get(5);
 		URI componentIdentity  = getURI(structuralInstantiations_data.get(6));
-		
+		URI instantiatedComponent = getURI(structuralInstantiations_data.get(7));
 		//TODO: Why does creating an object of StructuralInstantiation requires a component identity? 
 		//getInstantiatedComponent
-		StructuralInstantiation s = 
-				new StructuralInstantiation(identity, componentIdentity, access, type, roles, direction);
+		StructuralInstantiation s = new StructuralInstantiation(persistentIdentity, access, instantiatedComponent);
+				//new StructuralInstantiation(identity, componentIdentity, access, type, roles, direction);
 		s.setDisplayId(displayId);
 		s.setName(name);
 		s.setDescription(description);
@@ -365,7 +374,8 @@ public class mainTester {
 		Location location 	   = new Cut(persistentIdentity, 0); 
 		//TODO What type of Location is this referring to? Unable to create an object of Location
 		
-		StructuralAnnotation s = new StructuralAnnotation(identity, description, location);
+		StructuralAnnotation s = new StructuralAnnotation(persistentIdentity, location);
+				//new StructuralAnnotation(identity, description, location);
 		s.setDisplayId(displayId);
 		s.setName(name);
 		s.setDescription(description);
@@ -377,27 +387,27 @@ public class mainTester {
 		return structuralInstantiation; 
 		
 	}
-	private static List<StructuralConstraint> generateStructuralConstraint(List<String> structuralConstraints_data, 
-			AccessType access, List<URI> type, List<URI> roles, DirectionType direction)
-	{
-		URI identity 		   = getURI(structuralConstraints_data.get(0));
-		URI persistentIdentity = getURI(structuralConstraints_data.get(1));
-		String version 		   = structuralConstraints_data.get(2);
-		URI restriction 	   = getURI(structuralConstraints_data.get(3));
-		URI componentIdentity  = getURI(structuralConstraints_data.get(4)); 
+//	private static List<StructuralConstraint> generateStructuralConstraint(List<String> structuralConstraints_data, 
+//			AccessType access, List<URI> type, List<URI> roles, DirectionType direction)
+//	{
+//		URI identity 		   = getURI(structuralConstraints_data.get(0));
+//		URI persistentIdentity = getURI(structuralConstraints_data.get(1));
+//		String version 		   = structuralConstraints_data.get(2);
+//		URI restriction 	   = getURI(structuralConstraints_data.get(3));
+//		URI componentIdentity  = getURI(structuralConstraints_data.get(4)); 
 		
 		//TODO: What is the point of creating 2 objects of StructuralInstantiation?
-		StructuralInstantiation subject = new StructuralInstantiation(identity, componentIdentity, access, type, roles, direction);
-		StructuralInstantiation object = new StructuralInstantiation(identity, componentIdentity, access, type, roles, direction);
+//		StructuralInstantiation subject = new StructuralInstantiation(identity, componentIdentity, access, type, roles, direction);
+//		StructuralInstantiation object = new StructuralInstantiation(identity, componentIdentity, access, type, roles, direction);
 		
-		StructuralConstraint s = new StructuralConstraint(identity, restriction, subject, object);
-		s.setPersistentIdentity(persistentIdentity);
-		s.setVersion(version);
-		
-		List<StructuralConstraint> structuralConstraint = new ArrayList<StructuralConstraint>();
-		structuralConstraint.add(s);
-		return structuralConstraint; 
-	}
+//		StructuralConstraint s = new StructuralConstraint(identity, restriction, subject, object);
+//		s.setPersistentIdentity(persistentIdentity);
+//		s.setVersion(version);
+//		
+//		List<StructuralConstraint> structuralConstraint = new ArrayList<StructuralConstraint>();
+//		structuralConstraint.add(s);
+//		return structuralConstraint; 
+//	}
 	
 	private static Structure generateStructure(List<String> structure_data)
 	{
