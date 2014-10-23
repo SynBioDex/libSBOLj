@@ -1,14 +1,13 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import org.sbolstandard.core2.abstract_classes.Identified;
+import java.util.Set;
 
 /**
  * @author Zhen Zhang
+ * @author Nicholas Roehner
  * @version 2.0
  * @param <Identified>
  *
@@ -17,22 +16,23 @@ import org.sbolstandard.core2.abstract_classes.Identified;
 public class SBOLDocument {
 	
 	//private HashMap<URI, Identified> identityMap;
-	private List<TopLevel> topLevels;
-	private List<Collection> collections;
-	private List<Component> components;
-	private List<Model> models;
-	private List<Module> modules;
-	private List<Structure> structures;
+	private HashMap<URI, TopLevel> topLevels;
+	private HashMap<URI, Collection> collections;
+	private HashMap<URI, Component> components;
+	private HashMap<URI, Model> models;
+	private HashMap<URI, Module> modules;
+	private HashMap<URI, Structure> structures;
 
 	public SBOLDocument() {
 		//identityMap = new HashMap<URI, Identified>();
-		topLevels = new ArrayList<TopLevel>();
-		collections = new ArrayList<Collection>();
-		components = new ArrayList<Component>();
-		models = new ArrayList<Model>();
-		modules = new ArrayList<Module>();
-		structures = new ArrayList<Structure>();
+		topLevels = new HashMap<URI, TopLevel>();
+		collections = new HashMap<URI, Collection>();
+		components = new HashMap<URI, Component>();
+		models = new HashMap<URI, Model>();
+		modules = new HashMap<URI, Module>();
+		structures = new HashMap<URI, Structure>();
 	}
+	
 	
 	/**
 	 * Create a new {@link Module} instance.
@@ -40,66 +40,69 @@ public class SBOLDocument {
 	 * @param roles
 	 * @return
 	 */
-	public Module createModule(URI identity, List<URI> roles) {
+	public Module createModule(URI identity, Set<URI> roles) {
 		Module newModule = new Module(identity, roles);
 		addModule(newModule);		
 		return newModule;
 	}
 	
 	/**
-	 * Appends the specified Module to the end of the list of modules.
+	 * Appends the specified <code>module</code> to the end of the list of modules.
 	 * @param module
 	 */
 	public void addModule(Module module) {
 		// TODO: Recursively check the uniqueness of URIs of each Module and its field variables. 
-		
-//		// Check if moduleToAdd's URI exists already.		
-//		for (Module mod : modules) {
-//			if (mod.getIdentity().equals(moduleToAdd.getIdentity())) {
-//				System.err.println("Identical URI for module " + mod.getDisplayId() + " already exists in the module list.");
-//				break;
-//			}
-//		}
-		modules.add(module);
+		modules.put(module.getIdentity(), module);
 	}
-	
-//	/**
-//	 * Remove a module from the module list by matching its URI to those in the list. 
-//	 * @param moduleToRemove
-//	 */
-//	public void removeModule(Module moduleToRemove) {
-//		for (Module mod : modules) {
-//			if (mod.getIdentity().equals(moduleToRemove.getIdentity())) {
-//				modules.remove(mod);
-//			}
-//		}					
-//	}
 	
 	/**
-	 * Remove the module matching the given identity from the list of modules. 
-	 * @return true if a matching module is removed from the module list.
-	 * @param identity
+	 * Removes the instance matching the specified URI from the list of modules if present.
+	 * @param structuralConstraintURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public boolean removeModule(URI identity) {
-		for (Module mod : modules) {
-			if (mod.getIdentity().equals(identity)) {
-				modules.remove(mod);
-				return true;
-			}
-		}
-		return false;
+	public Module removeModule(URI moduleURI) {
+		return modules.remove(moduleURI);
+	}
+		
+	/**
+	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * @param moduleURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Module getModule(URI moduleURI) {
+		return modules.get(moduleURI);
 	}
 	
-	public Module getModule(URI id) {
-		for (Module mod : modules) {
-			if (mod.getIdentity().equals(id)) {
-				return mod;
-			}			
+	/**
+	 * Returns the list of <code>Module</code> instances owned by this instance.
+	 * @return the list of <code>Module</code> instances owned by this instance
+	 */
+	public List<Module> getModules() {
+		return (List<Module>) modules.values();
+	}
+
+	/**
+	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 */
+	public void clearModules() {
+		Object[] keySetArray = modules.keySet().toArray();
+		for (Object key : keySetArray) {
+			removeModule((URI) key);
 		}
-		return null;
 	}
 	
-		/**
+	/**
+	 * Clears the existing list <code>modules</code>, then appends all of the elements in the specified collection to the end of this list.
+	 * @param modules
+	 */
+	public void setModules(List<Module> modules) {		
+		clearModules();
+		for (Module module : modules) {
+			addModule(module);
+		}
+	}
+	
+	/**
 	 * Create a new {@link Collection} instance.
 	 * @param identity
 	 * @return
@@ -110,24 +113,60 @@ public class SBOLDocument {
 		return newCollection;
 	}
 	
+	/**
+	 * Appends the specified <code>collection</code> to the end of the list of collections.
+	 * @param collection
+	 */
 	public void addCollection(Collection collection) {
-			// TODO: Recursively check the uniqueness of URIs of each Module and its field variables.
-		collections.add(collection);
+		// TODO: Recursively check the uniqueness of URIs of each Collection and its field variables. 
+		collections.put(collection.getIdentity(), collection);
 	}
 	
 	/**
-	 * Remove the collection matching the given identity from the list of collections.
-	 * @param identity
-	 * @return true if a matching collection is removed from the collection list.
+	 * Removes the instance matching the specified URI from the list of collections if present.
+	 * @param structuralConstraintURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public boolean removeCollection(URI identity) {
-		for (Collection collection : collections) {
-			if (collection.getIdentity().equals(identity)) {
-				collections.remove(collection);
-				return true;
-			}
+	public Collection removeCollection(URI collectionURI) {
+		return collections.remove(collectionURI);
+	}
+		
+	/**
+	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * @param collectionURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Collection getCollection(URI collectionURI) {
+		return collections.get(collectionURI);
+	}
+	
+	/**
+	 * Returns the list of <code>Collection</code> instances owned by this instance.
+	 * @return the list of <code>Collection</code> instances owned by this instance
+	 */
+	public List<Collection> getCollections() {
+		return (List<Collection>) collections.values();
+	}
+
+	/**
+	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 */
+	public void clearCollections() {
+		Object[] keySetArray = collections.keySet().toArray();
+		for (Object key : keySetArray) {
+			removeCollection((URI) key);
 		}
-		return false;
+	}
+	
+	/**
+	 * Clears the existing list <code>collections</code>, then appends all of the elements in the specified collection to the end of this list.
+	 * @param collections
+	 */
+	public void setCollections(List<Collection> collections) {		
+		clearCollections();
+		for (Collection collection : collections) {
+			addCollection(collection);
+		}
 	}
 
 	/**
@@ -136,65 +175,136 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @return
 	 */
-	public Model createModel(URI identity, URI source, URI language, URI framework, List<URI> roles) {
+	public Model createModel(URI identity, URI source, URI language, URI framework, Set<URI> roles) {
 		Model newModel = new Model(identity, source, language, framework, roles);
 		addModel(newModel);
 		return newModel;
 	}
 	
+		/**
+	 * Appends the specified <code>model</code> to the end of the list of models.
+	 * @param model
+	 */
 	public void addModel(Model model) {
-	// TODO: Recursively check the uniqueness of URIs of each Module and its field variables.
-		models.add(model);
+		// TODO: Recursively check the uniqueness of URIs of each Model and its field variables. 
+		models.put(model.getIdentity(), model);
 	}
 	
 	/**
-	 * Remove the model matching the given identity from the list of models.
-	 * @param identity
-	 * @return true if a matching model is removed from the model list.
+	 * Removes the instance matching the specified URI from the list of models if present.
+	 * @param structuralConstraintURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public boolean removeModel(URI identity) {
-		for (Model model : models) {
-			if (model.getIdentity().equals(identity)) {
-				models.remove(model);
-				return true;
-			}
-		}
-		return false;
+	public Model removeModel(URI modelURI) {
+		return models.remove(modelURI);
+	}
+		
+	/**
+	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * @param modelURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Model getModel(URI modelURI) {
+		return models.get(modelURI);
 	}
 	
+	/**
+	 * Returns the list of <code>Model</code> instances owned by this instance.
+	 * @return the list of <code>Model</code> instances owned by this instance
+	 */
+	public List<Model> getModels() {
+		return (List<Model>) models.values();
+	}
 
+	/**
+	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 */
+	public void clearModels() {
+		Object[] keySetArray = models.keySet().toArray();
+		for (Object key : keySetArray) {
+			removeModel((URI) key);
+		}
+	}
+	
+	/**
+	 * Clears the existing list <code>models</code>, then appends all of the elements in the specified collection to the end of this list.
+	 * @param models
+	 */
+	public void setModels(List<Model> models) {		
+		clearModels();
+		for (Model model : models) {
+			addModel(model);
+		}
+	}
+	
 	/**
 	 * Create a new {@link Component} instance.
 	 * @param identity
 	 * @param displayId
 	 * @return
 	 */
-	public Component createComponent(URI identity, List<URI> type, List<URI> roles) {
+	public Component createComponent(URI identity, Set<URI> type, Set<URI> roles) {
 		Component newComponent = new Component(identity, type, roles);
 		addComponent(newComponent);
 		return newComponent;
 	}
 	
+	/**
+	 * Appends the specified <code>component</code> to the end of the list of components.
+	 * @param component
+	 */
 	public void addComponent(Component component) {
-		// TODO: Recursively check the uniqueness of URIs of each Module and its field variables.
-		components.add(component);
+		// TODO: Recursively check the uniqueness of URIs of each Component and its field variables. 
+		components.put(component.getIdentity(), component);
 	}
 	
 	/**
-	 * Remove the component matching the given identity from the list of components.
-	 * @param identity
-	 * @return true if a matching component is removed from the component list.
+	 * Removes the instance matching the specified URI from the list of components if present.
+	 * @param structuralConstraintURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public boolean removeComponent(URI identity) {
-		for (Component component : components) {
-			if (component.getIdentity().equals(identity)) {
-				components.remove(component);
-				return true;
-			}
-		}
-		return false;
+	public Component removeComponent(URI componentURI) {
+		return components.remove(componentURI);
+	}
+		
+	/**
+	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * @param componentURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Component getComponent(URI componentURI) {
+		return components.get(componentURI);
+	}
+	
+	/**
+	 * Returns the list of <code>Component</code> instances owned by this instance.
+	 * @return the list of <code>Component</code> instances owned by this instance
+	 */
+	public List<Component> getComponents() {
+		return (List<Component>) components.values();
 	}
 
+	/**
+	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 */
+	public void clearComponents() {
+		Object[] keySetArray = components.keySet().toArray();
+		for (Object key : keySetArray) {
+			removeComponent((URI) key);
+		}
+	}
+	
+	/**
+	 * Clears the existing list <code>components</code>, then appends all of the elements in the specified collection to the end of this list.
+	 * @param components
+	 */
+	public void setComponents(List<Component> components) {		
+		clearComponents();
+		for (Component component : components) {
+			addComponent(component);
+		}
+	}
+	
 	/**
 	 * Create a new {@link Structure} instance.
 	 * @param identity
@@ -207,24 +317,60 @@ public class SBOLDocument {
 		return newStructure;
 	}
 	
+	/**
+	 * Appends the specified <code>structure</code> to the end of the list of structures.
+	 * @param structure
+	 */
 	public void addStructure(Structure structure) {
-		// TODO: Recursively check the uniqueness of URIs of each Module and its field variables.
-		structures.add(structure);
+		// TODO: Recursively check the uniqueness of URIs of each Structure and its field variables. 
+		structures.put(structure.getIdentity(), structure);
 	}
 	
 	/**
-	 * Remove the structure matching the given identity from the list of structures.
-	 * @param identity
-	 * @return true if a matching structure is removed from the structure list.
+	 * Removes the instance matching the specified URI from the list of structures if present.
+	 * @param structuralConstraintURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public boolean removeStructure(URI identity) {
-		for (Structure structure : structures) {
-			if (structure.getIdentity().equals(identity)) {
-				structures.remove(structure);
-				return true;
-			}
+	public Structure removeStructure(URI structureURI) {
+		return structures.remove(structureURI);
+	}
+		
+	/**
+	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * @param structureURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Structure getStructure(URI structureURI) {
+		return structures.get(structureURI);
+	}
+	
+	/**
+	 * Returns the list of <code>Structure</code> instances owned by this instance.
+	 * @return the list of <code>Structure</code> instances owned by this instance
+	 */
+	public List<Structure> getStructures() {
+		return (List<Structure>) structures.values();
+	}
+
+	/**
+	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 */
+	public void clearStructures() {
+		Object[] keySetArray = structures.keySet().toArray();
+		for (Object key : keySetArray) {
+			removeStructure((URI) key);
 		}
-		return false;
+	}
+	
+	/**
+	 * Clears the existing list <code>structures</code>, then appends all of the elements in the specified collection to the end of this list.
+	 * @param structures
+	 */
+	public void setStructures(List<Structure> structures) {		
+		clearStructures();
+		for (Structure structure : structures) {
+			addStructure(structure);
+		}
 	}
 
 	/**
@@ -239,98 +385,60 @@ public class SBOLDocument {
 		return newTopLevel;
 	}
 
+	/**
+	 * Appends the specified <code>topLevel</code> to the end of the list of topLevels.
+	 * @param topLevel
+	 */
 	public void addTopLevel(TopLevel topLevel) {
-		// TODO: Recursively check the uniqueness of URIs of each Module and its field variables.
-		topLevels.add(topLevel);
+		// TODO: Recursively check the uniqueness of URIs of each TopLevel and its field variables. 
+		topLevels.put(topLevel.getIdentity(), topLevel);
 	}
 	
 	/**
-	 * Remove the top-level instance matching the given identity from the topLevel list.
-	 * @param identity
-	 * @return true if a matching top-level instance is removed from the topLevel list.
+	 * Removes the instance matching the specified URI from the list of topLevels if present.
+	 * @param structuralConstraintURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public boolean removeTopLevel(URI identity) {
-		for (TopLevel topLevel : topLevels) {
-			if (topLevel.getIdentity().equals(identity)) {
-				components.remove(topLevel);
-				return true;
-			}
-		}
-		return false;
+	public TopLevel removeTopLevel(URI topLevelURI) {
+		return topLevels.remove(topLevelURI);
 	}
-
+		
+	/**
+	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * @param topLevelURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public TopLevel getTopLevel(URI topLevelURI) {
+		return topLevels.get(topLevelURI);
+	}
+	
+	/**
+	 * Returns the list of <code>TopLevel</code> instances owned by this instance.
+	 * @return the list of <code>TopLevel</code> instances owned by this instance
+	 */
 	public List<TopLevel> getTopLevels() {
-		return topLevels;
+		return (List<TopLevel>) topLevels.values();
 	}
 
-	public void setTopLevels(List<TopLevel> topLevels) {
-		this.topLevels = topLevels;
-	}
-
-	public List<Collection> getCollections() {
-		return collections;
-	}
-
-	public void setCollections(List<Collection> collections) {
-		this.collections = collections;
-	}
-
-	public List<Component> getComponents() {
-		return components;
-	}
-
-	public void setComponents(List<Component> components) {
-		this.components = components;
-	}
-
-	public List<Model> getModels() {
-		return models;
-	}
-
-	public void setModels(List<Model> models) {
-		this.models = models;
-	}
-
-	public List<Module> getModules() {
-		return modules;
-	}
-
-	public void setModules(List<Module> modules) {
-		this.modules = modules;
-	}
-
-	public List<Structure> getStructures() {
-		return structures;
-	}
-
-	public void setStructures(List<Structure> structures) {
-		this.structures = structures;
-	}
-	
-	public void clearCollections() {
-		collections.clear();
-	}
-	
-	public void clearComponents() {
-		components.clear();
-	}
-	
-	public void clearModels() {
-		models.clear();
-	}
-	
-	public void clearModules() {
-		modules.clear();
-	}
-	
-	public void clearStructures() {
-		structures.clear();
-	}
-	
+	/**
+	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 */
 	public void clearTopLevels() {
-		topLevels.clear();
+		Object[] keySetArray = topLevels.keySet().toArray();
+		for (Object key : keySetArray) {
+			removeTopLevel((URI) key);
+		}
 	}
 	
-	
+	/**
+	 * Clears the existing list <code>topLevels</code>, then appends all of the elements in the specified collection to the end of this list.
+	 * @param topLevels
+	 */
+	public void setTopLevels(List<TopLevel> topLevels) {		
+		clearTopLevels();
+		for (TopLevel topLevel : topLevels) {
+			addTopLevel(topLevel);
+		}
+	}
 	
 }

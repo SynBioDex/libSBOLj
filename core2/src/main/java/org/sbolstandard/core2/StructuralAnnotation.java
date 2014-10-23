@@ -28,8 +28,25 @@ public class StructuralAnnotation extends Documented {
 		setLocation(location);		
 	}
 	
+
 	/**
-	 * Check whether optional field variable <code>structuralInstantiation</code> is set or not.
+	 * Returns field variable <code>location</code>.
+	 * @return field variable <code>location</code>
+	 */
+	public Location getLocation() {
+		return location;
+	}
+
+	/**
+	 * Sets field variable <code>location</code> to the specified element.
+	 * @param location
+	 */
+	public void setLocation(Location location) {
+		this.location = location;
+	}	
+	
+	/**
+	 * Test if optional field variable <code>structuralInstantiation</code> is set.
 	 * @return <code>true</code> if it is not null.
 	 */
 	public boolean isSetStructuralInstantiation() {
@@ -39,9 +56,24 @@ public class StructuralAnnotation extends Documented {
 			return true;
 	}
 	
+	/**
+	 * Returns field variable <code>structuralInstantiation</code>.
+	 * @return field variable <code>structuralInstantiation</code>
+	 */
+	public StructuralInstantiation getStructuralInstantiation() {
+		return structuralInstantiation;
+	}
+
+	/**
+	 * Sets field variable <code>structuralInstantiation</code> to the specified element.
+	 * @param structuralInstantiation
+	 */
+	public void setStructuralInstantiation(StructuralInstantiation structuralInstantiation) {
+		this.structuralInstantiation = structuralInstantiation;
+	}
 	
 	/**
-	 * Set optional field variable <code>structuralInstantiation</code> to null.
+	 * Set optional field variable <code>structuralInstantiation</code> to <code>null</code>.
 	 */
 	public void unsetStructuralInstantiation() {
 		structuralInstantiation = null;
@@ -278,22 +310,8 @@ public class StructuralAnnotation extends Documented {
 		}
 	}
 
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
 
 
-	public StructuralInstantiation getStructuralInstantiation() {
-		return structuralInstantiation;
-	}
 
-
-	public void setStructuralInstantiation(StructuralInstantiation structuralInstantiation) {
-		this.structuralInstantiation = structuralInstantiation;
-	}
 
 }

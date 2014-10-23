@@ -11,14 +11,20 @@ public class OrientedRange extends Range{
 		setOrientation(orientation);		
 	}
 
+	/**
+	 * Returns field variable <code>orientation</code>.
+	 * @return field variable <code>orientation</code>
+	 */
 	public Orientation getOrientation() {		
 		return orientation;
 	}
 
-	public void setOrientation(Orientation ori) {
-		orientation = ori;		
+	/**
+	 * Sets field variable <code>orientation</code> to the specified element.
+	 * @param orientation
+	 */
+	public void setOrientation(Orientation orientation) {
+		this.orientation = orientation;		
 	}
-	
-	
 
 }

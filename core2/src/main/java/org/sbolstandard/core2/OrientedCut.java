@@ -11,10 +11,18 @@ public class OrientedCut extends Cut {
 		setOrientation(orientation);
 	}
 
+	/**
+	 * Returns field variable <code>orientation</code>.
+	 * @return
+	 */
 	public Orientation getOrientation() {
 		return orientation;
 	}
 
+	/**
+	 * Sets field variable <code>orientation</code> to the specified element.
+	 * @param orientation
+	 */
 	public void setOrientation(Orientation orientation) {
 		this.orientation = orientation;
 	}

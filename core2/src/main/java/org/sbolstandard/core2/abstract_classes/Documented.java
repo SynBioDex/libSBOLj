@@ -4,7 +4,7 @@ import java.net.URI;
 
 /**
  * 
- * @author Ernst Oberortner
+ * @author Zhen Zhang
  * @author Nicholas Roehner
  * @version 2.0
  */
@@ -23,9 +23,11 @@ public abstract class Documented extends Identified {
 		super(identity);
 	}
 	
+	
+	
 	/**
-	 * Check whether optional field variable <code>displayId</code> is set or not.
-	 * @return <code>true</code> if it is not null
+	 * Test if optional field variable <code>displayId</code> is set.
+	 * @return <code>true</code> if it is not <code>null</code>
 	 */
 	public boolean isSetDisplayId() {
 		if (displayId == null)
@@ -35,25 +37,21 @@ public abstract class Documented extends Identified {
 	}
 	
 	/**
-	 * Check whether optional field variable <code>name</code> is set or not
-	 * @return <code>true</code> if it is not null
+	 * Returns field variable <code>displayId</code>.
+	 * @return field variable <code>displayId</code>
 	 */
-	public boolean isSetName() {
-		if (name == null)
-			return false;
-		else 
-			return true;
+	// @return the documented object's display ID
+	public String getDisplayId() {
+		return displayId;
 	}
-	
+		
 	/**
-	 * Check whether optional field variable <code>description</code> is set or not
-	 * @return <code>true</code> if it is not null
+	 * Set field variable <code>displayId</code> to the specified element.
+	 * @param displayId
 	 */
-	public boolean isSetDescription() {
-		if (description == null)
-			return false;
-		else 
-			return true;
+	// Created for backward compatibility to 1.1. 
+	public void setDisplayId(String displayId) {
+		this.displayId = displayId;
 	}
 	
 	/**
@@ -64,65 +62,82 @@ public abstract class Documented extends Identified {
 	}
 	
 	/**
-	 * Set optional field variable <code>name</code> to <code>null</code>.
+	 * Test if optional field variable <code>name</code> is set.
+	 * @return <code>true</code> if it is not <code>null</code>
+	 */
+	public boolean isSetName() {
+		if (name == null)
+			return false;
+		else 
+			return true;
+	}
+		
+	/**
+	 * Returns field variable <code>name</code>.
+	 * @return field variable <code>name</code>
+	 */
+	//@return the documented object's name
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Sets field variable <code>name</code> to the specified element.
+	 */
+	// @param name a name for the documented object
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Sets optional field variable <code>name</code> to <code>null</code>.
 	 */
 	public void unsetName() {
 		name = null;
 	}
 	
 	/**
-	 * Set optional field variable <code>description</code> to <code>null</code>.
+	 * Test if optional field variable <code>description</code> is set.
+	 * @return <code>true</code> if it is not <code>null</code>
 	 */
-	public void unsetDescription() {
-		description = null;
+	public boolean isSetDescription() {
+		if (description == null)
+			return false;
+		else 
+			return true;
 	}
 	
 	/**
-	 * 
-	 * @return the documented object's display ID
+	 * Returns field variable <code>description</code>.
+	 * @return field variable <code>description</code>
 	 */
-	public String getDisplayId() {
-		return displayId;
-	}
-
-	/**
-	 * 
-	 * @return the documented object's name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * 
-	 * @param name a name for the documented object
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * 
-	 * @return the documented object's description
-	 */
+	// @return the documented object's description
 	public String getDescription() {
 		return description;
 	}
 
 	/**
-	 * 
-	 * @param description a description for the documented object
+	 * Sets field variable <code>description</code> to the specified element.
+	 * @param description
 	 */
+	// @param a description for the documented object
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	/**
-	 * Created for backward compatibility to 1.1. 
-	 * @param value
+	 * Set optional field variable <code>description</code> to <code>null</code>.
 	 */
-	public void setDisplayId(String value) {
-		this.displayId = value;
+	public void unsetDescription() {
+		description = null;
 	}
+
+
+
+
+
+
+	
+
 
 }

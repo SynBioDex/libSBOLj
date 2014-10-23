@@ -13,10 +13,18 @@ public class Cut extends Location{
 		setAt(at);
 	}
 
+	/**
+	 * Returns field variable <code>at</code>.
+	 * @return field variable <code>at</code>
+	 */
 	public Integer getAt() {
 		return at;
 	}
 
+	/**
+	 * Sets field variable <code>at</code> to the specified element.
+	 * @param at
+	 */
 	public void setAt(Integer at) {
 		this.at = at;
 	}
