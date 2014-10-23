@@ -18,26 +18,50 @@ public class StructuralConstraint extends Identified {
 		setObject(object);
 	}
 
+	/**
+	 * Returns field variable <code>restriction</code>.
+	 * @return field variable <code>restriction</code>
+	 */
 	public URI getRestriction() {
 		return restriction;
 	}
 
+	/**
+	 * Sets field variable <code>restriction</code> to the specified element.
+	 * @param restriction
+	 */
 	public void setRestriction(URI restriction) {
 		this.restriction = restriction;
 	}
 
+	/**
+	 * Returns field variable <code>subject</code>.
+	 * @return field variable <code>subject</code>
+	 */
 	public URI getSubject() {
 		return subject;
 	}
 
+	/**
+	 * Sets field variable <code>subject</code> to the specified element.
+	 * @param subject
+	 */
 	public void setSubject(URI subject) {
 		this.subject = subject;
 	}
 
+	/**
+	 * Returns field variable <code>object</code>. 
+	 * @return field variable <code>object</code>
+	 */
 	public URI getObject() {
 		return object;
 	}
 
+	/**
+	 * Sets field variable <code>object</code> to the specified element.
+	 * @param object
+	 */
 	public void setObject(URI object) {
 		this.object = object;
 	}

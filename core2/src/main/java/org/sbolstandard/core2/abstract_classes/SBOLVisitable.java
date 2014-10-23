@@ -15,8 +15,6 @@
 
 package org.sbolstandard.core2.abstract_classes;
 
-import java.io.ByteArrayOutputStream;
-
 import org.sbolstandard.core2.SBOLVisitor;
 
 /**
