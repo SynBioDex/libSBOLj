@@ -457,8 +457,8 @@ public class writeTester {
 		modInstantiation.setDisplayId(displayId);
 		modInstantiation.setName(name);
 		modInstantiation.setDescription(description);
-		MapsTo maps = new MapsTo();
-		modInstantiation.addReference(reference);
+//		MapsTo maps = new MapsTo();
+//		modInstantiation.addReference(reference);
 		return modInstantiation; 
 	}
 	
