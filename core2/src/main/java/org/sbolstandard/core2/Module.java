@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -135,7 +136,8 @@ public class Module extends TopLevel {
 	 * @return the list of moduleInstantiation instances owned by this instance.
 	 */
 	public List<ModuleInstantiation> getModuleInstantiations() {
-		return (List<ModuleInstantiation>) moduleInstantiations.values();
+//		return (List<ModuleInstantiation>) moduleInstantiations.values();
+		return new ArrayList<ModuleInstantiation>(moduleInstantiations.values());
 	}
 	
 	/**
@@ -154,7 +156,8 @@ public class Module extends TopLevel {
 	 */
 	public void setModuleInstantiations(
 			List<ModuleInstantiation> moduleInstantiations) {
-		clearModuleInstantiations();		
+		if(isSetModuleInstantiations())
+			clearModuleInstantiations();		
 		for (ModuleInstantiation moduleInstantiation : moduleInstantiations) {
 			addModuleInstantiation(moduleInstantiation);
 		}
@@ -216,7 +219,8 @@ public class Module extends TopLevel {
 	 * @return the list of interaction instances owned by this instance.
 	 */
 	public List<Interaction> getInteractions() {
-		return (List<Interaction>) interactions.values();
+//		return (List<Interaction>) interactions.values();
+		return new ArrayList<Interaction>(interactions.values());
 	}
 	
 	/**
@@ -299,7 +303,8 @@ public class Module extends TopLevel {
 	 * @return the list of functionalInstantiation instances owned by this instance.
 	 */
 	public List<FunctionalInstantiation> getFunctionalInstantiations() {
-		return (List<FunctionalInstantiation>) functionalInstantiations.values();
+//		return (List<FunctionalInstantiation>) functionalInstantiations.values();
+		return new ArrayList<FunctionalInstantiation>(functionalInstantiations.values());
 	}
 	
 	/**

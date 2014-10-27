@@ -1,5 +1,6 @@
 package org.sbolstandard.core2;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -242,7 +243,10 @@ public class Component extends TopLevel {
 	 * @return the list of structuralAnnotation instances owned by this instance.
 	 */
 	public List<StructuralAnnotation> getStructuralAnnotations() {
-		return (List<StructuralAnnotation>) structuralAnnotations.values();
+//		return (List<StructuralAnnotation>) structuralAnnotations.values();
+		List<StructuralAnnotation> structuralAnnotations = new ArrayList<StructuralAnnotation>(); 
+		structuralAnnotations.addAll(this.structuralAnnotations.values());
+		return structuralAnnotations; 
 	}
 	
 	/**
@@ -324,7 +328,10 @@ public class Component extends TopLevel {
 	 * @return the list of structuralInstantiation instances owned by this instance.
 	 */
 	public List<StructuralInstantiation> getStructuralInstantiations() {
-		return (List<StructuralInstantiation>) structuralInstantiations.values();
+//		return (List<StructuralInstantiation>) structuralInstantiations.values();
+		List<StructuralInstantiation> structuralInstantiations = new ArrayList<StructuralInstantiation>(); 
+		structuralInstantiations.addAll(this.structuralInstantiations.values());
+		return structuralInstantiations; 
 	}
 	
 	/**
@@ -407,7 +414,10 @@ public class Component extends TopLevel {
 	 * @return the list of structuralConstraint instances owned by this instance.
 	 */
 	public List<StructuralConstraint> getStructuralConstraints() {
-		return (List<StructuralConstraint>) structuralConstraints.values();
+//		return (List<StructuralConstraint>) structuralConstraints.values();
+		List<StructuralConstraint> structuralConstraints = new ArrayList<StructuralConstraint>(); 
+		structuralConstraints.addAll(this.structuralConstraints.values());
+		return structuralConstraints; 
 	}
 	
 	/**

@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -78,7 +79,11 @@ public class SBOLDocument {
 	 * @return the list of <code>Module</code> instances owned by this instance
 	 */
 	public List<Module> getModules() {
-		return (List<Module>) modules.values();
+//		return (List<Module>) modules.values();
+		List<Module> modules = new ArrayList<Module>(); 
+		modules.addAll(this.modules.values());
+		return modules; 
+		
 	}
 
 	/**
@@ -145,7 +150,10 @@ public class SBOLDocument {
 	 * @return the list of <code>Collection</code> instances owned by this instance
 	 */
 	public List<Collection> getCollections() {
-		return (List<Collection>) collections.values();
+//		return (List<Collection>) collections.values();
+		List<Collection> collections = new ArrayList<Collection>(); 
+		collections.addAll(this.collections.values());
+		return collections; 
 	}
 
 	/**
@@ -213,7 +221,10 @@ public class SBOLDocument {
 	 * @return the list of <code>Model</code> instances owned by this instance
 	 */
 	public List<Model> getModels() {
-		return (List<Model>) models.values();
+//		return (List<Model>) models.values();
+		List<Model> models = new ArrayList<Model>(); 
+		models.addAll(this.models.values());
+		return models; 
 	}
 
 	/**
@@ -281,7 +292,10 @@ public class SBOLDocument {
 	 * @return the list of <code>Component</code> instances owned by this instance
 	 */
 	public List<Component> getComponents() {
-		return (List<Component>) components.values();
+//		return (List<Component>) components.values();
+		List<Component> components = new ArrayList<Component>(); 
+		components.addAll(this.components.values());
+		return components; 
 	}
 
 	/**
@@ -349,7 +363,10 @@ public class SBOLDocument {
 	 * @return the list of <code>Structure</code> instances owned by this instance
 	 */
 	public List<Structure> getStructures() {
-		return (List<Structure>) structures.values();
+//		return (List<Structure>) structures.values();
+		List<Structure> structures = new ArrayList<Structure>(); 
+		structures.addAll(this.structures.values());
+		return structures; 
 	}
 
 	/**
@@ -417,7 +434,10 @@ public class SBOLDocument {
 	 * @return the list of <code>TopLevel</code> instances owned by this instance
 	 */
 	public List<TopLevel> getTopLevels() {
-		return (List<TopLevel>) topLevels.values();
+//		return (List<TopLevel>) topLevels.values();
+		List<TopLevel> topLevels = new ArrayList<TopLevel>(); 
+		topLevels.addAll(this.topLevels.values());
+		return topLevels; 
 	}
 
 	/**

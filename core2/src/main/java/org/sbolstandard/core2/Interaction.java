@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +28,7 @@ public class Interaction extends Documented {
 	public Interaction(URI identity, Set<URI> type, List<Participation> participations) {
 		super(identity);
 		setType(type);
+		this.participations = new HashMap<URI, Participation>(); 
 		setParticipations(participations);
 	}
 	
@@ -86,7 +88,7 @@ public class Interaction extends Documented {
 	 * @return <code>true</code> if the field variable is not an empty list
 	 */
 	public boolean isSetParticipations() {
-		if (participations.isEmpty())
+		if (participations == null || participations.isEmpty())
 			return false;
 		else
 			return true;					
@@ -111,6 +113,7 @@ public class Interaction extends Documented {
 	 */
 	public void addParticipation(Participation participation) {
 		// TODO: @addParticipation, Check for duplicated entries.
+		
 		participations.put(participation.getIdentity(), participation);
 	}
 	
@@ -138,7 +141,8 @@ public class Interaction extends Documented {
 	 * @return the list of participation instances owned by this instance.
 	 */
 	public List<Participation> getParticipations() {
-		return (List<Participation>) participations.values();
+//		return (List<Participation>) participations.values();
+		return new ArrayList<Participation>(participations.values());
 	}
 	
 	/**
@@ -157,7 +161,8 @@ public class Interaction extends Documented {
 	 */
 	public void setParticipations(
 			List<Participation> participations) {
-		clearParticipations();		
+		if(isSetParticipations())
+			clearParticipations();	
 		for (Participation participation : participations) {
 			addParticipation(participation);
 		}
