@@ -36,6 +36,7 @@ public class SBOLWriter {
 	 * 
 	 * TODO:
 	 * make various types of write() with diff. params.
+	 * make common data (i.e. persistentidentity, name, displayId into seperate methods. 
 	 * 
 	 */
 	
@@ -45,7 +46,7 @@ public class SBOLWriter {
 	 * @param out
 	 */
 	public static void write(SBOLDocument doc, OutputStream out) {
-	
+		//TODO: annotation
 		List<TopLevelDocument<QName>> topLevelDoc = new ArrayList<TopLevelDocument<QName>>();
 		formatCollections(doc.getCollections(), topLevelDoc);
 		formatModules(doc.getModules(), topLevelDoc); 		
@@ -85,6 +86,7 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.Documented.name, t.getName()));
 			if(t.getDescription() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.description, t.getDescription()));
+//			t.getAnnotations()
 		}
 		
 	}
@@ -130,14 +132,14 @@ public class SBOLWriter {
 			{
 				for (URI roles : c.getRoles())
 				{
-					list.add(NamedProperty(Sbol2Terms.Component.roles, c.getRoles().toString())); 
+					list.add(NamedProperty(Sbol2Terms.Component.roles, roles)); 
 				}
 			}
 			if(c.getType() != null)
 			{	
 				for(URI types : c.getType())
 				{
-					list.add(NamedProperty(Sbol2Terms.Component.types, c.getType().toString()));
+					list.add(NamedProperty(Sbol2Terms.Component.types, types));
 				}
 			}
 		
@@ -274,10 +276,7 @@ public class SBOLWriter {
 			
 			if(f.getTimeStamp() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.timeStamp, f.getTimeStamp().toString()));
-//			if(f.getInstantiatedComponent() != null) 
-			//TODO: Why does creating an object of FunctionalInstantiation requires a component identity? 
-			//how to retrieve List<URI> type? in mainTester, you need to create a List<URI> type but there is no
-			//method to retrieve this data. 
+
 				
 
 			properties.add(NamedProperty(Sbol2Terms.Module.hasfunctionalInstantiations, 
@@ -311,6 +310,8 @@ public class SBOLWriter {
 			if(i.getDescription() != null)
 				list.add(NamedProperty(Sbol2Terms.Documented.description, i.getDescription()));
 			
+			//TODO: participation is its own class. 
+			//TODO: iterate through each getType()
 			if (i.getParticipations() != null)
 				list.add(NamedProperty(Sbol2Terms.Interaction.type, i.getParticipations().toString()));
 			//TODO: is getParticipation() == getType() because Interaction does not have a getType(). 

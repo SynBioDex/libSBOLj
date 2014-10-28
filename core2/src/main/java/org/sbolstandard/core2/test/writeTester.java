@@ -12,12 +12,15 @@ import org.sbolstandard.core2.abstract_classes.Location;
 
 public class writeTester {
 	
+	//TODO: create data for each toplevel entity individually in own method.
+	//TODO: rename getData() to getIdentificationData()
 	public static void main( String[] args ) throws Exception
 	{
 		SBOLDocument SBOL2Doc_test = new SBOLDocument(); 
+		//TODO: call createCollection(); 
 		
 		createLacI_Inverter(SBOL2Doc_test);
-//		createTetR_Inverter(SBOL2Doc_test);
+		createTetR_Inverter(SBOL2Doc_test);
 		
 	
 		SBOLWriter.write(SBOL2Doc_test,(System.out));
@@ -66,8 +69,6 @@ public class writeTester {
 				C, 
 				11, 20); 
 		
-		
-		//TODO: why should StructuralConstraint have "precedes" as a URI?
 		StructuralConstraint struct_constraint = createStructuralConstraintData(
 				getData("struct_constraint_identity", "struct_constraint_persistentIdentity", "struct_constraint_v1.0", "precedes"), 
 				P, 
@@ -104,7 +105,6 @@ public class writeTester {
 				getData("TetROut_identity","TetROut_persistentIdentity","TetROut_v0.1","TetROut_displayID","TetROut_Name", "TetROut_Description","public", "output"),
 				TetR);
 		
-		//TODO: What direction is this? input/output/none? and is it private/public? for this Inv
 		FunctionalInstantiation Inv = createFunctionalInstantiationData(
 				getData("Inv_identity","Inv_persistentIdentity","Inv_v0.1","Inv_displayID","Inv_Name", "Inv_Description","private", "none"),
 				pLactetR);
@@ -156,22 +156,33 @@ public class writeTester {
 				getData("TetRSp_identity","TetRSp_persistentIdentity","TetRSp_v0.1","TetRSp_displayID","TetRSp_Name", "TetRSp_Description","private", "none"),
 				TetR);
 		
+		MapsTo LacISp_LacIIn = createMapTo(
+				getURI("LacISp_Mapsto_LacIIn_identity"), 
+				getRefinement("merge"), 
+				LacISp, LacIIn); 
+		
+		MapsTo TetRSp_TetROut = createMapTo(
+				getURI("TetRSp_Mapsto_TetROut_identity"), 
+				getRefinement("merge"), 
+				TetRSp, TetROut); 
+		
 		ModuleInstantiation Inv1 = createModuleInstantiationData(
 				getData("Inv1_identity","Inv1_persistentIdentity","Inv1_v0.1","Inv1_displayID","Inv1_Name", "Inv1_Description"),
-				LacI_Inv); 
+				LacI_Inv, 
+				getMapsTo_List(LacISp_LacIIn, TetRSp_TetROut)); 
 		
 		Model Togglemodel = createModelData(SBOL2Doc_test, 
-				getData("Togglemodel_identity","Togglemodel_persistentIdentity","Togglemodel_v0.1","Togglemodel_displayID","Togglemodel_Name", "Togglemodel_Description", "Togglemodel_source", "Togglemodel_framework", "Togglemodel_framework"),
+				getData("Togglemodel_identity","Togglemodel_persistentIdentity","Togglemodel_v0.1","Togglemodel_displayID","Togglemodel_Name", "Togglemodel_Description", "Togglemodel_source", "Togglemodel_language", "Togglemodel_framework"),
 				getSetOfURI("Togglemodel_role")
 				); 
 		
-//		Module Toggle = createModuleData(SBOL2Doc_test, 
-//				getSetOfURI("Toggle_type"),
-//				getSetOfURI("Toggle_role"),
-//				getData("Toggle_identity","Toggle_persistentIdentity","Toggle_v0.1","Toggle_displayID","Toggle_Name", "Toggle_Description"),
-//				getFunctionalInstantiation_List(LacISp, TetRSp), 
-//				getInteraction_List(interact1, interact2), null, null
-//				);
+		Module Toggle = createModuleData(SBOL2Doc_test, 
+				getSetOfURI("Toggle_type"),
+				getSetOfURI("Toggle_role"),
+				getData("Toggle_identity","Toggle_persistentIdentity","Toggle_v0.1","Toggle_displayID","Toggle_Name", "Toggle_Description"),
+				getFunctionalInstantiation_List(LacISp, TetRSp), 
+				getInteraction_List(interact1, interact2), null, null
+				);
 	}
 	
 	private static void createTetR_Inverter(SBOLDocument SBOL2Doc_test)
@@ -217,8 +228,6 @@ public class writeTester {
 				C, 
 				11, 20); 
 		
-		
-		//TODO: why should StructuralConstraint have "precedes" as a URI?
 		StructuralConstraint struct_constraint = createStructuralConstraintData(
 				getData("struct_constraint_identity", "struct_constraint_persistentIdentity", "struct_constraint_v1.0", "precedes"), 
 				P, 
@@ -255,7 +264,6 @@ public class writeTester {
 				getData("LacIOut_identity","LacIOut_persistentIdentity","LacIOut_v0.1","LacIOut_displayID","LacIOut_Name", "LacIOut_Description","public", "output"),
 				LacI);
 		
-		//TODO: What direction is this? input/output/none? and is it private/public? for this Inv
 		FunctionalInstantiation Inv = createFunctionalInstantiationData(
 				getData("Inv_identity","Inv_persistentIdentity","Inv_v0.1","Inv_displayID","Inv_Name", "Inv_Description","private", "none"),
 				ptetLacI);
@@ -275,7 +283,6 @@ public class writeTester {
 				getParticipation_List(p1, p2), 
 				getSetOfURI("repression")); 
 		
-		//TODO: check if this is right for producer, produces, and identity?
 		Participation p3 = createParticipationData(
 				getURI("participation3_identity"), 
 				getSetOfURI("producer"), 
@@ -298,6 +305,22 @@ public class writeTester {
 				getFunctionalInstantiation_List(TetRIn, LacIOut, Inv), 
 				getInteraction_List(interact1, interact2), null, null
 				);
+		
+		//---------------------DOUBLE CHECK
+//		MapsTo LacISp_LacIOut = createMapTo(
+//				getURI("LacISp_Mapsto_LacIOut_identity"), 
+//				getRefinement("merge"), 
+//				LacISp, LacIOut); 
+//		
+//		MapsTo TetRSp_TetRIn = createMapTo(
+//				getURI("TetRSp_Mapsto_TetRIn_identity"), 
+//				getRefinement("merge"), 
+//				TetRSp, TetRIn); 
+//		
+//		ModuleInstantiation Inv2 = createModuleInstantiationData(
+//				getData("Inv2_identity","Inv2_persistentIdentity","Inv2_v0.1","Inv2_displayID","Inv2_Name", "Inv2_Description"),
+//				TetR_Inv, 
+//				getMapsTo_List(LacISp_LacIOut, TetRSp_TetRIn)); 
 	}
 	
 	private static Component createComponentData(SBOLDocument SBOL2Doc_test, 
@@ -322,10 +345,8 @@ public class writeTester {
 		c.setName(name);
 		c.setDescription(description);
 		
-		//TODO: setStructuralInstantiations will turn to addStructuralInstantiations. call it 2x to pass into 
-		//addStructuralAnnotations()
 		if(structureData != null)
-			c.setStructure(structureData.getIdentity()); //TODO: should this be getIdentity() for ref? 
+			c.setStructure(structureData.getIdentity()); 
 		if(structureInstantiationData != null)
 		{
 			c.setStructuralInstantiations(structureInstantiationData);
@@ -367,8 +388,6 @@ public class writeTester {
 		
 		URI instantiatedComponent = c.getIdentity();
 		
-		//TODO: Why does creating an object of FunctionalInstantiation requires a component identity? 
-		//getInstantiatedComponent
 		FunctionalInstantiation f = new FunctionalInstantiation(identity, access, instantiatedComponent, direction);
 		f.setIdentity(identity);
 		f.setPersistentIdentity(persistentIdentity);
@@ -392,7 +411,6 @@ public class writeTester {
 		String name 		   = interaction_data.get(4); 
 		String description 	   = interaction_data.get(5); 
 		
-		//TODO: what is type and participations?
 		Interaction interaction = new Interaction(identity, type, participations);
 		
 		interaction.setPersistentIdentity(persistentIdentity);
@@ -402,6 +420,12 @@ public class writeTester {
 		interaction.setDescription(description);
 		
 		return interaction;
+	}
+	
+	private static MapsTo createMapTo (URI identity, RefinementType refinement, 
+			FunctionalInstantiation pre_fi, FunctionalInstantiation post_fi)
+	{
+		return new MapsTo(identity, refinement, pre_fi.getIdentity(), post_fi.getIdentity());
 	}
 	
 	private static Module createModuleData(SBOLDocument SBOL2Doc_test, 
@@ -440,7 +464,8 @@ public class writeTester {
 	
 	private static ModuleInstantiation createModuleInstantiationData(
 			List<String> moduleInstantiation_data, 
-			Module m)
+			Module m, 
+			List<MapsTo> maps)
 	{	
 		URI identity 		   = getURI(moduleInstantiation_data.get(0)); 
 		URI persistentIdentity = getURI(moduleInstantiation_data.get(1));
@@ -449,16 +474,15 @@ public class writeTester {
 		String name 		   = moduleInstantiation_data.get(4); 
 		String description 	   = moduleInstantiation_data.get(5); 
 		
-		//TODO: make sure ModuleInstantiation should keep track of identities from the Module that it is referencing.
-		
 		ModuleInstantiation modInstantiation = new ModuleInstantiation(identity, m.getIdentity()); 
 		modInstantiation.setPersistentIdentity(persistentIdentity);
 		modInstantiation.setVersion(version);
 		modInstantiation.setDisplayId(displayId);
 		modInstantiation.setName(name);
 		modInstantiation.setDescription(description);
-//		MapsTo maps = new MapsTo();
-//		modInstantiation.addReference(reference);
+		
+		for(MapsTo map : maps)
+			modInstantiation.addReference(map);
 		return modInstantiation; 
 	}
 	
@@ -492,14 +516,14 @@ public class writeTester {
 	}
 	
 	private static StructuralConstraint createStructuralConstraintData(
-			List<String> structuralConstraints_data, 
+			List<String> structuralConstraints_data,  
 			StructuralInstantiation pre_structInstant, 
 			StructuralInstantiation post_structInstant)
 	{
 		URI identity 		   = getURI(structuralConstraints_data.get(0));
 		URI persistentIdentity = getURI(structuralConstraints_data.get(1));
 		String version 		   = structuralConstraints_data.get(2);
-		URI restriction 	   = getURI(structuralConstraints_data.get(3)); //TODO: is this how you would set restriction?
+		URI restriction 	   = getURI(structuralConstraints_data.get(3)); 
 		URI subject 		   = pre_structInstant.getIdentity(); 
 		URI object 			   = post_structInstant.getIdentity(); 
 		
@@ -530,8 +554,6 @@ public class writeTester {
 		
 		URI instantiatedComponent = c.getIdentity(); //TODO: is component (c.identity) instantiatedComponent?
 		
-		//TODO: Why does creating an object of StructuralInstantiation requires a component identity? 
-		//getInstantiatedComponent
 		StructuralInstantiation s = new StructuralInstantiation(identity, access, instantiatedComponent);
 		s.setIdentity(identity);
 		s.setPersistentIdentity(persistentIdentity);
@@ -583,6 +605,11 @@ public class writeTester {
 		return new ArrayList<Interaction>(Arrays.asList(i)); 
 	}
 	
+	private static List<MapsTo> getMapsTo_List(MapsTo ... maps)
+	{
+		return new ArrayList<MapsTo>(Arrays.asList(maps));
+	}
+	
 	private static List<URI> getListOfURI(String ... appends)
 	{
 		List<URI> list = new ArrayList<URI>();
@@ -591,6 +618,19 @@ public class writeTester {
 			list.add(getURI(append));
 		}
 		return list; 
+	}
+	
+	private static RefinementType getRefinement(String s)
+	{
+		if(s.equals("verifyIdentical"))
+			return RefinementType.verifyIdentical; 
+		else if(s.equals("useLocal"))
+			return RefinementType.useLocal; 
+		else if(s.equals("useRemote"))
+			return RefinementType.useRemote; 
+		else if(s.equals("merge"))
+			return RefinementType.merge; 
+		return RefinementType.merge; 
 	}
 	
 	private static List<Participation> getParticipation_List(Participation ... p)
