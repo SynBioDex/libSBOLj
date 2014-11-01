@@ -31,19 +31,24 @@ public class writeTester {
 		Collection myParts = createCollection(SBOL2Doc_test,
 				getData("myParts_1","myParts_persistentIdentity","v1.0","myParts","myParts", "myParts")); 
 		
-		myParts.addMember(get_pLac(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_tetR(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_pLactetR(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_LacI(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_TetR(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_LacI_Inv(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_tetRSeq(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_pLactetRSeq(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_pLac(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_tetR(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_pLactetR(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_LacI_Inv(SBOL2Doc_test).getIdentity());
 		
-//		get_LacI_Inv (SBOL2Doc_test);
-//		createLacI_Inverter(SBOL2Doc_test);
-//		createTetR_Inverter(SBOL2Doc_test);
+		myParts.addMember(get_LacI(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_TetR(SBOL2Doc_test).getIdentity());
+		
+		myParts.addMember(get_ptetSeq(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_lacISeq(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_ptetlacISeq(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_ptet(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_lacI(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_ptetlacI(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_TetR_Inv(SBOL2Doc_test).getIdentity());
 		
 		SBOLWriter.write(SBOL2Doc_test,(System.out));
 	}
@@ -113,7 +118,7 @@ public class writeTester {
 		return createStructuralAnnotationData(
 				getData("p_structAnnotate_1", "p_structAnnotate_persistentIdentity", "v1.0", "p_structAnnotate", "p_structAnnotate", "p_structAnnotate"), 
 				get_P(SBOL2Doc_test), 
-				0, 10);
+				11, 20);
 	}
 	
 	private static StructuralConstraint get_struct_constraint (SBOLDocument SBOL2Doc_test)
@@ -177,7 +182,7 @@ public class writeTester {
 				get_pLactetR(SBOL2Doc_test));
 	}
 	
-	private static Participation get_p1 (SBOLDocument SBOL2Doc_test, String identity)
+	private static Participation get_p1a (SBOLDocument SBOL2Doc_test, String identity)
 	{
 		return createParticipationData(
 				getURI(identity), 
@@ -185,7 +190,7 @@ public class writeTester {
 				get_LacIIn(SBOL2Doc_test));
 	}
 	
-	private static Participation get_p2 (SBOLDocument SBOL2Doc_test, String identity )
+	private static Participation get_p2a (SBOLDocument SBOL2Doc_test, String identity )
 	{
 		return createParticipationData(
 				getURI(identity), 
@@ -193,19 +198,27 @@ public class writeTester {
 				get_LacIInv(SBOL2Doc_test));
 	}
 	
-	private static Interaction get_interact1 (SBOLDocument SBOL2Doc_test)
+	private static Participation get_p3a (SBOLDocument SBOL2Doc_test, String identity)
+	{
+		return createParticipationData(
+				getURI(identity), 
+				getSetOfURI("producor"), 
+				get_TetROut(SBOL2Doc_test));
+	}
+	
+	private static Interaction get_interact1a (SBOLDocument SBOL2Doc_test)
 	{
 		return createInteractionData(
 				getData("interact1_1","interact1_persistentIdentity","v1.0","interact1","interact1", "interact1"),
-				getParticipation_List(get_p1(SBOL2Doc_test, "p1_1"), get_p2(SBOL2Doc_test, "p2_1")), 
+				getParticipation_List(get_p1a(SBOL2Doc_test, "p1a_1"), get_p2a(SBOL2Doc_test, "p2a_1")), 
 				getSetOfURI("repression")); 
 	}
 	
-	private static Interaction get_interact2 (SBOLDocument SBOL2Doc_test)
+	private static Interaction get_interact2a (SBOLDocument SBOL2Doc_test)
 	{
 		return createInteractionData(
 				getData("interact2_1","interact2_persistentIdentity","v1.0","interact2","interact2", "interact2"),
-				getParticipation_List(get_p1(SBOL2Doc_test,"p2__1"), get_p2(SBOL2Doc_test,"p2_1")), 
+				getParticipation_List(get_p2a(SBOL2Doc_test,"p2a_1"), get_p3a(SBOL2Doc_test,"p3a_1")), 
 				getSetOfURI("produces")); 
 	}
 	
@@ -220,8 +233,8 @@ public class writeTester {
 						get_TetROut(SBOL2Doc_test), 
 						get_LacIInv(SBOL2Doc_test)), 
 				getInteraction_List(
-						get_interact1(SBOL2Doc_test), 
-						get_interact2(SBOL2Doc_test)), 
+						get_interact1a(SBOL2Doc_test), 
+						get_interact2a(SBOL2Doc_test)), 
 				null, null
 				);
 	}
@@ -266,33 +279,33 @@ public class writeTester {
 				null, null, null);
 	}
 	
-	private static StructuralInstantiation get_P2 (SBOLDocument SBOL2Doc_test)
+	private static StructuralInstantiation get_T (SBOLDocument SBOL2Doc_test)
 	{
 		return createStructuralInstantiationData(
-				getData("P2_1", "P2_persistentIdentity", "P2_v1.0", "P2", "P2", "P2", "public"), 
+				getData("T_1", "T_persistentIdentity", "T_v1.0", "T", "T", "T", "public"), 
 				get_ptet(SBOL2Doc_test));
 	}
 	
-	private static StructuralInstantiation get_C2 (SBOLDocument SBOL2Doc_test)
+	private static StructuralInstantiation get_L (SBOLDocument SBOL2Doc_test)
 	{
 		return createStructuralInstantiationData(
-				getData("C2_1", "C2_persistentIdentity", "C2_v1.0", "C2", "C2", "C2", "public"), 
+				getData("L_1", "L_persistentIdentity", "L_v1.0", "L", "L", "L", "public"), 
 				get_lacI(SBOL2Doc_test));
 	}
 	
-	private static StructuralAnnotation get_p2_structAnnotate (SBOLDocument SBOL2Doc_test)
+	private static StructuralAnnotation get_t_structAnnotate (SBOLDocument SBOL2Doc_test)
 	{
 		return createStructuralAnnotationData(
 				getData("p2_structAnnotate_1", "p2_structAnnotate_persistentIdentity", "v1.0", "p2_structAnnotate", "p2_structAnnotate", "p2_structAnnotate"), 
-				get_P2(SBOL2Doc_test), 
+				get_T(SBOL2Doc_test), 
 				0, 10);
 	}
 	
-	private static StructuralAnnotation get_c2_structAnnotate (SBOLDocument SBOL2Doc_test)
+	private static StructuralAnnotation get_l_structAnnotate (SBOLDocument SBOL2Doc_test)
 	{
 		return createStructuralAnnotationData(
 				getData("c2_structAnnotate_1", "c2_structAnnotate_persistentIdentity", "v1.0", "c2_structAnnotate", "c2_structAnnotate", "c2_structAnnotate"), 
-				get_C2(SBOL2Doc_test), 
+				get_L(SBOL2Doc_test), 
 				0, 10);
 	}
 	
@@ -303,8 +316,8 @@ public class writeTester {
 				getSetOfURI("Gene"),
 				getData("ptetlacI_1","ptetlacI_persistentIdentity","v1.0","ptetlacI","ptetlacI", "ptetlacI"),
 				get_ptetlacISeq(SBOL2Doc_test), 
-				getStructuralInstantiation_List(get_P2(SBOL2Doc_test), get_C2(SBOL2Doc_test)), 
-				getStructuralAnnotation_List(get_p2_structAnnotate(SBOL2Doc_test), get_c2_structAnnotate(SBOL2Doc_test)), 
+				getStructuralInstantiation_List(get_T(SBOL2Doc_test), get_L(SBOL2Doc_test)), 
+				getStructuralAnnotation_List(get_t_structAnnotate(SBOL2Doc_test), get_l_structAnnotate(SBOL2Doc_test)), 
 				null); 
 	}
 	
@@ -322,24 +335,128 @@ public class writeTester {
 				get_LacI(SBOL2Doc_test));
 	}
 	
+	private static FunctionalInstantiation get_TetRInv (SBOLDocument SBOL2Doc_test)
+	{
+		return createFunctionalInstantiationData(
+				getData("TetRInv_1","TetRInv_persistentIdentity","v1.0","TetRInv","TetRInv", "TetRInv","private", "none"),
+				get_ptetlacI(SBOL2Doc_test));
+	}
 	
-	//TODO: to be completed
-//	private static Module get_TetR_Inv (SBOLDocument SBOL2Doc_test)
-//	{
-//		return createModuleData(SBOL2Doc_test, 
-//				getSetOfURI("Inverter"),
-//				getSetOfURI("Transcriptionfactor."),
-//				getData("TetR_Inv_1","TetR_Inv_persistentIdentity","v1.0","TetR_Inv","TetR_Inv", "TetR_Inv"),
-//				getFunctionalInstantiation_List(
-//						get_LacIIn(SBOL2Doc_test), 
-//						get_TetROut(SBOL2Doc_test), 
-//						get_LacInv(SBOL2Doc_test)), 
-//				getInteraction_List(
-//						get_interact1(SBOL2Doc_test), 
-//						get_interact2(SBOL2Doc_test)), 
-//				null, null
-//				);
-//	}
+	private static Participation get_p1b (SBOLDocument SBOL2Doc_test, String identity)
+	{
+		return createParticipationData(
+				getURI(identity), 
+				getSetOfURI("repressor"), 
+				get_TetRIn(SBOL2Doc_test));
+	}
+	
+	private static Participation get_p2b (SBOLDocument SBOL2Doc_test, String identity )
+	{
+		return createParticipationData(
+				getURI(identity), 
+				getSetOfURI("repressed"), 
+				get_TetRInv(SBOL2Doc_test));
+	}
+	
+	private static Participation get_p3b (SBOLDocument SBOL2Doc_test, String identity)
+	{
+		return createParticipationData(
+				getURI(identity), 
+				getSetOfURI("producor"), 
+				get_LacIOut(SBOL2Doc_test));
+	}
+	
+	private static Interaction get_interact1b (SBOLDocument SBOL2Doc_test)
+	{
+		return createInteractionData(
+				getData("interact1b_1","interact1b_persistentIdentity","v1.0","interact1b","interact1b", "interact1b"),
+				getParticipation_List(get_p1b(SBOL2Doc_test, "p1b_1"), get_p2b(SBOL2Doc_test, "p2b_1")), 
+				getSetOfURI("repression")); 
+	}
+	
+	private static Interaction get_interact2b (SBOLDocument SBOL2Doc_test)
+	{
+		return createInteractionData(
+				getData("interact2b_1","interact2b_persistentIdentity","v1.0","interact2b","interact2b", "interact2b"),
+				getParticipation_List(get_p2b(SBOL2Doc_test,"p2b_1"), get_p3b(SBOL2Doc_test,"p3b_1")), 
+				getSetOfURI("produces")); 
+	}
+	
+	private static Module get_TetR_Inv (SBOLDocument SBOL2Doc_test)
+	{
+		return createModuleData(SBOL2Doc_test, 
+				getSetOfURI("Inverter"),
+				getSetOfURI("Transcriptionfactor."),
+				getData("TetR_Inv_1","TetR_Inv_persistentIdentity","v1.0","TetR_Inv","TetR_Inv", "TetR_Inv"),
+				getFunctionalInstantiation_List(
+						get_TetRIn(SBOL2Doc_test), 
+						get_LacIOut(SBOL2Doc_test), 
+						get_TetRInv(SBOL2Doc_test)), 
+				getInteraction_List(
+						get_interact1b(SBOL2Doc_test), 
+						get_interact2b(SBOL2Doc_test)), 
+				null, null
+				);
+	}
+	
+	// ------------------------------ CREATING Toggle Top Module ------------------------------
+	private static FunctionalInstantiation get_LacISp (SBOLDocument SBOL2Doc_test)
+	{
+		return createFunctionalInstantiationData(
+				getData("LacISp_1","LacISp_persistentIdentity","v1.0","LacISp","LacISp", "LacISp"),
+				get_LacI(SBOL2Doc_test));
+	}
+	
+	private static FunctionalInstantiation get_TetRSp (SBOLDocument SBOL2Doc_test)
+	{
+		return createFunctionalInstantiationData(
+				getData("TetRSp_1","TetRSp_persistentIdentity","v1.0","TetRSp","TetRSp", "TetRSp"),
+				get_TetR(SBOL2Doc_test));
+	}
+	
+	private static ModuleInstantiation get_Inv1 (SBOLDocument SBOL2Doc_test)
+	{
+		return createModuleInstantiationData(
+				getData("Inv1_1","Inv1_persistentIdentity","v1.0","Inv1","Inv1", "Inv1"),
+				get_LacI_Inv(SBOL2Doc_test),
+				getMapsTo_List(
+						createMapTo(getURI("Inv1a_identity"), getRefinement("useLocal"), get_LacISp(SBOL2Doc_test), get_LacIIn(SBOL2Doc_test)),
+						createMapTo(getURI("Inv2a_TetRSp_identity"), getRefinement("useLocal"), get_TetRSp(SBOL2Doc_test), get_TetROut(SBOL2Doc_test))
+						)
+				); 
+	}
+	
+	private static ModuleInstantiation get_Inv2 (SBOLDocument SBOL2Doc_test)
+	{
+		return createModuleInstantiationData(
+				getData("Inv2_1","Inv2_persistentIdentity","v1.0","Inv2","Inv2", "Inv2"),
+				get_TetR_Inv(SBOL2Doc_test),
+				getMapsTo_List(
+						createMapTo(getURI("Inv1b_identity"), getRefinement("useLocal"), get_LacISp(SBOL2Doc_test), get_LacIOut(SBOL2Doc_test)),
+						createMapTo(getURI("Inv2b_identity"), getRefinement("useLocal"), get_TetRSp(SBOL2Doc_test), get_TetRIn(SBOL2Doc_test))
+						)
+				); 
+	}
+	
+	private static Model get_ToggleModel (SBOLDocument SBOL2Doc_test)
+	{
+		return createModelData(SBOL2Doc_test, 
+				getData("ToggleModel_1","ToggleModel_persistentIdentity","v1.0","ToggleModel","ToggleModel", "ToggleModel", "ToggleModel_source", "ToggleModel_language", "ToggleModel_framework"), 
+				getSetOfURI("ToggleModel_role"));
+	}
+
+	private static Module get_Toggle (SBOLDocument SBOL2Doc_test)
+	{
+		return createModuleData(SBOL2Doc_test, 
+				getSetOfURI("Toggle_type"),
+				getSetOfURI("Toggle_role"),
+				getData("Toggle_1","Toggle_persistentIdentity","v1.0","Toggle","Toggle", "Toggle"),
+				getFunctionalInstantiation_List(get_LacISp(SBOL2Doc_test), get_TetRSp(SBOL2Doc_test)), 
+				null, getModuleInstantiation_List(get_Inv1(SBOL2Doc_test), get_Inv2(SBOL2Doc_test)), 
+				getSetOfURI(get_ToggleModel(SBOL2Doc_test).getIdentity())
+				);
+	}
+	
 	
 	private static void setCommonTopLevelData (TopLevel t, URI identity, URI persistentIdentity,
 			String version, String displayId, String name, String description)
@@ -366,285 +483,6 @@ public class writeTester {
 //		i.setTimeStamp(timeStamp);
 	}
 	
-	private static void createLacI_Inverter(SBOLDocument SBOL2Doc_test)
-	{
-		Structure pLacSeq = createStructureData(SBOL2Doc_test, 
-				getData("pLacSeq_1","pLacSeq_persistentIdentity","v1.0","pLacSeq","pLacSeq", "pLacSeq", "pLacSeq_element", "pLacSeq_encoding")); 
-		Structure tetRSeq = createStructureData(SBOL2Doc_test, 
-				getData("tetRSeq_1","tetRSeq_persistentIdentity","v1.0","tetRSeq","tetRSeq", "tetRSeq", "tetRSeq_element", "tetRSeq_encoding")); 
-		Structure pLactetRSeq = createStructureData(SBOL2Doc_test, 
-				getData("pLactetRSeq_1","pLactetRSeq_persistentIdentity","v1.0","pLactetRSeq","pLactetRSeq", "pLactetRSeq", "pLactetRSeq_element", "pLactetRSeq_encoding")); 
-	
-		Component pLac = createComponentData(SBOL2Doc_test,
-				getSetOfURI("DNA"),
-				getSetOfURI("Promoter"),
-				getData("pLac_1","pLac_persistentIdentity","v1.0","pLac","pLac", "pLac"),
-				pLacSeq, 
-				null, null, null); 
-		
-		Component tetR = createComponentData(SBOL2Doc_test,
-				getSetOfURI("DNA"),
-				getSetOfURI("CDS"),
-				getData("tetR_1","tetR_persistentIdentity","v1.0","tetR","tetR", "tetR"),
-				tetRSeq, 
-				null, null, null);
-		
-		
-		StructuralInstantiation P = createStructuralInstantiationData(
-				getData("P_1", "P_persistentIdentity", "P_v1.0", "P", "P", "P", "public"), 
-				pLac);
-		
-		StructuralInstantiation C = createStructuralInstantiationData(
-				getData("C_1", "C_persistentIdentity", "C_v1.0", "C", "C", "C", "public"), 
-				tetR);
-		
-		//NOTE: either use StructuralAnnotation OR StructuralConstraint. Never both 
-		StructuralAnnotation p_structAnnotate  = createStructuralAnnotationData(
-				getData("p_structAnnotate_1", "p_structAnnotate_persistentIdentity", "v1.0", "p_structAnnotate", "p_structAnnotate", "p_structAnnotate"), 
-				P, 
-				0, 10);
-		
-		StructuralAnnotation c_structAnnotate  = createStructuralAnnotationData(
-				getData("c_structAnnotate_1", "c_structAnnotate_persistentIdentity", "v1.0", "c_structAnnotate", "c_structAnnotate", "c_structAnnotate"), 
-				C, 
-				11, 20); 
-		
-		StructuralConstraint struct_constraint = createStructuralConstraintData(
-				getData("struct_constraint_1", "struct_constraint_persistentIdentity", "v1.0", "precedes"), 
-				P, 
-				C); 
-
-		Component pLactetR = createComponentData(SBOL2Doc_test,
-				getSetOfURI("DNA"),
-				getSetOfURI("Gene"),
-				getData("pLactetR_1","pLactetR_persistentIdentity","v1.0","pLactetR","pLactetR", "pLactetR"),
-				pLactetRSeq, 
-				getStructuralInstantiation_List(P, C), 
-				null, //getStructuralAnnotation_List(p_structAnnotate, c_structAnnotate), 
-				getStructuralConstraint_List(struct_constraint)); 
-		
-		Component LacI = createComponentData(SBOL2Doc_test,
-				getSetOfURI("Protein"),
-				getSetOfURI("Transcriptionfactor"),
-				getData("LacI_1","LacI_persistentIdentity","v1.0","LacI", "LacI", "LacI"),
-				null, 
-				null, null, null); 
-		
-		Component TetR = createComponentData(SBOL2Doc_test,
-				getSetOfURI("Protein"),
-				getSetOfURI("Transcriptionfactor."),
-				getData("TetR_1","TetR_persistentIdentity","v1.0","TetR", "TetR", "TetR"),
-				null, 
-				null, null, null); 
-		
-		FunctionalInstantiation LacIIn = createFunctionalInstantiationData(
-				getData("LacIIn_1","LacIIn_persistentIdentity","v1.0","LacIIn","LacIIn", "LacIIn","public", "input"),
-				LacI);
-		
-		FunctionalInstantiation TetROut = createFunctionalInstantiationData(
-				getData("TetROut_1","TetROut_persistentIdentity","v1.0","TetROut","TetROut", "TetROut","public", "output"),
-				TetR);
-		
-		FunctionalInstantiation Inv = createFunctionalInstantiationData(
-				getData("Inv_1","Inv_persistentIdentity","v1.0","Inv","Inv", "Inv","private", "none"),
-				pLactetR);
-		
-		Participation p1 = createParticipationData(
-				getURI("participation1_1"), 
-				getSetOfURI("repressor"), 
-				LacIIn);
-		
-		Participation p2 = createParticipationData(
-				getURI("participation2_1"), 
-				getSetOfURI("repressed"), 
-				Inv);
-		
-		Interaction interact1 =  createInteractionData(
-				getData("interact1_1","interact1_persistentIdentity","v1.0","interact1","interact1", "interact1"),
-				getParticipation_List(p1, p2), 
-				getSetOfURI("repression")); 
-		
-		Participation p3 = createParticipationData(
-				getURI("participation3_1"), 
-				getSetOfURI("producer"), 
-				Inv);
-		
-		Participation p4 = createParticipationData(
-				getURI("participation4_1"), 
-				getSetOfURI("produced"), 
-				TetROut);
-		
-		Interaction interact2 =  createInteractionData(
-				getData("interact2_1","interact2_persistentIdentity","v1.0","interact2","interact2", "interact2"),
-				getParticipation_List(p3, p4), 
-				getSetOfURI("produces")); 
-		
-		Module LacI_Inv = createModuleData(SBOL2Doc_test, 
-				getSetOfURI("Inverter"),
-				getSetOfURI("Transcriptionfactor."),
-				getData("LacI_Inv_1","LacI_Inv_persistentIdentity","v1.0","LacI_Inv","LacI_Inv", "LacI_Inv"),
-				getFunctionalInstantiation_List(LacIIn, TetROut, Inv), 
-				getInteraction_List(interact1, interact2), null, null
-				);
-		
-		FunctionalInstantiation LacISp = createFunctionalInstantiationData(
-				getData("LacISp_1","LacISp_persistentIdentity","v1.0","LacISp","LacISp", "LacISp","private", "none"),
-				LacI);
-		
-		FunctionalInstantiation TetRSp = createFunctionalInstantiationData(
-				getData("TetRSp_1","TetRSp_persistentIdentity","v1.0","TetRSp","TetRSp", "TetRSp","private", "none"),
-				TetR);
-		
-		MapsTo LacISp_LacIIn = createMapTo(
-				getURI("LacISp_Mapsto_LacIIn_1"), 
-				getRefinement("merge"), 
-				LacISp, LacIIn); 
-		
-		MapsTo TetRSp_TetROut = createMapTo(
-				getURI("TetRSp_Mapsto_TetROut_1"), 
-				getRefinement("merge"), 
-				TetRSp, TetROut); 
-		
-		ModuleInstantiation Inv1 = createModuleInstantiationData(
-				getData("Inv1_1","Inv1_persistentIdentity","v1.0","Inv1","Inv1", "Inv1"),
-				LacI_Inv, 
-				getMapsTo_List(LacISp_LacIIn, TetRSp_TetROut)); 
-		
-		Model Togglemodel = createModelData(SBOL2Doc_test, 
-				getData("Togglemodel_1","Togglemodel_persistentIdentity","v1.0","Togglemodel","Togglemodel", "Togglemodel", "Togglemodel_source", "Togglemodel_language", "Togglemodel_framework"),
-				getSetOfURI("Togglemodel")
-				); 
-		
-		Module Toggle = createModuleData(SBOL2Doc_test, 
-				getSetOfURI("Toggle"),
-				getSetOfURI("Toggle"),
-				getData("Toggle_1","Toggle_persistentIdentity","v1.0","Toggle","Toggle", "Toggle"),
-				getFunctionalInstantiation_List(LacISp, TetRSp), 
-				getInteraction_List(interact1, interact2), null, null
-				);
-	}
-	
-	private static void createTetR_Inverter(SBOLDocument SBOL2Doc_test)
-	{
-		Structure pLacSeq = createStructureData(SBOL2Doc_test, 
-				getData("pLacSeq_1","pLacSeq_persistentIdentity","v1.0","pLacSeq","pLacSeq", "pLacSeq", "pLacSeq_element", "pLacSeq_encoding")); 
-		Structure tetRSeq = createStructureData(SBOL2Doc_test, 
-				getData("tetRSeq_1","tetRSeq_persistentIdentity","v1.0","tetRSeq","tetRSeq", "tetRSeq", "tetRSeq_element", "tetRSeq_encoding")); 
-		Structure pLactetRSeq = createStructureData(SBOL2Doc_test, 
-				getData("pLactetRSeq_1","pLactetRSeq_persistentIdentity","v1.0","pLactetRSeq","pLactetRSeq", "pLactetRSeq", "pLactetRSeq_element", "pLactetRSeq_encoding")); 
-	
-		Component ptet = createComponentData(SBOL2Doc_test,
-				getSetOfURI("DNA"),
-				getSetOfURI("Promoter"),
-				getData("ptet_1","ptet_persistentIdentity","v1.0","ptet","ptet", "ptet"),
-				pLacSeq, 
-				null, null, null); 
-		
-		Component lacI = createComponentData(SBOL2Doc_test,
-				getSetOfURI("DNA"),
-				getSetOfURI("CDS"),
-				getData("lacI_1","lacI_persistentIdentity","v1.0","lacI","lacI", "lacI"),
-				tetRSeq, 
-				null, null, null);
-		
-		
-		StructuralInstantiation P = createStructuralInstantiationData(
-				getData("P_1", "P_persistentIdentity", "v1.0", "P", "P", "P", "public"), 
-				ptet);
-		
-		StructuralInstantiation C = createStructuralInstantiationData(
-				getData("C_1", "C_persistentIdentity", "v1.0", "C", "C", "C", "public"), 
-				lacI);
-		
-		//NOTE: either use StructuralAnnotation OR StructuralConstraint. Never both 
-		StructuralAnnotation p_structAnnotate  = createStructuralAnnotationData(
-				getData("p_structAnnotate_1", "p_structAnnotate_persistentIdentity", "v1.0", "p_structAnnotate", "p_structAnnotate", "p_structAnnotate"), 
-				P, 
-				0, 10);
-		
-		StructuralAnnotation c_structAnnotate  = createStructuralAnnotationData(
-				getData("c_structAnnotate_1", "c_structAnnotate_persistentIdentity", "v1.0", "c_structAnnotate", "c_structAnnotate", "c_structAnnotate"), 
-				C, 
-				11, 20); 
-		
-		StructuralConstraint struct_constraint = createStructuralConstraintData(
-				getData("struct_constraint_1", "struct_constraint_persistentIdentity", "v1.0", "precedes"), 
-				P, 
-				C); 
-
-		Component ptetLacI = createComponentData(SBOL2Doc_test,
-				getSetOfURI("DNA"),
-				getSetOfURI("Gene"),
-				getData("ptetLacI_1","ptetLacI_persistentIdentity","v1.0","ptetLacI","ptetLacI", "ptetLacI"),
-				pLactetRSeq, 
-				getStructuralInstantiation_List(P, C), 
-				null, //getStructuralAnnotation_List(p_structAnnotate, c_structAnnotate), 
-				getStructuralConstraint_List(struct_constraint)); 
-		
-		Component TetR = createComponentData(SBOL2Doc_test,
-				getSetOfURI("Protein"),
-				getSetOfURI("Transcriptionfactor"),
-				getData("TetR_1","TetR_persistentIdentity","v1.0","TetR", "TetR", "TetR"),
-				null, 
-				null, null, null); 
-		
-		Component LacI = createComponentData(SBOL2Doc_test,
-				getSetOfURI("Protein"),
-				getSetOfURI("Transcriptionfactor."),
-				getData("LacI_1","LacI_persistentIdentity","v1.0","LacI", "LacI", "LacI"),
-				null, 
-				null, null, null); 
-		
-		FunctionalInstantiation TetRIn = createFunctionalInstantiationData(
-				getData("TetRIn_1","TetRIn_persistentIdentity","v1.0","TetRIn","TetRIn", "TetRIn","public", "input"),
-				TetR);
-		
-		FunctionalInstantiation LacIOut = createFunctionalInstantiationData(
-				getData("LacIOut_1","LacIOut_persistentIdentity","v1.0","LacIOut","LacIOut", "LacIOut","public", "output"),
-				LacI);
-		
-		FunctionalInstantiation Inv = createFunctionalInstantiationData(
-				getData("Inv_1","Inv_persistentIdentity","v1.0","Inv","Inv", "Inv","private", "none"),
-				ptetLacI);
-		
-		Participation p1 = createParticipationData(
-				getURI("participation1_1"), 
-				getSetOfURI("repressor"), 
-				TetRIn);
-		
-		Participation p2 = createParticipationData(
-				getURI("participation2_1"), 
-				getSetOfURI("repressed"), 
-				Inv);
-		
-		Interaction interact1 =  createInteractionData(
-				getData("interact1_1","interact1_persistentIdentity","v1.0","interact1","interact1", "interact1"),
-				getParticipation_List(p1, p2), 
-				getSetOfURI("repression")); 
-		
-		Participation p3 = createParticipationData(
-				getURI("participation3_1"), 
-				getSetOfURI("producer"), 
-				Inv);
-		
-		Participation p4 = createParticipationData(
-				getURI("participation4_1"), 
-				getSetOfURI("produced"), 
-				LacIOut);
-		
-		Interaction interact2 =  createInteractionData(
-				getData("interact2_1","interact2_persistentIdentity","v1.0","interact2","interact2", "interact2"),
-				getParticipation_List(p3, p4), 
-				getSetOfURI("produces")); 
-		
-		Module LacI_Inv = createModuleData(SBOL2Doc_test, 
-				getSetOfURI("Inverter"),
-				getSetOfURI("Transcriptionfactor."),
-				getData("LacI_Inv_1","LacI_Inv_persistentIdentity","v1.0","LacI_Inv","LacI_Inv", "LacI_Inv"),
-				getFunctionalInstantiation_List(TetRIn, LacIOut, Inv), 
-				getInteraction_List(interact1, interact2), null, null
-				); 
-	}
 	
 	private static Collection createCollection(SBOLDocument SBOL2Doc_test, List<String> collectionData)
 	{	
@@ -939,6 +777,11 @@ public class writeTester {
 		return new ArrayList<FunctionalInstantiation>(Arrays.asList(fi)); 
 	}
 	
+	private static List<ModuleInstantiation> getModuleInstantiation_List(ModuleInstantiation ... mi)
+	{
+		return new ArrayList<ModuleInstantiation>(Arrays.asList(mi)); 
+	}
+	
 	private static List<Interaction> getInteraction_List(Interaction ... i)
 	{
 		return new ArrayList<Interaction>(Arrays.asList(i)); 
@@ -975,6 +818,16 @@ public class writeTester {
 	private static List<Participation> getParticipation_List(Participation ... p)
 	{
 		return new ArrayList<Participation>(Arrays.asList(p)); 
+	}
+	
+	private static Set<URI> getSetOfURI(URI ... uriS)
+	{
+		Set<URI> list = new HashSet<URI>();
+		for(URI uri : uriS)
+		{
+			list.add(uri);
+		}
+		return list; 
 	}
 	
 	private static Set<URI> getSetOfURI(String ... appends)
