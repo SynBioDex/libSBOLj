@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -83,7 +84,8 @@ public class ModuleInstantiation extends Documented {
 	 * @return the list of reference instances owned by this instance.
 	 */
 	public List<MapsTo> getReferences() {
-		return (List<MapsTo>) references.values();
+//		return (List<MapsTo>) references.values();
+		return new ArrayList<MapsTo>(references.values());
 	}
 	
 	/**

@@ -215,7 +215,7 @@ public class Sbol2Terms
 	   */
 	  public static final class ModuleInstantiation {
 		  public static final QName ModuleInstantiation 	= sbol2.withLocalPart("ModuleInstantiation");
-		  public static final QName hasReferences			= sbol2.withLocalPart("references");
+		  public static final QName hasReferences			= sbol2.withLocalPart("reference");
 		  public static final QName hasInstantiatedModule	= sbol2.withLocalPart("instantiatedModule");
 		  public static final QName displayId 		   		= Documented.displayId;  
 		  public static final QName name 			   		= Documented.name;

@@ -6,7 +6,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Set;
 import java.net.URI;
-//import java.util.Collection;
 import java.util.List;
 
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
@@ -38,8 +37,6 @@ public class SBOLWriter {
 	 * 
 	 * TODO:
 	 * make various types of write() with diff. params.
-	 * make common data (i.e. persistentidentity, name, displayId into seperate methods. 
-	 * 
 	 */
 	
 	/**
@@ -106,7 +103,13 @@ public class SBOLWriter {
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			getCommonTopLevelData(list, c);
-//			c.getMembers()
+			if(c.getMembers() != null)
+			{
+				for (URI member : c.getMembers())
+				{
+					list.add(NamedProperty(Sbol2Terms.Collection.hasMembers, member)); 
+				}
+			}
 	
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Collection.Collection, c.getIdentity(), NamedProperties(list)));
 		}
@@ -159,6 +162,13 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.Model.language, m.getLanguage()));
 			if(m.getFramework() != null)
 				list.add(NamedProperty(Sbol2Terms.Model.framework, m.getFramework()));
+			if(m.getRoles() != null)
+			{
+				for (URI role : m.getRoles())
+				{
+					list.add(NamedProperty(Sbol2Terms.Model.roles, role));
+				}
+			}
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Model.Model, m.getIdentity(), NamedProperties(list)));
 		}
@@ -174,16 +184,15 @@ public class SBOLWriter {
 
 			if(m.getRoles() != null)
 			{
-				for (URI roles : m.getRoles())
+				for (URI role : m.getRoles())
 				{
-					list.add(NamedProperty(Sbol2Terms.Module.roles, roles.toString()));
+					list.add(NamedProperty(Sbol2Terms.Module.roles, role));
 				}
 			}
 			
 			getFunctionalInstantiations(m.getFunctionalInstantiations(),list);	
 			getInteractions(m.getInteractions(),list); 
 			getModels(m.getModels(),list); 
-			getModels(m.getModels(), list);
 			getModuleInstantiation(m.getModuleInstantiations(),list);
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Module.Module, m.getIdentity(), NamedProperties(list)));
@@ -207,7 +216,6 @@ public class SBOLWriter {
 		
 	}
 	
-	
 	/**
 	 * getFunctionalInstantiations for Module
 	 * @param functionalInstantiation
@@ -224,7 +232,11 @@ public class SBOLWriter {
 			
 			if(f.getInstantiatedComponent() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstantiation.hasInstantiatedComponent, f.getInstantiatedComponent()));
-			
+			if(f.getAccess() != null)
+				list.add(NamedProperty(Sbol2Terms.FunctionalInstantiation.access, f.getAccess().getAccessTypeAlias()));
+			if(f.getDirection() != null)
+				list.add(NamedProperty(Sbol2Terms.FunctionalInstantiation.direction, f.getDirection().name()));	
+				
 			properties.add(NamedProperty(Sbol2Terms.Module.hasfunctionalInstantiations, 
 					NestedDocument( Sbol2Terms.FunctionalInstantiation.FunctionalInstantiation, 
 					f.getIdentity(), NamedProperties(list))));
@@ -243,21 +255,8 @@ public class SBOLWriter {
 		for(Interaction i : interactions)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-		
-			if(i.getPersistentIdentity() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, i.getPersistentIdentity()));
-			if(i.getVersion() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.version, i.getVersion()));
+			getCommonDocumentedData(list, i);
 			
-			if(i.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, i.getDisplayId()));
-			if(i.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, i.getName()));
-			if(i.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, i.getDescription()));
-			
-			//TODO: participation is its own class. 
-			//TODO: iterate through each getType()
 			if(i.getType() != null)
 			{	
 				for(URI type : i.getType())
@@ -266,8 +265,15 @@ public class SBOLWriter {
 				}
 			}
 			
-			//TODO: double check if participant is correct
-			getParticipations(i.getParticipations(), list);
+			if(i.getParticipations() != null)
+			{
+				List<NestedDocument> participantList = getParticipations(i.getParticipations());
+
+				for(NestedDocument n : participantList)
+				{
+					list.add(NamedProperty(Sbol2Terms.Participation.Participation, n));
+				}
+			}
 			
 			properties.add(NamedProperty(Sbol2Terms.Module.hasInteractions, 
 					NestedDocument( Sbol2Terms.Interaction.Interaction, 
@@ -275,20 +281,25 @@ public class SBOLWriter {
 		}
 	}
 	
-	private static void getParticipations(List<Participation> participations, List<NamedProperty<QName>> list)
+	private static List<NestedDocument> getParticipations(List<Participation> participations)
 	{
-		if (participations != null)
+		List<NestedDocument> nestedDoc = new ArrayList<NestedDocument>(); 
+		
 			for(Participation p : participations)
 			{
+				List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>(); 
+				
 				list.add(NamedProperty(Sbol2Terms.Identified.identity,p.getIdentity()));
-				//roles
 				if(p.getRoles() != null)
 					for(URI r : p.getRoles())
-						list.add(NamedProperty(Sbol2Terms.Participation.role, r)); 
-				//participant
+						list.add(NamedProperty(Sbol2Terms.Participation.role, r));
 				if(p.getParticipant() != null)
 					list.add(NamedProperty(Sbol2Terms.Participation.hasParticipant, p.getParticipant())); 
+				
+				nestedDoc.add(NestedDocument(Sbol2Terms.Participation.Participation, p.getIdentity(), NamedProperties(list)));
 			}
+		
+		return nestedDoc; 
 	}
 	
 	private static void getModels(Set<URI> models, List<NamedProperty<QName>> list)
@@ -310,15 +321,49 @@ public class SBOLWriter {
 		for(ModuleInstantiation m : moduleInstantiation)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-		
+
 			getCommonDocumentedData(list, m);
-			
-//			if(m.getInstantiatedModule() != null) //TODO
-				
+
+			if(m.getInstantiatedModule() != null)
+				list.add(NamedProperty(Sbol2Terms.ModuleInstantiation.hasInstantiatedModule, m.getInstantiatedModule()));	
+
+			if(m.getReferences() != null)	
+			{
+				List<NestedDocument> referenceList = getReferences(m.getReferences());
+
+				for(NestedDocument n : referenceList)
+				{
+					list.add(NamedProperty(Sbol2Terms.ModuleInstantiation.hasReferences, n));
+				}
+			}
+
 			properties.add(NamedProperty(Sbol2Terms.Module.hasModuleInstantiations, 
 					NestedDocument( Sbol2Terms.ModuleInstantiation.ModuleInstantiation, 
-					m.getIdentity(), NamedProperties(list))));
+							m.getIdentity(), NamedProperties(list))));
 		}
+	}
+
+	private static List<NestedDocument> getReferences(List<MapsTo> references)
+	{
+		List<NestedDocument> nestedDoc = new ArrayList<NestedDocument>(); 
+
+		for(MapsTo m : references)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>(); 
+
+			if(m.getIdentity() != null)
+				list.add(NamedProperty(Sbol2Terms.RefersTo.identity, m.getIdentity()));
+			if(m.getRefinement() != null)
+				list.add(NamedProperty(Sbol2Terms.RefersTo.refinement, m.getRefinement().name()));
+			if(m.getRemote() != null)
+				list.add(NamedProperty(Sbol2Terms.RefersTo.hasRemote, m.getRemote())); 
+			if(m.getLocal() != null)
+				list.add(NamedProperty(Sbol2Terms.RefersTo.hasLocal, m.getLocal())); 
+
+			nestedDoc.add(NestedDocument(Sbol2Terms.RefersTo.RefersTo, m.getIdentity(), NamedProperties(list)));
+		}
+
+		return nestedDoc; 
 	}
 	
 	private static void getStructure(URI structure, List<NamedProperty<QName>> list)
@@ -335,9 +380,9 @@ public class SBOLWriter {
 
 			getCommonDocumentedData(list, s);
 			if(s.getLocation() != null)
+			{
 				list.add(getLocation(s.getLocation())); 
-			//	`
-//			getRefStructuralInstantiation(s.getStructuralInstantiation()); 
+			}
 
 			properties.add(NamedProperty(Sbol2Terms.Component.hasStructuralAnnotations, 
 					NestedDocument( Sbol2Terms.StructuralAnnotation.StructuralAnnotation, 
@@ -396,20 +441,10 @@ public class SBOLWriter {
 		for(StructuralInstantiation s : structuralInstantiations)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			
-			if(s.getPersistentIdentity() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, s.getPersistentIdentity()));
-			if(s.getVersion() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.version, s.getVersion()));
-			if(s.getDisplayId() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.displayId, s.getDisplayId()));
-			if(s.getName() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.name, s.getName()));
-			if(s.getDescription() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.description, s.getDescription()));
+
+			getCommonDocumentedData(list, s);
 			if(s.getInstantiatedComponent() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstantiation.ComponentInstantiation, s.getInstantiatedComponent()));
-					
 
 			properties.add(NamedProperty(Sbol2Terms.Component.hasStructuralInstantiations, 
 					NestedDocument( Sbol2Terms.StructuralInstantiation.StructuralInstantiation, 

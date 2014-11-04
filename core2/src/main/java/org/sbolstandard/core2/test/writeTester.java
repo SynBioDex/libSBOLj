@@ -50,6 +50,8 @@ public class writeTester {
 		myParts.addMember(get_ptetlacI(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_TetR_Inv(SBOL2Doc_test).getIdentity());
 		
+		myParts.addMember(get_Toggle(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_ToggleModel(SBOL2Doc_test).getIdentity());
 		SBOLWriter.write(SBOL2Doc_test,(System.out));
 	}
 	
@@ -403,14 +405,14 @@ public class writeTester {
 	private static FunctionalInstantiation get_LacISp (SBOLDocument SBOL2Doc_test)
 	{
 		return createFunctionalInstantiationData(
-				getData("LacISp_1","LacISp_persistentIdentity","v1.0","LacISp","LacISp", "LacISp"),
+				getData("LacISp_1","LacISp_persistentIdentity","v1.0","LacISp","LacISp", "LacISp", "public", "input"),
 				get_LacI(SBOL2Doc_test));
 	}
 	
 	private static FunctionalInstantiation get_TetRSp (SBOLDocument SBOL2Doc_test)
 	{
 		return createFunctionalInstantiationData(
-				getData("TetRSp_1","TetRSp_persistentIdentity","v1.0","TetRSp","TetRSp", "TetRSp"),
+				getData("TetRSp_1","TetRSp_persistentIdentity","v1.0","TetRSp","TetRSp", "TetRSp", "public", "input"),
 				get_TetR(SBOL2Doc_test));
 	}
 	
@@ -657,9 +659,9 @@ public class writeTester {
 		ModuleInstantiation modInstantiation = new ModuleInstantiation(identity, m.getIdentity()); 
 		setCommonDocumentedData(modInstantiation, identity, persistentIdentity, version, displayId, name, description);
 
-		
 		for(MapsTo map : maps)
 			modInstantiation.addReference(map);
+		
 		return modInstantiation; 
 	}
 	
