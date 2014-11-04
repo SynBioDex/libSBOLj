@@ -215,7 +215,7 @@ public class Sbol2Terms
 	   */
 	  public static final class ModuleInstantiation {
 		  public static final QName ModuleInstantiation 	= sbol2.withLocalPart("ModuleInstantiation");
-		  public static final QName hasReferences			= sbol2.withLocalPart("reference");
+		  public static final QName hasMapping			= sbol2.withLocalPart("mapping");
 		  public static final QName hasInstantiatedModule	= sbol2.withLocalPart("instantiatedModule");
 		  public static final QName displayId 		   		= Documented.displayId;  
 		  public static final QName name 			   		= Documented.name;
@@ -314,8 +314,8 @@ public class Sbol2Terms
 	   * A group of qualified terms for refersTo related SBOL objects
 	   *
 	   */
-	  public static final class RefersTo {
-		  public static final QName RefersTo 		   = sbol2.withLocalPart("RefersTo");
+	  public static final class MapsTo {
+		  public static final QName MapsTo 		   = sbol2.withLocalPart("MapsTo");
 		  public static final QName refinement 		   = sbol2.withLocalPart("refinement");
 		  public static final QName hasRemote 		   = sbol2.withLocalPart("remote"); 
 		  public static final QName hasLocal 		   = sbol2.withLocalPart("local");

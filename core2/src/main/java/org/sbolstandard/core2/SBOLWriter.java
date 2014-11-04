@@ -271,7 +271,7 @@ public class SBOLWriter {
 
 				for(NestedDocument n : participantList)
 				{
-					list.add(NamedProperty(Sbol2Terms.Participation.Participation, n));
+					list.add(NamedProperty(Sbol2Terms.Interaction.hasParticipations, n));
 				}
 			}
 			
@@ -333,7 +333,7 @@ public class SBOLWriter {
 
 				for(NestedDocument n : referenceList)
 				{
-					list.add(NamedProperty(Sbol2Terms.ModuleInstantiation.hasReferences, n));
+					list.add(NamedProperty(Sbol2Terms.ModuleInstantiation.hasMapping, n));
 				}
 			}
 
@@ -352,15 +352,15 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>(); 
 
 			if(m.getIdentity() != null)
-				list.add(NamedProperty(Sbol2Terms.RefersTo.identity, m.getIdentity()));
+				list.add(NamedProperty(Sbol2Terms.MapsTo.identity, m.getIdentity()));
 			if(m.getRefinement() != null)
-				list.add(NamedProperty(Sbol2Terms.RefersTo.refinement, m.getRefinement().name()));
+				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinement().name()));
 			if(m.getRemote() != null)
-				list.add(NamedProperty(Sbol2Terms.RefersTo.hasRemote, m.getRemote())); 
+				list.add(NamedProperty(Sbol2Terms.MapsTo.hasRemote, m.getRemote())); 
 			if(m.getLocal() != null)
-				list.add(NamedProperty(Sbol2Terms.RefersTo.hasLocal, m.getLocal())); 
+				list.add(NamedProperty(Sbol2Terms.MapsTo.hasLocal, m.getLocal())); 
 
-			nestedDoc.add(NestedDocument(Sbol2Terms.RefersTo.RefersTo, m.getIdentity(), NamedProperties(list)));
+			nestedDoc.add(NestedDocument(Sbol2Terms.MapsTo.MapsTo, m.getIdentity(), NamedProperties(list)));
 		}
 
 		return nestedDoc; 
