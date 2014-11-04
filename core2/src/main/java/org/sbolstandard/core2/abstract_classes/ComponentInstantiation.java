@@ -12,7 +12,7 @@ public abstract class ComponentInstantiation extends Documented {
 	
 	private AccessType access;
 	private URI instantiatedComponent;
-	private HashMap<URI, MapsTo> references;
+	private HashMap<URI, MapsTo> mappings;
 	
 //	public ComponentInstantiation(URI identity, URI componentIdentity, AccessType access, List<URI> type, List<URI> roles) {
 //		super(identity);
@@ -26,7 +26,7 @@ public abstract class ComponentInstantiation extends Documented {
 		super(identity);
 		setAccess(access);
 		setInstantiatedComponent(instantiatedComponent);		
-		this.references = new HashMap<URI, MapsTo>();
+		this.mappings = new HashMap<URI, MapsTo>();
 	}
 	
 	
@@ -50,8 +50,8 @@ public abstract class ComponentInstantiation extends Documented {
 	 * Test if optional field variable <code>references</code> is set.
 	 * @return <code>true</code> if it is not an empty list
 	 */
-	public boolean isSetReferences() {
-		if (references.isEmpty())
+	public boolean isSetMappings() {
+		if (mappings.isEmpty())
 			return false;
 		else
 			return true;
@@ -66,29 +66,29 @@ public abstract class ComponentInstantiation extends Documented {
 	 * @param remote
 	 * @return the created MapsTo instance. 
 	 */
-	public MapsTo createReference(URI identity, RefinementType refinement, 
+	public MapsTo createMapping(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
-		MapsTo reference = new MapsTo(identity, refinement, local, remote);
-		addReference(reference);
-		return reference;
+		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
+		addMapping(mapping);
+		return mapping;
 	}
 	
 	/**
 	 * Adds the specified instance to the list of references. 
 	 * @param reference
 	 */
-	public void addReference(MapsTo reference) {
+	public void addMapping(MapsTo reference) {
 		// TODO: @addReference, Check for duplicated entries.
-		references.put(reference.getIdentity(), reference);
+		mappings.put(reference.getIdentity(), reference);
 	}
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of references if present.
-	 * @param referenceURI
+	 * @param mappingURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo removeReference(URI referenceURI) {
-		return references.remove(referenceURI);
+	public MapsTo removeMapping(URI mappingURI) {
+		return mappings.remove(mappingURI);
 	}
 	
 	/**
@@ -96,37 +96,37 @@ public abstract class ComponentInstantiation extends Documented {
 	 * @param referenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo getReference(URI referenceURI) {
-		return references.get(referenceURI);
+	public MapsTo getMapping(URI referenceURI) {
+		return mappings.get(referenceURI);
 	}
 	
 	/**
 	 * Returns the list of reference instances owned by this instance. 
 	 * @return the list of reference instances owned by this instance.
 	 */
-	public List<MapsTo> getReferences() {
-		return (List<MapsTo>) references.values();
+	public List<MapsTo> getMappings() {
+		return (List<MapsTo>) mappings.values();
 	}
 	
 	/**
 	 * Removes all entries of the list of reference instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearReferences() {
-		Object[] keySetArray = references.keySet().toArray();
+	public void clearMappings() {
+		Object[] keySetArray = mappings.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeReference((URI) key);
+			removeMapping((URI) key);
 		}
 	}
 		
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param references
+	 * @param mappings
 	 */
-	public void setReferences(
-			List<MapsTo> references) {
-		clearReferences();		
-		for (MapsTo reference : references) {
-			addReference(reference);
+	public void setMappings(
+			List<MapsTo> mappings) {
+		clearMappings();		
+		for (MapsTo reference : mappings) {
+			addMapping(reference);
 		}
 	}
 	

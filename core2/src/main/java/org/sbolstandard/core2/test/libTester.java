@@ -38,13 +38,13 @@ public class libTester {
 		
 		MapsTo mapto_LacI_input = new MapsTo(mapto_LacI_inputURI, RefinementType.verifyIdentical, LacI_localURI, LacI_remoteURI);
 		MapsTo mapto_TetR_output = new MapsTo(mapto_TetR_outputURI, RefinementType.verifyIdentical, TetR_localURI, TetR_remoteURI);
-		inv1.addReference(mapto_LacI_input);
+		inv1.addMapping(mapto_LacI_input);
 		
 		
 		// Instantiate TetR Inverter
 		ModuleInstantiation inv2 = toggleModule.createModuleInstantiation(inv2URI, TetR_InverterURI);
 		MapsTo mapto_TetR_Inverter = new MapsTo(mapto_TetR_InverterURI, RefinementType.verifyIdentical, inv2URI, TetR_InverterURI);
-		inv2.addReference(mapto_TetR_Inverter);
+		inv2.addMapping(mapto_TetR_Inverter);
 		
 	}
 

@@ -327,9 +327,9 @@ public class SBOLWriter {
 			if(m.getInstantiatedModule() != null)
 				list.add(NamedProperty(Sbol2Terms.ModuleInstantiation.hasInstantiatedModule, m.getInstantiatedModule()));	
 
-			if(m.getReferences() != null)	
+			if(m.getMappings() != null)	
 			{
-				List<NestedDocument> referenceList = getReferences(m.getReferences());
+				List<NestedDocument> referenceList = getReferences(m.getMappings());
 
 				for(NestedDocument n : referenceList)
 				{
