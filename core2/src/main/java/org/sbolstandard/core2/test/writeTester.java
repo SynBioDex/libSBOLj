@@ -623,7 +623,7 @@ public class writeTester {
 	
 	private static Turtle createTurtle()
 	{
-		return new Turtle(); 
+		return new Turtle("turtleString");
 	}
 	
 	private static MapsTo createMapTo (URI identity, RefinementType refinement, 
