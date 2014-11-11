@@ -2,11 +2,13 @@ package org.sbolstandard.core2.abstract_classes;
 
 import java.net.URI;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 import org.sbolstandard.core2.Annotation;
+import org.sbolstandard.core2.ModuleInstantiation;
 import org.sbolstandard.core2.Turtle;
 
 /**
@@ -205,7 +207,8 @@ public abstract class Identified {
 	 * @return the list of structuralAnnotation instances owned by this instance.
 	 */
 	public List<Annotation> getAnnotations() {
-		return (List<Annotation>) annotations.values();
+//		return (List<Annotation>) annotations.values();
+		return new ArrayList<Annotation>(annotations.values());
 	}
 	
 	/**

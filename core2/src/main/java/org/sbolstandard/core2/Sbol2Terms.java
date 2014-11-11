@@ -10,6 +10,11 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
  */
 public class Sbol2Terms
 {	
+	/*TODO: 
+	 * Update variables to new name based on spreadsheet sent from Nic
+	 * Each class created in the method should be plural
+	 */
+	
 	/**
 	 * The namespace binding for SBOL2.0 
 	 */
@@ -48,12 +53,12 @@ public class Sbol2Terms
 	   */
 	  public static final class Component {
 		  public static final QName Component 	 				= sbol2.withLocalPart("Component");
-		  public static final QName types 	  	 				= sbol2.withLocalPart("types");
-		  public static final QName roles 	  	 				= sbol2.withLocalPart("roles");
+		  public static final QName types 	  	 				= sbol2.withLocalPart("type");
+		  public static final QName roles 	  	 				= sbol2.withLocalPart("role");
 		  public static final QName hasStructure 				= sbol2.withLocalPart("structure");
-		  public static final QName hasStructuralAnnotations 	= sbol2.withLocalPart("structuralAnnotations");
-		  public static final QName hasStructuralConstraints 	= sbol2.withLocalPart("structuralConstraints");
-		  public static final QName hasStructuralInstantiations = sbol2.withLocalPart("structuralInstantiations");
+		  public static final QName hasStructuralAnnotations 	= sbol2.withLocalPart("structuralAnnotation");
+		  public static final QName hasStructuralConstraints 	= sbol2.withLocalPart("structuralConstraint");
+		  public static final QName hasStructuralInstantiations = sbol2.withLocalPart("structuralInstantiation");
 		  public static final QName displayId 		   			= Documented.displayId;  
 		  public static final QName name 			   			= Documented.name;
 		  public static final QName description 	   			= Documented.description;
@@ -71,7 +76,7 @@ public class Sbol2Terms
 		  public static final QName ComponentInstantiation 	 = sbol2.withLocalPart("ComponentInstantiation");
 		  public static final QName access 					 = sbol2.withLocalPart("access");  
 		  public static final QName hasInstantiatedComponent = sbol2.withLocalPart("instantiatedComponent");
-		  public static final QName hasReferences 			 = sbol2.withLocalPart("references"); 
+		  public static final QName hasReferences 			 = sbol2.withLocalPart("reference"); 
 		  public static final QName displayId 		   		 = Documented.displayId;  
 		  public static final QName name 			   		 = Documented.name;
 		  public static final QName description 	   		 = Documented.description;
@@ -133,7 +138,7 @@ public class Sbol2Terms
 	  public static final class Identified {
 		  public static final QName Identified 	   	   = sbol2.withLocalPart("Identified"); 
 		  public static final QName identity   	   	   = sbol2.withLocalPart("identity"); 
-//		  public static final QName hasAnnotations 	   = sbol2.withLocalPart("annotations");
+		  public static final QName hasAnnotations 	   = sbol2.withLocalPart("annotation");
 		  public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity");
 		  public static final QName version   	  	   = sbol2.withLocalPart("version");
 		  public static final QName timeStamp   	   = sbol2.withLocalPart("timeStamp"); 
@@ -146,7 +151,7 @@ public class Sbol2Terms
 	  public static final class Interaction {
 		  public static final QName Interaction 	   = sbol2.withLocalPart("Interaction");
 		  public static final QName type 			   = sbol2.withLocalPart("type");
-		  public static final QName hasParticipations  = sbol2.withLocalPart("participations");
+		  public static final QName hasParticipations  = sbol2.withLocalPart("participation");
 		  public static final QName displayId 		   = Documented.displayId;  
 		  public static final QName name 			   = Documented.name;
 		  public static final QName description 	   = Documented.description;
@@ -331,7 +336,7 @@ public class Sbol2Terms
 	   */
 	  public static final class Structure {
 		  public static final QName Structure 		   = sbol2.withLocalPart("Structure"); 
-		  public static final QName elements  		   = sbol2.withLocalPart("elements"); 
+		  public static final QName elements  		   = sbol2.withLocalPart("element"); 
 		  public static final QName encoding  		   = sbol2.withLocalPart("encoding"); 
 		  public static final QName displayId 		   = Documented.displayId;  
 		  public static final QName name 			   = Documented.name;
