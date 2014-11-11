@@ -699,7 +699,7 @@ public class writeTester {
 		setCommonDocumentedData(modInstantiation, identity, persistentIdentity, version, displayId, name, description);
 
 		for(MapsTo map : maps)
-			modInstantiation.addReference(map);
+			modInstantiation.addMapping(map);
 		
 		return modInstantiation; 
 	}

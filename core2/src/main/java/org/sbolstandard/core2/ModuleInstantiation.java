@@ -15,13 +15,13 @@ import org.sbolstandard.core2.abstract_classes.Documented;
  */
 public class ModuleInstantiation extends Documented {
 	
-	private HashMap<URI, MapsTo> references;
+	private HashMap<URI, MapsTo> mappings;
 	private URI instantiatedModule;
 	
 	public ModuleInstantiation(URI identity, URI instantiatedModule) {
 		super(identity);
 		setInstantiatedModule(instantiatedModule);
-		this.references = new HashMap<URI, MapsTo>();
+		this.mappings = new HashMap<URI, MapsTo>();
 	}
 
 	
@@ -45,8 +45,8 @@ public class ModuleInstantiation extends Documented {
 	 * Test if optional field variable <code>references</code> is set.
 	 * @return <code>true</code> if it is not an empty list
 	 */
-	public boolean isSetReferences() {
-		if (references.isEmpty())
+	public boolean isSetMappings() {
+		if (mappings.isEmpty())
 			return false;
 		else
 			return true;
@@ -56,9 +56,9 @@ public class ModuleInstantiation extends Documented {
 	 * Adds the specified instance to the list of references. 
 	 * @param reference
 	 */
-	public void addReference(MapsTo reference) {
+	public void addMapping(MapsTo reference) {
 		// TODO: @addReference, Check for duplicated entries.
-		references.put(reference.getIdentity(), reference);
+		mappings.put(reference.getIdentity(), reference);
 	}
 	
 	/**
@@ -66,8 +66,8 @@ public class ModuleInstantiation extends Documented {
 	 * @param referenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo removeReference(URI referenceURI) {
-		return references.remove(referenceURI);
+	public MapsTo removeMapping(URI referenceURI) {
+		return mappings.remove(referenceURI);
 	}
 	
 	/**
@@ -75,38 +75,38 @@ public class ModuleInstantiation extends Documented {
 	 * @param referenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo getReference(URI referenceURI) {
-		return references.get(referenceURI);
+	public MapsTo getMapping(URI referenceURI) {
+		return mappings.get(referenceURI);
 	}
 	
 	/**
 	 * Returns the list of reference instances owned by this instance.
 	 * @return the list of reference instances owned by this instance.
 	 */
-	public List<MapsTo> getReferences() {
+	public List<MapsTo> getMappings() {
 //		return (List<MapsTo>) references.values();
-		return new ArrayList<MapsTo>(references.values());
+		return new ArrayList<MapsTo>(mappings.values());
 	}
 	
 	/**
 	 * Removes all entries of the list of reference instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearReferences() {
-		Object[] keySetArray = references.keySet().toArray();
+	public void clearMappings() {
+		Object[] keySetArray = mappings.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeReference((URI) key);
+			removeMapping((URI) key);
 		}
 	}
 		
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param references
+	 * @param mappings
 	 */
-	public void setReferences(
-			List<MapsTo> references) {
-		clearReferences();		
-		for (MapsTo reference : references) {
-			addReference(reference);
+	public void setMappings(
+			List<MapsTo> mappings) {
+		clearMappings();		
+		for (MapsTo mapping : mappings) {
+			addMapping(mapping);
 		}
 	}
 	
