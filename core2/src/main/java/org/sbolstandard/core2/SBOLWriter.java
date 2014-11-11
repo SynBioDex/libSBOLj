@@ -1,24 +1,33 @@
 package org.sbolstandard.core2;
 
+import java.io.*;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Set;
-import java.net.URI;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
-import javanet.staxutils.IndentingXMLStreamWriter;
+import uk.ac.ncl.intbio.core.io.json.JsonIo;
+import uk.ac.ncl.intbio.core.io.json.StringifyQName;
+import uk.ac.intbio.core.io.turtle.TurtleIo;
 
+import javax.json.*;
+import javax.json.stream.JsonGenerator;
+import javanet.staxutils.IndentingXMLStreamWriter;
 import javax.xml.namespace.QName; 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
+
 
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Identified;
@@ -36,7 +45,7 @@ public class SBOLWriter {
 	 * all checks for != null will be change to isSet()
 	 * 
 	 * TODO:
-	 * make various types of write() with diff. params.
+	 * Make sure Range, Cut...etc should be included in the correct method. 
 	 */
 	
 	/**
@@ -45,7 +54,6 @@ public class SBOLWriter {
 	 * @param out
 	 */
 	public static void write(SBOLDocument doc, OutputStream out) {
-		//TODO: annotation
 		List<TopLevelDocument<QName>> topLevelDoc = new ArrayList<TopLevelDocument<QName>>();
 		formatCollections(doc.getCollections(), topLevelDoc);
 		formatModules(doc.getModules(), topLevelDoc); 		
@@ -54,13 +62,15 @@ public class SBOLWriter {
 		formatStructures(doc.getStructures(), topLevelDoc); 
 		
 		try {
-			write(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
+			writeRdf(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
+//			writeJson(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
+//			writeTurtle(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
 		} 
 		catch(Exception e) { e.printStackTrace();} 
 		
 	}
 	
-	private static void write(Writer stream, DocumentRoot<QName> document) throws Exception
+	public static void writeRdf(Writer stream, DocumentRoot<QName> document) throws Exception
 	{
 		XMLStreamWriter xmlWriter = new IndentingXMLStreamWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(stream));
 		RdfIo rdfIo = new RdfIo();
@@ -69,23 +79,45 @@ public class SBOLWriter {
 		xmlWriter.close();
 	}
 	
+	public static void writeJson(Writer stream, DocumentRoot<QName> document) throws Exception
+	{
+		Map<String, Object> config = new HashMap<>();
+		config.put(JsonGenerator.PRETTY_PRINTING, true);
+		JsonGenerator writer = Json.createGeneratorFactory(config).createGenerator(stream);
+		JsonIo jsonIo = new JsonIo();
+		jsonIo.createIoWriter(writer).write(StringifyQName.qname2string.mapDR(document));
+		writer.flush();
+		writer.close();
+	}
+	
+	public static void writeTurtle(Writer stream, DocumentRoot<QName> document) throws Exception
+	{
+		PrintWriter printWriter = new PrintWriter(stream);
+		TurtleIo turtleIo = new TurtleIo();
+		turtleIo.createIoWriter(printWriter).write(document);
+		printWriter.flush();
+	}
+	
 	private static void getCommonIdentifiedData (List<NamedProperty<QName>> list, Identified t)
 	{
-		if(t.getPersistentIdentity() != null)
-			list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, t.getPersistentIdentity()));
-		if(t.getVersion() != null)
-			list.add(NamedProperty(Sbol2Terms.Documented.version, t.getVersion()));
+		//TODO: suppress getPersistentIdentity() & getVersion() for now. 
+//		if(t.getPersistentIdentity() != null)
+//			list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, t.getPersistentIdentity()));
+//		if(t.getVersion() != null)
+//			list.add(NamedProperty(Sbol2Terms.Documented.version, t.getVersion()));
 		if(t.getTimeStamp() != null)
 			list.add(NamedProperty(Sbol2Terms.Documented.timeStamp, t.getTimeStamp().toString()));
-		// TODO output annotations
-//		t.getAnnotations()
+		//TODO: wait until Zhen makes the correction in Turtle object before implementing. 
+//		if(t.getAnnotations() != null) 
+//			getAnnotations(t.getAnnotations(), list);
 	}
 	
 	private static void getCommonDocumentedData (List<NamedProperty<QName>> list, Documented d)
 	{
 		getCommonIdentifiedData(list, d);
-		if(d.getDisplayId() != null)
-			list.add(NamedProperty(Sbol2Terms.Documented.displayId, d.getDisplayId()));
+		//TODO: suppress getDisplayId() for now. 
+//		if(d.getDisplayId() != null)
+//			list.add(NamedProperty(Sbol2Terms.Documented.displayId, d.getDisplayId()));
 		if(d.getName() != null)
 			list.add(NamedProperty(Sbol2Terms.Documented.name, d.getName()));
 		if(d.getDescription() != null)
@@ -216,6 +248,23 @@ public class SBOLWriter {
 		
 	}
 	
+	private static void getAnnotations(List<Annotation> annotations, List<NamedProperty<QName>> list)
+	{
+		//TODO: turtle value printing out weird due to .toString cast. and should annotation have own section?
+//		List<NestedDocument> nestedDoc = new ArrayList<NestedDocument>(); 
+		for(Annotation a : annotations)
+		{
+//			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			if(a.getRelation() != null)
+				list.add(NamedProperty(Sbol2Terms.Annotation.relation, a.getRelation()));
+			if(a.getLiteral() != null)
+				list.add(NamedProperty(Sbol2Terms.Annotation.value, a.getLiteral().toString()));
+			
+			//TODO: annotation does not have identity
+//			nestedDoc.add(NestedDocument(Sbol2Terms.Annotation.Annotation, a.getIdentity(), NamedProperties(list)));
+		}
+	}
+	
 	/**
 	 * getFunctionalInstantiations for Module
 	 * @param functionalInstantiation
@@ -289,7 +338,9 @@ public class SBOLWriter {
 			{
 				List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>(); 
 				
-				list.add(NamedProperty(Sbol2Terms.Identified.identity,p.getIdentity()));
+				//TODO: should participations identity be ignored like all identity?
+//				if(p.getIdentity() != null)
+//					list.add(NamedProperty(Sbol2Terms.Identified.identity,p.getIdentity()));
 				if(p.getRoles() != null)
 					for(URI r : p.getRoles())
 						list.add(NamedProperty(Sbol2Terms.Participation.role, r));
