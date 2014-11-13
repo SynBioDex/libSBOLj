@@ -6,19 +6,19 @@
     <parent>
         <groupId>org.sbolstandard</groupId>
         <artifactId>libSBOLj</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
     <packaging>jar</packaging>
 
-    <artifactId>${parent.artifactId}-examples</artifactId>
+    <artifactId>${project.parent.artifactId}-examples</artifactId>
 
     <dependencies>
         <!-- dependencies used by libSBOLj -->
         <dependency>
-            <groupId>${parent.groupId}</groupId>
-            <artifactId>${parent.artifactId}-core</artifactId>
-            <version>${parent.version}</version>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>${project.parent.artifactId}-core</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
 
         <!-- test dependencies -->
