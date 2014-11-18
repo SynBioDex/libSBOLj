@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import uk.ac.ncl.intbio.examples.SbolTerms;
+import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
+
 /**
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -23,6 +27,7 @@ public class SBOLDocument {
 	private HashMap<URI, Model> models;
 	private HashMap<URI, Module> modules;
 	private HashMap<URI, Structure> structures;
+	private HashMap<URI,NamespaceBinding> nameSpaces;
 
 	public SBOLDocument() {
 		//identityMap = new HashMap<URI, Identified>();
@@ -32,6 +37,9 @@ public class SBOLDocument {
 		models = new HashMap<URI, Model>();
 		modules = new HashMap<URI, Module>();
 		structures = new HashMap<URI, Structure>();
+		nameSpaces = new HashMap<URI, NamespaceBinding>();
+		nameSpaces.put(URI.create(SbolTerms.sbol2.getNamespaceURI()), SbolTerms.sbol2);
+		
 	}
 	
 	
@@ -460,5 +468,18 @@ public class SBOLDocument {
 			addTopLevel(topLevel);
 		}
 	}
+	
+
+	public void addNameSpaceBinding(URI nameSpaceUri, String prefix) {
+		nameSpaces.put(nameSpaceUri, NamespaceBinding(nameSpaceUri.toString(), prefix));
+	}
+	
+	public List<NamespaceBinding> getNameSpaceBindings() {
+
+		List<NamespaceBinding> bindings = new ArrayList<NamespaceBinding>(); 
+		bindings.addAll(this.nameSpaces.values());
+		return bindings; 
+	}
+	
 	
 }

@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.sbolstandard.core2.Annotation;
 import org.sbolstandard.core2.ModuleInstantiation;
 import org.sbolstandard.core2.Turtle;
@@ -169,7 +171,7 @@ public abstract class Identified {
 	 * @param literal
 	 * @return the created Annotation instance. 
 	 */
-	public Annotation createAnnotation(URI relation, Turtle literal) {
+	public Annotation createAnnotation(QName relation, Turtle literal) {
 		Annotation structuralAnnotation = new Annotation(relation, literal);
 		addAnnotation(structuralAnnotation);
 		return structuralAnnotation;
@@ -181,7 +183,7 @@ public abstract class Identified {
 	 */
 	public void addAnnotation(Annotation annotation) {
 		// TODO: @addAnnotation, Check for duplicated entries.
-		annotations.put(annotation.getRelation(), annotation);
+		annotations.put(URI.create(annotation.getRelation().getNamespaceURI()+"/" + annotation.getRelation().getLocalPart()) , annotation);
 	}
 	
 	/**

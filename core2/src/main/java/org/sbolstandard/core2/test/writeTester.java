@@ -34,7 +34,7 @@ public class writeTester {
 	{	
 		Collection myParts = createCollection(SBOL2Doc_test,
 				getData("myParts/1/0","myParts","1.0","myParts","myParts", "myParts"), 
-				getAnnotation_List(createAnnotation(getURI("myPart_relation"),createTurtle()))); 
+				getAnnotation_List(createAnnotation(getQName("myPart_relation"),createTurtle()))); 
 		
 		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_tetRSeq(SBOL2Doc_test).getIdentity());
@@ -252,7 +252,7 @@ public class writeTester {
 						get_interact1a(SBOL2Doc_test), 
 						get_interact2a(SBOL2Doc_test)), 
 				null, null, 
-				getAnnotation_List(createAnnotation(getURI("LacI_Inv_relation"),createTurtle()))
+				getAnnotation_List(createAnnotation(getQName("LacI_Inv_relation"),createTurtle()))
 				);
 	}
 	
@@ -421,7 +421,7 @@ public class writeTester {
 						get_interact1b(SBOL2Doc_test), 
 						get_interact2b(SBOL2Doc_test)), 
 				null, null,
-				getAnnotation_List(createAnnotation(getURI("TetR_Inv_relation"),createTurtle()))
+				getAnnotation_List(createAnnotation(getQName("TetR_Inv_relation"),createTurtle()))
 				);
 	}
 	
@@ -480,7 +480,7 @@ public class writeTester {
 				getFunctionalInstantiation_List(get_LacISp(SBOL2Doc_test), get_TetRSp(SBOL2Doc_test)), 
 				null, getModuleInstantiation_List(get_Inv1(SBOL2Doc_test), get_Inv2(SBOL2Doc_test)), 
 				getSetOfURI(get_ToggleModel(SBOL2Doc_test).getIdentity()),
-				getAnnotation_List(createAnnotation(getURI("Toggle_relation"),createTurtle()))
+				getAnnotation_List(createAnnotation(getQName("Toggle_relation"),createTurtle()))
 				);
 	}
 	
@@ -527,7 +527,7 @@ public class writeTester {
 		return collection; 
 	}
 	
-	private static Annotation createAnnotation(URI relation, Turtle literal)
+	private static Annotation createAnnotation(QName relation, Turtle literal)
 	{	
 		return new Annotation(relation, literal);
 		
@@ -905,6 +905,11 @@ public class writeTester {
 	private static URI getURI(String append)
 	{
 		return URI.create("http://www.async.ece.utah.edu/" + append);
+	}
+	
+	private static QName getQName(String append)
+	{
+		return new QName("http://www.async.ece.utah.edu/", append);
 	}
 
 

@@ -1,9 +1,6 @@
 package org.sbolstandard.core2;
 
 import java.io.*;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Set;
@@ -14,24 +11,29 @@ import java.util.Map;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
+import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 import uk.ac.ncl.intbio.core.io.json.JsonIo;
 import uk.ac.ncl.intbio.core.io.json.StringifyQName;
+import uk.ac.ncl.intbio.examples.SbolTerms;
 import uk.ac.intbio.core.io.turtle.TurtleIo;
 
 import javax.json.*;
 import javax.json.stream.JsonGenerator;
+
 import javanet.staxutils.IndentingXMLStreamWriter;
+
 import javax.xml.namespace.QName; 
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamWriter;
 
-
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Identified;
 import org.sbolstandard.core2.abstract_classes.Location;
+
+import com.hp.hpl.jena.rdf.arp.impl.ANode;
 
 /**
  * @author Tramy Nguyen
@@ -62,7 +64,7 @@ public class SBOLWriter {
 		formatStructures(doc.getStructures(), topLevelDoc); 
 		
 		try {
-			writeRdf(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
+			writeRdf(new OutputStreamWriter(out), DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),TopLevelDocuments(topLevelDoc)));
 //			writeJson(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
 //			writeTurtle(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
 		} 
@@ -150,7 +152,7 @@ public class SBOLWriter {
 	private static void formatComponents (List<Component> components, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 		for(Component c : components)
-		{	
+		{		
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 
 			getCommonTopLevelData(list,c);
@@ -169,6 +171,14 @@ public class SBOLWriter {
 					list.add(NamedProperty(Sbol2Terms.Component.types, types));
 				}
 			}
+			
+			if(c.getAnnotations() != null)
+			{	
+				for(Annotation annotation : c.getAnnotations())
+				{
+					list.add(NamedProperty(annotation.getRelation(), annotation.getLiteral().getTurtleStr()));
+				}
+			}
 		
 			getStructuralInstantiations(c.getStructuralInstantiations(),list);
 			getStructuralAnnotations(c.getStructuralAnnotations(),list);
@@ -176,9 +186,10 @@ public class SBOLWriter {
 			if(c.getStructure() != null)
 				getStructure(c.getStructure(), list); 
 			
-			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Component.Component, c.getIdentity(), NamedProperties(list)));
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Component.Component, c.getIdentity(), NamedProperties(list)));			
 		}
 	}
+	
 	
 	private static void formatModels (List<Model> models, List<TopLevelDocument<QName>> topLevelDoc)
 	{
@@ -255,11 +266,12 @@ public class SBOLWriter {
 		for(Annotation a : annotations)
 		{
 //			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			if(a.getRelation() != null)
+			/* GM: Commented 
+			 * if(a.getRelation() != null)
 				list.add(NamedProperty(Sbol2Terms.Annotation.relation, a.getRelation()));
 			if(a.getLiteral() != null)
 				list.add(NamedProperty(Sbol2Terms.Annotation.value, a.getLiteral().toString()));
-			
+			*/
 			//TODO: annotation does not have identity
 //			nestedDoc.add(NestedDocument(Sbol2Terms.Annotation.Annotation, a.getIdentity(), NamedProperties(list)));
 		}
