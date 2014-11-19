@@ -1,9 +1,6 @@
 package org.sbolstandard.core2;
 
 import java.io.*;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Set;
@@ -16,6 +13,7 @@ import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
+import uk.ac.ncl.intbio.core.io.CoreIoException;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 import uk.ac.ncl.intbio.core.io.json.JsonIo;
 import uk.ac.ncl.intbio.core.io.json.StringifyQName;
@@ -23,11 +21,14 @@ import uk.ac.intbio.core.io.turtle.TurtleIo;
 
 import javax.json.*;
 import javax.json.stream.JsonGenerator;
-import javanet.staxutils.IndentingXMLStreamWriter;
-import javax.xml.namespace.QName; 
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamWriter;
 
+import javanet.staxutils.IndentingXMLStreamWriter;
+
+import javax.xml.namespace.QName; 
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Identified;
@@ -46,32 +47,64 @@ public class SBOLWriter {
 	 * 
 	 * TODO:
 	 * Make sure Range, Cut...etc should be included in the correct method. 
+	 * fix URI for those that are not referencing. 
+	 * url(authority)/id/major.vr/minor.vr
 	 */
 	
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
 	 * @param doc
 	 * @param out
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
 	 */
-	public static void write(SBOLDocument doc, OutputStream out) {
+	public static void write(SBOLDocument doc, OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException {
+		
+			writeRdf(new OutputStreamWriter(out), 
+					DocumentRoot( NamespaceBindings(NamespaceBinding("http://sbols.org/v2#","sbol2")),
+							TopLevelDocuments(getTopLevelDocument(doc))));
+//			writeJson(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
+//			writeTurtle(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
+
+	}
+	
+	public static void write(SBOLDocument doc, String filename) throws FileNotFoundException {
+		write(doc, new File(filename));
+	}
+	
+	public static void write(SBOLDocument doc, File file) throws FileNotFoundException{
+		FileOutputStream stream = new FileOutputStream(file);
+	    BufferedOutputStream buffer = new BufferedOutputStream(stream);
+	    try {
+			write(doc, buffer);
+	    } catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
+	      
+	    } finally {
+	      try {
+	        try {
+	          stream.close();
+	        } finally {
+	          buffer.close();
+	        }
+	      } catch (IOException e) {
+	      }
+	    }
+	}
+	
+	private static List<TopLevelDocument<QName>> getTopLevelDocument(SBOLDocument doc) {
 		List<TopLevelDocument<QName>> topLevelDoc = new ArrayList<TopLevelDocument<QName>>();
 		formatCollections(doc.getCollections(), topLevelDoc);
 		formatModules(doc.getModules(), topLevelDoc); 		
 		formatModels(doc.getModels(), topLevelDoc); 			
 		formatComponents(doc.getComponents(), topLevelDoc);  
 		formatStructures(doc.getStructures(), topLevelDoc); 
-		
-		try {
-			writeRdf(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
-//			writeJson(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
-//			writeTurtle(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
-		} 
-		catch(Exception e) { e.printStackTrace();} 
-		
+		return topLevelDoc;
 	}
 	
-	public static void writeRdf(Writer stream, DocumentRoot<QName> document) throws Exception
+	public static void writeRdf(Writer stream, DocumentRoot<QName> document) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
+		
 		XMLStreamWriter xmlWriter = new IndentingXMLStreamWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(stream));
 		RdfIo rdfIo = new RdfIo();
 		rdfIo.createIoWriter(xmlWriter).write(document);
@@ -106,10 +139,17 @@ public class SBOLWriter {
 //		if(t.getVersion() != null)
 //			list.add(NamedProperty(Sbol2Terms.Documented.version, t.getVersion()));
 		if(t.getTimeStamp() != null)
-			list.add(NamedProperty(Sbol2Terms.Documented.timeStamp, t.getTimeStamp().toString()));
-		//TODO: wait until Zhen makes the correction in Turtle object before implementing. 
-//		if(t.getAnnotations() != null) 
-//			getAnnotations(t.getAnnotations(), list);
+			list.add(NamedProperty(Sbol2Terms.Identified.timeStamp, t.getTimeStamp().toString()));
+		
+		if(t.getAnnotations() != null) 
+		{
+			List<NestedDocument> annotationList = getAnnotations(t.getAnnotations());
+
+			for(NestedDocument annotation : annotationList)
+			{
+				list.add(NamedProperty(Sbol2Terms.Identified.hasAnnotations, annotation));
+			}
+		}
 	}
 	
 	private static void getCommonDocumentedData (List<NamedProperty<QName>> list, Documented d)
@@ -159,24 +199,24 @@ public class SBOLWriter {
 			{
 				for (URI roles : c.getRoles())
 				{
-					list.add(NamedProperty(Sbol2Terms.Component.roles, roles)); 
+					list.add(NamedProperty(Sbol2Terms.ComponentDefinition.roles, roles)); 
 				}
 			}
 			if(c.getType() != null)
 			{	
 				for(URI types : c.getType())
 				{
-					list.add(NamedProperty(Sbol2Terms.Component.types, types));
+					list.add(NamedProperty(Sbol2Terms.ComponentDefinition.type, types));
 				}
 			}
 		
 			getStructuralInstantiations(c.getStructuralInstantiations(),list);
-			getStructuralAnnotations(c.getStructuralAnnotations(),list);
+			getSequenceAnnotations(c.getStructuralAnnotations(),list);
 			getStructuralConstraints(c.getStructuralConstraints(),list);
 			if(c.getStructure() != null)
-				getStructure(c.getStructure(), list); 
+				getSequence(c.getStructure(), list); 
 			
-			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Component.Component, c.getIdentity(), NamedProperties(list)));
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ComponentDefinition.ComponentDefinition, c.getIdentity(), NamedProperties(list)));
 		}
 	}
 	
@@ -218,7 +258,7 @@ public class SBOLWriter {
 			{
 				for (URI role : m.getRoles())
 				{
-					list.add(NamedProperty(Sbol2Terms.Module.roles, role));
+					list.add(NamedProperty(Sbol2Terms.ModuleDefinition.roles, role));
 				}
 			}
 			
@@ -227,7 +267,7 @@ public class SBOLWriter {
 			getModels(m.getModels(),list); 
 			getModuleInstantiation(m.getModuleInstantiations(),list);
 			
-			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Module.Module, m.getIdentity(), NamedProperties(list)));
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ModuleDefinition.ModuleDefinition, m.getIdentity(), NamedProperties(list)));
 		}	
 	}
 	
@@ -239,30 +279,30 @@ public class SBOLWriter {
 	
 			getCommonTopLevelData(list, s);
 			if(s.getElements() != null)
-				list.add(NamedProperty(Sbol2Terms.Structure.elements, s.getElements()));
+				list.add(NamedProperty(Sbol2Terms.Sequence.elements, s.getElements()));
 			if(s.getEncoding() != null)
-				list.add(NamedProperty(Sbol2Terms.Structure.encoding, s.getEncoding()));
+				list.add(NamedProperty(Sbol2Terms.Sequence.encoding, s.getEncoding()));
 			
-			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Structure.Structure, s.getIdentity(), NamedProperties(list)));
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Sequence.Sequence, s.getIdentity(), NamedProperties(list)));
 		}
 		
 	}
 	
-	private static void getAnnotations(List<Annotation> annotations, List<NamedProperty<QName>> list)
+	private static List<NestedDocument> getAnnotations(List<Annotation> annotations)//, List<NamedProperty<QName>> list)
 	{
-		//TODO: turtle value printing out weird due to .toString cast. and should annotation have own section?
-//		List<NestedDocument> nestedDoc = new ArrayList<NestedDocument>(); 
+		List<NestedDocument> nestedDoc = new ArrayList<NestedDocument>(); 
 		for(Annotation a : annotations)
 		{
-//			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			if(a.getRelation() != null)
 				list.add(NamedProperty(Sbol2Terms.Annotation.relation, a.getRelation()));
 			if(a.getLiteral() != null)
-				list.add(NamedProperty(Sbol2Terms.Annotation.value, a.getLiteral().toString()));
+				list.add(NamedProperty(Sbol2Terms.Annotation.value, a.getLiteral().getTurtleStr()));
 			
-			//TODO: annotation does not have identity
-//			nestedDoc.add(NestedDocument(Sbol2Terms.Annotation.Annotation, a.getIdentity(), NamedProperties(list)));
+			//TODO: annotation does not have identity. Should I use getRelation() instead?
+			nestedDoc.add(NestedDocument(Sbol2Terms.Annotation.Annotation, a.getRelation(), NamedProperties(list)));
 		}
+		return nestedDoc;
 	}
 	
 	/**
@@ -280,14 +320,14 @@ public class SBOLWriter {
 			getCommonDocumentedData(list, f);
 			
 			if(f.getInstantiatedComponent() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstantiation.hasInstantiatedComponent, f.getInstantiatedComponent()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasInstantiatedComponent, f.getInstantiatedComponent()));
 			if(f.getAccess() != null)
-				list.add(NamedProperty(Sbol2Terms.FunctionalInstantiation.access, f.getAccess().getAccessTypeAlias()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccess().getAccessTypeAlias()));
 			if(f.getDirection() != null)
-				list.add(NamedProperty(Sbol2Terms.FunctionalInstantiation.direction, f.getDirection().name()));	
+				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirection().name()));	
 				
-			properties.add(NamedProperty(Sbol2Terms.Module.hasfunctionalInstantiations, 
-					NestedDocument( Sbol2Terms.FunctionalInstantiation.FunctionalInstantiation, 
+			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasFunctionalComponent, 
+					NestedDocument( Sbol2Terms.FunctionalComponent.FunctionalComponent, 
 					f.getIdentity(), NamedProperties(list))));
 		}
 	}
@@ -324,7 +364,7 @@ public class SBOLWriter {
 				}
 			}
 			
-			properties.add(NamedProperty(Sbol2Terms.Module.hasInteractions, 
+			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasInteractions, 
 					NestedDocument( Sbol2Terms.Interaction.Interaction, 
 					i.getIdentity(), NamedProperties(list))));
 		}
@@ -336,11 +376,7 @@ public class SBOLWriter {
 		
 			for(Participation p : participations)
 			{
-				List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>(); 
-				
-				//TODO: should participations identity be ignored like all identity?
-//				if(p.getIdentity() != null)
-//					list.add(NamedProperty(Sbol2Terms.Identified.identity,p.getIdentity()));
+				List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 				if(p.getRoles() != null)
 					for(URI r : p.getRoles())
 						list.add(NamedProperty(Sbol2Terms.Participation.role, r));
@@ -357,7 +393,7 @@ public class SBOLWriter {
 	{
 		for(URI m : models)
 		{
-			list.add(NamedProperty(Sbol2Terms.Module.hasModels, m));
+			list.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasModels, m));
 		}
 	}
 	
@@ -376,7 +412,7 @@ public class SBOLWriter {
 			getCommonDocumentedData(list, m);
 
 			if(m.getInstantiatedModule() != null)
-				list.add(NamedProperty(Sbol2Terms.ModuleInstantiation.hasInstantiatedModule, m.getInstantiatedModule()));	
+				list.add(NamedProperty(Sbol2Terms.Module.hasInstantiatedModule, m.getInstantiatedModule()));	
 
 			if(m.getMappings() != null)	
 			{
@@ -384,12 +420,12 @@ public class SBOLWriter {
 
 				for(NestedDocument n : referenceList)
 				{
-					list.add(NamedProperty(Sbol2Terms.ModuleInstantiation.hasMapping, n));
+					list.add(NamedProperty(Sbol2Terms.Module.hasMappings, n));
 				}
 			}
 
-			properties.add(NamedProperty(Sbol2Terms.Module.hasModuleInstantiations, 
-					NestedDocument( Sbol2Terms.ModuleInstantiation.ModuleInstantiation, 
+			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasSubModule, 
+					NestedDocument( Sbol2Terms.Module.Module, 
 							m.getIdentity(), NamedProperties(list))));
 		}
 	}
@@ -401,9 +437,7 @@ public class SBOLWriter {
 		for(MapsTo m : references)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>(); 
-
-			if(m.getIdentity() != null)
-				list.add(NamedProperty(Sbol2Terms.MapsTo.identity, m.getIdentity()));
+			//TODO: should mapsTo need to retreive identity? 
 			if(m.getRefinement() != null)
 				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinement().name()));
 			if(m.getRemote() != null)
@@ -417,12 +451,12 @@ public class SBOLWriter {
 		return nestedDoc; 
 	}
 	
-	private static void getStructure(URI structure, List<NamedProperty<QName>> list)
+	private static void getSequence(URI structure, List<NamedProperty<QName>> list)
 	{
-			list.add(NamedProperty(Sbol2Terms.Component.hasStructure, structure));
+			list.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSequence, structure));
 	}
 	
-	private static void getStructuralAnnotations(List<StructuralAnnotation> structuralAnnotations,
+	private static void getSequenceAnnotations(List<StructuralAnnotation> structuralAnnotations,
 			List<NamedProperty<QName>> properties)
 	{
 		for(StructuralAnnotation s : structuralAnnotations)
@@ -435,8 +469,8 @@ public class SBOLWriter {
 				list.add(getLocation(s.getLocation())); 
 			}
 
-			properties.add(NamedProperty(Sbol2Terms.Component.hasStructuralAnnotations, 
-					NestedDocument( Sbol2Terms.StructuralAnnotation.StructuralAnnotation, 
+			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSequenceAnnotations, 
+					NestedDocument( Sbol2Terms.SequenceAnnotation.SequenceAnnotation, 
 					s.getIdentity(), NamedProperties(list))));
 		}
 
@@ -469,18 +503,18 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			
 			if(s.getPersistentIdentity() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, s.getPersistentIdentity()));
+				list.add(NamedProperty(Sbol2Terms.Identified.persistentIdentity, s.getPersistentIdentity()));
 			if(s.getVersion() != null)
-				list.add(NamedProperty(Sbol2Terms.Documented.version, s.getVersion()));
+				list.add(NamedProperty(Sbol2Terms.Identified.version, s.getVersion()));
 			if(s.getRestriction() != null)
-				list.add(NamedProperty(Sbol2Terms.StructuralConstraint.restriction, s.getRestriction()));
+				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.restriction, s.getRestriction()));
 			if(s.getSubject() != null)
-				list.add(NamedProperty(Sbol2Terms.StructuralConstraint.hasSubject, s.getSubject()));
+				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.hasSubject, s.getSubject()));
 			if(s.getObject() != null)
-				list.add(NamedProperty(Sbol2Terms.StructuralConstraint.hasObject, s.getObject()));
+				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.hasObject, s.getObject()));
 			
-			properties.add(NamedProperty(Sbol2Terms.Component.hasStructuralConstraints, 
-					NestedDocument( Sbol2Terms.StructuralConstraint.StructuralConstraint, 
+			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSequenceConstraints, 
+					NestedDocument( Sbol2Terms.SequenceConstraint.SequenceConstraint, 
 					s.getIdentity(), NamedProperties(list))));
 		}
 
@@ -495,10 +529,10 @@ public class SBOLWriter {
 
 			getCommonDocumentedData(list, s);
 			if(s.getInstantiatedComponent() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstantiation.ComponentInstantiation, s.getInstantiatedComponent()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.ComponentInstance, s.getInstantiatedComponent()));
 
-			properties.add(NamedProperty(Sbol2Terms.Component.hasStructuralInstantiations, 
-					NestedDocument( Sbol2Terms.StructuralInstantiation.StructuralInstantiation, 
+			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSubComponents, 
+					NestedDocument( Sbol2Terms.Component.Component, 
 					s.getIdentity(), NamedProperties(list))));
 		}
 	}

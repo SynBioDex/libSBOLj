@@ -181,7 +181,7 @@ public abstract class Identified {
 	 */
 	public void addAnnotation(Annotation annotation) {
 		// TODO: @addAnnotation, Check for duplicated entries.
-		annotations.put(annotation.getRelation(), annotation);
+			annotations.put(annotation.getRelation(), annotation);
 	}
 	
 	/**
