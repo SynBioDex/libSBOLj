@@ -19,41 +19,41 @@ public class SBOLDocument {
 	//private HashMap<URI, Identified> identityMap;
 	private HashMap<URI, TopLevel> topLevels;
 	private HashMap<URI, Collection> collections;
-	private HashMap<URI, Component> components;
+	private HashMap<URI, ComponentDefinition> componentDefinitions;
 	private HashMap<URI, Model> models;
-	private HashMap<URI, Module> modules;
-	private HashMap<URI, Structure> structures;
+	private HashMap<URI, ModuleDefinition> moduleDefinitions;
+	private HashMap<URI, Sequence> sequences;
 
 	public SBOLDocument() {
 		//identityMap = new HashMap<URI, Identified>();
 		topLevels = new HashMap<URI, TopLevel>();
 		collections = new HashMap<URI, Collection>();
-		components = new HashMap<URI, Component>();
+		componentDefinitions = new HashMap<URI, ComponentDefinition>();
 		models = new HashMap<URI, Model>();
-		modules = new HashMap<URI, Module>();
-		structures = new HashMap<URI, Structure>();
+		moduleDefinitions = new HashMap<URI, ModuleDefinition>();
+		sequences = new HashMap<URI, Sequence>();
 	}
 	
 	
 	/**
-	 * Create a new {@link Module} instance.
+	 * Create a new {@link ModuleDefinition} instance.
 	 * @param identity
 	 * @param roles
 	 * @return
 	 */
-	public Module createModule(URI identity, Set<URI> roles) {
-		Module newModule = new Module(identity, roles);
-		addModule(newModule);		
+	public ModuleDefinition createModuleDefinition(URI identity, Set<URI> roles) {
+		ModuleDefinition newModule = new ModuleDefinition(identity, roles);
+		addModuleDefinition(newModule);		
 		return newModule;
 	}
 	
 	/**
 	 * Appends the specified <code>module</code> to the end of the list of modules.
-	 * @param module
+	 * @param moduleDefinition
 	 */
-	public void addModule(Module module) {
+	public void addModuleDefinition(ModuleDefinition moduleDefinition) {
 		// TODO: Recursively check the uniqueness of URIs of each Module and its field variables. 
-		modules.put(module.getIdentity(), module);
+		moduleDefinitions.put(moduleDefinition.getIdentity(), moduleDefinition);
 	}
 	
 	/**
@@ -61,8 +61,8 @@ public class SBOLDocument {
 	 * @param structuralConstraintURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Module removeModule(URI moduleURI) {
-		return modules.remove(moduleURI);
+	public ModuleDefinition removeModuleDefinition(URI moduleURI) {
+		return moduleDefinitions.remove(moduleURI);
 	}
 		
 	/**
@@ -70,40 +70,39 @@ public class SBOLDocument {
 	 * @param moduleURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Module getModule(URI moduleURI) {
-		return modules.get(moduleURI);
+	public ModuleDefinition getModuleDefinition(URI moduleURI) {
+		return moduleDefinitions.get(moduleURI);
 	}
 	
 	/**
 	 * Returns the list of <code>Module</code> instances owned by this instance.
 	 * @return the list of <code>Module</code> instances owned by this instance
 	 */
-	public List<Module> getModules() {
-//		return (List<Module>) modules.values();
-		List<Module> modules = new ArrayList<Module>(); 
-		modules.addAll(this.modules.values());
-		return modules; 
+	public List<ModuleDefinition> getModuleDefinitions() {
+		List<ModuleDefinition> moduleDefinitions = new ArrayList<ModuleDefinition>(); 
+		moduleDefinitions.addAll(this.moduleDefinitions.values());
+		return moduleDefinitions; 
 		
 	}
 
 	/**
 	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearModules() {
-		Object[] keySetArray = modules.keySet().toArray();
+	public void clearModuleDefinitions() {
+		Object[] keySetArray = moduleDefinitions.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeModule((URI) key);
+			removeModuleDefinition((URI) key);
 		}
 	}
 	
 	/**
 	 * Clears the existing list <code>modules</code>, then appends all of the elements in the specified collection to the end of this list.
-	 * @param modules
+	 * @param moduleDefinitions
 	 */
-	public void setModules(List<Module> modules) {		
-		clearModules();
-		for (Module module : modules) {
-			addModule(module);
+	public void setModuleDefinitions(List<ModuleDefinition> moduleDefinitions) {		
+		clearModuleDefinitions();
+		for (ModuleDefinition module : moduleDefinitions) {
+			addModuleDefinition(module);
 		}
 	}
 	
@@ -249,95 +248,95 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a new {@link Component} instance.
+	 * Create a new {@link ComponentDefinition} instance.
 	 * @param identity
 	 * @param displayId
 	 * @return
 	 */
-	public Component createComponent(URI identity, Set<URI> type, Set<URI> roles) {
-		Component newComponent = new Component(identity, type, roles);
-		addComponent(newComponent);
-		return newComponent;
+	public ComponentDefinition createComponentDefinition(URI identity, Set<URI> type, Set<URI> roles) {
+		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, type, roles);
+		addComponentDefinition(newComponentDefinition);
+		return newComponentDefinition;
 	}
 	
 	/**
-	 * Appends the specified <code>component</code> to the end of the list of components.
-	 * @param component
+	 * Appends the specified element to the end of the list of component definitions.
+	 * @param componentDefinition
 	 */
-	public void addComponent(Component component) {
+	public void addComponentDefinition(ComponentDefinition componentDefinition) {
 		// TODO: Recursively check the uniqueness of URIs of each Component and its field variables. 
-		components.put(component.getIdentity(), component);
+		componentDefinitions.put(componentDefinition.getIdentity(), componentDefinition);
 	}
 	
 	/**
-	 * Removes the instance matching the specified URI from the list of components if present.
+	 * Removes the instance matching the specified URI from the list of component definitions if present.
 	 * @param structuralConstraintURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Component removeComponent(URI componentURI) {
-		return components.remove(componentURI);
+	public ComponentDefinition removeComponentDefinition(URI componentDefinitionURI) {
+		return componentDefinitions.remove(componentDefinitionURI);
 	}
 		
 	/**
-	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
-	 * @param componentURI
+	 * Returns the instance matching the specified URI from the list of component definitions if present.
+	 * @param componentDefinitionURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Component getComponent(URI componentURI) {
-		return components.get(componentURI);
+	public ComponentDefinition getComponentDefinition(URI componentDefinitionURI) {
+		return componentDefinitions.get(componentDefinitionURI);
 	}
 	
 	/**
-	 * Returns the list of <code>Component</code> instances owned by this instance.
-	 * @return the list of <code>Component</code> instances owned by this instance
+	 * Returns the list of <code>ComponentDefinition</code> instances owned by this instance.
+	 * @return the list of <code>ComponentDefinition</code> instances owned by this instance
 	 */
-	public List<Component> getComponents() {
+	public List<ComponentDefinition> getComponentDefinitions() {
 //		return (List<Component>) components.values();
-		List<Component> components = new ArrayList<Component>(); 
-		components.addAll(this.components.values());
+		List<ComponentDefinition> components = new ArrayList<ComponentDefinition>(); 
+		components.addAll(this.componentDefinitions.values());
 		return components; 
 	}
 
 	/**
 	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearComponents() {
-		Object[] keySetArray = components.keySet().toArray();
+	public void clearComponentDefinitions() {
+		Object[] keySetArray = componentDefinitions.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeComponent((URI) key);
+			removeComponentDefinition((URI) key);
 		}
 	}
 	
 	/**
-	 * Clears the existing list <code>components</code>, then appends all of the elements in the specified collection to the end of this list.
-	 * @param components
+	 * Clears the existing list of component definitions, then appends all of the elements in the specified collection to the end of this list.
+	 * @param componentDefinitions
 	 */
-	public void setComponents(List<Component> components) {		
-		clearComponents();
-		for (Component component : components) {
-			addComponent(component);
+	public void setComponentDefinitions(List<ComponentDefinition> componentDefinitions) {		
+		clearComponentDefinitions();
+		for (ComponentDefinition componentDefinition : componentDefinitions) {
+			addComponentDefinition(componentDefinition);
 		}
 	}
 	
 	/**
-	 * Create a new {@link Structure} instance.
+	 * Create a new {@link Sequence} instance.
 	 * @param identity
 	 * @param displayId
 	 * @return
 	 */
-	public Structure createStructure(URI identity, String elements, URI encoding) {
-		Structure newStructure = new Structure(identity, elements, encoding);
-		addStructure(newStructure);
-		return newStructure;
+	public Sequence createSequence(URI identity, String elements, URI encoding) {
+		Sequence newSequence = new Sequence(identity, elements, encoding);
+		addSequence(newSequence);
+		return newSequence;
 	}
 	
 	/**
 	 * Appends the specified <code>structure</code> to the end of the list of structures.
-	 * @param structure
+	 * @param sequence
 	 */
-	public void addStructure(Structure structure) {
+	public void addSequence(Sequence sequence) {
 		// TODO: Recursively check the uniqueness of URIs of each Structure and its field variables. 
-		structures.put(structure.getIdentity(), structure);
+		sequences.put(sequence.getIdentity(), sequence);
 	}
 	
 	/**
@@ -345,48 +344,48 @@ public class SBOLDocument {
 	 * @param structuralConstraintURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Structure removeStructure(URI structureURI) {
-		return structures.remove(structureURI);
+	public Sequence removeSequence(URI sequenceURI) {
+		return sequences.remove(sequenceURI);
 	}
 		
 	/**
 	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
-	 * @param structureURI
+	 * @param sequenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Structure getStructure(URI structureURI) {
-		return structures.get(structureURI);
+	public Sequence getSequence(URI sequenceURI) {
+		return sequences.get(sequenceURI);
 	}
 	
 	/**
 	 * Returns the list of <code>Structure</code> instances owned by this instance.
 	 * @return the list of <code>Structure</code> instances owned by this instance
 	 */
-	public List<Structure> getStructures() {
+	public List<Sequence> getSequences() {
 //		return (List<Structure>) structures.values();
-		List<Structure> structures = new ArrayList<Structure>(); 
-		structures.addAll(this.structures.values());
+		List<Sequence> structures = new ArrayList<Sequence>(); 
+		structures.addAll(this.sequences.values());
 		return structures; 
 	}
 
 	/**
 	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearStructures() {
-		Object[] keySetArray = structures.keySet().toArray();
+	public void clearSequences() {
+		Object[] keySetArray = sequences.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeStructure((URI) key);
+			removeSequence((URI) key);
 		}
 	}
 	
 	/**
 	 * Clears the existing list <code>structures</code>, then appends all of the elements in the specified collection to the end of this list.
-	 * @param structures
+	 * @param sequences
 	 */
-	public void setStructures(List<Structure> structures) {		
-		clearStructures();
-		for (Structure structure : structures) {
-			addStructure(structure);
+	public void setSequences(List<Sequence> sequences) {		
+		clearSequences();
+		for (Sequence sequence : sequences) {
+			addSequence(sequence);
 		}
 	}
 

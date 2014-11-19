@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.sbolstandard.core2.Annotation;
-import org.sbolstandard.core2.ModuleInstantiation;
+import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.Turtle;
 
 /**

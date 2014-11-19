@@ -4,13 +4,13 @@ import java.net.URI;
 
 import org.sbolstandard.core2.abstract_classes.Identified;
 
-public class StructuralConstraint extends Identified {
+public class SequenceConstraint extends Identified {
 
 	private URI restriction;
 	private URI subject;
 	private URI object;
 	
-	public StructuralConstraint(URI identity, URI restriction, 
+	public SequenceConstraint(URI identity, URI restriction, 
 			URI subject, URI object) {
 		super(identity);
 		setRestriction(restriction);

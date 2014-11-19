@@ -56,10 +56,10 @@ public class SBOLWriter {
 	public static void write(SBOLDocument doc, OutputStream out) {
 		List<TopLevelDocument<QName>> topLevelDoc = new ArrayList<TopLevelDocument<QName>>();
 		formatCollections(doc.getCollections(), topLevelDoc);
-		formatModules(doc.getModules(), topLevelDoc); 		
+		formatModules(doc.getModuleDefinitions(), topLevelDoc); 		
 		formatModels(doc.getModels(), topLevelDoc); 			
-		formatComponents(doc.getComponents(), topLevelDoc);  
-		formatStructures(doc.getStructures(), topLevelDoc); 
+		formatComponents(doc.getComponentDefinitions(), topLevelDoc);  
+		formatStructures(doc.getSequences(), topLevelDoc); 
 		
 		try {
 			writeRdf(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
@@ -147,9 +147,9 @@ public class SBOLWriter {
 		}
 	}
 	
-	private static void formatComponents (List<Component> components, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatComponents (List<ComponentDefinition> components, List<TopLevelDocument<QName>> topLevelDoc)
 	{
-		for(Component c : components)
+		for(ComponentDefinition c : components)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 
@@ -170,11 +170,11 @@ public class SBOLWriter {
 				}
 			}
 		
-			getStructuralInstantiations(c.getStructuralInstantiations(),list);
-			getStructuralAnnotations(c.getStructuralAnnotations(),list);
-			getStructuralConstraints(c.getStructuralConstraints(),list);
-			if(c.getStructure() != null)
-				getStructure(c.getStructure(), list); 
+			getStructuralInstantiations(c.getSubComponents(),list);
+			getStructuralAnnotations(c.getSequenceAnnotations(),list);
+			getStructuralConstraints(c.getSequenceConstraints(),list);
+			if(c.getSequence() != null)
+				getStructure(c.getSequence(), list); 
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Component.Component, c.getIdentity(), NamedProperties(list)));
 		}
@@ -206,9 +206,9 @@ public class SBOLWriter {
 		}
 	}
 	
-	private static void formatModules(List<Module> module, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatModules(List<ModuleDefinition> module, List<TopLevelDocument<QName>> topLevelDoc)
 	{
-		for (Module m : module)
+		for (ModuleDefinition m : module)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			
@@ -231,9 +231,9 @@ public class SBOLWriter {
 		}	
 	}
 	
-	private static void formatStructures (List<Structure> structures, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatStructures (List<Sequence> structures, List<TopLevelDocument<QName>> topLevelDoc)
 	{
-		for(Structure s : structures)
+		for(Sequence s : structures)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 	
@@ -270,17 +270,17 @@ public class SBOLWriter {
 	 * @param functionalInstantiation
 	 * @param properties
 	 */
-	private static void getFunctionalInstantiations(List<FunctionalInstantiation> functionalInstantiation,
+	private static void getFunctionalInstantiations(List<FunctionalComponent> functionalInstantiation,
 			List<NamedProperty<QName>> properties)
 	{
-		for(FunctionalInstantiation f : functionalInstantiation)
+		for(FunctionalComponent f : functionalInstantiation)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 		
 			getCommonDocumentedData(list, f);
 			
-			if(f.getInstantiatedComponent() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstantiation.hasInstantiatedComponent, f.getInstantiatedComponent()));
+			if(f.getDefinition() != null)
+				list.add(NamedProperty(Sbol2Terms.ComponentInstantiation.hasInstantiatedComponent, f.getDefinition()));
 			if(f.getAccess() != null)
 				list.add(NamedProperty(Sbol2Terms.FunctionalInstantiation.access, f.getAccess().getAccessTypeAlias()));
 			if(f.getDirection() != null)
@@ -366,10 +366,10 @@ public class SBOLWriter {
 	 * @param moduleInstantiation
 	 * @param properties
 	 */
-	private static void getModuleInstantiation (List<ModuleInstantiation> moduleInstantiation, 
+	private static void getModuleInstantiation (List<Module> moduleInstantiation, 
 			List<NamedProperty<QName>> properties)
 	{
-		for(ModuleInstantiation m : moduleInstantiation)
+		for(Module m : moduleInstantiation)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 
@@ -422,10 +422,10 @@ public class SBOLWriter {
 			list.add(NamedProperty(Sbol2Terms.Component.hasStructure, structure));
 	}
 	
-	private static void getStructuralAnnotations(List<StructuralAnnotation> structuralAnnotations,
+	private static void getStructuralAnnotations(List<SequenceAnnotation> structuralAnnotations,
 			List<NamedProperty<QName>> properties)
 	{
-		for(StructuralAnnotation s : structuralAnnotations)
+		for(SequenceAnnotation s : structuralAnnotations)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 
@@ -461,10 +461,10 @@ public class SBOLWriter {
 //		
 //	}
 	
-	private static void getStructuralConstraints(List<StructuralConstraint> structuralConstraint,
+	private static void getStructuralConstraints(List<SequenceConstraint> structuralConstraint,
 			List<NamedProperty<QName>> properties)
 	{
-		for(StructuralConstraint s : structuralConstraint)
+		for(SequenceConstraint s : structuralConstraint)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			
@@ -486,16 +486,16 @@ public class SBOLWriter {
 
 	}
 	
-	private static void getStructuralInstantiations(List<StructuralInstantiation> structuralInstantiations,
+	private static void getStructuralInstantiations(List<Component> structuralInstantiations,
 			List<NamedProperty<QName>> properties)
 	{
-		for(StructuralInstantiation s : structuralInstantiations)
+		for(Component s : structuralInstantiations)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 
 			getCommonDocumentedData(list, s);
-			if(s.getInstantiatedComponent() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstantiation.ComponentInstantiation, s.getInstantiatedComponent()));
+			if(s.getDefinition() != null)
+				list.add(NamedProperty(Sbol2Terms.ComponentInstantiation.ComponentInstantiation, s.getDefinition()));
 
 			properties.add(NamedProperty(Sbol2Terms.Component.hasStructuralInstantiations, 
 					NestedDocument( Sbol2Terms.StructuralInstantiation.StructuralInstantiation, 

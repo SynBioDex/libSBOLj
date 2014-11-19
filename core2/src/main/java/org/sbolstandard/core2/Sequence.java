@@ -2,12 +2,12 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-public class Structure extends TopLevel{
+public class Sequence extends TopLevel{
 		
 	private String elements;
 	private URI encoding;
 	
-	public Structure(URI identity, String elements, URI encoding) {
+	public Sequence(URI identity, String elements, URI encoding) {
 		super(identity);
 		setElements(elements);
 		setEncoding(encoding);

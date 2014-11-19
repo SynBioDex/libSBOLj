@@ -3,7 +3,7 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.sbolstandard.core2.abstract_classes.ComponentInstantiation;
+import org.sbolstandard.core2.abstract_classes.ComponentInstance;
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Location;
 
@@ -14,16 +14,16 @@ import org.sbolstandard.core2.abstract_classes.Location;
  * @version 2.0
  */
 
-public class StructuralAnnotation extends Documented {
+public class SequenceAnnotation extends Documented {
 
 	private Location location;
-	private StructuralInstantiation structuralInstantiation;
+	private Component structuralInstantiation;
 //	private int start;
 //	private int end;
 //	private Orientation orientation;	
 //	private Collection<StructuralAnnotation> precededAnnotations;
 	
-	public StructuralAnnotation(URI identity, Location location) {
+	public SequenceAnnotation(URI identity, Location location) {
 		super(identity);
 		setLocation(location);		
 	}
@@ -60,7 +60,7 @@ public class StructuralAnnotation extends Documented {
 	 * Returns field variable <code>structuralInstantiation</code>.
 	 * @return field variable <code>structuralInstantiation</code>
 	 */
-	public StructuralInstantiation getStructuralInstantiation() {
+	public Component getStructuralInstantiation() {
 		return structuralInstantiation;
 	}
 
@@ -68,7 +68,7 @@ public class StructuralAnnotation extends Documented {
 	 * Sets field variable <code>structuralInstantiation</code> to the specified element.
 	 * @param structuralInstantiation
 	 */
-	public void setStructuralInstantiation(StructuralInstantiation structuralInstantiation) {
+	public void setStructuralInstantiation(Component structuralInstantiation) {
 		this.structuralInstantiation = structuralInstantiation;
 	}
 	

@@ -2,13 +2,13 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import org.sbolstandard.core2.abstract_classes.ComponentInstantiation;
+import org.sbolstandard.core2.abstract_classes.ComponentInstance;
 
-public class FunctionalInstantiation extends ComponentInstantiation{
+public class FunctionalComponent extends ComponentInstance{
 		
 	private DirectionType direction;
 	
-	public FunctionalInstantiation(URI identity, AccessType access, 
+	public FunctionalComponent(URI identity, AccessType access, 
 			URI instantiatedComponent, DirectionType direction) {
 		super(identity,access, instantiatedComponent);
 		setDirection(direction);
