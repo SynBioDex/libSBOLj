@@ -474,8 +474,11 @@ public class SBOLDocument {
 		nameSpaces.put(nameSpaceUri, NamespaceBinding(nameSpaceUri.toString(), prefix));
 	}
 	
+	/**
+	 * Gets the namespace bindings for the document
+	 * @return A list of {@link NamespaceBinding}
+	 */
 	public List<NamespaceBinding> getNameSpaceBindings() {
-
 		List<NamespaceBinding> bindings = new ArrayList<NamespaceBinding>(); 
 		bindings.addAll(this.nameSpaces.values());
 		return bindings; 

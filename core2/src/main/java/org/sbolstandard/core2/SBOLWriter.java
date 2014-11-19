@@ -64,6 +64,7 @@ public class SBOLWriter {
 		formatStructures(doc.getStructures(), topLevelDoc); 
 		
 		try {
+			//GM: Added the namespace bindings 
 			writeRdf(new OutputStreamWriter(out), DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),TopLevelDocuments(topLevelDoc)));
 //			writeJson(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
 //			writeTurtle(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(topLevelDoc)));
@@ -172,6 +173,7 @@ public class SBOLWriter {
 				}
 			}
 			
+			//GM: Added the annotations as NamedProperties for now. Annotations should be added through the interfaces.
 			if(c.getAnnotations() != null)
 			{	
 				for(Annotation annotation : c.getAnnotations())
@@ -266,7 +268,7 @@ public class SBOLWriter {
 		for(Annotation a : annotations)
 		{
 //			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			/* GM: Commented 
+			/* GM: Commented for now
 			 * if(a.getRelation() != null)
 				list.add(NamedProperty(Sbol2Terms.Annotation.relation, a.getRelation()));
 			if(a.getLiteral() != null)
