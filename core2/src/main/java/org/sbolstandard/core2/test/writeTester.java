@@ -137,7 +137,7 @@ public class writeTester {
 				getData("pLactetR/struct_constraint/1/0", "struct_constraint", "1.0"), 
 				get_P(SBOL2Doc_test), 
 				get_C(SBOL2Doc_test),
-				getPropertyURI("struct_constraint/precedes"));
+				getPropertyURI("precedes"));
 	}
 	
 	private static ComponentDefinition get_pLactetR (SBOLDocument SBOL2Doc_test)
@@ -477,7 +477,7 @@ public class writeTester {
 		//TODO: Should you attach parent ToggleModel URI to this model when this is being referenced? 
 		return createModelData(SBOL2Doc_test, 
 				getData("Toggle/ToggleModel/1/0","ToggleModel","1.0","ToggleModel","ToggleModel", "ToggleModel"), 
-				getSetOfURI("ToggleModel_role"), 
+				getSetPropertyURI("ToggleModel_role"), 
 				getPropertyURI("ToggleModel_source"), getPropertyURI("ToggleModel_language"), getPropertyURI("ToggleModel_framework"));
 	}
 
