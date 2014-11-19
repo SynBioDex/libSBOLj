@@ -17,11 +17,7 @@ import org.sbolstandard.core2.abstract_classes.Location;
 public class SequenceAnnotation extends Documented {
 
 	private Location location;
-	private Component structuralInstantiation;
-//	private int start;
-//	private int end;
-//	private Orientation orientation;	
-//	private Collection<StructuralAnnotation> precededAnnotations;
+	private URI component;
 	
 	public SequenceAnnotation(URI identity, Location location) {
 		super(identity);
@@ -46,37 +42,37 @@ public class SequenceAnnotation extends Documented {
 	}	
 	
 	/**
-	 * Test if optional field variable <code>structuralInstantiation</code> is set.
+	 * Test if optional field variable <code>component</code> is set.
 	 * @return <code>true</code> if it is not null.
 	 */
 	public boolean isSetStructuralInstantiation() {
-		if (structuralInstantiation == null)
+		if (component == null)
 			return false;
 		else
 			return true;
 	}
 	
 	/**
-	 * Returns field variable <code>structuralInstantiation</code>.
-	 * @return field variable <code>structuralInstantiation</code>
+	 * Returns field variable <code>component</code>.
+	 * @return field variable <code>component</code>
 	 */
-	public Component getStructuralInstantiation() {
-		return structuralInstantiation;
+	public URI getComponent() {
+		return component;
 	}
 
 	/**
-	 * Sets field variable <code>structuralInstantiation</code> to the specified element.
-	 * @param structuralInstantiation
+	 * Sets field variable <code>component</code> to the specified element.
+	 * @param componentURI
 	 */
-	public void setStructuralInstantiation(Component structuralInstantiation) {
-		this.structuralInstantiation = structuralInstantiation;
+	public void setComponent(URI componentURI) {
+		this.component = componentURI;
 	}
 	
 	/**
-	 * Set optional field variable <code>structuralInstantiation</code> to <code>null</code>.
+	 * Set optional field variable <code>component</code> to <code>null</code>.
 	 */
-	public void unsetStructuralInstantiation() {
-		structuralInstantiation = null;
+	public void unsetComponent() {
+		component = null;
 	}
 
 //	/**
@@ -194,7 +190,7 @@ public class SequenceAnnotation extends Documented {
 //	 * @return the sequence annotation's subcomponent instantiation
 //	 */
 //	public ComponentInstantiation getSubComponentInstantiation() {
-//		return structuralInstantiation;
+//		return component;
 //	}
 	
 	// TRAMY - PUT BACK
@@ -203,8 +199,8 @@ public class SequenceAnnotation extends Documented {
 	 * @deprecated As of release 2.0, replaced by {@link #getSubComponentInstantiation()}
 	 */
 //	public SequenceComponent getSubComponent() {
-////		if (structuralInstantiation != null) {
-////			Component tmp = structuralInstantiation.getInstantiatedComponent();
+////		if (component != null) {
+////			Component tmp = component.getInstantiatedComponent();
 ////			if (tmp instanceof SequenceComponent) {
 ////				return (SequenceComponent) tmp;
 ////			}
@@ -221,7 +217,7 @@ public class SequenceAnnotation extends Documented {
 //	 * @param subComponentInstantiation a subcomponent instantiation for the sequence annotation
 //	 */
 //	public void setSubComponentInstantiation(ComponentInstantiation subComponentInstantiation) {
-//		this.structuralInstantiation = subComponentInstantiation;
+//		this.component = subComponentInstantiation;
 //	}
 	
 	/**
@@ -235,7 +231,7 @@ public class SequenceAnnotation extends Documented {
 ////		String identityStr = getIdentity().toString() + "/" + subComponent.getDisplayId();
 ////		URI identity = URI.create(identityStr);
 ////		String displayId = getDisplayId() + "_" + subComponent.getDisplayId();				
-////		this.structuralInstantiation = new ComponentInstantiation(identity, displayId, subComponent);
+////		this.component = new ComponentInstantiation(identity, displayId, subComponent);
 //	}
 
 //	/**

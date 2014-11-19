@@ -95,10 +95,10 @@ public class SBOLWriter {
 	private static List<TopLevelDocument<QName>> getTopLevelDocument(SBOLDocument doc) {
 		List<TopLevelDocument<QName>> topLevelDoc = new ArrayList<TopLevelDocument<QName>>();
 		formatCollections(doc.getCollections(), topLevelDoc);
-		formatModules(doc.getModuleDefinitions(), topLevelDoc); 		
+		formatModuleDefinitions(doc.getModuleDefinitions(), topLevelDoc); 		
 		formatModels(doc.getModels(), topLevelDoc); 			
-		formatComponents(doc.getComponentDefinitions(), topLevelDoc);  
-		formatStructures(doc.getSequences(), topLevelDoc); 
+		formatComponentDefinitions(doc.getComponentDefinitions(), topLevelDoc);  
+		formatSequences(doc.getSequences(), topLevelDoc); 
 		return topLevelDoc;
 	}
 	
@@ -187,9 +187,9 @@ public class SBOLWriter {
 		}
 	}
 	
-	private static void formatComponents (List<ComponentDefinition> components, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatComponentDefinitions (List<ComponentDefinition> componentDefinitions, List<TopLevelDocument<QName>> topLevelDoc)
 	{
-		for(ComponentDefinition c : components)
+		for(ComponentDefinition c : componentDefinitions)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 
@@ -210,9 +210,9 @@ public class SBOLWriter {
 				}
 			}
 		
-			getStructuralInstantiations(c.getSubComponents(),list);
+			getSubComponents(c.getSubComponents(),list);
 			getSequenceAnnotations(c.getSequenceAnnotations(),list);
-			getStructuralConstraints(c.getSequenceConstraints(),list);
+			getSequenceConstraints(c.getSequenceConstraints(),list);
 			if(c.getSequence() != null)
 				getSequence(c.getSequence(), list); 
 			
@@ -246,7 +246,7 @@ public class SBOLWriter {
 		}
 	}
 	
-	private static void formatModules(List<ModuleDefinition> module, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatModuleDefinitions(List<ModuleDefinition> module, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 		for (ModuleDefinition m : module)
 		{	
@@ -262,16 +262,16 @@ public class SBOLWriter {
 				}
 			}
 			
-			getFunctionalInstantiations(m.getFunctionalInstantiations(),list);	
+			getFunctionalComponents(m.getComponents(),list);	
 			getInteractions(m.getInteractions(),list); 
 			getModels(m.getModels(),list); 
-			getModuleInstantiation(m.getModuleInstantiations(),list);
+			getModule(m.getSubModule(),list);
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ModuleDefinition.ModuleDefinition, m.getIdentity(), NamedProperties(list)));
 		}	
 	}
 	
-	private static void formatStructures (List<Sequence> sequences, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatSequences (List<Sequence> sequences, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 		for(Sequence s : sequences)
 		{	
@@ -306,11 +306,11 @@ public class SBOLWriter {
 	}
 	
 	/**
-	 * getFunctionalInstantiations for Module
+	 * getFunctionalComponents for Module
 	 * @param functionalInstantiation
 	 * @param properties
 	 */
-	private static void getFunctionalInstantiations(List<FunctionalComponent> functionalInstantiation,
+	private static void getFunctionalComponents(List<FunctionalComponent> functionalInstantiation,
 			List<NamedProperty<QName>> properties)
 	{
 		for(FunctionalComponent f : functionalInstantiation)
@@ -398,11 +398,11 @@ public class SBOLWriter {
 	}
 	
 	/**
-	 * getModuleInstantiation for Module
+	 * getModule for Module
 	 * @param module
 	 * @param properties
 	 */
-	private static void getModuleInstantiation (List<Module> module, 
+	private static void getModule (List<Module> module, 
 			List<NamedProperty<QName>> properties)
 	{
 		for(Module m : module)
@@ -411,8 +411,8 @@ public class SBOLWriter {
 
 			getCommonDocumentedData(list, m);
 
-			if(m.getInstantiatedModule() != null)
-				list.add(NamedProperty(Sbol2Terms.Module.hasInstantiatedModule, m.getInstantiatedModule()));	
+			if(m.getDefinition() != null)
+				list.add(NamedProperty(Sbol2Terms.Module.hasInstantiatedModule, m.getDefinition()));	
 
 			if(m.getMappings() != null)	
 			{
@@ -495,7 +495,7 @@ public class SBOLWriter {
 //		
 //	}
 	
-	private static void getStructuralConstraints(List<SequenceConstraint> sequenceConstraint,
+	private static void getSequenceConstraints(List<SequenceConstraint> sequenceConstraint,
 			List<NamedProperty<QName>> properties)
 	{
 		for(SequenceConstraint s : sequenceConstraint)
@@ -520,7 +520,7 @@ public class SBOLWriter {
 
 	}
 	
-	private static void getStructuralInstantiations(List<Component> components,
+	private static void getSubComponents(List<Component> components,
 			List<NamedProperty<QName>> properties)
 	{
 		for(Component s : components)

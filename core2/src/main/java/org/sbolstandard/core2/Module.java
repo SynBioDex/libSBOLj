@@ -16,11 +16,11 @@ import org.sbolstandard.core2.abstract_classes.Documented;
 public class Module extends Documented {
 	
 	private HashMap<URI, MapsTo> mappings;
-	private URI instantiatedModule;
+	private URI definition;
 	
 	public Module(URI identity, URI instantiatedModule) {
 		super(identity);
-		setInstantiatedModule(instantiatedModule);
+		setDefinition(instantiatedModule);
 		this.mappings = new HashMap<URI, MapsTo>();
 	}
 
@@ -29,16 +29,16 @@ public class Module extends Documented {
 	 * Returns field variable <code>instantiatedModule</code>.
 	 * @return field variable <code>instantiatedModule</code>
 	 */
-	public URI getInstantiatedModule() {
-		return instantiatedModule;
+	public URI getDefinition() {
+		return definition;
 	}
 
 	/**
 	 * Sets field variable <code>instantiatedModule</code> to the specified element.
-	 * @param instantiatedModule
+	 * @param definitionURI
 	 */
-	public void setInstantiatedModule(URI instantiatedModule) {
-		this.instantiatedModule = instantiatedModule;
+	public void setDefinition(URI definitionURI) {
+		this.definition = definitionURI;
 	}
 
 	/**

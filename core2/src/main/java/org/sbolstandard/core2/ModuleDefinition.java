@@ -15,17 +15,17 @@ import java.util.Set;
 public class ModuleDefinition extends TopLevel {
 	
 	private Set<URI> roles;
-	private HashMap<URI, Module> moduleInstantiations;
+	private HashMap<URI, Module> subModules;
 	private HashMap<URI, Interaction> interactions;
-	private HashMap<URI, FunctionalComponent> functionalInstantiations;
+	private HashMap<URI, FunctionalComponent> components;
 	private Set<URI> models;
 	
 	public ModuleDefinition(URI identity, Set<URI> roles) {
 		super(identity);
 		setRoles(roles);
-		this.moduleInstantiations = new HashMap<URI, Module>();
+		this.subModules = new HashMap<URI, Module>();
 		this.interactions = new HashMap<URI, Interaction>();
-		this.functionalInstantiations = new HashMap<URI, FunctionalComponent>();
+		this.components = new HashMap<URI, FunctionalComponent>();
 		this.models = new HashSet<URI>();		
 	}
 	
@@ -81,11 +81,11 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Test if field variable <code>moduleInstantiations</code> is set.
+	 * Test if field variable <code>subModules</code> is set.
 	 * @return <code>true</code> if it is not an empty list.
 	 */
-	public boolean isSetModuleInstantiations() {
-		if (moduleInstantiations.isEmpty())
+	public boolean isSetSubModules() {
+		if (subModules.isEmpty())
 			return false;
 		else
 			return true;					
@@ -96,70 +96,69 @@ public class ModuleDefinition extends TopLevel {
 	 * then adds to the list of ModuleInstantiation instances owned by this instance.
 	 * @param identity
 	 * @param location
-	 * @return the  created ModuleInstantiation instance. 
+	 * @return the created ModuleInstantiation instance. 
 	 */
-	public Module createModuleInstantiation(URI identity, URI instantiatedModule) {
-		Module moduleInstantiation = new Module(identity, instantiatedModule);
-		addModuleInstantiation(moduleInstantiation);
-		return moduleInstantiation;
+	public Module createSubModule(URI identity, URI subModuleURI) {
+		Module subModule = new Module(identity, subModuleURI);
+		addSubModule(subModule);
+		return subModule;
 	}
 	
 	/**
-	 * Adds the specified instance to the list of moduleInstantiations. 
-	 * @param moduleInstantiation
+	 * Adds the specified instance to the list of subModules. 
+	 * @param subModule
 	 */
-	public void addModuleInstantiation(Module moduleInstantiation) {
+	public void addSubModule(Module subModule) {
 		// TODO: @addModuleInstantiation, Check for duplicated entries.
-		moduleInstantiations.put(moduleInstantiation.getIdentity(), moduleInstantiation);
+		subModules.put(subModule.getIdentity(), subModule);
 	}
 	
 	/**
-	 * Removes the instance matching the specified URI from the list of moduleInstantiations if present.
-	 * @param moduleInstantiationURI
+	 * Removes the instance matching the specified URI from the list of subModules if present.
+	 * @param subModuleURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Module removeModuleInstantiation(URI moduleInstantiationURI) {
-		return moduleInstantiations.remove(moduleInstantiationURI);
+	public Module removeSubModule(URI subModuleURI) {
+		return subModules.remove(subModuleURI);
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of moduleInstantiations if present.
-	 * @param moduleInstantiationURI
+	 * Returns the instance matching the specified URI from the list of subModules if present.
+	 * @param subModuleURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Module getModuleInstantiation(URI moduleInstantiationURI) {
-		return moduleInstantiations.get(moduleInstantiationURI);
+	public Module getSubModule(URI subModuleURI) {
+		return subModules.get(subModuleURI);
 	}
 	
 	/**
-	 * Returns the list of moduleInstantiation instances owned by this instance. 
-	 * @return the list of moduleInstantiation instances owned by this instance.
+	 * Returns the list of subModule instances owned by this instance. 
+	 * @return the list of subModule instances owned by this instance.
 	 */
-	public List<Module> getModuleInstantiations() {
-//		return (List<ModuleInstantiation>) moduleInstantiations.values();
-		return new ArrayList<Module>(moduleInstantiations.values());
+	public List<Module> getSubModule() {
+		return new ArrayList<Module>(subModules.values());
 	}
 	
 	/**
-	 * Removes all entries of the list of moduleInstantiation instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of subModule instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearModuleInstantiations() {
-		Object[] keySetArray = moduleInstantiations.keySet().toArray();
+	public void clearSubModules() {
+		Object[] keySetArray = subModules.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeModuleInstantiation((URI) key);
+			removeSubModule((URI) key);
 		}
 	}
 		
 	/**
-	 * Clears the existing list of moduleInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param moduleInstantiations
+	 * Clears the existing list of subModule instances, then appends all of the elements in the specified collection to the end of this list.
+	 * @param subModules
 	 */
-	public void setModuleInstantiations(
-			List<Module> moduleInstantiations) {
-		if(isSetModuleInstantiations())
-			clearModuleInstantiations();		
-		for (Module moduleInstantiation : moduleInstantiations) {
-			addModuleInstantiation(moduleInstantiation);
+	public void setSubModules(
+			List<Module> subModules) {
+		if(isSetSubModules())
+			clearSubModules();		
+		for (Module subModule : subModules) {
+			addSubModule(subModule);
 		}
 	}
 	
@@ -249,8 +248,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Test if field variable <code>functionalInstantiations</code> is set.
 	 * @return <code>true</code> if it is not an empty list.
 	 */
-	public boolean isSetFunctionalInstantiations() {
-		if (functionalInstantiations.isEmpty()) 
+	public boolean isSetComponents() {
+		if (components.isEmpty()) 
 			return false;
 		else
 			return true;
@@ -261,79 +260,78 @@ public class ModuleDefinition extends TopLevel {
 	 * then adds to the list of FunctionalInstantiation instances owned by this instance.
 	 * @param identity
 	 * @param location
-	 * @return the  created FunctionalInstantiation instance. 
+	 * @return the created {@link FunctionalComponent} instance. 
 	 */
-	public FunctionalComponent createFunctionalInstantiation(URI identity, AccessType access, 
-			URI instantiatedComponent, DirectionType direction) {
-		FunctionalComponent functionalInstantiation = 
-				new FunctionalComponent(identity, access, instantiatedComponent, direction);
-		addFunctionalInstantiation(functionalInstantiation);
-		return functionalInstantiation;
+	public FunctionalComponent createComponent(URI identity, AccessType access, 
+			URI functionalComponentURI, DirectionType direction) {
+		FunctionalComponent functionalComponent = 
+				new FunctionalComponent(identity, access, functionalComponentURI, direction);
+		addComponent(functionalComponent);
+		return functionalComponent;
 	}
 	
 	/**
 	 * Adds the specified instance to the list of functionalInstantiations. 
-	 * @param functionalInstantiation
+	 * @param component
 	 */
-	public void addFunctionalInstantiation(FunctionalComponent functionalInstantiation) {
+	public void addComponent(FunctionalComponent component) {
 		// TODO: @addFunctionalInstantiation, Check for duplicated entries.
-		functionalInstantiations.put(functionalInstantiation.getIdentity(), functionalInstantiation);
+		components.put(component.getIdentity(), component);
 	}
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of functionalInstantiations if present.
-	 * @param functionalInstantiationURI
+	 * @param componentURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public FunctionalComponent removeFunctionalInstantiation(URI functionalInstantiationURI) {
-		return functionalInstantiations.remove(functionalInstantiationURI);
+	public FunctionalComponent removeComponent(URI componentURI) {
+		return components.remove(componentURI);
 	}
 	
 	/**
 	 * Returns the instance matching the specified URI from the list of functionalInstantiations if present.
-	 * @param functionalInstantiationURI
+	 * @param componentURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public FunctionalComponent getFunctionalInstantiation(URI functionalInstantiationURI) {
-		return functionalInstantiations.get(functionalInstantiationURI);
+	public FunctionalComponent getComponent(URI componentURI) {
+		return components.get(componentURI);
 	}
 	
 	/**
 	 * Returns the list of functionalInstantiation instances owned by this instance. 
 	 * @return the list of functionalInstantiation instances owned by this instance.
 	 */
-	public List<FunctionalComponent> getFunctionalInstantiations() {
-//		return (List<FunctionalInstantiation>) functionalInstantiations.values();
-		return new ArrayList<FunctionalComponent>(functionalInstantiations.values());
+	public List<FunctionalComponent> getComponents() {
+		return new ArrayList<FunctionalComponent>(components.values());
 	}
 	
 	/**
 	 * Removes all entries of the list of functionalInstantiation instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearFunctionalInstantiations() {
-		Object[] keySetArray = functionalInstantiations.keySet().toArray();
+	public void clearComponents() {
+		Object[] keySetArray = components.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeFunctionalInstantiation((URI) key);
+			removeComponent((URI) key);
 		}
 	}
 		
 	/**
 	 * Clears the existing list of functionalInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param functionalInstantiations
+	 * @param components
 	 */
-	public void setFunctionalInstantiations(
-			List<FunctionalComponent> functionalInstantiations) {
-		clearFunctionalInstantiations();		
-		for (FunctionalComponent functionalInstantiation : functionalInstantiations) {
-			addFunctionalInstantiation(functionalInstantiation);
+	public void setComponents(
+			List<FunctionalComponent> components) {
+		clearComponents();		
+		for (FunctionalComponent component : components) {
+			addComponent(component);
 		}
 	}
 	
 //	/**
-//	 * Set optional field variable <code>moduleInstantiations</code> to an empty list.
+//	 * Set optional field variable <code>subModules</code> to an empty list.
 //	 */
 //	public void unsetModuleInstantiations() {
-//		moduleInstantiations.clear();
+//		subModules.clear();
 //	}
 //	
 //	/**

@@ -63,19 +63,19 @@ public class writeTester {
 	
 	private static Sequence get_pLacSeq (SBOLDocument SBOL2Doc_test)
 	{
-		return createStructureData(SBOL2Doc_test, 
+		return createSequenceData(SBOL2Doc_test, 
 				getData("pLacSeq/1/0","pLacSeq","1.0","pLacSeq","pLacSeq", "pLacSeq", "pLacSeq_element", "pLacSeq_encoding")); 
 	}
 	
 	private static Sequence get_tetRSeq (SBOLDocument SBOL2Doc_test)
 	{
-		return createStructureData(SBOL2Doc_test, 
+		return createSequenceData(SBOL2Doc_test, 
 				getData("tetRSeq/1/0","tetRSeq","1.0","tetRSeq","tetRSeq", "tetRSeq", "tetRSeq_element", "tetRSeq_encoding")); 
 	}
 	
 	private static Sequence get_pLactetRSeq (SBOLDocument SBOL2Doc_test)
 	{
-		return createStructureData(SBOL2Doc_test, 
+		return createSequenceData(SBOL2Doc_test, 
 				getData("pLactetRSeq/1/0","pLactetRSeq","1.0","pLactetRSeq","pLactetRSeq", "pLactetRSeq", "pLactetRSeq_element", "pLactetRSeq_encoding")); 
 	}
 	
@@ -101,14 +101,14 @@ public class writeTester {
 	
 	private static Component get_P (SBOLDocument SBOL2Doc_test)
 	{
-		return createStructuralInstantiationData(
+		return createComponentData(
 				getData("P/1/0", "P", "P_1.0", "P", "P", "P", "public"), 
 				get_pLac(SBOL2Doc_test));
 	}
 	
 	private static Component get_C (SBOLDocument SBOL2Doc_test)
 	{
-		return createStructuralInstantiationData(
+		return createComponentData(
 				getData("C/1/0", "C", "C_1.0", "C", "C", "C", "public"), 
 				get_tetR(SBOL2Doc_test));
 	}
@@ -129,7 +129,7 @@ public class writeTester {
 				11, 20);
 	}
 	
-	private static SequenceConstraint get_struct_constraint (SBOLDocument SBOL2Doc_test)
+	private static SequenceConstraint get_sequence_constraint (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceConstraintData(
 				getData("struct_constraint", "struct_constraint", "1.0", "precedes"), 
@@ -144,9 +144,9 @@ public class writeTester {
 				getSetOfURI("Gene"),
 				getData("pLactetR/1/0","pLactetR","1.0","pLactetR","pLactetR", "pLactetR"),
 				get_pLactetRSeq(SBOL2Doc_test), 
-				getStructuralInstantiation_List(get_P(SBOL2Doc_test), get_C(SBOL2Doc_test)), 
+				getComponent_List(get_P(SBOL2Doc_test), get_C(SBOL2Doc_test)), 
 				null,  
-				getSequenceConstraint_List(get_struct_constraint(SBOL2Doc_test))); 
+				getSequenceConstraint_List(get_sequence_constraint(SBOL2Doc_test))); 
 	}
 	
 	private static ComponentDefinition get_LacI (SBOLDocument SBOL2Doc_test)
@@ -240,7 +240,7 @@ public class writeTester {
 	
 	private static ModuleDefinition get_LacI_Inv (SBOLDocument SBOL2Doc_test)
 	{
-		return createModuleData(SBOL2Doc_test, 
+		return createModuleDefinitionData(SBOL2Doc_test, 
 				getSetOfURI("Inverter"),
 				getSetOfURI("Transcriptionfactor"),
 				getData("LacI_Inv/1/0","LacI_Inv","1.0","LacI_Inv","LacI_Inv", "LacI_Inv"),
@@ -260,19 +260,19 @@ public class writeTester {
 	// ------------------------------ CREATING TetR_Inverter ------------------------------
 	private static Sequence get_ptetSeq (SBOLDocument SBOL2Doc_test)
 	{
-		return createStructureData(SBOL2Doc_test, 
+		return createSequenceData(SBOL2Doc_test, 
 				getData("ptetSeq/1/0","ptetSeq","1.0","ptetSeq","ptetSeq", "ptetSeq", "ptetSeq_element", "ptetSeq_encoding")); 
 	}
 	
 	private static Sequence get_lacISeq (SBOLDocument SBOL2Doc_test)
 	{
-		return createStructureData(SBOL2Doc_test, 
+		return createSequenceData(SBOL2Doc_test, 
 				getData("lacISeq/1/0","lacISeq","1.0","lacISeq","lacISeq", "lacISeq", "lacISeq_element", "lacISeq_encoding")); 
 	}
 	
 	private static Sequence get_ptetlacISeq (SBOLDocument SBOL2Doc_test)
 	{
-		return createStructureData(SBOL2Doc_test, 
+		return createSequenceData(SBOL2Doc_test, 
 				getData("ptetlacISeq/1/0","ptetlacISeq","1.0","ptetlacISeq","ptetlacISeq", "ptetlacISeq", "ptetlacISeq_element", "ptetlacISeq_encoding")); 
 	}
 	
@@ -298,19 +298,19 @@ public class writeTester {
 	
 	private static Component get_T (SBOLDocument SBOL2Doc_test)
 	{
-		return createStructuralInstantiationData(
+		return createComponentData(
 				getData("T/1/0", "T", "T_1.0", "T", "T", "T", "public"), 
 				get_ptet(SBOL2Doc_test));
 	}
 	
 	private static Component get_L (SBOLDocument SBOL2Doc_test)
 	{
-		return createStructuralInstantiationData(
+		return createComponentData(
 				getData("L/1/0", "L", "L_1.0", "L", "L", "L", "public"), 
 				get_lacI(SBOL2Doc_test));
 	}
 	
-	private static SequenceAnnotation get_t_structAnnotate (SBOLDocument SBOL2Doc_test)
+	private static SequenceAnnotation get_t_sequenceAnnotate (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceAnnotationData(
 				getData("p2_structAnnotate", "p2_structAnnotate", "1.0", "p2_structAnnotate", "p2_structAnnotate", "p2_structAnnotate"), 
@@ -333,8 +333,8 @@ public class writeTester {
 				getSetOfURI("Gene"),
 				getData("ptetlacI/1/0","ptetlacI","1.0","ptetlacI","ptetlacI", "ptetlacI"),
 				get_ptetlacISeq(SBOL2Doc_test), 
-				getStructuralInstantiation_List(get_T(SBOL2Doc_test), get_L(SBOL2Doc_test)), 
-				getSequenceAnnotation_List(get_t_structAnnotate(SBOL2Doc_test), get_l_structAnnotate(SBOL2Doc_test)), 
+				getComponent_List(get_T(SBOL2Doc_test), get_L(SBOL2Doc_test)), 
+				getSequenceAnnotation_List(get_t_sequenceAnnotate(SBOL2Doc_test), get_l_structAnnotate(SBOL2Doc_test)), 
 				null); 
 	}
 	
@@ -409,7 +409,7 @@ public class writeTester {
 	
 	private static ModuleDefinition get_TetR_Inv (SBOLDocument SBOL2Doc_test)
 	{
-		return createModuleData(SBOL2Doc_test, 
+		return createModuleDefinitionData(SBOL2Doc_test, 
 				getSetOfURI("Inverter"),
 				getSetOfURI("Transcriptionfactor"),
 				getData("TetR_Inv/1/0","TetR_Inv","1.0","TetR_Inv","TetR_Inv", "TetR_Inv"),
@@ -442,7 +442,7 @@ public class writeTester {
 	
 	private static Module get_Inv1 (SBOLDocument SBOL2Doc_test)
 	{
-		return createModuleInstantiationData(
+		return createModuleData(
 				getData("Inv1/1/0","Inv1","1.0","Inv1","Inv1", "Inv1"),
 				get_LacI_Inv(SBOL2Doc_test),
 				getMapsTo_List(
@@ -454,7 +454,7 @@ public class writeTester {
 	
 	private static Module get_Inv2 (SBOLDocument SBOL2Doc_test)
 	{
-		return createModuleInstantiationData(
+		return createModuleData(
 				getData("Inv2/1/0","Inv2","1.0","Inv2","Inv2", "Inv2"),
 				get_TetR_Inv(SBOL2Doc_test),
 				getMapsTo_List(
@@ -473,7 +473,7 @@ public class writeTester {
 
 	private static ModuleDefinition get_Toggle (SBOLDocument SBOL2Doc_test)
 	{
-		return createModuleData(SBOL2Doc_test, 
+		return createModuleDefinitionData(SBOL2Doc_test, 
 				getSetOfURI("Toggle_type"),
 				getSetOfURI("Toggle_role"),
 				getData("Toggle/1/0","Toggle","1.0","Toggle","Toggle", "Toggle"),
@@ -652,7 +652,7 @@ public class writeTester {
 		return model;
 	}
 	
-	private static ModuleDefinition createModuleData(SBOLDocument SBOL2Doc_test, 
+	private static ModuleDefinition createModuleDefinitionData(SBOLDocument SBOL2Doc_test, 
 			Set<URI> type, Set<URI> roles,
 			List<String> module_data,
 			List<FunctionalComponent> functionalInstantiation_data,
@@ -673,18 +673,18 @@ public class writeTester {
 		m.setAnnotations(annotations);
 		
 		if(functionalInstantiation_data != null)
-			m.setFunctionalInstantiations(functionalInstantiation_data);
+			m.setComponents(functionalInstantiation_data);
 		if(interactionData != null)
 			m.setInteractions(interactionData);
 		if(moduleInstantiation_data != null)
-			m.setModuleInstantiations(moduleInstantiation_data);
+			m.setSubModules(moduleInstantiation_data);
 		if(model_data != null)
 			m.setModels(model_data);
 		
 		return m; 
 	}
 	
-	private static Module createModuleInstantiationData(
+	private static Module createModuleData(
 			List<String> moduleInstantiation_data, 
 			ModuleDefinition m, 
 			List<MapsTo> maps)
@@ -751,7 +751,7 @@ public class writeTester {
 		return s; 
 	}
 	
-	private static Component createStructuralInstantiationData(
+	private static Component createComponentData(
 			List<String> structuralInstantiations_data, 
 			ComponentDefinition c)
 	{
@@ -777,7 +777,7 @@ public class writeTester {
 		return s; 
 	}
 	
-	private static Sequence createStructureData(SBOLDocument SBOL2Doc_test, List<String> structureData)
+	private static Sequence createSequenceData(SBOLDocument SBOL2Doc_test, List<String> structureData)
 	{
 		URI identity 		   = getURI(structureData.get(0)); 
 		URI persistentIdentity = getURI(structureData.get(1)); 
@@ -897,7 +897,7 @@ public class writeTester {
 		return new ArrayList<SequenceConstraint>(Arrays.asList(sc)); 
 	}
 	
-	private static List<Component> getStructuralInstantiation_List(Component ... si)
+	private static List<Component> getComponent_List(Component ... si)
 	{
 		return new ArrayList<Component>(Arrays.asList(si)); 
 	}
