@@ -10,7 +10,7 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.sbolstandard.core2.Annotation;
-import org.sbolstandard.core2.ModuleInstantiation;
+import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.Turtle;
 
 /**

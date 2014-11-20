@@ -8,10 +8,10 @@ import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.MapsTo;
 import org.sbolstandard.core2.RefinementType;
 
-public abstract class ComponentInstantiation extends Documented {
+public abstract class ComponentInstance extends Documented {
 	
 	private AccessType access;
-	private URI instantiatedComponent;
+	private URI definition;
 	private HashMap<URI, MapsTo> mappings;
 	
 //	public ComponentInstantiation(URI identity, URI componentIdentity, AccessType access, List<URI> type, List<URI> roles) {
@@ -22,10 +22,10 @@ public abstract class ComponentInstantiation extends Documented {
 //		this.references = new ArrayList<MapsTo>();
 //	}
 	
-	public ComponentInstantiation(URI identity, AccessType access, URI instantiatedComponent) {
+	public ComponentInstance(URI identity, AccessType access, URI definition) {
 		super(identity);
 		setAccess(access);
-		setInstantiatedComponent(instantiatedComponent);		
+		setDefinition(definition);		
 		this.mappings = new HashMap<URI, MapsTo>();
 	}
 	
@@ -138,21 +138,19 @@ public abstract class ComponentInstantiation extends Documented {
 //	}
 	
 	/**
-	 * Returns field variable <code>instantiatedComponent</code>
-	 * @return field variable <code>instantiatedComponent</code>
+	 * Returns field variable <code>definition</code>
+	 * @return field variable <code>definition</code>
 	 */
-	public URI getInstantiatedComponent() {
-		return instantiatedComponent;
+	public URI getDefinition() {
+		return definition;
 	}
 
 	/**
 	 * Sets field variable <code>instantiatedComponent</code> to the specified element.
-	 * @param instantiatedComponent
+	 * @param definitionURI
 	 */
-	public void setInstantiatedComponent(URI instantiatedComponent) {
-		this.instantiatedComponent = instantiatedComponent;
+	public void setDefinition(URI definitionURI) {
+		this.definition = definitionURI;
 	}
-
-
 
 }

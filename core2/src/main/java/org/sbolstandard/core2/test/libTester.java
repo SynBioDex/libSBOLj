@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.sbolstandard.core2.MapsTo;
+import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.Module;
-import org.sbolstandard.core2.ModuleInstantiation;
 import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.SBOLDocument;
 
@@ -30,10 +30,10 @@ public class libTester {
 		
 		
 		SBOLDocument toggleSwitch = new SBOLDocument();
-		Module toggleModule = toggleSwitch.createModule(toggleSwitchURI, getSetOfURIs("switch"));
+		ModuleDefinition toggleModule = toggleSwitch.createModuleDefinition(toggleSwitchURI, getSetOfURIs("switch"));
 		// Instantiate LacI inverter
-		ModuleInstantiation inv1 = toggleModule.createModuleInstantiation(inv1URI, LacI_InverterURI);
-		toggleModule.addModuleInstantiation(inv1);
+		Module inv1 = toggleModule.createSubModule(inv1URI, LacI_InverterURI);
+		toggleModule.addSubModule(inv1);
 		
 		
 		MapsTo mapto_LacI_input = new MapsTo(mapto_LacI_inputURI, RefinementType.verifyIdentical, LacI_localURI, LacI_remoteURI);
@@ -42,7 +42,7 @@ public class libTester {
 		
 		
 		// Instantiate TetR Inverter
-		ModuleInstantiation inv2 = toggleModule.createModuleInstantiation(inv2URI, TetR_InverterURI);
+		Module inv2 = toggleModule.createSubModule(inv2URI, TetR_InverterURI);
 		MapsTo mapto_TetR_Inverter = new MapsTo(mapto_TetR_InverterURI, RefinementType.verifyIdentical, inv2URI, TetR_InverterURI);
 		inv2.addMapping(mapto_TetR_Inverter);
 		
