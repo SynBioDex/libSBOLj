@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import uk.ac.ncl.intbio.examples.SbolTerms;
+import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
+
 /**
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -23,6 +27,7 @@ public class SBOLDocument {
 	private HashMap<URI, Model> models;
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
+	private HashMap<URI,NamespaceBinding> nameSpaces;
 
 	public SBOLDocument() {
 		//identityMap = new HashMap<URI, Identified>();
@@ -32,6 +37,8 @@ public class SBOLDocument {
 		models = new HashMap<URI, Model>();
 		moduleDefinitions = new HashMap<URI, ModuleDefinition>();
 		sequences = new HashMap<URI, Sequence>();
+		nameSpaces = new HashMap<URI, NamespaceBinding>();
+		nameSpaces.put(URI.create(SbolTerms.sbol2.getNamespaceURI()), SbolTerms.sbol2);
 	}
 	
 	
@@ -459,5 +466,25 @@ public class SBOLDocument {
 			addTopLevel(topLevel);
 		}
 	}
+	
+	/**
+	 * Adds a namespace URI and its prefix
+	 * @param nameSpaceUri The Namespace {@link URI}
+	 * @param prefix The prefix {@link String}
+	 */
+	public void addNameSpaceBinding(URI nameSpaceUri, String prefix) {
+		nameSpaces.put(nameSpaceUri, NamespaceBinding(nameSpaceUri.toString(), prefix));
+	}
+	
+	/**
+	 * Gets the namespace bindings for the document
+	 * @return A list of {@link NamespaceBinding}
+	 */
+	public List<NamespaceBinding> getNameSpaceBindings() {
+		List<NamespaceBinding> bindings = new ArrayList<NamespaceBinding>(); 
+		bindings.addAll(this.nameSpaces.values());
+		return bindings; 
+	}
+	
 	
 }

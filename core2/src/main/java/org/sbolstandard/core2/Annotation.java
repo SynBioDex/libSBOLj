@@ -1,13 +1,14 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import javax.xml.namespace.QName;
 
 public class Annotation {
 
-	private URI relation;
+	private QName relation;
 	private Turtle literal;
 	
-	public Annotation(URI relation, Turtle literal) {
+	public Annotation(QName relation, Turtle literal) {
 		setRelation(relation);
 		setLiteral(literal);
 	}
@@ -16,7 +17,7 @@ public class Annotation {
 	 * Returns field variable <code>relation</code>.
 	 * @return field variable <code>relation</code>
 	 */
-	public URI getRelation() {
+	public QName getRelation() {
 		return relation;
 	}
 
@@ -24,7 +25,7 @@ public class Annotation {
 	 * Sets field variable <code>relation</code> to the specified element.
 	 * @param relation
 	 */
-	public void setRelation(URI relation) {
+	public void setRelation(QName relation) {
 		this.relation = relation;
 	}
 

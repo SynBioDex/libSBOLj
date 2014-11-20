@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 
 import org.sbolstandard.core2.*; 
@@ -76,6 +77,7 @@ public class writeTester {
 		Collection myParts = createCollection(SBOL2Doc_test,
 				getData("myParts/1/0","myParts","1.0","myParts","myParts", "myParts"),null); 
 //				getAnnotation_List(createAnnotation(getURI("myParts/myPart_relation/1/0"),createTurtle()))); 
+
 		
 		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_tetRSeq(SBOL2Doc_test).getIdentity());
@@ -297,7 +299,9 @@ public class writeTester {
 						get_interact1a(SBOL2Doc_test), 
 						get_interact2a(SBOL2Doc_test)), 
 				null, null, 
+
 				null//getAnnotation_List(createAnnotation(getURI("LacI_Inv/LacI_Inv_relation/1/0"),createTurtle()))
+
 				);
 	}
 	
@@ -578,7 +582,7 @@ public class writeTester {
 		return collection; 
 	}
 	
-	private static Annotation createAnnotation(URI relation, Turtle literal)
+	private static Annotation createAnnotation(QName relation, Turtle literal)
 	{	
 		return new Annotation(relation, literal);
 		

@@ -11,12 +11,14 @@ import java.util.Map;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
+import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 import uk.ac.ncl.intbio.core.io.json.JsonIo;
 import uk.ac.ncl.intbio.core.io.json.StringifyQName;
+import uk.ac.ncl.intbio.examples.SbolTerms;
 import uk.ac.intbio.core.io.turtle.TurtleIo;
 
 import javax.json.*;
@@ -33,6 +35,8 @@ import javax.xml.stream.XMLStreamWriter;
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Identified;
 import org.sbolstandard.core2.abstract_classes.Location;
+
+import com.hp.hpl.jena.rdf.arp.impl.ANode;
 
 /**
  * @author Tramy Nguyen
@@ -256,6 +260,7 @@ public class SBOLWriter {
 
 	private static void formatComponentDefinitions (List<ComponentDefinition> componentDefinitions, List<TopLevelDocument<QName>> topLevelDoc)
 	{
+
 		for(ComponentDefinition c : componentDefinitions)
 		{	
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
@@ -276,7 +281,15 @@ public class SBOLWriter {
 					list.add(NamedProperty(Sbol2Terms.ComponentDefinition.type, types));
 				}
 			}
-
+			//GM: Added the annotations as NamedProperties for now. Annotations should be added through the interfaces.
+			if(c.getAnnotations() != null)
+			{	
+				for(Annotation annotation : c.getAnnotations())
+				{
+					list.add(NamedProperty(annotation.getRelation(), annotation.getLiteral().getTurtleStr()));
+				}
+			}
+	
 			getSubComponents(c.getSubComponents(),list);
 			getSequenceAnnotations(c.getSequenceAnnotations(),list);
 			getSequenceConstraints(c.getSequenceConstraints(),list);
@@ -360,6 +373,7 @@ public class SBOLWriter {
 		List<NestedDocument> nestedDoc = new ArrayList<NestedDocument>(); 
 		for(Annotation a : annotations)
 		{
+			/* GM: TODO: Commented for now
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			if(a.getRelation() != null)
 				list.add(NamedProperty(Sbol2Terms.Annotation.relation, a.getRelation()));
@@ -368,6 +382,7 @@ public class SBOLWriter {
 
 			//TODO: annotation does not have identity. Should I use getRelation() instead?
 			nestedDoc.add(NestedDocument(Sbol2Terms.Annotation.Annotation, a.getRelation(), NamedProperties(list)));
+			*/
 		}
 		return nestedDoc;
 	}
