@@ -1,11 +1,14 @@
 package org.sbolstandard.core2.test;
 
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.xml.stream.FactoryConfigurationError;
 
 import org.sbolstandard.core2.*; 
 import org.sbolstandard.core2.abstract_classes.Documented;
@@ -21,7 +24,47 @@ public class writeTester {
 	{
 		SBOLDocument SBOL2Doc_test = new SBOLDocument(); 
 		get_myParts(SBOL2Doc_test);
-		SBOLWriter.write(SBOL2Doc_test,(System.out));
+//		SBOLWriter.writeRdf(SBOL2Doc_test,(System.out));
+//		SBOLWriter.writeRdf(SBOL2Doc_test, "/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.0.rdf");
+//		SBOLWriter.writeRdf(SBOL2Doc_test, new File("/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.0.rdf"));
+		
+//		try {
+//			SBOLWriter.writeJson(SBOL2Doc_test,(System.out));
+//		} catch (FactoryConfigurationError e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (Throwable e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		SBOLWriter.writeJson(SBOL2Doc_test, "/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.0.json");
+//		SBOLWriter.writeJson(SBOL2Doc_test, new File("/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.0.json"));
+		
+//		try {
+//			SBOLWriter.writeTurtle(SBOL2Doc_test,(System.out));
+//		} catch (FactoryConfigurationError e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (Throwable e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+//		try {
+//			SBOLWriter.writeTurtle(SBOL2Doc_test, "/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.0.ttl");
+//		} catch (Throwable e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		try {
+			SBOLWriter.writeTurtle(SBOL2Doc_test, new File("/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.0.ttl"));
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	private static Collection get_myParts (SBOLDocument SBOL2Doc_test)
@@ -63,22 +106,21 @@ public class writeTester {
 	{
 		return createSequenceData(SBOL2Doc_test, 
 				getData("pLacSeq/1/0","pLacSeq","1.0","pLacSeq","pLacSeq", "pLacSeq", "pLacSeq_element"), 
-				getPropertyURI("pLacSeq_encoding/1/0")); 
+				getPropertyURI("pLacSeq")); 
 	}
 	
 	private static Sequence get_tetRSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test, 
 				getData("tetRSeq/1/0","tetRSeq","1.0","tetRSeq","tetRSeq", "tetRSeq", "tetRSeq_element"), 
-				getPropertyURI("tetRSeq_encoding/1/0")); 
+				getPropertyURI("tetRSeq")); 
 	}
 	
 	private static Sequence get_pLactetRSeq (SBOLDocument SBOL2Doc_test)
 	{
-		//TODO: should structure URI contain its parent URI when the componentDefinition this is in is ref.?
 		return createSequenceData(SBOL2Doc_test, 
 				getData("pLactetRSeq/1/0","pLactetRSeq","1.0","pLactetRSeq","pLactetRSeq", "pLactetRSeq", "pLactetRSeq_element"), 
-				getPropertyURI("pLactetRSeq_encoding/1/0")); 
+				getPropertyURI("pLactetRSeq")); 
 	}
 	
 	private static ComponentDefinition get_pLac (SBOLDocument SBOL2Doc_test)
@@ -245,7 +287,7 @@ public class writeTester {
 	{
 		return createModuleDefinitionData(SBOL2Doc_test, 
 				getSetOfURI("Inverter"),
-				getSetPropertyURI("Inverter"), //TODO: this was changed from Transcriptionfactor to Inverter
+				getSetPropertyURI("Inverter"), 
 				getData("LacI_Inv/1/0","LacI_Inv","1.0","LacI_Inv","LacI_Inv", "LacI_Inv"),
 				getFunctionalComponent_List(
 						get_LacIIn(SBOL2Doc_test), 
@@ -265,22 +307,21 @@ public class writeTester {
 	{
 		return createSequenceData(SBOL2Doc_test, 
 				getData("ptetSeq/1/0","ptetSeq","1.0","ptetSeq","ptetSeq", "ptetSeq", "ptetSeq_element"), 
-				getPropertyURI("ptetSeq_encoding/1/0")); 
+				getPropertyURI("ptetSeq_encoding")); 
 	}
 	
 	private static Sequence get_lacISeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test, 
 				getData("lacISeq/1/0","lacISeq","1.0","lacISeq","lacISeq", "lacISeq", "lacISeq_element"), 
-				getPropertyURI("lacISeq_encoding/1/0")); 
+				getPropertyURI("lacISeq")); 
 	}
 	
 	private static Sequence get_ptetlacISeq (SBOLDocument SBOL2Doc_test)
 	{
-		//TODO: should parent uri attach to this child uri when the parent only ref. this child?
 		return createSequenceData(SBOL2Doc_test, 
 				getData("ptetlacISeq/1/0","ptetlacISeq","1.0","ptetlacISeq","ptetlacISeq", "ptetlacISeq", "ptetlacISeq_element"), 
-				getPropertyURI("ptetlacISeq_encoding/1/0")); 
+				getPropertyURI("ptetlacISeq")); 
 	}
 	
 	private static ComponentDefinition get_ptet(SBOLDocument SBOL2Doc_test)
@@ -361,7 +402,6 @@ public class writeTester {
 	
 	private static FunctionalComponent get_TetRInv (SBOLDocument SBOL2Doc_test)
 	{
-		//TODO: double check for parent URI attached to children URI
 		return createFunctionalComponentData(
 				getData("TetR_Inv/TetRInv/1/0","TetRInv","1.0","TetRInv","TetRInv", "TetRInv","private", "none"),
 				get_ptetlacI(SBOL2Doc_test));
@@ -419,7 +459,7 @@ public class writeTester {
 	{
 		return createModuleDefinitionData(SBOL2Doc_test, 
 				getSetOfURI("Inverter"),
-				getSetPropertyURI("Inverter"), //TODO: this was changed from Transcriptionfactor to Inverter
+				getSetPropertyURI("Inverter"),
 				getData("TetR_Inv/1/0","TetR_Inv","1.0","TetR_Inv","TetR_Inv", "TetR_Inv"),
 				getFunctionalComponent_List(
 						get_TetRIn(SBOL2Doc_test), 
@@ -473,8 +513,7 @@ public class writeTester {
 	}
 	
 	private static Model get_ToggleModel (SBOLDocument SBOL2Doc_test)
-	{
-		//TODO: Should you attach parent ToggleModel URI to this model when this is being referenced? 
+	{ 
 		return createModelData(SBOL2Doc_test, 
 				getData("Toggle/ToggleModel/1/0","ToggleModel","1.0","ToggleModel","ToggleModel", "ToggleModel"), 
 				getSetPropertyURI("ToggleModel_role"), 
