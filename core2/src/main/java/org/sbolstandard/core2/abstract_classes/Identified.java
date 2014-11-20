@@ -26,12 +26,12 @@ public abstract class Identified {
 	private URI persistentIdentity;
 	private String version;
 	private Timestamp timeStamp;
-	private HashMap<URI,Annotation> annotations;
+	private List<Annotation> annotations;
 	
 	public Identified(URI identity) {
 		setIdentity(identity);
 		this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
-		this.annotations = new HashMap<URI, Annotation>();
+		this.annotations = new ArrayList<Annotation>();
 	}
 	
 	
@@ -172,9 +172,9 @@ public abstract class Identified {
 	 * @return the created Annotation instance. 
 	 */
 	public Annotation createAnnotation(QName relation, Turtle literal) {
-		Annotation structuralAnnotation = new Annotation(relation, literal);
-		addAnnotation(structuralAnnotation);
-		return structuralAnnotation;
+		Annotation annotation = new Annotation(relation, literal);
+		addAnnotation(annotation);
+		return annotation;
 	}
 	
 	/**
@@ -183,7 +183,7 @@ public abstract class Identified {
 	 */
 	public void addAnnotation(Annotation annotation) {
 		// TODO: @addAnnotation, Check for duplicated entries.
-		annotations.put(URI.create(annotation.getRelation().getNamespaceURI()+"/" + annotation.getRelation().getLocalPart()) , annotation);
+		annotations.add(annotation);
 	}
 	
 	/**
@@ -191,36 +191,36 @@ public abstract class Identified {
 	 * @param structuralAnnotationURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Annotation removeAnnotation(URI structuralAnnotationURI) {
-		return annotations.remove(structuralAnnotationURI);
+	public boolean removeAnnotation(Annotation annotation) {
+		return annotations.remove(annotation);
 	}
 	
-	/**
-	 * Returns the instance matching the specified URI from the list of annotations if present.
-	 * @param structuralAnnotationURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
-	 */
-	public Annotation getAnnotation(URI structuralAnnotationURI) {
-		return annotations.get(structuralAnnotationURI);
-	}
+//	/**
+//	 * Returns the instance matching the specified URI from the list of annotations if present.
+//	 * @param structuralAnnotationURI
+//	 * @return the matching instance if present, or <code>null</code> if not present.
+//	 */
+//	public Annotation getAnnotation(URI structuralAnnotationURI) {
+//		return annotations.get(structuralAnnotationURI);
+//	}
 	
 	/**
 	 * Returns the list of structuralAnnotation instances owned by this instance. 
 	 * @return the list of structuralAnnotation instances owned by this instance.
 	 */
 	public List<Annotation> getAnnotations() {
-//		return (List<Annotation>) annotations.values();
-		return new ArrayList<Annotation>(annotations.values());
+		return annotations;		
 	}
 	
 	/**
 	 * Removes all entries of the list of structuralAnnotation instances owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearAnnotations() {
-		Object[] keySetArray = annotations.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeAnnotation((URI) key);
-		}
+//		Object[] keySetArray = annotations.keySet().toArray();
+//		for (Object key : keySetArray) {
+//			removeAnnotation((URI) key);
+//		}
+		annotations.clear();
 	}
 		
 	/**
