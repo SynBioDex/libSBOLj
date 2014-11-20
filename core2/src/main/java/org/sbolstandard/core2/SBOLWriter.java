@@ -66,7 +66,7 @@ public class SBOLWriter {
 			throws XMLStreamException, FactoryConfigurationError, CoreIoException {
 
 		writeRdf(new OutputStreamWriter(out), 
-				DocumentRoot( NamespaceBindings(NamespaceBinding("http://sbols.org/v2#","sbol2")),
+				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 
 	}
@@ -98,7 +98,7 @@ public class SBOLWriter {
 			throws FactoryConfigurationError, Throwable {
 
 		writeTurtle(new OutputStreamWriter(out), 
-				DocumentRoot( NamespaceBindings(NamespaceBinding("http://sbols.org/v2#","sbol2")),
+				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 
 		//			writeTurtle(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(getTopLevelDocument(doc))));
@@ -158,7 +158,7 @@ public class SBOLWriter {
 			throws FactoryConfigurationError, Throwable {
 
 		writeJson(new OutputStreamWriter(out), 
-				DocumentRoot( NamespaceBindings(NamespaceBinding("http://sbols.org/v2#","sbol2")),
+				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 
 	}
