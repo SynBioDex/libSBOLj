@@ -52,10 +52,12 @@ public class SBOLWriter {
 	 * 
 	 * TODO:
 	 * Make sure Range, Cut...etc should be included in the correct method. 
+	 * format toplevel
 	 */
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
+	 * in RDF format. 
 	 * @param doc
 	 * @param out
 	 * @throws XMLStreamException
@@ -71,10 +73,25 @@ public class SBOLWriter {
 
 	}
 	
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output 
+	 * file name in RDF format
+	 * 
+	 * @param doc
+	 * @param filename
+	 * @throws FileNotFoundException
+	 */
 	public static void writeRdf(SBOLDocument doc, String filename) throws FileNotFoundException {
 		writeRdf(doc, new File(filename));
 	}
 
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
+	 * in RDF format. 
+	 * @param doc
+	 * @param file
+	 * @throws FileNotFoundException
+	 */
 	public static void writeRdf(SBOLDocument doc, File file) throws FileNotFoundException{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -94,6 +111,14 @@ public class SBOLWriter {
 		}
 	}
 
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
+	 * in turtle format. 
+	 * @param doc
+	 * @param out
+	 * @throws FactoryConfigurationError
+	 * @throws Throwable
+	 */
 	public static void writeTurtle(SBOLDocument doc, OutputStream out) 
 			throws FactoryConfigurationError, Throwable {
 
@@ -105,10 +130,24 @@ public class SBOLWriter {
 
 	}
 	
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output 
+	 * filename in turtle format. 
+	 * @param doc
+	 * @param filename
+	 * @throws Throwable
+	 */
 	public static void writeTurtle(SBOLDocument doc, String filename) throws Throwable {
 		writeTurtle(doc, new File(filename));
 	}
 	
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
+	 * in turtle format. 
+	 * @param doc
+	 * @param file
+	 * @throws Throwable
+	 */
 	public static void writeTurtle(SBOLDocument doc, File file) throws Throwable{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -128,10 +167,24 @@ public class SBOLWriter {
 		}
 	}
 
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output 
+	 * file name in Json format
+	 * @param doc
+	 * @param filename
+	 * @throws FileNotFoundException
+	 */
 	public static void writeJson(SBOLDocument doc, String filename) throws FileNotFoundException {
 		writeJson(doc, new File(filename));
 	}
 
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file 
+	 * in Json format
+	 * @param doc
+	 * @param file
+	 * @throws FileNotFoundException
+	 */
 	public static void writeJson(SBOLDocument doc, File file) throws FileNotFoundException{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -154,6 +207,14 @@ public class SBOLWriter {
 		}
 	}
 
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
+	 * in Json format. 
+	 * @param doc
+	 * @param out
+	 * @throws FactoryConfigurationError
+	 * @throws Throwable
+	 */
 	public static void writeJson(SBOLDocument doc, OutputStream out) 
 			throws FactoryConfigurationError, Throwable {
 
@@ -214,11 +275,9 @@ public class SBOLWriter {
 
 		if(t.getAnnotations() != null) 
 		{
-			List<NestedDocument> annotationList = getAnnotations(t.getAnnotations());
-
-			for(NestedDocument annotation : annotationList)
+			for(Annotation annotation : t.getAnnotations())
 			{
-				list.add(NamedProperty(Sbol2Terms.Identified.hasAnnotations, annotation));
+				list.add(NamedProperty(annotation.getRelation(), annotation.getLiteral().getTurtleStr()));
 			}
 		}
 	}
@@ -279,14 +338,6 @@ public class SBOLWriter {
 				for(URI types : c.getType())
 				{
 					list.add(NamedProperty(Sbol2Terms.ComponentDefinition.type, types));
-				}
-			}
-			//GM: Added the annotations as NamedProperties for now. Annotations should be added through the interfaces.
-			if(c.getAnnotations() != null)
-			{	
-				for(Annotation annotation : c.getAnnotations())
-				{
-					list.add(NamedProperty(annotation.getRelation(), annotation.getLiteral().getTurtleStr()));
 				}
 			}
 	
@@ -368,24 +419,6 @@ public class SBOLWriter {
 
 	}
 
-	private static List<NestedDocument> getAnnotations(List<Annotation> annotations)//, List<NamedProperty<QName>> list)
-	{
-		List<NestedDocument> nestedDoc = new ArrayList<NestedDocument>(); 
-		for(Annotation a : annotations)
-		{
-			/* GM: TODO: Commented for now
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-			if(a.getRelation() != null)
-				list.add(NamedProperty(Sbol2Terms.Annotation.relation, a.getRelation()));
-			if(a.getLiteral() != null)
-				list.add(NamedProperty(Sbol2Terms.Annotation.value, a.getLiteral().getTurtleStr()));
-
-			//TODO: annotation does not have identity. Should I use getRelation() instead?
-			nestedDoc.add(NestedDocument(Sbol2Terms.Annotation.Annotation, a.getRelation(), NamedProperties(list)));
-			*/
-		}
-		return nestedDoc;
-	}
 
 	/**
 	 * getFunctionalComponents for Module
@@ -519,7 +552,6 @@ public class SBOLWriter {
 		for(MapsTo m : references)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>(); 
-			//TODO: should mapsTo need to retreive identity? 
 			if(m.getRefinement() != null)
 				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinement().name()));
 			if(m.getRemote() != null)
@@ -561,11 +593,15 @@ public class SBOLWriter {
 	private static NamedProperty<QName> getLocation(Location location)
 	{
 		List<NamedProperty<QName>> property = new ArrayList<NamedProperty<QName>>();
+		
 		if(location instanceof Range)
 		{
 			Range range = (Range) location; 
 			property.add(NamedProperty(Sbol2Terms.Range.start, range.start)); 
 			property.add(NamedProperty(Sbol2Terms.Range.end, range.end)); 
+
+			return NamedProperty(Sbol2Terms.Location.Location, 
+					NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(property))); 
 		}
 		return NamedProperty(Sbol2Terms.Location.Location, 
 				NestedDocument(Sbol2Terms.Range.Range, location.getIdentity(), NamedProperties(property))); 

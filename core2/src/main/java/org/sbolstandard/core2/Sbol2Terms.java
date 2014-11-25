@@ -67,7 +67,7 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class ComponentInstance {
-		  public static final QName ComponentInstance 	 = sbol2.withLocalPart("ComponentInstance");
+		  public static final QName ComponentInstance 	 = sbol2.withLocalPart("componentInstance");
 		  public static final QName access 					 = sbol2.withLocalPart("access"); 
 		  //TODO: double check on hasInstantiatedComponent
 		  public static final QName hasInstantiatedComponent = sbol2.withLocalPart("instantiatedComponent");
@@ -255,7 +255,7 @@ public class Sbol2Terms
 	   */
 	  public static final class Sequence {
 		  public static final QName Sequence 		   = sbol2.withLocalPart("Sequence"); 
-		  public static final QName elements  		   = sbol2.withLocalPart("element"); 
+		  public static final QName elements  		   = sbol2.withLocalPart("elements"); 
 		  public static final QName encoding  		   = sbol2.withLocalPart("encoding");
 	  }
 //	  

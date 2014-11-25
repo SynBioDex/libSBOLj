@@ -9,6 +9,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
+import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import uk.ac.ncl.intbio.core.datatree.PropertyValue;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
@@ -16,8 +17,10 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 public class SBOLReader {
 	
+	private static SBOLDocument SBOLDoc = new SBOLDocument();
+	
 	public static SBOLDocument read(String fileName) {
-		SBOLDocument SBOLDoc = new SBOLDocument(); 
+//		readRdf(new Reader(filename));
 		return SBOLDoc;
 	}
 	
@@ -29,11 +32,11 @@ public class SBOLReader {
 	 * @param document
 	 * @return SBOLDocument
 	 */
-	private void read( DocumentRoot<QName> document) { //DocumentRoot<QName> document
+	private static void read( DocumentRoot<QName> document) { //DocumentRoot<QName> document
 		for(TopLevelDocument<QName> topLevel : document.getTopLevelDocuments())
 		{
 			if(topLevel.getType() == Sbol2Terms.Sequence.Sequence)
-				formatSequences(topLevel.getNamespaceBindings()); 
+				parseSequences(topLevel.getProperties()); 
 			
 			
 		}
@@ -49,18 +52,19 @@ public class SBOLReader {
 //		}
 	}
 	
-	private DocumentRoot<QName> readRdf(Reader reader) throws Exception
+	private static DocumentRoot<QName> readRdf(Reader reader) throws Exception
 	{
 		XMLStreamReader xmlReader=XMLInputFactory.newInstance().createXMLStreamReader(reader);
 		RdfIo rdfIo = new RdfIo();
 		return rdfIo.createIoReader(xmlReader).read();		
 	}
 	
-	private void formatSequences(List<NamespaceBinding> list)
+	private static void parseSequences(List<NamedProperty<QName>> list)
 	{
 		String displayId;
 		String name;
 		String description;
+		
 	}
 	
 }

@@ -1,6 +1,7 @@
 package org.sbolstandard.core2.test;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,73 +11,162 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
 
 import org.sbolstandard.core2.*; 
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Identified;
 import org.sbolstandard.core2.abstract_classes.Location;
 
+import uk.ac.ncl.intbio.core.io.CoreIoException;
+
 public class writeTester {
+	
+	private static SBOLDocument SBOL2Doc_test = new SBOLDocument(); 
+	
+	private static String  rdfString = 
+			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.1.rdf";
+	private static String  rdfFile = 
+			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.1.rdf";
+	
+	private static String JsonString = 
+			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.1.json";
+	private static String JsonFile = 
+			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.1.json";
+	
+	private static String TurtleString = 
+			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.1.ttl";
+	private static String TurtleFile = 
+			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.1.ttl";
 	
 	/*
 	 * TODO: rename getData() to getIdentificationData() 
+	 * annotations was inserted in : get_LacI_Inv(), get_myParts(), get_TetR_Inv(), get_Toggle()
 	 */
-	public static void main( String[] args ) throws Exception
+	public static void main( String[] args ) 
 	{
-		SBOLDocument SBOL2Doc_test = new SBOLDocument(); 
 		get_myParts(SBOL2Doc_test);
-//		SBOLWriter.writeRdf(SBOL2Doc_test,(System.out));
-//		SBOLWriter.writeRdf(SBOL2Doc_test, "/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.0.rdf");
-//		SBOLWriter.writeRdf(SBOL2Doc_test, new File("/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.0.rdf"));
+		writeRdfOutputStream(); 
+//		writeJsonOutputStream(); 
+//		writeTurtleOutputStream(); 
 		
-//		try {
-//			SBOLWriter.writeJson(SBOL2Doc_test,(System.out));
-//		} catch (FactoryConfigurationError e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (Throwable e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		SBOLWriter.writeJson(SBOL2Doc_test, "/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.0.json");
-//		SBOLWriter.writeJson(SBOL2Doc_test, new File("/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.0.json"));
+//		writeRdfString();
+//		writeJsonString();
+//		writeTurtleString();
 		
-//		try {
-//			SBOLWriter.writeTurtle(SBOL2Doc_test,(System.out));
-//		} catch (FactoryConfigurationError e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (Throwable e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-//		try {
-//			SBOLWriter.writeTurtle(SBOL2Doc_test, "/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.0.ttl");
-//		} catch (Throwable e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
+//		writeRdfFile(); 
+//		writeJsonFile(); 
+//		writeTurtleFile(); 
+	}
+	
+	public static void writeRdfOutputStream()
+	{
+			try {
+				SBOLWriter.writeRdf(SBOL2Doc_test,(System.out));
+			} catch (XMLStreamException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FactoryConfigurationError e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CoreIoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	
+	public static void writeJsonOutputStream() 
+	{
+			try {
+				SBOLWriter.writeJson(SBOL2Doc_test,(System.out));
+			} catch (FactoryConfigurationError e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	
+	public static void writeTurtleOutputStream() 
+	{
+			try {
+				SBOLWriter.writeTurtle(SBOL2Doc_test,(System.out));
+			} catch (FactoryConfigurationError e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	
+	public static void writeRdfString()
+	{
+			try {
+				SBOLWriter.writeRdf(SBOL2Doc_test, rdfString);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	
+	public static void writeJsonString()
+	{
+			try {
+				SBOLWriter.writeJson(SBOL2Doc_test, JsonString);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+	
+	public static void writeTurtleString()
+	{
 		try {
-			SBOLWriter.writeTurtle(SBOL2Doc_test, new File("/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.0.ttl"));
-		} catch (Throwable e) {
+			SBOLWriter.writeJson(SBOL2Doc_test, TurtleString);
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+	}
+	
+	
+	public static void writeJsonFile() 
+	{
+		try {
+			SBOLWriter.writeJson(SBOL2Doc_test, new File(JsonFile));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void writeTurtleFile()
+	{
+		try {
+			SBOLWriter.writeJson(SBOL2Doc_test, new File(TurtleFile));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void writeRdfFile() 
+	{
+			try {
+				SBOLWriter.writeRdf(SBOL2Doc_test, new File(rdfFile));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	private static Collection get_myParts (SBOLDocument SBOL2Doc_test)
 	{	
-		/*
-		 * SBOLDocument SBOL2Doc_test, List<String> collectionData, 
-			List<Annotation> annotations
-		 */
 		Collection myParts = createCollection(SBOL2Doc_test,
-				getData("myParts/1/0","myParts","1.0","myParts","myParts", "myParts"),null); 
-//				getAnnotation_List(createAnnotation(getURI("myParts/myPart_relation/1/0"),createTurtle()))); 
+				getData("myParts/1/0","myParts","1.0","myParts","myParts", "myParts"),
+				getAnnotation_List(createAnnotation(new QName("myParts/myPart_relation/1/0"),createTurtle()))); 
 
 		
 		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
@@ -140,7 +230,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("CDS"),
-				getData("tetR/1/0","tetR","1.0","tetR","tetR", "tetR"),
+				getData("tetRCDS/1/0","tetR","1.0","tetR","tetR", "tetR"),
 				get_tetRSeq(SBOL2Doc_test), 
 				null, null, null);	
 	}
@@ -164,7 +254,8 @@ public class writeTester {
 		return createSequenceAnnotationData(
 				getData("p_structAnnotate", "p_structAnnotate", "1.0", "p_structAnnotate", "p_structAnnotate", "p_structAnnotate"), 
 				get_P(SBOL2Doc_test), 
-				0, 10);
+				0, 10, 
+				null);
 	}
 	
 	private static SequenceAnnotation get_c_sequenceAnnotate (SBOLDocument SBOL2Doc_test)
@@ -172,7 +263,8 @@ public class writeTester {
 		return createSequenceAnnotationData(
 				getData("p_structAnnotate", "p_structAnnotate", "1.0", "p_structAnnotate", "p_structAnnotate", "p_structAnnotate"), 
 				get_P(SBOL2Doc_test), 
-				11, 20);
+				11, 20,
+				null);
 	}
 	
 	private static SequenceConstraint get_struct_constraint (SBOLDocument SBOL2Doc_test)
@@ -299,8 +391,7 @@ public class writeTester {
 						get_interact1a(SBOL2Doc_test), 
 						get_interact2a(SBOL2Doc_test)), 
 				null, null, 
-
-				null//getAnnotation_List(createAnnotation(getURI("LacI_Inv/LacI_Inv_relation/1/0"),createTurtle()))
+				getAnnotation_List(createAnnotation(new QName("LacI_Inv/LacI_Inv_relation/1/0"),createTurtle()))
 
 				);
 	}
@@ -343,7 +434,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("CDS"),
-				getData("lacI/1/0","lacI","1.0","lacI","lacI", "lacI"),
+				getData("lacICDS/1/0","lacI","1.0","lacI","lacI", "lacI"),
 				get_lacISeq(SBOL2Doc_test), 
 				null, null, null);
 	}
@@ -367,7 +458,8 @@ public class writeTester {
 		return createSequenceAnnotationData(
 				getData("ptetlacI/p2_structAnnotate/1/0", "p2_structAnnotate", "1.0", "p2_structAnnotate", "p2_structAnnotate", "p2_structAnnotate"), 
 				get_T(SBOL2Doc_test), 
-				0, 10);
+				0, 10, 
+				getURI("ptetlacI/p2_structAnnotate/p2_structAnnotate_range/1/0"));
 	}
 	
 	private static SequenceAnnotation get_l_structAnnotate (SBOLDocument SBOL2Doc_test)
@@ -375,7 +467,8 @@ public class writeTester {
 		return createSequenceAnnotationData(
 				getData("ptetlacI/c2_structAnnotate/1/0", "c2_structAnnotate", "1.0", "c2_structAnnotate", "c2_structAnnotate", "c2_structAnnotate"), 
 				get_L(SBOL2Doc_test), 
-				11, 20);
+				11, 20,
+				getURI("ptetlacI/c2_structAnnotate/c2_structAnnotate_range/1/0"));
 	}
 	
 	private static ComponentDefinition get_ptetlacI (SBOLDocument SBOL2Doc_test)
@@ -472,8 +565,8 @@ public class writeTester {
 				getInteraction_List(
 						get_interact1b(SBOL2Doc_test), 
 						get_interact2b(SBOL2Doc_test)), 
-				null, null,null
-//				getAnnotation_List(createAnnotation(getURI("TetR_Inv/TetR_Inv_relation/1/0"),createTurtle()))
+				null, null,
+				getAnnotation_List(createAnnotation(new QName("TetR_Inv/TetR_Inv_relation/1/0"),createTurtle()))
 				);
 	}
 	
@@ -533,8 +626,7 @@ public class writeTester {
 				getFunctionalComponent_List(get_LacISp(SBOL2Doc_test), get_TetRSp(SBOL2Doc_test)), 
 				null, getModule_List(get_Inv1(SBOL2Doc_test), get_Inv2(SBOL2Doc_test)), 
 				getSetOfURI(get_ToggleModel(SBOL2Doc_test).getIdentity()),
-				null
-				//getAnnotation_List(createAnnotation(getURI("Toggle/Toggle_relation/1/0"),createTurtle()))
+				getAnnotation_List(createAnnotation(new QName("Toggle/Toggle_relation/1/0"),createTurtle()))
 				);
 	}
 	
@@ -584,7 +676,7 @@ public class writeTester {
 	
 	private static Annotation createAnnotation(QName relation, Turtle literal)
 	{	
-		return new Annotation(relation, literal);
+		return new Annotation(relation, literal); 
 		
 	}
 	
@@ -766,7 +858,8 @@ public class writeTester {
 	private static SequenceAnnotation createSequenceAnnotationData(
 			List<String> structuralAnnotations_data,
 			Component ref_component,
-			int startRange, int endRange)
+			int startRange, int endRange, 
+			URI locationURI)
 	{
 		URI identity 		   = getURI(structuralAnnotations_data.get(0));
 		URI persistentIdentity = getURI(structuralAnnotations_data.get(1));
@@ -774,7 +867,7 @@ public class writeTester {
 		String displayId 	   = structuralAnnotations_data.get(3);
 		String name 		   = structuralAnnotations_data.get(4);
 		String description 	   = structuralAnnotations_data.get(5);
-		Location location 	   = new Range(ref_component.getIdentity(), startRange, endRange);
+		Location location 	   = new Range(locationURI, startRange, endRange);
 		
 		SequenceAnnotation s = new SequenceAnnotation(identity, location);
 		setCommonDocumentedData(s, identity, persistentIdentity, version, displayId, name, description);
