@@ -231,6 +231,7 @@ public class SBOLWriter {
 		formatModels(doc.getModels(), topLevelDoc); 			
 		formatComponentDefinitions(doc.getComponentDefinitions(), topLevelDoc);  
 		formatSequences(doc.getSequences(), topLevelDoc); 
+		formatTopLevel(doc.getTopLevels(), topLevelDoc);
 		return topLevelDoc;
 	}
 
@@ -299,6 +300,17 @@ public class SBOLWriter {
 		getCommonDocumentedData(list,t);
 	}
 
+	private static void formatTopLevel (List<TopLevel> topLevels, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+		for(TopLevel t : topLevels)
+		{	
+			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			getCommonTopLevelData(list, t);
+
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.TopLevel.TopLevel, t.getIdentity(), NamedProperties(list)));
+		}
+	}
+	
 	private static void formatCollections (List<Collection> collections, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 		for(Collection c : collections)
@@ -435,7 +447,7 @@ public class SBOLWriter {
 			getCommonDocumentedData(list, f);
 
 			if(f.getDefinition() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasInstantiatedComponent, f.getDefinition()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinition()));
 			if(f.getAccess() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccess().getAccessTypeAlias()));
 			if(f.getDirection() != null)
@@ -646,9 +658,11 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 
 			getCommonDocumentedData(list, s);
+			if(s.getAccess() != null)
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, s.getAccess().getAccessTypeAlias()));
 			if(s.getDefinition() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.ComponentInstance, s.getDefinition()));
-
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinition()));
+			
 			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSubComponents, 
 					NestedDocument( Sbol2Terms.Component.Component, 
 							s.getIdentity(), NamedProperties(list))));

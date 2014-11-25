@@ -70,8 +70,7 @@ public class Sbol2Terms
 		  public static final QName ComponentInstance 	 = sbol2.withLocalPart("componentInstance");
 		  public static final QName access 					 = sbol2.withLocalPart("access"); 
 		  //TODO: double check on hasInstantiatedComponent
-		  public static final QName hasInstantiatedComponent = sbol2.withLocalPart("instantiatedComponent");
-		  public static final QName hasMappings 			 = sbol2.withLocalPart("MapsTo"); 
+		  public static final QName hasMappings 			 = sbol2.withLocalPart("Mapping"); 
 		  public static final QName hasComponentDefinition 			 = sbol2.withLocalPart("definition"); 
 	  }
 	  

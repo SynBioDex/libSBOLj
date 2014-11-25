@@ -24,20 +24,14 @@ public class writeTester {
 	
 	private static SBOLDocument SBOL2Doc_test = new SBOLDocument(); 
 	
-	private static String  rdfString = 
-			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.1.rdf";
-	private static String  rdfFile = 
-			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.1.rdf";
+	private static String  rdfString   = "writeTesterString_v1.3.rdf";
+	private static String  rdfFile 	   = "writeTesterFile_v1.1.rdf";
 	
-	private static String JsonString = 
-			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.1.json";
-	private static String JsonFile = 
-			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.1.json";
+	private static String JsonString   = "writeTesterString_v1.3.json";
+	private static String JsonFile 	   = "writeTesterFile_v1.1.json";
 	
-	private static String TurtleString = 
-			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/String/writeTesterString_v1.1.ttl";
-	private static String TurtleFile = 
-			"/Users/tramynguyen/Documents/Research_Docs/SBOLWriter_Examples/File/writeTesterFile_v1.1.ttl";
+	private static String TurtleString = "writeTesterString_v1.3.ttl";
+	private static String TurtleFile   = "writeTesterFile_v1.1.ttl";
 	
 	/*
 	 * TODO: rename getData() to getIdentificationData() 
@@ -104,7 +98,8 @@ public class writeTester {
 	public static void writeRdfString()
 	{
 			try {
-				SBOLWriter.writeRdf(SBOL2Doc_test, rdfString);
+				SBOLWriter.writeRdf(SBOL2Doc_test, rdfString); //writeTesterString_v1.1.rdf
+//				SBOLWriter.writeRdf(SBOL2Doc_test, "writeTesterString_v1.2.rdf");
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -166,7 +161,7 @@ public class writeTester {
 	{	
 		Collection myParts = createCollection(SBOL2Doc_test,
 				getData("myParts/1/0","myParts","1.0","myParts","myParts", "myParts"),
-				getAnnotation_List(createAnnotation(new QName("myParts/myPart_relation/1/0"),createTurtle()))); 
+				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle()))); 
 
 		
 		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
@@ -191,7 +186,14 @@ public class writeTester {
 		myParts.addMember(get_Toggle(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_ToggleModel(SBOL2Doc_test).getIdentity());
 		
+		myParts.addMember(get_topLevel(SBOL2Doc_test).getIdentity());
 		return myParts; 
+	}
+	
+	private static TopLevel get_topLevel (SBOLDocument SBOL2Doc_test)
+	{
+		
+		return createTopLevel(SBOL2Doc_test, getData("TopLevel/1/0","TopLevel","1.0","TopLevel","TopLevel", "TopLevel"));
 	}
 	
 	private static Sequence get_pLacSeq (SBOLDocument SBOL2Doc_test)
@@ -391,7 +393,7 @@ public class writeTester {
 						get_interact1a(SBOL2Doc_test), 
 						get_interact2a(SBOL2Doc_test)), 
 				null, null, 
-				getAnnotation_List(createAnnotation(new QName("LacI_Inv/LacI_Inv_relation/1/0"),createTurtle()))
+				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle()))
 
 				);
 	}
@@ -566,7 +568,7 @@ public class writeTester {
 						get_interact1b(SBOL2Doc_test), 
 						get_interact2b(SBOL2Doc_test)), 
 				null, null,
-				getAnnotation_List(createAnnotation(new QName("TetR_Inv/TetR_Inv_relation/1/0"),createTurtle()))
+				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle()))
 				);
 	}
 	
@@ -626,7 +628,7 @@ public class writeTester {
 				getFunctionalComponent_List(get_LacISp(SBOL2Doc_test), get_TetRSp(SBOL2Doc_test)), 
 				null, getModule_List(get_Inv1(SBOL2Doc_test), get_Inv2(SBOL2Doc_test)), 
 				getSetOfURI(get_ToggleModel(SBOL2Doc_test).getIdentity()),
-				getAnnotation_List(createAnnotation(new QName("Toggle/Toggle_relation/1/0"),createTurtle()))
+				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle()))
 				);
 	}
 	
@@ -654,6 +656,20 @@ public class writeTester {
 		i.setPersistentIdentity(persistentIdentity);
 		i.setVersion(version);
 //		i.setTimeStamp(timeStamp);
+	}
+	
+	private static TopLevel createTopLevel(SBOLDocument SBOL2Doc_test, List<String> topLevelData)
+	{
+		URI identity 		   = getURI(topLevelData.get(0)); 
+		URI persistentIdentity = getURI(topLevelData.get(1)); 
+		String version 		   = topLevelData.get(2); 
+		String displayId 	   = topLevelData.get(3); 
+		String name 		   = topLevelData.get(4); 
+		String description 	   = topLevelData.get(5); 
+		
+		TopLevel toplevel =  SBOL2Doc_test.createTopLevel(identity);
+		setCommonTopLevelData(toplevel, identity, persistentIdentity, version, displayId, name, description);
+		return toplevel;
 	}
 	
 	
