@@ -36,7 +36,7 @@ import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Identified;
 import org.sbolstandard.core2.abstract_classes.Location;
 
-import com.hp.hpl.jena.rdf.arp.impl.ANode;
+
 
 /**
  * @author Tramy Nguyen
