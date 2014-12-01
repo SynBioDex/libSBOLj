@@ -52,16 +52,7 @@ public class SBOLReader {
 		RdfIo rdfIo = new RdfIo();
 		return rdfIo.createIoReader(xmlReader).read();		
 	}
-	
-	private static void write(Writer stream, DocumentRoot<QName> document) throws Exception
-	{
-		XMLStreamWriter xmlWriter = new IndentingXMLStreamWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(stream));
-		RdfIo rdfIo = new RdfIo();
-		// rdfIo.createIoWriter(xmlWriter).write(makeDocument());
-		rdfIo.createIoWriter(xmlWriter).write(document);
-		xmlWriter.flush();
-		xmlWriter.close();
-	}
+
 	
 	private static void parseSequence(SBOLDocument SBOLDoc, List<NamedProperty<QName>> list)
 	{
