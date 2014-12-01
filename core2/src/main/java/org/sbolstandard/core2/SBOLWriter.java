@@ -39,7 +39,7 @@ import org.sbolstandard.core2.abstract_classes.Location;
 import com.hp.hpl.jena.rdf.arp.impl.ANode;
 
 /**
- * @author Tramy Nguyen
+ * @author Tramy Nguyen 
  * @version 2.0
  *
  */
@@ -337,19 +337,19 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 
 			getCommonTopLevelData(list,c);
-
-			if(c.getRoles() != null)
-			{
-				for (URI roles : c.getRoles())
-				{
-					list.add(NamedProperty(Sbol2Terms.ComponentDefinition.roles, roles)); 
-				}
-			}
 			if(c.getType() != null)
 			{	
 				for(URI types : c.getType())
 				{
 					list.add(NamedProperty(Sbol2Terms.ComponentDefinition.type, types));
+				}
+			}
+			
+			if(c.getRoles() != null)
+			{
+				for (URI roles : c.getRoles())
+				{
+					list.add(NamedProperty(Sbol2Terms.ComponentDefinition.roles, roles)); 
 				}
 			}
 	
@@ -451,7 +451,7 @@ public class SBOLWriter {
 			if(f.getAccess() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccess().getAccessTypeAlias()));
 			if(f.getDirection() != null)
-				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirection().name()));	
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDirection().name()));	
 
 			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasFunctionalComponent, 
 					NestedDocument( Sbol2Terms.FunctionalComponent.FunctionalComponent, 
@@ -662,7 +662,16 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, s.getAccess().getAccessTypeAlias()));
 			if(s.getDefinition() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinition()));
-			
+			if(s.getMappings() != null)	
+			{
+				List<NestedDocument> referenceList = getReferences(s.getMappings());
+
+				for(NestedDocument n : referenceList)
+				{
+					//TODO: is this ComponentInstance.hasMappings right?
+					list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasMappings, n));
+				}
+			}
 			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSubComponents, 
 					NestedDocument( Sbol2Terms.Component.Component, 
 							s.getIdentity(), NamedProperties(list))));

@@ -44,7 +44,7 @@ public class writeTester {
 //		writeJsonOutputStream(); 
 //		writeTurtleOutputStream(); 
 		
-//		writeRdfString();
+		writeRdfString();
 //		writeJsonString();
 //		writeTurtleString();
 		
@@ -98,8 +98,7 @@ public class writeTester {
 	public static void writeRdfString()
 	{
 			try {
-				SBOLWriter.writeRdf(SBOL2Doc_test, rdfString); //writeTesterString_v1.1.rdf
-//				SBOLWriter.writeRdf(SBOL2Doc_test, "writeTesterString_v1.2.rdf");
+				SBOLWriter.writeRdf(SBOL2Doc_test, rdfString); 
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -1,10 +1,12 @@
 package org.sbolstandard.core2.abstract_classes;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.sbolstandard.core2.AccessType;
+import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.MapsTo;
 import org.sbolstandard.core2.RefinementType;
 
@@ -105,7 +107,7 @@ public abstract class ComponentInstance extends Documented {
 	 * @return the list of reference instances owned by this instance.
 	 */
 	public List<MapsTo> getMappings() {
-		return (List<MapsTo>) mappings.values();
+		return new ArrayList<MapsTo>(mappings.values());
 	}
 	
 	/**

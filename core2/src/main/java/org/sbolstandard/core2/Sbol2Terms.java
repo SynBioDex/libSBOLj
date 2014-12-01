@@ -43,9 +43,9 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class Collection {
-		  public static final QName Collection		   = sbol2.withLocalPart("Collection");
-		  public static final QName hasMembers		   = sbol2.withLocalPart("member"); 
-//		  public static final QName access 			   = sbol2.withLocalPart("access"); 
+		  public static final QName Collection = sbol2.withLocalPart("Collection");
+		  public static final QName hasMembers = sbol2.withLocalPart("member"); 
+//		  public static final QName access 	   = sbol2.withLocalPart("access"); 
 	  }
 	  
 	  /**
@@ -53,13 +53,13 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class ComponentDefinition {
-		  public static final QName ComponentDefinition 	 	= sbol2.withLocalPart("ComponentDefinition");
-		  public static final QName type 	  	 				= sbol2.withLocalPart("type");
-		  public static final QName roles 	  	 				= sbol2.withLocalPart("role");
-		  public static final QName hasSequence					= sbol2.withLocalPart("sequence");
-		  public static final QName hasSequenceAnnotations 		= sbol2.withLocalPart("sequenceAnnotation");
-		  public static final QName hasSequenceConstraints 		= sbol2.withLocalPart("sequenceConstraint");
-		  public static final QName hasSubComponents 			= sbol2.withLocalPart("subComponent");
+		  public static final QName ComponentDefinition    = sbol2.withLocalPart("ComponentDefinition");
+		  public static final QName type 	  	 		   = sbol2.withLocalPart("type");
+		  public static final QName roles 	  	 		   = sbol2.withLocalPart("role");
+		  public static final QName hasSequence			   = sbol2.withLocalPart("sequence");
+		  public static final QName hasSequenceAnnotations = sbol2.withLocalPart("sequenceAnnotation");
+		  public static final QName hasSequenceConstraints = sbol2.withLocalPart("sequenceConstraint");
+		  public static final QName hasSubComponents 	   = sbol2.withLocalPart("subComponent");
 	  }
 	  
 	  /**
@@ -67,11 +67,11 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class ComponentInstance {
-		  public static final QName ComponentInstance 	 = sbol2.withLocalPart("componentInstance");
-		  public static final QName access 					 = sbol2.withLocalPart("access"); 
+		  public static final QName ComponentInstance 	   = sbol2.withLocalPart("componentInstance");
+		  public static final QName access 				   = sbol2.withLocalPart("access"); 
 		  //TODO: double check on hasInstantiatedComponent
-		  public static final QName hasMappings 			 = sbol2.withLocalPart("Mapping"); 
-		  public static final QName hasComponentDefinition 			 = sbol2.withLocalPart("definition"); 
+		  public static final QName hasMappings 		   = sbol2.withLocalPart("Mapping"); 
+		  public static final QName hasComponentDefinition = sbol2.withLocalPart("definition"); 
 	  }
 	  
 	  /**
@@ -88,10 +88,10 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class Documented {
-		  public static final QName Documented 		   = sbol2.withLocalPart("Documented");		  
-		  public static final QName displayId 		   = sbol2.withLocalPart("displayId");
-		  public static final QName name 			   = sbol2.withLocalPart("name");
-		  public static final QName description 	   = sbol2.withLocalPart("description");
+		  public static final QName Documented 	= sbol2.withLocalPart("Documented");		  
+		  public static final QName displayId 	= sbol2.withLocalPart("displayId");
+		  public static final QName name 		= sbol2.withLocalPart("name");
+		  public static final QName description = sbol2.withLocalPart("description");
 	  }
 	  
 	  /**
@@ -99,8 +99,7 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class FunctionalComponent {
-		  public static final QName FunctionalComponent 	= sbol2.withLocalPart("FunctionalComponent");
-		  public static final QName direction 				= sbol2.withLocalPart("direction");
+		  public static final QName FunctionalComponent = sbol2.withLocalPart("FunctionalComponent");
 	  }
 	  
 	  /**
@@ -131,7 +130,7 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class Location {
-		  public static final QName Location   		   = sbol2.withLocalPart("location");
+		  public static final QName Location = sbol2.withLocalPart("location");
 	  }
 	  
 	  /**
@@ -139,10 +138,10 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class MapsTo {
-		  public static final QName MapsTo 		   = sbol2.withLocalPart("MapsTo");
-		  public static final QName refinement 		   = sbol2.withLocalPart("refinement");
-		  public static final QName hasRemote 		   = sbol2.withLocalPart("remote"); 
-		  public static final QName hasLocal 		   = sbol2.withLocalPart("local");
+		  public static final QName MapsTo 	   = sbol2.withLocalPart("MapsTo");
+		  public static final QName refinement = sbol2.withLocalPart("refinement");
+		  public static final QName hasRemote  = sbol2.withLocalPart("remote"); 
+		  public static final QName hasLocal   = sbol2.withLocalPart("local");
 	  }
 	  
 	  /**
@@ -150,11 +149,11 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class Model {
-		  public static final QName Model			   = sbol2.withLocalPart("Model");
-		  public static final QName source			   = sbol2.withLocalPart("source");
-		  public static final QName language 		   = sbol2.withLocalPart("language");
-		  public static final QName framework 		   = sbol2.withLocalPart("framework");
-		  public static final QName roles			   = sbol2.withLocalPart("role");
+		  public static final QName Model	  = sbol2.withLocalPart("Model");
+		  public static final QName source	  = sbol2.withLocalPart("source");
+		  public static final QName language  = sbol2.withLocalPart("language");
+		  public static final QName framework = sbol2.withLocalPart("framework");
+		  public static final QName roles	  = sbol2.withLocalPart("role");
 		
 	  }
 	  
@@ -177,11 +176,11 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class Module {
-		  public static final QName Module 	= sbol2.withLocalPart("Module");
-		  public static final QName hasMappings			= sbol2.withLocalPart("mapping");
-		  public static final QName hasDefinition		= sbol2.withLocalPart("definition");
+		  public static final QName Module 				  = sbol2.withLocalPart("Module");
+		  public static final QName hasMappings			  = sbol2.withLocalPart("mapping");
+		  public static final QName hasDefinition		  = sbol2.withLocalPart("definition");
 		  //TODO: double check hasInstantiatedModule
-		  public static final QName hasInstantiatedModule	= sbol2.withLocalPart("instantiatedModule");
+		  public static final QName hasInstantiatedModule = sbol2.withLocalPart("instantiatedModule");
 	  }
 	  
 	  //TODO: Moeity was deleted?
@@ -203,8 +202,8 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class MultiRange {
-		  public static final QName MultiRange 		   = sbol2.withLocalPart("MultiRange");
-		  public static final QName hasRanges 		   = sbol2.withLocalPart("range");
+		  public static final QName MultiRange = sbol2.withLocalPart("MultiRange");
+		  public static final QName hasRanges  = sbol2.withLocalPart("range");
 	  }
 	  
 	  /**
@@ -212,9 +211,9 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class OrientedCut {
-		  public static final QName OrientedCut 	   = sbol2.withLocalPart("OrientedCut");
-		  public static final QName orientation 	   = sbol2.withLocalPart("orientation");
-//		  public static final QName Integer 		   = sbol2.withLocalPart("Integer");
+		  public static final QName OrientedCut = sbol2.withLocalPart("OrientedCut");
+		  public static final QName orientation = sbol2.withLocalPart("orientation");
+//		  public static final QName Integer 	= sbol2.withLocalPart("Integer");
 	  }
 	  
 	  /**
@@ -222,8 +221,8 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class OrientedRange {
-		  public static final QName OrientedRange 	   = sbol2.withLocalPart("OrientedRange");
-		  public static final QName orientation   	   = sbol2.withLocalPart("orientation");
+		  public static final QName OrientedRange = sbol2.withLocalPart("OrientedRange");
+		  public static final QName orientation   = sbol2.withLocalPart("orientation");
 	  }
 	  
 	  /**
@@ -231,9 +230,9 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class Participation {
-		  public static final QName Participation  	   = sbol2.withLocalPart("Participation");
-		  public static final QName role 		   	   = sbol2.withLocalPart("role");
-		  public static final QName hasParticipant 	   = sbol2.withLocalPart("participant");
+		  public static final QName Participation  	= sbol2.withLocalPart("Participation");
+		  public static final QName role 		   	= sbol2.withLocalPart("role");
+		  public static final QName hasParticipant 	= sbol2.withLocalPart("participant");
 		  
 	  }
 	  
@@ -242,9 +241,9 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class Range {
-		  public static final QName Range 			   = sbol2.withLocalPart("Range");
-		  public static final QName start 			   = sbol2.withLocalPart("start");
-		  public static final QName end   			   = sbol2.withLocalPart("end");
+		  public static final QName Range = sbol2.withLocalPart("Range");
+		  public static final QName start = sbol2.withLocalPart("start");
+		  public static final QName end   = sbol2.withLocalPart("end");
 	  }
 	 
 //	  
@@ -253,9 +252,9 @@ public class Sbol2Terms
 	   *
 	   */
 	  public static final class Sequence {
-		  public static final QName Sequence 		   = sbol2.withLocalPart("Sequence"); 
-		  public static final QName elements  		   = sbol2.withLocalPart("elements"); 
-		  public static final QName encoding  		   = sbol2.withLocalPart("encoding");
+		  public static final QName Sequence = sbol2.withLocalPart("Sequence"); 
+		  public static final QName elements = sbol2.withLocalPart("elements"); 
+		  public static final QName encoding = sbol2.withLocalPart("encoding");
 	  }
 //	  
 	  /**
@@ -274,9 +273,9 @@ public class Sbol2Terms
 	   */
 	  public static final class SequenceConstraint {
 		  public static final QName SequenceConstraint = sbol2.withLocalPart("SequenceConstraint"); 
-		  public static final QName restriction 		 = sbol2.withLocalPart("restriction"); 
-		  public static final QName hasSubject 			 = sbol2.withLocalPart("subject"); 
-		  public static final QName hasObject 			 = sbol2.withLocalPart("object"); 
+		  public static final QName restriction 	   = sbol2.withLocalPart("restriction"); 
+		  public static final QName hasSubject 		   = sbol2.withLocalPart("subject"); 
+		  public static final QName hasObject 		   = sbol2.withLocalPart("object"); 
 	  }
 	  
 	  /**
