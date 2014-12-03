@@ -61,7 +61,6 @@ public class SBOLWriter {
 	 * url(authority)/id/major.vr/minor.vr
 	 *
 	 * TODO:
-	 * Make sure Range, Cut...etc should be included in the correct method.
 	 * ComponentInstance never created but only used in FunctionalComponent
 	 * Component and MapsTo never created
 	 */
