@@ -369,7 +369,7 @@ public class SBOLWriter {
 			if(f.getAccess() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccess().getAccessTypeAlias()));
 			if(f.getDirection() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDirection().name()));
+				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirection().name()));
 
 			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasFunctionalComponent,
 					NestedDocument( Sbol2Terms.FunctionalComponent.FunctionalComponent,
