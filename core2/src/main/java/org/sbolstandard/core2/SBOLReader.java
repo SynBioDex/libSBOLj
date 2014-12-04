@@ -10,8 +10,9 @@ import java.net.URI;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
@@ -72,11 +73,44 @@ public class SBOLReader {
 		{
 			if(topLevel.getType().equals( Sbol2Terms.Sequence.Sequence))
 				parseSequence(SBOLDoc, topLevel);
+			if(topLevel.getType().equals( Sbol2Terms.ModuleDefinition.hasFunctionalComponent))
+				parseModuleDefinition(SBOLDoc, topLevel);
 		}
 	}
 
 	private static boolean isEmptyElementValue(Literal<QName> literal) {
 		return /* literal instanceof Literal.QNameLiteral || */ literal instanceof Literal.UriLiteral;
+	}
+
+	private static void parseModuleDefinition(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+	{
+		String name = "";
+		String description = "";
+		String timeStamp = "";
+		Set<URI> roles = new HashSet<URI>();
+
+		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
+		{
+			if(namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			{
+				name = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			{
+				description = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
+			{
+				timeStamp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+		}
+
+		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity(), roles);
+
+		moduleDefinition.setName(name);
+		moduleDefinition.setDescription(description);
+		moduleDefinition.setTimeStamp(getTimestamp(timeStamp));
+
 	}
 
 	private static void parseSequence(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
@@ -97,7 +131,6 @@ public class SBOLReader {
 					@Override
 					public void visit(NestedDocument<QName> v) throws XMLStreamException {
 					}
-
 					@Override
 					public void visit(Literal<QName> v) throws XMLStreamException {
 						if(isEmptyElementValue(v)) {
@@ -115,7 +148,7 @@ public class SBOLReader {
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
 			{
-				timeStamp = namedProperty.getValue().toString();
+				timeStamp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.Sequence.elements))
 			{
@@ -131,24 +164,28 @@ public class SBOLReader {
 			}
 		}
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss:SSS");
-		Date parsedTimeStamp = null;
-		try {
-			parsedTimeStamp = dateFormat.parse(timeStamp);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Timestamp timestamp = new Timestamp(parsedTimeStamp.getTime());
-
 		Sequence sequence = SBOLDoc.createSequence(topLevel.getIdentity(), elements, encoding);
 		//TODO: wait until Zhen adds features to getter() for Timestamp: sequence.setTimeStamp(new Timestamp(timestamp));
 		// TODO: do not set name if blank
 		sequence.setName(name);
 		sequence.setDescription(description);
-		sequence.setTimeStamp(timestamp);
+		sequence.setTimeStamp(getTimestamp(timeStamp));
 
 
+	}
+
+	private static Timestamp getTimestamp(String timeStamp)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+		java.util.Date date = null;
+		try {
+			date = sdf.parse(timeStamp);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+		return timestamp;
 	}
 
 }
