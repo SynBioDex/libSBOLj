@@ -7,8 +7,8 @@ package org.sbolstandard.core2;
  * @version 2.0
  */
 public enum Orientation {
-	inline, 
-	reverseComplement,
+	inline("inline"), 
+	reverseComplement("reverseComplement"),
 	
 	/**
 	 * Represents <code>+</code> strand which is 5' to 3'.
@@ -22,9 +22,9 @@ public enum Orientation {
 	 */
 	NEGATIVE("-");
 	
-	Orientation() {
-		
-	}
+//	Orientation() {
+//		
+//	}
 	
 	private String symbol;
 	

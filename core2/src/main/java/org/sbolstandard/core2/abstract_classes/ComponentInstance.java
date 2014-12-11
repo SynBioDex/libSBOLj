@@ -132,13 +132,6 @@ public abstract class ComponentInstance extends Documented {
 		}
 	}
 	
-//	/**
-//	 * Set optional field variable <code>references</code> to an empty list.
-//	 */
-//	public void unsetReferences() {
-//		references.clear();
-//	}
-	
 	/**
 	 * Returns field variable <code>definition</code>
 	 * @return field variable <code>definition</code>

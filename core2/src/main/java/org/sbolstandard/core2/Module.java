@@ -40,7 +40,8 @@ public class Module extends Documented {
 	public void setDefinition(URI definitionURI) {
 		this.definition = definitionURI;
 	}
-
+	
+			
 	/**
 	 * Test if optional field variable <code>references</code> is set.
 	 * @return <code>true</code> if it is not an empty list
@@ -50,6 +51,22 @@ public class Module extends Documented {
 			return false;
 		else
 			return true;
+	}
+	
+	/**
+	 * Calls the MapsTo constructor to create a new instance using the specified parameters, 
+	 * then adds to the list of MapsTo instances owned by this component.
+	 * @param identity
+	 * @param refinement
+	 * @param local
+	 * @param remote
+	 * @return the created MapsTo instance. 
+	 */
+	public MapsTo createMapping(URI identity, RefinementType refinement, 
+			URI local, URI remote) {
+		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
+		addMapping(mapping);
+		return mapping;
 	}
 	
 	/**
@@ -109,12 +126,6 @@ public class Module extends Documented {
 			addMapping(mapping);
 		}
 	}
-	
-//	/**
-//	 * Set optional field variable <code>references</code> to an empty list.
-//	 */
-//	public void unsetReferences() {
-//		references.clear();
-//	}
+
 
 }
