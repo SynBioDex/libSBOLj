@@ -71,8 +71,8 @@ public class Sbol2Terms
 		public static final QName ComponentInstance 	   = sbol2.withLocalPart("componentInstance");
 		public static final QName access 				   = sbol2.withLocalPart("access");
 		//TODO: double check on hasInstantiatedComponent
-		public static final QName hasMappings 		   = sbol2.withLocalPart("Mapping");
-		public static final QName hasComponentDefinition = sbol2.withLocalPart("definition");
+		public static final QName hasMappings 		   	   = sbol2.withLocalPart("Mapping");
+		public static final QName hasComponentDefinition   = sbol2.withLocalPart("definition");
 	}
 
 	/**
@@ -82,6 +82,7 @@ public class Sbol2Terms
 	public static final class Cut {
 		public static final QName Cut = sbol2.withLocalPart("Cut");
 		public static final QName at 	= sbol2.withLocalPart("at");
+		public static final QName orientation   = sbol2.withLocalPart("orientation");
 	}
 
 	/**
@@ -246,6 +247,7 @@ public class Sbol2Terms
 		public static final QName Range = sbol2.withLocalPart("Range");
 		public static final QName start = sbol2.withLocalPart("start");
 		public static final QName end   = sbol2.withLocalPart("end");
+		public static final QName orientation   = sbol2.withLocalPart("orientation");
 	}
 
 	//
