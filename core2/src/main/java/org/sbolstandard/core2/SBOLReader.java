@@ -127,33 +127,28 @@ public class SBOLReader {
 			{
 				description = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequence))
+			{
+				structure = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSubComponents))
+			{
+				components.add(parseSubComponent(((NestedDocument<QName>)namedProperty.getValue())));
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequenceAnnotations))
+			{
+				sequenceAnnotations.add(parseSequenceAnnotation((NestedDocument<QName>)namedProperty.getValue()));
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequenceConstraints))
+			{
+				sequenceConstraints.add(parseSequenceConstraint(((NestedDocument<QName>)namedProperty.getValue())));
+			}
 		}
 
 		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
 		c.setTimeStamp(getTimestamp(timeStamp));
 		c.setName(name);
 		c.setDescription(description);
-
-		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
-		{
-			if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequence))
-			{
-				structure = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSubComponents))
-			{
-				components.add(parseSubComponents(c, ((NestedDocument<QName>)namedProperty.getValue())));
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequenceAnnotations))
-			{
-				sequenceAnnotations.add(parseSequenceAnnotations(c, ((NestedDocument<QName>)namedProperty.getValue())));
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequenceConstraints))
-			{
-				sequenceConstraints.add(parseSequenceConstraints(c, ((NestedDocument<QName>)namedProperty.getValue())));
-			}
-		}
-
 		c.setSequence(structure);
 		c.setSubComponents(components);
 		c.setSequenceAnnotations(sequenceAnnotations);
@@ -161,7 +156,7 @@ public class SBOLReader {
 		return c;
 	}
 
-	private static SequenceConstraint parseSequenceConstraints(ComponentDefinition componentDefinition, NestedDocument<QName> sequenceConstraints)
+	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraints)
 	{
 		URI restriction = null;
 		URI subject = null;
@@ -183,12 +178,11 @@ public class SBOLReader {
 			}
 		}
 
-		SequenceConstraint s = componentDefinition.createSequenceConstraint(sequenceConstraints.getIdentity(), restriction, subject, object);
-
+		SequenceConstraint s = new SequenceConstraint(sequenceConstraints.getIdentity(), restriction, subject, object);
 		return s;
 	}
 
-	private static SequenceAnnotation parseSequenceAnnotations(ComponentDefinition componentDefinition, NestedDocument<QName> sequenceAnnotation)
+	private static SequenceAnnotation parseSequenceAnnotation(NestedDocument<QName> sequenceAnnotation)
 	{
 		Location location = null;
 		String name = "";
@@ -199,7 +193,6 @@ public class SBOLReader {
 		{
 			if(namedProperty.getName().equals(Sbol2Terms.Location.Location))
 			{
-				//TODO: ASK.
 				location = parseLocation((NestedDocument<QName>)namedProperty.getValue());
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
@@ -216,7 +209,7 @@ public class SBOLReader {
 			}
 		}
 
-		SequenceAnnotation s = componentDefinition.createSequenceAnnotation(sequenceAnnotation.getIdentity(), location);
+		SequenceAnnotation s = new SequenceAnnotation(sequenceAnnotation.getIdentity(), location);
 		s.setTimeStamp(getTimestamp(timeStamp));
 		s.setName(name);
 		s.setDescription(description);
@@ -230,53 +223,73 @@ public class SBOLReader {
 
 		if(location.getType().equals(Sbol2Terms.Range.Range))
 		{
-			int start = 0; //TODO: consider if start will ever be 0?
-			int end = 0;   //TODO: consider if end will ever be 0? if no, err.
-			for(NamedProperty<QName> namedProperty : location.getProperties())
-			{
-				String temp;
-				if(namedProperty.getName().equals(Sbol2Terms.Range.start))
-				{
-					temp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
-					start = Integer.parseInt(temp);
-				}
-				else if(namedProperty.getName().equals(Sbol2Terms.Range.end))
-				{
-					temp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
-					end = Integer.parseInt(temp);
-				}
-				else if(namedProperty.getName().equals(Sbol2Terms.Range.orientation))
-				{
-					//TODO: how to set orientation? method not found in Range or Location.
-				}
-			}
-			l = new Range(location.getIdentity(), start, end);
-		} // end of Range
+			return parseRange(location);
+		}
 		else if(location.getType().equals(Sbol2Terms.MultiRange.MultiRange))
 		{
-			String version = "";
-			URI persistentIdentity = null;
-			Set<URI> type = new HashSet<URI>();
-			Set<URI> ranges = new HashSet<URI>();
-
-			for(NamedProperty<QName> namedProperty : location.getProperties())
-			{
-				if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
-				{
-					persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
-				}
-				else if(namedProperty.getName().equals(Sbol2Terms.Identified.version))
-				{
-					version = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
-				}
-			}
-			l = new MultiRange(location.getIdentity(), persistentIdentity, version, ranges);
+			//TODO: suppress for now
+			//			return parseMultiRange(location);
 		}
 		return l;
 
 	}
 
-	private static Component parseSubComponents(ComponentDefinition componentDefinition, NestedDocument<QName> subComponents)
+	private static MultiRange parseMultiRange(NestedDocument<QName> typeMultiRange)
+	{
+		String version = "";
+		URI persistentIdentity = null;
+		Set<URI> type = new HashSet<URI>();
+		Set<URI> ranges = new HashSet<URI>();
+		//		Set<Range> ranges = new HashSet<Range>();
+
+		for(NamedProperty<QName> namedProperty : typeMultiRange.getProperties())
+		{
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Identified.version))
+			{
+				version = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.MultiRange.hasRanges))
+			{
+				//TODO: suppress for now
+				//				ranges.add( parseRange((NestedDocument<QName>)namedProperty.getValue())) );
+			}
+		}
+		//		TODO: shouldn't MultiRange take in Range of ranges? Not Set<URI> of ranges?
+		MultiRange r = new MultiRange(typeMultiRange.getIdentity(), persistentIdentity, version, ranges);
+		return r;
+	}
+
+	private static Range parseRange(NestedDocument<QName> typeRange)
+	{
+		int start = 0; //TODO: consider if start will ever be 0?
+		int end = 0;   //TODO: consider if end will ever be 0? if no, err.
+		for(NamedProperty<QName> namedProperty : typeRange.getProperties())
+		{
+			String temp;
+			if(namedProperty.getName().equals(Sbol2Terms.Range.start))
+			{
+				temp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+				start = Integer.parseInt(temp);
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Range.end))
+			{
+				temp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+				end = Integer.parseInt(temp);
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Range.orientation))
+			{
+				//TODO: wait until orientation is included by Zhen before parsing.
+			}
+		}
+		Range r = new Range(typeRange.getIdentity(), start, end);
+		return r;
+	}
+
+	private static Component parseSubComponent(NestedDocument<QName> subComponents)
 	{
 		String name = "";
 		String description = "";
@@ -289,7 +302,6 @@ public class SBOLReader {
 		{
 			if(namedProperty.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
-				//TODO: this is wrong
 				access = AccessType.valueOf(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.ComponentInstance.hasComponentDefinition))
@@ -310,7 +322,7 @@ public class SBOLReader {
 			}
 		}
 
-		Component c = componentDefinition.createSubComponent(subComponents.getIdentity(), access, subComponentURI);
+		Component c = new Component(subComponents.getIdentity(), access, subComponentURI);
 		c.setTimeStamp(getTimestamp(timeStamp));
 		c.setName(name);
 		c.setDescription(description);
@@ -469,27 +481,11 @@ public class SBOLReader {
 						parseFunctionalComponents((NestedDocument<QName>)namedProperty.getValue())
 						);
 			}
-		}
-
-		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity(), roles);
-
-		moduleDefinition.setName(name);
-		moduleDefinition.setDescription(description);
-		moduleDefinition.setTimeStamp(getTimestamp(timeStamp));
-
-		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
-		{
-			//			if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasFunctionalComponent))
-			//			{
-			//				functionalComponents.add(parseFunctionalComponents(moduleDefinition,
-			//						((NestedDocument<QName>)namedProperty.getValue())
-			//						));
-			//			}
-			if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasInteractions))
+			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasInteractions))
 			{
-				interactions.add(parseInteractions(moduleDefinition,
-						((NestedDocument<QName>)namedProperty.getValue())
-						));
+				interactions.add(
+						parseInteraction(((NestedDocument<QName>)namedProperty.getValue())
+								));
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModels))
 			{
@@ -497,18 +493,23 @@ public class SBOLReader {
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasSubModule))
 			{
-				subModules.add(parseSubModule(moduleDefinition,
+				subModules.add(parseSubModule(
 						((NestedDocument<QName>)namedProperty.getValue())
 						));
 			}
 		}
+
+		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity(), roles);
+		moduleDefinition.setName(name);
+		moduleDefinition.setDescription(description);
+		moduleDefinition.setTimeStamp(getTimestamp(timeStamp));
 		moduleDefinition.setComponents(functionalComponents);
 		moduleDefinition.setInteractions(interactions);
 		moduleDefinition.setModels(models);
 		moduleDefinition.setSubModules(subModules);
 	}
 
-	private static Module parseSubModule(ModuleDefinition moduleDefinition, NestedDocument<QName> modules)
+	private static Module parseSubModule(NestedDocument<QName> module)
 	{
 		URI subModuleURI = null;
 		String name = "";
@@ -516,45 +517,40 @@ public class SBOLReader {
 		String timeStamp = "";
 		List<MapsTo> mappings = new ArrayList<MapsTo>();
 
-		for(NamedProperty<QName> m : modules.getProperties())
+		for(NamedProperty<QName> namedProperty : module.getProperties())
 		{
-			if(m.getName().equals(Sbol2Terms.Module.hasInstantiatedModule))
+			if(namedProperty.getName().equals(Sbol2Terms.Module.hasInstantiatedModule))
 			{
-				subModuleURI = URI.create(((Literal<QName>)m.getValue()).getValue().toString());
+				subModuleURI = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
-			else if(m.getName().equals(Sbol2Terms.Documented.name))
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.name))
 			{
-				name = ((Literal<QName>)m.getValue()).getValue().toString();
+				name = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
-			else if(m.getName().equals(Sbol2Terms.Documented.description))
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.description))
 			{
-				description = ((Literal<QName>)m.getValue()).getValue().toString();
+				description = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
-			else if(m.getName().equals(Sbol2Terms.Identified.timeStamp))
+			else if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
 			{
-				timeStamp = ((Literal<QName>)m.getValue()).getValue().toString();
+				timeStamp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Module.hasMappings))
+			{
+				mappings.add(
+						parseMapping((NestedDocument<QName>)namedProperty.getValue()));
 			}
 		}
 
-		Module module = moduleDefinition.createSubModule(modules.getIdentity(), subModuleURI);
-
-		for(NamedProperty<QName> namedProperty : modules.getProperties())
-		{
-			if(namedProperty.getName().equals(Sbol2Terms.Module.hasMappings))
-			{
-				mappings.add(parseMappings(module,
-						(NestedDocument<QName>)namedProperty.getValue()));
-			}
-		}
-
-		module.setName(name);
-		module.setDescription(description);
-		module.setTimeStamp(getTimestamp(timeStamp));
-		module.setMappings(mappings);
-		return module;
+		Module submodule = new Module(module.getIdentity(), subModuleURI);
+		submodule.setName(name);
+		submodule.setDescription(description);
+		submodule.setTimeStamp(getTimestamp(timeStamp));
+		submodule.setMappings(mappings);
+		return submodule;
 	}
 
-	private static MapsTo parseMappings(Module module, NestedDocument<QName> mappings)
+	private static MapsTo parseMapping(NestedDocument<QName> mappings)
 	{
 		URI remote = null;
 		RefinementType refinement = null;
@@ -564,9 +560,7 @@ public class SBOLReader {
 		{
 			if(m.getName().equals(Sbol2Terms.MapsTo.refinement))
 			{
-				//TODO: how to retrieve RefinementType?
-				//refinement = ((Literal<QName>)m.getValue()).getValue().toString();
-				refinement = RefinementType.useLocal;
+				refinement = RefinementType.valueOf(((Literal<QName>)m.getValue()).getValue().toString());
 			}
 			else if(m.getName().equals(Sbol2Terms.MapsTo.hasRemote))
 			{
@@ -577,18 +571,16 @@ public class SBOLReader {
 				local = URI.create(((Literal<QName>)m.getValue()).getValue().toString());
 			}
 		}
-		//TODO: How do you create a MapsTo to module?
 		MapsTo map = new MapsTo(mappings.getIdentity(), refinement, local,remote);
-		module.addMapping(map);
 		return map;
 	}
 
-	private static Interaction parseInteractions(ModuleDefinition moduleDefinition, NestedDocument<QName> interactions)
+	private static Interaction parseInteraction(NestedDocument<QName> interaction)
 	{
 		Set<URI> type = new HashSet<URI>();
 		List<Participation> participations = new ArrayList<Participation>();
 
-		for(NamedProperty<QName> i : interactions.getProperties())
+		for(NamedProperty<QName> i : interaction.getProperties())
 		{
 			if(i.getName().equals(Sbol2Terms.Interaction.type))
 			{
@@ -596,13 +588,12 @@ public class SBOLReader {
 			}
 			else if(i.getName().equals(Sbol2Terms.Interaction.hasParticipations))
 			{
-				//TODO: this is wrong. ASK.
 				participations.add(parseParticipation(
 						(NestedDocument<QName>)i.getValue()));
 			}
 		}
-		Interaction interaction = moduleDefinition.createInteraction(interactions.getIdentity(), type, participations);
-		return interaction;
+		Interaction i = new Interaction(interaction.getIdentity(), type, participations);
+		return i;
 	}
 
 	private static Participation parseParticipation(NestedDocument<QName> participation)
@@ -622,8 +613,6 @@ public class SBOLReader {
 			}
 		}
 		Participation p = new Participation(participation.getIdentity(), role, participant);
-		//				interaction.createParticipation(participation.getIdentity(), role, participant);
-
 		return p;
 	}
 
@@ -638,15 +627,13 @@ public class SBOLReader {
 
 		for(NamedProperty<QName> f : functionalComponent.getProperties())
 		{
-			if(functionalComponent.getType() == Sbol2Terms.ComponentInstance.access)
+			if(functionalComponent.getType().equals(Sbol2Terms.ComponentInstance.access))
 			{
-				//TODO: ASK!
-				access = AccessType.PRIVATE;
+				access = AccessType.valueOf(((Literal<QName>)f.getValue()).getValue().toString());
 			}
 			else if(f.getName().equals(Sbol2Terms.FunctionalComponent.direction))
 			{
-				//TODO: ASK!
-				direction = DirectionType.input;
+				direction = DirectionType.valueOf(((Literal<QName>)f.getValue()).getValue().toString());
 			}
 			else if(f.getName().equals(Sbol2Terms.ComponentInstance.hasComponentDefinition))
 			{
@@ -667,7 +654,6 @@ public class SBOLReader {
 		}
 
 		FunctionalComponent fc = new FunctionalComponent(functionalComponent.getIdentity(), access, functionalComponentURI, direction);
-		//				moduleDefinition.createComponent(functionalComponents.getIdentity(), access, functionalComponentURI, direction);
 		fc.setName(name);
 		fc.setDescription(description);
 		fc.setTimeStamp(getTimestamp(timeStamp));
