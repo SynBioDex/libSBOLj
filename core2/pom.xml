@@ -39,6 +39,11 @@
              	<artifactId>sbol-data-nativeSbol</artifactId>
              	<version>0.1.0</version>
              </dependency>
+             <dependency>
+             	<groupId>org.sbolstandard</groupId>
+             	<artifactId>${project.parent.artifactId}-core</artifactId>
+             	<version>${project.parent.version}</version>
+             </dependency>
     </dependencies>
   
    <build>
