@@ -182,7 +182,7 @@ public class ComponentDefinition extends TopLevel {
 	 * then adds to the list of SequenceAnnotation instances owned by this instance.
 	 * @param identity
 	 * @param location
-	 * @return the  created SequenceAnnotation instance. 
+	 * @return the created SequenceAnnotation instance. 
 	 */
 	public SequenceAnnotation createSequenceAnnotation(URI identity, Location location) {
 		SequenceAnnotation sequenceAnnotation = new SequenceAnnotation(identity, location);

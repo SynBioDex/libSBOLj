@@ -367,7 +367,7 @@ public class SBOLWriter {
 			if(f.getDefinition() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinition()));
 			if(f.getAccess() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccess().getAccessTypeAlias()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccess().getAccessType()));
 			if(f.getDirection() != null)
 				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirection().name()));
 
@@ -603,7 +603,7 @@ public class SBOLWriter {
 
 			formatCommonDocumentedData(list, s);
 			if(s.getAccess() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, s.getAccess().getAccessTypeAlias()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, s.getAccess().getAccessType()));
 			if(s.getDefinition() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinition()));
 			if(s.getMappings() != null)
@@ -640,8 +640,12 @@ public class SBOLWriter {
 		if(location instanceof Range)
 		{
 			Range range = (Range) location;
-			property.add(NamedProperty(Sbol2Terms.Range.start, range.start));
-			property.add(NamedProperty(Sbol2Terms.Range.end, range.end));
+			//(library changed) property.add(NamedProperty(Sbol2Terms.Range.start, range.start));
+			//(library changed) property.add(NamedProperty(Sbol2Terms.Range.end, range.end));
+			// See fixes below.
+			property.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
+			property.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
+			
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(property)));
@@ -649,8 +653,11 @@ public class SBOLWriter {
 		else if(location instanceof MultiRange)
 		{
 			MultiRange multiRange = (MultiRange) location;
-			for(URI r : multiRange.getRanges())
-				property.add(NamedProperty(Sbol2Terms.MultiRange.hasRanges, r));
+			//for(URI r : multiRange.getRanges())
+			//	property.add(NamedProperty(Sbol2Terms.MultiRange.hasRanges, r));
+			
+			for(Range r : multiRange.getRanges())
+				property.add(NamedProperty(Sbol2Terms.MultiRange.hasRanges, r.getIdentity()));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.MultiRange.MultiRange, multiRange.getIdentity(), NamedProperties(property)));
@@ -663,23 +670,26 @@ public class SBOLWriter {
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Cut.Cut, cut.getIdentity(), NamedProperties(property)));
 		}
-
-		else if(location instanceof OrientedCut)
-		{
-			OrientedCut orientedCut = (OrientedCut) location;
-			property.add(NamedProperty(Sbol2Terms.OrientedCut.orientation, orientedCut.getOrientation().getSymbol()));
-
-			return NamedProperty(Sbol2Terms.Location.Location,
-					NestedDocument(Sbol2Terms.OrientedCut.OrientedCut, orientedCut.getIdentity(), NamedProperties(property)));
-		}
-		else if(location instanceof OrientedRange)
-		{
-			OrientedRange orientedRange = (OrientedRange) location;
-			property.add(NamedProperty(Sbol2Terms.OrientedRange.orientation, orientedRange.getOrientation().getSymbol()));
-
-			return NamedProperty(Sbol2Terms.Location.Location,
-					NestedDocument(Sbol2Terms.OrientedRange.OrientedRange, orientedRange.getIdentity(), NamedProperties(property)));
-		}
+		
+		// (library chagned) Temporarily commented out the code here. The OrientedCut and OrientedRange classes do not exist anymore.
+		// TODO: Need to fix the commented code below.
+		
+//		else if(location instanceof OrientedCut)
+//		{
+//			OrientedCut orientedCut = (OrientedCut) location;
+//			property.add(NamedProperty(Sbol2Terms.OrientedCut.orientation, orientedCut.getOrientation().getSymbol()));
+//
+//			return NamedProperty(Sbol2Terms.Location.Location,
+//					NestedDocument(Sbol2Terms.OrientedCut.OrientedCut, orientedCut.getIdentity(), NamedProperties(property)));
+//		}
+//		else if(location instanceof OrientedRange)
+//		{
+//			OrientedRange orientedRange = (OrientedRange) location;
+//			property.add(NamedProperty(Sbol2Terms.OrientedRange.orientation, orientedRange.getOrientation().getSymbol()));
+//
+//			return NamedProperty(Sbol2Terms.Location.Location,
+//					NestedDocument(Sbol2Terms.OrientedRange.OrientedRange, orientedRange.getIdentity(), NamedProperties(property)));
+//		}
 		//Note: This outer return should never occur. If so, ERR
 		return NamedProperty(Sbol2Terms.Location.Location,
 				NestedDocument(Sbol2Terms.Range.Range, location.getIdentity(), NamedProperties(property)));

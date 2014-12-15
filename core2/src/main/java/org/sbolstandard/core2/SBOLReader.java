@@ -227,8 +227,25 @@ public class SBOLReader {
 		}
 		else if(location.getType().equals(Sbol2Terms.MultiRange.MultiRange))
 		{
-			//TODO: suppress for now
-			//			return parseMultiRange(location);
+
+			String version = "";
+			URI persistentIdentity = null;
+			Set<URI> type = new HashSet<URI>();
+			Set<URI> ranges = new HashSet<URI>();
+
+			for(NamedProperty<QName> namedProperty : location.getProperties())
+			{
+				if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+				{
+					persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+				}
+				else if(namedProperty.getName().equals(Sbol2Terms.Identified.version))
+				{
+					version = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+				}
+			}
+			//l = new MultiRange(location.getIdentity(), persistentIdentity, version, ranges);
+			l = new MultiRange(location.getIdentity());
 		}
 		return l;
 
@@ -259,8 +276,8 @@ public class SBOLReader {
 			}
 		}
 		//		TODO: shouldn't MultiRange take in Range of ranges? Not Set<URI> of ranges?
-		MultiRange r = new MultiRange(typeMultiRange.getIdentity(), persistentIdentity, version, ranges);
-		return r;
+
+		return null;
 	}
 
 	private static Range parseRange(NestedDocument<QName> typeRange)

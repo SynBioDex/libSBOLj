@@ -127,63 +127,55 @@ public class SequenceAnnotation extends Documented {
 //		return orientation;
 //	}
 	
-	/**
-     * Orientation of feature is the + or - strand.
-     * 
-     * Sequences used are by convention assumed 5' to 3', therefore the 
-     * <code>+</code> strand is 5' to 3' and the <code>-</code> strand 
-     * is 3' to 5'.
-     *
-     * @return <code>+</code> if feature aligns in same direction as DnaComponent,
-     *         <code>-</code> if feature aligns in opposite direction as DnaComponent.
-     * @deprecated As of release 2.0, replaced by {@link #getOrientation()}
-     */
-	public Orientation getStrand() {
-		Location loc = getLocation();
-		if (loc instanceof OrientedRange) {			
-			Orientation ori = ((OrientedRange) loc).getOrientation();
-			if (ori.equals(Orientation.inline)) {				
-				return Orientation.POSITIVE;
-			}
-			else {
-				return Orientation.NEGATIVE;
-			}
-		}
-		return null;
-	}
-
 //	/**
-//	 * 
-//	 * @param orientation an orientation for the sequence annotation
-//	 */
-//	public void setOrientation(Orientation orientation) {
-//		this.orientation = orientation;
+//     * Orientation of feature is the + or - strand.
+//     * 
+//     * Sequences used are by convention assumed 5' to 3', therefore the 
+//     * <code>+</code> strand is 5' to 3' and the <code>-</code> strand 
+//     * is 3' to 5'.
+//     *
+//     * @return <code>+</code> if feature aligns in same direction as DnaComponent,
+//     *         <code>-</code> if feature aligns in opposite direction as DnaComponent.
+//     * @deprecated As of release 2.0, replaced by {@link #getOrientation()}
+//     */
+//	public Orientation getStrand() {
+//		Location loc = getLocation();
+//		if (loc instanceof OrientedRange) {			
+//			Orientation ori = ((OrientedRange) loc).getOrientation();
+//			if (ori.equals(Orientation.inline)) {				
+//				return Orientation.POSITIVE;
+//			}
+//			else {
+//				return Orientation.NEGATIVE;
+//			}
+//		}
+//		return null;
 //	}
-	
-	/**
-	 * @param value
-	 * @deprecated As of release 2.0, replaced by {@link #setOrientation()}
-	 */
-	public void setStrand(Orientation value) {
-//		if (value.equals(Orientation.POSITIVE)) {
-//			this.orientation = Orientation.inline;
+//	
+//	/**
+//	 * @param value
+//	 * @deprecated As of release 2.0, replaced by {@link #setOrientation()}
+//	 */
+//	public void setStrand(Orientation value) {
+////		if (value.equals(Orientation.POSITIVE)) {
+////			this.orientation = Orientation.inline;
+////		}
+////		else if (value.equals(Orientation.NEGATIVE)) {
+////			this.orientation = Orientation.reverseComplement;
+////		}
+//		Location loc = getLocation();		
+//		if (loc instanceof OrientedRange) {
+//			if (value.equals(Orientation.POSITIVE)) {
+//				((OrientedRange) loc).setOrientation(Orientation.inline);
+//			}
+//			else if (value.equals(Orientation.NEGATIVE)) {
+//				((OrientedRange) loc).setOrientation(Orientation.reverseComplement);
+//			}
+//			
+//			// TODO: strand should be + or -. 
 //		}
-//		else if (value.equals(Orientation.NEGATIVE)) {
-//			this.orientation = Orientation.reverseComplement;
-//		}
-		Location loc = getLocation();		
-		if (loc instanceof OrientedRange) {
-			if (value.equals(Orientation.POSITIVE)) {
-				((OrientedRange) loc).setOrientation(Orientation.inline);
-			}
-			else if (value.equals(Orientation.NEGATIVE)) {
-				((OrientedRange) loc).setOrientation(Orientation.reverseComplement);
-			}
-			
-			// TODO: strand should be + or -. 
-		}
-		// TODO: Error message. 
-	}
+//		// TODO: Error message. 
+//	}
 	
 //	/**
 //	 * 
