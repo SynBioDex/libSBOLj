@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
-import uk.ac.ncl.intbio.examples.SbolTerms;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
 
 /**
@@ -38,7 +37,7 @@ public class SBOLDocument {
 		moduleDefinitions = new HashMap<URI, ModuleDefinition>();
 		sequences = new HashMap<URI, Sequence>();
 		nameSpaces = new HashMap<URI, NamespaceBinding>();
-		nameSpaces.put(URI.create(SbolTerms.sbol2.getNamespaceURI()), SbolTerms.sbol2);
+		nameSpaces.put(URI.create(Sbol2Terms.sbol2.getNamespaceURI()), Sbol2Terms.sbol2);
 	}
 	
 	

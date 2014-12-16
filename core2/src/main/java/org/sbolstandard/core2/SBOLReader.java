@@ -319,7 +319,7 @@ public class SBOLReader {
 		{
 			if(namedProperty.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
-				access = AccessType.valueOf(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+				access = AccessType.valueOf(((Literal<QName>)namedProperty.getValue()).getValue().toString().toUpperCase());
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.ComponentInstance.hasComponentDefinition))
 			{
@@ -646,7 +646,7 @@ public class SBOLReader {
 		{
 			if(functionalComponent.getType().equals(Sbol2Terms.ComponentInstance.access))
 			{
-				access = AccessType.valueOf(((Literal<QName>)f.getValue()).getValue().toString());
+				access = AccessType.valueOf(((Literal<QName>)f.getValue()).getValue().toString().toUpperCase());
 			}
 			else if(f.getName().equals(Sbol2Terms.FunctionalComponent.direction))
 			{

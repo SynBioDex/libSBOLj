@@ -19,7 +19,7 @@ public class Sbol2Terms
 	/**
 	 * The namespace binding for SBOL2.0
 	 */
-	public static final NamespaceBinding sbol2 = NamespaceBinding("http://sbols.org/v2#", "sbol2");
+	public static final NamespaceBinding sbol2 = NamespaceBinding("http://sbols.org/v2#", "sbol");
 
 	/**
 	 * A group of qualified terms for Annotation related SBOL objects
