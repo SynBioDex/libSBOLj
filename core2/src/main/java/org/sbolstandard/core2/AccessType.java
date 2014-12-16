@@ -17,7 +17,7 @@ public enum AccessType {
 	 * @throws URISyntaxException 
 	 */
 	public String getAccessType() {		
-		return "http://sbol.org/" + accessType;		
+		return accessType;		
 	}
 
 	/**
