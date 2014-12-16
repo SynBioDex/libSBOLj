@@ -104,6 +104,7 @@ public class SBOLReader {
 		List<Component> components = new ArrayList<Component>();
 		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>();
 		List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
+		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -143,6 +144,10 @@ public class SBOLReader {
 			{
 				description = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
+			else
+			{
+				annotations.add(new Annotation(namedProperty)) ;
+			}
 		}
 
 		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
@@ -153,6 +158,7 @@ public class SBOLReader {
 		c.setSubComponents(components);
 		c.setSequenceAnnotations(sequenceAnnotations);
 		c.setSequenceConstraints(sequenceConstraints);
+		c.setAnnotations(annotations);
 		return c;
 	}
 
@@ -369,6 +375,7 @@ public class SBOLReader {
 		String name = "";
 		String description = "";
 		String timeStamp = "";
+		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -384,12 +391,17 @@ public class SBOLReader {
 			{
 				description = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
+			else
+			{
+				annotations.add(new Annotation(namedProperty)) ;
+			}
 		}
 
 		TopLevel t = SBOLDoc.createTopLevel(topLevel.getIdentity());
 		t.setTimeStamp(getTimestamp(timeStamp));
 		t.setName(name);
 		t.setDescription(description);
+		t.setAnnotations(annotations);
 		return t;
 	}
 
@@ -402,6 +414,7 @@ public class SBOLReader {
 		URI language = null;
 		URI framework = null;
 		Set<URI> roles = new HashSet<URI>();
+		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -433,12 +446,17 @@ public class SBOLReader {
 			{
 				description = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
+			else
+			{
+				annotations.add(new Annotation(namedProperty)) ;
+			}
 		}
 
 		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework, roles);
 		m.setTimeStamp(getTimestamp(timeStamp));
 		m.setName(name);
 		m.setDescription(description);
+		m.setAnnotations(annotations);
 		return m;
 	}
 
@@ -448,6 +466,7 @@ public class SBOLReader {
 		String description = "";
 		String timeStamp = "";
 		Set<URI> members = new HashSet<URI>();
+		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -467,6 +486,10 @@ public class SBOLReader {
 			{
 				description = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
+			else
+			{
+				annotations.add(new Annotation(namedProperty)) ;
+			}
 		}
 
 		Collection c = SBOLDoc.createCollection(topLevel.getIdentity());
@@ -474,6 +497,7 @@ public class SBOLReader {
 		c.setName(name);
 		c.setDescription(description);
 		c.setMembers(members);
+		c.setAnnotations(annotations);
 
 	}
 
@@ -487,6 +511,7 @@ public class SBOLReader {
 		List<Interaction> interactions = new ArrayList<Interaction>();
 		Set<URI> models = new HashSet<URI>();
 		List<Module> subModules = new ArrayList<Module>();
+		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -528,6 +553,10 @@ public class SBOLReader {
 			{
 				timeStamp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
+			else
+			{
+				annotations.add(new Annotation(namedProperty)) ;
+			}
 		}
 
 		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity(), roles);
@@ -538,6 +567,7 @@ public class SBOLReader {
 		moduleDefinition.setInteractions(interactions);
 		moduleDefinition.setModels(models);
 		moduleDefinition.setSubModules(subModules);
+		moduleDefinition.setAnnotations(annotations);
 	}
 
 	private static Module parseSubModule(NestedDocument<QName> module)
