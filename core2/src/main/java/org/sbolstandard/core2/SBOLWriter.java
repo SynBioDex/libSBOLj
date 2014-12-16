@@ -60,10 +60,6 @@ public class SBOLWriter {
 	 * all checks for != null will be change to isSet()
 	 * url(authority)/id/major.vr/minor.vr
 	 *
-	 * TODO:
-	 * ComponentInstance never created but only used in FunctionalComponent
-	 * Component and MapsTo never created
-	 */
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
@@ -364,7 +360,7 @@ public class SBOLWriter {
 
 			formatCommonDocumentedData(list, f);
 
-			if(f.getDefinition() != null)
+			if(f.getDefinition() != null) //TODO: check if this has a componentDefinition
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinition()));
 			if(f.getAccess() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccess().getAccessType()));
@@ -385,7 +381,6 @@ public class SBOLWriter {
 	private static void formatInteractions (List<Interaction> interactions,
 			List<NamedProperty<QName>> properties)
 	{
-
 		for(Interaction i : interactions)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
@@ -398,7 +393,6 @@ public class SBOLWriter {
 					list.add(NamedProperty(Sbol2Terms.Interaction.type, type));
 				}
 			}
-
 			if(i.getParticipations() != null)
 			{
 				List<NestedDocument> participantList = formatParticipations(i.getParticipations());
@@ -464,7 +458,7 @@ public class SBOLWriter {
 			formatCommonDocumentedData(list, m);
 
 			if(m.getDefinition() != null)
-				list.add(NamedProperty(Sbol2Terms.Module.hasInstantiatedModule, m.getDefinition()));
+				list.add(NamedProperty(Sbol2Terms.Module.hasDefinition, m.getDefinition()));
 
 			if(m.getMappings() != null)
 			{
@@ -636,16 +630,13 @@ public class SBOLWriter {
 	private static NamedProperty<QName> getLocation(Location location)
 	{
 		List<NamedProperty<QName>> property = new ArrayList<NamedProperty<QName>>();
+		formatCommonIdentifiedData(property, location); //TODO: double check if this is correct
 
 		if(location instanceof Range)
 		{
 			Range range = (Range) location;
-			//(library changed) property.add(NamedProperty(Sbol2Terms.Range.start, range.start));
-			//(library changed) property.add(NamedProperty(Sbol2Terms.Range.end, range.end));
-			// See fixes below.
 			property.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
 			property.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
-			
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(property)));
@@ -653,9 +644,6 @@ public class SBOLWriter {
 		else if(location instanceof MultiRange)
 		{
 			MultiRange multiRange = (MultiRange) location;
-			//for(URI r : multiRange.getRanges())
-			//	property.add(NamedProperty(Sbol2Terms.MultiRange.hasRanges, r));
-			
 			for(Range r : multiRange.getRanges())
 				property.add(NamedProperty(Sbol2Terms.MultiRange.hasRanges, r.getIdentity()));
 
@@ -666,30 +654,31 @@ public class SBOLWriter {
 		{
 			Cut cut = (Cut) location;
 			property.add(NamedProperty(Sbol2Terms.Cut.at, cut.getAt()));
+			property.add(NamedProperty(Sbol2Terms.Cut.orientation, cut.getOrientation()));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Cut.Cut, cut.getIdentity(), NamedProperties(property)));
 		}
-		
+
 		// (library chagned) Temporarily commented out the code here. The OrientedCut and OrientedRange classes do not exist anymore.
 		// TODO: Need to fix the commented code below.
-		
-//		else if(location instanceof OrientedCut)
-//		{
-//			OrientedCut orientedCut = (OrientedCut) location;
-//			property.add(NamedProperty(Sbol2Terms.OrientedCut.orientation, orientedCut.getOrientation().getSymbol()));
-//
-//			return NamedProperty(Sbol2Terms.Location.Location,
-//					NestedDocument(Sbol2Terms.OrientedCut.OrientedCut, orientedCut.getIdentity(), NamedProperties(property)));
-//		}
-//		else if(location instanceof OrientedRange)
-//		{
-//			OrientedRange orientedRange = (OrientedRange) location;
-//			property.add(NamedProperty(Sbol2Terms.OrientedRange.orientation, orientedRange.getOrientation().getSymbol()));
-//
-//			return NamedProperty(Sbol2Terms.Location.Location,
-//					NestedDocument(Sbol2Terms.OrientedRange.OrientedRange, orientedRange.getIdentity(), NamedProperties(property)));
-//		}
+
+		//		else if(location instanceof OrientedCut)
+		//		{
+		//			OrientedCut orientedCut = (OrientedCut) location;
+		//			property.add(NamedProperty(Sbol2Terms.OrientedCut.orientation, orientedCut.getOrientation().getSymbol()));
+		//
+		//			return NamedProperty(Sbol2Terms.Location.Location,
+		//					NestedDocument(Sbol2Terms.OrientedCut.OrientedCut, orientedCut.getIdentity(), NamedProperties(property)));
+		//		}
+		//		else if(location instanceof OrientedRange)
+		//		{
+		//			OrientedRange orientedRange = (OrientedRange) location;
+		//			property.add(NamedProperty(Sbol2Terms.OrientedRange.orientation, orientedRange.getOrientation().getSymbol()));
+		//
+		//			return NamedProperty(Sbol2Terms.Location.Location,
+		//					NestedDocument(Sbol2Terms.OrientedRange.OrientedRange, orientedRange.getIdentity(), NamedProperties(property)));
+		//		}
 		//Note: This outer return should never occur. If so, ERR
 		return NamedProperty(Sbol2Terms.Location.Location,
 				NestedDocument(Sbol2Terms.Range.Range, location.getIdentity(), NamedProperties(property)));

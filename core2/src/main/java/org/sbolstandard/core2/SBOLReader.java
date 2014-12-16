@@ -33,10 +33,6 @@ public class SBOLReader {
 
 	private static String name;
 
-	/*
-	 * TODO: When iterating nestedDocument, remember to go through each properties.
-	 */
-
 	public static SBOLDocument read(String fileName) throws Throwable {
 		FileInputStream fis = new FileInputStream(fileName);
 		String inputStreamString = new Scanner(fis,"UTF-8").useDelimiter("\\A").next();
@@ -107,33 +103,25 @@ public class SBOLReader {
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.Model.roles))
-			{
-				roles.add(URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString()));
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.type))
+			if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.type))
 			{
 				type.add(URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString()));
 			}
-			if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
+			else if(namedProperty.getName().equals(Sbol2Terms.Model.roles))
+			{
+				roles.add(URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString()));
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
 			{
 				timeStamp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.Documented.name))
-			{
-				name = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.Documented.description))
-			{
-				description = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequence))
-			{
-				structure = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSubComponents))
 			{
 				components.add(parseSubComponent(((NestedDocument<QName>)namedProperty.getValue())));
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequence))
+			{
+				structure = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequenceAnnotations))
 			{
@@ -142,6 +130,14 @@ public class SBOLReader {
 			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequenceConstraints))
 			{
 				sequenceConstraints.add(parseSequenceConstraint(((NestedDocument<QName>)namedProperty.getValue())));
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			{
+				name = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			{
+				description = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
 		}
 
@@ -223,60 +219,69 @@ public class SBOLReader {
 
 		if(location.getType().equals(Sbol2Terms.Range.Range))
 		{
-			return parseRange(location);
+			l = parseRange(location);
 		}
 		else if(location.getType().equals(Sbol2Terms.MultiRange.MultiRange))
 		{
-
-			String version = "";
-			URI persistentIdentity = null;
-			Set<URI> type = new HashSet<URI>();
-			Set<URI> ranges = new HashSet<URI>();
-
-			for(NamedProperty<QName> namedProperty : location.getProperties())
-			{
-				if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
-				{
-					persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
-				}
-				else if(namedProperty.getName().equals(Sbol2Terms.Identified.version))
-				{
-					version = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
-				}
-			}
-			//l = new MultiRange(location.getIdentity(), persistentIdentity, version, ranges);
-			l = new MultiRange(location.getIdentity());
+			l = parseMultiRange(location);
+		}
+		else if(location.getType().equals(Sbol2Terms.Cut.Cut))
+		{
+			l = parseCut(location);
 		}
 		return l;
 
 	}
 
-	private static MultiRange parseMultiRange(NestedDocument<QName> typeMultiRange)
+	private static Cut parseCut(NestedDocument<QName> typeCut)
 	{
+		Integer at = 0;
+		URI orientation = null;
 		String version = "";
-		URI persistentIdentity = null;
-		Set<URI> type = new HashSet<URI>();
-		Set<URI> ranges = new HashSet<URI>();
-		//		Set<Range> ranges = new HashSet<Range>();
-
-		for(NamedProperty<QName> namedProperty : typeMultiRange.getProperties())
+		for(NamedProperty<QName> namedProperty : typeCut.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			if(namedProperty.getName().equals(Sbol2Terms.Cut.at))
 			{
-				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+				String temp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+				at = Integer.parseInt(temp);
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Cut.orientation))
+			{
+				orientation = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
 				version = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
+		}
+
+		Cut c = new Cut(typeCut.getIdentity(), at);
+		c.setOrientation(orientation);
+		c.setVersion(version);
+		return c;
+	}
+
+	private static MultiRange parseMultiRange(NestedDocument<QName> typeMultiRange)
+	{
+		String version = "";
+		Set<URI> type = new HashSet<URI>();
+		List<Range> ranges = new ArrayList<Range>(); //TODO: Should range be a List or Set?
+
+		for(NamedProperty<QName> namedProperty : typeMultiRange.getProperties())
+		{
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.version))
+			{
+				version = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
 			else if(namedProperty.getName().equals(Sbol2Terms.MultiRange.hasRanges))
 			{
-				//TODO: suppress for now
-				//				ranges.add( parseRange((NestedDocument<QName>)namedProperty.getValue())) );
+				ranges.add( parseRange((NestedDocument<QName>)namedProperty.getValue() ));
 			}
 		}
-		//		TODO: shouldn't MultiRange take in Range of ranges? Not Set<URI> of ranges?
 
+		MultiRange multiRange = new MultiRange(typeMultiRange.getIdentity());
+		multiRange.setVersion(version);
+		multiRange.setRanges(ranges);
 		return null;
 	}
 
@@ -284,6 +289,9 @@ public class SBOLReader {
 	{
 		int start = 0; //TODO: consider if start will ever be 0?
 		int end = 0;   //TODO: consider if end will ever be 0? if no, err.
+		URI orientation = null;
+		String version = "";
+
 		for(NamedProperty<QName> namedProperty : typeRange.getProperties())
 		{
 			String temp;
@@ -299,10 +307,17 @@ public class SBOLReader {
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.Range.orientation))
 			{
-				//TODO: wait until orientation is included by Zhen before parsing.
+				orientation = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Identified.version))
+			{
+				version = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
 		}
+
 		Range r = new Range(typeRange.getIdentity(), start, end);
+		r.setOrientation(orientation);
+		r.setVersion(version);
 		return r;
 	}
 
@@ -311,7 +326,6 @@ public class SBOLReader {
 		String name = "";
 		String description = "";
 		String timeStamp = "";
-
 		AccessType access = null;
 		URI subComponentURI = null;
 
@@ -421,10 +435,6 @@ public class SBOLReader {
 		m.setTimeStamp(getTimestamp(timeStamp));
 		m.setName(name);
 		m.setDescription(description);
-		m.setSource(source);
-		m.setLanguage(language);
-		m.setFramework(framework);
-		m.setRoles(roles);
 		return m;
 	}
 
@@ -476,7 +486,33 @@ public class SBOLReader {
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.roles))
+			{
+				roles.add(URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString()));
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasSubModule))
+			{
+				subModules.add(parseSubModule(
+						((NestedDocument<QName>)namedProperty.getValue())
+						));
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasInteractions))
+			{
+				interactions.add(
+						parseInteraction(((NestedDocument<QName>)namedProperty.getValue())
+								));
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasFunctionalComponent))
+			{
+				functionalComponents.add(
+						parseFunctionalComponents((NestedDocument<QName>)namedProperty.getValue())
+						);
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModels))
+			{
+				models.add(URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString()));
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.name))
 			{
 				name = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
@@ -487,32 +523,6 @@ public class SBOLReader {
 			else if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
 			{
 				timeStamp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.roles))
-			{
-				roles.add(URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString()));
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasFunctionalComponent))
-			{
-				functionalComponents.add(
-						parseFunctionalComponents((NestedDocument<QName>)namedProperty.getValue())
-						);
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasInteractions))
-			{
-				interactions.add(
-						parseInteraction(((NestedDocument<QName>)namedProperty.getValue())
-								));
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModels))
-			{
-				models.add(URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString()));
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasSubModule))
-			{
-				subModules.add(parseSubModule(
-						((NestedDocument<QName>)namedProperty.getValue())
-						));
 			}
 		}
 
@@ -594,6 +604,9 @@ public class SBOLReader {
 
 	private static Interaction parseInteraction(NestedDocument<QName> interaction)
 	{
+		String name = "";
+		String description = "";
+		String timeStamp = "";
 		Set<URI> type = new HashSet<URI>();
 		List<Participation> participations = new ArrayList<Participation>();
 
@@ -608,6 +621,19 @@ public class SBOLReader {
 				participations.add(parseParticipation(
 						(NestedDocument<QName>)i.getValue()));
 			}
+			else if(i.getName().equals(Sbol2Terms.Documented.name))
+			{
+				name = ((Literal<QName>)i.getValue()).getValue().toString();
+			}
+			else if(i.getName().equals(Sbol2Terms.Documented.description))
+			{
+				description = ((Literal<QName>)i.getValue()).getValue().toString();
+			}
+			else if(i.getName().equals(Sbol2Terms.Identified.timeStamp))
+			{
+				timeStamp = ((Literal<QName>)i.getValue()).getValue().toString();
+			}
+
 		}
 		Interaction i = new Interaction(interaction.getIdentity(), type, participations);
 		return i;
@@ -685,7 +711,7 @@ public class SBOLReader {
 		String timeStamp = "";
 		String elements ="";
 		URI encoding = null;
-
+		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -712,6 +738,7 @@ public class SBOLReader {
 			else
 			{
 				// TODO: Everything else will be considered as an annotation
+				annotations.add(parseAnnotation((NestedDocument<QName>)namedProperty.getValue() ) );
 			}
 		}
 
@@ -721,8 +748,33 @@ public class SBOLReader {
 		sequence.setName(name);
 		sequence.setDescription(description);
 		sequence.setTimeStamp(getTimestamp(timeStamp));
+		sequence.setAnnotations(annotations);
 
 
+	}
+
+	private static Annotation parseAnnotation(NestedDocument<QName> annotation)
+	{
+		//		Qname relation = null; //TODO: what is the correct way to set annotation?
+		Literal literal = null;
+		NamedProperty<QName> n = null;
+
+		for(NamedProperty<QName> namedProperty : annotation.getProperties())
+		{
+			if(namedProperty.getName().equals(Sbol2Terms.Annotation.relation))
+			{
+				//				relation = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Annotation.value))
+			{
+				literal = ((Literal<QName>)namedProperty.getValue());
+			}
+			else
+				n = namedProperty;
+		}
+
+		Annotation a = new Annotation(n); //Annotation(relation, literal);
+		return a;
 	}
 
 	private static Timestamp getTimestamp(String timeStamp)
