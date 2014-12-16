@@ -84,6 +84,10 @@ public class SBOLReader {
 				parseComponentDefinitions(SBOLDoc, topLevel);
 			else if(topLevel.getType().equals( Sbol2Terms.TopLevel.TopLevel))
 				parseTopLevel(SBOLDoc, topLevel);
+			else
+			{
+				//TODO: everything else should be a generic toplevel.
+			}
 		}
 	}
 
@@ -737,8 +741,7 @@ public class SBOLReader {
 			}
 			else
 			{
-				// TODO: Everything else will be considered as an annotation
-				annotations.add(parseAnnotation((NestedDocument<QName>)namedProperty.getValue() ) );
+				annotations.add(new Annotation(namedProperty)) ;
 			}
 		}
 

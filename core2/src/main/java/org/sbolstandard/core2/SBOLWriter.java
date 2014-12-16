@@ -302,7 +302,7 @@ public class SBOLWriter {
 		{
 			for(Annotation annotation : t.getAnnotations())
 			{
-				list.add(NamedProperty(annotation.getRelation(), annotation.getLiteral().getTurtleStr()));
+				list.add(annotation.getNamedProperty());
 			}
 		}
 	}
