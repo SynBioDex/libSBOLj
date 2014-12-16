@@ -616,14 +616,14 @@ public class SBOLWriter {
 		}
 	}
 
-	private static void formatTopLevel (List<TopLevel> topLevels, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatTopLevel (List<GenericTopLevel> topLevels, List<TopLevelDocument<QName>> topLevelDoc)
 	{
-		for(TopLevel t : topLevels)
+		for(GenericTopLevel t : topLevels)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			formatCommonTopLevelData(list, t);
 
-			topLevelDoc.add(TopLevelDocument(Sbol2Terms.TopLevel.TopLevel, t.getIdentity(), NamedProperties(list)));
+			topLevelDoc.add(TopLevelDocument(t.getRdfType(), t.getIdentity(), NamedProperties(list)));
 		}
 	}
 
@@ -712,7 +712,7 @@ public class SBOLWriter {
 		formatModels(doc.getModels(), topLevelDoc);
 		formatComponentDefinitions(doc.getComponentDefinitions(), topLevelDoc);
 		formatSequences(doc.getSequences(), topLevelDoc);
-		formatTopLevel(doc.getTopLevels(), topLevelDoc);
+		formatTopLevel(doc.getGenericTopLevels(), topLevelDoc);
 		return topLevelDoc;
 	}
 

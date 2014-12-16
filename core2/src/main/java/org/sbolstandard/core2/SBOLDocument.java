@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
+
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
 
@@ -20,7 +22,7 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
 public class SBOLDocument {
 	
 	//private HashMap<URI, Identified> identityMap;
-	private HashMap<URI, TopLevel> topLevels;
+	private HashMap<URI, GenericTopLevel> topLevels;
 	private HashMap<URI, Collection> collections;
 	private HashMap<URI, ComponentDefinition> componentDefinitions;
 	private HashMap<URI, Model> models;
@@ -30,7 +32,7 @@ public class SBOLDocument {
 
 	public SBOLDocument() {
 		//identityMap = new HashMap<URI, Identified>();
-		topLevels = new HashMap<URI, TopLevel>();
+		topLevels = new HashMap<URI, GenericTopLevel>();
 		collections = new HashMap<URI, Collection>();
 		componentDefinitions = new HashMap<URI, ComponentDefinition>();
 		models = new HashMap<URI, Model>();
@@ -396,23 +398,23 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link TopLevel} instance.
+	 * Create a new {@link GenericTopLevel} instance.
 	 * @param identity
 	 * @param displayId
 	 * @return
 	 */
-	public TopLevel createTopLevel(URI identity) {
-		TopLevel newTopLevel = new TopLevel(identity);
-	    addTopLevel(newTopLevel);
-		return newTopLevel;
+	public GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
+		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
+	    addGenericTopLevel(newGenericTopLevel);
+		return newGenericTopLevel;
 	}
 
 	/**
 	 * Appends the specified <code>topLevel</code> to the end of the list of topLevels.
 	 * @param topLevel
 	 */
-	public void addTopLevel(TopLevel topLevel) {
-		// TODO: Recursively check the uniqueness of URIs of each TopLevel and its field variables. 
+	public void addGenericTopLevel(GenericTopLevel topLevel) {
+		// TODO: Recursively check the uniqueness of URIs of each GenericTopLevel and its field variables. 
 		topLevels.put(topLevel.getIdentity(), topLevel);
 	}
 	
@@ -421,7 +423,7 @@ public class SBOLDocument {
 	 * @param structuralConstraintURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public TopLevel removeTopLevel(URI topLevelURI) {
+	public GenericTopLevel removeGenericTopLevel(URI topLevelURI) {
 		return topLevels.remove(topLevelURI);
 	}
 		
@@ -430,17 +432,17 @@ public class SBOLDocument {
 	 * @param topLevelURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public TopLevel getTopLevel(URI topLevelURI) {
+	public GenericTopLevel getGenericTopLevel(URI topLevelURI) {
 		return topLevels.get(topLevelURI);
 	}
 	
 	/**
-	 * Returns the list of <code>TopLevel</code> instances owned by this instance.
-	 * @return the list of <code>TopLevel</code> instances owned by this instance
+	 * Returns the list of <code>GenericTopLevel</code> instances owned by this instance.
+	 * @return the list of <code>GenericTopLevel</code> instances owned by this instance
 	 */
-	public List<TopLevel> getTopLevels() {
-//		return (List<TopLevel>) topLevels.values();
-		List<TopLevel> topLevels = new ArrayList<TopLevel>(); 
+	public List<GenericTopLevel> getGenericTopLevels() {
+//		return (List<GenericTopLevel>) topLevels.values();
+		List<GenericTopLevel> topLevels = new ArrayList<GenericTopLevel>(); 
 		topLevels.addAll(this.topLevels.values());
 		return topLevels; 
 	}
@@ -448,10 +450,10 @@ public class SBOLDocument {
 	/**
 	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearTopLevels() {
+	public void clearGenericTopLevels() {
 		Object[] keySetArray = topLevels.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeTopLevel((URI) key);
+			removeGenericTopLevel((URI) key);
 		}
 	}
 	
@@ -459,10 +461,10 @@ public class SBOLDocument {
 	 * Clears the existing list <code>topLevels</code>, then appends all of the elements in the specified collection to the end of this list.
 	 * @param topLevels
 	 */
-	public void setTopLevels(List<TopLevel> topLevels) {		
-		clearTopLevels();
-		for (TopLevel topLevel : topLevels) {
-			addTopLevel(topLevel);
+	public void setGenericTopLevels(List<GenericTopLevel> topLevels) {		
+		clearGenericTopLevels();
+		for (GenericTopLevel topLevel : topLevels) {
+			addGenericTopLevel(topLevel);
 		}
 	}
 	

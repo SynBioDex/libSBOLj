@@ -25,6 +25,7 @@ import org.sbolstandard.core2.abstract_classes.Location;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.Literal;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
+import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
@@ -56,6 +57,9 @@ public class SBOLReader {
 	public static SBOLDocument readRdf(InputStream in, DocumentRoot<QName> document)
 	{
 		SBOLDocument SBOLDoc = new SBOLDocument();
+		// TODO: loop through namespace bindings and add to the SBOLDocument
+		//NamespaceBinding n = document.getNamespaceBindings().get(0);
+		//SBOL2Doc_test.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 		readRdf(SBOLDoc,document);
 		return SBOLDoc;
 	}
@@ -364,7 +368,7 @@ public class SBOLReader {
 		return c;
 	}
 
-	private static TopLevel parseTopLevel(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+	private static GenericTopLevel parseTopLevel(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
 		String name = "";
 		String description = "";
@@ -386,7 +390,7 @@ public class SBOLReader {
 			}
 		}
 
-		TopLevel t = SBOLDoc.createTopLevel(topLevel.getIdentity());
+		GenericTopLevel t = SBOLDoc.createGenericTopLevel(topLevel.getIdentity(),topLevel.getType());
 		t.setTimeStamp(getTimestamp(timeStamp));
 		t.setName(name);
 		t.setDescription(description);

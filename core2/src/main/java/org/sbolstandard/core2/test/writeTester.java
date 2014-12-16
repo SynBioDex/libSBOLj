@@ -20,6 +20,7 @@ import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.DirectionType;
 import org.sbolstandard.core2.FunctionalComponent;
+import org.sbolstandard.core2.GenericTopLevel;
 import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.MapsTo;
 import org.sbolstandard.core2.Model;
@@ -679,7 +680,7 @@ public class writeTester {
 		//		i.setTimeStamp(timeStamp);
 	}
 
-	private static TopLevel createTopLevel(SBOLDocument SBOL2Doc_test, List<String> topLevelData)
+	private static GenericTopLevel createTopLevel(SBOLDocument SBOL2Doc_test, List<String> topLevelData)
 	{
 		URI identity 		   = getURI(topLevelData.get(0));
 		URI persistentIdentity = getURI(topLevelData.get(1));
@@ -688,7 +689,9 @@ public class writeTester {
 		String name 		   = topLevelData.get(4);
 		String description 	   = topLevelData.get(5);
 
-		TopLevel toplevel =  SBOL2Doc_test.createTopLevel(identity);
+		GenericTopLevel toplevel =  SBOL2Doc_test.createGenericTopLevel(identity, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+		SBOL2Doc_test.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+
 		setCommonTopLevelData(toplevel, identity, persistentIdentity, version, displayId, name, description);
 		return toplevel;
 	}

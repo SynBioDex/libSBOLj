@@ -2,19 +2,21 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+import javax.xml.namespace.QName;
+
 public class GenericTopLevel extends TopLevel{
 
-	private URI rdfType;
+	private QName rdfType;
 	
-	public URI getRdfType() {
+	public QName getRdfType() {
 		return rdfType;
 	}
 
-	public void setRdfType(URI rdfType) {
+	public void setRdfType(QName rdfType) {
 		this.rdfType = rdfType;
 	}
 
-	public GenericTopLevel(URI identity, URI rdfType) {
+	public GenericTopLevel(URI identity, QName rdfType) {
 		super(identity);
 		this.rdfType = rdfType;		
 	}
