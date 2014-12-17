@@ -60,6 +60,10 @@ public class SBOLReader {
 		// TODO: loop through namespace bindings and add to the SBOLDocument
 		//NamespaceBinding n = document.getNamespaceBindings().get(0);
 		//SBOL2Doc_test.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		for(NamespaceBinding n : document.getNamespaceBindings())
+		{
+			SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+		}
 		readRdf(SBOLDoc,document);
 		return SBOLDoc;
 	}
@@ -86,12 +90,8 @@ public class SBOLReader {
 				parseSequences(SBOLDoc, topLevel);
 			else if(topLevel.getType().equals( Sbol2Terms.ComponentDefinition.ComponentDefinition))
 				parseComponentDefinitions(SBOLDoc, topLevel);
-			else if(topLevel.getType().equals( Sbol2Terms.TopLevel.TopLevel))
-				parseTopLevel(SBOLDoc, topLevel);
-			else
-			{
-				//TODO: everything else should be a generic toplevel.
-			}
+			else //(topLevel.getType().equals( Sbol2Terms.TopLevel.TopLevel))
+				parseGenericTopLevel(SBOLDoc, topLevel);
 		}
 	}
 
@@ -278,8 +278,7 @@ public class SBOLReader {
 	private static MultiRange parseMultiRange(NestedDocument<QName> typeMultiRange)
 	{
 		String version = "";
-		Set<URI> type = new HashSet<URI>();
-		List<Range> ranges = new ArrayList<Range>(); //TODO: Should range be a List or Set?
+		List<Range> ranges = new ArrayList<Range>();
 
 		for(NamedProperty<QName> namedProperty : typeMultiRange.getProperties())
 		{
@@ -375,7 +374,7 @@ public class SBOLReader {
 		return c;
 	}
 
-	private static GenericTopLevel parseTopLevel(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+	private static GenericTopLevel parseGenericTopLevel(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
 		String name = "";
 		String description = "";
@@ -791,30 +790,6 @@ public class SBOLReader {
 		sequence.setAnnotations(annotations);
 
 
-	}
-
-	private static Annotation parseAnnotation(NestedDocument<QName> annotation)
-	{
-		//		Qname relation = null; //TODO: what is the correct way to set annotation?
-		Literal literal = null;
-		NamedProperty<QName> n = null;
-
-		for(NamedProperty<QName> namedProperty : annotation.getProperties())
-		{
-			if(namedProperty.getName().equals(Sbol2Terms.Annotation.relation))
-			{
-				//				relation = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.Annotation.value))
-			{
-				literal = ((Literal<QName>)namedProperty.getValue());
-			}
-			else
-				n = namedProperty;
-		}
-
-		Annotation a = new Annotation(n); //Annotation(relation, literal);
-		return a;
 	}
 
 	private static Timestamp getTimestamp(String timeStamp)
