@@ -11,23 +11,30 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.json.Json;
+import javax.json.JsonReader;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import org.sbolstandard.core2.abstract_classes.Location;
 
+import uk.ac.intbio.core.io.turtle.TurtleIo;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.Literal;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
+import uk.ac.ncl.intbio.core.io.IoReader;
+import uk.ac.ncl.intbio.core.io.json.JsonIo;
+import uk.ac.ncl.intbio.core.io.json.StringifyQName;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 public class SBOLReader {
@@ -68,7 +75,20 @@ public class SBOLReader {
 		return SBOLDoc;
 	}
 
+	private static DocumentRoot<QName> readJson(Reader stream) throws Exception
+	{
+		JsonReader reader = Json.createReaderFactory(Collections.<String, Object> emptyMap()).createReader(stream);
+		JsonIo jsonIo = new JsonIo();
+		IoReader<String> ioReader = jsonIo.createIoReader(reader.read());
+		DocumentRoot<String> root = ioReader.read();
+		return StringifyQName.string2qname.mapDR(root);
+	}
 
+	private static DocumentRoot<QName> readTurtle(Reader reader) throws Exception
+	{
+		TurtleIo turtleIo = new TurtleIo();
+		return turtleIo.createIoReader(reader).read();
+	}
 
 	private static DocumentRoot<QName> read(Reader reader) throws Exception
 	{
@@ -90,7 +110,9 @@ public class SBOLReader {
 				parseSequences(SBOLDoc, topLevel);
 			else if(topLevel.getType().equals( Sbol2Terms.ComponentDefinition.ComponentDefinition))
 				parseComponentDefinitions(SBOLDoc, topLevel);
-			else //(topLevel.getType().equals( Sbol2Terms.TopLevel.TopLevel))
+			else if (topLevel.getType().equals( Sbol2Terms.TopLevel.TopLevel))
+				parseGenericTopLevel(SBOLDoc, topLevel);
+			else
 				parseGenericTopLevel(SBOLDoc, topLevel);
 		}
 	}

@@ -61,17 +61,17 @@ public class writeTester {
 	public static void main( String[] args )
 	{
 		get_myParts(SBOL2Doc_test);
-		writeRdfOutputStream();
+		//		writeRdfOutputStream();
 		//		writeJsonOutputStream();
-		//		writeTurtleOutputStream();
+		writeTurtleOutputStream();
 
-		writeRdfString();
+		//		writeRdfString();
 		//		writeJsonString();
 		//		writeTurtleString();
 
-		//		writeRdfFile();
-		//		writeJsonFile();
-		//		writeTurtleFile();
+		writeRdfFile();
+		writeJsonFile();
+		writeTurtleFile();
 	}
 
 	public static void writeRdfOutputStream()
@@ -160,11 +160,12 @@ public class writeTester {
 	public static void writeTurtleFile()
 	{
 		try {
-			SBOLWriter.writeJson(SBOL2Doc_test, new File(TurtleFile));
-		} catch (FileNotFoundException e) {
+			SBOLWriter.writeTurtle(SBOL2Doc_test, new File(TurtleFile));
+		} catch (Throwable e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 
 	public static void writeRdfFile()
@@ -214,7 +215,7 @@ public class writeTester {
 	private static TopLevel get_topLevel (SBOLDocument SBOL2Doc_test)
 	{
 
-		return createTopLevel(SBOL2Doc_test, getData("TopLevel/1/0","TopLevel","1.0","TopLevel","TopLevel", "TopLevel"));
+		return createTopLevel(SBOL2Doc_test, getData("GenericTopLevel/1/0","GenericTopLevel","1.0","GenericTopLevel","GenericTopLevel", "GenericTopLevel"));
 	}
 
 	private static Sequence get_pLacSeq (SBOLDocument SBOL2Doc_test)
@@ -902,15 +903,20 @@ public class writeTester {
 			int startRange, int endRange,
 			URI locationURI)
 	{
+		Range r = new Range(locationURI, startRange, endRange);
+		r.setOrientation(Sbol2Terms.Orientation.inline);
+		//URI.create("orientationURI"));
+
 		URI identity 		   = getURI(structuralAnnotations_data.get(0));
 		URI persistentIdentity = getURI(structuralAnnotations_data.get(1));
 		String version 		   = structuralAnnotations_data.get(2);
 		String displayId 	   = structuralAnnotations_data.get(3);
 		String name 		   = structuralAnnotations_data.get(4);
 		String description 	   = structuralAnnotations_data.get(5);
-		Location location 	   = new Range(locationURI, startRange, endRange);
+		Location location 	   = r;
 
 		SequenceAnnotation s = new SequenceAnnotation(identity, location);
+
 		setCommonDocumentedData(s, identity, persistentIdentity, version, displayId, name, description);
 
 
