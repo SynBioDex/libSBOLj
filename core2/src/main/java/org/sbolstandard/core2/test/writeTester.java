@@ -13,12 +13,10 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
-import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.Annotation;
 import org.sbolstandard.core2.Collection;
 import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
-import org.sbolstandard.core2.DirectionType;
 import org.sbolstandard.core2.FunctionalComponent;
 import org.sbolstandard.core2.GenericTopLevel;
 import org.sbolstandard.core2.Interaction;
@@ -31,6 +29,7 @@ import org.sbolstandard.core2.Range;
 import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLWriter;
+import org.sbolstandard.core2.Sbol2Terms;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceAnnotation;
 import org.sbolstandard.core2.SequenceConstraint;
@@ -763,21 +762,23 @@ public class writeTester {
 		String name 		   = functionalInstantiation_data.get(4);
 		String description 	   = functionalInstantiation_data.get(5);
 
-		AccessType access = null;
+		URI access = null;
 		if(functionalInstantiation_data.get(6).equals("public"))
-			access = AccessType.PUBLIC;
+			//access = AccessType.PUBLIC;
+			access = Sbol2Terms.Access.PUBLIC;
 		else if(functionalInstantiation_data.get(6).equals("private"))
-			access = AccessType.PRIVATE;
+			//access = AccessType.PRIVATE;
+			access = Sbol2Terms.Access.PRIVATE;
 
-		DirectionType direction = null;
+		URI direction = null;
 		if(functionalInstantiation_data.get(7).equals("input"))
-			direction = DirectionType.input;
+			direction = Sbol2Terms.Direction.input;
 		else if(functionalInstantiation_data.get(7).equals("output"))
-			direction = DirectionType.output;
+			direction = Sbol2Terms.Direction.output;
 		else if(functionalInstantiation_data.get(7).equals("inout"))
-			direction = DirectionType.inout;
+			direction = Sbol2Terms.Direction.inout;
 		else if(functionalInstantiation_data.get(7).equals("none"))
-			direction = DirectionType.none;
+			direction = Sbol2Terms.Direction.none;
 
 		URI instantiatedComponent = c.getIdentity();
 
@@ -948,11 +949,11 @@ public class writeTester {
 		String name 		   = structuralInstantiations_data.get(4);
 		String description	   = structuralInstantiations_data.get(5);
 
-		AccessType access = null;
+		URI access = null;
 		if(structuralInstantiations_data.get(6).equals("public"))
-			access = AccessType.PUBLIC;
+			access = Sbol2Terms.Access.PUBLIC;
 		else if(structuralInstantiations_data.get(6).equals("private"))
-			access = AccessType.PRIVATE;
+			access = Sbol2Terms.Access.PRIVATE;
 
 		URI instantiatedComponent = c.getIdentity();
 

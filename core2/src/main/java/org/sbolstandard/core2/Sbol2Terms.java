@@ -2,6 +2,8 @@ package org.sbolstandard.core2;
 
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
+import java.net.URI;
+
 import javax.xml.namespace.QName;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
@@ -289,5 +291,25 @@ public class Sbol2Terms
 	public static final class TopLevel {
 		public static final QName TopLevel = sbol2.withLocalPart("TopLevel");
 	}
-
+	
+	
+	public static final class Access {
+		public static final URI PUBLIC = URI.create(sbol2.getNamespaceURI() + "public");
+		public static final URI PRIVATE = URI.create(sbol2.getNamespaceURI() + "private");
+	}
+	
+	
+	public static final class Direction {
+		public static final URI input = URI.create(sbol2.getNamespaceURI() + "input");
+		public static final URI output = URI.create(sbol2.getNamespaceURI() + "output");
+		public static final URI inout = URI.create(sbol2.getNamespaceURI() + "inout");
+		public static final URI none = URI.create(sbol2.getNamespaceURI() + "none");
+	}
+	
+	
+	public static final class Orientation {
+		public static final URI  inline = URI.create(sbol2.getNamespaceURI() + "inline");
+		public static final URI reverseComplement = URI.create(sbol2.getNamespaceURI() + "reverseComplement");
+	}
+				
 }

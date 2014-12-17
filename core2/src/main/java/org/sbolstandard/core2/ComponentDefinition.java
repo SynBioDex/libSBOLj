@@ -269,7 +269,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subComponentURI
 	 * @return the created StructuralInstantiation instance. 
 	 */
-	public Component createSubComponent(URI identity, AccessType access, URI subComponentURI) {
+	public Component createSubComponent(URI identity, URI access, URI subComponentURI) {
 		Component subComponent = new Component(identity, access, subComponentURI);
 		addSubComponent(subComponent);
 		return subComponent;

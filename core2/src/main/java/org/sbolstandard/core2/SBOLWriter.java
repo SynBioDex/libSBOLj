@@ -363,9 +363,9 @@ public class SBOLWriter {
 			if(f.getDefinition() != null) //TODO: check if this has a componentDefinition
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinition()));
 			if(f.getAccess() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccess().getAccessType()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccess()));
 			if(f.getDirection() != null)
-				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirection().name()));
+				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirection()));
 
 			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasFunctionalComponent,
 					NestedDocument( Sbol2Terms.FunctionalComponent.FunctionalComponent,
@@ -597,7 +597,7 @@ public class SBOLWriter {
 
 			formatCommonDocumentedData(list, s);
 			if(s.getAccess() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, s.getAccess().getAccessType()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, s.getAccess()));
 			if(s.getDefinition() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinition()));
 			if(s.getMappings() != null)

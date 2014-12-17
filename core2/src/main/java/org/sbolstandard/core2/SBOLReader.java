@@ -340,14 +340,15 @@ public class SBOLReader {
 		String name = "";
 		String description = "";
 		String timeStamp = "";
-		AccessType access = null;
+		URI access = null;
 		URI subComponentURI = null;
 
 		for(NamedProperty<QName> namedProperty : subComponents.getProperties())
 		{
 			if(namedProperty.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
-				access = AccessType.valueOf(((Literal<QName>)namedProperty.getValue()).getValue().toString().toUpperCase());
+				//access = AccessType.valueOf(((Literal<QName>)namedProperty.getValue()).getValue().toString().toUpperCase());
+				access = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.ComponentInstance.hasComponentDefinition))
 			{
@@ -702,19 +703,21 @@ public class SBOLReader {
 		String name = "";
 		String description = "";
 		String timeStamp = "";
-		AccessType access = null;
-		DirectionType direction = null;
+		URI access = null;
+		URI direction = null;
 		URI functionalComponentURI = null;
 
 		for(NamedProperty<QName> f : functionalComponent.getProperties())
 		{
 			if(functionalComponent.getType().equals(Sbol2Terms.ComponentInstance.access))
 			{
-				access = AccessType.valueOf(((Literal<QName>)f.getValue()).getValue().toString().toUpperCase());
+				//access = AccessType.valueOf(((Literal<QName>)f.getValue()).getValue().toString().toUpperCase());
+				access = URI.create(((Literal<QName>)f.getValue()).getValue().toString());
 			}
 			else if(f.getName().equals(Sbol2Terms.FunctionalComponent.direction))
 			{
-				direction = DirectionType.valueOf(((Literal<QName>)f.getValue()).getValue().toString());
+				//direction = DirectionType.valueOf(((Literal<QName>)f.getValue()).getValue().toString());
+				direction = URI.create(((Literal<QName>)f.getValue()).getValue().toString());
 			}
 			else if(f.getName().equals(Sbol2Terms.ComponentInstance.hasComponentDefinition))
 			{

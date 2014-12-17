@@ -6,10 +6,10 @@ import org.sbolstandard.core2.abstract_classes.ComponentInstance;
 
 public class FunctionalComponent extends ComponentInstance{
 		
-	private DirectionType direction;
+	private URI direction;
 	
-	public FunctionalComponent(URI identity, AccessType access, 
-			URI instantiatedComponent, DirectionType direction) {
+	public FunctionalComponent(URI identity, URI access, 
+			URI instantiatedComponent, URI direction) {
 		super(identity,access, instantiatedComponent);
 		setDirection(direction);
 	}
@@ -18,7 +18,7 @@ public class FunctionalComponent extends ComponentInstance{
 	 * Returns field variable <code>direction</code> to the specified element.
 	 * @return field variable <code>direction</code> to the specified element
 	 */
-	public DirectionType getDirection() {
+	public URI getDirection() {
 		return direction;
 	}
 
@@ -26,7 +26,7 @@ public class FunctionalComponent extends ComponentInstance{
 	 * Sets field variable <code>direction</code> to the specified element.
 	 * @param direction
 	 */
-	public void setDirection(DirectionType direction) {
+	public void setDirection(URI direction) {
 		this.direction = direction;
 	}
 }

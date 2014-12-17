@@ -8,8 +8,6 @@ import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 
 public class Annotation {
 
-	private QName relation;
-	private Turtle literal;
 	private NamedProperty<QName> namedProperty;
 
 

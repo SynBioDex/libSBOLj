@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.MapsTo;
 import org.sbolstandard.core2.RefinementType;
 
 public abstract class ComponentInstance extends Documented {
 	
-	private AccessType access;
+	private URI access;
 	private URI definition;
 	private HashMap<URI, MapsTo> mappings;
 	
@@ -24,7 +23,7 @@ public abstract class ComponentInstance extends Documented {
 //		this.references = new ArrayList<MapsTo>();
 //	}
 	
-	public ComponentInstance(URI identity, AccessType access, URI definition) {
+	public ComponentInstance(URI identity, URI access, URI definition) {
 		super(identity);
 		setAccess(access);
 		setDefinition(definition);		
@@ -36,7 +35,7 @@ public abstract class ComponentInstance extends Documented {
 	 * Returns field variable <code>access</code>.
 	 * @return field variable <code>access</code>
 	 */
-	public AccessType getAccess() {
+	public URI getAccess() {
 		return access;
 	}
 
@@ -44,7 +43,7 @@ public abstract class ComponentInstance extends Documented {
 	 * Sets field variable <code>access</code> to the specified element.
 	 * @param access
 	 */
-	public void setAccess(AccessType access) {
+	public void setAccess(URI access) {
 		this.access = access;
 	}
 	
