@@ -61,17 +61,17 @@ public class writeTester {
 	public static void main( String[] args )
 	{
 		get_myParts(SBOL2Doc_test);
-		//		writeRdfOutputStream();
+		writeRdfOutputStream();
 		//		writeJsonOutputStream();
-		writeTurtleOutputStream();
+		//		writeTurtleOutputStream();
 
-		//		writeRdfString();
+		writeRdfString();
 		//		writeJsonString();
 		//		writeTurtleString();
 
 		writeRdfFile();
-		writeJsonFile();
-		writeTurtleFile();
+		//		writeJsonFile();
+		//		writeTurtleFile();
 	}
 
 	public static void writeRdfOutputStream()
@@ -160,12 +160,11 @@ public class writeTester {
 	public static void writeTurtleFile()
 	{
 		try {
-			SBOLWriter.writeTurtle(SBOL2Doc_test, new File(TurtleFile));
-		} catch (Throwable e) {
+			SBOLWriter.writeJson(SBOL2Doc_test, new File(TurtleFile));
+		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 	public static void writeRdfFile()

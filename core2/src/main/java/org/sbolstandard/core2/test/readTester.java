@@ -12,7 +12,7 @@ public class readTester {
 	public static void main(String[] args) {
 		try {
 			SBOLDocument document  = SBOLReader.read(filenameRdf);
-			//			SBOLDocument document = SBOLReader.readRdf(filename);
+			//			SBOLDocument document = SBOLReader.readRdf(filenameRdf);
 			//			SBOLDocument document = SBOLReader.readJson(filenameJson);
 			//			SBOLDocument document = SBOLReader.readTurtle(filenameTurtle);
 
