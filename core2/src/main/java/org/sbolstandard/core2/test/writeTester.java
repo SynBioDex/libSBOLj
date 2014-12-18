@@ -46,13 +46,13 @@ public class writeTester {
 	private static SBOLDocument SBOL2Doc_test = new SBOLDocument();
 
 	private static String  rdfString   = "writeTesterString_v1.3.rdf";
-	private static String  rdfFile 	   = "writeTesterFile_v1.1.rdf";
+	private static String  rdfFile 	   = "writeTesterFile_v1.3.rdf";
 
 	private static String JsonString   = "writeTesterString_v1.3.json";
-	private static String JsonFile 	   = "writeTesterFile_v1.1.json";
+	private static String JsonFile 	   = "writeTesterFile_v1.3.json";
 
 	private static String TurtleString = "writeTesterString_v1.3.ttl";
-	private static String TurtleFile   = "writeTesterFile_v1.1.ttl";
+	private static String TurtleFile   = "writeTesterFile_v1.3.ttl";
 
 	/*
 	 * TODO: rename getData() to getIdentificationData()
@@ -61,17 +61,17 @@ public class writeTester {
 	public static void main( String[] args )
 	{
 		get_myParts(SBOL2Doc_test);
-		//		writeRdfOutputStream();
+				writeRdfOutputStream();
 		//		writeJsonOutputStream();
-		writeTurtleOutputStream();
+		//writeTurtleOutputStream();
 
-		//		writeRdfString();
+				writeRdfString();
 		//		writeJsonString();
 		//		writeTurtleString();
 
-		writeRdfFile();
-		writeJsonFile();
-		writeTurtleFile();
+		//writeRdfFile();
+		//writeJsonFile();
+		//writeTurtleFile();
 	}
 
 	public static void writeRdfOutputStream()

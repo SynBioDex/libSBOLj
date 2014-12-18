@@ -636,7 +636,8 @@ public class SBOLWriter {
 			Range range = (Range) location;
 			property.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
 			property.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
-			property.add(NamedProperty(Sbol2Terms.Cut.orientation, range.getOrientation()));
+			// TODO: if is set
+			property.add(NamedProperty(Sbol2Terms.Range.orientation, range.getOrientation()));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(property)));
@@ -654,6 +655,7 @@ public class SBOLWriter {
 		{
 			Cut cut = (Cut) location;
 			property.add(NamedProperty(Sbol2Terms.Cut.at, cut.getAt()));
+			// TODO: if is set
 			property.add(NamedProperty(Sbol2Terms.Cut.orientation, cut.getOrientation()));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
