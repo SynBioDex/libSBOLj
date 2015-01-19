@@ -57,9 +57,46 @@ public class SBOLWriter {
 
 	/*
 	 * Note:
-	 * all checks for != null will be change to isSet()
 	 * url(authority)/id/major.vr/minor.vr
 	 *
+	 * TODO: not all isSet() for the members are called.
+	 */
+
+	public static void write(SBOLDocument doc, File file) throws FileNotFoundException{
+		FileOutputStream stream = new FileOutputStream(file);
+		BufferedOutputStream buffer = new BufferedOutputStream(stream);
+		try
+		{
+			write(doc, buffer);
+		}
+		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		finally
+		{
+			try
+			{
+				try
+				{
+					stream.close();
+				}
+				finally { buffer.close(); }
+			}
+			catch (IOException e) { }
+		}
+	}
+
+	public static void write(SBOLDocument doc, OutputStream out)
+			throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	{
+
+		writeRdf(new OutputStreamWriter(out),
+				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
+						TopLevelDocuments(getTopLevelDocument(doc))));
+	}
+
+	public static void write(SBOLDocument doc, String filename) throws FileNotFoundException
+	{
+		write(doc, new File(filename));
+	}
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
@@ -71,22 +108,20 @@ public class SBOLWriter {
 	public static void writeJson(SBOLDocument doc, File file) throws FileNotFoundException{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
-		try {
+		try
+		{
 			writeJson(doc, buffer);
-		} catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
-
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				try {
-					stream.close();
-				} finally {
-					buffer.close();
-				}
-			} catch (IOException e) {
+		}
+		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		catch (Throwable e) { e.printStackTrace();}
+		finally
+		{
+			try
+			{
+				try { stream.close(); }
+				finally { buffer.close(); }
 			}
+			catch (IOException e) { }
 		}
 	}
 
@@ -114,7 +149,8 @@ public class SBOLWriter {
 	 * @param filename
 	 * @throws FileNotFoundException
 	 */
-	public static void writeJson(SBOLDocument doc, String filename) throws FileNotFoundException {
+	public static void writeJson(SBOLDocument doc, String filename) throws FileNotFoundException
+	{
 		writeJson(doc, new File(filename));
 	}
 
@@ -125,22 +161,26 @@ public class SBOLWriter {
 	 * @param file
 	 * @throws FileNotFoundException
 	 */
-	public static void writeRdf(SBOLDocument doc, File file) throws FileNotFoundException{
+	public static void writeRdf(SBOLDocument doc, File file) throws FileNotFoundException
+	{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
-		try {
+		try
+		{
 			writeRdf(doc, buffer);
-		} catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
-
-		} finally {
-			try {
-				try {
+		}
+		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		finally
+		{
+			try
+			{
+				try
+				{
 					stream.close();
-				} finally {
-					buffer.close();
 				}
-			} catch (IOException e) {
+				finally { buffer.close(); }
 			}
+			catch (IOException e) { }
 		}
 	}
 
@@ -154,12 +194,11 @@ public class SBOLWriter {
 	 * @throws CoreIoException
 	 */
 	public static void writeRdf(SBOLDocument doc, OutputStream out)
-			throws XMLStreamException, FactoryConfigurationError, CoreIoException {
-
+			throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	{
 		writeRdf(new OutputStreamWriter(out),
 				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
-
 	}
 
 	/**
@@ -170,7 +209,8 @@ public class SBOLWriter {
 	 * @param filename
 	 * @throws FileNotFoundException
 	 */
-	public static void writeRdf(SBOLDocument doc, String filename) throws FileNotFoundException {
+	public static void writeRdf(SBOLDocument doc, String filename) throws FileNotFoundException
+	{
 		writeRdf(doc, new File(filename));
 	}
 
@@ -184,19 +224,19 @@ public class SBOLWriter {
 	public static void writeTurtle(SBOLDocument doc, File file) throws Throwable{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
-		try {
+		try
+		{
 			writeTurtle(doc, buffer);
-		} catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
-
-		} finally {
-			try {
-				try {
-					stream.close();
-				} finally {
-					buffer.close();
-				}
-			} catch (IOException e) {
+		}
+		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		finally
+		{
+			try
+			{
+				try { stream.close(); }
+				finally { buffer.close(); }
 			}
+			catch (IOException e) { }
 		}
 	}
 
@@ -209,13 +249,11 @@ public class SBOLWriter {
 	 * @throws Throwable
 	 */
 	public static void writeTurtle(SBOLDocument doc, OutputStream out)
-			throws FactoryConfigurationError, Throwable {
-
+			throws FactoryConfigurationError, Throwable
+	{
 		writeTurtle(new OutputStreamWriter(out),
 				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
-
-		//			writeTurtle(new OutputStreamWriter(out), DocumentRoot(TopLevelDocuments(getTopLevelDocument(doc))));
 	}
 
 	/**
@@ -225,7 +263,8 @@ public class SBOLWriter {
 	 * @param filename
 	 * @throws Throwable
 	 */
-	public static void writeTurtle(SBOLDocument doc, String filename) throws Throwable {
+	public static void writeTurtle(SBOLDocument doc, String filename) throws Throwable
+	{
 		writeTurtle(doc, new File(filename));
 	}
 
@@ -263,7 +302,7 @@ public class SBOLWriter {
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			formatCommonTopLevelData(list, c);
-			if(c.getMembers() != null)
+			if(c.isSetMembers())
 			{
 				for (URI member : c.getMembers())
 				{
@@ -281,9 +320,9 @@ public class SBOLWriter {
 		//TODO: suppress getDisplayId() for now.
 		//		if(d.getDisplayId() != null)
 		//			list.add(NamedProperty(Sbol2Terms.Documented.displayId, d.getDisplayId()));
-		if(d.getName() != null)
+		if(d.isSetName())
 			list.add(NamedProperty(Sbol2Terms.Documented.name, d.getName()));
-		if(d.getDescription() != null)
+		if(d.isSetDescription())
 			list.add(NamedProperty(Sbol2Terms.Documented.description, d.getDescription()));
 	}
 
@@ -294,10 +333,10 @@ public class SBOLWriter {
 		//			list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, t.getPersistentIdentity()));
 		//		if(t.getVersion() != null)
 		//			list.add(NamedProperty(Sbol2Terms.Documented.version, t.getVersion()));
-		if(t.getTimeStamp() != null)
+		if(t.isSetTimeStamp())
 			list.add(NamedProperty(Sbol2Terms.Identified.timeStamp, t.getTimeStamp().toString()));
 
-		if(t.getAnnotations() != null)
+		if(t.isSetAnnotations())
 		{
 			for(Annotation annotation : t.getAnnotations())
 			{
@@ -359,14 +398,23 @@ public class SBOLWriter {
 
 			formatCommonDocumentedData(list, f);
 
-			if(f.getDefinition() != null) //TODO: check if this has a componentDefinition
+			if(f.getDefinition() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinition()));
 			if(f.getAccess() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccess()));
 			if(f.getDirection() != null)
 				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirection()));
+			if(f.isSetMappings())
+			{
+				List<NestedDocument> referenceList = getMapsTo(f.getMappings());
 
-			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasFunctionalComponent,
+				for(NestedDocument n : referenceList)
+				{
+					list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasMappings, n));
+				}
+			}
+
+			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasComponents,
 					NestedDocument( Sbol2Terms.FunctionalComponent.FunctionalComponent,
 							f.getIdentity(), NamedProperties(list))));
 		}
@@ -392,10 +440,9 @@ public class SBOLWriter {
 					list.add(NamedProperty(Sbol2Terms.Interaction.type, type));
 				}
 			}
-			if(i.getParticipations() != null)
+			if(i.isSetParticipations())
 			{
 				List<NestedDocument> participantList = formatParticipations(i.getParticipations());
-
 				for(NestedDocument n : participantList)
 				{
 					list.add(NamedProperty(Sbol2Terms.Interaction.hasParticipations, n));
@@ -458,11 +505,9 @@ public class SBOLWriter {
 
 			if(m.getDefinition() != null)
 				list.add(NamedProperty(Sbol2Terms.Module.hasDefinition, m.getDefinition()));
-
-			if(m.getMappings() != null)
+			if(m.isSetMappings())
 			{
 				List<NestedDocument> referenceList = getMapsTo(m.getMappings());
-
 				for(NestedDocument n : referenceList)
 				{
 					list.add(NamedProperty(Sbol2Terms.Module.hasMappings, n));
@@ -480,9 +525,7 @@ public class SBOLWriter {
 		for (ModuleDefinition m : module)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
-
 			formatCommonTopLevelData(list,m);
-
 			if(m.getRoles() != null)
 			{
 				for (URI role : m.getRoles())
@@ -534,9 +577,9 @@ public class SBOLWriter {
 
 			formatCommonDocumentedData(list, s);
 			if(s.getLocation() != null)
-			{
 				list.add(getLocation(s.getLocation()));
-			}
+			if(s.getComponent() != null)
+				list.add(NamedProperty(Sbol2Terms.SequenceAnnotation.hasComponent, s.getComponent()));
 
 			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSequenceAnnotations,
 					NestedDocument( Sbol2Terms.SequenceAnnotation.SequenceAnnotation,
@@ -602,10 +645,8 @@ public class SBOLWriter {
 			if(s.getMappings() != null)
 			{
 				List<NestedDocument> referenceList = getMapsTo(s.getMappings());
-
 				for(NestedDocument n : referenceList)
 				{
-					//TODO: is this ComponentInstance.hasMappings?
 					list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasMappings, n));
 				}
 			}
@@ -615,13 +656,13 @@ public class SBOLWriter {
 		}
 	}
 
-	private static void formatTopLevel (List<GenericTopLevel> topLevels, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatGenericTopLevel (List<GenericTopLevel> topLevels, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 		for(GenericTopLevel t : topLevels)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			formatCommonTopLevelData(list, t);
-
+			//TODO: shouldn't t.getRdfType() be checked to see if it is null before setting TopLevelDoc?
 			topLevelDoc.add(TopLevelDocument(t.getRdfType(), t.getIdentity(), NamedProperties(list)));
 		}
 	}
@@ -629,7 +670,7 @@ public class SBOLWriter {
 	private static NamedProperty<QName> getLocation(Location location)
 	{
 		List<NamedProperty<QName>> property = new ArrayList<NamedProperty<QName>>();
-		formatCommonIdentifiedData(property, location); //TODO: double check if this is correct
+		formatCommonIdentifiedData(property, location);
 
 		if(location instanceof Range)
 		{
@@ -655,33 +696,13 @@ public class SBOLWriter {
 		{
 			Cut cut = (Cut) location;
 			property.add(NamedProperty(Sbol2Terms.Cut.at, cut.getAt()));
-			// TODO: if is set
 			property.add(NamedProperty(Sbol2Terms.Cut.orientation, cut.getOrientation()));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Cut.Cut, cut.getIdentity(), NamedProperties(property)));
 		}
 
-		// (library chagned) Temporarily commented out the code here. The OrientedCut and OrientedRange classes do not exist anymore.
-		// TODO: Need to fix the commented code below.
-
-		//		else if(location instanceof OrientedCut)
-		//		{
-		//			OrientedCut orientedCut = (OrientedCut) location;
-		//			property.add(NamedProperty(Sbol2Terms.OrientedCut.orientation, orientedCut.getOrientation().getSymbol()));
-		//
-		//			return NamedProperty(Sbol2Terms.Location.Location,
-		//					NestedDocument(Sbol2Terms.OrientedCut.OrientedCut, orientedCut.getIdentity(), NamedProperties(property)));
-		//		}
-		//		else if(location instanceof OrientedRange)
-		//		{
-		//			OrientedRange orientedRange = (OrientedRange) location;
-		//			property.add(NamedProperty(Sbol2Terms.OrientedRange.orientation, orientedRange.getOrientation().getSymbol()));
-		//
-		//			return NamedProperty(Sbol2Terms.Location.Location,
-		//					NestedDocument(Sbol2Terms.OrientedRange.OrientedRange, orientedRange.getIdentity(), NamedProperties(property)));
-		//		}
-		//Note: This outer return should never occur. If so, ERR
+		//TODO: This outer return should never occur. If so, ERR
 		return NamedProperty(Sbol2Terms.Location.Location,
 				NestedDocument(Sbol2Terms.Range.Range, location.getIdentity(), NamedProperties(property)));
 
@@ -714,7 +735,7 @@ public class SBOLWriter {
 		formatModels(doc.getModels(), topLevelDoc);
 		formatComponentDefinitions(doc.getComponentDefinitions(), topLevelDoc);
 		formatSequences(doc.getSequences(), topLevelDoc);
-		formatTopLevel(doc.getGenericTopLevels(), topLevelDoc);
+		formatGenericTopLevel(doc.getGenericTopLevels(), topLevelDoc);
 		return topLevelDoc;
 	}
 

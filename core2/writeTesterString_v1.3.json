@@ -66,7 +66,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.942"
+                "2015-01-07 00:30:03.218"
             ],
             "{http://sbols.org/v2#}name":[
                 "myParts"
@@ -90,7 +90,7 @@
                             "TetRInv"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.978"
+                            "2015-01-07 00:30:03.26"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "TetRInv"
@@ -119,7 +119,7 @@
                             "LacIOut"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.976"
+                            "2015-01-07 00:30:03.259"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "LacIOut"
@@ -148,7 +148,7 @@
                             "TetRIn"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.976"
+                            "2015-01-07 00:30:03.258"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "TetRIn"
@@ -177,7 +177,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.982"
+                "2015-01-07 00:30:03.264"
             ],
             "{http://sbols.org/v2#}name":[
                 "TetR_Inv"
@@ -198,7 +198,7 @@
                             }
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.98"
+                            "2015-01-07 00:30:03.262"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "interact1b"
@@ -249,7 +249,7 @@
                             }
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.982"
+                            "2015-01-07 00:30:03.264"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "interact2b"
@@ -305,7 +305,7 @@
                             "TetROut"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.969"
+                            "2015-01-07 00:30:03.25"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "TetROut"
@@ -334,7 +334,7 @@
                             "LacIInv"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.97"
+                            "2015-01-07 00:30:03.251"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "LacIInv"
@@ -363,7 +363,7 @@
                             "LacIIn"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.969"
+                            "2015-01-07 00:30:03.249"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "LacIIn"
@@ -392,7 +392,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.974"
+                "2015-01-07 00:30:03.256"
             ],
             "{http://sbols.org/v2#}name":[
                 "LacI_Inv"
@@ -413,7 +413,7 @@
                             }
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.972"
+                            "2015-01-07 00:30:03.253"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "interact1"
@@ -464,7 +464,7 @@
                             }
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.974"
+                            "2015-01-07 00:30:03.256"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "interact2"
@@ -525,7 +525,7 @@
                             "TetRSp"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.968"
+                            "2015-01-07 00:30:03.249"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "TetRSp"
@@ -554,7 +554,7 @@
                             "LacISp"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.968"
+                            "2015-01-07 00:30:03.249"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "LacISp"
@@ -628,7 +628,7 @@
                             }
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.976"
+                            "2015-01-07 00:30:03.258"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "Inv1"
@@ -685,7 +685,7 @@
                             }
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.983"
+                            "2015-01-07 00:30:03.265"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "Inv2"
@@ -699,7 +699,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.983"
+                "2015-01-07 00:30:03.266"
             ],
             "{http://sbols.org/v2#}name":[
                 "Toggle"
@@ -731,7 +731,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.983"
+                "2015-01-07 00:30:03.266"
             ],
             "{http://sbols.org/v2#}name":[
                 "ToggleModel"
@@ -765,7 +765,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.972"
+                "2015-01-07 00:30:03.253"
             ],
             "{http://sbols.org/v2#}name":[
                 "tetR"
@@ -789,7 +789,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.982"
+                "2015-01-07 00:30:03.265"
             ],
             "{http://sbols.org/v2#}name":[
                 "TetR"
@@ -820,7 +820,7 @@
                             "C"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.971"
+                            "2015-01-07 00:30:03.252"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "C"
@@ -844,7 +844,7 @@
                             "P"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.971"
+                            "2015-01-07 00:30:03.252"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "P"
@@ -890,7 +890,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.972"
+                "2015-01-07 00:30:03.253"
             ],
             "{http://sbols.org/v2#}name":[
                 "pLactetR"
@@ -919,7 +919,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.981"
+                "2015-01-07 00:30:03.264"
             ],
             "{http://sbols.org/v2#}name":[
                 "lacI"
@@ -948,7 +948,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.981"
+                "2015-01-07 00:30:03.263"
             ],
             "{http://sbols.org/v2#}name":[
                 "ptet"
@@ -972,7 +972,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.982"
+                "2015-01-07 00:30:03.265"
             ],
             "{http://sbols.org/v2#}name":[
                 "LacI"
@@ -1003,7 +1003,7 @@
                             "L"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.98"
+                            "2015-01-07 00:30:03.263"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "L"
@@ -1027,7 +1027,7 @@
                             "T"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.98"
+                            "2015-01-07 00:30:03.263"
                         ],
                         "{http://sbols.org/v2#}name":[
                             "T"
@@ -1051,7 +1051,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.981"
+                "2015-01-07 00:30:03.264"
             ],
             "{http://sbols.org/v2#}name":[
                 "ptetlacI"
@@ -1064,7 +1064,7 @@
                             "p2_structAnnotate"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.981"
+                            "2015-01-07 00:30:03.263"
                         ],
                         "{http://sbols.org/v2#}location":[
                             {
@@ -1079,7 +1079,7 @@
                                         "10"
                                     ],
                                     "{http://sbols.org/v2#}timeStamp":[
-                                        "2014-12-17 16:47:31.981"
+                                        "2015-01-07 00:30:03.263"
                                     ],
                                     "{http://sbols.org/v2#}start":[
                                         "0"
@@ -1099,7 +1099,7 @@
                             "c2_structAnnotate"
                         ],
                         "{http://sbols.org/v2#}timeStamp":[
-                            "2014-12-17 16:47:31.981"
+                            "2015-01-07 00:30:03.264"
                         ],
                         "{http://sbols.org/v2#}location":[
                             {
@@ -1114,7 +1114,7 @@
                                         "20"
                                     ],
                                     "{http://sbols.org/v2#}timeStamp":[
-                                        "2014-12-17 16:47:31.981"
+                                        "2015-01-07 00:30:03.264"
                                     ],
                                     "{http://sbols.org/v2#}start":[
                                         "11"
@@ -1152,7 +1152,7 @@
                 }
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.971"
+                "2015-01-07 00:30:03.252"
             ],
             "{http://sbols.org/v2#}name":[
                 "pLac"
@@ -1169,7 +1169,7 @@
                 "pLactetRSeq_element"
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.971"
+                "2015-01-07 00:30:03.252"
             ],
             "{http://sbols.org/v2#}name":[
                 "pLactetRSeq"
@@ -1191,7 +1191,7 @@
                 "ptetlacISeq_element"
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.98"
+                "2015-01-07 00:30:03.262"
             ],
             "{http://sbols.org/v2#}name":[
                 "ptetlacISeq"
@@ -1213,7 +1213,7 @@
                 "lacISeq_element"
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.981"
+                "2015-01-07 00:30:03.264"
             ],
             "{http://sbols.org/v2#}name":[
                 "lacISeq"
@@ -1235,7 +1235,7 @@
                 "tetRSeq_element"
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.972"
+                "2015-01-07 00:30:03.253"
             ],
             "{http://sbols.org/v2#}name":[
                 "tetRSeq"
@@ -1257,7 +1257,7 @@
                 "pLacSeq_element"
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.971"
+                "2015-01-07 00:30:03.252"
             ],
             "{http://sbols.org/v2#}name":[
                 "pLacSeq"
@@ -1279,7 +1279,7 @@
                 "ptetSeq_element"
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.981"
+                "2015-01-07 00:30:03.263"
             ],
             "{http://sbols.org/v2#}name":[
                 "ptetSeq"
@@ -1298,7 +1298,7 @@
                 "GenericTopLevel"
             ],
             "{http://sbols.org/v2#}timeStamp":[
-                "2014-12-17 16:47:31.983"
+                "2015-01-07 00:30:03.266"
             ],
             "{http://sbols.org/v2#}name":[
                 "GenericTopLevel"
