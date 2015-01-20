@@ -97,7 +97,7 @@ public class SBOLReader {
 		// call a new v1 reader.
 		for(NamespaceBinding n: document.getNamespaceBindings())
 		{
-			if(n.equals(Sbol1Terms.sbol1))
+			if(n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 			{
 				return readRdfV1(buffer, document);
 			}
@@ -155,7 +155,7 @@ public class SBOLReader {
 		SBOLDocument SBOLDoc = new SBOLDocument();
 		for(NamespaceBinding n : document.getNamespaceBindings())
 		{
-			if(n.equals(Sbol1Terms.sbol1))
+			if(n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				SBOLDoc.addNameSpaceBinding(URI.create(Sbol2Terms.sbol2.getNamespaceURI()), Sbol2Terms.sbol2.getPrefix());
 			else
 				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());

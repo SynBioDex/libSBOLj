@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:annot="http://myannotation.org" xmlns:grn="urn:bbn.com:tasbe:grn" xmlns:sbol="http://sbols.org/v2#">
   <sbol:Collection rdf:about="http://www.async.ece.utah.edu/myParts/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.741</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.398</sbol:timeStamp>
     <annot:thisAnnotation>turtleString</annot:thisAnnotation>
     <sbol:name>myParts</sbol:name>
     <sbol:description>myParts</sbol:description>
@@ -26,14 +26,14 @@
     <sbol:member rdf:resource="http://www.async.ece.utah.edu/ptetlacI/1/0"/>
   </sbol:Collection>
   <sbol:ModuleDefinition rdf:about="http://www.async.ece.utah.edu/TetR_Inv/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.838</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.436</sbol:timeStamp>
     <annot:thisAnnotation>turtleString</annot:thisAnnotation>
     <sbol:name>TetR_Inv</sbol:name>
     <sbol:description>TetR_Inv</sbol:description>
     <sbol:role rdf:resource="http://some.ontology.org/Inverter"/>
     <sbol:component>
       <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.834</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.433</sbol:timeStamp>
         <sbol:name>TetRInv</sbol:name>
         <sbol:description>TetRInv</sbol:description>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/ptetlacI/1/0"/>
@@ -43,7 +43,7 @@
     </sbol:component>
     <sbol:component>
       <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.833</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.431</sbol:timeStamp>
         <sbol:name>LacIOut</sbol:name>
         <sbol:description>LacIOut</sbol:description>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1/0"/>
@@ -53,7 +53,7 @@
     </sbol:component>
     <sbol:component>
       <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.833</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.431</sbol:timeStamp>
         <sbol:name>TetRIn</sbol:name>
         <sbol:description>TetRIn</sbol:description>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1/0"/>
@@ -63,7 +63,7 @@
     </sbol:component>
     <sbol:interaction>
       <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.836</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.434</sbol:timeStamp>
         <sbol:name>interact1b</sbol:name>
         <sbol:description>interact1b</sbol:description>
         <sbol:type rdf:resource="http://some.ontology.org/repression"/>
@@ -83,7 +83,7 @@
     </sbol:interaction>
     <sbol:interaction>
       <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.838</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.436</sbol:timeStamp>
         <sbol:name>interact2b</sbol:name>
         <sbol:description>interact2b</sbol:description>
         <sbol:type rdf:resource="http://some.ontology.org/production"/>
@@ -103,14 +103,14 @@
     </sbol:interaction>
   </sbol:ModuleDefinition>
   <sbol:ModuleDefinition rdf:about="http://www.async.ece.utah.edu/LacI_Inv/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.831</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.429</sbol:timeStamp>
     <annot:thisAnnotation>turtleString</annot:thisAnnotation>
     <sbol:name>LacI_Inv</sbol:name>
     <sbol:description>LacI_Inv</sbol:description>
     <sbol:role rdf:resource="http://some.ontology.org/Inverter"/>
     <sbol:component>
       <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.826</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.423</sbol:timeStamp>
         <sbol:name>TetROut</sbol:name>
         <sbol:description>TetROut</sbol:description>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1/0"/>
@@ -120,7 +120,7 @@
     </sbol:component>
     <sbol:component>
       <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.827</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.425</sbol:timeStamp>
         <sbol:name>LacIInv</sbol:name>
         <sbol:description>LacIInv</sbol:description>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/pLactetR/1/0"/>
@@ -130,7 +130,7 @@
     </sbol:component>
     <sbol:component>
       <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.826</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.423</sbol:timeStamp>
         <sbol:name>LacIIn</sbol:name>
         <sbol:description>LacIIn</sbol:description>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1/0"/>
@@ -140,7 +140,7 @@
     </sbol:component>
     <sbol:interaction>
       <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.829</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.427</sbol:timeStamp>
         <sbol:name>interact1</sbol:name>
         <sbol:description>interact1</sbol:description>
         <sbol:type rdf:resource="http://some.ontology.org/repression"/>
@@ -160,7 +160,7 @@
     </sbol:interaction>
     <sbol:interaction>
       <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.831</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.428</sbol:timeStamp>
         <sbol:name>interact2</sbol:name>
         <sbol:description>interact2</sbol:description>
         <sbol:type rdf:resource="http://some.ontology.org/production"/>
@@ -180,14 +180,14 @@
     </sbol:interaction>
   </sbol:ModuleDefinition>
   <sbol:ModuleDefinition rdf:about="http://www.async.ece.utah.edu/Toggle/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.839</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.437</sbol:timeStamp>
     <annot:thisAnnotation>turtleString</annot:thisAnnotation>
     <sbol:name>Toggle</sbol:name>
     <sbol:description>Toggle</sbol:description>
     <sbol:role rdf:resource="http://some.ontology.org/Toggle_role"/>
     <sbol:component>
       <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/Toggle/TetRSp/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.825</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.423</sbol:timeStamp>
         <sbol:name>TetRSp</sbol:name>
         <sbol:description>TetRSp</sbol:description>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1/0"/>
@@ -197,7 +197,7 @@
     </sbol:component>
     <sbol:component>
       <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/Toggle/LacISp/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.825</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.422</sbol:timeStamp>
         <sbol:name>LacISp</sbol:name>
         <sbol:description>LacISp</sbol:description>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1/0"/>
@@ -208,7 +208,7 @@
     <sbol:model rdf:resource="http://www.async.ece.utah.edu/Toggle/ToggleModel/1/0"/>
     <sbol:subModule>
       <sbol:Module rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.832</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.431</sbol:timeStamp>
         <sbol:name>Inv1</sbol:name>
         <sbol:description>Inv1</sbol:description>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/1/0"/>
@@ -230,7 +230,7 @@
     </sbol:subModule>
     <sbol:subModule>
       <sbol:Module rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.839</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.437</sbol:timeStamp>
         <sbol:name>Inv2</sbol:name>
         <sbol:description>Inv2</sbol:description>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/1/0"/>
@@ -252,7 +252,7 @@
     </sbol:subModule>
   </sbol:ModuleDefinition>
   <sbol:Model rdf:about="http://www.async.ece.utah.edu/Toggle/ToggleModel/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.839</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.437</sbol:timeStamp>
     <sbol:name>ToggleModel</sbol:name>
     <sbol:description>ToggleModel</sbol:description>
     <sbol:source rdf:resource="http://some.ontology.org/ToggleModel_source"/>
@@ -261,7 +261,7 @@
     <sbol:role rdf:resource="http://some.ontology.org/ToggleModel_role"/>
   </sbol:Model>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/tetRCDS/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.828</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.426</sbol:timeStamp>
     <sbol:name>tetR</sbol:name>
     <sbol:description>tetR</sbol:description>
     <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
@@ -269,21 +269,21 @@
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/tetRSeq/1/0"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/TetR/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.839</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.437</sbol:timeStamp>
     <sbol:name>TetR</sbol:name>
     <sbol:description>TetR</sbol:description>
     <sbol:type rdf:resource="http://some.ontology.org/Protein"/>
     <sbol:role rdf:resource="http://some.ontology.org/Transcriptionfactor"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/pLactetR/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.829</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.426</sbol:timeStamp>
     <sbol:name>pLactetR</sbol:name>
     <sbol:description>pLactetR</sbol:description>
     <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
     <sbol:role rdf:resource="http://some.ontology.org/Gene"/>
     <sbol:subComponent>
       <sbol:Component rdf:about="http://www.async.ece.utah.edu/pLactetR/C/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.828</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.426</sbol:timeStamp>
         <sbol:name>C</sbol:name>
         <sbol:description>C</sbol:description>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
@@ -292,7 +292,7 @@
     </sbol:subComponent>
     <sbol:subComponent>
       <sbol:Component rdf:about="http://www.async.ece.utah.edu/pLactetR/P/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.828</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.426</sbol:timeStamp>
         <sbol:name>P</sbol:name>
         <sbol:description>P</sbol:description>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
@@ -309,7 +309,7 @@
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/pLactetRSeq/1/0"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/lacICDS/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.837</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.435</sbol:timeStamp>
     <sbol:name>lacI</sbol:name>
     <sbol:description>lacI</sbol:description>
     <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
@@ -317,7 +317,7 @@
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/lacISeq/1/0"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/ptet/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.837</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.435</sbol:timeStamp>
     <sbol:name>ptet</sbol:name>
     <sbol:description>ptet</sbol:description>
     <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
@@ -325,21 +325,21 @@
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/ptetSeq/1/0"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/LacI/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.838</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.436</sbol:timeStamp>
     <sbol:name>LacI</sbol:name>
     <sbol:description>LacI</sbol:description>
     <sbol:type rdf:resource="http://some.ontology.org/Protein"/>
     <sbol:role rdf:resource="http://some.ontology.org/Transcriptionfactor"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/ptetlacI/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.837</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.436</sbol:timeStamp>
     <sbol:name>ptetlacI</sbol:name>
     <sbol:description>ptetlacI</sbol:description>
     <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
     <sbol:role rdf:resource="http://some.ontology.org/Gene"/>
     <sbol:subComponent>
       <sbol:Component rdf:about="http://www.async.ece.utah.edu/ptetlacI/L/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.837</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.435</sbol:timeStamp>
         <sbol:name>L</sbol:name>
         <sbol:description>L</sbol:description>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
@@ -348,7 +348,7 @@
     </sbol:subComponent>
     <sbol:subComponent>
       <sbol:Component rdf:about="http://www.async.ece.utah.edu/ptetlacI/T/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.837</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.435</sbol:timeStamp>
         <sbol:name>T</sbol:name>
         <sbol:description>T</sbol:description>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
@@ -357,12 +357,12 @@
     </sbol:subComponent>
     <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/ptetlacI/p2_structAnnotate/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.837</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.435</sbol:timeStamp>
         <sbol:name>p2_structAnnotate</sbol:name>
         <sbol:description>p2_structAnnotate</sbol:description>
         <sbol:location>
           <sbol:Range rdf:about="http://www.async.ece.utah.edu/ptetlacI/p2_structAnnotate/p2_structAnnotate_range/1/0">
-            <sbol:timeStamp>2015-01-17 22:37:25.837</sbol:timeStamp>
+            <sbol:timeStamp>2015-01-20 15:49:01.435</sbol:timeStamp>
             <sbol:start>0</sbol:start>
             <sbol:end>10</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
@@ -372,12 +372,12 @@
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/ptetlacI/c2_structAnnotate/1/0">
-        <sbol:timeStamp>2015-01-17 22:37:25.837</sbol:timeStamp>
+        <sbol:timeStamp>2015-01-20 15:49:01.436</sbol:timeStamp>
         <sbol:name>c2_structAnnotate</sbol:name>
         <sbol:description>c2_structAnnotate</sbol:description>
         <sbol:location>
           <sbol:Range rdf:about="http://www.async.ece.utah.edu/ptetlacI/c2_structAnnotate/c2_structAnnotate_range/1/0">
-            <sbol:timeStamp>2015-01-17 22:37:25.837</sbol:timeStamp>
+            <sbol:timeStamp>2015-01-20 15:49:01.435</sbol:timeStamp>
             <sbol:start>11</sbol:start>
             <sbol:end>20</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
@@ -388,7 +388,7 @@
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/ptetlacISeq/1/0"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/pLac/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.828</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.426</sbol:timeStamp>
     <sbol:name>pLac</sbol:name>
     <sbol:description>pLac</sbol:description>
     <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
@@ -396,49 +396,49 @@
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/pLacSeq/1/0"/>
   </sbol:ComponentDefinition>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLactetRSeq/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.827</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.425</sbol:timeStamp>
     <sbol:name>pLactetRSeq</sbol:name>
     <sbol:description>pLactetRSeq</sbol:description>
     <sbol:elements>pLactetRSeq_element</sbol:elements>
     <sbol:encoding rdf:resource="http://some.ontology.org/pLactetRSeq"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/ptetlacISeq/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.836</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.434</sbol:timeStamp>
     <sbol:name>ptetlacISeq</sbol:name>
     <sbol:description>ptetlacISeq</sbol:description>
     <sbol:elements>ptetlacISeq_element</sbol:elements>
     <sbol:encoding rdf:resource="http://some.ontology.org/ptetlacISeq"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/lacISeq/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.837</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.435</sbol:timeStamp>
     <sbol:name>lacISeq</sbol:name>
     <sbol:description>lacISeq</sbol:description>
     <sbol:elements>lacISeq_element</sbol:elements>
     <sbol:encoding rdf:resource="http://some.ontology.org/lacISeq"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/tetRSeq/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.828</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.426</sbol:timeStamp>
     <sbol:name>tetRSeq</sbol:name>
     <sbol:description>tetRSeq</sbol:description>
     <sbol:elements>tetRSeq_element</sbol:elements>
     <sbol:encoding rdf:resource="http://some.ontology.org/tetRSeq"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLacSeq/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.828</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.426</sbol:timeStamp>
     <sbol:name>pLacSeq</sbol:name>
     <sbol:description>pLacSeq</sbol:description>
     <sbol:elements>pLacSeq_element</sbol:elements>
     <sbol:encoding rdf:resource="http://some.ontology.org/pLacSeq"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/ptetSeq/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.837</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.435</sbol:timeStamp>
     <sbol:name>ptetSeq</sbol:name>
     <sbol:description>ptetSeq</sbol:description>
     <sbol:elements>ptetSeq_element</sbol:elements>
     <sbol:encoding rdf:resource="http://some.ontology.org/ptetSeq_encoding"/>
   </sbol:Sequence>
   <grn:RegulatoryReaction rdf:about="http://www.async.ece.utah.edu/GenericTopLevel/1/0">
-    <sbol:timeStamp>2015-01-17 22:37:25.839</sbol:timeStamp>
+    <sbol:timeStamp>2015-01-20 15:49:01.437</sbol:timeStamp>
     <sbol:name>GenericTopLevel</sbol:name>
     <sbol:description>GenericTopLevel</sbol:description>
   </grn:RegulatoryReaction>
