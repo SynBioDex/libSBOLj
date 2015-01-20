@@ -39,8 +39,6 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 public class SBOLReader {
 
-	//TODO: make sure to check each local variable if they are empty before setting them.
-
 	public static SBOLDocument read(String fileName) throws Throwable
 	{
 		FileInputStream fis = new FileInputStream(fileName);
@@ -155,7 +153,7 @@ public class SBOLReader {
 		SBOLDocument SBOLDoc = new SBOLDocument();
 		for(NamespaceBinding n : document.getNamespaceBindings())
 		{
-			if(n.equals(Sbol1Terms.sbol1))
+			if(n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				SBOLDoc.addNameSpaceBinding(URI.create(Sbol2Terms.sbol2.getNamespaceURI()), Sbol2Terms.sbol2.getPrefix());
 			else
 				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
