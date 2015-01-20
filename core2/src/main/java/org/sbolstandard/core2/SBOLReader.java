@@ -95,7 +95,7 @@ public class SBOLReader {
 		// call a new v1 reader.
 		for(NamespaceBinding n: document.getNamespaceBindings())
 		{
-			if(n.equals(Sbol1Terms.sbol1))
+			if(n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 			{
 				return readRdfV1(buffer, document);
 			}
