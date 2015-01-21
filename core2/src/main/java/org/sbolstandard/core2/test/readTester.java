@@ -21,13 +21,23 @@ public class readTester {
 
 	public static void main(String[] args) {
 		try {
+<<<<<<< HEAD
 			//			SBOLDocument document  = SBOLReader.read(filenameRdf);
 			SBOLDocument document1 = SBOLReader.readRdf(filenameV1_8);
+=======
+			//SBOLDocument document  = SBOLReader.read(filenameRdf);
+						SBOLDocument document1 = SBOLReader.readRdf(filenameV1_1);
+>>>>>>> branch 'sbol2' of https://github.com/SynBioDex/libSBOLj.git
 			//			SBOLDocument document2 = SBOLReader.readJson(filenameJson);
 			//			SBOLDocument document3 = SBOLReader.readTurtle(filenameTurtle);
 
+<<<<<<< HEAD
 			//			SBOLWriter.writeRdf(document,(System.out));
 			SBOLWriter.writeRdf(document1,(System.out));
+=======
+			//SBOLWriter.writeRdf(document,(System.out));
+						SBOLWriter.writeRdf(document1,(System.out));
+>>>>>>> branch 'sbol2' of https://github.com/SynBioDex/libSBOLj.git
 			//			SBOLWriter.writeJson(document2,(System.out));
 			//			SBOLWriter.writeTurtle(document3,(System.out));
 
