@@ -27,6 +27,7 @@ import org.sbolstandard.core2.abstract_classes.Location;
 
 import uk.ac.intbio.core.io.turtle.TurtleIo;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
+import uk.ac.ncl.intbio.core.datatree.IdentifiableDocument;
 import uk.ac.ncl.intbio.core.datatree.Literal;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
@@ -236,7 +237,7 @@ public class SBOLReader {
 	// TODO: create parseDNAComponentV1
 	// if find sequence, call parseSequenceV1 returns identity of the sequence which is what you add to the object
 	// if find annotation, call parseSequenceAnnotationV1
-	private static ComponentDefinition parseDnaComponentV1(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+	private static ComponentDefinition parseDnaComponentV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
 	{
 		URI identity 	   = null;
 		String displayId   = null;
@@ -244,7 +245,8 @@ public class SBOLReader {
 		String description = null;
 		Set<URI> roles 	   = new HashSet<URI>();
 		URI seq_identity   = null;
-
+		// TODO: create a list of URI pairs for precedes relationships
+		
 		Set<URI> type = new HashSet<URI>();
 		type.add(URI.create("http://purl.obolibrary.org/obo/CHEBI_16991"));
 
@@ -280,8 +282,9 @@ public class SBOLReader {
 			{
 				//TODO: if find sequence, call parseSequenceV1 returns identity of the sequence
 				//which is what you add to the object
-				seq_identity = parseDnaSequenceV1(SBOLDoc, (TopLevelDocument<QName>) namedProperty.getValue()).getIdentity();
+				seq_identity = parseDnaSequenceV1(SBOLDoc, (NestedDocument<QName>) namedProperty.getValue()).getIdentity();
 			}
+			// TODO: add to this and all V1 parsers and else case which adds content to list of annotations
 		}
 
 		if(roles.isEmpty())
@@ -310,11 +313,13 @@ public class SBOLReader {
 		{
 			c.setSequence(seq_identity);
 		}
+		// TODO: for each pair in the list of precedes, create a sequenceConstraint of restriction precedes, the subject is the component URI of the first SA in
+		// the list and the object is the second SA's component
 
 		return c;
 	}
 
-	private static Sequence parseDnaSequenceV1(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+	private static Sequence parseDnaSequenceV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
 	{
 		URI identity = null;
 		String elements = null;
@@ -387,6 +392,7 @@ public class SBOLReader {
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.Collection.components))
 			{
+				// TODO: need to call parseDnaComponentV1
 				members.add(URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString()));
 			}
 		}
@@ -403,6 +409,7 @@ public class SBOLReader {
 		return c;
 	}
 
+	// TODO: add a list of precedes pairs
 	private static void parseSequenceAnnotationV1(SBOLDocument SBOLDoc, NestedDocument<QName> sequenceAnnotation)
 	{
 		URI identity = null;
@@ -434,17 +441,19 @@ public class SBOLReader {
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.subComponent))
 			{
+				// TODO: need to call parseDnaComponentV1
 				componentURI = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.precedes))
 			{
-				//TODO:
+				//TODO: create a pair which includes URI of this annotation and the URI referred to in the precedes, and add this to a list of precedes pairs.
 			}
 		}
 
 		if(start != null && end != null) //create SequenceAnnotation & Component
 		{
 			//TODO: Can range exist without orientation member to be set?
+			// TODO: make this identity unique
 			Range r = new Range(identity, start, end);
 			if(strand != null)
 			{

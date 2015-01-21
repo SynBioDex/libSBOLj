@@ -21,13 +21,13 @@ public class readTester {
 
 	public static void main(String[] args) {
 		try {
-			SBOLDocument document  = SBOLReader.read(filenameRdf);
-			//			SBOLDocument document1 = SBOLReader.readRdf(filenameV1_9);
+			//SBOLDocument document  = SBOLReader.read(filenameRdf);
+						SBOLDocument document1 = SBOLReader.readRdf(filenameV1_1);
 			//			SBOLDocument document2 = SBOLReader.readJson(filenameJson);
 			//			SBOLDocument document3 = SBOLReader.readTurtle(filenameTurtle);
 
-			SBOLWriter.writeRdf(document,(System.out));
-			//			SBOLWriter.writeRdf(document1,(System.out));
+			//SBOLWriter.writeRdf(document,(System.out));
+						SBOLWriter.writeRdf(document1,(System.out));
 			//			SBOLWriter.writeJson(document2,(System.out));
 			//			SBOLWriter.writeTurtle(document3,(System.out));
 
