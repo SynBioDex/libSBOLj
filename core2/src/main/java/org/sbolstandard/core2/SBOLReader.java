@@ -39,6 +39,7 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 public class SBOLReader {
 
+	//TODO: put test files into own directory folder
 	public static SBOLDocument read(String fileName) throws Throwable
 	{
 		FileInputStream fis = new FileInputStream(fileName);
@@ -91,8 +92,7 @@ public class SBOLReader {
 		String inputStreamString = new Scanner(stream,"UTF-8").useDelimiter("\\A").next();
 
 		DocumentRoot<QName> document= readRdf(new StringReader(inputStreamString));
-		// TODO: search namespace to see if v1 of v2, if v2 call read below else
-		// call a new v1 reader.
+
 		for(NamespaceBinding n: document.getNamespaceBindings())
 		{
 			if(n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
@@ -146,8 +146,6 @@ public class SBOLReader {
 		return SBOLDoc;
 	}
 
-	// TODO: readV1 should copy namespaces except sbol v1 namespace which is replaced with sbol v2
-	// call readTopLevelDocsV1
 	public static SBOLDocument readRdfV1(InputStream in, DocumentRoot<QName> document)
 	{
 		SBOLDocument SBOLDoc = new SBOLDocument();
@@ -195,10 +193,7 @@ public class SBOLReader {
 		return turtleIo.createIoReader(reader).read();
 	}
 
-	// TODO: readTopLevelDocsV1 will compare to topLevel V1 tags from sbol1terms
-	// If you find sequence, call parseSequencesV1
-	// if you find DNAcomponent, call parseDNAComponentV1
-	// if you find Collection, call parseCollectionV1
+
 	private static void readTopLevelDocsV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document) {
 
 		for(TopLevelDocument<QName> topLevel : document.getTopLevelDocuments())
@@ -217,7 +212,6 @@ public class SBOLReader {
 	private static void readTopLevelDocs(SBOLDocument SBOLDoc, DocumentRoot<QName> document) {
 		for(TopLevelDocument<QName> topLevel : document.getTopLevelDocuments())
 		{
-			//TODO: should these methods be returning it's object type back?
 			if(topLevel.getType().equals( Sbol2Terms.Collection.Collection))
 				parseCollections(SBOLDoc, topLevel);
 			else if(topLevel.getType().equals( Sbol2Terms.ModuleDefinition.ModuleDefinition))
@@ -233,12 +227,8 @@ public class SBOLReader {
 		}
 	}
 
-	// TODO: create parseDNAComponentV1
-	// if find sequence, call parseSequenceV1 returns identity of the sequence which is what you add to the object
-	// if find annotation, call parseSequenceAnnotationV1
 	private static ComponentDefinition parseDnaComponentV1(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		URI identity 	   = null;
 		String displayId   = null;
 		String name 	   = null;
 		String description = null;
@@ -250,12 +240,7 @@ public class SBOLReader {
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			//TODO: should identity be parse? Constructor already calls it without having to parse.
-			if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.uri))
-			{
-				identity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
-			}
-			else if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.displayId))
+			if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.displayId))
 			{
 				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
@@ -290,10 +275,6 @@ public class SBOLReader {
 		}
 
 		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
-		if(identity != null)
-		{
-			c.setIdentity(identity);
-		}
 		if(displayId != null)
 		{
 			c.setDisplayId(displayId);
@@ -903,11 +884,7 @@ public class SBOLReader {
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.GenericTopLevel.rdfType))
-			{
-				rdfType = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
-			}
-			else if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
 			{
 				timeStamp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
@@ -926,8 +903,7 @@ public class SBOLReader {
 		}
 
 		GenericTopLevel t = SBOLDoc.createGenericTopLevel(topLevel.getIdentity(),topLevel.getType());
-		//TODO: Check if Zhen's setRdfType should return a URI instead of a QName
-		//		t.setRdfType(rdfType);
+
 		if(name != null)
 			t.setName(name);
 		if(description != null)
@@ -997,7 +973,7 @@ public class SBOLReader {
 		return m;
 	}
 
-	private static void parseCollections(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+	private static Collection parseCollections(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
 		String name = null;
 		String description = null;
@@ -1041,9 +1017,10 @@ public class SBOLReader {
 			c.setTimeStamp(getTimestamp(timeStamp));
 		if(!annotations.isEmpty())
 			c.setAnnotations(annotations);
+		return c;
 	}
 
-	private static void parseModuleDefinition(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+	private static ModuleDefinition parseModuleDefinition(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
 		String name = null;
 		String description = null;
@@ -1118,6 +1095,7 @@ public class SBOLReader {
 			moduleDefinition.setTimeStamp(getTimestamp(timeStamp));
 		if(!annotations.isEmpty())
 			moduleDefinition.setAnnotations(annotations);
+		return moduleDefinition;
 	}
 
 	private static Module parseSubModule(NestedDocument<QName> module)
@@ -1346,7 +1324,7 @@ public class SBOLReader {
 		return fc;
 	}
 
-	private static void parseSequences(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+	private static Sequence parseSequences(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
 		String name = null;
 		String description = null;
@@ -1392,6 +1370,7 @@ public class SBOLReader {
 			sequence.setTimeStamp(getTimestamp(timeStamp));
 		if(!annotations.isEmpty())
 			sequence.setAnnotations(annotations);
+		return sequence;
 	}
 
 	private static Timestamp getTimestamp(String timeStamp)

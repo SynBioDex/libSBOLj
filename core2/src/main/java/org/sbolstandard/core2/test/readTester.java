@@ -14,20 +14,20 @@ public class readTester {
 	public static String filenameV1_3 	= "partial_pIKE_right_cassette.xml";
 	public static String filenameV1_4 	= "partial_pTAK_left_cassette.xml";
 	public static String filenameV1_5 	= "partial_pTAK_right_cassette.xml";
-	public static String filenameV1_6 	= "pIKE_pTAK_cassettes 2.xml"; //TODO: won't work
-	public static String filenameV1_7 	= "pIKE_pTAK_cassettes.xml"; //TODO: won't work
-	public static String filenameV1_8 	= "pIKE_pTAK_left_right_cassettes.xml"; //TODO: won't work
+	public static String filenameV1_6 	= "pIKE_pTAK_cassettes 2.xml";
+	public static String filenameV1_7 	= "pIKE_pTAK_cassettes.xml";
+	public static String filenameV1_8 	= "pIKE_pTAK_left_right_cassettes.xml";
 	public static String filenameV1_9 	= "pIKE_pTAK_toggle_switches.xml"; //TODO: won't work
 
 	public static void main(String[] args) {
 		try {
-			SBOLDocument document  = SBOLReader.read(filenameRdf);
-			//			SBOLDocument document1 = SBOLReader.readRdf(filenameV1_9);
+			//			SBOLDocument document  = SBOLReader.read(filenameRdf);
+			SBOLDocument document1 = SBOLReader.readRdf(filenameV1_8);
 			//			SBOLDocument document2 = SBOLReader.readJson(filenameJson);
 			//			SBOLDocument document3 = SBOLReader.readTurtle(filenameTurtle);
 
-			SBOLWriter.writeRdf(document,(System.out));
-			//			SBOLWriter.writeRdf(document1,(System.out));
+			//			SBOLWriter.writeRdf(document,(System.out));
+			SBOLWriter.writeRdf(document1,(System.out));
 			//			SBOLWriter.writeJson(document2,(System.out));
 			//			SBOLWriter.writeTurtle(document3,(System.out));
 
