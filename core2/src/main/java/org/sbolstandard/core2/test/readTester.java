@@ -1,5 +1,7 @@
 package org.sbolstandard.core2.test;
 
+import java.io.InputStream;
+
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLReader;
 import org.sbolstandard.core2.SBOLWriter;
@@ -19,10 +21,15 @@ public class readTester {
 	public static String filenameV1_8 	= "pIKE_pTAK_left_right_cassettes.xml";
 	public static String filenameV1_9 	= "pIKE_pTAK_toggle_switches.xml"; //TODO: won't work
 
+	public static String path = "/org/sbolstandard/core2/test/files/";
+
 	public static void main(String[] args) {
 		try {
+			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_9);
+
+			SBOLDocument document1 = SBOLReader.read(file);
 			//			SBOLDocument document  = SBOLReader.read(filenameRdf);
-			SBOLDocument document1 = SBOLReader.readRdf(filenameV1_8);
+			//			SBOLDocument document1 = SBOLReader.readRdf(filenameV1_8);
 			//			SBOLDocument document2 = SBOLReader.readJson(filenameJson);
 			//			SBOLDocument document3 = SBOLReader.readTurtle(filenameTurtle);
 

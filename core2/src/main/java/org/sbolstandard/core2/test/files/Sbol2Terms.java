@@ -1,4 +1,4 @@
-package org.sbolstandard.core2.test.rdf;
+package org.sbolstandard.core2.test.files;
 
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 

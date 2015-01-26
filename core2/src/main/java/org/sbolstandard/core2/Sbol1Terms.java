@@ -41,7 +41,7 @@ public class Sbol1Terms
 		public static final QName name	   	   = sbol1.withLocalPart("name");
 		public static final QName description  = sbol1.withLocalPart("description");
 		public static final QName type   	   = sbol1.withLocalPart("type");
-		public static final QName annotations  = sbol1.withLocalPart("annotations");
+		public static final QName annotations  = sbol1.withLocalPart("annotation");
 		public static final QName dnaSequence  = sbol1.withLocalPart("dnaSequence");
 
 	}
