@@ -39,11 +39,6 @@ public class readTester {
 			//			SBOLWriter.writeJson(document2,(System.out));
 			//			SBOLWriter.writeTurtle(document3,(System.out));
 
-			//TODO: take this out
-			SBOLWriter.writeTurtle(document1,(System.out));
-			SBOLWriter.writeTurtle(document1,(System.out));
-			SBOLWriter.writeTurtle(document1,(System.out));
-
 
 		} catch (Throwable e) {
 			e.printStackTrace();
