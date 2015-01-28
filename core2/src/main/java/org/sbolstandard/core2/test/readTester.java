@@ -26,7 +26,7 @@ public class readTester {
 
 	public static void main(String[] args) {
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_10);
+			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_6);
 
 			SBOLDocument document1 = SBOLReader.read(file);
 			//			SBOLDocument document  = SBOLReader.read(filenameRdf);
@@ -35,7 +35,7 @@ public class readTester {
 			//			SBOLDocument document3 = SBOLReader.readTurtle(filenameTurtle);
 
 			//			SBOLWriter.writeRdf(document,(System.out));
-			SBOLWriter.writeRdf(document1,(System.out));
+			SBOLWriter.writeRdf(document1,filenameV1_6.replace(".xml", "_v2.xml"));
 			//			SBOLWriter.writeJson(document2,(System.out));
 			//			SBOLWriter.writeTurtle(document3,(System.out));
 

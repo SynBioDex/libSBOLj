@@ -435,7 +435,7 @@ public class SBOLReader {
 			{
 				description = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
-			else if(namedProperty.getName().equals(Sbol1Terms.Collection.components))
+			else if(namedProperty.getName().equals(Sbol1Terms.Collection.component))
 			{
 				members.add(parseDnaComponentV1(SBOLDoc, (NestedDocument<QName>)namedProperty.getValue()).getIdentity());
 			}
