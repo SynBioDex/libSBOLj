@@ -224,6 +224,7 @@ public class Sbol2Terms
 		public static final QName Sequence = sbol2.withLocalPart("Sequence");
 		public static final QName elements = sbol2.withLocalPart("elements");
 		public static final QName encoding = sbol2.withLocalPart("encoding");
+
 	}
 	//
 	/**
@@ -256,6 +257,16 @@ public class Sbol2Terms
 		public static final QName rdfType 		  = sbol2.withLocalPart("rdfType");
 	}
 
+
+	public static final class SequenceURI {
+		public static final URI encoding 	  = URI.create(sbol2.getNamespaceURI() + "encoding");
+		public static final URI DnaSequenceV1 = URI.create("http://dx.doi.org/10.1021/bi00822a023");
+	}
+
+	public static final class DnaComponentV1URI {
+		public static final URI roles = URI.create("http://purl.obolibrary.org/obo/SO_0000804");
+		public static final URI type  = URI.create("http://purl.obolibrary.org/obo/CHEBI_16991");
+	}
 
 	public static final class Access {
 		public static final URI PUBLIC  = URI.create(sbol2.getNamespaceURI() + "public");

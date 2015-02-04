@@ -12,8 +12,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -40,8 +42,6 @@ import uk.ac.ncl.intbio.core.io.json.StringifyQName;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 public class SBOLReader {
-
-	//TODO: put test files into own directory folder
 
 	public static SBOLDocument read(String fileName) throws Throwable
 	{
@@ -258,7 +258,8 @@ public class SBOLReader {
 		}
 	}
 
-	private static ComponentDefinition parseDnaComponentV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
+	private static ComponentDefinition parseDnaComponentV1(SBOLDocument SBOLDoc,
+			IdentifiableDocument<QName> componentDef)
 	{
 		String displayId   = null;
 		String name 	   = null;
@@ -270,13 +271,13 @@ public class SBOLReader {
 		List<Component> components = new ArrayList<Component>();
 		List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
 
-		// TODO: create a list of URI pairs for precedes relationships
 		List<SBOLPair> precedePairs = new ArrayList<SBOLPair>();
+		Map<IdentifiableDocument<QName>, URI> componentDefMap = new HashMap<IdentifiableDocument<QName>, URI>();
 
 		Set<URI> type = new HashSet<URI>();
-		type.add(URI.create("http://purl.obolibrary.org/obo/CHEBI_16991"));
+		type.add(Sbol2Terms.DnaComponentV1URI.type);
 
-		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
+		for(NamedProperty<QName> namedProperty : componentDef.getProperties())
 		{
 			if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.displayId))
 			{
@@ -296,35 +297,21 @@ public class SBOLReader {
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.annotations))
 			{
-				//TODO: if find annotation, call parseSequenceAnnotationV1
-				SequenceAnnotation sa = parseSequenceAnnotationV1(SBOLDoc, ((NestedDocument<QName>)namedProperty.getValue()),
-						precedePairs);
-				//				if(sa == null) //create Component and one or more SequenceConstraint
-				if(sa.getLocation() == null)
-				{
+				URI value = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+				componentDefMap.put(componentDef, value);
 
-					// TODO: for each pair in the list of precedes, create a sequenceConstraint of restriction
-					// precedes, the subject is the component URI of the first SA in
-					// the list and the object is the second SA's component
-					for(SBOLPair pair: precedePairs)
-					{
-						URI sc_identity = URI.create("sequence_constraint/1/0");
-						URI restriction = URI.create("restriction/1/0"); //TODO: this is incorrect
-						URI subject = pair.getLeft();
-						URI object = pair.getRight();
+				SequenceAnnotation sa = parseSequenceAnnotationV1(SBOLDoc,
+						((NestedDocument<QName>)namedProperty.getValue()),
+						componentDefMap, precedePairs);
 
-						SequenceConstraint sc = new SequenceConstraint(sc_identity, restriction, subject, object);
-						sequenceConstraints.add(sc);
-					}
-				}
-				else //create SequenceAnnotation & Component
-				{
-					sequenceAnnotations.add(sa);
-				}
+				sequenceAnnotations.add(sa);
 
-				URI component_identity = URI.create("Component/1/0");
-				URI access = URI.create("public");
+				// TODO: make component either displayid or unique counter
+				URI component_identity = URI.create(componentDef.getIdentity()+"/component/1/0"); //TODO: this is wrong
+				URI access = Sbol2Terms.Access.PUBLIC;
 				URI instantiatedComponent = sa.getComponent();
+				// TODO: change sa.getComponent() to component_identity
+				// TODO: add to map2 from sa.getIdentity() to component_identity
 
 				Component component = new Component(component_identity, access, instantiatedComponent);
 				components.add(component);
@@ -343,9 +330,26 @@ public class SBOLReader {
 		}
 
 		if(roles.isEmpty())
-			roles.add(URI.create("http://purl.obolibrary.org/obo/SO_0000804"));
+			roles.add(Sbol2Terms.DnaComponentV1URI.roles);
 
-		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
+		// TODO: for each pair in the list of precedes, create a sequenceConstraint of restriction
+		// precedes, the subject is the component URI of the first SA in
+		// the list and the object is the second SA's component
+		for(SBOLPair pair: precedePairs)
+		{
+			// TODO: need parent URI in front, sequenceConstraint##
+			URI sc_identity = URI.create("sequenceConstraint/1/0");
+			// TODO: turn into a URI constant
+			URI restriction = URI.create("precedes/1/0"); //TODO: this is incorrect
+			// TODO: these should use map2 to fetch component URI
+			URI subject = pair.getLeft();
+			URI object = pair.getRight();
+
+			SequenceConstraint sc = new SequenceConstraint(sc_identity, restriction, subject, object);
+			sequenceConstraints.add(sc);
+		}
+
+		ComponentDefinition c = SBOLDoc.createComponentDefinition(componentDef.getIdentity(), type, roles);
 		if(displayId != null)
 			c.setDisplayId(displayId);
 		if(name != null)
@@ -370,7 +374,7 @@ public class SBOLReader {
 	private static Sequence parseDnaSequenceV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
 	{
 		String elements = null;
-		URI encoding = URI.create("http://dx.doi.org/10.1021/bi00822a023");
+		URI encoding = Sbol2Terms.SequenceURI.DnaSequenceV1;
 		String displayId = null;
 		String name = null;
 		String description = null;
@@ -460,8 +464,9 @@ public class SBOLReader {
 	}
 
 	// TODO: add a list of precedes pairs
-	private static SequenceAnnotation parseSequenceAnnotationV1(SBOLDocument SBOLDoc, NestedDocument<QName> sequenceAnnotation,
-			List<SBOLPair> precedePairs)
+	private static SequenceAnnotation parseSequenceAnnotationV1(SBOLDocument SBOLDoc,
+			NestedDocument<QName> sequenceAnnotation,
+			Map<IdentifiableDocument<QName>, URI> componentDefMap, List<SBOLPair> precedePairs)
 	{
 		String identity = null;
 		Integer start = null;
@@ -470,6 +475,7 @@ public class SBOLReader {
 		URI componentURI = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 		//		List<SBOLPair> precedePairs = new ArrayList<SBOLPair>();
+		Map<URI, IdentifiableDocument<QName>> saURIMap = new HashMap<URI, IdentifiableDocument<QName>>();
 
 		for(NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
@@ -493,7 +499,8 @@ public class SBOLReader {
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.subComponent))
 			{
-				componentURI = parseDnaComponentV1(SBOLDoc, (NestedDocument<QName>)namedProperty.getValue()).getIdentity();
+				componentURI = parseDnaComponentV1(SBOLDoc,
+						(NestedDocument<QName> )namedProperty.getValue()).getIdentity();
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.precedes))
 			{
@@ -510,33 +517,33 @@ public class SBOLReader {
 			}
 		}
 
-		Location location = null;
-		//		if(start == null || end == null) //create Component and one or more SequenceConstraint
-		//		{
-		//			SequenceAnnotation s = null;
-		//			return s;
-		//		}
+		Location location = null; //Note: location is null. Do not create a seqAnnotation if Location is empty
 
 		if(start != null && end != null) //create SequenceAnnotation & Component
 		{
-			URI range_identity = URI.create(identity + "/Location/Range/1/0");
+			URI range_identity = URI.create(sequenceAnnotation.getIdentity() + "/range/1/0"); //TODO: fix the parent's identity. currently null Location
 			Range r = new Range(range_identity, start, end);
 			if(strand != null)
 			{
 				if(strand.equals("+"))
 				{
-					r.setOrientation(URI.create(identity+"Location/Range/inline/1/0"));
+					r.setOrientation(Sbol2Terms.Orientation.inline);
 				}
 				else if(strand.equals("-"))
 				{
-					r.setOrientation(URI.create("reverseComplement"));
+					r.setOrientation(Sbol2Terms.Orientation.reverseComplement);
 				}
 
 				location = r;
 			}
 		}
-
-		//		Location location = r;
+		else
+		{
+			// TODO: create location with dummy (0) values for start/end for now
+			// replace later with new location class composed of just an orientation
+			// Do not return here
+			return null;
+		}
 
 		SequenceAnnotation s = new SequenceAnnotation(sequenceAnnotation.getIdentity(), location);
 
@@ -917,7 +924,7 @@ public class SBOLReader {
 		String name = null;
 		String description = null;
 		String timeStamp = null;
-		URI access = null;
+		URI access = Sbol2Terms.Access.PUBLIC;
 		URI subComponentURI = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 		List<MapsTo> mappings = new ArrayList<MapsTo>();

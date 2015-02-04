@@ -26,7 +26,7 @@ public class readTester {
 
 	public static void main(String[] args) {
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_10);
+			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
 
 			SBOLDocument document1 = SBOLReader.read(file);
 			//			SBOLDocument document  = SBOLReader.read(filenameRdf);
