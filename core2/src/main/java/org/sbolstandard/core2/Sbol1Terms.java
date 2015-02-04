@@ -27,7 +27,7 @@ public class Sbol1Terms
 		public static final QName displayId   = sbol1.withLocalPart("displayId");
 		public static final QName name	      = sbol1.withLocalPart("name");
 		public static final QName description = sbol1.withLocalPart("description");
-		public static final QName components  = sbol1.withLocalPart("components");
+		public static final QName component  = sbol1.withLocalPart("component");
 	}
 
 	/**
