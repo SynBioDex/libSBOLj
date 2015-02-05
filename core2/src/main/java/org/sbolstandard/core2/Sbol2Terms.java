@@ -266,6 +266,7 @@ public class Sbol2Terms
 	public static final class DnaComponentV1URI {
 		public static final URI roles = URI.create("http://purl.obolibrary.org/obo/SO_0000804");
 		public static final URI type  = URI.create("http://purl.obolibrary.org/obo/CHEBI_16991");
+		public static final URI restriction  = URI.create("http://some.ontology.org/precedes");
 	}
 
 	public static final class Access {

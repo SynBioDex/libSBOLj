@@ -38,6 +38,8 @@ public class readTester {
 			//			SBOLWriter.writeJson(document2,(System.out));
 			//			SBOLWriter.writeTurtle(document3,(System.out));
 
+			//			URI identity = URI.create("http://www.async.ece.utah.edu/pLactetRSeq/1/0");
+			//			System.out.println(SBOLReader.getParentURI(identity));
 
 		} catch (Throwable e) {
 			e.printStackTrace();
