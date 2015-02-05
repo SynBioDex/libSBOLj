@@ -43,6 +43,14 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 public class SBOLReader {
 
+	/*
+	 * TODO:
+	 * new class GenericLocation - orientation
+	 * change to enumeration - direction, access, refinement, restriction, orientation
+	 * new location will be added -  range cut, multi-range and GenericLocation
+	 *
+	 */
+
 	public static SBOLDocument read(String fileName) throws Throwable
 	{
 		FileInputStream fis = new FileInputStream(fileName);
@@ -272,7 +280,7 @@ public class SBOLReader {
 		List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
 
 		List<SBOLPair> precedePairs = new ArrayList<SBOLPair>();
-		Map<IdentifiableDocument<QName>, URI> componentDefMap = new HashMap<IdentifiableDocument<QName>, URI>();
+		Map<URI, URI> componentDefMap = new HashMap<URI, URI>();
 
 		Set<URI> type = new HashSet<URI>();
 		type.add(Sbol2Terms.DnaComponentV1URI.type);
@@ -297,21 +305,31 @@ public class SBOLReader {
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.annotations))
 			{
-				URI value = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
-				componentDefMap.put(componentDef, value);
+				//				URI value = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+				//				componentDefMap.put(componentDef, value);
 
 				SequenceAnnotation sa = parseSequenceAnnotationV1(SBOLDoc,
-						((NestedDocument<QName>)namedProperty.getValue()),
-						componentDefMap, precedePairs);
+						((NestedDocument<QName>)namedProperty.getValue()), precedePairs);
 
 				sequenceAnnotations.add(sa);
 
 				// TODO: make component either displayid or unique counter
-				URI component_identity = URI.create(componentDef.getIdentity()+"/component/1/0"); //TODO: this is wrong
+				int component_ver = 0;
+				URI component_identity = null;
+				if(displayId != null)
+				{
+					component_identity = URI.create(getParentURI(componentDef.getIdentity())+ displayId + "/1/0");
+				}
+				else
+				{
+					component_identity = URI.create(getParentURI(componentDef.getIdentity())+ "/component#" + ++component_ver + "/1/0");
+				}
 				URI access = Sbol2Terms.Access.PUBLIC;
-				URI instantiatedComponent = sa.getComponent();
+				URI instantiatedComponent = component_identity;
+				// URI instantiatedComponent = sa.getComponent();
 				// TODO: change sa.getComponent() to component_identity
 				// TODO: add to map2 from sa.getIdentity() to component_identity
+				componentDefMap.put(sa.getIdentity(), component_identity);
 
 				Component component = new Component(component_identity, access, instantiatedComponent);
 				components.add(component);
@@ -319,8 +337,6 @@ public class SBOLReader {
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.dnaSequence))
 			{
-				//TODO: if find sequence, call parseSequenceV1 returns identity of the sequence
-				//which is what you add to the object
 				seq_identity = parseDnaSequenceV1(SBOLDoc, (NestedDocument<QName>) namedProperty.getValue()).getIdentity();
 			}
 			else
@@ -335,15 +351,33 @@ public class SBOLReader {
 		// TODO: for each pair in the list of precedes, create a sequenceConstraint of restriction
 		// precedes, the subject is the component URI of the first SA in
 		// the list and the object is the second SA's component
+		int sc_version = 0;
 		for(SBOLPair pair: precedePairs)
 		{
 			// TODO: need parent URI in front, sequenceConstraint##
-			URI sc_identity = URI.create("sequenceConstraint/1/0");
+			URI sc_identity = URI.create(getParentURI(componentDef.getIdentity())+"/sequenceConstraint#" + ++sc_version +"/1/0");
+
 			// TODO: turn into a URI constant
-			URI restriction = URI.create("precedes/1/0"); //TODO: this is incorrect
+			URI restriction = Sbol2Terms.DnaComponentV1URI.restriction;
+
 			// TODO: these should use map2 to fetch component URI
-			URI subject = pair.getLeft();
-			URI object = pair.getRight();
+			//			URI subject = pair.getLeft();
+			//			URI object = pair.getRight();
+			URI subject = null;
+			URI object = null;
+			for(URI key : componentDefMap.keySet())
+			{
+				if(pair.getLeft().equals(key))
+				{
+					subject = componentDefMap.get(key);
+				}
+				else if(pair.getRight().equals(key))
+				{
+					object = componentDefMap.get(key);
+				}
+
+			}
+
 
 			SequenceConstraint sc = new SequenceConstraint(sc_identity, restriction, subject, object);
 			sequenceConstraints.add(sc);
@@ -352,9 +386,9 @@ public class SBOLReader {
 		ComponentDefinition c = SBOLDoc.createComponentDefinition(componentDef.getIdentity(), type, roles);
 		if(displayId != null)
 			c.setDisplayId(displayId);
-		if(name != null)
+		if(name != null && !name.isEmpty())
 			c.setName(name);
-		if(description != null)
+		if(description != null && !description.isEmpty())
 			c.setDescription(description);
 		if(seq_identity != null)
 			c.setSequence(seq_identity);
@@ -463,18 +497,16 @@ public class SBOLReader {
 		return c;
 	}
 
-	// TODO: add a list of precedes pairs
 	private static SequenceAnnotation parseSequenceAnnotationV1(SBOLDocument SBOLDoc,
-			NestedDocument<QName> sequenceAnnotation,
-			Map<IdentifiableDocument<QName>, URI> componentDefMap, List<SBOLPair> precedePairs)
+			NestedDocument<QName> sequenceAnnotation, List<SBOLPair> precedePairs)
 	{
 		String identity = null;
 		Integer start = null;
 		Integer end = null;
 		String strand = null;
 		URI componentURI = null;
+
 		List<Annotation> annotations = new ArrayList<Annotation>();
-		//		List<SBOLPair> precedePairs = new ArrayList<SBOLPair>();
 		Map<URI, IdentifiableDocument<QName>> saURIMap = new HashMap<URI, IdentifiableDocument<QName>>();
 
 		for(NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
@@ -517,11 +549,11 @@ public class SBOLReader {
 			}
 		}
 
-		Location location = null; //Note: location is null. Do not create a seqAnnotation if Location is empty
+		Location location = null; //Note: Do not create a seqAnnotation if Location is empty
 
 		if(start != null && end != null) //create SequenceAnnotation & Component
 		{
-			URI range_identity = URI.create(sequenceAnnotation.getIdentity() + "/range/1/0"); //TODO: fix the parent's identity. currently null Location
+			URI range_identity = URI.create(getParentURI(sequenceAnnotation.getIdentity()) + "range/1/0");
 			Range r = new Range(range_identity, start, end);
 			if(strand != null)
 			{
@@ -542,7 +574,11 @@ public class SBOLReader {
 			// TODO: create location with dummy (0) values for start/end for now
 			// replace later with new location class composed of just an orientation
 			// Do not return here
-			return null;
+			URI dummyRange_id = URI.create(getParentURI(sequenceAnnotation.getIdentity()) + "range/1/0");
+			int dummy_start = 0;
+			int dummy_end = 0;
+			Range dummyRange = new Range(dummyRange_id, dummy_start, dummy_end);
+			location = dummyRange;
 		}
 
 		SequenceAnnotation s = new SequenceAnnotation(sequenceAnnotation.getIdentity(), location);
@@ -552,9 +588,7 @@ public class SBOLReader {
 		if(!annotations.isEmpty())
 			s.setAnnotations(annotations);
 
-
 		return s;
-
 	}
 
 
@@ -1488,6 +1522,19 @@ public class SBOLReader {
 		return timestamp;
 	}
 
-
+	private static URI getParentURI(URI identity)
+	{
+		String identity_str = identity.toString();
+		String result = identity_str;
+		if(identity_str.endsWith("1/0"))
+		{
+			result = identity_str.substring(0, identity_str.length() - 3);
+		}
+		else if(!identity_str.endsWith("/"))
+		{
+			result = identity_str + "/";
+		}
+		return URI.create(result);
+	}
 
 }
