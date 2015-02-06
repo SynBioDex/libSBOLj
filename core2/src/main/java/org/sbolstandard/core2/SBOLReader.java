@@ -51,6 +51,13 @@ public class SBOLReader {
 	 *
 	 */
 
+	private static String authority = null;
+
+	public static void setAuthority(String authority)
+	{
+		SBOLReader.authority = authority;
+	}
+
 	public static SBOLDocument read(String fileName) throws Throwable
 	{
 		FileInputStream fis = new FileInputStream(fileName);
@@ -269,6 +276,7 @@ public class SBOLReader {
 	private static ComponentDefinition parseDnaComponentV1(SBOLDocument SBOLDoc,
 			IdentifiableDocument<QName> componentDef)
 	{
+		URI identity       = componentDef.getIdentity();
 		String displayId   = null;
 		String name 	   = null;
 		String description = null;
@@ -284,12 +292,16 @@ public class SBOLReader {
 
 		Set<URI> type = new HashSet<URI>();
 		type.add(Sbol2Terms.DnaComponentV1URI.type);
+		int component_num = 0;
 
 		for(NamedProperty<QName> namedProperty : componentDef.getProperties())
 		{
 			if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.displayId))
 			{
 				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+				if (authority!=null) {
+					identity = URI.create(authority + "/" + displayId + "/1/0");
+				}
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.name))
 			{
@@ -305,31 +317,27 @@ public class SBOLReader {
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.annotations))
 			{
-				//				URI value = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
-				//				componentDefMap.put(componentDef, value);
-
 				SequenceAnnotation sa = parseSequenceAnnotationV1(SBOLDoc,
 						((NestedDocument<QName>)namedProperty.getValue()), precedePairs);
 
 				sequenceAnnotations.add(sa);
 
 				// TODO: make component either displayid or unique counter
-				int component_ver = 0;
 				URI component_identity = null;
-				if(displayId != null)
+				/*if(displayId != null)
 				{
 					component_identity = URI.create(getParentURI(componentDef.getIdentity())+ displayId + "/1/0");
 				}
 				else
-				{
-					component_identity = URI.create(getParentURI(componentDef.getIdentity())+ "/component#" + ++component_ver + "/1/0");
-				}
+				{*/
+				component_identity = URI.create(getParentURI(identity)+ "component" + ++component_num + "/1/0");
+				/*}*/
 				URI access = Sbol2Terms.Access.PUBLIC;
-				URI instantiatedComponent = component_identity;
-				// URI instantiatedComponent = sa.getComponent();
-				// TODO: change sa.getComponent() to component_identity
-				// TODO: add to map2 from sa.getIdentity() to component_identity
+
+				URI instantiatedComponent = sa.getComponent();
+				// TODO: replace sa.getIdentity() with the identity of this nestedDocument
 				componentDefMap.put(sa.getIdentity(), component_identity);
+				sa.setComponent(component_identity);
 
 				Component component = new Component(component_identity, access, instantiatedComponent);
 				components.add(component);
@@ -355,7 +363,8 @@ public class SBOLReader {
 		for(SBOLPair pair: precedePairs)
 		{
 			// TODO: need parent URI in front, sequenceConstraint##
-			URI sc_identity = URI.create(getParentURI(componentDef.getIdentity())+"/sequenceConstraint#" + ++sc_version +"/1/0");
+			URI sc_identity = URI.create(getParentURI(identity)+"sequenceConstraint" + ++sc_version +"/1/0");
+
 
 			// TODO: turn into a URI constant
 			URI restriction = Sbol2Terms.DnaComponentV1URI.restriction;
@@ -383,7 +392,7 @@ public class SBOLReader {
 			sequenceConstraints.add(sc);
 		}
 
-		ComponentDefinition c = SBOLDoc.createComponentDefinition(componentDef.getIdentity(), type, roles);
+		ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
 		if(displayId != null)
 			c.setDisplayId(displayId);
 		if(name != null && !name.isEmpty())
@@ -407,6 +416,7 @@ public class SBOLReader {
 
 	private static Sequence parseDnaSequenceV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
 	{
+		URI identity = topLevel.getIdentity();
 		String elements = null;
 		URI encoding = Sbol2Terms.SequenceURI.DnaSequenceV1;
 		String displayId = null;
@@ -423,6 +433,9 @@ public class SBOLReader {
 			else if(namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
 				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+				if (authority!=null) {
+					identity = URI.create(authority + "/" + displayId + "/1/0");
+				}
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.Documented.name))
 			{
@@ -438,7 +451,7 @@ public class SBOLReader {
 			}
 		}
 
-		Sequence sequence = SBOLDoc.createSequence(topLevel.getIdentity(), elements, encoding);
+		Sequence sequence = SBOLDoc.createSequence(identity, elements, encoding);
 		if(displayId != null)
 			sequence.setDisplayId(displayId);
 		if(name != null)
@@ -453,6 +466,7 @@ public class SBOLReader {
 
 	private static Collection parseCollectionV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
 	{
+		URI identity = topLevel.getIdentity();
 		String displayId = null;
 		String name = null;
 		String description = null;
@@ -464,6 +478,9 @@ public class SBOLReader {
 			if(namedProperty.getName().equals(Sbol1Terms.Collection.displayId))
 			{
 				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+				if (authority!=null) {
+					identity = URI.create(authority + "/" + displayId + "/1/0");
+				}
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.Collection.name))
 			{
@@ -483,7 +500,7 @@ public class SBOLReader {
 			}
 		}
 
-		Collection c = SBOLDoc.createCollection(topLevel.getIdentity());
+		Collection c = SBOLDoc.createCollection(identity);
 		if(displayId != null)
 			c.setDisplayId(displayId);
 		if(name != null)
@@ -513,6 +530,7 @@ public class SBOLReader {
 		{
 			if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.uri))
 			{
+				// TODO: <parentURI> + "/" + annotation# + "/1/0" (only do this if authority is not null)
 				identity = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.bioStart))
@@ -1524,15 +1542,12 @@ public class SBOLReader {
 
 	private static URI getParentURI(URI identity)
 	{
+		// TODO: /d+/d+ at the end, and remove
 		String identity_str = identity.toString();
 		String result = identity_str;
-		if(identity_str.endsWith("1/0"))
+		if(identity_str.endsWith("/1/0"))
 		{
 			result = identity_str.substring(0, identity_str.length() - 3);
-		}
-		else if(!identity_str.endsWith("/"))
-		{
-			result = identity_str + "/";
 		}
 		return URI.create(result);
 	}
