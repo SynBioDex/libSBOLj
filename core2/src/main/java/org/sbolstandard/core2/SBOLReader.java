@@ -332,7 +332,7 @@ public class SBOLReader {
 				}
 				else
 				{*/
-				component_identity = URI.create(getParentURI(identity)+ "component" + ++component_num + "/1/0");
+				component_identity = URI.create(getParentURI(identity)+ "/component" + ++component_num + "/1/0");
 				/*}*/
 				URI access = Sbol2Terms.Access.PUBLIC;
 				URI instantiatedComponent = sa.getComponent();
@@ -364,7 +364,7 @@ public class SBOLReader {
 		for(SBOLPair pair: precedePairs)
 		{
 			// TODO: need parent URI in front, sequenceConstraint##
-			URI sc_identity = URI.create(getParentURI(identity)+"sequenceConstraint" + ++sc_version +"/1/0");
+			URI sc_identity = URI.create(getParentURI(identity)+"/sequenceConstraint" + ++sc_version +"/1/0");
 
 			// TODO: turn into a URI constant
 			URI restriction = Sbol2Terms.DnaComponentV1URI.restriction;
@@ -423,6 +423,13 @@ public class SBOLReader {
 		String name = null;
 		String description = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
+		if (authority!=null) {
+			if (topLevel.getIdentity().toString().lastIndexOf('/')!=-1) {
+				displayId = topLevel.getIdentity().toString().substring(
+						topLevel.getIdentity().toString().lastIndexOf('/')+1);
+				identity = URI.create(authority + "/" + displayId + "/1/0");
+			}				
+		}
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -571,7 +578,7 @@ public class SBOLReader {
 
 		if(start != null && end != null) //create SequenceAnnotation & Component
 		{
-			URI range_identity = URI.create(getParentURI(sequenceAnnotation.getIdentity()) + "range/1/0");
+			URI range_identity = URI.create(getParentURI(sequenceAnnotation.getIdentity()) + "/range/1/0");
 			Range r = new Range(range_identity, start, end);
 			if(strand != null)
 			{
@@ -592,7 +599,7 @@ public class SBOLReader {
 			// TODO: create location with dummy (0) values for start/end for now
 			// replace later with new location class composed of just an orientation
 			// Do not return here
-			URI dummyRange_id = URI.create(getParentURI(sequenceAnnotation.getIdentity()) + "range/1/0");
+			URI dummyRange_id = URI.create(getParentURI(sequenceAnnotation.getIdentity()) + "/range/1/0");
 			int dummy_start = 0;
 			int dummy_end = 0;
 			Range dummyRange = new Range(dummyRange_id, dummy_start, dummy_end);
@@ -1547,7 +1554,7 @@ public class SBOLReader {
 		String result = identity_str;
 		if(identity_str.endsWith("/1/0"))
 		{
-			result = identity_str.substring(0, identity_str.length() - 3);
+			result = identity_str.substring(0, identity_str.length() - 4);
 		}
 		return URI.create(result);
 	}
