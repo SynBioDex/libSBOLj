@@ -6,6 +6,12 @@ package org.sbolstandard.core2;
  * @author Nicholas Roehner
  * @version 2.0
  */
+public enum OrientationType {
+	inline,
+	reverseComplement
+}
+
+
 //public enum Orientation {
 //	inline("inline"), 
 //	reverseComplement("reverseComplement"),
