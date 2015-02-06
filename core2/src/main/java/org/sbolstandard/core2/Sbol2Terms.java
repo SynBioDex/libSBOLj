@@ -284,7 +284,7 @@ public class Sbol2Terms
 
 
 	public static final class Orientation {
-		public static final URI  inline 		  = URI.create(sbol2.getNamespaceURI() + "inline");
+		public static final URI inline 		  = URI.create(sbol2.getNamespaceURI() + "inline");
 		public static final URI reverseComplement = URI.create(sbol2.getNamespaceURI() + "reverseComplement");
 	}
 
