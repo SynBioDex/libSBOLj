@@ -9,9 +9,9 @@ public class SequenceConstraint extends Identified {
 	private URI restriction;
 	private URI subject;
 	private URI object;
-
-	public SequenceConstraint(URI identity, URI restriction, URI subject,
-			URI object) {
+	
+	public SequenceConstraint(URI identity, URI restriction, 
+			URI subject, URI object) {
 		super(identity);
 		setRestriction(restriction);
 		setSubject(subject);
@@ -20,7 +20,6 @@ public class SequenceConstraint extends Identified {
 
 	/**
 	 * Returns field variable <code>restriction</code>.
-	 * 
 	 * @return field variable <code>restriction</code>
 	 */
 	public URI getRestriction() {
@@ -29,7 +28,6 @@ public class SequenceConstraint extends Identified {
 
 	/**
 	 * Sets field variable <code>restriction</code> to the specified element.
-	 * 
 	 * @param restriction
 	 */
 	public void setRestriction(URI restriction) {
@@ -38,7 +36,6 @@ public class SequenceConstraint extends Identified {
 
 	/**
 	 * Returns field variable <code>subject</code>.
-	 * 
 	 * @return field variable <code>subject</code>
 	 */
 	public URI getSubject() {
@@ -47,7 +44,6 @@ public class SequenceConstraint extends Identified {
 
 	/**
 	 * Sets field variable <code>subject</code> to the specified element.
-	 * 
 	 * @param subject
 	 */
 	public void setSubject(URI subject) {
@@ -55,8 +51,7 @@ public class SequenceConstraint extends Identified {
 	}
 
 	/**
-	 * Returns field variable <code>object</code>.
-	 * 
+	 * Returns field variable <code>object</code>. 
 	 * @return field variable <code>object</code>
 	 */
 	public URI getObject() {
@@ -65,7 +60,6 @@ public class SequenceConstraint extends Identified {
 
 	/**
 	 * Sets field variable <code>object</code> to the specified element.
-	 * 
 	 * @param object
 	 */
 	public void setObject(URI object) {

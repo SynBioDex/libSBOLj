@@ -1,7 +1,6 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,24 +14,19 @@ import org.sbolstandard.core2.abstract_classes.Documented;
  * @version 2.0
  */
 public class Module extends Documented {
-
+	
 	private HashMap<URI, MapsTo> mappings;
 	private URI definition;
-
+	
 	public Module(URI identity, URI instantiatedModule) {
 		super(identity);
 		setDefinition(instantiatedModule);
 		this.mappings = new HashMap<URI, MapsTo>();
 	}
 
-	public Module(String authority, String ID, URI instantiatedModule) {
-		super(URI.create(authority + '/' + ID + "/1/0"));
-		// super.setPersistentIdentity(URI.create(authority + '/' + ID));
-	}
-
+	
 	/**
 	 * Returns field variable <code>instantiatedModule</code>.
-	 * 
 	 * @return field variable <code>instantiatedModule</code>
 	 */
 	public URI getDefinition() {
@@ -40,18 +34,16 @@ public class Module extends Documented {
 	}
 
 	/**
-	 * Sets field variable <code>instantiatedModule</code> to the specified
-	 * element.
-	 * 
+	 * Sets field variable <code>instantiatedModule</code> to the specified element.
 	 * @param definitionURI
 	 */
 	public void setDefinition(URI definitionURI) {
 		this.definition = definitionURI;
 	}
-
+	
+			
 	/**
 	 * Test if optional field variable <code>references</code> is set.
-	 * 
 	 * @return <code>true</code> if it is not an empty list
 	 */
 	public boolean isSetMappings() {
@@ -60,72 +52,61 @@ public class Module extends Documented {
 		else
 			return true;
 	}
-
+	
 	/**
-	 * Calls the MapsTo constructor to create a new instance using the specified
-	 * parameters, then adds to the list of MapsTo instances owned by this
-	 * component.
-	 * 
+	 * Calls the MapsTo constructor to create a new instance using the specified parameters, 
+	 * then adds to the list of MapsTo instances owned by this component.
 	 * @param identity
 	 * @param refinement
 	 * @param local
 	 * @param remote
-	 * @return the created MapsTo instance.
+	 * @return the created MapsTo instance. 
 	 */
-	public MapsTo createMapping(URI identity, RefinementType refinement,
+	public MapsTo createMapping(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
 		addMapping(mapping);
 		return mapping;
 	}
-
+	
 	/**
-	 * Adds the specified instance to the list of references.
-	 * 
+	 * Adds the specified instance to the list of references. 
 	 * @param reference
 	 */
 	public void addMapping(MapsTo reference) {
 		// TODO: @addReference, Check for duplicated entries.
 		mappings.put(reference.getIdentity(), reference);
 	}
-
+	
 	/**
-	 * Removes the instance matching the specified URI from the list of
-	 * references if present.
-	 * 
+	 * Removes the instance matching the specified URI from the list of references if present.
 	 * @param referenceURI
-	 * @return the matching instance if present, or <code>null</code> if not
-	 *         present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo removeMapping(URI referenceURI) {
 		return mappings.remove(referenceURI);
 	}
-
+	
 	/**
-	 * Returns the instance matching the specified URI from the list of
-	 * references if present.
-	 * 
+	 * Returns the instance matching the specified URI from the list of references if present.
 	 * @param referenceURI
-	 * @return the matching instance if present, or <code>null</code> if not
-	 *         present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo getMapping(URI referenceURI) {
 		return mappings.get(referenceURI);
 	}
-
+	
 	/**
 	 * Returns the list of reference instances owned by this instance.
-	 * 
 	 * @return the list of reference instances owned by this instance.
 	 */
 	public List<MapsTo> getMappings() {
-		// return (List<MapsTo>) references.values();
+//		return (List<MapsTo>) references.values();
 		return new ArrayList<MapsTo>(mappings.values());
 	}
-
+	
 	/**
-	 * Removes all entries of the list of reference instances owned by this
-	 * instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of reference instances owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearMappings() {
 		Object[] keySetArray = mappings.keySet().toArray();
@@ -133,18 +114,18 @@ public class Module extends Documented {
 			removeMapping((URI) key);
 		}
 	}
-
+		
 	/**
-	 * Clears the existing list of reference instances, then appends all of the
-	 * elements in the specified collection to the end of this list.
-	 * 
+	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param mappings
 	 */
-	public void setMappings(List<MapsTo> mappings) {
-		clearMappings();
+	public void setMappings(
+			List<MapsTo> mappings) {
+		clearMappings();		
 		for (MapsTo mapping : mappings) {
 			addMapping(mapping);
 		}
 	}
+
 
 }

@@ -34,35 +34,29 @@ public class SBOLValidationException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	private final List<Identified> objects;
 
-	// /**
-	// * Creates a new exception instance with the given message and objects
-	// causing the problem.
-	// */
-	// public SBOLValidationException(String message, Identified... objects) {
-	// this(message, Arrays.asList(objects));
-	// }
+//	/**
+//	 * Creates a new exception instance with the given message and objects causing the problem.
+//	 */
+//	public SBOLValidationException(String message, Identified... objects) {
+//		this(message, Arrays.asList(objects));
+//	}
 
-	// /**
-	// * Creates a new exception instance with the given message and objects
-	// causing the problem.
-	// */
-	// public SBOLValidationException(String message, java.util.Collection<?
-	// extends Identified> objects) {
-	// super(formatMessage(message, objects));
-	//
-	// this.objects = Collections.unmodifiableList(new
-	// ArrayList<Identified>(objects));
-	// }
+//	/**
+//	 * Creates a new exception instance with the given message and objects causing the problem.
+//	 */
+//	public SBOLValidationException(String message, java.util.Collection<? extends Identified> objects) {
+//		super(formatMessage(message, objects));
+//
+//		this.objects = Collections.unmodifiableList(new ArrayList<Identified>(objects));
+//	}
 
-	public SBOLValidationException(String message, Throwable cause,
-			Identified... objects) {
-		super(message, cause);
-		this.objects = Collections.unmodifiableList(Arrays.asList(objects));
-	}
+    public SBOLValidationException(String message, Throwable cause, Identified ... objects) {
+        super(message, cause);
+        this.objects = Collections.unmodifiableList(Arrays.asList(objects));
+    }
 
-	/**
-	 * Creates a new exception instance with the given cause but no specific
-	 * objects for the problem.
+    /**
+	 * Creates a new exception instance with the given cause but no specific objects for the problem.
 	 */
 	public SBOLValidationException(Throwable cause) {
 		super(cause);
@@ -71,33 +65,31 @@ public class SBOLValidationException extends RuntimeException {
 	}
 
 	/**
-	 * Returns the list of objects relevant for the validation exception. This
-	 * list may be empty if the exact object for the validation exception is not
-	 * known. In those cases, the {@link #getCause() cause} of the exception can
+	 * Returns the list of objects relevant for the validation exception. This list may be empty if the exact object
+	 * for the validation exception is not known. In those cases, the {@link #getCause() cause} of the exception can 
 	 * provide more information.
 	 */
 	public java.util.Collection<Identified> getObjects() {
 		return objects;
 	}
 
-	// private static String formatMessage(String message,
-	// java.util.Collection<? extends Identified> objects) {
-	// final StringBuilder sb = new StringBuilder(message);
-	// if (!objects.isEmpty()) {
-	// sb.append(": ");
-	// boolean first = true;
-	// for (Identified obj : objects) {
-	// if (first) {
-	// first = false;
-	// }
-	// else {
-	// sb.append(", ");
-	// }
-	// if (obj.getURI() != null) {
-	// sb.append(obj.getURI());
-	// }
-	// }
-	// }
-	// return sb.toString();
-	// }
+//	private static String formatMessage(String message, java.util.Collection<? extends Identified> objects) {
+//		final StringBuilder sb = new StringBuilder(message);
+//		if (!objects.isEmpty()) {
+//			sb.append(": ");
+//			boolean first = true;
+//			for (Identified obj : objects) {
+//				if (first) {
+//					first = false;
+//				}
+//				else {
+//					sb.append(", ");
+//				}
+//				if (obj.getURI() != null) {
+//					sb.append(obj.getURI());
+//				}
+//			}
+//		}
+//		return sb.toString();
+//	}
 }

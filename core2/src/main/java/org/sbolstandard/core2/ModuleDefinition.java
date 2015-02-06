@@ -1,7 +1,6 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,171 +13,134 @@ import java.util.Set;
  * @version 2.0
  */
 public class ModuleDefinition extends TopLevel {
-
+	
 	private Set<URI> roles;
 	private HashMap<URI, Module> subModules;
 	private HashMap<URI, Interaction> interactions;
 	private HashMap<URI, FunctionalComponent> components;
 	private Set<URI> models;
-
+	
 	public ModuleDefinition(URI identity, Set<URI> roles) {
 		super(identity);
 		setRoles(roles);
 		this.subModules = new HashMap<URI, Module>();
 		this.interactions = new HashMap<URI, Interaction>();
 		this.components = new HashMap<URI, FunctionalComponent>();
-		this.models = new HashSet<URI>();
+		this.models = new HashSet<URI>();		
 	}
-
+	
+	
 	/**
-	 * Adds the specified element to the set <code>roles</code> if it is not
-	 * already present.
-	 * 
+	 * Adds the specified element to the set <code>roles</code> if it is not already present. 
 	 * @param roleURI
-	 * @return <code>true</code> if this set did not already contain the
-	 *         specified element.
+	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addRole(URI roleURI) {
 		return roles.add(roleURI);
 	}
-
+	
 	/**
-	 * Removes the specified element from the set <code>roles</code> if it is
-	 * present.
-	 * 
+	 * Removes the specified element from the set <code>roles</code> if it is present.
 	 * @param roleURI
 	 * @return <code>true<code> if this set contained the specified element
 	 */
 	public boolean removeRole(URI roleURI) {
 		return roles.remove(roleURI);
 	}
-
+	
 	/**
 	 * Sets the field variable <code>roles</code> to the specified element.
-	 * 
 	 * @param roles
 	 */
 	public void setRoles(Set<URI> roles) {
 		this.roles = roles;
 	}
-
+	
 	/**
 	 * Returns the field variable <code>roles</code>.
-	 * 
 	 * @return
 	 */
 	public Set<URI> getRoles() {
 		return roles;
 	}
-
+	
 	/**
-	 * Returns true if the set <code>roles</code> contains the specified
-	 * element.
-	 * 
+	 * Returns true if the set <code>roles</code> contains the specified element. 
 	 * @return <code>true</code> if this set contains the specified element.
 	 */
 	public boolean containsRole(URI rolesURI) {
 		return roles.contains(rolesURI);
 	}
-
+	
 	/**
-	 * Removes all entries of the list of <code>roles</code> instances owned by
-	 * this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of <code>roles</code> instances owned by this instance. 
+	 * The list will be empty after this call returns.
 	 */
 	public void clearRoles() {
 		roles.clear();
 	}
-
+	
 	/**
 	 * Test if field variable <code>subModules</code> is set.
-	 * 
 	 * @return <code>true</code> if it is not an empty list.
 	 */
 	public boolean isSetSubModules() {
 		if (subModules.isEmpty())
 			return false;
 		else
-			return true;
+			return true;					
 	}
-
-	public Module createSubModule(String authority, String ID, URI subModuleURI) {
-		String identityStr = authority + '/' + ID + "/1/0";
-		Module subModule = new Module(URI.create(identityStr), subModuleURI);
-		// OR
-		// Module subModule = new Module(authority, ID, "1", "0", subModuleURI);
-		// addSubModule(subModule);
-		return subModule;
-	}
-
+	
 	/**
-	 * Calls the Module constructor to create a new instance using the specified
-	 * parameters, then adds to the list of ModuleInstantiation instances owned
-	 * by this instance.
-	 * 
+	 * Calls the ModuleInstantiation constructor to create a new instance using the specified parameters, 
+	 * then adds to the list of ModuleInstantiation instances owned by this instance.
 	 * @param identity
 	 * @param location
-	 * @return the created ModuleInstantiation instance.
+	 * @return the created ModuleInstantiation instance. 
 	 */
 	public Module createSubModule(URI identity, URI subModuleURI) {
 		Module subModule = new Module(identity, subModuleURI);
 		addSubModule(subModule);
 		return subModule;
 	}
-
+	
 	/**
-	 * Adds the specified instance to the list of subModules.
-	 * 
+	 * Adds the specified instance to the list of subModules. 
 	 * @param subModule
 	 */
 	public void addSubModule(Module subModule) {
 		// TODO: @addModuleInstantiation, Check for duplicated entries.
 		subModules.put(subModule.getIdentity(), subModule);
 	}
-
-	public void createNewVersion(ModuleDefinition oldModuleDef) {
-
-	}
-
-	public void createNewMinorVersion() {
-
-	}
-
+	
 	/**
-	 * Removes the instance matching the specified URI from the list of
-	 * subModules if present.
-	 * 
+	 * Removes the instance matching the specified URI from the list of subModules if present.
 	 * @param subModuleURI
-	 * @return the matching instance if present, or <code>null</code> if not
-	 *         present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Module removeSubModule(URI subModuleURI) {
 		return subModules.remove(subModuleURI);
 	}
-
+	
 	/**
-	 * Returns the instance matching the specified URI from the list of
-	 * subModules if present.
-	 * 
+	 * Returns the instance matching the specified URI from the list of subModules if present.
 	 * @param subModuleURI
-	 * @return the matching instance if present, or <code>null</code> if not
-	 *         present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Module getSubModule(URI subModuleURI) {
 		return subModules.get(subModuleURI);
 	}
-
+	
 	/**
-	 * Returns the list of subModule instances owned by this instance.
-	 * 
+	 * Returns the list of subModule instances owned by this instance. 
 	 * @return the list of subModule instances owned by this instance.
 	 */
 	public List<Module> getSubModule() {
 		return new ArrayList<Module>(subModules.values());
 	}
-
+	
 	/**
-	 * Removes all entries of the list of subModule instances owned by this
-	 * instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of subModule instances owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearSubModules() {
 		Object[] keySetArray = subModules.keySet().toArray();
@@ -186,97 +148,82 @@ public class ModuleDefinition extends TopLevel {
 			removeSubModule((URI) key);
 		}
 	}
-
+		
 	/**
-	 * Clears the existing list of subModule instances, then appends all of the
-	 * elements in the specified collection to the end of this list.
-	 * 
+	 * Clears the existing list of subModule instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param subModules
 	 */
-	public void setSubModules(List<Module> subModules) {
-		if (isSetSubModules())
-			clearSubModules();
+	public void setSubModules(
+			List<Module> subModules) {
+		if(isSetSubModules())
+			clearSubModules();		
 		for (Module subModule : subModules) {
 			addSubModule(subModule);
 		}
 	}
-
+	
 	/**
 	 * Test if field variable <code>interactions</code> is set.
-	 * 
 	 * @return <code>true</code> if it is not an empty list.
-	 */
+	 */		
 	public boolean isSetInteractions() {
 		if (interactions.isEmpty())
 			return false;
 		else
 			return true;
 	}
-
+	
 	/**
-	 * Calls the Interaction constructor to create a new instance using the
-	 * specified parameters, then adds to the list of Interaction instances
-	 * owned by this instance.
-	 * 
+	 * Calls the Interaction constructor to create a new instance using the specified parameters, 
+	 * then adds to the list of Interaction instances owned by this instance.
 	 * @param identity
 	 * @param location
-	 * @return the created Interaction instance.
+	 * @return the  created Interaction instance. 
 	 */
-	public Interaction createInteraction(URI identity, Set<URI> type,
-			List<Participation> participations) {
-		Interaction interaction = new Interaction(identity, type,
-				participations);
+	public Interaction createInteraction(URI identity, Set<URI> type, List<Participation> participations) {
+		Interaction interaction = new Interaction(identity, type, participations);
 		addInteraction(interaction);
 		return interaction;
 	}
-
+	
 	/**
-	 * Adds the specified instance to the list of interactions.
-	 * 
+	 * Adds the specified instance to the list of interactions. 
 	 * @param interaction
 	 */
 	public void addInteraction(Interaction interaction) {
 		// TODO: @addInteraction, Check for duplicated entries.
 		interactions.put(interaction.getIdentity(), interaction);
 	}
-
+	
 	/**
-	 * Removes the instance matching the specified URI from the list of
-	 * interactions if present.
-	 * 
+	 * Removes the instance matching the specified URI from the list of interactions if present.
 	 * @param interactionURI
-	 * @return the matching instance if present, or <code>null</code> if not
-	 *         present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Interaction removeInteraction(URI interactionURI) {
 		return interactions.remove(interactionURI);
 	}
-
+	
 	/**
-	 * Returns the instance matching the specified URI from the list of
-	 * interactions if present.
-	 * 
+	 * Returns the instance matching the specified URI from the list of interactions if present.
 	 * @param interactionURI
-	 * @return the matching instance if present, or <code>null</code> if not
-	 *         present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Interaction getInteraction(URI interactionURI) {
 		return interactions.get(interactionURI);
 	}
-
+	
 	/**
-	 * Returns the list of interaction instances owned by this instance.
-	 * 
+	 * Returns the list of interaction instances owned by this instance. 
 	 * @return the list of interaction instances owned by this instance.
 	 */
 	public List<Interaction> getInteractions() {
-		// return (List<Interaction>) interactions.values();
+//		return (List<Interaction>) interactions.values();
 		return new ArrayList<Interaction>(interactions.values());
 	}
-
+	
 	/**
-	 * Removes all entries of the list of interaction instances owned by this
-	 * instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of interaction instances owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearInteractions() {
 		Object[] keySetArray = interactions.keySet().toArray();
@@ -284,97 +231,82 @@ public class ModuleDefinition extends TopLevel {
 			removeInteraction((URI) key);
 		}
 	}
-
+		
 	/**
-	 * Clears the existing list of interaction instances, then appends all of
-	 * the elements in the specified collection to the end of this list.
-	 * 
+	 * Clears the existing list of interaction instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param interactions
 	 */
-	public void setInteractions(List<Interaction> interactions) {
-		clearInteractions();
+	public void setInteractions(
+			List<Interaction> interactions) {
+		clearInteractions();		
 		for (Interaction interaction : interactions) {
 			addInteraction(interaction);
 		}
 	}
-
+		
 	/**
 	 * Test if field variable <code>functionalInstantiations</code> is set.
-	 * 
 	 * @return <code>true</code> if it is not an empty list.
 	 */
 	public boolean isSetComponents() {
-		if (components.isEmpty())
+		if (components.isEmpty()) 
 			return false;
 		else
 			return true;
 	}
-
+ 	
 	/**
-	 * Calls the FunctionalInstantiation constructor to create a new instance
-	 * using the specified parameters, then adds to the list of
-	 * FunctionalInstantiation instances owned by this instance.
-	 * 
+	 * Calls the FunctionalInstantiation constructor to create a new instance using the specified parameters, 
+	 * then adds to the list of FunctionalInstantiation instances owned by this instance.
 	 * @param identity
 	 * @param location
-	 * @return the created {@link FunctionalComponent} instance.
+	 * @return the created {@link FunctionalComponent} instance. 
 	 */
-	public FunctionalComponent createComponent(URI identity, URI access,
+	public FunctionalComponent createComponent(URI identity, URI access, 
 			URI functionalComponentURI, URI direction) {
-		FunctionalComponent functionalComponent = new FunctionalComponent(
-				identity, access, functionalComponentURI, direction);
+		FunctionalComponent functionalComponent = 
+				new FunctionalComponent(identity, access, functionalComponentURI, direction);
 		addComponent(functionalComponent);
 		return functionalComponent;
 	}
-
+	
 	/**
-	 * Adds the specified instance to the list of functionalInstantiations.
-	 * 
+	 * Adds the specified instance to the list of functionalInstantiations. 
 	 * @param component
 	 */
 	public void addComponent(FunctionalComponent component) {
 		// TODO: @addFunctionalInstantiation, Check for duplicated entries.
 		components.put(component.getIdentity(), component);
 	}
-
+	
 	/**
-	 * Removes the instance matching the specified URI from the list of
-	 * functionalInstantiations if present.
-	 * 
+	 * Removes the instance matching the specified URI from the list of functionalInstantiations if present.
 	 * @param componentURI
-	 * @return the matching instance if present, or <code>null</code> if not
-	 *         present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public FunctionalComponent removeComponent(URI componentURI) {
 		return components.remove(componentURI);
 	}
-
+	
 	/**
-	 * Returns the instance matching the specified URI from the list of
-	 * functionalInstantiations if present.
-	 * 
+	 * Returns the instance matching the specified URI from the list of functionalInstantiations if present.
 	 * @param componentURI
-	 * @return the matching instance if present, or <code>null</code> if not
-	 *         present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public FunctionalComponent getComponent(URI componentURI) {
 		return components.get(componentURI);
 	}
-
+	
 	/**
-	 * Returns the list of functionalInstantiation instances owned by this
-	 * instance.
-	 * 
-	 * @return the list of functionalInstantiation instances owned by this
-	 *         instance.
+	 * Returns the list of functionalInstantiation instances owned by this instance. 
+	 * @return the list of functionalInstantiation instances owned by this instance.
 	 */
 	public List<FunctionalComponent> getComponents() {
 		return new ArrayList<FunctionalComponent>(components.values());
 	}
-
+	
 	/**
-	 * Removes all entries of the list of functionalInstantiation instances
-	 * owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of functionalInstantiation instances owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearComponents() {
 		Object[] keySetArray = components.keySet().toArray();
@@ -382,101 +314,88 @@ public class ModuleDefinition extends TopLevel {
 			removeComponent((URI) key);
 		}
 	}
-
+		
 	/**
-	 * Clears the existing list of functionalInstantiation instances, then
-	 * appends all of the elements in the specified collection to the end of
-	 * this list.
-	 * 
+	 * Clears the existing list of functionalInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param components
 	 */
-	public void setComponents(List<FunctionalComponent> components) {
-		clearComponents();
+	public void setComponents(
+			List<FunctionalComponent> components) {
+		clearComponents();		
 		for (FunctionalComponent component : components) {
 			addComponent(component);
 		}
 	}
-
-	// /**
-	// * Set optional field variable <code>subModules</code> to an empty list.
-	// */
-	// public void unsetModuleInstantiations() {
-	// subModules.clear();
-	// }
-	//
-	// /**
-	// * Set optional field variable <code>interactions</code> to an empty list.
-	// */
-	// public void unsetInteractions() {
-	// interactions.clear();
-	// }
-	//
-	// /**
-	// * Set optional field variable <code>functionalInstantiations</code> to an
-	// empty list.
-	// */
-	// public void unsetFunctionalInstantiations() {
-	// functionalInstantiations.clear();
-	// }
-
+	
+//	/**
+//	 * Set optional field variable <code>subModules</code> to an empty list.
+//	 */
+//	public void unsetModuleInstantiations() {
+//		subModules.clear();
+//	}
+//	
+//	/**
+//	 * Set optional field variable <code>interactions</code> to an empty list.
+//	 */
+//	public void unsetInteractions() {
+//		interactions.clear();
+//	}
+//	
+//	/**
+//	 * Set optional field variable <code>functionalInstantiations</code> to an empty list.
+//	 */
+//	public void unsetFunctionalInstantiations() {
+//		functionalInstantiations.clear();
+//	}
+	
 	/**
 	 * Test if field variable <code>models</code> is set.
-	 * 
 	 * @return <code>true</code> if it is not an empty list.
 	 */
 	public boolean isSetModels() {
 		if (models.isEmpty())
 			return false;
 		else
-			return true;
+			return true;					
 	}
-
+	
 	/**
-	 * Adds the specified instance to the list of models.
-	 * 
+	 * Adds the specified instance to the list of models. 
 	 * @param modelURI
 	 */
 	public void addModel(URI modelURI) {
 		// TODO: @addModel, Check for duplicated entries.
 		models.add(modelURI);
 	}
-
+	
 	/**
-	 * Removes the instance matching the specified URI from the list of models
-	 * if present.
-	 * 
+	 * Removes the instance matching the specified URI from the list of models if present.
 	 * @param modelURI
-	 * @return the matching instance if present, or <code>null</code> if not
-	 *         present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeModel(URI modelURI) {
-		// TODO: Need to check if the set of models' URIs is empty.
+		// TODO: Need to check if the set of models' URIs is empty. 
 		return models.remove(modelURI);
 	}
-
+	
 	/**
-	 * Clears the existing list of model instances, then appends all of the
-	 * elements in the specified collection to the end of this list.
-	 * 
+	 * Clears the existing list of model instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param models
 	 */
 	public void setModels(Set<URI> models) {
 		this.models = models;
 	}
-
+	
 	/**
 	 * Returns the list of model instances referenced by this instance.
-	 * 
 	 * @return the list of model instances referenced by this instance
 	 */
 	public Set<URI> getModels() {
 		return models;
 	}
-
+	
 	/**
-	 * Returns true if the set <code>models</code> contains the specified
-	 * element.
-	 * 
+	 * Returns true if the set <code>models</code> contains the specified element. 
 	 * @return <code>true</code> if this set contains the specified element.
 	 */
 	public boolean containsModel(URI modelURI) {
@@ -484,18 +403,22 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Removes all entries of the list of model instances owned by this
-	 * instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of model instances owned by this instance. 
+	 * The list will be empty after this call returns.
 	 */
 	public void clearModels() {
 		models.clear();
 	}
+	
+//	/**
+//	 * Set optional field variable <code>models</code> to an empty list.
+//	 */
+//	public void unsetModels() {
+//		models.clear();
+//	}
+	
+	
+	
 
-	// /**
-	// * Set optional field variable <code>models</code> to an empty list.
-	// */
-	// public void unsetModels() {
-	// models.clear();
-	// }
 
 }

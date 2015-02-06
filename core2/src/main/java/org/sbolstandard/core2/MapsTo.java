@@ -4,22 +4,22 @@ import java.net.URI;
 
 import org.sbolstandard.core2.abstract_classes.Identified;
 
-public class MapsTo extends Identified {
-
+public class MapsTo extends Identified{
+	
 	private RefinementType refinement;
 	private URI local; // URI of a local component instantiation.
 	private URI remote; // URI of a remote component instantiation
 
-	public MapsTo(URI identity, RefinementType refinement, URI local, URI remote) {
+	public MapsTo(URI identity, RefinementType refinement, 
+			URI local, URI remote) {
 		super(identity);
 		setRefinement(refinement);
 		setLocal(local);
-		setRemote(remote);
+		setRemote(remote);		
 	}
 
 	/**
 	 * Returns field variable <code>refinement</code>.
-	 * 
 	 * @return field variable <code>refinement</code>
 	 */
 	public RefinementType getRefinement() {
@@ -28,7 +28,6 @@ public class MapsTo extends Identified {
 
 	/**
 	 * Sets field variable <code>refinement</code> to the specified element.
-	 * 
 	 * @param refinement
 	 */
 	public void setRefinement(RefinementType refinement) {
@@ -37,7 +36,6 @@ public class MapsTo extends Identified {
 
 	/**
 	 * Returns field variable <code>local</code>.
-	 * 
 	 * @return field variable <code>local</code>
 	 */
 	public URI getLocal() {
@@ -46,7 +44,6 @@ public class MapsTo extends Identified {
 
 	/**
 	 * Sets field variable <code>local</code> to the specified element.
-	 * 
 	 * @param local
 	 */
 	public void setLocal(URI local) {
@@ -55,7 +52,6 @@ public class MapsTo extends Identified {
 
 	/**
 	 * Returns field variable <code>remote</code>.
-	 * 
 	 * @return field variable <code>remote</code>
 	 */
 	public URI getRemote() {
@@ -64,11 +60,10 @@ public class MapsTo extends Identified {
 
 	/**
 	 * Sets filed variable <code>remote</code> to the specified element.
-	 * 
 	 * @param remote
 	 */
 	public void setRemote(URI remote) {
 		this.remote = remote;
 	}
-
+	
 }

@@ -4,10 +4,10 @@ import java.net.URI;
 
 import javax.xml.namespace.QName;
 
-public class GenericTopLevel extends TopLevel {
+public class GenericTopLevel extends TopLevel{
 
 	private QName rdfType;
-
+	
 	public QName getRdfType() {
 		return rdfType;
 	}
@@ -18,6 +18,6 @@ public class GenericTopLevel extends TopLevel {
 
 	public GenericTopLevel(URI identity, QName rdfType) {
 		super(identity);
-		this.rdfType = rdfType;
+		this.rdfType = rdfType;		
 	}
 }

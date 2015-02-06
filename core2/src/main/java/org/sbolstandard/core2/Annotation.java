@@ -10,6 +10,7 @@ public class Annotation {
 
 	private NamedProperty<QName> namedProperty;
 
+
 	public Annotation(QName relation, Turtle literal) {
 		namedProperty = NamedProperty(relation, literal.getTurtleStr());
 	}

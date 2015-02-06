@@ -12,7 +12,7 @@ import org.sbolstandard.core2.SBOLDocument;
 
 public class libTester {
 
-	public static void main(String[] args) throws Exception {
+	public static void main( String[] args ) throws Exception {
 		URI toggleSwitchURI = getURI("toggle_switch");
 		URI inv1URI = getURI("Inverter1");
 		URI LacI_InverterURI = getURI("LacI_Inverter");
@@ -22,42 +22,47 @@ public class libTester {
 		URI mapto_TetR_outputURI = getURI("mapto_TetR_output");
 		URI TetR_localURI = getURI("TetR_local");
 		URI TetR_remoteURI = getURI("TetR_remote");
-
+		
+		
 		URI inv2URI = getURI("Inverter2");
 		URI TetR_InverterURI = getURI("TetR_Inverter");
 		URI mapto_TetR_InverterURI = getURI("mapto_TetR_Inverter");
-
+		
+		
 		SBOLDocument toggleSwitch = new SBOLDocument();
-		ModuleDefinition toggleModule = toggleSwitch.createModuleDefinition(
-				toggleSwitchURI, getSetOfURIs("switch"));
+		ModuleDefinition toggleModule = toggleSwitch.createModuleDefinition(toggleSwitchURI, getSetOfURIs("switch"));
 		// Instantiate LacI inverter
 		Module inv1 = toggleModule.createSubModule(inv1URI, LacI_InverterURI);
 		toggleModule.addSubModule(inv1);
-
-		MapsTo mapto_LacI_input = new MapsTo(mapto_LacI_inputURI,
-				RefinementType.verifyIdentical, LacI_localURI, LacI_remoteURI);
-		MapsTo mapto_TetR_output = new MapsTo(mapto_TetR_outputURI,
-				RefinementType.verifyIdentical, TetR_localURI, TetR_remoteURI);
+		
+		
+		MapsTo mapto_LacI_input = new MapsTo(mapto_LacI_inputURI, RefinementType.verifyIdentical, LacI_localURI, LacI_remoteURI);
+		MapsTo mapto_TetR_output = new MapsTo(mapto_TetR_outputURI, RefinementType.verifyIdentical, TetR_localURI, TetR_remoteURI);
 		inv1.addMapping(mapto_LacI_input);
-
+		
+		
 		// Instantiate TetR Inverter
 		Module inv2 = toggleModule.createSubModule(inv2URI, TetR_InverterURI);
-		MapsTo mapto_TetR_Inverter = new MapsTo(mapto_TetR_InverterURI,
-				RefinementType.verifyIdentical, inv2URI, TetR_InverterURI);
+		MapsTo mapto_TetR_Inverter = new MapsTo(mapto_TetR_InverterURI, RefinementType.verifyIdentical, inv2URI, TetR_InverterURI);
 		inv2.addMapping(mapto_TetR_Inverter);
-
+		
 	}
 
-	private static URI getURI(String append) {
+	private static URI getURI(String append)
+	{
 		return URI.create("http://www.async.ece.utah.edu/" + append);
 	}
-
-	private static Set<URI> getSetOfURIs(String... appends) {
+	
+	private static Set<URI> getSetOfURIs(String ... appends)
+	{
 		Set<URI> list = new HashSet<URI>();
-		for (String append : appends) {
+		for(String append : appends)
+		{
 			list.add(getURI(append));
 		}
-		return list;
+		return list; 
 	}
 
 }
+
+
