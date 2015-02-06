@@ -2,15 +2,12 @@ package org.sbolstandard.core2.util;
 
 import java.net.URI;
 
-public class SBOLPair
-{
-
+public class SBOLPair {
 
 	private URI left;
 	private URI right;
 
-	public SBOLPair(URI left, URI right)
-	{
+	public SBOLPair(URI left, URI right) {
 		this.left = left;
 		this.right = right;
 	}

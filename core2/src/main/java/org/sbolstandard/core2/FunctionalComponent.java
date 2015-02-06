@@ -4,18 +4,19 @@ import java.net.URI;
 
 import org.sbolstandard.core2.abstract_classes.ComponentInstance;
 
-public class FunctionalComponent extends ComponentInstance{
-		
+public class FunctionalComponent extends ComponentInstance {
+
 	private URI direction;
-	
-	public FunctionalComponent(URI identity, URI access, 
+
+	public FunctionalComponent(URI identity, URI access,
 			URI instantiatedComponent, URI direction) {
-		super(identity,access, instantiatedComponent);
+		super(identity, access, instantiatedComponent);
 		setDirection(direction);
 	}
 
 	/**
 	 * Returns field variable <code>direction</code> to the specified element.
+	 * 
 	 * @return field variable <code>direction</code> to the specified element
 	 */
 	public URI getDirection() {
@@ -24,6 +25,7 @@ public class FunctionalComponent extends ComponentInstance{
 
 	/**
 	 * Sets field variable <code>direction</code> to the specified element.
+	 * 
 	 * @param direction
 	 */
 	public void setDirection(URI direction) {

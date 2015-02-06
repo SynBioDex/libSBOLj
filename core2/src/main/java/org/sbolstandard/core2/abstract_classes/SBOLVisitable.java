@@ -18,38 +18,44 @@ package org.sbolstandard.core2.abstract_classes;
 import org.sbolstandard.core2.SBOLVisitor;
 
 /**
- * Top level interface for objects that can be visited by the {@link SBOLVisitor} class.
+ * Top level interface for objects that can be visited by the
+ * {@link SBOLVisitor} class.
  * 
- * NOTE: Implementation of this class does not provide a custom {@link Object#equals(Object)} implementation and uses the
- * default identity equality implementation. 
+ * NOTE: Implementation of this class does not provide a custom
+ * {@link Object#equals(Object)} implementation and uses the default identity
+ * equality implementation.
  * 
  * @author Evren Sirin
  */
 public abstract class SBOLVisitable {
-	
-//	private static final SBOLPrettyWriter WRITER = new SBOLPrettyWriter();
-//	
+
+	// private static final SBOLPrettyWriter WRITER = new SBOLPrettyWriter();
+	//
 	/**
 	 * Calls the appropriate visit function from the {@link SBOLVisitor} class.
-     *
-     * @param visitor the visitor to accept
-     * @throws T if the visitor throws T
+	 *
+	 * @param visitor
+	 *            the visitor to accept
+	 * @throws T
+	 *             if the visitor throws T
 	 */
-	public abstract <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T;
+	public abstract <T extends Throwable> void accept(SBOLVisitor<T> visitor)
+			throws T;
 
 	/**
-//	 * {@inheritDoc}
-//	 */
-//	@Override
-//	public String toString() {
-//		ByteArrayOutputStream out = new ByteArrayOutputStream();
-//		WRITER.write(this, out);
-//		return new String(out.toByteArray());
-//	}
-//
-////	/**
-////	 * The default equals implementation which returns <code>true</code> only if the given object is <code>==</code> to
-////	 * this object.
-////	 */
-////	public boolean equals(Object obj);
+	 * // * {@inheritDoc} //
+	 */
+	// @Override
+	// public String toString() {
+	// ByteArrayOutputStream out = new ByteArrayOutputStream();
+	// WRITER.write(this, out);
+	// return new String(out.toByteArray());
+	// }
+	//
+	// // /**
+	// // * The default equals implementation which returns <code>true</code>
+	// only if the given object is <code>==</code> to
+	// // * this object.
+	// // */
+	// // public boolean equals(Object obj);
 }

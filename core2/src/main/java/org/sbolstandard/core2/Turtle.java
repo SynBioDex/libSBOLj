@@ -1,9 +1,9 @@
 package org.sbolstandard.core2;
 
 public class Turtle {
-	
+
 	private String turtleStr;
-	
+
 	public Turtle(String turtleStr) {
 		this.turtleStr = turtleStr;
 	}
@@ -15,5 +15,5 @@ public class Turtle {
 	public void setTurtleStr(String turtleStr) {
 		this.turtleStr = turtleStr;
 	}
-	
+
 }
