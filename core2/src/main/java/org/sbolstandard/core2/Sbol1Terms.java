@@ -16,6 +16,7 @@ public class Sbol1Terms
 	 * The namespacebinding for SBOL1.0
 	 */
 	public static final NamespaceBinding sbol1 = NamespaceBinding("http://sbols.org/v1#", "sbol");
+	public static final NamespaceBinding rdf = NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf");
 
 	/**
 	 * A group of qualified terms for Collection related SBOL objects
@@ -40,7 +41,7 @@ public class Sbol1Terms
 		public static final QName displayId    = sbol1.withLocalPart("displayId");
 		public static final QName name	   	   = sbol1.withLocalPart("name");
 		public static final QName description  = sbol1.withLocalPart("description");
-		public static final QName type   	   = sbol1.withLocalPart("type");
+		public static final QName type   	   = rdf.withLocalPart("type");
 		public static final QName annotations  = sbol1.withLocalPart("annotation");
 		public static final QName dnaSequence  = sbol1.withLocalPart("dnaSequence");
 
