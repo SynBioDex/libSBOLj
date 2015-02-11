@@ -6,6 +6,7 @@ import org.sbolstandard.core2.abstract_classes.Identified;
 
 public class SequenceConstraint extends Identified {
 
+	//private RestrictionType restriction;
 	private URI restriction;
 	private URI subject;
 	private URI object;
@@ -17,6 +18,7 @@ public class SequenceConstraint extends Identified {
 		setSubject(subject);
 		setObject(object);
 	}
+	
 
 	/**
 	 * Returns field variable <code>restriction</code>.
@@ -65,5 +67,8 @@ public class SequenceConstraint extends Identified {
 	public void setObject(URI object) {
 		this.object = object;
 	}
-
+	
+	public static enum RestrictionType {
+		preceeds
+	}
 }

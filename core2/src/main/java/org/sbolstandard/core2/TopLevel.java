@@ -10,4 +10,8 @@ public class TopLevel extends Documented{
 		super(identity);	
 	}
 
+	public TopLevel(String authority, String id) {
+		super(authority, id);
+	}
+
 }

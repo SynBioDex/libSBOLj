@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.MapsTo;
 import org.sbolstandard.core2.RefinementType;
+import org.sbolstandard.core2.Sbol2Terms;
+
 
 public abstract class ComponentInstance extends Documented {
 	
@@ -146,5 +147,63 @@ public abstract class ComponentInstance extends Documented {
 	public void setDefinition(URI definitionURI) {
 		this.definition = definitionURI;
 	}
+	
+		public static enum AccessType {
 
+		PUBLIC("public"), PRIVATE("private");
+
+		// private final String accessType;
+
+		private String accessType;
+
+		private AccessType(String accessType) {
+			this.accessType = accessType;
+		}
+
+		private AccessType(URI accessType) {
+			if (accessType.equals(Access.PUBLIC)) {
+				this.accessType = "public";
+			} else if (accessType.equals(Access.PRIVATE)) {
+				this.accessType = "private";
+			}
+		}
+
+		/**
+		 * Returns the access type.
+		 * @return access type.
+		 */
+		public String getAccessType() {
+			return accessType;
+		}
+
+		/**
+		 * Returns the access type in URI.
+		 * @return access type in URI
+		 */
+		public URI getAccessTypeURI() {
+			if (accessType != null) {
+				if (accessType == "public") {
+					return Access.PUBLIC;
+				}
+				else if (accessType == "private") {
+					return Access.PRIVATE;
+				}
+				else
+					return null;
+			}
+			return null;
+		}
+
+		@Override
+		public String toString() {
+			return accessType;
+		}
+
+		public static final class Access {
+			public static final URI PUBLIC = URI.create(Sbol2Terms.sbol2
+			.getNamespaceURI() + "public");
+			public static final URI PRIVATE = URI.create(Sbol2Terms.sbol2
+			.getNamespaceURI() + "private");
+		}
+	}
 }

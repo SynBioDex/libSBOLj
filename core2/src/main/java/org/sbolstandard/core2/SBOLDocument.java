@@ -3,7 +3,9 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -47,7 +49,7 @@ public class SBOLDocument {
 	 * Create a new {@link ModuleDefinition} instance.
 	 * @param identity
 	 * @param roles
-	 * @return
+	 * @return the {@link ModuleDefinition} instance.
 	 */
 	public ModuleDefinition createModuleDefinition(URI identity, Set<URI> roles) {
 		ModuleDefinition newModule = new ModuleDefinition(identity, roles);
@@ -329,24 +331,78 @@ public class SBOLDocument {
 	/**
 	 * Create a new {@link Sequence} instance.
 	 * @param identity
-	 * @param displayId
+	 * @param elements
+	 * @param encoding
 	 * @return
 	 */
 	public Sequence createSequence(URI identity, String elements, URI encoding) {
 		Sequence newSequence = new Sequence(identity, elements, encoding);
-		addSequence(newSequence);
-		return newSequence;
+		if (addSequence(newSequence)) {
+			return newSequence;
+		}
+		else
+			return null;
 	}
 	
 	/**
-	 * Appends the specified <code>structure</code> to the end of the list of structures.
-	 * @param sequence
+	 * Create a new {@link Sequence} instance.
+	 * @param authority
+	 * @param id
+	 * @param elements
+	 * @param encoding
+	 * @return
 	 */
-	public void addSequence(Sequence sequence) {
-		// TODO: Recursively check the uniqueness of URIs of each Structure and its field variables. 
-		sequences.put(sequence.getIdentity(), sequence);
+	public Sequence createSequence(String authority, String id, String elements, URI encoding) {
+		Sequence newSequence = new Sequence(authority, id, elements, encoding);
+		if (addSequence(newSequence)) {
+			return newSequence;
+		}
+		else
+			return null;
 	}
 	
+	/**
+	 * Create a new {@link Sequence} instance with a new major version, and add it to the sequences list. 
+	 * @return
+	 */
+	public Sequence createNewMajorVersion() {
+		// TODO fill in
+		return null;
+		
+	}
+	
+	/**
+	 * Appends the specified <code>sequence</code> to the end of the list of sequences.
+	 * @param sequence
+	 * @return <code>true</code> if the specified sequence is successfully added.
+	 */
+	public boolean addSequence(Sequence sequence) {
+		if (!keyExistsInOtherMaps(sequences.keySet(), sequence.getPersistentIdentity())) {
+			if (!sequences.containsKey(sequence.getIdentity())) {
+				sequences.put(sequence.getIdentity(), sequence);
+				Sequence latestSequence = sequences.get(sequence.getPersistentIdentity());
+				if (latestSequence == null) {
+					sequences.put(sequence.getPersistentIdentity(), sequence);
+				}
+				else {
+					if (latestSequence.getMajorVersion() < sequence.getMajorVersion()) {
+						sequences.put(sequence.getPersistentIdentity(), sequence);
+					}
+					else if (latestSequence.getMajorVersion() == sequence.getMajorVersion()){
+						if (latestSequence.getMinorVersion() < sequence.getMinorVersion()) {
+							sequences.put(sequence.getPersistentIdentity(), sequence);
+						}
+					}
+				}
+				return true;
+			}
+			else // key exists in sequences map
+				return false;
+		}
+		else // key exists in other maps
+			return false;
+	}
+
 	/**
 	 * Removes the instance matching the specified URI from the list of structures if present.
 	 * @param structuralConstraintURI
@@ -487,5 +543,27 @@ public class SBOLDocument {
 		return bindings; 
 	}
 	
-	
+	/**
+	 * Check if the specified key exists in any hash maps in this class other than the one with the specified keySet. This method
+	 * constructs a set of key sets for other hash maps first, and then checks if the key exists.  
+	 * @param keySet
+	 * @param key
+	 * @return <code>true</code> if the specified key exists in other hash maps.
+	 */
+	private boolean keyExistsInOtherMaps(Set<URI> keySet, URI key) {
+		Set<HashSet<URI>> complementSet = new HashSet<HashSet<URI>>();
+		complementSet.add((HashSet<URI>) collections.keySet());
+		complementSet.add((HashSet<URI>) componentDefinitions.keySet());
+		complementSet.add((HashSet<URI>) models.keySet());
+		complementSet.add((HashSet<URI>) moduleDefinitions.keySet());
+		complementSet.add((HashSet<URI>) nameSpaces.keySet());
+		complementSet.add((HashSet<URI>) sequences.keySet());
+		complementSet.remove(keySet);
+		for (HashSet<URI> otherKeySet : complementSet) {
+			if (otherKeySet.contains(key)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
