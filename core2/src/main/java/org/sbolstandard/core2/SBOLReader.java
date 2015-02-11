@@ -60,7 +60,7 @@ public class SBOLReader {
 
 	public static SBOLDocument read(String fileName) throws Throwable
 	{
-		FileInputStream fis = new FileInputStream(fileName);
+		FileInputStream fis 	 = new FileInputStream(fileName);
 		String inputStreamString = new Scanner(fis,"UTF-8").useDelimiter("\\A").next();
 		return readRdf(new File(fileName));
 	}
@@ -82,9 +82,9 @@ public class SBOLReader {
 
 	public static SBOLDocument readJson(File file) throws Throwable
 	{
-		FileInputStream stream = new FileInputStream(file);
+		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
-		String inputStreamString = new Scanner(stream,"UTF-8").useDelimiter("\\A").next();
+		String inputStreamString   = new Scanner(stream,"UTF-8").useDelimiter("\\A").next();
 
 		DocumentRoot<QName> document= readJson(new StringReader(inputStreamString));
 		return readJson(buffer, document);
@@ -92,7 +92,7 @@ public class SBOLReader {
 
 	public static SBOLDocument read(File file) throws Throwable
 	{
-		FileInputStream stream = new FileInputStream(file);
+		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
 
 		return read(buffer);
@@ -103,29 +103,18 @@ public class SBOLReader {
 	 */
 	public static SBOLDocument readRdf(File file) throws Throwable
 	{
-		FileInputStream stream = new FileInputStream(file);
+		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
-		//		String inputStreamString = new Scanner(stream,"UTF-8").useDelimiter("\\A").next();
-		//
-		//		DocumentRoot<QName> document= readRdf(new StringReader(inputStreamString));
-		//
-		//		for(NamespaceBinding n: document.getNamespaceBindings())
-		//		{
-		//			if(n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
-		//			{
-		//				return readRdfV1(buffer, document);
-		//			}
-		//		}
 		return readRdf(buffer);
 	}
 
 	public static SBOLDocument readTurtle(File file) throws Throwable
 	{
-		FileInputStream stream = new FileInputStream(file);
+		FileInputStream stream 	   = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
-		String inputStreamString = new Scanner(stream,"UTF-8").useDelimiter("\\A").next();
+		String inputStreamString   = new Scanner(stream,"UTF-8").useDelimiter("\\A").next();
 
-		DocumentRoot<QName> document= readTurtle(new StringReader(inputStreamString));
+		DocumentRoot<QName> document = readTurtle(new StringReader(inputStreamString));
 		return readTurtle(buffer, document);
 	}
 
@@ -168,11 +157,10 @@ public class SBOLReader {
 	public static SBOLDocument readRdf(InputStream in)
 	{
 		String inputStreamString = new Scanner(in,"UTF-8").useDelimiter("\\A").next();
-		SBOLDocument SBOLDoc = new SBOLDocument();
-		//		DocumentRoot<QName> document;
+		SBOLDocument SBOLDoc 	 = new SBOLDocument();
+
 		try {
 			DocumentRoot<QName> document = readRdf(new StringReader(inputStreamString));
-
 			for(NamespaceBinding n: document.getNamespaceBindings())
 			{
 				if(n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
@@ -182,10 +170,6 @@ public class SBOLReader {
 				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
 
-			//			for(NamespaceBinding n : document.getNamespaceBindings())
-			//			{
-			//				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
-			//			}
 			readTopLevelDocs(SBOLDoc,document);
 
 		} catch (Exception e) { e.printStackTrace(); }
@@ -198,7 +182,7 @@ public class SBOLReader {
 		SBOLDocument SBOLDoc = new SBOLDocument();
 		for(NamespaceBinding n : document.getNamespaceBindings())
 		{
-			if(n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
+			if( n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()) )
 				SBOLDoc.addNameSpaceBinding(URI.create(Sbol2Terms.sbol2.getNamespaceURI()), Sbol2Terms.sbol2.getPrefix());
 			else
 				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -210,27 +194,32 @@ public class SBOLReader {
 	public static SBOLDocument readTurtle(InputStream in, DocumentRoot<QName> document)
 	{
 		SBOLDocument SBOLDoc = new SBOLDocument();
+
 		for(NamespaceBinding n : document.getNamespaceBindings())
 		{
 			SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 		}
+
 		readTopLevelDocs(SBOLDoc,document);
+
 		return SBOLDoc;
 	}
 
 	private static DocumentRoot<QName> readJson(Reader stream) throws Exception
 	{
-		JsonReader reader = Json.createReaderFactory(Collections.<String, Object> emptyMap()).createReader(stream);
-		JsonIo jsonIo = new JsonIo();
+		JsonReader reader 		  = Json.createReaderFactory(Collections.<String, Object> emptyMap()).createReader(stream);
+		JsonIo jsonIo 			  = new JsonIo();
 		IoReader<String> ioReader = jsonIo.createIoReader(reader.read());
 		DocumentRoot<String> root = ioReader.read();
+
 		return StringifyQName.string2qname.mapDR(root);
 	}
 
 	private static DocumentRoot<QName> readRdf(Reader reader) throws Exception
 	{
-		XMLStreamReader xmlReader=XMLInputFactory.newInstance().createXMLStreamReader(reader);
-		RdfIo rdfIo = new RdfIo();
+		XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader(reader);
+		RdfIo rdfIo 			  = new RdfIo();
+
 		return rdfIo.createIoReader(xmlReader).read();
 	}
 
@@ -251,7 +240,6 @@ public class SBOLReader {
 				parseDnaSequenceV1(SBOLDoc, topLevel);
 			else if(topLevel.getType().equals( Sbol1Terms.Collection.Collection))
 				parseCollectionV1(SBOLDoc, topLevel);
-			//TODO: else parse as genericTopLevel?
 		}
 	}
 
@@ -276,23 +264,25 @@ public class SBOLReader {
 	private static ComponentDefinition parseDnaComponentV1(SBOLDocument SBOLDoc,
 			IdentifiableDocument<QName> componentDef)
 	{
-		URI identity       = componentDef.getIdentity();
 		String displayId   = null;
 		String name 	   = null;
 		String description = null;
-		Set<URI> roles 	   = new HashSet<URI>();
 		URI seq_identity   = null;
-		List<Annotation> annotations = new ArrayList<Annotation>();
-		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>();
-		List<Component> components = new ArrayList<Component>();
-		List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
+		Set<URI> roles 	   = new HashSet<URI>();
+		URI identity       = componentDef.getIdentity();
 
-		List<SBOLPair> precedePairs = new ArrayList<SBOLPair>();
-		Map<URI, URI> componentDefMap = new HashMap<URI, URI>();
+		List<Annotation> annotations 				 = new ArrayList<Annotation>();
+		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>();
+		List<Component> components 				     = new ArrayList<Component>();
+		List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
+		List<SBOLPair> precedePairs   				 = new ArrayList<SBOLPair>();
+		Map<URI, URI> componentDefMap 			 	 = new HashMap<URI, URI>();
 
 		Set<URI> type = new HashSet<URI>();
 		type.add(Sbol2Terms.DnaComponentV1URI.type);
+
 		int component_num = 0;
+		int sa_num = 0;
 
 		for(NamedProperty<QName> namedProperty : componentDef.getProperties())
 		{
@@ -318,25 +308,16 @@ public class SBOLReader {
 			else if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.annotations))
 			{
 				SequenceAnnotation sa = parseSequenceAnnotationV1(SBOLDoc,
-						((NestedDocument<QName>)namedProperty.getValue()), precedePairs);
+						((NestedDocument<QName>)namedProperty.getValue()), precedePairs, identity, ++sa_num);
 
 				sequenceAnnotations.add(sa);
 
-				// TODO: make component either displayid or unique counter
-				URI component_identity = null;
-				/*if(displayId != null)
-				{
-					component_identity = URI.create(getParentURI(componentDef.getIdentity())+ displayId + "/1/0");
-				}
-				else
-				{*/
-				component_identity = URI.create(getParentURI(identity)+ "/component" + ++component_num + "/1/0");
-				/*}*/
+				URI component_identity = URI.create(getParentURI(identity) + "/component" + ++component_num + "/1/0");
 				URI access = Sbol2Terms.Access.PUBLIC;
-
 				URI instantiatedComponent = sa.getComponent();
-				// TODO: replace sa.getIdentity() with the identity of this nestedDocument
-				componentDefMap.put(sa.getIdentity(), component_identity);
+
+				URI originalURI = ((NestedDocument<QName>)namedProperty.getValue()).getIdentity();
+				componentDefMap.put(originalURI, component_identity);
 				sa.setComponent(component_identity);
 
 				Component component = new Component(component_identity, access, instantiatedComponent);
@@ -356,23 +337,16 @@ public class SBOLReader {
 		if(roles.isEmpty())
 			roles.add(Sbol2Terms.DnaComponentV1URI.roles);
 
-		// TODO: for each pair in the list of precedes, create a sequenceConstraint of restriction
-		// precedes, the subject is the component URI of the first SA in
-		// the list and the object is the second SA's component
-		int sc_version = 0;
+		int sc_number = 0;
+
 		for(SBOLPair pair: precedePairs)
 		{
 			// TODO: need parent URI in front, sequenceConstraint##
-			URI sc_identity = URI.create(getParentURI(identity)+"/sequenceConstraint" + ++sc_version +"/1/0");
-
-			// TODO: turn into a URI constant 
+			URI sc_identity = URI.create(getParentURI(identity) + "/sequenceConstraint" + ++sc_number + "/1/0");
 			URI restriction = Sbol2Terms.DnaComponentV1URI.restriction;
-
-			// TODO: these should use map2 to fetch component URI
-			//			URI subject = pair.getLeft();
-			//			URI object = pair.getRight();
 			URI subject = null;
-			URI object = null;
+			URI object  = null;
+
 			for(URI key : componentDefMap.keySet())
 			{
 				if(pair.getLeft().equals(key))
@@ -383,9 +357,7 @@ public class SBOLReader {
 				{
 					object = componentDefMap.get(key);
 				}
-
 			}
-
 
 			SequenceConstraint sc = new SequenceConstraint(sc_identity, restriction, subject, object);
 			sequenceConstraints.add(sc);
@@ -415,19 +387,20 @@ public class SBOLReader {
 
 	private static Sequence parseDnaSequenceV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
 	{
-		URI identity = topLevel.getIdentity();
-		String elements = null;
-		URI encoding = Sbol2Terms.SequenceURI.DnaSequenceV1;
-		String displayId = null;
-		String name = null;
+		String elements    = null;
+		String displayId   = null;
+		String name 	   = null;
 		String description = null;
+		URI identity 	   = topLevel.getIdentity();
+		URI encoding 	   = Sbol2Terms.SequenceURI.DnaSequenceV1;
 		List<Annotation> annotations = new ArrayList<Annotation>();
-		if (authority!=null) {
-			if (topLevel.getIdentity().toString().lastIndexOf('/')!=-1) {
+
+		if (authority != null) {
+			if (topLevel.getIdentity().toString().lastIndexOf('/') != -1) {
 				displayId = topLevel.getIdentity().toString().substring(
-						topLevel.getIdentity().toString().lastIndexOf('/')+1);
+						topLevel.getIdentity().toString().lastIndexOf('/') + 1);
 				identity = URI.create(authority + "/" + displayId + "/1/0");
-			}				
+			}
 		}
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
@@ -472,11 +445,12 @@ public class SBOLReader {
 
 	private static Collection parseCollectionV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
 	{
-		URI identity = topLevel.getIdentity();
-		String displayId = null;
-		String name = null;
+		URI identity 	   = topLevel.getIdentity();
+		String displayId   = null;
+		String name 	   = null;
 		String description = null;
-		Set<URI> members = new HashSet<URI>();
+
+		Set<URI> members   			 = new HashSet<URI>();
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
@@ -521,25 +495,21 @@ public class SBOLReader {
 	}
 
 	private static SequenceAnnotation parseSequenceAnnotationV1(SBOLDocument SBOLDoc,
-			NestedDocument<QName> sequenceAnnotation, List<SBOLPair> precedePairs)
+			NestedDocument<QName> sequenceAnnotation, List<SBOLPair> precedePairs, URI parentURI, int sa_num)
 	{
-		String identity = null;
-		Integer start = null;
-		Integer end = null;
-		String strand = null;
+		Integer start 	 = null;
+		Integer end 	 = null;
+		String strand 	 = null;
 		URI componentURI = null;
+		URI identity  	 = sequenceAnnotation.getIdentity();
 
-		List<Annotation> annotations = new ArrayList<Annotation>();
-		Map<URI, IdentifiableDocument<QName>> saURIMap = new HashMap<URI, IdentifiableDocument<QName>>();
-
+		List<Annotation> annotations 				   = new ArrayList<Annotation>();
+		if (authority != null) {
+			identity = URI.create(getParentURI(parentURI) + "/annotation" + sa_num + "/1/0");
+		}
 		for(NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.uri))
-			{
-				// TODO: <parentURI> + "/" + annotation# + "/1/0" (only do this if authority is not null)
-				identity = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
-			}
-			else if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.bioStart))
+			if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.bioStart))
 			{
 				String temp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 				start = Integer.parseInt(temp);
@@ -560,10 +530,8 @@ public class SBOLReader {
 			}
 			else if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.precedes))
 			{
-				//TODO: create a pair which includes URI of this annotation and the URI referred to in
-				//the precedes, and add this to a list of precedes pairs.
-				URI left = sequenceAnnotation.getIdentity();
-				URI right = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+				URI left 	  = sequenceAnnotation.getIdentity();
+				URI right 	  = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 				SBOLPair pair = new SBOLPair(left, right);
 				precedePairs.add(pair);
 			}
@@ -577,7 +545,7 @@ public class SBOLReader {
 
 		if(start != null && end != null) //create SequenceAnnotation & Component
 		{
-			URI range_identity = URI.create(getParentURI(sequenceAnnotation.getIdentity()) + "/range/1/0");
+			URI range_identity = URI.create(getParentURI(identity) + "/range/1/0");
 			Range r = new Range(range_identity, start, end);
 			if(strand != null)
 			{
@@ -595,17 +563,14 @@ public class SBOLReader {
 		}
 		else
 		{
-			// TODO: create location with dummy (0) values for start/end for now
-			// replace later with new location class composed of just an orientation
-			// Do not return here
-			URI dummyRange_id = URI.create(getParentURI(sequenceAnnotation.getIdentity()) + "/range/1/0");
+			URI dummyRange_id = URI.create(getParentURI(identity) + "/range/1/0");
 			int dummy_start = 0;
 			int dummy_end = 0;
 			Range dummyRange = new Range(dummyRange_id, dummy_start, dummy_end);
 			location = dummyRange;
 		}
 
-		SequenceAnnotation s = new SequenceAnnotation(sequenceAnnotation.getIdentity(), location);
+		SequenceAnnotation s = new SequenceAnnotation(identity, location);
 
 		if(componentURI != null)
 			s.setComponent(componentURI);
@@ -618,22 +583,31 @@ public class SBOLReader {
 
 	private static ComponentDefinition parseComponentDefinitions(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		Set<URI> type = new HashSet<URI>();
-		Set<URI> roles = new HashSet<URI>();
+		URI persistentIdentity = null;
+		String displayId 	   = null;
+		String name 	   	   = null;
+		String description 	   = null;
+		String timeStamp   	   = null;
+		URI structure      	   = null;
+		Set<URI> type  	   	   = new HashSet<URI>();
+		Set<URI> roles 	   	   = new HashSet<URI>();
 
-		URI structure = null;
-		List<Component> components = new ArrayList<Component>();
+		List<Component>  components 				 = new ArrayList<Component>();
+		List<Annotation> annotations 			     = new ArrayList<Annotation>();
 		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>();
 		List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
 
-		String name = null;
-		String description = null;
-		String timeStamp = null;
-		List<Annotation> annotations = new ArrayList<Annotation>();
-
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.type))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.type))
 			{
 				type.add(URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString()));
 			}
@@ -676,6 +650,10 @@ public class SBOLReader {
 		}
 
 		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
+		if(persistentIdentity != null)
+			c.setPersistentIdentity(persistentIdentity);
+		if(displayId != null)
+			c.setDisplayId(displayId);
 		if(structure != null)
 			c.setSequence(structure);
 		if(!components.isEmpty())
@@ -697,15 +675,20 @@ public class SBOLReader {
 
 	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraints)
 	{
-		URI restriction = null;
-		URI subject = null;
-		URI object = null;
-		String timeStamp = null;
+		URI persistentIdentity = null;
+		URI restriction  	   = null;
+		URI subject 	 	   = null;
+		URI object 		 	   = null;
+		String timeStamp 	   = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : sequenceConstraints.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.SequenceConstraint.restriction))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.SequenceConstraint.restriction))
 			{
 				restriction = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
@@ -728,6 +711,8 @@ public class SBOLReader {
 		}
 
 		SequenceConstraint s = new SequenceConstraint(sequenceConstraints.getIdentity(), restriction, subject, object);
+		if(persistentIdentity != null)
+			s.setPersistentIdentity(persistentIdentity);
 		//		s.setTimeStamp(getTimestamp(timeStamp)); //TODO: supress for now
 		if(!annotations.isEmpty())
 			s.setAnnotations(annotations);
@@ -736,17 +721,26 @@ public class SBOLReader {
 
 	private static SequenceAnnotation parseSequenceAnnotation(NestedDocument<QName> sequenceAnnotation)
 	{
-		Location location = null;
-		URI componentURI = null;
-		String name = null;
-		String description = null;
-		String timeStamp = null;
+		URI persistentIdentity = null;
+		String displayId 	   = null;
+		Location location  	   = null;
+		URI componentURI   	   = null;
+		String name 	   	   = null;
+		String description 	   = null;
+		String timeStamp   	   = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
-
 
 		for(NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.Location.Location))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Location.Location))
 			{
 				location = parseLocation((NestedDocument<QName>)namedProperty.getValue());
 			}
@@ -773,6 +767,10 @@ public class SBOLReader {
 		}
 
 		SequenceAnnotation s = new SequenceAnnotation(sequenceAnnotation.getIdentity(), location);
+		if(persistentIdentity != null)
+			s.setPersistentIdentity(persistentIdentity);
+		if(displayId != null)
+			s.setDisplayId(displayId);
 		if(componentURI != null)
 			s.setComponent(componentURI);
 		if(name != null)
@@ -788,7 +786,7 @@ public class SBOLReader {
 
 	private static Location parseLocation(NestedDocument<QName> location)
 	{
-		Location l = null;
+		Location l 		 = null;
 		String timeStamp = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
@@ -804,24 +802,10 @@ public class SBOLReader {
 		{
 			l = parseCut(location);
 		}
-		else //TODO: Ask how to handle this exception
+		else
 		{
 			System.out.println("ERR: Null. Location isn't a Range, MultiRange, or Cut.");
 			return l;
-		}
-
-		//TODO: should the location members be parsed when it is already parsed within range, cut,
-		//and multirange?
-		for(NamedProperty<QName> namedProperty : location.getProperties())
-		{
-			if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
-			}
-			else
-			{
-				annotations.add(new Annotation(namedProperty)) ;
-			}
 		}
 
 		if(timeStamp != null)
@@ -835,15 +819,20 @@ public class SBOLReader {
 
 	private static Cut parseCut(NestedDocument<QName> typeCut)
 	{
-		Integer at = null;
-		URI orientation = null;
-		String version = null;
-		String timeStamp = null;
+		URI persistentIdentity = null;
+		Integer at    	 	   = null;
+		URI orientation  	   = null;
+		String version   	   = null;
+		String timeStamp 	   = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : typeCut.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.Cut.at))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Cut.at))
 			{
 				String temp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 				at = Integer.parseInt(temp);
@@ -873,6 +862,8 @@ public class SBOLReader {
 		}
 
 		Cut c = new Cut(typeCut.getIdentity(), at);
+		if(persistentIdentity != null)
+			c.setPersistentIdentity(persistentIdentity);
 		if(orientation != null)
 			c.setOrientation(orientation);
 		if(version != null)
@@ -887,14 +878,19 @@ public class SBOLReader {
 
 	private static MultiRange parseMultiRange(NestedDocument<QName> typeMultiRange)
 	{
-		String version = null;
-		List<Range> ranges = new ArrayList<Range>();
-		String timeStamp = null;
+		URI persistentIdentity = null;
+		String version         = null;
+		String timeStamp   	   = null;
+		List<Range> ranges 	   = new ArrayList<Range>();
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : typeMultiRange.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.MultiRange.hasRanges))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.MultiRange.hasRanges))
 			{
 				ranges.add( parseRange((NestedDocument<QName>)namedProperty.getValue() ));
 			}
@@ -913,6 +909,8 @@ public class SBOLReader {
 		}
 
 		MultiRange multiRange = new MultiRange(typeMultiRange.getIdentity());
+		if(persistentIdentity != null)
+			multiRange.setPersistentIdentity(persistentIdentity);
 		if(!ranges.isEmpty())
 			multiRange.setRanges(ranges);
 		if(version != null)
@@ -926,12 +924,12 @@ public class SBOLReader {
 
 	private static Range parseRange(NestedDocument<QName> typeRange)
 	{
-		Integer start = null;
-		Integer end = null;
-		URI orientation = null;
-		String version = null;
-
-		String timeStamp = null;
+		URI persistentIdentity = null;
+		Integer start 	 	   = null;
+		Integer end 	 	   = null;
+		URI orientation  	   = null;
+		String version 	 	   = null;
+		String timeStamp 	   = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : typeRange.getProperties())
@@ -941,6 +939,10 @@ public class SBOLReader {
 			{
 				temp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 				start = Integer.parseInt(temp);
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.Range.end))
 			{
@@ -966,6 +968,8 @@ public class SBOLReader {
 		}
 
 		Range r = new Range(typeRange.getIdentity(), start, end);
+		if(persistentIdentity != null)
+			r.setPersistentIdentity(persistentIdentity);
 		if(orientation != null)
 			r.setOrientation(orientation);
 		if(version != null)
@@ -979,21 +983,32 @@ public class SBOLReader {
 
 	private static Component parseSubComponent(NestedDocument<QName> subComponents)
 	{
-		String name = null;
-		String description = null;
-		String timeStamp = null;
-		URI access = Sbol2Terms.Access.PUBLIC;
-		URI subComponentURI = null;
+		URI persistentIdentity = null;
+		String displayId 	   = null;
+		String name 		   = null;
+		String description 	   = null;
+		String timeStamp 	   = null;
+		URI subComponentURI    = null;
+		URI access 			   = Sbol2Terms.Access.PUBLIC;
+
 		List<Annotation> annotations = new ArrayList<Annotation>();
-		List<MapsTo> mappings = new ArrayList<MapsTo>();
+		List<MapsTo> mappings 		 = new ArrayList<MapsTo>();
 
 		for(NamedProperty<QName> namedProperty : subComponents.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.ComponentInstance.access))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
 				access = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
-			if(namedProperty.getName().equals(Sbol2Terms.Module.hasMappings))
+			else if(namedProperty.getName().equals(Sbol2Terms.Module.hasMappings))
 			{
 				mappings.add(parseMapping((NestedDocument<QName>)namedProperty.getValue()));
 			}
@@ -1020,6 +1035,10 @@ public class SBOLReader {
 		}
 
 		Component c = new Component(subComponents.getIdentity(), access, subComponentURI);
+		if(persistentIdentity != null)
+			c.setPersistentIdentity(persistentIdentity);
+		if(displayId != null)
+			c.setDisplayId(displayId);
 		if(access != null)
 			c.setAccess(access);
 		if(!mappings.isEmpty())
@@ -1040,15 +1059,25 @@ public class SBOLReader {
 
 	private static GenericTopLevel parseGenericTopLevel(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String name = null;
-		String description = null;
-		String timeStamp = null;
-		URI rdfType = null;
+		URI persistentIdentity = null;
+		String displayId 	   = null;
+		String name 	   	   = null;
+		String description 	   = null;
+		String timeStamp   	   = null;
+		URI rdfType 	   	   = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
 			{
 				timeStamp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
@@ -1067,12 +1096,15 @@ public class SBOLReader {
 		}
 
 		GenericTopLevel t = SBOLDoc.createGenericTopLevel(topLevel.getIdentity(),topLevel.getType());
-
+		if(persistentIdentity != null)
+			t.setPersistentIdentity(persistentIdentity);
+		if(displayId != null)
+			t.setDisplayId(displayId);
 		if(name != null)
 			t.setName(name);
 		if(description != null)
 			t.setDescription(description);
-		//		t.setTimeStamp(getTimestamp(timeStamp));
+		//		t.setTimeStamp(getTimestamp(timeStamp)); //TODO: cause error
 		if(!annotations.isEmpty())
 			t.setAnnotations(annotations);
 		return t;
@@ -1080,18 +1112,28 @@ public class SBOLReader {
 
 	private static Model parseModels(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String name = null;
-		String description = null;
-		String timeStamp = null;
-		URI source = null;
-		URI language = null;
-		URI framework = null;
-		Set<URI> roles = new HashSet<URI>();
+		URI persistentIdentity = null;
+		String displayId 	   = null;
+		String name 	   	   = null;
+		String description 	   = null;
+		String timeStamp   	   = null;
+		URI source 		   	   = null;
+		URI language 	   	   = null;
+		URI framework 	   	   = null;
+		Set<URI> roles 	   	   = new HashSet<URI>();
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.Model.source))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Model.source))
 			{
 				source = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
@@ -1126,6 +1168,10 @@ public class SBOLReader {
 		}
 
 		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework, roles);
+		if(persistentIdentity != null)
+			m.setPersistentIdentity(persistentIdentity);
+		if(displayId != null)
+			m.setDisplayId(displayId);
 		if(name != null)
 			m.setName(name);
 		if(description != null)
@@ -1139,15 +1185,25 @@ public class SBOLReader {
 
 	private static Collection parseCollections(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String name = null;
-		String description = null;
-		String timeStamp = null;
-		Set<URI> members = new HashSet<URI>();
+		URI persistentIdentity = null;
+		String displayId 	   = null;
+		String name        	   = null;
+		String description 	   = null;
+		String timeStamp   	   = null;
+		Set<URI> members   	   		 = new HashSet<URI>();
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.Collection.hasMembers))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Collection.hasMembers))
 			{
 				members.add(URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString()));
 			}
@@ -1159,7 +1215,6 @@ public class SBOLReader {
 			{
 				description = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
-
 			else if(namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
 			{
 				timeStamp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
@@ -1171,6 +1226,10 @@ public class SBOLReader {
 		}
 
 		Collection c = SBOLDoc.createCollection(topLevel.getIdentity());
+		if(displayId != null)
+			c.setDisplayId(displayId);
+		if(persistentIdentity != null)
+			c.setPersistentIdentity(persistentIdentity);
 		if(!members.isEmpty())
 			c.setMembers(members);
 		if(name != null)
@@ -1186,19 +1245,30 @@ public class SBOLReader {
 
 	private static ModuleDefinition parseModuleDefinition(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String name = null;
-		String description = null;
-		String timeStamp = null;
-		Set<URI> roles = new HashSet<URI>();
+		URI persistentIdentity = null;
+		String displayId 	   = null;
+		String name 	   	   = null;
+		String description 	   = null;
+		String timeStamp   	   = null;
+		Set<URI> roles     	   = new HashSet<URI>();
+		Set<URI> models    	   = new HashSet<URI>();
+
 		List<FunctionalComponent> functionalComponents = new ArrayList<FunctionalComponent>();
-		List<Interaction> interactions = new ArrayList<Interaction>();
-		Set<URI> models = new HashSet<URI>();
-		List<Module> subModules = new ArrayList<Module>();
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Interaction> interactions 				   = new ArrayList<Interaction>();
+		List<Module> subModules 					   = new ArrayList<Module>();
+		List<Annotation> annotations 				   = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.roles))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.roles))
 			{
 				roles.add(URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString()));
 			}
@@ -1243,6 +1313,10 @@ public class SBOLReader {
 		}
 
 		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity(), roles);
+		if(persistentIdentity != null)
+			moduleDefinition.setPersistentIdentity(persistentIdentity);
+		if(displayId != null)
+			moduleDefinition.setDisplayId(displayId);
 		if(!functionalComponents.isEmpty())
 			moduleDefinition.setComponents(functionalComponents);
 		if(!interactions.isEmpty())
@@ -1264,31 +1338,33 @@ public class SBOLReader {
 
 	private static Module parseSubModule(NestedDocument<QName> module)
 	{
-		URI subModuleURI = null;
-		URI definitionURI = null;
-		String name = null;
-		String description = null;
-		String timeStamp = null;
-		List<MapsTo> mappings = new ArrayList<MapsTo>();
+		URI persistentIdentity = null;
+		String displayId 	   = null;
+		URI definitionURI  	   = null;
+		String name 	   	   = null;
+		String description 	   = null;
+		String timeStamp   	   = null;
+		List<MapsTo> mappings 		 = new ArrayList<MapsTo>();
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : module.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.Module.hasMappings))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
-				mappings.add(
-						parseMapping((NestedDocument<QName>)namedProperty.getValue()));
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Module.hasMappings))
+			{
+				mappings.add(parseMapping((NestedDocument<QName>)namedProperty.getValue()));
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.Module.hasDefinition))
 			{
 				definitionURI = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
 			}
-			//TODO: does the UML diagram missing an instatiatedModule because the constructor for
-			//Module requires an instantiatedModule
-			//			else if(namedProperty.getName().equals(Sbol2Terms.Module.hasInstantiatedModule))
-			//			{
-			//				subModuleURI = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
-			//			}
 			else if(namedProperty.getName().equals(Sbol2Terms.Documented.name))
 			{
 				name = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
@@ -1308,9 +1384,12 @@ public class SBOLReader {
 		}
 
 		Module submodule = new Module(module.getIdentity(), definitionURI);
+		if(persistentIdentity != null)
+			submodule.setPersistentIdentity(persistentIdentity);
+		if(displayId != null)
+			submodule.setDisplayId(displayId);
 		if(!mappings.isEmpty())
 			submodule.setMappings(mappings);
-		//		submodule.setDefinition(definitionURI);
 		if(name != null)
 			submodule.setName(name);
 		if(description != null)
@@ -1324,13 +1403,18 @@ public class SBOLReader {
 
 	private static MapsTo parseMapping(NestedDocument<QName> mappings)
 	{
-		URI remote = null;
+		URI persistentIdentity    = null;
+		URI remote 				  = null;
 		RefinementType refinement = null;
-		URI local = null;
+		URI local 				  = null;
 
 		for(NamedProperty<QName> m : mappings.getProperties())
 		{
-			if(m.getName().equals(Sbol2Terms.MapsTo.refinement))
+			if(m.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)m.getValue()).getValue().toString());
+			}
+			else if(m.getName().equals(Sbol2Terms.MapsTo.refinement))
 			{
 				refinement = RefinementType.valueOf(((Literal<QName>)m.getValue()).getValue().toString());
 			}
@@ -1345,21 +1429,33 @@ public class SBOLReader {
 		}
 
 		MapsTo map = new MapsTo(mappings.getIdentity(), refinement, local,remote);
+		if(persistentIdentity != null)
+			map.setPersistentIdentity(persistentIdentity);
 		return map;
 	}
 
 	private static Interaction parseInteraction(NestedDocument<QName> interaction)
 	{
-		String name = null;
-		String description = null;
-		String timeStamp = null;
-		Set<URI> type = new HashSet<URI>();
+		URI persistentIdentity = null;
+		String displayId 	   = null;
+		String name 	   	   = null;
+		String description 	   = null;
+		String timeStamp   	   = null;
+		Set<URI> type 	   	   = new HashSet<URI>();
 		List<Participation> participations = new ArrayList<Participation>();
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations 	   = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> i : interaction.getProperties())
 		{
-			if(i.getName().equals(Sbol2Terms.Interaction.type))
+			if(i.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)i.getValue()).getValue().toString());
+			}
+			else if(i.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>)i.getValue()).getValue().toString();
+			}
+			else if(i.getName().equals(Sbol2Terms.Interaction.type))
 			{
 				type.add(URI.create(((Literal<QName>)i.getValue()).getValue().toString()));
 			}
@@ -1387,6 +1483,10 @@ public class SBOLReader {
 		}
 
 		Interaction i = new Interaction(interaction.getIdentity(), type, participations);
+		if(persistentIdentity != null)
+			i.setPersistentIdentity(persistentIdentity);
+		if(displayId != null)
+			i.setDisplayId(displayId);
 		if(name != null)
 			i.setName(name);
 		if(description != null)
@@ -1400,12 +1500,17 @@ public class SBOLReader {
 
 	private static Participation parseParticipation(NestedDocument<QName> participation)
 	{
-		Set<URI> role = new HashSet<URI>();
-		URI participant = null;
+		URI persistentIdentity = null;
+		Set<URI> role   	   = new HashSet<URI>();
+		URI participant 	   = null;
 
 		for(NamedProperty<QName> p : participation.getProperties())
 		{
-			if(p.getName().equals(Sbol2Terms.Participation.role))
+			if(p.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)p.getValue()).getValue().toString());
+			}
+			else if(p.getName().equals(Sbol2Terms.Participation.role))
 			{
 				role.add(URI.create(((Literal<QName>)p.getValue()).getValue().toString()));
 			}
@@ -1416,23 +1521,36 @@ public class SBOLReader {
 		}
 
 		Participation p = new Participation(participation.getIdentity(), role, participant);
+		if(persistentIdentity != null)
+			p.setPersistentIdentity(persistentIdentity);
 		return p;
 	}
 
 	private static FunctionalComponent parseFunctionalComponents(NestedDocument<QName> functionalComponent)
 	{
-		String name = null;
-		String description = null;
-		String timeStamp = null;
-		URI access = null;
-		URI direction = null;
+		URI persistentIdentity 	   = null;
+		String displayId 	   	   = null;
+		String name 			   = null;
+		String description 		   = null;
+		String timeStamp 		   = null;
+		URI access 				   = null;
+		URI direction 			   = null;
 		URI functionalComponentURI = null;
+
 		List<Annotation> annotations = new ArrayList<Annotation>();
-		List<MapsTo> mappings = new ArrayList<MapsTo>();
+		List<MapsTo> mappings 		 = new ArrayList<MapsTo>();
 
 		for(NamedProperty<QName> f : functionalComponent.getProperties())
 		{
-			if(functionalComponent.getType().equals(Sbol2Terms.ComponentInstance.access))
+			if(f.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)f.getValue()).getValue().toString());
+			}
+			else if(f.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>)f.getValue()).getValue().toString();
+			}
+			else if(functionalComponent.getType().equals(Sbol2Terms.ComponentInstance.access))
 			{
 				access = URI.create(((Literal<QName>)f.getValue()).getValue().toString());
 			}
@@ -1468,6 +1586,10 @@ public class SBOLReader {
 		}
 
 		FunctionalComponent fc = new FunctionalComponent(functionalComponent.getIdentity(), access, functionalComponentURI, direction);
+		if(persistentIdentity != null)
+			fc.setPersistentIdentity(persistentIdentity);
+		if(displayId != null)
+			fc.setDisplayId(displayId);
 		if(!mappings.isEmpty())
 			fc.setMappings(mappings);
 		if(name != null)
@@ -1483,16 +1605,26 @@ public class SBOLReader {
 
 	private static Sequence parseSequences(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String name = null;
-		String description = null;
-		String timeStamp = null;
-		String elements = null;
-		URI encoding = null;
+		URI persistentIdentity = null;
+		String displayId 	   = null;
+		String name 	   	   = null;
+		String description 	   = null;
+		String timeStamp   	   = null;
+		String elements    	   = null;
+		URI encoding 	   	   = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for(NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol2Terms.Sequence.elements))
+			if(namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity = URI.create(((Literal<QName>)namedProperty.getValue()).getValue().toString());
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
+			}
+			else if(namedProperty.getName().equals(Sbol2Terms.Sequence.elements))
 			{
 				elements = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 			}
@@ -1519,6 +1651,10 @@ public class SBOLReader {
 		}
 
 		Sequence sequence = SBOLDoc.createSequence(topLevel.getIdentity(), elements, encoding);
+		if(persistentIdentity != null)
+			sequence.setPersistentIdentity(persistentIdentity);
+		if(displayId != null)
+			sequence.setDisplayId(displayId);
 		if(name != null)
 			sequence.setName(name);
 		if(description != null)
@@ -1533,7 +1669,7 @@ public class SBOLReader {
 	private static Timestamp getTimestamp(String timeStamp)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		java.util.Date date = null;
+		java.util.Date date  = null;
 		try
 		{
 			date = sdf.parse(timeStamp);
@@ -1549,13 +1685,21 @@ public class SBOLReader {
 	private static URI getParentURI(URI identity)
 	{
 		// TODO: /d+/d+ at the end, and remove
+		String regex = ".*[/]\\d+[/]\\d+";
+		String regex_minor = ".*[/]\\d+[/]";
+		String regex_major = ".*[/]\\d+";
+		String regex_end = ".*[/]";
+
 		String identity_str = identity.toString();
-		String result = identity_str;
-		if(identity_str.endsWith("/1/0"))
+
+
+		while(identity_str.matches(regex) || identity_str.matches(regex_minor) || identity_str.matches(regex_major)
+				|| identity_str.matches(regex_end))
 		{
-			result = identity_str.substring(0, identity_str.length() - 4);
+			identity_str = identity_str.substring(0, identity_str.length() - 1);
 		}
-		return URI.create(result);
+
+		return URI.create(identity_str);
 	}
 
 }
