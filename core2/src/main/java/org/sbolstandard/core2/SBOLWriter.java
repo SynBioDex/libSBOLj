@@ -60,6 +60,7 @@ public class SBOLWriter {
 	 * url(authority)/id/major.vr/minor.vr
 	 *
 	 * TODO: not all isSet() for the members are called.
+	 * major and minor vision isn't implemented.
 	 */
 
 	public static void write(SBOLDocument doc, File file) throws FileNotFoundException{
@@ -222,7 +223,7 @@ public class SBOLWriter {
 	 * @throws Throwable
 	 */
 	public static void writeTurtle(SBOLDocument doc, File file) throws Throwable{
-		FileOutputStream stream = new FileOutputStream(file);
+		FileOutputStream stream 	= new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
 		try
 		{
@@ -318,8 +319,8 @@ public class SBOLWriter {
 	{
 		formatCommonIdentifiedData(list, d);
 		//TODO: suppress getDisplayId() for now.
-		//		if(d.getDisplayId() != null)
-		//			list.add(NamedProperty(Sbol2Terms.Documented.displayId, d.getDisplayId()));
+		if(d.getDisplayId() != null)
+			list.add(NamedProperty(Sbol2Terms.Documented.displayId, d.getDisplayId()));
 		if(d.isSetName())
 			list.add(NamedProperty(Sbol2Terms.Documented.name, d.getName()));
 		if(d.isSetDescription())
@@ -329,10 +330,10 @@ public class SBOLWriter {
 	private static void formatCommonIdentifiedData (List<NamedProperty<QName>> list, Identified t)
 	{
 		//TODO: suppress getPersistentIdentity() & getVersion() for now.
-		//		if(t.getPersistentIdentity() != null)
-		//			list.add(NamedProperty(Sbol2Terms.Documented.persistentIdentity, t.getPersistentIdentity()));
-		//		if(t.getVersion() != null)
-		//			list.add(NamedProperty(Sbol2Terms.Documented.version, t.getVersion()));
+		if(t.getPersistentIdentity() != null)
+			list.add(NamedProperty(Sbol2Terms.Identified.persistentIdentity, t.getPersistentIdentity()));
+		if(t.getVersion() != null)
+			list.add(NamedProperty(Sbol2Terms.Identified.version, t.getVersion()));
 		if(t.isSetTimeStamp())
 			list.add(NamedProperty(Sbol2Terms.Identified.timeStamp, t.getTimeStamp().toString()));
 

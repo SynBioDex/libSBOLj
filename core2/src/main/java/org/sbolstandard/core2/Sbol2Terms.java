@@ -111,6 +111,8 @@ public class Sbol2Terms
 		public static final QName identity   	   	 = sbol2.withLocalPart("identity");
 		public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity");
 		public static final QName version   	  	 = sbol2.withLocalPart("version");
+		public static final QName majorversion   	 = sbol2.withLocalPart("major version"); //TODO: clarify
+		public static final QName minorversion   	 = sbol2.withLocalPart("minor version");
 		public static final QName timeStamp   	     = sbol2.withLocalPart("timeStamp");
 		public static final QName hasAnnotations 	 = sbol2.withLocalPart("annotation");
 	}
