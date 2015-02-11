@@ -282,6 +282,7 @@ public class SBOLReader {
 		type.add(Sbol2Terms.DnaComponentV1URI.type);
 
 		int component_num = 0;
+		int sa_num = 0;
 
 		for(NamedProperty<QName> namedProperty : componentDef.getProperties())
 		{
@@ -307,7 +308,7 @@ public class SBOLReader {
 			else if(namedProperty.getName().equals(Sbol1Terms.DNAComponent.annotations))
 			{
 				SequenceAnnotation sa = parseSequenceAnnotationV1(SBOLDoc,
-						((NestedDocument<QName>)namedProperty.getValue()), precedePairs, identity);
+						((NestedDocument<QName>)namedProperty.getValue()), precedePairs, identity, ++sa_num);
 
 				sequenceAnnotations.add(sa);
 
@@ -315,7 +316,8 @@ public class SBOLReader {
 				URI access = Sbol2Terms.Access.PUBLIC;
 				URI instantiatedComponent = sa.getComponent();
 
-				componentDefMap.put(sa.getIdentity(), component_identity);
+				URI originalURI = ((NestedDocument<QName>)namedProperty.getValue()).getIdentity();
+				componentDefMap.put(originalURI, component_identity);
 				sa.setComponent(component_identity);
 
 				Component component = new Component(component_identity, access, instantiatedComponent);
@@ -493,9 +495,8 @@ public class SBOLReader {
 	}
 
 	private static SequenceAnnotation parseSequenceAnnotationV1(SBOLDocument SBOLDoc,
-			NestedDocument<QName> sequenceAnnotation, List<SBOLPair> precedePairs, URI parentURI)
+			NestedDocument<QName> sequenceAnnotation, List<SBOLPair> precedePairs, URI parentURI, int sa_num)
 	{
-		int sa_value 	 = 0;
 		Integer start 	 = null;
 		Integer end 	 = null;
 		String strand 	 = null;
@@ -503,18 +504,12 @@ public class SBOLReader {
 		URI identity  	 = sequenceAnnotation.getIdentity();
 
 		List<Annotation> annotations 				   = new ArrayList<Annotation>();
-
+		if (authority != null) {
+			identity = URI.create(getParentURI(parentURI) + "/annotation" + sa_num + "/1/0");
+		}
 		for(NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
-			if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.uri))
-			{
-				// TODO: <parentURI> + "/" + annotation# + "/1/0"
-				//(only do this if authority is not null)
-				if (authority != null) {
-					identity = URI.create(getParentURI(parentURI) + "/" + identity + ++sa_value + "/1/0");
-				}
-			}
-			else if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.bioStart))
+			if(namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.bioStart))
 			{
 				String temp = ((Literal<QName>)namedProperty.getValue()).getValue().toString();
 				start = Integer.parseInt(temp);
@@ -550,7 +545,7 @@ public class SBOLReader {
 
 		if(start != null && end != null) //create SequenceAnnotation & Component
 		{
-			URI range_identity = URI.create(getParentURI(sequenceAnnotation.getIdentity()) + "/range/1/0");
+			URI range_identity = URI.create(getParentURI(identity) + "/range/1/0");
 			Range r = new Range(range_identity, start, end);
 			if(strand != null)
 			{
@@ -568,14 +563,14 @@ public class SBOLReader {
 		}
 		else
 		{
-			URI dummyRange_id = URI.create(getParentURI(sequenceAnnotation.getIdentity()) + "/range/1/0");
+			URI dummyRange_id = URI.create(getParentURI(identity) + "/range/1/0");
 			int dummy_start = 0;
 			int dummy_end = 0;
 			Range dummyRange = new Range(dummyRange_id, dummy_start, dummy_end);
 			location = dummyRange;
 		}
 
-		SequenceAnnotation s = new SequenceAnnotation(sequenceAnnotation.getIdentity(), location);
+		SequenceAnnotation s = new SequenceAnnotation(identity, location);
 
 		if(componentURI != null)
 			s.setComponent(componentURI);
