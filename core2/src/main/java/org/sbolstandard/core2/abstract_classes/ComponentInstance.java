@@ -25,8 +25,9 @@ public abstract class ComponentInstance extends Documented {
 		}
 
 		/**
-		 * Sets field variable <code>access</code> to the element corresponding to the specified URI.
+		 * Convert the specified URI to its corresponding AccessType instance.
 		 * @param access
+		 * @return the corresponding AccessType instance
 		 */
 		public static AccessType convertToAccessType(URI access) {
 			if (access.equals(Access.PUBLIC)) {

@@ -1,5 +1,9 @@
 package org.sbolstandard.core2;
 
+import java.net.URI;
+
+import org.sbolstandard.core2.Sbol2Terms.Orientation;
+
 /**
  * 
  * @author Zhen Zhang
@@ -27,6 +31,45 @@ public enum OrientationType {
 	@Override
 	public String toString() {
 		return orientationType;
+	}
+
+	/**
+	 * Convert the specified URI to its corresponding OrientationType instance. 
+	 * @param orientation
+	 * @return the corresponding OrientationType instance
+	 */
+	public static OrientationType convertToOrientationType(URI orientation) {
+		if (orientation.equals(Orientation.inline)) {
+			return OrientationType.INlINE;
+		} 
+		else if (orientation.equals(Orientation.reverseComplement)) {
+			return OrientationType.REVERSECOMPLEMENT;
+		}
+		else {
+			// TODO: Validation?
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the orientation type in URI.
+	 * @return orientation type in URI
+	 */
+	public static URI convertToURI(OrientationType orientation) {
+		if (orientation != null) {
+			if (orientation.equals(OrientationType.INlINE)) {
+				return Orientation.inline;
+			}
+			else if (orientation.equals(OrientationType.REVERSECOMPLEMENT)) {
+				return Orientation.reverseComplement;
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			return null;
+		}
 	}
 }
 	

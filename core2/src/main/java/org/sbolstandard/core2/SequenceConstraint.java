@@ -26,10 +26,17 @@ public class SequenceConstraint extends Identified {
 		public String getRestrictionType() {
 			return restrictionType;
 		}
+
+		@Override
+		public String toString() {
+			return restrictionType;
+		}
 		
+				
 		/**
-		 * Sets field variable <code>access</code> to the element corresponding to the specified URI.
+		 * Convert the specified URI to its corresponding RestrictionType instance.
 		 * @param restriction
+		 * @return the corresponding RestrictionType instance.
 		 */
 		public static RestrictionType convertToRestrictionType(URI restriction) {
 			if (restriction.equals(Restriction.precedes)) {
@@ -40,10 +47,23 @@ public class SequenceConstraint extends Identified {
 				return null;
 			}
 		}
-
-		@Override
-		public String toString() {
-			return restrictionType;
+		
+		/**
+		 * Returns the restriction type in URI.
+		 * @return restriction type in URI
+		 */
+		public static URI convertToURI(RestrictionType restriction) {
+			if (restriction != null) {
+				if (restriction.equals(RestrictionType.PRECEDES)) {
+					return Restriction.precedes;
+				}
+				else {
+					return null;
+				}
+			}
+			else {
+				return null;
+			}
 		}
 	}
 	

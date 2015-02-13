@@ -31,6 +31,11 @@ public class FunctionalComponent extends ComponentInstance {
 			return directionType;
 		}
 
+		/**
+		 * Convert the specified URI to its corresponding DirectionType instance.
+		 * @param direction
+		 * @return the corresponding DirectionType instance
+		 */
 		public static DirectionType convertToDirectionType(URI direction) {
 			if (direction != null) {
 				if (direction.equals(DirectionType.INOUT)) {
@@ -48,7 +53,36 @@ public class FunctionalComponent extends ComponentInstance {
 				return null;
 			}
 		}
+		
+		/**
+		 * Returns the direction type in URI.
+		 * @return direction type in URI
+		 */
+		public static URI convertToURI(DirectionType direction) {
+			if (direction != null) {
+				if (direction.equals(DirectionType.INOUT)) {
+					return Direction.inout;
+				}
+				else if (direction.equals(DirectionType.INPUT)) {
+					return Direction.input;
+				}
+				else if (direction.equals(DirectionType.OUTPUT)) {
+					return Direction.output;
+				}
+				else if (direction.equals(DirectionType.NONE)) {
+					return Direction.none;
+				}
+				else {
+					return null;
+				}
+			}
+			else {
+				return null;
+			}
+		}
 	}
+	
+	
 
 	public FunctionalComponent(URI identity, AccessType access, URI instantiatedComponent,
 			DirectionType direction) {
