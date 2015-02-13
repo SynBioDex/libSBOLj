@@ -62,7 +62,7 @@ public class ComponentDefinition extends TopLevel {
 	
 	/**
 	 * Returns the field variable <code>type</code>.
-	 * @return
+	 * @return the set of URIs for <code>type</code>.
 	 */
 	public Set<URI> getType() {
 		return type;
@@ -112,7 +112,7 @@ public class ComponentDefinition extends TopLevel {
 	
 	/**
 	 * Returns the field variable <code>roles</code>.
-	 * @return
+	 * @return the set of URIs for <code>roles</code>.
 	 */
 	public Set<URI> getRoles() {
 		return roles;
@@ -432,8 +432,9 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
+	 * Deep equality.
 	 * @param componentDefinition
-	 * @return
+	 * @return <code>True</code> if the specified {@link ComponentDefinition} instance is equal to this instance.
 	 */
 	public boolean equals(ComponentDefinition componentDefinition) {
 		// TODO fill in the content
@@ -451,7 +452,7 @@ public class ComponentDefinition extends TopLevel {
 	
 	/**
 	 * Replace the minor version in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param minorVersion
+	 * @param majorVersion
 	 */
 	public void setMajorVersion(int majorVersion) {
 		// TODO fill in
@@ -500,7 +501,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Clone the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
 	 * @param id
-	 * @return the copied object
+	 * @return the copied {@link ComponentDefinition} instance.
 	 */
 	public ComponentDefinition copy(String id) {
 		// TODO fill in
@@ -511,7 +512,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Clone the object first, and set its major version to the specified value, and minor version to "0". 
 	 * @param majorVersion
-	 * @return
+	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
 	 */
 	public ComponentDefinition newMajorVersion(int majorVersion) {
 		// TODO fill in
@@ -521,7 +522,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Clone the object first, and set its minor version to the specified value.
 	 * @param minorVersion
-	 * @return
+	 * @return the copied {@link ComponentDefinition} instance with the specified minor version.
 	 */
 	public ComponentDefinition newMinorVersion(int minorVersion) {
 		// TODO fill in

@@ -19,8 +19,6 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @version 2.0
- * @param <Identified>
- *
  */
 
 public class SBOLDocument {
@@ -69,7 +67,7 @@ public class SBOLDocument {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of modules if present.
-	 * @param structuralConstraintURI
+	 * @param moduleURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public ModuleDefinition removeModuleDefinition(URI moduleURI) {
@@ -120,7 +118,7 @@ public class SBOLDocument {
 	/**
 	 * Create a new {@link Collection} instance.
 	 * @param identity
-	 * @return
+	 * @return {@link Collection} instance. 
 	 */
 	public Collection createCollection(URI identity) {
 		Collection newCollection = new Collection(identity);
@@ -139,7 +137,7 @@ public class SBOLDocument {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of collections if present.
-	 * @param structuralConstraintURI
+	 * @param collectionURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Collection removeCollection(URI collectionURI) {
@@ -190,8 +188,11 @@ public class SBOLDocument {
 	/**
 	 * Create a new {@link Model} instance.
 	 * @param identity
-	 * @param displayId
-	 * @return
+	 * @param source
+	 * @param language
+	 * @param framework
+	 * @param roles
+	 * @return {@link Model} instance.
 	 */
 	public Model createModel(URI identity, URI source, URI language, URI framework, Set<URI> roles) {
 		Model newModel = new Model(identity, source, language, framework, roles);
@@ -210,7 +211,7 @@ public class SBOLDocument {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of models if present.
-	 * @param structuralConstraintURI
+	 * @param modelURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Model removeModel(URI modelURI) {
@@ -261,8 +262,9 @@ public class SBOLDocument {
 	/**
 	 * Create a new {@link ComponentDefinition} instance.
 	 * @param identity
-	 * @param displayId
-	 * @return
+	 * @param type
+	 * @param roles
+	 * @return {@link ComponentDefinition} instance.
 	 */
 	public ComponentDefinition createComponentDefinition(URI identity, Set<URI> type, Set<URI> roles) {
 		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, type, roles);
@@ -281,7 +283,7 @@ public class SBOLDocument {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of component definitions if present.
-	 * @param structuralConstraintURI
+	 * @param componentDefinitionURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public ComponentDefinition removeComponentDefinition(URI componentDefinitionURI) {
@@ -334,7 +336,7 @@ public class SBOLDocument {
 	 * @param identity
 	 * @param elements
 	 * @param encoding
-	 * @return
+	 * @return {@link Sequence} instance.
 	 */
 	public Sequence createSequence(URI identity, String elements, URI encoding) {
 		Sequence newSequence = new Sequence(identity, elements, encoding);
@@ -374,7 +376,7 @@ public class SBOLDocument {
 	 * Create an instance of the top-level classes, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition}, 
 	 * {@link Sequence}, or {@link TopLevel} with a new major version, and add it to its corresponding top-level instances list.
 	 * @param toplevel
-	 * @return
+	 * @return {@link TopLevel} instance
 	 */
 	public TopLevel createNewMajorVersion(TopLevel toplevel) {
 		Identified newTopLevel = toplevel.newMajorVersion();
@@ -434,7 +436,7 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the instance matching the specified URI from the list of structures if present.
-	 * @param structuralConstraintURI
+	 * @param sequenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Sequence removeSequence(URI sequenceURI) {
@@ -485,8 +487,8 @@ public class SBOLDocument {
 	/**
 	 * Create a new {@link GenericTopLevel} instance.
 	 * @param identity
-	 * @param displayId
-	 * @return
+	 * @param rdfType
+	 * @return {@link GenericTopLevel} instance.
 	 */
 	public GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
@@ -505,7 +507,7 @@ public class SBOLDocument {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of topLevels if present.
-	 * @param structuralConstraintURI
+	 * @param topLevelURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public GenericTopLevel removeGenericTopLevel(URI topLevelURI) {

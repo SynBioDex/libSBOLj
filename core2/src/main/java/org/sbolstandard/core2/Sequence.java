@@ -62,7 +62,7 @@ public class Sequence extends TopLevel{
 	
 	/**
 	 * Replace the minor version in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param minorVersion
+	 * @param majorVersion
 	 */
 	public void setMajorVersion(int majorVersion) {
 		// TODO fill in

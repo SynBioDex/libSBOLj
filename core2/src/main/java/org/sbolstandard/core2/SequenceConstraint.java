@@ -85,7 +85,8 @@ public class SequenceConstraint extends Identified {
 	}
 	
 	/**
-	 * @return
+	 * Returns the URI corresponding to the type of restriction.
+	 * @return the URI corresponding to the type of restriction.
 	 */
 	public URI getRestrictionURI() {
 		if (restriction != null) {

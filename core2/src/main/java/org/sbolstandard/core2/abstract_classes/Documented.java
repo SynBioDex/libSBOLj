@@ -15,9 +15,7 @@ public abstract class Documented extends Identified {
 	private String description;
 	
 	/**
-	 * 
 	 * @param identity an identity for the documented object
-	 * @param displayID a display ID for the documented object
 	 */
 	public Documented(URI identity) {
 		super(identity);

@@ -252,8 +252,8 @@ public abstract class Identified {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of annotations if present.
-	 * @param structuralAnnotationURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @param annotation
+	 * @return <code>True</code> if the matching instance is present. 
 	 */
 	public boolean removeAnnotation(Annotation annotation) {
 		return annotations.remove(annotation);
