@@ -6,48 +6,135 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.sbolstandard.core2.MapsTo;
-import org.sbolstandard.core2.RefinementType;
+import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.Sbol2Terms;
 
 
 public abstract class ComponentInstance extends Documented {
 	
-	private URI access;
+	private AccessType access;
 	private URI definition;
 	private HashMap<URI, MapsTo> mappings;
 	
-//	public ComponentInstantiation(URI identity, URI componentIdentity, AccessType access, List<URI> type, List<URI> roles) {
-//		super(identity);
-//		setAccess(access);
-//		//setInstantiatedComponent(instantiatedComponent);
-//		this.instantiatedComponent = new Component(componentIdentity, type, roles);
-//		this.references = new ArrayList<MapsTo>();
-//	}
-	
-	public ComponentInstance(URI identity, URI access, URI definition) {
+	public static enum AccessType {
+		PUBLIC("public"), PRIVATE("private");
+		private final String accessType;
+
+		private AccessType(String accessType) {
+			this.accessType = accessType;
+		}
+
+		/**
+		 * Sets field variable <code>access</code> to the element corresponding to the specified URI.
+		 * @param access
+		 */
+		public static AccessType convertToAccessType(URI access) {
+			if (access.equals(Access.PUBLIC)) {
+				return AccessType.PUBLIC;
+			} else if (access.equals(Access.PRIVATE)) {
+				return AccessType.PRIVATE;
+			}
+			else {
+				// TODO: Validation?
+				return null;
+			}
+		}
+		
+		/**
+		 * Returns the access type in URI.
+		 * @return access type in URI
+		 */
+		public static URI convertToURI(AccessType access) {
+			if (access != null) {
+				if (access.equals(AccessType.PUBLIC)) {
+					return Access.PUBLIC;
+				}
+				else if (access.equals(AccessType.PRIVATE)) {
+					return Access.PRIVATE;
+				}
+				else {
+					return null;
+				}
+			}
+			else {
+				return null;
+			}
+		}
+
+		/**
+		 * Returns the access type.
+		 * @return access type.
+		 */
+		public String getAccessType() {
+			return accessType;
+		}
+
+		@Override
+		public String toString() {
+			return accessType;
+		}
+	}
+
+	public ComponentInstance(URI identity, AccessType access, URI definition) {
 		super(identity);
 		setAccess(access);
 		setDefinition(definition);		
 		this.mappings = new HashMap<URI, MapsTo>();
 	}
 	
-	
 	/**
 	 * Returns field variable <code>access</code>.
 	 * @return field variable <code>access</code>
 	 */
-	public URI getAccess() {
+	public AccessType getAccess() {
 		return access;
+	}
+	
+	/**
+	 * Returns the access type in URI.
+	 * @return access type in URI
+	 */
+	public URI getAccessURI() {
+		if (access != null) {
+			if (access.equals(AccessType.PUBLIC)) {
+				return Access.PUBLIC;
+			}
+			else if (access.equals(AccessType.PRIVATE)) {
+				return Access.PRIVATE;
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			return null;
+		}
 	}
 
 	/**
 	 * Sets field variable <code>access</code> to the specified element.
 	 * @param access
 	 */
-	public void setAccess(URI access) {
+	public void setAccess(AccessType access) {
 		this.access = access;
 	}
 	
+	/**
+	 * Sets field variable <code>access</code> to the element corresponding to the specified URI.
+	 * @param access
+	 */
+	public void setAccess(URI access) {
+		if (access.equals(Access.PUBLIC)) {
+			this.access = AccessType.PUBLIC;
+		} else if (access.equals(Access.PRIVATE)) {
+			this.access = AccessType.PRIVATE;
+		}
+		else {
+			// TODO: Validation?
+			this.access = null;
+		}
+	}
+
 	/**
 	 * Test if optional field variable <code>references</code> is set.
 	 * @return <code>true</code> if it is not an empty list
@@ -148,62 +235,11 @@ public abstract class ComponentInstance extends Documented {
 		this.definition = definitionURI;
 	}
 	
-		public static enum AccessType {
-
-		PUBLIC("public"), PRIVATE("private");
-
-		// private final String accessType;
-
-		private String accessType;
-
-		private AccessType(String accessType) {
-			this.accessType = accessType;
-		}
-
-		private AccessType(URI accessType) {
-			if (accessType.equals(Access.PUBLIC)) {
-				this.accessType = "public";
-			} else if (accessType.equals(Access.PRIVATE)) {
-				this.accessType = "private";
-			}
-		}
-
-		/**
-		 * Returns the access type.
-		 * @return access type.
-		 */
-		public String getAccessType() {
-			return accessType;
-		}
-
-		/**
-		 * Returns the access type in URI.
-		 * @return access type in URI
-		 */
-		public URI getAccessTypeURI() {
-			if (accessType != null) {
-				if (accessType == "public") {
-					return Access.PUBLIC;
-				}
-				else if (accessType == "private") {
-					return Access.PRIVATE;
-				}
-				else
-					return null;
-			}
-			return null;
-		}
-
-		@Override
-		public String toString() {
-			return accessType;
-		}
-
-		public static final class Access {
-			public static final URI PUBLIC = URI.create(Sbol2Terms.sbol2
-			.getNamespaceURI() + "public");
-			public static final URI PRIVATE = URI.create(Sbol2Terms.sbol2
-			.getNamespaceURI() + "private");
-		}
+	
+	public static final class Access {
+		public static final URI PUBLIC = URI.create(Sbol2Terms.sbol2
+				.getNamespaceURI() + "public");
+		public static final URI PRIVATE = URI.create(Sbol2Terms.sbol2
+				.getNamespaceURI() + "private");
 	}
 }

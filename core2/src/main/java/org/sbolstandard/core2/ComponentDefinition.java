@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
+import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.Location;
 
 /**
@@ -269,7 +271,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subComponentURI
 	 * @return the created StructuralInstantiation instance. 
 	 */
-	public Component createSubComponent(URI identity, URI access, URI subComponentURI) {
+	public Component createSubComponent(URI identity, AccessType access, URI subComponentURI) {
 		Component subComponent = new Component(identity, access, subComponentURI);
 		addSubComponent(subComponent);
 		return subComponent;
@@ -354,7 +356,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @param object
 	 * @return the created StructuralConstraint instance. 
 	 */
-	public SequenceConstraint createSequenceConstraint(URI identity, URI restriction, URI subject, URI object) {
+	public SequenceConstraint createSequenceConstraint(URI identity, RestrictionType restriction, URI subject, URI object) {
 		SequenceConstraint sequenceConstraint = new SequenceConstraint(identity, restriction, subject, object);
 		addSequenceConstraint(sequenceConstraint);
 		return sequenceConstraint;

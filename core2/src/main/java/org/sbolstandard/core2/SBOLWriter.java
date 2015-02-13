@@ -402,9 +402,9 @@ public class SBOLWriter {
 			if(f.getDefinition() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinition()));
 			if(f.getAccess() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccess()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccessURI()));
 			if(f.getDirection() != null)
-				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirection()));
+				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirectionURI()));
 			if(f.isSetMappings())
 			{
 				List<NestedDocument> referenceList = getMapsTo(f.getMappings());
@@ -601,7 +601,7 @@ public class SBOLWriter {
 			if(s.getVersion() != null)
 				list.add(NamedProperty(Sbol2Terms.Identified.version, s.getVersion()));
 			if(s.getRestriction() != null)
-				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.restriction, s.getRestriction()));
+				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.restriction, s.getRestrictionURI()));
 			if(s.getSubject() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.hasSubject, s.getSubject()));
 			if(s.getObject() != null)
@@ -640,7 +640,7 @@ public class SBOLWriter {
 
 			formatCommonDocumentedData(list, s);
 			if(s.getAccess() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, s.getAccess()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, s.getAccessURI()));
 			if(s.getDefinition() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinition()));
 			if(s.getMappings() != null)
@@ -679,7 +679,7 @@ public class SBOLWriter {
 			property.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
 			property.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
 			if(range.isSetOrientation())
-				property.add(NamedProperty(Sbol2Terms.Range.orientation, range.getOrientation()));
+				property.add(NamedProperty(Sbol2Terms.Range.orientation, range.getOrientationURI()));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(property)));
@@ -697,7 +697,7 @@ public class SBOLWriter {
 		{
 			Cut cut = (Cut) location;
 			property.add(NamedProperty(Sbol2Terms.Cut.at, cut.getAt()));
-			property.add(NamedProperty(Sbol2Terms.Cut.orientation, cut.getOrientation()));
+			property.add(NamedProperty(Sbol2Terms.Cut.orientation, cut.getOrientationURI()));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Cut.Cut, cut.getIdentity(), NamedProperties(property)));

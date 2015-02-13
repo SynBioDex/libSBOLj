@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.abstract_classes.Documented;
 
 /**
