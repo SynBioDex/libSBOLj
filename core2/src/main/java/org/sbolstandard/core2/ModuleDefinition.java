@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.sbolstandard.core2.FunctionalComponent.DirectionType;
+import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
+
 /**
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -262,8 +265,8 @@ public class ModuleDefinition extends TopLevel {
 	 * @param location
 	 * @return the created {@link FunctionalComponent} instance. 
 	 */
-	public FunctionalComponent createComponent(URI identity, URI access, 
-			URI functionalComponentURI, URI direction) {
+	public FunctionalComponent createComponent(URI identity, AccessType access, 
+			URI functionalComponentURI, DirectionType direction) {
 		FunctionalComponent functionalComponent = 
 				new FunctionalComponent(identity, access, functionalComponentURI, direction);
 		addComponent(functionalComponent);

@@ -21,6 +21,12 @@ public abstract class Documented extends Identified {
 	 */
 	public Documented(URI identity) {
 		super(identity);
+		// TODO extract display ID
+	}
+	
+	public Documented(String authority, String id) {
+		super(authority, id);
+		setDisplayId(id.trim());
 	}
 	
 	

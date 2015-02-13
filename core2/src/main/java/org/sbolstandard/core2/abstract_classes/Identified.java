@@ -32,6 +32,30 @@ public abstract class Identified {
 		setIdentity(identity);
 		this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 		this.annotations = new ArrayList<Annotation>();
+		String identityStr = identity.toString();
+		if (isURIcompliant(identityStr)) {
+			// URI = authority/id/majorVersion/minorVersion
+			String minorVersion = identityStr.substring(identityStr.lastIndexOf('/') + 1, identityStr.length());
+			// TODO: extract major version
+		}
+		// else
+			
+		
+		
+	}
+	
+	private boolean isURIcompliant(String identity) {
+		// TODO Check URI compliance
+		return true;
+	}
+
+	public Identified(String authority, String id) {
+		//this(URI.create(authority.trim() + '/' + id.trim() + "/1/0"));
+		setIdentity(identity);
+		this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
+		this.annotations = new ArrayList<Annotation>();
+		this.setPersistentIdentity(URI.create(authority.trim() + '/' + id.trim()));
+		this.setVersion("1.0");
 	}
 	
 	
@@ -47,7 +71,7 @@ public abstract class Identified {
 	 * Sets field variable <code>identity</code> to the specified element.
 	 * @param identity
 	 */
-	public void setIdentity(URI identity) {
+	public final void setIdentity(URI identity) {
 		this.identity = identity;
 	}
 	
@@ -109,7 +133,36 @@ public abstract class Identified {
 	 * @param version
 	 */
 	public void setVersion(String version) {
+		// TODO: Require version to be "[0-9]+.[0-9]+".
 		this.version = version;
+	}
+	
+	/**
+	 * Returns the major version if the <code>version</code> field not <code>null</code> and is compliant. 
+	 * Otherwise returns -1.
+	 * @return the major version
+	 */
+	public int getMajorVersion() {
+		// TODO: Need to check version compliance first.
+		if (version != null) {
+			return Integer.parseInt(version.substring(0, version.indexOf('.')-1));
+		}
+		else
+			return -1;
+	}
+	
+	/**
+	 * Returns the minor version if the <code>version</code> field not <code>null</code> and is compliant. 
+	 * Otherwise returns -1.
+	 * @return the minor version
+	 */
+	public int getMinorVersion() {
+		// TODO: Need to check version compliance first.
+		if (version != null) {
+			return Integer.parseInt(version.substring(version.indexOf('.'), version.length()));
+		}
+		else
+			return -1;
 	}
 	
 	/**

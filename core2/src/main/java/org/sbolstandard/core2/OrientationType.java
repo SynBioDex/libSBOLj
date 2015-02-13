@@ -2,20 +2,36 @@ package org.sbolstandard.core2;
 
 /**
  * 
- * @author Ernst Oberortner
+ * @author Zhen Zhang
  * @author Nicholas Roehner
  * @version 2.0
  */
+
 public enum OrientationType {
-	inline,
-	reverseComplement
+	INlINE("inline"), 
+	REVERSECOMPLEMENT("reverseComplement");
+	private final String orientationType;
+
+	private OrientationType(String orientationType) {
+		this.orientationType = orientationType;
+	}
+
+	/**
+	 * Returns the orientation type.
+	 * @return orientation type.
+	 */
+	public String getOrientationType() {
+		return orientationType;
+	}
+
+	@Override
+	public String toString() {
+		return orientationType;
+	}
 }
-
-
-//public enum Orientation {
-//	inline("inline"), 
-//	reverseComplement("reverseComplement"),
-//	
+	
+	
+	//------Begin: Orientation from 1.1 ---------
 //	/**
 //	 * Represents <code>+</code> strand which is 5' to 3'.
 //	 * @deprecated As of release 2.0, replaced by {@link #inline}}
@@ -27,14 +43,14 @@ public enum OrientationType {
 //	 * @deprecated As of release 2.0, replaced by {@link #reverseComplement}}
 //	 */
 //	NEGATIVE("-");
-//	
-////	Orientation() {
-////		
-////	}
+	
+//	Orientation() {
+//		
+//	}
 //	
 //	private String symbol;
 //	
-//	private Orientation(String symbol) {
+//	private OrientationType(String symbol) {
 //		this.symbol = symbol;
 //	}
 //	
@@ -49,5 +65,5 @@ public enum OrientationType {
 //	public String toString() {
 //		return symbol;
 //	}
+	//------End: Orientation from 1.1 ---------
 	
-//}

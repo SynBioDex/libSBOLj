@@ -18,6 +18,7 @@ import org.sbolstandard.core2.Collection;
 import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.FunctionalComponent;
+import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.GenericTopLevel;
 import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.MapsTo;
@@ -26,15 +27,18 @@ import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.Participation;
 import org.sbolstandard.core2.Range;
-import org.sbolstandard.core2.RefinementType;
+import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sbol2Terms;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceAnnotation;
 import org.sbolstandard.core2.SequenceConstraint;
+import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 import org.sbolstandard.core2.TopLevel;
 import org.sbolstandard.core2.Turtle;
+import org.sbolstandard.core2.abstract_classes.ComponentInstance.Access;
+import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Identified;
 import org.sbolstandard.core2.abstract_classes.Location;
@@ -296,7 +300,7 @@ public class writeTester {
 				getData("pLactetR/struct_constraint/1/0", "struct_constraint", "1.0"),
 				get_P(SBOL2Doc_test),
 				get_C(SBOL2Doc_test),
-				getPropertyURI("precedes"));
+				SequenceConstraint.RestrictionType.PRECEDES);//getPropertyURI("precedes"));
 	}
 
 	private static ComponentDefinition get_pLactetR (SBOLDocument SBOL2Doc_test)
@@ -614,8 +618,8 @@ public class writeTester {
 				getData("Toggle/Inv1/1/0","Inv1","1.0","Inv1","Inv1", "Inv1"),
 				get_LacI_Inv(SBOL2Doc_test),
 				getMapsTo_List(
-						createMapTo(getURI("Toggle/Inv1/Inv1a/1/0"), getRefinement("useLocal"), get_LacISp(SBOL2Doc_test), get_LacIIn(SBOL2Doc_test)),
-						createMapTo(getURI("Toggle/Inv1/Inv2a_TetRSp/1/0"), getRefinement("useLocal"), get_TetRSp(SBOL2Doc_test), get_TetROut(SBOL2Doc_test))
+						createMapTo(getURI("Toggle/Inv1/Inv1a/1/0"), RefinementType.USELOCAL, get_LacISp(SBOL2Doc_test), get_LacIIn(SBOL2Doc_test)),
+						createMapTo(getURI("Toggle/Inv1/Inv2a_TetRSp/1/0"), RefinementType.USELOCAL, get_TetRSp(SBOL2Doc_test), get_TetROut(SBOL2Doc_test))
 						)
 				);
 	}
@@ -626,8 +630,8 @@ public class writeTester {
 				getData("Toggle/Inv2/1/0","Inv2","1.0","Inv2","Inv2", "Inv2"),
 				get_TetR_Inv(SBOL2Doc_test),
 				getMapsTo_List(
-						createMapTo(getURI("Toggle/Inv2/Inv1b/1/0"), getRefinement("useLocal"), get_LacISp(SBOL2Doc_test), get_LacIOut(SBOL2Doc_test)),
-						createMapTo(getURI("Toggle/Inv2/Inv2b/1/0"), getRefinement("useLocal"), get_TetRSp(SBOL2Doc_test), get_TetRIn(SBOL2Doc_test))
+						createMapTo(getURI("Toggle/Inv2/Inv1b/1/0"), RefinementType.USELOCAL, get_LacISp(SBOL2Doc_test), get_LacIOut(SBOL2Doc_test)),
+						createMapTo(getURI("Toggle/Inv2/Inv2b/1/0"), RefinementType.USELOCAL, get_TetRSp(SBOL2Doc_test), get_TetRIn(SBOL2Doc_test))
 						)
 				);
 	}
@@ -762,23 +766,25 @@ public class writeTester {
 		String name 		   = functionalInstantiation_data.get(4);
 		String description 	   = functionalInstantiation_data.get(5);
 
-		URI access = null;
+		AccessType access = null;
 		if(functionalInstantiation_data.get(6).equals("public"))
 			//access = AccessType.PUBLIC;
-			access = Sbol2Terms.Access.PUBLIC;
+			//access = Sbol2Terms.Access.PUBLIC;
+			access = AccessType.PUBLIC;
 		else if(functionalInstantiation_data.get(6).equals("private"))
 			//access = AccessType.PRIVATE;
-			access = Sbol2Terms.Access.PRIVATE;
+			//access = Sbol2Terms.Access.PRIVATE;
+			access = AccessType.PRIVATE;
 
-		URI direction = null;
+		DirectionType direction = null;
 		if(functionalInstantiation_data.get(7).equals("input"))
-			direction = Sbol2Terms.Direction.input;
+			direction = DirectionType.INPUT;//Sbol2Terms.Direction.input;
 		else if(functionalInstantiation_data.get(7).equals("output"))
-			direction = Sbol2Terms.Direction.output;
+			direction = DirectionType.OUTPUT;//Sbol2Terms.Direction.output;
 		else if(functionalInstantiation_data.get(7).equals("inout"))
-			direction = Sbol2Terms.Direction.inout;
+			direction = DirectionType.INOUT;//Sbol2Terms.Direction.inout;
 		else if(functionalInstantiation_data.get(7).equals("none"))
-			direction = Sbol2Terms.Direction.none;
+			direction = DirectionType.NONE;//Sbol2Terms.Direction.none;
 
 		URI instantiatedComponent = c.getIdentity();
 
@@ -926,7 +932,7 @@ public class writeTester {
 			List<String> structuralConstraints_data,
 			Component pre_structInstant,
 			Component post_structInstant,
-			URI restriction)
+			RestrictionType restriction)
 	{
 		URI identity 		   = getURI(structuralConstraints_data.get(0));
 		URI persistentIdentity = getURI(structuralConstraints_data.get(1));
@@ -954,11 +960,11 @@ public class writeTester {
 		String name 		   = structuralInstantiations_data.get(4);
 		String description	   = structuralInstantiations_data.get(5);
 
-		URI access = null;
+		AccessType access = null;
 		if(structuralInstantiations_data.get(6).equals("public"))
-			access = Sbol2Terms.Access.PUBLIC;
+			access = AccessType.PUBLIC;
 		else if(structuralInstantiations_data.get(6).equals("private"))
-			access = Sbol2Terms.Access.PRIVATE;
+			access = AccessType.PRIVATE;
 
 		URI instantiatedComponent = c.getIdentity();
 
@@ -1041,18 +1047,18 @@ public class writeTester {
 		return list;
 	}
 
-	private static RefinementType getRefinement(String s)
-	{
-		if(s.equals("verifyIdentical"))
-			return RefinementType.verifyIdentical;
-		else if(s.equals("useLocal"))
-			return RefinementType.useLocal;
-		else if(s.equals("useRemote"))
-			return RefinementType.useRemote;
-		else if(s.equals("merge"))
-			return RefinementType.merge;
-		return RefinementType.merge;
-	}
+//	private static RefinementType getRefinement(String s)
+//	{
+//		if(s.equals("verifyIdentical"))
+//			return RefinementType.verifyIdentical;
+//		else if(s.equals("useLocal"))
+//			return RefinementType.useLocal;
+//		else if(s.equals("useRemote"))
+//			return RefinementType.useRemote;
+//		else if(s.equals("merge"))
+//			return RefinementType.merge;
+//		return RefinementType.merge;
+//	}
 
 	private static List<Participation> getParticipation_List(Participation ... p)
 	{

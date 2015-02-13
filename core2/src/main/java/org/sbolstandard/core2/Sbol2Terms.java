@@ -271,18 +271,19 @@ public class Sbol2Terms
 		public static final URI restriction  = URI.create(sbol2.getNamespaceURI() + "precedes");
 	}
 
-	public static final class Access {
-		public static final URI PUBLIC  = URI.create(sbol2.getNamespaceURI() + "public");
-		public static final URI PRIVATE = URI.create(sbol2.getNamespaceURI() + "private");
-	}
+	// Moved to ComponentInstance
+//	public static final class Access {
+//		public static final URI PUBLIC  = URI.create(sbol2.getNamespaceURI() + "public");
+//		public static final URI PRIVATE = URI.create(sbol2.getNamespaceURI() + "private");
+//	}
 
-
-	public static final class Direction {
-		public static final URI input  = URI.create(sbol2.getNamespaceURI() + "input");
-		public static final URI output = URI.create(sbol2.getNamespaceURI() + "output");
-		public static final URI inout  = URI.create(sbol2.getNamespaceURI() + "inout");
-		public static final URI none   = URI.create(sbol2.getNamespaceURI() + "none");
-	}
+	// Moved to FunctionalComponent
+//	public static final class Direction {
+//		public static final URI input  = URI.create(sbol2.getNamespaceURI() + "input");
+//		public static final URI output = URI.create(sbol2.getNamespaceURI() + "output");
+//		public static final URI inout  = URI.create(sbol2.getNamespaceURI() + "inout");
+//		public static final URI none   = URI.create(sbol2.getNamespaceURI() + "none");
+//	}
 
 
 	public static final class Orientation {

@@ -2,12 +2,13 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+import org.sbolstandard.core2.Sbol2Terms.Orientation;
 import org.sbolstandard.core2.abstract_classes.Location;
 
 public class Cut extends Location{
 	
 	private Integer at;
-	private URI orientation;
+	private OrientationType orientation;
 	
 	public Cut(URI identity, Integer at) {
 		super(identity);
@@ -46,8 +47,29 @@ public class Cut extends Location{
 	 * @return field variable <code>orientation</code>
 	 */
 	// @return the documented object's display ID
-	public URI getOrientation() {
+	public OrientationType getOrientation() {
 		return this.orientation;
+	}
+	
+	/**
+	 * Returns the orientation type in URI.
+	 * @return orientation type in URI
+	 */
+	public URI getOrientationURI() {
+		if (orientation != null) {
+			if (orientation.equals(OrientationType.INlINE)) {
+				return Orientation.inline;
+			}
+			else if (orientation.equals(OrientationType.REVERSECOMPLEMENT)) {
+				return Orientation.reverseComplement;
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			return null;
+		}
 	}
 		
 	/**
@@ -55,8 +77,24 @@ public class Cut extends Location{
 	 * @param orientation
 	 */
 	// Created for backward compatibility to 1.1. 
-	public void setOrientation(URI orientation) {
+	public void setOrientation(OrientationType orientation) {
 		this.orientation = orientation;
+	}
+	
+	/**
+	 * Sets field variable <code>orientation</code> to the element corresponding to the specified URI.
+	 * @param orientation
+	 */
+	public void setOrientation(URI orientation) {
+		if (orientation.equals(Orientation.inline)) {
+			this.orientation = OrientationType.INlINE;
+		} else if (orientation.equals(Orientation.reverseComplement)) {
+			this.orientation = OrientationType.REVERSECOMPLEMENT;
+		}
+		else {
+			// TODO: Validation?
+			this.orientation = null;
+		}
 	}
 	
 	/**
