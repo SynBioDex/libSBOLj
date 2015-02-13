@@ -551,15 +551,15 @@ public class SBOLDocument {
 	 * @return <code>true</code> if the specified key exists in other hash maps.
 	 */
 	private boolean keyExistsInOtherMaps(Set<URI> keySet, URI key) {
-		Set<HashSet<URI>> complementSet = new HashSet<HashSet<URI>>();
-		complementSet.add((HashSet<URI>) collections.keySet());
-		complementSet.add((HashSet<URI>) componentDefinitions.keySet());
-		complementSet.add((HashSet<URI>) models.keySet());
-		complementSet.add((HashSet<URI>) moduleDefinitions.keySet());
-		complementSet.add((HashSet<URI>) nameSpaces.keySet());
-		complementSet.add((HashSet<URI>) sequences.keySet());
+		Set<Set<URI>> complementSet = new HashSet<Set<URI>>();
+		complementSet.add((Set<URI>) collections.keySet());
+		complementSet.add((Set<URI>) componentDefinitions.keySet());
+		complementSet.add((Set<URI>) models.keySet());
+		complementSet.add((Set<URI>) moduleDefinitions.keySet());
+		complementSet.add((Set<URI>) nameSpaces.keySet());
+		complementSet.add((Set<URI>) sequences.keySet());
 		complementSet.remove(keySet);
-		for (HashSet<URI> otherKeySet : complementSet) {
+		for (Set<URI> otherKeySet : complementSet) {
 			if (otherKeySet.contains(key)) {
 				return true;
 			}
