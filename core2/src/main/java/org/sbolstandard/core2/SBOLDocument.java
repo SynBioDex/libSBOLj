@@ -10,6 +10,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.sbolstandard.core2.abstract_classes.Identified;
+
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
 
@@ -23,8 +25,7 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.*;
 
 public class SBOLDocument {
 	
-	//private HashMap<URI, Identified> identityMap;
-	private HashMap<URI, GenericTopLevel> topLevels;
+	private HashMap<URI, GenericTopLevel> genericTopLevels;
 	private HashMap<URI, Collection> collections;
 	private HashMap<URI, ComponentDefinition> componentDefinitions;
 	private HashMap<URI, Model> models;
@@ -34,7 +35,7 @@ public class SBOLDocument {
 
 	public SBOLDocument() {
 		//identityMap = new HashMap<URI, Identified>();
-		topLevels = new HashMap<URI, GenericTopLevel>();
+		genericTopLevels = new HashMap<URI, GenericTopLevel>();
 		collections = new HashMap<URI, Collection>();
 		componentDefinitions = new HashMap<URI, ComponentDefinition>();
 		models = new HashMap<URI, Model>();
@@ -350,23 +351,51 @@ public class SBOLDocument {
 	 * @param id
 	 * @param elements
 	 * @param encoding
-	 * @return
+	 * @return the created Sequence instance. 
 	 */
 	public Sequence createSequence(String authority, String id, String elements, URI encoding) {
-		Sequence newSequence = new Sequence(authority, id, elements, encoding);
-		if (addSequence(newSequence)) {
-			return newSequence;
+		//Sequence newSequence = new Sequence(authority, id, elements, encoding);
+		URI newSequenceURI = URI.create(authority + '/' + id + "/1/0");
+		if (Identified.isURIcompliant(newSequenceURI.toString())) {
+			Sequence newSequence = new Sequence(newSequenceURI, elements, encoding);
+			if (addSequence(newSequence)) {
+				return newSequence;
+			}
+			else
+				return null;
 		}
-		else
+		else {
+			// TODO: Non-compliant URI
 			return null;
+		}
 	}
 	
 	/**
-	 * Create a new {@link Sequence} instance with a new major version, and add it to the sequences list. 
+	 * Create an instance of the top-level classes, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition}, 
+	 * {@link Sequence}, or {@link TopLevel} with a new major version, and add it to its corresponding top-level instances list.
+	 * @param toplevel
 	 * @return
 	 */
-	public Sequence createNewMajorVersion() {
-		// TODO fill in
+	public TopLevel createNewMajorVersion(TopLevel toplevel) {
+		Identified newTopLevel = toplevel.newMajorVersion();
+		if (newTopLevel instanceof Collection) {
+			addCollection((Collection) newTopLevel);
+		}
+		else if (newTopLevel instanceof ComponentDefinition) {
+			addComponentDefinition((ComponentDefinition) newTopLevel);
+		}
+		else if (newTopLevel instanceof Model) {
+			addModel((Model) newTopLevel);
+		}
+		else if (newTopLevel instanceof ModuleDefinition) {
+			addModuleDefinition((ModuleDefinition) newTopLevel);
+		}
+		else if (newTopLevel instanceof Sequence) {
+			addSequence((Sequence) newTopLevel);
+		}
+		else if (newTopLevel instanceof TopLevel) {
+			addGenericTopLevel((GenericTopLevel) newTopLevel);
+		}
 		return null;
 		
 	}
@@ -471,7 +500,7 @@ public class SBOLDocument {
 	 */
 	public void addGenericTopLevel(GenericTopLevel topLevel) {
 		// TODO: Recursively check the uniqueness of URIs of each GenericTopLevel and its field variables. 
-		topLevels.put(topLevel.getIdentity(), topLevel);
+		genericTopLevels.put(topLevel.getIdentity(), topLevel);
 	}
 	
 	/**
@@ -480,7 +509,7 @@ public class SBOLDocument {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public GenericTopLevel removeGenericTopLevel(URI topLevelURI) {
-		return topLevels.remove(topLevelURI);
+		return genericTopLevels.remove(topLevelURI);
 	}
 		
 	/**
@@ -489,7 +518,7 @@ public class SBOLDocument {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public GenericTopLevel getGenericTopLevel(URI topLevelURI) {
-		return topLevels.get(topLevelURI);
+		return genericTopLevels.get(topLevelURI);
 	}
 	
 	/**
@@ -499,7 +528,7 @@ public class SBOLDocument {
 	public List<GenericTopLevel> getGenericTopLevels() {
 //		return (List<GenericTopLevel>) topLevels.values();
 		List<GenericTopLevel> topLevels = new ArrayList<GenericTopLevel>(); 
-		topLevels.addAll(this.topLevels.values());
+		topLevels.addAll(this.genericTopLevels.values());
 		return topLevels; 
 	}
 
@@ -507,7 +536,7 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearGenericTopLevels() {
-		Object[] keySetArray = topLevels.keySet().toArray();
+		Object[] keySetArray = genericTopLevels.keySet().toArray();
 		for (Object key : keySetArray) {
 			removeGenericTopLevel((URI) key);
 		}

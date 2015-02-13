@@ -13,11 +13,11 @@ public class Sequence extends TopLevel{
 		setEncoding(encoding);
 	}
 	
-	public Sequence(String authority, String Id, String elements, URI encoding) {
-		super(authority, Id);
-		setElements(elements);
-		setEncoding(encoding);
-	}
+//	public Sequence(String authority, String Id, String elements, URI encoding) {
+//		super(authority, Id);
+//		setElements(elements);
+//		setEncoding(encoding);
+//	}
 	
 	/**
 	 * Returns field variable <code>elements</code>.
@@ -49,15 +49,6 @@ public class Sequence extends TopLevel{
 	 */
 	public void setEncoding(URI encoding) {
 		this.encoding = encoding;
-	}
-	
-	/**
-	 * @param sequence
-	 * @return
-	 */
-	public boolean equals(Sequence sequence) {
-		// TODO fill in the content
-		return false;
 	}
 	
 	/**
@@ -117,35 +108,47 @@ public class Sequence extends TopLevel{
 		return null;
 	}
 	
-	/**
-	 * Clone the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
-	 * @param id
-	 * @return the copied object
-	 */
-	public Sequence copy(String id) {
-		// TODO fill in
-		return null;
-		
+//	/**
+//	 * Clone the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
+//	 * @param id
+//	 * @return the copied object
+//	 */
+//	public Sequence copy(String id) {
+//		// TODO fill in
+//		return null;
+//		
+//	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
+		result = prime * result + ((encoding == null) ? 0 : encoding.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sequence other = (Sequence) obj;
+		if (elements == null) {
+			if (other.elements != null)
+				return false;
+		} else if (!elements.equals(other.elements))
+			return false;
+		if (encoding == null) {
+			if (other.encoding != null)
+				return false;
+		} else if (!encoding.equals(other.encoding))
+			return false;
+		return true;
 	}
 	
-	/**
-	 * Clone the object first, and set its major version to the specified value, and minor version to "0". 
-	 * @param majorVersion
-	 * @return
-	 */
-	public Sequence newMajorVersion(int majorVersion) {
-		// TODO fill in
-		return null;
-	}
-	
-	/**
-	 * Clone the object first, and set its minor version to the specified value.
-	 * @param minorVersion
-	 * @return
-	 */
-	public Sequence newMinorVersion(int minorVersion) {
-		// TODO fill in
-		return null;
-	}
 	
 }

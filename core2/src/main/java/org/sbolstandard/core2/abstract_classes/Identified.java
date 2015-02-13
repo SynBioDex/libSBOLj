@@ -25,6 +25,8 @@ public abstract class Identified {
 	protected URI identity;
 	private URI persistentIdentity;
 	private String version;
+	private int majorVersion;
+	private int minorVersion;
 	private Timestamp timeStamp;
 	private List<Annotation> annotations;
 	
@@ -35,8 +37,8 @@ public abstract class Identified {
 		String identityStr = identity.toString();
 		if (isURIcompliant(identityStr)) {
 			// URI = authority/id/majorVersion/minorVersion
-			String minorVersion = identityStr.substring(identityStr.lastIndexOf('/') + 1, identityStr.length());
-			// TODO: extract major version
+			//String minorVersion = identityStr.substring(identityStr.lastIndexOf('/') + 1, identityStr.length());
+			// TODO: extract major and minor versions
 		}
 		// else
 			
@@ -44,7 +46,7 @@ public abstract class Identified {
 		
 	}
 	
-	private boolean isURIcompliant(String identity) {
+	public static boolean isURIcompliant(String identity) {
 		// TODO Check URI compliance
 		return true;
 	}
@@ -55,7 +57,9 @@ public abstract class Identified {
 		this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 		this.annotations = new ArrayList<Annotation>();
 		this.setPersistentIdentity(URI.create(authority.trim() + '/' + id.trim()));
-		this.setVersion("1.0");
+		//this.setVersion("1.0");
+		this.setMajorVersion(1);
+		this.setMinorVersion(0);
 	}
 	
 	
@@ -110,6 +114,7 @@ public abstract class Identified {
 	}
 	
 	/**
+	 * @deprecated
 	 * Test if optional field variable <code>version</code> is set.
 	 * @return <code>true</code> if it is not <code>null</code>
 	 */
@@ -121,6 +126,7 @@ public abstract class Identified {
 	}
 	
 	/**
+	 * @deprecated
 	 * Returns field variable <code>version</code>.
 	 * @return field variable <code>version</code>.
 	 */
@@ -129,6 +135,7 @@ public abstract class Identified {
 	}
 
 	/**
+	 * @deprecated
 	 * Sets field variable <code>version</code> to the specified element.
 	 * @param version
 	 */
@@ -138,39 +145,43 @@ public abstract class Identified {
 	}
 	
 	/**
-	 * Returns the major version if the <code>version</code> field not <code>null</code> and is compliant. 
-	 * Otherwise returns -1.
-	 * @return the major version
+	 * Returns the major version.
+ 	 * @return the major version
 	 */
 	public int getMajorVersion() {
-		// TODO: Need to check version compliance first.
-		if (version != null) {
-			return Integer.parseInt(version.substring(0, version.indexOf('.')-1));
-		}
-		else
-			return -1;
+		return majorVersion;
 	}
 	
 	/**
-	 * Returns the minor version if the <code>version</code> field not <code>null</code> and is compliant. 
-	 * Otherwise returns -1.
+	 * Sets field variable <code>majorVersion</code> to the specified value.
+	 * @param majorVersion
+	 */
+	public void setMajorVersion(int majorVersion) {
+		this.majorVersion = majorVersion;
+	}
+	
+	/**
+	 * Returns the minor version.
 	 * @return the minor version
 	 */
 	public int getMinorVersion() {
-		// TODO: Need to check version compliance first.
-		if (version != null) {
-			return Integer.parseInt(version.substring(version.indexOf('.'), version.length()));
-		}
-		else
-			return -1;
+		return minorVersion;
 	}
 	
 	/**
-	 * Set optional field variable <code>version</code> to <code>null</code>.
+	 * Sets field variable <code>minorVersion</code> to the specified value.
+	 * @param minorVersion
 	 */
-	public void unsetVersion() {
-		version = null;
+	public void setMinorVersion(int minorVersion) {
+		this.minorVersion = minorVersion;
 	}
+	
+//	/**
+//	 * Set optional field variable <code>version</code> to <code>null</code>.
+//	 */
+//	public void unsetVersion() {
+//		version = null;
+//	}
 		
 	/**
 	 * Test if optional field variable <code>timeStamp</code> is set.
@@ -294,7 +305,90 @@ public abstract class Identified {
 	public void unsetAnnotations() {
 		annotations = null;
 	}
-//	
+
+	/**
+	 * Provide a deep copy of this instance.
+	 */
+	protected Identified clone() {
+		//TODO deal with visibility of this method.
+		// TODO fill in
+		return null;
+	}
+	
+	/**
+	 * Clone the object first, increment the major version of the original object by 1, 
+	 * and then set this value to the major version of the cloned object. Set the minor version of the cloned object to 0.    
+	 * @return the cloned object
+	 */
+	public Identified newMajorVersion() {
+		Identified cloned = this.clone();
+		cloned.setMajorVersion(this.getMajorVersion() + 1);
+		cloned.setMinorVersion(0);
+		return cloned;
+	}
+	
+	/**
+ 	 * Clone the object first, and increment the minor version of the original object by 1, 
+	 * and then set this value to the minor version of the cloned object.  
+	 * @return the cloned object
+	 */
+	public Identified newMinorVersion() {
+		Identified cloned = this.clone();
+		cloned.setMinorVersion(this.getMinorVersion() + 1);
+		return cloned;
+	}
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((annotations == null) ? 0 : annotations.hashCode());
+		result = prime * result + ((identity == null) ? 0 : identity.hashCode());
+		result = prime * result + majorVersion;
+		result = prime * result + minorVersion;
+		result = prime * result
+				+ ((persistentIdentity == null) ? 0 : persistentIdentity.hashCode());
+		result = prime * result + ((timeStamp == null) ? 0 : timeStamp.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Identified other = (Identified) obj;
+		if (annotations == null) {
+			if (other.annotations != null)
+				return false;
+		} else if (!annotations.equals(other.annotations))
+			return false;
+		if (identity == null) {
+			if (other.identity != null)
+				return false;
+		} else if (!identity.equals(other.identity))
+			return false;
+		if (majorVersion != other.majorVersion)
+			return false;
+		if (minorVersion != other.minorVersion)
+			return false;
+		if (persistentIdentity == null) {
+			if (other.persistentIdentity != null)
+				return false;
+		} else if (!persistentIdentity.equals(other.persistentIdentity))
+			return false;
+		if (timeStamp == null) {
+			if (other.timeStamp != null)
+				return false;
+		} else if (!timeStamp.equals(other.timeStamp))
+			return false;
+		return true;
+	}
+
 //	/**
 //	 * @return
 //	 * @deprecated As of release 2.0, replaced by {@link #getIdentity()}

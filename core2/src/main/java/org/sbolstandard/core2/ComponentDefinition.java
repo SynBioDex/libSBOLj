@@ -198,7 +198,8 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public void addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
 		// TODO: @addSequenceAnnotation, Check for duplicated entries.
-		sequenceAnnotations.put(sequenceAnnotation.getIdentity(), sequenceAnnotation);
+		URI key = URI.create(sequenceAnnotation.getIdentity().toString().toLowerCase());
+		sequenceAnnotations.put(key, sequenceAnnotation);
 	}
 	
 	/**
@@ -207,7 +208,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceAnnotation removeSequenceAnnotation(URI sequenceAnnotationURI) {
-		return sequenceAnnotations.remove(sequenceAnnotationURI);
+		URI key = URI.create(sequenceAnnotationURI.toString().toLowerCase());
+		return sequenceAnnotations.remove(key);
 	}
 	
 	/**
@@ -216,7 +218,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceAnnotation getSequenceAnnotation(URI sequenceAnnotationURI) {
-		return sequenceAnnotations.get(sequenceAnnotationURI);
+		URI key = URI.create(sequenceAnnotationURI.toString().toLowerCase());
+		return sequenceAnnotations.get(key);
 	}
 	
 	/**
@@ -282,8 +285,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subComponent
 	 */
 	public void addSubComponent(Component subComponent) {
+		URI key = URI.create(subComponent.getIdentity().toString().toLowerCase());
 		// TODO: @addSubComponent, Check for duplicated entries.
-		subComponents.put(subComponent.getIdentity(), subComponent);
+		subComponents.put(key, subComponent);
 	}
 	
 	/**
@@ -292,7 +296,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Component removeSubComponent(URI subComponentURI) {
-		return subComponents.remove(subComponentURI);
+		URI key = URI.create(subComponentURI.toString().toLowerCase());
+		return subComponents.remove(key);
 	}
 	
 	/**
@@ -301,7 +306,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Component getSubComponent(URI subComponentURI) {
-		return subComponents.get(subComponentURI);
+		URI key = URI.create(subComponentURI.toString().toLowerCase());
+		return subComponents.get(key);
 	}
 	
 	/**
@@ -368,7 +374,8 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public void addSequenceConstraint(SequenceConstraint sequenceConstraint) {
 		// TODO: @addStructuralConstraint, Check for duplicated entries.
-		sequenceConstraints.put(sequenceConstraint.getIdentity(), sequenceConstraint);
+		URI key = URI.create(sequenceConstraint.getIdentity().toString().toLowerCase());
+		sequenceConstraints.put(key, sequenceConstraint);
 	}
 	
 	/**
@@ -377,7 +384,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceConstraint removeSequenceConstraint(URI sequenceConstraintURI) {
-		return sequenceConstraints.remove(sequenceConstraintURI);
+		URI key = URI.create(sequenceConstraintURI.toString().toLowerCase());
+		return sequenceConstraints.remove(key);
 	}
 	
 	/**
@@ -386,7 +394,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceConstraint getSequenceConstraint(URI sequenceConstraintURI) {
-		return sequenceConstraints.get(sequenceConstraintURI);
+		URI key = URI.create(sequenceConstraintURI.toString().toLowerCase());
+		return sequenceConstraints.get(key);
 	}
 	
 	/**
@@ -517,5 +526,62 @@ public class ComponentDefinition extends TopLevel {
 	public ComponentDefinition newMinorVersion(int minorVersion) {
 		// TODO fill in
 		return null;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		result = prime * result + ((sequence == null) ? 0 : sequence.hashCode());
+		result = prime * result
+				+ ((sequenceAnnotations == null) ? 0 : sequenceAnnotations.hashCode());
+		result = prime * result
+				+ ((sequenceConstraints == null) ? 0 : sequenceConstraints.hashCode());
+		result = prime * result + ((subComponents == null) ? 0 : subComponents.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ComponentDefinition other = (ComponentDefinition) obj;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		if (sequence == null) {
+			if (other.sequence != null)
+				return false;
+		} else if (!sequence.equals(other.sequence))
+			return false;
+		if (sequenceAnnotations == null) {
+			if (other.sequenceAnnotations != null)
+				return false;
+		} else if (!sequenceAnnotations.equals(other.sequenceAnnotations))
+			return false;
+		if (sequenceConstraints == null) {
+			if (other.sequenceConstraints != null)
+				return false;
+		} else if (!sequenceConstraints.equals(other.sequenceConstraints))
+			return false;
+		if (subComponents == null) {
+			if (other.subComponents != null)
+				return false;
+		} else if (!subComponents.equals(other.subComponents))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
 	}
 }
