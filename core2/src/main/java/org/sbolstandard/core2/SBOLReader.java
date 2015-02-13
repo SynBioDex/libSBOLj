@@ -46,9 +46,13 @@ public class SBOLReader {
 	/*
 	 * TODO:
 	 * new class GenericLocation - orientation
-	 * change to enumeration - direction, access, refinement, restriction, orientation
-	 * new location will be added -  range cut, multi-range and GenericLocation
-	 *
+	 * change to enumeration - direction, access, refinement, restriction-(seq_contraint), orientation
+	 * new location will be added (GenericLocation) -  range cut, multi-range and GenericLocation
+	 * move orientation to component? in dummy range change to genericLocation to set orientation
+	 * change authority name to i.e. setURIPrefix...-refactor authority to setURIPrefix
+	 * authority uri = www....
+	 * get new uri for CHEBI from Goksel - from type field
+	 * create new annotation to indicate from old sbolv1 to sbolv2
 	 */
 
 	private static String authority = null;
@@ -282,7 +286,7 @@ public class SBOLReader {
 		type.add(Sbol2Terms.DnaComponentV1URI.type);
 
 		int component_num = 0;
-		int sa_num = 0;
+		int sa_num 		  = 0;
 
 		for(NamedProperty<QName> namedProperty : componentDef.getProperties())
 		{
@@ -341,7 +345,6 @@ public class SBOLReader {
 
 		for(SBOLPair pair: precedePairs)
 		{
-			// TODO: need parent URI in front, sequenceConstraint##
 			URI sc_identity = URI.create(getParentURI(identity) + "/sequenceConstraint" + ++sc_number + "/1/0");
 			URI restriction = Sbol2Terms.DnaComponentV1URI.restriction;
 			URI subject = null;
@@ -713,7 +716,8 @@ public class SBOLReader {
 		SequenceConstraint s = new SequenceConstraint(sequenceConstraints.getIdentity(), restriction, subject, object);
 		if(persistentIdentity != null)
 			s.setPersistentIdentity(persistentIdentity);
-		//		s.setTimeStamp(getTimestamp(timeStamp)); //TODO: supress for now
+		if( timeStamp != null )
+			s.setTimeStamp(getTimestamp(timeStamp));
 		if(!annotations.isEmpty())
 			s.setAnnotations(annotations);
 		return s;
@@ -787,7 +791,6 @@ public class SBOLReader {
 	private static Location parseLocation(NestedDocument<QName> location)
 	{
 		Location l 		 = null;
-		String timeStamp = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		if(location.getType().equals(Sbol2Terms.Range.Range))
@@ -808,8 +811,6 @@ public class SBOLReader {
 			return l;
 		}
 
-		if(timeStamp != null)
-			l.setTimeStamp(getTimestamp(timeStamp));
 		if(!annotations.isEmpty())
 			l.setAnnotations(annotations);
 
@@ -1104,7 +1105,8 @@ public class SBOLReader {
 			t.setName(name);
 		if(description != null)
 			t.setDescription(description);
-		//		t.setTimeStamp(getTimestamp(timeStamp)); //TODO: cause error
+		if(timeStamp != null)
+			t.setTimeStamp(getTimestamp(timeStamp));
 		if(!annotations.isEmpty())
 			t.setAnnotations(annotations);
 		return t;
