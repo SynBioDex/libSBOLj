@@ -400,6 +400,14 @@ public class SBOLDocument {
 		}
 		return null;
 		
+		// TODO: Have all "add" methods return Boolean.
+		
+	}
+	
+	public TopLevel createNewMinorVersion(TopLevel toplevel) {
+		return null;
+		
+		// TODO: Fill in 
 	}
 	
 	/**
@@ -408,30 +416,47 @@ public class SBOLDocument {
 	 * @return <code>true</code> if the specified sequence is successfully added.
 	 */
 	public boolean addSequence(Sequence sequence) {
-		if (!keyExistsInOtherMaps(sequences.keySet(), sequence.getPersistentIdentity())) {
-			if (!sequences.containsKey(sequence.getIdentity())) {
-				sequences.put(sequence.getIdentity(), sequence);
-				Sequence latestSequence = sequences.get(sequence.getPersistentIdentity());
-				if (latestSequence == null) {
-					sequences.put(sequence.getPersistentIdentity(), sequence);
-				}
-				else {
-					if (latestSequence.getMajorVersion() < sequence.getMajorVersion()) {
+		if (sequence.isSetPersistentIdentity() && sequence.isSetMajorVersion() && sequence.isSetMinorVersion()) {
+			// Compliant URI should come in here.
+			// Check if persistent identity exists in other maps.
+			if (!keyExistsInOtherMaps(sequences.keySet(), sequence.getPersistentIdentity())) {
+				// Check if URI exists in the sequences map.
+				if (!sequences.containsKey(sequence.getIdentity())) {
+					sequences.put(sequence.getIdentity(), sequence);
+					Sequence latestSequence = sequences.get(sequence.getPersistentIdentity());
+					if (latestSequence == null) {
 						sequences.put(sequence.getPersistentIdentity(), sequence);
 					}
-					else if (latestSequence.getMajorVersion() == sequence.getMajorVersion()){
-						if (latestSequence.getMinorVersion() < sequence.getMinorVersion()) {
+					else {
+						if (latestSequence.getMajorVersion() < sequence.getMajorVersion()) {
 							sequences.put(sequence.getPersistentIdentity(), sequence);
 						}
+						else if (latestSequence.getMajorVersion() == sequence.getMajorVersion()){
+							if (latestSequence.getMinorVersion() < sequence.getMinorVersion()) {
+								sequences.put(sequence.getPersistentIdentity(), sequence);
+							}
+						}
 					}
+					return true;
 				}
-				return true;
+				else // key exists in sequences map
+					return false;
 			}
-			else // key exists in sequences map
+			else // key exists in other maps
 				return false;
 		}
-		else // key exists in other maps
-			return false;
+		else { // Only check if sequence's URI exists in all maps.
+			if (!keyExistsInOtherMaps(sequences.keySet(), sequence.getIdentity())) {
+				if (!sequences.containsKey(sequence.getIdentity())) {
+					sequences.put(sequence.getIdentity(), sequence);					
+					return true;
+				}
+				else // key exists in sequences map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
 	}
 
 	/**

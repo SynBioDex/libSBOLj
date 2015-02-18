@@ -53,9 +53,9 @@ public abstract class Documented extends Identified {
 	 * Set field variable <code>displayId</code> to the specified element.
 	 * @param displayId
 	 */
-	// Created for backward compatibility to 1.1. 
 	public void setDisplayId(String displayId) {
 		this.displayId = displayId;
+		// TODO: Update the URI?
 	}
 	
 	/**

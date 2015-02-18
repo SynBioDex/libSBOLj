@@ -25,8 +25,8 @@ public abstract class Identified {
 	protected URI identity;
 	private URI persistentIdentity;
 	private String version;
-	private int majorVersion;
-	private int minorVersion;
+	private Integer majorVersion;
+	private Integer minorVersion;
 	private Timestamp timeStamp;
 	private List<Annotation> annotations;
 	
@@ -125,6 +125,20 @@ public abstract class Identified {
 			return true;					
 	}
 	
+	public boolean isSetMajorVersion() {
+		if (majorVersion == null)
+			return false;
+		else
+			return true;
+	}
+	
+	public boolean isSetMinorVersion() {
+		if (minorVersion == null)
+			return false;
+		else
+			return true;
+	}
+	
 	/**
 	 * @deprecated
 	 * Returns field variable <code>version</code>.
@@ -148,7 +162,7 @@ public abstract class Identified {
 	 * Returns the major version.
  	 * @return the major version
 	 */
-	public int getMajorVersion() {
+	public Integer getMajorVersion() {
 		return majorVersion;
 	}
 	
@@ -158,14 +172,16 @@ public abstract class Identified {
 	 */
 	public void setMajorVersion(int majorVersion) {
 		this.majorVersion = majorVersion;
+		// TODO: Update URI?
 	}
 	
 	/**
 	 * Returns the minor version.
 	 * @return the minor version
 	 */
-	public int getMinorVersion() {
+	public Integer getMinorVersion() {
 		return minorVersion;
+		// TODO: Update URI?
 	}
 	
 	/**
@@ -317,7 +333,8 @@ public abstract class Identified {
 	
 	/**
 	 * Clone the object first, increment the major version of the original object by 1, 
-	 * and then set this value to the major version of the cloned object. Set the minor version of the cloned object to 0.    
+	 * and then set this value to the major version of the cloned object. Set the minor version of the cloned object to 0.
+	 * Update the URI of the cloned object.    
 	 * @return the cloned object
 	 */
 	public Identified newMajorVersion() {
@@ -329,7 +346,7 @@ public abstract class Identified {
 	
 	/**
  	 * Clone the object first, and increment the minor version of the original object by 1, 
-	 * and then set this value to the minor version of the cloned object.  
+	 * and then set this value to the minor version of the cloned object. Update the URI of the cloned object.  
 	 * @return the cloned object
 	 */
 	public Identified newMinorVersion() {

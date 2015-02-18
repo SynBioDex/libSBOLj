@@ -149,6 +149,4 @@ public class Sequence extends TopLevel{
 			return false;
 		return true;
 	}
-	
-	
 }
