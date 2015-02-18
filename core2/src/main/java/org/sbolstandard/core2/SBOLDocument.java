@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.sbolstandard.core2.abstract_classes.Identified;
+import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.*;

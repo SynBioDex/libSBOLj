@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
+import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 /**
  * @author Zhen Zhang

@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.sbolstandard.core2.abstract_classes.TopLevel;
+
 public class Collection extends TopLevel{
 	
 	private Set<URI> members;

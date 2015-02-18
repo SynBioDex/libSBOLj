@@ -8,6 +8,7 @@ import java.util.Set;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.Location;
+import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 /**
  * 

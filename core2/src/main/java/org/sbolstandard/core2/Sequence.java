@@ -2,6 +2,8 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+import org.sbolstandard.core2.abstract_classes.TopLevel;
+
 public class Sequence extends TopLevel{
 		
 	private String elements;

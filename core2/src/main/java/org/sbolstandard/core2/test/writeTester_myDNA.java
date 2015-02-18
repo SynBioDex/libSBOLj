@@ -16,7 +16,7 @@ import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceAnnotation;
 import org.sbolstandard.core2.SequenceConstraint;
-import org.sbolstandard.core2.TopLevel;
+import org.sbolstandard.core2.abstract_classes.TopLevel;
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Identified;
 

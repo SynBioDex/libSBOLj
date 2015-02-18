@@ -182,7 +182,7 @@ public abstract class Identified {
 	 * Sets field variable <code>majorVersion</code> to the specified value.
 	 * @param majorVersion
 	 */
-	public void setMajorVersion(int majorVersion) {
+	public void setMajorVersion(Integer majorVersion) {
 		this.majorVersion = majorVersion;
 		// TODO: Update URI?
 	}
@@ -204,7 +204,7 @@ public abstract class Identified {
 	 * Sets field variable <code>minorVersion</code> to the specified value.
 	 * @param minorVersion
 	 */
-	public void setMinorVersion(int minorVersion) {
+	public void setMinorVersion(Integer minorVersion) {
 		this.minorVersion = minorVersion;
 	}
 	

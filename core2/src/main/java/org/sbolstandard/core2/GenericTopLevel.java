@@ -4,6 +4,8 @@ import java.net.URI;
 
 import javax.xml.namespace.QName;
 
+import org.sbolstandard.core2.abstract_classes.TopLevel;
+
 public class GenericTopLevel extends TopLevel{
 
 	private QName rdfType;

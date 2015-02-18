@@ -22,12 +22,12 @@ import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.GenericTopLevel;
 import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.MapsTo;
+import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.Model;
 import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.Participation;
 import org.sbolstandard.core2.Range;
-import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sbol2Terms;
@@ -35,13 +35,12 @@ import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceAnnotation;
 import org.sbolstandard.core2.SequenceConstraint;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
-import org.sbolstandard.core2.TopLevel;
 import org.sbolstandard.core2.Turtle;
-import org.sbolstandard.core2.abstract_classes.ComponentInstance.Access;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Identified;
 import org.sbolstandard.core2.abstract_classes.Location;
+import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 
