@@ -24,11 +24,16 @@ public abstract class Identified {
 	
 	protected URI identity;
 	private URI persistentIdentity;
+	
+	/**
+	 * @deprecated
+	 */
 	private String version;
 	private Integer majorVersion;
 	private Integer minorVersion;
 	private Timestamp timeStamp;
 	private List<Annotation> annotations;
+	private URI wasDerivedFrom;
 	
 	public Identified(URI identity) {
 		setIdentity(identity);
@@ -139,6 +144,13 @@ public abstract class Identified {
 			return true;
 	}
 	
+	public boolean isSetWasDerivedFrom() {
+		if (wasDerivedFrom == null)
+			return false;
+		else
+			return true;
+	}
+	
 	/**
 	 * @deprecated
 	 * Returns field variable <code>version</code>.
@@ -184,12 +196,24 @@ public abstract class Identified {
 		// TODO: Update URI?
 	}
 	
+	public URI getWasDerivedFrom() {
+		return wasDerivedFrom;
+	}
+	
 	/**
 	 * Sets field variable <code>minorVersion</code> to the specified value.
 	 * @param minorVersion
 	 */
 	public void setMinorVersion(int minorVersion) {
 		this.minorVersion = minorVersion;
+	}
+	
+	/**
+	 * Sets field variable <code>wasDerivedFrom</code> to the specified value.
+	 * @param wasDerivedFrom
+	 */
+	public void setWasDerivedFrom(URI wasDerivedFrom) {
+		this.wasDerivedFrom = wasDerivedFrom;
 	}
 	
 //	/**
@@ -321,6 +345,18 @@ public abstract class Identified {
 	public void unsetAnnotations() {
 		annotations = null;
 	}
+	
+	public void unsetMajorVersion() {
+		majorVersion = null;
+	}
+	
+	public void unsetMinorVersion() {
+		minorVersion = null;
+	}
+	
+	public void unsetWasDerivedFrom() {
+		wasDerivedFrom = null;
+	}
 
 	/**
 	 * Provide a deep copy of this instance.
@@ -339,6 +375,7 @@ public abstract class Identified {
 	 */
 	public Identified newMajorVersion() {
 		Identified cloned = this.clone();
+		wasDerivedFrom = cloned.getIdentity();
 		cloned.setMajorVersion(this.getMajorVersion() + 1);
 		cloned.setMinorVersion(0);
 		return cloned;
@@ -351,6 +388,7 @@ public abstract class Identified {
 	 */
 	public Identified newMinorVersion() {
 		Identified cloned = this.clone();
+		wasDerivedFrom = cloned.getIdentity();
 		cloned.setMinorVersion(this.getMinorVersion() + 1);
 		return cloned;
 	}

@@ -2,6 +2,8 @@ package org.sbolstandard.core2.abstract_classes;
 
 import java.net.URI;
 
+import org.sbolstandard.core2.ComponentDefinition;
+
 /**
  * 
  * @author Zhen Zhang
@@ -172,4 +174,16 @@ public abstract class Documented extends Identified {
 			return false;
 		return true;
 	}
+	
+//	/**	
+//	 * Clone the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
+//	 * @param id
+//	 * @return the copied {@link ComponentDefinition} instance.
+//	 */
+//	public ComponentDefinition copy(String id) {		
+//		setDerivedFrom(this.getIdentity());
+//		// TODO fill in
+//		return null;
+//		
+//	}
 }
