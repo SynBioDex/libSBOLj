@@ -27,7 +27,7 @@ public class readTester {
 	public static void main(String[] args) {
 		try {
 			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
-			SBOLReader.setAuthority("http://www.async.ece.utah.edu");
+			SBOLReader.setURIPrefix("www.async.ece.utah.edu");
 			SBOLDocument document1 = SBOLReader.read(file);
 			//			SBOLDocument document  = SBOLReader.read(filenameRdf);
 			//			SBOLDocument document1 = SBOLReader.readRdf(filenameV1_8);

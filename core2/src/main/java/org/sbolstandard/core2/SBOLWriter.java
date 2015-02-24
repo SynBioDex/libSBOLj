@@ -61,7 +61,6 @@ public class SBOLWriter {
 	 * url(authority)/id/major.vr/minor.vr
 	 *
 	 * TODO: not all isSet() for the members are called.
-	 * major and minor vision isn't implemented.
 	 */
 
 	public static void write(SBOLDocument doc, File file) throws FileNotFoundException{
@@ -319,7 +318,6 @@ public class SBOLWriter {
 	private static void formatCommonDocumentedData (List<NamedProperty<QName>> list, Documented d)
 	{
 		formatCommonIdentifiedData(list, d);
-		//TODO: suppress getDisplayId() for now.
 		if(d.getDisplayId() != null)
 			list.add(NamedProperty(Sbol2Terms.Documented.displayId, d.getDisplayId()));
 		if(d.isSetName())
@@ -330,11 +328,8 @@ public class SBOLWriter {
 
 	private static void formatCommonIdentifiedData (List<NamedProperty<QName>> list, Identified t)
 	{
-		//TODO: suppress getPersistentIdentity() & getVersion() for now.
 		if(t.getPersistentIdentity() != null)
 			list.add(NamedProperty(Sbol2Terms.Identified.persistentIdentity, t.getPersistentIdentity()));
-		if(t.getVersion() != null)
-			list.add(NamedProperty(Sbol2Terms.Identified.version, t.getVersion()));
 		if(t.isSetTimeStamp())
 			list.add(NamedProperty(Sbol2Terms.Identified.timeStamp, t.getTimeStamp().toString()));
 
@@ -599,8 +594,6 @@ public class SBOLWriter {
 
 			if(s.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Identified.persistentIdentity, s.getPersistentIdentity()));
-			if(s.getVersion() != null)
-				list.add(NamedProperty(Sbol2Terms.Identified.version, s.getVersion()));
 			if(s.getRestriction() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.restriction, s.getRestrictionURI()));
 			if(s.getSubject() != null)
@@ -664,7 +657,6 @@ public class SBOLWriter {
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			formatCommonTopLevelData(list, t);
-			//TODO: shouldn't t.getRdfType() be checked to see if it is null before setting TopLevelDoc?
 			topLevelDoc.add(TopLevelDocument(t.getRdfType(), t.getIdentity(), NamedProperties(list)));
 		}
 	}

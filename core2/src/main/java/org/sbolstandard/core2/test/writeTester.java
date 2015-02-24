@@ -57,6 +57,9 @@ public class writeTester {
 	private static String TurtleString = "writeTesterString_v1.3.ttl";
 	private static String TurtleFile   = "writeTesterFile_v1.3.ttl";
 
+	private static String  fileName   = "single_pLacTetRSeq.rdf";
+
+
 	public static void main( String[] args )
 	{
 		get_myParts(SBOL2Doc_test);
@@ -64,12 +67,11 @@ public class writeTester {
 		//		writeJsonOutputStream();
 		//		writeTurtleOutputStream();
 
-		writeRdfString();
+		//		writeRdfString();
 		//		writeJsonString();
 		//		writeTurtleString();
 
-
-		//writeRdfFile();
+		writeRdfFile();
 		//writeJsonFile();
 		//writeTurtleFile();
 	}
@@ -173,7 +175,7 @@ public class writeTester {
 	public static void writeRdfFile()
 	{
 		try {
-			SBOLWriter.writeRdf(SBOL2Doc_test, new File(rdfFile));
+			SBOLWriter.writeRdf(SBOL2Doc_test, new File(fileName)); //TODO: rdfFile
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -186,7 +188,6 @@ public class writeTester {
 		Collection myParts = createCollection(SBOL2Doc_test,
 				getData("myParts/1/0","myParts","1.0","myParts","myParts", "myParts"),
 				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
-
 
 		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_tetRSeq(SBOL2Doc_test).getIdentity());
@@ -243,6 +244,7 @@ public class writeTester {
 
 	private static ComponentDefinition get_pLac (SBOLDocument SBOL2Doc_test)
 	{
+		Sequence temp = get_pLacSeq(SBOL2Doc_test);
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Promoter"),
@@ -678,7 +680,6 @@ public class writeTester {
 	{
 		i.setIdentity(identity);
 		i.setPersistentIdentity(persistentIdentity);
-		i.setVersion(version);
 		//		i.setTimeStamp(timeStamp);
 	}
 
@@ -1046,18 +1047,18 @@ public class writeTester {
 		return list;
 	}
 
-//	private static RefinementType getRefinement(String s)
-//	{
-//		if(s.equals("verifyIdentical"))
-//			return RefinementType.verifyIdentical;
-//		else if(s.equals("useLocal"))
-//			return RefinementType.useLocal;
-//		else if(s.equals("useRemote"))
-//			return RefinementType.useRemote;
-//		else if(s.equals("merge"))
-//			return RefinementType.merge;
-//		return RefinementType.merge;
-//	}
+	//	private static RefinementType getRefinement(String s)
+	//	{
+	//		if(s.equals("verifyIdentical"))
+	//			return RefinementType.verifyIdentical;
+	//		else if(s.equals("useLocal"))
+	//			return RefinementType.useLocal;
+	//		else if(s.equals("useRemote"))
+	//			return RefinementType.useRemote;
+	//		else if(s.equals("merge"))
+	//			return RefinementType.merge;
+	//		return RefinementType.merge;
+	//	}
 
 	private static List<Participation> getParticipation_List(Participation ... p)
 	{

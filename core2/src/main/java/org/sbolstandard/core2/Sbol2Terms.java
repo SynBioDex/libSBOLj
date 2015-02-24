@@ -67,7 +67,6 @@ public class Sbol2Terms
 	public static final class ComponentInstance {
 		public static final QName ComponentInstance 	   = sbol2.withLocalPart("componentInstance");
 		public static final QName access 				   = sbol2.withLocalPart("access");
-		//TODO: double check on hasInstantiatedComponent
 		public static final QName hasMappings 		   	   = sbol2.withLocalPart("Mapping");
 		public static final QName hasComponentDefinition   = sbol2.withLocalPart("definition");
 	}
@@ -102,6 +101,11 @@ public class Sbol2Terms
 		public static final QName direction   	   	  = sbol2.withLocalPart("direction");
 	}
 
+	public static final class GenericLocation {
+		public static final QName GenericLocation = sbol2.withLocalPart("Generic Location");
+		public static final QName orientation = sbol2.withLocalPart("Orientation");
+	}
+
 	/**
 	 * A group of qualified terms for Identified related SBOL objects
 	 *
@@ -110,8 +114,7 @@ public class Sbol2Terms
 		public static final QName Identified 	   	 = sbol2.withLocalPart("Identified");
 		public static final QName identity   	   	 = sbol2.withLocalPart("identity");
 		public static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity");
-		public static final QName version   	  	 = sbol2.withLocalPart("version");
-		public static final QName majorversion   	 = sbol2.withLocalPart("major version"); //TODO: clarify
+		public static final QName majorversion   	 = sbol2.withLocalPart("major version");
 		public static final QName minorversion   	 = sbol2.withLocalPart("minor version");
 		public static final QName timeStamp   	     = sbol2.withLocalPart("timeStamp");
 		public static final QName hasAnnotations 	 = sbol2.withLocalPart("annotation");
@@ -267,23 +270,23 @@ public class Sbol2Terms
 
 	public static final class DnaComponentV1URI {
 		public static final URI roles = URI.create("http://purl.obolibrary.org/obo/SO_0000804");
-		public static final URI type  = URI.create("http://purl.obolibrary.org/obo/CHEBI_16991");
+		public static final URI type  = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
 		public static final URI restriction  = URI.create(sbol2.getNamespaceURI() + "precedes");
 	}
 
 	// Moved to ComponentInstance
-//	public static final class Access {
-//		public static final URI PUBLIC  = URI.create(sbol2.getNamespaceURI() + "public");
-//		public static final URI PRIVATE = URI.create(sbol2.getNamespaceURI() + "private");
-//	}
+	//	public static final class Access {
+	//		public static final URI PUBLIC  = URI.create(sbol2.getNamespaceURI() + "public");
+	//		public static final URI PRIVATE = URI.create(sbol2.getNamespaceURI() + "private");
+	//	}
 
 	// Moved to FunctionalComponent
-//	public static final class Direction {
-//		public static final URI input  = URI.create(sbol2.getNamespaceURI() + "input");
-//		public static final URI output = URI.create(sbol2.getNamespaceURI() + "output");
-//		public static final URI inout  = URI.create(sbol2.getNamespaceURI() + "inout");
-//		public static final URI none   = URI.create(sbol2.getNamespaceURI() + "none");
-//	}
+	//	public static final class Direction {
+	//		public static final URI input  = URI.create(sbol2.getNamespaceURI() + "input");
+	//		public static final URI output = URI.create(sbol2.getNamespaceURI() + "output");
+	//		public static final URI inout  = URI.create(sbol2.getNamespaceURI() + "inout");
+	//		public static final URI none   = URI.create(sbol2.getNamespaceURI() + "none");
+	//	}
 
 
 	public static final class Orientation {

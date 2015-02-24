@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#">
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLactetRSeq/1/0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pLactetRSeq"/>
+    <sbol:timeStamp>2015-02-24 12:02:15.114</sbol:timeStamp>
+    <sbol:name>pLactetRSeq</sbol:name>
+    <sbol:description>pLactetRSeq</sbol:description>
+    <sbol:elements>pLactetRSeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/pLactetRSeq"/>
+  </sbol:Sequence>
+</rdf:RDF>
