@@ -158,4 +158,26 @@ public class FunctionalComponent extends ComponentInstance {
 		public static final URI	inout	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "inout");
 		public static final URI	none	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "none");
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((direction == null) ? 0 : direction.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FunctionalComponent other = (FunctionalComponent) obj;
+		if (direction != other.direction)
+			return false;
+		return true;
+	}
 }

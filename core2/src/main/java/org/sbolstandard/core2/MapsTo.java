@@ -188,6 +188,40 @@ public class MapsTo extends Identified{
 	public void setRemote(URI remote) {
 		this.remote = remote;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((local == null) ? 0 : local.hashCode());
+		result = prime * result + ((refinement == null) ? 0 : refinement.hashCode());
+		result = prime * result + ((remote == null) ? 0 : remote.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MapsTo other = (MapsTo) obj;
+		if (local == null) {
+			if (other.local != null)
+				return false;
+		} else if (!local.equals(other.local))
+			return false;
+		if (refinement != other.refinement)
+			return false;
+		if (remote == null) {
+			if (other.remote != null)
+				return false;
+		} else if (!remote.equals(other.remote))
+			return false;
+		return true;
+	}
 	
 	
 	public static final class Refinement {

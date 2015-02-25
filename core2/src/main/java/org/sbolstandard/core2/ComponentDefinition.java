@@ -432,15 +432,14 @@ public class ComponentDefinition extends TopLevel {
 		}
 	}
 	
-	/**
-	 * Deep equality.
-	 * @param componentDefinition
-	 * @return <code>True</code> if the specified {@link ComponentDefinition} instance is equal to this instance.
-	 */
-	public boolean equals(ComponentDefinition componentDefinition) {
-		// TODO fill in the content
-		return false;
-	}
+//	/**
+//	 * Deep equality.
+//	 * @param componentDefinition
+//	 * @return <code>True</code> if the specified {@link ComponentDefinition} instance is equal to this instance.
+//	 */
+//	public boolean equals(ComponentDefinition componentDefinition) {
+//		return false;
+//	}
 	
 	/**
 	 * Replace the minor version in the object's URI with the specified one, and make the same replacement for all of its children objects.
@@ -545,6 +544,9 @@ public class ComponentDefinition extends TopLevel {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.Documented#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

@@ -31,6 +31,7 @@ public class SBOLDocument {
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
 	private HashMap<URI,NamespaceBinding> nameSpaces;
+	private HashMap<URI, Annotation> annotations;
 
 	public SBOLDocument() {
 		//identityMap = new HashMap<URI, Identified>();
@@ -345,20 +346,21 @@ public class SBOLDocument {
 			return newSequence;
 		}
 		else
+			// TODO return exception
 			return null;
 	}
 	
 	/**
 	 * Create a new {@link Sequence} instance.
-	 * @param authority
+	 * @param URIprefix
 	 * @param id
 	 * @param elements
 	 * @param encoding
 	 * @return the created Sequence instance. 
 	 */
-	public Sequence createSequence(String authority, String id, String elements, URI encoding) {
+	public Sequence createSequence(String URIprefix, String id, String elements, URI encoding) {
 		//Sequence newSequence = new Sequence(authority, id, elements, encoding);
-		URI newSequenceURI = URI.create(authority + '/' + id + "/1/0");
+		URI newSequenceURI = URI.create(URIprefix + '/' + id + "/1/0");
 		if (Identified.isURIcompliant(newSequenceURI.toString())) {
 			Sequence newSequence = new Sequence(newSequenceURI, elements, encoding);
 			if (addSequence(newSequence)) {
@@ -587,6 +589,7 @@ public class SBOLDocument {
 	 * @param prefix The prefix {@link String}
 	 */
 	public void addNameSpaceBinding(URI nameSpaceUri, String prefix) {
+		// TODO @addNameSpaceBinding: Check for duplicates.
 		nameSpaces.put(nameSpaceUri, NamespaceBinding(nameSpaceUri.toString(), prefix));
 	}
 	

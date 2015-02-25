@@ -56,12 +56,12 @@ public abstract class Identified {
 		return true;
 	}
 
-	public Identified(String authority, String id) {
+	public Identified(String URIprefix, String id) {
 		//this(URI.create(authority.trim() + '/' + id.trim() + "/1/0"));
 		setIdentity(identity);
 		this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 		this.annotations = new ArrayList<Annotation>();
-		this.setPersistentIdentity(URI.create(authority.trim() + '/' + id.trim()));
+		this.setPersistentIdentity(URI.create(URIprefix.trim() + '/' + id.trim()));
 		//this.setVersion("1.0");
 		this.setMajorVersion(1);
 		this.setMinorVersion(0);
@@ -378,6 +378,7 @@ public abstract class Identified {
 		wasDerivedFrom = cloned.getIdentity();
 		cloned.setMajorVersion(this.getMajorVersion() + 1);
 		cloned.setMinorVersion(0);
+		// TODO: Update the cloned URI.
 		return cloned;
 	}
 	

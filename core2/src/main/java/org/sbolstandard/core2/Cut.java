@@ -103,4 +103,32 @@ public class Cut extends Location{
 	public void unsetOrientation() {
 		orientation = null;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((at == null) ? 0 : at.hashCode());
+		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cut other = (Cut) obj;
+		if (at == null) {
+			if (other.at != null)
+				return false;
+		} else if (!at.equals(other.at))
+			return false;
+		if (orientation != other.orientation)
+			return false;
+		return true;
+	}
 }

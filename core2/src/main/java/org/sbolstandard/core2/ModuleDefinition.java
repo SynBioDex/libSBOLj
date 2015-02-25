@@ -413,6 +413,57 @@ public class ModuleDefinition extends TopLevel {
 	public void clearModels() {
 		models.clear();
 	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((components == null) ? 0 : components.hashCode());
+		result = prime * result + ((interactions == null) ? 0 : interactions.hashCode());
+		result = prime * result + ((models == null) ? 0 : models.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		result = prime * result + ((subModules == null) ? 0 : subModules.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ModuleDefinition other = (ModuleDefinition) obj;
+		if (components == null) {
+			if (other.components != null)
+				return false;
+		} else if (!components.equals(other.components))
+			return false;
+		if (interactions == null) {
+			if (other.interactions != null)
+				return false;
+		} else if (!interactions.equals(other.interactions))
+			return false;
+		if (models == null) {
+			if (other.models != null)
+				return false;
+		} else if (!models.equals(other.models))
+			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		if (subModules == null) {
+			if (other.subModules != null)
+				return false;
+		} else if (!subModules.equals(other.subModules))
+			return false;
+		return true;
+	}
 	
 //	/**
 //	 * Set optional field variable <code>models</code> to an empty list.

@@ -100,5 +100,30 @@ public class MultiRange extends Location{
 			addRange(range);
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((ranges == null) ? 0 : ranges.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MultiRange other = (MultiRange) obj;
+		if (ranges == null) {
+			if (other.ranges != null)
+				return false;
+		} else if (!ranges.equals(other.ranges))
+			return false;
+		return true;
+	}
 	
 }
