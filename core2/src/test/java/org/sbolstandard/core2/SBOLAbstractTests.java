@@ -2,6 +2,7 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -14,53 +15,56 @@ public abstract class SBOLAbstractTests {
 	//      the parts generated will say it passes but it will not really check whether the two
 	//      things being compared are the same.
 
-	@Test
+//	@Test
 	/* Creates a single Collection with no members.
 	 * Note: Works on SBOLReader but not SBOLWriter.
 	 */
-	public void valid01() throws Exception
-	{
-		runTest("test/data/singleCollection.rdf",
-				get_Collection("myParts",
-						SBOLTestUtils.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),
-								SBOLTestUtils.createTurtle())));
-	}
-
-	public void valid02() throws Exception
-	{
-		runTest("test/data/singleCollection.rdf",
-				get_Collection("myParts", null));
-	}
-
-	@Test //Creates a single GenericTopLevel
-	public void valid03() throws Exception
-	{
-		runTest("test/data/singleGenericTopLevel.rdf", get_genericTopLevel("GenericTopLevel"));
-	}
+//	public void valid01() throws Exception
+//	{
+//		// TODO: build SBOL document here to send
+//		runTest("test/data/singleCollection.rdf",
+//				get_Collection("myParts",
+//						SBOLTestUtils.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),
+//								SBOLTestUtils.createTurtle())));
+//	}
+//
+//	public void valid02() throws Exception
+//	{
+//		runTest("test/data/singleCollection.rdf",
+//				get_Collection("myParts", null));
+//	}
+//
+//	@Test //Creates a single GenericTopLevel
+//	public void valid03() throws Exception
+//	{
+//		runTest("test/data/singleGenericTopLevel.rdf", get_genericTopLevel("GenericTopLevel"));
+//	}
 
 	@Test //Creates a single Sequence called pLacSeq
 	public void valid04() throws Exception
 	{
-		runTest("test/data/single_pLacSeq.rdf", get_Sequence("pLacSeq"));
+		SBOLDocument document = new SBOLDocument();
+		createSequence(document,"pLacSeq");
+		runTest("test/data/single_pLacSeq.rdf", document);
 	}
 
 	@Test //Creates a single Sequence called tetRSeq
 	public void valid05() throws Exception
 	{
-		runTest("test/data/single_tetRSeq.rdf", get_Sequence("tetRSeq"));
-	}
-
-	@Test //Creates a single Sequence called pLacTetRSeq
-	public void valid06() throws Exception
-	{
-		runTest("test/data/single_pLacTetRSeq.rdf", get_Sequence("pLactetRSeq"));
+		SBOLDocument document = new SBOLDocument();
+		createSequence(document,"pLacSeq");
+		createSequence(document,"tetRSeq");
+		createSequence(document,"pLactetRSeq");
+		runTest("test/data/multiple_sequences.rdf", document);
 	}
 
 	@Test //TODO: Still testing...
 	public void valid07() throws Exception
 	{
+		SBOLDocument document = new SBOLDocument();
+		createComponentDefinition(document,"pLac","DNA","promoter","pLacSeq",null,null,null);
 		//TODO: change the rdf file name to its' correct generated object
-		runTest("test/data/singleGenericTopLevel.rdf", get_pLac("pLac"));
+		runTest("test/data/singleGenericTopLevel.rdf", document);
 	}
 
 	public Collection get_Collection (String topLevelName, Annotation...annotation)
@@ -103,6 +107,28 @@ public abstract class SBOLAbstractTests {
 				identity, persistentIdentity,
 				displayId, name, description, majorVersion, minorVersion);
 	}
+	
+	public void createSequence(SBOLDocument document,String id)
+	{
+		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu", id, id + "_element", URI.create("http://encodings.org/encoding"));
+		sequence.setName(id);
+		sequence.setDescription(id);
+	}
+	
+	public void createComponentDefinition(SBOLDocument document,String id,String type,String role,String sequenceId,List<SequenceAnnotation> sequenceAnnotations,
+			List<SequenceConstraint> sequenceConstraints,List<Component> subComponents) 
+	{
+		ComponentDefinition componentDefinition = document.createComponentDefinition("http://www.async.ece.utah.edu", id, 
+				SBOLTestUtils.getSetPropertyURI(type), SBOLTestUtils.getSetPropertyURI(role));
+		if (sequenceId!=null)
+			componentDefinition.setSequence(URI.create("http://www.async.ece.utah.edu/"+sequenceId+"/1/0"));
+		if (sequenceAnnotations!=null)
+			componentDefinition.setSequenceAnnotations(sequenceAnnotations);
+		if (sequenceConstraints!=null)
+			componentDefinition.setSequenceConstraints(sequenceConstraints);
+		if (subComponents!=null)
+			componentDefinition.setSubComponents(subComponents);
+	}
 
 	public Sequence get_Sequence (String topLevelName)
 	{
@@ -143,7 +169,7 @@ public abstract class SBOLAbstractTests {
 				get_Sequence("pLacSeq"), null, null, null);
 	}
 
-	public abstract void runTest(final String fileName, final TopLevel... contents)
+	public abstract void runTest(final String fileName, final SBOLDocument expected)
 			throws Exception;
 
 }

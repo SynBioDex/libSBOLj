@@ -60,8 +60,10 @@ public class writeTester {
 	private static String  fileName   = "single_pLacTetRSeq.rdf";
 
 
-	public static void main( String[] args )
+	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
+		String prURI="http://www.partsregistry.org/";
+
 		get_myParts(SBOL2Doc_test);
 		writeRdfOutputStream();
 		//		writeJsonOutputStream();

@@ -438,6 +438,16 @@ public class SBOLTestUtils {
 		return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 	}
 
+	public static URI createCompliantIdentity(String id)
+	{
+		return URI.create("http://www.async.ece.utah.edu/" + id + "/1/0");
+	}
+
+	public static URI createCompliantPersistentIdentity(String id)
+	{
+		return URI.create("http://www.async.ece.utah.edu/" + id);
+	}
+
 	public static URI getURI(String append)
 	{
 		return URI.create("http://www.async.ece.utah.edu/" + append);

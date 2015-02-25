@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.io.InputStream;
+import static org.junit.Assert.assertTrue;
 
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
@@ -20,7 +21,7 @@ import org.sbolstandard.core2.abstract_classes.TopLevel;
 public class SBOLReaderTest extends SBOLAbstractTests
 {
 	@Override
-	public void runTest(final String fileName, final TopLevel... contents) throws Exception
+	public void runTest(final String fileName, final SBOLDocument expected) throws Exception
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
@@ -32,13 +33,8 @@ public class SBOLReaderTest extends SBOLAbstractTests
 		{
 			SBOLReader.setURIPrefix("www.async.ece.utah.edu");
 			SBOLDocument actual = SBOLReader.read(resourceAsStream);
-
-			if (contents != null)
-			{
-				SBOLDocument expected = SBOLTestUtils.createDocument(contents);
-				//TODO: DeepEquality check will go here.
-				//				new SBOLDeepEquality.EqualityTester().assertEqual(expected, actual);
-			}
+			assertTrue(actual.equals(expected));
+;			//				new SBOLDeepEquality.EqualityTester().assertEqual(expected, actual);
 		}
 		catch (SBOLValidationException e)
 		{
