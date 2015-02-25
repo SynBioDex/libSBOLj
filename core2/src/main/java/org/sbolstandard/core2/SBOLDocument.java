@@ -30,8 +30,7 @@ public class SBOLDocument {
 	private HashMap<URI, Model> models;
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
-	private HashMap<URI,NamespaceBinding> nameSpaces;
-	private HashMap<URI, Annotation> annotations;
+	private HashMap<URI,NamespaceBinding> nameSpaces;	
 
 	public SBOLDocument() {
 		//identityMap = new HashMap<URI, Identified>();
@@ -42,7 +41,7 @@ public class SBOLDocument {
 		moduleDefinitions = new HashMap<URI, ModuleDefinition>();
 		sequences = new HashMap<URI, Sequence>();
 		nameSpaces = new HashMap<URI, NamespaceBinding>();
-		nameSpaces.put(URI.create(Sbol2Terms.sbol2.getNamespaceURI()), Sbol2Terms.sbol2);
+		nameSpaces.put(URI.create(Sbol2Terms.sbol2.getNamespaceURI()), Sbol2Terms.sbol2);		
 	}
 	
 	
@@ -691,5 +690,69 @@ public class SBOLDocument {
 			}
 		}
 		return false;
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((collections == null) ? 0 : collections.hashCode());
+		result = prime * result
+				+ ((componentDefinitions == null) ? 0 : componentDefinitions.hashCode());
+		result = prime * result + ((genericTopLevels == null) ? 0 : genericTopLevels.hashCode());
+		result = prime * result + ((models == null) ? 0 : models.hashCode());
+		result = prime * result + ((moduleDefinitions == null) ? 0 : moduleDefinitions.hashCode());
+		result = prime * result + ((nameSpaces == null) ? 0 : nameSpaces.hashCode());
+		result = prime * result + ((sequences == null) ? 0 : sequences.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SBOLDocument other = (SBOLDocument) obj;
+		if (collections == null) {
+			if (other.collections != null)
+				return false;
+		} else if (!collections.equals(other.collections))
+			return false;
+		if (componentDefinitions == null) {
+			if (other.componentDefinitions != null)
+				return false;
+		} else if (!componentDefinitions.equals(other.componentDefinitions))
+			return false;
+		if (genericTopLevels == null) {
+			if (other.genericTopLevels != null)
+				return false;
+		} else if (!genericTopLevels.equals(other.genericTopLevels))
+			return false;
+		if (models == null) {
+			if (other.models != null)
+				return false;
+		} else if (!models.equals(other.models))
+			return false;
+		if (moduleDefinitions == null) {
+			if (other.moduleDefinitions != null)
+				return false;
+		} else if (!moduleDefinitions.equals(other.moduleDefinitions))
+			return false;
+		if (nameSpaces == null) {
+			if (other.nameSpaces != null)
+				return false;
+		} else if (!nameSpaces.equals(other.nameSpaces))
+			return false;
+		if (sequences == null) {
+			if (other.sequences != null)
+				return false;
+		} else if (!sequences.equals(other.sequences))
+			return false;
+		return true;
 	}
 }
