@@ -396,6 +396,7 @@ public class SBOLTestUtils {
 
 	public static SBOLDocument createDocument(TopLevel... contents) {
 		SBOLDocument document = new SBOLDocument();
+		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
 		for(TopLevel topLevel: contents)
 		{
 			if(topLevel instanceof Collection)

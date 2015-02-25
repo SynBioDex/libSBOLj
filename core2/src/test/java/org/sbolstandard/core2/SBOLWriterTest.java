@@ -1,5 +1,7 @@
 package org.sbolstandard.core2;
 
+import java.net.URI;
+
 import org.junit.Assume;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
