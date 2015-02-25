@@ -274,13 +274,79 @@ public class SBOLDocument {
 		return newComponentDefinition;
 	}
 	
+		/**
+	 * Create a new {@link ComponentDefinition} instance.
+	 * @param URIprefix
+	 * @param id
+	 * @param elements
+	 * @param encoding
+	 * @return the created Sequence instance. 
+	 */
+	public ComponentDefinition createComponentDefinition(String URIprefix, String id, Set<URI> type, Set<URI> roles) {
+		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + id + "/1/0");
+		if (Identified.isURIcompliant(newComponentDefinitionURI.toString())) {
+			ComponentDefinition newComponentDefinition = new ComponentDefinition(newComponentDefinitionURI, type, roles);
+			if (addComponentDefinition(newComponentDefinition)) {
+				return newComponentDefinition;
+			}
+			else
+				return null;
+		}
+		else {
+			// TODO: Non-compliant URI
+			return null;
+		}
+	}
+	
 	/**
 	 * Appends the specified element to the end of the list of component definitions.
 	 * @param componentDefinition
+	 * @return 
 	 */
-	public void addComponentDefinition(ComponentDefinition componentDefinition) {
-		// TODO: Recursively check the uniqueness of URIs of each Component and its field variables. 
-		componentDefinitions.put(componentDefinition.getIdentity(), componentDefinition);
+	public boolean addComponentDefinition(ComponentDefinition componentDefinition) {
+		if (componentDefinition.isSetPersistentIdentity() &&
+				componentDefinition.isSetMajorVersion() && 
+					componentDefinition.isSetMinorVersion()) {
+			// Compliant URI should come in here.
+			// Check if persistent identity exists in other maps.
+			if (!keyExistsInOtherMaps(componentDefinitions.keySet(), componentDefinition.getPersistentIdentity())) {
+				// Check if URI exists in the componentDefinitions map.
+				if (!componentDefinitions.containsKey(componentDefinition.getIdentity())) {
+					componentDefinitions.put(componentDefinition.getIdentity(), componentDefinition);
+					ComponentDefinition latestComponentDefinition = componentDefinitions.get(componentDefinition.getPersistentIdentity());
+					if (latestComponentDefinition == null) {
+						componentDefinitions.put(componentDefinition.getPersistentIdentity(), componentDefinition);
+					}
+					else {
+						if (latestComponentDefinition.getMajorVersion() < componentDefinition.getMajorVersion()) {
+							componentDefinitions.put(componentDefinition.getPersistentIdentity(), componentDefinition);
+						}
+						else if (latestComponentDefinition.getMajorVersion() == componentDefinition.getMajorVersion()){
+							if (latestComponentDefinition.getMinorVersion() < componentDefinition.getMinorVersion()) {
+								componentDefinitions.put(componentDefinition.getPersistentIdentity(), componentDefinition);
+							}
+						}
+					}
+					return true;
+				}
+				else // key exists in componentDefinitions map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if sequence's URI exists in all maps.
+			if (!keyExistsInOtherMaps(componentDefinitions.keySet(), componentDefinition.getIdentity())) {
+				if (!componentDefinitions.containsKey(componentDefinition.getIdentity())) {
+					componentDefinitions.put(componentDefinition.getIdentity(), componentDefinition);					
+					return true;
+				}
+				else // key exists in componentDefinitions map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
 	}
 	
 	/**
