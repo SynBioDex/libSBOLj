@@ -238,7 +238,7 @@ public class Sbol2Terms
 	 */
 	public static final class SequenceAnnotation {
 		public static final QName SequenceAnnotation = sbol2.withLocalPart("SequenceAnnotation");
-		public static final QName hasComponent 		 = sbol2.withLocalPart("Component");
+		public static final QName hasComponent 		 = sbol2.withLocalPart("component");
 		public static final QName hasLocation 		 = sbol2.withLocalPart("location");
 	}
 

@@ -59,6 +59,7 @@ public class SBOLWriter {
 	/*
 	 * Note:
 	 * url(authority)/id/major.vr/minor.vr
+	 * read 1.1 and 2.0 then compare
 	 *
 	 * TODO: not all isSet() for the members are called.
 	 */
@@ -88,7 +89,6 @@ public class SBOLWriter {
 	public static void write(SBOLDocument doc, OutputStream out)
 			throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
-
 		writeRdf(new OutputStreamWriter(out),
 				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));

@@ -34,6 +34,28 @@ public class SBOLTestUtils {
 	private SBOLTestUtils() {
 	}
 
+	public static void createSequence(SBOLDocument document,String id)
+	{
+		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu", id, id + "_element", URI.create("http://encodings.org/encoding"));
+		sequence.setName(id);
+		sequence.setDescription(id);
+	}
+
+	public static void createComponentDefinition(SBOLDocument document,String id,String type,String role,String sequenceId,List<SequenceAnnotation> sequenceAnnotations,
+			List<SequenceConstraint> sequenceConstraints,List<Component> subComponents)
+	{
+		ComponentDefinition componentDefinition = document.createComponentDefinition("http://www.async.ece.utah.edu", id,
+				SBOLTestUtils.getSetPropertyURI(type), SBOLTestUtils.getSetPropertyURI(role));
+		if (sequenceId!=null)
+			componentDefinition.setSequence(URI.create("http://www.async.ece.utah.edu/"+sequenceId+"/1/0"));
+		if (sequenceAnnotations!=null)
+			componentDefinition.setSequenceAnnotations(sequenceAnnotations);
+		if (sequenceConstraints!=null)
+			componentDefinition.setSequenceConstraints(sequenceConstraints);
+		if (subComponents!=null)
+			componentDefinition.setSubComponents(subComponents);
+	}
+
 	//	public static GenericTopLevel createGenericTopLevel(SBOLDocument SBOL2Doc_test, List<String> topLevelData)
 	public static GenericTopLevel createGenericTopLevel(
 			URI identity, URI persistentIdentity,
@@ -307,8 +329,6 @@ public class SBOLTestUtils {
 		return s;
 	}
 
-	//	public static Sequence createSequenceData(SBOLDocument SBOL2Doc_test, List<String> structureData,
-	//			URI encoding)
 	public static Sequence createSequenceData(
 			URI identity, URI persistentIdentity,
 			String displayId, String name, String description,
