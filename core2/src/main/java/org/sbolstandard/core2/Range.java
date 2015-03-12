@@ -17,7 +17,14 @@ public class Range extends Location{
 		setEnd(end);
 	}
 	
-	
+	private Range(Range range) {
+		super(range);
+		this.setStart(range.getStart().intValue());
+		this.setEnd(range.getEnd().intValue());
+		this.setOrientation(range.getOrientation());
+	}
+
+
 	/**
 	 * Sets field variable <code>start</code> to the specified element.
 	 * @param value
@@ -30,7 +37,7 @@ public class Range extends Location{
 	 * Returns field variable <code>start</code>.
 	 * @return field variable <code>start</code>
 	 */
-	public int getStart() {		
+	public Integer getStart() {		
 		return start;
 	}
 
@@ -38,7 +45,7 @@ public class Range extends Location{
 	 * Returns field variable <code>end</code>.
 	 * @return field variable <code>end</code>
 	 */
-	public int getEnd() {
+	public Integer getEnd() {
 		return end;
 	}
 
@@ -122,6 +129,12 @@ public class Range extends Location{
 	 */
 	public void unsetOrientation() {
 		orientation = null;
+	}
+
+
+	@Override
+	public Range deepCopy() {
+		return new Range(this);
 	}
 
 }

@@ -24,11 +24,23 @@ public abstract class Documented extends Identified {
 		// TODO extract display ID
 	}
 	
-	public Documented(String authority, String id) {
-		super(authority, id);
-		setDisplayId(id.trim());
+	public Documented(String URIprefix, String id, String version) {
+		super(URIprefix, id, version);
+		setDisplayId(id);
 	}
 	
+	protected Documented(Documented documented) {
+		super(documented);
+		if (documented.isSetDisplayId()) {
+			this.setDisplayId(documented.getDisplayId());
+		}
+		if (documented.isSetName()) {
+			this.setName(documented.getName());
+		}
+		if (documented.isSetDescription()) {
+			this.setDescription(documented.getDescription());
+		}		
+	}
 	
 	
 	/**
@@ -175,15 +187,8 @@ public abstract class Documented extends Identified {
 		return true;
 	}
 	
-//	/**	
-//	 * Clone the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
-//	 * @param id
-//	 * @return the copied {@link ComponentDefinition} instance.
-//	 */
-//	public ComponentDefinition copy(String id) {		
-//		setDerivedFrom(this.getIdentity());
-//		// TODO fill in
-//		return null;
-//		
-//	}
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.Identified#deepCopy()
+	 */
+	protected abstract Documented deepCopy();
 }

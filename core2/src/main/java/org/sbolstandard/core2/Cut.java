@@ -14,6 +14,14 @@ public class Cut extends Location{
 		super(identity);
 		setAt(at);
 	}
+	
+	private Cut(Cut cut) {
+		super(cut);
+		this.setAt(cut.getAt().intValue());
+		if (cut.isSetOrientation()) {
+			this.setOrientation(cut.getOrientation());
+		}
+	}
 
 	/**
 	 * Returns field variable <code>at</code>.
@@ -130,5 +138,10 @@ public class Cut extends Location{
 		if (orientation != other.orientation)
 			return false;
 		return true;
+	}
+
+	@Override
+	public Cut deepCopy() {
+		return new Cut(this);
 	}
 }

@@ -24,6 +24,18 @@ public class Module extends Documented {
 		setDefinition(instantiatedModule);
 		this.mappings = new HashMap<URI, MapsTo>();
 	}
+	
+	private Module(Module module) {
+		super(module);
+		this.setDefinition(module.getDefinition());
+		if (module.isSetMappings()) {
+			List<MapsTo> mappings = new ArrayList<MapsTo>();
+			for (MapsTo mapping : module.getMappings()) {
+				mappings.add(mapping.deepCopy());
+			}
+			this.setMappings(mappings);
+		}
+	}
 
 	
 	/**
@@ -159,6 +171,12 @@ public class Module extends Documented {
 		} else if (!mappings.equals(other.mappings))
 			return false;
 		return true;
+	}
+
+
+	@Override
+	protected Module deepCopy() {
+		return new Module(this);
 	}
 
 

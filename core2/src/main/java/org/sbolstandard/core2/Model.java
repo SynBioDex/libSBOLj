@@ -1,8 +1,10 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.HashSet;
 import java.util.Set;
 
+import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 /**
@@ -23,6 +25,18 @@ public class Model extends TopLevel {
 		setLanguage(language);
 		setFramework(framework);
 		setRoles(roles);
+	}
+	
+	private Model(Model model) {
+		super(model);
+		this.setSource(model.getSource());
+		this.setLanguage(model.getLanguage());
+		this.setFramework(model.getFramework());
+		Set<URI> roles = new HashSet<URI>();
+		for (URI role : model.getRoles()) {
+			roles.add(role);
+		}
+		this.setRoles(roles);
 	}
 
 	/**
@@ -164,6 +178,11 @@ public class Model extends TopLevel {
 		} else if (!source.equals(other.source))
 			return false;
 		return true;
+	}
+
+	@Override
+	protected Documented deepCopy() {
+		return new Model(this);
 	}
 
 }

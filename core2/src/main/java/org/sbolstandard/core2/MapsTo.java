@@ -95,6 +95,13 @@ public class MapsTo extends Identified{
 		setRemote(remote);		
 	}
 
+	private MapsTo(MapsTo mapsTo) {
+		super(mapsTo);
+		this.setRefinement(mapsTo.getRefinement());
+		this.setLocal(mapsTo.getLocal());
+		this.setRemote(mapsTo.getRemote());
+	}
+
 	/**
 	 * Returns field variable <code>refinement</code>.
 	 * @return field variable <code>refinement</code>
@@ -233,6 +240,12 @@ public class MapsTo extends Identified{
 				.getNamespaceURI() + "useRemote");
 		public static final URI verifyIdentical = URI.create(Sbol2Terms.sbol2
 				.getNamespaceURI() + "verifyIdentical");
+	}
+
+
+	@Override
+	protected MapsTo deepCopy() {
+		return new MapsTo(this);
 	}
 
 }

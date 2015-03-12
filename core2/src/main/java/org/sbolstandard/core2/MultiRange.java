@@ -17,6 +17,17 @@ public class MultiRange extends Location{
 	}
 	
 	
+	private MultiRange(MultiRange multiRange) {
+		super(multiRange);
+		if (multiRange.isSetRanges()) {
+			List<Range> ranges = new ArrayList<Range>();
+			for (Range range : multiRange.getRanges()) {
+				ranges.add(range.deepCopy());
+			}
+		}
+	}
+
+
 	/**
 	 * Test if field variable <code>ranges</code> is set.
 	 * @return <code>true</code> if the field variable is not an empty list
@@ -124,6 +135,12 @@ public class MultiRange extends Location{
 		} else if (!ranges.equals(other.ranges))
 			return false;
 		return true;
+	}
+
+
+	@Override
+	public MultiRange deepCopy() {
+		return new MultiRange(this);
 	}
 	
 }

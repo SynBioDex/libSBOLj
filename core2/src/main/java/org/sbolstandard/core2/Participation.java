@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.sbolstandard.core2.abstract_classes.Identified;
@@ -22,6 +23,16 @@ public class Participation extends Identified {
 		setParticipant(participant);
 	}
 	
+	private Participation(Participation participation) {
+		super(participation);
+		Set<URI> roles = new HashSet<URI>();
+		for (URI role : participation.getRoles()) {
+			roles.add(role);
+		}		
+		this.setRoles(roles);
+		this.setParticipant(participation.getParticipant());
+	}
+
 	/**
 	 * Returns field variable <code>participant</code>.
 	 * @return field variable <code>participant</code>
@@ -86,6 +97,11 @@ public class Participation extends Identified {
 	 */
 	public void clearRoles() {
 		roles.clear();
+	}
+
+	@Override
+	protected Participation deepCopy() {
+		return new Participation(this);
 	}
 
 }

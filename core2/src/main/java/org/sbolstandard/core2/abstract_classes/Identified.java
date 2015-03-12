@@ -4,13 +4,11 @@ import java.net.URI;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import org.sbolstandard.core2.Annotation;
-import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.Turtle;
 
 /**
@@ -24,20 +22,15 @@ public abstract class Identified {
 	
 	protected URI identity;
 	private URI persistentIdentity;
-	
-	/**
-	 * @deprecated
-	 */
-	private String version;
-	private Integer majorVersion;
-	private Integer minorVersion;
-	private Timestamp timeStamp;
+	private String version;	
+//	private Integer majorVersion;
+//	private Integer minorVersion;
 	private List<Annotation> annotations;
 	private URI wasDerivedFrom;
 	
 	public Identified(URI identity) {
 		setIdentity(identity);
-		this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
+		//this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 		this.annotations = new ArrayList<Annotation>();
 		String identityStr = identity.toString();
 		if (isURIcompliant(identityStr)) {
@@ -46,27 +39,45 @@ public abstract class Identified {
 			// TODO: extract major and minor versions
 		}
 		// else
-			
-		
-		
 	}
 	
+	/**
+	 * This copy constructor creates a new {@link Identified} class and copies all fields specified by the <code>identified</code> object. 
+	 * @param identified
+	 */
+	protected Identified(Identified identified) {
+		//this.setIdentity(URI.create(identified.getIdentity().toString()));
+		this.setIdentity(identified.getIdentity());
+		if (identified.isSetAnnotations()) {
+			List<Annotation> clonedAnnotations = new ArrayList<Annotation>();
+			for (Annotation annotation : identified.getAnnotations()) {
+				clonedAnnotations.add(annotation.deepCopy());
+			}
+			this.setAnnotations(clonedAnnotations);
+		}
+		if (identified.isSetVersion()) {
+			this.setVersion(identified.getVersion());
+		}
+		if (identified.isSetPersistentIdentity()) {
+			this.setPersistentIdentity(URI.create(identified.getPersistentIdentity().toString()));	
+		}		
+		//this.setTimeStamp(new Timestamp(Calendar.getInstance().getTime().getTime()));
+		if (identified.isSetWasDerivedFrom()) {
+			this.setWasDerivedFrom(URI.create(identified.getWasDerivedFrom().toString()));	
+		}		
+	}
+
+	public Identified (String URIprefix, String id, String version) {
+		setIdentity(URI.create(URIprefix.trim() + '/' + id.trim() + '/' + version));
+		this.annotations = new ArrayList<Annotation>();
+		this.setPersistentIdentity(URI.create(URIprefix.trim() + '/' + id.trim()));
+		this.setVersion(version);
+	}
+
 	public static boolean isURIcompliant(String identity) {
 		// TODO Check URI compliance
 		return true;
 	}
-
-	public Identified(String URIprefix, String id) {
-		//this(URI.create(authority.trim() + '/' + id.trim() + "/1/0"));
-		setIdentity(identity);
-		this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
-		this.annotations = new ArrayList<Annotation>();
-		this.setPersistentIdentity(URI.create(URIprefix.trim() + '/' + id.trim()));
-		//this.setVersion("1.0");
-		this.setMajorVersion(1);
-		this.setMinorVersion(0);
-	}
-	
 	
 	/**
 	 * Returns field variable <code>identity</code>.
@@ -119,7 +130,6 @@ public abstract class Identified {
 	}
 	
 	/**
-	 * @deprecated
 	 * Test if optional field variable <code>version</code> is set.
 	 * @return <code>true</code> if it is not <code>null</code>
 	 */
@@ -130,19 +140,19 @@ public abstract class Identified {
 			return true;					
 	}
 	
-	public boolean isSetMajorVersion() {
-		if (majorVersion == null)
-			return false;
-		else
-			return true;
-	}
-	
-	public boolean isSetMinorVersion() {
-		if (minorVersion == null)
-			return false;
-		else
-			return true;
-	}
+//	public boolean isSetMajorVersion() {
+//		if (majorVersion == null)
+//			return false;
+//		else
+//			return true;
+//	}
+//	
+//	public boolean isSetMinorVersion() {
+//		if (minorVersion == null)
+//			return false;
+//		else
+//			return true;
+//	}
 	
 	public boolean isSetWasDerivedFrom() {
 		if (wasDerivedFrom == null)
@@ -152,7 +162,6 @@ public abstract class Identified {
 	}
 	
 	/**
-	 * @deprecated
 	 * Returns field variable <code>version</code>.
 	 * @return field variable <code>version</code>.
 	 */
@@ -161,7 +170,6 @@ public abstract class Identified {
 	}
 
 	/**
-	 * @deprecated
 	 * Sets field variable <code>version</code> to the specified element.
 	 * @param version
 	 */
@@ -170,43 +178,43 @@ public abstract class Identified {
 		this.version = version;
 	}
 	
-	/**
-	 * Returns the major version.
- 	 * @return the major version
-	 */
-	public Integer getMajorVersion() {
-		return majorVersion;
-	}
-	
-	/**
-	 * Sets field variable <code>majorVersion</code> to the specified value.
-	 * @param majorVersion
-	 */
-	public void setMajorVersion(Integer majorVersion) {
-		this.majorVersion = majorVersion;
-		// TODO: Update URI?
-	}
-	
-	/**
-	 * Returns the minor version.
-	 * @return the minor version
-	 */
-	public Integer getMinorVersion() {
-		return minorVersion;
-		// TODO: Update URI?
-	}
+//	/**
+//	 * Returns the major version.
+// 	 * @return the major version
+//	 */
+//	public Integer getMajorVersion() {
+//		return majorVersion;
+//	}
+//	
+//	/**
+//	 * Sets field variable <code>majorVersion</code> to the specified value.
+//	 * @param majorVersion
+//	 */
+//	public void setMajorVersion(Integer majorVersion) {
+//		this.majorVersion = majorVersion;
+//		// TODO: Update URI?
+//	}
+//	
+//	/**
+//	 * Returns the minor version.
+//	 * @return the minor version
+//	 */
+//	public Integer getMinorVersion() {
+//		return minorVersion;
+//		// TODO: Update URI?
+//	}
 	
 	public URI getWasDerivedFrom() {
 		return wasDerivedFrom;
 	}
 	
-	/**
-	 * Sets field variable <code>minorVersion</code> to the specified value.
-	 * @param minorVersion
-	 */
-	public void setMinorVersion(Integer minorVersion) {
-		this.minorVersion = minorVersion;
-	}
+//	/**
+//	 * Sets field variable <code>minorVersion</code> to the specified value.
+//	 * @param minorVersion
+//	 */
+//	public void setMinorVersion(Integer minorVersion) {
+//		this.minorVersion = minorVersion;
+//	}
 	
 	/**
 	 * Sets field variable <code>wasDerivedFrom</code> to the specified value.
@@ -214,47 +222,6 @@ public abstract class Identified {
 	 */
 	public void setWasDerivedFrom(URI wasDerivedFrom) {
 		this.wasDerivedFrom = wasDerivedFrom;
-	}
-	
-//	/**
-//	 * Set optional field variable <code>version</code> to <code>null</code>.
-//	 */
-//	public void unsetVersion() {
-//		version = null;
-//	}
-		
-	/**
-	 * Test if optional field variable <code>timeStamp</code> is set.
-	 * @return <code>true</code> if it is not <code>null</code>
-	 */
-	public boolean isSetTimeStamp() {
-		if (timeStamp == null)
-			return false;
-		else
-			return true;
-	}
-	
-	/**
-	 * Returns field variable <code>timeStamp</code>.
-	 * @return field variable <code>timeStamp</code>
-	 */
-	public Timestamp getTimeStamp() {
-		return timeStamp;
-	}
-	
-	/**
-	 * Sets field variable <code>timeStamp</code> to the specified element. 
-	 * @param timeStamp
-	 */
-	public void setTimeStamp(Timestamp timeStamp) {
-		this.timeStamp = timeStamp;
-	}
-	
-	/**
-	 * Set optional field variable <code>timeStamp</code> to <code>null</code>.
-	 */
-	public void unsetTimeStamp() {
-		timeStamp = null;
 	}
  	
 	/**
@@ -346,13 +313,13 @@ public abstract class Identified {
 		annotations = null;
 	}
 	
-	public void unsetMajorVersion() {
-		majorVersion = null;
-	}
-	
-	public void unsetMinorVersion() {
-		minorVersion = null;
-	}
+//	public void unsetMajorVersion() {
+//		majorVersion = null;
+//	}
+//	
+//	public void unsetMinorVersion() {
+//		minorVersion = null;
+//	}
 	
 	public void unsetWasDerivedFrom() {
 		wasDerivedFrom = null;
@@ -361,51 +328,18 @@ public abstract class Identified {
 	/**
 	 * Provide a deep copy of this instance.
 	 */
-	protected Identified clone() {
-		//TODO deal with visibility of this method.
-		// TODO fill in
-		return null;
-	}
-	
-	/**
-	 * Clone the object first, increment the major version of the original object by 1, 
-	 * and then set this value to the major version of the cloned object. Set the minor version of the cloned object to 0.
-	 * Update the URI of the cloned object.    
-	 * @return the cloned object
-	 */
-	public Identified newMajorVersion() {
-		Identified cloned = this.clone();
-		wasDerivedFrom = cloned.getIdentity();
-		cloned.setMajorVersion(this.getMajorVersion() + 1);
-		cloned.setMinorVersion(0);
-		// TODO: Update the cloned URI.
-		return cloned;
-	}
-	
-	/**
- 	 * Clone the object first, and increment the minor version of the original object by 1, 
-	 * and then set this value to the minor version of the cloned object. Update the URI of the cloned object.  
-	 * @return the cloned object
-	 */
-	public Identified newMinorVersion() {
-		Identified cloned = this.clone();
-		wasDerivedFrom = cloned.getIdentity();
-		cloned.setMinorVersion(this.getMinorVersion() + 1);
-		return cloned;
-	}
-	
-	
+	protected abstract Identified deepCopy();
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((annotations == null) ? 0 : annotations.hashCode());
 		result = prime * result + ((identity == null) ? 0 : identity.hashCode());
-		result = prime * result + majorVersion;
-		result = prime * result + minorVersion;
 		result = prime * result
 				+ ((persistentIdentity == null) ? 0 : persistentIdentity.hashCode());
-		result = prime * result + ((timeStamp == null) ? 0 : timeStamp.hashCode());
+		result = prime * result + ((version == null) ? 0 : version.hashCode());
+		result = prime * result + ((wasDerivedFrom == null) ? 0 : wasDerivedFrom.hashCode());
 		return result;
 	}
 
@@ -428,22 +362,75 @@ public abstract class Identified {
 				return false;
 		} else if (!identity.equals(other.identity))
 			return false;
-		if (majorVersion != other.majorVersion)
-			return false;
-		if (minorVersion != other.minorVersion)
-			return false;
 		if (persistentIdentity == null) {
 			if (other.persistentIdentity != null)
 				return false;
 		} else if (!persistentIdentity.equals(other.persistentIdentity))
 			return false;
-		if (timeStamp == null) {
-			if (other.timeStamp != null)
+		if (version == null) {
+			if (other.version != null)
 				return false;
-		} else if (!timeStamp.equals(other.timeStamp))
+		} else if (!version.equals(other.version))
+			return false;
+		if (wasDerivedFrom == null) {
+			if (other.wasDerivedFrom != null)
+				return false;
+		} else if (!wasDerivedFrom.equals(other.wasDerivedFrom))
 			return false;
 		return true;
 	}
+
+	
+	
+//	@Override
+//	public int hashCode() {
+//		final int prime = 31;
+//		int result = 1;
+//		result = prime * result + ((annotations == null) ? 0 : annotations.hashCode());
+//		result = prime * result + ((identity == null) ? 0 : identity.hashCode());
+//		result = prime * result + majorVersion;
+//		result = prime * result + minorVersion;
+//		result = prime * result
+//				+ ((persistentIdentity == null) ? 0 : persistentIdentity.hashCode());
+//		result = prime * result + ((timeStamp == null) ? 0 : timeStamp.hashCode());
+//		return result;
+//	}
+//
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		Identified other = (Identified) obj;
+//		if (annotations == null) {
+//			if (other.annotations != null)
+//				return false;
+//		} else if (!annotations.equals(other.annotations))
+//			return false;
+//		if (identity == null) {
+//			if (other.identity != null)
+//				return false;
+//		} else if (!identity.equals(other.identity))
+//			return false;
+//		if (majorVersion != other.majorVersion)
+//			return false;
+//		if (minorVersion != other.minorVersion)
+//			return false;
+//		if (persistentIdentity == null) {
+//			if (other.persistentIdentity != null)
+//				return false;
+//		} else if (!persistentIdentity.equals(other.persistentIdentity))
+//			return false;
+//		if (timeStamp == null) {
+//			if (other.timeStamp != null)
+//				return false;
+//		} else if (!timeStamp.equals(other.timeStamp))
+//			return false;
+//		return true;
+//	}
 
 //	/**
 //	 * @return

@@ -14,6 +14,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
+import org.sbolstandard.core.SBOLValidationException;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
@@ -36,7 +37,7 @@ public class SBOLTestUtils {
 
 	public static void createSequence(SBOLDocument document,String id)
 	{
-		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu", id, id + "_element", URI.create("http://encodings.org/encoding"));
+		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu", id, "1/0", id + "_element", URI.create("http://encodings.org/encoding"));
 		sequence.setName(id);
 		sequence.setDescription(id);
 	}
@@ -407,10 +408,11 @@ public class SBOLTestUtils {
 			i.setIdentity(identity);
 		if(persistentIdentity != null)
 			i.setPersistentIdentity(persistentIdentity);
-		if(majorVersion != null)
-			i.setMajorVersion(majorVersion);
-		if(minorVersion != null)
-			i.setMinorVersion(minorVersion);
+//		if(majorVersion != null)
+//			i.setMajorVersion(majorVersion);
+//		if(minorVersion != null)
+//			i.setMinorVersion(minorVersion);
+		// TODO: Insert version here.
 		//		i.setTimeStamp(timeStamp); //TODO: is timeStamp provided by user?
 	}
 

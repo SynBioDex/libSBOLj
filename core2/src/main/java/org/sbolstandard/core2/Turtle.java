@@ -7,6 +7,10 @@ public class Turtle {
 	public Turtle(String turtleStr) {
 		this.turtleStr = turtleStr;
 	}
+	
+	private Turtle(Turtle turtle) {
+		this.setTurtleStr(turtle.getTurtleStr());
+	}
 
 	public String getTurtleStr() {
 		return turtleStr;
@@ -39,6 +43,10 @@ public class Turtle {
 		} else if (!turtleStr.equals(other.turtleStr))
 			return false;
 		return true;
+	}
+	
+	public Turtle deepCopy() {
+		return new Turtle(this);
 	}
 	
 }
