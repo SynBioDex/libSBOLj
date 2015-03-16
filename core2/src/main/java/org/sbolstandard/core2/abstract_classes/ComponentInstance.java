@@ -83,6 +83,10 @@ public abstract class ComponentInstance extends Documented {
 		this.mappings = new HashMap<URI, MapsTo>();
 	}
 	
+	protected ComponentInstance(ComponentInstance component) {
+		super(component);
+	}
+
 	/**
 	 * Returns field variable <code>access</code>.
 	 * @return field variable <code>access</code>
@@ -235,6 +239,8 @@ public abstract class ComponentInstance extends Documented {
 	public void setDefinition(URI definitionURI) {
 		this.definition = definitionURI;
 	}
+
+	protected abstract ComponentInstance deepCopy();
 	
 	
 	public static final class Access {
@@ -243,4 +249,6 @@ public abstract class ComponentInstance extends Documented {
 		public static final URI PRIVATE = URI.create(Sbol2Terms.sbol2
 				.getNamespaceURI() + "private");
 	}
+	
+
 }

@@ -3,6 +3,7 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +33,21 @@ public class Interaction extends Documented {
 		setParticipations(participations);
 	}
 	
-	
+	public Interaction(Interaction interaction) {
+		super(interaction);
+		Set<URI> type = new HashSet<URI>();
+		for (URI typeElement : interaction.getType()) {
+			type.add(URI.create(typeElement.toString()));
+		}
+		this.setType(type);
+		List<Participation> participations = new ArrayList<Participation>();
+		for (Participation participation : interaction.getParticipations()) {
+			participations.add(participation.deepCopy());
+		}
+		this.setParticipations(participations);
+	}
+
+
 	/**
 	 * Adds the specified element to the set <code>type</code> if it is not already present. 
 	 * @param typeURI
@@ -200,9 +215,9 @@ public class Interaction extends Documented {
 			return false;
 		return true;
 	}
-	
-	
 
-
-
+	@Override
+	protected Interaction deepCopy() {
+		return new Interaction(this);
+	}
 }

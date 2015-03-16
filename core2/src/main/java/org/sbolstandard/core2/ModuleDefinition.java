@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
+import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 /**
@@ -33,7 +34,43 @@ public class ModuleDefinition extends TopLevel {
 		this.models = new HashSet<URI>();		
 	}
 	
-	
+	private ModuleDefinition(ModuleDefinition moduleDefinition) {
+		super(moduleDefinition);
+		Set<URI> roles = new HashSet<URI>();
+		for (URI role : moduleDefinition.getRoles()) {
+			roles.add(role);
+		}		
+		this.setRoles(roles);
+		if (moduleDefinition.isSetSubModules()) {
+			List<Module> subModules = new ArrayList<Module>();
+			for (Module subModule : moduleDefinition.getSubModule()) {
+				subModules.add(subModule.deepCopy());
+			}
+			this.setSubModules(subModules);
+		}
+		if (moduleDefinition.isSetInteractions()) {
+			List<Interaction> interactions = new ArrayList<Interaction>();
+			for (Interaction interaction : moduleDefinition.getInteractions()) {
+				interactions.add(interaction.deepCopy());
+			}
+			this.setInteractions(interactions);
+		}
+		if (moduleDefinition.isSetComponents()) {
+			List<FunctionalComponent> components = new ArrayList<FunctionalComponent>();
+			for (FunctionalComponent component : moduleDefinition.getComponents()) {
+				components.add(component.deepCopy());
+			}
+			this.setComponents(components);
+		}
+		if (moduleDefinition.isSetModels()) {
+			Set<URI> models = new HashSet<URI>();
+			for (URI model : moduleDefinition.getModels()) {
+				models.add(model);
+			}
+		}
+	}
+
+
 	/**
 	 * Adds the specified element to the set <code>roles</code> if it is not already present. 
 	 * @param roleURI
@@ -463,6 +500,12 @@ public class ModuleDefinition extends TopLevel {
 		} else if (!subModules.equals(other.subModules))
 			return false;
 		return true;
+	}
+
+
+	@Override
+	protected ModuleDefinition deepCopy() {
+		return new ModuleDefinition(this);
 	}
 	
 //	/**

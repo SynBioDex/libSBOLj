@@ -75,6 +75,13 @@ public class SequenceConstraint extends Identified {
 		setObject(object);
 	}
 	
+	private SequenceConstraint(SequenceConstraint sequenceConstraint) {
+		super(sequenceConstraint);
+		this.setRestriction(sequenceConstraint.getRestriction());
+		this.setSubject(sequenceConstraint.getSubject());
+		this.setObject(sequenceConstraint.getObject());
+	}
+
 
 	/**
 	 * Returns field variable <code>restriction</code>.
@@ -196,5 +203,11 @@ public class SequenceConstraint extends Identified {
 		} else if (!subject.equals(other.subject))
 			return false;
 		return true;
+	}
+
+
+	@Override
+	public SequenceConstraint deepCopy() {		
+		return new SequenceConstraint(this);
 	}
 }

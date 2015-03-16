@@ -6,12 +6,17 @@ import org.sbolstandard.core2.Sbol2Terms.Orientation;
 import org.sbolstandard.core2.abstract_classes.Location;
 
 public class GenericLocation extends Location{
+	
+	private OrientationType orientation;
 
 	public GenericLocation(URI identity) {
 		super(identity);
 	}
-
-	private OrientationType orientation;
+	
+	private GenericLocation(GenericLocation genericLocation) {
+		super(genericLocation);
+		this.setOrientation(genericLocation.getOrientation());
+	}
 
 	/**
 	 * Test if optional field variable <code>orientation</code> is set.
@@ -106,6 +111,11 @@ public class GenericLocation extends Location{
 		if (orientation != other.orientation)
 			return false;
 		return true;
+	}
+
+	@Override
+	public GenericLocation deepCopy() {
+		return new GenericLocation(this);
 	}
 
 }

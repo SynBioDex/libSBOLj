@@ -4,10 +4,11 @@ import java.net.URI;
 
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance;
+import org.sbolstandard.core2.abstract_classes.Documented;
 
 public class FunctionalComponent extends ComponentInstance {
 
-	private DirectionType	direction;
+	private DirectionType direction;
 
 	public enum DirectionType {
 		INPUT("input"), OUTPUT("output"), INOUT("inout"), NONE("none");
@@ -82,13 +83,19 @@ public class FunctionalComponent extends ComponentInstance {
 		}
 	}
 	
-	
 
 	public FunctionalComponent(URI identity, AccessType access, URI instantiatedComponent,
 			DirectionType direction) {
 		super(identity, access, instantiatedComponent);
 		setDirection(direction);
 	}
+	
+	private FunctionalComponent(FunctionalComponent functionalComponent) {
+		super(functionalComponent);
+		this.setDirection(functionalComponent.getDirection());
+	}
+	
+	
 
 	/**
 	 * Returns field variable <code>direction</code> to the specified element.
@@ -179,5 +186,10 @@ public class FunctionalComponent extends ComponentInstance {
 		if (direction != other.direction)
 			return false;
 		return true;
+	}
+
+	@Override
+	protected FunctionalComponent deepCopy() {
+		return new FunctionalComponent(this);
 	}
 }

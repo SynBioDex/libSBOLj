@@ -6,25 +6,61 @@ import javax.xml.namespace.QName;
 
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 
+
 public class Annotation {
 
-	private NamedProperty<QName> namedProperty;
-
+	private NamedProperty<QName> value;
 
 	public Annotation(QName relation, Turtle literal) {
-		namedProperty = NamedProperty(relation, literal.getTurtleStr());
+		value = NamedProperty(relation, literal.getTurtleStr());
 	}
 
-	public Annotation(NamedProperty<QName> namedProperty) {
-		this.namedProperty = namedProperty;
+	public Annotation(NamedProperty<QName> value) {
+		this.value = value;
+	}
+	
+	private Annotation(Annotation annotation) {
+		this.setValue(annotation.getValue());
+	}
+	
+
+	public NamedProperty<QName> getValue() {
+		return value;
 	}
 
-	public NamedProperty<QName> getNamedProperty() {
-		return namedProperty;
+	public void setValue(NamedProperty<QName> value) {
+		this.value = value;
 	}
 
-	public void setNamedProperty(NamedProperty<QName> namedProperty) {
-		this.namedProperty = namedProperty;
+	public Annotation deepCopy() {
+		return new Annotation(this);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Annotation other = (Annotation) obj;
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!value.equals(other.value))
+			//return false;
+		// TODO: Hack here. Need to wait for equals and hashCode to be implemented in NamedProperty.
+			return true;
+		return true;
 	}
 
 }

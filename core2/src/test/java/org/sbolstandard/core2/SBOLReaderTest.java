@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 
+import org.sbolstandard.core.SBOLValidationException;
+
 /**
  * The two inputs for runTest will do the following:
  * 1. Read in the specified .xml file.

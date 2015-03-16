@@ -731,8 +731,8 @@ public class SBOLReader
 			c.setName(name);
 		if (description != null)
 			c.setDescription(description);
-		if (timeStamp != null)
-			c.setTimeStamp(getTimestamp(timeStamp));
+//		if (timeStamp != null)	
+//			c.setTimeStamp(getTimestamp(timeStamp));
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
 		if (majorVersion != null)
@@ -810,12 +810,13 @@ public class SBOLReader
 		SequenceConstraint s = new SequenceConstraint(sequenceConstraints.getIdentity(), restriction, subject, object);
 		if (persistentIdentity != null)
 			s.setPersistentIdentity(persistentIdentity);
-		if (timeStamp != null)
-			s.setTimeStamp(getTimestamp(timeStamp));
-		if (majorVersion != null)
-			s.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			s.setMinorVersion(minorVersion);
+//		if (timeStamp != null)
+//			s.setTimeStamp(getTimestamp(timeStamp));
+//		if (majorVersion != null)
+//			s.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			s.setMinorVersion(minorVersion);
+		// TODO Insert version here.
 		if (wasDerivedFrom != null)
 			s.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -890,10 +891,11 @@ public class SBOLReader
 		SequenceAnnotation s = new SequenceAnnotation(sequenceAnnotation.getIdentity(), location);
 		if (persistentIdentity != null)
 			s.setPersistentIdentity(persistentIdentity);
-		if (majorVersion != null)
-			s.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			s.setMinorVersion(minorVersion);
+//		if (majorVersion != null)
+//			s.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			s.setMinorVersion(minorVersion);
+		// TODO Insert version here.
 		if (displayId != null)
 			s.setDisplayId(displayId);
 		if (componentURI != null)
@@ -902,8 +904,8 @@ public class SBOLReader
 			s.setName(name);
 		if (description != null)
 			s.setDescription(description);
-		if (timeStamp != null)
-			s.setTimeStamp(getTimestamp(timeStamp));
+//		if (timeStamp != null)
+//			s.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			s.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -994,12 +996,13 @@ public class SBOLReader
 			gl.setOrientation(orientation);
 		if(persistentIdentity != null)
 			gl.setPersistentIdentity(persistentIdentity);
-		if(timeStamp != null)
-			gl.setTimeStamp(getTimestamp(timeStamp));
-		if(majorVersion != null)
-			gl.setMajorVersion(majorVersion);
-		if(minorVersion != null)
-			gl.setMinorVersion(minorVersion);
+//		if(timeStamp != null)
+//			gl.setTimeStamp(getTimestamp(timeStamp));
+//		if(majorVersion != null)
+//			gl.setMajorVersion(majorVersion);
+//		if(minorVersion != null)
+//			gl.setMinorVersion(minorVersion);
+			// TODO Insert version here.		
 		if(wasDerivedFrom != null)
 			gl.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1069,12 +1072,13 @@ public class SBOLReader
 			c.setPersistentIdentity(persistentIdentity);
 		if (orientation != null)
 			c.setOrientation(orientation);
-		if (timeStamp != null)
-			c.setTimeStamp(getTimestamp(timeStamp));
-		if (majorVersion != null)
-			c.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			c.setMinorVersion(minorVersion);
+//		if (timeStamp != null)
+//			c.setTimeStamp(getTimestamp(timeStamp));
+//		if (majorVersion != null)
+//			c.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			c.setMinorVersion(minorVersion);
+		// TODO: Insert version here.
 		if (wasDerivedFrom != null)
 			c.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1133,12 +1137,13 @@ public class SBOLReader
 			multiRange.setPersistentIdentity(persistentIdentity);
 		if (!ranges.isEmpty())
 			multiRange.setRanges(ranges);
-		if (majorVersion != null)
-			multiRange.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			multiRange.setMinorVersion(minorVersion);
-		if (timeStamp != null)
-			multiRange.setTimeStamp(getTimestamp(timeStamp));
+//		if (majorVersion != null)
+//			multiRange.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			multiRange.setMinorVersion(minorVersion);
+//		if (timeStamp != null)
+//			multiRange.setTimeStamp(getTimestamp(timeStamp));
+		// TODO: Insert version here.
 		if (wasDerivedFrom != null)
 			multiRange.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1209,12 +1214,13 @@ public class SBOLReader
 			r.setPersistentIdentity(persistentIdentity);
 		if (orientation != null)
 			r.setOrientation(orientation);
-		if (majorVersion != null)
-			r.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			r.setMinorVersion(minorVersion);
-		if (timeStamp != null)
-			r.setTimeStamp(getTimestamp(timeStamp));
+//		if (majorVersion != null)
+//			r.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			r.setMinorVersion(minorVersion);
+//		if (timeStamp != null)
+		// TODO: Insert version here.
+//			r.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			r.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1297,10 +1303,11 @@ public class SBOLReader
 		Component c = new Component(subComponents.getIdentity(), access, subComponentURI);
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
-		if (majorVersion != null)
-			c.setMajorVersion(majorVersion);
-		if ( minorVersion != null)
-			c.setMinorVersion(minorVersion);
+//		if (majorVersion != null)
+//			c.setMajorVersion(majorVersion);
+//		if ( minorVersion != null)
+//			c.setMinorVersion(minorVersion);
+		// TODO: Insert version here.
 		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (access != null)
@@ -1313,8 +1320,8 @@ public class SBOLReader
 			c.setName(name);
 		if (description != null)
 			c.setDescription(description);
-		if (timeStamp != null)
-			c.setTimeStamp(getTimestamp(timeStamp));
+//		if (timeStamp != null)
+//			c.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			c.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1382,18 +1389,19 @@ public class SBOLReader
 		GenericTopLevel t = SBOLDoc.createGenericTopLevel(topLevel.getIdentity(), topLevel.getType());
 		if (persistentIdentity != null)
 			t.setPersistentIdentity(persistentIdentity);
-		if (majorVersion != null)
-			t.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			t.setMinorVersion(minorVersion);
+//		if (majorVersion != null)
+//			t.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			t.setMinorVersion(minorVersion);
+		// TODO: Insert version here.
 		if (displayId != null)
 			t.setDisplayId(displayId);
 		if (name != null)
 			t.setName(name);
 		if (description != null)
 			t.setDescription(description);
-		if(timeStamp != null)
-			t.setTimeStamp(getTimestamp(timeStamp));
+//		if(timeStamp != null)
+//			t.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			t.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1479,18 +1487,19 @@ public class SBOLReader
 		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework, roles);
 		if (persistentIdentity != null)
 			m.setPersistentIdentity(persistentIdentity);
-		if (majorVersion != null)
-			m.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			m.setMinorVersion(minorVersion);
+//		if (majorVersion != null)
+//			m.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			m.setMinorVersion(minorVersion);
+		// TODO: Insert version here.
 		if (displayId != null)
 			m.setDisplayId(displayId);
 		if (name != null)
 			m.setName(name);
 		if (description != null)
 			m.setDescription(description);
-		if (timeStamp != null)
-			m.setTimeStamp(getTimestamp(timeStamp));
+//		if (timeStamp != null)
+//			m.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			m.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1561,10 +1570,11 @@ public class SBOLReader
 		Collection c = SBOLDoc.createCollection(topLevel.getIdentity());
 		if (displayId != null)
 			c.setDisplayId(displayId);
-		if (majorVersion != null)
-			c.setMajorVersion(majorVersion);
-		if( minorVersion != null)
-			c.setMinorVersion(minorVersion);
+//		if (majorVersion != null)
+//			c.setMajorVersion(majorVersion);
+//		if( minorVersion != null)
+//			c.setMinorVersion(minorVersion);
+		// TODO: Insert version here.
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
 		if (!members.isEmpty())
@@ -1573,8 +1583,8 @@ public class SBOLReader
 			c.setName(name);
 		if (description != null)
 			c.setDescription(description);
-		if (timeStamp != null)
-			c.setTimeStamp(getTimestamp(timeStamp));
+//		if (timeStamp != null)
+//			c.setTimeStamp(getTimestamp(timeStamp));
 		if( wasDerivedFrom != null)
 			c.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1666,10 +1676,11 @@ public class SBOLReader
 		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity(), roles);
 		if (persistentIdentity != null)
 			moduleDefinition.setPersistentIdentity(persistentIdentity);
-		if (majorVersion != null)
-			moduleDefinition.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			moduleDefinition.setMinorVersion(minorVersion);
+//		if (majorVersion != null)
+//			moduleDefinition.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			moduleDefinition.setMinorVersion(minorVersion);
+		// TODO: Insert version here.
 		if (displayId != null)
 			moduleDefinition.setDisplayId(displayId);
 		if (!functionalComponents.isEmpty())
@@ -1684,8 +1695,8 @@ public class SBOLReader
 			moduleDefinition.setName(name);
 		if (description != null)
 			moduleDefinition.setDescription(description);
-		if (timeStamp != null)
-			moduleDefinition.setTimeStamp(getTimestamp(timeStamp));
+//		if (timeStamp != null)
+//			moduleDefinition.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			moduleDefinition.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1760,10 +1771,11 @@ public class SBOLReader
 		Module submodule = new Module(module.getIdentity(), definitionURI);
 		if (persistentIdentity != null)
 			submodule.setPersistentIdentity(persistentIdentity);
-		if (majorVersion != null)
-			submodule.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			submodule.setMinorVersion(minorVersion);
+//		if (majorVersion != null)
+//			submodule.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			submodule.setMinorVersion(minorVersion);
+		// TODO: Insert version here.
 		if (displayId != null)
 			submodule.setDisplayId(displayId);
 		if (!mappings.isEmpty())
@@ -1772,8 +1784,8 @@ public class SBOLReader
 			submodule.setName(name);
 		if (description != null)
 			submodule.setDescription(description);
-		if (timeStamp != null)
-			submodule.setTimeStamp(getTimestamp(timeStamp));
+//		if (timeStamp != null)
+//			submodule.setTimeStamp(getTimestamp(timeStamp));
 		if( wasDerivedFrom != null)
 			submodule.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1834,10 +1846,11 @@ public class SBOLReader
 		MapsTo map = new MapsTo(mappings.getIdentity(), refinement, local, remote);
 		if (persistentIdentity != null)
 			map.setPersistentIdentity(persistentIdentity);
-		if (majorVersion != null)
-			map.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			map.setMinorVersion(minorVersion);
+//		if (majorVersion != null)
+//			map.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			map.setMinorVersion(minorVersion);
+		// TODO: Insert version here.
 		if (wasDerivedFrom != null)
 			map.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1913,18 +1926,19 @@ public class SBOLReader
 		Interaction i = new Interaction(interaction.getIdentity(), type, participations);
 		if (persistentIdentity != null)
 			i.setPersistentIdentity(persistentIdentity);
-		if (majorVersion != null)
-			i.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			i.setMinorVersion(minorVersion);
+//		if (majorVersion != null)
+//			i.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			i.setMinorVersion(minorVersion);
+		// TODO: Insert version here.
 		if (displayId != null)
 			i.setDisplayId(displayId);
 		if (name != null)
 			i.setName(name);
 		if (description != null)
 			i.setDescription(description);
-		if (timeStamp != null)
-			i.setTimeStamp(getTimestamp(timeStamp));
+//		if (timeStamp != null)
+//			i.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			i.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1980,10 +1994,10 @@ public class SBOLReader
 		Participation p = new Participation(participation.getIdentity(), role, participant);
 		if (persistentIdentity != null)
 			p.setPersistentIdentity(persistentIdentity);
-		if (majorVersion != null)
-			p.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			p.setMinorVersion(minorVersion);
+//		if (majorVersion != null)
+//			p.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			p.setMinorVersion(minorVersion);
 		if( wasDerivedFrom != null)
 			p.setWasDerivedFrom(wasDerivedFrom);
 		if(!annotations.isEmpty())
@@ -2077,10 +2091,10 @@ public class SBOLReader
 				functionalComponentURI, direction);
 		if (persistentIdentity != null)
 			fc.setPersistentIdentity(persistentIdentity);
-		if (majorVersion != null)
-			fc.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			fc.setMinorVersion(minorVersion);
+//		if (majorVersion != null)
+//			fc.setMajorVersion(majorVersion);
+//		if (minorVersion != null)
+//			fc.setMinorVersion(minorVersion);
 		if (displayId != null)
 			fc.setDisplayId(displayId);
 		if (!mappings.isEmpty())
@@ -2089,8 +2103,8 @@ public class SBOLReader
 			fc.setName(name);
 		if (description != null)
 			fc.setDescription(description);
-		if (timeStamp != null)
-			fc.setTimeStamp(getTimestamp(timeStamp));
+//		if (timeStamp != null)
+//			fc.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			fc.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -2176,8 +2190,8 @@ public class SBOLReader
 			sequence.setName(name);
 		if (description != null)
 			sequence.setDescription(description);
-		if (timeStamp != null)
-			sequence.setTimeStamp(getTimestamp(timeStamp));
+//		if (timeStamp != null)
+//			sequence.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			sequence.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())

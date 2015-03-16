@@ -14,10 +14,13 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
+import org.sbolstandard.core.SBOLValidationException;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
+import org.sbolstandard.core2.abstract_classes.Documented;
+import org.sbolstandard.core2.abstract_classes.Identified;
 import org.sbolstandard.core2.abstract_classes.Location;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
@@ -34,9 +37,8 @@ public class SBOLTestUtils {
 
 	public static Sequence createSequence(SBOLDocument document,String id)
 	{
-		//TODO: encoding was set to URI.create("http://encodings.org/encoding") but in old tester,
-		//it was set to http://some.ontology.org
-		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu", id, id + "_element", URI.create("http://some.ontology.org/" + id));
+		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu", id, "1/0", id + "_element", URI.create("http://encodings.org/encoding"));
+
 		sequence.setName(id);
 		sequence.setDescription(id);
 		return sequence;
@@ -267,7 +269,55 @@ public class SBOLTestUtils {
 		return new ArrayList<MapsTo>(Arrays.asList(maps));
 	}
 
-	//TODO: see if this is ever called
+
+	//	public static Collection createCollection(int id, DnaComponent... components) {
+	//		Collection coll1 = SBOLFactory.createCollection();
+	//		coll1.setURI(uri("http://example.com/collection" + id));
+	//		coll1.setDisplayId("Coll" + id);
+	//		coll1.setName("Collection" + id);
+	//		for (DnaComponent component : components) {
+	//	        coll1.addComponent(component);
+	//        }
+	//		return coll1;
+	//	}
+
+	public static void setCommonTopLevelData (TopLevel t, URI identity, URI persistentIdentity,
+			String displayId, String name, String description,
+			Integer majorVersion, Integer minorVersion)
+	{
+		setCommonDocumentedData(t, identity, persistentIdentity, displayId, name, description,
+				majorVersion,  minorVersion);
+	}
+
+	public static void setCommonDocumentedData (Documented d, URI identity, URI persistentIdentity,
+			String displayId, String name, String description,
+			Integer majorVersion, Integer minorVersion)
+	{
+		if(displayId != null)
+			d.setDisplayId(displayId);
+		if(name != null)
+			d.setName(name);
+		if(description != null)
+			d.setDescription(description);
+
+		setCommonIdentifiedData(d, identity, persistentIdentity, majorVersion, minorVersion);
+	}
+
+	public static void setCommonIdentifiedData (Identified i, URI identity, URI persistentIdentity,
+			Integer majorVersion, Integer minorVersion)
+	{
+		if(identity != null)
+			i.setIdentity(identity);
+		if(persistentIdentity != null)
+			i.setPersistentIdentity(persistentIdentity);
+		//		if(majorVersion != null)
+		//			i.setMajorVersion(majorVersion);
+		//		if(minorVersion != null)
+		//			i.setMinorVersion(minorVersion);
+		// TODO: Insert version here.
+		//		i.setTimeStamp(timeStamp); //TODO: is timeStamp provided by user?
+	}
+
 	public static SBOLDocument createDocument(TopLevel... contents) {
 		SBOLDocument document = new SBOLDocument();
 		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");

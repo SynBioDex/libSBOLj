@@ -4,11 +4,22 @@ import java.net.URI;
 
 import javax.xml.namespace.QName;
 
+import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 public class GenericTopLevel extends TopLevel{
 
 	private QName rdfType;
+	
+	public GenericTopLevel(URI identity, QName rdfType) {
+		super(identity);
+		this.rdfType = rdfType;		
+	}
+	
+	public GenericTopLevel(GenericTopLevel genericTopLevel) {
+		super(genericTopLevel);
+		this.setRdfType(genericTopLevel.getRdfType());
+	}
 	
 	public QName getRdfType() {
 		return rdfType;
@@ -16,11 +27,6 @@ public class GenericTopLevel extends TopLevel{
 
 	public void setRdfType(QName rdfType) {
 		this.rdfType = rdfType;
-	}
-
-	public GenericTopLevel(URI identity, QName rdfType) {
-		super(identity);
-		this.rdfType = rdfType;		
 	}
 
 	@Override
@@ -46,5 +52,10 @@ public class GenericTopLevel extends TopLevel{
 		} else if (!rdfType.equals(other.rdfType))
 			return false;
 		return true;
+	}
+
+	@Override
+	protected GenericTopLevel deepCopy() {
+		return new GenericTopLevel(this);
 	}
 }

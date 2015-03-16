@@ -330,14 +330,13 @@ public class SBOLWriter {
 	{
 		if(t.getPersistentIdentity() != null)
 			list.add(NamedProperty(Sbol2Terms.Identified.persistentIdentity, t.getPersistentIdentity()));
-		//		if(t.isSetTimeStamp())
-		//			list.add(NamedProperty(Sbol2Terms.Identified.timeStamp, t.getTimeStamp().toString()));
+
 
 		if(t.isSetAnnotations())
 		{
 			for(Annotation annotation : t.getAnnotations())
 			{
-				list.add(annotation.getNamedProperty());
+				list.add(annotation.getValue());
 			}
 		}
 	}

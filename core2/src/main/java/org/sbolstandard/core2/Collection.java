@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 public class Collection extends TopLevel{
@@ -13,6 +14,17 @@ public class Collection extends TopLevel{
 	public Collection(URI identity) {
 		super(identity);
 		this.members = new HashSet<URI>();
+	}
+	
+	private Collection(Collection collection) {
+		super(collection.getIdentity());
+		if (collection.isSetMembers()) {
+					Set<URI> newMembers = new HashSet<URI>();		
+		for (URI member : collection.getMembers()) {
+			newMembers.add(member);
+		}
+
+		}
 	}
 
 	/**
@@ -100,5 +112,10 @@ public class Collection extends TopLevel{
 		} else if (!members.equals(other.members))
 			return false;
 		return true;
+	}
+
+	@Override
+	public Collection deepCopy() {
+		return new Collection(this);
 	}
 }

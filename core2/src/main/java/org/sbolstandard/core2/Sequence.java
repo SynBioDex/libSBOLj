@@ -2,6 +2,7 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 public class Sequence extends TopLevel{
@@ -13,6 +14,12 @@ public class Sequence extends TopLevel{
 		super(identity);
 		setElements(elements);
 		setEncoding(encoding);
+	}
+	
+	private Sequence(Sequence sequence) {
+		super(sequence.getIdentity());
+		this.setElements(sequence.getElements());
+		this.setEncoding(sequence.getEncoding());
 	}
 	
 //	public Sequence(String authority, String Id, String elements, URI encoding) {
@@ -102,14 +109,6 @@ public class Sequence extends TopLevel{
 		// TODO Need to change the parent's authority?
 	}
 	
-	/**
-	 * Provide a deep copy of this object.
-	 */
-	public Sequence clone() {
-		// TODO deal with visibility of this method. 
-		return null;
-	}
-	
 //	/**
 //	 * Clone the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
 //	 * @param id
@@ -151,4 +150,11 @@ public class Sequence extends TopLevel{
 			return false;
 		return true;
 	}
+
+	@Override
+	protected Sequence deepCopy() {
+		return new Sequence(this);
+	}
+	
+	
 }

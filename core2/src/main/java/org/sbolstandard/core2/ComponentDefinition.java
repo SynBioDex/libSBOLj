@@ -2,6 +2,7 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,6 +36,45 @@ public class ComponentDefinition extends TopLevel {
 		this.sequenceConstraints = new HashMap<URI, SequenceConstraint>();
 	}
 
+	private ComponentDefinition(ComponentDefinition componentDefinition) {
+		super(componentDefinition);
+		Set<URI> types = new HashSet<URI>();
+		for (URI type : componentDefinition.getType()) {
+			types.add(URI.create(type.toString()));
+		}
+		setType(types);
+		Set<URI> roles = new HashSet<URI>();
+		for (URI role : componentDefinition.getRoles()) {
+			roles.add(URI.create(role.toString()));
+		}
+		setRoles(roles);
+		if (componentDefinition.isSetSubComponents()) {
+			List<Component> subComponents = new ArrayList<Component>();
+			for (Component subComponent : componentDefinition.getSubComponents()) {
+				subComponents.add(subComponent.deepCopy());
+			}
+			this.setSubComponents(subComponents);
+		}		
+		if (componentDefinition.isSetSequenceConstraints()) {
+			List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
+			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
+				sequenceConstraints.add((SequenceConstraint) sequenceConstraint.deepCopy());
+			}
+			this.setSequenceConstraints(sequenceConstraints);
+		}
+		if (componentDefinition.isSetSequenceAnnotations()) {
+			List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>();
+			for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
+				sequenceAnnotations.add(sequenceAnnotation.deepCopy());
+			}
+			this.setSequenceAnnotations(sequenceAnnotations);
+		}
+		if (componentDefinition.isSetSequence()) {
+			this.setSequence(URI.create(componentDefinition.getSequence().toString()));
+		}
+	}
+	
+	
 	/**
 	 * Adds the specified element to the set <code>type</code> if it is not already present. 
 	 * @param typeURI
@@ -156,10 +196,10 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Sets the {@link Sequence} reference to the specified element.
-	 * @param structure
+	 * @param sequence
 	 */
-	public void setSequence(URI structure) {
-		this.sequence = structure;
+	public void setSequence(URI sequence) {
+		this.sequence = sequence;
 	}
 	
 	/**
@@ -189,18 +229,84 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public SequenceAnnotation createSequenceAnnotation(URI identity, Location location) {
 		SequenceAnnotation sequenceAnnotation = new SequenceAnnotation(identity, location);
-		addSequenceAnnotation(sequenceAnnotation);
-		return sequenceAnnotation;
+		if (addSequenceAnnotation(sequenceAnnotation)) {
+			return sequenceAnnotation;
+		}
+		else {
+			return null;
+		}
+		
 	}
+	
+//	public SequenceAnnotation createSequenceAnnotation(String URIprefix, String id, 
+//				String version, Location location) {		
+//		URI newSequenceURI = URI.create(URIprefix + '/' + id + '/' + version);
+//		if (Identified.isURIcompliant(newSequenceURI.toString())) {
+//			Sequence newSequence = new Sequence(newSequenceURI, elements, encoding);
+//			if (addSequence(newSequence)) {
+//				return newSequence;
+//			}
+//			else
+//				return null;
+//		}
+//		else {
+//			// TODO: Non-compliant URI
+//			return null;
+//		}
+//	}
 	
 	/**
 	 * Adds the specified instance to the list of structuralAnnotations. 
 	 * @param sequenceAnnotation
+	 * @return 
 	 */
-	public void addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
-		// TODO: @addSequenceAnnotation, Check for duplicated entries.
-		URI key = URI.create(sequenceAnnotation.getIdentity().toString().toLowerCase());
-		sequenceAnnotations.put(key, sequenceAnnotation);
+	public boolean addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
+
+		sequenceAnnotations.put(sequenceAnnotation.getIdentity(), sequenceAnnotation);
+		// TODO: @addSequenceAnnotation, Check for duplicated entries. Hack here: returns true.
+		return true;
+//		if (sequenceAnnotation.isSetPersistentIdentity() && sequenceAnnotation.isSetVersion()) {
+//			// Compliant URI should come in here.
+//			// Check if persistent identity exists in other maps.
+//			if (!keyExistsInOtherMaps(sequenceAnnotations.keySet(), sequenceAnnotation.getPersistentIdentity())) {
+//				// Check if URI exists in the sequenceAnnotations map.
+//				if (!sequenceAnnotations.containsKey(sequenceAnnotation.getIdentity())) {
+//					sequenceAnnotations.put(sequenceAnnotation.getIdentity(), sequenceAnnotation);
+//					SequenceAnnotation latestSequenceAnnotation = sequenceAnnotations.get(sequenceAnnotation.getPersistentIdentity());
+//					if (latestSequenceAnnotation == null) {
+//						sequenceAnnotations.put(sequenceAnnotation.getPersistentIdentity(), sequenceAnnotation);
+//					}
+//					else {
+//						if (latestSequenceAnnotation.getMajorVersion() < sequenceAnnotation.getMajorVersion()) {
+//							sequenceAnnotations.put(sequenceAnnotation.getPersistentIdentity(), sequenceAnnotation);
+//						}
+//						else if (latestSequenceAnnotation.getMajorVersion() == sequenceAnnotation.getMajorVersion()){
+//							if (latestSequenceAnnotation.getMinorVersion() < sequenceAnnotation.getMinorVersion()) {
+//								sequenceAnnotations.put(sequenceAnnotation.getPersistentIdentity(), sequenceAnnotation);
+//							}
+//						}
+//					}
+//					return true;
+//				}
+//				else // key exists in sequenceAnnotations map
+//					return false;
+//			}
+//			else // key exists in other maps
+//				return false;
+//		}
+//		else { // Only check if sequenceAnnotation's URI exists in all maps.
+//			if (!keyExistsInOtherMaps(sequenceAnnotations.keySet(), sequenceAnnotation.getIdentity())) {
+//				if (!sequenceAnnotations.containsKey(sequenceAnnotation.getIdentity())) {
+//					sequenceAnnotations.put(sequenceAnnotation.getIdentity(), sequenceAnnotation);					
+//					return true;
+//				}
+//				else // key exists in sequenceAnnotations map
+//					return false;
+//			}
+//			else // key exists in other maps
+//				return false;
+//		}
+//		
 	}
 	
 	/**
@@ -286,9 +392,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subComponent
 	 */
 	public void addSubComponent(Component subComponent) {
-		URI key = URI.create(subComponent.getIdentity().toString().toLowerCase());
+		//URI key = URI.create(subComponent.getIdentity().toString().toLowerCase());
 		// TODO: @addSubComponent, Check for duplicated entries.
-		subComponents.put(key, subComponent);
+		subComponents.put(subComponent.getIdentity(), subComponent);
 	}
 	
 	/**
@@ -493,9 +599,8 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Provide a deep copy of this object.
 	 */
-	public ComponentDefinition clone() {
-		// TODO deal with visibility of this method. 
-		return null;
+	public ComponentDefinition deepCopy() {
+		return new ComponentDefinition(this);
 	}
 	
 	/**
@@ -510,23 +615,14 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Clone the object first, and set its major version to the specified value, and minor version to "0". 
-	 * @param majorVersion
+	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
+	 * @param newVersion
 	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
 	 */
-	public ComponentDefinition newMajorVersion(int majorVersion) {
-		// TODO fill in
-		return null;
-	}
-	
-	/**
-	 * Clone the object first, and set its minor version to the specified value.
-	 * @param minorVersion
-	 * @return the copied {@link ComponentDefinition} instance with the specified minor version.
-	 */
-	public ComponentDefinition newMinorVersion(int minorVersion) {
-		// TODO fill in
-		return null;
+	public ComponentDefinition newVersion(String newVersion) {
+		ComponentDefinition cloned = this.deepCopy();
+		cloned.setVersion(newVersion);
+		return cloned;
 	}
 
 	@Override

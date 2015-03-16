@@ -24,6 +24,14 @@ public class SequenceAnnotation extends Documented {
 		setLocation(location);		
 	}
 	
+	private SequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
+		super(sequenceAnnotation.getIdentity());
+		this.setLocation(sequenceAnnotation.getLocation().deepCopy());
+		if (sequenceAnnotation.isSetComponent()) {
+			this.setComponent(sequenceAnnotation.getComponent());
+		}
+	}
+	
 
 	/**
 	 * Returns field variable <code>location</code>.
@@ -45,7 +53,7 @@ public class SequenceAnnotation extends Documented {
 	 * Test if optional field variable <code>component</code> is set.
 	 * @return <code>true</code> if it is not null.
 	 */
-	public boolean isSetStructuralInstantiation() {
+	public boolean isSetComponent() {
 		if (component == null)
 			return false;
 		else
@@ -299,7 +307,6 @@ public class SequenceAnnotation extends Documented {
 		}
 	}
 
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -308,7 +315,6 @@ public class SequenceAnnotation extends Documented {
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -330,6 +336,12 @@ public class SequenceAnnotation extends Documented {
 		} else if (!location.equals(other.location))
 			return false;
 		return true;
+	}
+
+
+	@Override
+	public SequenceAnnotation deepCopy() {
+		return new SequenceAnnotation(this);
 	}
 
 
