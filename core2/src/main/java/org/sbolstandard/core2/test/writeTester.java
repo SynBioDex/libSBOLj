@@ -57,15 +57,19 @@ public class writeTester {
 	private static String TurtleString = "writeTesterString_v1.3.ttl";
 	private static String TurtleFile   = "writeTesterFile_v1.3.ttl";
 
-	private static String  fileName   = "single_pLacTetRSeq.rdf";
+	private static String  fileName   = "single_singleCollection.rdf";
 
 
 	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
-		String prURI="http://www.partsregistry.org/";
+		//		String prURI="http://www.partsregistry.org/";
 
+		//		get_pLacSeq(SBOL2Doc_test);
+		//		get_ToggleModel(SBOL2Doc_test);
 		get_myParts(SBOL2Doc_test);
+
 		writeRdfOutputStream();
+
 		//		writeJsonOutputStream();
 		//		writeTurtleOutputStream();
 
@@ -74,6 +78,7 @@ public class writeTester {
 		//		writeTurtleString();
 
 		writeRdfFile();
+
 		//writeJsonFile();
 		//writeTurtleFile();
 	}
@@ -191,29 +196,29 @@ public class writeTester {
 				getData("myParts/1/0","myParts","1.0","myParts","myParts", "myParts"),
 				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
 
-		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_tetRSeq(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_pLactetRSeq(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_pLac(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_tetR(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_pLactetR(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_LacI_Inv(SBOL2Doc_test).getIdentity());
-
-		myParts.addMember(get_LacI(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_TetR(SBOL2Doc_test).getIdentity());
-
-		myParts.addMember(get_ptetSeq(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_lacISeq(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_ptetlacISeq(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_ptet(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_lacI(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_ptetlacI(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_TetR_Inv(SBOL2Doc_test).getIdentity());
-
-		myParts.addMember(get_Toggle(SBOL2Doc_test).getIdentity());
-		myParts.addMember(get_ToggleModel(SBOL2Doc_test).getIdentity());
-
-		myParts.addMember(get_topLevel(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_tetRSeq(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_pLactetRSeq(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_pLac(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_tetR(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_pLactetR(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_LacI_Inv(SBOL2Doc_test).getIdentity());
+		//
+		//		myParts.addMember(get_LacI(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_TetR(SBOL2Doc_test).getIdentity());
+		//
+		//		myParts.addMember(get_ptetSeq(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_lacISeq(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_ptetlacISeq(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_ptet(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_lacI(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_ptetlacI(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_TetR_Inv(SBOL2Doc_test).getIdentity());
+		//
+		//		myParts.addMember(get_Toggle(SBOL2Doc_test).getIdentity());
+		//		myParts.addMember(get_ToggleModel(SBOL2Doc_test).getIdentity());
+		//
+		//		myParts.addMember(get_topLevel(SBOL2Doc_test).getIdentity());
 		return myParts;
 	}
 
@@ -670,7 +675,7 @@ public class writeTester {
 	private static void setCommonDocumentedData (Documented d, URI identity, URI persistentIdentity,
 			String version, String displayId, String name, String description)
 	{
-		d.setDisplayId(displayId);
+		//		d.setDisplayId(displayId);
 		d.setName(name);
 		d.setDescription(description);
 
@@ -681,7 +686,7 @@ public class writeTester {
 			String version)
 	{
 		i.setIdentity(identity);
-		i.setPersistentIdentity(persistentIdentity);
+		//		i.setPersistentIdentity(persistentIdentity);
 		//		i.setTimeStamp(timeStamp);
 	}
 

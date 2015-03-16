@@ -321,7 +321,7 @@ public class SBOLWriter {
 		if(d.getDisplayId() != null)
 			list.add(NamedProperty(Sbol2Terms.Documented.displayId, d.getDisplayId()));
 		if(d.isSetName())
-			list.add(NamedProperty(Sbol2Terms.Documented.name, d.getName()));
+			list.add(NamedProperty(Sbol2Terms.Documented.title, d.getName()));
 		if(d.isSetDescription())
 			list.add(NamedProperty(Sbol2Terms.Documented.description, d.getDescription()));
 	}
@@ -330,8 +330,8 @@ public class SBOLWriter {
 	{
 		if(t.getPersistentIdentity() != null)
 			list.add(NamedProperty(Sbol2Terms.Identified.persistentIdentity, t.getPersistentIdentity()));
-		if(t.isSetTimeStamp())
-			list.add(NamedProperty(Sbol2Terms.Identified.timeStamp, t.getTimeStamp().toString()));
+		//		if(t.isSetTimeStamp())
+		//			list.add(NamedProperty(Sbol2Terms.Identified.timeStamp, t.getTimeStamp().toString()));
 
 		if(t.isSetAnnotations())
 		{

@@ -1,9 +1,8 @@
 package org.sbolstandard.core2;
 
-import java.io.InputStream;
 import static org.junit.Assert.assertTrue;
 
-import org.sbolstandard.core2.abstract_classes.TopLevel;
+import java.io.InputStream;
 
 /**
  * The two inputs for runTest will do the following:
@@ -34,16 +33,10 @@ public class SBOLReaderTest extends SBOLAbstractTests
 			SBOLReader.setURIPrefix("www.async.ece.utah.edu");
 			SBOLDocument actual = SBOLReader.read(resourceAsStream);
 			assertTrue(actual.equals(expected));
-;			//				new SBOLDeepEquality.EqualityTester().assertEqual(expected, actual);
 		}
 		catch (SBOLValidationException e)
 		{
 			throw new AssertionError("Failed for " + fileName, e);
 		}
-		//TODO: Insert DeepEquality Check
-		//		catch (SBOLDeepEquality.NotEqualException e)
-		//		{
-		//			throw new AssertionError("Failed for " + fileName, e);
-		//		}
 	}
 }

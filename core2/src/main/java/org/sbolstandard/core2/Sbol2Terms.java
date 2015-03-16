@@ -14,9 +14,16 @@ import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 public class Sbol2Terms
 {
 	/**
+	 * TODO: Add correct namespace for dc.
+	 */
+
+	/**
 	 * The namespace binding for SBOL2.0
 	 */
 	public static final NamespaceBinding sbol2 = NamespaceBinding("http://sbols.org/v2#", "sbol");
+	public static final NamespaceBinding dc = NamespaceBinding("http://purl.org/dc/terms/", "dcterms");
+
+
 
 	/**
 	 * A group of qualified terms for Annotation related SBOL objects
@@ -88,8 +95,8 @@ public class Sbol2Terms
 	public static final class Documented {
 		public static final QName Documented  = sbol2.withLocalPart("Documented");
 		public static final QName displayId   = sbol2.withLocalPart("displayId");
-		public static final QName name 		  = sbol2.withLocalPart("name");
-		public static final QName description = sbol2.withLocalPart("description");
+		public static final QName title 	  = dc.withLocalPart("title");
+		public static final QName description = dc.withLocalPart("description");
 	}
 
 	/**

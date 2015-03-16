@@ -60,6 +60,9 @@ public class SBOLReader
 		SBOLReader.setURIPrefix = authority;
 	}
 
+
+	//TODO: setVersion only apply to 1.1 reader for serialization
+
 	public static SBOLDocument read(String fileName) throws Throwable
 	{
 		FileInputStream fis 	 = new FileInputStream(fileName);
@@ -141,6 +144,7 @@ public class SBOLReader
 
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
+				//if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					return readRdfV1(in, document);
@@ -302,8 +306,9 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				if (setURIPrefix != null)
+				if (setURIPrefix != null) //TODO: check version set
 				{
+					// TODO: displayId + "/" + version
 					identity = URI.create(setURIPrefix + "/" + displayId + "/1/0");
 				}
 			}
@@ -326,7 +331,7 @@ public class SBOLReader
 						precedePairs, identity, ++sa_num);
 
 				sequenceAnnotations.add(sa);
-
+				// TODO: if version then + "/" + version, else skip version
 				URI component_identity    = URI.create(getParentURI(identity) + "/component" + ++component_num + "/1/0");
 				AccessType access 		  = AccessType.convertToAccessType(ComponentInstance.Access.PUBLIC);
 				URI instantiatedComponent = sa.getComponent();
@@ -435,7 +440,7 @@ public class SBOLReader
 					identity = URI.create(setURIPrefix + "/" + displayId + "/1/0");
 				}
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -687,7 +692,7 @@ public class SBOLReader
 			{
 				sequenceConstraints.add(parseSequenceConstraint(((NestedDocument<QName>) namedProperty.getValue())));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -860,7 +865,7 @@ public class SBOLReader
 			{
 				componentURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1267,7 +1272,7 @@ public class SBOLReader
 			{
 				subComponentURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1356,7 +1361,7 @@ public class SBOLReader
 			{
 				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1449,7 +1454,7 @@ public class SBOLReader
 			{
 				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1531,7 +1536,7 @@ public class SBOLReader
 			{
 				members.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1636,7 +1641,7 @@ public class SBOLReader
 			{
 				models.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1730,7 +1735,7 @@ public class SBOLReader
 			{
 				definitionURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1883,7 +1888,7 @@ public class SBOLReader
 			{
 				participations.add(parseParticipation((NestedDocument<QName>) i.getValue()));
 			}
-			else if (i.getName().equals(Sbol2Terms.Documented.name))
+			else if (i.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) i.getValue()).getValue().toString();
 			}
@@ -2044,7 +2049,7 @@ public class SBOLReader
 			{
 				functionalComponentURI = URI.create(((Literal<QName>) f.getValue()).getValue().toString());
 			}
-			else if (f.getName().equals(Sbol2Terms.Documented.name))
+			else if (f.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
@@ -2135,7 +2140,7 @@ public class SBOLReader
 			{
 				encoding = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.name))
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}

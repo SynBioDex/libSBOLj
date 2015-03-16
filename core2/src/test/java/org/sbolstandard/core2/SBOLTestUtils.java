@@ -18,8 +18,6 @@ import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
-import org.sbolstandard.core2.abstract_classes.Documented;
-import org.sbolstandard.core2.abstract_classes.Identified;
 import org.sbolstandard.core2.abstract_classes.Location;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
@@ -34,229 +32,169 @@ public class SBOLTestUtils {
 	private SBOLTestUtils() {
 	}
 
-	public static void createSequence(SBOLDocument document,String id)
+	public static Sequence createSequence(SBOLDocument document,String id)
 	{
-		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu", id, id + "_element", URI.create("http://encodings.org/encoding"));
+		//TODO: encoding was set to URI.create("http://encodings.org/encoding") but in old tester,
+		//it was set to http://some.ontology.org
+		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu", id, id + "_element", URI.create("http://some.ontology.org/" + id));
 		sequence.setName(id);
 		sequence.setDescription(id);
+		return sequence;
 	}
 
-	public static void createComponentDefinition(SBOLDocument document,String id,String type,String role,String sequenceId,List<SequenceAnnotation> sequenceAnnotations,
-			List<SequenceConstraint> sequenceConstraints,List<Component> subComponents)
+	public static ComponentDefinition createComponentDefinition(SBOLDocument document, String id,
+			String type, String role, URI sequenceId,
+			List<SequenceAnnotation> sequenceAnnotations,
+			List<SequenceConstraint> sequenceConstraints,
+			List<Component> subComponents)
 	{
 		ComponentDefinition componentDefinition = document.createComponentDefinition("http://www.async.ece.utah.edu", id,
 				SBOLTestUtils.getSetPropertyURI(type), SBOLTestUtils.getSetPropertyURI(role));
+
+		componentDefinition.setName(id);
+		componentDefinition.setDescription(id);
+
+		//URI.create("http://www.async.ece.utah.edu/"+sequenceId+"/1/0"
 		if (sequenceId!=null)
-			componentDefinition.setSequence(URI.create("http://www.async.ece.utah.edu/"+sequenceId+"/1/0"));
+			componentDefinition.setSequence(sequenceId);
 		if (sequenceAnnotations!=null)
 			componentDefinition.setSequenceAnnotations(sequenceAnnotations);
 		if (sequenceConstraints!=null)
 			componentDefinition.setSequenceConstraints(sequenceConstraints);
 		if (subComponents!=null)
 			componentDefinition.setSubComponents(subComponents);
+
+		return componentDefinition;
 	}
 
-	//	public static GenericTopLevel createGenericTopLevel(SBOLDocument SBOL2Doc_test, List<String> topLevelData)
-	public static GenericTopLevel createGenericTopLevel(
-			URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion)
+	public static GenericTopLevel createGenericTopLevel(SBOLDocument document, String id)
 	{
-
-		//TODO: ask if genericTopLevel is always set to the following QName
-		//		GenericTopLevel toplevel =  SBOL2Doc_test.createGenericTopLevel(identity, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
-		GenericTopLevel genericToplevel =  new GenericTopLevel(identity, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
-
-		//TODO: commented this NameSpaceBinding and moved it to createDocument() in this class
-		//		SBOL2Doc_test.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-
-		setCommonTopLevelData(genericToplevel, identity, persistentIdentity,
-				displayId, name, description, majorVersion, minorVersion);
+		GenericTopLevel genericToplevel =  document.createGenericTopLevel(URI.create("http://www.async.ece.utah.edu/"+id+"/1/0"),
+				new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+		genericToplevel.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
+		genericToplevel.setDisplayId(id);
+		genericToplevel.setName(id);
+		genericToplevel.setDescription(id);
 		return genericToplevel;
 	}
 
-
-	//	public static Collection createCollection(SBOLDocument SBOL2Doc_test, List<String> collectionData,
-	//			List<Annotation> annotations)
-	public static Collection createCollection(
-			URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion,
+	public static Collection createCollection(SBOLDocument document, String id,
 			List<Annotation> annotations)
 	{
-		//		Collection collection = SBOL2Doc_test.createCollection(identity);
-		Collection collection = new Collection(identity);
-		setCommonTopLevelData(collection, identity, persistentIdentity,
-				displayId, name, description, majorVersion, minorVersion);
+		Collection collection = document.createCollection(URI.create("http://www.async.ece.utah.edu/"+id+"/1/0"));
+
+		collection.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
+		collection.setDisplayId(id);
+		collection.setName(id);
+		collection.setDescription(id);
+
 		if(annotations != null)
 			collection.setAnnotations(annotations);
 		return collection;
 	}
 
-	//TODO: consider putting annotation in or not.
+	//TODO: consider removing
 	public static Annotation createAnnotation(QName relation, Turtle literal)
 	{
+		if(relation == null || literal == null)
+			return null;
 		return new Annotation(relation, literal);
 	}
 
-	//	public static ComponentDefinition createComponentDefinitionData(SBOLDocument SBOL2Doc_test,
-	//			Set<URI> type, Set<URI> roles,
-	//			List<String> componentData,
-	//			Sequence structureData,
-	//			List<Component> structureInstantiationData,
-	//			List<SequenceAnnotation> structureAnnotationData,
-	//			List<SequenceConstraint> structureConstraintData)
-	public static ComponentDefinition createComponentDefinitionData(
-			Set<URI> type, Set<URI> roles,
-			URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion,
-			Sequence structureData,
-			List<Component> structureInstantiationData,
-			List<SequenceAnnotation> structureAnnotationData,
-			List<SequenceConstraint> structureConstraintData)
+	public static FunctionalComponent createFunctionalComponent(String id,
+			String access, String direction, URI instantiatedComponent)
 	{
-		//		ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(identity, type, roles);
-		ComponentDefinition c = new ComponentDefinition(identity, type, roles);
-		setCommonTopLevelData(c, identity, persistentIdentity,
-				displayId, name, description, majorVersion, minorVersion);
+		AccessType accessType = null;
+		if(access.equals("public"))
+			accessType = AccessType.PUBLIC;
+		else if(access.equals("private"))
+			accessType = AccessType.PRIVATE;
 
-		if(structureData != null)
-			c.setSequence(structureData.getIdentity());
-		if(structureInstantiationData != null)
-		{
-			c.setSubComponents(structureInstantiationData);
-			if(structureAnnotationData != null && structureConstraintData == null)
-				c.setSequenceAnnotations(structureAnnotationData);
-			else if(structureConstraintData != null)
-				c.setSequenceConstraints(structureConstraintData);
-		}
-		return c;
+		DirectionType directionType = null;
+		if(direction.equals("input"))
+			directionType = DirectionType.INPUT;
+		else if(direction.equals("output"))
+			directionType = DirectionType.OUTPUT;
+		else if(direction.equals("inout"))
+			directionType = DirectionType.INOUT;
+		else if(direction.equals("none"))
+			directionType = DirectionType.NONE;
+
+		return new FunctionalComponent(URI.create(id), accessType, instantiatedComponent, directionType);
 	}
 
-	public static FunctionalComponent createFunctionalComponentData(
-			AccessType access, DirectionType direction,
-			URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion,
-			ComponentDefinition c)
+	public static Interaction createInteraction(String id,
+			List<Participation> participations, Set<URI> type)
 	{
-		//		AccessType access = null;
-		//		if(functionalInstantiation_data.get(6).equals("public"))
-		//			access = AccessType.PUBLIC;
-		//		else if(functionalInstantiation_data.get(6).equals("private"))
-		//			access = AccessType.PRIVATE;
-		//
-		//		DirectionType direction = null;
-		//		if(functionalInstantiation_data.get(7).equals("input"))
-		//			direction = DirectionType.INPUT;
-		//		else if(functionalInstantiation_data.get(7).equals("output"))
-		//			direction = DirectionType.OUTPUT;
-		//		else if(functionalInstantiation_data.get(7).equals("inout"))
-		//			direction = DirectionType.INOUT;
-		//		else if(functionalInstantiation_data.get(7).equals("none"))
-		//			direction = DirectionType.NONE;
-
-		URI instantiatedComponent = c.getIdentity();
-
-		FunctionalComponent f = new FunctionalComponent(identity, access, instantiatedComponent, direction);
-		setCommonDocumentedData(f, identity, persistentIdentity,
-				displayId, name, description, majorVersion, minorVersion);
-
-		return f;
+		return new Interaction(URI.create(id), type, participations);
 	}
 
-	public static Interaction createInteractionData(
-			URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion,
-			List<Participation> participations,
-			Set<URI> type)
-	{
-		Interaction interaction = new Interaction(identity, type, participations);
-
-		setCommonDocumentedData(interaction, identity, persistentIdentity,
-				displayId, name, description, majorVersion, minorVersion);
-
-
-		return interaction;
-	}
-
+	//TODO: consider removing
 	public static Turtle createTurtle()
 	{
 		return new Turtle("turtleString");
 	}
 
-	public static MapsTo createMapTo (URI identity, RefinementType refinement,
-			FunctionalComponent pre_fi, FunctionalComponent post_fi)
+	public static MapsTo createMapTo (String id, String refinement,
+			URI pre_fi, URI post_fi)
 	{
-		return new MapsTo(identity, refinement, pre_fi.getIdentity(), post_fi.getIdentity());
+		RefinementType refinementType = null;
+		if(refinement.equals("verifyIdentical"))
+			refinementType =  RefinementType.VERIFYIDENTICAL;
+		else if(refinement.equals("useLocal"))
+			refinementType =  RefinementType.USELOCAL;
+		else if(refinement.equals("useRemote"))
+			refinementType =  RefinementType.USEREMOTE;
+		else if(refinement.equals("merge"))
+			refinementType =  RefinementType.MERGE;
+
+		return new MapsTo(URI.create(id), refinementType, pre_fi, post_fi);
 	}
 
+	public static void createModel(SBOLDocument document, String id,
+			String source, String language, String framework, Set<URI> roles)
+	{
+		Model model = document.createModel(URI.create(id), URI.create(source), URI.create(language), URI.create(framework), roles);
+		model.setName(id);
+		model.setDescription(id);
+	}
 
-	//	public static Model createModelData(SBOLDocument doc, List<String> modeldata, Set<URI> roles,
-	//			URI source, URI language, URI framework)
-	public static Model createModelData(
-			URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion,
+	public static ModuleDefinition createModuleDefinition(SBOLDocument document, String id,
 			Set<URI> roles,
-			URI source, URI language, URI framework)
-	{
-		Model model = new Model(identity, source, language, framework, roles);
-		setCommonTopLevelData(model, identity, persistentIdentity,
-				displayId, name, description, majorVersion, minorVersion);
-
-		return model;
-	}
-
-	//	public static ModuleDefinition createModuleDefinitionData(SBOLDocument SBOL2Doc_test,
-	//			Set<URI> type, Set<URI> roles,
-	//			List<String> module_data,
-	//			List<FunctionalComponent> functionalInstantiation_data,
-	//			List<Interaction> interactionData,
-	//			List<Module> moduleInstantiation_data,
-	//			Set<URI> model_data,
-	//			List<Annotation> annotations)
-	public static ModuleDefinition createModuleDefinitionData(
-			Set<URI> type, Set<URI> roles,
-			URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion,
-			List<FunctionalComponent> functionalInstantiation_data,
+			List<FunctionalComponent> functionalComponent_data,
 			List<Interaction> interactionData,
-			List<Module> moduleInstantiation_data,
+			List<Module> submodule_data,
 			Set<URI> model_data,
 			List<Annotation> annotations)
 	{
-		ModuleDefinition m = new ModuleDefinition(identity, roles);
-		setCommonTopLevelData(m, identity, persistentIdentity,
-				displayId, name, description, majorVersion, minorVersion);
+		ModuleDefinition m = document.createModuleDefinition(URI.create(id), roles);
+
+		m.setName(id);
+		m.setDescription(id);
 
 		if(annotations != null)
 			m.setAnnotations(annotations);
-		if(functionalInstantiation_data != null)
-			m.setComponents(functionalInstantiation_data);
+		if(functionalComponent_data != null)
+			m.setComponents(functionalComponent_data);
 		if(interactionData != null)
 			m.setInteractions(interactionData);
-		if(moduleInstantiation_data != null)
-			m.setSubModules(moduleInstantiation_data);
+		if(submodule_data != null)
+			m.setSubModules(submodule_data);
 		if(model_data != null)
 			m.setModels(model_data);
 
 		return m;
 	}
 
-	public static Module createModuleData(
-			URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion,
-			ModuleDefinition m,
+	//TODO: check
+	public static Module createModuleData(SBOLDocument document, String id,
+			String instantiatedModule,
 			List<MapsTo> maps)
 	{
-		Module modInstantiation = new Module(identity, m.getIdentity());
-		setCommonDocumentedData(modInstantiation, identity, persistentIdentity,
-				displayId, name, description, majorVersion, minorVersion);
+		Module modInstantiation = new Module(URI.create(id), URI.create(instantiatedModule));
+
+		modInstantiation.setName(id);
+		modInstantiation.setDescription(id);
 
 		for(MapsTo map : maps)
 			modInstantiation.addMapping(map);
@@ -264,84 +202,46 @@ public class SBOLTestUtils {
 		return modInstantiation;
 	}
 
-	public static Participation createParticipationData(
-			URI identity, Set<URI> roles, FunctionalComponent fi)
+	//TODO: consider adding particpation
+	public static Participation createParticipation(
+			String id, Set<URI> roles, URI fi)
 	{
-		return new Participation(identity, roles, fi.getIdentity());
+		return new Participation(URI.create(id), roles, fi);
 	}
 
-	public static SequenceAnnotation createSequenceAnnotationData(
-			URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion,
+	//TODO: decide if SequenceAnnotation is always a Range for location
+	public static SequenceAnnotation createSequenceAnnotation(
+			String id,
 			Component ref_component,
-			int startRange, int endRange,
-			URI locationURI)
+			Location location)
 	{
-		Range r = new Range(locationURI, startRange, endRange);
-		r.setOrientation(Sbol2Terms.Orientation.inline); //TODO: check if this is always inline?
+		Location loc = location;
 
-		Location location 	   = r;
-
-		SequenceAnnotation s = new SequenceAnnotation(identity, location);
-
-		setCommonDocumentedData(s, identity, persistentIdentity,
-				displayId, name, description, majorVersion, minorVersion);
-
-
-		return s;
+		return new SequenceAnnotation(URI.create(id), loc);
 	}
 
-	public static SequenceConstraint createSequenceConstraintData(
-			URI subject, URI object,
-			URI identity, URI persistentIdentity,
-			Integer majorVersion, Integer minorVersion,
-			RestrictionType restriction)
+	public static SequenceConstraint createSequenceConstraint(String id,
+			String subject, String object, String restriction)
 	{
-		SequenceConstraint s = new SequenceConstraint(identity, restriction, subject, object);
-		setCommonIdentifiedData(s, identity, persistentIdentity,
-				majorVersion, minorVersion);
+		RestrictionType restrictionType = null;
+		if(restriction.equals("precedes"))
+			restrictionType = restrictionType.PRECEDES;
 
-		return s;
+		return new SequenceConstraint(URI.create(id), restrictionType, URI.create(subject), URI.create(object));
 	}
 
-	public static Component createComponentData(
-			AccessType access,
-			URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion,
-			ComponentDefinition c)
+	public static Component createComponent(String id, String access, String instantiatedComponent)
 	{
+		AccessType accessType = null;
+		if(access.equals("public"))
+			accessType = AccessType.PUBLIC;
+		else if(access.equals("private"))
+			accessType = AccessType.PRIVATE;
 
-		//		AccessType access = null;
-		//		if(structuralInstantiations_data.get(6).equals("public"))
-		//			access = AccessType.PUBLIC;
-		//		else if(structuralInstantiations_data.get(6).equals("private"))
-		//			access = AccessType.PRIVATE;
-
-		URI instantiatedComponent = c.getIdentity();
-
-		Component s = new Component(identity, access, instantiatedComponent);
-		setCommonDocumentedData(s, identity, persistentIdentity,
-				displayId, name, description, majorVersion, minorVersion);
-
-
-		return s;
+		return new Component(URI.create(id), accessType, URI.create(instantiatedComponent));
 	}
 
-	public static Sequence createSequenceData(
-			URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion,
-			String element, URI encoding)
-	{
-		Sequence structure = new Sequence(identity, element, encoding);
-		setCommonTopLevelData(structure, identity, persistentIdentity,
-				displayId, name, description,  majorVersion,  minorVersion);
-
-		return structure;
-	}
-
+	//TODO: See if this is ever called.
 	public static List<Annotation> getAnnotation_List(Annotation ... a)
 	{
 		return new ArrayList<Annotation>(Arrays.asList(a));
@@ -367,53 +267,7 @@ public class SBOLTestUtils {
 		return new ArrayList<MapsTo>(Arrays.asList(maps));
 	}
 
-	//	public static Collection createCollection(int id, DnaComponent... components) {
-	//		Collection coll1 = SBOLFactory.createCollection();
-	//		coll1.setURI(uri("http://example.com/collection" + id));
-	//		coll1.setDisplayId("Coll" + id);
-	//		coll1.setName("Collection" + id);
-	//		for (DnaComponent component : components) {
-	//	        coll1.addComponent(component);
-	//        }
-	//		return coll1;
-	//	}
-
-	public static void setCommonTopLevelData (TopLevel t, URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion)
-	{
-		setCommonDocumentedData(t, identity, persistentIdentity, displayId, name, description,
-				majorVersion,  minorVersion);
-	}
-
-	public static void setCommonDocumentedData (Documented d, URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion)
-	{
-		if(displayId != null)
-			d.setDisplayId(displayId);
-		if(name != null)
-			d.setName(name);
-		if(description != null)
-			d.setDescription(description);
-
-		setCommonIdentifiedData(d, identity, persistentIdentity, majorVersion, minorVersion);
-	}
-
-	public static void setCommonIdentifiedData (Identified i, URI identity, URI persistentIdentity,
-			Integer majorVersion, Integer minorVersion)
-	{
-		if(identity != null)
-			i.setIdentity(identity);
-		if(persistentIdentity != null)
-			i.setPersistentIdentity(persistentIdentity);
-		if(majorVersion != null)
-			i.setMajorVersion(majorVersion);
-		if(minorVersion != null)
-			i.setMinorVersion(minorVersion);
-		//		i.setTimeStamp(timeStamp); //TODO: is timeStamp provided by user?
-	}
-
+	//TODO: see if this is ever called
 	public static SBOLDocument createDocument(TopLevel... contents) {
 		SBOLDocument document = new SBOLDocument();
 		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
@@ -487,60 +341,4 @@ public class SBOLTestUtils {
 	{
 		return URI.create("http://some.ontology.org/" + append);
 	}
-
-	//	public static URI uri(String uri)
-	//	{
-	//		return URI.create(uri);
-	//	}
-
-	//	public static void assertInvalid(final String fileName, String expectedMessage) throws Exception {
-	//		try {
-	//			assertValid(fileName);
-	//			fail("Invalid file passed validation: " + fileName);
-	//		}
-	//		catch (SBOLValidationException e) {
-	//			String msgFormat = "Validation exception message does not contain expected message:%n  Expected=%s%n  Actual=%s";
-	//			String msg = String.format(msgFormat, expectedMessage, e.getMessage());
-	//			if(!e.getMessage().contains(expectedMessage) && (e.getCause() == null || !e.getCause().getMessage().contains(expectedMessage))) {
-	//                throw(AssertionError) new AssertionError(msg).initCause(e);
-	//            }
-	//		}
-	//		catch (Exception e) {
-	//			throw e;
-	//		}
-	//	}
-	//
-	//	public static void assertValid(final String fileName) throws Exception {
-	//		// reading the document ensures validity
-	//        InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
-	//        if(resourceAsStream == null) resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/" + fileName);
-	//
-	//        assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
-	//
-	//        try {
-	//            SBOLFactory.read(resourceAsStream);
-	//        } catch (IOException e) {
-	//            throw new AssertionError("Failed to validate " + fileName, e);
-	//        } catch (SBOLValidationException e) {
-	//            throw new SBOLValidationException("Failed to validate " + fileName, e);
-	//        }
-	//	}
-	//
-	//	public static void assertInvalid(final SBOLDocument doc, String expectedMessage) throws Exception {
-	//		try {
-	//			assertValid(doc);
-	//			fail("Invalid doc passed validation: " + doc);
-	//		}
-	//		catch (SBOLValidationException e) {
-	//			String msgFormat = "Validation exception message does not contain expected message:%n  Expected=%s%n  Actual=%s";
-	//			String msg = String.format(msgFormat, expectedMessage, e.getMessage());
-	//            if(!e.getMessage().contains(expectedMessage)) {
-	//                throw new AssertionError(msg, e);
-	//            }
-	//		}
-	//	}
-	//
-	//	public static void assertValid(final SBOLDocument doc) throws Exception {
-	//		SBOLFactory.validate(doc);
-	//	}
 }
