@@ -135,7 +135,6 @@ public abstract class Identified {
 	 * Test if optional field variable <code>version</code> is set.
 	 * @return <code>true</code> if it is not <code>null</code>
 	 */
-	@Deprecated
 	public boolean isSetVersion() {
 		if (version == null)
 			return false;
@@ -170,7 +169,6 @@ public abstract class Identified {
 	 * Returns field variable <code>version</code>.
 	 * @return field variable <code>version</code>.
 	 */
-	@Deprecated
 	public String getVersion() {
 		return version;
 	}
@@ -179,7 +177,6 @@ public abstract class Identified {
 	 * Sets field variable <code>version</code> to the specified element.
 	 * @param version
 	 */
-	@Deprecated
 	public void setVersion(String version) {
 		// TODO: Require version to be "[0-9]+.[0-9]+".
 		this.version = version;
