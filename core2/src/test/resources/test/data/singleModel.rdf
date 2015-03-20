@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:annot="http://myannotation.org" xmlns:grn="urn:bbn.com:tasbe:grn" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sbol="http://sbols.org/v2#">
+  <sbol:Model rdf:about="ToggleModel">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/ToggleModel"/>
+    <sbol:displayId>ToggleModel</sbol:displayId>
+    <dcterms:title>ToggleModel</dcterms:title>
+    <dcterms:description>ToggleModel</dcterms:description>
+    <sbol:source rdf:resource="ToggleModel_source"/>
+    <sbol:language rdf:resource="ToggleModel_language"/>
+    <sbol:framework rdf:resource="ToggleModel_framework"/>
+    <sbol:role rdf:resource="http://some.ontology.org/ToggleModel_role"/>
+  </sbol:Model>
+</rdf:RDF>
