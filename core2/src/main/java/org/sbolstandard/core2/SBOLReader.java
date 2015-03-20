@@ -306,7 +306,7 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				if (setURIPrefix != null) //TODO: check version set
+				if (setURIPrefix != null ) //TODO: check version set
 				{
 					// TODO: displayId + "/" + version
 					identity = URI.create(setURIPrefix + "/" + displayId + "/1/0");
@@ -332,6 +332,7 @@ public class SBOLReader
 
 				sequenceAnnotations.add(sa);
 				// TODO: if version then + "/" + version, else skip version
+
 				URI component_identity    = URI.create(getParentURI(identity) + "/component" + ++component_num + "/1/0");
 				AccessType access 		  = AccessType.convertToAccessType(ComponentInstance.Access.PUBLIC);
 				URI instantiatedComponent = sa.getComponent();
@@ -509,8 +510,6 @@ public class SBOLReader
 		}
 
 		Collection c = SBOLDoc.createCollection(identity);
-		// Only do below if identity!=topLevel.getIdentity()
-		// TODO: setWasDerivedFrom field to topLevel.getIdentity();
 		if(identity != topLevel.getIdentity())
 			c.setWasDerivedFrom(topLevel.getIdentity());
 		if (displayId != null)
@@ -599,9 +598,6 @@ public class SBOLReader
 		{
 
 			URI dummyGenericLoc_id = URI.create(getParentURI(identity) + "/GenericLocation/1/0");
-			//			int dummy_start   = 0;
-			//			int dummy_end 	  = 0;
-			//			Range dummyRange  = new Range(dummyRange_id, dummy_start, dummy_end);
 			GenericLocation  dummyGenericLoc = new GenericLocation(dummyGenericLoc_id);
 			if (strand != null)
 			{
@@ -635,10 +631,8 @@ public class SBOLReader
 		String displayId 	   = null;
 		String name 	 	   = null;
 		String description 	   = null;
-		String timeStamp 	   = null;
 		URI structure 		   = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version 		   = null;
 		URI wasDerivedFrom     = null;
 		Set<URI> type 		   = new HashSet<URI>();
 		Set<URI> roles 	  	   = new HashSet<URI>();
@@ -654,15 +648,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
@@ -700,10 +688,6 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
@@ -731,14 +715,10 @@ public class SBOLReader
 			c.setName(name);
 		if (description != null)
 			c.setDescription(description);
-//		if (timeStamp != null)	
-//			c.setTimeStamp(getTimestamp(timeStamp));
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
-		if (majorVersion != null)
-			c.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			c.setMinorVersion(minorVersion);
+		if (version != null)
+			c.setVersion(version);
 		if (wasDerivedFrom != null)
 			c.setWasDerivedFrom(wasDerivedFrom);
 		return c;
@@ -750,9 +730,7 @@ public class SBOLReader
 		RestrictionType restriction  = null;
 		URI subject 				 = null;
 		URI object 					 = null;
-		String timeStamp 			 = null;
-		Integer majorVersion 		 = null;
-		Integer minorVersion  		 = null;
+		String version 				 = null;
 		URI wasDerivedFrom 			 = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
@@ -782,20 +760,9 @@ public class SBOLReader
 			{
 				object = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
-			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
@@ -810,13 +777,8 @@ public class SBOLReader
 		SequenceConstraint s = new SequenceConstraint(sequenceConstraints.getIdentity(), restriction, subject, object);
 		if (persistentIdentity != null)
 			s.setPersistentIdentity(persistentIdentity);
-//		if (timeStamp != null)
-//			s.setTimeStamp(getTimestamp(timeStamp));
-//		if (majorVersion != null)
-//			s.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			s.setMinorVersion(minorVersion);
-		// TODO Insert version here.
+		if (version != null)
+			s.setVersion(version);
 		if (wasDerivedFrom != null)
 			s.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -832,9 +794,7 @@ public class SBOLReader
 		URI componentURI 	   = null;
 		String name 		   = null;
 		String description 	   = null;
-		String timeStamp 	   = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version   	   = null;
 		URI wasDerivedFrom 	   = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
@@ -848,15 +808,9 @@ public class SBOLReader
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Location.Location))
 			{
@@ -874,10 +828,6 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
@@ -891,11 +841,8 @@ public class SBOLReader
 		SequenceAnnotation s = new SequenceAnnotation(sequenceAnnotation.getIdentity(), location);
 		if (persistentIdentity != null)
 			s.setPersistentIdentity(persistentIdentity);
-//		if (majorVersion != null)
-//			s.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			s.setMinorVersion(minorVersion);
-		// TODO Insert version here.
+		if(version != null)
+			s.setVersion(version);
 		if (displayId != null)
 			s.setDisplayId(displayId);
 		if (componentURI != null)
@@ -904,8 +851,6 @@ public class SBOLReader
 			s.setName(name);
 		if (description != null)
 			s.setDescription(description);
-//		if (timeStamp != null)
-//			s.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			s.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -949,12 +894,10 @@ public class SBOLReader
 
 	private static GenericLocation parseGenericLocation(NestedDocument<QName> typeGenLoc)
 	{
-		URI persistentIdentity      = null;
-		URI orientation = null;
-		String timeStamp 	   		= null;
-		Integer majorVersion        = null;
-		Integer minorVersion        = null;
-		URI wasDerivedFrom 			= null;
+		URI persistentIdentity       = null;
+		URI orientation 			 = null;
+		String version        	     = null;
+		URI wasDerivedFrom 			 = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		for (NamedProperty<QName> namedProperty : typeGenLoc.getProperties())
@@ -967,19 +910,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
@@ -996,13 +929,8 @@ public class SBOLReader
 			gl.setOrientation(orientation);
 		if(persistentIdentity != null)
 			gl.setPersistentIdentity(persistentIdentity);
-//		if(timeStamp != null)
-//			gl.setTimeStamp(getTimestamp(timeStamp));
-//		if(majorVersion != null)
-//			gl.setMajorVersion(majorVersion);
-//		if(minorVersion != null)
-//			gl.setMinorVersion(minorVersion);
-			// TODO Insert version here.		
+		if(version != null)
+			gl.setVersion(version);
 		if(wasDerivedFrom != null)
 			gl.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1016,9 +944,7 @@ public class SBOLReader
 		URI persistentIdentity = null;
 		Integer at 			   = null;
 		URI orientation 	   = null;
-		String timeStamp 	   = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
@@ -1037,19 +963,9 @@ public class SBOLReader
 			{
 				orientation = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
@@ -1072,13 +988,8 @@ public class SBOLReader
 			c.setPersistentIdentity(persistentIdentity);
 		if (orientation != null)
 			c.setOrientation(orientation);
-//		if (timeStamp != null)
-//			c.setTimeStamp(getTimestamp(timeStamp));
-//		if (majorVersion != null)
-//			c.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			c.setMinorVersion(minorVersion);
-		// TODO: Insert version here.
+		if(version != null)
+			c.setVersion(version);
 		if (wasDerivedFrom != null)
 			c.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1090,9 +1001,7 @@ public class SBOLReader
 	private static MultiRange parseMultiRange(NestedDocument<QName> typeMultiRange)
 	{
 		URI persistentIdentity = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
-		String timeStamp 	   = null;
+		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
 
 		List<Range> ranges 	 		 = new ArrayList<Range>();
@@ -1108,19 +1017,9 @@ public class SBOLReader
 			{
 				ranges.add(parseRange((NestedDocument<QName>) namedProperty.getValue()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
@@ -1137,13 +1036,8 @@ public class SBOLReader
 			multiRange.setPersistentIdentity(persistentIdentity);
 		if (!ranges.isEmpty())
 			multiRange.setRanges(ranges);
-//		if (majorVersion != null)
-//			multiRange.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			multiRange.setMinorVersion(minorVersion);
-//		if (timeStamp != null)
-//			multiRange.setTimeStamp(getTimestamp(timeStamp));
-		// TODO: Insert version here.
+		if(version != null)
+			multiRange.setVersion(version);
 		if (wasDerivedFrom != null)
 			multiRange.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1157,9 +1051,7 @@ public class SBOLReader
 		Integer start 		   = null;
 		Integer end 		   = null;
 		URI orientation 	   = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
-		String timeStamp 	   = null;
+		String version 		   = null;
 		URI wasDerivedFrom     = null;
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
@@ -1184,20 +1076,9 @@ public class SBOLReader
 			{
 				orientation = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
@@ -1214,13 +1095,8 @@ public class SBOLReader
 			r.setPersistentIdentity(persistentIdentity);
 		if (orientation != null)
 			r.setOrientation(orientation);
-//		if (majorVersion != null)
-//			r.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			r.setMinorVersion(minorVersion);
-//		if (timeStamp != null)
-		// TODO: Insert version here.
-//			r.setTimeStamp(getTimestamp(timeStamp));
+		if(version != null)
+			r.setVersion(version);
 		if (wasDerivedFrom != null)
 			r.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1231,12 +1107,10 @@ public class SBOLReader
 	private static Component parseSubComponent(NestedDocument<QName> subComponents)
 	{
 		URI persistentIdentity = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version 		   = null;
 		String displayId 	   = null;
 		String name 		   = null;
 		String description 	   = null;
-		String timeStamp 	   = null;
 		URI subComponentURI    = null;
 		AccessType access 	   = null;
 		URI wasDerivedFrom 	   = null;
@@ -1250,15 +1124,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
@@ -1286,10 +1154,6 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
@@ -1303,11 +1167,8 @@ public class SBOLReader
 		Component c = new Component(subComponents.getIdentity(), access, subComponentURI);
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
-//		if (majorVersion != null)
-//			c.setMajorVersion(majorVersion);
-//		if ( minorVersion != null)
-//			c.setMinorVersion(minorVersion);
-		// TODO: Insert version here.
+		if(version != null)
+			c.setVersion(version);
 		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (access != null)
@@ -1320,8 +1181,6 @@ public class SBOLReader
 			c.setName(name);
 		if (description != null)
 			c.setDescription(description);
-//		if (timeStamp != null)
-//			c.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			c.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1334,12 +1193,10 @@ public class SBOLReader
 			TopLevelDocument<QName> topLevel)
 	{
 		URI persistentIdentity = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version 		   = null;
 		String displayId 	   = null;
 		String name 		   = null;
 		String description 	   = null;
-		String timeStamp 	   = null;
 		URI wasDerivedFrom 	   = null;
 
 		List<Annotation> annotations = new ArrayList<Annotation>();
@@ -1350,23 +1207,13 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
@@ -1389,19 +1236,14 @@ public class SBOLReader
 		GenericTopLevel t = SBOLDoc.createGenericTopLevel(topLevel.getIdentity(), topLevel.getType());
 		if (persistentIdentity != null)
 			t.setPersistentIdentity(persistentIdentity);
-//		if (majorVersion != null)
-//			t.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			t.setMinorVersion(minorVersion);
-		// TODO: Insert version here.
+		if (version != null)
+			t.setVersion(version);
 		if (displayId != null)
 			t.setDisplayId(displayId);
 		if (name != null)
 			t.setName(name);
 		if (description != null)
 			t.setDescription(description);
-//		if(timeStamp != null)
-//			t.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			t.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1412,12 +1254,10 @@ public class SBOLReader
 	private static Model parseModels(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
 		URI persistentIdentity = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version 		   = null;
 		String displayId 	   = null;
 		String name 		   = null;
 		String description 	   = null;
-		String timeStamp 	   = null;
 		URI source 			   = null;
 		URI language 		   = null;
 		URI framework 	 	   = null;
@@ -1432,15 +1272,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
@@ -1470,10 +1304,6 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
@@ -1487,19 +1317,14 @@ public class SBOLReader
 		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework, roles);
 		if (persistentIdentity != null)
 			m.setPersistentIdentity(persistentIdentity);
-//		if (majorVersion != null)
-//			m.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			m.setMinorVersion(minorVersion);
-		// TODO: Insert version here.
+		if (version != null)
+			m.setVersion(version);
 		if (displayId != null)
 			m.setDisplayId(displayId);
 		if (name != null)
 			m.setName(name);
 		if (description != null)
 			m.setDescription(description);
-//		if (timeStamp != null)
-//			m.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			m.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1510,12 +1335,10 @@ public class SBOLReader
 	private static Collection parseCollections(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
 		URI persistentIdentity = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version 		   = null;
 		String displayId 	   = null;
 		String name 		   = null;
 		String description 	   = null;
-		String timeStamp 	   = null;
 		URI wasDerivedFrom 	   = null;
 
 		Set<URI> members 			 = new HashSet<URI>();
@@ -1527,15 +1350,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
@@ -1553,10 +1370,6 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
@@ -1570,11 +1383,8 @@ public class SBOLReader
 		Collection c = SBOLDoc.createCollection(topLevel.getIdentity());
 		if (displayId != null)
 			c.setDisplayId(displayId);
-//		if (majorVersion != null)
-//			c.setMajorVersion(majorVersion);
-//		if( minorVersion != null)
-//			c.setMinorVersion(minorVersion);
-		// TODO: Insert version here.
+		if (version != null)
+			c.setVersion(version);
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
 		if (!members.isEmpty())
@@ -1583,8 +1393,6 @@ public class SBOLReader
 			c.setName(name);
 		if (description != null)
 			c.setDescription(description);
-//		if (timeStamp != null)
-//			c.setTimeStamp(getTimestamp(timeStamp));
 		if( wasDerivedFrom != null)
 			c.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1596,12 +1404,10 @@ public class SBOLReader
 			TopLevelDocument<QName> topLevel)
 	{
 		URI persistentIdentity = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version 	       = null;
 		String displayId 	   = null;
 		String name 		   = null;
 		String description 	   = null;
-		String timeStamp 	   = null;
 		URI wasDerivedFrom 	   = null;
 		Set<URI> roles 		   = new HashSet<URI>();
 		Set<URI> models 	   = new HashSet<URI>();
@@ -1617,15 +1423,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
@@ -1659,10 +1459,6 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
@@ -1676,11 +1472,8 @@ public class SBOLReader
 		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity(), roles);
 		if (persistentIdentity != null)
 			moduleDefinition.setPersistentIdentity(persistentIdentity);
-//		if (majorVersion != null)
-//			moduleDefinition.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			moduleDefinition.setMinorVersion(minorVersion);
-		// TODO: Insert version here.
+		if (version != null)
+			moduleDefinition.setVersion(version);
 		if (displayId != null)
 			moduleDefinition.setDisplayId(displayId);
 		if (!functionalComponents.isEmpty())
@@ -1695,8 +1488,6 @@ public class SBOLReader
 			moduleDefinition.setName(name);
 		if (description != null)
 			moduleDefinition.setDescription(description);
-//		if (timeStamp != null)
-//			moduleDefinition.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			moduleDefinition.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1707,13 +1498,11 @@ public class SBOLReader
 	private static Module parseSubModule(NestedDocument<QName> module)
 	{
 		URI persistentIdentity = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version 		   = null;
 		String displayId 	   = null;
 		URI definitionURI 	   = null;
 		String name 		   = null;
 		String description     = null;
-		String timeStamp 	   = null;
 		URI wasDerivedFrom 	   = null;
 		List<MapsTo> mappings 		 = new ArrayList<MapsTo>();
 		List<Annotation> annotations = new ArrayList<Annotation>();
@@ -1724,15 +1513,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
@@ -1754,10 +1537,6 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
@@ -1771,11 +1550,8 @@ public class SBOLReader
 		Module submodule = new Module(module.getIdentity(), definitionURI);
 		if (persistentIdentity != null)
 			submodule.setPersistentIdentity(persistentIdentity);
-//		if (majorVersion != null)
-//			submodule.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			submodule.setMinorVersion(minorVersion);
-		// TODO: Insert version here.
+		if (version != null)
+			submodule.setVersion(version);
 		if (displayId != null)
 			submodule.setDisplayId(displayId);
 		if (!mappings.isEmpty())
@@ -1784,8 +1560,6 @@ public class SBOLReader
 			submodule.setName(name);
 		if (description != null)
 			submodule.setDescription(description);
-//		if (timeStamp != null)
-//			submodule.setTimeStamp(getTimestamp(timeStamp));
 		if( wasDerivedFrom != null)
 			submodule.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1796,8 +1570,7 @@ public class SBOLReader
 	private static MapsTo parseMapping(NestedDocument<QName> mappings)
 	{
 		URI persistentIdentity    = null;
-		Integer majorVersion      = null;
-		Integer minorVersion 	  = null;
+		String version 	  	 	  = null;
 		URI remote 				  = null;
 		RefinementType refinement = null;
 		URI local 				  = null;
@@ -1811,15 +1584,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) m.getValue()).getValue().toString());
 			}
-			else if (m.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (m.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) m.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (m.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) m.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) m.getValue()).getValue().toString();
 			}
 			else if (m.getName().equals(Sbol2Terms.MapsTo.refinement))
 			{
@@ -1846,11 +1613,8 @@ public class SBOLReader
 		MapsTo map = new MapsTo(mappings.getIdentity(), refinement, local, remote);
 		if (persistentIdentity != null)
 			map.setPersistentIdentity(persistentIdentity);
-//		if (majorVersion != null)
-//			map.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			map.setMinorVersion(minorVersion);
-		// TODO: Insert version here.
+		if (version != null)
+			map.setVersion(version);
 		if (wasDerivedFrom != null)
 			map.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1861,12 +1625,10 @@ public class SBOLReader
 	private static Interaction parseInteraction(NestedDocument<QName> interaction)
 	{
 		URI persistentIdentity = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version 		   = null;
 		String displayId 	   = null;
 		String name 		   = null;
 		String description 	   = null;
-		String timeStamp 	   = null;
 		URI wasDerivedFrom	   = null;
 
 		Set<URI> type 		   			   = new HashSet<URI>();
@@ -1879,15 +1641,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) i.getValue()).getValue().toString());
 			}
-			else if (i.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (i.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) i.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (i.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) i.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) i.getValue()).getValue().toString();
 			}
 			else if (i.getName().equals(Sbol2Terms.Documented.displayId))
 			{
@@ -1909,10 +1665,6 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) i.getValue()).getValue().toString();
 			}
-			else if (i.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) i.getValue()).getValue().toString();
-			}
 			else if (i.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) i.getValue()).getValue().toString());
@@ -1926,19 +1678,14 @@ public class SBOLReader
 		Interaction i = new Interaction(interaction.getIdentity(), type, participations);
 		if (persistentIdentity != null)
 			i.setPersistentIdentity(persistentIdentity);
-//		if (majorVersion != null)
-//			i.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			i.setMinorVersion(minorVersion);
-		// TODO: Insert version here.
+		if (version != null)
+			i.setVersion(version);
 		if (displayId != null)
 			i.setDisplayId(displayId);
 		if (name != null)
 			i.setName(name);
 		if (description != null)
 			i.setDescription(description);
-//		if (timeStamp != null)
-//			i.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			i.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -1949,8 +1696,7 @@ public class SBOLReader
 	private static Participation parseParticipation(NestedDocument<QName> participation)
 	{
 		URI persistentIdentity = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version 		   = null;
 		Set<URI> role 		   = new HashSet<URI>();
 		URI participant        = null;
 		URI wasDerivedFrom 	   = null;
@@ -1962,15 +1708,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) p.getValue()).getValue().toString());
 			}
-			else if (p.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (p.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) p.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (p.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) p.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) p.getValue()).getValue().toString();
 			}
 			else if (p.getName().equals(Sbol2Terms.Participation.role))
 			{
@@ -1994,10 +1734,8 @@ public class SBOLReader
 		Participation p = new Participation(participation.getIdentity(), role, participant);
 		if (persistentIdentity != null)
 			p.setPersistentIdentity(persistentIdentity);
-//		if (majorVersion != null)
-//			p.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			p.setMinorVersion(minorVersion);
+		if (version != null)
+			p.setVersion(version);
 		if( wasDerivedFrom != null)
 			p.setWasDerivedFrom(wasDerivedFrom);
 		if(!annotations.isEmpty())
@@ -2009,12 +1747,10 @@ public class SBOLReader
 			NestedDocument<QName> functionalComponent)
 	{
 		URI persistentIdentity 	   = null;
-		Integer majorVersion 	   = null;
-		Integer minorVersion 	   = null;
+		String version 			   = null;
 		String displayId 		   = null;
 		String name 			   = null;
 		String description 		   = null;
-		String timeStamp 		   = null;
 		AccessType access 		   = null;
 		DirectionType direction    = null;
 		URI functionalComponentURI = null;
@@ -2029,15 +1765,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) f.getValue()).getValue().toString());
 			}
-			else if (f.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (f.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) f.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (f.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) f.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
 			else if (f.getName().equals(Sbol2Terms.Documented.displayId))
 			{
@@ -2071,10 +1801,6 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
-			else if (f.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) f.getValue()).getValue().toString();
-			}
 			else if (f.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) f.getValue()).getValue().toString());
@@ -2091,10 +1817,8 @@ public class SBOLReader
 				functionalComponentURI, direction);
 		if (persistentIdentity != null)
 			fc.setPersistentIdentity(persistentIdentity);
-//		if (majorVersion != null)
-//			fc.setMajorVersion(majorVersion);
-//		if (minorVersion != null)
-//			fc.setMinorVersion(minorVersion);
+		if (version != null)
+			fc.setVersion(version);
 		if (displayId != null)
 			fc.setDisplayId(displayId);
 		if (!mappings.isEmpty())
@@ -2103,8 +1827,6 @@ public class SBOLReader
 			fc.setName(name);
 		if (description != null)
 			fc.setDescription(description);
-//		if (timeStamp != null)
-//			fc.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			fc.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
@@ -2115,12 +1837,10 @@ public class SBOLReader
 	private static Sequence parseSequences(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
 		URI persistentIdentity = null;
-		Integer majorVersion   = null;
-		Integer minorVersion   = null;
+		String version 		   = null;
 		String displayId 	   = null;
 		String name 		   = null;
 		String description 	   = null;
-		String timeStamp   	   = null;
 		String elements 	   = null;
 		URI encoding 		   = null;
 		URI wasDerivedFrom 	   = null;
@@ -2132,15 +1852,9 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.majorversion))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
-				String temp  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				majorVersion = Integer.parseInt(temp);
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.minorversion))
-			{
-				String temp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				minorVersion = Integer.parseInt(temp);
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
@@ -2162,10 +1876,6 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.timeStamp))
-			{
-				timeStamp = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
 			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
@@ -2180,18 +1890,14 @@ public class SBOLReader
 				elements, encoding);
 		if (persistentIdentity != null)
 			sequence.setPersistentIdentity(persistentIdentity);
-		if (majorVersion != null)
-			sequence.setMajorVersion(majorVersion);
-		if (minorVersion != null)
-			sequence.setMinorVersion(minorVersion);
+		if (version != null)
+			sequence.setVersion(version);
 		if (displayId != null)
 			sequence.setDisplayId(displayId);
 		if (name != null)
 			sequence.setName(name);
 		if (description != null)
 			sequence.setDescription(description);
-//		if (timeStamp != null)
-//			sequence.setTimeStamp(getTimestamp(timeStamp));
 		if (wasDerivedFrom != null)
 			sequence.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())

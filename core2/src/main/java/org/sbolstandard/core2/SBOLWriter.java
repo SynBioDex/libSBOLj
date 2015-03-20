@@ -331,6 +331,8 @@ public class SBOLWriter {
 		if(t.getPersistentIdentity() != null)
 			list.add(NamedProperty(Sbol2Terms.Identified.persistentIdentity, t.getPersistentIdentity()));
 
+		if(t.getVersion() != null)
+			list.add(NamedProperty(Sbol2Terms.Identified.version, t.getVersion()));
 
 		if(t.isSetAnnotations())
 		{

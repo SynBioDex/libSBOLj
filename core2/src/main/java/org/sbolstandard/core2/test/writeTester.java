@@ -64,8 +64,6 @@ public class writeTester {
 	{
 		//		String prURI="http://www.partsregistry.org/";
 
-		//		get_pLacSeq(SBOL2Doc_test);
-		//		get_ToggleModel(SBOL2Doc_test);
 		get_myParts(SBOL2Doc_test);
 
 		writeRdfOutputStream();

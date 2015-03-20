@@ -19,10 +19,7 @@ import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
-import org.sbolstandard.core2.abstract_classes.Documented;
-import org.sbolstandard.core2.abstract_classes.Identified;
 import org.sbolstandard.core2.abstract_classes.Location;
-import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 
@@ -37,7 +34,8 @@ public class SBOLTestUtils {
 
 	public static Sequence createSequence(SBOLDocument document,String id)
 	{
-		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu", id, "1/0", id + "_element", URI.create("http://encodings.org/encoding"));
+		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu",
+				id, "1/0", id + "_element", URI.create("http://encodings.org/encoding"));
 
 		sequence.setName(id);
 		sequence.setDescription(id);
@@ -45,18 +43,18 @@ public class SBOLTestUtils {
 	}
 
 	public static ComponentDefinition createComponentDefinition(SBOLDocument document, String id,
-			String type, String role, URI sequenceId,
+			Set<URI> type, Set<URI> role, URI sequenceId,
 			List<SequenceAnnotation> sequenceAnnotations,
 			List<SequenceConstraint> sequenceConstraints,
 			List<Component> subComponents)
 	{
-		ComponentDefinition componentDefinition = document.createComponentDefinition("http://www.async.ece.utah.edu", id,
-				SBOLTestUtils.getSetPropertyURI(type), SBOLTestUtils.getSetPropertyURI(role));
+		ComponentDefinition componentDefinition = document.createComponentDefinition(
+				"http://www.async.ece.utah.edu", id,
+				type, role);
 
 		componentDefinition.setName(id);
 		componentDefinition.setDescription(id);
 
-		//URI.create("http://www.async.ece.utah.edu/"+sequenceId+"/1/0"
 		if (sequenceId!=null)
 			componentDefinition.setSequence(sequenceId);
 		if (sequenceAnnotations!=null)
@@ -71,7 +69,8 @@ public class SBOLTestUtils {
 
 	public static GenericTopLevel createGenericTopLevel(SBOLDocument document, String id)
 	{
-		GenericTopLevel genericToplevel =  document.createGenericTopLevel(URI.create("http://www.async.ece.utah.edu/"+id+"/1/0"),
+		GenericTopLevel genericToplevel =  document.createGenericTopLevel(
+				URI.create("http://www.async.ece.utah.edu/"+id+"/1/0"),
 				new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
 		genericToplevel.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
 		genericToplevel.setDisplayId(id);
@@ -95,47 +94,34 @@ public class SBOLTestUtils {
 		return collection;
 	}
 
-	//TODO: consider removing
-	public static Annotation createAnnotation(QName relation, Turtle literal)
+	public static void createModel(SBOLDocument document, String id)
 	{
-		if(relation == null || literal == null)
-			return null;
-		return new Annotation(relation, literal);
+		Model model = document.createModel(URI.create(id),
+				URI.create(id + "_source"),
+				URI.create(id + "_language"),
+				URI.create(id + "_framework"),
+				getSetPropertyURI(id + "_role"));
+
+		model.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
+		model.setDisplayId(id);
+		model.setName(id);
+		model.setDescription(id);
 	}
 
+	//TODO: consider removing
+	//	public static Annotation createAnnotation(QName relation, Turtle literal)
+	//	{
+	//		if(relation == null || literal == null)
+	//			return null;
+	//		return new Annotation(relation, literal);
+	//	}
+
 	public static FunctionalComponent createFunctionalComponent(String id,
-			String access, String direction, URI instantiatedComponent)
+			AccessType accessType, DirectionType directionType, URI instantiatedComponent)
 	{
-		AccessType accessType = null;
-		if(access.equals("public"))
-			accessType = AccessType.PUBLIC;
-		else if(access.equals("private"))
-			accessType = AccessType.PRIVATE;
-
-		DirectionType directionType = null;
-		if(direction.equals("input"))
-			directionType = DirectionType.INPUT;
-		else if(direction.equals("output"))
-			directionType = DirectionType.OUTPUT;
-		else if(direction.equals("inout"))
-			directionType = DirectionType.INOUT;
-		else if(direction.equals("none"))
-			directionType = DirectionType.NONE;
-
 		return new FunctionalComponent(URI.create(id), accessType, instantiatedComponent, directionType);
 	}
 
-	public static Interaction createInteraction(String id,
-			List<Participation> participations, Set<URI> type)
-	{
-		return new Interaction(URI.create(id), type, participations);
-	}
-
-	//TODO: consider removing
-	public static Turtle createTurtle()
-	{
-		return new Turtle("turtleString");
-	}
 
 	public static MapsTo createMapTo (String id, String refinement,
 			URI pre_fi, URI post_fi)
@@ -153,14 +139,6 @@ public class SBOLTestUtils {
 		return new MapsTo(URI.create(id), refinementType, pre_fi, post_fi);
 	}
 
-	public static void createModel(SBOLDocument document, String id,
-			String source, String language, String framework, Set<URI> roles)
-	{
-		Model model = document.createModel(URI.create(id), URI.create(source), URI.create(language), URI.create(framework), roles);
-		model.setName(id);
-		model.setDescription(id);
-	}
-
 	public static ModuleDefinition createModuleDefinition(SBOLDocument document, String id,
 			Set<URI> roles,
 			List<FunctionalComponent> functionalComponent_data,
@@ -170,7 +148,8 @@ public class SBOLTestUtils {
 			List<Annotation> annotations)
 	{
 		ModuleDefinition m = document.createModuleDefinition(URI.create(id), roles);
-
+		m.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
+		m.setDisplayId(id);
 		m.setName(id);
 		m.setDescription(id);
 
@@ -281,77 +260,6 @@ public class SBOLTestUtils {
 	//		return coll1;
 	//	}
 
-	public static void setCommonTopLevelData (TopLevel t, URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion)
-	{
-		setCommonDocumentedData(t, identity, persistentIdentity, displayId, name, description,
-				majorVersion,  minorVersion);
-	}
-
-	public static void setCommonDocumentedData (Documented d, URI identity, URI persistentIdentity,
-			String displayId, String name, String description,
-			Integer majorVersion, Integer minorVersion)
-	{
-		if(displayId != null)
-			d.setDisplayId(displayId);
-		if(name != null)
-			d.setName(name);
-		if(description != null)
-			d.setDescription(description);
-
-		setCommonIdentifiedData(d, identity, persistentIdentity, majorVersion, minorVersion);
-	}
-
-	public static void setCommonIdentifiedData (Identified i, URI identity, URI persistentIdentity,
-			Integer majorVersion, Integer minorVersion)
-	{
-		if(identity != null)
-			i.setIdentity(identity);
-		if(persistentIdentity != null)
-			i.setPersistentIdentity(persistentIdentity);
-		//		if(majorVersion != null)
-		//			i.setMajorVersion(majorVersion);
-		//		if(minorVersion != null)
-		//			i.setMinorVersion(minorVersion);
-		// TODO: Insert version here.
-		//		i.setTimeStamp(timeStamp); //TODO: is timeStamp provided by user?
-	}
-
-	public static SBOLDocument createDocument(TopLevel... contents) {
-		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		for(TopLevel topLevel: contents)
-		{
-			if(topLevel instanceof Collection)
-			{
-				document.addCollection((Collection)topLevel);
-			}
-			else if(topLevel instanceof ModuleDefinition)
-			{
-				document.addModuleDefinition((ModuleDefinition)topLevel);
-			}
-			else if(topLevel instanceof Model)
-			{
-				document.addModel((Model)topLevel);
-			}
-			else if(topLevel instanceof ComponentDefinition)
-			{
-				document.addComponentDefinition((ComponentDefinition)topLevel);
-			}
-			else if(topLevel instanceof Sequence)
-			{
-				document.addSequence((Sequence)topLevel);
-			}
-			else if(topLevel instanceof GenericTopLevel)
-			{
-				document.addGenericTopLevel((GenericTopLevel)topLevel);
-				//TODO: this might cause issue due to duplicate namespace?
-				document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-			}
-		}
-		return document;
-	}
 
 	public static SBOLDocument writeAndRead(SBOLDocument doc)
 			throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
