@@ -141,10 +141,10 @@ public class SBOLTestUtils {
 
 	public static ModuleDefinition createModuleDefinition(SBOLDocument document, String id,
 			Set<URI> roles,
-			List<FunctionalComponent> functionalComponent_data,
-			List<Interaction> interactionData,
-			List<Module> submodule_data,
-			Set<URI> model_data,
+			List<FunctionalComponent> functionalComponents,
+			List<Interaction> interactions,
+			List<Module> submodules,
+			Set<URI> models,
 			List<Annotation> annotations)
 	{
 		ModuleDefinition m = document.createModuleDefinition(URI.create(id), roles);
@@ -155,14 +155,14 @@ public class SBOLTestUtils {
 
 		if(annotations != null)
 			m.setAnnotations(annotations);
-		if(functionalComponent_data != null)
-			m.setComponents(functionalComponent_data);
-		if(interactionData != null)
-			m.setInteractions(interactionData);
-		if(submodule_data != null)
-			m.setSubModules(submodule_data);
-		if(model_data != null)
-			m.setModels(model_data);
+		if(functionalComponents != null)
+			m.setComponents(functionalComponents);
+		if(interactions != null)
+			m.setInteractions(interactions);
+		if(submodules != null)
+			m.setSubModules(submodules);
+		if(models != null)
+			m.setModels(models);
 
 		return m;
 	}
@@ -190,36 +190,27 @@ public class SBOLTestUtils {
 		return new Participation(URI.create(id), roles, fi);
 	}
 
-	//TODO: decide if SequenceAnnotation is always a Range for location
-	public static SequenceAnnotation createSequenceAnnotation(
-			String id,
-			Component ref_component,
-			Location location)
-	{
-		Location loc = location;
 
-		return new SequenceAnnotation(URI.create(id), loc);
+	public static SequenceAnnotation createSequenceAnnotation(String id, Location location)
+	{
+		return new SequenceAnnotation(URI.create(id), location);
+	}
+
+	public static Interaction createInteraction(String id, Set<URI> type,
+			List<Participation> participations)
+	{
+		return new Interaction(URI.create(id), type, participations);
 	}
 
 	public static SequenceConstraint createSequenceConstraint(String id,
-			String subject, String object, String restriction)
+			URI subject, URI object, RestrictionType restrictionType)
 	{
-		RestrictionType restrictionType = null;
-		if(restriction.equals("precedes"))
-			restrictionType = restrictionType.PRECEDES;
-
-		return new SequenceConstraint(URI.create(id), restrictionType, URI.create(subject), URI.create(object));
+		return new SequenceConstraint(URI.create(id), restrictionType, subject, object);
 	}
 
-	public static Component createComponent(String id, String access, String instantiatedComponent)
+	public static Component createComponent(String id, AccessType accessType, URI instantiatedComponent)
 	{
-		AccessType accessType = null;
-		if(access.equals("public"))
-			accessType = AccessType.PUBLIC;
-		else if(access.equals("private"))
-			accessType = AccessType.PRIVATE;
-
-		return new Component(URI.create(id), accessType, URI.create(instantiatedComponent));
+		return new Component(URI.create(id), accessType, instantiatedComponent);
 	}
 
 	//TODO: See if this is ever called.

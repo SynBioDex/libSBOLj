@@ -194,9 +194,9 @@ public class writeTester {
 				getData("myParts/1/0","myParts","1.0","myParts","myParts", "myParts"),
 				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
 
-		//		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
-		//		myParts.addMember(get_tetRSeq(SBOL2Doc_test).getIdentity());
-		//		myParts.addMember(get_pLactetRSeq(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_tetRSeq(SBOL2Doc_test).getIdentity());
+		myParts.addMember(get_pLactetRSeq(SBOL2Doc_test).getIdentity());
 		//		myParts.addMember(get_pLac(SBOL2Doc_test).getIdentity());
 		//		myParts.addMember(get_tetR(SBOL2Doc_test).getIdentity());
 		//		myParts.addMember(get_pLactetR(SBOL2Doc_test).getIdentity());

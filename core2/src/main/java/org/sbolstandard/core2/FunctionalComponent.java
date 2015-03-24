@@ -2,9 +2,7 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance;
-import org.sbolstandard.core2.abstract_classes.Documented;
 
 public class FunctionalComponent extends ComponentInstance {
 
@@ -20,7 +18,7 @@ public class FunctionalComponent extends ComponentInstance {
 
 		/**
 		 * Returns the direction type.
-		 * 
+		 *
 		 * @return direction type.
 		 */
 		public String getDirectionType() {
@@ -54,7 +52,7 @@ public class FunctionalComponent extends ComponentInstance {
 				return null;
 			}
 		}
-		
+
 		/**
 		 * Returns the direction type in URI.
 		 * @return direction type in URI
@@ -82,24 +80,24 @@ public class FunctionalComponent extends ComponentInstance {
 			}
 		}
 	}
-	
+
 
 	public FunctionalComponent(URI identity, AccessType access, URI instantiatedComponent,
 			DirectionType direction) {
 		super(identity, access, instantiatedComponent);
 		setDirection(direction);
 	}
-	
+
 	private FunctionalComponent(FunctionalComponent functionalComponent) {
 		super(functionalComponent);
 		this.setDirection(functionalComponent.getDirection());
 	}
-	
-	
+
+
 
 	/**
 	 * Returns field variable <code>direction</code> to the specified element.
-	 * 
+	 *
 	 * @return field variable <code>direction</code> to the specified element
 	 */
 	public DirectionType getDirection() {
@@ -108,7 +106,7 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Returns the direction type in URI.
-	 * 
+	 *
 	 * @return direction type in URI
 	 */
 	public URI getDirectionURI() {
@@ -119,8 +117,8 @@ public class FunctionalComponent extends ComponentInstance {
 				return Direction.input;
 			} else if (direction.equals(DirectionType.OUTPUT)) {
 				return Direction.output;
-			} else if (direction.equals(DirectionType.INOUT)) {
-				return Direction.inout;
+			} else if (direction.equals(DirectionType.NONE)) {
+				return Direction.none;
 			} else {
 				return null;
 			}
@@ -131,7 +129,7 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Sets field variable <code>direction</code> to the specified element.
-	 * 
+	 *
 	 * @param direction
 	 */
 	public void setDirection(DirectionType direction) {
@@ -141,7 +139,7 @@ public class FunctionalComponent extends ComponentInstance {
 	/**
 	 * Sets field variable <code>direction</code> to the element corresponding
 	 * to the specified URI.
-	 * 
+	 *
 	 * @param direction
 	 */
 	public void setDirection(URI direction) {

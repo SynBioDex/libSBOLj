@@ -254,7 +254,7 @@ public class SBOLReader
 				parseCollectionV1(SBOLDoc, topLevel);
 			else
 			{
-				//TODO: can't create annotation here...
+				parseGenericTopLevel(SBOLDoc, topLevel);
 			}
 		}
 	}
