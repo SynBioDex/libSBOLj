@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:annot="http://myannotation.org" xmlns:grn="urn:bbn.com:tasbe:grn" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sbol="http://sbols.org/v2#">
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/LacIIn/1/0">
+    <dcterms:title>LacIIn</dcterms:title>
+    <dcterms:description>LacIIn</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/Protein"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Transcriptionfactor"/>
+  </sbol:ComponentDefinition>
+</rdf:RDF>

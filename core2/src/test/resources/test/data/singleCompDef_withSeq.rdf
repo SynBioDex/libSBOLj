@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:annot="http://myannotation.org" xmlns:grn="urn:bbn.com:tasbe:grn" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sbol="http://sbols.org/v2#">
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/pLac/1/0">
+    <dcterms:title>pLac</dcterms:title>
+    <dcterms:description>pLac</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Promoter"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/pLacSeq/1/0"/>
+  </sbol:ComponentDefinition>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLacSeq/1/0">
+    <dcterms:title>pLacSeq</dcterms:title>
+    <dcterms:description>pLacSeq</dcterms:description>
+    <sbol:elements>pLacSeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://encodings.org/encoding"/>
+  </sbol:Sequence>
+</rdf:RDF>

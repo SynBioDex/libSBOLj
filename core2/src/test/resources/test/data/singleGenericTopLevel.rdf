@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:annot="http://myannotation.org" xmlns:grn="urn:bbn.com:tasbe:grn" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sbol="http://sbols.org/v2#">
+  <grn:RegulatoryReaction rdf:about="http://www.async.ece.utah.edu/GenericTopLevel/1/0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/GenericTopLevel"/>
+    <sbol:displayId>GenericTopLevel</sbol:displayId>
+    <dcterms:title>GenericTopLevel</dcterms:title>
+    <dcterms:description>GenericTopLevel</dcterms:description>
+  </grn:RegulatoryReaction>
+</rdf:RDF>

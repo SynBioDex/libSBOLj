@@ -1,0 +1,419 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:so="http://purl.obolibrary.org/obo/"
+  xmlns:s="http://sbols.org/v1#"
+  xmlns:grn="urn:bbn.com:tasbe:grn">
+<s:Collection rdf:about="SHORT/col/GeneticRegulatoryNetwork">
+  <!-- Genetic regulatory network for Proto: (green (and (IPTG) (aTc))) -->
+  <!-- Produced by BioCompiler version 32:33M -->
+  <s:displayId>GeneticRegulatoryNetwork</s:displayId>
+  
+  <!-- Transcriptional Units -->
+  <s:component>
+    <s:DnaComponent rdf:about="SHORT/part/FunctionalUnit_1">
+      <s:displayId>FunctionalUnit_1</s:displayId>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_2">
+          <s:precedes rdf:resource="SHORT/anot/an_4"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_1">
+              <s:displayId>part_1</s:displayId>
+              <s:name>Promoter 1</s:name>
+              <grn:design>
+                <grn:DataType grn:logicalType="boolean" grn:logicalValue="true"/>
+              </grn:design>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_4">
+          <s:precedes rdf:resource="SHORT/anot/an_6"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_3">
+              <s:displayId>part_3</s:displayId>
+              <s:name>GFP CDS</s:name>
+              <grn:regulation>
+                <grn:product>
+                  <grn:ChemicalSpecies grn:uid="GFP">
+                    <grn:design>
+                      <grn:DataType grn:logicalType="boolean"/>
+                    </grn:design>
+                    <grn:property>
+                      <grn:Family grn:name="GFP"/>
+                    </grn:property>
+                  </grn:ChemicalSpecies>
+                </grn:product>
+              </grn:regulation>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+              <grn:regulation>
+                <grn:regulatedBy grn:repression="true">
+                  <grn:ChemicalSpecies grn:uid="Echo">
+                    <grn:design>
+                      <grn:DataType grn:logicalType="boolean"/>
+                    </grn:design>
+                  </grn:ChemicalSpecies>
+                </grn:regulatedBy>
+              </grn:regulation>
+              <grn:regulation>
+                <grn:regulatedBy grn:repression="true">
+                  <grn:ChemicalSpecies grn:uid="Foxtrot">
+                    <grn:design>
+                      <grn:DataType grn:logicalType="boolean"/>
+                    </grn:design>
+                  </grn:ChemicalSpecies>
+                </grn:regulatedBy>
+              </grn:regulation>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_6">
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_5">
+              <s:displayId>part_5</s:displayId>
+              <s:name>Terminator 5</s:name>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000141"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+    </s:DnaComponent>
+  </s:component>
+  
+  <s:component>
+    <s:DnaComponent rdf:about="SHORT/part/FunctionalUnit_2">
+      <s:displayId>FunctionalUnit_2</s:displayId>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_8">
+          <s:precedes rdf:resource="SHORT/anot/an_10"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_7">
+              <s:displayId>part_7</s:displayId>
+              <s:name>Promoter 7</s:name>
+              <grn:design>
+                <grn:DataType grn:logicalType="boolean" grn:logicalValue="true"/>
+              </grn:design>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_10">
+          <s:precedes rdf:resource="SHORT/anot/an_12"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_9">
+              <s:displayId>part_9</s:displayId>
+              <s:name>Echo CDS</s:name>
+              <grn:regulation>
+                <grn:product>
+                  <grn:ChemicalSpecies grn:uid="Echo"/>
+                </grn:product>
+              </grn:regulation>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+              <grn:regulation>
+                <grn:regulatedBy grn:repression="true">
+                  <grn:ChemicalSpecies grn:uid="Bravo">
+                    <grn:design>
+                      <grn:DataType grn:logicalType="boolean"/>
+                    </grn:design>
+                  </grn:ChemicalSpecies>
+                </grn:regulatedBy>
+              </grn:regulation>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_12">
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_11">
+              <s:displayId>part_11</s:displayId>
+              <s:name>Terminator 11</s:name>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000141"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+    </s:DnaComponent>
+  </s:component>
+  
+  <s:component>
+    <s:DnaComponent rdf:about="SHORT/part/FunctionalUnit_3">
+      <s:displayId>FunctionalUnit_3</s:displayId>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_14">
+          <s:precedes rdf:resource="SHORT/anot/an_16"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_13">
+              <s:displayId>part_13</s:displayId>
+              <s:name>Promoter 13</s:name>
+              <grn:design>
+                <grn:DataType grn:logicalType="boolean" grn:logicalValue="true"/>
+              </grn:design>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_16">
+          <s:precedes rdf:resource="SHORT/anot/an_18"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_15">
+              <s:displayId>part_15</s:displayId>
+              <s:name>Foxtrot CDS</s:name>
+              <grn:regulation>
+                <grn:product>
+                  <grn:ChemicalSpecies grn:uid="Foxtrot"/>
+                </grn:product>
+              </grn:regulation>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+              <grn:regulation>
+                <grn:regulatedBy grn:repression="true">
+                  <grn:ChemicalSpecies grn:uid="Charlie">
+                    <grn:design>
+                      <grn:DataType grn:logicalType="boolean"/>
+                    </grn:design>
+                  </grn:ChemicalSpecies>
+                </grn:regulatedBy>
+              </grn:regulation>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_18">
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_17">
+              <s:displayId>part_17</s:displayId>
+              <s:name>Terminator 17</s:name>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000141"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+    </s:DnaComponent>
+  </s:component>
+  
+  <s:component>
+    <s:DnaComponent rdf:about="SHORT/part/FunctionalUnit_4">
+      <s:displayId>FunctionalUnit_4</s:displayId>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_20">
+          <s:precedes rdf:resource="SHORT/anot/an_22"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_19">
+              <s:displayId>part_19</s:displayId>
+              <s:name>Promoter 19</s:name>
+              <grn:design>
+                <grn:DataType grn:logicalType="boolean" grn:logicalValue="true"/>
+              </grn:design>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_22">
+          <s:precedes rdf:resource="SHORT/anot/an_24"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_21">
+              <s:displayId>part_21</s:displayId>
+              <s:name>LacI CDS</s:name>
+              <grn:regulation>
+                <grn:product>
+                  <grn:ChemicalSpecies grn:uid="LacI">
+                    <grn:design>
+                      <grn:DataType grn:logicalType="boolean"/>
+                    </grn:design>
+                    <grn:property>
+                      <grn:Family grn:name="LacI"/>
+                    </grn:property>
+                  </grn:ChemicalSpecies>
+                </grn:product>
+              </grn:regulation>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_24">
+          <s:precedes rdf:resource="SHORT/anot/an_26"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_23">
+              <s:displayId>part_23</s:displayId>
+              <s:name>TetR CDS</s:name>
+              <grn:regulation>
+                <grn:product>
+                  <grn:ChemicalSpecies grn:uid="TetR">
+                    <grn:design>
+                      <grn:DataType grn:logicalType="boolean"/>
+                    </grn:design>
+                    <grn:property>
+                      <grn:Family grn:name="TetR"/>
+                    </grn:property>
+                  </grn:ChemicalSpecies>
+                </grn:product>
+              </grn:regulation>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_26">
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_25">
+              <s:displayId>part_25</s:displayId>
+              <s:name>Terminator 25</s:name>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000141"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+    </s:DnaComponent>
+  </s:component>
+  
+  <s:component>
+    <s:DnaComponent rdf:about="SHORT/part/FunctionalUnit_5">
+      <s:displayId>FunctionalUnit_5</s:displayId>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_28">
+          <s:precedes rdf:resource="SHORT/anot/an_30"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_27">
+              <s:displayId>part_27</s:displayId>
+              <s:name>Promoter 27</s:name>
+              <grn:design>
+                <grn:DataType grn:logicalType="boolean" grn:logicalValue="true"/>
+              </grn:design>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+              <grn:regulation>
+                <grn:regulatedBy grn:repression="true">
+                  <grn:ChemicalSpecies grn:uid="LacI"/>
+                </grn:regulatedBy>
+              </grn:regulation>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_30">
+          <s:precedes rdf:resource="SHORT/anot/an_32"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_29">
+              <s:displayId>part_29</s:displayId>
+              <s:name>Bravo CDS</s:name>
+              <grn:regulation>
+                <grn:product>
+                  <grn:ChemicalSpecies grn:uid="Bravo"/>
+                </grn:product>
+              </grn:regulation>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_32">
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_31">
+              <s:displayId>part_31</s:displayId>
+              <s:name>Terminator 31</s:name>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000141"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+    </s:DnaComponent>
+  </s:component>
+  
+  <s:component>
+    <s:DnaComponent rdf:about="SHORT/part/FunctionalUnit_6">
+      <s:displayId>FunctionalUnit_6</s:displayId>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_34">
+          <s:precedes rdf:resource="SHORT/anot/an_36"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_33">
+              <s:displayId>part_33</s:displayId>
+              <s:name>Promoter 33</s:name>
+              <grn:design>
+                <grn:DataType grn:logicalType="boolean" grn:logicalValue="true"/>
+              </grn:design>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+              <grn:regulation>
+                <grn:regulatedBy grn:repression="true">
+                  <grn:ChemicalSpecies grn:uid="TetR"/>
+                </grn:regulatedBy>
+              </grn:regulation>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_36">
+          <s:precedes rdf:resource="SHORT/anot/an_38"/>
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_35">
+              <s:displayId>part_35</s:displayId>
+              <s:name>Charlie CDS</s:name>
+              <grn:regulation>
+                <grn:product>
+                  <grn:ChemicalSpecies grn:uid="Charlie"/>
+                </grn:product>
+              </grn:regulation>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+      <s:annotation>
+        <s:SequenceAnnotation rdf:about="SHORT/anot/an_38">
+          <s:subComponent>
+            <s:DnaComponent rdf:about="part_37">
+              <s:displayId>part_37</s:displayId>
+              <s:name>Terminator 37</s:name>
+              <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000141"/>
+            </s:DnaComponent>
+          </s:subComponent>
+        </s:SequenceAnnotation>
+      </s:annotation>
+    </s:DnaComponent>
+  </s:component>
+  
+  <!-- Regulatory Reactions -->
+  <grn:regulation>
+    <grn:RegulatoryReaction>
+      <grn:substrate>
+        <grn:ChemicalSpecies grn:uid="LacI"/>
+      </grn:substrate>
+      <grn:regulatedBy grn:repression="true">
+        <grn:ChemicalSpecies grn:uid="IPTG">
+          <grn:design>
+            <grn:DataType grn:logicalType="boolean"/>
+          </grn:design>
+        </grn:ChemicalSpecies>
+      </grn:regulatedBy>
+    </grn:RegulatoryReaction>
+    <grn:RegulatoryReaction>
+      <grn:substrate>
+        <grn:ChemicalSpecies grn:uid="TetR"/>
+      </grn:substrate>
+      <grn:regulatedBy grn:repression="true">
+        <grn:ChemicalSpecies grn:uid="aTc">
+          <grn:design>
+            <grn:DataType grn:logicalType="boolean"/>
+          </grn:design>
+        </grn:ChemicalSpecies>
+      </grn:regulatedBy>
+    </grn:RegulatoryReaction>
+  </grn:regulation>
+</s:Collection>
+</rdf:RDF>
