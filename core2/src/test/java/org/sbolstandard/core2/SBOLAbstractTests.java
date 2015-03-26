@@ -9,11 +9,12 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
+import org.sbolstandard.core2.MapsTo.RefinementType;
+import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 
 /**
- * Test the validity of the code serialization and not the conceptual bio models.
  * @author Tramy Nguyen
  *
  */
@@ -34,7 +35,118 @@ public abstract class SBOLAbstractTests {
 		SBOLWriter.writeRdf(document,(System.out));
 	}
 
-	//	TODO: singleCollection_Members
+	@Test
+	public void test_Annotations() throws Exception
+	{
+		SBOLDocument document = new SBOLDocument();
+
+		List<Annotation> collection_annotations = new ArrayList<Annotation>();
+		collection_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "coll_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createCollection(document, "myParts", collection_annotations);
+
+		List<Annotation> model_annotations = new ArrayList<Annotation>();
+		model_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "model_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createModel(document, "someModel", model_annotations);
+
+		List<Annotation> moduleDefinition_annotations = new ArrayList<Annotation>();
+		moduleDefinition_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "modDef_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createModuleDefinition(document, "someModDef", null, null, null, null, null, moduleDefinition_annotations);
+
+		List<Annotation> sequence_annotations = new ArrayList<Annotation>();
+		sequence_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "seq_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createSequence(document, "someSeq", sequence_annotations);
+
+		List<Annotation> componentDefinition_annotations = new ArrayList<Annotation>();
+		componentDefinition_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "compDef_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createComponentDefinition(document, "someCompDef", null, null, null, null, null, null, componentDefinition_annotations);
+
+		List<Annotation> genericTopLevel_annotations = new ArrayList<Annotation>();
+		genericTopLevel_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "genericTopLev_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createGenericTopLevel(document, "someGenericTopLevel", genericTopLevel_annotations);
+
+		List<Annotation> component_annotations = new ArrayList<Annotation>();
+		component_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "component_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createComponent("someComponent", AccessType.PUBLIC, null, component_annotations);
+
+		List<Annotation> sequenceAnnotation_annotations = new ArrayList<Annotation>();
+		sequenceAnnotation_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "seqAnnot_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createSequenceAnnotation("someSequence", null, sequenceAnnotation_annotations);
+
+		List<Annotation> sequenceConstraint_annotations = new ArrayList<Annotation>();
+		sequenceConstraint_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "seqCon_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createSequenceConstraint("someSequenceConstraint", null, null, RestrictionType.PRECEDES, sequenceConstraint_annotations);
+
+		//TODO: unable to create a componentInstance for testing.
+		//		List<Annotation> componentInstance_annotations = new ArrayList<Annotation>();
+		//		componentInstance_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "compInstance_annot1"),
+		//				new Turtle("turtleString")));
+
+
+		List<Annotation> mapsTo_annotations = new ArrayList<Annotation>();
+		mapsTo_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "mapsTo_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createMapTo("someMapsTo", RefinementType.USELOCAL, null, null, mapsTo_annotations);
+
+		List<Annotation> location_annotations = new ArrayList<Annotation>();
+		location_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "location_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createLocation("someLocation", new Range(URI.create("someRange1"), 0, 10), location_annotations);
+
+		List<Annotation> multiRange_annotations = new ArrayList<Annotation>();
+		multiRange_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "multiRange_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createLocation("someMultiRange1", new MultiRange(URI.create("someMultiRange")), multiRange_annotations);
+
+		List<Annotation> range_annotations = new ArrayList<Annotation>();
+		range_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "range_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createLocation("someRange2", new Range(URI.create("someRange"), 0, 10), range_annotations);
+
+		List<Annotation> cut_annotations = new ArrayList<Annotation>();
+		cut_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "cut_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createLocation("someCut", new Cut(URI.create("someCut"), 10), cut_annotations);
+
+		List<Annotation> genericLocation_annotations = new ArrayList<Annotation>();
+		genericLocation_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "genericLoc_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createGenericTopLevel(document, "someGenericTopLevel", genericLocation_annotations);
+
+		List<Annotation> module_annotations = new ArrayList<Annotation>();
+		module_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "module_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createModule("someModule", null, module_annotations);
+
+		List<Annotation> interaction_annotations = new ArrayList<Annotation>();
+		interaction_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "interaction_annot1"),
+				new Turtle("turtleString")));
+		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
+		List<Participation> interact_part = new ArrayList<Participation>();
+		Participation p1a = SBOLTestUtils.createParticipation("p1a", null, null);
+		interact_part.add(p1a);
+		SBOLTestUtils.createInteraction("someInteraction", type, interact_part, interaction_annotations);
+
+		List<Annotation> functionalComponent_annotations = new ArrayList<Annotation>();
+		functionalComponent_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "funcComp_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createFunctionalComponent("someFunctionalComp", AccessType.PUBLIC, DirectionType.INOUT, null, functionalComponent_annotations);
+
+		List<Annotation> participation_annotations = new ArrayList<Annotation>();
+		participation_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "participation_annot1"),
+				new Turtle("turtleString")));
+		SBOLTestUtils.createParticipation("someParticipation", null, participation_annotations);
+
+	}
+
 	@Test
 	public void test_singleCollection_no_Members() throws Exception
 	{
@@ -72,7 +184,7 @@ public abstract class SBOLAbstractTests {
 		SBOLDocument document = new SBOLDocument();
 		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
 		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel");
+		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel", null);
 		runTest("test/data/singleGenericTopLevel.rdf", document);
 	}
 
@@ -82,9 +194,9 @@ public abstract class SBOLAbstractTests {
 		SBOLDocument document = new SBOLDocument();
 		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
 		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel1");
-		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel2");
-		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel3");
+		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel1", null);
+		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel2", null);
+		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel3", null);
 		runTest("test/data/multipleGenericTopLevel.rdf", document);
 	}
 
@@ -94,7 +206,7 @@ public abstract class SBOLAbstractTests {
 		SBOLDocument document = new SBOLDocument();
 		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
 		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createModel(document, "ToggleModel");
+		SBOLTestUtils.createModel(document, "ToggleModel", null);
 		runTest("test/data/singleModel.rdf", document);
 	}
 
@@ -105,7 +217,7 @@ public abstract class SBOLAbstractTests {
 		SBOLDocument document = new SBOLDocument();
 		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
 		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createSequence(document,"pLacSeq");
+		SBOLTestUtils.createSequence(document,"pLacSeq", null);
 
 		runTest("test/data/singleSequence.rdf", document);
 	}
@@ -116,9 +228,9 @@ public abstract class SBOLAbstractTests {
 		SBOLDocument document = new SBOLDocument();
 		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
 		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createSequence(document,"pLacSeq");
-		SBOLTestUtils.createSequence(document,"tetRSeq");
-		SBOLTestUtils.createSequence(document,"pLactetRSeq");
+		SBOLTestUtils.createSequence(document,"pLacSeq", null);
+		SBOLTestUtils.createSequence(document,"tetRSeq", null);
+		SBOLTestUtils.createSequence(document,"pLactetRSeq", null);
 		runTest("test/data/multipleSequences.rdf", document);
 	}
 
@@ -151,7 +263,7 @@ public abstract class SBOLAbstractTests {
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Promoter");
 		SBOLTestUtils.createComponentDefinition(document, "pLac", type, role,
-				null, null, null, null);
+				null, null, null, null, null);
 
 		runTest("test/data/singleComponentDefinition.rdf", document);
 	}
@@ -163,11 +275,11 @@ public abstract class SBOLAbstractTests {
 		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
 		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
-		URI s = SBOLTestUtils.createSequence(document, "pLacSeq").getIdentity();
+		URI s = SBOLTestUtils.createSequence(document, "pLacSeq", null).getIdentity();
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Promoter");
 		SBOLTestUtils.createComponentDefinition(document, "pLac", type, role,
-				s, null, null, null);
+				s, null, null, null, null);
 
 		runTest("test/data/singleCompDef_withSeq.rdf", document);
 	}
@@ -182,11 +294,11 @@ public abstract class SBOLAbstractTests {
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("Protein");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Transcriptionfactor");
 		URI compdef = SBOLTestUtils.createComponentDefinition(document, "LacIIn", type, role,
-				null, null, null, null).getIdentity();
+				null, null, null, null, null).getIdentity();
 
 		AccessType accessType 		= AccessType.PUBLIC;
 		DirectionType directionType = DirectionType.INPUT;
-		SBOLTestUtils.createFunctionalComponent("LacIIn", accessType, directionType, compdef);
+		SBOLTestUtils.createFunctionalComponent("LacIIn", accessType, directionType, compdef, null);
 
 		runTest("test/data/singleFunctionalComponent.rdf", document);
 	}
@@ -269,7 +381,7 @@ public abstract class SBOLAbstractTests {
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Promoter");
 		return SBOLTestUtils.createComponentDefinition(document, "pLac", type, role,
-				pLacSeq_id, null, null, null);
+				pLacSeq_id, null, null, null, null);
 	}
 
 	public ComponentDefinition get_tetR(SBOLDocument document, URI tetRSeq_id)
@@ -277,7 +389,7 @@ public abstract class SBOLAbstractTests {
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("CDS");
 		return SBOLTestUtils.createComponentDefinition(document, "tetR", type, role,
-				tetRSeq_id, null, null, null);
+				tetRSeq_id, null, null, null, null);
 	}
 
 	public ComponentDefinition get_pLactetR(SBOLDocument document, URI pLac_id, URI tetR_id, URI pLactetRSeq_id)
@@ -287,8 +399,8 @@ public abstract class SBOLAbstractTests {
 
 		List<Component> subComponents = new ArrayList<Component>();
 		//get_P & get_C 319
-		Component P = SBOLTestUtils.createComponent("P", AccessType.PUBLIC, pLac_id);
-		Component C = SBOLTestUtils.createComponent("C", AccessType.PUBLIC, tetR_id);
+		Component P = SBOLTestUtils.createComponent("P", AccessType.PUBLIC, pLac_id, null);
+		Component C = SBOLTestUtils.createComponent("C", AccessType.PUBLIC, tetR_id, null);
 		subComponents.add(P);
 		subComponents.add(C);
 
@@ -296,11 +408,11 @@ public abstract class SBOLAbstractTests {
 		//get_struct_constraint 321
 		SequenceConstraint struct_constraint =
 				SBOLTestUtils.createSequenceConstraint("struct_constraint",
-						P.getIdentity(), C.getIdentity(), SequenceConstraint.RestrictionType.PRECEDES);
+						P.getIdentity(), C.getIdentity(), SequenceConstraint.RestrictionType.PRECEDES, null);
 		sequenceConstraints.add(struct_constraint);
 
 		return SBOLTestUtils.createComponentDefinition(document, "pLactetR", type, role,
-				pLactetRSeq_id, null, sequenceConstraints, subComponents);
+				pLactetRSeq_id, null, sequenceConstraints, subComponents, null);
 	}
 	//
 	//	public ComponentDefinition get_LacI(SBOLDocument document)

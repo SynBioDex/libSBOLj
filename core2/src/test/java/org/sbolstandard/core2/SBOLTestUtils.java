@@ -4,8 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,21 +30,26 @@ public class SBOLTestUtils {
 	private SBOLTestUtils() {
 	}
 
-	public static Sequence createSequence(SBOLDocument document,String id)
+
+	public static Sequence createSequence(SBOLDocument document,String id, List<Annotation> annotations)
 	{
 		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu",
 				id, "1/0", id + "_element", URI.create("http://encodings.org/encoding"));
 
 		sequence.setName(id);
 		sequence.setDescription(id);
+
+		if(annotations != null)
+			sequence.setAnnotations(annotations);
 		return sequence;
 	}
+
 
 	public static ComponentDefinition createComponentDefinition(SBOLDocument document, String id,
 			Set<URI> type, Set<URI> role, URI sequenceId,
 			List<SequenceAnnotation> sequenceAnnotations,
 			List<SequenceConstraint> sequenceConstraints,
-			List<Component> subComponents)
+			List<Component> subComponents, List<Annotation> annotations)
 	{
 		ComponentDefinition componentDefinition = document.createComponentDefinition(
 				"http://www.async.ece.utah.edu", id,
@@ -55,19 +58,22 @@ public class SBOLTestUtils {
 		componentDefinition.setName(id);
 		componentDefinition.setDescription(id);
 
-		if (sequenceId!=null)
+		if (sequenceId!= null)
 			componentDefinition.setSequence(sequenceId);
-		if (sequenceAnnotations!=null)
+		if (sequenceAnnotations!= null)
 			componentDefinition.setSequenceAnnotations(sequenceAnnotations);
-		if (sequenceConstraints!=null)
+		if (sequenceConstraints!= null)
 			componentDefinition.setSequenceConstraints(sequenceConstraints);
-		if (subComponents!=null)
+		if (subComponents!= null)
 			componentDefinition.setSubComponents(subComponents);
-
+		if (annotations != null)
+			componentDefinition.setAnnotations(annotations);
 		return componentDefinition;
 	}
 
-	public static GenericTopLevel createGenericTopLevel(SBOLDocument document, String id)
+
+	public static GenericTopLevel createGenericTopLevel(SBOLDocument document, String id,
+			List<Annotation> annotations)
 	{
 		GenericTopLevel genericToplevel =  document.createGenericTopLevel(
 				URI.create("http://www.async.ece.utah.edu/"+id+"/1/0"),
@@ -76,8 +82,11 @@ public class SBOLTestUtils {
 		genericToplevel.setDisplayId(id);
 		genericToplevel.setName(id);
 		genericToplevel.setDescription(id);
+		if(annotations != null)
+			genericToplevel.setAnnotations(annotations);
 		return genericToplevel;
 	}
+
 
 	public static Collection createCollection(SBOLDocument document, String id,
 			List<Annotation> annotations)
@@ -94,7 +103,8 @@ public class SBOLTestUtils {
 		return collection;
 	}
 
-	public static void createModel(SBOLDocument document, String id)
+
+	public static void createModel(SBOLDocument document, String id, List<Annotation> annotations)
 	{
 		Model model = document.createModel(URI.create(id),
 				URI.create(id + "_source"),
@@ -106,38 +116,51 @@ public class SBOLTestUtils {
 		model.setDisplayId(id);
 		model.setName(id);
 		model.setDescription(id);
+		if(annotations != null)
+			model.setAnnotations(annotations);
 	}
 
-	//TODO: consider removing
-	//	public static Annotation createAnnotation(QName relation, Turtle literal)
-	//	{
-	//		if(relation == null || literal == null)
-	//			return null;
-	//		return new Annotation(relation, literal);
-	//	}
+
+	public static Module createModule(String id, URI instantiatedModule,
+			List<Annotation> annotations)
+	{
+		Module m = new Module(URI.create(id), instantiatedModule);
+		if(annotations != null)
+			m.setAnnotations(annotations);
+		return m;
+	}
+
+
+	public static Participation createParticipation(String id, URI instantiatedModule,
+			List<Annotation> annotations)
+	{
+		Participation m = new Participation(URI.create(id), null, null);
+		if(annotations != null)
+			m.setAnnotations(annotations);
+		return m;
+	}
+
 
 	public static FunctionalComponent createFunctionalComponent(String id,
-			AccessType accessType, DirectionType directionType, URI instantiatedComponent)
+			AccessType accessType, DirectionType directionType, URI instantiatedComponent,
+			List<Annotation> annotations)
 	{
-		return new FunctionalComponent(URI.create(id), accessType, instantiatedComponent, directionType);
+		FunctionalComponent f = new FunctionalComponent(URI.create(id), accessType, instantiatedComponent, directionType);
+		if (annotations != null)
+			f.setAnnotations(annotations);
+		return f;
 	}
 
 
-	public static MapsTo createMapTo (String id, String refinement,
-			URI pre_fi, URI post_fi)
+	public static MapsTo createMapTo (String id, RefinementType refinementType,
+			URI pre_fi, URI post_fi, List<Annotation> annotations)
 	{
-		RefinementType refinementType = null;
-		if(refinement.equals("verifyIdentical"))
-			refinementType =  RefinementType.VERIFYIDENTICAL;
-		else if(refinement.equals("useLocal"))
-			refinementType =  RefinementType.USELOCAL;
-		else if(refinement.equals("useRemote"))
-			refinementType =  RefinementType.USEREMOTE;
-		else if(refinement.equals("merge"))
-			refinementType =  RefinementType.MERGE;
-
-		return new MapsTo(URI.create(id), refinementType, pre_fi, post_fi);
+		MapsTo m = new MapsTo(URI.create(id), refinementType, pre_fi, post_fi);
+		if (annotations != null)
+			m.setAnnotations(annotations);
+		return m;
 	}
+
 
 	public static ModuleDefinition createModuleDefinition(SBOLDocument document, String id,
 			Set<URI> roles,
@@ -167,89 +190,63 @@ public class SBOLTestUtils {
 		return m;
 	}
 
-	//TODO: check
-	public static Module createModuleData(SBOLDocument document, String id,
-			String instantiatedModule,
-			List<MapsTo> maps)
+	public static SequenceAnnotation createSequenceAnnotation(String id, Location location,
+			List<Annotation> annotations)
 	{
-		Module modInstantiation = new Module(URI.create(id), URI.create(instantiatedModule));
-
-		modInstantiation.setName(id);
-		modInstantiation.setDescription(id);
-
-		for(MapsTo map : maps)
-			modInstantiation.addMapping(map);
-
-		return modInstantiation;
+		SequenceAnnotation sa = new SequenceAnnotation(URI.create(id), location);
+		if(annotations != null)
+			sa.setAnnotations(annotations);
+		return sa;
 	}
 
-	//TODO: consider adding particpation
-	public static Participation createParticipation(
-			String id, Set<URI> roles, URI fi)
-	{
-		return new Participation(URI.create(id), roles, fi);
-	}
-
-
-	public static SequenceAnnotation createSequenceAnnotation(String id, Location location)
-	{
-		return new SequenceAnnotation(URI.create(id), location);
-	}
 
 	public static Interaction createInteraction(String id, Set<URI> type,
-			List<Participation> participations)
+			List<Participation> participations, List<Annotation> annotations)
 	{
-		return new Interaction(URI.create(id), type, participations);
+		Interaction i = new Interaction(URI.create(id), type, participations);
+		if (annotations != null)
+			i.setAnnotations(annotations);
+		return i;
 	}
+
+	//	public static ComponentInstance createComponentInstance(SBOLDocument document, String id, Set<URI> type,
+	//			List<Participation> participations, List<Annotation> annotations)
+	//	{
+	//		ComponentInstance i = new Co
+	//		if (annotations != null)
+	//			i.setAnnotations(annotations);
+	//		return i;
+	//	}
+
+
+	public static Location createLocation(String id, Location location, List<Annotation> annotations)
+	{
+		Location l = location;
+		if (annotations != null)
+			l.setAnnotations(annotations);
+		return l;
+	}
+
 
 	public static SequenceConstraint createSequenceConstraint(String id,
-			URI subject, URI object, RestrictionType restrictionType)
+			URI subject, URI object, RestrictionType restrictionType,
+			List<Annotation> annotations)
 	{
-		return new SequenceConstraint(URI.create(id), restrictionType, subject, object);
-	}
-
-	public static Component createComponent(String id, AccessType accessType, URI instantiatedComponent)
-	{
-		return new Component(URI.create(id), accessType, instantiatedComponent);
-	}
-
-	//TODO: See if this is ever called.
-	public static List<Annotation> getAnnotation_List(Annotation ... a)
-	{
-		return new ArrayList<Annotation>(Arrays.asList(a));
-	}
-
-	public static List<FunctionalComponent> getFunctionalComponent_List(FunctionalComponent ... fi)
-	{
-		return new ArrayList<FunctionalComponent>(Arrays.asList(fi));
-	}
-
-	public static List<Module> getModule_List(Module ... mi)
-	{
-		return new ArrayList<Module>(Arrays.asList(mi));
-	}
-
-	public static List<Interaction> getInteraction_List(Interaction ... i)
-	{
-		return new ArrayList<Interaction>(Arrays.asList(i));
-	}
-
-	public static List<MapsTo> getMapsTo_List(MapsTo ... maps)
-	{
-		return new ArrayList<MapsTo>(Arrays.asList(maps));
+		SequenceConstraint s = new SequenceConstraint(URI.create(id), restrictionType, subject, object);
+		if (annotations != null)
+			s.setAnnotations(annotations);
+		return s;
 	}
 
 
-	//	public static Collection createCollection(int id, DnaComponent... components) {
-	//		Collection coll1 = SBOLFactory.createCollection();
-	//		coll1.setURI(uri("http://example.com/collection" + id));
-	//		coll1.setDisplayId("Coll" + id);
-	//		coll1.setName("Collection" + id);
-	//		for (DnaComponent component : components) {
-	//	        coll1.addComponent(component);
-	//        }
-	//		return coll1;
-	//	}
+	public static Component createComponent(String id, AccessType accessType, URI instantiatedComponent,
+			List<Annotation> annotations)
+	{
+		Component c = new Component(URI.create(id), accessType, instantiatedComponent);
+		if(annotations != null)
+			c.setAnnotations(annotations);
+		return c;
+	}
 
 
 	public static SBOLDocument writeAndRead(SBOLDocument doc)

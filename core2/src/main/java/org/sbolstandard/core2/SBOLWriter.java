@@ -548,6 +548,8 @@ public class SBOLWriter {
 		for(Participation p : participations)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			formatCommonIdentifiedData(list, p);
+
 			if(p.getRoles() != null)
 				for(URI r : p.getRoles())
 					list.add(NamedProperty(Sbol2Terms.Participation.role, r));
@@ -592,6 +594,7 @@ public class SBOLWriter {
 		for(SequenceConstraint s : sequenceConstraint)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			formatCommonIdentifiedData(list, s);
 
 			if(s.getPersistentIdentity() != null)
 				list.add(NamedProperty(Sbol2Terms.Identified.persistentIdentity, s.getPersistentIdentity()));
@@ -710,6 +713,7 @@ public class SBOLWriter {
 		for(MapsTo m : references)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			formatCommonIdentifiedData(list, m);
 			if(m.getRefinement() != null)
 				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinement().name()));
 			if(m.getRemote() != null)
