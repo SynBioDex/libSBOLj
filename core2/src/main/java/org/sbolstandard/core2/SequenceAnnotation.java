@@ -1,9 +1,6 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-
-import org.sbolstandard.core2.abstract_classes.ComponentInstance;
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Location;
 

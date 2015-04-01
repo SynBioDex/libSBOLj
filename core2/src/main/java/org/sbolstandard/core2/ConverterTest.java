@@ -1,10 +1,6 @@
 package org.sbolstandard.core2;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import org.sbolstandard.core2.SBOLDocument;
 //import org.sbolstandard.core.SBOLReader; // TRAMY - PUT BACK
 //import org.sbolstandard.core.impl.SBOLReaderImpl; // TRAMY - PUT BACK
 

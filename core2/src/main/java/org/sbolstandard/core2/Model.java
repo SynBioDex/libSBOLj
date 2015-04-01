@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 /**
