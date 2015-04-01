@@ -395,9 +395,9 @@ public class SBOLDocument {
 	 * @param encoding
 	 * @return the created Sequence instance.
 	 */
-	public ComponentDefinition createComponentDefinition(String URIprefix, String id, Set<URI> type, Set<URI> roles) {
-		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + id + "/1/0");
-		if (Identified.isURIcompliant(newComponentDefinitionURI.toString())) {
+	public ComponentDefinition createComponentDefinition(String URIprefix, String id, String version, Set<URI> type, Set<URI> roles) {
+		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + id + version);
+		if (Identified.isURIcompliant(newComponentDefinitionURI)) {
 			ComponentDefinition newComponentDefinition = new ComponentDefinition(newComponentDefinitionURI, type, roles);
 			if (addComponentDefinition(newComponentDefinition)) {
 				return newComponentDefinition;
@@ -534,7 +534,7 @@ public class SBOLDocument {
 	public Sequence createSequence(String URIprefix, String id, String version, String elements, URI encoding) {
 		//Sequence newSequence = new Sequence(authority, id, elements, encoding);
 		URI newSequenceURI = URI.create(URIprefix + '/' + id + '/' + version);
-		if (Identified.isURIcompliant(newSequenceURI.toString())) {
+		if (Identified.isURIcompliant(newSequenceURI)) {
 			Sequence newSequence = new Sequence(newSequenceURI, elements, encoding);
 			if (addSequence(newSequence)) {
 				return newSequence;

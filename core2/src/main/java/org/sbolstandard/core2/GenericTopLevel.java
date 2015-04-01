@@ -58,4 +58,26 @@ public class GenericTopLevel extends TopLevel{
 	protected GenericTopLevel deepCopy() {
 		return new GenericTopLevel(this);
 	}
+	
+	/**
+	 * @param newDisplayId
+	 * @return
+	 */
+	public GenericTopLevel copy(String newDisplayId) {
+		GenericTopLevel cloned = (GenericTopLevel) this.deepCopy();		
+		cloned.updateDisplayId(newDisplayId);
+		return cloned;
+	}
+	
+	/**
+	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
+	 * @param newVersion
+	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+	 */
+	public GenericTopLevel newVersion(String newVersion) {
+		GenericTopLevel cloned = (GenericTopLevel) super.newVersion(newVersion);		
+		cloned.updateVersion(newVersion);
+		return cloned;
+	}
+
 }

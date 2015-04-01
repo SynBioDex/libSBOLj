@@ -2,7 +2,9 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance;
+import org.sbolstandard.core2.abstract_classes.Documented;
 
 public class FunctionalComponent extends ComponentInstance {
 
@@ -10,7 +12,7 @@ public class FunctionalComponent extends ComponentInstance {
 
 	public enum DirectionType {
 		INPUT("input"), OUTPUT("output"), INOUT("inout"), NONE("none");
-		private final String	directionType;
+		private final String directionType;
 
 		private DirectionType(String directionType) {
 			this.directionType = directionType;
@@ -18,7 +20,7 @@ public class FunctionalComponent extends ComponentInstance {
 
 		/**
 		 * Returns the direction type.
-		 *
+		 * 
 		 * @return direction type.
 		 */
 		public String getDirectionType() {
@@ -41,10 +43,10 @@ public class FunctionalComponent extends ComponentInstance {
 					return DirectionType.INOUT;
 				} else if (direction.equals(DirectionType.INPUT)) {
 					return DirectionType.INPUT;
+				} else if (direction.equals(DirectionType.NONE)) {
+					return DirectionType.NONE;
 				} else if (direction.equals(DirectionType.OUTPUT)) {
 					return DirectionType.OUTPUT;
-				} else if (direction.equals(DirectionType.INOUT)) {
-					return DirectionType.INOUT;
 				} else {
 					return null;
 				}
@@ -52,7 +54,7 @@ public class FunctionalComponent extends ComponentInstance {
 				return null;
 			}
 		}
-
+		
 		/**
 		 * Returns the direction type in URI.
 		 * @return direction type in URI
@@ -80,24 +82,24 @@ public class FunctionalComponent extends ComponentInstance {
 			}
 		}
 	}
-
+	
 
 	public FunctionalComponent(URI identity, AccessType access, URI instantiatedComponent,
 			DirectionType direction) {
 		super(identity, access, instantiatedComponent);
 		setDirection(direction);
 	}
-
+	
 	private FunctionalComponent(FunctionalComponent functionalComponent) {
 		super(functionalComponent);
 		this.setDirection(functionalComponent.getDirection());
 	}
-
-
+	
+	
 
 	/**
 	 * Returns field variable <code>direction</code> to the specified element.
-	 *
+	 * 
 	 * @return field variable <code>direction</code> to the specified element
 	 */
 	public DirectionType getDirection() {
@@ -106,7 +108,7 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Returns the direction type in URI.
-	 *
+	 * 
 	 * @return direction type in URI
 	 */
 	public URI getDirectionURI() {
@@ -129,7 +131,7 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Sets field variable <code>direction</code> to the specified element.
-	 *
+	 * 
 	 * @param direction
 	 */
 	public void setDirection(DirectionType direction) {
@@ -139,7 +141,7 @@ public class FunctionalComponent extends ComponentInstance {
 	/**
 	 * Sets field variable <code>direction</code> to the element corresponding
 	 * to the specified URI.
-	 *
+	 * 
 	 * @param direction
 	 */
 	public void setDirection(URI direction) {

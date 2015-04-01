@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 public class Collection extends TopLevel{
@@ -117,5 +116,45 @@ public class Collection extends TopLevel{
 	@Override
 	public Collection deepCopy() {
 		return new Collection(this);
+	}
+	
+	/**
+	 * 
+	 * @param displayId
+	 * @return
+	 */
+	public Collection copy(String displayId) {
+		Collection cloned = (Collection) super.copy(displayId);
+		cloned.updateDisplayId(displayId);
+		return cloned;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+	 */
+	public void updateDisplayId(String newDisplayId) {
+		super.updateDisplayId(newDisplayId);
+		if (isURIcompliant(this.getIdentity())) {			
+			// TODO Change all of its children's displayIds in their URIs.
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#newVersion(java.lang.String)
+	 */
+	public Collection newVersion(String newVersion) {
+		Collection cloned = (Collection) super.copy(newVersion);
+		cloned.updateVersion(newVersion);
+		return cloned;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+	 */
+	public void updateVersion(String newVersion) {
+		super.updateVersion(newVersion);
+		if (isURIcompliant(this.getIdentity())) {			
+			// TODO Change all of its children's versions in their URIs.
+		}
 	}
 }

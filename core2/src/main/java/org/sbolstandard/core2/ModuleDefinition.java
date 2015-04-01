@@ -508,15 +508,52 @@ public class ModuleDefinition extends TopLevel {
 		return new ModuleDefinition(this);
 	}
 	
+	/**
+	 * @param newDisplayId
+	 * @return
+	 */
+	public ModuleDefinition copy(String newDisplayId) {
+		ModuleDefinition cloned = (ModuleDefinition) super.copy(newDisplayId);		
+		cloned.updateDisplayId(newDisplayId);
+		return cloned;
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+	 */
+	public void updateDisplayId(String newDisplayId) {
+		super.updateDisplayId(newDisplayId);
+		if (isURIcompliant(this.getIdentity())) {			
+			// TODO Change all of its children's displayIds in their URIs.
+		}
+	}
+	
+	/**
+	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
+	 * @param newVersion
+	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+	 */
+	public ModuleDefinition newVersion(String newVersion) {
+		ModuleDefinition cloned = (ModuleDefinition) super.newVersion(newVersion);		
+		cloned.updateVersion(newVersion);
+		return cloned;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+	 */
+	public void updateVersion(String newVersion) {
+		super.updateVersion(newVersion);
+		if (isURIcompliant(this.getIdentity())) {			
+			// TODO Change all of its children's versions in their URIs.
+		}
+	}
+
 //	/**
 //	 * Set optional field variable <code>models</code> to an empty list.
 //	 */
 //	public void unsetModels() {
 //		models.clear();
 //	}
-	
-	
-	
-
-
 }

@@ -538,40 +538,17 @@ public class ComponentDefinition extends TopLevel {
 		}
 	}
 	
-//	/**
-//	 * Deep equality.
-//	 * @param componentDefinition
-//	 * @return <code>True</code> if the specified {@link ComponentDefinition} instance is equal to this instance.
-//	 */
-//	public boolean equals(ComponentDefinition componentDefinition) {
-//		return false;
-//	}
-	
-	/**
-	 * Replace the minor version in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param minorVersion
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
 	 */
-	public void setMinorVersion(int minorVersion) {
-		// TODO fill in
-		
+	public void updateDisplayId(String newDisplayId) {
+		super.updateDisplayId(newDisplayId);
+		if (isURIcompliant(this.getIdentity())) {			
+			// TODO Change all of its children's displayIds in their URIs.
+		}
 	}
-	
-	/**
-	 * Replace the minor version in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param majorVersion
-	 */
-	public void setMajorVersion(int majorVersion) {
-		// TODO fill in
-	}
-	
-	/**
-	 * Replace the display ID in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param id
-	 */
-	public void setDisplayId(String id) {
-		// TODO fill in
-	}
-	
+
+
 	/**
 	 * Replace the display ID in the URI of the object's parent with the specified one.  
 	 * @param id
@@ -605,13 +582,13 @@ public class ComponentDefinition extends TopLevel {
 	
 	/**
 	 * Clone the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
-	 * @param id
+	 * @param newDisplayId
 	 * @return the copied {@link ComponentDefinition} instance.
 	 */
-	public ComponentDefinition copy(String id) {
-		// TODO fill in
-		return null;
-		
+	public ComponentDefinition copy(String newDisplayId) {
+		ComponentDefinition cloned = (ComponentDefinition) super.copy(newDisplayId);
+		cloned.updateDisplayId(newDisplayId);
+		return cloned;
 	}
 	
 	/**
@@ -620,9 +597,19 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
 	 */
 	public ComponentDefinition newVersion(String newVersion) {
-		ComponentDefinition cloned = this.deepCopy();
-		cloned.setVersion(newVersion);
+		ComponentDefinition cloned = (ComponentDefinition) super.newVersion(newVersion);		
+		cloned.updateVersion(newVersion);
 		return cloned;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+	 */
+	public void updateVersion(String newVersion) {
+		super.updateVersion(newVersion);
+		if (isURIcompliant(this.getIdentity())) {			
+			// TODO Change all of its children's versions in their URIs.
+		}
 	}
 
 	@Override

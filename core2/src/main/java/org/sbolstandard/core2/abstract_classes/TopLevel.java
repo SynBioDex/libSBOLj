@@ -15,18 +15,18 @@ public abstract class TopLevel extends Documented{
 	protected TopLevel(TopLevel toplevel) {
 		super(toplevel);
 	}
+		
+	protected abstract TopLevel deepCopy();
 
 	/**
 	 * Get a deep copy of the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
 	 * @param displayId
-	 * @param version
 	 * @return the copied {@link Documented} instance.
 	 */
-	public TopLevel copy(String displayId, String version) {
-		TopLevel cloned = (TopLevel) this.deepCopy();
+	public TopLevel copy(String displayId) {
+		TopLevel cloned = this.deepCopy();
 		cloned.setWasDerivedFrom(this.getIdentity());
-		cloned.setDisplayId(displayId);
-		cloned.setVersion(version);
+		cloned.setDisplayId(displayId);		
 		return cloned;
 	}
 
@@ -39,10 +39,35 @@ public abstract class TopLevel extends Documented{
 	 */
 
 	public TopLevel newVersion(String version) {
-		TopLevel cloned = (TopLevel) this.deepCopy();
+		TopLevel cloned = this.deepCopy();
 		cloned.setWasDerivedFrom(this.getIdentity());
 		cloned.setVersion(version);
-
 		return cloned;
+	}
+	
+	/**
+	 * Replace the display ID in the object's URI with the specified one, and make the same replacement for all of its children objects.
+	 * @param newDisplayId
+	 */
+	protected void updateDisplayId(String newDisplayId) {
+		this.setDisplayId(newDisplayId);
+		if (isURIcompliant(this.getIdentity())) {
+			String newURIStr = this.extractURIprefix()
+								+ '/' + newDisplayId + '/' + this.extractVersion();			
+			URI newURI = URI.create(newURIStr);
+			this.setIdentity(newURI);			
+		}
+	}
+	
+	/**
+	 * @param newVersion
+	 */
+	protected void updateVersion(String newVersion) {
+		this.setVersion(newVersion);
+		if (isURIcompliant(this.getIdentity())) {
+			String newURIStr = this.extractPersistentId() + '/' + newVersion;			
+			URI newURI = URI.create(newURIStr);
+			this.setIdentity(newURI);			
+		}		
 	}
 }

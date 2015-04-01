@@ -52,7 +52,7 @@ public class SBOLTestUtils {
 			List<Component> subComponents, List<Annotation> annotations)
 	{
 		ComponentDefinition componentDefinition = document.createComponentDefinition(
-				"http://www.async.ece.utah.edu", id,
+				"http://www.async.ece.utah.edu", id, "1/0",
 				type, role);
 
 		componentDefinition.setName(id);
