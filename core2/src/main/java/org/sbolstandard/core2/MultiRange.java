@@ -139,7 +139,7 @@ public class MultiRange extends Location{
 
 
 	@Override
-	public MultiRange deepCopy() {
+	protected MultiRange deepCopy() {
 		return new MultiRange(this);
 	}
 	

@@ -59,22 +59,6 @@ public class Sequence extends TopLevel{
 		this.encoding = encoding;
 	}
 	
-	/**
-	 * Replace the display ID in the URI of the object's parent with the specified one.  
-	 * @param id
-	 */
-	public void setParentDisplayId(String id) {
-		// TODO fill in
-	}
-	
-	/**
-	 * Replace the display ID in the URI of the object's grand parent (2 levels up) with the specified one.
-	 * @param id
-	 */
-	public void setGrandParentDisplayId(String id) {
-		// TODO fill in
-	}
-	
 //	/**
 //	 * Replace the authority in the object's URI with the specified one, and make the same replacement for all of its children objects.
 //	 * @param authority

@@ -16,7 +16,7 @@ public class GenericTopLevel extends TopLevel{
 		this.rdfType = rdfType;		
 	}
 	
-	public GenericTopLevel(GenericTopLevel genericTopLevel) {
+	private GenericTopLevel(GenericTopLevel genericTopLevel) {
 		super(genericTopLevel);
 		this.setRdfType(genericTopLevel.getRdfType());
 	}

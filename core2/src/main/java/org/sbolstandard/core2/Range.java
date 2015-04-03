@@ -133,7 +133,7 @@ public class Range extends Location{
 
 
 	@Override
-	public Range deepCopy() {
+	protected Range deepCopy() {
 		return new Range(this);
 	}
 

@@ -15,7 +15,7 @@ public class Component extends ComponentInstance{
 	}
 
 	@Override
-	public Component deepCopy() {
+	protected Component deepCopy() {
 		return new Component(this); 
 	}
 }

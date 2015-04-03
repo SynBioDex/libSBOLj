@@ -303,7 +303,7 @@ public class SBOLWriter {
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			formatCommonTopLevelData(list, c);
-			if(c.isSetMembers())
+			if(!c.getMembers().isEmpty())//(c.isSetMembers())
 			{
 				for (URI member : c.getMembers())
 				{
@@ -356,9 +356,9 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 
 			formatCommonTopLevelData(list,c);
-			if(c.getType() != null)
+			if(c.getTypes() != null)
 			{
-				for(URI types : c.getType())
+				for(URI types : c.getTypes())
 				{
 					list.add(NamedProperty(Sbol2Terms.ComponentDefinition.type, types));
 				}

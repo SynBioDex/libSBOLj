@@ -522,7 +522,7 @@ public class ModuleDefinition extends TopLevel {
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
 	 */
-	public void updateDisplayId(String newDisplayId) {
+	protected void updateDisplayId(String newDisplayId) {
 		super.updateDisplayId(newDisplayId);
 		if (isURIcompliant(this.getIdentity())) {			
 			// TODO Change all of its children's displayIds in their URIs.
@@ -543,7 +543,7 @@ public class ModuleDefinition extends TopLevel {
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
 	 */
-	public void updateVersion(String newVersion) {
+	protected void updateVersion(String newVersion) {
 		super.updateVersion(newVersion);
 		if (isURIcompliant(this.getIdentity())) {			
 			// TODO Change all of its children's versions in their URIs.

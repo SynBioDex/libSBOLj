@@ -114,7 +114,7 @@ public class GenericLocation extends Location{
 	}
 
 	@Override
-	public GenericLocation deepCopy() {
+	protected GenericLocation deepCopy() {
 		return new GenericLocation(this);
 	}
 
