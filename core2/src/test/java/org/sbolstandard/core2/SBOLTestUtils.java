@@ -94,7 +94,7 @@ public class SBOLTestUtils {
 		return collection;
 	}
 
-	public static void createModel(SBOLDocument document, String id)
+	public static Model createModel(SBOLDocument document, String id, List<Annotation> annotations)
 	{
 		Model model = document.createModel(URI.create(id),
 				URI.create(id + "_source"),
@@ -106,6 +106,10 @@ public class SBOLTestUtils {
 		model.setDisplayId(id);
 		model.setName(id);
 		model.setDescription(id);
+
+		if(annotations != null)
+			model.setAnnotations(annotations);
+		return model;
 	}
 
 	//TODO: consider removing
@@ -120,22 +124,13 @@ public class SBOLTestUtils {
 			AccessType accessType, DirectionType directionType, URI instantiatedComponent)
 	{
 		return new FunctionalComponent(URI.create(id), accessType, instantiatedComponent, directionType);
+
 	}
 
 
-	public static MapsTo createMapTo (String id, String refinement,
+	public static MapsTo createMapTo (String id, RefinementType refinementType,
 			URI pre_fi, URI post_fi)
 	{
-		RefinementType refinementType = null;
-		if(refinement.equals("verifyIdentical"))
-			refinementType =  RefinementType.VERIFYIDENTICAL;
-		else if(refinement.equals("useLocal"))
-			refinementType =  RefinementType.USELOCAL;
-		else if(refinement.equals("useRemote"))
-			refinementType =  RefinementType.USEREMOTE;
-		else if(refinement.equals("merge"))
-			refinementType =  RefinementType.MERGE;
-
 		return new MapsTo(URI.create(id), refinementType, pre_fi, post_fi);
 	}
 
@@ -169,10 +164,10 @@ public class SBOLTestUtils {
 
 	//TODO: check
 	public static Module createModuleData(SBOLDocument document, String id,
-			String instantiatedModule,
+			URI instantiatedModule,
 			List<MapsTo> maps)
 	{
-		Module modInstantiation = new Module(URI.create(id), URI.create(instantiatedModule));
+		Module modInstantiation = new Module(URI.create(id), instantiatedModule);
 
 		modInstantiation.setName(id);
 		modInstantiation.setDescription(id);
