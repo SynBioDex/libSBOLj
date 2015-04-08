@@ -8,9 +8,9 @@ public class Turtle {
 		this.turtleStr = turtleStr;
 	}
 	
-	private Turtle(Turtle turtle) {
-		this.setTurtleStr(turtle.getTurtleStr());
-	}
+//	private Turtle(Turtle turtle) {
+//		this.setTurtleStr(turtle.getTurtleStr());
+//	}
 
 	public String getTurtleStr() {
 		return turtleStr;

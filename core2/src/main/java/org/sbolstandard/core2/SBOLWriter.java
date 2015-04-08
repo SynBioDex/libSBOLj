@@ -535,7 +535,7 @@ public class SBOLWriter {
 			formatFunctionalComponents(m.getComponents(),list);
 			formatInteractions(m.getInteractions(),list);
 			formatModels(m.getModels(),list);
-			formatModule(m.getSubModule(),list);
+			formatModule(m.getSubModules(),list);
 
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ModuleDefinition.ModuleDefinition, m.getIdentity(), NamedProperties(list)));
 		}

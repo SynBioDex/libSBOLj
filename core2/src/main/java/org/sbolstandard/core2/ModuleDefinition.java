@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
-import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 /**
@@ -41,28 +40,28 @@ public class ModuleDefinition extends TopLevel {
 			roles.add(role);
 		}		
 		this.setRoles(roles);
-		if (moduleDefinition.isSetSubModules()) {
+		if (!moduleDefinition.getSubModules().isEmpty()) {
 			List<Module> subModules = new ArrayList<Module>();
-			for (Module subModule : moduleDefinition.getSubModule()) {
+			for (Module subModule : moduleDefinition.getSubModules()) {
 				subModules.add(subModule.deepCopy());
 			}
 			this.setSubModules(subModules);
 		}
-		if (moduleDefinition.isSetInteractions()) {
+		if (!moduleDefinition.getInteractions().isEmpty()) {
 			List<Interaction> interactions = new ArrayList<Interaction>();
 			for (Interaction interaction : moduleDefinition.getInteractions()) {
 				interactions.add(interaction.deepCopy());
 			}
 			this.setInteractions(interactions);
 		}
-		if (moduleDefinition.isSetComponents()) {
+		if (!moduleDefinition.getComponents().isEmpty()) {
 			List<FunctionalComponent> components = new ArrayList<FunctionalComponent>();
 			for (FunctionalComponent component : moduleDefinition.getComponents()) {
 				components.add(component.deepCopy());
 			}
 			this.setComponents(components);
 		}
-		if (moduleDefinition.isSetModels()) {
+		if (!moduleDefinition.getModels().isEmpty()) {
 			Set<URI> models = new HashSet<URI>();
 			for (URI model : moduleDefinition.getModels()) {
 				models.add(model);
@@ -121,16 +120,16 @@ public class ModuleDefinition extends TopLevel {
 		roles.clear();
 	}
 	
-	/**
-	 * Test if field variable <code>subModules</code> is set.
-	 * @return <code>true</code> if it is not an empty list.
-	 */
-	public boolean isSetSubModules() {
-		if (subModules.isEmpty())
-			return false;
-		else
-			return true;					
-	}
+//	/**
+//	 * Test if field variable <code>subModules</code> is set.
+//	 * @return <code>true</code> if it is not an empty list.
+//	 */
+//	public boolean isSetSubModules() {
+//		if (subModules.isEmpty())
+//			return false;
+//		else
+//			return true;					
+//	}
 	
 	/**
 	 * Calls the ModuleInstantiation constructor to create a new instance using the specified parameters, 
@@ -176,7 +175,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the list of subModule instances owned by this instance. 
 	 * @return the list of subModule instances owned by this instance.
 	 */
-	public List<Module> getSubModule() {
+	public List<Module> getSubModules() {
 		return new ArrayList<Module>(subModules.values());
 	}
 	
@@ -196,23 +195,23 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public void setSubModules(
 			List<Module> subModules) {
-		if(isSetSubModules())
+		if(!getSubModules().isEmpty())
 			clearSubModules();		
 		for (Module subModule : subModules) {
 			addSubModule(subModule);
 		}
 	}
 	
-	/**
-	 * Test if field variable <code>interactions</code> is set.
-	 * @return <code>true</code> if it is not an empty list.
-	 */		
-	public boolean isSetInteractions() {
-		if (interactions.isEmpty())
-			return false;
-		else
-			return true;
-	}
+//	/**
+//	 * Test if field variable <code>interactions</code> is set.
+//	 * @return <code>true</code> if it is not an empty list.
+//	 */		
+//	public boolean isSetInteractions() {
+//		if (interactions.isEmpty())
+//			return false;
+//		else
+//			return true;
+//	}
 	
 	/**
 	 * Calls the Interaction constructor to create a new instance using the specified parameters, 
@@ -285,16 +284,16 @@ public class ModuleDefinition extends TopLevel {
 		}
 	}
 		
-	/**
-	 * Test if field variable <code>functionalInstantiations</code> is set.
-	 * @return <code>true</code> if it is not an empty list.
-	 */
-	public boolean isSetComponents() {
-		if (components.isEmpty()) 
-			return false;
-		else
-			return true;
-	}
+//	/**
+//	 * Test if field variable <code>functionalInstantiations</code> is set.
+//	 * @return <code>true</code> if it is not an empty list.
+//	 */
+//	public boolean isSetComponents() {
+//		if (components.isEmpty()) 
+//			return false;
+//		else
+//			return true;
+//	}
  	
 	/**
 	 * Calls the FunctionalInstantiation constructor to create a new instance using the specified parameters, 
@@ -389,16 +388,16 @@ public class ModuleDefinition extends TopLevel {
 //		functionalInstantiations.clear();
 //	}
 	
-	/**
-	 * Test if field variable <code>models</code> is set.
-	 * @return <code>true</code> if it is not an empty list.
-	 */
-	public boolean isSetModels() {
-		if (models.isEmpty())
-			return false;
-		else
-			return true;					
-	}
+//	/**
+//	 * Test if field variable <code>models</code> is set.
+//	 * @return <code>true</code> if it is not an empty list.
+//	 */
+//	public boolean isSetModels() {
+//		if (models.isEmpty())
+//			return false;
+//		else
+//			return true;					
+//	}
 	
 	/**
 	 * Adds the specified instance to the list of models. 
