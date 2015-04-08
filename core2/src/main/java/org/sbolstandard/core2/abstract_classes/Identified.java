@@ -50,7 +50,7 @@ public abstract class Identified {
 		if (identified.isSetAnnotations()) {
 			List<Annotation> clonedAnnotations = new ArrayList<Annotation>();
 			for (Annotation annotation : identified.getAnnotations()) {
-				clonedAnnotations.add(annotation.deepCopy());
+				clonedAnnotations.add(annotation.copy());
 			}
 			this.setAnnotations(clonedAnnotations);
 		}

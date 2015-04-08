@@ -45,8 +45,7 @@ public class Turtle {
 		return true;
 	}
 	
-	public Turtle deepCopy() {
-		return new Turtle(this);
-	}
-	
+//	private Turtle deepCopy() {
+//		return new Turtle(this);
+//	}	
 }

@@ -3,7 +3,6 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 import org.sbolstandard.core2.abstract_classes.ComponentInstance;
-import org.sbolstandard.core2.abstract_classes.Documented;
 
 public class Component extends ComponentInstance{
 
@@ -16,7 +15,7 @@ public class Component extends ComponentInstance{
 	}
 
 	@Override
-	public Component deepCopy() {
+	protected Component deepCopy() {
 		return new Component(this); 
 	}
 }

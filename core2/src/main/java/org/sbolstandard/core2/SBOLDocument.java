@@ -46,6 +46,29 @@ public class SBOLDocument {
 		nameSpaces.put(URI.create(Sbol2Terms.dc.getNamespaceURI()), Sbol2Terms.dc);
 	}
 
+	/**
+	 * Create a new {@link Model} instance.
+	 * @param identity
+	 * @param rdfType
+	 * @return {@link Model} instance.
+	 */
+	public ModuleDefinition createModuleDefinition(String URIprefix, String displayId, String version, Set<URI> roles) {
+		URI newModuleDefinitionURI = URI.create(URIprefix + '/' + displayId + version);
+		if (Identified.isURIcompliant(newModuleDefinitionURI)) {
+			ModuleDefinition newModuleDefinition = new ModuleDefinition(newModuleDefinitionURI, roles);
+			new ModuleDefinition(newModuleDefinitionURI, roles);
+			if (addModuleDefinition(newModuleDefinition)) {
+				return newModuleDefinition;
+			}
+			else
+				return null;
+		}
+		else {
+			// TODO: Non-compliant URI
+			return null;
+		}
+	}
+	
 
 	/**
 	 * Create a new {@link ModuleDefinition} instance.
@@ -65,7 +88,8 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addModuleDefinition(ModuleDefinition newModuleDefinition) {
-		if (newModuleDefinition.isSetPersistentIdentity() && newModuleDefinition.isSetVersion()) {
+		//if (newModuleDefinition.isSetPersistentIdentity() && newModuleDefinition.isSetVersion()) {
+		if (Identified.isURIcompliant(newModuleDefinition.getIdentity())) {			
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(moduleDefinitions.keySet(), newModuleDefinition.getPersistentIdentity())) {
@@ -170,7 +194,8 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addCollection(Collection newCollection) {
-		if (newCollection.isSetPersistentIdentity() && newCollection.isSetVersion()) {
+		//if (newCollection.isSetPersistentIdentity() && newCollection.isSetVersion()) {
+		if (Identified.isURIcompliant(newCollection.getIdentity())) {
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(collections.keySet(), newCollection.getPersistentIdentity())) {
@@ -211,7 +236,7 @@ public class SBOLDocument {
 
 	private boolean isFirstVersionNewer(String version1, String version2) {
 		// TODO compare according to Maven's version scheme.
-		return false;
+		return true;
 	}
 
 
@@ -264,6 +289,29 @@ public class SBOLDocument {
 			addCollection(collection);
 		}
 	}
+	
+	/**
+	 * Create a new {@link Model} instance.
+	 * @param identity
+	 * @param rdfType
+	 * @return {@link Model} instance.
+	 */
+	public Model createModel(String URIprefix, String displayId, String version, 
+			URI source, URI language, URI framework, Set<URI> roles) {
+		URI newModelURI = URI.create(URIprefix + '/' + displayId + version);
+		if (Identified.isURIcompliant(newModelURI)) {
+			Model newModel = new Model(newModelURI, source, language, framework, roles);
+			if (addModel(newModel)) {
+				return newModel;
+			}
+			else
+				return null;
+		}
+		else {
+			// TODO: Non-compliant URI
+			return null;
+		}
+	}
 
 	/**
 	 * Create a new {@link Model} instance.
@@ -286,7 +334,8 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addModel(Model newModel) {
-		if (newModel.isSetPersistentIdentity() && newModel.isSetVersion()) {
+		//if (newModel.isSetPersistentIdentity() && newModel.isSetVersion()) {
+		if (Identified.isURIcompliant(newModel.getIdentity())) {
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(models.keySet(), newModel.getPersistentIdentity())) {
@@ -390,13 +439,13 @@ public class SBOLDocument {
 	/**
 	 * Create a new {@link ComponentDefinition} instance.
 	 * @param URIprefix
-	 * @param id
+	 * @param displayId
 	 * @param elements
 	 * @param encoding
-	 * @return the created Sequence instance.
+	 * @return the created {@link ComponentDefinition} instance.
 	 */
-	public ComponentDefinition createComponentDefinition(String URIprefix, String id, String version, Set<URI> type, Set<URI> roles) {
-		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + id + version);
+	public ComponentDefinition createComponentDefinition(String URIprefix, String displayId, String version, Set<URI> type, Set<URI> roles) {
+		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + displayId + version);
 		if (Identified.isURIcompliant(newComponentDefinitionURI)) {
 			ComponentDefinition newComponentDefinition = new ComponentDefinition(newComponentDefinitionURI, type, roles);
 			if (addComponentDefinition(newComponentDefinition)) {
@@ -417,7 +466,8 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addComponentDefinition(ComponentDefinition newComponentDefinition) {
-		if (newComponentDefinition.isSetPersistentIdentity() && newComponentDefinition.isSetVersion()) {
+		//if (newComponentDefinition.isSetPersistentIdentity() && newComponentDefinition.isSetVersion()) {
+		if (Identified.isURIcompliant(newComponentDefinition.getIdentity())) {
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(componentDefinitions.keySet(), newComponentDefinition.getPersistentIdentity())) {
@@ -550,55 +600,128 @@ public class SBOLDocument {
 
 	/**
 	 * Create an instance of the top-level classes, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link TopLevel} with a new major version, and add it to its corresponding top-level instances list.
+	 * {@link Sequence}, or {@link TopLevel} with a new version, and add it to its corresponding top-level instances list.
 	 * @param toplevel
+	 * @param newVersion
 	 * @return {@link TopLevel} instance
 	 */
-	public TopLevel createNewVersion(TopLevel toplevel, String version) {
-		TopLevel newTopLevel = toplevel.newVersion(version);
-		if (newTopLevel instanceof Collection) {
-			if (addCollection((Collection) newTopLevel)) {
-				return newTopLevel;
+	public TopLevel createNewVersion(TopLevel toplevel, String newVersion) {
+		if (toplevel instanceof Collection) {			
+			Collection newCollection = ((Collection) toplevel).newVersion(newVersion);			
+			if (addCollection(newCollection)) {
+				return newCollection;
 			}
 			else {
 				return null;
 			}
 		}
-		else if (newTopLevel instanceof ComponentDefinition) {
-			if (addComponentDefinition((ComponentDefinition) newTopLevel)) {
-				return newTopLevel;
+		else if (toplevel instanceof ComponentDefinition) {
+			ComponentDefinition newComponentDefinition = ((ComponentDefinition) toplevel).newVersion(newVersion);
+			if (addComponentDefinition(newComponentDefinition)) {
+				return newComponentDefinition;
 			}
 			else {
 				return null;
 			}
 		}
-		else if (newTopLevel instanceof Model) {
-			if (addModel((Model) newTopLevel)) {
-				return newTopLevel;
+		else if (toplevel instanceof Model) {
+			Model newModel = ((Model) toplevel).newVersion(newVersion);			
+			if (addModel(newModel)) {
+				return newModel;
 			}
 			else {
 				return null;
 			}
 		}
-		else if (newTopLevel instanceof ModuleDefinition) {
-			if (addModuleDefinition((ModuleDefinition) newTopLevel)) {
-				return newTopLevel;
+		else if (toplevel instanceof ModuleDefinition) {
+			ModuleDefinition newModuleDefinition = ((ModuleDefinition) toplevel).newVersion(newVersion);
+			if (addModuleDefinition(newModuleDefinition)) {
+				return newModuleDefinition;
 			}
 			else {
 				return null;
 			}
 		}
-		else if (newTopLevel instanceof Sequence) {
-			if (addSequence((Sequence) newTopLevel)) {
-				return newTopLevel;
+		else if (toplevel instanceof Sequence) {
+			Sequence newSequence = ((Sequence) toplevel).newVersion(newVersion);
+			if (addSequence(newSequence)) {
+				return newSequence;
 			}
 			else {
 				return null;
 			}
 		}
-		else if (newTopLevel instanceof TopLevel) {
-			if (addGenericTopLevel((GenericTopLevel) newTopLevel)) {
-				return newTopLevel;
+		else if (toplevel instanceof GenericTopLevel) {
+			GenericTopLevel newGenericTopLevel = ((GenericTopLevel) toplevel).newVersion(newVersion);
+			if (addGenericTopLevel(newGenericTopLevel)) {
+				return newGenericTopLevel;
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			return null;
+		}
+	}
+	
+	/**
+	 * Create an instance of the top-level classes, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+	 * {@link Sequence}, or {@link TopLevel} with a new display ID, and add it to its corresponding top-level instances list.
+	 * @param toplevel
+	 * @param newDisplayId
+	 * @return {@link TopLevel} instance
+	 */
+	public TopLevel createCopy(TopLevel toplevel, String newDisplayId) {
+		if (toplevel instanceof Collection) {			
+			Collection newCollection = ((Collection) toplevel).copy(newDisplayId);			
+			if (addCollection(newCollection)) {
+				return newCollection;
+			}
+			else {
+				return null;
+			}
+		}
+		else if (toplevel instanceof ComponentDefinition) {
+			ComponentDefinition newComponentDefinition = ((ComponentDefinition) toplevel).copy(newDisplayId);
+			if (addComponentDefinition(newComponentDefinition)) {
+				return newComponentDefinition;
+			}
+			else {
+				return null;
+			}
+		}
+		else if (toplevel instanceof Model) {
+			Model newModel = ((Model) toplevel).copy(newDisplayId);			
+			if (addModel(newModel)) {
+				return newModel;
+			}
+			else {
+				return null;
+			}
+		}
+		else if (toplevel instanceof ModuleDefinition) {
+			ModuleDefinition newModuleDefinition = ((ModuleDefinition) toplevel).copy(newDisplayId);
+			if (addModuleDefinition(newModuleDefinition)) {
+				return newModuleDefinition;
+			}
+			else {
+				return null;
+			}
+		}
+		else if (toplevel instanceof Sequence) {
+			Sequence newSequence = ((Sequence) toplevel).copy(newDisplayId);
+			if (addSequence(newSequence)) {
+				return newSequence;
+			}
+			else {
+				return null;
+			}
+		}
+		else if (toplevel instanceof GenericTopLevel) {
+			GenericTopLevel newGenericTopLevel = ((GenericTopLevel) toplevel).copy(newDisplayId);
+			if (addGenericTopLevel(newGenericTopLevel)) {
+				return newGenericTopLevel;
 			}
 			else {
 				return null;
@@ -611,20 +734,21 @@ public class SBOLDocument {
 
 	/**
 	 * Appends the specified <code>sequence</code> to the end of the list of sequences.
-	 * @param sequence
+	 * @param newSequence
 	 * @return <code>true</code> if the specified sequence is successfully added.
 	 */
-	public boolean addSequence(Sequence sequence) {
-		if (sequence.isSetPersistentIdentity() && sequence.isSetVersion()) {
+	public boolean addSequence(Sequence newSequence) {
+		//if (sequence.isSetPersistentIdentity() && sequence.isSetVersion()) {
+		if (Identified.isURIcompliant(newSequence.getIdentity())) {			
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
-			if (!keyExistsInOtherMaps(sequences.keySet(), sequence.getPersistentIdentity())) {
+			if (!keyExistsInOtherMaps(sequences.keySet(), newSequence.getPersistentIdentity())) {
 				// Check if URI exists in the sequences map.
-				if (!sequences.containsKey(sequence.getIdentity())) {
-					sequences.put(sequence.getIdentity(), sequence);
-					Sequence latestSequence = sequences.get(sequence.getPersistentIdentity());
+				if (!sequences.containsKey(newSequence.getIdentity())) {
+					sequences.put(newSequence.getIdentity(), newSequence);
+					Sequence latestSequence = sequences.get(newSequence.getPersistentIdentity());
 					if (latestSequence == null) {
-						sequences.put(sequence.getPersistentIdentity(), sequence);
+						sequences.put(newSequence.getPersistentIdentity(), newSequence);
 					}
 					else {
 						// TODO Extract the version of latestCollection and compare according to Maven's versioning scheme.
@@ -646,9 +770,9 @@ public class SBOLDocument {
 				return false;
 		}
 		else { // Only check if sequence's URI exists in all maps.
-			if (!keyExistsInOtherMaps(sequences.keySet(), sequence.getIdentity())) {
-				if (!sequences.containsKey(sequence.getIdentity())) {
-					sequences.put(sequence.getIdentity(), sequence);
+			if (!keyExistsInOtherMaps(sequences.keySet(), newSequence.getIdentity())) {
+				if (!sequences.containsKey(newSequence.getIdentity())) {
+					sequences.put(newSequence.getIdentity(), newSequence);
 					return true;
 				}
 				else // key exists in sequences map
@@ -708,6 +832,30 @@ public class SBOLDocument {
 			addSequence(sequence);
 		}
 	}
+	
+	/**
+	 * Create a new {@link GenericTopLevel} instance.
+	 * @param URIprefix
+	 * @param displayId
+	 * @param elements
+	 * @param encoding
+	 * @return the created GenericTopLevel instance.
+	 */
+	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) {
+		URI newGenericTopLevelURI = URI.create(URIprefix + '/' + displayId + version);
+		if (Identified.isURIcompliant(newGenericTopLevelURI)) {
+			GenericTopLevel newGenericTopLevel = new GenericTopLevel(newGenericTopLevelURI, rdfType);
+			if (addGenericTopLevel(newGenericTopLevel)) {
+				return newGenericTopLevel;
+			}
+			else
+				return null;
+		}
+		else {
+			// TODO: Non-compliant URI
+			return null;
+		}
+	}
 
 	/**
 	 * Create a new {@link GenericTopLevel} instance.
@@ -727,7 +875,8 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addGenericTopLevel(GenericTopLevel newGenericTopLevel) {
-		if (newGenericTopLevel.isSetPersistentIdentity() && newGenericTopLevel.isSetVersion()) {
+		//if (newGenericTopLevel.isSetPersistentIdentity() && newGenericTopLevel.isSetVersion()) {
+		if (Identified.isURIcompliant(newGenericTopLevel.getIdentity())) {			
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(genericTopLevels.keySet(), newGenericTopLevel.getPersistentIdentity())) {
@@ -835,6 +984,91 @@ public class SBOLDocument {
 		List<NamespaceBinding> bindings = new ArrayList<NamespaceBinding>();
 		bindings.addAll(this.nameSpaces.values());
 		return bindings;
+	}
+	
+	/**
+	 * Removes the instance matching the specified URI from the list of nameSpaces if present.
+	 * @param nameSpaceURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public NamespaceBinding removeNamespaceBinding(URI nameSpaceURI) {
+		return nameSpaces.remove(nameSpaceURI);
+	}
+	
+//	/**
+//	 * Clears the existing list <code>modules</code>, then appends all of the elements in the specified collection to the end of this list.
+//	 * @param namespaceBinding
+//	 */
+//	public void setNameSpaceBindings(List<NamespaceBinding> namespaceBinding) {
+//		clearNamespaceBindings();
+//		for (NamespaceBinding namespace : namespaceBinding) {
+//			addNamespaceBinding(namespace);
+//		}
+//	}
+	
+//	/**
+//	 * Appends the specified <code>module</code> to the end of the list of modules.
+//	 * @param newNamespaceBinding
+//	 * @return
+//	 */
+//	public boolean addNamespaceBinding(NamespaceBinding newNamespaceBinding) {
+//		// TODO Need addNamespaceBinding?
+//		if (newNamespaceBinding.isSetPersistentIdentity() && newNamespaceBinding.isSetVersion()) {
+//			// Compliant URI should come in here.
+//			// Check if persistent identity exists in other maps.
+//			if (!keyExistsInOtherMaps(moduleDefinitions.keySet(), newNamespaceBinding.getPersistentIdentity())) {
+//				// Check if URI exists in the moduleDefinitions map.
+//				if (!moduleDefinitions.containsKey(newNamespaceBinding.getIdentity())) {
+//					moduleDefinitions.put(newNamespaceBinding.getIdentity(), newNamespaceBinding);
+//					NamespaceBinding latestNamespaceBinding = moduleDefinitions.get(newNamespaceBinding.getPersistentIdentity());
+//					if (latestNamespaceBinding == null) {
+//						moduleDefinitions.put(newNamespaceBinding.getPersistentIdentity(), newNamespaceBinding);
+//					}
+//					else {
+//						if (isFirstVersionNewer(newNamespaceBinding.getVersion(), latestNamespaceBinding.getVersion())) {
+//							moduleDefinitions.put(newNamespaceBinding.getPersistentIdentity(), newNamespaceBinding);
+//						}
+//					}
+//					return true;
+//				}
+//				else // key exists in moduleDefinitions map
+//					return false;
+//			}
+//			else // key exists in other maps
+//				return false;
+//		}
+//		else { // Only check if sequence's URI exists in all maps.
+//			if (!keyExistsInOtherMaps(moduleDefinitions.keySet(), newNamespaceBinding.getIdentity())) {
+//				if (!moduleDefinitions.containsKey(newNamespaceBinding.getIdentity())) {
+//					moduleDefinitions.put(newNamespaceBinding.getIdentity(), newNamespaceBinding);
+//					return true;
+//				}
+//				else // key exists in moduleDefinitions map
+//					return false;
+//			}
+//			else // key exists in other maps
+//				return false;
+//		}
+//	}	
+	
+	/**
+	 * 
+	 */
+	public void clearNamespaceBindings() {
+		Object[] keySetArray = nameSpaces.keySet().toArray();
+		for (Object key : keySetArray) {
+			removeNamespaceBinding((URI) key);
+		}		
+	}
+
+
+	/**
+	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * @param nameSpaceURI
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public NamespaceBinding getNameSpaceBinding(URI nameSpaceURI) {
+		return nameSpaces.get(nameSpaceURI);
 	}
 
 	/**

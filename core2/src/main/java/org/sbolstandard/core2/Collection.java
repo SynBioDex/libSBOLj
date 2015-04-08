@@ -17,25 +17,22 @@ public class Collection extends TopLevel{
 	
 	private Collection(Collection collection) {
 		super(collection.getIdentity());
-		if (collection.isSetMembers()) {
-					Set<URI> newMembers = new HashSet<URI>();		
+		Set<URI> newMembers = new HashSet<URI>();		
 		for (URI member : collection.getMembers()) {
 			newMembers.add(member);
-		}
-
-		}
+		}		
 	}
 
-	/**
-	 * Test if field variable <code>members</code> is set.
-	 * @return <code>true</code> if it is not an empty list.
-	 */
-	public boolean isSetMembers() {
-		if (members.isEmpty())
-			return false;
-		else
-			return true;					
-	}
+//	/**
+//	 * Test if field variable <code>members</code> is set.
+//	 * @return <code>true</code> if it is not an empty list.
+//	 */
+//	public boolean isSetMembers() {
+//		if (members.isEmpty())
+//			return false;
+//		else
+//			return true;					
+//	}
 	
 	/**
 	 * Adds the specified instance to the list of members. 
@@ -114,7 +111,7 @@ public class Collection extends TopLevel{
 	}
 
 	@Override
-	public Collection deepCopy() {
+	protected Collection deepCopy() {
 		return new Collection(this);
 	}
 	
@@ -132,7 +129,7 @@ public class Collection extends TopLevel{
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
 	 */
-	public void updateDisplayId(String newDisplayId) {
+	protected void updateDisplayId(String newDisplayId) {
 		super.updateDisplayId(newDisplayId);
 		if (isURIcompliant(this.getIdentity())) {			
 			// TODO Change all of its children's displayIds in their URIs.
@@ -151,7 +148,7 @@ public class Collection extends TopLevel{
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
 	 */
-	public void updateVersion(String newVersion) {
+	protected void updateVersion(String newVersion) {
 		super.updateVersion(newVersion);
 		if (isURIcompliant(this.getIdentity())) {			
 			// TODO Change all of its children's versions in their URIs.

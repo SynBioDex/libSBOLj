@@ -24,16 +24,35 @@ public class Annotation {
 	}
 	
 
+	/**
+	 * @return
+	 */
 	public NamedProperty<QName> getValue() {
 		return value;
 	}
 
+	/**
+	 * @param value
+	 */
 	public void setValue(NamedProperty<QName> value) {
 		this.value = value;
 	}
 
-	public Annotation deepCopy() {
+	/**
+	 * @return
+	 */
+	private Annotation deepCopy() {
 		return new Annotation(this);
+	}
+	
+	/**
+	 * 
+	 * @param displayId
+	 * @return
+	 */
+	public Annotation copy() {
+		Annotation cloned = this.deepCopy();
+		return cloned;
 	}
 
 	@Override

@@ -141,7 +141,7 @@ public class Cut extends Location{
 	}
 
 	@Override
-	public Cut deepCopy() {
+	protected Cut deepCopy() {
 		return new Cut(this);
 	}
 }

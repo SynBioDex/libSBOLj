@@ -20,7 +20,7 @@ import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 public class ComponentDefinition extends TopLevel {
 
-	private Set<URI> type;
+	private Set<URI> types;
 	private Set<URI> roles;
 	private URI sequence;
 	private HashMap<URI, Component> subComponents;
@@ -29,7 +29,7 @@ public class ComponentDefinition extends TopLevel {
 	
 	public ComponentDefinition(URI identity, Set<URI> type, Set<URI> roles) {
 		super(identity);
-		setType(type);
+		setTypes(type);
 		setRoles(roles);		
 		this.subComponents = new HashMap<URI, Component>(); 		
 		this.sequenceAnnotations = new HashMap<URI, SequenceAnnotation>();
@@ -39,30 +39,30 @@ public class ComponentDefinition extends TopLevel {
 	private ComponentDefinition(ComponentDefinition componentDefinition) {
 		super(componentDefinition);
 		Set<URI> types = new HashSet<URI>();
-		for (URI type : componentDefinition.getType()) {
+		for (URI type : componentDefinition.getTypes()) {
 			types.add(URI.create(type.toString()));
 		}
-		setType(types);
+		setTypes(types);
 		Set<URI> roles = new HashSet<URI>();
 		for (URI role : componentDefinition.getRoles()) {
 			roles.add(URI.create(role.toString()));
 		}
 		setRoles(roles);
-		if (componentDefinition.isSetSubComponents()) {
+		if (!componentDefinition.getSubComponents().isEmpty()) {
 			List<Component> subComponents = new ArrayList<Component>();
 			for (Component subComponent : componentDefinition.getSubComponents()) {
 				subComponents.add(subComponent.deepCopy());
 			}
 			this.setSubComponents(subComponents);
 		}		
-		if (componentDefinition.isSetSequenceConstraints()) {
+		if (!componentDefinition.getSequenceConstraints().isEmpty()) {
 			List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
 			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
 				sequenceConstraints.add((SequenceConstraint) sequenceConstraint.deepCopy());
 			}
 			this.setSequenceConstraints(sequenceConstraints);
 		}
-		if (componentDefinition.isSetSequenceAnnotations()) {
+		if (!componentDefinition.getSequenceAnnotations().isEmpty()) {
 			List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>();
 			for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
 				sequenceAnnotations.add(sequenceAnnotation.deepCopy());
@@ -81,7 +81,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addType(URI typeURI) {
-		return type.add(typeURI);
+		return types.add(typeURI);
 	}
 	
 	/**
@@ -90,23 +90,23 @@ public class ComponentDefinition extends TopLevel {
 	 * @return <code>true<code> if this set contained the specified element
 	 */
 	public boolean removeType(URI typeURI) {
-		return type.remove(typeURI);
+		return types.remove(typeURI);
 	}
 	
 	/**
 	 * Sets the field variable <code>type</code> to the specified element.
 	 * @param type
 	 */
-	public void setType(Set<URI> type) {
-		this.type = type;
+	public void setTypes(Set<URI> type) {
+		this.types = type;
 	}
 	
 	/**
 	 * Returns the field variable <code>type</code>.
 	 * @return the set of URIs for <code>type</code>.
 	 */
-	public Set<URI> getType() {
-		return type;
+	public Set<URI> getTypes() {
+		return types;
 	}
 	
 	/**
@@ -114,15 +114,15 @@ public class ComponentDefinition extends TopLevel {
 	 * @return <code>true</code> if this set contains the specified element.
 	 */
 	public boolean containsType(URI typeURI) {
-		return type.contains(typeURI);
+		return types.contains(typeURI);
 	}
 	
 	/**
 	 * Removes all entries of the list of <code>type</code> instances owned by this instance. 
 	 * The list will be empty after this call returns.
 	 */
-	public void clearType() {
-		type.clear();
+	public void clearTypes() {
+		types.clear();
 	}
 	
 	/**
@@ -209,16 +209,16 @@ public class ComponentDefinition extends TopLevel {
 		sequence = null;
 	}
 	
-	/**
-	 * Test if any {@link SequenceAnnotation} instance exists.
-	 * @return <code>true</code> if at least one such instance exists.
-	 */
-	public boolean isSetSequenceAnnotations() {
-		if (sequenceAnnotations.isEmpty())
-			return false;
-		else
-			return true;					
-	}
+//	/**
+//	 * Test if any {@link SequenceAnnotation} instance exists.
+//	 * @return <code>true</code> if at least one such instance exists.
+//	 */
+//	public boolean isSetSequenceAnnotations() {
+//		if (sequenceAnnotations.isEmpty())
+//			return false;
+//		else
+//			return true;					
+//	}
 	
 	/**
 	 * Calls the SequenceAnnotation constructor to create a new instance using the specified parameters, 
@@ -362,16 +362,16 @@ public class ComponentDefinition extends TopLevel {
 		}
 	}
 	
-	/**
-	 * Test if the optional field variable <code>structuralInstantiations</code> is set.
-	 * @return <code>true</code> if the field variable is not an empty list
-	 */
-	public boolean isSetSubComponents() {
-		if (subComponents.isEmpty())
-			return false;
-		else
-			return true;
-	}
+//	/**
+//	 * Test if the optional field variable <code>structuralInstantiations</code> is set.
+//	 * @return <code>true</code> if the field variable is not an empty list
+//	 */
+//	public boolean isSetSubComponents() {
+//		if (subComponents.isEmpty())
+//			return false;
+//		else
+//			return true;
+//	}
 
 	/**
 	 * Calls the StructuralInstantiation constructor to create a new instance using the specified parameters, 
@@ -449,16 +449,16 @@ public class ComponentDefinition extends TopLevel {
 		}
 	}
 	
-	/**
-	 * Test if the optional field variable <code>sequenceConstraints</code> is set.
-	 * @return <code>true</code> if the field variable is not an empty list
-	 */
-	public boolean isSetSequenceConstraints() {
-		if (sequenceConstraints.isEmpty())
-			return false;
-		else
-			return true;
-	}
+//	/**
+//	 * Test if the optional field variable <code>sequenceConstraints</code> is set.
+//	 * @return <code>true</code> if the field variable is not an empty list
+//	 */
+//	public boolean isSetSequenceConstraints() {
+//		if (sequenceConstraints.isEmpty())
+//			return false;
+//		else
+//			return true;
+//	}
 	
 	/**
 	 * Calls the StructuralConstraint constructor to create a new instance using the specified parameters, 
@@ -541,7 +541,7 @@ public class ComponentDefinition extends TopLevel {
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
 	 */
-	public void updateDisplayId(String newDisplayId) {
+	protected void updateDisplayId(String newDisplayId) {
 		super.updateDisplayId(newDisplayId);
 		if (isURIcompliant(this.getIdentity())) {			
 			// TODO Change all of its children's displayIds in their URIs.
@@ -553,7 +553,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Replace the display ID in the URI of the object's parent with the specified one.  
 	 * @param id
 	 */
-	public void setParentDisplayId(String id) {
+	private void setParentDisplayId(String id) {
 		// TODO fill in
 	}
 	
@@ -561,22 +561,22 @@ public class ComponentDefinition extends TopLevel {
 	 * Replace the display ID in the URI of the object's grand parent (2 levels up) with the specified one.
 	 * @param id
 	 */
-	public void setGrandParentDisplayId(String id) {
+	private void setGrandParentDisplayId(String id) {
 		// TODO fill in
 	}
 	
-	/**
-	 * Replace the authority in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param authority
-	 */
-	public void setAuthority(String authority) {
-		// TODO Need to change the parent's authority?
-	}
+//	/**
+//	 * Replace the authority in the object's URI with the specified one, and make the same replacement for all of its children objects.
+//	 * @param authority
+//	 */
+//	public void setAuthority(String authority) {
+//		// TODO Need to change the parent's authority?
+//	}
 	
 	/**
 	 * Provide a deep copy of this object.
 	 */
-	public ComponentDefinition deepCopy() {
+	protected ComponentDefinition deepCopy() {
 		return new ComponentDefinition(this);
 	}
 	
@@ -605,7 +605,7 @@ public class ComponentDefinition extends TopLevel {
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
 	 */
-	public void updateVersion(String newVersion) {
+	protected void updateVersion(String newVersion) {
 		super.updateVersion(newVersion);
 		if (isURIcompliant(this.getIdentity())) {			
 			// TODO Change all of its children's versions in their URIs.
@@ -623,7 +623,7 @@ public class ComponentDefinition extends TopLevel {
 		result = prime * result
 				+ ((sequenceConstraints == null) ? 0 : sequenceConstraints.hashCode());
 		result = prime * result + ((subComponents == null) ? 0 : subComponents.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + ((types == null) ? 0 : types.hashCode());
 		return result;
 	}
 
@@ -664,10 +664,10 @@ public class ComponentDefinition extends TopLevel {
 				return false;
 		} else if (!subComponents.equals(other.subComponents))
 			return false;
-		if (type == null) {
-			if (other.type != null)
+		if (types == null) {
+			if (other.types != null)
 				return false;
-		} else if (!type.equals(other.type))
+		} else if (!types.equals(other.types))
 			return false;
 		return true;
 	}
