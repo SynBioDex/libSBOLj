@@ -71,7 +71,9 @@ public class SBOLWriter {
 		{
 			write(doc, buffer);
 		}
-		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		catch (XMLStreamException e) { }
+		catch (FactoryConfigurationError  e) { }
+		catch (CoreIoException e) { }
 		finally
 		{
 			try
@@ -113,7 +115,9 @@ public class SBOLWriter {
 		{
 			writeJson(doc, buffer);
 		}
-		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		catch (XMLStreamException e) { }
+		catch (FactoryConfigurationError  e) { }
+		catch (CoreIoException e) { }
 		catch (Throwable e) { e.printStackTrace();}
 		finally
 		{
@@ -170,7 +174,9 @@ public class SBOLWriter {
 		{
 			writeRdf(doc, buffer);
 		}
-		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		catch (XMLStreamException e) { }
+		catch (FactoryConfigurationError  e) { }
+		catch (CoreIoException e) { }
 		finally
 		{
 			try
@@ -229,7 +235,9 @@ public class SBOLWriter {
 		{
 			writeTurtle(doc, buffer);
 		}
-		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		catch (XMLStreamException e) { }
+		catch (FactoryConfigurationError  e) { }
+		catch (CoreIoException e) { }
 		finally
 		{
 			try
@@ -271,7 +279,7 @@ public class SBOLWriter {
 
 	private static void writeJson(Writer stream, DocumentRoot<QName> document) throws Exception
 	{
-		Map<String, Object> config = new HashMap<>();
+		HashMap<String, Object> config = new HashMap<String,Object>();
 		config.put(JsonGenerator.PRETTY_PRINTING, true);
 		JsonGenerator writer = Json.createGeneratorFactory(config).createGenerator(stream);
 		JsonIo jsonIo = new JsonIo();
