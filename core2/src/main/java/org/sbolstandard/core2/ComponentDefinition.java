@@ -315,8 +315,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceAnnotation removeSequenceAnnotation(URI sequenceAnnotationURI) {
-		URI key = URI.create(sequenceAnnotationURI.toString().toLowerCase());
-		return sequenceAnnotations.remove(key);
+		//URI key = URI.create(sequenceAnnotationURI.toString().toLowerCase());
+		return sequenceAnnotations.remove(sequenceAnnotationURI);
 	}
 	
 	/**
@@ -325,8 +325,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceAnnotation getSequenceAnnotation(URI sequenceAnnotationURI) {
-		URI key = URI.create(sequenceAnnotationURI.toString().toLowerCase());
-		return sequenceAnnotations.get(key);
+		return sequenceAnnotations.get(sequenceAnnotationURI);
 	}
 	
 	/**
@@ -403,8 +402,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Component removeSubComponent(URI subComponentURI) {
-		URI key = URI.create(subComponentURI.toString().toLowerCase());
-		return subComponents.remove(key);
+		//URI key = URI.create(subComponentURI.toString().toLowerCase());
+		return subComponents.remove(subComponentURI);
 	}
 	
 	/**
@@ -413,8 +412,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Component getSubComponent(URI subComponentURI) {
-		URI key = URI.create(subComponentURI.toString().toLowerCase());
-		return subComponents.get(key);
+		//URI key = URI.create(subComponentURI.toString().toLowerCase());
+		return subComponents.get(subComponentURI);
 	}
 	
 	/**
@@ -481,8 +480,8 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public void addSequenceConstraint(SequenceConstraint sequenceConstraint) {
 		// TODO: @addStructuralConstraint, Check for duplicated entries.
-		URI key = URI.create(sequenceConstraint.getIdentity().toString().toLowerCase());
-		sequenceConstraints.put(key, sequenceConstraint);
+		//URI key = URI.create(sequenceConstraint.getIdentity().toString().toLowerCase());
+		sequenceConstraints.put(sequenceConstraint.getIdentity(), sequenceConstraint);
 	}
 	
 	/**
@@ -491,8 +490,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceConstraint removeSequenceConstraint(URI sequenceConstraintURI) {
-		URI key = URI.create(sequenceConstraintURI.toString().toLowerCase());
-		return sequenceConstraints.remove(key);
+		//URI key = URI.create(sequenceConstraintURI.toString().toLowerCase());
+		return sequenceConstraints.remove(sequenceConstraintURI);
 	}
 	
 	/**
@@ -501,8 +500,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceConstraint getSequenceConstraint(URI sequenceConstraintURI) {
-		URI key = URI.create(sequenceConstraintURI.toString().toLowerCase());
-		return sequenceConstraints.get(key);
+		return sequenceConstraints.get(sequenceConstraintURI);
 	}
 	
 	/**
