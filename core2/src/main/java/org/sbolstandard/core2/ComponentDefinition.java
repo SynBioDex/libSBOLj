@@ -307,8 +307,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceAnnotation removeSequenceAnnotation(URI sequenceAnnotationURI) {
-		URI key = URI.create(sequenceAnnotationURI.toString().toLowerCase());
-		return sequenceAnnotations.remove(key);
+		//URI key = URI.create(sequenceAnnotationURI.toString().toLowerCase());
+		return sequenceAnnotations.remove(sequenceAnnotationURI);
 	}
 	
 	/**
@@ -433,8 +433,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Component removeSubComponent(URI subComponentURI) {
-		URI key = URI.create(subComponentURI.toString().toLowerCase());
-		return subComponents.remove(key);
+		//URI key = URI.create(subComponentURI.toString().toLowerCase());
+		return subComponents.remove(subComponentURI);
 	}
 	
 	/**
@@ -442,7 +442,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subComponentURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Component getSubComponent(URI subComponentURI) {		
+	public Component getSubComponent(URI subComponentURI) {
 		return subComponents.get(subComponentURI);
 	}
 	
@@ -558,8 +558,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceConstraint removeSequenceConstraint(URI sequenceConstraintURI) {
-		URI key = URI.create(sequenceConstraintURI.toString().toLowerCase());
-		return sequenceConstraints.remove(key);
+		//URI key = URI.create(sequenceConstraintURI.toString().toLowerCase());
+		return sequenceConstraints.remove(sequenceConstraintURI);
 	}
 	
 	/**
@@ -567,7 +567,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @param sequenceConstraintURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public SequenceConstraint getSequenceConstraint(URI sequenceConstraintURI) {		
+	public SequenceConstraint getSequenceConstraint(URI sequenceConstraintURI) {
 		return sequenceConstraints.get(sequenceConstraintURI);
 	}
 	
