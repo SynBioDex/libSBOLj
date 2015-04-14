@@ -8,13 +8,15 @@ import java.util.List;
 import org.sbolstandard.core2.MapsTo;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.Sbol2Terms;
+import org.sbolstandard.core2.util.UriCompliance;
+import org.sbolstandard.core2.util.Version;
 
 
 public abstract class ComponentInstance extends Documented {
 	
 	private AccessType access;
 	private URI definition;
-	private HashMap<URI, MapsTo> mappings;
+	private HashMap<URI, MapsTo> mapsTos;
 	
 	public static enum AccessType {
 		PUBLIC("public"), PRIVATE("private");
@@ -80,7 +82,7 @@ public abstract class ComponentInstance extends Documented {
 		super(identity);
 		setAccess(access);
 		setDefinition(definition);		
-		this.mappings = new HashMap<URI, MapsTo>();
+		this.mapsTos = new HashMap<URI, MapsTo>();
 	}
 	
 	protected ComponentInstance(ComponentInstance component) {
@@ -145,7 +147,7 @@ public abstract class ComponentInstance extends Documented {
 	 * @return <code>true</code> if it is not an empty list
 	 */
 	public boolean isSetMappings() {
-		if (mappings.isEmpty())
+		if (mapsTos.isEmpty())
 			return false;
 		else
 			return true;
@@ -171,9 +173,37 @@ public abstract class ComponentInstance extends Documented {
 	 * Adds the specified instance to the list of references. 
 	 * @param reference
 	 */
-	public void addMapping(MapsTo reference) {
-		// TODO: @addReference, Check for duplicated entries.
-		mappings.put(reference.getIdentity(), reference);
+	public void addMapping(MapsTo mapTo) {
+		
+		mapsTos.put(mapTo.getIdentity(), mapTo);
+//		if (UriCompliance.isChildURIcompliant(this.getIdentity(), mapTo.getIdentity())) {
+//			URI persistentId = URI.create(UriCompliance.extractPersistentId(mapTo.getIdentity()));
+//			// Check if URI exists in the mapsTos map.
+//			if (!mapsTos.containsKey(mapTo.getIdentity())) {
+//				mapsTos.put(mapTo.getIdentity(), mapTo);
+//				MapsTo latestSubComponent = mapsTos.get(persistentId);
+//				if (latestSubComponent == null) {
+//					mapsTos.put(persistentId, mapTo);
+//				}
+//				else {						
+//					if (Version.isFirstVersionNewer(UriCompliance.extractVersion(mapTo.getIdentity()), 
+//							UriCompliance.extractVersion(latestSubComponent.getIdentity()))) {								
+//						mapsTos.put(persistentId, mapTo);
+//					}
+//				}
+//				return true;
+//			}
+//			else // key exists in mapsTos map
+//				return false;
+//		}
+//		else { // Only check if mapTo's URI exists in all maps.
+//			if (!mapsTos.containsKey(mapTo.getIdentity())) {
+//				mapsTos.put(mapTo.getIdentity(), mapTo);					
+//				return true;
+//			}
+//			else // key exists in mapsTos map
+//				return false;
+//		}
 	}
 	
 	/**
@@ -182,7 +212,7 @@ public abstract class ComponentInstance extends Documented {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo removeMapping(URI mappingURI) {
-		return mappings.remove(mappingURI);
+		return mapsTos.remove(mappingURI);
 	}
 	
 	/**
@@ -191,7 +221,7 @@ public abstract class ComponentInstance extends Documented {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo getMapping(URI referenceURI) {
-		return mappings.get(referenceURI);
+		return mapsTos.get(referenceURI);
 	}
 	
 	/**
@@ -199,14 +229,14 @@ public abstract class ComponentInstance extends Documented {
 	 * @return the list of reference instances owned by this instance.
 	 */
 	public List<MapsTo> getMappings() {
-		return new ArrayList<MapsTo>(mappings.values());
+		return new ArrayList<MapsTo>(mapsTos.values());
 	}
 	
 	/**
 	 * Removes all entries of the list of reference instances owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearMappings() {
-		Object[] keySetArray = mappings.keySet().toArray();
+		Object[] keySetArray = mapsTos.keySet().toArray();
 		for (Object key : keySetArray) {
 			removeMapping((URI) key);
 		}

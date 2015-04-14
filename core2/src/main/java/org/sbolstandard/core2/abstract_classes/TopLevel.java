@@ -1,16 +1,25 @@
 package org.sbolstandard.core2.abstract_classes;
 
 import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.sbolstandard.core2.util.UriCompliance;
 
 public abstract class TopLevel extends Documented{
+		
+//	private static String persistentIdURI;
+//	private static String URIprefix;
+//	private static String displayIdURI;
+//	private static String versionURI;
 
 	public TopLevel(URI identity) {
 		super(identity);
 	}
 
-	public TopLevel(String authority, String id, String version) {
-		super(authority, id, version);
-	}
+//	public TopLevel(String authority, String id, String version) {
+//		super(authority, id, version);
+//	}
 
 	protected TopLevel(TopLevel toplevel) {
 		super(toplevel);
@@ -51,9 +60,11 @@ public abstract class TopLevel extends Documented{
 	 */
 	protected void updateDisplayId(String newDisplayId) {
 		this.setDisplayId(newDisplayId);
-		if (isURIcompliant(this.getIdentity())) {
-			String newURIStr = this.extractURIprefix()
-								+ '/' + newDisplayId + '/' + this.extractVersion();			
+		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())
+				&& UriCompliance.isDisplayIdCompliant(newDisplayId)) {
+			String newURIStr = UriCompliance.extractURIprefix(this.getIdentity())
+								+ '/' + newDisplayId + '/' 
+								+ UriCompliance.extractVersion(this.getIdentity());			
 			URI newURI = URI.create(newURIStr);
 			this.setIdentity(newURI);			
 		}
@@ -64,8 +75,9 @@ public abstract class TopLevel extends Documented{
 	 */
 	protected void updateVersion(String newVersion) {
 		this.setVersion(newVersion);
-		if (isURIcompliant(this.getIdentity())) {
-			String newURIStr = this.extractPersistentId() + '/' + newVersion;			
+		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())
+				&& UriCompliance.isDisplayIdCompliant(newVersion)) {
+			String newURIStr = UriCompliance.extractPersistentId(this.getIdentity()) + '/' + newVersion;			
 			URI newURI = URI.create(newURIStr);
 			this.setIdentity(newURI);			
 		}		

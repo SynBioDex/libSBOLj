@@ -10,6 +10,8 @@ import java.util.Set;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
+import org.sbolstandard.core2.util.UriCompliance;
+import org.sbolstandard.core2.util.Version;
 
 /**
  * @author Zhen Zhang
@@ -230,9 +232,46 @@ public class ModuleDefinition extends TopLevel {
 	 * Adds the specified instance to the list of interactions. 
 	 * @param interaction
 	 */
-	public void addInteraction(Interaction interaction) {
-		// TODO: @addInteraction, Check for duplicated entries.
-		interactions.put(interaction.getIdentity(), interaction);
+	public boolean addInteraction(Interaction interaction) {
+		if (UriCompliance.isChildURIcompliant(this.getIdentity(), interaction.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(UriCompliance.extractPersistentId(interaction.getIdentity()));
+			if (!keyExistsInOtherMaps(interactions.keySet(), persistentId)) {
+				// Check if URI exists in the interactions map.
+				if (!interactions.containsKey(interaction.getIdentity())) {
+					interactions.put(interaction.getIdentity(), interaction);
+					Interaction latestInteraction = interactions.get(persistentId);
+					if (latestInteraction == null) {
+						interactions.put(persistentId, interaction);
+					}
+					else {						
+						if (Version.isFirstVersionNewer(UriCompliance.extractVersion(interaction.getIdentity()),
+								UriCompliance.extractVersion(latestInteraction.getIdentity()))) {
+							interactions.put(persistentId, interaction);
+						}
+					}
+					return true;
+				}
+				else // key exists in interactions map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if interaction's URI exists in all maps.
+			if (!keyExistsInOtherMaps(interactions.keySet(), interaction.getIdentity())) {
+				if (!interactions.containsKey(interaction.getIdentity())) {
+					interactions.put(interaction.getIdentity(), interaction);					
+					return true;
+				}
+				else // key exists in interactions map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+
+
 	}
 	
 	/**
@@ -311,12 +350,47 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Adds the specified instance to the list of functionalInstantiations. 
+	 * Adds the specified instance to the list of components.
 	 * @param component
 	 */
-	public void addComponent(FunctionalComponent component) {
-		// TODO: @addFunctionalInstantiation, Check for duplicated entries.
-		components.put(component.getIdentity(), component);
+	public boolean addComponent(FunctionalComponent component) {
+		if (UriCompliance.isChildURIcompliant(this.getIdentity(), component.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(UriCompliance.extractPersistentId(component.getIdentity()));
+			if (!keyExistsInOtherMaps(components.keySet(), persistentId)) {
+				// Check if URI exists in the components map.
+				if (!components.containsKey(component.getIdentity())) {
+					components.put(component.getIdentity(), component);
+					FunctionalComponent latestFunctionalComponent = components.get(persistentId);
+					if (latestFunctionalComponent == null) {
+						components.put(component.getPersistentIdentity(), component);
+					}
+					else {						
+						if (Version.isFirstVersionNewer(UriCompliance.extractVersion(component.getIdentity()),
+								UriCompliance.extractVersion(latestFunctionalComponent.getIdentity()))) {
+							components.put(component.getPersistentIdentity(), component);
+						}
+					}
+					return true;
+				}
+				else // key exists in components map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if component's URI exists in all maps.
+			if (!keyExistsInOtherMaps(components.keySet(), component.getIdentity())) {
+				if (!components.containsKey(component.getIdentity())) {
+					components.put(component.getIdentity(), component);					
+					return true;
+				}
+				else // key exists in components map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
 	}
 	
 	/**
@@ -414,7 +488,6 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeModel(URI modelURI) {
-		// TODO: Need to check if the set of models' URIs is empty. 
 		return models.remove(modelURI);
 	}
 	
@@ -448,8 +521,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public void clearModels() {
 		models.clear();
-	}
-
+	}	
 
 	@Override
 	public int hashCode() {
@@ -523,7 +595,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	protected void updateDisplayId(String newDisplayId) {
 		super.updateDisplayId(newDisplayId);
-		if (isURIcompliant(this.getIdentity())) {			
+		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {					
 			// TODO Change all of its children's displayIds in their URIs.
 		}
 	}
@@ -544,15 +616,28 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	protected void updateVersion(String newVersion) {
 		super.updateVersion(newVersion);
-		if (isURIcompliant(this.getIdentity())) {			
+		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {					
 			// TODO Change all of its children's versions in their URIs.
 		}
 	}
-
-//	/**
-//	 * Set optional field variable <code>models</code> to an empty list.
-//	 */
-//	public void unsetModels() {
-//		models.clear();
-//	}
+	
+	/**
+	 * Check if the specified key exists in any hash maps in this class other than the one with the specified keySet. This method
+	 * constructs a set of key sets for other hash maps first, and then checks if the key exists.
+	 * @param keySet
+	 * @param key
+	 * @return <code>true</code> if the specified key exists in other hash maps.
+	 */
+	private boolean keyExistsInOtherMaps(Set<URI> keySet, URI key) {
+		Set<Set<URI>> complementSet = new HashSet<Set<URI>>();
+		complementSet.add(components.keySet());
+		complementSet.add(interactions.keySet());		
+		complementSet.remove(keySet);
+		for (Set<URI> otherKeySet : complementSet) {
+			if (otherKeySet.contains(key)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

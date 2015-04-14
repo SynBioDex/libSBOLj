@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.sbolstandard.core2.abstract_classes.TopLevel;
+import org.sbolstandard.core2.util.UriCompliance;
 
 /**
  * @author Zhen Zhang
@@ -199,7 +200,7 @@ public class Model extends TopLevel {
 	 */
 	public void updateDisplayId(String newDisplayId) {
 		super.updateDisplayId(newDisplayId);
-		if (isURIcompliant(this.getIdentity())) {			
+		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {				
 			// TODO Change all of its children's displayIds in their URIs.
 		}
 	}
@@ -220,7 +221,7 @@ public class Model extends TopLevel {
 	 */
 	public void updateVersion(String newVersion) {
 		super.updateVersion(newVersion);
-		if (isURIcompliant(this.getIdentity())) {			
+		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
 			// TODO Change all of its children's versions in their URIs.
 		}
 	}

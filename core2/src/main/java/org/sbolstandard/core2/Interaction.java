@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.sbolstandard.core2.abstract_classes.Documented;
+import org.sbolstandard.core2.util.UriCompliance;
 
 /**
  * 
@@ -127,9 +128,45 @@ public class Interaction extends Documented {
 	 * @param participation
 	 */
 	public void addParticipation(Participation participation) {
-		// TODO: @addParticipation, Check for duplicated entries.
-		
+		// TODO: @addParticipation, Check for duplicated entries.		
 		participations.put(participation.getIdentity(), participation);
+//		if (UriCompliance.isChildURIcompliant(this.getIdentity(), subComponent.getIdentity())) {
+//			// Check if persistent identity exists in other maps.
+//			URI persistentId = URI.create(UriCompliance.extractPersistentId(subComponent.getIdentity()));
+//			if (!keyExistsInOtherMaps(subComponents.keySet(), persistentId)) {
+//				// Check if URI exists in the subComponents map.
+//				if (!subComponents.containsKey(subComponent.getIdentity())) {
+//					subComponents.put(subComponent.getIdentity(), subComponent);
+//					Component latestSubComponent = subComponents.get(persistentId);
+//					if (latestSubComponent == null) {
+//						subComponents.put(persistentId, subComponent);
+//					}
+//					else {						
+//						if (Version.isFirstVersionNewer(UriCompliance.extractVersion(subComponent.getIdentity()), 
+//								UriCompliance.extractVersion(latestSubComponent.getIdentity()))) {								
+//							subComponents.put(persistentId, subComponent);
+//						}
+//					}
+//					return true;
+//				}
+//				else // key exists in subComponents map
+//					return false;
+//			}
+//			else // key exists in other maps
+//				return false;
+//		}
+//		else { // Only check if subComponent's URI exists in all maps.
+//			if (!keyExistsInOtherMaps(subComponents.keySet(), subComponent.getIdentity())) {
+//				if (!subComponents.containsKey(subComponent.getIdentity())) {
+//					subComponents.put(subComponent.getIdentity(), subComponent);					
+//					return true;
+//				}
+//				else // key exists in subComponents map
+//					return false;
+//			}
+//			else // key exists in other maps
+//				return false;
+//		}		
 	}
 	
 	/**

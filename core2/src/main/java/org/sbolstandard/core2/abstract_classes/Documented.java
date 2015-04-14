@@ -21,16 +21,12 @@ public abstract class Documented extends Identified {
 	 */
 	public Documented(URI identity) {
 		super(identity);
-		if (isURIcompliant(identity)) {
-			// TODO extract display ID
-		}
-
 	}
 	
-	public Documented(String URIprefix, String displayId, String version) {
-		super(URIprefix, displayId, version);
-		setDisplayId(displayId);
-	}
+//	public Documented(String URIprefix, String displayId, String version) {
+//		super(URIprefix, displayId, version);
+//		setDisplayId(displayId);
+//	}
 	
 	protected Documented(Documented documented) {
 		super(documented);
