@@ -209,6 +209,7 @@ public class SBOLTestUtils {
 		return i;
 	}
 
+	//TODO:
 	//	public static ComponentInstance createComponentInstance(SBOLDocument document, String id, Set<URI> type,
 	//			List<Participation> participations, List<Annotation> annotations)
 	//	{
