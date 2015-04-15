@@ -65,7 +65,7 @@ public class SBOLTestUtils {
 		if (sequenceConstraints!= null)
 			componentDefinition.setSequenceConstraints(sequenceConstraints);
 		if (subComponents!= null)
-			componentDefinition.setSubComponents(subComponents);
+			componentDefinition.setComponents(subComponents);
 		if (annotations != null)
 			componentDefinition.setAnnotations(annotations);
 		return componentDefinition;

@@ -88,6 +88,15 @@ public abstract class ComponentInstance extends Documented {
 	
 	protected ComponentInstance(ComponentInstance component) {
 		super(component);
+		setAccess(component.getAccess());
+		setDefinition(component.getDefinition());	
+		if (!component.getMapsTos().isEmpty()) {
+			List<MapsTo> mapsTos = new ArrayList<MapsTo>();
+			for (MapsTo mapsTo : component.getMapsTos()) {
+				mapsTos.add(mapsTo.deepCopy());
+			}
+			this.setMapsTo(mapsTos);
+		}
 	}
 
 	/**
@@ -143,16 +152,16 @@ public abstract class ComponentInstance extends Documented {
 		}
 	}
 
-	/**
-	 * Test if optional field variable <code>references</code> is set.
-	 * @return <code>true</code> if it is not an empty list
-	 */
-	public boolean isSetMappings() {
-		if (mapsTos.isEmpty())
-			return false;
-		else
-			return true;
-	}	
+//	/**
+//	 * Test if optional field variable <code>references</code> is set.
+//	 * @return <code>true</code> if it is not an empty list
+//	 */
+//	public boolean isSetMappings() {
+//		if (mapsTos.isEmpty())
+//			return false;
+//		else
+//			return true;
+//	}	
 	
 	/**
 	 * Calls the MapsTo constructor to create a new instance using the specified parameters, 
@@ -166,7 +175,7 @@ public abstract class ComponentInstance extends Documented {
 	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
-		addMapping(mapping);
+		addMapsTo(mapping);
 		return mapping;
 	}
 	
@@ -198,7 +207,7 @@ public abstract class ComponentInstance extends Documented {
 	 * Adds the specified instance to the list of references. 
 	 * @param reference
 	 */
-	public boolean addMapping(MapsTo mapsTo) {
+	public boolean addMapsTo(MapsTo mapsTo) {
 		//mapsTos.put(mapTo.getIdentity(), mapTo);
 		if (isChildURIcompliant(this.getIdentity(), mapsTo.getIdentity())) {
 			URI persistentId = URI.create(extractPersistentId(mapsTo.getIdentity()));
@@ -235,7 +244,7 @@ public abstract class ComponentInstance extends Documented {
 	 * @param mappingURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo removeMapping(URI mappingURI) {
+	public MapsTo removeMapsTo(URI mappingURI) {
 		return mapsTos.remove(mappingURI);
 	}
 	
@@ -244,7 +253,7 @@ public abstract class ComponentInstance extends Documented {
 	 * @param referenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo getMapping(URI referenceURI) {
+	public MapsTo getMapsTo(URI referenceURI) {
 		return mapsTos.get(referenceURI);
 	}
 	
@@ -252,17 +261,17 @@ public abstract class ComponentInstance extends Documented {
 	 * Returns the list of reference instances owned by this instance. 
 	 * @return the list of reference instances owned by this instance.
 	 */
-	public List<MapsTo> getMappings() {
+	public List<MapsTo> getMapsTos() {
 		return new ArrayList<MapsTo>(mapsTos.values());
 	}
 	
 	/**
 	 * Removes all entries of the list of reference instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearMappings() {
+	public void clearMapsTos() {
 		Object[] keySetArray = mapsTos.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeMapping((URI) key);
+			removeMapsTo((URI) key);
 		}
 	}
 		
@@ -270,11 +279,11 @@ public abstract class ComponentInstance extends Documented {
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param mappings
 	 */
-	public void setMappings(
+	public void setMapsTo(
 			List<MapsTo> mappings) {
-		clearMappings();		
+		clearMapsTos();		
 		for (MapsTo reference : mappings) {
-			addMapping(reference);
+			addMapsTo(reference);
 		}
 	}
 	

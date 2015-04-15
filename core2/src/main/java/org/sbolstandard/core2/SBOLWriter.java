@@ -380,7 +380,7 @@ public class SBOLWriter {
 				}
 			}
 
-			formatSubComponents(c.getSubComponents(),list);
+			formatSubComponents(c.getComponents(),list);
 			formatSequenceAnnotations(c.getSequenceAnnotations(),list);
 			formatSequenceConstraints(c.getSequenceConstraints(),list);
 			if(c.getSequence() != null)
@@ -410,9 +410,9 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccessURI()));
 			if(f.getDirection() != null)
 				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirectionURI()));
-			if(f.isSetMappings())
+			if(!f.getMapsTos().isEmpty())//(f.isSetMappings())
 			{
-				List<NestedDocument> referenceList = getMapsTo(f.getMappings());
+				List<NestedDocument> referenceList = getMapsTo(f.getMapsTos());
 
 				for(NestedDocument n : referenceList)
 				{
@@ -649,9 +649,9 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, s.getAccessURI()));
 			if(s.getDefinition() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinition()));
-			if(s.getMappings() != null)
+			if(s.getMapsTos() != null)
 			{
-				List<NestedDocument> referenceList = getMapsTo(s.getMappings());
+				List<NestedDocument> referenceList = getMapsTo(s.getMapsTos());
 				for(NestedDocument n : referenceList)
 				{
 					list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasMappings, n));
