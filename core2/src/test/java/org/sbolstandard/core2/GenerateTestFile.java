@@ -11,8 +11,8 @@ public class GenerateTestFile
 	{
 		SBOLDocument document = new SBOLDocument();
 
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
 		writeRdfFile(document, "sampleToggleSwitch.rdf");
 

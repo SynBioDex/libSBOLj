@@ -189,7 +189,7 @@ public class writeTester {
 
 	private static Collection get_myParts (SBOLDocument SBOL2Doc_test)
 	{
-		SBOL2Doc_test.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
+		SBOL2Doc_test.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
 		Collection myParts = createCollection(SBOL2Doc_test,
 				getData("myParts/1/0","myParts","1.0","myParts","myParts", "myParts"),
 				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
@@ -698,7 +698,7 @@ public class writeTester {
 		String description 	   = topLevelData.get(5);
 
 		GenericTopLevel toplevel =  SBOL2Doc_test.createGenericTopLevel(identity, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
-		SBOL2Doc_test.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		SBOL2Doc_test.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
 		setCommonTopLevelData(toplevel, identity, persistentIdentity, version, displayId, name, description);
 		return toplevel;
