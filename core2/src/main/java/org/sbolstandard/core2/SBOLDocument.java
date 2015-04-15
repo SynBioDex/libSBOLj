@@ -11,8 +11,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.sbolstandard.core2.abstract_classes.Identified;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
+import static org.sbolstandard.core2.util.UriCompliance.*;
+import org.sbolstandard.core2.util.Version;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 
@@ -33,7 +34,6 @@ public class SBOLDocument {
 	private HashMap<URI,NamespaceBinding> nameSpaces;
 
 	public SBOLDocument() {
-		//identityMap = new HashMap<URI, Identified>();
 		genericTopLevels = new HashMap<URI, GenericTopLevel>();
 		collections = new HashMap<URI, Collection>();
 		componentDefinitions = new HashMap<URI, ComponentDefinition>();
@@ -53,23 +53,16 @@ public class SBOLDocument {
 	 * @return {@link Model} instance.
 	 */
 	public ModuleDefinition createModuleDefinition(String URIprefix, String displayId, String version, Set<URI> roles) {
-		URI newModuleDefinitionURI = URI.create(URIprefix + '/' + displayId + version);
-		if (Identified.isURIcompliant(newModuleDefinitionURI)) {
-			ModuleDefinition newModuleDefinition = new ModuleDefinition(newModuleDefinitionURI, roles);
-			new ModuleDefinition(newModuleDefinitionURI, roles);
-			if (addModuleDefinition(newModuleDefinition)) {
-				return newModuleDefinition;
-			}
-			else
-				return null;
+		URI newModuleDefinitionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isTopLevelURIcompliant(newModuleDefinitionURI)) {		
+			return createModuleDefinition(newModuleDefinitionURI, roles);
 		}
 		else {
-			// TODO: Non-compliant URI
+			// TODO: Generate a warning here?
 			return null;
 		}
 	}
 	
-
 	/**
 	 * Create a new {@link ModuleDefinition} instance.
 	 * @param identity
@@ -88,8 +81,7 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addModuleDefinition(ModuleDefinition newModuleDefinition) {
-		//if (newModuleDefinition.isSetPersistentIdentity() && newModuleDefinition.isSetVersion()) {
-		if (Identified.isURIcompliant(newModuleDefinition.getIdentity())) {			
+		if (isTopLevelURIcompliant(newModuleDefinition.getIdentity())) {
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(moduleDefinitions.keySet(), newModuleDefinition.getPersistentIdentity())) {
@@ -101,7 +93,7 @@ public class SBOLDocument {
 						moduleDefinitions.put(newModuleDefinition.getPersistentIdentity(), newModuleDefinition);
 					}
 					else {
-						if (isFirstVersionNewer(newModuleDefinition.getVersion(), latestModuleDefinition.getVersion())) {
+						if (Version.isFirstVersionNewer(newModuleDefinition.getVersion(), latestModuleDefinition.getVersion())) {
 							moduleDefinitions.put(newModuleDefinition.getPersistentIdentity(), newModuleDefinition);
 						}
 					}
@@ -195,7 +187,8 @@ public class SBOLDocument {
 	 */
 	public boolean addCollection(Collection newCollection) {
 		//if (newCollection.isSetPersistentIdentity() && newCollection.isSetVersion()) {
-		if (Identified.isURIcompliant(newCollection.getIdentity())) {
+		//if (TopLevel.isURIcompliant(newCollection.getIdentity())) {
+		if (isTopLevelURIcompliant(newCollection.getIdentity())) {		
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(collections.keySet(), newCollection.getPersistentIdentity())) {
@@ -207,7 +200,7 @@ public class SBOLDocument {
 						collections.put(newCollection.getPersistentIdentity(), newCollection);
 					}
 					else {
-						if (isFirstVersionNewer(newCollection.getVersion(), latestCollection.getVersion())) {
+						if (Version.isFirstVersionNewer(newCollection.getVersion(), latestCollection.getVersion())) {
 							collections.put(newCollection.getPersistentIdentity(), newCollection);
 						}
 					}
@@ -231,12 +224,6 @@ public class SBOLDocument {
 			else // key exists in other maps
 				return false;
 		}
-	}
-
-
-	private boolean isFirstVersionNewer(String version1, String version2) {
-		// TODO compare according to Maven's version scheme.
-		return true;
 	}
 
 
@@ -292,25 +279,38 @@ public class SBOLDocument {
 	
 	/**
 	 * Create a new {@link Model} instance.
-	 * @param identity
-	 * @param rdfType
-	 * @return {@link Model} instance.
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param source
+	 * @param language
+	 * @param framework
+	 * @param roles
+	 * @return
 	 */
 	public Model createModel(String URIprefix, String displayId, String version, 
 			URI source, URI language, URI framework, Set<URI> roles) {
-		URI newModelURI = URI.create(URIprefix + '/' + displayId + version);
-		if (Identified.isURIcompliant(newModelURI)) {
-			Model newModel = new Model(newModelURI, source, language, framework, roles);
-			if (addModel(newModel)) {
-				return newModel;
-			}
-			else
-				return null;
+		URI newModelURI = URI.create(URIprefix + '/' + displayId + '/' +version);
+		if (isTopLevelURIcompliant(newModelURI)) {
+			return createModel(newModelURI, source, language, framework, roles);
 		}
 		else {
-			// TODO: Non-compliant URI
+			// TODO: Generate a warning here?
 			return null;
 		}
+		
+//		if (TopLevel.isURIcompliant(newModelURI)) {
+//			Model newModel = new Model(newModelURI, source, language, framework, roles);
+//			if (addModel(newModel)) {
+//				return newModel;
+//			}
+//			else
+//				return null;
+//		}
+//		else {
+//			// TODO: Non-compliant URI
+//			return null;
+//		}
 	}
 
 	/**
@@ -334,8 +334,7 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addModel(Model newModel) {
-		//if (newModel.isSetPersistentIdentity() && newModel.isSetVersion()) {
-		if (Identified.isURIcompliant(newModel.getIdentity())) {
+		if (isTopLevelURIcompliant(newModel.getIdentity())) {			
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(models.keySet(), newModel.getPersistentIdentity())) {
@@ -347,7 +346,7 @@ public class SBOLDocument {
 						models.put(newModel.getPersistentIdentity(), newModel);
 					}
 					else {
-						if (isFirstVersionNewer(newModel.getVersion(), latestModel.getVersion())) {
+						if (Version.isFirstVersionNewer(newModel.getVersion(), latestModel.getVersion())) {
 							models.put(newModel.getPersistentIdentity(), newModel);
 						}
 					}
@@ -445,19 +444,25 @@ public class SBOLDocument {
 	 * @return the created {@link ComponentDefinition} instance.
 	 */
 	public ComponentDefinition createComponentDefinition(String URIprefix, String displayId, String version, Set<URI> type, Set<URI> roles) {
-		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + displayId + version);
-		if (Identified.isURIcompliant(newComponentDefinitionURI)) {
-			ComponentDefinition newComponentDefinition = new ComponentDefinition(newComponentDefinitionURI, type, roles);
-			if (addComponentDefinition(newComponentDefinition)) {
-				return newComponentDefinition;
-			}
-			else
-				return null;
+		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isTopLevelURIcompliant(newComponentDefinitionURI)) {		
+			return createComponentDefinition(newComponentDefinitionURI, type, roles);
 		}
 		else {
-			// TODO: Non-compliant URI
+			// TODO: Generate a warning here?
 			return null;
 		}
+//		if (TopLevel.isURIcompliant(newComponentDefinitionURI)) {
+//			ComponentDefinition newComponentDefinition = new ComponentDefinition(newComponentDefinitionURI, type, roles);
+//			if (addComponentDefinition(newComponentDefinition)) {
+//				return newComponentDefinition;
+//			}
+//			else
+//				return null;
+//		}
+//		else {
+//			return null;
+//		}
 	}
 
 	/**
@@ -465,9 +470,8 @@ public class SBOLDocument {
 	 * @param newComponentDefinition
 	 * @return
 	 */
-	public boolean addComponentDefinition(ComponentDefinition newComponentDefinition) {
-		//if (newComponentDefinition.isSetPersistentIdentity() && newComponentDefinition.isSetVersion()) {
-		if (Identified.isURIcompliant(newComponentDefinition.getIdentity())) {
+	public boolean addComponentDefinition(ComponentDefinition newComponentDefinition) {		
+		if (isTopLevelURIcompliant(newComponentDefinition.getIdentity())) {
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(componentDefinitions.keySet(), newComponentDefinition.getPersistentIdentity())) {
@@ -479,7 +483,7 @@ public class SBOLDocument {
 						componentDefinitions.put(newComponentDefinition.getPersistentIdentity(), newComponentDefinition);
 					}
 					else {
-						if (isFirstVersionNewer(newComponentDefinition.getVersion(), latestComponentDefinition.getVersion())) {
+						if (Version.isFirstVersionNewer(newComponentDefinition.getVersion(), latestComponentDefinition.getVersion())) {
 							componentDefinitions.put(newComponentDefinition.getPersistentIdentity(), newComponentDefinition);
 						}
 					}
@@ -576,25 +580,19 @@ public class SBOLDocument {
 	/**
 	 * Create a new {@link Sequence} instance.
 	 * @param URIprefix
-	 * @param id
+	 * @param displayId
 	 * @param elements
 	 * @param encoding
 	 * @return the created Sequence instance.
 	 */
-	public Sequence createSequence(String URIprefix, String id, String version, String elements, URI encoding) {
-		//Sequence newSequence = new Sequence(authority, id, elements, encoding);
-		URI newSequenceURI = URI.create(URIprefix + '/' + id + '/' + version);
-		if (Identified.isURIcompliant(newSequenceURI)) {
-			Sequence newSequence = new Sequence(newSequenceURI, elements, encoding);
-			if (addSequence(newSequence)) {
-				return newSequence;
-			}
-			else
-				return null;
+	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) {
+		URI newSequenceURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isTopLevelURIcompliant(newSequenceURI)) {		
+			return createSequence(newSequenceURI, elements, encoding);
 		}
 		else {
-			// TODO: Non-compliant URI
 			return null;
+			// TODO: Generate a warning here?
 		}
 	}
 
@@ -738,8 +736,7 @@ public class SBOLDocument {
 	 * @return <code>true</code> if the specified sequence is successfully added.
 	 */
 	public boolean addSequence(Sequence newSequence) {
-		//if (sequence.isSetPersistentIdentity() && sequence.isSetVersion()) {
-		if (Identified.isURIcompliant(newSequence.getIdentity())) {			
+		if (isTopLevelURIcompliant(newSequence.getIdentity())) {		
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(sequences.keySet(), newSequence.getPersistentIdentity())) {
@@ -842,19 +839,26 @@ public class SBOLDocument {
 	 * @return the created GenericTopLevel instance.
 	 */
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) {
-		URI newGenericTopLevelURI = URI.create(URIprefix + '/' + displayId + version);
-		if (Identified.isURIcompliant(newGenericTopLevelURI)) {
-			GenericTopLevel newGenericTopLevel = new GenericTopLevel(newGenericTopLevelURI, rdfType);
-			if (addGenericTopLevel(newGenericTopLevel)) {
-				return newGenericTopLevel;
-			}
-			else
-				return null;
+		URI newGenericTopLevelURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isTopLevelURIcompliant(newGenericTopLevelURI)) {
+			return createGenericTopLevel(newGenericTopLevelURI, rdfType);
 		}
 		else {
-			// TODO: Non-compliant URI
+			// TODO: Generate a warning here?
 			return null;
 		}
+		
+//		if (TopLevel.isURIcompliant(newGenericTopLevelURI)) {
+//			GenericTopLevel newGenericTopLevel = new GenericTopLevel(newGenericTopLevelURI, rdfType);
+//			if (addGenericTopLevel(newGenericTopLevel)) {
+//				return newGenericTopLevel;
+//			}
+//			else
+//				return null;
+//		}
+//		else {
+//			return null;
+//		}
 	}
 
 	/**
@@ -875,9 +879,7 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addGenericTopLevel(GenericTopLevel newGenericTopLevel) {
-		//if (newGenericTopLevel.isSetPersistentIdentity() && newGenericTopLevel.isSetVersion()) {
-		if (Identified.isURIcompliant(newGenericTopLevel.getIdentity())) {			
-			// Compliant URI should come in here.
+		if (isTopLevelURIcompliant(newGenericTopLevel.getIdentity())) {			
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(genericTopLevels.keySet(), newGenericTopLevel.getPersistentIdentity())) {
 				// Check if URI exists in the genericTopLevels map.
@@ -888,7 +890,7 @@ public class SBOLDocument {
 						genericTopLevels.put(newGenericTopLevel.getPersistentIdentity(), newGenericTopLevel);
 					}
 					else {
-						if (isFirstVersionNewer(newGenericTopLevel.getVersion(), latestGenericTopLevel.getVersion())) {
+						if (Version.isFirstVersionNewer(newGenericTopLevel.getVersion(), latestGenericTopLevel.getVersion())) {
 							genericTopLevels.put(newGenericTopLevel.getPersistentIdentity(), newGenericTopLevel);
 						}
 					}

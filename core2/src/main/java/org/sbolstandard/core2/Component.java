@@ -6,8 +6,8 @@ import org.sbolstandard.core2.abstract_classes.ComponentInstance;
 
 public class Component extends ComponentInstance{
 
-	public Component(URI identity, AccessType access, URI instantiatedComponent) {
-		super(identity, access, instantiatedComponent);
+	public Component(URI identity, AccessType access, URI componentDefinition) {
+		super(identity, access, componentDefinition);
 	}
 	
 	public Component(Component component) {

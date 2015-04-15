@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.sbolstandard.core2.abstract_classes.Location;
 
+import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.Version.*;
+
 public class MultiRange extends Location{
 	
 	private HashMap<URI, Range> ranges;
@@ -53,15 +56,65 @@ public class MultiRange extends Location{
 		return range;
 	}
 	
+	public Range createRange(String displayId, String version, Integer start, Integer end) {
+		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		if (parentPersistentIdStr != null) {
+			if (isDisplayIdCompliant(displayId)) {
+				if (isVersionCompliant(version)) {
+					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
+					return createRange(newMapsToURI, start, end);
+				}
+				else {
+					// TODO: Warning: version not compliant
+					return null;
+				}
+			}
+			else {
+				// TODO: Warning: display ID not compliant
+				return null;
+			}
+		}
+		else {
+			// TODO: Warning: Parent persistent ID is not compliant.
+			return null;
+		}
+	}
+	
 	/**
 	 * Adds the specified instance to the list of structuralAnnotations. 
 	 * @param range
 	 */
-	public void addRange(Range range) {
-		// TODO: @addRange, Check for duplicated entries.
-		ranges.put(range.getIdentity(), range);
+	public boolean addRange(Range range) {
+		if (isChildURIcompliant(this.getIdentity(), range.getIdentity())) {
+			URI persistentId = URI.create(extractPersistentId(range.getIdentity()));
+			// Check if URI exists in the ranges map.
+			if (!ranges.containsKey(range.getIdentity())) {
+				ranges.put(range.getIdentity(), range);
+				Range latestSubComponent = ranges.get(persistentId);
+				if (latestSubComponent == null) {
+					ranges.put(persistentId, range);
+				}
+				else {						
+					if (isFirstVersionNewer(extractVersion(range.getIdentity()), 
+							extractVersion(latestSubComponent.getIdentity()))) {								
+						ranges.put(persistentId, range);
+					}
+				}
+				return true;
+			}
+			else // key exists in ranges map
+				return false;
+		}
+		else { // Only check if mapTo's URI exists in all maps.
+			if (!ranges.containsKey(range.getIdentity())) {
+				ranges.put(range.getIdentity(), range);					
+				return true;
+			}
+			else // key exists in ranges map
+				return false;
+		}		
 	}
-	
+
 	/**
 	 * Removes the instance matching the specified URI from the list of structuralAnnotations if present.
 	 * @param rangeURI

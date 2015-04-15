@@ -3,6 +3,8 @@ package org.sbolstandard.core2.abstract_classes;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
 
@@ -31,13 +33,7 @@ public abstract class Identified {
 	public Identified(URI identity) {
 		setIdentity(identity);
 		//this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
-		this.annotations = new ArrayList<Annotation>();		
-		if (isURIcompliant(identity)) {
-			// URI = prefix/displayId/version
-			// TODO: extract version
-		}
-		// else
-
+		this.annotations = new ArrayList<Annotation>();
 	}
 
 	/**
@@ -66,18 +62,12 @@ public abstract class Identified {
 		}
 	}
 
-	public Identified (String URIprefix, String displayId, String version) {
-		setIdentity(URI.create(URIprefix.trim() + '/' + displayId.trim() + '/' + version));
-		this.annotations = new ArrayList<Annotation>();
-		this.setPersistentIdentity(URI.create(URIprefix.trim() + '/' + displayId.trim()));
-		this.setVersion(version);
-	}
-
-	public static boolean isURIcompliant(URI uri) {
-		// TODO Check URI compliance
-		return true;
-	}
-
+//	public Identified (String URIprefix, String displayId, String version) {
+//		setIdentity(URI.create(URIprefix.trim() + '/' + displayId.trim() + '/' + version));
+//		this.annotations = new ArrayList<Annotation>();
+//		this.setPersistentIdentity(URI.create(URIprefix.trim() + '/' + displayId.trim()));
+//		this.setVersion(version);
+//	}
 
 	/**
 	 * Returns field variable <code>identity</code>.
@@ -337,22 +327,7 @@ public abstract class Identified {
 
 		return true;
 	}
-	
-	protected String extractURIprefix() {
-		// TODO Extract URIprefix from identity URI.
-		return null;
-	}
-	
-	protected String extractVersion() {
-		// TODO Extract version from identity URI.
-		return null;
-	}
-	
-	protected String extractPersistentId() {
-		// TODO Extract persistentId from identity URI.
-		return null;
-	}
-
+		
 	//	/**
 	//	 * @return
 	//	 * @deprecated As of release 2.0, replaced by {@link #getIdentity()}
