@@ -401,7 +401,7 @@ public class SBOLReader
 		if (!sequenceAnnotations.isEmpty())
 			c.setSequenceAnnotations(sequenceAnnotations);
 		if (!components.isEmpty())
-			c.setSubComponents(components);
+			c.setComponents(components);
 		if (!sequenceConstraints.isEmpty())
 			c.setSequenceConstraints(sequenceConstraints);
 
@@ -706,7 +706,7 @@ public class SBOLReader
 		if (structure != null)
 			c.setSequence(structure);
 		if (!components.isEmpty())
-			c.setSubComponents(components);
+			c.setComponents(components);
 		if (!sequenceAnnotations.isEmpty())
 			c.setSequenceAnnotations(sequenceAnnotations);
 		if (!sequenceConstraints.isEmpty())
@@ -1174,7 +1174,7 @@ public class SBOLReader
 		if (access != null)
 			c.setAccess(access);
 		if (!mappings.isEmpty())
-			c.setMappings(mappings);
+			c.setMapsTo(mappings);
 		if (subComponentURI != null)
 			c.setDefinition(subComponentURI);
 		if (name != null)
@@ -1822,7 +1822,7 @@ public class SBOLReader
 		if (displayId != null)
 			fc.setDisplayId(displayId);
 		if (!mappings.isEmpty())
-			fc.setMappings(mappings);
+			fc.setMapsTo(mappings);
 		if (name != null)
 			fc.setName(name);
 		if (description != null)

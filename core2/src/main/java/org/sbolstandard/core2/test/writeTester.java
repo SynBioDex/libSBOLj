@@ -750,7 +750,7 @@ public class writeTester {
 			c.setSequence(structureData.getIdentity());
 		if(structureInstantiationData != null)
 		{
-			c.setSubComponents(structureInstantiationData);
+			c.setComponents(structureInstantiationData);
 			if(structureAnnotationData != null && structureConstraintData == null)
 				c.setSequenceAnnotations(structureAnnotationData);
 			else if(structureConstraintData != null)

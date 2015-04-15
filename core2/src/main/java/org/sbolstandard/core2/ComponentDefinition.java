@@ -25,7 +25,7 @@ public class ComponentDefinition extends TopLevel {
 	private Set<URI> types;
 	private Set<URI> roles;
 	private URI sequence;
-	private HashMap<URI, Component> subComponents;
+	private HashMap<URI, Component> components;
 	private HashMap<URI, SequenceAnnotation> sequenceAnnotations;
 	private HashMap<URI, SequenceConstraint> sequenceConstraints;
 	
@@ -33,7 +33,7 @@ public class ComponentDefinition extends TopLevel {
 		super(identity);
 		setTypes(type);
 		setRoles(roles);		
-		this.subComponents = new HashMap<URI, Component>(); 		
+		this.components = new HashMap<URI, Component>(); 		
 		this.sequenceAnnotations = new HashMap<URI, SequenceAnnotation>();
 		this.sequenceConstraints = new HashMap<URI, SequenceConstraint>();
 	}
@@ -50,12 +50,12 @@ public class ComponentDefinition extends TopLevel {
 			roles.add(URI.create(role.toString()));
 		}
 		setRoles(roles);
-		if (!componentDefinition.getSubComponents().isEmpty()) {
+		if (!componentDefinition.getComponents().isEmpty()) {
 			List<Component> subComponents = new ArrayList<Component>();
-			for (Component subComponent : componentDefinition.getSubComponents()) {
+			for (Component subComponent : componentDefinition.getComponents()) {
 				subComponents.add(subComponent.deepCopy());
 			}
-			this.setSubComponents(subComponents);
+			this.setComponents(subComponents);
 		}		
 		if (!componentDefinition.getSequenceConstraints().isEmpty()) {
 			List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
@@ -392,7 +392,7 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public Component createComponent(URI identity, AccessType access, URI componentDefinitionURI) {
 		Component subComponent = new Component(identity, access, componentDefinitionURI);
-		if (addSubComponent(subComponent)) {
+		if (addComponent(subComponent)) {
 			return subComponent;
 		}
 		else {
@@ -425,22 +425,22 @@ public class ComponentDefinition extends TopLevel {
 	 * Adds the specified instance to the list of components.
 	 * @param subComponent
 	 */
-	public boolean addSubComponent(Component subComponent) {
+	public boolean addComponent(Component subComponent) {
 		if (isChildURIcompliant(this.getIdentity(), subComponent.getIdentity())) {
 			// Check if persistent identity exists in other maps.
 			URI persistentId = URI.create(extractPersistentId(subComponent.getIdentity()));
-			if (!keyExistsInOtherMaps(subComponents.keySet(), persistentId)) {
+			if (!keyExistsInOtherMaps(components.keySet(), persistentId)) {
 				// Check if URI exists in the subComponents map.
-				if (!subComponents.containsKey(subComponent.getIdentity())) {
-					subComponents.put(subComponent.getIdentity(), subComponent);
-					Component latestSubComponent = subComponents.get(persistentId);
+				if (!components.containsKey(subComponent.getIdentity())) {
+					components.put(subComponent.getIdentity(), subComponent);
+					Component latestSubComponent = components.get(persistentId);
 					if (latestSubComponent == null) {
-						subComponents.put(persistentId, subComponent);
+						components.put(persistentId, subComponent);
 					}
 					else {						
 						if (Version.isFirstVersionNewer(extractVersion(subComponent.getIdentity()), 
 								extractVersion(latestSubComponent.getIdentity()))) {								
-							subComponents.put(persistentId, subComponent);
+							components.put(persistentId, subComponent);
 						}
 					}
 					return true;
@@ -452,9 +452,9 @@ public class ComponentDefinition extends TopLevel {
 				return false;
 		}
 		else { // Only check if subComponent's URI exists in all maps.
-			if (!keyExistsInOtherMaps(subComponents.keySet(), subComponent.getIdentity())) {
-				if (!subComponents.containsKey(subComponent.getIdentity())) {
-					subComponents.put(subComponent.getIdentity(), subComponent);					
+			if (!keyExistsInOtherMaps(components.keySet(), subComponent.getIdentity())) {
+				if (!components.containsKey(subComponent.getIdentity())) {
+					components.put(subComponent.getIdentity(), subComponent);					
 					return true;
 				}
 				else // key exists in subComponents map
@@ -470,9 +470,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subComponentURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Component removeSubComponent(URI subComponentURI) {
+	public Component removeComponent(URI subComponentURI) {
 		//URI key = URI.create(subComponentURI.toString().toLowerCase());
-		return subComponents.remove(subComponentURI);
+		return components.remove(subComponentURI);
 	}
 	
 	/**
@@ -480,27 +480,27 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subComponentURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Component getSubComponent(URI subComponentURI) {
-		return subComponents.get(subComponentURI);
+	public Component getComponent(URI subComponentURI) {
+		return components.get(subComponentURI);
 	}
 	
 	/**
 	 * Returns the list of {@link Component} instances owned by this instance. 
 	 * @return the list of {@link Component} instances owned by this instance.
 	 */
-	public List<Component> getSubComponents() {
+	public List<Component> getComponents() {
 		List<Component> structuralInstantiations = new ArrayList<Component>(); 
-		structuralInstantiations.addAll(this.subComponents.values());
+		structuralInstantiations.addAll(this.components.values());
 		return structuralInstantiations; 
 	}
 	
 	/**
 	 * Removes all entries of the list of structuralInstantiation instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearSubComponents() {
-		Object[] keySetArray = subComponents.keySet().toArray();
+	public void clearComponents() {
+		Object[] keySetArray = components.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeSubComponent((URI) key);			
+			removeComponent((URI) key);			
 		}
 	}
 		
@@ -508,11 +508,11 @@ public class ComponentDefinition extends TopLevel {
 	 * Clears the existing list of structuralInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param components
 	 */
-	public void setSubComponents(
+	public void setComponents(
 			List<Component> components) {
-		clearSubComponents();
+		clearComponents();
 		for (Component component : components) {
-			addSubComponent(component);
+			addComponent(component);
 		}
 	}
 	
@@ -739,7 +739,7 @@ public class ComponentDefinition extends TopLevel {
 				+ ((sequenceAnnotations == null) ? 0 : sequenceAnnotations.hashCode());
 		result = prime * result
 				+ ((sequenceConstraints == null) ? 0 : sequenceConstraints.hashCode());
-		result = prime * result + ((subComponents == null) ? 0 : subComponents.hashCode());
+		result = prime * result + ((components == null) ? 0 : components.hashCode());
 		result = prime * result + ((types == null) ? 0 : types.hashCode());
 		return result;
 	}
@@ -776,10 +776,10 @@ public class ComponentDefinition extends TopLevel {
 				return false;
 		} else if (!sequenceConstraints.equals(other.sequenceConstraints))
 			return false;
-		if (subComponents == null) {
-			if (other.subComponents != null)
+		if (components == null) {
+			if (other.components != null)
 				return false;
-		} else if (!subComponents.equals(other.subComponents))
+		} else if (!components.equals(other.components))
 			return false;
 		if (types == null) {
 			if (other.types != null)
@@ -800,7 +800,7 @@ public class ComponentDefinition extends TopLevel {
 		Set<Set<URI>> complementSet = new HashSet<Set<URI>>();
 		complementSet.add(sequenceAnnotations.keySet());
 		complementSet.add(sequenceConstraints.keySet());
-		complementSet.add(subComponents.keySet());
+		complementSet.add(components.keySet());
 		complementSet.remove(keySet);
 		for (Set<URI> otherKeySet : complementSet) {
 			if (otherKeySet.contains(key)) {
