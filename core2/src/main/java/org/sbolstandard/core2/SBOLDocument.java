@@ -53,7 +53,7 @@ public class SBOLDocument {
 	 * @return {@link Model} instance.
 	 */
 	public ModuleDefinition createModuleDefinition(String URIprefix, String displayId, String version, Set<URI> roles) {
-		URI newModuleDefinitionURI = URI.create(URIprefix + '/' + displayId + version);
+		URI newModuleDefinitionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
 		if (isTopLevelURIcompliant(newModuleDefinitionURI)) {		
 			return createModuleDefinition(newModuleDefinitionURI, roles);
 		}
@@ -290,7 +290,7 @@ public class SBOLDocument {
 	 */
 	public Model createModel(String URIprefix, String displayId, String version, 
 			URI source, URI language, URI framework, Set<URI> roles) {
-		URI newModelURI = URI.create(URIprefix + '/' + displayId + version);
+		URI newModelURI = URI.create(URIprefix + '/' + displayId + '/' +version);
 		if (isTopLevelURIcompliant(newModelURI)) {
 			return createModel(newModelURI, source, language, framework, roles);
 		}
@@ -444,7 +444,7 @@ public class SBOLDocument {
 	 * @return the created {@link ComponentDefinition} instance.
 	 */
 	public ComponentDefinition createComponentDefinition(String URIprefix, String displayId, String version, Set<URI> type, Set<URI> roles) {
-		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + displayId + version);
+		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
 		if (isTopLevelURIcompliant(newComponentDefinitionURI)) {		
 			return createComponentDefinition(newComponentDefinitionURI, type, roles);
 		}
@@ -839,7 +839,7 @@ public class SBOLDocument {
 	 * @return the created GenericTopLevel instance.
 	 */
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) {
-		URI newGenericTopLevelURI = URI.create(URIprefix + '/' + displayId + version);
+		URI newGenericTopLevelURI = URI.create(URIprefix + '/' + displayId + '/' + version);
 		if (isTopLevelURIcompliant(newGenericTopLevelURI)) {
 			return createGenericTopLevel(newGenericTopLevelURI, rdfType);
 		}

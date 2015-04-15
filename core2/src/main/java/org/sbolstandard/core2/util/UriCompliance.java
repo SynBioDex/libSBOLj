@@ -127,7 +127,7 @@ public final class UriCompliance {
 	}
 	 
 	 /**
-	 * @param topLevelURI
+	 * @param parentURI
 	 * @param childURI
 	 * @return
 	 */

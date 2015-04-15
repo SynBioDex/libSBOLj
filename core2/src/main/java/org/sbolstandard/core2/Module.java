@@ -19,9 +19,9 @@ public class Module extends Documented {
 	private HashMap<URI, MapsTo> mappings;
 	private URI definition;
 	
-	public Module(URI identity, URI instantiatedModule) {
+	public Module(URI identity, URI moduleDefinition) {
 		super(identity);
-		setDefinition(instantiatedModule);
+		setDefinition(moduleDefinition);
 		this.mappings = new HashMap<URI, MapsTo>();
 	}
 	

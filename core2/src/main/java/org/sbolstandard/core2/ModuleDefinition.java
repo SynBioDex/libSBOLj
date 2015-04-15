@@ -140,19 +140,76 @@ public class ModuleDefinition extends TopLevel {
 	 * @param location
 	 * @return the created ModuleInstantiation instance. 
 	 */
-	public Module createSubModule(URI identity, URI subModuleURI) {
-		Module subModule = new Module(identity, subModuleURI);
+	public Module createModule(URI identity, URI moduleDefinitionURI) {
+		Module subModule = new Module(identity, moduleDefinitionURI);
 		addSubModule(subModule);
 		return subModule;
 	}
 	
+
+	/**
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param moduleDefinitionURI
+	 * @return
+	 */
+	public Module createModule(String URIprefix, String displayId, String version, URI moduleDefinitionURI) {
+		URI newModuleURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newModuleURI)) {
+			return createModule(newModuleURI, moduleDefinitionURI);
+		}
+		else {
+			// TODO: Generate warning message here.
+			return null;
+		}
+	}
+	
+	
+	
 	/**
 	 * Adds the specified instance to the list of subModules. 
 	 * @param subModule
+	 * @return 
 	 */
-	public void addSubModule(Module subModule) {
-		// TODO: @addModuleInstantiation, Check for duplicated entries.
-		subModules.put(subModule.getIdentity(), subModule);
+	public boolean addSubModule(Module subModule) {
+		if (isChildURIcompliant(this.getIdentity(), subModule.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(subModule.getIdentity()));
+			if (!keyExistsInOtherMaps(subModules.keySet(), persistentId)) {
+				// Check if URI exists in the subModules map.
+				if (!subModules.containsKey(subModule.getIdentity())) {
+					subModules.put(subModule.getIdentity(), subModule);
+					Module latestSubModule = subModules.get(persistentId);
+					if (latestSubModule == null) {
+						subModules.put(persistentId, subModule);
+					}
+					else {						
+						if (Version.isFirstVersionNewer(extractVersion(subModule.getIdentity()),
+								extractVersion(latestSubModule.getIdentity()))) {
+							subModules.put(persistentId, subModule);
+						}
+					}
+					return true;
+				}
+				else // key exists in subModules map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if subModule's URI exists in all maps.
+			if (!keyExistsInOtherMaps(subModules.keySet(), subModule.getIdentity())) {
+				if (!subModules.containsKey(subModule.getIdentity())) {
+					subModules.put(subModule.getIdentity(), subModule);					
+					return true;
+				}
+				else // key exists in subModules map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}		
 	}
 	
 	/**
@@ -229,6 +286,27 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param type
+	 * @param participations
+	 * @return
+	 */
+	public Interaction createInteraction(String URIprefix, String displayId, String version, 
+			Set<URI> type, List<Participation> participations) {
+		URI newInteractionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newInteractionURI)) {
+			return createInteraction(newInteractionURI, type, participations);
+		}
+		else {
+			// TODO: Generate warning messages here.
+			return null;
+		}
+	}
+	
+	
+	/**
 	 * Adds the specified instance to the list of interactions. 
 	 * @param interaction
 	 */
@@ -270,8 +348,6 @@ public class ModuleDefinition extends TopLevel {
 			else // key exists in other maps
 				return false;
 		}
-
-
 	}
 	
 	/**
@@ -341,13 +417,27 @@ public class ModuleDefinition extends TopLevel {
 	 * @param location
 	 * @return the created {@link FunctionalComponent} instance. 
 	 */
-	public FunctionalComponent createComponent(URI identity, AccessType access, 
+	public FunctionalComponent createFunctionalComponent(URI identity, AccessType access, 
 			URI functionalComponentURI, DirectionType direction) {
 		FunctionalComponent functionalComponent = 
 				new FunctionalComponent(identity, access, functionalComponentURI, direction);
 		addComponent(functionalComponent);
 		return functionalComponent;
 	}
+
+	public FunctionalComponent createFunctionalComponent(String URIprefix, String displayId, String version,  AccessType access, 
+			URI functionalComponentURI, DirectionType direction) {
+		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newComponentDefinitionURI)) {		
+			return createFunctionalComponent(newComponentDefinitionURI, access, functionalComponentURI, direction);
+		}
+		else {
+			// TODO: Generate a warning here?
+			return null;
+		}
+	}
+
+	
 	
 	/**
 	 * Adds the specified instance to the list of components.
@@ -478,7 +568,6 @@ public class ModuleDefinition extends TopLevel {
 	 * @param modelURI
 	 */
 	public void addModel(URI modelURI) {
-		// TODO: @addModel, Check for duplicated entries.
 		models.add(modelURI);
 	}
 	

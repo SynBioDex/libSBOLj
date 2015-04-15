@@ -239,6 +239,24 @@ public class ComponentDefinition extends TopLevel {
 		}		
 	}
 	
+	/**
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param location
+	 * @return
+	 */
+	public SequenceAnnotation createSequenceAnnotation(String URIprefix, String displayId, String version, Location location) {
+		URI newSequenceAnnotationURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newSequenceAnnotationURI)) {
+			return createSequenceAnnotation(newSequenceAnnotationURI, location);
+		}
+		else {
+			// TODO: Generate warning message here.
+			return null;
+		}
+	}
+	
 //	public SequenceAnnotation createSequenceAnnotation(String URIprefix, String id, 
 //				String version, Location location) {		
 //		URI newSequenceURI = URI.create(URIprefix + '/' + id + '/' + version);
@@ -369,11 +387,11 @@ public class ComponentDefinition extends TopLevel {
 	 * then adds to the list of StructuralInstantiation instances owned by this instance.
 	 * @param identity
 	 * @param access
-	 * @param subComponentURI
+	 * @param componentDefinitionURI
 	 * @return the created StructuralInstantiation instance. 
 	 */
-	public Component createSubComponent(URI identity, AccessType access, URI subComponentURI) {
-		Component subComponent = new Component(identity, access, subComponentURI);
+	public Component createComponent(URI identity, AccessType access, URI componentDefinitionURI) {
+		Component subComponent = new Component(identity, access, componentDefinitionURI);
 		if (addSubComponent(subComponent)) {
 			return subComponent;
 		}
@@ -381,6 +399,26 @@ public class ComponentDefinition extends TopLevel {
 			return null;
 		}
 
+	}
+	
+	/**
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param access
+	 * @param componentDefinitionURI
+	 * @return
+	 */
+	public Component createComponent(String URIprefix, String displayId, String version, 
+			AccessType access, URI componentDefinitionURI) {
+		URI newComponentURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newComponentURI)) {
+			return createComponent(newComponentURI, access, componentDefinitionURI);
+		}
+		else {
+			// TODO: Generate warning message here.
+			return null;
+		}
 	}
 	
 	/**
@@ -504,6 +542,27 @@ public class ComponentDefinition extends TopLevel {
 			return sequenceConstraint;
 		}
 		else {
+			return null;
+		}
+	}
+		
+	/**
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param restriction
+	 * @param subject
+	 * @param object
+	 * @return
+	 */
+	public SequenceConstraint createSequenceConstraint(String URIprefix, String displayId, String version, 
+			RestrictionType restriction, URI subject, URI object) {
+		URI newSequenceConstraintURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newSequenceConstraintURI)) {
+			return createSequenceConstraint(newSequenceConstraintURI, restriction, subject, object);
+		}
+		else {
+			// TODO: Generate warning message here.
 			return null;
 		}
 	}
