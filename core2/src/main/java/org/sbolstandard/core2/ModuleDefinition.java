@@ -10,7 +10,7 @@ import java.util.Set;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
-import org.sbolstandard.core2.util.UriCompliance;
+import static org.sbolstandard.core2.util.UriCompliance.*;
 import org.sbolstandard.core2.util.Version;
 
 /**
@@ -233,9 +233,9 @@ public class ModuleDefinition extends TopLevel {
 	 * @param interaction
 	 */
 	public boolean addInteraction(Interaction interaction) {
-		if (UriCompliance.isChildURIcompliant(this.getIdentity(), interaction.getIdentity())) {
+		if (isChildURIcompliant(this.getIdentity(), interaction.getIdentity())) {
 			// Check if persistent identity exists in other maps.
-			URI persistentId = URI.create(UriCompliance.extractPersistentId(interaction.getIdentity()));
+			URI persistentId = URI.create(extractPersistentId(interaction.getIdentity()));
 			if (!keyExistsInOtherMaps(interactions.keySet(), persistentId)) {
 				// Check if URI exists in the interactions map.
 				if (!interactions.containsKey(interaction.getIdentity())) {
@@ -245,8 +245,8 @@ public class ModuleDefinition extends TopLevel {
 						interactions.put(persistentId, interaction);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(UriCompliance.extractVersion(interaction.getIdentity()),
-								UriCompliance.extractVersion(latestInteraction.getIdentity()))) {
+						if (Version.isFirstVersionNewer(extractVersion(interaction.getIdentity()),
+								extractVersion(latestInteraction.getIdentity()))) {
 							interactions.put(persistentId, interaction);
 						}
 					}
@@ -354,9 +354,9 @@ public class ModuleDefinition extends TopLevel {
 	 * @param component
 	 */
 	public boolean addComponent(FunctionalComponent component) {
-		if (UriCompliance.isChildURIcompliant(this.getIdentity(), component.getIdentity())) {
+		if (isChildURIcompliant(this.getIdentity(), component.getIdentity())) {
 			// Check if persistent identity exists in other maps.
-			URI persistentId = URI.create(UriCompliance.extractPersistentId(component.getIdentity()));
+			URI persistentId = URI.create(extractPersistentId(component.getIdentity()));
 			if (!keyExistsInOtherMaps(components.keySet(), persistentId)) {
 				// Check if URI exists in the components map.
 				if (!components.containsKey(component.getIdentity())) {
@@ -366,8 +366,8 @@ public class ModuleDefinition extends TopLevel {
 						components.put(component.getPersistentIdentity(), component);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(UriCompliance.extractVersion(component.getIdentity()),
-								UriCompliance.extractVersion(latestFunctionalComponent.getIdentity()))) {
+						if (Version.isFirstVersionNewer(extractVersion(component.getIdentity()),
+								extractVersion(latestFunctionalComponent.getIdentity()))) {
 							components.put(component.getPersistentIdentity(), component);
 						}
 					}
@@ -595,7 +595,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	protected void updateDisplayId(String newDisplayId) {
 		super.updateDisplayId(newDisplayId);
-		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {					
+		if (isTopLevelURIcompliant(this.getIdentity())) {					
 			// TODO Change all of its children's displayIds in their URIs.
 		}
 	}
@@ -616,7 +616,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	protected void updateVersion(String newVersion) {
 		super.updateVersion(newVersion);
-		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {					
+		if (isTopLevelURIcompliant(this.getIdentity())) {					
 			// TODO Change all of its children's versions in their URIs.
 		}
 	}

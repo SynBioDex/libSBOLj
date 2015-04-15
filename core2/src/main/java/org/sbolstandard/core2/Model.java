@@ -198,7 +198,7 @@ public class Model extends TopLevel {
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
 	 */
-	public void updateDisplayId(String newDisplayId) {
+	protected void updateDisplayId(String newDisplayId) {
 		super.updateDisplayId(newDisplayId);
 		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {				
 			// TODO Change all of its children's displayIds in their URIs.
@@ -219,7 +219,7 @@ public class Model extends TopLevel {
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
 	 */
-	public void updateVersion(String newVersion) {
+	protected void updateVersion(String newVersion) {
 		super.updateVersion(newVersion);
 		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
 			// TODO Change all of its children's versions in their URIs.
