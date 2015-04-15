@@ -197,7 +197,8 @@ public abstract class SBOLAbstractTests {
 	//	|		- double check on correct use of URIs										  |
 	//	|																					  |
 	//	|-------------------------------------------------------------------------------------|
-	/*@Test
+	/*
+	@Test
 	public void test_ToggleSwitch() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
@@ -297,37 +298,38 @@ public abstract class SBOLAbstractTests {
 
 		Collection myParts = SBOLTestUtils.createCollection(document, "myParts", annotations);
 
-		//		myParts.addMember(get_topLevel(SBOL2Doc_test).getIdentity());
-		myParts.addMember(pLacSeq_id);
-		myParts.addMember(tetRSeq_id);
-		myParts.addMember(pLactetRSeq_id);
+		myParts.addMember(TetR_Inv_id);
 
-		myParts.addMember(pLac_id);
-		myParts.addMember(tetR_id);
-		myParts.addMember(pLactetR_id);
+		myParts.addMember(ptetlacISeq_id);
+		myParts.addMember(tetRSeq_id);
 
 		myParts.addMember(LacI_Inv_id);
-
-		myParts.addMember(LacI_id);
-		myParts.addMember(TetR_id);
-
-		myParts.addMember(ptetSeq_id);
-		myParts.addMember(lacISeq_id);
-		myParts.addMember(ptetlacISeq_id);
-
-		myParts.addMember(ptet_id);
-		myParts.addMember(lacI_id);
-		myParts.addMember(ptetlacI_id);
-
-		myParts.addMember(TetR_Inv_id);
 
 		myParts.addMember(Toggle_id);
 		myParts.addMember(ToggleModel_id);
 
+		myParts.addMember(ptetSeq_id);
+
+		myParts.addMember(pLac_id);
+		myParts.addMember(pLactetRSeq_id);
+
+		myParts.addMember(tetR_id); //TODO: tetRCDS
+		myParts.addMember(TetR_id);
+
 		myParts.addMember(SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel").getIdentity());
 
+		myParts.addMember(pLactetR_id);
+		myParts.addMember(lacISeq_id);
+		myParts.addMember(lacI_id); //TODO: lacICDS
+		myParts.addMember(pLacSeq_id);
+
+		myParts.addMember(ptet_id);
+		myParts.addMember(LacI_id);
+		myParts.addMember(ptetlacI_id);
+
 		runTest("test/data/writeTesterString_v1.3.rdf", document);
-	}*/
+	}
+	 */
 
 	public ComponentDefinition get_pLac(SBOLDocument document, URI pLacSeq_id)
 	{
@@ -432,30 +434,6 @@ public abstract class SBOLAbstractTests {
 		return SBOLTestUtils.createComponentDefinition(document, "ptetlacI", type, role,
 				ptetlacISeq_id, sequenceAnnotations, null, subComponents);
 	}
-
-	//	public FunctionalComponent get_LacIIn(SBOLDocument document, URI LacI_id)
-	//	{
-	//		return SBOLTestUtils.createFunctionalComponent("LacIIn",
-	//				AccessType.PUBLIC, DirectionType.INPUT, LacI_id);
-	//	}
-
-	//	public FunctionalComponent get_LacInv(SBOLDocument document, URI pLactetR_id)
-	//	{
-	//		return SBOLTestUtils.createFunctionalComponent("LacInv",
-	//				AccessType.PUBLIC, DirectionType.INPUT, pLactetR_id);
-	//	}
-
-	//	public FunctionalComponent get_TetROut(SBOLDocument document, URI TetR_id)
-	//	{
-	//		return SBOLTestUtils.createFunctionalComponent("TetROut",
-	//				AccessType.PUBLIC, DirectionType.OUTPUT, TetR_id);
-	//	}
-
-	//	public FunctionalComponent get_TetRInv(SBOLDocument document, URI ptetlacI_id)
-	//	{
-	//		return SBOLTestUtils.createFunctionalComponent("TetRInv",
-	//				AccessType.PRIVATE, DirectionType.NONE, ptetlacI_id);
-	//	}
 
 
 	public ModuleDefinition get_LacI_Inv(SBOLDocument document,
