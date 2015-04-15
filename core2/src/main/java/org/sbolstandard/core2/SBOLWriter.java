@@ -439,9 +439,9 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			formatCommonDocumentedData(list, i);
 
-			if(i.getType() != null)
+			if(i.getTypes() != null)
 			{
-				for(URI type : i.getType())
+				for(URI type : i.getTypes())
 				{
 					list.add(NamedProperty(Sbol2Terms.Interaction.type, type));
 				}
@@ -511,9 +511,9 @@ public class SBOLWriter {
 
 			if(m.getDefinition() != null)
 				list.add(NamedProperty(Sbol2Terms.Module.hasDefinition, m.getDefinition()));
-			if(m.isSetMappings())
+			if(!m.getMapsTos().isEmpty())
 			{
-				List<NestedDocument> referenceList = getMapsTo(m.getMappings());
+				List<NestedDocument> referenceList = getMapsTo(m.getMapsTos());
 				for(NestedDocument n : referenceList)
 				{
 					list.add(NamedProperty(Sbol2Terms.Module.hasMappings, n));
@@ -543,7 +543,7 @@ public class SBOLWriter {
 			formatFunctionalComponents(m.getComponents(),list);
 			formatInteractions(m.getInteractions(),list);
 			formatModels(m.getModels(),list);
-			formatModule(m.getSubModules(),list);
+			formatModule(m.getModules(),list);
 
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ModuleDefinition.ModuleDefinition, m.getIdentity(), NamedProperties(list)));
 		}

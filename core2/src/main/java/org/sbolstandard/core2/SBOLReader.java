@@ -128,7 +128,7 @@ public class SBOLReader
 		SBOLDocument SBOLDoc = new SBOLDocument();
 		for (NamespaceBinding n : document.getNamespaceBindings())
 		{
-			SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+			SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 		}
 		readTopLevelDocs(SBOLDoc, document);
 		return SBOLDoc;
@@ -149,7 +149,7 @@ public class SBOLReader
 				{
 					return readRdfV1(in, document);
 				}
-				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -177,7 +177,7 @@ public class SBOLReader
 				{
 					return readRdfV1(in, document);
 				}
-				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
 			readTopLevelDocs(SBOLDoc, document);
 		}
@@ -196,12 +196,12 @@ public class SBOLReader
 		{
 			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 			{
-				SBOLDoc.addNameSpaceBinding(
+				SBOLDoc.addNamespaceBinding(
 						URI.create(Sbol2Terms.sbol2.getNamespaceURI()),
 						Sbol2Terms.sbol2.getPrefix());
 			}
 			else
-				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 		}
 		readTopLevelDocsV1(SBOLDoc, document);
 		return SBOLDoc;
@@ -213,7 +213,7 @@ public class SBOLReader
 
 		for (NamespaceBinding n : document.getNamespaceBindings())
 		{
-			SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+			SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 		}
 
 		readTopLevelDocs(SBOLDoc, document);
@@ -1483,7 +1483,7 @@ public class SBOLReader
 		if (!models.isEmpty())
 			moduleDefinition.setModels(models);
 		if (!subModules.isEmpty())
-			moduleDefinition.setSubModules(subModules);
+			moduleDefinition.setModules(subModules);
 		if (name != null)
 			moduleDefinition.setName(name);
 		if (description != null)
@@ -1555,7 +1555,7 @@ public class SBOLReader
 		if (displayId != null)
 			submodule.setDisplayId(displayId);
 		if (!mappings.isEmpty())
-			submodule.setMappings(mappings);
+			submodule.setMapsTos(mappings);
 		if (name != null)
 			submodule.setName(name);
 		if (description != null)

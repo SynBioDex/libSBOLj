@@ -731,6 +731,73 @@ public class SBOLDocument {
 	}
 
 	/**
+	 * Create an instance of the top-level classes, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+	 * {@link Sequence}, or {@link TopLevel} with a new display ID, and add it to its corresponding top-level instances list.
+	 * @param toplevel
+	 * @param newPrefix
+	 * @return {@link TopLevel} instance
+	 */
+	public TopLevel createCopyWithNewPrefix(TopLevel toplevel, String newPrefix) {
+		if (toplevel instanceof Collection) {			
+			Collection newCollection = ((Collection) toplevel).copy(newPrefix);			
+			if (addCollection(newCollection)) {
+				return newCollection;
+			}
+			else {
+				return null;
+			}
+		}
+		else if (toplevel instanceof ComponentDefinition) {
+			ComponentDefinition newComponentDefinition = ((ComponentDefinition) toplevel).copy(newPrefix);
+			if (addComponentDefinition(newComponentDefinition)) {
+				return newComponentDefinition;
+			}
+			else {
+				return null;
+			}
+		}
+		else if (toplevel instanceof Model) {
+			Model newModel = ((Model) toplevel).copy(newPrefix);			
+			if (addModel(newModel)) {
+				return newModel;
+			}
+			else {
+				return null;
+			}
+		}
+		else if (toplevel instanceof ModuleDefinition) {
+			ModuleDefinition newModuleDefinition = ((ModuleDefinition) toplevel).copy(newPrefix);
+			if (addModuleDefinition(newModuleDefinition)) {
+				return newModuleDefinition;
+			}
+			else {
+				return null;
+			}
+		}
+		else if (toplevel instanceof Sequence) {
+			Sequence newSequence = ((Sequence) toplevel).copy(newPrefix);
+			if (addSequence(newSequence)) {
+				return newSequence;
+			}
+			else {
+				return null;
+			}
+		}
+		else if (toplevel instanceof GenericTopLevel) {
+			GenericTopLevel newGenericTopLevel = ((GenericTopLevel) toplevel).copy(newPrefix);
+			if (addGenericTopLevel(newGenericTopLevel)) {
+				return newGenericTopLevel;
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			return null;
+		}
+	}
+	
+	/**
 	 * Appends the specified <code>sequence</code> to the end of the list of sequences.
 	 * @param newSequence
 	 * @return <code>true</code> if the specified sequence is successfully added.
@@ -973,7 +1040,7 @@ public class SBOLDocument {
 	 * @param nameSpaceUri The Namespace {@link URI}
 	 * @param prefix The prefix {@link String}
 	 */
-	public void addNameSpaceBinding(URI nameSpaceUri, String prefix) {
+	public void addNamespaceBinding(URI nameSpaceUri, String prefix) {
 		// TODO @addNameSpaceBinding: Check for duplicates.
 		nameSpaces.put(nameSpaceUri, NamespaceBinding(nameSpaceUri.toString(), prefix));
 	}

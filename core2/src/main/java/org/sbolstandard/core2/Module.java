@@ -31,12 +31,12 @@ public class Module extends Documented {
 	private Module(Module module) {
 		super(module);
 		this.setDefinition(module.getDefinition());
-		if (module.isSetMappings()) {
+		if (!module.getMapsTos().isEmpty()) {
 			List<MapsTo> mappings = new ArrayList<MapsTo>();
-			for (MapsTo mapping : module.getMappings()) {
+			for (MapsTo mapping : module.getMapsTos()) {
 				mappings.add(mapping.deepCopy());
 			}
-			this.setMappings(mappings);
+			this.setMapsTos(mappings);
 		}
 	}
 
@@ -58,16 +58,16 @@ public class Module extends Documented {
 	}
 	
 			
-	/**
-	 * Test if optional field variable <code>references</code> is set.
-	 * @return <code>true</code> if it is not an empty list
-	 */
-	public boolean isSetMappings() {
-		if (mapsTos.isEmpty())
-			return false;
-		else
-			return true;
-	}
+//	/**
+//	 * Test if optional field variable <code>references</code> is set.
+//	 * @return <code>true</code> if it is not an empty list
+//	 */
+//	public boolean isSetMappings() {
+//		if (mapsTos.isEmpty())
+//			return false;
+//		else
+//			return true;
+//	}
 	
 	/**
 	 * Calls the MapsTo constructor to create a new instance using the specified parameters, 
@@ -158,7 +158,7 @@ public class Module extends Documented {
 	 * @param referenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo removeMapping(URI referenceURI) {
+	public MapsTo removeMapsTo(URI referenceURI) {
 		return mapsTos.remove(referenceURI);
 	}
 	
@@ -167,7 +167,7 @@ public class Module extends Documented {
 	 * @param referenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo getMapping(URI referenceURI) {
+	public MapsTo getMapsTo(URI referenceURI) {
 		return mapsTos.get(referenceURI);
 	}
 	
@@ -175,7 +175,7 @@ public class Module extends Documented {
 	 * Returns the list of reference instances owned by this instance.
 	 * @return the list of reference instances owned by this instance.
 	 */
-	public List<MapsTo> getMappings() {
+	public List<MapsTo> getMapsTos() {
 //		return (List<MapsTo>) references.values();
 		return new ArrayList<MapsTo>(mapsTos.values());
 	}
@@ -183,10 +183,10 @@ public class Module extends Documented {
 	/**
 	 * Removes all entries of the list of reference instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearMappings() {
+	public void clearMapsTos() {
 		Object[] keySetArray = mapsTos.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeMapping((URI) key);
+			removeMapsTo((URI) key);
 		}
 	}
 		
@@ -194,9 +194,9 @@ public class Module extends Documented {
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param mappings
 	 */
-	public void setMappings(
+	public void setMapsTos(
 			List<MapsTo> mappings) {
-		clearMappings();		
+		clearMapsTos();		
 		for (MapsTo mapping : mappings) {
 			addMapsTo(mapping);
 		}

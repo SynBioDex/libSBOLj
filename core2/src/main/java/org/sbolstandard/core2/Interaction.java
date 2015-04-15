@@ -18,7 +18,7 @@ import static org.sbolstandard.core2.util.Version.*;
  */
 public class Interaction extends Documented {
 
-	private Set<URI> type;
+	private Set<URI> types;
 	private HashMap<URI, Participation> participations;
 	
 	/**
@@ -29,7 +29,7 @@ public class Interaction extends Documented {
 	 */
 	public Interaction(URI identity, Set<URI> type, List<Participation> participations) {
 		super(identity);
-		setType(type);
+		setTypes(type);
 		this.participations = new HashMap<URI, Participation>(); 
 		setParticipations(participations);
 	}
@@ -37,10 +37,10 @@ public class Interaction extends Documented {
 	public Interaction(Interaction interaction) {
 		super(interaction);
 		Set<URI> type = new HashSet<URI>();
-		for (URI typeElement : interaction.getType()) {
+		for (URI typeElement : interaction.getTypes()) {
 			type.add(URI.create(typeElement.toString()));
 		}
-		this.setType(type);
+		this.setTypes(type);
 		List<Participation> participations = new ArrayList<Participation>();
 		for (Participation participation : interaction.getParticipations()) {
 			participations.add(participation.deepCopy());
@@ -55,7 +55,7 @@ public class Interaction extends Documented {
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addType(URI typeURI) {
-		return type.add(typeURI);
+		return types.add(typeURI);
 	}
 	
 	/**
@@ -64,23 +64,23 @@ public class Interaction extends Documented {
 	 * @return <code>true<code> if this set contained the specified element
 	 */
 	public boolean removeType(URI typeURI) {
-		return type.remove(typeURI);
+		return types.remove(typeURI);
 	}
 	
 	/**
 	 * Sets the field variable <code>type</code> to the specified element.
 	 * @param type
 	 */
-	public void setType(Set<URI> type) {
-		this.type = type;
+	public void setTypes(Set<URI> type) {
+		this.types = type;
 	}
 	
 	/**
 	 * Returns the field variable <code>type</code>.
 	 * @return
 	 */
-	public Set<URI> getType() {
-		return type;
+	public Set<URI> getTypes() {
+		return types;
 	}
 	
 	/**
@@ -88,15 +88,15 @@ public class Interaction extends Documented {
 	 * @return <code>true</code> if this set contains the specified element.
 	 */
 	public boolean containsType(URI typeURI) {
-		return type.contains(typeURI);
+		return types.contains(typeURI);
 	}
 	
 	/**
 	 * Removes all entries of the list of <code>type</code> instances owned by this instance. 
 	 * The list will be empty after this call returns.
 	 */
-	public void clearType() {
-		type.clear();
+	public void clearTypes() {
+		types.clear();
 	}
 	
 	/**
@@ -240,7 +240,7 @@ public class Interaction extends Documented {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((participations == null) ? 0 : participations.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + ((types == null) ? 0 : types.hashCode());
 		return result;
 	}
 
@@ -259,10 +259,10 @@ public class Interaction extends Documented {
 				return false;
 		} else if (!participations.equals(other.participations))
 			return false;
-		if (type == null) {
-			if (other.type != null)
+		if (types == null) {
+			if (other.types != null)
 				return false;
-		} else if (!type.equals(other.type))
+		} else if (!types.equals(other.types))
 			return false;
 		return true;
 	}
