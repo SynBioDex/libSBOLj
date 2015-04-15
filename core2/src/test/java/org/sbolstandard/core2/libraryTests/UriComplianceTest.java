@@ -412,4 +412,6 @@ public class UriComplianceTest {
 	public void testIsTopLevelURIcompliant4() {
 		assertFalse(isTopLevelURIcompliant(uri4));
 	}
+	
+	// TODO: Test isVersionCompliant
 }

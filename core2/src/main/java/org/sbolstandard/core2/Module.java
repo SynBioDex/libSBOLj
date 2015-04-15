@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.abstract_classes.Documented;
+import static org.sbolstandard.core2.util.UriCompliance.*;
 
 /**
  * 
@@ -75,12 +76,45 @@ public class Module extends Documented {
 	 * @param remote
 	 * @return the created MapsTo instance. 
 	 */
-	public MapsTo createMapping(URI identity, RefinementType refinement, 
+	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
 		addMapping(mapping);
 		return mapping;
 	}
+	
+	/**
+	 * @param displayId
+	 * @param version
+	 * @param refinement
+	 * @param local
+	 * @param remote
+	 * @return
+	 */
+	public MapsTo createMapsTo(String displayId, String version, RefinementType refinement, URI local, URI remote) {
+		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		if (parentPersistentIdStr != null) {
+			if (isDisplayIdCompliant(displayId)) {
+				if (isVersionCompliant(version)) {
+					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
+					return createMapsTo(newMapsToURI, refinement, local, remote);
+				}
+				else {
+					// TODO: Warning: version not compliant
+					return null;
+				}
+			}
+			else {
+				// TODO: Warning: display ID not compliant
+				return null;
+			}
+		}
+		else {
+			// TODO: Warning: Parent persistent ID is not compliant.
+			return null;
+		}
+	}	
+
 	
 	/**
 	 * Adds the specified instance to the list of references. 

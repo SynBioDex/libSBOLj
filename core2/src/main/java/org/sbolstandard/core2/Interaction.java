@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.sbolstandard.core2.abstract_classes.Documented;
-import org.sbolstandard.core2.util.UriCompliance;
+import static org.sbolstandard.core2.util.UriCompliance.*;
 
 /**
  * 
@@ -121,6 +121,30 @@ public class Interaction extends Documented {
 		Participation participation = new Participation(identity, role, participant);
 		addParticipation(participation);
 		return participation;
+	}
+	
+	public Participation createParticipation(String displayId, String version, Set<URI> role, URI participant) {
+		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		if (parentPersistentIdStr != null) {
+			if (isDisplayIdCompliant(displayId)) {
+				if (isVersionCompliant(version)) {
+					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
+					return createParticipation(newMapsToURI, role, participant);
+				}
+				else {
+					// TODO: Warning: version not compliant
+					return null;
+				}
+			}
+			else {
+				// TODO: Warning: display ID not compliant
+				return null;
+			}
+		}
+		else {
+			// TODO: Warning: Parent persistent ID is not compliant.
+			return null;
+		}
 	}
 	
 	/**

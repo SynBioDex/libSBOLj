@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.sbolstandard.core2.abstract_classes.Location;
+import static org.sbolstandard.core2.util.UriCompliance.*;
 
 public class MultiRange extends Location{
 	
@@ -51,6 +52,30 @@ public class MultiRange extends Location{
 		Range range = new Range(identity, start, end);
 		addRange(range);
 		return range;
+	}
+	
+	public Range createRange(String displayId, String version, Integer start, Integer end) {
+		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		if (parentPersistentIdStr != null) {
+			if (isDisplayIdCompliant(displayId)) {
+				if (isVersionCompliant(version)) {
+					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
+					return createRange(newMapsToURI, start, end);
+				}
+				else {
+					// TODO: Warning: version not compliant
+					return null;
+				}
+			}
+			else {
+				// TODO: Warning: display ID not compliant
+				return null;
+			}
+		}
+		else {
+			// TODO: Warning: Parent persistent ID is not compliant.
+			return null;
+		}
 	}
 	
 	/**

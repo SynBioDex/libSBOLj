@@ -187,9 +187,28 @@ public final class UriCompliance {
 //		}
 	 }
 	
+	/**
+	 * @param newDisplayId
+	 * @return
+	 */
 	public static boolean isDisplayIdCompliant(String newDisplayId) {
 		Pattern r = Pattern.compile(displayIDpattern);
 		Matcher m = r.matcher(newDisplayId);
+		if (m.matches()) {
+			return true;
+		}			
+		else {
+			return false;
+		}
+	}
+	
+	/**
+	 * @param newVersion
+	 * @return
+	 */
+	public static boolean isVersionCompliant(String newVersion) {
+		Pattern r = Pattern.compile(versionPattern);
+		Matcher m = r.matcher(newVersion);
 		if (m.matches()) {
 			return true;
 		}			
