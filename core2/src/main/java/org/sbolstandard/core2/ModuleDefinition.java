@@ -142,7 +142,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public Module createModule(URI identity, URI moduleDefinitionURI) {
 		Module subModule = new Module(identity, moduleDefinitionURI);
-		addSubModule(subModule);
+		addModule(subModule);
 		return subModule;
 	}
 	
@@ -172,7 +172,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param subModule
 	 * @return 
 	 */
-	public boolean addSubModule(Module subModule) {
+	public boolean addModule(Module subModule) {
 		if (isChildURIcompliant(this.getIdentity(), subModule.getIdentity())) {
 			// Check if persistent identity exists in other maps.
 			URI persistentId = URI.create(extractPersistentId(subModule.getIdentity()));
@@ -257,7 +257,7 @@ public class ModuleDefinition extends TopLevel {
 		if(!getSubModules().isEmpty())
 			clearSubModules();		
 		for (Module subModule : subModules) {
-			addSubModule(subModule);
+			addModule(subModule);
 		}
 	}
 	
@@ -421,7 +421,7 @@ public class ModuleDefinition extends TopLevel {
 			URI functionalComponentURI, DirectionType direction) {
 		FunctionalComponent functionalComponent = 
 				new FunctionalComponent(identity, access, functionalComponentURI, direction);
-		addComponent(functionalComponent);
+		addFunctionalComponent(functionalComponent);
 		return functionalComponent;
 	}
 
@@ -443,7 +443,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Adds the specified instance to the list of components.
 	 * @param component
 	 */
-	public boolean addComponent(FunctionalComponent component) {
+	public boolean addFunctionalComponent(FunctionalComponent component) {
 		if (isChildURIcompliant(this.getIdentity(), component.getIdentity())) {
 			// Check if persistent identity exists in other maps.
 			URI persistentId = URI.create(extractPersistentId(component.getIdentity()));
@@ -527,7 +527,7 @@ public class ModuleDefinition extends TopLevel {
 			List<FunctionalComponent> components) {
 		clearComponents();		
 		for (FunctionalComponent component : components) {
-			addComponent(component);
+			addFunctionalComponent(component);
 		}
 	}
 	

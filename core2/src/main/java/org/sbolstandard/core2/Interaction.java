@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.sbolstandard.core2.abstract_classes.Documented;
 import static org.sbolstandard.core2.util.UriCompliance.*;
-
+import static org.sbolstandard.core2.util.Version.*;
 /**
  * 
  * @author Zhen Zhang
@@ -151,46 +151,36 @@ public class Interaction extends Documented {
 	 * Adds the specified instance to the list of participations. 
 	 * @param participation
 	 */
-	public void addParticipation(Participation participation) {
-		// TODO: @addParticipation, Check for duplicated entries.		
-		participations.put(participation.getIdentity(), participation);
-//		if (UriCompliance.isChildURIcompliant(this.getIdentity(), subComponent.getIdentity())) {
-//			// Check if persistent identity exists in other maps.
-//			URI persistentId = URI.create(UriCompliance.extractPersistentId(subComponent.getIdentity()));
-//			if (!keyExistsInOtherMaps(subComponents.keySet(), persistentId)) {
-//				// Check if URI exists in the subComponents map.
-//				if (!subComponents.containsKey(subComponent.getIdentity())) {
-//					subComponents.put(subComponent.getIdentity(), subComponent);
-//					Component latestSubComponent = subComponents.get(persistentId);
-//					if (latestSubComponent == null) {
-//						subComponents.put(persistentId, subComponent);
-//					}
-//					else {						
-//						if (Version.isFirstVersionNewer(UriCompliance.extractVersion(subComponent.getIdentity()), 
-//								UriCompliance.extractVersion(latestSubComponent.getIdentity()))) {								
-//							subComponents.put(persistentId, subComponent);
-//						}
-//					}
-//					return true;
-//				}
-//				else // key exists in subComponents map
-//					return false;
-//			}
-//			else // key exists in other maps
-//				return false;
-//		}
-//		else { // Only check if subComponent's URI exists in all maps.
-//			if (!keyExistsInOtherMaps(subComponents.keySet(), subComponent.getIdentity())) {
-//				if (!subComponents.containsKey(subComponent.getIdentity())) {
-//					subComponents.put(subComponent.getIdentity(), subComponent);					
-//					return true;
-//				}
-//				else // key exists in subComponents map
-//					return false;
-//			}
-//			else // key exists in other maps
-//				return false;
-//		}		
+	public boolean addParticipation(Participation participation) {
+		if (isChildURIcompliant(this.getIdentity(), participation.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(participation.getIdentity()));
+			// Check if URI exists in the participations map.
+			if (!participations.containsKey(participation.getIdentity())) {
+				participations.put(participation.getIdentity(), participation);
+				Participation latestSubComponent = participations.get(persistentId);
+				if (latestSubComponent == null) {
+					participations.put(persistentId, participation);
+				}
+				else {						
+					if (isFirstVersionNewer(extractVersion(participation.getIdentity()), 
+							extractVersion(latestSubComponent.getIdentity()))) {								
+						participations.put(persistentId, participation);
+					}
+				}
+				return true;
+			}
+			else // key exists in participations map
+				return false;
+		}
+		else { // Only check if participation's URI exists in all maps.
+			if (!participations.containsKey(participation.getIdentity())) {
+				participations.put(participation.getIdentity(), participation);					
+				return true;
+			}
+			else // key exists in participations map
+				return false;
+		}		
 	}
 	
 	/**

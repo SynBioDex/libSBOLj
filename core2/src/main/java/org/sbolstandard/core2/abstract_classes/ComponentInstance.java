@@ -8,8 +8,9 @@ import java.util.List;
 import org.sbolstandard.core2.MapsTo;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.Sbol2Terms;
+
+import static org.sbolstandard.core2.util.Version.*;
 import static org.sbolstandard.core2.util.UriCompliance.*;
-import org.sbolstandard.core2.util.Version;
 
 
 public abstract class ComponentInstance extends Documented {
@@ -197,37 +198,36 @@ public abstract class ComponentInstance extends Documented {
 	 * Adds the specified instance to the list of references. 
 	 * @param reference
 	 */
-	public void addMapping(MapsTo mapTo) {
-		
-		mapsTos.put(mapTo.getIdentity(), mapTo);
-//		if (UriCompliance.isChildURIcompliant(this.getIdentity(), mapTo.getIdentity())) {
-//			URI persistentId = URI.create(UriCompliance.extractPersistentId(mapTo.getIdentity()));
-//			// Check if URI exists in the mapsTos map.
-//			if (!mapsTos.containsKey(mapTo.getIdentity())) {
-//				mapsTos.put(mapTo.getIdentity(), mapTo);
-//				MapsTo latestSubComponent = mapsTos.get(persistentId);
-//				if (latestSubComponent == null) {
-//					mapsTos.put(persistentId, mapTo);
-//				}
-//				else {						
-//					if (Version.isFirstVersionNewer(UriCompliance.extractVersion(mapTo.getIdentity()), 
-//							UriCompliance.extractVersion(latestSubComponent.getIdentity()))) {								
-//						mapsTos.put(persistentId, mapTo);
-//					}
-//				}
-//				return true;
-//			}
-//			else // key exists in mapsTos map
-//				return false;
-//		}
-//		else { // Only check if mapTo's URI exists in all maps.
-//			if (!mapsTos.containsKey(mapTo.getIdentity())) {
-//				mapsTos.put(mapTo.getIdentity(), mapTo);					
-//				return true;
-//			}
-//			else // key exists in mapsTos map
-//				return false;
-//		}
+	public boolean addMapping(MapsTo mapsTo) {
+		//mapsTos.put(mapTo.getIdentity(), mapTo);
+		if (isChildURIcompliant(this.getIdentity(), mapsTo.getIdentity())) {
+			URI persistentId = URI.create(extractPersistentId(mapsTo.getIdentity()));
+			// Check if URI exists in the mapsTos map.
+			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
+				mapsTos.put(mapsTo.getIdentity(), mapsTo);
+				MapsTo latestSubComponent = mapsTos.get(persistentId);
+				if (latestSubComponent == null) {
+					mapsTos.put(persistentId, mapsTo);
+				}
+				else {						
+					if (isFirstVersionNewer(extractVersion(mapsTo.getIdentity()), 
+							extractVersion(latestSubComponent.getIdentity()))) {								
+						mapsTos.put(persistentId, mapsTo);
+					}
+				}
+				return true;
+			}
+			else // key exists in mapsTos map
+				return false;
+		}
+		else { // Only check if mapTo's URI exists in all maps.
+			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
+				mapsTos.put(mapsTo.getIdentity(), mapsTo);					
+				return true;
+			}
+			else // key exists in mapsTos map
+				return false;
+		}
 	}
 	
 	/**
