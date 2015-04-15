@@ -183,7 +183,7 @@ public class SBOLTestUtils {
 		if(interactions != null)
 			m.setInteractions(interactions);
 		if(submodules != null)
-			m.setSubModules(submodules);
+			m.setModules(submodules);
 		if(models != null)
 			m.setModels(models);
 

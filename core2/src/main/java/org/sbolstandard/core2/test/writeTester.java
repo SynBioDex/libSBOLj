@@ -873,7 +873,7 @@ public class writeTester {
 		if(interactionData != null)
 			m.setInteractions(interactionData);
 		if(moduleInstantiation_data != null)
-			m.setSubModules(moduleInstantiation_data);
+			m.setModules(moduleInstantiation_data);
 		if(model_data != null)
 			m.setModels(model_data);
 

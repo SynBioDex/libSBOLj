@@ -1483,7 +1483,7 @@ public class SBOLReader
 		if (!models.isEmpty())
 			moduleDefinition.setModels(models);
 		if (!subModules.isEmpty())
-			moduleDefinition.setSubModules(subModules);
+			moduleDefinition.setModules(subModules);
 		if (name != null)
 			moduleDefinition.setName(name);
 		if (description != null)
