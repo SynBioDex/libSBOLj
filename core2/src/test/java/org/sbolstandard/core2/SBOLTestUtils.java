@@ -52,7 +52,7 @@ public class SBOLTestUtils {
 			List<Component> subComponents, List<Annotation> annotations)
 	{
 		ComponentDefinition componentDefinition = document.createComponentDefinition(
-				"http://www.async.ece.utah.edu", id,
+				"http://www.async.ece.utah.edu", id, "1/0",
 				type, role);
 
 		componentDefinition.setName(id);
@@ -65,7 +65,7 @@ public class SBOLTestUtils {
 		if (sequenceConstraints!= null)
 			componentDefinition.setSequenceConstraints(sequenceConstraints);
 		if (subComponents!= null)
-			componentDefinition.setSubComponents(subComponents);
+			componentDefinition.setComponents(subComponents);
 		if (annotations != null)
 			componentDefinition.setAnnotations(annotations);
 		return componentDefinition;

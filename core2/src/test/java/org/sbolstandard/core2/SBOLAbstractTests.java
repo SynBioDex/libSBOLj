@@ -27,7 +27,7 @@ public abstract class SBOLAbstractTests {
 
 		Set<URI> roles = SBOLTestUtils.getSetPropertyURI("Inverter");
 		ModuleDefinition moduleDefinition=document.createModuleDefinition(URI.create("testmodule"),roles);
-		FunctionalComponent fc=moduleDefinition.createComponent(
+		FunctionalComponent fc=moduleDefinition.createFunctionalComponent(
 				URI.create("fc1"),
 				ComponentInstance.AccessType.PUBLIC,
 				URI.create("cd1"),

@@ -9,8 +9,9 @@ import java.util.Set;
 
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
-import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
+import static org.sbolstandard.core2.util.UriCompliance.*;
+import org.sbolstandard.core2.util.Version;
 
 /**
  * @author Zhen Zhang
@@ -41,28 +42,28 @@ public class ModuleDefinition extends TopLevel {
 			roles.add(role);
 		}		
 		this.setRoles(roles);
-		if (moduleDefinition.isSetSubModules()) {
+		if (!moduleDefinition.getSubModules().isEmpty()) {
 			List<Module> subModules = new ArrayList<Module>();
-			for (Module subModule : moduleDefinition.getSubModule()) {
+			for (Module subModule : moduleDefinition.getSubModules()) {
 				subModules.add(subModule.deepCopy());
 			}
 			this.setSubModules(subModules);
 		}
-		if (moduleDefinition.isSetInteractions()) {
+		if (!moduleDefinition.getInteractions().isEmpty()) {
 			List<Interaction> interactions = new ArrayList<Interaction>();
 			for (Interaction interaction : moduleDefinition.getInteractions()) {
 				interactions.add(interaction.deepCopy());
 			}
 			this.setInteractions(interactions);
 		}
-		if (moduleDefinition.isSetComponents()) {
+		if (!moduleDefinition.getComponents().isEmpty()) {
 			List<FunctionalComponent> components = new ArrayList<FunctionalComponent>();
 			for (FunctionalComponent component : moduleDefinition.getComponents()) {
 				components.add(component.deepCopy());
 			}
 			this.setComponents(components);
 		}
-		if (moduleDefinition.isSetModels()) {
+		if (!moduleDefinition.getModels().isEmpty()) {
 			Set<URI> models = new HashSet<URI>();
 			for (URI model : moduleDefinition.getModels()) {
 				models.add(model);
@@ -121,16 +122,16 @@ public class ModuleDefinition extends TopLevel {
 		roles.clear();
 	}
 	
-	/**
-	 * Test if field variable <code>subModules</code> is set.
-	 * @return <code>true</code> if it is not an empty list.
-	 */
-	public boolean isSetSubModules() {
-		if (subModules.isEmpty())
-			return false;
-		else
-			return true;					
-	}
+//	/**
+//	 * Test if field variable <code>subModules</code> is set.
+//	 * @return <code>true</code> if it is not an empty list.
+//	 */
+//	public boolean isSetSubModules() {
+//		if (subModules.isEmpty())
+//			return false;
+//		else
+//			return true;					
+//	}
 	
 	/**
 	 * Calls the ModuleInstantiation constructor to create a new instance using the specified parameters, 
@@ -139,19 +140,76 @@ public class ModuleDefinition extends TopLevel {
 	 * @param location
 	 * @return the created ModuleInstantiation instance. 
 	 */
-	public Module createSubModule(URI identity, URI subModuleURI) {
-		Module subModule = new Module(identity, subModuleURI);
-		addSubModule(subModule);
+	public Module createModule(URI identity, URI moduleDefinitionURI) {
+		Module subModule = new Module(identity, moduleDefinitionURI);
+		addModule(subModule);
 		return subModule;
 	}
+	
+
+	/**
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param moduleDefinitionURI
+	 * @return
+	 */
+	public Module createModule(String URIprefix, String displayId, String version, URI moduleDefinitionURI) {
+		URI newModuleURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newModuleURI)) {
+			return createModule(newModuleURI, moduleDefinitionURI);
+		}
+		else {
+			// TODO: Generate warning message here.
+			return null;
+		}
+	}
+	
+	
 	
 	/**
 	 * Adds the specified instance to the list of subModules. 
 	 * @param subModule
+	 * @return 
 	 */
-	public void addSubModule(Module subModule) {
-		// TODO: @addModuleInstantiation, Check for duplicated entries.
-		subModules.put(subModule.getIdentity(), subModule);
+	public boolean addModule(Module subModule) {
+		if (isChildURIcompliant(this.getIdentity(), subModule.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(subModule.getIdentity()));
+			if (!keyExistsInOtherMaps(subModules.keySet(), persistentId)) {
+				// Check if URI exists in the subModules map.
+				if (!subModules.containsKey(subModule.getIdentity())) {
+					subModules.put(subModule.getIdentity(), subModule);
+					Module latestSubModule = subModules.get(persistentId);
+					if (latestSubModule == null) {
+						subModules.put(persistentId, subModule);
+					}
+					else {						
+						if (Version.isFirstVersionNewer(extractVersion(subModule.getIdentity()),
+								extractVersion(latestSubModule.getIdentity()))) {
+							subModules.put(persistentId, subModule);
+						}
+					}
+					return true;
+				}
+				else // key exists in subModules map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if subModule's URI exists in all maps.
+			if (!keyExistsInOtherMaps(subModules.keySet(), subModule.getIdentity())) {
+				if (!subModules.containsKey(subModule.getIdentity())) {
+					subModules.put(subModule.getIdentity(), subModule);					
+					return true;
+				}
+				else // key exists in subModules map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}		
 	}
 	
 	/**
@@ -176,7 +234,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the list of subModule instances owned by this instance. 
 	 * @return the list of subModule instances owned by this instance.
 	 */
-	public List<Module> getSubModule() {
+	public List<Module> getSubModules() {
 		return new ArrayList<Module>(subModules.values());
 	}
 	
@@ -196,23 +254,23 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public void setSubModules(
 			List<Module> subModules) {
-		if(isSetSubModules())
+		if(!getSubModules().isEmpty())
 			clearSubModules();		
 		for (Module subModule : subModules) {
-			addSubModule(subModule);
+			addModule(subModule);
 		}
 	}
 	
-	/**
-	 * Test if field variable <code>interactions</code> is set.
-	 * @return <code>true</code> if it is not an empty list.
-	 */		
-	public boolean isSetInteractions() {
-		if (interactions.isEmpty())
-			return false;
-		else
-			return true;
-	}
+//	/**
+//	 * Test if field variable <code>interactions</code> is set.
+//	 * @return <code>true</code> if it is not an empty list.
+//	 */		
+//	public boolean isSetInteractions() {
+//		if (interactions.isEmpty())
+//			return false;
+//		else
+//			return true;
+//	}
 	
 	/**
 	 * Calls the Interaction constructor to create a new instance using the specified parameters, 
@@ -228,12 +286,68 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param type
+	 * @param participations
+	 * @return
+	 */
+	public Interaction createInteraction(String URIprefix, String displayId, String version, 
+			Set<URI> type, List<Participation> participations) {
+		URI newInteractionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newInteractionURI)) {
+			return createInteraction(newInteractionURI, type, participations);
+		}
+		else {
+			// TODO: Generate warning messages here.
+			return null;
+		}
+	}
+	
+	
+	/**
 	 * Adds the specified instance to the list of interactions. 
 	 * @param interaction
 	 */
-	public void addInteraction(Interaction interaction) {
-		// TODO: @addInteraction, Check for duplicated entries.
-		interactions.put(interaction.getIdentity(), interaction);
+	public boolean addInteraction(Interaction interaction) {
+		if (isChildURIcompliant(this.getIdentity(), interaction.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(interaction.getIdentity()));
+			if (!keyExistsInOtherMaps(interactions.keySet(), persistentId)) {
+				// Check if URI exists in the interactions map.
+				if (!interactions.containsKey(interaction.getIdentity())) {
+					interactions.put(interaction.getIdentity(), interaction);
+					Interaction latestInteraction = interactions.get(persistentId);
+					if (latestInteraction == null) {
+						interactions.put(persistentId, interaction);
+					}
+					else {						
+						if (Version.isFirstVersionNewer(extractVersion(interaction.getIdentity()),
+								extractVersion(latestInteraction.getIdentity()))) {
+							interactions.put(persistentId, interaction);
+						}
+					}
+					return true;
+				}
+				else // key exists in interactions map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if interaction's URI exists in all maps.
+			if (!keyExistsInOtherMaps(interactions.keySet(), interaction.getIdentity())) {
+				if (!interactions.containsKey(interaction.getIdentity())) {
+					interactions.put(interaction.getIdentity(), interaction);					
+					return true;
+				}
+				else // key exists in interactions map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
 	}
 	
 	/**
@@ -285,16 +399,16 @@ public class ModuleDefinition extends TopLevel {
 		}
 	}
 		
-	/**
-	 * Test if field variable <code>functionalInstantiations</code> is set.
-	 * @return <code>true</code> if it is not an empty list.
-	 */
-	public boolean isSetComponents() {
-		if (components.isEmpty()) 
-			return false;
-		else
-			return true;
-	}
+//	/**
+//	 * Test if field variable <code>functionalInstantiations</code> is set.
+//	 * @return <code>true</code> if it is not an empty list.
+//	 */
+//	public boolean isSetComponents() {
+//		if (components.isEmpty()) 
+//			return false;
+//		else
+//			return true;
+//	}
  	
 	/**
 	 * Calls the FunctionalInstantiation constructor to create a new instance using the specified parameters, 
@@ -303,21 +417,70 @@ public class ModuleDefinition extends TopLevel {
 	 * @param location
 	 * @return the created {@link FunctionalComponent} instance. 
 	 */
-	public FunctionalComponent createComponent(URI identity, AccessType access, 
+	public FunctionalComponent createFunctionalComponent(URI identity, AccessType access, 
 			URI functionalComponentURI, DirectionType direction) {
 		FunctionalComponent functionalComponent = 
 				new FunctionalComponent(identity, access, functionalComponentURI, direction);
-		addComponent(functionalComponent);
+		addFunctionalComponent(functionalComponent);
 		return functionalComponent;
 	}
+
+	public FunctionalComponent createFunctionalComponent(String URIprefix, String displayId, String version,  AccessType access, 
+			URI functionalComponentURI, DirectionType direction) {
+		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newComponentDefinitionURI)) {		
+			return createFunctionalComponent(newComponentDefinitionURI, access, functionalComponentURI, direction);
+		}
+		else {
+			// TODO: Generate a warning here?
+			return null;
+		}
+	}
+
+	
 	
 	/**
-	 * Adds the specified instance to the list of functionalInstantiations. 
+	 * Adds the specified instance to the list of components.
 	 * @param component
 	 */
-	public void addComponent(FunctionalComponent component) {
-		// TODO: @addFunctionalInstantiation, Check for duplicated entries.
-		components.put(component.getIdentity(), component);
+	public boolean addFunctionalComponent(FunctionalComponent component) {
+		if (isChildURIcompliant(this.getIdentity(), component.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(component.getIdentity()));
+			if (!keyExistsInOtherMaps(components.keySet(), persistentId)) {
+				// Check if URI exists in the components map.
+				if (!components.containsKey(component.getIdentity())) {
+					components.put(component.getIdentity(), component);
+					FunctionalComponent latestFunctionalComponent = components.get(persistentId);
+					if (latestFunctionalComponent == null) {
+						components.put(component.getPersistentIdentity(), component);
+					}
+					else {						
+						if (Version.isFirstVersionNewer(extractVersion(component.getIdentity()),
+								extractVersion(latestFunctionalComponent.getIdentity()))) {
+							components.put(component.getPersistentIdentity(), component);
+						}
+					}
+					return true;
+				}
+				else // key exists in components map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if component's URI exists in all maps.
+			if (!keyExistsInOtherMaps(components.keySet(), component.getIdentity())) {
+				if (!components.containsKey(component.getIdentity())) {
+					components.put(component.getIdentity(), component);					
+					return true;
+				}
+				else // key exists in components map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
 	}
 	
 	/**
@@ -364,7 +527,7 @@ public class ModuleDefinition extends TopLevel {
 			List<FunctionalComponent> components) {
 		clearComponents();		
 		for (FunctionalComponent component : components) {
-			addComponent(component);
+			addFunctionalComponent(component);
 		}
 	}
 	
@@ -389,23 +552,22 @@ public class ModuleDefinition extends TopLevel {
 //		functionalInstantiations.clear();
 //	}
 	
-	/**
-	 * Test if field variable <code>models</code> is set.
-	 * @return <code>true</code> if it is not an empty list.
-	 */
-	public boolean isSetModels() {
-		if (models.isEmpty())
-			return false;
-		else
-			return true;					
-	}
+//	/**
+//	 * Test if field variable <code>models</code> is set.
+//	 * @return <code>true</code> if it is not an empty list.
+//	 */
+//	public boolean isSetModels() {
+//		if (models.isEmpty())
+//			return false;
+//		else
+//			return true;					
+//	}
 	
 	/**
 	 * Adds the specified instance to the list of models. 
 	 * @param modelURI
 	 */
 	public void addModel(URI modelURI) {
-		// TODO: @addModel, Check for duplicated entries.
 		models.add(modelURI);
 	}
 	
@@ -415,7 +577,6 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeModel(URI modelURI) {
-		// TODO: Need to check if the set of models' URIs is empty. 
 		return models.remove(modelURI);
 	}
 	
@@ -449,8 +610,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public void clearModels() {
 		models.clear();
-	}
-
+	}	
 
 	@Override
 	public int hashCode() {
@@ -508,15 +668,65 @@ public class ModuleDefinition extends TopLevel {
 		return new ModuleDefinition(this);
 	}
 	
-//	/**
-//	 * Set optional field variable <code>models</code> to an empty list.
-//	 */
-//	public void unsetModels() {
-//		models.clear();
-//	}
-	
-	
+	/**
+	 * @param newDisplayId
+	 * @return
+	 */
+	public ModuleDefinition copy(String newDisplayId) {
+		ModuleDefinition cloned = (ModuleDefinition) super.copy(newDisplayId);		
+		cloned.updateDisplayId(newDisplayId);
+		return cloned;
+	}
 	
 
-
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+	 */
+	protected void updateDisplayId(String newDisplayId) {
+		super.updateDisplayId(newDisplayId);
+		if (isTopLevelURIcompliant(this.getIdentity())) {					
+			// TODO Change all of its children's displayIds in their URIs.
+		}
+	}
+	
+	/**
+	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
+	 * @param newVersion
+	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+	 */
+	public ModuleDefinition newVersion(String newVersion) {
+		ModuleDefinition cloned = (ModuleDefinition) super.newVersion(newVersion);		
+		cloned.updateVersion(newVersion);
+		return cloned;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+	 */
+	protected void updateVersion(String newVersion) {
+		super.updateVersion(newVersion);
+		if (isTopLevelURIcompliant(this.getIdentity())) {					
+			// TODO Change all of its children's versions in their URIs.
+		}
+	}
+	
+	/**
+	 * Check if the specified key exists in any hash maps in this class other than the one with the specified keySet. This method
+	 * constructs a set of key sets for other hash maps first, and then checks if the key exists.
+	 * @param keySet
+	 * @param key
+	 * @return <code>true</code> if the specified key exists in other hash maps.
+	 */
+	private boolean keyExistsInOtherMaps(Set<URI> keySet, URI key) {
+		Set<Set<URI>> complementSet = new HashSet<Set<URI>>();
+		complementSet.add(components.keySet());
+		complementSet.add(interactions.keySet());		
+		complementSet.remove(keySet);
+		for (Set<URI> otherKeySet : complementSet) {
+			if (otherKeySet.contains(key)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

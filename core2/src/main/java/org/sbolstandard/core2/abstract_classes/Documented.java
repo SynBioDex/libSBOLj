@@ -21,13 +21,12 @@ public abstract class Documented extends Identified {
 	 */
 	public Documented(URI identity) {
 		super(identity);
-		// TODO extract display ID
 	}
 	
-	public Documented(String URIprefix, String id, String version) {
-		super(URIprefix, id, version);
-		setDisplayId(id);
-	}
+//	public Documented(String URIprefix, String displayId, String version) {
+//		super(URIprefix, displayId, version);
+//		setDisplayId(displayId);
+//	}
 	
 	protected Documented(Documented documented) {
 		super(documented);
@@ -69,7 +68,6 @@ public abstract class Documented extends Identified {
 	 */
 	public void setDisplayId(String displayId) {
 		this.displayId = displayId;
-		// TODO: Update the URI?
 	}
 	
 	/**

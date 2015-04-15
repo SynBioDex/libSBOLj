@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.abstract_classes.Documented;
+import static org.sbolstandard.core2.util.Version.*;
+
+import static org.sbolstandard.core2.util.UriCompliance.*;
 
 /**
  * 
@@ -16,13 +19,13 @@ import org.sbolstandard.core2.abstract_classes.Documented;
  */
 public class Module extends Documented {
 	
-	private HashMap<URI, MapsTo> mappings;
+	private HashMap<URI, MapsTo> mapsTos;
 	private URI definition;
 	
-	public Module(URI identity, URI instantiatedModule) {
+	public Module(URI identity, URI moduleDefinition) {
 		super(identity);
-		setDefinition(instantiatedModule);
-		this.mappings = new HashMap<URI, MapsTo>();
+		setDefinition(moduleDefinition);
+		this.mapsTos = new HashMap<URI, MapsTo>();
 	}
 	
 	private Module(Module module) {
@@ -60,7 +63,7 @@ public class Module extends Documented {
 	 * @return <code>true</code> if it is not an empty list
 	 */
 	public boolean isSetMappings() {
-		if (mappings.isEmpty())
+		if (mapsTos.isEmpty())
 			return false;
 		else
 			return true;
@@ -75,20 +78,79 @@ public class Module extends Documented {
 	 * @param remote
 	 * @return the created MapsTo instance. 
 	 */
-	public MapsTo createMapping(URI identity, RefinementType refinement, 
+	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
-		addMapping(mapping);
+		addMapsTo(mapping);
 		return mapping;
 	}
 	
 	/**
-	 * Adds the specified instance to the list of references. 
-	 * @param reference
+	 * @param displayId
+	 * @param version
+	 * @param refinement
+	 * @param local
+	 * @param remote
+	 * @return
 	 */
-	public void addMapping(MapsTo reference) {
-		// TODO: @addReference, Check for duplicated entries.
-		mappings.put(reference.getIdentity(), reference);
+	public MapsTo createMapsTo(String displayId, String version, RefinementType refinement, URI local, URI remote) {
+		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		if (parentPersistentIdStr != null) {
+			if (isDisplayIdCompliant(displayId)) {
+				if (isVersionCompliant(version)) {
+					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
+					return createMapsTo(newMapsToURI, refinement, local, remote);
+				}
+				else {
+					// TODO: Warning: version not compliant
+					return null;
+				}
+			}
+			else {
+				// TODO: Warning: display ID not compliant
+				return null;
+			}
+		}
+		else {
+			// TODO: Warning: Parent persistent ID is not compliant.
+			return null;
+		}
+	}	
+	
+	/**
+	 * Adds the specified instance to the list of references. 
+	 * @param mapsTo
+	 * @return
+	 */
+	public boolean addMapsTo(MapsTo mapsTo) {
+		if (isChildURIcompliant(this.getIdentity(), mapsTo.getIdentity())) {
+			URI persistentId = URI.create(extractPersistentId(mapsTo.getIdentity()));
+			// Check if URI exists in the mapsTos map.
+			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
+				mapsTos.put(mapsTo.getIdentity(), mapsTo);
+				MapsTo latestSubComponent = mapsTos.get(persistentId);
+				if (latestSubComponent == null) {
+					mapsTos.put(persistentId, mapsTo);
+				}
+				else {						
+					if (isFirstVersionNewer(extractVersion(mapsTo.getIdentity()), 
+							extractVersion(latestSubComponent.getIdentity()))) {								
+						mapsTos.put(persistentId, mapsTo);
+					}
+				}
+				return true;
+			}
+			else // key exists in mapsTos map
+				return false;
+		}
+		else { // Only check if mapTo's URI exists in all maps.
+			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
+				mapsTos.put(mapsTo.getIdentity(), mapsTo);					
+				return true;
+			}
+			else // key exists in mapsTos map
+				return false;
+		}
 	}
 	
 	/**
@@ -97,7 +159,7 @@ public class Module extends Documented {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo removeMapping(URI referenceURI) {
-		return mappings.remove(referenceURI);
+		return mapsTos.remove(referenceURI);
 	}
 	
 	/**
@@ -106,7 +168,7 @@ public class Module extends Documented {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo getMapping(URI referenceURI) {
-		return mappings.get(referenceURI);
+		return mapsTos.get(referenceURI);
 	}
 	
 	/**
@@ -115,14 +177,14 @@ public class Module extends Documented {
 	 */
 	public List<MapsTo> getMappings() {
 //		return (List<MapsTo>) references.values();
-		return new ArrayList<MapsTo>(mappings.values());
+		return new ArrayList<MapsTo>(mapsTos.values());
 	}
 	
 	/**
 	 * Removes all entries of the list of reference instances owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearMappings() {
-		Object[] keySetArray = mappings.keySet().toArray();
+		Object[] keySetArray = mapsTos.keySet().toArray();
 		for (Object key : keySetArray) {
 			removeMapping((URI) key);
 		}
@@ -136,7 +198,7 @@ public class Module extends Documented {
 			List<MapsTo> mappings) {
 		clearMappings();		
 		for (MapsTo mapping : mappings) {
-			addMapping(mapping);
+			addMapsTo(mapping);
 		}
 	}
 
@@ -146,7 +208,7 @@ public class Module extends Documented {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((definition == null) ? 0 : definition.hashCode());
-		result = prime * result + ((mappings == null) ? 0 : mappings.hashCode());
+		result = prime * result + ((mapsTos == null) ? 0 : mapsTos.hashCode());
 		return result;
 	}
 
@@ -165,10 +227,10 @@ public class Module extends Documented {
 				return false;
 		} else if (!definition.equals(other.definition))
 			return false;
-		if (mappings == null) {
-			if (other.mappings != null)
+		if (mapsTos == null) {
+			if (other.mapsTos != null)
 				return false;
-		} else if (!mappings.equals(other.mappings))
+		} else if (!mapsTos.equals(other.mapsTos))
 			return false;
 		return true;
 	}

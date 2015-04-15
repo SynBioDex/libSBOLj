@@ -4,8 +4,8 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
+import org.sbolstandard.core2.util.UriCompliance;
 
 /**
  * @author Zhen Zhang
@@ -181,8 +181,48 @@ public class Model extends TopLevel {
 	}
 
 	@Override
-	protected Documented deepCopy() {
+	protected Model deepCopy() {
 		return new Model(this);
 	}
+	
+	/**
+	 * @param newDisplayId
+	 * @return
+	 */
+	public Model copy(String newDisplayId) {
+		Model cloned = (Model) this.deepCopy();
+		cloned.updateDisplayId(newDisplayId);
+		return cloned;
+	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+	 */
+	protected void updateDisplayId(String newDisplayId) {
+		super.updateDisplayId(newDisplayId);
+		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {				
+			// TODO Change all of its children's displayIds in their URIs.
+		}
+	}
+	
+	/**
+	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
+	 * @param newVersion
+	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+	 */
+	public Model newVersion(String newVersion) {
+		Model cloned = (Model) super.newVersion(newVersion);		
+		cloned.updateVersion(newVersion);
+		return cloned;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+	 */
+	protected void updateVersion(String newVersion) {
+		super.updateVersion(newVersion);
+		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
+			// TODO Change all of its children's versions in their URIs.
+		}
+	}
 }

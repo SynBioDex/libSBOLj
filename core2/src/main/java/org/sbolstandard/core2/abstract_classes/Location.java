@@ -14,5 +14,5 @@ public abstract class Location extends Identified{
 		super(location);
 	}
 	
-	public abstract Location deepCopy();
+	protected abstract Location deepCopy();
 }

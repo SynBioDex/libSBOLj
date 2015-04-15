@@ -1,9 +1,6 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-
-import org.sbolstandard.core2.abstract_classes.ComponentInstance;
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Location;
 
@@ -26,13 +23,25 @@ public class SequenceAnnotation extends Documented {
 	
 	private SequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
 		super(sequenceAnnotation.getIdentity());
-		this.setLocation(sequenceAnnotation.getLocation().deepCopy());
+		//this.setLocation(sequenceAnnotation.getLocation().deepCopy());
+		Location originalLocation = sequenceAnnotation.getLocation();
+		if(originalLocation instanceof MultiRange) {
+			this.setLocation(((MultiRange) originalLocation).deepCopy());
+		}
+		else if(originalLocation instanceof Range) {
+			this.setLocation(((Range) originalLocation).deepCopy());
+		}
+		else if(originalLocation instanceof Cut) {
+			this.setLocation(((Cut) originalLocation).deepCopy());
+		}
+		else if(originalLocation instanceof GenericLocation) {
+			this.setLocation(((GenericLocation) originalLocation).deepCopy());
+		}
 		if (sequenceAnnotation.isSetComponent()) {
 			this.setComponent(sequenceAnnotation.getComponent());
 		}
 	}
 	
-
 	/**
 	 * Returns field variable <code>location</code>.
 	 * @return field variable <code>location</code>
@@ -338,14 +347,8 @@ public class SequenceAnnotation extends Documented {
 		return true;
 	}
 
-
 	@Override
-	public SequenceAnnotation deepCopy() {
+	protected SequenceAnnotation deepCopy() {
 		return new SequenceAnnotation(this);
 	}
-
-
-
-
-
 }

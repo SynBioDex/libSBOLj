@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.sbolstandard.core2.abstract_classes.Documented;
-
+import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.Version.*;
 /**
  * 
  * @author Zhen Zhang
@@ -122,14 +123,64 @@ public class Interaction extends Documented {
 		return participation;
 	}
 	
+	public Participation createParticipation(String displayId, String version, Set<URI> role, URI participant) {
+		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		if (parentPersistentIdStr != null) {
+			if (isDisplayIdCompliant(displayId)) {
+				if (isVersionCompliant(version)) {
+					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
+					return createParticipation(newMapsToURI, role, participant);
+				}
+				else {
+					// TODO: Warning: version not compliant
+					return null;
+				}
+			}
+			else {
+				// TODO: Warning: display ID not compliant
+				return null;
+			}
+		}
+		else {
+			// TODO: Warning: Parent persistent ID is not compliant.
+			return null;
+		}
+	}
+	
 	/**
 	 * Adds the specified instance to the list of participations. 
 	 * @param participation
 	 */
-	public void addParticipation(Participation participation) {
-		// TODO: @addParticipation, Check for duplicated entries.
-		
-		participations.put(participation.getIdentity(), participation);
+	public boolean addParticipation(Participation participation) {
+		if (isChildURIcompliant(this.getIdentity(), participation.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(participation.getIdentity()));
+			// Check if URI exists in the participations map.
+			if (!participations.containsKey(participation.getIdentity())) {
+				participations.put(participation.getIdentity(), participation);
+				Participation latestSubComponent = participations.get(persistentId);
+				if (latestSubComponent == null) {
+					participations.put(persistentId, participation);
+				}
+				else {						
+					if (isFirstVersionNewer(extractVersion(participation.getIdentity()), 
+							extractVersion(latestSubComponent.getIdentity()))) {								
+						participations.put(persistentId, participation);
+					}
+				}
+				return true;
+			}
+			else // key exists in participations map
+				return false;
+		}
+		else { // Only check if participation's URI exists in all maps.
+			if (!participations.containsKey(participation.getIdentity())) {
+				participations.put(participation.getIdentity(), participation);					
+				return true;
+			}
+			else // key exists in participations map
+				return false;
+		}		
 	}
 	
 	/**

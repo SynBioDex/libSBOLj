@@ -207,7 +207,7 @@ public class SequenceConstraint extends Identified {
 
 
 	@Override
-	public SequenceConstraint deepCopy() {		
+	protected SequenceConstraint deepCopy() {		
 		return new SequenceConstraint(this);
 	}
 }

@@ -9,12 +9,15 @@ import org.sbolstandard.core2.MapsTo;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.Sbol2Terms;
 
+import static org.sbolstandard.core2.util.Version.*;
+import static org.sbolstandard.core2.util.UriCompliance.*;
+
 
 public abstract class ComponentInstance extends Documented {
 	
 	private AccessType access;
 	private URI definition;
-	private HashMap<URI, MapsTo> mappings;
+	private HashMap<URI, MapsTo> mapsTos;
 	
 	public static enum AccessType {
 		PUBLIC("public"), PRIVATE("private");
@@ -80,11 +83,20 @@ public abstract class ComponentInstance extends Documented {
 		super(identity);
 		setAccess(access);
 		setDefinition(definition);		
-		this.mappings = new HashMap<URI, MapsTo>();
+		this.mapsTos = new HashMap<URI, MapsTo>();
 	}
 	
 	protected ComponentInstance(ComponentInstance component) {
 		super(component);
+		setAccess(component.getAccess());
+		setDefinition(component.getDefinition());	
+		if (!component.getMapsTos().isEmpty()) {
+			List<MapsTo> mapsTos = new ArrayList<MapsTo>();
+			for (MapsTo mapsTo : component.getMapsTos()) {
+				mapsTos.add(mapsTo.deepCopy());
+			}
+			this.setMapsTo(mapsTos);
+		}
 	}
 
 	/**
@@ -140,16 +152,16 @@ public abstract class ComponentInstance extends Documented {
 		}
 	}
 
-	/**
-	 * Test if optional field variable <code>references</code> is set.
-	 * @return <code>true</code> if it is not an empty list
-	 */
-	public boolean isSetMappings() {
-		if (mappings.isEmpty())
-			return false;
-		else
-			return true;
-	}	
+//	/**
+//	 * Test if optional field variable <code>references</code> is set.
+//	 * @return <code>true</code> if it is not an empty list
+//	 */
+//	public boolean isSetMappings() {
+//		if (mapsTos.isEmpty())
+//			return false;
+//		else
+//			return true;
+//	}	
 	
 	/**
 	 * Calls the MapsTo constructor to create a new instance using the specified parameters, 
@@ -160,20 +172,71 @@ public abstract class ComponentInstance extends Documented {
 	 * @param remote
 	 * @return the created MapsTo instance. 
 	 */
-	public MapsTo createMapping(URI identity, RefinementType refinement, 
+	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
-		addMapping(mapping);
+		addMapsTo(mapping);
 		return mapping;
+	}
+	
+	public MapsTo createMapsTo(String displayId, String version, RefinementType refinement, URI local, URI remote) {
+		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		if (parentPersistentIdStr != null) {
+			if (isDisplayIdCompliant(displayId)) {
+				if (isVersionCompliant(version)) {
+					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
+					return createMapsTo(newMapsToURI, refinement, local, remote);
+				}
+				else {
+					// TODO: Warning: version not compliant
+					return null;
+				}
+			}
+			else {
+				// TODO: Warning: display ID not compliant
+				return null;
+			}
+		}
+		else {
+			// TODO: Warning: Parent persistent ID is not compliant.
+			return null;
+		}
 	}
 	
 	/**
 	 * Adds the specified instance to the list of references. 
 	 * @param reference
 	 */
-	public void addMapping(MapsTo reference) {
-		// TODO: @addReference, Check for duplicated entries.
-		mappings.put(reference.getIdentity(), reference);
+	public boolean addMapsTo(MapsTo mapsTo) {
+		//mapsTos.put(mapTo.getIdentity(), mapTo);
+		if (isChildURIcompliant(this.getIdentity(), mapsTo.getIdentity())) {
+			URI persistentId = URI.create(extractPersistentId(mapsTo.getIdentity()));
+			// Check if URI exists in the mapsTos map.
+			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
+				mapsTos.put(mapsTo.getIdentity(), mapsTo);
+				MapsTo latestSubComponent = mapsTos.get(persistentId);
+				if (latestSubComponent == null) {
+					mapsTos.put(persistentId, mapsTo);
+				}
+				else {						
+					if (isFirstVersionNewer(extractVersion(mapsTo.getIdentity()), 
+							extractVersion(latestSubComponent.getIdentity()))) {								
+						mapsTos.put(persistentId, mapsTo);
+					}
+				}
+				return true;
+			}
+			else // key exists in mapsTos map
+				return false;
+		}
+		else { // Only check if mapTo's URI exists in all maps.
+			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
+				mapsTos.put(mapsTo.getIdentity(), mapsTo);					
+				return true;
+			}
+			else // key exists in mapsTos map
+				return false;
+		}
 	}
 	
 	/**
@@ -181,8 +244,8 @@ public abstract class ComponentInstance extends Documented {
 	 * @param mappingURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo removeMapping(URI mappingURI) {
-		return mappings.remove(mappingURI);
+	public MapsTo removeMapsTo(URI mappingURI) {
+		return mapsTos.remove(mappingURI);
 	}
 	
 	/**
@@ -190,25 +253,25 @@ public abstract class ComponentInstance extends Documented {
 	 * @param referenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo getMapping(URI referenceURI) {
-		return mappings.get(referenceURI);
+	public MapsTo getMapsTo(URI referenceURI) {
+		return mapsTos.get(referenceURI);
 	}
 	
 	/**
 	 * Returns the list of reference instances owned by this instance. 
 	 * @return the list of reference instances owned by this instance.
 	 */
-	public List<MapsTo> getMappings() {
-		return new ArrayList<MapsTo>(mappings.values());
+	public List<MapsTo> getMapsTos() {
+		return new ArrayList<MapsTo>(mapsTos.values());
 	}
 	
 	/**
 	 * Removes all entries of the list of reference instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearMappings() {
-		Object[] keySetArray = mappings.keySet().toArray();
+	public void clearMapsTos() {
+		Object[] keySetArray = mapsTos.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeMapping((URI) key);
+			removeMapsTo((URI) key);
 		}
 	}
 		
@@ -216,11 +279,11 @@ public abstract class ComponentInstance extends Documented {
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param mappings
 	 */
-	public void setMappings(
+	public void setMapsTo(
 			List<MapsTo> mappings) {
-		clearMappings();		
+		clearMapsTos();		
 		for (MapsTo reference : mappings) {
-			addMapping(reference);
+			addMapsTo(reference);
 		}
 	}
 	

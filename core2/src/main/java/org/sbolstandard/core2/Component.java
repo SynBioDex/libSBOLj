@@ -3,12 +3,11 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 import org.sbolstandard.core2.abstract_classes.ComponentInstance;
-import org.sbolstandard.core2.abstract_classes.Documented;
 
 public class Component extends ComponentInstance{
 
-	public Component(URI identity, AccessType access, URI instantiatedComponent) {
-		super(identity, access, instantiatedComponent);
+	public Component(URI identity, AccessType access, URI componentDefinition) {
+		super(identity, access, componentDefinition);
 	}
 	
 	public Component(Component component) {
@@ -16,7 +15,7 @@ public class Component extends ComponentInstance{
 	}
 
 	@Override
-	public Component deepCopy() {
+	protected Component deepCopy() {
 		return new Component(this); 
 	}
 }

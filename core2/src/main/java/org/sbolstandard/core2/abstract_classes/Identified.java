@@ -3,6 +3,8 @@ package org.sbolstandard.core2.abstract_classes;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
 
@@ -32,14 +34,6 @@ public abstract class Identified {
 		setIdentity(identity);
 		//this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 		this.annotations = new ArrayList<Annotation>();
-		String identityStr = identity.toString();
-		if (isURIcompliant(identityStr)) {
-			// URI = authority/id/majorVersion/minorVersion
-			//String minorVersion = identityStr.substring(identityStr.lastIndexOf('/') + 1, identityStr.length());
-			// TODO: extract major and minor versions
-		}
-		// else
-
 	}
 
 	/**
@@ -52,7 +46,7 @@ public abstract class Identified {
 		if (identified.isSetAnnotations()) {
 			List<Annotation> clonedAnnotations = new ArrayList<Annotation>();
 			for (Annotation annotation : identified.getAnnotations()) {
-				clonedAnnotations.add(annotation.deepCopy());
+				clonedAnnotations.add(annotation.copy());
 			}
 			this.setAnnotations(clonedAnnotations);
 		}
@@ -68,18 +62,12 @@ public abstract class Identified {
 		}
 	}
 
-	public Identified (String URIprefix, String id, String version) {
-		setIdentity(URI.create(URIprefix.trim() + '/' + id.trim() + '/' + version));
-		this.annotations = new ArrayList<Annotation>();
-		this.setPersistentIdentity(URI.create(URIprefix.trim() + '/' + id.trim()));
-		this.setVersion(version);
-	}
-
-	public static boolean isURIcompliant(String identity) {
-		// TODO Check URI compliance
-		return true;
-	}
-
+//	public Identified (String URIprefix, String displayId, String version) {
+//		setIdentity(URI.create(URIprefix.trim() + '/' + displayId.trim() + '/' + version));
+//		this.annotations = new ArrayList<Annotation>();
+//		this.setPersistentIdentity(URI.create(URIprefix.trim() + '/' + displayId.trim()));
+//		this.setVersion(version);
+//	}
 
 	/**
 	 * Returns field variable <code>identity</code>.
@@ -142,22 +130,6 @@ public abstract class Identified {
 			return true;
 	}
 
-
-	//	public boolean isSetMajorVersion() {
-	//		if (majorVersion == null)
-	//			return false;
-	//		else
-	//			return true;
-	//	}
-	//
-	//	public boolean isSetMinorVersion() {
-	//		if (minorVersion == null)
-	//			return false;
-	//		else
-	//			return true;
-	//	}
-
-
 	public boolean isSetWasDerivedFrom() {
 		if (wasDerivedFrom == null)
 			return false;
@@ -178,50 +150,12 @@ public abstract class Identified {
 	 * @param version
 	 */
 	public void setVersion(String version) {
-		// TODO: Require version to be "[0-9]+.[0-9]+".
 		this.version = version;
 	}
-
-	//	/**
-	//	 * Returns the major version.
-	// 	 * @return the major version
-	//	 */
-	//	public Integer getMajorVersion() {
-	//		return majorVersion;
-	//	}
-	//
-	//	/**
-	//	 * Sets field variable <code>majorVersion</code> to the specified value.
-	//	 * @param majorVersion
-	//	 */
-	//	public void setMajorVersion(Integer majorVersion) {
-	//		this.majorVersion = majorVersion;
-	//		// TODO: Update URI?
-	//	}
-	//
-	//	/**
-	//	 * Returns the minor version.
-	//	 * @return the minor version
-	//	 */
-	//	public Integer getMinorVersion() {
-	//		return minorVersion;
-	//		// TODO: Update URI?
-	//	}
-
 
 	public URI getWasDerivedFrom() {
 		return wasDerivedFrom;
 	}
-
-
-	//	/**
-	//	 * Sets field variable <code>minorVersion</code> to the specified value.
-	//	 * @param minorVersion
-	//	 */
-	//	public void setMinorVersion(Integer minorVersion) {
-	//		this.minorVersion = minorVersion;
-	//	}
-
 
 	/**
 	 * Sets field variable <code>wasDerivedFrom</code> to the specified value.
@@ -393,58 +327,7 @@ public abstract class Identified {
 
 		return true;
 	}
-
-
-	//	@Override
-	//	public int hashCode() {
-	//		final int prime = 31;
-	//		int result = 1;
-	//		result = prime * result + ((annotations == null) ? 0 : annotations.hashCode());
-	//		result = prime * result + ((identity == null) ? 0 : identity.hashCode());
-	//		result = prime * result + majorVersion;
-	//		result = prime * result + minorVersion;
-	//		result = prime * result
-	//				+ ((persistentIdentity == null) ? 0 : persistentIdentity.hashCode());
-	//		result = prime * result + ((timeStamp == null) ? 0 : timeStamp.hashCode());
-	//		return result;
-	//	}
-	//
-	//	@Override
-	//	public boolean equals(Object obj) {
-	//		if (this == obj)
-	//			return true;
-	//		if (obj == null)
-	//			return false;
-	//		if (getClass() != obj.getClass())
-	//			return false;
-	//		Identified other = (Identified) obj;
-	//		if (annotations == null) {
-	//			if (other.annotations != null)
-	//				return false;
-	//		} else if (!annotations.equals(other.annotations))
-	//			return false;
-	//		if (identity == null) {
-	//			if (other.identity != null)
-	//				return false;
-	//		} else if (!identity.equals(other.identity))
-	//			return false;
-	//		if (majorVersion != other.majorVersion)
-	//			return false;
-	//		if (minorVersion != other.minorVersion)
-	//			return false;
-	//		if (persistentIdentity == null) {
-	//			if (other.persistentIdentity != null)
-	//				return false;
-	//		} else if (!persistentIdentity.equals(other.persistentIdentity))
-	//			return false;
-	//		if (timeStamp == null) {
-	//			if (other.timeStamp != null)
-	//				return false;
-	//		} else if (!timeStamp.equals(other.timeStamp))
-	//			return false;
-	//		return true;
-	//	}
-
+		
 	//	/**
 	//	 * @return
 	//	 * @deprecated As of release 2.0, replaced by {@link #getIdentity()}

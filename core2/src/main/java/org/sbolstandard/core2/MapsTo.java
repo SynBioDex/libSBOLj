@@ -86,7 +86,6 @@ public class MapsTo extends Identified{
 		}
 	}
 	
-	
 	public MapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		super(identity);
@@ -244,7 +243,7 @@ public class MapsTo extends Identified{
 
 
 	@Override
-	protected MapsTo deepCopy() {
+	public MapsTo deepCopy() {
 		return new MapsTo(this);
 	}
 

@@ -10,6 +10,8 @@ import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.Location;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
+import static org.sbolstandard.core2.util.UriCompliance.*;
+import org.sbolstandard.core2.util.Version;
 
 /**
  * 
@@ -20,18 +22,18 @@ import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 public class ComponentDefinition extends TopLevel {
 
-	private Set<URI> type;
+	private Set<URI> types;
 	private Set<URI> roles;
 	private URI sequence;
-	private HashMap<URI, Component> subComponents;
+	private HashMap<URI, Component> components;
 	private HashMap<URI, SequenceAnnotation> sequenceAnnotations;
 	private HashMap<URI, SequenceConstraint> sequenceConstraints;
 	
 	public ComponentDefinition(URI identity, Set<URI> type, Set<URI> roles) {
 		super(identity);
-		setType(type);
+		setTypes(type);
 		setRoles(roles);		
-		this.subComponents = new HashMap<URI, Component>(); 		
+		this.components = new HashMap<URI, Component>(); 		
 		this.sequenceAnnotations = new HashMap<URI, SequenceAnnotation>();
 		this.sequenceConstraints = new HashMap<URI, SequenceConstraint>();
 	}
@@ -39,30 +41,30 @@ public class ComponentDefinition extends TopLevel {
 	private ComponentDefinition(ComponentDefinition componentDefinition) {
 		super(componentDefinition);
 		Set<URI> types = new HashSet<URI>();
-		for (URI type : componentDefinition.getType()) {
+		for (URI type : componentDefinition.getTypes()) {
 			types.add(URI.create(type.toString()));
 		}
-		setType(types);
+		setTypes(types);
 		Set<URI> roles = new HashSet<URI>();
 		for (URI role : componentDefinition.getRoles()) {
 			roles.add(URI.create(role.toString()));
 		}
 		setRoles(roles);
-		if (componentDefinition.isSetSubComponents()) {
+		if (!componentDefinition.getComponents().isEmpty()) {
 			List<Component> subComponents = new ArrayList<Component>();
-			for (Component subComponent : componentDefinition.getSubComponents()) {
+			for (Component subComponent : componentDefinition.getComponents()) {
 				subComponents.add(subComponent.deepCopy());
 			}
-			this.setSubComponents(subComponents);
+			this.setComponents(subComponents);
 		}		
-		if (componentDefinition.isSetSequenceConstraints()) {
+		if (!componentDefinition.getSequenceConstraints().isEmpty()) {
 			List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
 			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
 				sequenceConstraints.add((SequenceConstraint) sequenceConstraint.deepCopy());
 			}
 			this.setSequenceConstraints(sequenceConstraints);
 		}
-		if (componentDefinition.isSetSequenceAnnotations()) {
+		if (!componentDefinition.getSequenceAnnotations().isEmpty()) {
 			List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>();
 			for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
 				sequenceAnnotations.add(sequenceAnnotation.deepCopy());
@@ -81,7 +83,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addType(URI typeURI) {
-		return type.add(typeURI);
+		return types.add(typeURI);
 	}
 	
 	/**
@@ -90,23 +92,23 @@ public class ComponentDefinition extends TopLevel {
 	 * @return <code>true<code> if this set contained the specified element
 	 */
 	public boolean removeType(URI typeURI) {
-		return type.remove(typeURI);
+		return types.remove(typeURI);
 	}
 	
 	/**
 	 * Sets the field variable <code>type</code> to the specified element.
 	 * @param type
 	 */
-	public void setType(Set<URI> type) {
-		this.type = type;
+	public void setTypes(Set<URI> type) {
+		this.types = type;
 	}
 	
 	/**
 	 * Returns the field variable <code>type</code>.
 	 * @return the set of URIs for <code>type</code>.
 	 */
-	public Set<URI> getType() {
-		return type;
+	public Set<URI> getTypes() {
+		return types;
 	}
 	
 	/**
@@ -114,15 +116,15 @@ public class ComponentDefinition extends TopLevel {
 	 * @return <code>true</code> if this set contains the specified element.
 	 */
 	public boolean containsType(URI typeURI) {
-		return type.contains(typeURI);
+		return types.contains(typeURI);
 	}
 	
 	/**
 	 * Removes all entries of the list of <code>type</code> instances owned by this instance. 
 	 * The list will be empty after this call returns.
 	 */
-	public void clearType() {
-		type.clear();
+	public void clearTypes() {
+		types.clear();
 	}
 	
 	/**
@@ -209,16 +211,16 @@ public class ComponentDefinition extends TopLevel {
 		sequence = null;
 	}
 	
-	/**
-	 * Test if any {@link SequenceAnnotation} instance exists.
-	 * @return <code>true</code> if at least one such instance exists.
-	 */
-	public boolean isSetSequenceAnnotations() {
-		if (sequenceAnnotations.isEmpty())
-			return false;
-		else
-			return true;					
-	}
+//	/**
+//	 * Test if any {@link SequenceAnnotation} instance exists.
+//	 * @return <code>true</code> if at least one such instance exists.
+//	 */
+//	public boolean isSetSequenceAnnotations() {
+//		if (sequenceAnnotations.isEmpty())
+//			return false;
+//		else
+//			return true;					
+//	}
 	
 	/**
 	 * Calls the SequenceAnnotation constructor to create a new instance using the specified parameters, 
@@ -234,8 +236,25 @@ public class ComponentDefinition extends TopLevel {
 		}
 		else {
 			return null;
+		}		
+	}
+	
+	/**
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param location
+	 * @return
+	 */
+	public SequenceAnnotation createSequenceAnnotation(String URIprefix, String displayId, String version, Location location) {
+		URI newSequenceAnnotationURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newSequenceAnnotationURI)) {
+			return createSequenceAnnotation(newSequenceAnnotationURI, location);
 		}
-		
+		else {
+			// TODO: Generate warning message here.
+			return null;
+		}
 	}
 	
 //	public SequenceAnnotation createSequenceAnnotation(String URIprefix, String id, 
@@ -256,57 +275,48 @@ public class ComponentDefinition extends TopLevel {
 //	}
 	
 	/**
-	 * Adds the specified instance to the list of structuralAnnotations. 
+	 * Adds the specified instance to the list of sequenceAnnotations. 
 	 * @param sequenceAnnotation
 	 * @return 
 	 */
 	public boolean addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
-
-		sequenceAnnotations.put(sequenceAnnotation.getIdentity(), sequenceAnnotation);
-		// TODO: @addSequenceAnnotation, Check for duplicated entries. Hack here: returns true.
-		return true;
-//		if (sequenceAnnotation.isSetPersistentIdentity() && sequenceAnnotation.isSetVersion()) {
-//			// Compliant URI should come in here.
-//			// Check if persistent identity exists in other maps.
-//			if (!keyExistsInOtherMaps(sequenceAnnotations.keySet(), sequenceAnnotation.getPersistentIdentity())) {
-//				// Check if URI exists in the sequenceAnnotations map.
-//				if (!sequenceAnnotations.containsKey(sequenceAnnotation.getIdentity())) {
-//					sequenceAnnotations.put(sequenceAnnotation.getIdentity(), sequenceAnnotation);
-//					SequenceAnnotation latestSequenceAnnotation = sequenceAnnotations.get(sequenceAnnotation.getPersistentIdentity());
-//					if (latestSequenceAnnotation == null) {
-//						sequenceAnnotations.put(sequenceAnnotation.getPersistentIdentity(), sequenceAnnotation);
-//					}
-//					else {
-//						if (latestSequenceAnnotation.getMajorVersion() < sequenceAnnotation.getMajorVersion()) {
-//							sequenceAnnotations.put(sequenceAnnotation.getPersistentIdentity(), sequenceAnnotation);
-//						}
-//						else if (latestSequenceAnnotation.getMajorVersion() == sequenceAnnotation.getMajorVersion()){
-//							if (latestSequenceAnnotation.getMinorVersion() < sequenceAnnotation.getMinorVersion()) {
-//								sequenceAnnotations.put(sequenceAnnotation.getPersistentIdentity(), sequenceAnnotation);
-//							}
-//						}
-//					}
-//					return true;
-//				}
-//				else // key exists in sequenceAnnotations map
-//					return false;
-//			}
-//			else // key exists in other maps
-//				return false;
-//		}
-//		else { // Only check if sequenceAnnotation's URI exists in all maps.
-//			if (!keyExistsInOtherMaps(sequenceAnnotations.keySet(), sequenceAnnotation.getIdentity())) {
-//				if (!sequenceAnnotations.containsKey(sequenceAnnotation.getIdentity())) {
-//					sequenceAnnotations.put(sequenceAnnotation.getIdentity(), sequenceAnnotation);					
-//					return true;
-//				}
-//				else // key exists in sequenceAnnotations map
-//					return false;
-//			}
-//			else // key exists in other maps
-//				return false;
-//		}
-//		
+		if (isChildURIcompliant(this.getIdentity(), sequenceAnnotation.getIdentity())) {
+			// Check if persistent identity exists in other maps.	
+			URI persistentId = URI.create(extractPersistentId(sequenceAnnotation.getIdentity()));
+			if (!keyExistsInOtherMaps(sequenceAnnotations.keySet(), persistentId)) {
+				// Check if URI exists in the sequenceAnnotations map.
+				if (!sequenceAnnotations.containsKey(sequenceAnnotation.getIdentity())) {
+					sequenceAnnotations.put(sequenceAnnotation.getIdentity(), sequenceAnnotation);
+					SequenceAnnotation latestSequenceAnnotation = sequenceAnnotations.get(persistentId);
+					if (latestSequenceAnnotation == null) {
+						sequenceAnnotations.put(persistentId, sequenceAnnotation);
+					}
+					else {						
+						if (Version.isFirstVersionNewer(extractVersion(sequenceAnnotation.getIdentity()), 
+								extractVersion(latestSequenceAnnotation.getIdentity()))) {
+							sequenceAnnotations.put(persistentId, sequenceAnnotation);
+						}
+					}
+					return true;
+				}
+				else // key exists in sequenceAnnotations map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if sequenceAnnotation's URI exists in all maps.
+			if (!keyExistsInOtherMaps(sequenceAnnotations.keySet(), sequenceAnnotation.getIdentity())) {
+				if (!sequenceAnnotations.containsKey(sequenceAnnotation.getIdentity())) {
+					sequenceAnnotations.put(sequenceAnnotation.getIdentity(), sequenceAnnotation);					
+					return true;
+				}
+				else // key exists in sequenceAnnotations map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}		
 	}
 	
 	/**
@@ -315,8 +325,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceAnnotation removeSequenceAnnotation(URI sequenceAnnotationURI) {
-		URI key = URI.create(sequenceAnnotationURI.toString().toLowerCase());
-		return sequenceAnnotations.remove(key);
+		//URI key = URI.create(sequenceAnnotationURI.toString().toLowerCase());
+		return sequenceAnnotations.remove(sequenceAnnotationURI);
 	}
 	
 	/**
@@ -324,9 +334,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @param sequenceAnnotationURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public SequenceAnnotation getSequenceAnnotation(URI sequenceAnnotationURI) {
-		URI key = URI.create(sequenceAnnotationURI.toString().toLowerCase());
-		return sequenceAnnotations.get(key);
+	public SequenceAnnotation getSequenceAnnotation(URI sequenceAnnotationURI) {		
+		return sequenceAnnotations.get(sequenceAnnotationURI);
 	}
 	
 	/**
@@ -362,39 +371,98 @@ public class ComponentDefinition extends TopLevel {
 		}
 	}
 	
-	/**
-	 * Test if the optional field variable <code>structuralInstantiations</code> is set.
-	 * @return <code>true</code> if the field variable is not an empty list
-	 */
-	public boolean isSetSubComponents() {
-		if (subComponents.isEmpty())
-			return false;
-		else
-			return true;
-	}
+//	/**
+//	 * Test if the optional field variable <code>structuralInstantiations</code> is set.
+//	 * @return <code>true</code> if the field variable is not an empty list
+//	 */
+//	public boolean isSetSubComponents() {
+//		if (subComponents.isEmpty())
+//			return false;
+//		else
+//			return true;
+//	}
 
 	/**
 	 * Calls the StructuralInstantiation constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of StructuralInstantiation instances owned by this instance.
 	 * @param identity
 	 * @param access
-	 * @param subComponentURI
+	 * @param componentDefinitionURI
 	 * @return the created StructuralInstantiation instance. 
 	 */
-	public Component createSubComponent(URI identity, AccessType access, URI subComponentURI) {
-		Component subComponent = new Component(identity, access, subComponentURI);
-		addSubComponent(subComponent);
-		return subComponent;
+	public Component createComponent(URI identity, AccessType access, URI componentDefinitionURI) {
+		Component subComponent = new Component(identity, access, componentDefinitionURI);
+		if (addComponent(subComponent)) {
+			return subComponent;
+		}
+		else {
+			return null;
+		}
+
 	}
 	
 	/**
-	 * Adds the specified instance to the list of structuralInstantiations. 
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param access
+	 * @param componentDefinitionURI
+	 * @return
+	 */
+	public Component createComponent(String URIprefix, String displayId, String version, 
+			AccessType access, URI componentDefinitionURI) {
+		URI newComponentURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newComponentURI)) {
+			return createComponent(newComponentURI, access, componentDefinitionURI);
+		}
+		else {
+			// TODO: Generate warning message here.
+			return null;
+		}
+	}
+	
+	/**
+	 * Adds the specified instance to the list of components.
 	 * @param subComponent
 	 */
-	public void addSubComponent(Component subComponent) {
-		//URI key = URI.create(subComponent.getIdentity().toString().toLowerCase());
-		// TODO: @addSubComponent, Check for duplicated entries.
-		subComponents.put(subComponent.getIdentity(), subComponent);
+	public boolean addComponent(Component subComponent) {
+		if (isChildURIcompliant(this.getIdentity(), subComponent.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(subComponent.getIdentity()));
+			if (!keyExistsInOtherMaps(components.keySet(), persistentId)) {
+				// Check if URI exists in the subComponents map.
+				if (!components.containsKey(subComponent.getIdentity())) {
+					components.put(subComponent.getIdentity(), subComponent);
+					Component latestSubComponent = components.get(persistentId);
+					if (latestSubComponent == null) {
+						components.put(persistentId, subComponent);
+					}
+					else {						
+						if (Version.isFirstVersionNewer(extractVersion(subComponent.getIdentity()), 
+								extractVersion(latestSubComponent.getIdentity()))) {								
+							components.put(persistentId, subComponent);
+						}
+					}
+					return true;
+				}
+				else // key exists in subComponents map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if subComponent's URI exists in all maps.
+			if (!keyExistsInOtherMaps(components.keySet(), subComponent.getIdentity())) {
+				if (!components.containsKey(subComponent.getIdentity())) {
+					components.put(subComponent.getIdentity(), subComponent);					
+					return true;
+				}
+				else // key exists in subComponents map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
 	}
 	
 	/**
@@ -402,9 +470,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subComponentURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Component removeSubComponent(URI subComponentURI) {
-		URI key = URI.create(subComponentURI.toString().toLowerCase());
-		return subComponents.remove(key);
+	public Component removeComponent(URI subComponentURI) {
+		//URI key = URI.create(subComponentURI.toString().toLowerCase());
+		return components.remove(subComponentURI);
 	}
 	
 	/**
@@ -412,28 +480,27 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subComponentURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Component getSubComponent(URI subComponentURI) {
-		URI key = URI.create(subComponentURI.toString().toLowerCase());
-		return subComponents.get(key);
+	public Component getComponent(URI subComponentURI) {
+		return components.get(subComponentURI);
 	}
 	
 	/**
 	 * Returns the list of {@link Component} instances owned by this instance. 
 	 * @return the list of {@link Component} instances owned by this instance.
 	 */
-	public List<Component> getSubComponents() {
+	public List<Component> getComponents() {
 		List<Component> structuralInstantiations = new ArrayList<Component>(); 
-		structuralInstantiations.addAll(this.subComponents.values());
+		structuralInstantiations.addAll(this.components.values());
 		return structuralInstantiations; 
 	}
 	
 	/**
 	 * Removes all entries of the list of structuralInstantiation instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearSubComponents() {
-		Object[] keySetArray = subComponents.keySet().toArray();
+	public void clearComponents() {
+		Object[] keySetArray = components.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeSubComponent((URI) key);			
+			removeComponent((URI) key);			
 		}
 	}
 		
@@ -441,24 +508,24 @@ public class ComponentDefinition extends TopLevel {
 	 * Clears the existing list of structuralInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param components
 	 */
-	public void setSubComponents(
+	public void setComponents(
 			List<Component> components) {
-		clearSubComponents();
+		clearComponents();
 		for (Component component : components) {
-			addSubComponent(component);
+			addComponent(component);
 		}
 	}
 	
-	/**
-	 * Test if the optional field variable <code>sequenceConstraints</code> is set.
-	 * @return <code>true</code> if the field variable is not an empty list
-	 */
-	public boolean isSetSequenceConstraints() {
-		if (sequenceConstraints.isEmpty())
-			return false;
-		else
-			return true;
-	}
+//	/**
+//	 * Test if the optional field variable <code>sequenceConstraints</code> is set.
+//	 * @return <code>true</code> if the field variable is not an empty list
+//	 */
+//	public boolean isSetSequenceConstraints() {
+//		if (sequenceConstraints.isEmpty())
+//			return false;
+//		else
+//			return true;
+//	}
 	
 	/**
 	 * Calls the StructuralConstraint constructor to create a new instance using the specified parameters, 
@@ -471,18 +538,77 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public SequenceConstraint createSequenceConstraint(URI identity, RestrictionType restriction, URI subject, URI object) {
 		SequenceConstraint sequenceConstraint = new SequenceConstraint(identity, restriction, subject, object);
-		addSequenceConstraint(sequenceConstraint);
-		return sequenceConstraint;
+		if (addSequenceConstraint(sequenceConstraint)) {
+			return sequenceConstraint;
+		}
+		else {
+			return null;
+		}
+	}
+		
+	/**
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param restriction
+	 * @param subject
+	 * @param object
+	 * @return
+	 */
+	public SequenceConstraint createSequenceConstraint(String URIprefix, String displayId, String version, 
+			RestrictionType restriction, URI subject, URI object) {
+		URI newSequenceConstraintURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newSequenceConstraintURI)) {
+			return createSequenceConstraint(newSequenceConstraintURI, restriction, subject, object);
+		}
+		else {
+			// TODO: Generate warning message here.
+			return null;
+		}
 	}
 	
 	/**
-	 * Adds the specified instance to the list of structuralConstraints. 
+	 * Adds the specified instance to the list of sequenceConstraints. 
 	 * @param sequenceConstraint
 	 */
-	public void addSequenceConstraint(SequenceConstraint sequenceConstraint) {
-		// TODO: @addStructuralConstraint, Check for duplicated entries.
-		URI key = URI.create(sequenceConstraint.getIdentity().toString().toLowerCase());
-		sequenceConstraints.put(key, sequenceConstraint);
+	public boolean addSequenceConstraint(SequenceConstraint sequenceConstraint) {
+		if (isChildURIcompliant(this.getIdentity(), sequenceConstraint.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(sequenceConstraint.getIdentity()));
+			if (!keyExistsInOtherMaps(sequenceConstraints.keySet(), persistentId)) {
+				// Check if URI exists in the sequenceConstraints map.
+				if (!sequenceConstraints.containsKey(sequenceConstraint.getIdentity())) {
+					sequenceConstraints.put(sequenceConstraint.getIdentity(), sequenceConstraint);
+					SequenceConstraint latestSequenceConstraint = sequenceConstraints.get(persistentId);
+					if (latestSequenceConstraint == null) {
+						sequenceConstraints.put(persistentId, sequenceConstraint);
+					}
+					else {						
+						if (Version.isFirstVersionNewer(extractVersion(sequenceConstraint.getIdentity()), 
+								extractVersion(latestSequenceConstraint.getIdentity()))) {
+							sequenceConstraints.put(persistentId, sequenceConstraint);
+						}
+					}
+					return true;
+				}
+				else // key exists in sequenceConstraints map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if sequenceConstraint's URI exists in all maps.
+			if (!keyExistsInOtherMaps(sequenceConstraints.keySet(), sequenceConstraint.getIdentity())) {
+				if (!sequenceConstraints.containsKey(sequenceConstraint.getIdentity())) {
+					sequenceConstraints.put(sequenceConstraint.getIdentity(), sequenceConstraint);					
+					return true;
+				}
+				else // key exists in sequenceConstraints map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
 	}
 	
 	/**
@@ -491,8 +617,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceConstraint removeSequenceConstraint(URI sequenceConstraintURI) {
-		URI key = URI.create(sequenceConstraintURI.toString().toLowerCase());
-		return sequenceConstraints.remove(key);
+		//URI key = URI.create(sequenceConstraintURI.toString().toLowerCase());
+		return sequenceConstraints.remove(sequenceConstraintURI);
 	}
 	
 	/**
@@ -501,8 +627,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceConstraint getSequenceConstraint(URI sequenceConstraintURI) {
-		URI key = URI.create(sequenceConstraintURI.toString().toLowerCase());
-		return sequenceConstraints.get(key);
+		return sequenceConstraints.get(sequenceConstraintURI);
 	}
 	
 	/**
@@ -538,45 +663,22 @@ public class ComponentDefinition extends TopLevel {
 		}
 	}
 	
-//	/**
-//	 * Deep equality.
-//	 * @param componentDefinition
-//	 * @return <code>True</code> if the specified {@link ComponentDefinition} instance is equal to this instance.
-//	 */
-//	public boolean equals(ComponentDefinition componentDefinition) {
-//		return false;
-//	}
-	
-	/**
-	 * Replace the minor version in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param minorVersion
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
 	 */
-	public void setMinorVersion(int minorVersion) {
-		// TODO fill in
-		
+	protected void updateDisplayId(String newDisplayId) {
+		super.updateDisplayId(newDisplayId);
+		if (isTopLevelURIcompliant(this.getIdentity())) {			
+			// TODO Change all of its children's displayIds in their URIs.
+		}
 	}
-	
-	/**
-	 * Replace the minor version in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param majorVersion
-	 */
-	public void setMajorVersion(int majorVersion) {
-		// TODO fill in
-	}
-	
-	/**
-	 * Replace the display ID in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param id
-	 */
-	public void setDisplayId(String id) {
-		// TODO fill in
-	}
-	
+
+
 	/**
 	 * Replace the display ID in the URI of the object's parent with the specified one.  
 	 * @param id
 	 */
-	public void setParentDisplayId(String id) {
+	private void setParentDisplayId(String id) {
 		// TODO fill in
 	}
 	
@@ -584,34 +686,26 @@ public class ComponentDefinition extends TopLevel {
 	 * Replace the display ID in the URI of the object's grand parent (2 levels up) with the specified one.
 	 * @param id
 	 */
-	public void setGrandParentDisplayId(String id) {
+	private void setGrandParentDisplayId(String id) {
 		// TODO fill in
-	}
-	
-	/**
-	 * Replace the authority in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param authority
-	 */
-	public void setAuthority(String authority) {
-		// TODO Need to change the parent's authority?
 	}
 	
 	/**
 	 * Provide a deep copy of this object.
 	 */
-	public ComponentDefinition deepCopy() {
+	protected ComponentDefinition deepCopy() {
 		return new ComponentDefinition(this);
 	}
 	
 	/**
 	 * Clone the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
-	 * @param id
+	 * @param newDisplayId
 	 * @return the copied {@link ComponentDefinition} instance.
 	 */
-	public ComponentDefinition copy(String id) {
-		// TODO fill in
-		return null;
-		
+	public ComponentDefinition copy(String newDisplayId) {
+		ComponentDefinition cloned = (ComponentDefinition) super.copy(newDisplayId);
+		cloned.updateDisplayId(newDisplayId);
+		return cloned;
 	}
 	
 	/**
@@ -620,9 +714,19 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
 	 */
 	public ComponentDefinition newVersion(String newVersion) {
-		ComponentDefinition cloned = this.deepCopy();
-		cloned.setVersion(newVersion);
+		ComponentDefinition cloned = (ComponentDefinition) super.newVersion(newVersion);		
+		cloned.updateVersion(newVersion);
 		return cloned;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+	 */
+	protected void updateVersion(String newVersion) {
+		super.updateVersion(newVersion);
+		if (isTopLevelURIcompliant(this.getIdentity())) {
+			// TODO Change all of its children's versions in their URIs.
+		}
 	}
 
 	@Override
@@ -635,8 +739,8 @@ public class ComponentDefinition extends TopLevel {
 				+ ((sequenceAnnotations == null) ? 0 : sequenceAnnotations.hashCode());
 		result = prime * result
 				+ ((sequenceConstraints == null) ? 0 : sequenceConstraints.hashCode());
-		result = prime * result + ((subComponents == null) ? 0 : subComponents.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		result = prime * result + ((components == null) ? 0 : components.hashCode());
+		result = prime * result + ((types == null) ? 0 : types.hashCode());
 		return result;
 	}
 
@@ -672,16 +776,37 @@ public class ComponentDefinition extends TopLevel {
 				return false;
 		} else if (!sequenceConstraints.equals(other.sequenceConstraints))
 			return false;
-		if (subComponents == null) {
-			if (other.subComponents != null)
+		if (components == null) {
+			if (other.components != null)
 				return false;
-		} else if (!subComponents.equals(other.subComponents))
+		} else if (!components.equals(other.components))
 			return false;
-		if (type == null) {
-			if (other.type != null)
+		if (types == null) {
+			if (other.types != null)
 				return false;
-		} else if (!type.equals(other.type))
+		} else if (!types.equals(other.types))
 			return false;
 		return true;
+	}
+	
+	/**
+	 * Check if the specified key exists in any hash maps in this class other than the one with the specified keySet. This method
+	 * constructs a set of key sets for other hash maps first, and then checks if the key exists.
+	 * @param keySet
+	 * @param key
+	 * @return <code>true</code> if the specified key exists in other hash maps.
+	 */
+	private boolean keyExistsInOtherMaps(Set<URI> keySet, URI key) {
+		Set<Set<URI>> complementSet = new HashSet<Set<URI>>();
+		complementSet.add(sequenceAnnotations.keySet());
+		complementSet.add(sequenceConstraints.keySet());
+		complementSet.add(components.keySet());
+		complementSet.remove(keySet);
+		for (Set<URI> otherKeySet : complementSet) {
+			if (otherKeySet.contains(key)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

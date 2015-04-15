@@ -4,8 +4,8 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
+import org.sbolstandard.core2.util.UriCompliance;
 
 public class Collection extends TopLevel{
 	
@@ -18,32 +18,28 @@ public class Collection extends TopLevel{
 	
 	private Collection(Collection collection) {
 		super(collection.getIdentity());
-		if (collection.isSetMembers()) {
-					Set<URI> newMembers = new HashSet<URI>();		
+		Set<URI> newMembers = new HashSet<URI>();		
 		for (URI member : collection.getMembers()) {
 			newMembers.add(member);
-		}
-
-		}
+		}		
 	}
 
-	/**
-	 * Test if field variable <code>members</code> is set.
-	 * @return <code>true</code> if it is not an empty list.
-	 */
-	public boolean isSetMembers() {
-		if (members.isEmpty())
-			return false;
-		else
-			return true;					
-	}
+//	/**
+//	 * Test if field variable <code>members</code> is set.
+//	 * @return <code>true</code> if it is not an empty list.
+//	 */
+//	public boolean isSetMembers() {
+//		if (members.isEmpty())
+//			return false;
+//		else
+//			return true;					
+//	}
 	
 	/**
 	 * Adds the specified instance to the list of members. 
 	 * @param memberURI
 	 */
 	public void addMember(URI memberURI) {
-		// TODO: @addMember, Check for duplicated entries.
 		members.add(memberURI);
 	}
 	
@@ -115,7 +111,47 @@ public class Collection extends TopLevel{
 	}
 
 	@Override
-	public Collection deepCopy() {
+	protected Collection deepCopy() {
 		return new Collection(this);
+	}
+	
+	/**
+	 * 
+	 * @param displayId
+	 * @return
+	 */
+	public Collection copy(String displayId) {
+		Collection cloned = (Collection) super.copy(displayId);
+		cloned.updateDisplayId(displayId);
+		return cloned;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+	 */
+	protected void updateDisplayId(String newDisplayId) {
+		super.updateDisplayId(newDisplayId);
+		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {			
+			// TODO Change all of its children's displayIds in their URIs.
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#newVersion(java.lang.String)
+	 */
+	public Collection newVersion(String newVersion) {
+		Collection cloned = (Collection) super.copy(newVersion);
+		cloned.updateVersion(newVersion);
+		return cloned;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+	 */
+	protected void updateVersion(String newVersion) {
+		super.updateVersion(newVersion);
+		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
+			// TODO Change all of its children's versions in their URIs.
+		}
 	}
 }

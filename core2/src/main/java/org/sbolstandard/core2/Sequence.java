@@ -2,7 +2,6 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 public class Sequence extends TopLevel{
@@ -60,64 +59,12 @@ public class Sequence extends TopLevel{
 		this.encoding = encoding;
 	}
 	
-	/**
-	 * Replace the minor version in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param minorVersion
-	 */
-	public void setMinorVersion(int minorVersion) {
-		// TODO fill in
-		
-	}
-	
-	/**
-	 * Replace the minor version in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param majorVersion
-	 */
-	public void setMajorVersion(int majorVersion) {
-		// TODO fill in
-	}
-	
-	/**
-	 * Replace the display ID in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param id
-	 */
-	public void setDisplayId(String id) {
-		// TODO fill in
-	}
-	
-	/**
-	 * Replace the display ID in the URI of the object's parent with the specified one.  
-	 * @param id
-	 */
-	public void setParentDisplayId(String id) {
-		// TODO fill in
-	}
-	
-	/**
-	 * Replace the display ID in the URI of the object's grand parent (2 levels up) with the specified one.
-	 * @param id
-	 */
-	public void setGrandParentDisplayId(String id) {
-		// TODO fill in
-	}
-	
-	/**
-	 * Replace the authority in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	 * @param authority
-	 */
-	public void setAuthority(String authority) {
-		// TODO Need to change the parent's authority?
-	}
-	
 //	/**
-//	 * Clone the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
-//	 * @param id
-//	 * @return the copied object
+//	 * Replace the authority in the object's URI with the specified one, and make the same replacement for all of its children objects.
+//	 * @param authority
 //	 */
-//	public Sequence copy(String id) {
-//		// TODO fill in
-//		return null;
-//		
+//	public void setAuthority(String authority) {
+//		// TODO Need to change the parent's authority?
 //	}
 
 	@Override
@@ -156,5 +103,34 @@ public class Sequence extends TopLevel{
 		return new Sequence(this);
 	}
 	
+	/**
+	 * @param newDisplayId
+	 * @return
+	 */
+	public Sequence copy(String newDisplayId) {
+		Sequence cloned = (Sequence) super.copy(newDisplayId);
+		cloned.updateDisplayId(newDisplayId);
+		return cloned;
+	}
 	
+	/**
+	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
+	 * @param newVersion
+	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+	 */
+	public Sequence newVersion(String newVersion) {
+		Sequence cloned = (Sequence) super.newVersion(newVersion);		
+		cloned.updateVersion(newVersion);
+		return cloned;
+	}
+	
+//	/* (non-Javadoc)
+//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+//	 */
+//	public void updateVersion(String newVersion) {
+//		super.updateVersion(newVersion);
+//		if (isURIcompliant(this.getIdentity())) {			
+//			// TODO Change all of its children's versions in their URIs.
+//		}
+//	}
 }
