@@ -10,7 +10,7 @@ import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.Location;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
-import org.sbolstandard.core2.util.UriCompliance;
+import static org.sbolstandard.core2.util.UriCompliance.*;
 import org.sbolstandard.core2.util.Version;
 
 /**
@@ -262,9 +262,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @return 
 	 */
 	public boolean addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
-		if (UriCompliance.isChildURIcompliant(this.getIdentity(), sequenceAnnotation.getIdentity())) {
+		if (isChildURIcompliant(this.getIdentity(), sequenceAnnotation.getIdentity())) {
 			// Check if persistent identity exists in other maps.	
-			URI persistentId = URI.create(UriCompliance.extractPersistentId(sequenceAnnotation.getIdentity()));
+			URI persistentId = URI.create(extractPersistentId(sequenceAnnotation.getIdentity()));
 			if (!keyExistsInOtherMaps(sequenceAnnotations.keySet(), persistentId)) {
 				// Check if URI exists in the sequenceAnnotations map.
 				if (!sequenceAnnotations.containsKey(sequenceAnnotation.getIdentity())) {
@@ -274,8 +274,8 @@ public class ComponentDefinition extends TopLevel {
 						sequenceAnnotations.put(persistentId, sequenceAnnotation);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(UriCompliance.extractVersion(sequenceAnnotation.getIdentity()), 
-								UriCompliance.extractVersion(latestSequenceAnnotation.getIdentity()))) {
+						if (Version.isFirstVersionNewer(extractVersion(sequenceAnnotation.getIdentity()), 
+								extractVersion(latestSequenceAnnotation.getIdentity()))) {
 							sequenceAnnotations.put(persistentId, sequenceAnnotation);
 						}
 					}
@@ -388,9 +388,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subComponent
 	 */
 	public boolean addSubComponent(Component subComponent) {
-		if (UriCompliance.isChildURIcompliant(this.getIdentity(), subComponent.getIdentity())) {
+		if (isChildURIcompliant(this.getIdentity(), subComponent.getIdentity())) {
 			// Check if persistent identity exists in other maps.
-			URI persistentId = URI.create(UriCompliance.extractPersistentId(subComponent.getIdentity()));
+			URI persistentId = URI.create(extractPersistentId(subComponent.getIdentity()));
 			if (!keyExistsInOtherMaps(subComponents.keySet(), persistentId)) {
 				// Check if URI exists in the subComponents map.
 				if (!subComponents.containsKey(subComponent.getIdentity())) {
@@ -400,8 +400,8 @@ public class ComponentDefinition extends TopLevel {
 						subComponents.put(persistentId, subComponent);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(UriCompliance.extractVersion(subComponent.getIdentity()), 
-								UriCompliance.extractVersion(latestSubComponent.getIdentity()))) {								
+						if (Version.isFirstVersionNewer(extractVersion(subComponent.getIdentity()), 
+								extractVersion(latestSubComponent.getIdentity()))) {								
 							subComponents.put(persistentId, subComponent);
 						}
 					}
@@ -513,9 +513,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @param sequenceConstraint
 	 */
 	public boolean addSequenceConstraint(SequenceConstraint sequenceConstraint) {
-		if (UriCompliance.isChildURIcompliant(this.getIdentity(), sequenceConstraint.getIdentity())) {
+		if (isChildURIcompliant(this.getIdentity(), sequenceConstraint.getIdentity())) {
 			// Check if persistent identity exists in other maps.
-			URI persistentId = URI.create(UriCompliance.extractPersistentId(sequenceConstraint.getIdentity()));
+			URI persistentId = URI.create(extractPersistentId(sequenceConstraint.getIdentity()));
 			if (!keyExistsInOtherMaps(sequenceConstraints.keySet(), persistentId)) {
 				// Check if URI exists in the sequenceConstraints map.
 				if (!sequenceConstraints.containsKey(sequenceConstraint.getIdentity())) {
@@ -525,8 +525,8 @@ public class ComponentDefinition extends TopLevel {
 						sequenceConstraints.put(persistentId, sequenceConstraint);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(UriCompliance.extractVersion(sequenceConstraint.getIdentity()), 
-								UriCompliance.extractVersion(latestSequenceConstraint.getIdentity()))) {
+						if (Version.isFirstVersionNewer(extractVersion(sequenceConstraint.getIdentity()), 
+								extractVersion(latestSequenceConstraint.getIdentity()))) {
 							sequenceConstraints.put(persistentId, sequenceConstraint);
 						}
 					}
@@ -609,7 +609,7 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	protected void updateDisplayId(String newDisplayId) {
 		super.updateDisplayId(newDisplayId);
-		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {			
+		if (isTopLevelURIcompliant(this.getIdentity())) {			
 			// TODO Change all of its children's displayIds in their URIs.
 		}
 	}
@@ -665,7 +665,7 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	protected void updateVersion(String newVersion) {
 		super.updateVersion(newVersion);
-		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
+		if (isTopLevelURIcompliant(this.getIdentity())) {
 			// TODO Change all of its children's versions in their URIs.
 		}
 	}
