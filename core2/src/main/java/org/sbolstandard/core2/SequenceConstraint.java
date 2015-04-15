@@ -164,7 +164,7 @@ public class SequenceConstraint extends Identified {
 	}
 	
 	
-	public static final class Restriction {
+	private static final class Restriction {
 		public static final URI precedes = URI.create(Sbol2Terms.sbol2
 				.getNamespaceURI() + "precedes");
 	}

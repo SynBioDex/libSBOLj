@@ -334,7 +334,7 @@ public class SBOLReader
 				// TODO: if version then + "/" + version, else skip version
 
 				URI component_identity    = URI.create(getParentURI(identity) + "/component" + ++component_num + "/1/0");
-				AccessType access 		  = AccessType.convertToAccessType(ComponentInstance.Access.PUBLIC);
+				AccessType access 		  = AccessType.PUBLIC;
 				URI instantiatedComponent = sa.getComponent();
 				URI originalURI 		  = ((NestedDocument<QName>) namedProperty.getValue()).getIdentity();
 

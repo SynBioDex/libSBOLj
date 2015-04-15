@@ -157,7 +157,7 @@ public class FunctionalComponent extends ComponentInstance {
 		}
 	}
 
-	public static final class Direction {
+	private static final class Direction {
 		public static final URI	input	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "input");
 		public static final URI	output	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "output");
 		public static final URI	inout	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "inout");
