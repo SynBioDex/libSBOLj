@@ -74,7 +74,9 @@ public class SBOLWriter {
 		{
 			write(doc, buffer);
 		}
-		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		catch (XMLStreamException e) { }
+		catch (FactoryConfigurationError  e) { }
+		catch (CoreIoException e) { }
 		finally
 		{
 			try
@@ -132,7 +134,9 @@ public class SBOLWriter {
 		{
 			writeJSON(doc, buffer);
 		}
-		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		catch (XMLStreamException e) { }
+		catch (FactoryConfigurationError  e) { }
+		catch (CoreIoException e) { }
 		catch (Throwable e) { e.printStackTrace();}
 		finally
 		{
@@ -189,7 +193,9 @@ public class SBOLWriter {
 		{
 			writeRdf(doc, buffer);
 		}
-		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		catch (XMLStreamException e) { }
+		catch (FactoryConfigurationError  e) { }
+		catch (CoreIoException e) { }
 		finally
 		{
 			try
@@ -247,7 +253,9 @@ public class SBOLWriter {
 		{
 			writeTurtle(doc, buffer);
 		}
-		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
+		catch (XMLStreamException e) { }
+		catch (FactoryConfigurationError  e) { }
+		catch (CoreIoException e) { }
 		finally
 		{
 			try
@@ -289,7 +297,7 @@ public class SBOLWriter {
 
 	private static void writeJSON(Writer stream, DocumentRoot<QName> document) throws Exception
 	{
-		Map<String, Object> config = new HashMap<>();
+		HashMap<String, Object> config = new HashMap<String,Object>();
 		config.put(JsonGenerator.PRETTY_PRINTING, true);
 		JsonGenerator writer = Json.createGeneratorFactory(config).createGenerator(stream);
 		JsonIo jsonIo = new JsonIo();
@@ -449,9 +457,9 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			formatCommonDocumentedData(list, i);
 
-			if(i.getType() != null)
+			if(i.getTypes() != null)
 			{
-				for(URI type : i.getType())
+				for(URI type : i.getTypes())
 				{
 					list.add(NamedProperty(Sbol2Terms.Interaction.type, type));
 				}
@@ -521,9 +529,9 @@ public class SBOLWriter {
 
 			if(m.getDefinition() != null)
 				list.add(NamedProperty(Sbol2Terms.Module.hasDefinition, m.getDefinition()));
-			if(m.isSetMappings())
+			if(!m.getMapsTos().isEmpty())
 			{
-				List<NestedDocument> referenceList = getMapsTo(m.getMappings());
+				List<NestedDocument> referenceList = getMapsTo(m.getMapsTos());
 				for(NestedDocument n : referenceList)
 				{
 					list.add(NamedProperty(Sbol2Terms.Module.hasMapsTo, n));
@@ -553,7 +561,7 @@ public class SBOLWriter {
 			formatFunctionalComponents(m.getComponents(),list);
 			formatInteractions(m.getInteractions(),list);
 			formatModels(m.getModels(),list);
-			formatModule(m.getSubModules(),list);
+			formatModule(m.getModules(),list);
 
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ModuleDefinition.ModuleDefinition, m.getIdentity(), NamedProperties(list)));
 		}

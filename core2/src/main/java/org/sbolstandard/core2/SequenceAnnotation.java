@@ -121,20 +121,20 @@ public class SequenceAnnotation extends Documented {
 //		return start;
 //	}
 	
-	/**
-	 * 
-     * First position of the Sequence Feature being annotated.
-     * Start coordinate is in terms of the Sequence of the SequenceComponent
-     * annotated.
-     * @return positive integer coordinate of first base of the SequenceFeature.
-     * @deprecated As of release 2.0, replaced by {@link #getStart}.      
-     */
-	public Integer getBioStart() {
-		if (location instanceof Range) {
-			return ((Range) location).getStart();
-		}		
-		return null;		
-	}
+//	/**
+//	 * 
+//     * First position of the Sequence Feature being annotated.
+//     * Start coordinate is in terms of the Sequence of the SequenceComponent
+//     * annotated.
+//     * @return positive integer coordinate of first base of the SequenceFeature.
+//     * @deprecated As of release 2.0, replaced by {@link #getStart}.      
+//     */
+//	public Integer getBioStart() {
+//		if (location instanceof Range) {
+//			return ((Range) location).getStart();
+//		}		
+//		return null;		
+//	}
 
 //	/**
 //	 * 
@@ -202,11 +202,11 @@ public class SequenceAnnotation extends Documented {
 //		return component;
 //	}
 	
-	// TRAMY - PUT BACK
-	/**
-	 * @return
-	 * @deprecated As of release 2.0, replaced by {@link #getSubComponentInstantiation()}
-	 */
+//	// TRAMY - PUT BACK
+//	/**
+//	 * @return
+//	 * @deprecated As of release 2.0, replaced by {@link #getSubComponentInstantiation()}
+//	 */
 //	public SequenceComponent getSubComponent() {
 ////		if (component != null) {
 ////			Component tmp = component.getInstantiatedComponent();
@@ -229,13 +229,13 @@ public class SequenceAnnotation extends Documented {
 //		this.component = subComponentInstantiation;
 //	}
 	
-	/**
-	 * Warning: Default URI and displayId are generated for a new component instantiation.
-	 * Make sure they do not conflict with existing ones.
-	 * @throws URISyntaxException 
-	 * @deprecated As of release 2.0, replaced by {@link #setSubComponentInstantiation(ComponentInstantiation)}
-	 * // TRAMY - PUT BACK
-	 */
+//	/**
+//	 * Warning: Default URI and displayId are generated for a new component instantiation.
+//	 * Make sure they do not conflict with existing ones.
+//	 * @throws URISyntaxException 
+//	 * @deprecated As of release 2.0, replaced by {@link #setSubComponentInstantiation(ComponentInstantiation)}
+//	 * // TRAMY - PUT BACK
+//	 */
 //	public void setSubComponent(SequenceComponent subComponent) {
 ////		String identityStr = getIdentity().toString() + "/" + subComponent.getDisplayId();
 ////		URI identity = URI.create(identityStr);
@@ -263,16 +263,16 @@ public class SequenceAnnotation extends Documented {
 //		this.start = value;
 //	}
 	
-	/**
-	 * @param value
-	 * @deprecated As of release 2.0, replaced by {@link #setStart(Integer)}
-	 */
-	public void setBioStart(Integer value) {
-		//this.start = value;	
-		if (location instanceof Range) {
-			((Range) location).setStart(value);
-		}
-	}
+//	/**
+//	 * @param value
+//	 * @deprecated As of release 2.0, replaced by {@link #setStart(Integer)}
+//	 */
+//	public void setBioStart(Integer value) {
+//		//this.start = value;	
+//		if (location instanceof Range) {
+//			((Range) location).setStart(value);
+//		}
+//	}
 	
 //	/**
 //     * Last position of the Sequence Feature on the DnaComponent.
@@ -288,33 +288,33 @@ public class SequenceAnnotation extends Documented {
 //		
 //	}
 	
-	/**
-	 * Last position of the Sequence Feature on the DnaComponent.
-	 * Coordinate in terms of the DnaSequence of the DnaComponent annotated.
-	 * @return positive integer coordinate of last base of the SequenceFeature
-	 * @deprecated As of release 2.0, replaced by {@link #getEnd(Integer)}
-	 */
-	public Integer getBioEnd() {
-		if (location instanceof Range) {
-			return ((Range) location).getEnd();
-		}		
-		return null;
-	}
+//	/**
+//	 * Last position of the Sequence Feature on the DnaComponent.
+//	 * Coordinate in terms of the DnaSequence of the DnaComponent annotated.
+//	 * @return positive integer coordinate of last base of the SequenceFeature
+//	 * @deprecated As of release 2.0, replaced by {@link #getEnd(Integer)}
+//	 */
+//	public Integer getBioEnd() {
+//		if (location instanceof Range) {
+//			return ((Range) location).getEnd();
+//		}		
+//		return null;
+//	}
 
 //	public void setEnd(Integer value) {
 //		this.end = value;
 //	}
 	
-	/**
-	 * @param value
-	 * @deprecated As of release 2.0, replaced by {@link #setEnd(Integer)}
-	 */
-	public void setBioEnd(Integer value) {
-		// this.end = value;
-		if (location instanceof Range) {
-			((Range) location).setEnd(value);
-		}
-	}
+//	/**
+//	 * @param value
+//	 * @deprecated As of release 2.0, replaced by {@link #setEnd(Integer)}
+//	 */
+//	public void setBioEnd(Integer value) {
+//		// this.end = value;
+//		if (location instanceof Range) {
+//			((Range) location).setEnd(value);
+//		}
+//	}
 
 	@Override
 	public int hashCode() {

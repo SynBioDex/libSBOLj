@@ -180,7 +180,7 @@ public class SBOLReader
 				{
 					return readRdfV1(in, document);
 				}
-				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -213,7 +213,7 @@ public class SBOLReader
 				{
 					return readRdfV1(in, document);
 				}
-				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -246,7 +246,7 @@ public class SBOLReader
 				{
 					return readRdfV1(in, document);
 				}
-				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
 			readTopLevelDocs(SBOLDoc, document);
 		}
@@ -272,7 +272,8 @@ public class SBOLReader
 				{
 					return readRdfV1(in, document);
 				}
-				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+
 			}
 			readTopLevelDocs(SBOLDoc, document);
 		}
@@ -291,12 +292,12 @@ public class SBOLReader
 		{
 			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 			{
-				SBOLDoc.addNameSpaceBinding(
+				SBOLDoc.addNamespaceBinding(
 						URI.create(Sbol2Terms.sbol2.getNamespaceURI()),
 						Sbol2Terms.sbol2.getPrefix());
 			}
 			else
-				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 		}
 		readTopLevelDocsV1(SBOLDoc, document);
 		return SBOLDoc;
@@ -416,7 +417,7 @@ public class SBOLReader
 				// TODO: if version then + "/" + version, else skip version
 
 				URI component_identity    = URI.create(getParentURI(identity) + "/component" + ++component_num + "/1/0");
-				AccessType access 		  = AccessType.convertToAccessType(ComponentInstance.Access.PUBLIC);
+				AccessType access 		  = AccessType.PUBLIC;
 				URI instantiatedComponent = sa.getComponent();
 				URI originalURI 		  = ((NestedDocument<QName>) namedProperty.getValue()).getIdentity();
 
@@ -1565,7 +1566,7 @@ public class SBOLReader
 		if (!models.isEmpty())
 			moduleDefinition.setModels(models);
 		if (!subModules.isEmpty())
-			moduleDefinition.setSubModules(subModules);
+			moduleDefinition.setModules(subModules);
 		if (name != null)
 			moduleDefinition.setName(name);
 		if (description != null)
@@ -1637,7 +1638,7 @@ public class SBOLReader
 		if (displayId != null)
 			submodule.setDisplayId(displayId);
 		if (!mappings.isEmpty())
-			submodule.setMappings(mappings);
+			submodule.setMapsTos(mappings);
 		if (name != null)
 			submodule.setName(name);
 		if (description != null)

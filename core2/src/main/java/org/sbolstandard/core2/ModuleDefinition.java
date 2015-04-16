@@ -21,7 +21,7 @@ import org.sbolstandard.core2.util.Version;
 public class ModuleDefinition extends TopLevel {
 	
 	private Set<URI> roles;
-	private HashMap<URI, Module> subModules;
+	private HashMap<URI, Module> modules;
 	private HashMap<URI, Interaction> interactions;
 	private HashMap<URI, FunctionalComponent> components;
 	private Set<URI> models;
@@ -29,7 +29,7 @@ public class ModuleDefinition extends TopLevel {
 	public ModuleDefinition(URI identity, Set<URI> roles) {
 		super(identity);
 		setRoles(roles);
-		this.subModules = new HashMap<URI, Module>();
+		this.modules = new HashMap<URI, Module>();
 		this.interactions = new HashMap<URI, Interaction>();
 		this.components = new HashMap<URI, FunctionalComponent>();
 		this.models = new HashSet<URI>();		
@@ -42,12 +42,12 @@ public class ModuleDefinition extends TopLevel {
 			roles.add(role);
 		}		
 		this.setRoles(roles);
-		if (!moduleDefinition.getSubModules().isEmpty()) {
+		if (!moduleDefinition.getModules().isEmpty()) {
 			List<Module> subModules = new ArrayList<Module>();
-			for (Module subModule : moduleDefinition.getSubModules()) {
+			for (Module subModule : moduleDefinition.getModules()) {
 				subModules.add(subModule.deepCopy());
 			}
-			this.setSubModules(subModules);
+			this.setModules(subModules);
 		}
 		if (!moduleDefinition.getInteractions().isEmpty()) {
 			List<Interaction> interactions = new ArrayList<Interaction>();
@@ -176,18 +176,18 @@ public class ModuleDefinition extends TopLevel {
 		if (isChildURIcompliant(this.getIdentity(), subModule.getIdentity())) {
 			// Check if persistent identity exists in other maps.
 			URI persistentId = URI.create(extractPersistentId(subModule.getIdentity()));
-			if (!keyExistsInOtherMaps(subModules.keySet(), persistentId)) {
+			if (!keyExistsInOtherMaps(modules.keySet(), persistentId)) {
 				// Check if URI exists in the subModules map.
-				if (!subModules.containsKey(subModule.getIdentity())) {
-					subModules.put(subModule.getIdentity(), subModule);
-					Module latestSubModule = subModules.get(persistentId);
+				if (!modules.containsKey(subModule.getIdentity())) {
+					modules.put(subModule.getIdentity(), subModule);
+					Module latestSubModule = modules.get(persistentId);
 					if (latestSubModule == null) {
-						subModules.put(persistentId, subModule);
+						modules.put(persistentId, subModule);
 					}
 					else {						
 						if (Version.isFirstVersionNewer(extractVersion(subModule.getIdentity()),
 								extractVersion(latestSubModule.getIdentity()))) {
-							subModules.put(persistentId, subModule);
+							modules.put(persistentId, subModule);
 						}
 					}
 					return true;
@@ -199,9 +199,9 @@ public class ModuleDefinition extends TopLevel {
 				return false;
 		}
 		else { // Only check if subModule's URI exists in all maps.
-			if (!keyExistsInOtherMaps(subModules.keySet(), subModule.getIdentity())) {
-				if (!subModules.containsKey(subModule.getIdentity())) {
-					subModules.put(subModule.getIdentity(), subModule);					
+			if (!keyExistsInOtherMaps(modules.keySet(), subModule.getIdentity())) {
+				if (!modules.containsKey(subModule.getIdentity())) {
+					modules.put(subModule.getIdentity(), subModule);					
 					return true;
 				}
 				else // key exists in subModules map
@@ -214,11 +214,11 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of subModules if present.
-	 * @param subModuleURI
+	 * @param moduleURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Module removeSubModule(URI subModuleURI) {
-		return subModules.remove(subModuleURI);
+	public Module removeModule(URI moduleURI) {
+		return modules.remove(moduleURI);
 	}
 	
 	/**
@@ -226,25 +226,25 @@ public class ModuleDefinition extends TopLevel {
 	 * @param subModuleURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Module getSubModule(URI subModuleURI) {
-		return subModules.get(subModuleURI);
+	public Module getModule(URI subModuleURI) {
+		return modules.get(subModuleURI);
 	}
 	
 	/**
 	 * Returns the list of subModule instances owned by this instance. 
 	 * @return the list of subModule instances owned by this instance.
 	 */
-	public List<Module> getSubModules() {
-		return new ArrayList<Module>(subModules.values());
+	public List<Module> getModules() {
+		return new ArrayList<Module>(modules.values());
 	}
 	
 	/**
 	 * Removes all entries of the list of subModule instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearSubModules() {
-		Object[] keySetArray = subModules.keySet().toArray();
+	public void clearModules() {
+		Object[] keySetArray = modules.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeSubModule((URI) key);
+			removeModule((URI) key);
 		}
 	}
 		
@@ -252,10 +252,10 @@ public class ModuleDefinition extends TopLevel {
 	 * Clears the existing list of subModule instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param subModules
 	 */
-	public void setSubModules(
+	public void setModules(
 			List<Module> subModules) {
-		if(!getSubModules().isEmpty())
-			clearSubModules();		
+		if(!getModules().isEmpty())
+			clearModules();		
 		for (Module subModule : subModules) {
 			addModule(subModule);
 		}
@@ -620,7 +620,7 @@ public class ModuleDefinition extends TopLevel {
 		result = prime * result + ((interactions == null) ? 0 : interactions.hashCode());
 		result = prime * result + ((models == null) ? 0 : models.hashCode());
 		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
-		result = prime * result + ((subModules == null) ? 0 : subModules.hashCode());
+		result = prime * result + ((modules == null) ? 0 : modules.hashCode());
 		return result;
 	}
 
@@ -654,10 +654,10 @@ public class ModuleDefinition extends TopLevel {
 				return false;
 		} else if (!roles.equals(other.roles))
 			return false;
-		if (subModules == null) {
-			if (other.subModules != null)
+		if (modules == null) {
+			if (other.modules != null)
 				return false;
-		} else if (!subModules.equals(other.subModules))
+		} else if (!modules.equals(other.modules))
 			return false;
 		return true;
 	}

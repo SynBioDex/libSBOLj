@@ -230,7 +230,7 @@ public class MapsTo extends Identified{
 	}
 	
 	
-	public static final class Refinement {
+	private static final class Refinement {
 		public static final URI merge = URI.create(Sbol2Terms.sbol2
 				.getNamespaceURI() + "merge");
 		public static final URI useLocal = URI.create(Sbol2Terms.sbol2

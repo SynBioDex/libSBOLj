@@ -164,8 +164,8 @@ public abstract class SBOLAbstractTests {
 	public void test_singleCollection_no_Members() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
 		List<Annotation> annotations = new ArrayList<Annotation>();
 		Annotation a = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),
@@ -181,8 +181,8 @@ public abstract class SBOLAbstractTests {
 	public void test_multipleCollections_no_Members() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
 		SBOLTestUtils.createCollection(document, "myPart1", null);
 		SBOLTestUtils.createCollection(document, "myPart2", null);
@@ -195,8 +195,8 @@ public abstract class SBOLAbstractTests {
 	public void test_singleGenericTopLevel() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel", null);
 		runTest("test/data/singleGenericTopLevel.rdf", document);
 	}
@@ -205,8 +205,8 @@ public abstract class SBOLAbstractTests {
 	public void test_multipleGenericTopLevel() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel1", null);
 		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel2", null);
 		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel3", null);
@@ -217,8 +217,8 @@ public abstract class SBOLAbstractTests {
 	public void test_singleModel() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 		SBOLTestUtils.createModel(document, "ToggleModel", null);
 		runTest("test/data/singleModel.rdf", document);
 	}
@@ -228,9 +228,10 @@ public abstract class SBOLAbstractTests {
 	public void test_singleSequence() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createSequence(document,"pLacSeq", null); //TODO unable to create a sequence right here because returning null instead of a sequence object
+
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		SBOLTestUtils.createSequence(document,"pLacSeq", null);
 
 		runTest("test/data/singleSequence.rdf", document);
 	}
@@ -239,9 +240,9 @@ public abstract class SBOLAbstractTests {
 	public void test_multipleSquences() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createSequence(document,"pLacSeq", null); //TODO failing here: isTopLevelURIcompliant is returning an null object instead of the constructed Sequence
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		SBOLTestUtils.createSequence(document,"pLacSeq", null);
 		SBOLTestUtils.createSequence(document,"tetRSeq", null);
 		SBOLTestUtils.createSequence(document,"pLactetRSeq", null);
 		runTest("test/data/multipleSequences.rdf", document);
@@ -251,8 +252,8 @@ public abstract class SBOLAbstractTests {
 	public void test_single_emptyModuleDefinition() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
 		Set<URI> roles = SBOLTestUtils.getSetPropertyURI("Inverter");
 		//		List<FunctionalComponent> functionalComponent_data;
@@ -270,8 +271,8 @@ public abstract class SBOLAbstractTests {
 	public void test_singleComponentDefinition() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Promoter");
@@ -285,8 +286,8 @@ public abstract class SBOLAbstractTests {
 	public void test_singleCompDef_withSeq() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
 		URI s = SBOLTestUtils.createSequence(document, "pLacSeq", null).getIdentity(); //TODO: throwing error right here because unable to create a sequence object but rather a null object
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
@@ -301,8 +302,8 @@ public abstract class SBOLAbstractTests {
 	public void test_singleFunctionalComponent() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
+		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("Protein");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Transcriptionfactor");

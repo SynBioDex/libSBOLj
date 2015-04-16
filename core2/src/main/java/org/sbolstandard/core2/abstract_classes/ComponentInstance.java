@@ -306,7 +306,7 @@ public abstract class ComponentInstance extends Documented {
 	protected abstract ComponentInstance deepCopy();
 	
 	
-	public static final class Access {
+	private static final class Access {
 		public static final URI PUBLIC = URI.create(Sbol2Terms.sbol2
 				.getNamespaceURI() + "public");
 		public static final URI PRIVATE = URI.create(Sbol2Terms.sbol2
