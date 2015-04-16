@@ -21,6 +21,19 @@ import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 public abstract class SBOLAbstractTests {
 
 	@Test
+	public void test_JSONFile() throws Exception
+	{
+		SBOLDocument document=new SBOLDocument();
+		SBOLWriter.writeJSON(document, (System.out));
+	}
+
+	public void test_TurtleFile() throws Exception
+	{
+		SBOLDocument document=new SBOLDocument();
+		SBOLWriter.writeTurtle(document, (System.out));
+	}
+
+	@Test
 	public void test_moduleDef_withFunctionalComponent() throws Exception
 	{
 		SBOLDocument document=new SBOLDocument();
@@ -58,7 +71,7 @@ public abstract class SBOLAbstractTests {
 		List<Annotation> sequence_annotations = new ArrayList<Annotation>();
 		sequence_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "seq_annot1"),
 				new Turtle("turtleString")));
-		SBOLTestUtils.createSequence(document, "someSeq", sequence_annotations);
+		SBOLTestUtils.createSequence(document, "someSeq", sequence_annotations); //TODO failing right here because can't create a sequence
 
 		List<Annotation> componentDefinition_annotations = new ArrayList<Annotation>();
 		componentDefinition_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "compDef_annot1"),
@@ -217,7 +230,7 @@ public abstract class SBOLAbstractTests {
 		SBOLDocument document = new SBOLDocument();
 		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
 		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createSequence(document,"pLacSeq", null);
+		SBOLTestUtils.createSequence(document,"pLacSeq", null); //TODO unable to create a sequence right here because returning null instead of a sequence object
 
 		runTest("test/data/singleSequence.rdf", document);
 	}
@@ -228,7 +241,7 @@ public abstract class SBOLAbstractTests {
 		SBOLDocument document = new SBOLDocument();
 		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
 		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createSequence(document,"pLacSeq", null);
+		SBOLTestUtils.createSequence(document,"pLacSeq", null); //TODO failing here: isTopLevelURIcompliant is returning an null object instead of the constructed Sequence
 		SBOLTestUtils.createSequence(document,"tetRSeq", null);
 		SBOLTestUtils.createSequence(document,"pLactetRSeq", null);
 		runTest("test/data/multipleSequences.rdf", document);
@@ -275,7 +288,7 @@ public abstract class SBOLAbstractTests {
 		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
 		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
-		URI s = SBOLTestUtils.createSequence(document, "pLacSeq", null).getIdentity();
+		URI s = SBOLTestUtils.createSequence(document, "pLacSeq", null).getIdentity(); //TODO: throwing error right here because unable to create a sequence object but rather a null object
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Promoter");
 		SBOLTestUtils.createComponentDefinition(document, "pLac", type, role,
@@ -293,12 +306,13 @@ public abstract class SBOLAbstractTests {
 
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("Protein");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Transcriptionfactor");
-		URI compdef = SBOLTestUtils.createComponentDefinition(document, "LacIIn", type, role,
-				null, null, null, null, null).getIdentity();
+		ComponentDefinition compdef = SBOLTestUtils.createComponentDefinition(document, "LacIIn", type, role,
+				null, null, null, null, null);
+		URI compDef_id = compdef.getIdentity(); //TODO: error right here due to returning a null object thus unable to get identity.
 
 		AccessType accessType 		= AccessType.PUBLIC;
 		DirectionType directionType = DirectionType.INPUT;
-		SBOLTestUtils.createFunctionalComponent("LacIIn", accessType, directionType, compdef, null);
+		SBOLTestUtils.createFunctionalComponent("LacIIn", accessType, directionType, compDef_id, null);
 
 		runTest("test/data/singleFunctionalComponent.rdf", document);
 	}

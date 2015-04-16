@@ -34,7 +34,7 @@ public class SBOLTestUtils {
 	public static Sequence createSequence(SBOLDocument document,String id, List<Annotation> annotations)
 	{
 		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu",
-				id, "1/0", id + "_element", URI.create("http://encodings.org/encoding"));
+				id, "1.0", id + "_element", URI.create("http://encodings.org/encoding"));
 
 		sequence.setName(id);
 		sequence.setDescription(id);
@@ -52,11 +52,11 @@ public class SBOLTestUtils {
 			List<Component> subComponents, List<Annotation> annotations)
 	{
 		ComponentDefinition componentDefinition = document.createComponentDefinition(
-				"http://www.async.ece.utah.edu", id, "1/0",
+				"http://www.async.ece.utah.edu", id, "1.0",
 				type, role);
 
-		componentDefinition.setName(id);
-		componentDefinition.setDescription(id);
+		//		componentDefinition.setName(id);
+		//		componentDefinition.setDescription(id);
 
 		if (sequenceId!= null)
 			componentDefinition.setSequence(sequenceId);

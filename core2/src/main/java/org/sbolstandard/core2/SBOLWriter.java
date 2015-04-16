@@ -57,13 +57,16 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 public class SBOLWriter {
 
 	/*
-	 * Note:
-	 * url(authority)/id/major.vr/minor.vr
-	 * read 1.1 and 2.0 then compare
-	 *
 	 * TODO: not all isSet() for the members are called.
 	 */
 
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
+	 * in RDF format.
+	 * @param doc
+	 * @param file
+	 * @throws FileNotFoundException
+	 */
 	public static void write(SBOLDocument doc, File file) throws FileNotFoundException{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -86,6 +89,15 @@ public class SBOLWriter {
 		}
 	}
 
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
+	 * in RDF format.
+	 * @param doc
+	 * @param out
+	 * @throws XMLStreamException
+	 * @throws FactoryConfigurationError
+	 * @throws CoreIoException
+	 */
 	public static void write(SBOLDocument doc, OutputStream out)
 			throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
@@ -94,6 +106,13 @@ public class SBOLWriter {
 						TopLevelDocuments(getTopLevelDocument(doc))));
 	}
 
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
+	 * file name in RDF format
+	 * @param doc
+	 * @param filename
+	 * @throws FileNotFoundException
+	 */
 	public static void write(SBOLDocument doc, String filename) throws FileNotFoundException
 	{
 		write(doc, new File(filename));
@@ -101,17 +120,17 @@ public class SBOLWriter {
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
-	 * in Json format
+	 * in JSON format.
 	 * @param doc
 	 * @param file
 	 * @throws FileNotFoundException
 	 */
-	public static void writeJson(SBOLDocument doc, File file) throws FileNotFoundException{
+	public static void writeJSON(SBOLDocument doc, File file) throws FileNotFoundException{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
 		try
 		{
-			writeJson(doc, buffer);
+			writeJSON(doc, buffer);
 		}
 		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) { }
 		catch (Throwable e) { e.printStackTrace();}
@@ -128,31 +147,31 @@ public class SBOLWriter {
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
-	 * in Json format.
+	 * in JSON format.
 	 * @param doc
 	 * @param out
 	 * @throws FactoryConfigurationError
-	 * @throws Throwable
+	 * @throws Exception
 	 */
-	public static void writeJson(SBOLDocument doc, OutputStream out)
-			throws FactoryConfigurationError, Throwable {
+	public static void writeJSON(SBOLDocument doc, OutputStream out)
+			throws FactoryConfigurationError, Exception {
 
-		writeJson(new OutputStreamWriter(out),
+		writeJSON(new OutputStreamWriter(out),
 				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 
 	}
 
 	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
-	 * file name in Json format
+	 * * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
+	 * file name in JSON format
 	 * @param doc
 	 * @param filename
 	 * @throws FileNotFoundException
 	 */
-	public static void writeJson(SBOLDocument doc, String filename) throws FileNotFoundException
+	public static void writeJSON(SBOLDocument doc, String filename) throws FileNotFoundException
 	{
-		writeJson(doc, new File(filename));
+		writeJSON(doc, new File(filename));
 	}
 
 	/**
@@ -205,7 +224,6 @@ public class SBOLWriter {
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
 	 * file name in RDF format
-	 *
 	 * @param doc
 	 * @param filename
 	 * @throws FileNotFoundException
@@ -217,7 +235,7 @@ public class SBOLWriter {
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
-	 * in turtle format.
+	 * in Turtle format.
 	 * @param doc
 	 * @param file
 	 * @throws Throwable
@@ -243,14 +261,14 @@ public class SBOLWriter {
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
-	 * in turtle format.
+	 * in Turtle format.
 	 * @param doc
 	 * @param out
 	 * @throws FactoryConfigurationError
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	public static void writeTurtle(SBOLDocument doc, OutputStream out)
-			throws FactoryConfigurationError, Throwable
+			throws FactoryConfigurationError, Exception
 	{
 		writeTurtle(new OutputStreamWriter(out),
 				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
@@ -259,7 +277,7 @@ public class SBOLWriter {
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
-	 * filename in turtle format.
+	 * file name in Turtle format
 	 * @param doc
 	 * @param filename
 	 * @throws Throwable
@@ -269,7 +287,7 @@ public class SBOLWriter {
 		writeTurtle(doc, new File(filename));
 	}
 
-	private static void writeJson(Writer stream, DocumentRoot<QName> document) throws Exception
+	private static void writeJSON(Writer stream, DocumentRoot<QName> document) throws Exception
 	{
 		Map<String, Object> config = new HashMap<>();
 		config.put(JsonGenerator.PRETTY_PRINTING, true);
@@ -372,7 +390,7 @@ public class SBOLWriter {
 				}
 			}
 
-			formatSubComponents(c.getComponents(),list);
+			formatComponents(c.getComponents(),list);
 			formatSequenceAnnotations(c.getSequenceAnnotations(),list);
 			formatSequenceConstraints(c.getSequenceConstraints(),list);
 			if(c.getSequence() != null)
@@ -402,17 +420,17 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccessURI()));
 			if(f.getDirection() != null)
 				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirectionURI()));
-			if(!f.getMapsTos().isEmpty())//(f.isSetMappings())
+			if(!f.getMapsTos().isEmpty())
 			{
 				List<NestedDocument> referenceList = getMapsTo(f.getMapsTos());
 
 				for(NestedDocument n : referenceList)
 				{
-					list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasMappings, n));
+					list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasMapsTo, n));
 				}
 			}
 
-			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasComponents,
+			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasfunctionalComponent,
 					NestedDocument( Sbol2Terms.FunctionalComponent.FunctionalComponent,
 							f.getIdentity(), NamedProperties(list))));
 		}
@@ -508,11 +526,11 @@ public class SBOLWriter {
 				List<NestedDocument> referenceList = getMapsTo(m.getMappings());
 				for(NestedDocument n : referenceList)
 				{
-					list.add(NamedProperty(Sbol2Terms.Module.hasMappings, n));
+					list.add(NamedProperty(Sbol2Terms.Module.hasMapsTo, n));
 				}
 			}
 
-			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasSubModule,
+			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasModule,
 					NestedDocument( Sbol2Terms.Module.Module,
 							m.getIdentity(), NamedProperties(list))));
 		}
@@ -629,7 +647,7 @@ public class SBOLWriter {
 
 	}
 
-	private static void formatSubComponents(List<Component> components,
+	private static void formatComponents(List<Component> components,
 			List<NamedProperty<QName>> properties)
 	{
 		for(Component s : components)
@@ -646,10 +664,10 @@ public class SBOLWriter {
 				List<NestedDocument> referenceList = getMapsTo(s.getMapsTos());
 				for(NestedDocument n : referenceList)
 				{
-					list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasMappings, n));
+					list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasMapsTo, n));
 				}
 			}
-			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSubComponents,
+			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasComponent,
 					NestedDocument( Sbol2Terms.Component.Component,
 							s.getIdentity(), NamedProperties(list))));
 		}

@@ -60,9 +60,12 @@ public class SBOLReader
 		SBOLReader.setURIPrefix = authority;
 	}
 
-
-	//TODO: setVersion only apply to 1.1 reader for serialization
-
+	/**
+	 * Takes in the given RDF filename and converts the file to an SBOLDocument
+	 * @param fileName
+	 * @return
+	 * @throws Throwable
+	 */
 	public static SBOLDocument read(String fileName) throws Throwable
 	{
 		FileInputStream fis 	 = new FileInputStream(fileName);
@@ -70,31 +73,59 @@ public class SBOLReader
 		return readRdf(new File(fileName));
 	}
 
-	public static SBOLDocument readJson(String fileName) throws Throwable
+	/**
+	 * Takes in the given JSON filename and converts the file to an SBOLDocument
+	 * @param fileName
+	 * @return
+	 * @throws Throwable
+	 */
+	public static SBOLDocument readJSON(String fileName) throws Throwable
 	{
-		return readJson(new File(fileName));
+		return readJSON(new File(fileName));
 	}
 
+	/**
+	 * Takes in the given RDF filename and converts the file to an SBOLDocument
+	 * @param fileName
+	 * @return
+	 * @throws Throwable
+	 */
 	public static SBOLDocument readRdf(String fileName) throws Throwable
 	{
 		return readRdf(new File(fileName));
 	}
 
+	/**
+	 * Takes in the given Turtle filename and converts the file to an SBOLDocument
+	 * @param fileName
+	 * @return
+	 * @throws Throwable
+	 */
 	public static SBOLDocument readTurtle(String fileName) throws Throwable
 	{
 		return readTurtle(new File(fileName));
 	}
 
-	public static SBOLDocument readJson(File file) throws Throwable
+	/**
+	 * Takes in the given JSON file and converts the file to an SBOLDocument
+	 * @param file
+	 * @return
+	 * @throws Throwable
+	 */
+	public static SBOLDocument readJSON(File file) throws Throwable
 	{
 		FileInputStream stream 	   = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
-		String inputStreamString   = new Scanner(stream, "UTF-8").useDelimiter("\\A").next();
 
-		DocumentRoot<QName> document = readJson(new StringReader(inputStreamString));
-		return readJson(buffer, document);
+		return readJSON(buffer);
 	}
 
+	/**
+	 * Takes in the given RDF file and converts the file to an SBOLDocument
+	 * @param file
+	 * @return
+	 * @throws Throwable
+	 */
 	public static SBOLDocument read(File file) throws Throwable
 	{
 		FileInputStream stream 	   = new FileInputStream(file);
@@ -104,7 +135,10 @@ public class SBOLReader
 	}
 
 	/**
-	 * Takes in the given .rdf file and converts the file to an SBOLDocument
+	 * Takes in the given RDF file and converts the file to an SBOLDocument
+	 * @param file
+	 * @return
+	 * @throws Throwable
 	 */
 	public static SBOLDocument readRdf(File file) throws Throwable
 	{
@@ -113,38 +147,35 @@ public class SBOLReader
 		return readRdf(buffer);
 	}
 
+	/**
+	 * Takes in the given Turtle file and converts the file to an SBOLDocument
+	 * @param file
+	 * @return
+	 * @throws Throwable
+	 */
 	public static SBOLDocument readTurtle(File file) throws Throwable
 	{
 		FileInputStream stream 	   = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
-		String inputStreamString   = new Scanner(stream, "UTF-8").useDelimiter("\\A").next();
 
-		DocumentRoot<QName> document = readTurtle(new StringReader(inputStreamString));
-		return readTurtle(buffer, document);
+		return readTurtle(buffer);
 	}
 
-	public static SBOLDocument readJson(InputStream in, DocumentRoot<QName> document)
-	{
-		SBOLDocument SBOLDoc = new SBOLDocument();
-		for (NamespaceBinding n : document.getNamespaceBindings())
-		{
-			SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
-		}
-		readTopLevelDocs(SBOLDoc, document);
-		return SBOLDoc;
-	}
-
-	public static SBOLDocument read(InputStream in)
+	/**
+	 * Takes in a given JSON InputStream and converts the file to an SBOLDocument
+	 * @param in
+	 * @return
+	 */
+	public static SBOLDocument readJSON(InputStream in)
 	{
 		String inputStreamString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		try
 		{
-			DocumentRoot<QName> document = readRdf(new StringReader(inputStreamString));
+			DocumentRoot<QName> document = readJSON(new StringReader(inputStreamString));
 
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				//if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					return readRdfV1(in, document);
@@ -163,6 +194,44 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
+	/**
+	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument
+	 * @param in
+	 * @return
+	 */
+	public static SBOLDocument read(InputStream in)
+	{
+		String inputStreamString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
+		SBOLDocument SBOLDoc     = new SBOLDocument();
+		try
+		{
+			DocumentRoot<QName> document = readRdf(new StringReader(inputStreamString));
+
+			for (NamespaceBinding n : document.getNamespaceBindings())
+			{
+				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
+				{
+					return readRdfV1(in, document);
+				}
+				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+			}
+
+			readTopLevelDocs(SBOLDoc, document);
+
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return SBOLDoc;
+	}
+
+	/**
+	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument
+	 * @param in
+	 * @return
+	 */
 	public static SBOLDocument readRdf(InputStream in)
 	{
 		String inputStreamString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
@@ -189,7 +258,33 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	public static SBOLDocument readRdfV1(InputStream in, DocumentRoot<QName> document)
+	public static SBOLDocument readTurtle(InputStream in)
+	{
+		String inputStreamString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
+		SBOLDocument SBOLDoc     = new SBOLDocument();
+
+		try
+		{
+			DocumentRoot<QName> document = readTurtle(new StringReader(inputStreamString));
+			for (NamespaceBinding n : document.getNamespaceBindings())
+			{
+				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
+				{
+					return readRdfV1(in, document);
+				}
+				SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+			}
+			readTopLevelDocs(SBOLDoc, document);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return SBOLDoc;
+	}
+
+	private static SBOLDocument readRdfV1(InputStream in, DocumentRoot<QName> document)
 	{
 		SBOLDocument SBOLDoc = new SBOLDocument();
 		for (NamespaceBinding n : document.getNamespaceBindings())
@@ -207,20 +302,7 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	public static SBOLDocument readTurtle(InputStream in, DocumentRoot<QName> document)
-	{
-		SBOLDocument SBOLDoc = new SBOLDocument();
-
-		for (NamespaceBinding n : document.getNamespaceBindings())
-		{
-			SBOLDoc.addNameSpaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
-		}
-
-		readTopLevelDocs(SBOLDoc, document);
-		return SBOLDoc;
-	}
-
-	private static DocumentRoot<QName> readJson(Reader stream) throws Exception
+	private static DocumentRoot<QName> readJSON(Reader stream) throws Exception
 	{
 		JsonReader reader 		  = Json.createReaderFactory(Collections.<String, Object> emptyMap()).createReader(stream);
 		JsonIo jsonIo 	  		  = new JsonIo();
@@ -664,7 +746,7 @@ public class SBOLReader
 			{
 				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSubComponents))
+			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasComponent))
 			{
 				components.add(parseSubComponent(((NestedDocument<QName>) namedProperty.getValue())));
 			}
@@ -1138,7 +1220,7 @@ public class SBOLReader
 						.create(((Literal<QName>) namedProperty.getValue())
 								.getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMappings))
+			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapsTo))
 			{
 				mappings.add(parseMapping((NestedDocument<QName>) namedProperty.getValue()));
 			}
@@ -1435,7 +1517,7 @@ public class SBOLReader
 			{
 				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasSubModule))
+			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModule))
 			{
 				subModules.add(parseSubModule(((NestedDocument<QName>) namedProperty.getValue())));
 			}
@@ -1443,7 +1525,7 @@ public class SBOLReader
 			{
 				interactions.add(parseInteraction(((NestedDocument<QName>) namedProperty.getValue())));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasComponents))
+			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasfunctionalComponent))
 			{
 				functionalComponents.add(parseFunctionalComponents((NestedDocument<QName>) namedProperty.getValue()));
 			}
@@ -1521,7 +1603,7 @@ public class SBOLReader
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMappings))
+			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapsTo))
 			{
 				mappings.add(parseMapping((NestedDocument<QName>) namedProperty.getValue()));
 			}
@@ -1785,7 +1867,7 @@ public class SBOLReader
 						.convertToDirectionType(URI.create(((Literal<QName>) f
 								.getValue()).getValue().toString()));
 			}
-			if (f.getName().equals(Sbol2Terms.ComponentInstance.hasMappings))
+			if (f.getName().equals(Sbol2Terms.ComponentInstance.hasMapsTo))
 			{
 				mappings.add(parseMapping((NestedDocument<QName>) f.getValue()));
 			}
