@@ -992,8 +992,11 @@ public class writeTester {
 		String element 		   = structureData.get(6);
 
 		Sequence structure = SBOL2Doc_test.createSequence(identity, element, encoding);
-		setCommonTopLevelData(structure, identity, persistentIdentity, version, displayId, name, description);
-
+		if (structure==null) {
+			structure = SBOL2Doc_test.getSequence(identity);
+		} else {	
+			setCommonTopLevelData(structure, identity, persistentIdentity, version, displayId, name, description);
+		}
 		return structure;
 	}
 

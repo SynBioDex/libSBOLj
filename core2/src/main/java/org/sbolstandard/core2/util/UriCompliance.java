@@ -114,6 +114,8 @@ public final class UriCompliance {
 	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise. 
 	 */
 	 public static final boolean isTopLevelURIcompliant(URI topLevelObjURI) {
+		return false;
+		/*
 		String URIstr = topLevelObjURI.toString();		
 		String URIpattern = URIprefixPattern + "/" + displayIDpattern + "/" + versionPattern;
 		Pattern r = Pattern.compile(URIpattern);
@@ -124,7 +126,8 @@ public final class UriCompliance {
 		else {
 			// TODO: Warning: top-level URI is not compliant. 
 			return false;
-		}		
+		}	
+		*/	
 	}
 	 
 	 /**
