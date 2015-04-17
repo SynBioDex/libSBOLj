@@ -45,7 +45,7 @@ public abstract class SBOLAbstractTests {
 				ComponentInstance.AccessType.PUBLIC,
 				URI.create("cd1"),
 				FunctionalComponent.DirectionType.NONE);
-		SBOLWriter.writeRdf(document,(System.out));
+		SBOLWriter.writeRDF(document,(System.out));
 	}
 
 	@Test

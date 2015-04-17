@@ -21,7 +21,6 @@ public class Sbol2Terms
 	public static final NamespaceBinding dc = NamespaceBinding("http://purl.org/dc/terms/", "dcterms");
 
 
-
 	/**
 	 * A group of qualified terms for Annotation related SBOL objects
 	 *

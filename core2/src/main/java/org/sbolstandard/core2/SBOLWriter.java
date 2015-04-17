@@ -103,7 +103,7 @@ public class SBOLWriter {
 	public static void write(SBOLDocument doc, OutputStream out)
 			throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
-		writeRdf(new OutputStreamWriter(out),
+		writeRDF(new OutputStreamWriter(out),
 				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 	}
@@ -185,13 +185,13 @@ public class SBOLWriter {
 	 * @param file
 	 * @throws FileNotFoundException
 	 */
-	public static void writeRdf(SBOLDocument doc, File file) throws FileNotFoundException
+	public static void writeRDF(SBOLDocument doc, File file) throws FileNotFoundException
 	{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
 		try
 		{
-			writeRdf(doc, buffer);
+			writeRDF(doc, buffer);
 		}
 		catch (XMLStreamException e) { }
 		catch (FactoryConfigurationError  e) { }
@@ -219,10 +219,10 @@ public class SBOLWriter {
 	 * @throws FactoryConfigurationError
 	 * @throws CoreIoException
 	 */
-	public static void writeRdf(SBOLDocument doc, OutputStream out)
+	public static void writeRDF(SBOLDocument doc, OutputStream out)
 			throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
-		writeRdf(new OutputStreamWriter(out),
+		writeRDF(new OutputStreamWriter(out),
 				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 	}
@@ -234,9 +234,9 @@ public class SBOLWriter {
 	 * @param filename
 	 * @throws FileNotFoundException
 	 */
-	public static void writeRdf(SBOLDocument doc, String filename) throws FileNotFoundException
+	public static void writeRDF(SBOLDocument doc, String filename) throws FileNotFoundException
 	{
-		writeRdf(doc, new File(filename));
+		writeRDF(doc, new File(filename));
 	}
 
 	/**
@@ -306,7 +306,7 @@ public class SBOLWriter {
 		writer.close();
 	}
 
-	private static void writeRdf(Writer stream, DocumentRoot<QName> document) throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	private static void writeRDF(Writer stream, DocumentRoot<QName> document) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		XMLStreamWriter xmlWriter = new IndentingXMLStreamWriter(XMLOutputFactory.newInstance().createXMLStreamWriter(stream));
 		RdfIo rdfIo = new RdfIo();

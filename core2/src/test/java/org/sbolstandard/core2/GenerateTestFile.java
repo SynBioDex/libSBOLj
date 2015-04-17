@@ -21,7 +21,7 @@ public class GenerateTestFile
 	public static void writeRdfFile(SBOLDocument document, String fileName)
 	{
 		try {
-			SBOLWriter.writeRdf(document, new File(fileName));
+			SBOLWriter.writeRDF(document, new File(fileName));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
