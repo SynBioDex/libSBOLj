@@ -26,6 +26,7 @@ import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.Model;
 import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.ModuleDefinition;
+import org.sbolstandard.core2.OrientationType;
 import org.sbolstandard.core2.Participation;
 import org.sbolstandard.core2.Range;
 import org.sbolstandard.core2.SBOLDocument;
@@ -914,7 +915,7 @@ public class writeTester {
 			URI locationURI)
 	{
 		Range r = new Range(locationURI, startRange, endRange);
-		r.setOrientation(Sbol2Terms.Orientation.inline);
+		r.setOrientation(OrientationType.INLINE);
 		//URI.create("orientationURI"));
 
 		URI identity 		   = getURI(structuralAnnotations_data.get(0));

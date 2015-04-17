@@ -66,7 +66,7 @@ public class Cut extends Location{
 	 */
 	public URI getOrientationURI() {
 		if (orientation != null) {
-			if (orientation.equals(OrientationType.INlINE)) {
+			if (orientation.equals(OrientationType.INLINE)) {
 				return Orientation.inline;
 			}
 			else if (orientation.equals(OrientationType.REVERSECOMPLEMENT)) {
@@ -96,7 +96,7 @@ public class Cut extends Location{
 	 */
 	public void setOrientation(URI orientation) {
 		if (orientation.equals(Orientation.inline)) {
-			this.orientation = OrientationType.INlINE;
+			this.orientation = OrientationType.INLINE;
 		} else if (orientation.equals(Orientation.reverseComplement)) {
 			this.orientation = OrientationType.REVERSECOMPLEMENT;
 		}
