@@ -10,7 +10,9 @@ import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.Location;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
+
 import static org.sbolstandard.core2.util.UriCompliance.*;
+
 import org.sbolstandard.core2.util.Version;
 
 /**
@@ -664,30 +666,91 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateCompliantURI(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	protected void updateDisplayId(String newDisplayId) {
-		super.updateDisplayId(newDisplayId);
-		if (isTopLevelURIcompliant(this.getIdentity())) {			
-			// TODO Change all of its children's displayIds in their URIs.
+	protected boolean checkDescendantsURIcompliance() {
+		if (!isTopLevelURIcompliant(this.getIdentity())) { 	// ComponentDefinition to be copied has non-compliant URI.
+			return false;
 		}
-	}
-
-
-	/**
-	 * Replace the display ID in the URI of the object's parent with the specified one.  
-	 * @param id
-	 */
-	private void setParentDisplayId(String id) {
-		// TODO fill in
-	}
-	
-	/**
-	 * Replace the display ID in the URI of the object's grand parent (2 levels up) with the specified one.
-	 * @param id
-	 */
-	private void setGrandParentDisplayId(String id) {
-		// TODO fill in
+		boolean allDescendantsCompliant = true;
+		if (!this.getSequenceConstraints().isEmpty()) {
+			for (SequenceConstraint sequenceConstraint : this.getSequenceConstraints()) {
+				allDescendantsCompliant = allDescendantsCompliant 
+						&& isChildURIcompliant(this.getIdentity(), sequenceConstraint.getIdentity());
+				// SequenceConstraint does not have any child classes. No need to check further.
+				if (!allDescendantsCompliant) { // Current sequence constraint has non-compliant URI. 
+					return allDescendantsCompliant;
+				}
+			}
+		}
+		if (!this.getComponents().isEmpty()) {
+			for (Component component : this.getComponents()) {
+				allDescendantsCompliant = allDescendantsCompliant 
+						&& isChildURIcompliant(this.getIdentity(), component.getIdentity());
+				if (!allDescendantsCompliant) { // Current component has non-compliant URI. 
+					return allDescendantsCompliant;
+				}
+				if (!component.getMapsTos().isEmpty()) {
+					// Check compliance of Component's children
+					for (MapsTo mapsTo : component.getMapsTos()) {
+						allDescendantsCompliant = allDescendantsCompliant 
+								&& isChildURIcompliant(component.getIdentity(), mapsTo.getIdentity());
+						if (!allDescendantsCompliant) { // Current mapsTo has non-compliant URI. 
+							return allDescendantsCompliant;
+						}
+					}					
+				}
+			}
+		}
+		if (!this.getSequenceAnnotations().isEmpty()) {
+			for (SequenceAnnotation sequenceAnnotation : this.getSequenceAnnotations()) {
+				allDescendantsCompliant = allDescendantsCompliant 
+						&& isChildURIcompliant(this.getIdentity(), sequenceAnnotation.getIdentity());
+				if (!allDescendantsCompliant) { // Current sequence annotation has non-compliant URI. 
+					return allDescendantsCompliant;
+				}
+				Location location = sequenceAnnotation.getLocation();
+				if (location instanceof Range) {
+					allDescendantsCompliant = allDescendantsCompliant 
+							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), ((Range)location).getIdentity());
+					if (!allDescendantsCompliant) { // Current range has non-compliant URI. 
+						return allDescendantsCompliant;
+					}
+				}
+				if (location instanceof Cut) {
+					allDescendantsCompliant = allDescendantsCompliant 
+							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), ((Cut)location).getIdentity());
+					if (!allDescendantsCompliant) { // Current cut has non-compliant URI. 
+						return allDescendantsCompliant;
+					}
+				}
+				if (location instanceof GenericLocation) {
+					allDescendantsCompliant = allDescendantsCompliant 
+							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), ((GenericLocation)location).getIdentity());
+					if (!allDescendantsCompliant) { // Current generic location has non-compliant URI. 
+						return allDescendantsCompliant;
+					}
+				}
+				if (location instanceof MultiRange) {
+					allDescendantsCompliant = allDescendantsCompliant 
+							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), ((MultiRange)location).getIdentity());
+					if (!allDescendantsCompliant) { // Current generic location has non-compliant URI. 
+						return allDescendantsCompliant;
+					}
+					if (!((MultiRange) location).getRanges().isEmpty()) {
+						for (Range range : ((MultiRange) location).getRanges()) {
+							allDescendantsCompliant = allDescendantsCompliant 
+									&& isChildURIcompliant(((MultiRange) location).getIdentity(), range.getIdentity());
+							if (!allDescendantsCompliant) { // Current location has non-compliant URI. 
+								return allDescendantsCompliant;
+							}
+						}
+					}
+				}
+			}
+		}
+		// All descendants of this ComponentDefinition object have compliant URIs.
+		return allDescendantsCompliant;		
 	}
 	
 	/**
@@ -697,37 +760,61 @@ public class ComponentDefinition extends TopLevel {
 		return new ComponentDefinition(this);
 	}
 	
-	/**
-	 * Clone the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
-	 * @param newDisplayId
-	 * @return the copied {@link ComponentDefinition} instance.
-	 */
-	public ComponentDefinition copy(String newDisplayId) {
-		ComponentDefinition cloned = (ComponentDefinition) super.copy(newDisplayId);
-		cloned.updateDisplayId(newDisplayId);
-		return cloned;
-	}
-	
-	/**
-	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
-	 * @param newVersion
-	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
-	 */
-	public ComponentDefinition newVersion(String newVersion) {
-		ComponentDefinition cloned = (ComponentDefinition) super.newVersion(newVersion);		
-		cloned.updateVersion(newVersion);
-		return cloned;
-	}
-	
 	/* (non-Javadoc)
-	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	protected void updateVersion(String newVersion) {
-		super.updateVersion(newVersion);
-		if (isTopLevelURIcompliant(this.getIdentity())) {
-			// TODO Change all of its children's versions in their URIs.
+	public ComponentDefinition copy(String URIprefix, String displayId, String version) {				
+		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
+				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
+			ComponentDefinition cloned = this.deepCopy();
+			cloned.setWasDerivedFrom(this.getIdentity());		
+			cloned.setDisplayId(displayId);
+			cloned.setVersion(version);
+			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
+			cloned.setIdentity(newIdentity);
+			// Update all children's URIs
+			if (!cloned.getSequenceConstraints().isEmpty()) {
+				for (SequenceConstraint sequenceConstraint : cloned.getSequenceConstraints()) {
+					sequenceConstraint.updateCompliantURI(URIprefix, displayId, version);
+				}
+			}
+			if (!cloned.getSequenceAnnotations().isEmpty()) {
+				for (SequenceAnnotation SequenceAnnotation : cloned.getSequenceAnnotations()) {
+					SequenceAnnotation.updateCompliantURI(URIprefix, displayId, version);
+				}	
+			}
+			if (!cloned.getComponents().isEmpty()) {
+				for (Component component : cloned.getComponents()) {
+					component.updateCompliantURI(URIprefix, displayId, version);
+				}
+			}
+			return cloned;
+		}
+		else {
+			return null; 	
 		}
 	}
+	
+//	/**
+//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
+//	 * @param newVersion
+//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+//	 */
+//	public ComponentDefinition newVersion(String newVersion) {
+//		ComponentDefinition cloned = (ComponentDefinition) super.newVersion(newVersion);		
+//		cloned.updateVersion(newVersion);
+//		return cloned;
+//	}
+//	
+//	/* (non-Javadoc)
+//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+//	 */
+//	protected void updateVersion(String newVersion) {
+//		super.updateVersion(newVersion);
+//		if (isTopLevelURIcompliant(this.getIdentity())) {
+//			// TODO Change all of its children's versions in their URIs.
+//		}
+//	}
 
 	@Override
 	public int hashCode() {

@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import static org.sbolstandard.core2.util.UriCompliance.*;
 
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
@@ -103,26 +104,58 @@ public class Sequence extends TopLevel{
 		return new Sequence(this);
 	}
 	
-	/**
-	 * @param newDisplayId
-	 * @return
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public Sequence copy(String newDisplayId) {
-		Sequence cloned = (Sequence) super.copy(newDisplayId);
-		cloned.updateDisplayId(newDisplayId);
-		return cloned;
+	@Override
+	public Sequence copy(String URIprefix, String displayId, String version) {
+		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
+				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
+			Sequence cloned = this.deepCopy();
+			cloned.setWasDerivedFrom(this.getIdentity());		
+			cloned.setDisplayId(displayId);
+			cloned.setVersion(version);
+			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
+			cloned.setIdentity(newIdentity);
+			return cloned;
+		}
+		else {
+			return null; 	
+		}
 	}
+
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
+	 */
+	@Override
+	protected boolean checkDescendantsURIcompliance() {
+		if (!isTopLevelURIcompliant(this.getIdentity())) {
+			return false;
+		}
+		return true;
+	}
+
 	
-	/**
-	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
-	 * @param newVersion
-	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
-	 */
-	public Sequence newVersion(String newVersion) {
-		Sequence cloned = (Sequence) super.newVersion(newVersion);		
-		cloned.updateVersion(newVersion);
-		return cloned;
-	}
+//	/**
+//	 * @param newDisplayId
+//	 * @return
+//	 */
+//	public Sequence copy(String newDisplayId) {
+//		Sequence cloned = (Sequence) super.copy(newDisplayId);
+//		cloned.updateCompliantURI(newDisplayId);
+//		return cloned;
+//	}
+//	
+//	/**
+//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
+//	 * @param newVersion
+//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+//	 */
+//	public Sequence newVersion(String newVersion) {
+//		Sequence cloned = (Sequence) super.newVersion(newVersion);		
+//		cloned.updateVersion(newVersion);
+//		return cloned;
+//	}
 	
 //	/* (non-Javadoc)
 //	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
@@ -130,7 +163,6 @@ public class Sequence extends TopLevel{
 //	public void updateVersion(String newVersion) {
 //		super.updateVersion(newVersion);
 //		if (isURIcompliant(this.getIdentity())) {			
-//			// TODO Change all of its children's versions in their URIs.
 //		}
 //	}
 }

@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.abstract_classes.Documented;
-import static org.sbolstandard.core2.util.Version.*;
 
+import static org.sbolstandard.core2.util.Version.*;
 import static org.sbolstandard.core2.util.UriCompliance.*;
 
 /**
@@ -241,5 +241,27 @@ public class Module extends Documented {
 		return new Module(this);
 	}
 
+	/**
+	 * Assume this Module object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
+	 * This method is called by {@link ModuleDefinition#copy(String, String, String)}.
+	 * @param URIprefix
+	 * @param parentDisplayId
+	 * @param version
+	 */
+	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
+		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 1); // 1 indicates that this object is a child of a top-level object.
+		URI newIdentity = URI.create(URIprefix + '/' + parentDisplayId + '/' 
+				+ thisObjDisplayId + '/' + version);
+		if (!this.getMapsTos().isEmpty()) {
+			// Update children's URIs
+			for (MapsTo mapsTo : this.getMapsTos()) {
+				mapsTo.updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
+			}
+		}
+		// TODO: need to set wasDerivedFrom here?
+		this.setWasDerivedFrom(this.getIdentity());
+		this.setIdentity(newIdentity);		
+	}
 
 }
+

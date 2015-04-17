@@ -869,7 +869,7 @@ public class writeTester {
 			m.setAnnotations(annotations);
 
 		if(functionalInstantiation_data != null)
-			m.setComponents(functionalInstantiation_data);
+			m.setFunctionalComponents(functionalInstantiation_data);
 		if(interactionData != null)
 			m.setInteractions(interactionData);
 		if(moduleInstantiation_data != null)

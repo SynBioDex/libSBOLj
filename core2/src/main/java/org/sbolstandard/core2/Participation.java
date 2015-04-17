@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import static org.sbolstandard.core2.util.UriCompliance.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -102,6 +103,24 @@ public class Participation extends Identified {
 	@Override
 	protected Participation deepCopy() {
 		return new Participation(this);
+	}
+
+	/**
+	 * Assume this Participation object has compliant URI, and all given parameters have compliant forms.
+	 * This method is called by {@link Interaction#updateCompliantURI(String, String, String)}.
+	 * @param URIprefix
+	 * @param grandparentDisplayId
+	 * @param parentDisplayId
+	 * @param version
+	 */
+	void updateCompliantURI(String URIprefix, String grandparentDisplayId,
+			String parentDisplayId, String version) {
+		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 2); // 2 indicates that this object is a grandchild of a top-level object.
+		URI newIdentity = URI.create(URIprefix + '/' + grandparentDisplayId + '/' + parentDisplayId + '/' 
+				+ thisObjDisplayId + '/' + version);
+		// TODO: need to set wasDerivedFrom here?
+		this.setWasDerivedFrom(this.getIdentity());
+		this.setIdentity(newIdentity);
 	}
 
 }

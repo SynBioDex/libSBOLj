@@ -51,8 +51,13 @@ public class SBOLTestUtils {
 			List<SequenceConstraint> sequenceConstraints,
 			List<Component> subComponents, List<Annotation> annotations)
 	{
+//		ComponentDefinition componentDefinition = document.createComponentDefinition(
+//				"http://www.async.ece.utah.edu", id, "1/0",
+//				type, role);
+		
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 		ComponentDefinition componentDefinition = document.createComponentDefinition(
-				"http://www.async.ece.utah.edu", id, "1/0",
+				id, "1/0",
 				type, role);
 
 		componentDefinition.setName(id);
@@ -179,7 +184,7 @@ public class SBOLTestUtils {
 		if(annotations != null)
 			m.setAnnotations(annotations);
 		if(functionalComponents != null)
-			m.setComponents(functionalComponents);
+			m.setFunctionalComponents(functionalComponents);
 		if(interactions != null)
 			m.setInteractions(interactions);
 		if(submodules != null)

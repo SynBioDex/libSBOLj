@@ -46,7 +46,7 @@ public final class UriCompliance {
 	 * top-level object's display ID; if the given index is 1, the extracted display ID is the
 	 * child object's display ID; if the given index is 2, the extracted display ID is the
 	 * grand child object's display ID; if the given index is 3, the extracted display ID is the
-	 * grand grand child object's display ID.
+	 * great grand child object's display ID.
 	 * @param objURI
 	 * @param index
 	 * @return the extracted display ID.
@@ -115,13 +115,14 @@ public final class UriCompliance {
 	 */
 	 public static final boolean isTopLevelURIcompliant(URI topLevelObjURI) {
 		String URIstr = topLevelObjURI.toString();		
-		String URIpattern = URIprefixpattern + "/" + displayIDpattern + "/" + versionPattern;
+		String URIpattern = URIprefixPattern + "/" + displayIDpattern + "/" + versionPattern;
 		Pattern r = Pattern.compile(URIpattern);
 		Matcher m = r.matcher(URIstr);
 		if (m.matches()) {
 			return true;
 		}			
 		else {
+			// TODO: Warning: top-level URI is not compliant. 
 			return false;
 		}		
 	}
@@ -145,7 +146,16 @@ public final class UriCompliance {
 				// Only need to remove the child's own display ID part.
 				String parentPartOfChildPersistId = childPersistentId.substring(0, childPersistentId.lastIndexOf('/'));
 				if (parentPartOfChildPersistId.equals(parentPersistentId)) {
-					return true;
+					String parentVersion = parentMatcher.group(3);
+					String childVersion = childMatcher.group(3);
+					if (parentVersion.equals(childVersion)) {
+						return true;
+					}
+					else {
+						// TODO: Warning: Versions do not match.
+						return false;
+					}
+					
 				}
 				else {
 					// TODO: generate message: Parent persistent ID extracted from the child's persistent ID does not match parent's persistent ID.
@@ -198,6 +208,7 @@ public final class UriCompliance {
 			return true;
 		}			
 		else {
+			// TODO: Warning: Display ID is not compliant.
 			return false;
 		}
 	}
@@ -217,28 +228,43 @@ public final class UriCompliance {
 		}
 	}
 	
+	/**
+	 * @param URIprefix
+	 * @return
+	 */
+	public static boolean isURIprefixCompliant(String URIprefix) {
+		Pattern r = Pattern.compile(URIprefixPattern);
+		Matcher m = r.matcher(URIprefix);
+		if (m.matches()) {
+			return true;
+		}			
+		else {
+			return false;
+		}
+	}
+	
 	// (?:...) is a non-capturing group
-	public static final String URIprefixpattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
+	public static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
 	//public static final String URIprefixpattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"; 
 	
 	public static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]+";//"[a-zA-Z0-9_]+";
 	
 	//public static final String MavenVersionPattern = "[0-9]+(?:[.][0-9]+){0,2}(?:-alpha|beta|SNAPSHOT)*";
 	
-	public static final String versionPattern = "[-a-zA-Z0-9.]+";
+	public static final String versionPattern = "[^/]+"; //"[-a-zA-Z0-9.]+";
 	
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: persistent ID
 	// group 2: URI prefix
 	// group 3: version
-	public static final String genericURIpattern1 = "((" + URIprefixpattern + ")/(?:" + displayIDpattern + "/){1,4})(" + versionPattern + ")";
+	public static final String genericURIpattern1 = "((" + URIprefixPattern + ")/(?:" + displayIDpattern + "/){1,4})(" + versionPattern + ")";
 	
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: top-level display ID
 	// group 2: top-level's child display ID
 	// group 3: top-level's grand child display ID
 	// group 4: top-level's grand grand child display ID
-	public static final String genericURIpattern2 = URIprefixpattern + "/((?:" + displayIDpattern + "/){1,4})" + versionPattern;
+	public static final String genericURIpattern2 = URIprefixPattern + "/((?:" + displayIDpattern + "/){1,4})" + versionPattern;
 	
 
 }

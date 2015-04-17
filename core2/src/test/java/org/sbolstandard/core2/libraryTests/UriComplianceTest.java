@@ -365,7 +365,7 @@ public class UriComplianceTest {
 		
 	@Test
 	public void testIsChildURIcompliant1() {
-		assertTrue(isChildURIcompliant(uri1, uri5));
+		assertFalse(isChildURIcompliant(uri1, uri5));
 	}
 	
 	@Test
@@ -376,6 +376,11 @@ public class UriComplianceTest {
 	@Test
 	public void testIsChildURIcompliant3() {
 		assertTrue(isChildURIcompliant(URI.create("http://www.async.ece.utah.edu/pLac/ptetlacISeq/multi_range/1.0.02-SNAPSHOT"), uri10));
+	}
+	
+	@Test
+	public void testIsChildURIcompliant4() {
+		assertFalse(isChildURIcompliant(URI.create("http://www.async.ece.utah.edu/LacI_Inv/interaction_1/1.0.1-alpha"), uri7));
 	}
 	
 	@Test

@@ -1,6 +1,9 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+
+import static org.sbolstandard.core2.util.UriCompliance.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -184,45 +187,74 @@ public class Model extends TopLevel {
 	protected Model deepCopy() {
 		return new Model(this);
 	}
-	
-	/**
-	 * @param newDisplayId
-	 * @return
+
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public Model copy(String newDisplayId) {
-		Model cloned = (Model) this.deepCopy();
-		cloned.updateDisplayId(newDisplayId);
-		return cloned;
+	@Override
+	public Model copy(String URIprefix, String displayId, String version) {
+		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
+				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
+			Model cloned = this.deepCopy();
+			cloned.setWasDerivedFrom(this.getIdentity());		
+			cloned.setDisplayId(displayId);
+			cloned.setVersion(version);
+			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
+			cloned.setIdentity(newIdentity);
+			return cloned;
+		}
+		else {
+			return null; 	
+		}
 	}
 
 	/* (non-Javadoc)
-	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
-	protected void updateDisplayId(String newDisplayId) {
-		super.updateDisplayId(newDisplayId);
-		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {				
-			// TODO Change all of its children's displayIds in their URIs.
+	@Override
+	protected boolean checkDescendantsURIcompliance() {
+		if (!isTopLevelURIcompliant(this.getIdentity())) {
+			return false;
 		}
+		return true;
 	}
 	
-	/**
-	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
-	 * @param newVersion
-	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
-	 */
-	public Model newVersion(String newVersion) {
-		Model cloned = (Model) super.newVersion(newVersion);		
-		cloned.updateVersion(newVersion);
-		return cloned;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
-	 */
-	protected void updateVersion(String newVersion) {
-		super.updateVersion(newVersion);
-		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
-			// TODO Change all of its children's versions in their URIs.
-		}
-	}
+//	/**
+//	 * @param newDisplayId
+//	 * @return
+//	 */
+//	public Model copy(String newDisplayId) {
+//		Model cloned = (Model) this.deepCopy();
+//		cloned.updateCompliantURI(newDisplayId);
+//		return cloned;
+//	}
+//
+//	/* (non-Javadoc)
+//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+//	 */
+//	protected void updateCompliantURI(String newDisplayId) {
+//		super.updateCompliantURI(newDisplayId);
+//		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {				
+//		}
+//	}
+//	
+//	/**
+//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
+//	 * @param newVersion
+//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+//	 */
+//	public Model newVersion(String newVersion) {
+//		Model cloned = (Model) super.newVersion(newVersion);		
+//		cloned.updateVersion(newVersion);
+//		return cloned;
+//	}
+//	
+//	/* (non-Javadoc)
+//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+//	 */
+//	protected void updateVersion(String newVersion) {
+//		super.updateVersion(newVersion);
+//		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
+//		}
+//	}
 }

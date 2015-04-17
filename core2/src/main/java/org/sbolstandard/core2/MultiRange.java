@@ -190,10 +190,33 @@ public class MultiRange extends Location{
 		return true;
 	}
 
-
 	@Override
 	protected MultiRange deepCopy() {
 		return new MultiRange(this);
+	}
+
+	/**
+	 * Assume this MultiRange object has compliant URI, and all given parameters have compliant forms.
+	 * This method is called by {@link SequenceAnnotation#updateCompliantURI(String, String, String)}.
+	 * @param URIprefix
+	 * @param grandParentDisplayId
+	 * @param parentDisplayId
+	 * @param version
+	 */
+	void updateCompliantURI(String URIprefix, String grandparentDisplayId, 
+			String parentDisplayId, String version) {
+		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 2); // 2 indicates that this object is a grandchild of a top-level object.
+		URI newIdentity = URI.create(URIprefix + '/' + grandparentDisplayId + '/' + parentDisplayId + '/' 
+				+ thisObjDisplayId + '/' + version);
+		if (!this.getRanges().isEmpty()) {
+			// Update children's URIs
+			for (Range range : this.getRanges()) {
+				range.updateCompliantURI(URIprefix, grandparentDisplayId, parentDisplayId, thisObjDisplayId, version);
+			}
+		}			
+		// TODO: need to set wasDerivedFrom here?
+		this.setWasDerivedFrom(this.getIdentity());
+		this.setIdentity(newIdentity);		
 	}
 	
 }

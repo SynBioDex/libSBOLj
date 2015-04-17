@@ -540,7 +540,7 @@ public class SBOLWriter {
 				}
 			}
 
-			formatFunctionalComponents(m.getComponents(),list);
+			formatFunctionalComponents(m.getFunctionalComponents(),list);
 			formatInteractions(m.getInteractions(),list);
 			formatModels(m.getModels(),list);
 			formatModule(m.getModules(),list);
