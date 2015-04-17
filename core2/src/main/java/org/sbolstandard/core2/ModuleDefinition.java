@@ -10,8 +10,10 @@ import java.util.Set;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
+
 import static org.sbolstandard.core2.util.UriCompliance.*;
-import org.sbolstandard.core2.util.Version;
+
+import static org.sbolstandard.core2.util.Version.*;
 
 /**
  * @author Zhen Zhang
@@ -23,7 +25,7 @@ public class ModuleDefinition extends TopLevel {
 	private Set<URI> roles;
 	private HashMap<URI, Module> modules;
 	private HashMap<URI, Interaction> interactions;
-	private HashMap<URI, FunctionalComponent> components;
+	private HashMap<URI, FunctionalComponent> functionalComponents;
 	private Set<URI> models;
 	
 	public ModuleDefinition(URI identity, Set<URI> roles) {
@@ -31,7 +33,7 @@ public class ModuleDefinition extends TopLevel {
 		setRoles(roles);
 		this.modules = new HashMap<URI, Module>();
 		this.interactions = new HashMap<URI, Interaction>();
-		this.components = new HashMap<URI, FunctionalComponent>();
+		this.functionalComponents = new HashMap<URI, FunctionalComponent>();
 		this.models = new HashSet<URI>();		
 	}
 	
@@ -56,12 +58,12 @@ public class ModuleDefinition extends TopLevel {
 			}
 			this.setInteractions(interactions);
 		}
-		if (!moduleDefinition.getComponents().isEmpty()) {
+		if (!moduleDefinition.getFunctionalComponents().isEmpty()) {
 			List<FunctionalComponent> components = new ArrayList<FunctionalComponent>();
-			for (FunctionalComponent component : moduleDefinition.getComponents()) {
+			for (FunctionalComponent component : moduleDefinition.getFunctionalComponents()) {
 				components.add(component.deepCopy());
 			}
-			this.setComponents(components);
+			this.setFunctionalComponents(components);
 		}
 		if (!moduleDefinition.getModels().isEmpty()) {
 			Set<URI> models = new HashSet<URI>();
@@ -169,25 +171,25 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Adds the specified instance to the list of subModules. 
-	 * @param subModule
+	 * @param newModule
 	 * @return 
 	 */
-	public boolean addModule(Module subModule) {
-		if (isChildURIcompliant(this.getIdentity(), subModule.getIdentity())) {
+	public boolean addModule(Module newModule) {
+		if (isChildURIcompliant(this.getIdentity(), newModule.getIdentity())) {
 			// Check if persistent identity exists in other maps.
-			URI persistentId = URI.create(extractPersistentId(subModule.getIdentity()));
+			URI persistentId = URI.create(extractPersistentId(newModule.getIdentity()));
 			if (!keyExistsInOtherMaps(modules.keySet(), persistentId)) {
 				// Check if URI exists in the subModules map.
-				if (!modules.containsKey(subModule.getIdentity())) {
-					modules.put(subModule.getIdentity(), subModule);
+				if (!modules.containsKey(newModule.getIdentity())) {
+					modules.put(newModule.getIdentity(), newModule);
 					Module latestSubModule = modules.get(persistentId);
 					if (latestSubModule == null) {
-						modules.put(persistentId, subModule);
+						modules.put(persistentId, newModule);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(extractVersion(subModule.getIdentity()),
+						if (isFirstVersionNewer(extractVersion(newModule.getIdentity()),
 								extractVersion(latestSubModule.getIdentity()))) {
-							modules.put(persistentId, subModule);
+							modules.put(persistentId, newModule);
 						}
 					}
 					return true;
@@ -199,9 +201,9 @@ public class ModuleDefinition extends TopLevel {
 				return false;
 		}
 		else { // Only check if subModule's URI exists in all maps.
-			if (!keyExistsInOtherMaps(modules.keySet(), subModule.getIdentity())) {
-				if (!modules.containsKey(subModule.getIdentity())) {
-					modules.put(subModule.getIdentity(), subModule);					
+			if (!keyExistsInOtherMaps(modules.keySet(), newModule.getIdentity())) {
+				if (!modules.containsKey(newModule.getIdentity())) {
+					modules.put(newModule.getIdentity(), newModule);					
 					return true;
 				}
 				else // key exists in subModules map
@@ -323,7 +325,7 @@ public class ModuleDefinition extends TopLevel {
 						interactions.put(persistentId, interaction);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(extractVersion(interaction.getIdentity()),
+						if (isFirstVersionNewer(extractVersion(interaction.getIdentity()),
 								extractVersion(latestInteraction.getIdentity()))) {
 							interactions.put(persistentId, interaction);
 						}
@@ -441,24 +443,24 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Adds the specified instance to the list of components.
-	 * @param component
+	 * @param functionalComponent
 	 */
-	public boolean addFunctionalComponent(FunctionalComponent component) {
-		if (isChildURIcompliant(this.getIdentity(), component.getIdentity())) {
+	public boolean addFunctionalComponent(FunctionalComponent functionalComponent) {
+		if (isChildURIcompliant(this.getIdentity(), functionalComponent.getIdentity())) {
 			// Check if persistent identity exists in other maps.
-			URI persistentId = URI.create(extractPersistentId(component.getIdentity()));
-			if (!keyExistsInOtherMaps(components.keySet(), persistentId)) {
+			URI persistentId = URI.create(extractPersistentId(functionalComponent.getIdentity()));
+			if (!keyExistsInOtherMaps(functionalComponents.keySet(), persistentId)) {
 				// Check if URI exists in the components map.
-				if (!components.containsKey(component.getIdentity())) {
-					components.put(component.getIdentity(), component);
-					FunctionalComponent latestFunctionalComponent = components.get(persistentId);
+				if (!functionalComponents.containsKey(functionalComponent.getIdentity())) {
+					functionalComponents.put(functionalComponent.getIdentity(), functionalComponent);
+					FunctionalComponent latestFunctionalComponent = functionalComponents.get(persistentId);
 					if (latestFunctionalComponent == null) {
-						components.put(component.getPersistentIdentity(), component);
+						functionalComponents.put(persistentId, functionalComponent);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(extractVersion(component.getIdentity()),
+						if (isFirstVersionNewer(extractVersion(functionalComponent.getIdentity()),
 								extractVersion(latestFunctionalComponent.getIdentity()))) {
-							components.put(component.getPersistentIdentity(), component);
+							functionalComponents.put(persistentId, functionalComponent);
 						}
 					}
 					return true;
@@ -470,9 +472,9 @@ public class ModuleDefinition extends TopLevel {
 				return false;
 		}
 		else { // Only check if component's URI exists in all maps.
-			if (!keyExistsInOtherMaps(components.keySet(), component.getIdentity())) {
-				if (!components.containsKey(component.getIdentity())) {
-					components.put(component.getIdentity(), component);					
+			if (!keyExistsInOtherMaps(functionalComponents.keySet(), functionalComponent.getIdentity())) {
+				if (!functionalComponents.containsKey(functionalComponent.getIdentity())) {
+					functionalComponents.put(functionalComponent.getIdentity(), functionalComponent);					
 					return true;
 				}
 				else // key exists in components map
@@ -488,8 +490,8 @@ public class ModuleDefinition extends TopLevel {
 	 * @param componentURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public FunctionalComponent removeComponent(URI componentURI) {
-		return components.remove(componentURI);
+	public FunctionalComponent removeFunctionalComponent(URI componentURI) {
+		return functionalComponents.remove(componentURI);
 	}
 	
 	/**
@@ -497,25 +499,25 @@ public class ModuleDefinition extends TopLevel {
 	 * @param componentURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public FunctionalComponent getComponent(URI componentURI) {
-		return components.get(componentURI);
+	public FunctionalComponent getFunctionalComponent(URI componentURI) {
+		return functionalComponents.get(componentURI);
 	}
 	
 	/**
 	 * Returns the list of functionalInstantiation instances owned by this instance. 
 	 * @return the list of functionalInstantiation instances owned by this instance.
 	 */
-	public List<FunctionalComponent> getComponents() {
-		return new ArrayList<FunctionalComponent>(components.values());
+	public List<FunctionalComponent> getFunctionalComponents() {
+		return new ArrayList<FunctionalComponent>(functionalComponents.values());
 	}
 	
 	/**
 	 * Removes all entries of the list of functionalInstantiation instances owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearComponents() {
-		Object[] keySetArray = components.keySet().toArray();
+		Object[] keySetArray = functionalComponents.keySet().toArray();
 		for (Object key : keySetArray) {
-			removeComponent((URI) key);
+			removeFunctionalComponent((URI) key);
 		}
 	}
 		
@@ -523,7 +525,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Clears the existing list of functionalInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param components
 	 */
-	public void setComponents(
+	public void setFunctionalComponents(
 			List<FunctionalComponent> components) {
 		clearComponents();		
 		for (FunctionalComponent component : components) {
@@ -616,7 +618,7 @@ public class ModuleDefinition extends TopLevel {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((components == null) ? 0 : components.hashCode());
+		result = prime * result + ((functionalComponents == null) ? 0 : functionalComponents.hashCode());
 		result = prime * result + ((interactions == null) ? 0 : interactions.hashCode());
 		result = prime * result + ((models == null) ? 0 : models.hashCode());
 		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
@@ -634,10 +636,10 @@ public class ModuleDefinition extends TopLevel {
 		if (getClass() != obj.getClass())
 			return false;
 		ModuleDefinition other = (ModuleDefinition) obj;
-		if (components == null) {
-			if (other.components != null)
+		if (functionalComponents == null) {
+			if (other.functionalComponents != null)
 				return false;
-		} else if (!components.equals(other.components))
+		} else if (!functionalComponents.equals(other.functionalComponents))
 			return false;
 		if (interactions == null) {
 			if (other.interactions != null)
@@ -668,47 +670,47 @@ public class ModuleDefinition extends TopLevel {
 		return new ModuleDefinition(this);
 	}
 	
-	/**
-	 * @param newDisplayId
-	 * @return
-	 */
-	public ModuleDefinition copy(String newDisplayId) {
-		ModuleDefinition cloned = (ModuleDefinition) super.copy(newDisplayId);		
-		cloned.updateDisplayId(newDisplayId);
-		return cloned;
-	}
-	
-
-	/* (non-Javadoc)
-	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
-	 */
-	protected void updateDisplayId(String newDisplayId) {
-		super.updateDisplayId(newDisplayId);
-		if (isTopLevelURIcompliant(this.getIdentity())) {					
-			// TODO Change all of its children's displayIds in their URIs.
-		}
-	}
-	
-	/**
-	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
-	 * @param newVersion
-	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
-	 */
-	public ModuleDefinition newVersion(String newVersion) {
-		ModuleDefinition cloned = (ModuleDefinition) super.newVersion(newVersion);		
-		cloned.updateVersion(newVersion);
-		return cloned;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
-	 */
-	protected void updateVersion(String newVersion) {
-		super.updateVersion(newVersion);
-		if (isTopLevelURIcompliant(this.getIdentity())) {					
-			// TODO Change all of its children's versions in their URIs.
-		}
-	}
+//	/**
+//	 * @param newDisplayId
+//	 * @return
+//	 */
+//	public ModuleDefinition copy(String newDisplayId) {
+//		ModuleDefinition cloned = (ModuleDefinition) super.copy(newDisplayId);		
+//		cloned.updateCompliantURI(newDisplayId);
+//		return cloned;
+//	}
+//	
+//
+//	/* (non-Javadoc)
+//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+//	 */
+//	protected void updateCompliantURI(String newDisplayId) {
+//		super.updateCompliantURI(newDisplayId);
+//		if (isTopLevelURIcompliant(this.getIdentity())) {					
+//			// TODO Change all of its children's displayIds in their URIs.
+//		}
+//	}
+//	
+//	/**
+//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
+//	 * @param newVersion
+//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+//	 */
+//	public ModuleDefinition newVersion(String newVersion) {
+//		ModuleDefinition cloned = (ModuleDefinition) super.newVersion(newVersion);		
+//		cloned.updateVersion(newVersion);
+//		return cloned;
+//	}
+//	
+//	/* (non-Javadoc)
+//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+//	 */
+//	protected void updateVersion(String newVersion) {
+//		super.updateVersion(newVersion);
+//		if (isTopLevelURIcompliant(this.getIdentity())) {					
+//			// TODO Change all of its children's versions in their URIs.
+//		}
+//	}
 	
 	/**
 	 * Check if the specified key exists in any hash maps in this class other than the one with the specified keySet. This method
@@ -719,7 +721,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	private boolean keyExistsInOtherMaps(Set<URI> keySet, URI key) {
 		Set<Set<URI>> complementSet = new HashSet<Set<URI>>();
-		complementSet.add(components.keySet());
+		complementSet.add(functionalComponents.keySet());
 		complementSet.add(interactions.keySet());		
 		complementSet.remove(keySet);
 		for (Set<URI> otherKeySet : complementSet) {
@@ -729,4 +731,107 @@ public class ModuleDefinition extends TopLevel {
 		}
 		return false;
 	}
+
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ModuleDefinition copy(String URIprefix, String displayId, String version) {
+		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
+				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
+			ModuleDefinition cloned = this.deepCopy();
+			cloned.setWasDerivedFrom(this.getIdentity());		
+			cloned.setDisplayId(displayId);
+			cloned.setVersion(version);
+			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
+			cloned.setIdentity(newIdentity);
+			// Update all children's URIs
+			if (!cloned.getModules().isEmpty()) {
+				for (Module module : cloned.getModules()) {
+					module.updateCompliantURI(URIprefix, displayId, version);
+				}
+			}
+			if (!cloned.getInteractions().isEmpty()) {
+				for (Interaction SequenceAnnotation : cloned.getInteractions()) {
+					SequenceAnnotation.updateCompliantURI(URIprefix, displayId, version);
+				}	
+			}
+			if (!cloned.getFunctionalComponents().isEmpty()) {
+				for (FunctionalComponent component : cloned.getFunctionalComponents()) {
+					component.updateCompliantURI(URIprefix, displayId, version);
+				}
+			}
+			return cloned;
+		}
+		else {
+			return null; 	
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateCompliantURI(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	protected boolean checkDescendantsURIcompliance() {
+		if (!isTopLevelURIcompliant(this.getIdentity())) { 	// ComponentDefinition to be copied has non-compliant URI.
+			return false;
+		}
+		boolean allDescendantsCompliant = true;
+		if (!this.getModules().isEmpty()) {
+			for (Module module : this.getModules()) {
+				allDescendantsCompliant = allDescendantsCompliant 
+						&& isChildURIcompliant(this.getIdentity(), module.getIdentity());				
+				if (!allDescendantsCompliant) { // Current sequence constraint has non-compliant URI. 
+					return allDescendantsCompliant;
+				}
+				if (!module.getMapsTos().isEmpty()) {
+					// Check compliance of Module's children
+					for (MapsTo mapsTo : module.getMapsTos()) {
+						allDescendantsCompliant = allDescendantsCompliant 
+								&& isChildURIcompliant(module.getIdentity(), mapsTo.getIdentity());
+						if (!allDescendantsCompliant) { // Current mapsTo has non-compliant URI. 
+							return allDescendantsCompliant;
+						}
+					}					
+				}
+			}
+		}
+		if (!this.getFunctionalComponents().isEmpty()) {
+			for (FunctionalComponent functionalComponent : this.getFunctionalComponents()) {
+				allDescendantsCompliant = allDescendantsCompliant 
+						&& isChildURIcompliant(this.getIdentity(), functionalComponent.getIdentity());
+				if (!allDescendantsCompliant) { // Current component has non-compliant URI. 
+					return allDescendantsCompliant;
+				}
+				if (!functionalComponent.getMapsTos().isEmpty()) {
+					// Check compliance of Component's children
+					for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+						allDescendantsCompliant = allDescendantsCompliant 
+								&& isChildURIcompliant(functionalComponent.getIdentity(), mapsTo.getIdentity());
+						if (!allDescendantsCompliant) { // Current mapsTo has non-compliant URI. 
+							return allDescendantsCompliant;
+						}
+					}					
+				}
+			}
+		}
+		if (!this.getInteractions().isEmpty()) {
+			for (Interaction interaction : this.getInteractions()) {
+				allDescendantsCompliant = allDescendantsCompliant 
+						&& isChildURIcompliant(this.getIdentity(), interaction.getIdentity());
+				if (!allDescendantsCompliant) { // Current interaction has non-compliant URI. 
+					return allDescendantsCompliant;
+				}
+				for (Participation participation : interaction.getParticipations()) {
+					allDescendantsCompliant = allDescendantsCompliant 
+							&& isChildURIcompliant(interaction.getIdentity(), participation.getIdentity());
+					if (!allDescendantsCompliant) { // Current participation has non-compliant URI. 
+						return allDescendantsCompliant;
+					}
+				}
+			}
+		}
+		// All descendants of this ComponentDefinition object have compliant URIs.
+		return allDescendantsCompliant;		
+	}
+	
 }

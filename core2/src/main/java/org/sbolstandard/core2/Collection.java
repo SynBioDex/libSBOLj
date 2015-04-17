@@ -5,7 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.sbolstandard.core2.abstract_classes.TopLevel;
-import org.sbolstandard.core2.util.UriCompliance;
+
+import static org.sbolstandard.core2.util.UriCompliance.*;
 
 public class Collection extends TopLevel{
 	
@@ -115,43 +116,80 @@ public class Collection extends TopLevel{
 		return new Collection(this);
 	}
 	
-	/**
-	 * 
-	 * @param displayId
-	 * @return
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public Collection copy(String displayId) {
-		Collection cloned = (Collection) super.copy(displayId);
-		cloned.updateDisplayId(displayId);
-		return cloned;
+	@Override
+	public Collection copy(String URIprefix, String displayId, String version) {
+		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
+				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
+			Collection cloned = this.deepCopy();
+			cloned.setWasDerivedFrom(this.getIdentity());
+			//cloned.setPersistentIdentity(persistentIdentity);
+			cloned.setDisplayId(displayId);
+			cloned.setVersion(version);
+			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
+			cloned.setIdentity(newIdentity);
+			return cloned;
+		}
+		else {
+			return null; 	
+		}
 	}
 
 	/* (non-Javadoc)
-	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
-	protected void updateDisplayId(String newDisplayId) {
-		super.updateDisplayId(newDisplayId);
-		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {			
-			// TODO Change all of its children's displayIds in their URIs.
+	@Override
+	protected boolean checkDescendantsURIcompliance() {
+		if (!isTopLevelURIcompliant(this.getIdentity())) {
+			return false;
 		}
+		return true;
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#newVersion(java.lang.String)
-	 */
-	public Collection newVersion(String newVersion) {
-		Collection cloned = (Collection) super.copy(newVersion);
-		cloned.updateVersion(newVersion);
-		return cloned;
-	}
+//	/**	
+//	 * @param URIprefix
+//	 * @param displayId
+//	 * @param version
+//	 * @return
+//	 */
+//	public Collection copy(String URIprefix, String displayId, String version) {
+//		Collection cloned = (Collection) super.copy(displayId);
+//		if (cloned.updateCompliantURI(displayId)) {
+//			return cloned;
+//		}
+//		else {
+//			return null;
+//		}
+//		
+//	}
+
+//	/* (non-Javadoc)
+//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+//	 */
+//	protected void updateCompliantURI(String newDisplayId) {
+//		super.updateCompliantURI(newDisplayId);
+//		if (isTopLevelURIcompliant(this.getIdentity())) {			
+//			
+//		}
+//	}
 	
-	/* (non-Javadoc)
-	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
-	 */
-	protected void updateVersion(String newVersion) {
-		super.updateVersion(newVersion);
-		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
-			// TODO Change all of its children's versions in their URIs.
-		}
-	}
+//	/* (non-Javadoc)
+//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#newVersion(java.lang.String)
+//	 */
+//	public Collection newVersion(String newVersion) {
+//		Collection cloned = (Collection) super.copy(newVersion);
+//		cloned.updateVersion(newVersion);
+//		return cloned;
+//	}
+	
+//	/* (non-Javadoc)
+//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+//	 */
+//	protected void updateVersion(String newVersion) {
+//		super.updateVersion(newVersion);
+//		if (isTopLevelURIcompliant(this.getIdentity())) {
+//		}
+//	}
 }

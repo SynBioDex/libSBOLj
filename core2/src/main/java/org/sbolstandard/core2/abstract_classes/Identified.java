@@ -24,15 +24,11 @@ public abstract class Identified {
 	private URI persistentIdentity;
 
 	private String version;
-	//	private Integer majorVersion;
-	//	private Integer minorVersion;
-
 	private List<Annotation> annotations;
 	private URI wasDerivedFrom;
 
 	public Identified(URI identity) {
 		setIdentity(identity);
-		//this.timeStamp = new Timestamp(Calendar.getInstance().getTime().getTime());
 		this.annotations = new ArrayList<Annotation>();
 	}
 
@@ -41,7 +37,6 @@ public abstract class Identified {
 	 * @param identified
 	 */
 	protected Identified(Identified identified) {
-		//this.setIdentity(URI.create(identified.getIdentity().toString()));
 		this.setIdentity(identified.getIdentity());
 		if (identified.isSetAnnotations()) {
 			List<Annotation> clonedAnnotations = new ArrayList<Annotation>();

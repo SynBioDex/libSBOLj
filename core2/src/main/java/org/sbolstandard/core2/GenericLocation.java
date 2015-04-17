@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import static org.sbolstandard.core2.util.UriCompliance.*;
 
 import org.sbolstandard.core2.Sbol2Terms.Orientation;
 import org.sbolstandard.core2.abstract_classes.Location;
@@ -44,7 +45,7 @@ public class GenericLocation extends Location{
 	 */
 	public URI getOrientationURI() {
 		if (orientation != null) {
-			if (orientation.equals(OrientationType.INlINE)) {
+			if (orientation.equals(OrientationType.INLINE)) {
 				return Orientation.inline;
 			}
 			else if (orientation.equals(OrientationType.REVERSECOMPLEMENT)) {
@@ -74,7 +75,7 @@ public class GenericLocation extends Location{
 	 */
 	public void setOrientation(URI orientation) {
 		if (orientation.equals(Orientation.inline)) {
-			this.orientation = OrientationType.INlINE;
+			this.orientation = OrientationType.INLINE;
 		} else if (orientation.equals(Orientation.reverseComplement)) {
 			this.orientation = OrientationType.REVERSECOMPLEMENT;
 		}
@@ -116,6 +117,24 @@ public class GenericLocation extends Location{
 	@Override
 	protected GenericLocation deepCopy() {
 		return new GenericLocation(this);
+	}
+
+	/**
+	 * Assume this GenericLocation object has compliant URI, and all given parameters have compliant forms.
+	 * This method is called by {@link SequenceAnnotation#updateCompliantURI(String, String, String)}.
+	 * @param URIprefix
+	 * @param grandparentDisplayId
+	 * @param parentDisplayId
+	 * @param version
+	 */
+	void updateCompliantURI(String URIprefix, String grandparentDisplayId,
+			String parentDisplayId, String version) {
+		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 2); // 2 indicates that this object is a grandchild of a top-level object.
+		URI newIdentity = URI.create(URIprefix + '/' + grandparentDisplayId + '/' + parentDisplayId + '/' 
+				+ thisObjDisplayId + '/' + version);
+		// TODO: need to set wasDerivedFrom here?
+		this.setWasDerivedFrom(this.getIdentity());
+		this.setIdentity(newIdentity);
 	}
 
 }

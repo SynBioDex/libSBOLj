@@ -12,7 +12,7 @@ import org.sbolstandard.core2.Sbol2Terms.Orientation;
  */
 
 public enum OrientationType {
-	INlINE("inline"), 
+	INLINE("inline"), 
 	REVERSECOMPLEMENT("reverseComplement");
 	private final String orientationType;
 
@@ -40,7 +40,7 @@ public enum OrientationType {
 	 */
 	public static OrientationType convertToOrientationType(URI orientation) {
 		if (orientation.equals(Orientation.inline)) {
-			return OrientationType.INlINE;
+			return OrientationType.INLINE;
 		} 
 		else if (orientation.equals(Orientation.reverseComplement)) {
 			return OrientationType.REVERSECOMPLEMENT;
@@ -57,7 +57,7 @@ public enum OrientationType {
 	 */
 	public static URI convertToURI(OrientationType orientation) {
 		if (orientation != null) {
-			if (orientation.equals(OrientationType.INlINE)) {
+			if (orientation.equals(OrientationType.INLINE)) {
 				return Orientation.inline;
 			}
 			else if (orientation.equals(OrientationType.REVERSECOMPLEMENT)) {

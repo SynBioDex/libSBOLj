@@ -214,13 +214,13 @@ public abstract class ComponentInstance extends Documented {
 			// Check if URI exists in the mapsTos map.
 			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
 				mapsTos.put(mapsTo.getIdentity(), mapsTo);
-				MapsTo latestSubComponent = mapsTos.get(persistentId);
-				if (latestSubComponent == null) {
+				MapsTo latestMapsTo = mapsTos.get(persistentId);
+				if (latestMapsTo == null) {
 					mapsTos.put(persistentId, mapsTo);
 				}
 				else {						
 					if (isFirstVersionNewer(extractVersion(mapsTo.getIdentity()), 
-							extractVersion(latestSubComponent.getIdentity()))) {								
+							extractVersion(latestMapsTo.getIdentity()))) {								
 						mapsTos.put(persistentId, mapsTo);
 					}
 				}

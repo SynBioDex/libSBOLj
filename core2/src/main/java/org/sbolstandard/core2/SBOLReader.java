@@ -1595,7 +1595,7 @@ public class SBOLReader
 		if (displayId != null)
 			moduleDefinition.setDisplayId(displayId);
 		if (!functionalComponents.isEmpty())
-			moduleDefinition.setComponents(functionalComponents);
+			moduleDefinition.setFunctionalComponents(functionalComponents);
 		if (!interactions.isEmpty())
 			moduleDefinition.setInteractions(interactions);
 		if (!models.isEmpty())

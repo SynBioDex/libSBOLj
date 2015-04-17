@@ -2,6 +2,8 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+import static org.sbolstandard.core2.util.UriCompliance.*;
+
 import javax.xml.namespace.QName;
 
 import org.sbolstandard.core2.abstract_classes.TopLevel;
@@ -58,25 +60,56 @@ public class GenericTopLevel extends TopLevel{
 		return new GenericTopLevel(this);
 	}
 	
-	/**
-	 * @param newDisplayId
-	 * @return
+//	/**
+//	 * @param newDisplayId
+//	 * @return
+//	 */
+//	public GenericTopLevel copy(String newDisplayId) {
+//		GenericTopLevel cloned = (GenericTopLevel) this.deepCopy();		
+//		cloned.updateCompliantURI(newDisplayId);
+//		return cloned;
+//	}
+//	
+//	/**
+//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
+//	 * @param newVersion
+//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+//	 */
+//	public GenericTopLevel newVersion(String newVersion) {
+//		GenericTopLevel cloned = (GenericTopLevel) super.newVersion(newVersion);		
+//		cloned.updateVersion(newVersion);
+//		return cloned;
+//	}
+
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public GenericTopLevel copy(String newDisplayId) {
-		GenericTopLevel cloned = (GenericTopLevel) this.deepCopy();		
-		cloned.updateDisplayId(newDisplayId);
-		return cloned;
+	@Override
+	public GenericTopLevel copy(String URIprefix, String displayId, String version) {
+		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
+				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
+			GenericTopLevel cloned = this.deepCopy();
+			cloned.setWasDerivedFrom(this.getIdentity());		
+			cloned.setDisplayId(displayId);
+			cloned.setVersion(version);
+			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
+			cloned.setIdentity(newIdentity);
+			return cloned;
+		}
+		else {
+			return null; 	
+		}		
 	}
-	
-	/**
-	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
-	 * @param newVersion
-	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
-	public GenericTopLevel newVersion(String newVersion) {
-		GenericTopLevel cloned = (GenericTopLevel) super.newVersion(newVersion);		
-		cloned.updateVersion(newVersion);
-		return cloned;
+	@Override
+	protected boolean checkDescendantsURIcompliance() {
+		if (!isTopLevelURIcompliant(this.getIdentity())) {
+			return false;
+		}
+		return true;
 	}
 
 }
