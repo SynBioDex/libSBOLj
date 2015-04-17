@@ -1234,7 +1234,7 @@ public class SBOLReader
 		URI wasDerivedFrom 	   = null;
 
 		List<Annotation> annotations = new ArrayList<Annotation>();
-		List<MapsTo> mappings 		 = new ArrayList<MapsTo>();
+		List<MapsTo> mapsTo 		 = new ArrayList<MapsTo>();
 
 		for (NamedProperty<QName> namedProperty : subComponents.getProperties())
 		{
@@ -1258,7 +1258,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapsTo))
 			{
-				mappings.add(parseMapping((NestedDocument<QName>) namedProperty.getValue()));
+				mapsTo.add(parseMapsTo((NestedDocument<QName>) namedProperty.getValue()));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentInstance.hasComponentDefinition))
 			{
@@ -1291,8 +1291,8 @@ public class SBOLReader
 			c.setDisplayId(displayId);
 		if (access != null)
 			c.setAccess(access);
-		if (!mappings.isEmpty())
-			c.setMapsTo(mappings);
+		if (!mapsTo.isEmpty())
+			c.setMapsTo(mapsTo);
 		if (subComponentURI != null)
 			c.setDefinition(subComponentURI);
 		if (name != null)
@@ -1641,7 +1641,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapsTo))
 			{
-				mappings.add(parseMapping((NestedDocument<QName>) namedProperty.getValue()));
+				mappings.add(parseMapsTo((NestedDocument<QName>) namedProperty.getValue()));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasDefinition))
 			{
@@ -1685,7 +1685,7 @@ public class SBOLReader
 		return submodule;
 	}
 
-	private static MapsTo parseMapping(NestedDocument<QName> mappings)
+	private static MapsTo parseMapsTo(NestedDocument<QName> mappings)
 	{
 		URI persistentIdentity    = null;
 		String version 	  	 	  = null;
@@ -1905,7 +1905,7 @@ public class SBOLReader
 			}
 			if (f.getName().equals(Sbol2Terms.ComponentInstance.hasMapsTo))
 			{
-				mappings.add(parseMapping((NestedDocument<QName>) f.getValue()));
+				mappings.add(parseMapsTo((NestedDocument<QName>) f.getValue()));
 			}
 			else if (f.getName().equals(Sbol2Terms.ComponentInstance.hasComponentDefinition))
 			{
