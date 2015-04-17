@@ -13,7 +13,7 @@ import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 import static org.sbolstandard.core2.util.UriCompliance.*;
 
-import org.sbolstandard.core2.util.Version;
+import static org.sbolstandard.core2.util.Version.*;
 
 /**
  * 
@@ -294,7 +294,7 @@ public class ComponentDefinition extends TopLevel {
 						sequenceAnnotations.put(persistentId, sequenceAnnotation);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(extractVersion(sequenceAnnotation.getIdentity()), 
+						if (isFirstVersionNewer(extractVersion(sequenceAnnotation.getIdentity()), 
 								extractVersion(latestSequenceAnnotation.getIdentity()))) {
 							sequenceAnnotations.put(persistentId, sequenceAnnotation);
 						}
@@ -440,7 +440,7 @@ public class ComponentDefinition extends TopLevel {
 						components.put(persistentId, subComponent);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(extractVersion(subComponent.getIdentity()), 
+						if (isFirstVersionNewer(extractVersion(subComponent.getIdentity()), 
 								extractVersion(latestSubComponent.getIdentity()))) {								
 							components.put(persistentId, subComponent);
 						}
@@ -586,7 +586,7 @@ public class ComponentDefinition extends TopLevel {
 						sequenceConstraints.put(persistentId, sequenceConstraint);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(extractVersion(sequenceConstraint.getIdentity()), 
+						if (isFirstVersionNewer(extractVersion(sequenceConstraint.getIdentity()), 
 								extractVersion(latestSequenceConstraint.getIdentity()))) {
 							sequenceConstraints.put(persistentId, sequenceConstraint);
 						}

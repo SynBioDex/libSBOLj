@@ -159,13 +159,13 @@ public class Interaction extends Documented {
 			// Check if URI exists in the participations map.
 			if (!participations.containsKey(participation.getIdentity())) {
 				participations.put(participation.getIdentity(), participation);
-				Participation latestSubComponent = participations.get(persistentId);
-				if (latestSubComponent == null) {
+				Participation latestParticipation = participations.get(persistentId);
+				if (latestParticipation == null) {
 					participations.put(persistentId, participation);
 				}
 				else {						
 					if (isFirstVersionNewer(extractVersion(participation.getIdentity()), 
-							extractVersion(latestSubComponent.getIdentity()))) {								
+							extractVersion(latestParticipation.getIdentity()))) {								
 						participations.put(persistentId, participation);
 					}
 				}

@@ -13,7 +13,7 @@ import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 import static org.sbolstandard.core2.util.UriCompliance.*;
 
-import org.sbolstandard.core2.util.Version;
+import static org.sbolstandard.core2.util.Version.*;
 
 /**
  * @author Zhen Zhang
@@ -171,25 +171,25 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Adds the specified instance to the list of subModules. 
-	 * @param subModule
+	 * @param newModule
 	 * @return 
 	 */
-	public boolean addModule(Module subModule) {
-		if (isChildURIcompliant(this.getIdentity(), subModule.getIdentity())) {
+	public boolean addModule(Module newModule) {
+		if (isChildURIcompliant(this.getIdentity(), newModule.getIdentity())) {
 			// Check if persistent identity exists in other maps.
-			URI persistentId = URI.create(extractPersistentId(subModule.getIdentity()));
+			URI persistentId = URI.create(extractPersistentId(newModule.getIdentity()));
 			if (!keyExistsInOtherMaps(modules.keySet(), persistentId)) {
 				// Check if URI exists in the subModules map.
-				if (!modules.containsKey(subModule.getIdentity())) {
-					modules.put(subModule.getIdentity(), subModule);
+				if (!modules.containsKey(newModule.getIdentity())) {
+					modules.put(newModule.getIdentity(), newModule);
 					Module latestSubModule = modules.get(persistentId);
 					if (latestSubModule == null) {
-						modules.put(persistentId, subModule);
+						modules.put(persistentId, newModule);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(extractVersion(subModule.getIdentity()),
+						if (isFirstVersionNewer(extractVersion(newModule.getIdentity()),
 								extractVersion(latestSubModule.getIdentity()))) {
-							modules.put(persistentId, subModule);
+							modules.put(persistentId, newModule);
 						}
 					}
 					return true;
@@ -201,9 +201,9 @@ public class ModuleDefinition extends TopLevel {
 				return false;
 		}
 		else { // Only check if subModule's URI exists in all maps.
-			if (!keyExistsInOtherMaps(modules.keySet(), subModule.getIdentity())) {
-				if (!modules.containsKey(subModule.getIdentity())) {
-					modules.put(subModule.getIdentity(), subModule);					
+			if (!keyExistsInOtherMaps(modules.keySet(), newModule.getIdentity())) {
+				if (!modules.containsKey(newModule.getIdentity())) {
+					modules.put(newModule.getIdentity(), newModule);					
 					return true;
 				}
 				else // key exists in subModules map
@@ -325,7 +325,7 @@ public class ModuleDefinition extends TopLevel {
 						interactions.put(persistentId, interaction);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(extractVersion(interaction.getIdentity()),
+						if (isFirstVersionNewer(extractVersion(interaction.getIdentity()),
 								extractVersion(latestInteraction.getIdentity()))) {
 							interactions.put(persistentId, interaction);
 						}
@@ -443,24 +443,24 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Adds the specified instance to the list of components.
-	 * @param component
+	 * @param functionalComponent
 	 */
-	public boolean addFunctionalComponent(FunctionalComponent component) {
-		if (isChildURIcompliant(this.getIdentity(), component.getIdentity())) {
+	public boolean addFunctionalComponent(FunctionalComponent functionalComponent) {
+		if (isChildURIcompliant(this.getIdentity(), functionalComponent.getIdentity())) {
 			// Check if persistent identity exists in other maps.
-			URI persistentId = URI.create(extractPersistentId(component.getIdentity()));
+			URI persistentId = URI.create(extractPersistentId(functionalComponent.getIdentity()));
 			if (!keyExistsInOtherMaps(functionalComponents.keySet(), persistentId)) {
 				// Check if URI exists in the components map.
-				if (!functionalComponents.containsKey(component.getIdentity())) {
-					functionalComponents.put(component.getIdentity(), component);
+				if (!functionalComponents.containsKey(functionalComponent.getIdentity())) {
+					functionalComponents.put(functionalComponent.getIdentity(), functionalComponent);
 					FunctionalComponent latestFunctionalComponent = functionalComponents.get(persistentId);
 					if (latestFunctionalComponent == null) {
-						functionalComponents.put(component.getPersistentIdentity(), component);
+						functionalComponents.put(persistentId, functionalComponent);
 					}
 					else {						
-						if (Version.isFirstVersionNewer(extractVersion(component.getIdentity()),
+						if (isFirstVersionNewer(extractVersion(functionalComponent.getIdentity()),
 								extractVersion(latestFunctionalComponent.getIdentity()))) {
-							functionalComponents.put(component.getPersistentIdentity(), component);
+							functionalComponents.put(persistentId, functionalComponent);
 						}
 					}
 					return true;
@@ -472,9 +472,9 @@ public class ModuleDefinition extends TopLevel {
 				return false;
 		}
 		else { // Only check if component's URI exists in all maps.
-			if (!keyExistsInOtherMaps(functionalComponents.keySet(), component.getIdentity())) {
-				if (!functionalComponents.containsKey(component.getIdentity())) {
-					functionalComponents.put(component.getIdentity(), component);					
+			if (!keyExistsInOtherMaps(functionalComponents.keySet(), functionalComponent.getIdentity())) {
+				if (!functionalComponents.containsKey(functionalComponent.getIdentity())) {
+					functionalComponents.put(functionalComponent.getIdentity(), functionalComponent);					
 					return true;
 				}
 				else // key exists in components map

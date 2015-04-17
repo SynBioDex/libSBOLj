@@ -15,7 +15,7 @@ import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 import static org.sbolstandard.core2.util.UriCompliance.*;
 
-import org.sbolstandard.core2.util.Version;
+import static org.sbolstandard.core2.util.Version.*;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 
@@ -78,8 +78,12 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition createModuleDefinition(URI identity, Set<URI> roles) {
 		ModuleDefinition newModule = new ModuleDefinition(identity, roles);
-		addModuleDefinition(newModule);
-		return newModule;
+		if (addModuleDefinition(newModule)) {
+			return newModule;	
+		}
+		else {
+			return null;
+		}
 	}
 
 	/**
@@ -89,19 +93,22 @@ public class SBOLDocument {
 	 */
 	public boolean addModuleDefinition(ModuleDefinition newModuleDefinition) {
 		if (isTopLevelURIcompliant(newModuleDefinition.getIdentity())) {
+			URI persistentId = URI.create(extractPersistentId(newModuleDefinition.getIdentity()));
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
-			if (!keyExistsInOtherMaps(moduleDefinitions.keySet(), newModuleDefinition.getPersistentIdentity())) {
+			if (!keyExistsInOtherMaps(moduleDefinitions.keySet(), persistentId)) {
 				// Check if URI exists in the moduleDefinitions map.
 				if (!moduleDefinitions.containsKey(newModuleDefinition.getIdentity())) {
 					moduleDefinitions.put(newModuleDefinition.getIdentity(), newModuleDefinition);
-					ModuleDefinition latestModuleDefinition = moduleDefinitions.get(newModuleDefinition.getPersistentIdentity());
+					ModuleDefinition latestModuleDefinition = moduleDefinitions.get(persistentId);
 					if (latestModuleDefinition == null) {
-						moduleDefinitions.put(newModuleDefinition.getPersistentIdentity(), newModuleDefinition);
+						moduleDefinitions.put(persistentId, newModuleDefinition);
 					}
 					else {
-						if (Version.isFirstVersionNewer(newModuleDefinition.getVersion(), latestModuleDefinition.getVersion())) {
-							moduleDefinitions.put(newModuleDefinition.getPersistentIdentity(), newModuleDefinition);
+						if (isFirstVersionNewer(
+								extractVersion(newModuleDefinition.getIdentity()),
+								extractVersion(latestModuleDefinition.getIdentity()))){
+							moduleDefinitions.put(persistentId, newModuleDefinition);
 						}
 					}
 					return true;
@@ -183,8 +190,11 @@ public class SBOLDocument {
 	 */
 	public Collection createCollection(URI identity) {
 		Collection newCollection = new Collection(identity);
-		addCollection(newCollection);
-		return newCollection;
+		if (addCollection(newCollection)) {
+			return newCollection;
+		}
+		else
+			return null;
 	}
 	
 	/**
@@ -213,22 +223,21 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addCollection(Collection newCollection) {
-		//if (newCollection.isSetPersistentIdentity() && newCollection.isSetVersion()) {
-		//if (TopLevel.isURIcompliant(newCollection.getIdentity())) {
-		if (isTopLevelURIcompliant(newCollection.getIdentity())) {		
-			// Compliant URI should come in here.
+		if (isTopLevelURIcompliant(newCollection.getIdentity())) {	
+			URI persistentId = URI.create(extractPersistentId(newCollection.getIdentity()));
 			// Check if persistent identity exists in other maps.
-			if (!keyExistsInOtherMaps(collections.keySet(), newCollection.getPersistentIdentity())) {
+			if (!keyExistsInOtherMaps(collections.keySet(), persistentId)) {
 				// Check if URI exists in the collections map.
 				if (!collections.containsKey(newCollection.getIdentity())) {
 					collections.put(newCollection.getIdentity(), newCollection);
-					Collection latestCollection = collections.get(newCollection.getPersistentIdentity());
+					Collection latestCollection = collections.get(persistentId);
 					if (latestCollection == null) {
-						collections.put(newCollection.getPersistentIdentity(), newCollection);
+						collections.put(persistentId, newCollection);
 					}
 					else {
-						if (Version.isFirstVersionNewer(newCollection.getVersion(), latestCollection.getVersion())) {
-							collections.put(newCollection.getPersistentIdentity(), newCollection);
+						if (isFirstVersionNewer(extractVersion(newCollection.getIdentity()),
+								extractVersion(latestCollection.getIdentity()))) {
+							collections.put(persistentId, newCollection);
 						}
 					}
 					return true;
@@ -342,8 +351,12 @@ public class SBOLDocument {
 	 */
 	public Model createModel(URI identity, URI source, URI language, URI framework, Set<URI> roles) {
 		Model newModel = new Model(identity, source, language, framework, roles);
-		addModel(newModel);
-		return newModel;
+		if (addModel(newModel)) {
+			return newModel;	
+		}
+		else {
+			return null;
+		}
 	}
 
 	/**
@@ -352,20 +365,23 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addModel(Model newModel) {
-		if (isTopLevelURIcompliant(newModel.getIdentity())) {			
+		if (isTopLevelURIcompliant(newModel.getIdentity())) {
+			URI persistentId = URI.create(extractPersistentId(newModel.getIdentity()));
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
-			if (!keyExistsInOtherMaps(models.keySet(), newModel.getPersistentIdentity())) {
+			if (!keyExistsInOtherMaps(models.keySet(), persistentId)) {
 				// Check if URI exists in the models map.
 				if (!models.containsKey(newModel.getIdentity())) {
 					models.put(newModel.getIdentity(), newModel);
-					Model latestModel = models.get(newModel.getPersistentIdentity());
+					Model latestModel = models.get(persistentId);
 					if (latestModel == null) {
-						models.put(newModel.getPersistentIdentity(), newModel);
+						models.put(persistentId, newModel);
 					}
 					else {
-						if (Version.isFirstVersionNewer(newModel.getVersion(), latestModel.getVersion())) {
-							models.put(newModel.getPersistentIdentity(), newModel);
+						if (isFirstVersionNewer(
+								extractVersion(newModel.getIdentity()),
+								extractVersion(latestModel.getIdentity()))){
+							models.put(persistentId, newModel);
 						}
 					}
 					return true;
@@ -449,8 +465,11 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition createComponentDefinition(URI identity, Set<URI> type, Set<URI> roles) {
 		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, type, roles);
-		addComponentDefinition(newComponentDefinition);
-		return newComponentDefinition;
+		if (addComponentDefinition(newComponentDefinition)) {
+			return newComponentDefinition;
+		}
+		else 
+			return null;
 	}
 
 	/**
@@ -483,19 +502,21 @@ public class SBOLDocument {
 	 */
 	public boolean addComponentDefinition(ComponentDefinition newComponentDefinition) {		
 		if (isTopLevelURIcompliant(newComponentDefinition.getIdentity())) {
-			// Compliant URI should come in here.
+			URI persistentId = URI.create(extractPersistentId(newComponentDefinition.getIdentity()));
 			// Check if persistent identity exists in other maps.
-			if (!keyExistsInOtherMaps(componentDefinitions.keySet(), newComponentDefinition.getPersistentIdentity())) {
-				// Check if URI exists in the componentDefinitions map.
+			if (!keyExistsInOtherMaps(componentDefinitions.keySet(), persistentId)) {
+				// Check if URI exists in the componentDefinitions map.	
 				if (!componentDefinitions.containsKey(newComponentDefinition.getIdentity())) {
 					componentDefinitions.put(newComponentDefinition.getIdentity(), newComponentDefinition);
-					ComponentDefinition latestComponentDefinition = componentDefinitions.get(newComponentDefinition.getPersistentIdentity());
+					ComponentDefinition latestComponentDefinition = componentDefinitions.get(persistentId);
 					if (latestComponentDefinition == null) {
-						componentDefinitions.put(newComponentDefinition.getPersistentIdentity(), newComponentDefinition);
+						componentDefinitions.put(persistentId, newComponentDefinition);
 					}
 					else {
-						if (Version.isFirstVersionNewer(newComponentDefinition.getVersion(), latestComponentDefinition.getVersion())) {
-							componentDefinitions.put(newComponentDefinition.getPersistentIdentity(), newComponentDefinition);
+						if (isFirstVersionNewer(
+								extractVersion(newComponentDefinition.getIdentity()),
+								extractVersion(latestComponentDefinition.getIdentity()))) {
+							componentDefinitions.put(persistentId, newComponentDefinition);
 						}
 					}
 					return true;
@@ -803,27 +824,23 @@ public class SBOLDocument {
 	 * @return <code>true</code> if the specified sequence is successfully added.
 	 */
 	public boolean addSequence(Sequence newSequence) {
-		if (isTopLevelURIcompliant(newSequence.getIdentity())) {		
-			// Compliant URI should come in here.
+		if (isTopLevelURIcompliant(newSequence.getIdentity())) {
+			URI persistentId = URI.create(extractPersistentId(newSequence.getIdentity()));
 			// Check if persistent identity exists in other maps.
-			if (!keyExistsInOtherMaps(sequences.keySet(), newSequence.getPersistentIdentity())) {
+			if (!keyExistsInOtherMaps(sequences.keySet(), persistentId)) {
 				// Check if URI exists in the sequences map.
 				if (!sequences.containsKey(newSequence.getIdentity())) {
 					sequences.put(newSequence.getIdentity(), newSequence);
-					Sequence latestSequence = sequences.get(newSequence.getPersistentIdentity());
+					Sequence latestSequence = sequences.get(persistentId);
 					if (latestSequence == null) {
-						sequences.put(newSequence.getPersistentIdentity(), newSequence);
+						sequences.put(persistentId, newSequence);
 					}
 					else {
-						// TODO Extract the version of latestCollection and compare according to Maven's versioning scheme.
-						//						if (latestSequence.getMajorVersion() < sequence.getMajorVersion()) {
-						//							sequences.put(sequence.getPersistentIdentity(), sequence);
-						//						}
-						//						else if (latestSequence.getMajorVersion() == sequence.getMajorVersion()){
-						//							if (latestSequence.getMinorVersion() < sequence.getMinorVersion()) {
-						//								sequences.put(sequence.getPersistentIdentity(), sequence);
-						//							}
-						//						}
+						if (isFirstVersionNewer(
+								extractVersion(newSequence.getIdentity()),
+								extractVersion(latestSequence.getIdentity()))){
+							sequences.put(persistentId, newSequence);
+						}
 					}
 					return true;
 				}
@@ -928,8 +945,14 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
-		addGenericTopLevel(newGenericTopLevel);
-		return newGenericTopLevel;
+		if (addGenericTopLevel(newGenericTopLevel)) {
+			return newGenericTopLevel;			
+		}
+		else {
+			return null;
+		}
+			
+
 	}
 
 	/**
@@ -938,19 +961,22 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addGenericTopLevel(GenericTopLevel newGenericTopLevel) {
-		if (isTopLevelURIcompliant(newGenericTopLevel.getIdentity())) {			
+		if (isTopLevelURIcompliant(newGenericTopLevel.getIdentity())) {
+			URI persistentId = URI.create(extractPersistentId(newGenericTopLevel.getIdentity()));
 			// Check if persistent identity exists in other maps.
-			if (!keyExistsInOtherMaps(genericTopLevels.keySet(), newGenericTopLevel.getPersistentIdentity())) {
+			if (!keyExistsInOtherMaps(genericTopLevels.keySet(), persistentId)) {
 				// Check if URI exists in the genericTopLevels map.
 				if (!genericTopLevels.containsKey(newGenericTopLevel.getIdentity())) {
 					genericTopLevels.put(newGenericTopLevel.getIdentity(), newGenericTopLevel);
-					GenericTopLevel latestGenericTopLevel = genericTopLevels.get(newGenericTopLevel.getPersistentIdentity());
+					GenericTopLevel latestGenericTopLevel = genericTopLevels.get(persistentId);
 					if (latestGenericTopLevel == null) {
-						genericTopLevels.put(newGenericTopLevel.getPersistentIdentity(), newGenericTopLevel);
+						genericTopLevels.put(persistentId, newGenericTopLevel);
 					}
 					else {
-						if (Version.isFirstVersionNewer(newGenericTopLevel.getVersion(), latestGenericTopLevel.getVersion())) {
-							genericTopLevels.put(newGenericTopLevel.getPersistentIdentity(), newGenericTopLevel);
+						if (isFirstVersionNewer(
+								extractVersion(newGenericTopLevel.getIdentity()),
+								extractVersion(latestGenericTopLevel.getIdentity()))){
+							genericTopLevels.put(persistentId, newGenericTopLevel);
 						}
 					}
 					return true;

@@ -90,13 +90,13 @@ public class MultiRange extends Location{
 			// Check if URI exists in the ranges map.
 			if (!ranges.containsKey(range.getIdentity())) {
 				ranges.put(range.getIdentity(), range);
-				Range latestSubComponent = ranges.get(persistentId);
-				if (latestSubComponent == null) {
+				Range latestRange = ranges.get(persistentId);
+				if (latestRange == null) {
 					ranges.put(persistentId, range);
 				}
 				else {						
 					if (isFirstVersionNewer(extractVersion(range.getIdentity()), 
-							extractVersion(latestSubComponent.getIdentity()))) {								
+							extractVersion(latestRange.getIdentity()))) {								
 						ranges.put(persistentId, range);
 					}
 				}
