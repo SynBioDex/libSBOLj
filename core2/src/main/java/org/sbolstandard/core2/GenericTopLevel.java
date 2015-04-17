@@ -2,7 +2,7 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 import javax.xml.namespace.QName;
 

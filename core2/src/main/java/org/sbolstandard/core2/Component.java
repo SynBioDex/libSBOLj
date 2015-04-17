@@ -3,7 +3,7 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 import org.sbolstandard.core2.abstract_classes.ComponentInstance;
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 public class Component extends ComponentInstance{
 

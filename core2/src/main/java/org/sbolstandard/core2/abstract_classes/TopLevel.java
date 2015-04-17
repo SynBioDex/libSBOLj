@@ -1,7 +1,7 @@
 package org.sbolstandard.core2.abstract_classes;
 
 import java.net.URI;
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 public abstract class TopLevel extends Documented{
 		

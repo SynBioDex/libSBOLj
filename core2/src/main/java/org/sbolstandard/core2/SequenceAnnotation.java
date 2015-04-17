@@ -1,7 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 import org.sbolstandard.core2.abstract_classes.Documented;
 import org.sbolstandard.core2.abstract_classes.Location;
@@ -216,7 +216,6 @@ public class SequenceAnnotation extends Documented {
 ////				return (SequenceComponent) tmp;
 ////			}
 ////			else {
-////				// TODO Throw proper exception.
 ////				return null;				
 ////			}
 ////		}

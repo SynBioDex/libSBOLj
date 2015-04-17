@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.sbolstandard.core2.abstract_classes.Location;
 
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 import static org.sbolstandard.core2.util.Version.*;
 
 public class MultiRange extends Location{

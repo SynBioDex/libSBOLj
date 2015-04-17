@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.sbolstandard.core2.abstract_classes.Documented;
 
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 import static org.sbolstandard.core2.util.Version.*;
 /**
  * 

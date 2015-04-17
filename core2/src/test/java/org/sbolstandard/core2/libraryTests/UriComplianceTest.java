@@ -1,7 +1,7 @@
 package org.sbolstandard.core2.libraryTests;
 
 import static org.junit.Assert.*;
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 import java.net.URI;
 import org.junit.Test;
