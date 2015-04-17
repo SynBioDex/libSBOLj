@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class UriCompliance {
+public final class URIcompliance {
 			
 	/**
 	 * Extract the persistent identity URI from the given URI.
@@ -83,27 +83,6 @@ public final class UriCompliance {
 		else 
 			return null;
 	}
-	
-//	/**
-//	 * Test if this object's identity URI is compliant with the form ⟨prefix⟩/⟨displayId⟩/⟨version⟩. 
-//	 * The prefix is established by the owner of this top level object. 
-//	 * The owner of a prefix must ensure that the displayIds for their top level SBOL objects are unique under the prefix.
-//	 * Multiple versions of each object can exist, but they must each have a unique version at the end of their URI.
-//	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise. 
-//	 */
-//	public boolean isURIcompliant() {
-//		String URIstr = this.getIdentity().toString();
-//		// TODO: Need MavenVersionPattern or just a versionPattern?
-//		String URIpattern = URIprefixpattern + "/" + displayIDpattern + "/" + versionPattern;
-//		Pattern r = Pattern.compile(URIpattern);
-//		Matcher m = r.matcher(URIstr);
-//		if (m.matches()) {
-//			return true;
-//		}			
-//		else {
-//			return false;
-//		}
-//	}
 	
 	/**
 	 * Test if the given top-level instance's identity URI is compliant with the form ⟨prefix⟩/⟨displayId⟩/⟨version⟩. 
