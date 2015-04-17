@@ -745,17 +745,21 @@ public class writeTester {
 		String description 	   = componentData.get(5);
 
 		ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(identity, type, roles);
-		setCommonTopLevelData(c, identity, persistentIdentity, version, displayId, name, description);
+		if (c==null) {
+			c = SBOL2Doc_test.getComponentDefinition(identity);
+		} else {
+			setCommonTopLevelData(c, identity, persistentIdentity, version, displayId, name, description);
 
-		if(structureData != null)
-			c.setSequence(structureData.getIdentity());
-		if(structureInstantiationData != null)
-		{
-			c.setComponents(structureInstantiationData);
-			if(structureAnnotationData != null && structureConstraintData == null)
-				c.setSequenceAnnotations(structureAnnotationData);
-			else if(structureConstraintData != null)
-				c.setSequenceConstraints(structureConstraintData);
+			if(structureData != null)
+				c.setSequence(structureData.getIdentity());
+			if(structureInstantiationData != null)
+			{
+				c.setComponents(structureInstantiationData);
+				if(structureAnnotationData != null && structureConstraintData == null)
+					c.setSequenceAnnotations(structureAnnotationData);
+				else if(structureConstraintData != null)
+					c.setSequenceConstraints(structureConstraintData);
+			}
 		}
 
 		return c;
@@ -843,8 +847,11 @@ public class writeTester {
 		String name 		   = modeldata.get(4);
 		String description     = modeldata.get(5);
 		Model model = doc.createModel(identity, source, language, framework, roles);
-		setCommonTopLevelData(model, identity, persistentIdentity, version, displayId, name, description);
-
+		if (model==null) {
+			model = doc.getModel(identity);
+		} else {
+			setCommonTopLevelData(model, identity, persistentIdentity, version, displayId, name, description);
+		}
 		return model;
 	}
 
@@ -865,19 +872,22 @@ public class writeTester {
 		String description 	   = module_data.get(5);
 
 		ModuleDefinition m = SBOL2Doc_test.createModuleDefinition(identity, roles);
-		setCommonTopLevelData(m, identity, persistentIdentity, version, displayId, name, description);
-		if(annotations != null)
-			m.setAnnotations(annotations);
+		if (m==null) {
+			m = SBOL2Doc_test.getModuleDefinition(identity);
+		} else {
+			setCommonTopLevelData(m, identity, persistentIdentity, version, displayId, name, description);
+			if(annotations != null)
+				m.setAnnotations(annotations);
 
-		if(functionalInstantiation_data != null)
-			m.setFunctionalComponents(functionalInstantiation_data);
-		if(interactionData != null)
-			m.setInteractions(interactionData);
-		if(moduleInstantiation_data != null)
-			m.setModules(moduleInstantiation_data);
-		if(model_data != null)
-			m.setModels(model_data);
-
+			if(functionalInstantiation_data != null)
+				m.setFunctionalComponents(functionalInstantiation_data);
+			if(interactionData != null)
+				m.setInteractions(interactionData);
+			if(moduleInstantiation_data != null)
+				m.setModules(moduleInstantiation_data);
+			if(model_data != null)
+				m.setModels(model_data);
+		}
 		return m;
 	}
 
