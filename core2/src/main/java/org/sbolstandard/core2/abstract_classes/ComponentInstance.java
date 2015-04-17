@@ -175,8 +175,12 @@ public abstract class ComponentInstance extends Documented {
 	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
-		addMapsTo(mapping);
-		return mapping;
+		if (addMapsTo(mapping)) {
+			return mapping;	
+		}
+		else {
+			return null;
+		}		
 	}
 	
 	public MapsTo createMapsTo(String displayId, String version, RefinementType refinement, URI local, URI remote) {

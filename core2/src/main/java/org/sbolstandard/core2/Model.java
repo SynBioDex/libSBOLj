@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.sbolstandard.core2.abstract_classes.TopLevel;
-import org.sbolstandard.core2.util.UriCompliance;
+
 
 /**
  * @author Zhen Zhang

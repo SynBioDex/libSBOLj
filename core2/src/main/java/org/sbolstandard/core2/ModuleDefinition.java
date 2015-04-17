@@ -144,8 +144,12 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public Module createModule(URI identity, URI moduleDefinitionURI) {
 		Module subModule = new Module(identity, moduleDefinitionURI);
-		addModule(subModule);
-		return subModule;
+		if (addModule(subModule)) {
+			return subModule;	
+		}
+		else {
+			return null;
+		}
 	}
 	
 
@@ -283,8 +287,13 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public Interaction createInteraction(URI identity, Set<URI> type, List<Participation> participations) {
 		Interaction interaction = new Interaction(identity, type, participations);
-		addInteraction(interaction);
-		return interaction;
+		if (addInteraction(interaction)) {
+			return interaction;	
+		}
+		else {
+			return null;
+		}
+		
 	}
 	
 	/**
@@ -423,8 +432,12 @@ public class ModuleDefinition extends TopLevel {
 			URI functionalComponentURI, DirectionType direction) {
 		FunctionalComponent functionalComponent = 
 				new FunctionalComponent(identity, access, functionalComponentURI, direction);
-		addFunctionalComponent(functionalComponent);
-		return functionalComponent;
+		if(addFunctionalComponent(functionalComponent)) {
+			return functionalComponent;	
+		}
+		else {
+			return null;
+		}
 	}
 
 	public FunctionalComponent createFunctionalComponent(String URIprefix, String displayId, String version,  AccessType access, 

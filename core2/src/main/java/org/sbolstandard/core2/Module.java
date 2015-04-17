@@ -81,8 +81,12 @@ public class Module extends Documented {
 	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
-		addMapsTo(mapping);
-		return mapping;
+		if (addMapsTo(mapping)) {
+			return mapping;	
+		}
+		else {
+			return null;
+		}
 	}
 	
 	/**

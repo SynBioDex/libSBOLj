@@ -120,8 +120,12 @@ public class Interaction extends Documented {
 	 */
 	public Participation createParticipation(URI identity, Set<URI> role, URI participant) {
 		Participation participation = new Participation(identity, role, participant);
-		addParticipation(participation);
-		return participation;
+		if (addParticipation(participation)) { 
+			return participation;
+		}
+		else {
+			return null;
+		}
 	}
 	
 	public Participation createParticipation(String displayId, String version, Set<URI> role, URI participant) {
