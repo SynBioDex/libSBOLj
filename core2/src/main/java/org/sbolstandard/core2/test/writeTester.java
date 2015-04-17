@@ -84,7 +84,7 @@ public class writeTester {
 	public static void writeRdfOutputStream()
 	{
 		try {
-			SBOLWriter.writeRdf(SBOL2Doc_test,(System.out));
+			SBOLWriter.writeRDF(SBOL2Doc_test,(System.out));
 		} catch (XMLStreamException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -100,7 +100,7 @@ public class writeTester {
 	public static void writeJsonOutputStream()
 	{
 		try {
-			SBOLWriter.writeJson(SBOL2Doc_test,(System.out));
+			SBOLWriter.writeJSON(SBOL2Doc_test,(System.out));
 		} catch (FactoryConfigurationError e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -126,7 +126,7 @@ public class writeTester {
 	public static void writeRdfString()
 	{
 		try {
-			SBOLWriter.writeRdf(SBOL2Doc_test, rdfString);
+			SBOLWriter.writeRDF(SBOL2Doc_test, rdfString);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -136,7 +136,7 @@ public class writeTester {
 	public static void writeJsonString()
 	{
 		try {
-			SBOLWriter.writeJson(SBOL2Doc_test, JsonString);
+			SBOLWriter.writeJSON(SBOL2Doc_test, JsonString);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -160,7 +160,7 @@ public class writeTester {
 	public static void writeJsonFile()
 	{
 		try {
-			SBOLWriter.writeJson(SBOL2Doc_test, new File(JsonFile));
+			SBOLWriter.writeJSON(SBOL2Doc_test, new File(JsonFile));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -170,7 +170,7 @@ public class writeTester {
 	public static void writeTurtleFile()
 	{
 		try {
-			SBOLWriter.writeJson(SBOL2Doc_test, new File(TurtleFile));
+			SBOLWriter.writeJSON(SBOL2Doc_test, new File(TurtleFile));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -180,7 +180,7 @@ public class writeTester {
 	public static void writeRdfFile()
 	{
 		try {
-			SBOLWriter.writeRdf(SBOL2Doc_test, new File(fileName)); //TODO: rdfFile
+			SBOLWriter.writeRDF(SBOL2Doc_test, new File(fileName)); //TODO: rdfFile
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
