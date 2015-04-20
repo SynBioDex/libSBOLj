@@ -400,22 +400,22 @@ public class UriComplianceTest {
 
 	@Test
 	public void testIsTopLevelURIcompliant1() {
-		assertTrue(isTopLevelURIcompliant(uri1));
+		assertTrue(isURIcompliant(uri1, 0));
 	}
 	
 	@Test
 	public void testIsTopLevelURIcompliant2() {
-		assertFalse(isTopLevelURIcompliant(uri5));
+		assertFalse(isURIcompliant(uri5, 0));
 	}
 	
 	@Test
 	public void testIsTopLevelURIcompliant3() {
-		assertFalse(isTopLevelURIcompliant(uri10));
+		assertFalse(isURIcompliant(uri10, 0));
 	}
 
 	@Test
 	public void testIsTopLevelURIcompliant4() {
-		assertFalse(isTopLevelURIcompliant(uri4));
+		assertFalse(isURIcompliant(uri4, 0));
 	}
 	
 	// TODO: Test isVersionCompliant

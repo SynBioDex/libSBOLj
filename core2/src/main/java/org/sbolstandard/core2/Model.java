@@ -213,7 +213,7 @@ public class Model extends TopLevel {
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		if (!isTopLevelURIcompliant(this.getIdentity())) {
+		if (!isURIcompliant(this.getIdentity(), 0)) {
 			return false;
 		}
 		return true;

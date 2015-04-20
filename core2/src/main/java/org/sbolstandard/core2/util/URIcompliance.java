@@ -85,18 +85,35 @@ public final class URIcompliance {
 	}
 	
 	/**
-	 * Test if the given top-level instance's identity URI is compliant with the form ⟨prefix⟩/⟨displayId⟩/⟨version⟩. 
-	 * The prefix is established by the owner of this top level object. 
-	 * The owner of a prefix must ensure that the displayIds for their top level SBOL objects are unique under the prefix.
-	 * Multiple versions of each object can exist, but they must each have a unique version at the end of their URI.
-	 * @param topLevelObjURI
+	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/){1,4}⟨version⟩. 
+	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on 
+	 * the level of the given object. If the given index is 0, then {@code objURI} is checked as a top-level URI for compliance;
+	 * if the given index is 1, then {@code objURI} is checked as a child of a top-level URI for compliance;
+	 * if the given index is 2, then {@code objURI} is checked as a grand child of a top-level URI for compliance; and
+	 * if the given index is 3, then {@code objURI} is checked as a great grand child of a top-level URI for compliance.
+	 * @param objURI
+	 * @param index
 	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise. 
 	 */
-	 public static final boolean isTopLevelURIcompliant(URI topLevelObjURI) {
-		//return false;		
-		String URIstr = topLevelObjURI.toString();		
-		String URIpattern = URIprefixPattern + "/" + displayIDpattern + "/" + versionPattern;
-		Pattern r = Pattern.compile(URIpattern);
+	 public static final boolean isURIcompliant(URI objURI, int index) {
+		if (index < 0 || index > 3) {
+			// TODO: generate error message
+			return false;
+		}
+		Pattern r;
+		String URIstr = objURI.toString();
+		if (index == 0) {
+			r = Pattern.compile(toplevelURIpattern);	
+		}
+		else if (index == 1) {
+			r = Pattern.compile(childURIpattern);
+		}
+		else if (index == 2) {
+			r = Pattern.compile(grandchildURIpattern);
+		}
+		else { // index == 3
+			r = Pattern.compile(greatGrandchildURIpattern);
+		}
 		Matcher m = r.matcher(URIstr);
 		if (m.matches()) {
 			return true;
@@ -104,7 +121,7 @@ public final class URIcompliance {
 		else {
 			// TODO: Warning: top-level URI is not compliant. 
 			return false;
-		}	
+		}
 	}
 	 
 	 /**
@@ -246,5 +263,11 @@ public final class URIcompliance {
 	// group 4: top-level's grand grand child display ID
 	public static final String genericURIpattern2 = URIprefixPattern + "/((?:" + displayIDpattern + "/){1,4})" + versionPattern;
 	
-
+	public static final String toplevelURIpattern = URIprefixPattern + "/" + displayIDpattern + "/" + versionPattern;
+	
+	public static final String childURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){2}" + versionPattern;
+	
+	public static final String grandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){3}" + versionPattern;
+	
+	public static final String greatGrandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){4}" + versionPattern;
 }

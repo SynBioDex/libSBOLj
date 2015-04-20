@@ -669,7 +669,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateCompliantURI(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	protected boolean checkDescendantsURIcompliance() {
-		if (!isTopLevelURIcompliant(this.getIdentity())) { 	// ComponentDefinition to be copied has non-compliant URI.
+		if (!isURIcompliant(this.getIdentity(), 0)) { 	// ComponentDefinition to be copied has non-compliant URI.
 			return false;
 		}
 		boolean allDescendantsCompliant = true;

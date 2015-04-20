@@ -92,7 +92,7 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addModuleDefinition(ModuleDefinition newModuleDefinition) {
-		if (isTopLevelURIcompliant(newModuleDefinition.getIdentity())) {
+		if (newModuleDefinition.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newModuleDefinition.getIdentity()));
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
@@ -223,7 +223,7 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addCollection(Collection newCollection) {
-		if (isTopLevelURIcompliant(newCollection.getIdentity())) {	
+		if (newCollection.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newCollection.getIdentity()));
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(collections.keySet(), persistentId)) {
@@ -365,7 +365,7 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addModel(Model newModel) {
-		if (isTopLevelURIcompliant(newModel.getIdentity())) {
+		if (newModel.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newModel.getIdentity()));
 			// Compliant URI should come in here.
 			// Check if persistent identity exists in other maps.
@@ -501,7 +501,7 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addComponentDefinition(ComponentDefinition newComponentDefinition) {		
-		if (isTopLevelURIcompliant(newComponentDefinition.getIdentity())) {
+		if (newComponentDefinition.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newComponentDefinition.getIdentity()));
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(componentDefinitions.keySet(), persistentId)) {
@@ -618,14 +618,18 @@ public class SBOLDocument {
 	 * @return the created Sequence instance.
 	 */
 	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) {
-		URI newSequenceURI = URI.create(URIprefix + '/' + displayId + '/' + version);
-		if (isTopLevelURIcompliant(newSequenceURI)) {		
-			return createSequence(newSequenceURI, elements, encoding);
-		}
-		else {
+		if (!isDisplayIdCompliant(displayId)) {
 			return null;
-			// TODO: Generate a warning here?
 		}
+		if (!isVersionCompliant(version)) {
+			return null;
+		}
+		if (defaultURIprefix == null) {
+			// TODO: Error: defaultURIprefix is null. 
+			return null;
+		}
+		URI newSequenceURI = URI.create(defaultURIprefix + '/' + displayId + '/' + version);		
+		return createSequence(newSequenceURI, elements, encoding);
 	}
 	
 	/**
@@ -824,7 +828,7 @@ public class SBOLDocument {
 	 * @return <code>true</code> if the specified sequence is successfully added.
 	 */
 	public boolean addSequence(Sequence newSequence) {
-		if (isTopLevelURIcompliant(newSequence.getIdentity())) {
+		if (newSequence.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newSequence.getIdentity()));
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(sequences.keySet(), persistentId)) {
@@ -961,7 +965,7 @@ public class SBOLDocument {
 	 * @return
 	 */
 	public boolean addGenericTopLevel(GenericTopLevel newGenericTopLevel) {
-		if (isTopLevelURIcompliant(newGenericTopLevel.getIdentity())) {
+		if (newGenericTopLevel.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newGenericTopLevel.getIdentity()));
 			// Check if persistent identity exists in other maps.
 			if (!keyExistsInOtherMaps(genericTopLevels.keySet(), persistentId)) {
