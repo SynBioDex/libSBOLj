@@ -51,7 +51,6 @@ public class Annotation {
 	
 	/**
 	 * Makes a deep copy of this Annotation object. 
-	 * @param displayId
 	 * @return an Annotation object that is the exact copy of this object. 
 	 */
 	public Annotation copy() {

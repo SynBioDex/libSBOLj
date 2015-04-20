@@ -50,10 +50,11 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link Model} instance.
-	 * @param identity
-	 * @param rdfType
-	 * @return {@link Model} instance.
+	 * Create a new {@link ModuleDefinition} object.
+	 * @param displayId
+	 * @param version
+	 * @param roles
+	 * @return the created {@link ModuleDefinition} object.
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version, Set<URI> roles) {
 		if (!isDisplayIdCompliant(displayId)) {
@@ -71,10 +72,10 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a new {@link ModuleDefinition} instance.
+	 * Create a new {@link ModuleDefinition} object.
 	 * @param identity
 	 * @param roles
-	 * @return the {@link ModuleDefinition} instance.
+	 * @return the {@link ModuleDefinition} object.
 	 */
 	public ModuleDefinition createModuleDefinition(URI identity, Set<URI> roles) {
 		ModuleDefinition newModule = new ModuleDefinition(identity, roles);
@@ -87,9 +88,9 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Appends the specified <code>module</code> to the end of the list of modules.
+	 * Appends the specified {@code ModuleDefinition} object to the end of the list of module definitions.
 	 * @param newModuleDefinition
-	 * @return
+	 * @return {@code true} if the {@code newModuleDefinition} is successfully added, {@code false} otherwise. 
 	 */
 	public boolean addModuleDefinition(ModuleDefinition newModuleDefinition) {
 		if (newModuleDefinition.checkDescendantsURIcompliance()) {
@@ -134,26 +135,26 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes the instance matching the specified URI from the list of modules if present.
+	 * Removes the object matching the specified URI from the list of modules if present.
 	 * @param moduleURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public ModuleDefinition removeModuleDefinition(URI moduleURI) {
 		return moduleDefinitions.remove(moduleURI);
 	}
 
 	/**
-	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
 	 * @param moduleURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public ModuleDefinition getModuleDefinition(URI moduleURI) {
 		return moduleDefinitions.get(moduleURI);
 	}
 
 	/**
-	 * Returns the list of <code>Module</code> instances owned by this instance.
-	 * @return the list of <code>Module</code> instances owned by this instance
+	 * Returns the list of <code>Module</code> objects owned by this object.
+	 * @return the list of <code>Module</code> objects owned by this object
 	 */
 	public List<ModuleDefinition> getModuleDefinitions() {
 		List<ModuleDefinition> moduleDefinitions = new ArrayList<ModuleDefinition>();
@@ -163,7 +164,7 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearModuleDefinitions() {
 		Object[] keySetArray = moduleDefinitions.keySet().toArray();
@@ -184,9 +185,9 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link Collection} instance.
+	 * Create a new {@link Collection} object.
 	 * @param identity
-	 * @return {@link Collection} instance.
+	 * @return {@link Collection} object.
 	 */
 	public Collection createCollection(URI identity) {
 		Collection newCollection = new Collection(identity);
@@ -198,9 +199,10 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a new {@link Collection} instance with the default URI prefix. 
-	 * @param identity
-	 * @return {@link Collection} instance.
+	 * Create a new {@link Collection} object with the default URI prefix. 
+	 * @param displayId
+	 * @param version
+	 * @return the created {@link Collection} object.
 	 */
 	public Collection createCollection(String displayId, String version) {
 		if (!isDisplayIdCompliant(displayId)) {
@@ -218,9 +220,9 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Appends the specified <code>collection</code> to the end of the list of collections.
+	 * Appends the specified {@code newCollection} object to the end of the list of collections.
 	 * @param newCollection
-	 * @return
+	 * @return {@code true} if the {@code newCollection} is successfully added, {@code false} otherwise.
 	 */
 	public boolean addCollection(Collection newCollection) {
 		if (newCollection.checkDescendantsURIcompliance()) {
@@ -264,26 +266,26 @@ public class SBOLDocument {
 
 
 	/**
-	 * Removes the instance matching the specified URI from the list of collections if present.
+	 * Removes the object matching the specified URI from the list of collections if present.
 	 * @param collectionURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Collection removeCollection(URI collectionURI) {
 		return collections.remove(collectionURI);
 	}
 
 	/**
-	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
 	 * @param collectionURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Collection getCollection(URI collectionURI) {
 		return collections.get(collectionURI);
 	}
 
 	/**
-	 * Returns the list of <code>Collection</code> instances owned by this instance.
-	 * @return the list of <code>Collection</code> instances owned by this instance
+	 * Returns the list of <code>Collection</code> objects owned by this object.
+	 * @return the list of <code>Collection</code> objects owned by this object
 	 */
 	public List<Collection> getCollections() {
 		//		return (List<Collection>) collections.values();
@@ -293,7 +295,7 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearCollections() {
 		Object[] keySetArray = collections.keySet().toArray();
@@ -314,15 +316,14 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a new {@link Model} instance.
-	 * @param URIprefix
+	 * Create a new {@link Model} object.
 	 * @param displayId
 	 * @param version
 	 * @param source
 	 * @param language
 	 * @param framework
 	 * @param roles
-	 * @return
+	 * @return the created {@link Model} object. 
 	 */
 	public Model createModel(String displayId, String version, 
 			URI source, URI language, URI framework, Set<URI> roles) {
@@ -341,13 +342,13 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link Model} instance.
+	 * Create a new {@link Model} object.
 	 * @param identity
 	 * @param source
 	 * @param language
 	 * @param framework
 	 * @param roles
-	 * @return {@link Model} instance.
+	 * @return {@link Model} object.
 	 */
 	public Model createModel(URI identity, URI source, URI language, URI framework, Set<URI> roles) {
 		Model newModel = new Model(identity, source, language, framework, roles);
@@ -362,7 +363,7 @@ public class SBOLDocument {
 	/**
 	 * Appends the specified <code>model</code> to the end of the list of models.
 	 * @param newModel
-	 * @return
+	 * @return {@code true} if the {@code newModel} is successfully added, {@code false} otherwise.
 	 */
 	public boolean addModel(Model newModel) {
 		if (newModel.checkDescendantsURIcompliance()) {
@@ -407,26 +408,26 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes the instance matching the specified URI from the list of models if present.
+	 * Removes the object matching the specified URI from the list of models if present.
 	 * @param modelURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Model removeModel(URI modelURI) {
 		return models.remove(modelURI);
 	}
 
 	/**
-	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
 	 * @param modelURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Model getModel(URI modelURI) {
 		return models.get(modelURI);
 	}
 
 	/**
-	 * Returns the list of <code>Model</code> instances owned by this instance.
-	 * @return the list of <code>Model</code> instances owned by this instance
+	 * Returns the list of <code>Model</code> objects owned by this object.
+	 * @return the list of <code>Model</code> objects owned by this object
 	 */
 	public List<Model> getModels() {
 		//		return (List<Model>) models.values();
@@ -436,7 +437,7 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearModels() {
 		Object[] keySetArray = models.keySet().toArray();
@@ -457,11 +458,11 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link ComponentDefinition} instance.
+	 * Create a new {@link ComponentDefinition} object.
 	 * @param identity
 	 * @param type
 	 * @param roles
-	 * @return {@link ComponentDefinition} instance.
+	 * @return {@link ComponentDefinition} object.
 	 */
 	public ComponentDefinition createComponentDefinition(URI identity, Set<URI> type, Set<URI> roles) {
 		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, type, roles);
@@ -473,12 +474,12 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link ComponentDefinition} instance with the default URI prefix.
+	 * Create a new {@link ComponentDefinition} object with the default URI prefix.
 	 * @param displayId
 	 * @param version
 	 * @param types
 	 * @param roles
-	 * @return
+	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types, Set<URI> roles) {
 		if (!isDisplayIdCompliant(displayId)) {
@@ -498,7 +499,7 @@ public class SBOLDocument {
 	/**
 	 * Appends the specified element to the end of the list of component definitions.
 	 * @param newComponentDefinition
-	 * @return
+	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
 	 */
 	public boolean addComponentDefinition(ComponentDefinition newComponentDefinition) {		
 		if (newComponentDefinition.checkDescendantsURIcompliance()) {
@@ -543,26 +544,26 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes the instance matching the specified URI from the list of component definitions if present.
+	 * Removes the object matching the specified URI from the list of component definitions if present.
 	 * @param componentDefinitionURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public ComponentDefinition removeComponentDefinition(URI componentDefinitionURI) {
 		return componentDefinitions.remove(componentDefinitionURI);
 	}
 
 	/**
-	 * Returns the instance matching the specified URI from the list of component definitions if present.
+	 * Returns the object matching the specified URI from the list of component definitions if present.
 	 * @param componentDefinitionURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public ComponentDefinition getComponentDefinition(URI componentDefinitionURI) {
 		return componentDefinitions.get(componentDefinitionURI);
 	}
 
 	/**
-	 * Returns the list of <code>ComponentDefinition</code> instances owned by this instance.
-	 * @return the list of <code>ComponentDefinition</code> instances owned by this instance
+	 * Returns the list of <code>ComponentDefinition</code> objects owned by this object.
+	 * @return the list of <code>ComponentDefinition</code> objects owned by this object
 	 */
 	public List<ComponentDefinition> getComponentDefinitions() {
 		//		return (List<Component>) components.values();
@@ -572,7 +573,7 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearComponentDefinitions() {
 		Object[] keySetArray = componentDefinitions.keySet().toArray();
@@ -593,11 +594,11 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link Sequence} instance.
+	 * Create a new {@link Sequence} object.
 	 * @param identity
 	 * @param elements
 	 * @param encoding
-	 * @return {@link Sequence} instance.
+	 * @return {@link Sequence} object.
 	 */
 	public Sequence createSequence(URI identity, String elements, URI encoding) {
 		Sequence newSequence = new Sequence(identity, elements, encoding);
@@ -610,12 +611,12 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link Sequence} instance.
+	 * Create a new {@link Sequence} object.
 	 * @param URIprefix
 	 * @param displayId
 	 * @param elements
 	 * @param encoding
-	 * @return the created Sequence instance.
+	 * @return the created Sequence object.
 	 */
 	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) {
 		if (!isDisplayIdCompliant(displayId)) {
@@ -633,11 +634,11 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a copy of the given top-level instance, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link TopLevel} with the given version, and add it to its corresponding top-level instances list.
+ 	 * Create a copy of the given top-level object, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+	 * {@link Sequence}, or {@link TopLevel} with the given version, and add it to its corresponding top-level objects list.
 	 * @param toplevel
-	 * @param newVersion
-	 * @return {@link TopLevel} instance
+	 * @param newURIprefix
+	 * @return the created {@link TopLevel} object
 	 */
 	public TopLevel createCopyWithURIprefix(TopLevel toplevel, String newURIprefix) {
 		String olddisplayId = extractDisplayId(((Collection) toplevel).getIdentity(), 0);
@@ -646,11 +647,11 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a copy of the given top-level instance, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link TopLevel} with the given version, and add it to its corresponding top-level instances list.
+	 * Create a copy of the given top-level object, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+	 * {@link Sequence}, or {@link TopLevel} with the given version, and add it to its corresponding top-level objects list.
 	 * @param toplevel
 	 * @param newVersion
-	 * @return {@link TopLevel} instance
+	 * @return {@link TopLevel} object
 	 */
 	public TopLevel createCopyWithVersion(TopLevel toplevel, String newVersion) {
 		String oldURIprefix = extractURIprefix(((Collection) toplevel).getIdentity());
@@ -659,11 +660,11 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a copy of the given top-level instance, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link GenericTopLevel} with the given display ID, and add it to its corresponding top-level instances list.
+	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+	 * {@link Sequence}, or {@link GenericTopLevel} with the given display ID, and add it to its corresponding top-level objects list.
 	 * @param toplevel
 	 * @param newDisplayId
-	 * @return {@link TopLevel} instance
+	 * @return {@link TopLevel} object
 	 */
 	public TopLevel createCopyWithDisplayId(TopLevel toplevel, String newDisplayId) {
 		String oldURIprefix = extractURIprefix(toplevel.getIdentity());
@@ -673,11 +674,11 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a copy of the given top-level instance, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix and display ID, and add it to its corresponding top-level instances list.
+	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix and display ID, and add it to its corresponding top-level objects list.
 	 * @param toplevel
 	 * @param newDisplayId
-	 * @return {@link TopLevel} instance
+	 * @return {@link TopLevel} object
 	 */
 	public TopLevel createCopyWithPersistentId(TopLevel toplevel, String newURIprefix, String newDisplayId) {
 		String oldVersion = extractVersion(toplevel.getIdentity());
@@ -686,14 +687,14 @@ public class SBOLDocument {
 	}
 
 //	/**
-//	 * Create an instance of the top-level classes, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-//	 * {@link Sequence}, or {@link TopLevel} with a new display ID, and add it to its corresponding top-level instances list.
+//	 * Create an object of the top-level classes, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+//	 * {@link Sequence}, or {@link TopLevel} with a new display ID, and add it to its corresponding top-level objects list.
 //	 * @param toplevel
 //	 * @param newPrefix
-//	 * @return {@link TopLevel} instance
+//	 * @return {@link TopLevel} object
 //	 */
 //	public TopLevel createCopyWithNewPrefix(TopLevel toplevel, String newPrefix) {
-//		if (toplevel instanceof Collection) {			
+//		if (toplevel objectof Collection) {			
 //			Collection newCollection = ((Collection) toplevel).copy(newPrefix);			
 //			if (addCollection(newCollection)) {
 //				return newCollection;
@@ -702,7 +703,7 @@ public class SBOLDocument {
 //				return null;
 //			}
 //		}
-//		else if (toplevel instanceof ComponentDefinition) {
+//		else if (toplevel objectof ComponentDefinition) {
 //			ComponentDefinition newComponentDefinition = ((ComponentDefinition) toplevel).copy(newPrefix);
 //			if (addComponentDefinition(newComponentDefinition)) {
 //				return newComponentDefinition;
@@ -711,7 +712,7 @@ public class SBOLDocument {
 //				return null;
 //			}
 //		}
-//		else if (toplevel instanceof Model) {
+//		else if (toplevel objectof Model) {
 //			Model newModel = ((Model) toplevel).copy(newPrefix);			
 //			if (addModel(newModel)) {
 //				return newModel;
@@ -720,7 +721,7 @@ public class SBOLDocument {
 //				return null;
 //			}
 //		}
-//		else if (toplevel instanceof ModuleDefinition) {
+//		else if (toplevel objectof ModuleDefinition) {
 //			ModuleDefinition newModuleDefinition = ((ModuleDefinition) toplevel).copy(newPrefix);
 //			if (addModuleDefinition(newModuleDefinition)) {
 //				return newModuleDefinition;
@@ -729,7 +730,7 @@ public class SBOLDocument {
 //				return null;
 //			}
 //		}
-//		else if (toplevel instanceof Sequence) {
+//		else if (toplevel objectof Sequence) {
 //			Sequence newSequence = ((Sequence) toplevel).copy(newPrefix);
 //			if (addSequence(newSequence)) {
 //				return newSequence;
@@ -738,7 +739,7 @@ public class SBOLDocument {
 //				return null;
 //			}
 //		}
-//		else if (toplevel instanceof GenericTopLevel) {
+//		else if (toplevel objectof GenericTopLevel) {
 //			GenericTopLevel newGenericTopLevel = ((GenericTopLevel) toplevel).copy(newPrefix);
 //			if (addGenericTopLevel(newGenericTopLevel)) {
 //				return newGenericTopLevel;
@@ -753,13 +754,13 @@ public class SBOLDocument {
 //	}
 	
 	/**
- 	 * Create a copy of the given top-level instance, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix, display ID, and version. Then add it to its corresponding top-level instances list.
+ 	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix, display ID, and version. Then add it to its corresponding top-level objects list.
 	 * @param toplevel
 	 * @param URIprefix
 	 * @param displayId
 	 * @param version
-	 * @return {@link TopLevel} instance
+	 * @return the copied {@link TopLevel} object
 	 */
 	public TopLevel createCopy(TopLevel toplevel, String URIprefix, String displayId, String version) {
 		if (toplevel instanceof Collection) {			
@@ -869,26 +870,26 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes the instance matching the specified URI from the list of structures if present.
+	 * Removes the object matching the specified URI from the list of structures if present.
 	 * @param sequenceURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Sequence removeSequence(URI sequenceURI) {
 		return sequences.remove(sequenceURI);
 	}
 
 	/**
-	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
 	 * @param sequenceURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Sequence getSequence(URI sequenceURI) {
 		return sequences.get(sequenceURI);
 	}
 
 	/**
-	 * Returns the list of <code>Structure</code> instances owned by this instance.
-	 * @return the list of <code>Structure</code> instances owned by this instance
+	 * Returns the list of <code>Structure</code> objects owned by this object.
+	 * @return the list of <code>Structure</code> objects owned by this object
 	 */
 	public List<Sequence> getSequences() {
 		//		return (List<Structure>) structures.values();
@@ -898,7 +899,7 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearSequences() {
 		Object[] keySetArray = sequences.keySet().toArray();
@@ -919,12 +920,11 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a new {@link GenericTopLevel} instance.
-	 * @param URIprefix
+	 * Create a new {@link GenericTopLevel} object.
 	 * @param displayId
-	 * @param elements
-	 * @param encoding
-	 * @return the created GenericTopLevel instance.
+	 * @param version
+	 * @param rdfType
+	 * @return the created {@link GenericTopLevel} object.
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
 		if (!isDisplayIdCompliant(displayId)) {
@@ -942,10 +942,10 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link GenericTopLevel} instance.
+	 * Create a new {@link GenericTopLevel} object.
 	 * @param identity
 	 * @param rdfType
-	 * @return {@link GenericTopLevel} instance.
+	 * @return {@link GenericTopLevel} object.
 	 */
 	public GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
@@ -960,9 +960,9 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Appends the specified <code>topLevel</code> to the end of the list of topLevels.
+	 * Appends the specified {@code TopLevel} object to the end of the list of topLevels.
 	 * @param newGenericTopLevel
-	 * @return
+	 * @return {@code true} if the {@code newTopLevel} is successfully added, {@code false} otherwise.
 	 */
 	public boolean addGenericTopLevel(GenericTopLevel newGenericTopLevel) {
 		if (newGenericTopLevel.checkDescendantsURIcompliance()) {
@@ -1008,26 +1008,26 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes the instance matching the specified URI from the list of topLevels if present.
+	 * Removes the object matching the specified URI from the list of topLevels if present.
 	 * @param topLevelURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public GenericTopLevel removeGenericTopLevel(URI topLevelURI) {
 		return genericTopLevels.remove(topLevelURI);
 	}
 
 	/**
-	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
 	 * @param topLevelURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public GenericTopLevel getGenericTopLevel(URI topLevelURI) {
 		return genericTopLevels.get(topLevelURI);
 	}
 
 	/**
-	 * Returns the list of <code>GenericTopLevel</code> instances owned by this instance.
-	 * @return the list of <code>GenericTopLevel</code> instances owned by this instance
+	 * Returns the list of <code>GenericTopLevel</code> objects owned by this object.
+	 * @return the list of <code>GenericTopLevel</code> objects owned by this object
 	 */
 	public List<GenericTopLevel> getGenericTopLevels() {
 		//		return (List<GenericTopLevel>) topLevels.values();
@@ -1037,7 +1037,7 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearGenericTopLevels() {
 		Object[] keySetArray = genericTopLevels.keySet().toArray();
@@ -1086,9 +1086,9 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Removes the instance matching the specified URI from the list of nameSpaces if present.
+	 * Removes the object matching the specified URI from the list of nameSpaces if present.
 	 * @param nameSpaceURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public NamespaceBinding removeNamespaceBinding(URI nameSpaceURI) {
 		return nameSpaces.remove(nameSpaceURI);
@@ -1117,9 +1117,9 @@ public class SBOLDocument {
 
 
 	/**
-	 * Returns the instance matching the specified URI from the list of structuralConstraints if present.
+	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
 	 * @param nameSpaceURI
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public NamespaceBinding getNameSpaceBinding(URI nameSpaceURI) {
 		return nameSpaces.get(nameSpaceURI);
