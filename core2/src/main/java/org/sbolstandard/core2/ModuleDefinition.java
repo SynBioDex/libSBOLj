@@ -753,7 +753,8 @@ public class ModuleDefinition extends TopLevel {
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			ModuleDefinition cloned = this.deepCopy();
-			cloned.setWasDerivedFrom(this.getIdentity());		
+			cloned.setWasDerivedFrom(this.getIdentity());
+			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
 			cloned.setDisplayId(displayId);
 			cloned.setVersion(version);
 			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			

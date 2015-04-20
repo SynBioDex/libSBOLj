@@ -128,7 +128,7 @@ public class UriComplianceTest {
 	@Test
 	public void testExtractPersistentId8() {
 		String extractedPersistentId = extractPersistentId(uri10);
-		System.out.println(extractedPersistentId);
+		//System.out.println(extractedPersistentId);
 		assertEquals(uri10PersistIdStr, extractedPersistentId);		
 	}
 	
