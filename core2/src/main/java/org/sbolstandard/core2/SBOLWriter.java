@@ -740,7 +740,7 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			formatCommonIdentifiedData(list, m);
 			if(m.getRefinement() != null)
-				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinement().name()));
+				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinementURI()));
 			if(m.getRemote() != null)
 				list.add(NamedProperty(Sbol2Terms.MapsTo.hasRemote, m.getRemote()));
 			if(m.getLocal() != null)
