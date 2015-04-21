@@ -16,6 +16,7 @@ public final class URIcompliance {
 		String URIstr = objURI.toString();
 		Pattern r = Pattern.compile(genericURIpattern1);
 		Matcher m = r.matcher(URIstr);
+
 		if (m.matches()) {
 			return m.group(1).substring(0, m.group(1).lastIndexOf('/')); // remove the '/' in the end.
 		}
