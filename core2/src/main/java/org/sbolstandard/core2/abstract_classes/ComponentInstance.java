@@ -10,7 +10,7 @@ import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.Sbol2Terms;
 
 import static org.sbolstandard.core2.util.Version.*;
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 
 public abstract class ComponentInstance extends Documented {
@@ -84,6 +84,11 @@ public abstract class ComponentInstance extends Documented {
 		setAccess(access);
 		setDefinition(definition);		
 		this.mapsTos = new HashMap<URI, MapsTo>();
+		if (isURIcompliant(identity, 1)) {
+			this.setVersion(extractVersion(identity));
+			this.setDisplayId(extractDisplayId(identity, 0));
+			this.setPersistentIdentity(URI.create(extractPersistentId(identity)));
+		}
 	}
 	
 	protected ComponentInstance(ComponentInstance component) {
@@ -175,8 +180,12 @@ public abstract class ComponentInstance extends Documented {
 	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
-		addMapsTo(mapping);
-		return mapping;
+		if (addMapsTo(mapping)) {
+			return mapping;	
+		}
+		else {
+			return null;
+		}		
 	}
 	
 	public MapsTo createMapsTo(String displayId, String version, RefinementType refinement, URI local, URI remote) {

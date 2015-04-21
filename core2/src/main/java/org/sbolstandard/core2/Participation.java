@@ -1,7 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 import java.util.HashSet;
 import java.util.Set;
 

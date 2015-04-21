@@ -3,10 +3,8 @@ package org.sbolstandard.core2.abstract_classes;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.xml.namespace.QName;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 import org.sbolstandard.core2.Annotation;
 import org.sbolstandard.core2.Turtle;

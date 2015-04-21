@@ -2,13 +2,13 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.sbolstandard.core2.abstract_classes.TopLevel;
-import org.sbolstandard.core2.util.UriCompliance;
+
 
 /**
  * @author Zhen Zhang
@@ -196,7 +196,8 @@ public class Model extends TopLevel {
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			Model cloned = this.deepCopy();
-			cloned.setWasDerivedFrom(this.getIdentity());		
+			cloned.setWasDerivedFrom(this.getIdentity());	
+			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
 			cloned.setDisplayId(displayId);
 			cloned.setVersion(version);
 			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
@@ -213,7 +214,7 @@ public class Model extends TopLevel {
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		if (!isTopLevelURIcompliant(this.getIdentity())) {
+		if (!isURIcompliant(this.getIdentity(), 0)) {
 			return false;
 		}
 		return true;

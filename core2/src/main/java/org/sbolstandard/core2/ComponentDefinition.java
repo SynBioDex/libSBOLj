@@ -11,7 +11,7 @@ import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.Location;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 import static org.sbolstandard.core2.util.Version.*;
 
@@ -669,7 +669,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateCompliantURI(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	protected boolean checkDescendantsURIcompliance() {
-		if (!isTopLevelURIcompliant(this.getIdentity())) { 	// ComponentDefinition to be copied has non-compliant URI.
+		if (!isURIcompliant(this.getIdentity(), 0)) { 	// ComponentDefinition to be copied has non-compliant URI.
 			return false;
 		}
 		boolean allDescendantsCompliant = true;
@@ -767,7 +767,8 @@ public class ComponentDefinition extends TopLevel {
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			ComponentDefinition cloned = this.deepCopy();
-			cloned.setWasDerivedFrom(this.getIdentity());		
+			cloned.setWasDerivedFrom(this.getIdentity());
+			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
 			cloned.setDisplayId(displayId);
 			cloned.setVersion(version);
 			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			

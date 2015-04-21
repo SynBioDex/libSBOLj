@@ -11,7 +11,7 @@ import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 import static org.sbolstandard.core2.util.Version.*;
 
@@ -144,8 +144,12 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public Module createModule(URI identity, URI moduleDefinitionURI) {
 		Module subModule = new Module(identity, moduleDefinitionURI);
-		addModule(subModule);
-		return subModule;
+		if (addModule(subModule)) {
+			return subModule;	
+		}
+		else {
+			return null;
+		}
 	}
 	
 
@@ -283,8 +287,13 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public Interaction createInteraction(URI identity, Set<URI> type, List<Participation> participations) {
 		Interaction interaction = new Interaction(identity, type, participations);
-		addInteraction(interaction);
-		return interaction;
+		if (addInteraction(interaction)) {
+			return interaction;	
+		}
+		else {
+			return null;
+		}
+		
 	}
 	
 	/**
@@ -423,8 +432,12 @@ public class ModuleDefinition extends TopLevel {
 			URI functionalComponentURI, DirectionType direction) {
 		FunctionalComponent functionalComponent = 
 				new FunctionalComponent(identity, access, functionalComponentURI, direction);
-		addFunctionalComponent(functionalComponent);
-		return functionalComponent;
+		if(addFunctionalComponent(functionalComponent)) {
+			return functionalComponent;	
+		}
+		else {
+			return null;
+		}
 	}
 
 	public FunctionalComponent createFunctionalComponent(String URIprefix, String displayId, String version,  AccessType access, 
@@ -740,7 +753,8 @@ public class ModuleDefinition extends TopLevel {
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			ModuleDefinition cloned = this.deepCopy();
-			cloned.setWasDerivedFrom(this.getIdentity());		
+			cloned.setWasDerivedFrom(this.getIdentity());
+			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
 			cloned.setDisplayId(displayId);
 			cloned.setVersion(version);
 			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
@@ -772,7 +786,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateCompliantURI(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	protected boolean checkDescendantsURIcompliance() {
-		if (!isTopLevelURIcompliant(this.getIdentity())) { 	// ComponentDefinition to be copied has non-compliant URI.
+		if (!isURIcompliant(this.getIdentity(), 0)) { 	// ComponentDefinition to be copied has non-compliant URI.
 			return false;
 		}
 		boolean allDescendantsCompliant = true;

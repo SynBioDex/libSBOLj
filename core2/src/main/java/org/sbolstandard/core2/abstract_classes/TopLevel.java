@@ -1,7 +1,7 @@
 package org.sbolstandard.core2.abstract_classes;
 
 import java.net.URI;
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 public abstract class TopLevel extends Documented{
 		
@@ -12,6 +12,11 @@ public abstract class TopLevel extends Documented{
 
 	public TopLevel(URI identity) {
 		super(identity);
+		if (isURIcompliant(identity, 0)) {
+			this.setVersion(extractVersion(identity));
+			this.setDisplayId(extractDisplayId(identity, 0));
+			this.setPersistentIdentity(URI.create(extractPersistentId(identity)));
+		}
 	}
 
 //	public TopLevel(String authority, String id, String version) {

@@ -2,7 +2,7 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 import javax.xml.namespace.QName;
 
@@ -89,7 +89,8 @@ public class GenericTopLevel extends TopLevel{
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			GenericTopLevel cloned = this.deepCopy();
-			cloned.setWasDerivedFrom(this.getIdentity());		
+			cloned.setWasDerivedFrom(this.getIdentity());
+			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
 			cloned.setDisplayId(displayId);
 			cloned.setVersion(version);
 			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
@@ -106,7 +107,7 @@ public class GenericTopLevel extends TopLevel{
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		if (!isTopLevelURIcompliant(this.getIdentity())) {
+		if (!isURIcompliant(this.getIdentity(), 0)) {
 			return false;
 		}
 		return true;

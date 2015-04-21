@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.sbolstandard.core2.abstract_classes.TopLevel;
 
-import static org.sbolstandard.core2.util.UriCompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 public class Collection extends TopLevel{
 	
@@ -37,7 +37,7 @@ public class Collection extends TopLevel{
 //	}
 	
 	/**
-	 * Adds the specified instance to the list of members. 
+	 * Adds the specified member URI to the list of members.  
 	 * @param memberURI
 	 */
 	public void addMember(URI memberURI) {
@@ -45,7 +45,7 @@ public class Collection extends TopLevel{
 	}
 	
 	/**
-	 * Removes the instance matching the specified URI from the list of members if present.
+	 * Removes the member matching the specified URI from the list of members if present.
 	 * @param memberURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
@@ -55,7 +55,9 @@ public class Collection extends TopLevel{
 	}
 	
 	/**
-	 * Clears the existing list of member instances, then appends all of the elements in the specified collection to the end of this list.
+	 * Clears the existing list of members, then set the members of this object to  
+	 * the specified list of members.
+	 *  	 
 	 * @param members
 	 */
 	public void setMembers(Set<URI> members) {
@@ -63,29 +65,33 @@ public class Collection extends TopLevel{
 	}
 	
 	/**
-	 * Returns the list of member instances referenced by this component.
-	 * @return the list of member instances referenced by this component
+	 * Returns the list of members referenced by this object.
+	 * @return the list of members referenced by this object.
 	 */
 	public Set<URI> getMembers() {
 		return members;
 	}
 	
 	/**
-	 * Returns true if the set <code>members</code> contains the specified element. 
-	 * @return <code>true</code> if this set contains the specified element.
-	 */
+	 * Returns {@code true} if the {@code members} of this {@link Collection} object 
+	 * contains the specified argument. 
+	 * @return {@code true} if the {@code members} of this {@link Collection} object 
+	 * contains the specified argument.  
+ 	 */
 	public boolean containsMember(URI memberURI) {
 		return members.contains(memberURI);
 	}
 
 	/**
-	 * Removes all entries of the list of member instances owned by this instance. 
-	 * The list will be empty after this call returns.
+	 * Removes all of the members of this {@link Collection} object.
 	 */
 	public void clearMembers() {
 		members.clear();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.Documented#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -94,6 +100,9 @@ public class Collection extends TopLevel{
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.Documented#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -111,6 +120,9 @@ public class Collection extends TopLevel{
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#deepCopy()
+	 */
 	@Override
 	protected Collection deepCopy() {
 		return new Collection(this);
@@ -125,7 +137,7 @@ public class Collection extends TopLevel{
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			Collection cloned = this.deepCopy();
 			cloned.setWasDerivedFrom(this.getIdentity());
-			//cloned.setPersistentIdentity(persistentIdentity);
+			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
 			cloned.setDisplayId(displayId);
 			cloned.setVersion(version);
 			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
@@ -142,7 +154,7 @@ public class Collection extends TopLevel{
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		if (!isTopLevelURIcompliant(this.getIdentity())) {
+		if (!isURIcompliant(this.getIdentity(), 0)) {
 			return false;
 		}
 		return true;
