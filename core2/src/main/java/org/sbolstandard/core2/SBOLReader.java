@@ -7,9 +7,6 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -2023,7 +2020,7 @@ public class SBOLReader
 		return sequence;
 	}
 
-	private static Timestamp getTimestamp(String timeStamp)
+	/*private static Timestamp getTimestamp(String timeStamp)
 	{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
 		java.util.Date date  = null;
@@ -2037,7 +2034,7 @@ public class SBOLReader
 		}
 		java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
 		return timestamp;
-	}
+	}*/
 
 	private static URI getParentURI(URI identity)
 	{

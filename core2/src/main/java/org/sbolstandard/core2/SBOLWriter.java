@@ -21,7 +21,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javanet.staxutils.IndentingXMLStreamWriter;
@@ -430,9 +429,9 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirectionURI()));
 			if(!f.getMapsTos().isEmpty())
 			{
-				List<NestedDocument> referenceList = getMapsTo(f.getMapsTos());
+				List<NestedDocument<QName>> referenceList = getMapsTo(f.getMapsTos());
 
-				for(NestedDocument n : referenceList)
+				for(NestedDocument<QName> n : referenceList)
 				{
 					list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasMapsTo, n));
 				}
@@ -466,8 +465,8 @@ public class SBOLWriter {
 			}
 			if(i.isSetParticipations())
 			{
-				List<NestedDocument> participantList = formatParticipations(i.getParticipations());
-				for(NestedDocument n : participantList)
+				List<NestedDocument<QName>> participantList = formatParticipations(i.getParticipations());
+				for(NestedDocument<QName> n : participantList)
 				{
 					list.add(NamedProperty(Sbol2Terms.Interaction.hasParticipations, n));
 				}
@@ -531,8 +530,8 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.Module.hasDefinition, m.getDefinition()));
 			if(!m.getMapsTos().isEmpty())
 			{
-				List<NestedDocument> referenceList = getMapsTo(m.getMapsTos());
-				for(NestedDocument n : referenceList)
+				List<NestedDocument<QName>> referenceList = getMapsTo(m.getMapsTos());
+				for(NestedDocument<QName> n : referenceList)
 				{
 					list.add(NamedProperty(Sbol2Terms.Module.hasMapsTo, n));
 				}
@@ -567,9 +566,9 @@ public class SBOLWriter {
 		}
 	}
 
-	private static List<NestedDocument> formatParticipations(List<Participation> participations)
+	private static List<NestedDocument<QName>> formatParticipations(List<Participation> participations)
 	{
-		List<NestedDocument> nestedDoc = new ArrayList<NestedDocument>();
+		List<NestedDocument<QName>> nestedDoc = new ArrayList<NestedDocument<QName>>();
 
 		for(Participation p : participations)
 		{
@@ -669,8 +668,8 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinition()));
 			if(s.getMapsTos() != null)
 			{
-				List<NestedDocument> referenceList = getMapsTo(s.getMapsTos());
-				for(NestedDocument n : referenceList)
+				List<NestedDocument<QName>> referenceList = getMapsTo(s.getMapsTos());
+				for(NestedDocument<QName> n : referenceList)
 				{
 					list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasMapsTo, n));
 				}
@@ -732,9 +731,9 @@ public class SBOLWriter {
 
 	}
 
-	private static List<NestedDocument> getMapsTo(List<MapsTo> references)
+	private static List<NestedDocument<QName>> getMapsTo(List<MapsTo> references)
 	{
-		List<NestedDocument> nestedDoc = new ArrayList<NestedDocument>();
+		List<NestedDocument<QName>> nestedDoc = new ArrayList<NestedDocument<QName>>();
 
 		for(MapsTo m : references)
 		{
