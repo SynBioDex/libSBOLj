@@ -742,7 +742,6 @@ public class SBOLReader
 	private static ComponentDefinition parseComponentDefinitions(
 			SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		URI persistentIdentity = null;
 		String displayId 	   = null;
 		String name 	 	   = null;
 		String description 	   = null;
@@ -759,11 +758,7 @@ public class SBOLReader
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
-			{
-				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
+			 if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -814,8 +809,7 @@ public class SBOLReader
 		}
 
 		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
-		if (persistentIdentity != null)
-			c.setPersistentIdentity(persistentIdentity);
+		c.setPersistentIdentity(topLevel.getOptionalUriPropertyValue(Sbol2Terms.Identified.persistentIdentity));
 		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (structure != null)
