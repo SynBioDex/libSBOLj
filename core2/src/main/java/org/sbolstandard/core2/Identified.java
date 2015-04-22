@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
@@ -176,8 +177,8 @@ public abstract class Identified {
 	 * @param literal
 	 * @return the created Annotation instance.
 	 */
-	public Annotation createAnnotation(QName relation, Turtle literal) {
-		Annotation annotation = new Annotation(relation, literal);
+	public Annotation createAnnotation(NamedProperty<QName> namedProperty) {
+		Annotation annotation = new Annotation(namedProperty);
 		addAnnotation(annotation);
 		return annotation;
 	}

@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class URIcompliance {
+final class URIcompliance {
 
 	/**
 	 * Extract the persistent identity URI from the given URI.

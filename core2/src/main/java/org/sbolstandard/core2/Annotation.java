@@ -14,7 +14,7 @@ public class Annotation {
 	public Annotation(QName relation, Turtle literal) {
 		value = NamedProperty(relation, literal.getTurtleStr());
 	}
-
+	
 	public Annotation(NamedProperty<QName> value) {
 		this.value = value;
 	}

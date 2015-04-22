@@ -122,7 +122,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Removes all entries of the list of <code>type</code> instances owned by this instance. 
 	 * The list will be empty after this call returns.
 	 */
-	public void clearTypes() {
+	void clearTypes() {
 		types.clear();
 	}
 	

@@ -60,7 +60,7 @@ import java.util.Stack;
  * @author <a href="mailto:kenney@apache.org">Kenney Westerhof</a>
  * @author <a href="mailto:hboutemy@apache.org">Hervé Boutemy</a>
  */
-public class ComparableVersion
+class ComparableVersion
     implements Comparable<ComparableVersion>
 {
     private String value;

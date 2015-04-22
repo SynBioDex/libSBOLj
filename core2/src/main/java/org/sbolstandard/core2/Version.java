@@ -5,7 +5,7 @@ package org.sbolstandard.core2;
  * @author Zhen Zhang
  *
  */
-public final class Version {
+final class Version {
 	
 	
 	/**
