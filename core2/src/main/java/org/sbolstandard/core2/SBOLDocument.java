@@ -460,12 +460,12 @@ public class SBOLDocument {
 	/**
 	 * Create a new {@link ComponentDefinition} object.
 	 * @param identity
-	 * @param type
+	 * @param types
 	 * @param roles
 	 * @return {@link ComponentDefinition} object.
 	 */
-	public ComponentDefinition createComponentDefinition(URI identity, Set<URI> type, Set<URI> roles) {
-		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, type, roles);
+	public ComponentDefinition createComponentDefinition(URI identity, Set<URI> types, Set<URI> roles) {
+		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types, roles);
 		if (addComponentDefinition(newComponentDefinition)) {
 			return newComponentDefinition;
 		}
@@ -618,7 +618,7 @@ public class SBOLDocument {
 	 * @param encoding
 	 * @return the created Sequence object.
 	 */
-	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) {
+	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
 		if (!isDisplayIdCompliant(displayId)) {
 			return null;
 		}
@@ -633,58 +633,58 @@ public class SBOLDocument {
 		return createSequence(newSequenceURI, elements, encoding);
 	}
 	
-	/**
- 	 * Create a copy of the given top-level object, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link TopLevel} with the given version, and add it to its corresponding top-level objects list.
-	 * @param toplevel
-	 * @param newURIprefix
-	 * @return the created {@link TopLevel} object
-	 */
-	public TopLevel createCopyWithURIprefix(TopLevel toplevel, String newURIprefix) {
-		String olddisplayId = extractDisplayId(((Collection) toplevel).getIdentity(), 0);
-		String oldVersion = extractVersion(toplevel.getIdentity());
-		return createCopy(toplevel, newURIprefix, olddisplayId, oldVersion);
-	}
-
-	/**
-	 * Create a copy of the given top-level object, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link TopLevel} with the given version, and add it to its corresponding top-level objects list.
-	 * @param toplevel
-	 * @param newVersion
-	 * @return {@link TopLevel} object
-	 */
-	public TopLevel createCopyWithVersion(TopLevel toplevel, String newVersion) {
-		String oldURIprefix = extractURIprefix(((Collection) toplevel).getIdentity());
-		String olddisplayId = extractDisplayId(((Collection) toplevel).getIdentity(), 0);	
-		return createCopy(toplevel, oldURIprefix, olddisplayId, newVersion);
-	}
-	
-	/**
-	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link GenericTopLevel} with the given display ID, and add it to its corresponding top-level objects list.
-	 * @param toplevel
-	 * @param newDisplayId
-	 * @return {@link TopLevel} object
-	 */
-	public TopLevel createCopyWithDisplayId(TopLevel toplevel, String newDisplayId) {
-		String oldURIprefix = extractURIprefix(toplevel.getIdentity());
-		String oldVersion = extractVersion(toplevel.getIdentity());
-		return createCopy(toplevel, oldURIprefix, 
-				newDisplayId, oldVersion);
-	}
-	
-	/**
-	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix and display ID, and add it to its corresponding top-level objects list.
-	 * @param toplevel
-	 * @param newDisplayId
-	 * @return {@link TopLevel} object
-	 */
-	public TopLevel createCopyWithPersistentId(TopLevel toplevel, String newURIprefix, String newDisplayId) {
-		String oldVersion = extractVersion(toplevel.getIdentity());
-		return createCopy(toplevel, newURIprefix, 
-				newDisplayId, oldVersion);
-	}
+//	/**
+// 	 * Create a copy of the given top-level object, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+//	 * {@link Sequence}, or {@link TopLevel} with the given version, and add it to its corresponding top-level objects list.
+//	 * @param toplevel
+//	 * @param newURIprefix
+//	 * @return the created {@link TopLevel} object
+//	 */
+//	public TopLevel createCopyWithURIprefix(TopLevel toplevel, String newURIprefix) {
+//		String olddisplayId = extractDisplayId(((Collection) toplevel).getIdentity(), 0);
+//		String oldVersion = extractVersion(toplevel.getIdentity());
+//		return createCopy(toplevel, newURIprefix, olddisplayId, oldVersion);
+//	}
+//
+//	/**
+//	 * Create a copy of the given top-level object, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+//	 * {@link Sequence}, or {@link TopLevel} with the given version, and add it to its corresponding top-level objects list.
+//	 * @param toplevel
+//	 * @param newVersion
+//	 * @return {@link TopLevel} object
+//	 */
+//	public TopLevel createCopyWithVersion(TopLevel toplevel, String newVersion) {
+//		String oldURIprefix = extractURIprefix(((Collection) toplevel).getIdentity());
+//		String olddisplayId = extractDisplayId(((Collection) toplevel).getIdentity(), 0);	
+//		return createCopy(toplevel, oldURIprefix, olddisplayId, newVersion);
+//	}
+//	
+//	/**
+//	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+//	 * {@link Sequence}, or {@link GenericTopLevel} with the given display ID, and add it to its corresponding top-level objects list.
+//	 * @param toplevel
+//	 * @param newDisplayId
+//	 * @return {@link TopLevel} object
+//	 */
+//	public TopLevel createCopyWithDisplayId(TopLevel toplevel, String newDisplayId) {
+//		String oldURIprefix = extractURIprefix(toplevel.getIdentity());
+//		String oldVersion = extractVersion(toplevel.getIdentity());
+//		return createCopy(toplevel, oldURIprefix, 
+//				newDisplayId, oldVersion);
+//	}
+//	
+//	/**
+//	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+//	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix and display ID, and add it to its corresponding top-level objects list.
+//	 * @param toplevel
+//	 * @param newDisplayId
+//	 * @return {@link TopLevel} object
+//	 */
+//	public TopLevel createCopyWithPersistentId(TopLevel toplevel, String newURIprefix, String newDisplayId) {
+//		String oldVersion = extractVersion(toplevel.getIdentity());
+//		return createCopy(toplevel, newURIprefix, 
+//				newDisplayId, oldVersion);
+//	}
 
 //	/**
 //	 * Create an object of the top-level classes, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
@@ -754,6 +754,7 @@ public class SBOLDocument {
 //	}
 	
 	/**
+	 * This method is ONLY valid for compliant URIs.
  	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
 	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix, display ID, and version. Then add it to its corresponding top-level objects list.
 	 * @param toplevel
