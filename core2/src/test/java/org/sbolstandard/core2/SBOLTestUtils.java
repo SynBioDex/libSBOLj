@@ -32,7 +32,11 @@ public class SBOLTestUtils {
 
 	public static Sequence createSequence(SBOLDocument document,String id, List<Annotation> annotations)
 	{
-		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu",
+//		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu",
+//				id, "1.0", id + "_element", URI.create("http://encodings.org/encoding"));
+		
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		Sequence sequence = document.createSequence(
 				id, "1.0", id + "_element", URI.create("http://encodings.org/encoding"));
 
 		sequence.setName(id);
