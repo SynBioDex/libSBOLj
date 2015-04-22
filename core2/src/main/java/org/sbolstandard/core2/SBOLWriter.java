@@ -33,11 +33,6 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import org.sbolstandard.core2.abstract_classes.Documented;
-import org.sbolstandard.core2.abstract_classes.Identified;
-import org.sbolstandard.core2.abstract_classes.Location;
-import org.sbolstandard.core2.abstract_classes.TopLevel;
-
 import uk.ac.intbio.core.io.turtle.TurtleIo;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;

@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.sbolstandard.core2.abstract_classes.Location;
-
-import static org.sbolstandard.core2.util.URIcompliance.*;
-import static org.sbolstandard.core2.util.Version.*;
+import static org.sbolstandard.core2.URIcompliance.*;
+import static org.sbolstandard.core2.Version.*;
 
 public class MultiRange extends Location{
 	

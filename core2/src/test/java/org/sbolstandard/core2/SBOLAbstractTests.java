@@ -8,11 +8,10 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
+import org.sbolstandard.core2.ComponentInstance.AccessType;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
-import org.sbolstandard.core2.abstract_classes.ComponentInstance;
-import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
 
 /**
  * @author Tramy Nguyen

@@ -6,10 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.sbolstandard.core2.MapsTo.RefinementType;
-import org.sbolstandard.core2.abstract_classes.Documented;
 
-import static org.sbolstandard.core2.util.Version.*;
-import static org.sbolstandard.core2.util.URIcompliance.*;
+import static org.sbolstandard.core2.URIcompliance.*;
+import static org.sbolstandard.core2.Version.*;
 
 /**
  * 

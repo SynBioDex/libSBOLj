@@ -2,11 +2,9 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import static org.sbolstandard.core2.util.URIcompliance.*;
+import static org.sbolstandard.core2.URIcompliance.*;
 
 import javax.xml.namespace.QName;
-
-import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 public class GenericTopLevel extends TopLevel{
 

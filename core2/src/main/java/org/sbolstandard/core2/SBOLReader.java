@@ -22,12 +22,10 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
+import org.sbolstandard.core2.ComponentInstance.AccessType;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
-import org.sbolstandard.core2.abstract_classes.ComponentInstance;
-import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
-import org.sbolstandard.core2.abstract_classes.Location;
 
 import uk.ac.intbio.core.io.turtle.TurtleIo;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
@@ -745,6 +743,7 @@ public class SBOLReader
 		String displayId 	   = null;
 		String name 	 	   = null;
 		String description 	   = null;
+		URI persistentIdentity = null;
 		URI structure 		   = null;
 		String version 		   = null;
 		URI wasDerivedFrom     = null;
@@ -761,6 +760,10 @@ public class SBOLReader
 			 if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity  = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
@@ -809,9 +812,11 @@ public class SBOLReader
 		}
 
 		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
-		c.setPersistentIdentity(topLevel.getOptionalUriPropertyValue(Sbol2Terms.Identified.persistentIdentity));
+		//c.setPersistentIdentity(topLevel.getOptionalUriPropertyValue(Sbol2Terms.Identified.persistentIdentity));
 		if (displayId != null)
 			c.setDisplayId(displayId);
+		if (persistentIdentity != null)
+			c.setPersistentIdentity(persistentIdentity);
 		if (structure != null)
 			c.setSequence(structure);
 		if (!components.isEmpty())

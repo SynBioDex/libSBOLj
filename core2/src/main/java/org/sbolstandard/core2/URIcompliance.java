@@ -1,4 +1,4 @@
-package org.sbolstandard.core2.util;
+package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.util.regex.Matcher;

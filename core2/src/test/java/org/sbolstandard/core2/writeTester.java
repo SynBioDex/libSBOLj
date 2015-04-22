@@ -13,14 +13,10 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
+import org.sbolstandard.core2.ComponentInstance.AccessType;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
-import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
-import org.sbolstandard.core2.abstract_classes.Documented;
-import org.sbolstandard.core2.abstract_classes.Identified;
-import org.sbolstandard.core2.abstract_classes.Location;
-import org.sbolstandard.core2.abstract_classes.TopLevel;
 
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 

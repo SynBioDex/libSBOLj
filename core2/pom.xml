@@ -12,7 +12,7 @@
 	<artifactId>${project.parent.artifactId}-core2</artifactId>
 
 	<properties>
-		<sbol-data.version>0.1.2</sbol-data.version>
+		<sbol-data.version>0.1.1</sbol-data.version>
 	</properties>
 
 

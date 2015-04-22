@@ -1,4 +1,4 @@
-package org.sbolstandard.core2.util;
+package org.sbolstandard.core2;
 
 //package org.apache.maven.artifact.versioning;
 

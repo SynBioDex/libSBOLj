@@ -1,10 +1,12 @@
 package org.sbolstandard.core2.libraryTests;
 
 import static org.junit.Assert.*;
-import static org.sbolstandard.core2.util.URIcompliance.*;
+import static org.sbolstandard.core2.URIcompliance.*;
 
 import java.net.URI;
+
 import org.junit.Test;
+
 import static org.hamcrest.CoreMatchers.*;
 
 public class UriComplianceTest {

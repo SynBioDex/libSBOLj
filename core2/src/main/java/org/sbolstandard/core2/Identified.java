@@ -1,13 +1,12 @@
-package org.sbolstandard.core2.abstract_classes;
+package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.namespace.QName;
-import static org.sbolstandard.core2.util.URIcompliance.*;
 
-import org.sbolstandard.core2.Annotation;
-import org.sbolstandard.core2.Turtle;
+import javax.xml.namespace.QName;
+
+import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
  *

@@ -6,14 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.sbolstandard.core2.ComponentInstance.AccessType;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
-import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
-import org.sbolstandard.core2.abstract_classes.Location;
-import org.sbolstandard.core2.abstract_classes.TopLevel;
 
-import static org.sbolstandard.core2.util.URIcompliance.*;
-
-import static org.sbolstandard.core2.util.Version.*;
+import static org.sbolstandard.core2.URIcompliance.*;
+import static org.sbolstandard.core2.Version.*;
 
 /**
  * 
