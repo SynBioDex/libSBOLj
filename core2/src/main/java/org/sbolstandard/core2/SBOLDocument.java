@@ -460,8 +460,9 @@ public class SBOLDocument {
 	 * @param roles
 	 * @return {@link ComponentDefinition} object.
 	 */
-	public ComponentDefinition createComponentDefinition(URI identity, Set<URI> types, Set<URI> roles) {
-		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types, roles);
+	public ComponentDefinition createComponentDefinition(URI identity, Set<URI> types) {
+		//ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types, roles);
+		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types);
 		if (addComponentDefinition(newComponentDefinition)) {
 			return newComponentDefinition;
 		}
@@ -477,7 +478,7 @@ public class SBOLDocument {
 	 * @param roles
 	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
 	 */
-	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types, Set<URI> roles) {
+	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
 		if (!isDisplayIdCompliant(displayId)) {
 			return null;
 		}
@@ -489,7 +490,7 @@ public class SBOLDocument {
 			return null;
 		}
 		URI newComponentDefinitionURI = URI.create(defaultURIprefix + '/' + displayId + '/' + version);
-		return createComponentDefinition(newComponentDefinitionURI, types, roles);
+		return createComponentDefinition(newComponentDefinitionURI, types);
 	}
 
 	/**

@@ -498,7 +498,9 @@ public class SBOLReader
 			sequenceConstraints.add(sc);
 		}
 
-		ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
+		//ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
+		ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type);
+		c.setRoles(roles);
 		if(identity != componentDef.getIdentity())
 			c.setWasDerivedFrom(componentDef.getIdentity());
 		if (displayId != null)
@@ -811,8 +813,10 @@ public class SBOLReader
 			}
 		}
 
-		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
+		//ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
 		//c.setPersistentIdentity(topLevel.getOptionalUriPropertyValue(Sbol2Terms.Identified.persistentIdentity));
+		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type);
+		c.setRoles(roles);
 		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (persistentIdentity != null)

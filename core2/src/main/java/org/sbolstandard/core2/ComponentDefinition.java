@@ -28,10 +28,11 @@ public class ComponentDefinition extends TopLevel {
 	private HashMap<URI, SequenceAnnotation> sequenceAnnotations;
 	private HashMap<URI, SequenceConstraint> sequenceConstraints;
 	
-	public ComponentDefinition(URI identity, Set<URI> type, Set<URI> roles) {
+	public ComponentDefinition(URI identity, Set<URI> types) {
 		super(identity);
-		setTypes(type);
-		setRoles(roles);		
+		setTypes(types);
+		//setRoles(roles);
+		this.roles = new HashSet<URI>();
 		this.components = new HashMap<URI, Component>(); 		
 		this.sequenceAnnotations = new HashMap<URI, SequenceAnnotation>();
 		this.sequenceConstraints = new HashMap<URI, SequenceConstraint>();
@@ -44,11 +45,13 @@ public class ComponentDefinition extends TopLevel {
 			types.add(URI.create(type.toString()));
 		}
 		setTypes(types);
-		Set<URI> roles = new HashSet<URI>();
-		for (URI role : componentDefinition.getRoles()) {
-			roles.add(URI.create(role.toString()));
-		}
-		setRoles(roles);
+		if (!componentDefinition.getRoles().isEmpty()) {
+			Set<URI> roles = new HashSet<URI>();
+			for (URI role : componentDefinition.getRoles()) {
+				roles.add(URI.create(role.toString()));
+			}
+			this.setRoles(roles);
+		}		
 		if (!componentDefinition.getComponents().isEmpty()) {
 			List<Component> subComponents = new ArrayList<Component>();
 			for (Component subComponent : componentDefinition.getComponents()) {

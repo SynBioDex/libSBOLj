@@ -59,9 +59,12 @@ public class SBOLTestUtils {
 //				type, role);
 		
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+//		ComponentDefinition componentDefinition = document.createComponentDefinition(
+//				id, "1.0",type, role);
 		ComponentDefinition componentDefinition = document.createComponentDefinition(
-				id, "1.0",type, role);
-
+				id, "1.0",type);
+		componentDefinition.setRoles(role);
+		
 		//		componentDefinition.setName(id);
 		//		componentDefinition.setDescription(id);
 
