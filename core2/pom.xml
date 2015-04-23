@@ -9,7 +9,7 @@
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>${project.parent.artifactId}-core2</artifactId>
+	<artifactId>libSBOLj-core2</artifactId>
 
 	<properties>
 		<sbol-data.version>0.1.1</sbol-data.version>
@@ -44,7 +44,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.sbolstandard</groupId>
-			<artifactId>${project.parent.artifactId}-core</artifactId>
+			<artifactId>libSBOLj-core</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>

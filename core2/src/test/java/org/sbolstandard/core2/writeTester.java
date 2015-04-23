@@ -405,7 +405,8 @@ public class writeTester {
 								get_interact1a(SBOL2Doc_test),
 								get_interact2a(SBOL2Doc_test)),
 								null, null,
-								getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle()))
+								//getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle()))
+								getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot")))
 
 				);
 	}
@@ -804,10 +805,10 @@ public class writeTester {
 		return interaction;
 	}
 
-	private static Turtle createTurtle()
-	{
-		return new Turtle("turtleString");
-	}
+//	private static Turtle createTurtle()
+//	{
+//		return new Turtle("turtleString");
+//	}
 
 	private static MapsTo createMapTo (URI identity, RefinementType refinement,
 			FunctionalComponent pre_fi, FunctionalComponent post_fi)
@@ -825,9 +826,7 @@ public class writeTester {
 		String displayId 	   = modeldata.get(3);
 		String name 		   = modeldata.get(4);
 		String description     = modeldata.get(5);
-		//Model model = doc.createModel(identity, source, language, framework, roles);
-		Model model = doc.createModel(identity, source, language, framework);
-		model.setRoles(roles);
+		Model model = doc.createModel(identity, source, language, framework, roles);
 		setCommonTopLevelData(model, identity, persistentIdentity, version, displayId, name, description);
 
 		return model;

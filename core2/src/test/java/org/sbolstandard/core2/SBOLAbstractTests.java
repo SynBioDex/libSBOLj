@@ -1,5 +1,8 @@
 package org.sbolstandard.core2;
 
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,30 +12,28 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.sbolstandard.core2.ComponentInstance.AccessType;
-import org.sbolstandard.core2.FunctionalComponent.DirectionType;
-import org.sbolstandard.core2.MapsTo.RefinementType;
-import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
-
 /**
  * @author Tramy Nguyen
  *
  */
 public abstract class SBOLAbstractTests {
 
+
 	@Test
 	public void test_JSONFile() throws Exception
 	{
 		SBOLDocument document=new SBOLDocument();
-		SBOLWriter.writeJSON(document, (System.out));
+		runTest("test/data/emptyJSONFile.json", document, "json");
+
 	}
 
 	public void test_TurtleFile() throws Exception
 	{
 		SBOLDocument document=new SBOLDocument();
-		SBOLWriter.writeTurtle(document, (System.out));
+		runTest("test/data/emptyTurtleFile.json", document, "turtle");
 	}
 
-	@Test
+	/*@Test
 	public void test_moduleDef_withFunctionalComponent() throws Exception
 	{
 		SBOLDocument document=new SBOLDocument();
@@ -45,102 +46,153 @@ public abstract class SBOLAbstractTests {
 				URI.create("cd1"),
 				FunctionalComponent.DirectionType.NONE);
 		SBOLWriter.writeRDF(document,(System.out));
+	}*/
+
+	@Test
+	public void test_collectionAnnotation() throws Exception
+	{
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+
+		//TODO: each object annotation have to match the namespacebinding created?
+		List<Annotation> collection_annotations = new ArrayList<Annotation>();
+		collection_annotations.add(new Annotation(
+				NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "TurtleString")));
+		SBOLTestUtils.createCollection(document, "myParts", collection_annotations);
+
+		runTest("test/data/collectionAnnotation.rdf", document, "rdf");
 	}
 
+	@Test
+	public void test_modelAnnotation() throws Exception
+	{
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+
+		List<Annotation> model_annotations = new ArrayList<Annotation>();
+		model_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
+				"TurtleString")));
+		SBOLTestUtils.createModel(document, "someModel", model_annotations);
+
+		runTest("test/data/modelAnnotation.rdf", document, "rdf");
+	}
+
+	@Test
+	public void test_moduleAnnotation() throws Exception
+	{
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+
+		List<Annotation> moduleDefinition_annotations = new ArrayList<Annotation>();
+		moduleDefinition_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
+				"TurtleString")));
+		SBOLTestUtils.createModuleDefinition(document, "someModDef", null, null, null, null, null, moduleDefinition_annotations);
+
+
+		runTest("test/data/moduleAnnotation.rdf", document, "rdf");
+	}
+
+	/*
 	@Test
 	public void test_Annotations() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
 
 		List<Annotation> collection_annotations = new ArrayList<Annotation>();
-		collection_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "coll_annot1"),
-				new Turtle("turtleString")));
+		collection_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "coll_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createCollection(document, "myParts", collection_annotations);
 
 		List<Annotation> model_annotations = new ArrayList<Annotation>();
-		model_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "model_annot1"),
-				new Turtle("turtleString")));
+		model_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "model_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createModel(document, "someModel", model_annotations);
 
 		List<Annotation> moduleDefinition_annotations = new ArrayList<Annotation>();
-		moduleDefinition_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "modDef_annot1"),
-				new Turtle("turtleString")));
+		moduleDefinition_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "modDef_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createModuleDefinition(document, "someModDef", null, null, null, null, null, moduleDefinition_annotations);
 
 		List<Annotation> sequence_annotations = new ArrayList<Annotation>();
-		sequence_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "seq_annot1"),
-				new Turtle("turtleString")));
+		sequence_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "seq_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createSequence(document, "someSeq", sequence_annotations); //TODO failing right here because can't create a sequence
 
 		List<Annotation> componentDefinition_annotations = new ArrayList<Annotation>();
-		componentDefinition_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "compDef_annot1"),
-				new Turtle("turtleString")));
+		componentDefinition_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "compDef_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createComponentDefinition(document, "someCompDef", null, null, null, null, null, null, componentDefinition_annotations);
 
 		List<Annotation> genericTopLevel_annotations = new ArrayList<Annotation>();
-		genericTopLevel_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "genericTopLev_annot1"),
-				new Turtle("turtleString")));
+		genericTopLevel_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "genericTopLev_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createGenericTopLevel(document, "someGenericTopLevel", genericTopLevel_annotations);
 
 		List<Annotation> component_annotations = new ArrayList<Annotation>();
-		component_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "component_annot1"),
-				new Turtle("turtleString")));
+		component_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "component_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createComponent("someComponent", AccessType.PUBLIC, null, component_annotations);
 
 		List<Annotation> sequenceAnnotation_annotations = new ArrayList<Annotation>();
-		sequenceAnnotation_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "seqAnnot_annot1"),
-				new Turtle("turtleString")));
+		sequenceAnnotation_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "seqAnnot_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createSequenceAnnotation("someSequence", null, sequenceAnnotation_annotations);
 
 		List<Annotation> sequenceConstraint_annotations = new ArrayList<Annotation>();
-		sequenceConstraint_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "seqCon_annot1"),
-				new Turtle("turtleString")));
+		sequenceConstraint_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "seqCon_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createSequenceConstraint("someSequenceConstraint", null, null, RestrictionType.PRECEDES, sequenceConstraint_annotations);
 
 		//TODO: unable to create a componentInstance for testing.
 		//		List<Annotation> componentInstance_annotations = new ArrayList<Annotation>();
-		//		componentInstance_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "compInstance_annot1"),
-		//				new Turtle("turtleString")));
+		//		componentInstance_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "compInstance_annot1"),
+		//				"TurtleString")));
 
 
 		List<Annotation> mapsTo_annotations = new ArrayList<Annotation>();
-		mapsTo_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "mapsTo_annot1"),
-				new Turtle("turtleString")));
+		mapsTo_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "mapsTo_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createMapTo("someMapsTo", RefinementType.USELOCAL, null, null, mapsTo_annotations);
 
 		List<Annotation> location_annotations = new ArrayList<Annotation>();
-		location_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "location_annot1"),
-				new Turtle("turtleString")));
+		location_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "location_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createLocation("someLocation", new Range(URI.create("someRange1"), 0, 10), location_annotations);
 
 		List<Annotation> multiRange_annotations = new ArrayList<Annotation>();
-		multiRange_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "multiRange_annot1"),
-				new Turtle("turtleString")));
+		multiRange_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "multiRange_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createLocation("someMultiRange1", new MultiRange(URI.create("someMultiRange")), multiRange_annotations);
 
 		List<Annotation> range_annotations = new ArrayList<Annotation>();
-		range_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "range_annot1"),
-				new Turtle("turtleString")));
+		range_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "range_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createLocation("someRange2", new Range(URI.create("someRange"), 0, 10), range_annotations);
 
 		List<Annotation> cut_annotations = new ArrayList<Annotation>();
-		cut_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "cut_annot1"),
-				new Turtle("turtleString")));
+		cut_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "cut_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createLocation("someCut", new Cut(URI.create("someCut"), 10), cut_annotations);
 
 		List<Annotation> genericLocation_annotations = new ArrayList<Annotation>();
-		genericLocation_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "genericLoc_annot1"),
-				new Turtle("turtleString")));
+		genericLocation_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "genericLoc_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createGenericTopLevel(document, "someGenericTopLevel", genericLocation_annotations);
 
 		List<Annotation> module_annotations = new ArrayList<Annotation>();
-		module_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "module_annot1"),
-				new Turtle("turtleString")));
+		module_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "module_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createModule("someModule", null, module_annotations);
 
 		List<Annotation> interaction_annotations = new ArrayList<Annotation>();
-		interaction_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "interaction_annot1"),
-				new Turtle("turtleString")));
+		interaction_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "interaction_annot1"),
+				"TurtleString")));
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
 		List<Participation> interact_part = new ArrayList<Participation>();
 		Participation p1a = SBOLTestUtils.createParticipation("p1a", null, null);
@@ -148,13 +200,13 @@ public abstract class SBOLAbstractTests {
 		SBOLTestUtils.createInteraction("someInteraction", type, interact_part, interaction_annotations);
 
 		List<Annotation> functionalComponent_annotations = new ArrayList<Annotation>();
-		functionalComponent_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "funcComp_annot1"),
-				new Turtle("turtleString")));
+		functionalComponent_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "funcComp_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createFunctionalComponent("someFunctionalComp", AccessType.PUBLIC, DirectionType.INOUT, null, functionalComponent_annotations);
 
 		List<Annotation> participation_annotations = new ArrayList<Annotation>();
-		participation_annotations.add(new Annotation(new QName("http://myannotation.org", "thisAnnotation", "participation_annot1"),
-				new Turtle("turtleString")));
+		participation_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "participation_annot1"),
+				"TurtleString")));
 		SBOLTestUtils.createParticipation("someParticipation", null, participation_annotations);
 
 	}
@@ -167,14 +219,15 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
 		List<Annotation> annotations = new ArrayList<Annotation>();
-		Annotation a = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),
-				new Turtle("turtleString"));
+		Annotation a = new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
+				"turtleString"));
 		annotations.add(a);
 
 		SBOLTestUtils.createCollection(document, "myParts", null);
 
 		runTest("test/data/singleCollection.rdf", document);
 	}
+
 
 	@Test
 	public void test_multipleCollections_no_Members() throws Exception
@@ -315,7 +368,7 @@ public abstract class SBOLAbstractTests {
 		SBOLTestUtils.createFunctionalComponent("LacIIn", accessType, directionType, compDef_id, null);
 
 		runTest("test/data/singleFunctionalComponent.rdf", document);
-	}
+	}*/
 
 	//	|------------------------------------TOGGLE SWITCH------------------------------------|
 	//	|		- double check on correct use of URIs										  |
@@ -329,8 +382,8 @@ public abstract class SBOLAbstractTests {
 	//		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 	//
 	//		List<Annotation> annotations = new ArrayList<Annotation>();
-	//		Annotation a = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),
-	//				new Turtle("turtleString"));
+	//		Annotation a = new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
+	//				"TurtleString"));
 	//		annotations.add(a);
 	//
 	//		//Sequence
@@ -570,8 +623,8 @@ public abstract class SBOLAbstractTests {
 	//		interactions.add(interact2a);
 	//
 	//		List<Annotation> annotations = new ArrayList<Annotation>();
-	//		Annotation a = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),
-	//				new Turtle("turtleString"));
+	//		Annotation a = new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
+	//				"TurtleString"));
 	//		annotations.add(a);
 	//
 	//		return SBOLTestUtils.createModuleDefinition(document, "LacI_Inv",
@@ -585,7 +638,7 @@ public abstract class SBOLAbstractTests {
 	//	}
 
 
-	public abstract void runTest(final String fileName, final SBOLDocument expected)
+	public abstract void runTest(final String fileName, final SBOLDocument expected, String fileType)
 			throws Exception;
 
 }
