@@ -20,12 +20,13 @@ public class Model extends TopLevel {
 	private URI framework;
 	private Set<URI> roles;
 
-	public Model(URI identity,URI source, URI language, URI framework, Set<URI> roles) {
+	public Model(URI identity,URI source, URI language, URI framework) {
 		super(identity);		
 		setSource(source);
 		setLanguage(language);
 		setFramework(framework);
-		setRoles(roles);
+		//setRoles(roles);
+		roles = new HashSet<URI>();
 	}
 	
 	private Model(Model model) {
@@ -33,11 +34,13 @@ public class Model extends TopLevel {
 		this.setSource(model.getSource());
 		this.setLanguage(model.getLanguage());
 		this.setFramework(model.getFramework());
-		Set<URI> roles = new HashSet<URI>();
-		for (URI role : model.getRoles()) {
-			roles.add(role);
-		}
-		this.setRoles(roles);
+		if (!model.getRoles().isEmpty()) {
+			Set<URI> roles = new HashSet<URI>();
+			for (URI role : model.getRoles()) {
+				roles.add(role);
+			}
+			this.setRoles(roles);	
+		}		
 	}
 
 	/**

@@ -116,12 +116,16 @@ public class SBOLTestUtils {
 
 	public static void createModel(SBOLDocument document, String id, List<Annotation> annotations)
 	{
+//		Model model = document.createModel(URI.create(id),
+//				URI.create(id + "_source"),
+//				URI.create(id + "_language"),
+//				URI.create(id + "_framework"),
+//				getSetPropertyURI(id + "_role"));
 		Model model = document.createModel(URI.create(id),
 				URI.create(id + "_source"),
 				URI.create(id + "_language"),
-				URI.create(id + "_framework"),
-				getSetPropertyURI(id + "_role"));
-
+				URI.create(id + "_framework"));
+		model.setRoles(getSetPropertyURI(id + "_role"));
 		model.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
 		model.setDisplayId(id);
 		model.setName(id);

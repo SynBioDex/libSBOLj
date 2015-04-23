@@ -825,7 +825,9 @@ public class writeTester {
 		String displayId 	   = modeldata.get(3);
 		String name 		   = modeldata.get(4);
 		String description     = modeldata.get(5);
-		Model model = doc.createModel(identity, source, language, framework, roles);
+		//Model model = doc.createModel(identity, source, language, framework, roles);
+		Model model = doc.createModel(identity, source, language, framework);
+		model.setRoles(roles);
 		setCommonTopLevelData(model, identity, persistentIdentity, version, displayId, name, description);
 
 		return model;
