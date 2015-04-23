@@ -150,16 +150,14 @@ public class ModuleDefinition extends TopLevel {
 		}
 	}
 	
-
 	/**
-	 * @param URIprefix
 	 * @param displayId
-	 * @param version
 	 * @param moduleDefinitionURI
 	 * @return
 	 */
-	public Module createModule(String URIprefix, String displayId, String version, URI moduleDefinitionURI) {
-		URI newModuleURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+	public Module createModule(String displayId, URI moduleDefinitionURI) {
+		URI newModuleURI = URI.create(extractURIprefix(this.getIdentity())
+				+ '/' + displayId + '/' + extractVersion(this.getIdentity()));
 		if (isChildURIcompliant(this.getIdentity(), newModuleURI)) {
 			return createModule(newModuleURI, moduleDefinitionURI);
 		}
@@ -295,16 +293,14 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
-	 * @param URIprefix
 	 * @param displayId
-	 * @param version
 	 * @param type
 	 * @param participations
 	 * @return
 	 */
-	public Interaction createInteraction(String URIprefix, String displayId, String version, 
-			Set<URI> type, List<Participation> participations) {
-		URI newInteractionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+	public Interaction createInteraction(String displayId, Set<URI> type, List<Participation> participations) {
+		URI newInteractionURI = URI.create(extractURIprefix(this.getIdentity())
+				+ '/' + displayId + '/' + extractVersion(this.getIdentity()));
 		if (isChildURIcompliant(this.getIdentity(), newInteractionURI)) {
 			return createInteraction(newInteractionURI, type, participations);
 		}
@@ -438,9 +434,17 @@ public class ModuleDefinition extends TopLevel {
 		}
 	}
 
-	public FunctionalComponent createFunctionalComponent(String URIprefix, String displayId, String version,  AccessType access, 
+	/**
+	 * @param displayId
+	 * @param access
+	 * @param functionalComponentURI
+	 * @param direction
+	 * @return
+	 */
+	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access, 
 			URI functionalComponentURI, DirectionType direction) {
-		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		URI newComponentDefinitionURI = URI.create(extractURIprefix(this.getIdentity())
+				+ '/' + displayId + '/' + extractVersion(this.getIdentity()));
 		if (isChildURIcompliant(this.getIdentity(), newComponentDefinitionURI)) {		
 			return createFunctionalComponent(newComponentDefinitionURI, access, functionalComponentURI, direction);
 		}
@@ -449,8 +453,6 @@ public class ModuleDefinition extends TopLevel {
 			return null;
 		}
 	}
-
-	
 	
 	/**
 	 * Adds the specified instance to the list of components.

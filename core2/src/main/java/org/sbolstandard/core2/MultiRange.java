@@ -58,18 +58,13 @@ public class MultiRange extends Location{
 		}
 	}
 	
-	public Range createRange(String displayId, String version, Integer start, Integer end) {
+	public Range createRange(String displayId, Integer start, Integer end) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		if (parentPersistentIdStr != null) {
 			if (isDisplayIdCompliant(displayId)) {
-				if (isVersionCompliant(version)) {
-					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
-					return createRange(newMapsToURI, start, end);
-				}
-				else {
-					// TODO: Warning: version not compliant
-					return null;
-				}
+				URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' 
+						+ extractVersion(this.getIdentity()));
+				return createRange(newMapsToURI, start, end);
 			}
 			else {
 				// TODO: Warning: display ID not compliant

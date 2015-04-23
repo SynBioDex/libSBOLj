@@ -96,18 +96,13 @@ public class Module extends Documented {
 	 * @param remote
 	 * @return
 	 */
-	public MapsTo createMapsTo(String displayId, String version, RefinementType refinement, URI local, URI remote) {
+	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		if (parentPersistentIdStr != null) {
 			if (isDisplayIdCompliant(displayId)) {
-				if (isVersionCompliant(version)) {
-					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
-					return createMapsTo(newMapsToURI, refinement, local, remote);
-				}
-				else {
-					// TODO: Warning: version not compliant
-					return null;
-				}
+				URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' 
+						+ extractVersion(this.getIdentity()));
+				return createMapsTo(newMapsToURI, refinement, local, remote);
 			}
 			else {
 				// TODO: Warning: display ID not compliant

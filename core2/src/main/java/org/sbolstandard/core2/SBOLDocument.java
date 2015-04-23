@@ -608,7 +608,6 @@ public class SBOLDocument {
 
 	/**
 	 * Create a new {@link Sequence} object.
-	 * @param URIprefix
 	 * @param displayId
 	 * @param elements
 	 * @param encoding
@@ -760,6 +759,15 @@ public class SBOLDocument {
 	 * @return the copied {@link TopLevel} object
 	 */
 	public TopLevel createCopy(TopLevel toplevel, String URIprefix, String displayId, String version) {
+		if (URIprefix == null) {
+			URIprefix = extractURIprefix(toplevel.getIdentity());
+		}
+		if (displayId == null) {
+			displayId = extractDisplayId(toplevel.getIdentity(), 0);
+		}
+		if (version == null) {
+			version = extractVersion(toplevel.getIdentity());
+		}
 		if (toplevel instanceof Collection) {			
 			Collection newCollection = ((Collection) toplevel).copy(URIprefix, displayId, version);
 			if (addCollection(newCollection)) {
