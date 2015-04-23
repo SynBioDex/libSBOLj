@@ -283,9 +283,9 @@ public class SBOLDocument {
 	 * Returns the list of <code>Collection</code> objects owned by this object.
 	 * @return the list of <code>Collection</code> objects owned by this object
 	 */
-	public List<Collection> getCollections() {
+	public Set<Collection> getCollections() {
 		//		return (List<Collection>) collections.values();
-		List<Collection> collections = new ArrayList<Collection>();
+		Set<Collection> collections = new HashSet<Collection>();
 		collections.addAll(this.collections.values());
 		return collections;
 	}
@@ -889,9 +889,9 @@ public class SBOLDocument {
 	 * Returns the list of <code>Structure</code> objects owned by this object.
 	 * @return the list of <code>Structure</code> objects owned by this object
 	 */
-	public List<Sequence> getSequences() {
+	public Set<Sequence> getSequences() {
 		//		return (List<Structure>) structures.values();
-		List<Sequence> structures = new ArrayList<Sequence>();
+		Set<Sequence> structures = new HashSet<Sequence>();
 		structures.addAll(this.sequences.values());
 		return structures;
 	}

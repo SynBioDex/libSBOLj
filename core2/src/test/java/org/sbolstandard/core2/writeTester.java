@@ -167,11 +167,12 @@ public class writeTester {
 
 	private static Collection get_myParts (SBOLDocument SBOL2Doc_test)
 	{
+		SBOL2Doc_test.setDefaultURIprefix("http://www.async.ece.utah.edu");
 		SBOL2Doc_test.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
 		SBOL2Doc_test.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
 		Collection myParts = createCollection(SBOL2Doc_test,
-				getData("myParts/1/0","myParts","1.0","myParts","myParts", "myParts"),
+				getData("myParts", "1.0"),
 				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
 
 		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
@@ -209,22 +210,22 @@ public class writeTester {
 	private static Sequence get_pLacSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("pLacSeq/1/0","pLacSeq","1.0","pLacSeq","pLacSeq", "pLacSeq", "pLacSeq_element"),
-				getPropertyURI("pLacSeq"));
+				getData("pLacSeq","1.0","pLacSeq_element"),
+				getPropertyURI("property"));
 	}
 
 	private static Sequence get_tetRSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("tetRSeq/1/0","tetRSeq","1.0","tetRSeq","tetRSeq", "tetRSeq", "tetRSeq_element"),
-				getPropertyURI("tetRSeq"));
+				getData("tetRSeq","1.0","tetRSeq_element"),
+				getPropertyURI("property"));
 	}
 
 	private static Sequence get_pLactetRSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("pLactetRSeq/1/0","pLactetRSeq","1.0","pLactetRSeq","pLactetRSeq", "pLactetRSeq", "pLactetRSeq_element"),
-				getPropertyURI("pLactetRSeq"));
+				getData("pLactetRSeq","1.0","pLactetRSeq_element"),
+				getPropertyURI("property"));
 	}
 
 	private static ComponentDefinition get_pLac (SBOLDocument SBOL2Doc_test)
@@ -416,22 +417,22 @@ public class writeTester {
 	private static Sequence get_ptetSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("ptetSeq/1/0","ptetSeq","1.0","ptetSeq","ptetSeq", "ptetSeq", "ptetSeq_element"),
-				getPropertyURI("ptetSeq_encoding"));
+				getData("ptetSeq","1.0","ptetSeq_element"),
+				getPropertyURI("encoding"));
 	}
 
 	private static Sequence get_lacISeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("lacISeq/1/0","lacISeq","1.0","lacISeq","lacISeq", "lacISeq", "lacISeq_element"),
-				getPropertyURI("lacISeq"));
+				getData("lacISeq","1.0","lacISeq_element"),
+				getPropertyURI("encoding"));
 	}
 
 	private static Sequence get_ptetlacISeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("ptetlacISeq/1/0","ptetlacISeq","1.0","ptetlacISeq","ptetlacISeq", "ptetlacISeq", "ptetlacISeq_element"),
-				getPropertyURI("ptetlacISeq"));
+				getData("ptetlacISeq","1.0","ptetlacISeq_element"),
+				getPropertyURI("encoding"));
 	}
 
 	private static ComponentDefinition get_ptet(SBOLDocument SBOL2Doc_test)
@@ -647,28 +648,15 @@ public class writeTester {
 	}
 
 
-	private static void setCommonTopLevelData (TopLevel t, URI identity, URI persistentIdentity,
-			String version, String displayId, String name, String description)
+	private static void setCommonTopLevelData (TopLevel t, String name, String description)
 	{
-		setCommonDocumentedData(t, identity, persistentIdentity, version, displayId, name, description);
+		setCommonDocumentedData(t, name, description);
 	}
 
-	private static void setCommonDocumentedData (Documented d, URI identity, URI persistentIdentity,
-			String version, String displayId, String name, String description)
+	private static void setCommonDocumentedData (Documented d, String name, String description)
 	{
-		//		d.setDisplayId(displayId);
 		d.setName(name);
 		d.setDescription(description);
-
-		setCommonIdentifiedData(d, identity, persistentIdentity, version);
-	}
-
-	private static void setCommonIdentifiedData (Identified i, URI identity, URI persistentIdentity,
-			String version)
-	{
-		i.setIdentity(identity);
-		//		i.setPersistentIdentity(persistentIdentity);
-		//		i.setTimeStamp(timeStamp);
 	}
 
 	private static GenericTopLevel createTopLevel(SBOLDocument SBOL2Doc_test, List<String> topLevelData)
@@ -683,7 +671,7 @@ public class writeTester {
 		GenericTopLevel toplevel =  SBOL2Doc_test.createGenericTopLevel(identity, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
 		SBOL2Doc_test.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
-		setCommonTopLevelData(toplevel, identity, persistentIdentity, version, displayId, name, description);
+		setCommonTopLevelData(toplevel, name, description);
 		return toplevel;
 	}
 
@@ -691,15 +679,11 @@ public class writeTester {
 	private static Collection createCollection(SBOLDocument SBOL2Doc_test, List<String> collectionData,
 			List<Annotation> annotations)
 	{
-		URI identity 		   = getURI(collectionData.get(0));
-		URI persistentIdentity = getURI(collectionData.get(1));
-		String version 		   = collectionData.get(2);
-		String displayId 	   = collectionData.get(3);
-		String name 		   = collectionData.get(4);
-		String description 	   = collectionData.get(5);
+		String displayId	   = collectionData.get(0);
+		String version  	   = collectionData.get(1);
 
-		Collection collection = SBOL2Doc_test.createCollection(identity);
-		setCommonTopLevelData(collection, identity, persistentIdentity, version, displayId, name, description);
+		Collection collection = SBOL2Doc_test.createCollection(displayId,version);
+		setCommonTopLevelData(collection, displayId, displayId);
 		if(annotations != null)
 			collection.setAnnotations(annotations);
 		return collection;
@@ -732,7 +716,7 @@ public class writeTester {
 			c = SBOL2Doc_test.getComponentDefinition(identity);
 		} else {
 			c.setRoles(roles);
-			setCommonTopLevelData(c, identity, persistentIdentity, version, displayId, name, description);
+			setCommonTopLevelData(c, name, description);
 		}
 		
 		if(structureData != null)
@@ -783,7 +767,7 @@ public class writeTester {
 		URI instantiatedComponent = c.getIdentity();
 
 		FunctionalComponent f = new FunctionalComponent(identity, access, instantiatedComponent, direction);
-		setCommonDocumentedData(f, identity, persistentIdentity, version, displayId, name, description);
+		setCommonDocumentedData(f, name, description);
 
 
 		return f;
@@ -803,7 +787,7 @@ public class writeTester {
 
 		Interaction interaction = new Interaction(identity, type, participations);
 
-		setCommonDocumentedData(interaction, identity, persistentIdentity, version, displayId, name, description);
+		setCommonDocumentedData(interaction, name, description);
 
 
 		return interaction;
@@ -834,7 +818,7 @@ public class writeTester {
 		if (model==null) {
 			model = doc.getModel(identity);
 		} else {
-			setCommonTopLevelData(model, identity, persistentIdentity, version, displayId, name, description);
+			setCommonTopLevelData(model, name, description);
 		}
 		return model;
 	}
@@ -859,7 +843,7 @@ public class writeTester {
 		if (m==null) {
 			m = SBOL2Doc_test.getModuleDefinition(identity);
 		} else {
-			setCommonTopLevelData(m, identity, persistentIdentity, version, displayId, name, description);
+			setCommonTopLevelData(m, name, description);
 			if(annotations != null)
 				m.setAnnotations(annotations);
 
@@ -888,7 +872,7 @@ public class writeTester {
 		String description 	   = moduleInstantiation_data.get(5);
 
 		Module modInstantiation = new Module(identity, m.getIdentity());
-		setCommonDocumentedData(modInstantiation, identity, persistentIdentity, version, displayId, name, description);
+		setCommonDocumentedData(modInstantiation, name, description);
 
 		for(MapsTo map : maps)
 			modInstantiation.addMapsTo(map);
@@ -923,7 +907,7 @@ public class writeTester {
 
 		SequenceAnnotation s = new SequenceAnnotation(identity, location);
 
-		setCommonDocumentedData(s, identity, persistentIdentity, version, displayId, name, description);
+		setCommonDocumentedData(s, name, description);
 
 
 		return s;
@@ -970,7 +954,7 @@ public class writeTester {
 		URI instantiatedComponent = c.getIdentity();
 
 		Component s = new Component(identity, access, instantiatedComponent);
-		setCommonDocumentedData(s, identity, persistentIdentity, version, displayId, name, description);
+		setCommonDocumentedData(s, name, description);
 
 
 		return s;
@@ -979,19 +963,16 @@ public class writeTester {
 	private static Sequence createSequenceData(SBOLDocument SBOL2Doc_test, List<String> structureData,
 			URI encoding)
 	{
-		URI identity 		   = getURI(structureData.get(0));
-		URI persistentIdentity = getURI(structureData.get(1));
-		String version 		   = structureData.get(2);
-		String displayId 	   = structureData.get(3);
-		String name 		   = structureData.get(4);
-		String description 	   = structureData.get(5);
-		String element 		   = structureData.get(6);
+		String displayId 	   = structureData.get(0);
+		String version 		   = structureData.get(1);
+		String element 		   = structureData.get(2);
+		String identity 	   = SBOL2Doc_test.getDefaultURIprefix()+"/"+displayId+"/"+version;
 
-		Sequence structure = SBOL2Doc_test.createSequence(identity, element, encoding);
+		Sequence structure = SBOL2Doc_test.createSequence(displayId, version, element, encoding);
 		if (structure==null) {
-			structure = SBOL2Doc_test.getSequence(identity);
+			structure = SBOL2Doc_test.getSequence(URI.create(identity));
 		} else {
-			setCommonTopLevelData(structure, identity, persistentIdentity, version, displayId, name, description);
+			setCommonTopLevelData(structure, displayId, displayId);
 		}
 		return structure;
 	}

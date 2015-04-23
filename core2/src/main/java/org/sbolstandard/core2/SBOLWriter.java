@@ -317,7 +317,7 @@ public class SBOLWriter {
 		printWriter.flush();
 	}
 
-	private static void formatCollections (List<Collection> collections, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatCollections (Set<Collection> collections, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 		for(Collection c : collections)
 		{
@@ -632,7 +632,7 @@ public class SBOLWriter {
 
 	}
 
-	private static void formatSequences (List<Sequence> sequences, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatSequences (Set<Sequence> sequences, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 		for(Sequence s : sequences)
 		{

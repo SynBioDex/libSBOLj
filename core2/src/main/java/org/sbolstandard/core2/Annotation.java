@@ -10,6 +10,10 @@ import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 public class Annotation {
 
 	private NamedProperty<QName> value;
+
+	public Annotation(QName qName, String literal) {
+		value = NamedProperty(qName,literal);
+	}
 	
 	public Annotation(NamedProperty<QName> value) {
 		this.value = value;
