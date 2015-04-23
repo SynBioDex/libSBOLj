@@ -1,5 +1,7 @@
 package org.sbolstandard.core2;
 
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URI;
@@ -704,9 +706,9 @@ public class writeTester {
 		return collection;
 	}
 
-	private static Annotation createAnnotation(QName relation, Turtle literal)
+	private static Annotation createAnnotation(QName relation, String literal)
 	{
-		return new Annotation(relation, literal);
+		return new Annotation(NamedProperty(relation, literal));
 
 	}
 
@@ -804,9 +806,9 @@ public class writeTester {
 		return interaction;
 	}
 
-	private static Turtle createTurtle()
+	private static String createTurtle()
 	{
-		return new Turtle("turtleString");
+		return "turtleString";
 	}
 
 	private static MapsTo createMapTo (URI identity, RefinementType refinement,
