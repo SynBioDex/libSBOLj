@@ -1,4 +1,4 @@
-package org.sbolstandard.core2.libraryTests;
+package org.sbolstandard.core2;
 
 import static org.junit.Assert.*;
 import static org.sbolstandard.core2.URIcompliance.*;
