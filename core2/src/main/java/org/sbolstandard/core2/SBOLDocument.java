@@ -29,7 +29,7 @@ public class SBOLDocument {
 	private HashMap<URI, Model> models;
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
-	private HashMap<URI,NamespaceBinding> nameSpaces;
+	private HashMap<URI, NamespaceBinding> nameSpaces;
 	private String defaultURIprefix;
 
 	public SBOLDocument() {
@@ -1058,12 +1058,11 @@ public class SBOLDocument {
 	/**
 	 * Adds a namespace URI and its prefix. Deprecated method. Use {@link #addNamespaceBinding(NamespaceBinding)}.
 	 * 
-	 * @param nameSpaceUri The Namespace {@link URI}
+	 * @param nameSpaceURI The Namespace {@link URI}
 	 * @param prefix The prefix {@link String}
-	 * @deprecated
 	 */
-	public void addNamespaceBinding(URI nameSpaceUri, String prefix) {
-		nameSpaces.put(nameSpaceUri, NamespaceBinding(nameSpaceUri.toString(), prefix));
+	public void addNamespaceBinding(URI nameSpaceURI, String prefix) {
+		nameSpaces.put(nameSpaceURI, NamespaceBinding(nameSpaceURI.toString(), prefix));
 	}
 	
 	/**
