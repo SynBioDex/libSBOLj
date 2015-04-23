@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.*;
 
-public class UriComplianceTest {
+public class URIcomplianceTest {
 	String uri1Str = "http://www.async.ece.utah.edu/LacI_Inv/1.0";
 	String uri2Str = "http://www.AsYNc.eCe.utAH.edu/LacI_Inv/1.0";
 	String uri3Str = "http://www.async.ece.utah.edu/LAcI_inV/1.0";
