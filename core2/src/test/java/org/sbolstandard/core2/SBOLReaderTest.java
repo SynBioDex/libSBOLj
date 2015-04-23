@@ -22,7 +22,7 @@ import org.sbolstandard.core.SBOLValidationException;
 public class SBOLReaderTest extends SBOLAbstractTests
 {
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected) throws Exception
+	public void runTest(final String fileName, final SBOLDocument expected, String fileType) throws Exception
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
@@ -32,8 +32,18 @@ public class SBOLReaderTest extends SBOLAbstractTests
 
 		try
 		{
+			SBOLDocument actual;
 			SBOLReader.setURIPrefix("www.async.ece.utah.edu");
-			SBOLDocument actual = SBOLReader.read(resourceAsStream);
+
+			if(fileType.equals("rdf"))
+				actual = SBOLReader.readRDF(resourceAsStream);
+			else if (fileType.equals("json"))
+				actual = SBOLReader.readJSON(resourceAsStream);
+			else if (fileType.equals("turtle"))
+				actual = SBOLReader.readTurtle(resourceAsStream);
+			else
+				actual = SBOLReader.read(resourceAsStream);
+
 			assertTrue(actual.equals(expected));
 		}
 		catch (SBOLValidationException e)

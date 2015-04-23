@@ -729,7 +729,8 @@ public class writeTester {
 
 		//ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(identity, type, roles);
 		ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(identity, type);
-		c.setRoles(roles);
+		if (roles != null)
+			c.setRoles(roles);
 		setCommonTopLevelData(c, identity, persistentIdentity, version, displayId, name, description);
 
 		if(structureData != null)
