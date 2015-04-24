@@ -152,8 +152,8 @@ public class SBOLDocument {
 	 * Returns the list of <code>Module</code> objects owned by this object.
 	 * @return the list of <code>Module</code> objects owned by this object
 	 */
-	public List<ModuleDefinition> getModuleDefinitions() {
-		List<ModuleDefinition> moduleDefinitions = new ArrayList<ModuleDefinition>();
+	public Set<ModuleDefinition> getModuleDefinitions() {
+		Set<ModuleDefinition> moduleDefinitions = new HashSet<ModuleDefinition>();
 		moduleDefinitions.addAll(this.moduleDefinitions.values());
 		return moduleDefinitions;
 
@@ -284,7 +284,6 @@ public class SBOLDocument {
 	 * @return the list of <code>Collection</code> objects owned by this object
 	 */
 	public Set<Collection> getCollections() {
-		//		return (List<Collection>) collections.values();
 		Set<Collection> collections = new HashSet<Collection>();
 		collections.addAll(this.collections.values());
 		return collections;
@@ -424,9 +423,9 @@ public class SBOLDocument {
 	 * Returns the list of <code>Model</code> objects owned by this object.
 	 * @return the list of <code>Model</code> objects owned by this object
 	 */
-	public List<Model> getModels() {
+	public Set<Model> getModels() {
 		//		return (List<Model>) models.values();
-		List<Model> models = new ArrayList<Model>();
+		Set<Model> models = new HashSet<Model>();
 		models.addAll(this.models.values());
 		return models;
 	}
@@ -561,9 +560,9 @@ public class SBOLDocument {
 	 * Returns the list of <code>ComponentDefinition</code> objects owned by this object.
 	 * @return the list of <code>ComponentDefinition</code> objects owned by this object
 	 */
-	public List<ComponentDefinition> getComponentDefinitions() {
+	public Set<ComponentDefinition> getComponentDefinitions() {
 		//		return (List<Component>) components.values();
-		List<ComponentDefinition> components = new ArrayList<ComponentDefinition>();
+		Set<ComponentDefinition> components = new HashSet<ComponentDefinition>();
 		components.addAll(this.componentDefinitions.values());
 		return components;
 	}
@@ -1034,9 +1033,9 @@ public class SBOLDocument {
 	 * Returns the list of <code>GenericTopLevel</code> objects owned by this object.
 	 * @return the list of <code>GenericTopLevel</code> objects owned by this object
 	 */
-	public List<GenericTopLevel> getGenericTopLevels() {
+	public Set<GenericTopLevel> getGenericTopLevels() {
 		//		return (List<GenericTopLevel>) topLevels.values();
-		List<GenericTopLevel> topLevels = new ArrayList<GenericTopLevel>();
+		Set<GenericTopLevel> topLevels = new HashSet<GenericTopLevel>();
 		topLevels.addAll(this.genericTopLevels.values());
 		return topLevels;
 	}

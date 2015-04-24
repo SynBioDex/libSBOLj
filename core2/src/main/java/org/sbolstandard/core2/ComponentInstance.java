@@ -3,7 +3,9 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.sbolstandard.core2.MapsTo.RefinementType;
 
@@ -270,8 +272,8 @@ public abstract class ComponentInstance extends Documented {
 	 * Returns the list of reference instances owned by this instance. 
 	 * @return the list of reference instances owned by this instance.
 	 */
-	public List<MapsTo> getMapsTos() {
-		return new ArrayList<MapsTo>(mapsTos.values());
+	public Set<MapsTo> getMapsTos() {
+		return new HashSet<MapsTo>(mapsTos.values());
 	}
 	
 	/**

@@ -368,7 +368,7 @@ public class SBOLWriter {
 		formatCommonDocumentedData(list,t);
 	}
 
-	private static void formatComponentDefinitions (List<ComponentDefinition> componentDefinitions, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatComponentDefinitions (Set<ComponentDefinition> componentDefinitions, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 
 		for(ComponentDefinition c : componentDefinitions)
@@ -407,7 +407,7 @@ public class SBOLWriter {
 	 * @param functionalInstantiation
 	 * @param properties
 	 */
-	private static void formatFunctionalComponents(List<FunctionalComponent> functionalInstantiation,
+	private static void formatFunctionalComponents(Set<FunctionalComponent> functionalInstantiation,
 			List<NamedProperty<QName>> properties)
 	{
 		for(FunctionalComponent f : functionalInstantiation)
@@ -443,7 +443,7 @@ public class SBOLWriter {
 	 * @param interactions
 	 * @param properties
 	 */
-	private static void formatInteractions (List<Interaction> interactions,
+	private static void formatInteractions (Set<Interaction> interactions,
 			List<NamedProperty<QName>> properties)
 	{
 		for(Interaction i : interactions)
@@ -473,7 +473,7 @@ public class SBOLWriter {
 		}
 	}
 
-	private static void formatModels (List<Model> models, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatModels (Set<Model> models, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 		for(Model m : models)
 		{
@@ -499,7 +499,7 @@ public class SBOLWriter {
 		}
 	}
 
-	private static void formatModels(Set<URI> models, List<NamedProperty<QName>> list)
+	private static void formatModelProperties(Set<URI> models, List<NamedProperty<QName>> list)
 	{
 		for(URI m : models)
 		{
@@ -512,7 +512,7 @@ public class SBOLWriter {
 	 * @param module
 	 * @param properties
 	 */
-	private static void formatModule (List<Module> module,
+	private static void formatModule (Set<Module> module,
 			List<NamedProperty<QName>> properties)
 	{
 		for(Module m : module)
@@ -538,7 +538,7 @@ public class SBOLWriter {
 		}
 	}
 
-	private static void formatModuleDefinitions(List<ModuleDefinition> module, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatModuleDefinitions(Set<ModuleDefinition> module, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 		for (ModuleDefinition m : module)
 		{
@@ -554,14 +554,14 @@ public class SBOLWriter {
 
 			formatFunctionalComponents(m.getFunctionalComponents(),list);
 			formatInteractions(m.getInteractions(),list);
-			formatModels(m.getModels(),list);
+			formatModelProperties(m.getModels(),list);
 			formatModule(m.getModules(),list);
 
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ModuleDefinition.ModuleDefinition, m.getIdentity(), NamedProperties(list)));
 		}
 	}
 
-	private static List<NestedDocument<QName>> formatParticipations(List<Participation> participations)
+	private static List<NestedDocument<QName>> formatParticipations(Set<Participation> participations)
 	{
 		List<NestedDocument<QName>> nestedDoc = new ArrayList<NestedDocument<QName>>();
 
@@ -588,7 +588,7 @@ public class SBOLWriter {
 	}
 
 
-	private static void formatSequenceAnnotations(List<SequenceAnnotation> sequenceAnnotations,
+	private static void formatSequenceAnnotations(Set<SequenceAnnotation> sequenceAnnotations,
 			List<NamedProperty<QName>> properties)
 	{
 		for(SequenceAnnotation s : sequenceAnnotations)
@@ -608,7 +608,7 @@ public class SBOLWriter {
 
 	}
 
-	private static void formatSequenceConstraints(List<SequenceConstraint> sequenceConstraint,
+	private static void formatSequenceConstraints(Set<SequenceConstraint> sequenceConstraint,
 			List<NamedProperty<QName>> properties)
 	{
 		for(SequenceConstraint s : sequenceConstraint)
@@ -649,7 +649,7 @@ public class SBOLWriter {
 
 	}
 
-	private static void formatComponents(List<Component> components,
+	private static void formatComponents(Set<Component> components,
 			List<NamedProperty<QName>> properties)
 	{
 		for(Component s : components)
@@ -675,7 +675,7 @@ public class SBOLWriter {
 		}
 	}
 
-	private static void formatGenericTopLevel (List<GenericTopLevel> topLevels, List<TopLevelDocument<QName>> topLevelDoc)
+	private static void formatGenericTopLevel(Set<GenericTopLevel> topLevels, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 		for(GenericTopLevel t : topLevels)
 		{
@@ -726,7 +726,7 @@ public class SBOLWriter {
 
 	}
 
-	private static List<NestedDocument<QName>> getMapsTo(List<MapsTo> references)
+	private static List<NestedDocument<QName>> getMapsTo(Set<MapsTo> references)
 	{
 		List<NestedDocument<QName>> nestedDoc = new ArrayList<NestedDocument<QName>>();
 

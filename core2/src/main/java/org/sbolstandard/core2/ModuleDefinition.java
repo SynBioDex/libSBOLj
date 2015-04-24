@@ -236,8 +236,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the list of subModule instances owned by this instance. 
 	 * @return the list of subModule instances owned by this instance.
 	 */
-	public List<Module> getModules() {
-		return new ArrayList<Module>(modules.values());
+	public Set<Module> getModules() {
+		return new HashSet<Module>(modules.values());
 	}
 	
 	/**
@@ -377,9 +377,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the list of interaction instances owned by this instance. 
 	 * @return the list of interaction instances owned by this instance.
 	 */
-	public List<Interaction> getInteractions() {
-//		return (List<Interaction>) interactions.values();
-		return new ArrayList<Interaction>(interactions.values());
+	public Set<Interaction> getInteractions() {
+		return new HashSet<Interaction>(interactions.values());
 	}
 	
 	/**
@@ -520,8 +519,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the list of functionalInstantiation instances owned by this instance. 
 	 * @return the list of functionalInstantiation instances owned by this instance.
 	 */
-	public List<FunctionalComponent> getFunctionalComponents() {
-		return new ArrayList<FunctionalComponent>(functionalComponents.values());
+	public Set<FunctionalComponent> getFunctionalComponents() {
+		return new HashSet<FunctionalComponent>(functionalComponents.values());
 	}
 	
 	/**

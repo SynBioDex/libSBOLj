@@ -204,9 +204,8 @@ public class Interaction extends Documented {
 	 * Returns the list of participation instances owned by this instance. 
 	 * @return the list of participation instances owned by this instance.
 	 */
-	public List<Participation> getParticipations() {
-//		return (List<Participation>) participations.values();
-		return new ArrayList<Participation>(participations.values());
+	public Set<Participation> getParticipations() {
+		return new HashSet<Participation>(participations.values());
 	}
 	
 	/**

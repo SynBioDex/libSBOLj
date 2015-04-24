@@ -204,7 +204,7 @@ public class writeTester {
 	private static TopLevel get_topLevel (SBOLDocument SBOL2Doc_test)
 	{
 
-		return createTopLevel(SBOL2Doc_test, getData("GenericTopLevel/1/0","GenericTopLevel","1.0","GenericTopLevel","GenericTopLevel", "GenericTopLevel"));
+		return createTopLevel(SBOL2Doc_test, getData("GenericTopLevel","1.0"));
 	}
 
 	private static Sequence get_pLacSeq (SBOLDocument SBOL2Doc_test)
@@ -233,7 +233,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Promoter"),
-				getData("pLac/1/0","pLac","1.0","pLac","pLac", "pLac"),
+				getData("pLac","1.0"),
 				get_pLacSeq(SBOL2Doc_test),
 				null, null, null);
 	}
@@ -243,7 +243,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("CDS"),
-				getData("tetRCDS/1/0","tetR","1.0","tetR","tetR", "tetR"),
+				getData("tetRCDS","1.0"),
 				get_tetRSeq(SBOL2Doc_test),
 				null, null, null);
 	}
@@ -294,7 +294,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Gene"),
-				getData("pLactetR/1/0","pLactetR","1.0","pLactetR","pLactetR", "pLactetR"),
+				getData("pLactetR","1.0"),
 				get_pLactetRSeq(SBOL2Doc_test),
 				getComponent_List(get_P(SBOL2Doc_test), get_C(SBOL2Doc_test)),
 				null,
@@ -306,7 +306,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("Protein"),
 				getSetPropertyURI("Transcriptionfactor"),
-				getData("LacI/1/0","LacI","1.0","LacI", "LacI", "LacI"),
+				getData("LacI","1.0"),
 				null,
 				null, null, null);
 	}
@@ -316,7 +316,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("Protein"),
 				getSetPropertyURI("Transcriptionfactor"),
-				getData("TetR/1/0","TetR","1.0","TetR", "TetR", "TetR"),
+				getData("TetR","1.0"),
 				null,
 				null, null, null);
 	}
@@ -440,7 +440,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Promoter"),
-				getData("ptet/1/0","ptet","1.0","ptet","ptet", "ptet"),
+				getData("ptet","1.0"),
 				get_ptetSeq(SBOL2Doc_test),
 				null, null, null);
 	}
@@ -450,7 +450,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("CDS"),
-				getData("lacICDS/1/0","lacI","1.0","lacI","lacI", "lacI"),
+				getData("lacICDS","1.0"),
 				get_lacISeq(SBOL2Doc_test),
 				null, null, null);
 	}
@@ -492,7 +492,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Gene"),
-				getData("ptetlacI/1/0","ptetlacI","1.0","ptetlacI","ptetlacI", "ptetlacI"),
+				getData("ptetlacI","1.0"),
 				get_ptetlacISeq(SBOL2Doc_test),
 				getComponent_List(get_T(SBOL2Doc_test), get_L(SBOL2Doc_test)),
 				getSequenceAnnotation_List(get_t_structAnnotate(SBOL2Doc_test), get_l_structAnnotate(SBOL2Doc_test)),
@@ -628,7 +628,7 @@ public class writeTester {
 	private static Model get_ToggleModel (SBOLDocument SBOL2Doc_test)
 	{
 		return createModelData(SBOL2Doc_test,
-				getData("Toggle/ToggleModel/1/0","ToggleModel","1.0","ToggleModel","ToggleModel", "ToggleModel"),
+				getData("ToggleModel","1.0"),
 				getSetPropertyURI("ToggleModel_role"),
 				getPropertyURI("ToggleModel_source"), getPropertyURI("ToggleModel_language"), getPropertyURI("ToggleModel_framework"));
 	}
@@ -661,17 +661,13 @@ public class writeTester {
 
 	private static GenericTopLevel createTopLevel(SBOLDocument SBOL2Doc_test, List<String> topLevelData)
 	{
-		URI identity 		   = getURI(topLevelData.get(0));
-		URI persistentIdentity = getURI(topLevelData.get(1));
-		String version 		   = topLevelData.get(2);
-		String displayId 	   = topLevelData.get(3);
-		String name 		   = topLevelData.get(4);
-		String description 	   = topLevelData.get(5);
+		String displayId 	   = topLevelData.get(0);
+		String version 		   = topLevelData.get(1);
 
-		GenericTopLevel toplevel =  SBOL2Doc_test.createGenericTopLevel(identity, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+		GenericTopLevel toplevel =  SBOL2Doc_test.createGenericTopLevel(displayId, version, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
 		SBOL2Doc_test.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
-		setCommonTopLevelData(toplevel, name, description);
+		setCommonTopLevelData(toplevel, displayId, displayId);
 		return toplevel;
 	}
 
@@ -703,21 +699,18 @@ public class writeTester {
 			List<SequenceAnnotation> structureAnnotationData,
 			List<SequenceConstraint> structureConstraintData)
 	{
-		URI identity 		   = getURI(componentData.get(0));
-		URI persistentIdentity = getURI(componentData.get(1));
-		String version 		   = componentData.get(2);
-		String displayId 	   = componentData.get(3);
-		String name 		   = componentData.get(4);
-		String description 	   = componentData.get(5);
+		String displayId 	   = componentData.get(0);
+		String version 		   = componentData.get(1);
+		String identity 	   = SBOL2Doc_test.getDefaultURIprefix()+"/"+displayId+"/"+version;
 
 		//ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(identity, type, roles);
-		ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(identity, type);
+		ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(displayId, version, type);
 
 		if (c==null) {
-			c = SBOL2Doc_test.getComponentDefinition(identity);
+			c = SBOL2Doc_test.getComponentDefinition(URI.create(identity));
 		} else {
 			c.setRoles(roles);
-			setCommonTopLevelData(c, name, description);
+			setCommonTopLevelData(c, displayId, displayId);
 		}
 		if(structureData != null)
 			c.setSequence(structureData.getIdentity());
@@ -808,19 +801,16 @@ public class writeTester {
 	private static Model createModelData(SBOLDocument doc, List<String> modeldata, Set<URI> roles,
 			URI source, URI language, URI framework)
 	{
-		URI identity 		   = getURI(modeldata.get(0));
-		URI persistentIdentity = getURI(modeldata.get(1));
-		String version 		   = modeldata.get(2);
-		String displayId 	   = modeldata.get(3);
-		String name 		   = modeldata.get(4);
-		String description     = modeldata.get(5);
+		String displayId 	   = modeldata.get(0);
+		String version 		   = modeldata.get(1);
+		String identity 	   = SBOL2Doc_test.getDefaultURIprefix()+"/"+displayId+"/"+version;
 		// Model model = doc.createModel(identity, source, language, framework, roles);
-		Model model = doc.createModel(identity, source, language, framework);		
+		Model model = doc.createModel(displayId, version, source, language, framework);		
 		if (model==null) {
-			model = doc.getModel(identity);
+			model = doc.getModel(URI.create(identity));
 		} else {
 			model.setRoles(roles);
-			setCommonTopLevelData(model, name, description);
+			setCommonTopLevelData(model, displayId, displayId);
 		}
 		return model;
 	}

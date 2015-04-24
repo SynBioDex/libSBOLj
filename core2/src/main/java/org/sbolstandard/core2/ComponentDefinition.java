@@ -344,9 +344,9 @@ public class ComponentDefinition extends TopLevel {
 	 * Returns the list of structuralAnnotation instances owned by this instance. 
 	 * @return the list of structuralAnnotation instances owned by this instance.
 	 */
-	public List<SequenceAnnotation> getSequenceAnnotations() {
+	public Set<SequenceAnnotation> getSequenceAnnotations() {
 //		return (List<SequenceAnnotation>) structuralAnnotations.values();
-		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>(); 
+		Set<SequenceAnnotation> sequenceAnnotations = new HashSet<SequenceAnnotation>(); 
 		sequenceAnnotations.addAll(this.sequenceAnnotations.values());
 		return sequenceAnnotations; 
 	}
@@ -488,8 +488,8 @@ public class ComponentDefinition extends TopLevel {
 	 * Returns the list of {@link Component} instances owned by this instance. 
 	 * @return the list of {@link Component} instances owned by this instance.
 	 */
-	public List<Component> getComponents() {
-		List<Component> structuralInstantiations = new ArrayList<Component>(); 
+	public Set<Component> getComponents() {
+		Set<Component> structuralInstantiations = new HashSet<Component>(); 
 		structuralInstantiations.addAll(this.components.values());
 		return structuralInstantiations; 
 	}
@@ -634,9 +634,8 @@ public class ComponentDefinition extends TopLevel {
 	 * Returns the list of {@link SequenceConstraint} instances owned by this instance. 
 	 * @return the list of {@link SequenceConstraint} instances owned by this instance.
 	 */
-	public List<SequenceConstraint> getSequenceConstraints() {
-//		return (List<StructuralConstraint>) structuralConstraints.values();
-		List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>(); 
+	public Set<SequenceConstraint> getSequenceConstraints() {
+		Set<SequenceConstraint> sequenceConstraints = new HashSet<SequenceConstraint>(); 
 		sequenceConstraints.addAll(this.sequenceConstraints.values());
 		return sequenceConstraints; 
 	}
