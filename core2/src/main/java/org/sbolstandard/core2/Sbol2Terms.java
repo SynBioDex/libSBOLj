@@ -11,7 +11,7 @@ import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
  * Provides qualified names for SBOL2.0 objects.
  *
  */
-public class Sbol2Terms
+class Sbol2Terms
 {
 
 	/**

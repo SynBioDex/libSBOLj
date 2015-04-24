@@ -1,5 +1,7 @@
 package org.sbolstandard.core2;
 
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,12 +24,10 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
+import org.sbolstandard.core2.ComponentInstance.AccessType;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
-import org.sbolstandard.core2.abstract_classes.ComponentInstance;
-import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
-import org.sbolstandard.core2.abstract_classes.Location;
 
 import uk.ac.intbio.core.io.turtle.TurtleIo;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
@@ -207,7 +207,8 @@ public class SBOLReader
 				{
 					return readRDFV1(in, document);
 				}
-				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -240,7 +241,8 @@ public class SBOLReader
 				{
 					return readRDFV1(in, document);
 				}
-				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -273,7 +275,8 @@ public class SBOLReader
 				{
 					return readRDFV1(in, document);
 				}
-				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
 			readTopLevelDocs(SBOLDoc, document);
 		}
@@ -304,7 +307,8 @@ public class SBOLReader
 				{
 					return readRDFV1(in, document);
 				}
-				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 
 			}
 			readTopLevelDocs(SBOLDoc, document);
@@ -325,11 +329,20 @@ public class SBOLReader
 			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 			{
 				SBOLDoc.addNamespaceBinding(
-						URI.create(Sbol2Terms.sbol2.getNamespaceURI()),
-						Sbol2Terms.sbol2.getPrefix());
+						NamespaceBinding(
+								Sbol2Terms.sbol2.getNamespaceURI(),
+								Sbol2Terms.sbol2.getPrefix()));
+				//				SBOLDoc.addNamespaceBinding(
+				//						URI.create(Sbol2Terms.sbol2.getNamespaceURI()),
+				//						Sbol2Terms.sbol2.getPrefix());
 			}
 			else
-				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+			{
+				SBOLDoc.addNamespaceBinding(
+						NamespaceBinding(
+								n.getNamespaceURI(), n.getPrefix()));
+				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+			}
 		}
 		readTopLevelDocsV1(SBOLDoc, document);
 		return SBOLDoc;
@@ -500,7 +513,9 @@ public class SBOLReader
 			sequenceConstraints.add(sc);
 		}
 
-		ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
+		//ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
+		ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type);
+		c.setRoles(roles);
 		if(identity != componentDef.getIdentity())
 			c.setWasDerivedFrom(componentDef.getIdentity());
 		if (displayId != null)
@@ -742,10 +757,10 @@ public class SBOLReader
 	private static ComponentDefinition parseComponentDefinitions(
 			SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		URI persistentIdentity = null;
 		String displayId 	   = null;
 		String name 	 	   = null;
 		String description 	   = null;
+		URI persistentIdentity = null;
 		URI structure 		   = null;
 		String version 		   = null;
 		URI wasDerivedFrom     = null;
@@ -759,13 +774,13 @@ public class SBOLReader
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
-			{
-				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
+			if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				persistentIdentity  = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
@@ -813,11 +828,14 @@ public class SBOLReader
 			}
 		}
 
-		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
-		if (persistentIdentity != null)
-			c.setPersistentIdentity(persistentIdentity);
+		//ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
+		//c.setPersistentIdentity(topLevel.getOptionalUriPropertyValue(Sbol2Terms.Identified.persistentIdentity));
+		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type);
+		c.setRoles(roles);
 		if (displayId != null)
 			c.setDisplayId(displayId);
+		if (persistentIdentity != null)
+			c.setPersistentIdentity(persistentIdentity);
 		if (structure != null)
 			c.setSequence(structure);
 		if (!components.isEmpty())

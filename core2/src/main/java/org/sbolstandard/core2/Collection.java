@@ -4,9 +4,7 @@ import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.sbolstandard.core2.abstract_classes.TopLevel;
-
-import static org.sbolstandard.core2.util.URIcompliance.*;
+import static org.sbolstandard.core2.URIcompliance.*;
 
 public class Collection extends TopLevel{
 	

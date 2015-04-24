@@ -1,57 +1,60 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <parent>
-    <groupId>org.sbolstandard</groupId>
-    <artifactId>libSBOLj</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
-  </parent>
-  
-  <artifactId>${project.parent.artifactId}-core2</artifactId>
-  
-  <packaging>jar</packaging>
+	<modelVersion>4.0.0</modelVersion>
 
-    <dependencies>
-        <!-- dependencies used by libSBOLj -->
+	<parent>
+		<groupId>org.sbolstandard</groupId>
+		<artifactId>libSBOLj</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
 
-        <!-- test dependencies -->
-             <dependency>
-             	<groupId>
-             		uk.ac.ncl.intbio
-             	</groupId>
-             	<artifactId>sbol-data-core</artifactId>
-             	<version>0.1.1</version>
-             </dependency>
-             <dependency>
-             	<groupId>uk.ac.ncl.intbio</groupId>
-             	<artifactId>sbol-data-examples</artifactId>
-             	<version>0.1.1</version>
-             </dependency>
-             <dependency>
-             	<groupId>uk.ac.ncl.intbio</groupId>
-             	<artifactId>sbol-data-io-RDF</artifactId>
-             	<version>0.1.1</version>
-             </dependency>
-             <dependency>
-             	<groupId>uk.ac.ncl.intbio</groupId>
-             	<artifactId>sbol-data-nativeSbol</artifactId>
-             	<version>0.1.1</version>
-             </dependency>
-             <dependency>
-             	<groupId>org.sbolstandard</groupId>
-             	<artifactId>${project.parent.artifactId}-core</artifactId>
-             	<version>${project.parent.version}</version>
-             </dependency>
-             <dependency>
-               <groupId>junit</groupId>
-               <artifactId>junit</artifactId>
-               <version>4.12</version>
-             </dependency>
-    </dependencies>
-  
-   <build>
+	<artifactId>libSBOLj-core2</artifactId>
+
+	<properties>
+		<sbol-data.version>0.1.1</sbol-data.version>
+	</properties>
+
+
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<!-- dependencies used by libSBOLj -->
+
+		<!-- test dependencies -->
+		<dependency>
+			<groupId>uk.ac.ncl.intbio</groupId>
+			<artifactId>sbol-data-core</artifactId>
+			<version>${sbol-data.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>uk.ac.ncl.intbio</groupId>
+			<artifactId>sbol-data-examples</artifactId>
+			<version>${sbol-data.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>uk.ac.ncl.intbio</groupId>
+			<artifactId>sbol-data-io-RDF</artifactId>
+			<version>${sbol-data.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>uk.ac.ncl.intbio</groupId>
+			<artifactId>sbol-data-nativeSbol</artifactId>
+			<version>${sbol-data.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sbolstandard</groupId>
+			<artifactId>libSBOLj-core</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+	</dependencies>
+
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -67,10 +70,10 @@
 				</executions>
 				<configuration>
 					<shadedArtifactAttached>true</shadedArtifactAttached>
-              	<shadedClassifierName>withDependencies</shadedClassifierName>
+					<shadedClassifierName>withDependencies</shadedClassifierName>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-	  
+
 </project>

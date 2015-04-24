@@ -1,18 +1,18 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import static org.sbolstandard.core2.util.URIcompliance.*;
+
+import static org.sbolstandard.core2.URIcompliance.*;
 
 import org.sbolstandard.core2.Sbol2Terms.Orientation;
-import org.sbolstandard.core2.abstract_classes.Location;
 
 public class Range extends Location{
 	
-	private Integer start;
-	private Integer end;
+	private int start;
+	private int end;
 	private OrientationType orientation;
 	
-	public Range(URI identity, Integer start, Integer end) {
+	public Range(URI identity, int start, int end) {
 		super(identity);
 		setStart(start);
 		setEnd(end);
@@ -20,8 +20,8 @@ public class Range extends Location{
 	
 	private Range(Range range) {
 		super(range);
-		this.setStart(range.getStart().intValue());
-		this.setEnd(range.getEnd().intValue());
+		this.setStart(range.getStart());
+		this.setEnd(range.getEnd());
 		this.setOrientation(range.getOrientation());
 	}
 
@@ -30,7 +30,7 @@ public class Range extends Location{
 	 * Sets field variable <code>start</code> to the specified element.
 	 * @param value
 	 */
-	public void setStart(Integer value) {
+	public void setStart(int value) {
 		start = value;		
 	}
 	
@@ -38,7 +38,7 @@ public class Range extends Location{
 	 * Returns field variable <code>start</code>.
 	 * @return field variable <code>start</code>
 	 */
-	public Integer getStart() {		
+	public int getStart() {		
 		return start;
 	}
 
@@ -46,7 +46,7 @@ public class Range extends Location{
 	 * Returns field variable <code>end</code>.
 	 * @return field variable <code>end</code>
 	 */
-	public Integer getEnd() {
+	public int getEnd() {
 		return end;
 	}
 
@@ -54,7 +54,7 @@ public class Range extends Location{
 	 * Sets field variable <code>end</code> to the specified element.
 	 * @param value
 	 */
-	public void setEnd(Integer value) {
+	public void setEnd(int value) {
 		end = value;
 	}
 	
@@ -172,6 +172,34 @@ public class Range extends Location{
 		// TODO: need to set wasDerivedFrom here?
 		this.setWasDerivedFrom(this.getIdentity());
 		this.setIdentity(newIdentity);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + end;
+		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+		result = prime * result + start;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Range other = (Range) obj;
+		if (end != other.end)
+			return false;
+		if (orientation != other.orientation)
+			return false;
+		if (start != other.start)
+			return false;
+		return true;
 	}
 
 }

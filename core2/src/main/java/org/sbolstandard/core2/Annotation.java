@@ -10,11 +10,7 @@ import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 public class Annotation {
 
 	private NamedProperty<QName> value;
-
-	public Annotation(QName relation, Turtle literal) {
-		value = NamedProperty(relation, literal.getTurtleStr());
-	}
-
+	
 	public Annotation(NamedProperty<QName> value) {
 		this.value = value;
 	}

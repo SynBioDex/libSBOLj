@@ -2,8 +2,7 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import org.sbolstandard.core2.abstract_classes.Identified;
-import static org.sbolstandard.core2.util.URIcompliance.*;
+import static org.sbolstandard.core2.URIcompliance.*;
 
 public class SequenceConstraint extends Identified {
 

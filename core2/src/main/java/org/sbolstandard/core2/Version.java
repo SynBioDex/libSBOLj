@@ -1,11 +1,11 @@
-package org.sbolstandard.core2.util;
+package org.sbolstandard.core2;
 
 /**
  * This class provides methods for version comparisons, following the Maven version scheme.
  * @author Zhen Zhang
  *
  */
-public final class Version {
+final class Version {
 	
 	
 	/**

@@ -2,10 +2,6 @@ package org.sbolstandard.core2;
 
 import java.io.InputStream;
 
-import org.sbolstandard.core2.SBOLDocument;
-import org.sbolstandard.core2.SBOLReader;
-import org.sbolstandard.core2.SBOLWriter;
-
 public class readTester {
 	public static String filenameRdf 	= "writeTesterString_v1.3.rdf";
 	public static String filenameJson   = "writeTesterString_v1.3.json";
@@ -22,11 +18,15 @@ public class readTester {
 	public static String filenameV1_9 	= "pIKE_pTAK_toggle_switches.xml";
 	public static String filenameV1_10 	= "miRNA.sbol.xml";
 
-	public static String path = "/org/sbolstandard/core2/test/files/";
+	public static String path = "test/data/";
 
 	public static void main(String[] args) {
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_1);
+			if (file == null)
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_1);
+
+			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
 			SBOLReader.setURIPrefix("www.async.ece.utah.edu");
 			SBOLDocument document1 = SBOLReader.read(file);
 			//			SBOLDocument document  = SBOLReader.read(filenameRdf);

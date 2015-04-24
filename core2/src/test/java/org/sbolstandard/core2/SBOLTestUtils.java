@@ -13,11 +13,10 @@ import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
 import org.sbolstandard.core.SBOLValidationException;
+import org.sbolstandard.core2.ComponentInstance.AccessType;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
-import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
-import org.sbolstandard.core2.abstract_classes.Location;
 
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 
@@ -33,7 +32,11 @@ public class SBOLTestUtils {
 
 	public static Sequence createSequence(SBOLDocument document,String id, List<Annotation> annotations)
 	{
-		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu",
+//		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu",
+//				id, "1.0", id + "_element", URI.create("http://encodings.org/encoding"));
+		
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		Sequence sequence = document.createSequence(
 				id, "1.0", id + "_element", URI.create("http://encodings.org/encoding"));
 
 		sequence.setName(id);
@@ -56,9 +59,12 @@ public class SBOLTestUtils {
 //				type, role);
 		
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+//		ComponentDefinition componentDefinition = document.createComponentDefinition(
+//				id, "1.0",type, role);
 		ComponentDefinition componentDefinition = document.createComponentDefinition(
-				id, "1.0",type, role);
-
+				id, "1.0",type);
+		componentDefinition.setRoles(role);
+		
 		//		componentDefinition.setName(id);
 		//		componentDefinition.setDescription(id);
 
