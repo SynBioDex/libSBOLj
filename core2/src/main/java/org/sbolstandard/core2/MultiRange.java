@@ -47,71 +47,27 @@ public class MultiRange extends Location{
 	 * Calls the Range constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of Range instances owned by this instance.
 	 * @param identity
-	 * @param location
-	 * @return the created Range instance. 
+	 * @return the created Range instance.
 	 */
 	public Range createRange(URI identity, Integer start, Integer end) {
 		Range range = new Range(identity, start, end);
-		if (addRange(range)) {
-			return range;	
-		}
-		else {
-			return null;
-		}
+		addRange(range);
+		return range;
 	}
 	
 	public Range createRange(String displayId, Integer start, Integer end) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
-		if (parentPersistentIdStr != null) {
-			if (isDisplayIdCompliant(displayId)) {
-				URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' 
-						+ extractVersion(this.getIdentity()));
-				return createRange(newMapsToURI, start, end);
-			}
-			else {
-				// TODO: Warning: display ID not compliant
-				return null;
-			}
-		}
-		else {
-			// TODO: Warning: Parent persistent ID is not compliant.
-			return null;
-		}
+		String version = this.getVersion();
+		URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
+		return createRange(newMapsToURI, start, end);
 	}
 	
 	/**
 	 * Adds the specified instance to the list of structuralAnnotations. 
 	 * @param range
 	 */
-	public boolean addRange(Range range) {
-		if (isChildURIcompliant(this.getIdentity(), range.getIdentity())) {
-			URI persistentId = URI.create(extractPersistentId(range.getIdentity()));
-			// Check if URI exists in the ranges map.
-			if (!ranges.containsKey(range.getIdentity())) {
-				ranges.put(range.getIdentity(), range);
-				Range latestRange = ranges.get(persistentId);
-				if (latestRange == null) {
-					ranges.put(persistentId, range);
-				}
-				else {						
-					if (isFirstVersionNewer(extractVersion(range.getIdentity()), 
-							extractVersion(latestRange.getIdentity()))) {								
-						ranges.put(persistentId, range);
-					}
-				}
-				return true;
-			}
-			else // key exists in ranges map
-				return false;
-		}
-		else { // Only check if mapTo's URI exists in all maps.
-			if (!ranges.containsKey(range.getIdentity())) {
-				ranges.put(range.getIdentity(), range);					
-				return true;
-			}
-			else // key exists in ranges map
-				return false;
-		}		
+	public void addRange(Range range) {
+		addChildSafely(range, ranges, "range");
 	}
 
 	/**

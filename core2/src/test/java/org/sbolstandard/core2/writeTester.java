@@ -703,14 +703,13 @@ public class writeTester {
 		String version 		   = componentData.get(1);
 		String identity 	   = SBOL2Doc_test.getDefaultURIprefix()+"/"+displayId+"/"+version;
 
-		//ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(identity, type, roles);
-		ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(displayId, version, type);
-
-		if (c==null) {
-			c = SBOL2Doc_test.getComponentDefinition(URI.create(identity));
-		} else {
+		ComponentDefinition c;
+		try {
+			c = SBOL2Doc_test.createComponentDefinition(displayId, version, type);
 			c.setRoles(roles);
 			setCommonTopLevelData(c, displayId, displayId);
+		} catch (Exception e) {
+			c = SBOL2Doc_test.getComponentDefinition(URI.create(identity));
 		}
 		if(structureData != null)
 			c.setSequence(structureData.getIdentity());
@@ -808,11 +807,12 @@ public class writeTester {
 		String version 		   = modeldata.get(1);
 		String identity 	   = SBOL2Doc_test.getDefaultURIprefix()+"/"+displayId+"/"+version;
 		// Model model = doc.createModel(identity, source, language, framework, roles);
-		Model model = doc.createModel(displayId, version, source, language, framework);		
-		if (model==null) {
-			model = doc.getModel(URI.create(identity));
-		} else {
+		Model model;
+		try {
+			model = doc.createModel(displayId, version, source, language, framework);		
 			setCommonTopLevelData(model, displayId, displayId);
+		} catch (Exception e) {
+			model = doc.getModel(URI.create(identity));
 		}
 		return model;
 	}
@@ -830,10 +830,9 @@ public class writeTester {
 		String version 		   = module_data.get(1);
 		String identity 	   = SBOL2Doc_test.getDefaultURIprefix()+"/"+displayId+"/"+version;
 
-		ModuleDefinition m = SBOL2Doc_test.createModuleDefinition(displayId, version, roles);
-		if (m==null) {
-			m = SBOL2Doc_test.getModuleDefinition(URI.create(identity));
-		} else {
+		ModuleDefinition m;
+		try {
+			m = SBOL2Doc_test.createModuleDefinition(displayId, version, roles);
 			setCommonTopLevelData(m, displayId, displayId);
 			if(annotations != null)
 				m.setAnnotations(annotations);
@@ -846,6 +845,8 @@ public class writeTester {
 				m.setModules(moduleInstantiation_data);
 			if(model_data != null)
 				m.setModels(model_data);
+		} catch (Exception e) {
+			m = SBOL2Doc_test.getModuleDefinition(URI.create(identity));
 		}
 		return m;
 	}
@@ -959,11 +960,12 @@ public class writeTester {
 		String element 		   = structureData.get(2);
 		String identity 	   = SBOL2Doc_test.getDefaultURIprefix()+"/"+displayId+"/"+version;
 
-		Sequence structure = SBOL2Doc_test.createSequence(displayId, version, element, encoding);
-		if (structure==null) {
-			structure = SBOL2Doc_test.getSequence(URI.create(identity));
-		} else {
+		Sequence structure;
+		try {
+			structure = SBOL2Doc_test.createSequence(displayId, version, element, encoding);
 			setCommonTopLevelData(structure, displayId, displayId);
+		} catch (Exception e){
+			structure = SBOL2Doc_test.getSequence(URI.create(identity));
 		}
 		return structure;
 	}
