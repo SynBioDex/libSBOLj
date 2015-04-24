@@ -812,7 +812,6 @@ public class writeTester {
 		if (model==null) {
 			model = doc.getModel(URI.create(identity));
 		} else {
-			model.setRoles(roles);
 			setCommonTopLevelData(model, displayId, displayId);
 		}
 		return model;

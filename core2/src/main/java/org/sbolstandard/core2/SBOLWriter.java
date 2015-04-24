@@ -487,13 +487,6 @@ public class SBOLWriter {
 				list.add(NamedProperty(Sbol2Terms.Model.language, m.getLanguage()));
 			if(m.getFramework() != null)
 				list.add(NamedProperty(Sbol2Terms.Model.framework, m.getFramework()));
-			if(m.getRoles() != null)
-			{
-				for (URI role : m.getRoles())
-				{
-					list.add(NamedProperty(Sbol2Terms.Model.roles, role));
-				}
-			}
 
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Model.Model, m.getIdentity(), NamedProperties(list)));
 		}

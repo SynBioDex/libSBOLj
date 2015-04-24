@@ -126,7 +126,6 @@ public class SBOLTestUtils {
 				URI.create(id + "_source"),
 				URI.create(id + "_language"),
 				URI.create(id + "_framework"));
-		model.setRoles(getSetPropertyURI(id + "_role"));
 		model.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
 		model.setDisplayId(id);
 		model.setName(id);

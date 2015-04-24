@@ -1453,7 +1453,6 @@ public class SBOLReader
 
 		//Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework, roles);
 		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework);
-		m.setRoles(roles);
 		if (persistentIdentity != null)
 			m.setPersistentIdentity(persistentIdentity);
 		if (version != null)
