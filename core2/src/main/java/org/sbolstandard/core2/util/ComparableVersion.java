@@ -1,4 +1,4 @@
-package org.sbolstandard.core2;
+package org.sbolstandard.core2.util;
 
 //package org.apache.maven.artifact.versioning;
 
@@ -60,7 +60,7 @@ import java.util.Stack;
  * @author <a href="mailto:kenney@apache.org">Kenney Westerhof</a>
  * @author <a href="mailto:hboutemy@apache.org">Hervé Boutemy</a>
  */
-class ComparableVersion
+public class ComparableVersion
     implements Comparable<ComparableVersion>
 {
     private String value;

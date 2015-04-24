@@ -1,15 +1,13 @@
-package org.sbolstandard.core2;
+package org.sbolstandard.core2.abstract_classes;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import javax.xml.namespace.QName;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
-import uk.ac.ncl.intbio.core.datatree.NamedProperty;
-import static org.sbolstandard.core2.URIcompliance.*;
-import static org.sbolstandard.core2.Version.isFirstVersionNewer;
+import org.sbolstandard.core2.Annotation;
+import org.sbolstandard.core2.Turtle;
 
 /**
  *
@@ -175,10 +173,12 @@ public abstract class Identified {
 	/**
 	 * Calls the Annotation constructor to create a new instance using the specified parameters,
 	 * then adds to the list of Annotation instances owned by this component.
+	 * @param relation
+	 * @param literal
 	 * @return the created Annotation instance.
 	 */
-	public Annotation createAnnotation(NamedProperty<QName> namedProperty) {
-		Annotation annotation = new Annotation(namedProperty);
+	public Annotation createAnnotation(QName relation, Turtle literal) {
+		Annotation annotation = new Annotation(relation, literal);
 		addAnnotation(annotation);
 		return annotation;
 	}
@@ -320,43 +320,7 @@ public abstract class Identified {
 
 		return true;
 	}
-
-	protected <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) {
-		if (isChildURIcompliant(this.getIdentity(), child.getIdentity())) {
-			URI persistentId = URI.create(extractPersistentId(child.getIdentity()));
-			if(keyExistsInAnyMap(persistentId, maps))
-				throw new IllegalArgumentException(
-			"Instance for identity `" + child.identity +
-					"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
-			if(siblingsMap.containsKey(child.getIdentity()))
-				throw new IllegalArgumentException(
-						"Instance for identity `" + child.identity +
-								"' and persistent identity `" + persistentId + "' exists for a " + typeName);
-			siblingsMap.put(child.getIdentity(), child);
-			I latest = siblingsMap.get(persistentId);
-			if (latest == null) {
-				siblingsMap.put(persistentId, child);
-			}
-			else {
-				if (isFirstVersionNewer(extractVersion(child.getIdentity()),
-						extractVersion(latest.getIdentity()))) {
-					siblingsMap.put(persistentId, child);
-				}
-			}
-		}
-		else { // Only check if participation's URI exists in all maps.
-            if(keyExistsInAnyMap(child.getIdentity(), maps))
-                throw new IllegalArgumentException(
-                        "Instance for identity `" + child.identity +
-                                "' exists for a non-" + typeName);
-            if(siblingsMap.containsKey(child.getIdentity()))
-				throw new IllegalArgumentException(
-						"Instance for identity `" + child.identity + "' exists for a " + typeName);
-			siblingsMap.put(child.getIdentity(), child);
-		}
-
-	}
-
+		
 	//	/**
 	//	 * @return
 	//	 * @deprecated As of release 2.0, replaced by {@link #getIdentity()}

@@ -1,8 +1,9 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
-import static org.sbolstandard.core2.URIcompliance.*;
+import org.sbolstandard.core2.abstract_classes.ComponentInstance;
 
 public class FunctionalComponent extends ComponentInstance {
 

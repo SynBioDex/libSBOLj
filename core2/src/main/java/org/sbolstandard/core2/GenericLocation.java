@@ -1,10 +1,10 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-
-import static org.sbolstandard.core2.URIcompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 import org.sbolstandard.core2.Sbol2Terms.Orientation;
+import org.sbolstandard.core2.abstract_classes.Location;
 
 public class GenericLocation extends Location{
 	

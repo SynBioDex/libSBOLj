@@ -1,6 +1,8 @@
-package org.sbolstandard.core2;
+package org.sbolstandard.core2.abstract_classes;
 
 import java.net.URI;
+
+import org.sbolstandard.core2.ComponentDefinition;
 
 /**
  * 

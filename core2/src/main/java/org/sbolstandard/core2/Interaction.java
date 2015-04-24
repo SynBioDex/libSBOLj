@@ -7,8 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.sbolstandard.core2.URIcompliance.*;
+import org.sbolstandard.core2.abstract_classes.Documented;
 
+import static org.sbolstandard.core2.util.URIcompliance.*;
+import static org.sbolstandard.core2.util.Version.*;
 /**
  * 
  * @author Zhen Zhang
@@ -118,28 +120,72 @@ public class Interaction extends Documented {
 	 */
 	public Participation createParticipation(URI identity, Set<URI> role, URI participant) {
 		Participation participation = new Participation(identity, role, participant);
-		addParticipation(participation);
-		return participation;
+		if (addParticipation(participation)) { 
+			return participation;
+		}
+		else {
+			return null;
+		}
 	}
-
+	
 	public Participation createParticipation(String displayId, String version, Set<URI> role, URI participant) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
-		if(parentPersistentIdStr == null) {
-			throw new IllegalStateException(
-					"Can not create a child on a parent that has the non-standard compliant identity " +
-							this.getIdentity());
+		if (parentPersistentIdStr != null) {
+			if (isDisplayIdCompliant(displayId)) {
+				if (isVersionCompliant(version)) {
+					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
+					return createParticipation(newMapsToURI, role, participant);
+				}
+				else {
+					// TODO: Warning: version not compliant
+					return null;
+				}
+			}
+			else {
+				// TODO: Warning: display ID not compliant
+				return null;
+			}
 		}
-		validateIdVersion(displayId, version);
-        return createParticipation(
-				createCompliantUri(parentPersistentIdStr, displayId, version), role, participant);
+		else {
+			// TODO: Warning: Parent persistent ID is not compliant.
+			return null;
+		}
 	}
 	
 	/**
 	 * Adds the specified instance to the list of participations. 
 	 * @param participation
 	 */
-	public void addParticipation(Participation participation) {
-        addChildSafely(participation, participations, "participation");
+	public boolean addParticipation(Participation participation) {
+		if (isChildURIcompliant(this.getIdentity(), participation.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(participation.getIdentity()));
+			// Check if URI exists in the participations map.
+			if (!participations.containsKey(participation.getIdentity())) {
+				participations.put(participation.getIdentity(), participation);
+				Participation latestParticipation = participations.get(persistentId);
+				if (latestParticipation == null) {
+					participations.put(persistentId, participation);
+				}
+				else {						
+					if (isFirstVersionNewer(extractVersion(participation.getIdentity()), 
+							extractVersion(latestParticipation.getIdentity()))) {								
+						participations.put(persistentId, participation);
+					}
+				}
+				return true;
+			}
+			else // key exists in participations map
+				return false;
+		}
+		else { // Only check if participation's URI exists in all maps.
+			if (!participations.containsKey(participation.getIdentity())) {
+				participations.put(participation.getIdentity(), participation);					
+				return true;
+			}
+			else // key exists in participations map
+				return false;
+		}		
 	}
 	
 	/**

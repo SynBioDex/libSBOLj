@@ -7,11 +7,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.sbolstandard.core2.ComponentInstance.AccessType;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
+import org.sbolstandard.core2.abstract_classes.ComponentInstance.AccessType;
+import org.sbolstandard.core2.abstract_classes.TopLevel;
 
-import static org.sbolstandard.core2.URIcompliance.*;
-import static org.sbolstandard.core2.Version.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
+
+import static org.sbolstandard.core2.util.Version.*;
 
 /**
  * @author Zhen Zhang
@@ -137,14 +139,19 @@ public class ModuleDefinition extends TopLevel {
 	 * Calls the ModuleInstantiation constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of ModuleInstantiation instances owned by this instance.
 	 * @param identity
-	 * @return the created ModuleInstantiation instance.
+	 * @param location
+	 * @return the created ModuleInstantiation instance. 
 	 */
 	public Module createModule(URI identity, URI moduleDefinitionURI) {
 		Module subModule = new Module(identity, moduleDefinitionURI);
-		addModule(subModule);
-		return subModule;
+		if (addModule(subModule)) {
+			return subModule;	
+		}
+		else {
+			return null;
+		}
 	}
-
+	
 
 	/**
 	 * @param URIprefix
@@ -154,9 +161,16 @@ public class ModuleDefinition extends TopLevel {
 	 * @return
 	 */
 	public Module createModule(String URIprefix, String displayId, String version, URI moduleDefinitionURI) {
-		URI newModuleURI = createCompliantUri(URIprefix, displayId, version);
-		return createModule(newModuleURI, moduleDefinitionURI);
+		URI newModuleURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newModuleURI)) {
+			return createModule(newModuleURI, moduleDefinitionURI);
+		}
+		else {
+			// TODO: Generate warning message here.
+			return null;
+		}
 	}
+	
 	
 	
 	/**
@@ -164,8 +178,44 @@ public class ModuleDefinition extends TopLevel {
 	 * @param newModule
 	 * @return 
 	 */
-	public void addModule(Module newModule) {
-		addChildSafely(newModule, modules, "module", functionalComponents, interactions);
+	public boolean addModule(Module newModule) {
+		if (isChildURIcompliant(this.getIdentity(), newModule.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(newModule.getIdentity()));
+			if (!keyExistsInOtherMaps(modules.keySet(), persistentId)) {
+				// Check if URI exists in the subModules map.
+				if (!modules.containsKey(newModule.getIdentity())) {
+					modules.put(newModule.getIdentity(), newModule);
+					Module latestSubModule = modules.get(persistentId);
+					if (latestSubModule == null) {
+						modules.put(persistentId, newModule);
+					}
+					else {						
+						if (isFirstVersionNewer(extractVersion(newModule.getIdentity()),
+								extractVersion(latestSubModule.getIdentity()))) {
+							modules.put(persistentId, newModule);
+						}
+					}
+					return true;
+				}
+				else // key exists in subModules map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if subModule's URI exists in all maps.
+			if (!keyExistsInOtherMaps(modules.keySet(), newModule.getIdentity())) {
+				if (!modules.containsKey(newModule.getIdentity())) {
+					modules.put(newModule.getIdentity(), newModule);					
+					return true;
+				}
+				else // key exists in subModules map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}		
 	}
 	
 	/**
@@ -232,12 +282,18 @@ public class ModuleDefinition extends TopLevel {
 	 * Calls the Interaction constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of Interaction instances owned by this instance.
 	 * @param identity
-	 * @return the  created Interaction instance.
+	 * @param location
+	 * @return the  created Interaction instance. 
 	 */
 	public Interaction createInteraction(URI identity, Set<URI> type, List<Participation> participations) {
 		Interaction interaction = new Interaction(identity, type, participations);
-		addInteraction(interaction);
-		return interaction;
+		if (addInteraction(interaction)) {
+			return interaction;	
+		}
+		else {
+			return null;
+		}
+		
 	}
 	
 	/**
@@ -250,8 +306,14 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public Interaction createInteraction(String URIprefix, String displayId, String version, 
 			Set<URI> type, List<Participation> participations) {
-		URI newInteractionURI = createCompliantUri(URIprefix, displayId, version);
-		return createInteraction(newInteractionURI, type, participations);
+		URI newInteractionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newInteractionURI)) {
+			return createInteraction(newInteractionURI, type, participations);
+		}
+		else {
+			// TODO: Generate warning messages here.
+			return null;
+		}
 	}
 	
 	
@@ -259,8 +321,44 @@ public class ModuleDefinition extends TopLevel {
 	 * Adds the specified instance to the list of interactions. 
 	 * @param interaction
 	 */
-	public void addInteraction(Interaction interaction) {
-		addChildSafely(interaction, interactions, "interaction", functionalComponents, modules);
+	public boolean addInteraction(Interaction interaction) {
+		if (isChildURIcompliant(this.getIdentity(), interaction.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(interaction.getIdentity()));
+			if (!keyExistsInOtherMaps(interactions.keySet(), persistentId)) {
+				// Check if URI exists in the interactions map.
+				if (!interactions.containsKey(interaction.getIdentity())) {
+					interactions.put(interaction.getIdentity(), interaction);
+					Interaction latestInteraction = interactions.get(persistentId);
+					if (latestInteraction == null) {
+						interactions.put(persistentId, interaction);
+					}
+					else {						
+						if (isFirstVersionNewer(extractVersion(interaction.getIdentity()),
+								extractVersion(latestInteraction.getIdentity()))) {
+							interactions.put(persistentId, interaction);
+						}
+					}
+					return true;
+				}
+				else // key exists in interactions map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if interaction's URI exists in all maps.
+			if (!keyExistsInOtherMaps(interactions.keySet(), interaction.getIdentity())) {
+				if (!interactions.containsKey(interaction.getIdentity())) {
+					interactions.put(interaction.getIdentity(), interaction);					
+					return true;
+				}
+				else // key exists in interactions map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
 	}
 	
 	/**
@@ -327,20 +425,31 @@ public class ModuleDefinition extends TopLevel {
 	 * Calls the FunctionalInstantiation constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of FunctionalInstantiation instances owned by this instance.
 	 * @param identity
-	 * @return the created {@link FunctionalComponent} instance.
+	 * @param location
+	 * @return the created {@link FunctionalComponent} instance. 
 	 */
 	public FunctionalComponent createFunctionalComponent(URI identity, AccessType access, 
 			URI functionalComponentURI, DirectionType direction) {
 		FunctionalComponent functionalComponent = 
 				new FunctionalComponent(identity, access, functionalComponentURI, direction);
-		addFunctionalComponent(functionalComponent);
-		return functionalComponent;
+		if(addFunctionalComponent(functionalComponent)) {
+			return functionalComponent;	
+		}
+		else {
+			return null;
+		}
 	}
 
 	public FunctionalComponent createFunctionalComponent(String URIprefix, String displayId, String version,  AccessType access, 
 			URI functionalComponentURI, DirectionType direction) {
-		URI newComponentDefinitionURI = createCompliantUri(URIprefix, displayId, version);
-		return createFunctionalComponent(newComponentDefinitionURI, access, functionalComponentURI, direction);
+		URI newComponentDefinitionURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+		if (isChildURIcompliant(this.getIdentity(), newComponentDefinitionURI)) {		
+			return createFunctionalComponent(newComponentDefinitionURI, access, functionalComponentURI, direction);
+		}
+		else {
+			// TODO: Generate a warning here?
+			return null;
+		}
 	}
 
 	
@@ -349,8 +458,44 @@ public class ModuleDefinition extends TopLevel {
 	 * Adds the specified instance to the list of components.
 	 * @param functionalComponent
 	 */
-	public void addFunctionalComponent(FunctionalComponent functionalComponent) {
-		addChildSafely(functionalComponent, functionalComponents, "functionalComponent", interactions, modules);
+	public boolean addFunctionalComponent(FunctionalComponent functionalComponent) {
+		if (isChildURIcompliant(this.getIdentity(), functionalComponent.getIdentity())) {
+			// Check if persistent identity exists in other maps.
+			URI persistentId = URI.create(extractPersistentId(functionalComponent.getIdentity()));
+			if (!keyExistsInOtherMaps(functionalComponents.keySet(), persistentId)) {
+				// Check if URI exists in the components map.
+				if (!functionalComponents.containsKey(functionalComponent.getIdentity())) {
+					functionalComponents.put(functionalComponent.getIdentity(), functionalComponent);
+					FunctionalComponent latestFunctionalComponent = functionalComponents.get(persistentId);
+					if (latestFunctionalComponent == null) {
+						functionalComponents.put(persistentId, functionalComponent);
+					}
+					else {						
+						if (isFirstVersionNewer(extractVersion(functionalComponent.getIdentity()),
+								extractVersion(latestFunctionalComponent.getIdentity()))) {
+							functionalComponents.put(persistentId, functionalComponent);
+						}
+					}
+					return true;
+				}
+				else // key exists in components map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
+		else { // Only check if component's URI exists in all maps.
+			if (!keyExistsInOtherMaps(functionalComponents.keySet(), functionalComponent.getIdentity())) {
+				if (!functionalComponents.containsKey(functionalComponent.getIdentity())) {
+					functionalComponents.put(functionalComponent.getIdentity(), functionalComponent);					
+					return true;
+				}
+				else // key exists in components map
+					return false;
+			}
+			else // key exists in other maps
+				return false;
+		}
 	}
 	
 	/**

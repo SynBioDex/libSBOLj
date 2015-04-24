@@ -1,24 +1,10 @@
-package org.sbolstandard.core2;
+package org.sbolstandard.core2.util;
 
 import java.net.URI;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-final class URIcompliance {
-
-	public static void validateIdVersion(String displayId, String version) {
-		if (!isDisplayIdCompliant(displayId)) {
-			throw new IllegalArgumentException("Display id `" + displayId + "' is not compliant");
-		}
-		if (!isVersionCompliant(version)) {
-			throw new IllegalArgumentException("Version `" + version + "' is not compliant");
-		}
-	}
-
-	public static URI createCompliantUri(String prefix, String displayId, String version) {
-		return URI.create(prefix + '/' + displayId + '/' + version);
-	}
+public final class URIcompliance {
 
 	/**
 	 * Extract the persistent identity URI from the given URI.
@@ -285,13 +271,4 @@ final class URIcompliance {
 	public static final String grandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){3}" + versionPattern;
 
 	public static final String greatGrandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){4}" + versionPattern;
-
-	public static boolean keyExistsInAnyMap(URI key, Map<URI, ?>... maps) {
-		for(Map<URI, ?> map : maps) {
-			if(map.keySet().contains(key))
-				return true;
-		}
-
-		return false;
-	}
 }
