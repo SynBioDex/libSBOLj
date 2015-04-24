@@ -281,8 +281,8 @@ public class ModuleDefinition extends TopLevel {
 	 * @param location
 	 * @return the  created Interaction instance. 
 	 */
-	public Interaction createInteraction(URI identity, Set<URI> type, List<Participation> participations) {
-		Interaction interaction = new Interaction(identity, type, participations);
+	public Interaction createInteraction(URI identity, Set<URI> type) {
+		Interaction interaction = new Interaction(identity, type);
 		if (addInteraction(interaction)) {
 			return interaction;	
 		}
@@ -298,11 +298,11 @@ public class ModuleDefinition extends TopLevel {
 	 * @param participations
 	 * @return
 	 */
-	public Interaction createInteraction(String displayId, Set<URI> type, List<Participation> participations) {
+	public Interaction createInteraction(String displayId, Set<URI> type) {
 		URI newInteractionURI = URI.create(extractURIprefix(this.getIdentity())
 				+ '/' + displayId + '/' + extractVersion(this.getIdentity()));
 		if (isChildURIcompliant(this.getIdentity(), newInteractionURI)) {
-			return createInteraction(newInteractionURI, type, participations);
+			return createInteraction(newInteractionURI, type);
 		}
 		else {
 			// TODO: Generate warning messages here.

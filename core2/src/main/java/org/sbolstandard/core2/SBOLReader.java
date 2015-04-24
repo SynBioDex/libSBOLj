@@ -1814,7 +1814,10 @@ public class SBOLReader
 			}
 		}
 
-		Interaction i = new Interaction(interaction.getIdentity(), type, participations);
+		Interaction i = new Interaction(interaction.getIdentity(), type);
+		if (participations != null) {
+			i.setParticipations(participations);
+		}
 		if (persistentIdentity != null)
 			i.setPersistentIdentity(persistentIdentity);
 		if (version != null)

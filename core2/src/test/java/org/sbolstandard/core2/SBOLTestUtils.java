@@ -218,7 +218,10 @@ public class SBOLTestUtils {
 	public static Interaction createInteraction(String id, Set<URI> type,
 			List<Participation> participations, List<Annotation> annotations)
 	{
-		Interaction i = new Interaction(URI.create(id), type, participations);
+		Interaction i = new Interaction(URI.create(id), type);
+		if (participations != null) {
+			i.setParticipations(participations);
+		}
 		if (annotations != null)
 			i.setAnnotations(annotations);
 		return i;

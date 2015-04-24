@@ -168,12 +168,37 @@ public abstract class Identified {
 		else
 			return true;
 	}
+	
+	/**
+	 * Calls the Annotation constructor to create a new instance using the specified parameters,
+	 * then adds to the list of Annotation instances owned by this component.
+	 * @param relation
+	 * @param literal
+	 * @return the created Annotation instance.
+	 */
+	public Annotation createAnnotation(QName qName, String literal) {
+		Annotation annotation = new Annotation(qName,literal);
+		addAnnotation(annotation);
+		return annotation;
+	}
 
 	/**
 	 * Calls the Annotation constructor to create a new instance using the specified parameters,
 	 * then adds to the list of Annotation instances owned by this component.
 	 * @param relation
 	 * @param literal
+	 * @return the created Annotation instance.
+	 */
+	public Annotation createAnnotation(QName qName, URI literal) {
+		Annotation annotation = new Annotation(qName,literal);
+		addAnnotation(annotation);
+		return annotation;
+	}
+	
+	/**
+	 * Calls the Annotation constructor to create a new instance using the specified parameters,
+	 * then adds to the list of Annotation instances owned by this component.
+	 * @param namedProperty
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(NamedProperty<QName> namedProperty) {

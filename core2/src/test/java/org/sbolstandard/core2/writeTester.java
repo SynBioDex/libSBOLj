@@ -398,7 +398,7 @@ public class writeTester {
 		return createModuleDefinitionData(SBOL2Doc_test,
 				getSetOfURI("Inverter"),
 				getSetPropertyURI("Inverter"),
-				getData("LacI_Inv/1/0","LacI_Inv","1.0","LacI_Inv","LacI_Inv", "LacI_Inv"),
+				getData("LacI_Inv","1.0"),
 				getFunctionalComponent_List(
 						get_LacIIn(SBOL2Doc_test),
 						get_TetROut(SBOL2Doc_test),
@@ -573,7 +573,7 @@ public class writeTester {
 		return createModuleDefinitionData(SBOL2Doc_test,
 				getSetOfURI("Inverter"),
 				getSetPropertyURI("Inverter"),
-				getData("TetR_Inv/1/0","TetR_Inv","1.0","TetR_Inv","TetR_Inv", "TetR_Inv"),
+				getData("TetR_Inv","1.0"),
 				getFunctionalComponent_List(
 						get_TetRIn(SBOL2Doc_test),
 						get_LacIOut(SBOL2Doc_test),
@@ -638,7 +638,7 @@ public class writeTester {
 		return createModuleDefinitionData(SBOL2Doc_test,
 				getSetOfURI("Toggle_type"),
 				getSetPropertyURI("Toggle_role"),
-				getData("Toggle/1/0","Toggle","1.0","Toggle","Toggle", "Toggle"),
+				getData("Toggle","1.0"),
 				getFunctionalComponent_List(get_LacISp(SBOL2Doc_test), get_TetRSp(SBOL2Doc_test)),
 				null,
 				getModule_List(get_Inv1(SBOL2Doc_test), get_Inv2(SBOL2Doc_test)),
@@ -778,7 +778,10 @@ public class writeTester {
 		String name 		   = interaction_data.get(4);
 		String description 	   = interaction_data.get(5);
 
-		Interaction interaction = new Interaction(identity, type, participations);
+		Interaction interaction = new Interaction(identity, type);
+		if (participations!=null) {
+			interaction.setParticipations(participations);
+		}
 
 		setCommonDocumentedData(interaction, name, description);
 
@@ -824,18 +827,15 @@ public class writeTester {
 			Set<URI> model_data,
 			List<Annotation> annotations)
 	{
-		URI identity 		   = getURI(module_data.get(0));
-		URI persistentIdentity = getURI(module_data.get(1));
-		String version 		   = module_data.get(2);
-		String displayId 	   = module_data.get(3);
-		String name 		   = module_data.get(4);
-		String description 	   = module_data.get(5);
+		String displayId 	   = module_data.get(0);
+		String version 		   = module_data.get(1);
+		String identity 	   = SBOL2Doc_test.getDefaultURIprefix()+"/"+displayId+"/"+version;
 
-		ModuleDefinition m = SBOL2Doc_test.createModuleDefinition(identity, roles);
+		ModuleDefinition m = SBOL2Doc_test.createModuleDefinition(displayId, version, roles);
 		if (m==null) {
-			m = SBOL2Doc_test.getModuleDefinition(identity);
+			m = SBOL2Doc_test.getModuleDefinition(URI.create(identity));
 		} else {
-			setCommonTopLevelData(m, name, description);
+			setCommonTopLevelData(m, displayId, displayId);
 			if(annotations != null)
 				m.setAnnotations(annotations);
 

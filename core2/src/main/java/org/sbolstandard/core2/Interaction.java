@@ -26,11 +26,10 @@ public class Interaction extends Documented {
 	 * @param type a type for the interaction
 	 * @param participations a collection of participations for the interaction
 	 */
-	public Interaction(URI identity, Set<URI> type, List<Participation> participations) {
+	public Interaction(URI identity, Set<URI> type) {
 		super(identity);
 		setTypes(type);
 		this.participations = new HashMap<URI, Participation>(); 
-		setParticipations(participations);
 	}
 	
 	public Interaction(Interaction interaction) {

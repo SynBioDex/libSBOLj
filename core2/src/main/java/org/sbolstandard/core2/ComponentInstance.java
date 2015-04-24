@@ -291,9 +291,9 @@ public abstract class ComponentInstance extends Documented {
 	 * @param mappings
 	 */
 	public void setMapsTo(
-			List<MapsTo> mappings) {
+			List<MapsTo> mapsTos) {
 		clearMapsTos();		
-		for (MapsTo reference : mappings) {
+		for (MapsTo reference : mapsTos) {
 			addMapsTo(reference);
 		}
 	}
@@ -310,8 +310,8 @@ public abstract class ComponentInstance extends Documented {
 	 * Sets field variable <code>instantiatedComponent</code> to the specified element.
 	 * @param definitionURI
 	 */
-	public void setDefinition(URI definitionURI) {
-		this.definition = definitionURI;
+	public void setDefinition(URI definition) {
+		this.definition = definition;
 	}
 
 	protected abstract ComponentInstance deepCopy();
