@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.sbolstandard.core2.URIcompliance.*;
-import static org.sbolstandard.core2.Version.*;
+import org.sbolstandard.core2.abstract_classes.Location;
+
+import static org.sbolstandard.core2.util.URIcompliance.*;
+import static org.sbolstandard.core2.util.Version.*;
 
 public class MultiRange extends Location{
 	
@@ -45,26 +47,76 @@ public class MultiRange extends Location{
 	 * Calls the Range constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of Range instances owned by this instance.
 	 * @param identity
-	 * @return the created Range instance.
+	 * @param location
+	 * @return the created Range instance. 
 	 */
 	public Range createRange(URI identity, Integer start, Integer end) {
 		Range range = new Range(identity, start, end);
-		addRange(range);
-		return range;
+		if (addRange(range)) {
+			return range;	
+		}
+		else {
+			return null;
+		}
 	}
 	
 	public Range createRange(String displayId, String version, Integer start, Integer end) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
-		URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
-		return createRange(newMapsToURI, start, end);
+		if (parentPersistentIdStr != null) {
+			if (isDisplayIdCompliant(displayId)) {
+				if (isVersionCompliant(version)) {
+					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
+					return createRange(newMapsToURI, start, end);
+				}
+				else {
+					// TODO: Warning: version not compliant
+					return null;
+				}
+			}
+			else {
+				// TODO: Warning: display ID not compliant
+				return null;
+			}
+		}
+		else {
+			// TODO: Warning: Parent persistent ID is not compliant.
+			return null;
+		}
 	}
 	
 	/**
 	 * Adds the specified instance to the list of structuralAnnotations. 
 	 * @param range
 	 */
-	public void addRange(Range range) {
-		addChildSafely(range, ranges, "range");
+	public boolean addRange(Range range) {
+		if (isChildURIcompliant(this.getIdentity(), range.getIdentity())) {
+			URI persistentId = URI.create(extractPersistentId(range.getIdentity()));
+			// Check if URI exists in the ranges map.
+			if (!ranges.containsKey(range.getIdentity())) {
+				ranges.put(range.getIdentity(), range);
+				Range latestRange = ranges.get(persistentId);
+				if (latestRange == null) {
+					ranges.put(persistentId, range);
+				}
+				else {						
+					if (isFirstVersionNewer(extractVersion(range.getIdentity()), 
+							extractVersion(latestRange.getIdentity()))) {								
+						ranges.put(persistentId, range);
+					}
+				}
+				return true;
+			}
+			else // key exists in ranges map
+				return false;
+		}
+		else { // Only check if mapTo's URI exists in all maps.
+			if (!ranges.containsKey(range.getIdentity())) {
+				ranges.put(range.getIdentity(), range);					
+				return true;
+			}
+			else // key exists in ranges map
+				return false;
+		}		
 	}
 
 	/**

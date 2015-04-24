@@ -1,24 +1,24 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-
-import static org.sbolstandard.core2.URIcompliance.*;
+import static org.sbolstandard.core2.util.URIcompliance.*;
 
 import org.sbolstandard.core2.Sbol2Terms.Orientation;
+import org.sbolstandard.core2.abstract_classes.Location;
 
 public class Cut extends Location{
 	
-	private int at;
+	private Integer at;
 	private OrientationType orientation;
 	
-	public Cut(URI identity, int at) {
+	public Cut(URI identity, Integer at) {
 		super(identity);
 		setAt(at);
 	}
 	
 	private Cut(Cut cut) {
 		super(cut);
-		this.setAt(cut.getAt());
+		this.setAt(cut.getAt().intValue());
 		if (cut.isSetOrientation()) {
 			this.setOrientation(cut.getOrientation());
 		}
@@ -28,7 +28,7 @@ public class Cut extends Location{
 	 * Returns field variable <code>at</code>.
 	 * @return field variable <code>at</code>
 	 */
-	public int getAt() {
+	public Integer getAt() {
 		return at;
 	}
 
@@ -36,7 +36,7 @@ public class Cut extends Location{
 	 * Sets field variable <code>at</code> to the specified element.
 	 * @param at
 	 */
-	public void setAt(int at) {
+	public void setAt(Integer at) {
 		this.at = at;
 	}
 	
@@ -114,6 +114,34 @@ public class Cut extends Location{
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((at == null) ? 0 : at.hashCode());
+		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cut other = (Cut) obj;
+		if (at == null) {
+			if (other.at != null)
+				return false;
+		} else if (!at.equals(other.at))
+			return false;
+		if (orientation != other.orientation)
+			return false;
+		return true;
+	}
+
+	@Override
 	protected Cut deepCopy() {
 		return new Cut(this);
 	}
@@ -134,30 +162,5 @@ public class Cut extends Location{
 		// TODO: need to set wasDerivedFrom here?
 		this.setWasDerivedFrom(this.getIdentity());
 		this.setIdentity(newIdentity);
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + at;
-		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Cut other = (Cut) obj;
-		if (at != other.at)
-			return false;
-		if (orientation != other.orientation)
-			return false;
-		return true;
 	}
 }

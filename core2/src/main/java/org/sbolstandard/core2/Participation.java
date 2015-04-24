@@ -1,11 +1,11 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-
-import static org.sbolstandard.core2.URIcompliance.*;
-
+import static org.sbolstandard.core2.util.URIcompliance.*;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.sbolstandard.core2.abstract_classes.Identified;
 
 /**
  * 

@@ -33,6 +33,11 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.sbolstandard.core2.abstract_classes.Documented;
+import org.sbolstandard.core2.abstract_classes.Identified;
+import org.sbolstandard.core2.abstract_classes.Location;
+import org.sbolstandard.core2.abstract_classes.TopLevel;
+
 import uk.ac.intbio.core.io.turtle.TurtleIo;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
@@ -735,7 +740,7 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			formatCommonIdentifiedData(list, m);
 			if(m.getRefinement() != null)
-				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinementURI()));
+				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinement().name()));
 			if(m.getRemote() != null)
 				list.add(NamedProperty(Sbol2Terms.MapsTo.hasRemote, m.getRemote()));
 			if(m.getLocal() != null)
