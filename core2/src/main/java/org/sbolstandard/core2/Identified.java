@@ -23,6 +23,7 @@ public abstract class Identified {
 	private String version;
 	private List<Annotation> annotations;
 	private URI wasDerivedFrom;
+	protected String displayId;
 
 	public Identified(URI identity) {
 		setIdentity(identity);
@@ -317,6 +318,40 @@ public abstract class Identified {
 			return false;
 
 		return true;
+	}
+
+	/**
+	 * Test if optional field variable <code>displayId</code> is set.
+	 * @return <code>true</code> if it is not <code>null</code>
+	 */
+	public boolean isSetDisplayId() {
+		if (displayId == null)
+			return false;
+		else 
+			return true;
+	}
+
+	/**
+	 * Returns field variable <code>displayId</code>.
+	 * @return field variable <code>displayId</code>
+	 */
+	public String getDisplayId() {
+		return displayId;
+	}
+
+	/**
+	 * Set field variable <code>displayId</code> to the specified element.
+	 * @param displayId
+	 */
+	public void setDisplayId(String displayId) {
+		this.displayId = displayId;
+	}
+
+	/**
+	 * Set optional field variable <code>displayId</code> to <code>null</code>.
+	 */
+	public void unsetDisplayId() {
+		displayId = null;
 	}
 		
 	//	/**
