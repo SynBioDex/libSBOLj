@@ -8,7 +8,6 @@ import java.util.List;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 
 import static org.sbolstandard.core2.URIcompliance.*;
-import static org.sbolstandard.core2.Version.*;
 
 
 public abstract class ComponentInstance extends Documented {
@@ -37,8 +36,7 @@ public abstract class ComponentInstance extends Documented {
 				return AccessType.PRIVATE;
 			}
 			else {
-				// TODO: Validation?
-				return null;
+				throw new IllegalArgumentException("Unknown access URI `" + access + "'");
 			}
 		}
 		
@@ -178,72 +176,21 @@ public abstract class ComponentInstance extends Documented {
 	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
-		if (addMapsTo(mapping)) {
-			return mapping;	
-		}
-		else {
-			return null;
-		}		
+		addMapsTo(mapping);
+		return mapping;
 	}
 	
 	public MapsTo createMapsTo(String displayId, String version, RefinementType refinement, URI local, URI remote) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
-		if (parentPersistentIdStr != null) {
-			if (isDisplayIdCompliant(displayId)) {
-				if (isVersionCompliant(version)) {
-					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
-					return createMapsTo(newMapsToURI, refinement, local, remote);
-				}
-				else {
-					// TODO: Warning: version not compliant
-					return null;
-				}
-			}
-			else {
-				// TODO: Warning: display ID not compliant
-				return null;
-			}
-		}
-		else {
-			// TODO: Warning: Parent persistent ID is not compliant.
-			return null;
-		}
+		return createMapsTo(createCompliantUri(parentPersistentIdStr, displayId, version),
+				refinement, local, remote);
 	}
 	
 	/**
 	 * Adds the specified instance to the list of references. 
-	 * @param reference
 	 */
-	public boolean addMapsTo(MapsTo mapsTo) {
-		//mapsTos.put(mapTo.getIdentity(), mapTo);
-		if (isChildURIcompliant(this.getIdentity(), mapsTo.getIdentity())) {
-			URI persistentId = URI.create(extractPersistentId(mapsTo.getIdentity()));
-			// Check if URI exists in the mapsTos map.
-			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
-				mapsTos.put(mapsTo.getIdentity(), mapsTo);
-				MapsTo latestMapsTo = mapsTos.get(persistentId);
-				if (latestMapsTo == null) {
-					mapsTos.put(persistentId, mapsTo);
-				}
-				else {						
-					if (isFirstVersionNewer(extractVersion(mapsTo.getIdentity()), 
-							extractVersion(latestMapsTo.getIdentity()))) {								
-						mapsTos.put(persistentId, mapsTo);
-					}
-				}
-				return true;
-			}
-			else // key exists in mapsTos map
-				return false;
-		}
-		else { // Only check if mapTo's URI exists in all maps.
-			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
-				mapsTos.put(mapsTo.getIdentity(), mapsTo);					
-				return true;
-			}
-			else // key exists in mapsTos map
-				return false;
-		}
+	public void addMapsTo(MapsTo mapsTo) {
+		addChildSafely(mapsTo, mapsTos, "mapsTo");
 	}
 	
 	/**

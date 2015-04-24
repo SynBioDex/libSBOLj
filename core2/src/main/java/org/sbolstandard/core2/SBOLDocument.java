@@ -50,7 +50,9 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version, Set<URI> roles) {
 		validateCreationData(displayId, version);
-		return createModuleDefinition(createStandardCompliantUri(displayId, version), roles);
+		return createModuleDefinition(
+				createCompliantUri(defaultURIprefix, displayId, version),
+				roles);
 	}
 	
 	/**
@@ -71,7 +73,8 @@ public class SBOLDocument {
 	 * @return {@code true} if the {@code newModuleDefinition} is successfully added, {@code false} otherwise. 
 	 */
 	public void addModuleDefinition(ModuleDefinition newModuleDefinition) {
-		addTopLevel(newModuleDefinition, moduleDefinitions, "moduleDefinition");
+		addTopLevel(newModuleDefinition, moduleDefinitions, "moduleDefinition",
+                collections, componentDefinitions, genericTopLevels, models, sequences);
 	}
 
 	/**
@@ -143,7 +146,8 @@ public class SBOLDocument {
 	 */
 	public Collection createCollection(String displayId, String version) {
 		validateCreationData(displayId, version);
-		return createCollection(createStandardCompliantUri(displayId, version));
+		return createCollection(
+				createCompliantUri(defaultURIprefix, displayId, version));
 	}
 
 	/**
@@ -152,7 +156,8 @@ public class SBOLDocument {
 	 * @return {@code true} if the {@code newCollection} is successfully added, {@code false} otherwise.
 	 */
 	public void addCollection(Collection newCollection) {
-		addTopLevel(newCollection, collections, "collection");
+		addTopLevel(newCollection, collections, "collection",
+                componentDefinitions, genericTopLevels, models, moduleDefinitions, sequences);
 	}
 
 
@@ -219,7 +224,9 @@ public class SBOLDocument {
 	public Model createModel(String displayId, String version, 
 			URI source, URI language, URI framework, Set<URI> roles) {
 		validateCreationData(displayId, version);
-		return createModel(createStandardCompliantUri(displayId, version), source, language, framework, roles);
+		return createModel(
+				createCompliantUri(defaultURIprefix, displayId, version),
+				source, language, framework, roles);
 	}
 
 	/**
@@ -243,7 +250,8 @@ public class SBOLDocument {
 	 * @return {@code true} if the {@code newModel} is successfully added, {@code false} otherwise.
 	 */
 	public void addModel(Model newModel) {
-		addTopLevel(newModel, models, "model");
+		addTopLevel(newModel, models, "model",
+                collections, componentDefinitions, genericTopLevels, moduleDefinitions, sequences);
 	}
 
 	/**
@@ -318,7 +326,7 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
 		validateCreationData(displayId, version);
-		return createComponentDefinition(createStandardCompliantUri(displayId, version), types);
+		return createComponentDefinition(createCompliantUri(defaultURIprefix, displayId, version), types);
 	}
 
 	/**
@@ -327,7 +335,8 @@ public class SBOLDocument {
 	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
 	 */
 	public void addComponentDefinition(ComponentDefinition newComponentDefinition) {
-		addTopLevel(newComponentDefinition, componentDefinitions, "componentDefinition");
+		addTopLevel(newComponentDefinition, componentDefinitions, "componentDefinition",
+                collections, genericTopLevels, models, moduleDefinitions, sequences);
 	}
 
 	/**
@@ -402,7 +411,7 @@ public class SBOLDocument {
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
 		validateCreationData(displayId, version);
-		return createSequence(createStandardCompliantUri(displayId, version), elements, encoding);
+		return createSequence(createCompliantUri(defaultURIprefix, displayId, version), elements, encoding);
 	}
 	
 //	/**
@@ -578,7 +587,8 @@ public class SBOLDocument {
 	 * @return <code>true</code> if the specified sequence is successfully added.
 	 */
 	public void addSequence(Sequence newSequence) {
-		addTopLevel(newSequence, sequences, "sequence");
+		addTopLevel(newSequence, sequences, "sequence",
+                collections, componentDefinitions, genericTopLevels, models, moduleDefinitions);
 	}
 
 	/**
@@ -640,7 +650,7 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
 		validateCreationData(displayId, version);
-		return createGenericTopLevel(createStandardCompliantUri(displayId, version), rdfType);
+		return createGenericTopLevel(createCompliantUri(defaultURIprefix, displayId, version), rdfType);
 	}
 
 	/**
@@ -661,7 +671,8 @@ public class SBOLDocument {
 	 * @return {@code true} if the {@code newTopLevel} is successfully added, {@code false} otherwise.
 	 */
 	public void addGenericTopLevel(GenericTopLevel newGenericTopLevel) {
-		addTopLevel(newGenericTopLevel, genericTopLevels, "genericTopLevel");
+		addTopLevel(newGenericTopLevel, genericTopLevels, "genericTopLevel",
+                collections, componentDefinitions, models, moduleDefinitions, sequences);
 	}
 
 	/**
@@ -782,29 +793,6 @@ public class SBOLDocument {
 		return nameSpaces.get(nameSpaceURI);
 	}
 
-	/**
-	 * Check if the specified key exists in any hash maps in this class other than the one with the specified keySet. This method
-	 * constructs a set of key sets for other hash maps first, and then checks if the key exists.
-	 * @param keySet
-	 * @param key
-	 * @return <code>true</code> if the specified key exists in other hash maps.
-	 */
-	private boolean keyExistsInOtherMaps(Set<URI> keySet, URI key) {
-		Set<Set<URI>> complementSet = new HashSet<Set<URI>>();
-		complementSet.add(collections.keySet());
-		complementSet.add(componentDefinitions.keySet());
-		complementSet.add(models.keySet());
-		complementSet.add(moduleDefinitions.keySet());
-		complementSet.add(nameSpaces.keySet());
-		complementSet.add(sequences.keySet());
-		complementSet.remove(keySet);
-		for (Set<URI> otherKeySet : complementSet) {
-			if (otherKeySet.contains(key)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	@Override
 	public int hashCode() {
@@ -870,25 +858,16 @@ public class SBOLDocument {
 	}
 
 	private void validateCreationData(String displayId, String version) {
-		if (!isDisplayIdCompliant(displayId)) {
-			throw new IllegalArgumentException("Display id `" + displayId + "' is not compliant");
-		}
-		if (!isVersionCompliant(version)) {
-			throw new IllegalArgumentException("Version `" + version + "' is not compliant");
-		}
+		validateIdVersion(displayId, version);
 		if (defaultURIprefix == null) {
 			throw new IllegalStateException("The defaultURIprefix is not set. Please set it to a non-null value");
 		}
 	}
 
-	private URI createStandardCompliantUri(String displayId, String version) {
-		return URI.create(defaultURIprefix + '/' + displayId + '/' + version);
-	}
-
-	private <TL extends TopLevel> void addTopLevel(TL newTopLevel, Map<URI, TL> instancesMap, String typeName) {
+	private <TL extends TopLevel> void addTopLevel(TL newTopLevel, Map<URI, TL> instancesMap, String typeName, Map<URI, ? extends Identified> ... maps) {
 		if (newTopLevel.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newTopLevel.getIdentity()));
-			if (keyExistsInOtherMaps(instancesMap.keySet(), persistentId))
+			if (keyExistsInAnyMap(persistentId, maps))
 				throw new IllegalArgumentException(
 						"Instance for identity `" + newTopLevel.identity +
 								"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
@@ -911,7 +890,7 @@ public class SBOLDocument {
 			}
 		}
 		else { // Only check if sequence's URI exists in all maps.
-			if (keyExistsInOtherMaps(instancesMap.keySet(), newTopLevel.getIdentity()))
+			if (keyExistsInAnyMap(newTopLevel.getIdentity()))
 				throw new IllegalArgumentException(
 						"Instance for identity `" + newTopLevel.identity + "' exists for a non-" + typeName);
 			if (instancesMap.containsKey(newTopLevel.getIdentity()))
