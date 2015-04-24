@@ -3,7 +3,9 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.sbolstandard.core2.MapsTo.RefinementType;
 
@@ -91,8 +93,9 @@ public class Module extends Documented {
 	 * @param remote
 	 * @return
 	 */
-	public MapsTo createMapsTo(String displayId, String version, RefinementType refinement, URI local, URI remote) {
+	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		String version = this.getVersion();
 		URI newMapsToURI = createCompliantUri(parentPersistentIdStr, displayId, version);
 		return createMapsTo(newMapsToURI, refinement, local, remote);
 	}
@@ -128,9 +131,8 @@ public class Module extends Documented {
 	 * Returns the list of reference instances owned by this instance.
 	 * @return the list of reference instances owned by this instance.
 	 */
-	public List<MapsTo> getMapsTos() {
-//		return (List<MapsTo>) references.values();
-		return new ArrayList<MapsTo>(mapsTos.values());
+	public Set<MapsTo> getMapsTos() {
+		return new HashSet<MapsTo>(mapsTos.values());
 	}
 	
 	/**

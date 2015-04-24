@@ -145,15 +145,14 @@ public class ModuleDefinition extends TopLevel {
 		return subModule;
 	}
 
-
 	/**
-	 * @param URIprefix
 	 * @param displayId
-	 * @param version
 	 * @param moduleDefinitionURI
 	 * @return
 	 */
-	public Module createModule(String URIprefix, String displayId, String version, URI moduleDefinitionURI) {
+	public Module createModule(String displayId, URI moduleDefinitionURI) {
+		String URIprefix = this.getPersistentIdentity().toString();
+		String version = this.getVersion();
 		URI newModuleURI = createCompliantUri(URIprefix, displayId, version);
 		return createModule(newModuleURI, moduleDefinitionURI);
 	}
@@ -190,8 +189,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the list of subModule instances owned by this instance. 
 	 * @return the list of subModule instances owned by this instance.
 	 */
-	public List<Module> getModules() {
-		return new ArrayList<Module>(modules.values());
+	public Set<Module> getModules() {
+		return new HashSet<Module>(modules.values());
 	}
 	
 	/**
@@ -234,24 +233,23 @@ public class ModuleDefinition extends TopLevel {
 	 * @param identity
 	 * @return the  created Interaction instance.
 	 */
-	public Interaction createInteraction(URI identity, Set<URI> type, List<Participation> participations) {
-		Interaction interaction = new Interaction(identity, type, participations);
+	public Interaction createInteraction(URI identity, Set<URI> type) {
+		Interaction interaction = new Interaction(identity, type);
 		addInteraction(interaction);
 		return interaction;
 	}
 	
 	/**
-	 * @param URIprefix
 	 * @param displayId
-	 * @param version
 	 * @param type
 	 * @param participations
 	 * @return
 	 */
-	public Interaction createInteraction(String URIprefix, String displayId, String version, 
-			Set<URI> type, List<Participation> participations) {
+	public Interaction createInteraction(String displayId, Set<URI> type) {
+		String URIprefix = this.getPersistentIdentity().toString();
+		String version = this.getVersion();
 		URI newInteractionURI = createCompliantUri(URIprefix, displayId, version);
-		return createInteraction(newInteractionURI, type, participations);
+		return createInteraction(newInteractionURI, type);
 	}
 	
 	
@@ -285,9 +283,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the list of interaction instances owned by this instance. 
 	 * @return the list of interaction instances owned by this instance.
 	 */
-	public List<Interaction> getInteractions() {
-//		return (List<Interaction>) interactions.values();
-		return new ArrayList<Interaction>(interactions.values());
+	public Set<Interaction> getInteractions() {
+		return new HashSet<Interaction>(interactions.values());
 	}
 	
 	/**
@@ -337,13 +334,20 @@ public class ModuleDefinition extends TopLevel {
 		return functionalComponent;
 	}
 
-	public FunctionalComponent createFunctionalComponent(String URIprefix, String displayId, String version,  AccessType access, 
+	/**
+	 * @param displayId
+	 * @param access
+	 * @param functionalComponentURI
+	 * @param direction
+	 * @return
+	 */
+	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access, 
 			URI functionalComponentURI, DirectionType direction) {
+		String URIprefix = this.getPersistentIdentity().toString();
+		String version = this.getVersion();
 		URI newComponentDefinitionURI = createCompliantUri(URIprefix, displayId, version);
 		return createFunctionalComponent(newComponentDefinitionURI, access, functionalComponentURI, direction);
 	}
-
-	
 	
 	/**
 	 * Adds the specified instance to the list of components.
@@ -375,8 +379,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the list of functionalInstantiation instances owned by this instance. 
 	 * @return the list of functionalInstantiation instances owned by this instance.
 	 */
-	public List<FunctionalComponent> getFunctionalComponents() {
-		return new ArrayList<FunctionalComponent>(functionalComponents.values());
+	public Set<FunctionalComponent> getFunctionalComponents() {
+		return new HashSet<FunctionalComponent>(functionalComponents.values());
 	}
 	
 	/**

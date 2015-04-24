@@ -25,7 +25,7 @@ public class SBOLDocument {
 	private HashMap<URI, Model> models;
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
-	private HashMap<URI,NamespaceBinding> nameSpaces;
+	private HashMap<URI, NamespaceBinding> nameSpaces;
 	private String defaultURIprefix;
 
 	public SBOLDocument() {
@@ -50,9 +50,7 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version, Set<URI> roles) {
 		validateCreationData(displayId, version);
-		return createModuleDefinition(
-				createCompliantUri(defaultURIprefix, displayId, version),
-				roles);
+		return createModuleDefinition(createCompliantUri(defaultURIprefix, displayId, version),roles);
 	}
 	
 	/**
@@ -99,8 +97,8 @@ public class SBOLDocument {
 	 * Returns the list of <code>Module</code> objects owned by this object.
 	 * @return the list of <code>Module</code> objects owned by this object
 	 */
-	public List<ModuleDefinition> getModuleDefinitions() {
-		List<ModuleDefinition> moduleDefinitions = new ArrayList<ModuleDefinition>();
+	public Set<ModuleDefinition> getModuleDefinitions() {
+		Set<ModuleDefinition> moduleDefinitions = new HashSet<ModuleDefinition>();
 		moduleDefinitions.addAll(this.moduleDefinitions.values());
 		return moduleDefinitions;
 
@@ -183,9 +181,8 @@ public class SBOLDocument {
 	 * Returns the list of <code>Collection</code> objects owned by this object.
 	 * @return the list of <code>Collection</code> objects owned by this object
 	 */
-	public List<Collection> getCollections() {
-		//		return (List<Collection>) collections.values();
-		List<Collection> collections = new ArrayList<Collection>();
+	public Set<Collection> getCollections() {
+		Set<Collection> collections = new HashSet<Collection>();
 		collections.addAll(this.collections.values());
 		return collections;
 	}
@@ -218,15 +215,12 @@ public class SBOLDocument {
 	 * @param source
 	 * @param language
 	 * @param framework
-	 * @param roles
 	 * @return the created {@link Model} object. 
 	 */
-	public Model createModel(String displayId, String version, 
-			URI source, URI language, URI framework, Set<URI> roles) {
+	public Model createModel(String displayId, String version, URI source, URI language, URI framework) {
 		validateCreationData(displayId, version);
-		return createModel(
-				createCompliantUri(defaultURIprefix, displayId, version),
-				source, language, framework, roles);
+		return createModel(createCompliantUri(defaultURIprefix, displayId, version),
+				source, language, framework);
 	}
 
 	/**
@@ -238,8 +232,8 @@ public class SBOLDocument {
 	 * @param roles
 	 * @return {@link Model} object.
 	 */
-	public Model createModel(URI identity, URI source, URI language, URI framework, Set<URI> roles) {
-		Model newModel = new Model(identity, source, language, framework, roles);
+	public Model createModel(URI identity, URI source, URI language, URI framework) {
+		Model newModel = new Model(identity, source, language, framework);
 		addModel(newModel);
 		return newModel;
 	}
@@ -276,9 +270,9 @@ public class SBOLDocument {
 	 * Returns the list of <code>Model</code> objects owned by this object.
 	 * @return the list of <code>Model</code> objects owned by this object
 	 */
-	public List<Model> getModels() {
+	public Set<Model> getModels() {
 		//		return (List<Model>) models.values();
-		List<Model> models = new ArrayList<Model>();
+		Set<Model> models = new HashSet<Model>();
 		models.addAll(this.models.values());
 		return models;
 	}
@@ -361,9 +355,9 @@ public class SBOLDocument {
 	 * Returns the list of <code>ComponentDefinition</code> objects owned by this object.
 	 * @return the list of <code>ComponentDefinition</code> objects owned by this object
 	 */
-	public List<ComponentDefinition> getComponentDefinitions() {
+	public Set<ComponentDefinition> getComponentDefinitions() {
 		//		return (List<Component>) components.values();
-		List<ComponentDefinition> components = new ArrayList<ComponentDefinition>();
+		Set<ComponentDefinition> components = new HashSet<ComponentDefinition>();
 		components.addAll(this.componentDefinitions.values());
 		return components;
 	}
@@ -545,6 +539,15 @@ public class SBOLDocument {
 	 * @return the copied {@link TopLevel} object
 	 */
 	public TopLevel createCopy(TopLevel toplevel, String URIprefix, String displayId, String version) {
+		if (URIprefix == null) {
+			URIprefix = extractURIprefix(toplevel.getIdentity());
+		}
+		if (displayId == null) {
+			displayId = extractDisplayId(toplevel.getIdentity(), 0);
+		}
+		if (version == null) {
+			version = extractVersion(toplevel.getIdentity());
+		}
 		if (toplevel instanceof Collection) {			
 			Collection newCollection = ((Collection) toplevel).copy(URIprefix, displayId, version);
 			addCollection(newCollection);
@@ -613,9 +616,9 @@ public class SBOLDocument {
 	 * Returns the list of <code>Structure</code> objects owned by this object.
 	 * @return the list of <code>Structure</code> objects owned by this object
 	 */
-	public List<Sequence> getSequences() {
+	public Set<Sequence> getSequences() {
 		//		return (List<Structure>) structures.values();
-		List<Sequence> structures = new ArrayList<Sequence>();
+		Set<Sequence> structures = new HashSet<Sequence>();
 		structures.addAll(this.sequences.values());
 		return structures;
 	}
@@ -697,9 +700,9 @@ public class SBOLDocument {
 	 * Returns the list of <code>GenericTopLevel</code> objects owned by this object.
 	 * @return the list of <code>GenericTopLevel</code> objects owned by this object
 	 */
-	public List<GenericTopLevel> getGenericTopLevels() {
+	public Set<GenericTopLevel> getGenericTopLevels() {
 		//		return (List<GenericTopLevel>) topLevels.values();
-		List<GenericTopLevel> topLevels = new ArrayList<GenericTopLevel>();
+		Set<GenericTopLevel> topLevels = new HashSet<GenericTopLevel>();
 		topLevels.addAll(this.genericTopLevels.values());
 		return topLevels;
 	}
@@ -728,12 +731,11 @@ public class SBOLDocument {
 	/**
 	 * Adds a namespace URI and its prefix. Deprecated method. Use {@link #addNamespaceBinding(NamespaceBinding)}.
 	 * 
-	 * @param nameSpaceUri The Namespace {@link URI}
+	 * @param nameSpaceURI The Namespace {@link URI}
 	 * @param prefix The prefix {@link String}
-	 * @deprecated
 	 */
-	public void addNamespaceBinding(URI nameSpaceUri, String prefix) {
-		nameSpaces.put(nameSpaceUri, NamespaceBinding(nameSpaceUri.toString(), prefix));
+	public void addNamespaceBinding(URI nameSpaceURI, String prefix) {
+		nameSpaces.put(nameSpaceURI, NamespaceBinding(nameSpaceURI.toString(), prefix));
 	}
 	
 	/**

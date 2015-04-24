@@ -32,9 +32,9 @@ public class SBOLTestUtils {
 
 	public static Sequence createSequence(SBOLDocument document,String id, List<Annotation> annotations)
 	{
-//		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu",
-//				id, "1.0", id + "_element", URI.create("http://encodings.org/encoding"));
-		
+		//		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu",
+		//				id, "1.0", id + "_element", URI.create("http://encodings.org/encoding"));
+
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 		Sequence sequence = document.createSequence(
 				id, "1.0", id + "_element", URI.create("http://encodings.org/encoding"));
@@ -54,17 +54,18 @@ public class SBOLTestUtils {
 			List<SequenceConstraint> sequenceConstraints,
 			List<Component> subComponents, List<Annotation> annotations)
 	{
-//		ComponentDefinition componentDefinition = document.createComponentDefinition(
-//				"http://www.async.ece.utah.edu", id, "1/0",
-//				type, role);
-		
+		//		ComponentDefinition componentDefinition = document.createComponentDefinition(
+		//				"http://www.async.ece.utah.edu", id, "1/0",
+		//				type, role);
+
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
-//		ComponentDefinition componentDefinition = document.createComponentDefinition(
-//				id, "1.0",type, role);
+		//		ComponentDefinition componentDefinition = document.createComponentDefinition(
+		//				id, "1.0",type, role);
 		ComponentDefinition componentDefinition = document.createComponentDefinition(
 				id, "1.0",type);
-		componentDefinition.setRoles(role);
-		
+		if(role != null)
+			componentDefinition.setRoles(role);
+
 		//		componentDefinition.setName(id);
 		//		componentDefinition.setDescription(id);
 
@@ -101,8 +102,8 @@ public class SBOLTestUtils {
 	public static Collection createCollection(SBOLDocument document, String id,
 			List<Annotation> annotations)
 	{
-		Collection collection = document.createCollection(URI.create("http://www.async.ece.utah.edu/"+id+"/1/0"));
-
+		//		Collection collection = document.createCollection(URI.create("http://www.async.ece.utah.edu/"+id+"/1/0"));
+		Collection collection = document.createCollection(URI.create(id));
 		collection.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
 		collection.setDisplayId(id);
 		collection.setName(id);
@@ -116,12 +117,15 @@ public class SBOLTestUtils {
 
 	public static void createModel(SBOLDocument document, String id, List<Annotation> annotations)
 	{
+//		Model model = document.createModel(URI.create(id),
+//				URI.create(id + "_source"),
+//				URI.create(id + "_language"),
+//				URI.create(id + "_framework"),
+//				getSetPropertyURI(id + "_role"));
 		Model model = document.createModel(URI.create(id),
 				URI.create(id + "_source"),
 				URI.create(id + "_language"),
-				URI.create(id + "_framework"),
-				getSetPropertyURI(id + "_role"));
-
+				URI.create(id + "_framework"));
 		model.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
 		model.setDisplayId(id);
 		model.setName(id);
@@ -213,7 +217,10 @@ public class SBOLTestUtils {
 	public static Interaction createInteraction(String id, Set<URI> type,
 			List<Participation> participations, List<Annotation> annotations)
 	{
-		Interaction i = new Interaction(URI.create(id), type, participations);
+		Interaction i = new Interaction(URI.create(id), type);
+		if (participations != null) {
+			i.setParticipations(participations);
+		}
 		if (annotations != null)
 			i.setAnnotations(annotations);
 		return i;

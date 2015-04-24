@@ -3,7 +3,9 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.sbolstandard.core2.MapsTo.RefinementType;
 
@@ -180,8 +182,16 @@ public abstract class ComponentInstance extends Documented {
 		return mapping;
 	}
 	
-	public MapsTo createMapsTo(String displayId, String version, RefinementType refinement, URI local, URI remote) {
+	/**
+	 * @param displayId
+	 * @param refinement
+	 * @param local
+	 * @param remote
+	 * @return
+	 */
+	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		String version = this.getVersion();
 		return createMapsTo(createCompliantUri(parentPersistentIdStr, displayId, version),
 				refinement, local, remote);
 	}
@@ -215,8 +225,8 @@ public abstract class ComponentInstance extends Documented {
 	 * Returns the list of reference instances owned by this instance. 
 	 * @return the list of reference instances owned by this instance.
 	 */
-	public List<MapsTo> getMapsTos() {
-		return new ArrayList<MapsTo>(mapsTos.values());
+	public Set<MapsTo> getMapsTos() {
+		return new HashSet<MapsTo>(mapsTos.values());
 	}
 	
 	/**
@@ -234,9 +244,9 @@ public abstract class ComponentInstance extends Documented {
 	 * @param mappings
 	 */
 	public void setMapsTo(
-			List<MapsTo> mappings) {
+			List<MapsTo> mapsTos) {
 		clearMapsTos();		
-		for (MapsTo reference : mappings) {
+		for (MapsTo reference : mapsTos) {
 			addMapsTo(reference);
 		}
 	}
@@ -253,8 +263,8 @@ public abstract class ComponentInstance extends Documented {
 	 * Sets field variable <code>instantiatedComponent</code> to the specified element.
 	 * @param definitionURI
 	 */
-	public void setDefinition(URI definitionURI) {
-		this.definition = definitionURI;
+	public void setDefinition(URI definition) {
+		this.definition = definition;
 	}
 
 	protected abstract ComponentInstance deepCopy();

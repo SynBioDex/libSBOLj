@@ -3,7 +3,9 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 import static org.sbolstandard.core2.Version.*;
@@ -53,8 +55,9 @@ public class MultiRange extends Location{
 		return range;
 	}
 	
-	public Range createRange(String displayId, String version, Integer start, Integer end) {
+	public Range createRange(String displayId, Integer start, Integer end) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		String version = this.getVersion();
 		URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
 		return createRange(newMapsToURI, start, end);
 	}
@@ -89,8 +92,8 @@ public class MultiRange extends Location{
 	 * Returns the list of structuralAnnotation instances owned by this instance. 
 	 * @return the list of structuralAnnotation instances owned by this instance.
 	 */
-	public List<Range> getRanges() {
-		List<Range> ranges = new ArrayList<Range>(); 
+	public Set<Range> getRanges() {
+		Set<Range> ranges = new HashSet<Range>(); 
 		ranges.addAll(this.ranges.values());
 		return ranges; 
 	}

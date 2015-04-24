@@ -114,9 +114,9 @@ final class URIcompliance {
 		if (index < 0 || index > 3) {
 			// TODO: generate error message
 			return false;
-		}
+		}		
 		Pattern r;
-		String URIstr = objURI.toString();
+		String URIstr = objURI.toString();		
 		if (index == 0) {
 			r = Pattern.compile(toplevelURIpattern);
 		}
@@ -137,6 +137,9 @@ final class URIcompliance {
 			// TODO: Warning: top-level URI is not compliant.
 			return false;
 		}
+
+//		String[] extractedURIpieces = URIstr.split("/");
+//		String version = extractedURIpieces[extractedURIpieces.length - 1];
 	}
 
 	/**
@@ -256,14 +259,14 @@ final class URIcompliance {
 	}
 
 	// (?:...) is a non-capturing group
-	public static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
-	//public static final String URIprefixpattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+	//public static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
+	public static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
 	public static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]+";//"[a-zA-Z0-9_]+";
 
 	//public static final String MavenVersionPattern = "[0-9]+(?:[.][0-9]+){0,2}(?:-alpha|beta|SNAPSHOT)*";
 
-	public static final String versionPattern = "[^/]+"; //"[-a-zA-Z0-9.]+";
+	public static final String versionPattern = "[^/]+";
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: persistent ID

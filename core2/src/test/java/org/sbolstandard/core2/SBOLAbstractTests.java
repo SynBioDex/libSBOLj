@@ -1,5 +1,8 @@
 package org.sbolstandard.core2;
 
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,32 +12,28 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.sbolstandard.core2.ComponentInstance.AccessType;
-import org.sbolstandard.core2.FunctionalComponent.DirectionType;
-import org.sbolstandard.core2.MapsTo.RefinementType;
-import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
-
-import uk.ac.ncl.intbio.core.datatree.NamedProperty;
-
 /**
  * @author Tramy Nguyen
  *
  */
 public abstract class SBOLAbstractTests {
 
+
 	@Test
 	public void test_JSONFile() throws Exception
 	{
 		SBOLDocument document=new SBOLDocument();
-		SBOLWriter.writeJSON(document, (System.out));
+		runTest("test/data/emptyJSONFile.json", document, "json");
+
 	}
 
 	public void test_TurtleFile() throws Exception
 	{
 		SBOLDocument document=new SBOLDocument();
-		SBOLWriter.writeTurtle(document, (System.out));
+		runTest("test/data/emptyTurtleFile.json", document, "turtle");
 	}
 
-	@Test
+	/*@Test
 	public void test_moduleDef_withFunctionalComponent() throws Exception
 	{
 		SBOLDocument document=new SBOLDocument();
@@ -47,7 +46,58 @@ public abstract class SBOLAbstractTests {
 				URI.create("cd1"),
 				FunctionalComponent.DirectionType.NONE);
 		SBOLWriter.writeRDF(document,(System.out));
+	}*/
+
+	@Test
+	public void test_collectionAnnotation() throws Exception
+	{
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+
+		//TODO: each object annotation have to match the namespacebinding created?
+		List<Annotation> collection_annotations = new ArrayList<Annotation>();
+		collection_annotations.add(new Annotation(
+				NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "TurtleString")));
+		SBOLTestUtils.createCollection(document, "myParts", collection_annotations);
+
+		runTest("test/data/collectionAnnotation.rdf", document, "rdf");
 	}
+
+	@Test
+	public void test_modelAnnotation() throws Exception
+	{
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+
+		List<Annotation> model_annotations = new ArrayList<Annotation>();
+		model_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
+				"TurtleString")));
+		SBOLTestUtils.createModel(document, "someModel", model_annotations);
+
+		runTest("test/data/modelAnnotation.rdf", document, "rdf");
+	}
+	/*
+	@Test
+	public void test_moduleAnnotation() throws Exception
+	{
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+
+		List<Annotation> moduleDefinition_annotations = new ArrayList<Annotation>();
+		moduleDefinition_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
+				"TurtleString")));
+		SBOLTestUtils.createModuleDefinition(document, "someModDef", null, null, null, null, null, moduleDefinition_annotations);
+
+
+		runTest("test/data/moduleAnnotation.rdf", document, "rdf");
+	}
+
 
 	@Test
 	public void test_Annotations() throws Exception
@@ -178,10 +228,6 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/singleCollection.rdf", document);
 	}
 
-	private NamedProperty<QName> NamedProperty(QName qName, String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Test
 	public void test_multipleCollections_no_Members() throws Exception
@@ -322,7 +368,7 @@ public abstract class SBOLAbstractTests {
 		SBOLTestUtils.createFunctionalComponent("LacIIn", accessType, directionType, compDef_id, null);
 
 		runTest("test/data/singleFunctionalComponent.rdf", document);
-	}
+	}*/
 
 	//	|------------------------------------TOGGLE SWITCH------------------------------------|
 	//	|		- double check on correct use of URIs										  |
@@ -592,7 +638,7 @@ public abstract class SBOLAbstractTests {
 	//	}
 
 
-	public abstract void runTest(final String fileName, final SBOLDocument expected)
+	public abstract void runTest(final String fileName, final SBOLDocument expected, String fileType)
 			throws Exception;
 
 }

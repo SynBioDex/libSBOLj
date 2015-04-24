@@ -26,11 +26,10 @@ public class Interaction extends Documented {
 	 * @param type a type for the interaction
 	 * @param participations a collection of participations for the interaction
 	 */
-	public Interaction(URI identity, Set<URI> type, List<Participation> participations) {
+	public Interaction(URI identity, Set<URI> type) {
 		super(identity);
 		setTypes(type);
 		this.participations = new HashMap<URI, Participation>(); 
-		setParticipations(participations);
 	}
 	
 	public Interaction(Interaction interaction) {
@@ -122,8 +121,9 @@ public class Interaction extends Documented {
 		return participation;
 	}
 
-	public Participation createParticipation(String displayId, String version, Set<URI> role, URI participant) {
+	public Participation createParticipation(String displayId, Set<URI> role, URI participant) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		String version = this.getVersion();
 		if(parentPersistentIdStr == null) {
 			throw new IllegalStateException(
 					"Can not create a child on a parent that has the non-standard compliant identity " +
@@ -165,9 +165,8 @@ public class Interaction extends Documented {
 	 * Returns the list of participation instances owned by this instance. 
 	 * @return the list of participation instances owned by this instance.
 	 */
-	public List<Participation> getParticipations() {
-//		return (List<Participation>) participations.values();
-		return new ArrayList<Participation>(participations.values());
+	public Set<Participation> getParticipations() {
+		return new HashSet<Participation>(participations.values());
 	}
 	
 	/**

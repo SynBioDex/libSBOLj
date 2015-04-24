@@ -237,13 +237,14 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * @param URIprefix
 	 * @param displayId
 	 * @param version
 	 * @param location
 	 * @return
 	 */
-	public SequenceAnnotation createSequenceAnnotation(String URIprefix, String displayId, String version, Location location) {
+	public SequenceAnnotation createSequenceAnnotation(String displayId, Location location) {
+		String URIprefix = this.getPersistentIdentity().toString();
+		String version = this.getVersion();
 		URI newSequenceAnnotationURI = createCompliantUri(URIprefix, displayId, version);
 		if (!isChildURIcompliant(this.getIdentity(), newSequenceAnnotationURI))
 			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
@@ -251,23 +252,6 @@ public class ComponentDefinition extends TopLevel {
 			        "' for " + URIprefix + " " + displayId + " " + version);
 		return createSequenceAnnotation(newSequenceAnnotationURI, location);
 	}
-	
-//	public SequenceAnnotation createSequenceAnnotation(String URIprefix, String id, 
-//				String version, Location location) {		
-//		URI newSequenceURI = URI.create(URIprefix + '/' + id + '/' + version);
-//		if (Identified.isURIcompliant(newSequenceURI.toString())) {
-//			Sequence newSequence = new Sequence(newSequenceURI, elements, encoding);
-//			if (addSequence(newSequence)) {
-//				return newSequence;
-//			}
-//			else
-//				return null;
-//		}
-//		else {
-//			// TODO: Non-compliant URI
-//			return null;
-//		}
-//	}
 	
 	/**
 	 * Adds the specified instance to the list of sequenceAnnotations. 
@@ -302,9 +286,9 @@ public class ComponentDefinition extends TopLevel {
 	 * Returns the list of structuralAnnotation instances owned by this instance. 
 	 * @return the list of structuralAnnotation instances owned by this instance.
 	 */
-	public List<SequenceAnnotation> getSequenceAnnotations() {
+	public Set<SequenceAnnotation> getSequenceAnnotations() {
 //		return (List<SequenceAnnotation>) structuralAnnotations.values();
-		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>(); 
+		Set<SequenceAnnotation> sequenceAnnotations = new HashSet<SequenceAnnotation>(); 
 		sequenceAnnotations.addAll(this.sequenceAnnotations.values());
 		return sequenceAnnotations; 
 	}
@@ -357,15 +341,14 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * @param URIprefix
 	 * @param displayId
-	 * @param version
 	 * @param access
 	 * @param componentDefinitionURI
 	 * @return
 	 */
-	public Component createComponent(String URIprefix, String displayId, String version, 
-			AccessType access, URI componentDefinitionURI) {
+	public Component createComponent(String displayId, AccessType access, URI componentDefinitionURI) {
+		String URIprefix = this.getPersistentIdentity().toString();
+		String version = this.getVersion();
 		return createComponent(createCompliantUri(URIprefix, displayId, version),
 				access, componentDefinitionURI);
 	}
@@ -402,8 +385,8 @@ public class ComponentDefinition extends TopLevel {
 	 * Returns the list of {@link Component} instances owned by this instance. 
 	 * @return the list of {@link Component} instances owned by this instance.
 	 */
-	public List<Component> getComponents() {
-		List<Component> structuralInstantiations = new ArrayList<Component>(); 
+	public Set<Component> getComponents() {
+		Set<Component> structuralInstantiations = new HashSet<Component>(); 
 		structuralInstantiations.addAll(this.components.values());
 		return structuralInstantiations; 
 	}
@@ -465,8 +448,10 @@ public class ComponentDefinition extends TopLevel {
 	 * @param object
 	 * @return
 	 */
-	public SequenceConstraint createSequenceConstraint(String URIprefix, String displayId, String version, 
+	public SequenceConstraint createSequenceConstraint(String displayId,
 			RestrictionType restriction, URI subject, URI object) {
+		String URIprefix = this.getPersistentIdentity().toString();
+		String version = this.getVersion();
 		return createSequenceConstraint(
 				createCompliantUri(URIprefix, displayId, version),
 				restriction, subject, object);
@@ -504,9 +489,8 @@ public class ComponentDefinition extends TopLevel {
 	 * Returns the list of {@link SequenceConstraint} instances owned by this instance. 
 	 * @return the list of {@link SequenceConstraint} instances owned by this instance.
 	 */
-	public List<SequenceConstraint> getSequenceConstraints() {
-//		return (List<StructuralConstraint>) structuralConstraints.values();
-		List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>(); 
+	public Set<SequenceConstraint> getSequenceConstraints() {
+		Set<SequenceConstraint> sequenceConstraints = new HashSet<SequenceConstraint>(); 
 		sequenceConstraints.addAll(this.sequenceConstraints.values());
 		return sequenceConstraints; 
 	}

@@ -515,7 +515,8 @@ public class SBOLReader
 
 		//ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
 		ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type);
-		c.setRoles(roles);
+		if(roles != null)
+			c.setRoles(roles);
 		if(identity != componentDef.getIdentity())
 			c.setWasDerivedFrom(componentDef.getIdentity());
 		if (displayId != null)
@@ -831,7 +832,9 @@ public class SBOLReader
 		//ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
 		//c.setPersistentIdentity(topLevel.getOptionalUriPropertyValue(Sbol2Terms.Identified.persistentIdentity));
 		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type);
-		c.setRoles(roles);
+
+		if(roles != null)
+			c.setRoles(roles);
 		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (persistentIdentity != null)
@@ -972,6 +975,7 @@ public class SBOLReader
 		}
 
 		SequenceAnnotation s = new SequenceAnnotation(sequenceAnnotation.getIdentity(), location);
+
 		if (persistentIdentity != null)
 			s.setPersistentIdentity(persistentIdentity);
 		if(version != null)
@@ -1447,7 +1451,8 @@ public class SBOLReader
 			}
 		}
 
-		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework, roles);
+		//Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework, roles);
+		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework);
 		if (persistentIdentity != null)
 			m.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1808,7 +1813,10 @@ public class SBOLReader
 			}
 		}
 
-		Interaction i = new Interaction(interaction.getIdentity(), type, participations);
+		Interaction i = new Interaction(interaction.getIdentity(), type);
+		if (participations != null) {
+			i.setParticipations(participations);
+		}
 		if (persistentIdentity != null)
 			i.setPersistentIdentity(persistentIdentity);
 		if (version != null)

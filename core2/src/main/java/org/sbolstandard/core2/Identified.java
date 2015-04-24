@@ -22,10 +22,10 @@ public abstract class Identified {
 
 	protected URI identity;
 	private URI persistentIdentity;
-
 	private String version;
 	private List<Annotation> annotations;
 	private URI wasDerivedFrom;
+	protected String displayId;
 
 	public Identified(URI identity) {
 		setIdentity(identity);
@@ -51,7 +51,6 @@ public abstract class Identified {
 		if (identified.isSetPersistentIdentity()) {
 			this.setPersistentIdentity(URI.create(identified.getPersistentIdentity().toString()));
 		}
-		//this.setTimeStamp(new Timestamp(Calendar.getInstance().getTime().getTime()));
 		if (identified.isSetWasDerivedFrom()) {
 			this.setWasDerivedFrom(URI.create(identified.getWasDerivedFrom().toString()));
 		}
@@ -147,6 +146,41 @@ public abstract class Identified {
 	public void setVersion(String version) {
 		this.version = version;
 	}
+	
+	/**
+	 * Test if optional field variable <code>displayId</code> is set.
+	 * @return <code>true</code> if it is not <code>null</code>
+	 */
+	public boolean isSetDisplayId() {
+		if (displayId == null)
+			return false;
+		else 
+			return true;
+	}
+	
+	/**
+	 * Returns field variable <code>displayId</code>.
+	 * @return field variable <code>displayId</code>
+	 */
+	// @return the documented object's display ID
+	public String getDisplayId() {
+		return displayId;
+	}
+		
+	/**
+	 * Set field variable <code>displayId</code> to the specified element.
+	 * @param displayId
+	 */
+	public void setDisplayId(String displayId) {
+		this.displayId = displayId;
+	}
+	
+	/**
+	 * Set optional field variable <code>displayId</code> to <code>null</code>.
+	 */
+	public void unsetDisplayId() {
+		displayId = null;
+	}
 
 	public URI getWasDerivedFrom() {
 		return wasDerivedFrom;
@@ -171,10 +205,35 @@ public abstract class Identified {
 		else
 			return true;
 	}
+	
+	/**
+	 * Calls the Annotation constructor to create a new instance using the specified parameters,
+	 * then adds to the list of Annotation instances owned by this component.
+	 * @param relation
+	 * @param literal
+	 * @return the created Annotation instance.
+	 */
+	public Annotation createAnnotation(QName qName, String literal) {
+		Annotation annotation = new Annotation(qName,literal);
+		addAnnotation(annotation);
+		return annotation;
+	}
 
 	/**
 	 * Calls the Annotation constructor to create a new instance using the specified parameters,
 	 * then adds to the list of Annotation instances owned by this component.
+	 * @return the created Annotation instance.
+	 */
+	public Annotation createAnnotation(QName qName, URI literal) {
+		Annotation annotation = new Annotation(qName,literal);
+		addAnnotation(annotation);
+		return annotation;
+	}
+	
+	/**
+	 * Calls the Annotation constructor to create a new instance using the specified parameters,
+	 * then adds to the list of Annotation instances owned by this component.
+	 * @param namedProperty
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(NamedProperty<QName> namedProperty) {
