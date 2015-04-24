@@ -480,14 +480,13 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
 		if (!isDisplayIdCompliant(displayId)) {
-			return null;
+			throw new IllegalArgumentException("Display id `" + displayId + "' is not compliant");
 		}
 		if (!isVersionCompliant(version)) {
-			return null;
+			throw new IllegalArgumentException("Version `" + version + "' is not compliant");
 		}
 		if (defaultURIprefix == null) {
-			// TODO: Error: defaultURIprefix is null. 
-			return null;
+			throw new IllegalStateException("The defaultURIprefix is not set. Please set it to a non-null value");
 		}
 		URI newComponentDefinitionURI = URI.create(defaultURIprefix + '/' + displayId + '/' + version);
 		return createComponentDefinition(newComponentDefinitionURI, types);
@@ -599,12 +598,8 @@ public class SBOLDocument {
 	 */
 	public Sequence createSequence(URI identity, String elements, URI encoding) {
 		Sequence newSequence = new Sequence(identity, elements, encoding);
-		if (addSequence(newSequence)) {
-			return newSequence;
-		}
-		else
-			// TODO return exception
-			return null;
+		addSequence(newSequence);
+		return newSequence;
 	}
 
 	/**
@@ -617,16 +612,15 @@ public class SBOLDocument {
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
 		if (!isDisplayIdCompliant(displayId)) {
-			return null;
+			throw new IllegalArgumentException("Display id `" + displayId + "' is not compliant");
 		}
 		if (!isVersionCompliant(version)) {
-			return null;
+			throw new IllegalArgumentException("Version `" + version + "' is not compliant");
 		}
 		if (defaultURIprefix == null) {
-			// TODO: Error: defaultURIprefix is null. 
-			return null;
+			throw new IllegalStateException("The defaultURIprefix is not set. Please set it to a non-null value");
 		}
-		URI newSequenceURI = URI.create(defaultURIprefix + '/' + displayId + '/' + version);		
+		URI newSequenceURI = URI.create(defaultURIprefix + '/' + displayId + '/' + version);
 		return createSequence(newSequenceURI, elements, encoding);
 	}
 	
@@ -799,12 +793,8 @@ public class SBOLDocument {
 		}
 		else if (toplevel instanceof Sequence) {
 			Sequence newSequence = ((Sequence) toplevel).copy(URIprefix, displayId, version);
-			if (addSequence(newSequence)) {
-				return newSequence;
-			}
-			else {
-				return null;
-			}
+			addSequence(newSequence);
+			return newSequence;
 		}
 		else if (toplevel instanceof GenericTopLevel) {
 			GenericTopLevel newGenericTopLevel = ((GenericTopLevel) toplevel).copy(URIprefix, displayId, version);
@@ -826,7 +816,7 @@ public class SBOLDocument {
 	 * @param newSequence
 	 * @return <code>true</code> if the specified sequence is successfully added.
 	 */
-	public boolean addSequence(Sequence newSequence) {
+	public void addSequence(Sequence newSequence) {
 		if (newSequence.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newSequence.getIdentity()));
 			// Check if persistent identity exists in other maps.
@@ -845,25 +835,29 @@ public class SBOLDocument {
 							sequences.put(persistentId, newSequence);
 						}
 					}
-					return true;
 				}
 				else // key exists in sequences map
-					return false;
+					throw new IllegalArgumentException(
+							"Sequence instance for identity `" + newSequence.identity +
+									"' and persistent identity `" + persistentId + "' already exists");
 			}
 			else // key exists in other maps
-				return false;
+				throw new IllegalArgumentException(
+						"Instance for identity `" + newSequence.identity +
+								"' and persistent identity `" + persistentId + "' exists for a non-sequence");;
 		}
 		else { // Only check if sequence's URI exists in all maps.
 			if (!keyExistsInOtherMaps(sequences.keySet(), newSequence.getIdentity())) {
 				if (!sequences.containsKey(newSequence.getIdentity())) {
 					sequences.put(newSequence.getIdentity(), newSequence);
-					return true;
 				}
 				else // key exists in sequences map
-					return false;
+					throw new IllegalArgumentException(
+							"Instance for identity `" + newSequence.identity + "' exists for a non-sequence");;
 			}
 			else // key exists in other maps
-				return false;
+				throw new IllegalArgumentException(
+						"Instance for identity `" + newSequence.identity + "' exists for a non-sequence");;
 		}
 	}
 
@@ -1219,7 +1213,8 @@ public class SBOLDocument {
 			this.defaultURIprefix = defaultURIprefix;	
 		}
 		else {
-			// TODO: Generate warning message: invalid or null defaultURIprefix
+			throw new IllegalArgumentException(
+					"Unable to set default URI prefix to non-compliant value `" + defaultURIprefix + "'");
 		}
 	}
 	
