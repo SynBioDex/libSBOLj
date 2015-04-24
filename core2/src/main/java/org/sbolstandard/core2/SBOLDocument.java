@@ -53,18 +53,8 @@ public class SBOLDocument {
 	 * @return the created {@link ModuleDefinition} object.
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version, Set<URI> roles) {
-		if (!isDisplayIdCompliant(displayId)) {
-			return null;
-		}
-		if (!isVersionCompliant(version)) {
-			return null;
-		}
-		if (defaultURIprefix == null) {
-			// TODO: Error: defaultURIprefix is null. 
-			return null;
-		}
-		URI newModuleDefinitionURI = URI.create(defaultURIprefix + '/' + displayId + '/' + version);
-		return createModuleDefinition(newModuleDefinitionURI, roles);
+		validateCreationData(displayId, version);
+		return createModuleDefinition(createStandardCompliantUri(displayId, version), roles);
 	}
 	
 	/**
@@ -201,18 +191,8 @@ public class SBOLDocument {
 	 * @return the created {@link Collection} object.
 	 */
 	public Collection createCollection(String displayId, String version) {
-		if (!isDisplayIdCompliant(displayId)) {
-			return null;
-		}
-		if (!isVersionCompliant(version)) {
-			return null;
-		}
-		if (defaultURIprefix == null) {
-			// TODO: Error: defaultURIprefix is null. 
-			return null;
-		}
-		URI newCollectionURI = URI.create(defaultURIprefix + '/' + displayId + '/' + version);
-		return createCollection(newCollectionURI);
+		validateCreationData(displayId, version);
+		return createCollection(createStandardCompliantUri(displayId, version));
 	}
 
 	/**
@@ -323,18 +303,8 @@ public class SBOLDocument {
 	 */
 	public Model createModel(String displayId, String version, 
 			URI source, URI language, URI framework, Set<URI> roles) {
-		if (!isDisplayIdCompliant(displayId)) {
-			return null;
-		}
-		if (!isVersionCompliant(version)) {
-			return null;
-		}
-		if (defaultURIprefix == null) {
-			// TODO: Error: defaultURIprefix is null. 
-			return null;
-		}
-		URI newModelURI = URI.create(defaultURIprefix + '/' + displayId + '/' +version);
-		return createModel(newModelURI, source, language, framework, roles);
+		validateCreationData(displayId, version);
+		return createModel(createStandardCompliantUri(displayId, version), source, language, framework, roles);
 	}
 
 	/**
@@ -479,17 +449,8 @@ public class SBOLDocument {
 	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
-		if (!isDisplayIdCompliant(displayId)) {
-			throw new IllegalArgumentException("Display id `" + displayId + "' is not compliant");
-		}
-		if (!isVersionCompliant(version)) {
-			throw new IllegalArgumentException("Version `" + version + "' is not compliant");
-		}
-		if (defaultURIprefix == null) {
-			throw new IllegalStateException("The defaultURIprefix is not set. Please set it to a non-null value");
-		}
-		URI newComponentDefinitionURI = URI.create(defaultURIprefix + '/' + displayId + '/' + version);
-		return createComponentDefinition(newComponentDefinitionURI, types);
+		validateCreationData(displayId, version);
+		return createComponentDefinition(createStandardCompliantUri(displayId, version), types);
 	}
 
 	/**
@@ -611,17 +572,8 @@ public class SBOLDocument {
 	 * @return the created Sequence object.
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
-		if (!isDisplayIdCompliant(displayId)) {
-			throw new IllegalArgumentException("Display id `" + displayId + "' is not compliant");
-		}
-		if (!isVersionCompliant(version)) {
-			throw new IllegalArgumentException("Version `" + version + "' is not compliant");
-		}
-		if (defaultURIprefix == null) {
-			throw new IllegalStateException("The defaultURIprefix is not set. Please set it to a non-null value");
-		}
-		URI newSequenceURI = URI.create(defaultURIprefix + '/' + displayId + '/' + version);
-		return createSequence(newSequenceURI, elements, encoding);
+		validateCreationData(displayId, version);
+		return createSequence(createStandardCompliantUri(displayId, version), elements, encoding);
 	}
 	
 //	/**
@@ -919,18 +871,8 @@ public class SBOLDocument {
 	 * @return the created {@link GenericTopLevel} object.
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
-		if (!isDisplayIdCompliant(displayId)) {
-			return null;
-		}
-		if (!isVersionCompliant(version)) {
-			return null;
-		}
-		if (defaultURIprefix == null) {
-			// TODO: Error: defaultURIprefix is null. 
-			return null;
-		}
-		URI newGenericTopLevelURI = URI.create(defaultURIprefix + '/' + displayId + '/' + version);
-		return createGenericTopLevel(newGenericTopLevelURI, rdfType);
+		validateCreationData(displayId, version);
+		return createGenericTopLevel(createStandardCompliantUri(displayId, version), rdfType);
 	}
 
 	/**
@@ -1202,6 +1144,22 @@ public class SBOLDocument {
 		} else if (!sequences.equals(other.sequences))
 			return false;
 		return true;
+	}
+
+	private void validateCreationData(String displayId, String version) {
+		if (!isDisplayIdCompliant(displayId)) {
+			throw new IllegalArgumentException("Display id `" + displayId + "' is not compliant");
+		}
+		if (!isVersionCompliant(version)) {
+			throw new IllegalArgumentException("Version `" + version + "' is not compliant");
+		}
+		if (defaultURIprefix == null) {
+			throw new IllegalStateException("The defaultURIprefix is not set. Please set it to a non-null value");
+		}
+	}
+
+	private URI createStandardCompliantUri(String displayId, String version) {
+		return URI.create(defaultURIprefix + '/' + displayId + '/' + version);
 	}
 	
 	/**
