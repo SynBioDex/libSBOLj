@@ -1,20 +1,32 @@
 package org.sbolstandard.core2;
 
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.namespace.QName;
 
 public class GenerateTestFile
 {
 
 	public static void main(String[] args)
 	{
+
 		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		List<Annotation> model_annotations = new ArrayList<Annotation>();
+		model_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
+				"TurtleString")));
+		SBOLTestUtils.createModel(document, "someModel", model_annotations);
 
-		writeRdfFile(document, "sampleToggleSwitch.rdf");
+		writeRdfFile(document, "moduleAnnotation.rdf");
 
 	}
 

@@ -712,13 +712,13 @@ public class writeTester {
 
 		//ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(identity, type, roles);
 		ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(identity, type);
+
 		if (c==null) {
 			c = SBOL2Doc_test.getComponentDefinition(identity);
 		} else {
 			c.setRoles(roles);
 			setCommonTopLevelData(c, name, description);
 		}
-		
 		if(structureData != null)
 			c.setSequence(structureData.getIdentity());
 		if(structureInstantiationData != null)
@@ -814,10 +814,12 @@ public class writeTester {
 		String displayId 	   = modeldata.get(3);
 		String name 		   = modeldata.get(4);
 		String description     = modeldata.get(5);
-		Model model = doc.createModel(identity, source, language, framework, roles);
+		// Model model = doc.createModel(identity, source, language, framework, roles);
+		Model model = doc.createModel(identity, source, language, framework);		
 		if (model==null) {
 			model = doc.getModel(identity);
 		} else {
+			model.setRoles(roles);
 			setCommonTopLevelData(model, name, description);
 		}
 		return model;

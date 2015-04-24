@@ -20,7 +20,6 @@ public abstract class Identified {
 
 	protected URI identity;
 	private URI persistentIdentity;
-
 	private String version;
 	private List<Annotation> annotations;
 	private URI wasDerivedFrom;
@@ -49,7 +48,6 @@ public abstract class Identified {
 		if (identified.isSetPersistentIdentity()) {
 			this.setPersistentIdentity(URI.create(identified.getPersistentIdentity().toString()));
 		}
-		//this.setTimeStamp(new Timestamp(Calendar.getInstance().getTime().getTime()));
 		if (identified.isSetWasDerivedFrom()) {
 			this.setWasDerivedFrom(URI.create(identified.getWasDerivedFrom().toString()));
 		}

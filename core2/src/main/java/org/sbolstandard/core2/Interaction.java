@@ -126,18 +126,13 @@ public class Interaction extends Documented {
 		}
 	}
 	
-	public Participation createParticipation(String displayId, String version, Set<URI> role, URI participant) {
+	public Participation createParticipation(String displayId, Set<URI> role, URI participant) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		if (parentPersistentIdStr != null) {
 			if (isDisplayIdCompliant(displayId)) {
-				if (isVersionCompliant(version)) {
-					URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
-					return createParticipation(newMapsToURI, role, participant);
-				}
-				else {
-					// TODO: Warning: version not compliant
-					return null;
-				}
+				URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' 
+						+ extractVersion(this.getIdentity()));
+				return createParticipation(newMapsToURI, role, participant);
 			}
 			else {
 				// TODO: Warning: display ID not compliant

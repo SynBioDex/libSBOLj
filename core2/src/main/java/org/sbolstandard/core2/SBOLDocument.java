@@ -318,11 +318,10 @@ public class SBOLDocument {
 	 * @param source
 	 * @param language
 	 * @param framework
-	 * @param roles
 	 * @return the created {@link Model} object. 
 	 */
 	public Model createModel(String displayId, String version, 
-			URI source, URI language, URI framework, Set<URI> roles) {
+			URI source, URI language, URI framework) {
 		if (!isDisplayIdCompliant(displayId)) {
 			return null;
 		}
@@ -334,7 +333,7 @@ public class SBOLDocument {
 			return null;
 		}
 		URI newModelURI = URI.create(defaultURIprefix + '/' + displayId + '/' +version);
-		return createModel(newModelURI, source, language, framework, roles);
+		return createModel(newModelURI, source, language, framework);
 	}
 
 	/**
@@ -346,8 +345,8 @@ public class SBOLDocument {
 	 * @param roles
 	 * @return {@link Model} object.
 	 */
-	public Model createModel(URI identity, URI source, URI language, URI framework, Set<URI> roles) {
-		Model newModel = new Model(identity, source, language, framework, roles);
+	public Model createModel(URI identity, URI source, URI language, URI framework) {
+		Model newModel = new Model(identity, source, language, framework);
 		if (addModel(newModel)) {
 			return newModel;	
 		}
@@ -609,7 +608,6 @@ public class SBOLDocument {
 
 	/**
 	 * Create a new {@link Sequence} object.
-	 * @param URIprefix
 	 * @param displayId
 	 * @param elements
 	 * @param encoding
@@ -761,6 +759,15 @@ public class SBOLDocument {
 	 * @return the copied {@link TopLevel} object
 	 */
 	public TopLevel createCopy(TopLevel toplevel, String URIprefix, String displayId, String version) {
+		if (URIprefix == null) {
+			URIprefix = extractURIprefix(toplevel.getIdentity());
+		}
+		if (displayId == null) {
+			displayId = extractDisplayId(toplevel.getIdentity(), 0);
+		}
+		if (version == null) {
+			version = extractVersion(toplevel.getIdentity());
+		}
 		if (toplevel instanceof Collection) {			
 			Collection newCollection = ((Collection) toplevel).copy(URIprefix, displayId, version);
 			if (addCollection(newCollection)) {

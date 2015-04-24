@@ -242,14 +242,14 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * @param URIprefix
 	 * @param displayId
 	 * @param version
 	 * @param location
 	 * @return
 	 */
-	public SequenceAnnotation createSequenceAnnotation(String URIprefix, String displayId, String version, Location location) {
-		URI newSequenceAnnotationURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+	public SequenceAnnotation createSequenceAnnotation(String displayId, Location location) {
+		URI newSequenceAnnotationURI = URI.create(extractURIprefix(this.getIdentity())
+				+ '/' + displayId + '/' + extractVersion(this.getIdentity()));
 		if (isChildURIcompliant(this.getIdentity(), newSequenceAnnotationURI)) {
 			return createSequenceAnnotation(newSequenceAnnotationURI, location);
 		}
@@ -404,16 +404,14 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * @param URIprefix
 	 * @param displayId
-	 * @param version
 	 * @param access
 	 * @param componentDefinitionURI
 	 * @return
 	 */
-	public Component createComponent(String URIprefix, String displayId, String version, 
-			AccessType access, URI componentDefinitionURI) {
-		URI newComponentURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+	public Component createComponent(String displayId, AccessType access, URI componentDefinitionURI) {
+		URI newComponentURI = URI.create(extractURIprefix(this.getIdentity()) 
+				+ '/' + displayId + '/' + extractVersion(this.getIdentity()));
 		if (isChildURIcompliant(this.getIdentity(), newComponentURI)) {
 			return createComponent(newComponentURI, access, componentDefinitionURI);
 		}
@@ -557,9 +555,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @param object
 	 * @return
 	 */
-	public SequenceConstraint createSequenceConstraint(String URIprefix, String displayId, String version, 
-			RestrictionType restriction, URI subject, URI object) {
-		URI newSequenceConstraintURI = URI.create(URIprefix + '/' + displayId + '/' + version);
+	public SequenceConstraint createSequenceConstraint(String displayId, RestrictionType restriction, URI subject, URI object) {
+		URI newSequenceConstraintURI = URI.create(extractURIprefix(this.getIdentity())
+				+ '/' + displayId + '/' + extractVersion(this.getIdentity()));
 		if (isChildURIcompliant(this.getIdentity(), newSequenceConstraintURI)) {
 			return createSequenceConstraint(newSequenceConstraintURI, restriction, subject, object);
 		}

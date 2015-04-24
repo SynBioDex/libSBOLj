@@ -1,14 +1,12 @@
 package org.sbolstandard.core2;
 
-import java.net.URI;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Assume;
 
-import static org.junit.Assert.assertTrue;
-
 public class SBOLWriterTest extends SBOLAbstractTests {
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected) throws Exception {
+	public void runTest(final String fileName, final SBOLDocument expected, String fileType) throws Exception {
 		assumeNotNull(expected);
 		SBOLDocument actual = SBOLTestUtils.writeAndRead(expected);
 		assertTrue(actual.equals(expected));
