@@ -126,7 +126,6 @@ public class SBOLTestUtils {
 				URI.create(id + "_source"),
 				URI.create(id + "_language"),
 				URI.create(id + "_framework"));
-		model.setRoles(getSetPropertyURI(id + "_role"));
 		model.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
 		model.setDisplayId(id);
 		model.setName(id);
@@ -218,7 +217,10 @@ public class SBOLTestUtils {
 	public static Interaction createInteraction(String id, Set<URI> type,
 			List<Participation> participations, List<Annotation> annotations)
 	{
-		Interaction i = new Interaction(URI.create(id), type, participations);
+		Interaction i = new Interaction(URI.create(id), type);
+		if (participations != null) {
+			i.setParticipations(participations);
+		}
 		if (annotations != null)
 			i.setAnnotations(annotations);
 		return i;

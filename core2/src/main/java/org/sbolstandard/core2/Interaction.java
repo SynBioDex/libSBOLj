@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.sbolstandard.core2.URIcompliance.*;
-import static org.sbolstandard.core2.Version.*;
+
 /**
  * 
  * @author Zhen Zhang
@@ -26,11 +26,10 @@ public class Interaction extends Documented {
 	 * @param type a type for the interaction
 	 * @param participations a collection of participations for the interaction
 	 */
-	public Interaction(URI identity, Set<URI> type, List<Participation> participations) {
+	public Interaction(URI identity, Set<URI> type) {
 		super(identity);
 		setTypes(type);
 		this.participations = new HashMap<URI, Participation>(); 
-		setParticipations(participations);
 	}
 	
 	public Interaction(Interaction interaction) {
@@ -118,67 +117,29 @@ public class Interaction extends Documented {
 	 */
 	public Participation createParticipation(URI identity, Set<URI> role, URI participant) {
 		Participation participation = new Participation(identity, role, participant);
-		if (addParticipation(participation)) { 
-			return participation;
-		}
-		else {
-			return null;
-		}
+		addParticipation(participation);
+		return participation;
 	}
-	
+
 	public Participation createParticipation(String displayId, Set<URI> role, URI participant) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
-		if (parentPersistentIdStr != null) {
-			if (isDisplayIdCompliant(displayId)) {
-				URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' 
-						+ extractVersion(this.getIdentity()));
-				return createParticipation(newMapsToURI, role, participant);
-			}
-			else {
-				// TODO: Warning: display ID not compliant
-				return null;
-			}
+		String version = this.getVersion();
+		if(parentPersistentIdStr == null) {
+			throw new IllegalStateException(
+					"Can not create a child on a parent that has the non-standard compliant identity " +
+							this.getIdentity());
 		}
-		else {
-			// TODO: Warning: Parent persistent ID is not compliant.
-			return null;
-		}
+		validateIdVersion(displayId, version);
+        return createParticipation(
+				createCompliantUri(parentPersistentIdStr, displayId, version), role, participant);
 	}
 	
 	/**
 	 * Adds the specified instance to the list of participations. 
 	 * @param participation
 	 */
-	public boolean addParticipation(Participation participation) {
-		if (isChildURIcompliant(this.getIdentity(), participation.getIdentity())) {
-			// Check if persistent identity exists in other maps.
-			URI persistentId = URI.create(extractPersistentId(participation.getIdentity()));
-			// Check if URI exists in the participations map.
-			if (!participations.containsKey(participation.getIdentity())) {
-				participations.put(participation.getIdentity(), participation);
-				Participation latestParticipation = participations.get(persistentId);
-				if (latestParticipation == null) {
-					participations.put(persistentId, participation);
-				}
-				else {						
-					if (isFirstVersionNewer(extractVersion(participation.getIdentity()), 
-							extractVersion(latestParticipation.getIdentity()))) {								
-						participations.put(persistentId, participation);
-					}
-				}
-				return true;
-			}
-			else // key exists in participations map
-				return false;
-		}
-		else { // Only check if participation's URI exists in all maps.
-			if (!participations.containsKey(participation.getIdentity())) {
-				participations.put(participation.getIdentity(), participation);					
-				return true;
-			}
-			else // key exists in participations map
-				return false;
-		}		
+	public void addParticipation(Participation participation) {
+        addChildSafely(participation, participations, "participation");
 	}
 	
 	/**
@@ -204,9 +165,8 @@ public class Interaction extends Documented {
 	 * Returns the list of participation instances owned by this instance. 
 	 * @return the list of participation instances owned by this instance.
 	 */
-	public List<Participation> getParticipations() {
-//		return (List<Participation>) participations.values();
-		return new ArrayList<Participation>(participations.values());
+	public Set<Participation> getParticipations() {
+		return new HashSet<Participation>(participations.values());
 	}
 	
 	/**

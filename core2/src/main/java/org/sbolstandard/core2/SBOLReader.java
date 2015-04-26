@@ -1453,7 +1453,6 @@ public class SBOLReader
 
 		//Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework, roles);
 		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework);
-		m.setRoles(roles);
 		if (persistentIdentity != null)
 			m.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1814,7 +1813,10 @@ public class SBOLReader
 			}
 		}
 
-		Interaction i = new Interaction(interaction.getIdentity(), type, participations);
+		Interaction i = new Interaction(interaction.getIdentity(), type);
+		if (participations != null) {
+			i.setParticipations(participations);
+		}
 		if (persistentIdentity != null)
 			i.setPersistentIdentity(persistentIdentity);
 		if (version != null)

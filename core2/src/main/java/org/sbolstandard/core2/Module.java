@@ -3,12 +3,13 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.sbolstandard.core2.MapsTo.RefinementType;
 
 import static org.sbolstandard.core2.URIcompliance.*;
-import static org.sbolstandard.core2.Version.*;
 
 /**
  * 
@@ -80,12 +81,8 @@ public class Module extends Documented {
 	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
-		if (addMapsTo(mapping)) {
-			return mapping;	
-		}
-		else {
-			return null;
-		}
+		addMapsTo(mapping);
+		return mapping;
 	}
 	
 	/**
@@ -98,57 +95,18 @@ public class Module extends Documented {
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
-		if (parentPersistentIdStr != null) {
-			if (isDisplayIdCompliant(displayId)) {
-				URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' 
-						+ extractVersion(this.getIdentity()));
-				return createMapsTo(newMapsToURI, refinement, local, remote);
-			}
-			else {
-				// TODO: Warning: display ID not compliant
-				return null;
-			}
-		}
-		else {
-			// TODO: Warning: Parent persistent ID is not compliant.
-			return null;
-		}
-	}	
+		String version = this.getVersion();
+		URI newMapsToURI = createCompliantUri(parentPersistentIdStr, displayId, version);
+		return createMapsTo(newMapsToURI, refinement, local, remote);
+	}
 	
 	/**
 	 * Adds the specified instance to the list of references. 
 	 * @param mapsTo
 	 * @return
 	 */
-	public boolean addMapsTo(MapsTo mapsTo) {
-		if (isChildURIcompliant(this.getIdentity(), mapsTo.getIdentity())) {
-			URI persistentId = URI.create(extractPersistentId(mapsTo.getIdentity()));
-			// Check if URI exists in the mapsTos map.
-			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
-				mapsTos.put(mapsTo.getIdentity(), mapsTo);
-				MapsTo latestSubComponent = mapsTos.get(persistentId);
-				if (latestSubComponent == null) {
-					mapsTos.put(persistentId, mapsTo);
-				}
-				else {						
-					if (isFirstVersionNewer(extractVersion(mapsTo.getIdentity()), 
-							extractVersion(latestSubComponent.getIdentity()))) {								
-						mapsTos.put(persistentId, mapsTo);
-					}
-				}
-				return true;
-			}
-			else // key exists in mapsTos map
-				return false;
-		}
-		else { // Only check if mapTo's URI exists in all maps.
-			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
-				mapsTos.put(mapsTo.getIdentity(), mapsTo);					
-				return true;
-			}
-			else // key exists in mapsTos map
-				return false;
-		}
+	public void addMapsTo(MapsTo mapsTo) {
+		addChildSafely(mapsTo, mapsTos, "mapsTo");
 	}
 	
 	/**
@@ -173,9 +131,8 @@ public class Module extends Documented {
 	 * Returns the list of reference instances owned by this instance.
 	 * @return the list of reference instances owned by this instance.
 	 */
-	public List<MapsTo> getMapsTos() {
-//		return (List<MapsTo>) references.values();
-		return new ArrayList<MapsTo>(mapsTos.values());
+	public Set<MapsTo> getMapsTos() {
+		return new HashSet<MapsTo>(mapsTos.values());
 	}
 	
 	/**
