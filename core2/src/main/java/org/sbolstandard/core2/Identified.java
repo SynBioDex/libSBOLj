@@ -29,6 +29,11 @@ public abstract class Identified {
 
 	public Identified(URI identity) {
 		setIdentity(identity);
+		if (isURIcompliant(identity, 0)) {
+			this.setVersion(extractVersion(identity));
+			this.setDisplayId(extractDisplayId(identity, 0));
+			this.setPersistentIdentity(URI.create(extractPersistentId(identity)));
+		}
 		this.annotations = new ArrayList<Annotation>();
 	}
 

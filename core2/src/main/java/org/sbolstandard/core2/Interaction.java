@@ -129,9 +129,9 @@ public class Interaction extends Documented {
 					"Can not create a child on a parent that has the non-standard compliant identity " +
 							this.getIdentity());
 		}
-		validateIdVersion(displayId, version);
+		//validateIdVersion(displayId, version);
         return createParticipation(
-				createCompliantUri(parentPersistentIdStr, displayId, version), role, participant);
+				createCompliantURI(parentPersistentIdStr, displayId, version), role, participant);
 	}
 	
 	/**

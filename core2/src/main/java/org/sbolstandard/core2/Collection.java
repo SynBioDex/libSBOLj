@@ -39,6 +39,11 @@ public class Collection extends TopLevel{
 	 * @param memberURI
 	 */
 	public void addMember(URI memberURI) {
+		if (sbolDocument.isComplete()) {
+			if (sbolDocument.getTopLevel(memberURI)==null) {
+				throw new IllegalArgumentException("Top level '" + memberURI + "' does not exist.");
+			}
+		}
 		members.add(memberURI);
 	}
 	
@@ -59,7 +64,10 @@ public class Collection extends TopLevel{
 	 * @param members
 	 */
 	public void setMembers(Set<URI> members) {
-		this.members = members;
+		clearMembers();
+		for (URI member : members) {
+			addMember(member);
+		}
 	}
 	
 	/**
@@ -67,7 +75,9 @@ public class Collection extends TopLevel{
 	 * @return the list of members referenced by this object.
 	 */
 	public Set<URI> getMembers() {
-		return members;
+		Set<URI> result = new HashSet<URI>();
+		result.addAll(members);
+		return result;
 	}
 	
 	/**

@@ -863,6 +863,7 @@ public class SBOLReader
 	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraints)
 	{
 		URI persistentIdentity 		 = null;
+		String displayId             = null;
 		RestrictionType restriction  = null;
 		URI subject 				 = null;
 		URI object 					 = null;
@@ -896,6 +897,10 @@ public class SBOLReader
 			{
 				object = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
@@ -911,6 +916,8 @@ public class SBOLReader
 		}
 
 		SequenceConstraint s = new SequenceConstraint(sequenceConstraints.getIdentity(), restriction, subject, object);
+		if (displayId != null)
+			s.setDisplayId(displayId);
 		if (persistentIdentity != null)
 			s.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1032,6 +1039,7 @@ public class SBOLReader
 	private static GenericLocation parseGenericLocation(NestedDocument<QName> typeGenLoc)
 	{
 		URI persistentIdentity       = null;
+		String displayId			 = null;
 		URI orientation 			 = null;
 		String version        	     = null;
 		URI wasDerivedFrom 			 = null;
@@ -1042,6 +1050,10 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol2Terms.GenericLocation.orientation))
 			{
 				orientation = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
@@ -1062,6 +1074,8 @@ public class SBOLReader
 		}
 
 		GenericLocation gl = new GenericLocation(typeGenLoc.getIdentity());
+		if(displayId != null) 
+			gl.setDisplayId(displayId);
 		if(orientation != null)
 			gl.setOrientation(orientation);
 		if(persistentIdentity != null)
@@ -1079,6 +1093,7 @@ public class SBOLReader
 	private static Cut parseCut(NestedDocument<QName> typeCut)
 	{
 		URI persistentIdentity = null;
+		String displayId	   = null;
 		Integer at 			   = null;
 		URI orientation 	   = null;
 		String version 		   = null;
@@ -1090,6 +1105,10 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			} 
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Cut.at))
 			{
@@ -1123,6 +1142,8 @@ public class SBOLReader
 		Cut c = new Cut(typeCut.getIdentity(), at);
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
+		if (displayId != null) 
+			c.setDisplayId(displayId);
 		if (orientation != null)
 			c.setOrientation(orientation);
 		if(version != null)
@@ -1140,6 +1161,7 @@ public class SBOLReader
 		URI persistentIdentity = null;
 		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
+		String displayId       = null;
 
 		List<Range> ranges 	 		 = new ArrayList<Range>();
 		List<Annotation> annotations = new ArrayList<Annotation>();
@@ -1149,6 +1171,10 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.MultiRange.hasRanges))
 			{
@@ -1169,6 +1195,8 @@ public class SBOLReader
 		}
 
 		MultiRange multiRange = new MultiRange(typeMultiRange.getIdentity());
+		if (displayId != null)
+			multiRange.setDisplayId(displayId);
 		if (persistentIdentity != null)
 			multiRange.setPersistentIdentity(persistentIdentity);
 		if (!ranges.isEmpty())
@@ -1185,6 +1213,7 @@ public class SBOLReader
 	private static Range parseRange(NestedDocument<QName> typeRange)
 	{
 		URI persistentIdentity = null;
+		String displayId       = null;
 		Integer start 		   = null;
 		Integer end 		   = null;
 		URI orientation 	   = null;
@@ -1203,6 +1232,10 @@ public class SBOLReader
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Range.end))
 			{
@@ -1228,6 +1261,8 @@ public class SBOLReader
 		}
 
 		Range r = new Range(typeRange.getIdentity(), start, end);
+		if (displayId != null)
+			r.setDisplayId(displayId);
 		if (persistentIdentity != null)
 			r.setPersistentIdentity(persistentIdentity);
 		if (orientation != null)
@@ -1607,7 +1642,9 @@ public class SBOLReader
 			}
 		}
 
-		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity(), roles);
+		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity());
+		if (roles != null)
+			moduleDefinition.setRoles(roles);
 		if (persistentIdentity != null)
 			moduleDefinition.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1708,6 +1745,7 @@ public class SBOLReader
 	private static MapsTo parseMapsTo(NestedDocument<QName> mappings)
 	{
 		URI persistentIdentity    = null;
+		String displayId		  = null;
 		String version 	  	 	  = null;
 		URI remote 				  = null;
 		RefinementType refinement = null;
@@ -1721,6 +1759,10 @@ public class SBOLReader
 			if (m.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
 				persistentIdentity = URI.create(((Literal<QName>) m.getValue()).getValue().toString());
+			}
+			else if (m.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>) m.getValue()).getValue().toString();
 			}
 			else if (m.getName().equals(Sbol2Terms.Identified.version))
 			{
@@ -1749,6 +1791,8 @@ public class SBOLReader
 		}
 
 		MapsTo map = new MapsTo(mappings.getIdentity(), refinement, local, remote);
+		if (displayId != null)
+			map.setDisplayId(displayId);
 		if (persistentIdentity != null)
 			map.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1837,6 +1881,7 @@ public class SBOLReader
 	private static Participation parseParticipation(NestedDocument<QName> participation)
 	{
 		URI persistentIdentity = null;
+		String displayId	   = null;
 		String version 		   = null;
 		Set<URI> role 		   = new HashSet<URI>();
 		URI participant        = null;
@@ -1852,6 +1897,10 @@ public class SBOLReader
 			else if (p.getName().equals(Sbol2Terms.Identified.version))
 			{
 				version  = ((Literal<QName>) p.getValue()).getValue().toString();
+			}
+			else if (p.getName().equals(Sbol2Terms.Documented.displayId))
+			{
+				displayId = ((Literal<QName>) p.getValue()).getValue().toString();
 			}
 			else if (p.getName().equals(Sbol2Terms.Participation.role))
 			{
@@ -1873,6 +1922,8 @@ public class SBOLReader
 		}
 
 		Participation p = new Participation(participation.getIdentity(), role, participant);
+		if (displayId != null)
+			p.setDisplayId(displayId);
 		if (persistentIdentity != null)
 			p.setPersistentIdentity(persistentIdentity);
 		if (version != null)

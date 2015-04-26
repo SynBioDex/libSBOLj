@@ -27,6 +27,20 @@ public class SBOLDocument {
 	private HashMap<URI, Sequence> sequences;
 	private HashMap<URI, NamespaceBinding> nameSpaces;
 	private String defaultURIprefix;
+	private boolean complete = false;
+	
+	/**
+	 * Top level types
+	 *
+	 */
+	static final class TopLevelTypes {
+		static final String collection = "col";
+		static final String moduleDefinition = "md";
+		static final String model = "mod";
+		static final String componentDefinition = "cd";
+		static final String sequence = "seq";
+		static final String genericTopLevel = "gen";
+	}
 
 	public SBOLDocument() {
 		genericTopLevels = new HashMap<URI, GenericTopLevel>();
@@ -48,9 +62,10 @@ public class SBOLDocument {
 	 * @param roles
 	 * @return the created {@link ModuleDefinition} object.
 	 */
-	public ModuleDefinition createModuleDefinition(String displayId, String version, Set<URI> roles) {
+	public ModuleDefinition createModuleDefinition(String displayId, String version) {
 		validateCreationData(displayId, version);
-		return createModuleDefinition(createCompliantUri(defaultURIprefix, displayId, version),roles);
+		return createModuleDefinition(createCompliantURI(defaultURIprefix, TopLevelTypes.moduleDefinition, 
+				displayId, version));
 	}
 	
 	/**
@@ -59,8 +74,8 @@ public class SBOLDocument {
 	 * @param roles
 	 * @return the {@link ModuleDefinition} object.
 	 */
-	public ModuleDefinition createModuleDefinition(URI identity, Set<URI> roles) {
-		ModuleDefinition newModule = new ModuleDefinition(identity, roles);
+	public ModuleDefinition createModuleDefinition(URI identity) {
+		ModuleDefinition newModule = new ModuleDefinition(identity);
 		addModuleDefinition(newModule);
 		return newModule;
 	}
@@ -145,7 +160,7 @@ public class SBOLDocument {
 	public Collection createCollection(String displayId, String version) {
 		validateCreationData(displayId, version);
 		return createCollection(
-				createCompliantUri(defaultURIprefix, displayId, version));
+				createCompliantURI(defaultURIprefix, TopLevelTypes.collection, displayId, version));
 	}
 
 	/**
@@ -219,7 +234,7 @@ public class SBOLDocument {
 	 */
 	public Model createModel(String displayId, String version, URI source, URI language, URI framework) {
 		validateCreationData(displayId, version);
-		return createModel(createCompliantUri(defaultURIprefix, displayId, version),
+		return createModel(createCompliantURI(defaultURIprefix, TopLevelTypes.model, displayId, version),
 				source, language, framework);
 	}
 
@@ -320,7 +335,8 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
 		validateCreationData(displayId, version);
-		return createComponentDefinition(createCompliantUri(defaultURIprefix, displayId, version), types);
+		return createComponentDefinition(createCompliantURI(defaultURIprefix, TopLevelTypes.componentDefinition,
+				displayId, version), types);
 	}
 
 	/**
@@ -405,7 +421,8 @@ public class SBOLDocument {
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
 		validateCreationData(displayId, version);
-		return createSequence(createCompliantUri(defaultURIprefix, displayId, version), elements, encoding);
+		return createSequence(createCompliantURI(defaultURIprefix, TopLevelTypes.sequence, displayId, version), 
+				elements, encoding);
 	}
 	
 //	/**
@@ -653,7 +670,7 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
 		validateCreationData(displayId, version);
-		return createGenericTopLevel(createCompliantUri(defaultURIprefix, displayId, version), rdfType);
+		return createGenericTopLevel(createCompliantURI(defaultURIprefix, TopLevelTypes.genericTopLevel, displayId, version), rdfType);
 	}
 
 	/**
@@ -726,6 +743,34 @@ public class SBOLDocument {
 		for (GenericTopLevel topLevel : topLevels) {
 			addGenericTopLevel(topLevel);
 		}
+	}
+	
+	public TopLevel getTopLevel(URI topLevelURI) {
+		TopLevel topLevel = collections.get(topLevelURI);
+		if (topLevel!=null) {
+			return topLevel;
+		}
+		topLevel = moduleDefinitions.get(topLevelURI);
+		if (topLevel!=null) {
+			return topLevel;
+		}
+		topLevel = models.get(topLevelURI);
+		if (topLevel!=null) {
+			return topLevel;
+		}
+		topLevel = componentDefinitions.get(topLevelURI);
+		if (topLevel!=null) {
+			return topLevel;
+		}
+		topLevel = sequences.get(topLevelURI);
+		if (topLevel!=null) {
+			return topLevel;
+		}
+		topLevel = genericTopLevels.get(topLevelURI);
+		if (topLevel!=null) {
+			return topLevel;
+		}
+		return null;
 	}
 
 	/**
@@ -900,6 +945,7 @@ public class SBOLDocument {
 						"Instance for identity `" + newTopLevel.identity + "' exists for a " + typeName);
 			instancesMap.put(newTopLevel.getIdentity(), newTopLevel);
 		}
+		newTopLevel.setSBOLDocument(this);
 	}
 	
 	/**
@@ -922,5 +968,13 @@ public class SBOLDocument {
 	 */
 	public String getDefaultURIprefix() {
 		return defaultURIprefix;
+	}
+
+	public boolean isComplete() {
+		return complete;
+	}
+
+	public void setComplete(boolean complete) {
+		this.complete = complete;
 	}
 }

@@ -113,7 +113,7 @@ public class writeTester_myDNA {
 		return structure;
 	}
 
-	private static void setCommonTopLevelData (TopLevel t, URI identity, URI persistentIdentity,
+	private static void setCommonTopLevelData(TopLevel t, URI identity, URI persistentIdentity,
 			String version, String displayId, String name, String description)
 	{
 		setCommonDocumentedData(t, identity, persistentIdentity, version, displayId, name, description);
@@ -129,7 +129,7 @@ public class writeTester_myDNA {
 		setCommonIdentifiedData(d, identity, persistentIdentity, version);
 	}
 
-	private static void setCommonIdentifiedData (Identified i, URI identity, URI persistentIdentity,
+	private static void setCommonIdentifiedData(Identified i, URI identity, URI persistentIdentity,
 			String version)
 	{
 		i.setIdentity(identity);

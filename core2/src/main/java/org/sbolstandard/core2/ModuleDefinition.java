@@ -26,9 +26,9 @@ public class ModuleDefinition extends TopLevel {
 	private HashMap<URI, FunctionalComponent> functionalComponents;
 	private Set<URI> models;
 	
-	public ModuleDefinition(URI identity, Set<URI> roles) {
+	public ModuleDefinition(URI identity) {
 		super(identity);
-		setRoles(roles);
+		this.roles = new HashSet<URI>();
 		this.modules = new HashMap<URI, Module>();
 		this.interactions = new HashMap<URI, Interaction>();
 		this.functionalComponents = new HashMap<URI, FunctionalComponent>();
@@ -95,7 +95,10 @@ public class ModuleDefinition extends TopLevel {
 	 * @param roles
 	 */
 	public void setRoles(Set<URI> roles) {
-		this.roles = roles;
+		clearRoles();
+		for (URI role : roles) {
+			addRole(role);
+		}
 	}
 	
 	/**
@@ -103,7 +106,9 @@ public class ModuleDefinition extends TopLevel {
 	 * @return
 	 */
 	public Set<URI> getRoles() {
-		return roles;
+		Set<URI> result = new HashSet<URI>();
+		result.addAll(roles);
+		return result;
 	}
 	
 	/**
@@ -153,7 +158,7 @@ public class ModuleDefinition extends TopLevel {
 	public Module createModule(String displayId, URI moduleDefinitionURI) {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		URI newModuleURI = createCompliantUri(URIprefix, displayId, version);
+		URI newModuleURI = createCompliantURI(URIprefix, displayId, version);
 		return createModule(newModuleURI, moduleDefinitionURI);
 	}
 	
@@ -248,7 +253,7 @@ public class ModuleDefinition extends TopLevel {
 	public Interaction createInteraction(String displayId, Set<URI> type) {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		URI newInteractionURI = createCompliantUri(URIprefix, displayId, version);
+		URI newInteractionURI = createCompliantURI(URIprefix, displayId, version);
 		return createInteraction(newInteractionURI, type);
 	}
 	
@@ -345,7 +350,7 @@ public class ModuleDefinition extends TopLevel {
 			URI functionalComponentURI, DirectionType direction) {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		URI newComponentDefinitionURI = createCompliantUri(URIprefix, displayId, version);
+		URI newComponentDefinitionURI = createCompliantURI(URIprefix, displayId, version);
 		return createFunctionalComponent(newComponentDefinitionURI, access, functionalComponentURI, direction);
 	}
 	
@@ -442,6 +447,11 @@ public class ModuleDefinition extends TopLevel {
 	 * @param modelURI
 	 */
 	public void addModel(URI modelURI) {
+		if (sbolDocument.isComplete()) {
+			if (sbolDocument.getModel(modelURI)==null) {
+				throw new IllegalArgumentException("Model '" + modelURI + "' does not exist.");
+			}
+		}
 		models.add(modelURI);
 	}
 	
@@ -459,7 +469,10 @@ public class ModuleDefinition extends TopLevel {
 	 * @param models
 	 */
 	public void setModels(Set<URI> models) {
-		this.models = models;
+		clearRoles();
+		for (URI model : models) {
+			addRole(model);
+		}
 	}
 	
 	/**
@@ -467,7 +480,9 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the list of model instances referenced by this instance
 	 */
 	public Set<URI> getModels() {
-		return models;
+		Set<URI> result = new HashSet<URI>();
+		result.addAll(models);
+		return result;
 	}
 	
 	/**

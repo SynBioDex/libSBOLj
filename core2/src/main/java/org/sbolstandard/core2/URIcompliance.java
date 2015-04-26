@@ -16,8 +16,12 @@ final class URIcompliance {
 		}
 	}
 
-	public static URI createCompliantUri(String prefix, String displayId, String version) {
+	public static URI createCompliantURI(String prefix, String displayId, String version) {
 		return URI.create(prefix + '/' + displayId + '/' + version);
+	}
+	
+	public static URI createCompliantURI(String prefix, String type, String displayId, String version) {
+		return URI.create(prefix + '/' + type + '/' + displayId + '/' + version);
 	}
 
 	/**
@@ -134,6 +138,7 @@ final class URIcompliance {
 			return true;
 		}
 		else {
+			//System.out.println(URIstr + " is not compliant");
 			// TODO: Warning: top-level URI is not compliant.
 			return false;
 		}
@@ -262,7 +267,7 @@ final class URIcompliance {
 	//public static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
 	public static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
-	public static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]+";//"[a-zA-Z0-9_]+";
+	public static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]*";//"[a-zA-Z0-9_]+";
 
 	//public static final String MavenVersionPattern = "[0-9]+(?:[.][0-9]+){0,2}(?:-alpha|beta|SNAPSHOT)*";
 

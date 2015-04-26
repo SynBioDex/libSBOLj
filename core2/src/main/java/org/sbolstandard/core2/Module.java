@@ -96,7 +96,7 @@ public class Module extends Documented {
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		String version = this.getVersion();
-		URI newMapsToURI = createCompliantUri(parentPersistentIdStr, displayId, version);
+		URI newMapsToURI = createCompliantURI(parentPersistentIdStr, displayId, version);
 		return createMapsTo(newMapsToURI, refinement, local, remote);
 	}
 	

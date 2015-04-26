@@ -338,8 +338,6 @@ public class SBOLWriter {
 	private static void formatCommonDocumentedData (List<NamedProperty<QName>> list, Documented d)
 	{
 		formatCommonIdentifiedData(list, d);
-		if(d.getDisplayId() != null)
-			list.add(NamedProperty(Sbol2Terms.Documented.displayId, d.getDisplayId()));
 		if(d.isSetName())
 			list.add(NamedProperty(Sbol2Terms.Documented.title, d.getName()));
 		if(d.isSetDescription())
@@ -350,7 +348,8 @@ public class SBOLWriter {
 	{
 		if(t.getPersistentIdentity() != null)
 			list.add(NamedProperty(Sbol2Terms.Identified.persistentIdentity, t.getPersistentIdentity()));
-
+		if(t.getDisplayId() != null)
+			list.add(NamedProperty(Sbol2Terms.Documented.displayId, t.getDisplayId()));
 		if(t.getVersion() != null)
 			list.add(NamedProperty(Sbol2Terms.Identified.version, t.getVersion()));
 
@@ -396,7 +395,7 @@ public class SBOLWriter {
 			formatSequenceAnnotations(c.getSequenceAnnotations(),list);
 			formatSequenceConstraints(c.getSequenceConstraints(),list);
 			if(c.getSequence() != null)
-				formatSequence(c.getSequence(), list);
+				formatSequence(c.getSequenceURI(), list);
 
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ComponentDefinition.ComponentDefinition, c.getIdentity(), NamedProperties(list)));
 		}

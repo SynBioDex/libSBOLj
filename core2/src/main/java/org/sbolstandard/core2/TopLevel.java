@@ -2,7 +2,7 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import static org.sbolstandard.core2.URIcompliance.*;
+//import static org.sbolstandard.core2.URIcompliance.*;
 
 public abstract class TopLevel extends Documented{
 		
@@ -10,14 +10,17 @@ public abstract class TopLevel extends Documented{
 //	private static String URIprefix;
 //	private static String displayIdURI;
 //	private static String versionURI;
+	protected SBOLDocument sbolDocument = null;
 
 	public TopLevel(URI identity) {
 		super(identity);
+		/*
 		if (isURIcompliant(identity, 0)) {
 			this.setVersion(extractVersion(identity));
 			this.setDisplayId(extractDisplayId(identity, 0));
 			this.setPersistentIdentity(URI.create(extractPersistentId(identity)));
 		}
+		*/
 	}
 
 //	public TopLevel(String authority, String id, String version) {
@@ -27,7 +30,15 @@ public abstract class TopLevel extends Documented{
 	protected TopLevel(TopLevel toplevel) {
 		super(toplevel);
 	}
-		
+	
+	protected void setSBOLDocument(SBOLDocument sbolDocument) {
+		this.sbolDocument = sbolDocument;
+	}
+
+	protected SBOLDocument getSBOLDocument() {
+		return sbolDocument;
+	}
+	
 	protected abstract TopLevel deepCopy();
 	
 	/**

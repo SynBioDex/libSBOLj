@@ -184,7 +184,8 @@ public class SBOLTestUtils {
 			Set<URI> models,
 			List<Annotation> annotations)
 	{
-		ModuleDefinition m = document.createModuleDefinition(URI.create(id), roles);
+		ModuleDefinition m = document.createModuleDefinition(URI.create(id));
+		m.setRoles(roles);
 		m.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
 		m.setDisplayId(id);
 		m.setName(id);

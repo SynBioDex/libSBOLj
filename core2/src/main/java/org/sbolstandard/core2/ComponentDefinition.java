@@ -29,8 +29,8 @@ public class ComponentDefinition extends TopLevel {
 	
 	public ComponentDefinition(URI identity, Set<URI> types) {
 		super(identity);
+		this.types = new HashSet<URI>(); 
 		setTypes(types);
-		//setRoles(roles);
 		this.roles = new HashSet<URI>();
 		this.components = new HashMap<URI, Component>(); 		
 		this.sequenceAnnotations = new HashMap<URI, SequenceAnnotation>();
@@ -100,8 +100,14 @@ public class ComponentDefinition extends TopLevel {
 	 * Sets the field variable <code>type</code> to the specified element.
 	 * @param type
 	 */
-	public void setTypes(Set<URI> type) {
-		this.types = type;
+	public void setTypes(Set<URI> types) {
+		if (types==null || types.size()==0) {
+			throw new IllegalArgumentException("Component definition " + this.getIdentity() + " must have at least one type.");
+		}
+		clearTypes();
+		for (URI type : types) {
+			addType(type);
+		}
 	}
 	
 	/**
@@ -109,7 +115,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the set of URIs for <code>type</code>.
 	 */
 	public Set<URI> getTypes() {
-		return types;
+		Set<URI> result = new HashSet<URI>();
+		result.addAll(types);
+		return result;
 	}
 	
 	/**
@@ -151,7 +159,10 @@ public class ComponentDefinition extends TopLevel {
 	 * @param roles
 	 */
 	public void setRoles(Set<URI> roles) {
-		this.roles = roles;
+		clearRoles();
+		for (URI role : roles) {
+			addRole(role);
+		}
 	}
 	
 	/**
@@ -159,7 +170,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the set of URIs for <code>roles</code>.
 	 */
 	public Set<URI> getRoles() {
-		return roles;
+		Set<URI> result = new HashSet<URI>();
+		result.addAll(roles);
+		return result;
 	}
 	
 	/**
@@ -193,8 +206,13 @@ public class ComponentDefinition extends TopLevel {
 	 * Returns the URI of the referenced {@link Sequence} instance.
 	 * @return the URI of the referenced {@link Sequence} instance.
 	 */
-	public URI getSequence() {
+	public URI getSequenceURI() {
 		return sequence;
+	}
+	
+	public Sequence getSequence() {
+		if (sbolDocument==null) return null;
+		return sbolDocument.getSequence(sequence);
 	}
 
 	/**
@@ -202,6 +220,11 @@ public class ComponentDefinition extends TopLevel {
 	 * @param sequence
 	 */
 	public void setSequence(URI sequence) {
+		if (sbolDocument.isComplete()) {
+			if (sbolDocument.getSequence(sequence)==null) {
+				throw new IllegalArgumentException("Sequence '" + sequence + "' does not exist.");
+			}
+		}
 		this.sequence = sequence;
 	}
 	
@@ -245,7 +268,7 @@ public class ComponentDefinition extends TopLevel {
 	public SequenceAnnotation createSequenceAnnotation(String displayId, Location location) {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		URI newSequenceAnnotationURI = createCompliantUri(URIprefix, displayId, version);
+		URI newSequenceAnnotationURI = createCompliantURI(URIprefix, displayId, version);
 		if (!isChildURIcompliant(this.getIdentity(), newSequenceAnnotationURI))
 			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
 					"'is not compliant in parent `" + this.getIdentity() +
@@ -349,7 +372,7 @@ public class ComponentDefinition extends TopLevel {
 	public Component createComponent(String displayId, AccessType access, URI componentDefinitionURI) {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		return createComponent(createCompliantUri(URIprefix, displayId, version),
+		return createComponent(createCompliantURI(URIprefix, displayId, version),
 				access, componentDefinitionURI);
 	}
 	
@@ -405,8 +428,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Clears the existing list of structuralInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param components
 	 */
-	public void setComponents(
-			List<Component> components) {
+	public void setComponents(List<Component> components) {
 		clearComponents();
 		for (Component component : components) {
 			addComponent(component);
@@ -453,7 +475,7 @@ public class ComponentDefinition extends TopLevel {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		return createSequenceConstraint(
-				createCompliantUri(URIprefix, displayId, version),
+				createCompliantURI(URIprefix, displayId, version),
 				restriction, subject, object);
 	}
 	
