@@ -9,6 +9,7 @@ import java.io.InputStream;
 
 import org.sbolstandard.core.util.SBOLDeepEquality;
 
+@SuppressWarnings("unused")
 public class SBOLReaderTest extends SBOLAbstractTests {
 	public void runTest(final String fileName, final SBOLRootObject... contents) throws Exception {
 		// new SBOLPrettyWriter().write(expected, System.out);

@@ -21,10 +21,11 @@ public class GenerateTestFile
 		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
-		List<Annotation> model_annotations = new ArrayList<Annotation>();
-		model_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
+		List<Annotation> moduleDefinition_annotations = new ArrayList<Annotation>();
+		moduleDefinition_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
 				"TurtleString")));
-		SBOLTestUtils.createModel(document, "someModel", model_annotations);
+		SBOLTestUtils.createModuleDefinition(document, "someModDef", null, null, null, null, null, moduleDefinition_annotations);
+
 
 		writeRdfFile(document, "moduleAnnotation.rdf");
 

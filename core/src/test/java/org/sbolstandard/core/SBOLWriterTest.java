@@ -1,6 +1,5 @@
 package org.sbolstandard.core;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.sbolstandard.core.SBOLTestUtils.createDocument;
 import static org.sbolstandard.core.SBOLTestUtils.writeAndRead;

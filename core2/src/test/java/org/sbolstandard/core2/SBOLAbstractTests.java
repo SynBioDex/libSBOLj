@@ -18,7 +18,6 @@ import org.sbolstandard.core2.ComponentInstance.AccessType;
  */
 public abstract class SBOLAbstractTests {
 
-
 	@Test
 	public void test_JSONFile() throws Exception
 	{
