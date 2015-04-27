@@ -17,14 +17,14 @@ public class GenericTopLevel extends TopLevel{
 	
 	private GenericTopLevel(GenericTopLevel genericTopLevel) {
 		super(genericTopLevel);
-		this.setRdfType(genericTopLevel.getRdfType());
+		this.setRDFType(genericTopLevel.getRDFType());
 	}
 	
-	public QName getRdfType() {
+	public QName getRDFType() {
 		return rdfType;
 	}
 
-	public void setRdfType(QName rdfType) {
+	public void setRDFType(QName rdfType) {
 		this.rdfType = rdfType;
 	}
 

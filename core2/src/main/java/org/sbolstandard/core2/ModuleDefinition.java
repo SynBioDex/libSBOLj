@@ -65,7 +65,7 @@ public class ModuleDefinition extends TopLevel {
 		}
 		if (!moduleDefinition.getModels().isEmpty()) {
 			Set<URI> models = new HashSet<URI>();
-			for (URI model : moduleDefinition.getModels()) {
+			for (URI model : moduleDefinition.getModelURIs()) {
 				models.add(model);
 			}
 		}
@@ -156,6 +156,11 @@ public class ModuleDefinition extends TopLevel {
 	 * @return
 	 */
 	public Module createModule(String displayId, URI moduleDefinitionURI) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (sbolDocument.getModuleDefinition(moduleDefinitionURI)==null) {
+				throw new IllegalArgumentException("Module definition '" + moduleDefinitionURI + "' does not exist.");
+			}
+		}
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newModuleURI = createCompliantURI(URIprefix, displayId, version);
@@ -165,11 +170,13 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Adds the specified instance to the list of subModules. 
-	 * @param newModule
+	 * @param module
 	 * @return 
 	 */
-	public void addModule(Module newModule) {
-		addChildSafely(newModule, modules, "module", functionalComponents, interactions);
+	public void addModule(Module module) {
+		addChildSafely(module, modules, "module", functionalComponents, interactions);
+		module.setSBOLDocument(this.sbolDocument);
+		module.setModuleDefinition(this);
 	}
 	
 	/**
@@ -264,6 +271,8 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public void addInteraction(Interaction interaction) {
 		addChildSafely(interaction, interactions, "interaction", functionalComponents, modules);
+		interaction.setSBOLDocument(this.sbolDocument);
+        interaction.setModuleDefinition(this);
 	}
 	
 	/**
@@ -348,6 +357,11 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access, 
 			URI functionalComponentURI, DirectionType direction) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (sbolDocument.getComponentDefinition(functionalComponentURI)==null) {
+				throw new IllegalArgumentException("Component definition '" + functionalComponentURI + "' does not exist.");
+			}
+		}
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newComponentDefinitionURI = createCompliantURI(URIprefix, displayId, version);
@@ -360,6 +374,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public void addFunctionalComponent(FunctionalComponent functionalComponent) {
 		addChildSafely(functionalComponent, functionalComponents, "functionalComponent", interactions, modules);
+		functionalComponent.setSBOLDocument(this.sbolDocument);
 	}
 	
 	/**
@@ -447,7 +462,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param modelURI
 	 */
 	public void addModel(URI modelURI) {
-		if (sbolDocument.isComplete()) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModel(modelURI)==null) {
 				throw new IllegalArgumentException("Model '" + modelURI + "' does not exist.");
 			}
@@ -476,12 +491,25 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Returns the list of model instances referenced by this instance.
-	 * @return the list of model instances referenced by this instance
+	 * Returns the set of model URIs referenced by this instance.
+	 * @return the set of model URIs referenced by this instance
 	 */
-	public Set<URI> getModels() {
+	public Set<URI> getModelURIs() {
 		Set<URI> result = new HashSet<URI>();
 		result.addAll(models);
+		return result;
+	}
+	
+	/**
+	 * Returns the set of models referenced by this instance.
+	 * @return the set of models referenced by this instance
+	 */
+	public Set<Model> getModels() {
+		Set<Model> result = new HashSet<Model>();
+		for (URI modelURI : models) {
+			Model model = sbolDocument.getModel(modelURI);
+			result.add(model);
+		}
 		return result;
 	}
 	

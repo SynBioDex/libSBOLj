@@ -92,8 +92,6 @@ public class FunctionalComponent extends ComponentInstance {
 		super(functionalComponent);
 		this.setDirection(functionalComponent.getDirection());
 	}
-	
-	
 
 	/**
 	 * Returns field variable <code>direction</code> to the specified element.

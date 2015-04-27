@@ -26,6 +26,7 @@ public abstract class Identified {
 	private List<Annotation> annotations;
 	private URI wasDerivedFrom;
 	protected String displayId;
+	protected SBOLDocument sbolDocument = null;
 
 	public Identified(URI identity) {
 		setIdentity(identity);
@@ -324,7 +325,15 @@ public abstract class Identified {
 	public void unsetWasDerivedFrom() {
 		wasDerivedFrom = null;
 	}
+	
+	protected void setSBOLDocument(SBOLDocument sbolDocument) {
+		this.sbolDocument = sbolDocument;
+	}
 
+	protected SBOLDocument getSBOLDocument() {
+		return sbolDocument;
+	}
+	
 	/**
 	 * Provide a deep copy of this instance.
 	 */

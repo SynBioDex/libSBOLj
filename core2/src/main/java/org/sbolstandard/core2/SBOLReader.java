@@ -463,7 +463,7 @@ public class SBOLReader
 
 				URI component_identity    = URI.create(getParentURI(identity) + "/component" + ++component_num + "/1/0");
 				AccessType access 		  = AccessType.PUBLIC;
-				URI instantiatedComponent = sa.getComponent();
+				URI instantiatedComponent = sa.getComponentURI();
 				URI originalURI 		  = ((NestedDocument<QName>) namedProperty.getValue()).getIdentity();
 
 				componentDefMap.put(originalURI, component_identity);

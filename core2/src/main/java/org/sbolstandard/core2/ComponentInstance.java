@@ -15,7 +15,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
 public abstract class ComponentInstance extends Documented {
 	
 	private AccessType access;
-	private URI definition;
+	protected URI definition;
 	private HashMap<URI, MapsTo> mapsTos;
 	
 	public static enum AccessType {
@@ -92,7 +92,7 @@ public abstract class ComponentInstance extends Documented {
 	protected ComponentInstance(ComponentInstance component) {
 		super(component);
 		setAccess(component.getAccess());
-		setDefinition(component.getDefinition());	
+		setDefinition(component.getDefinitionURI());	
 		if (!component.getMapsTos().isEmpty()) {
 			List<MapsTo> mapsTos = new ArrayList<MapsTo>();
 			for (MapsTo mapsTo : component.getMapsTos()) {
@@ -187,7 +187,7 @@ public abstract class ComponentInstance extends Documented {
 	 * @param refinement
 	 * @param local
 	 * @param remote
-	 * @return
+	 * @return the newly created MapsTo object.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
@@ -255,8 +255,17 @@ public abstract class ComponentInstance extends Documented {
 	 * Returns field variable <code>definition</code>
 	 * @return field variable <code>definition</code>
 	 */
-	public URI getDefinition() {
+	public URI getDefinitionURI() {
 		return definition;
+	}
+	
+	/**
+	 * Returns the Component Definition referenced by this Component Instance
+	 * @return the Component Definition referenced by this Component Instance
+	 */	
+	public ComponentDefinition getDefinition() {
+		if (sbolDocument==null) return null;
+		return sbolDocument.getComponentDefinition(definition);
 	}
 
 	/**

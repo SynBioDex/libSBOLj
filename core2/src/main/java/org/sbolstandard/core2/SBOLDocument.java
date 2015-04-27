@@ -555,7 +555,7 @@ public class SBOLDocument {
 	 * @param version
 	 * @return the copied {@link TopLevel} object
 	 */
-	public TopLevel createCopy(TopLevel toplevel, String URIprefix, String displayId, String version) {
+	public Identified createCopy(Identified toplevel, String URIprefix, String displayId, String version) {
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(toplevel.getIdentity());
 		}
@@ -918,13 +918,13 @@ public class SBOLDocument {
 				throw new IllegalArgumentException(
 						"Instance for identity `" + newTopLevel.identity +
 								"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
-			if (instancesMap.containsKey(newTopLevel.getIdentity()))
+		   	if (instancesMap.containsKey(newTopLevel.getIdentity()))
 				throw new IllegalArgumentException(
 						"Instance for identity `" + newTopLevel.identity +
 								"' and persistent identity `" + persistentId + "' already exists for a " + typeName);
 
 			instancesMap.put(newTopLevel.getIdentity(), newTopLevel);
-			TL latest = instancesMap.get(persistentId);
+			Identified latest = instancesMap.get(persistentId);
 			if (latest == null) {
 				instancesMap.put(persistentId, newTopLevel);
 			}
@@ -970,10 +970,19 @@ public class SBOLDocument {
 		return defaultURIprefix;
 	}
 
+	/** 
+	 * Returns true if the complete flag is set.
+	 * @return true if the complete flag is set.
+	 */
 	public boolean isComplete() {
 		return complete;
 	}
 
+	/**
+	 * Sets the complete flag which when true indicates the SBOL Document is complete and any URIs that 
+	 * cannot be dereferenced to a valid object cause an exception to be thrown.
+	 * @param complete
+	 */
 	public void setComplete(boolean complete) {
 		this.complete = complete;
 	}

@@ -325,7 +325,7 @@ public class SBOLWriter {
 			formatCommonTopLevelData(list, c);
 			if(!c.getMembers().isEmpty())//(c.isSetMembers())
 			{
-				for (URI member : c.getMembers())
+				for (URI member : c.getMemberURIs())
 				{
 					list.add(NamedProperty(Sbol2Terms.Collection.hasMembers, member));
 				}
@@ -415,8 +415,8 @@ public class SBOLWriter {
 
 			formatCommonDocumentedData(list, f);
 
-			if(f.getDefinition() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinition()));
+			if(f.getDefinitionURI() != null)
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinitionURI()));
 			if(f.getAccess() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccessURI()));
 			if(f.getDirection() != null)
@@ -514,7 +514,7 @@ public class SBOLWriter {
 			formatCommonDocumentedData(list, m);
 
 			if(m.getDefinition() != null)
-				list.add(NamedProperty(Sbol2Terms.Module.hasDefinition, m.getDefinition()));
+				list.add(NamedProperty(Sbol2Terms.Module.hasDefinition, m.getDefinitionURI()));
 			if(!m.getMapsTos().isEmpty())
 			{
 				List<NestedDocument<QName>> referenceList = getMapsTo(m.getMapsTos());
@@ -546,7 +546,7 @@ public class SBOLWriter {
 
 			formatFunctionalComponents(m.getFunctionalComponents(),list);
 			formatInteractions(m.getInteractions(),list);
-			formatModelProperties(m.getModels(),list);
+			formatModelProperties(m.getModelURIs(),list);
 			formatModule(m.getModules(),list);
 
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ModuleDefinition.ModuleDefinition, m.getIdentity(), NamedProperties(list)));
@@ -566,7 +566,7 @@ public class SBOLWriter {
 				for(URI r : p.getRoles())
 					list.add(NamedProperty(Sbol2Terms.Participation.role, r));
 			if(p.getParticipant() != null)
-				list.add(NamedProperty(Sbol2Terms.Participation.hasParticipant, p.getParticipant()));
+				list.add(NamedProperty(Sbol2Terms.Participation.hasParticipant, p.getParticipantURI()));
 
 			nestedDoc.add(NestedDocument(Sbol2Terms.Participation.Participation, p.getIdentity(), NamedProperties(list)));
 		}
@@ -591,7 +591,7 @@ public class SBOLWriter {
 			if(s.getLocation() != null)
 				list.add(getLocation(s.getLocation()));
 			if(s.getComponent() != null)
-				list.add(NamedProperty(Sbol2Terms.SequenceAnnotation.hasComponent, s.getComponent()));
+				list.add(NamedProperty(Sbol2Terms.SequenceAnnotation.hasComponent, s.getComponentURI()));
 
 			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSequenceAnnotations,
 					NestedDocument( Sbol2Terms.SequenceAnnotation.SequenceAnnotation,
@@ -613,9 +613,9 @@ public class SBOLWriter {
 			if(s.getRestriction() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.restriction, s.getRestrictionURI()));
 			if(s.getSubject() != null)
-				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.hasSubject, s.getSubject()));
+				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.hasSubject, s.getSubjectURI()));
 			if(s.getObject() != null)
-				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.hasObject, s.getObject()));
+				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.hasObject, s.getObjectURI()));
 
 			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSequenceConstraints,
 					NestedDocument( Sbol2Terms.SequenceConstraint.SequenceConstraint,
@@ -651,8 +651,8 @@ public class SBOLWriter {
 			formatCommonDocumentedData(list, s);
 			if(s.getAccess() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, s.getAccessURI()));
-			if(s.getDefinition() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinition()));
+			if(s.getDefinitionURI() != null)
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinitionURI()));
 			if(s.getMapsTos() != null)
 			{
 				List<NestedDocument<QName>> referenceList = getMapsTo(s.getMapsTos());
@@ -673,7 +673,7 @@ public class SBOLWriter {
 		{
 			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
 			formatCommonTopLevelData(list, t);
-			topLevelDoc.add(TopLevelDocument(t.getRdfType(), t.getIdentity(), NamedProperties(list)));
+			topLevelDoc.add(TopLevelDocument(t.getRDFType(), t.getIdentity(), NamedProperties(list)));
 		}
 	}
 
@@ -729,9 +729,9 @@ public class SBOLWriter {
 			if(m.getRefinement() != null)
 				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinementURI()));
 			if(m.getRemote() != null)
-				list.add(NamedProperty(Sbol2Terms.MapsTo.hasRemote, m.getRemote()));
+				list.add(NamedProperty(Sbol2Terms.MapsTo.hasRemote, m.getRemoteURI()));
 			if(m.getLocal() != null)
-				list.add(NamedProperty(Sbol2Terms.MapsTo.hasLocal, m.getLocal()));
+				list.add(NamedProperty(Sbol2Terms.MapsTo.hasLocal, m.getLocalURI()));
 
 			nestedDoc.add(NestedDocument(Sbol2Terms.MapsTo.MapsTo, m.getIdentity(), NamedProperties(list)));
 		}

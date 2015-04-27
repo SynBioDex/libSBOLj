@@ -21,7 +21,8 @@ public class Module extends Documented {
 	
 	private HashMap<URI, MapsTo> mapsTos;
 	private URI definition;
-	
+	private ModuleDefinition moduleDefinition = null;
+
 	public Module(URI identity, URI moduleDefinition) {
 		super(identity);
 		setDefinition(moduleDefinition);
@@ -30,7 +31,7 @@ public class Module extends Documented {
 	
 	private Module(Module module) {
 		super(module);
-		this.setDefinition(module.getDefinition());
+		this.setDefinition(module.getDefinitionURI());
 		if (!module.getMapsTos().isEmpty()) {
 			List<MapsTo> mappings = new ArrayList<MapsTo>();
 			for (MapsTo mapping : module.getMapsTos()) {
@@ -45,8 +46,13 @@ public class Module extends Documented {
 	 * Returns field variable <code>instantiatedModule</code>.
 	 * @return field variable <code>instantiatedModule</code>
 	 */
-	public URI getDefinition() {
+	public URI getDefinitionURI() {
 		return definition;
+	}
+		
+	public ModuleDefinition getDefinition() {
+		if (sbolDocument==null) return null;
+		return sbolDocument.getModuleDefinition(definition);
 	}
 
 	/**
@@ -106,7 +112,20 @@ public class Module extends Documented {
 	 * @return
 	 */
 	public void addMapsTo(MapsTo mapsTo) {
+		if (sbolDocument.isComplete()) {
+			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
+				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocal() + "' does not exist.");
+			}
+		}
+		if (sbolDocument.isComplete()) {
+			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI())==null) {
+				throw new IllegalArgumentException("Functional component '" + mapsTo.getRemote() + "' does not exist.");
+			}
+		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
+		mapsTo.setSBOLDocument(this.sbolDocument);
+        mapsTo.setModuleDefinition(moduleDefinition);
+        mapsTo.setModule(this);
 	}
 	
 	/**
@@ -216,6 +235,14 @@ public class Module extends Documented {
 		// TODO: need to set wasDerivedFrom here?
 		this.setWasDerivedFrom(this.getIdentity());
 		this.setIdentity(newIdentity);		
+	}
+	
+	ModuleDefinition getModuleDefinition() {
+		return moduleDefinition;
+	}
+
+	void setModuleDefinition(ModuleDefinition moduleDefinition) {
+		this.moduleDefinition = moduleDefinition;
 	}
 
 }

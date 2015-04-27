@@ -10,7 +10,7 @@ public class Component extends ComponentInstance{
 		super(identity, access, componentDefinition);
 	}
 	
-	public Component(Component component) {
+	protected Component(Component component) {
 		super(component);
 	}
 

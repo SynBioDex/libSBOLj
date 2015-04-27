@@ -10,6 +10,7 @@ public class SequenceConstraint extends Identified {
 	private RestrictionType restriction;
 	private URI subject;
 	private URI object;
+	private ComponentDefinition componentDefinition = null;
 	
 	public static enum RestrictionType {
 		PRECEDES("precedes");
@@ -78,8 +79,8 @@ public class SequenceConstraint extends Identified {
 	private SequenceConstraint(SequenceConstraint sequenceConstraint) {
 		super(sequenceConstraint);
 		this.setRestriction(sequenceConstraint.getRestriction());
-		this.setSubject(sequenceConstraint.getSubject());
-		this.setObject(sequenceConstraint.getObject());
+		this.setSubject(sequenceConstraint.getSubjectURI());
+		this.setObject(sequenceConstraint.getObjectURI());
 	}
 
 
@@ -135,8 +136,17 @@ public class SequenceConstraint extends Identified {
 	 * Returns field variable <code>subject</code>.
 	 * @return field variable <code>subject</code>
 	 */
-	public URI getSubject() {
+	public URI getSubjectURI() {
 		return subject;
+	}
+
+	/**
+	 * Returns the Functional Component referenced as the subject.
+	 * @return the Functional Component referenced as the subject.
+	 */
+	public Component getSubject() {
+		if (componentDefinition==null) return null;
+		return componentDefinition.getComponent(subject);
 	}
 
 	/**
@@ -151,8 +161,17 @@ public class SequenceConstraint extends Identified {
 	 * Returns field variable <code>object</code>. 
 	 * @return field variable <code>object</code>
 	 */
-	public URI getObject() {
+	public URI getObjectURI() {
 		return object;
+	}
+	
+	/**
+	 * Returns the Functional Component referenced as the object.
+	 * @return the Functional Component referenced as the object.
+	 */
+	public Component getObject() {
+		if (componentDefinition==null) return null;
+		return componentDefinition.getComponent(object);
 	}
 
 	/**
@@ -226,5 +245,19 @@ public class SequenceConstraint extends Identified {
 		// TODO: need to set wasDerivedFrom here?
 		this.setWasDerivedFrom(this.getIdentity());
 		this.setIdentity(newIdentity);
+	}
+
+	/**
+	 * @return the componentDefinition
+	 */
+	public ComponentDefinition getComponentDefinition() {
+		return componentDefinition;
+	}
+
+	/**
+	 * @param componentDefinition the componentDefinition to set
+	 */
+	public void setComponentDefinition(ComponentDefinition componentDefinition) {
+		this.componentDefinition = componentDefinition;
 	}
 }

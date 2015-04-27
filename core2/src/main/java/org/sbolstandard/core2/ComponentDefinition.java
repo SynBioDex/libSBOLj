@@ -90,7 +90,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Removes the specified element from the set <code>type</code> if it is present.
 	 * @param typeURI
-	 * @return <code>true<code> if this set contained the specified element
+	 * @return <code>true</code> if this set contained the specified element
 	 */
 	public boolean removeType(URI typeURI) {
 		return types.remove(typeURI);
@@ -148,7 +148,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Removes the specified element from the set <code>roles</code> if it is present.
 	 * @param roleURI
-	 * @return <code>true<code> if this set contained the specified element
+	 * @return <code>true</code> if this set contained the specified element
 	 */
 	public boolean removeRole(URI roleURI) {
 		return roles.remove(roleURI);
@@ -220,7 +220,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @param sequence
 	 */
 	public void setSequence(URI sequence) {
-		if (sbolDocument.isComplete()) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getSequence(sequence)==null) {
 				throw new IllegalArgumentException("Sequence '" + sequence + "' does not exist.");
 			}
@@ -284,6 +284,8 @@ public class ComponentDefinition extends TopLevel {
 	public void addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
 		addChildSafely(sequenceAnnotation, sequenceAnnotations, "sequenceAnnotation",
 				components, sequenceConstraints);
+		sequenceAnnotation.setSBOLDocument(this.sbolDocument);
+		sequenceAnnotation.setComponentDefinition(this);
 	}
 	
 	/**
@@ -370,6 +372,11 @@ public class ComponentDefinition extends TopLevel {
 	 * @return
 	 */
 	public Component createComponent(String displayId, AccessType access, URI componentDefinitionURI) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (sbolDocument.getComponentDefinition(componentDefinitionURI)==null) {
+				throw new IllegalArgumentException("Component definition '" + componentDefinitionURI + "' does not exist.");
+			}
+		}
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		return createComponent(createCompliantURI(URIprefix, displayId, version),
@@ -380,9 +387,10 @@ public class ComponentDefinition extends TopLevel {
 	 * Adds the specified instance to the list of components.
 	 * @param subComponent
 	 */
-	public void addComponent(Component subComponent) {
-		addChildSafely(subComponent, components, "component",
+	public void addComponent(Component component) {
+		addChildSafely(component, components, "component",
 				sequenceAnnotations, sequenceConstraints);
+		component.setSBOLDocument(this.sbolDocument);
 	}
 	
 	/**
@@ -484,6 +492,18 @@ public class ComponentDefinition extends TopLevel {
 	 * @param sequenceConstraint
 	 */
 	public void addSequenceConstraint(SequenceConstraint sequenceConstraint) {
+		sequenceConstraint.setSBOLDocument(this.sbolDocument);
+		sequenceConstraint.setComponentDefinition(this);
+		if (sbolDocument.isComplete()) {
+			if (sequenceConstraint.getSubject()==null) {
+				throw new IllegalArgumentException("Component '" + sequenceConstraint.getSubjectURI() + "' does not exist.");
+			}
+		}
+		if (sbolDocument.isComplete()) {
+			if (sequenceConstraint.getObject()==null) {
+				throw new IllegalArgumentException("Component '" + sequenceConstraint.getObjectURI() + "' does not exist.");
+			}
+		}
 		addChildSafely(sequenceConstraint, sequenceConstraints, "sequenceConstraint",
 				components, sequenceAnnotations);
 	}

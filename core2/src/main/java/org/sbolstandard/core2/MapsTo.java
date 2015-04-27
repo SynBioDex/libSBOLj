@@ -9,6 +9,8 @@ public class MapsTo extends Identified{
 	private RefinementType refinement;
 	private URI local; // URI of a local component instantiation.
 	private URI remote; // URI of a remote component instantiation
+	private ModuleDefinition moduleDefinition = null;
+	private Module module = null;
 
 	public static enum RefinementType {
 		VERIFYIDENTICAL("verifyIdentical"),
@@ -97,8 +99,8 @@ public class MapsTo extends Identified{
 	private MapsTo(MapsTo mapsTo) {
 		super(mapsTo);
 		this.setRefinement(mapsTo.getRefinement());
-		this.setLocal(mapsTo.getLocal());
-		this.setRemote(mapsTo.getRemote());
+		this.setLocal(mapsTo.getLocalURI());
+		this.setRemote(mapsTo.getRemoteURI());
 	}
 
 	/**
@@ -167,8 +169,13 @@ public class MapsTo extends Identified{
 	 * Returns field variable <code>local</code>.
 	 * @return field variable <code>local</code>
 	 */
-	public URI getLocal() {
+	public URI getLocalURI() {
 		return local;
+	}
+	
+	public FunctionalComponent getLocal() {
+		if (moduleDefinition==null) return null;
+		return moduleDefinition.getFunctionalComponent(local);
 	}
 
 	/**
@@ -183,8 +190,14 @@ public class MapsTo extends Identified{
 	 * Returns field variable <code>remote</code>.
 	 * @return field variable <code>remote</code>
 	 */
-	public URI getRemote() {
+	public URI getRemoteURI() {
 		return remote;
+	}
+	
+	public FunctionalComponent getRemote() {
+		if (module==null) return null;
+		if (module.getDefinition()==null) return null;
+		return module.getDefinition().getFunctionalComponent(remote);
 	}
 
 	/**
@@ -263,6 +276,29 @@ public class MapsTo extends Identified{
 		// TODO: need to set wasDerivedFrom here?
 		this.setWasDerivedFrom(this.getIdentity());
 		this.setIdentity(newIdentity);
+	}
+
+	/**
+	 * @return the moduleDefinition
+	 */
+	ModuleDefinition getModuleDefinition() {
+		return moduleDefinition;
+	}
+
+	/**
+	 * @param moduleDefinition the moduleDefinition to set
+	 */
+	void setModuleDefinition(ModuleDefinition moduleDefinition) {
+		this.moduleDefinition = moduleDefinition;
+	}
+
+
+	Module getModule() {
+		return module;
+	}
+
+	void setModule(Module module) {
+		this.module = module;
 	}
 
 }

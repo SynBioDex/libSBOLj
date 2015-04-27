@@ -200,7 +200,7 @@ public class writeTester {
 		return myParts;
 	}
 
-	private static TopLevel get_topLevel (SBOLDocument SBOL2Doc_test)
+	private static Identified get_topLevel (SBOLDocument SBOL2Doc_test)
 	{
 
 		return createTopLevel(SBOL2Doc_test, getData("GenericTopLevel","1.0"));
@@ -613,8 +613,10 @@ public class writeTester {
 		Module m = createModuleData(md,
 			getData("Inv1"),
 			get_LacI_Inv(SBOL2Doc_test));
-		createMapTo(m,"Inv1a", RefinementType.USELOCAL, get_LacISp(SBOL2Doc_test,md), get_LacIIn(SBOL2Doc_test,md));
-		createMapTo(m,"Inv2a_TetRSp", RefinementType.USELOCAL, get_TetRSp(SBOL2Doc_test,md), get_TetROut(SBOL2Doc_test,md));
+		createMapTo(m,"Inv1a", RefinementType.USELOCAL, get_LacISp(SBOL2Doc_test,md), 
+				get_LacIIn(SBOL2Doc_test,get_LacI_Inv(SBOL2Doc_test)));
+		createMapTo(m,"Inv2a_TetRSp", RefinementType.USELOCAL, get_TetRSp(SBOL2Doc_test,md), 
+				get_TetROut(SBOL2Doc_test,get_LacI_Inv(SBOL2Doc_test)));
 	}
 
 	private static void get_Inv2 (SBOLDocument SBOL2Doc_test,ModuleDefinition md)
@@ -623,8 +625,10 @@ public class writeTester {
 			md,
 			getData("Inv2"),
 			get_TetR_Inv(SBOL2Doc_test));
-		createMapTo(m,"Inv1b", RefinementType.USELOCAL, get_LacISp(SBOL2Doc_test,md), get_LacIOut(SBOL2Doc_test,md));
-		createMapTo(m,"Inv2b", RefinementType.USELOCAL, get_TetRSp(SBOL2Doc_test,md), get_TetRIn(SBOL2Doc_test,md));
+		createMapTo(m,"Inv1b", RefinementType.USELOCAL, get_LacISp(SBOL2Doc_test,md), 
+				get_LacIOut(SBOL2Doc_test,get_TetR_Inv(SBOL2Doc_test)));
+		createMapTo(m,"Inv2b", RefinementType.USELOCAL, get_TetRSp(SBOL2Doc_test,md), 
+				get_TetRIn(SBOL2Doc_test,get_TetR_Inv(SBOL2Doc_test)));
 	}
 
 	private static Model get_ToggleModel(SBOLDocument SBOL2Doc_test)
@@ -850,6 +854,7 @@ public class writeTester {
 		if (s==null) {
 			s = cd.createSequenceAnnotation(displayId, location);
 			setCommonDocumentedData(s, displayId, displayId);
+			s.setComponent(ref_component.getIdentity());
 		} 
 		return s;
 	}

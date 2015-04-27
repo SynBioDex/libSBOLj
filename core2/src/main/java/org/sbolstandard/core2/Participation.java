@@ -17,6 +17,7 @@ public class Participation extends Identified {
 	
 	private Set<URI> roles;
 	private URI participant;
+	private ModuleDefinition moduleDefinition = null;
 	
 	public Participation(URI identity, Set<URI> roles, URI participant) {
 		super(identity);
@@ -31,17 +32,22 @@ public class Participation extends Identified {
 			roles.add(role);
 		}		
 		this.setRoles(roles);
-		this.setParticipant(participation.getParticipant());
+		this.setParticipant(participation.getParticipantURI());
 	}
 
 	/**
 	 * Returns field variable <code>participant</code>.
 	 * @return field variable <code>participant</code>
 	 */
-	public URI getParticipant() {
+	public URI getParticipantURI() {
 		return participant;
 	}
 
+	public FunctionalComponent getParticipant() {
+		if (moduleDefinition==null) return null;
+		return moduleDefinition.getFunctionalComponent(participant);
+	}
+	
 	/**
 	 * Sets field variable <code>participant</code> to the specified element.
 	 * @param participant
@@ -121,6 +127,20 @@ public class Participation extends Identified {
 		// TODO: need to set wasDerivedFrom here?
 		this.setWasDerivedFrom(this.getIdentity());
 		this.setIdentity(newIdentity);
+	}
+
+	/**
+	 * @return the moduleDefinition
+	 */
+	ModuleDefinition getModuleDefinition() {
+		return moduleDefinition;
+	}
+
+	/**
+	 * @param moduleDefinition the moduleDefinition to set
+	 */
+	void setModuleDefinition(ModuleDefinition moduleDefinition) {
+		this.moduleDefinition = moduleDefinition;
 	}
 
 }

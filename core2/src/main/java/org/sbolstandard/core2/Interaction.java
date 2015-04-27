@@ -19,6 +19,7 @@ public class Interaction extends Documented {
 
 	private Set<URI> types;
 	private HashMap<URI, Participation> participations;
+	private ModuleDefinition moduleDefinition = null;
 	
 	/**
 	 * 
@@ -122,6 +123,11 @@ public class Interaction extends Documented {
 	}
 
 	public Participation createParticipation(String displayId, Set<URI> role, URI participant) {
+		if (sbolDocument != null && sbolDocument.isComplete() && moduleDefinition != null) {
+			if (moduleDefinition.getFunctionalComponent(participant)==null) {
+				throw new IllegalArgumentException("Functional component '" + participant + "' does not exist.");
+			}
+		}
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		String version = this.getVersion();
 		if(parentPersistentIdStr == null) {
@@ -140,6 +146,8 @@ public class Interaction extends Documented {
 	 */
 	public void addParticipation(Participation participation) {
         addChildSafely(participation, participations, "participation");
+		participation.setSBOLDocument(this.sbolDocument);
+        participation.setModuleDefinition(moduleDefinition);
 	}
 	
 	/**
@@ -250,6 +258,20 @@ public class Interaction extends Documented {
 		// TODO: need to set wasDerivedFrom here?
 		this.setWasDerivedFrom(this.getIdentity());
 		this.setIdentity(newIdentity);		
+	}
+
+	/**
+	 * @return the moduleDefinition
+	 */
+	ModuleDefinition getModuleDefinition() {
+		return moduleDefinition;
+	}
+
+	/**
+	 * @param moduleDefinition the moduleDefinition to set
+	 */
+	void setModuleDefinition(ModuleDefinition moduleDefinition) {
+		this.moduleDefinition = moduleDefinition;
 	}
 	
 }

@@ -18,7 +18,7 @@ public class Collection extends TopLevel{
 	private Collection(Collection collection) {
 		super(collection.getIdentity());
 		Set<URI> newMembers = new HashSet<URI>();		
-		for (URI member : collection.getMembers()) {
+		for (URI member : collection.getMemberURIs()) {
 			newMembers.add(member);
 		}		
 	}
@@ -39,7 +39,7 @@ public class Collection extends TopLevel{
 	 * @param memberURI
 	 */
 	public void addMember(URI memberURI) {
-		if (sbolDocument.isComplete()) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getTopLevel(memberURI)==null) {
 				throw new IllegalArgumentException("Top level '" + memberURI + "' does not exist.");
 			}
@@ -71,12 +71,25 @@ public class Collection extends TopLevel{
 	}
 	
 	/**
-	 * Returns the list of members referenced by this object.
-	 * @return the list of members referenced by this object.
+	 * Returns the set of member URIs referenced by this object.
+	 * @return the set of member URIs referenced by this object.
 	 */
-	public Set<URI> getMembers() {
+	public Set<URI> getMemberURIs() {
 		Set<URI> result = new HashSet<URI>();
 		result.addAll(members);
+		return result;
+	}
+	
+	/**
+	 * Returns the set of members referenced by this object.
+	 * @return the set of members referenced by this object.
+	 */
+	public Set<TopLevel> getMembers() {
+		Set<TopLevel> result = new HashSet<TopLevel>();
+		for (URI memberURI : members) {
+			TopLevel member = sbolDocument.getTopLevel(memberURI);
+			result.add(member);
+		}
 		return result;
 	}
 	
