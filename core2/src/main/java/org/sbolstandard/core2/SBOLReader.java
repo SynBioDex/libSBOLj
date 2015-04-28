@@ -1921,7 +1921,9 @@ public class SBOLReader
 			}
 		}
 
-		Participation p = new Participation(participation.getIdentity(), role, participant);
+		Participation p = new Participation(participation.getIdentity(), participant);
+		if (role != null)
+			p.setRoles(role);
 		if (displayId != null)
 			p.setDisplayId(displayId);
 		if (persistentIdentity != null)

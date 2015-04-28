@@ -834,7 +834,8 @@ public class writeTester {
 			String displayId, Set<URI> roles, FunctionalComponent fi)
 	{
 		if (i.getParticipation(URI.create(i.getPersistentIdentity()+"/"+displayId))==null) {
-			i.createParticipation(displayId, roles, fi.getIdentity());
+			Participation p = i.createParticipation(displayId, fi.getIdentity());
+			p.setRoles(roles);
 		}
 	}
 

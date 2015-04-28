@@ -116,13 +116,13 @@ public class Interaction extends Documented {
 	 * @param location
 	 * @return the  created Participation instance. 
 	 */
-	public Participation createParticipation(URI identity, Set<URI> role, URI participant) {
-		Participation participation = new Participation(identity, role, participant);
+	public Participation createParticipation(URI identity, URI participant) {
+		Participation participation = new Participation(identity, participant);
 		addParticipation(participation);
 		return participation;
 	}
 
-	public Participation createParticipation(String displayId, Set<URI> role, URI participant) {
+	public Participation createParticipation(String displayId, URI participant) {
 		if (sbolDocument != null && sbolDocument.isComplete() && moduleDefinition != null) {
 			if (moduleDefinition.getFunctionalComponent(participant)==null) {
 				throw new IllegalArgumentException("Functional component '" + participant + "' does not exist.");
@@ -137,7 +137,7 @@ public class Interaction extends Documented {
 		}
 		//validateIdVersion(displayId, version);
         return createParticipation(
-				createCompliantURI(parentPersistentIdStr, displayId, version), role, participant);
+				createCompliantURI(parentPersistentIdStr, displayId, version), participant);
 	}
 	
 	/**

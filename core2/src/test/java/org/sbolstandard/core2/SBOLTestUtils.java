@@ -148,7 +148,7 @@ public class SBOLTestUtils {
 	public static Participation createParticipation(String id, URI instantiatedModule,
 			List<Annotation> annotations)
 	{
-		Participation m = new Participation(URI.create(id), null, null);
+		Participation m = new Participation(URI.create(id), null);
 		if(annotations != null)
 			m.setAnnotations(annotations);
 		return m;

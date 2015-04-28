@@ -88,7 +88,7 @@ public class SequenceAnnotation extends Documented {
 	 * @param componentURI
 	 */
 	public void setComponent(URI componentURI) {
-		if (sbolDocument.isComplete()) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (componentDefinition.getComponent(componentURI)==null) {
 				throw new IllegalArgumentException("Component '" + componentURI + "' does not exist.");
 			}
