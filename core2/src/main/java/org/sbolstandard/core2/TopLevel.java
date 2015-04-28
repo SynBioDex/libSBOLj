@@ -24,6 +24,7 @@ public abstract class TopLevel extends Documented{
 //		super(authority, id, version);
 //	}
 
+
 	protected TopLevel(TopLevel toplevel) {
 		super(toplevel);
 	}
@@ -47,6 +48,13 @@ public abstract class TopLevel extends Documented{
 	 * @return {@code true} if they are all compliant, {@code false} otherwise.
 	 */
 	protected abstract boolean checkDescendantsURIcompliance();
+	
+//	/**
+//	 * @return
+//	 */
+//	protected String getURIprefix() {
+//		
+//	}
 
 //	/**
 //	 * Get a deep copy of the object first, set its display ID to the specified value, and set the major version to "1" and minor version to "0".
