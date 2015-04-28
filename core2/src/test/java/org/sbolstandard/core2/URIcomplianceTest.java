@@ -30,15 +30,10 @@ public class URIcomplianceTest {
 	String uri8Str = "http://www.async.ece.utah.edu/LacI_Inv/interaction_1/participant#1/1.0.1";
 	String uri9Str = "http://www.async.ece.utah.edu/pLac/ptetlacISeq/multi_range/p2@struct&Annotate_range*/1.0.02-alpha";
 	String uri10Str = "http://www.async.ece.utah.edu/pLac/ptetlacISeq/multi_range/_p2_structAnnotate_range/1.0.02-SNAPSHOT";
-<<<<<<< HEAD
 	String uri11Str = "www.async.ece.utah.edu";
 	String uri12Str = "/";
 	String uri13Str = "http://www.async.ece.utah.edu/LacI_Inv/";
 	
-	
-=======
-
->>>>>>> refs/remotes/origin/develop
 	String uri1PersistIdStr = "http://www.async.ece.utah.edu/LacI_Inv";
 	String uri5PersistIdStr = "http://www.async.ece.utah.edu/LacI_Inv/LacIIn";
 	String uri7PersistIdStr = "http://www.async.ece.utah.edu/LacI_Inv/interaction_1/participant1";
@@ -64,7 +59,6 @@ public class URIcomplianceTest {
 	URI uri12 = URI.create(uri12Str);
 	URI uri13 = URI.create(uri13Str);
 
-<<<<<<< HEAD
 //	@Test
 //	public void testURLcase() {
 //		assertEquals(uri1, uri2);
@@ -447,26 +441,21 @@ public class URIcomplianceTest {
 //		assertFalse(isURIcompliant(uri11, 0));
 //	}
 	
-=======
 	@Test
 	public void testURLcase() {
 		assertEquals(uri1, uri2);
 	}
 
->>>>>>> refs/remotes/origin/develop
 	@Test
-<<<<<<< HEAD
 	public void testIsURIcompliant6() {
 		assertFalse(isURIcompliant(uri12, 0));
-=======
+	}
+
+	@Test
 	public void testIDcase() {
 		assertThat(uri1, is(not(uri3)));
->>>>>>> refs/remotes/origin/develop
 	}
-<<<<<<< HEAD
-	
-	
-=======
+
 
 	/**
 	 * Test <code>null<\code> for top-level URI not compliant in extractPersistentId.
@@ -839,7 +828,5 @@ public class URIcomplianceTest {
 	public void testIsTopLevelURIcompliant4() {
 		assertFalse(isURIcompliant(uri4, 0));
 	}
-
->>>>>>> refs/remotes/origin/develop
 	// TODO: Test isVersionCompliant
 }
