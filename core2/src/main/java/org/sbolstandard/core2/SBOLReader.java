@@ -1194,13 +1194,11 @@ public class SBOLReader
 			}
 		}
 
-		MultiRange multiRange = new MultiRange(typeMultiRange.getIdentity());
+		MultiRange multiRange = new MultiRange(typeMultiRange.getIdentity(),ranges);
 		if (displayId != null)
 			multiRange.setDisplayId(displayId);
 		if (persistentIdentity != null)
 			multiRange.setPersistentIdentity(persistentIdentity);
-		if (!ranges.isEmpty())
-			multiRange.setRanges(ranges);
 		if(version != null)
 			multiRange.setVersion(version);
 		if (wasDerivedFrom != null)

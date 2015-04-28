@@ -14,9 +14,10 @@ public class MultiRange extends Location{
 	
 	private HashMap<URI, Range> ranges;
 
-	public MultiRange(URI identity) {
+	public MultiRange(URI identity,List<Range> ranges) {
 		super(identity);
 		this.ranges = new HashMap<URI, Range>();
+		setRanges(ranges);
 	}
 	
 	
@@ -76,6 +77,9 @@ public class MultiRange extends Location{
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Range removeRange(URI rangeURI) {
+		if (ranges.size()<3) {
+			throw new IllegalArgumentException("MultiRange is required to have at least two ranges.");
+		}
 		return ranges.remove(rangeURI);
 	}
 	
@@ -112,8 +116,10 @@ public class MultiRange extends Location{
 	 * Clears the existing list of structuralAnnotation instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param ranges
 	 */
-	public void setRanges(
-			List<Range> ranges) {
+	public void setRanges(List<Range> ranges) {
+		if (ranges.size()<2) {
+			throw new IllegalArgumentException("MultiRange is required to have at least two ranges.");
+		}
 		clearRanges();		
 		for (Range range : ranges) {
 			addRange(range);
