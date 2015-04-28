@@ -2,22 +2,19 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import static org.sbolstandard.core2.URIcompliance.*;
+//import static org.sbolstandard.core2.URIcompliance.*;
 
 public abstract class TopLevel extends Documented{
 		
-//	private static String persistentIdURI;
-//	private static String URIprefix;
-//	private static String displayIdURI;
-//	private static String versionURI;
-
-	public TopLevel(URI identity) {
+public TopLevel(URI identity) {
 		super(identity);
+		/*
 		if (isURIcompliant(identity, 0)) {
 			this.setVersion(extractVersion(identity));
 			this.setDisplayId(extractDisplayId(identity, 0));
 			this.setPersistentIdentity(URI.create(extractPersistentId(identity)));
 		}
+		*/
 	}
 
 //	public TopLevel(String authority, String id, String version) {
@@ -28,8 +25,8 @@ public abstract class TopLevel extends Documented{
 	protected TopLevel(TopLevel toplevel) {
 		super(toplevel);
 	}
-		
-	protected abstract TopLevel deepCopy();
+	
+	protected abstract Identified deepCopy();
 	
 	/**
 	 * Make a copy of a top-level object whose URI and its descendants' URIs (children, grandchildren, etc) are all compliant. 
@@ -41,7 +38,7 @@ public abstract class TopLevel extends Documented{
 	 * @param version
 	 * @return the copied top-level object if this object and all of its descendants have compliant URIs, and {@code null} otherwise.
 	 */
-	public abstract TopLevel copy(String URIprefix, String displayId, String version);
+	public abstract Identified copy(String URIprefix, String displayId, String version);
 	
 	/**
 	 * Check if this top-level object's and all of its descendants' URIs are all compliant. 

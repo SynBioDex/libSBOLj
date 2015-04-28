@@ -1,13 +1,13 @@
 package org.sbolstandard.core2;
 
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.sbolstandard.core2.MapsTo;
-import org.sbolstandard.core2.ModuleDefinition;
-import org.sbolstandard.core2.Module;
-import org.sbolstandard.core2.SBOLDocument;
+//import java.net.URI;
+//import java.util.HashSet;
+//import java.util.Set;
+//
+//import org.sbolstandard.core2.MapsTo;
+//import org.sbolstandard.core2.ModuleDefinition;
+//import org.sbolstandard.core2.Module;
+//import org.sbolstandard.core2.SBOLDocument;
 
 public class libTester {
 

@@ -1,10 +1,28 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 final class URIcompliance {
+
+	public static void validateIdVersion(String displayId, String version) {
+		if (!isDisplayIdCompliant(displayId)) {
+			throw new IllegalArgumentException("Display id `" + displayId + "' is not compliant");
+		}
+		if (!isVersionCompliant(version)) {
+			throw new IllegalArgumentException("Version `" + version + "' is not compliant");
+		}
+	}
+
+	public static URI createCompliantURI(String prefix, String displayId, String version) {
+		return URI.create(prefix + '/' + displayId + '/' + version);
+	}
+	
+	public static URI createCompliantURI(String prefix, String type, String displayId, String version) {
+		return URI.create(prefix + '/' + type + '/' + displayId + '/' + version);
+	}
 
 	/**
 	 * Extract the persistent identity URI from the given URI.
@@ -97,128 +115,34 @@ final class URIcompliance {
 	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise.
 	 */
 	public static final boolean isURIcompliant(URI objURI, int index) {
-		return true;
+		if (index < 0 || index > 3) {
+			// TODO: generate error message
+			return false;
+		}		
+		Pattern r;
+		String URIstr = objURI.toString();		
+		if (index == 0) {
+			r = Pattern.compile(toplevelURIpattern);
+		}
+		else if (index == 1) {
+			r = Pattern.compile(childURIpattern);
+		}
+		else if (index == 2) {
+			r = Pattern.compile(grandchildURIpattern);
+		}
+		else { // index == 3
+			r = Pattern.compile(greatGrandchildURIpattern);
+		}
+		Matcher m = r.matcher(URIstr);
+		if (m.matches()) {
+			return true;
+		}
+		else {
+			//System.out.println(URIstr + " is not compliant");
+			// TODO: Warning: top-level URI is not compliant.
+			return false;
+		}
 	}
-//	public static final boolean isURIcompliant(URI objURI, String URIprefix, String version, String ... displayIds) {
-//		if (displayIds.length == 0 || displayIds.length > 4) {
-//			// TODO: Exception: wrong number of display IDs.
-//			return false;
-//		}
-//		if (objURI == null) {
-//			return false;
-//		}
-//		String URIstr = objURI.toString();
-//		if (URIstr.isEmpty()) {
-//			return false;
-//		}
-//		String[] extractedURIpieces = URIstr.split("/");
-//		if (extractedURIpieces.length < 4) { // minimal number of "/" should be 4, such as "http://www.async.ece.utah.edu/LacI_Inv/".
-//			return false;
-//		}
-//		int curIndex = extractedURIpieces.length - 1;
-//		String curExtractedStr = extractedURIpieces[curIndex];
-//		if (URIstr.endsWith("/")) { // version is empty. The last string extracted from the URI should be the display ID.
-//			if (isDisplayIdCompliant(curExtractedStr) && curExtractedStr.equals(displayIds[0])) {
-//				String extractedURIprefix = "";
-//				String parentDisplayId = null;
-//				String grandparentDisplayId = null;
-//				String greatGrandparentDisplayId = null;
-//				switch (displayIds.length) {				
-//				case 1: // Only one display ID is provided. Should be a top-level object.
-//					break;
-//				case 2: // Two display IDs are provided. Should be a child of a top-level object.
-//					parentDisplayId = displayIds[1];
-//					curIndex = curIndex - 1;
-//					curExtractedStr = extractedURIpieces[curIndex]; // parent display ID extracted from URI.
-//					if (isDisplayIdCompliant(parentDisplayId) && parentDisplayId.equals(curExtractedStr)) {
-//						break;
-//					}
-//					else {
-//						// TODO: Warning: parent display ID not compliant
-//						return false;
-//					}
-//				case 3: // Three display IDs are provided. Should be a grandchild of a top-level object.
-//					parentDisplayId = displayIds[1];
-//					curIndex = curIndex - 1;
-//					curExtractedStr = extractedURIpieces[curIndex]; // parent display ID extracted from URI.
-//					if (isDisplayIdCompliant(parentDisplayId) && parentDisplayId.equals(curExtractedStr)) {
-//						grandparentDisplayId = displayIds[2];
-//						curIndex = curIndex - 1;
-//						curExtractedStr = extractedURIpieces[curIndex]; // grandparent display ID extracted from URI.
-//						if (isDisplayIdCompliant(grandparentDisplayId) 
-//								&& grandparentDisplayId.equals(curExtractedStr)) {
-//							break;
-//						}
-//						else {
-//							// TODO: Warning: grandparent display ID not compliant
-//							return false;
-//						}
-//					}
-//					else {
-//						// TODO: Warning: parent display ID not compliant
-//						return false;
-//					}
-//				case 4: // Four display IDs are provided. Should be a great grandchild of a top-level object.
-//					parentDisplayId = displayIds[1];
-//					curIndex = curIndex - 1;
-//					curExtractedStr = extractedURIpieces[curIndex]; // parent display ID extracted from URI.
-//					if (isDisplayIdCompliant(parentDisplayId) && parentDisplayId.equals(curExtractedStr)) {
-//						grandparentDisplayId = displayIds[2];
-//						curIndex = curIndex - 1;
-//						curExtractedStr = extractedURIpieces[curIndex]; // grandparent display ID extracted from URI.
-//						if (isDisplayIdCompliant(grandparentDisplayId) 
-//								&& grandparentDisplayId.equals(curExtractedStr)) {
-//							greatGrandparentDisplayId = displayIds[3];
-//							curIndex = curIndex - 1;
-//							curExtractedStr = extractedURIpieces[curIndex]; // great grandparent display ID extracted from URI.
-//							if (isDisplayIdCompliant(greatGrandparentDisplayId) 
-//								&& greatGrandparentDisplayId.equals(curExtractedStr)) {
-//								break;
-//							}
-//							else {
-//								// TODO: Warning: great grandparent display ID not compliant
-//								return false;
-//							}
-//						}
-//						else {
-//							// TODO: Warning: grandparent display ID not compliant
-//							return false;
-//						}
-//					}
-//					else {
-//						// TODO: Warning: parent display ID not compliant
-//						return false;
-//					}
-//				default:
-//					return false;				
-//				}
-//				for (int i = 0; i < curIndex; i++) {
-//					extractedURIprefix = extractedURIprefix + extractedURIpieces[i];
-//				}
-//				if (isURIprefixCompliant(extractedURIprefix) && extractedURIprefix.equals(URIprefix)) {
-//					return true;
-//				}
-//				else { // URI prefix not compliant
-//					// TODO: Warning: URI prefix not compliant
-//					return false;
-//				}
-//			}
-//			else { // displayId not compliant
-//				// TODO: Warning: displayId not compliant
-//				return false;
-//			}
-//		}
-//		else { // version is not empty
-//			if (isVersionCompliant(curExtractedStr)) {
-//				return true;
-//				//String displayId = extractedURIpieces[versionIndex];
-//			}
-//			else { // version not compliant
-//				return false;
-//			}
-//		}
-//	}
-	
 	
 	public static final boolean isURIcompliantTemp(URI objURI, String URIprefix, String version, String ... displayIds) {
 		if (displayIds.length == 0 || displayIds.length > 4) {
@@ -460,7 +384,7 @@ final class URIcompliance {
 	//public static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
 	public static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
-	public static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]+";//"[a-zA-Z0-9_]+";
+	public static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]*";//"[a-zA-Z0-9_]+";
 
 	public static final String versionPattern = "^$|[^/]+"; // ^ and $ are the beginning and end of the string anchors respectively. 
 															// | is used to denote alternates. 
@@ -485,4 +409,13 @@ final class URIcompliance {
 	public static final String grandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){3}" + versionPattern;
 
 	public static final String greatGrandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){4}" + versionPattern;
+
+	public static boolean keyExistsInAnyMap(URI key, Map<URI, ?>... maps) {
+		for(Map<URI, ?> map : maps) {
+			if(map.keySet().contains(key))
+				return true;
+		}
+
+		return false;
+	}
 }

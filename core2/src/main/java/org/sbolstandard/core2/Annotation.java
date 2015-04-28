@@ -2,6 +2,8 @@ package org.sbolstandard.core2;
 
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
 
+import java.net.URI;
+
 import javax.xml.namespace.QName;
 
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
@@ -10,6 +12,14 @@ import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 public class Annotation {
 
 	private NamedProperty<QName> value;
+
+	public Annotation(QName qName, String literal) {
+		value = NamedProperty(qName,literal);
+	}
+
+	public Annotation(QName qName, URI literal) {
+		value = NamedProperty(qName,literal);
+	}
 	
 	public Annotation(NamedProperty<QName> value) {
 		this.value = value;

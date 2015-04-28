@@ -10,7 +10,6 @@ import java.net.URI;
  */
 public abstract class Documented extends Identified {
 
-	private String displayId;
 	private String name;
 	private String description;
 	
@@ -39,41 +38,6 @@ public abstract class Documented extends Identified {
 		}		
 	}
 	
-	
-	/**
-	 * Test if optional field variable <code>displayId</code> is set.
-	 * @return <code>true</code> if it is not <code>null</code>
-	 */
-	public boolean isSetDisplayId() {
-		if (displayId == null)
-			return false;
-		else 
-			return true;
-	}
-	
-	/**
-	 * Returns field variable <code>displayId</code>.
-	 * @return field variable <code>displayId</code>
-	 */
-	// @return the documented object's display ID
-	public String getDisplayId() {
-		return displayId;
-	}
-		
-	/**
-	 * Set field variable <code>displayId</code> to the specified element.
-	 * @param displayId
-	 */
-	public void setDisplayId(String displayId) {
-		this.displayId = displayId;
-	}
-	
-	/**
-	 * Set optional field variable <code>displayId</code> to <code>null</code>.
-	 */
-	public void unsetDisplayId() {
-		displayId = null;
-	}
 	
 	/**
 	 * Test if optional field variable <code>name</code> is set.
@@ -186,5 +150,5 @@ public abstract class Documented extends Identified {
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.Identified#deepCopy()
 	 */
-	protected abstract Documented deepCopy();
+	protected abstract Identified deepCopy();
 }

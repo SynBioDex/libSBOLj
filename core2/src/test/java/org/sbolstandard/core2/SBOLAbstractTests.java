@@ -18,7 +18,6 @@ import org.sbolstandard.core2.ComponentInstance.AccessType;
  */
 public abstract class SBOLAbstractTests {
 
-
 	@Test
 	public void test_JSONFile() throws Exception
 	{
@@ -80,7 +79,7 @@ public abstract class SBOLAbstractTests {
 
 		runTest("test/data/modelAnnotation.rdf", document, "rdf");
 	}
-
+	/*
 	@Test
 	public void test_moduleAnnotation() throws Exception
 	{
@@ -98,7 +97,7 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/moduleAnnotation.rdf", document, "rdf");
 	}
 
-	/*
+
 	@Test
 	public void test_Annotations() throws Exception
 	{

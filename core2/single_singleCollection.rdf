@@ -1,0 +1,1545 @@
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:annot="http://myannotation.org" xmlns:grn="urn:bbn.com:tasbe:grn" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sbol="http://sbols.org/v2#">
+  <sbol:Collection rdf:about="http://www.async.ece.utah.edu/myParts/1.0">
+    <annot:thisAnnotation>turtleString</annot:thisAnnotation>
+    <dcterms:title>myParts</dcterms:title>
+    <dcterms:description>myParts</dcterms:description>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/lacICDS/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/lacISeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/ptet/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/pLactetR/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/ptetlacISeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/pLacSeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/ptetSeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/ptetlacI/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/Toggle/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/tetRSeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/pLac/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/Toggle/ToggleModel/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/pLactetRSeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/GenericTopLevel/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/tetRCDS/1.0"/>
+  </sbol:Collection>
+  <sbol:Collection rdf:about="http://www.async.ece.utah.edu/myParts/1.0">
+    <annot:thisAnnotation>turtleString</annot:thisAnnotation>
+    <dcterms:title>myParts</dcterms:title>
+    <dcterms:description>myParts</dcterms:description>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/lacICDS/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/lacISeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/ptet/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/pLactetR/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/ptetlacISeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/pLacSeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/ptetSeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/ptetlacI/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/Toggle/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/tetRSeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/pLac/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/Toggle/ToggleModel/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/pLactetRSeq/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/GenericTopLevel/1.0"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/tetRCDS/1.0"/>
+  </sbol:Collection>
+  <sbol:ModuleDefinition rdf:about="http://www.async.ece.utah.edu/LacI_Inv/1.0">
+    <annot:thisAnnotation>turtleString</annot:thisAnnotation>
+    <dcterms:title>LacI_Inv</dcterms:title>
+    <dcterms:description>LacI_Inv</dcterms:description>
+    <sbol:role rdf:resource="http://some.ontology.org/Inverter"/>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0">
+        <dcterms:title>TetROut</dcterms:title>
+        <dcterms:description>TetROut</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#output"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0">
+        <dcterms:title>TetROut</dcterms:title>
+        <dcterms:description>TetROut</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#output"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0">
+        <dcterms:title>LacIInv</dcterms:title>
+        <dcterms:description>LacIInv</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/pLactetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#private"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#none"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0">
+        <dcterms:title>LacIIn</dcterms:title>
+        <dcterms:description>LacIIn</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0">
+        <dcterms:title>LacIInv</dcterms:title>
+        <dcterms:description>LacIInv</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/pLactetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#private"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#none"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0">
+        <dcterms:title>LacIIn</dcterms:title>
+        <dcterms:description>LacIIn</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/1.0">
+        <dcterms:title>interact2</dcterms:title>
+        <dcterms:description>interact2</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/production"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p3a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p4a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p4a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p3a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/1.0">
+        <dcterms:title>interact1</dcterms:title>
+        <dcterms:description>interact1</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/repression"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p1a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p1a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p2a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p2a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/1.0">
+        <dcterms:title>interact2</dcterms:title>
+        <dcterms:description>interact2</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/production"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p3a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p4a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p4a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p3a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/1.0">
+        <dcterms:title>interact1</dcterms:title>
+        <dcterms:description>interact1</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/repression"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p1a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p1a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p2a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p2a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+  </sbol:ModuleDefinition>
+  <sbol:ModuleDefinition rdf:about="http://www.async.ece.utah.edu/Toggle/1.0">
+    <annot:thisAnnotation>turtleString</annot:thisAnnotation>
+    <dcterms:title>Toggle</dcterms:title>
+    <dcterms:description>Toggle</dcterms:description>
+    <sbol:role rdf:resource="http://some.ontology.org/Toggle_role"/>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/Toggle/LacISp/1.0">
+        <dcterms:title>LacISp</dcterms:title>
+        <dcterms:description>LacISp</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/Toggle/LacISp/1.0">
+        <dcterms:title>LacISp</dcterms:title>
+        <dcterms:description>LacISp</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0">
+        <dcterms:title>TetRSp</dcterms:title>
+        <dcterms:description>TetRSp</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0">
+        <dcterms:title>TetRSp</dcterms:title>
+        <dcterms:description>TetRSp</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:model rdf:resource="http://www.async.ece.utah.edu/Toggle/ToggleModel/1.0"/>
+    <sbol:module>
+      <sbol:Module rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/1.0">
+        <dcterms:title>Inv1</dcterms:title>
+        <dcterms:description>Inv1</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/1.0"/>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv2a_TetRSp/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv1a/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv2a_TetRSp/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv1a/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+      </sbol:Module>
+    </sbol:module>
+    <sbol:module>
+      <sbol:Module rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/1.0">
+        <dcterms:title>Inv2</dcterms:title>
+        <dcterms:description>Inv2</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/1.0"/>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv2b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv2b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv1b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv1b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+      </sbol:Module>
+    </sbol:module>
+    <sbol:module>
+      <sbol:Module rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/1.0">
+        <dcterms:title>Inv2</dcterms:title>
+        <dcterms:description>Inv2</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/1.0"/>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv2b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv2b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv1b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv1b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+      </sbol:Module>
+    </sbol:module>
+    <sbol:module>
+      <sbol:Module rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/1.0">
+        <dcterms:title>Inv1</dcterms:title>
+        <dcterms:description>Inv1</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/1.0"/>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv2a_TetRSp/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv1a/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv2a_TetRSp/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv1a/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+      </sbol:Module>
+    </sbol:module>
+  </sbol:ModuleDefinition>
+  <sbol:ModuleDefinition rdf:about="http://www.async.ece.utah.edu/TetR_Inv/1.0">
+    <annot:thisAnnotation>turtleString</annot:thisAnnotation>
+    <dcterms:title>TetR_Inv</dcterms:title>
+    <dcterms:description>TetR_Inv</dcterms:description>
+    <sbol:role rdf:resource="http://some.ontology.org/Inverter"/>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0">
+        <dcterms:title>LacIOut</dcterms:title>
+        <dcterms:description>LacIOut</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#output"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0">
+        <dcterms:title>TetRInv</dcterms:title>
+        <dcterms:description>TetRInv</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/ptetlacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#private"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#none"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0">
+        <dcterms:title>TetRIn</dcterms:title>
+        <dcterms:description>TetRIn</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0">
+        <dcterms:title>TetRInv</dcterms:title>
+        <dcterms:description>TetRInv</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/ptetlacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#private"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#none"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0">
+        <dcterms:title>TetRIn</dcterms:title>
+        <dcterms:description>TetRIn</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0">
+        <dcterms:title>LacIOut</dcterms:title>
+        <dcterms:description>LacIOut</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#output"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/1.0">
+        <dcterms:title>interact1b</dcterms:title>
+        <dcterms:description>interact1b</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/repression"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p2b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p2b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p1b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p1b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/1.0">
+        <dcterms:title>interact1b</dcterms:title>
+        <dcterms:description>interact1b</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/repression"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p2b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p2b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p1b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p1b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/1.0">
+        <dcterms:title>interact2b</dcterms:title>
+        <dcterms:description>interact2b</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/production"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p4b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p3b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p3b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p4b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/1.0">
+        <dcterms:title>interact2b</dcterms:title>
+        <dcterms:description>interact2b</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/production"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p4b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p3b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p3b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p4b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+  </sbol:ModuleDefinition>
+  <sbol:ModuleDefinition rdf:about="http://www.async.ece.utah.edu/LacI_Inv/1.0">
+    <annot:thisAnnotation>turtleString</annot:thisAnnotation>
+    <dcterms:title>LacI_Inv</dcterms:title>
+    <dcterms:description>LacI_Inv</dcterms:description>
+    <sbol:role rdf:resource="http://some.ontology.org/Inverter"/>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0">
+        <dcterms:title>TetROut</dcterms:title>
+        <dcterms:description>TetROut</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#output"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0">
+        <dcterms:title>TetROut</dcterms:title>
+        <dcterms:description>TetROut</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#output"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0">
+        <dcterms:title>LacIInv</dcterms:title>
+        <dcterms:description>LacIInv</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/pLactetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#private"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#none"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0">
+        <dcterms:title>LacIIn</dcterms:title>
+        <dcterms:description>LacIIn</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0">
+        <dcterms:title>LacIInv</dcterms:title>
+        <dcterms:description>LacIInv</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/pLactetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#private"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#none"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0">
+        <dcterms:title>LacIIn</dcterms:title>
+        <dcterms:description>LacIIn</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/1.0">
+        <dcterms:title>interact2</dcterms:title>
+        <dcterms:description>interact2</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/production"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p3a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p4a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p4a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p3a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/1.0">
+        <dcterms:title>interact1</dcterms:title>
+        <dcterms:description>interact1</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/repression"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p1a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p1a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p2a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p2a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/1.0">
+        <dcterms:title>interact2</dcterms:title>
+        <dcterms:description>interact2</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/production"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p3a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p4a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p4a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact2/p3a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/1.0">
+        <dcterms:title>interact1</dcterms:title>
+        <dcterms:description>interact1</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/repression"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p1a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p1a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p2a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/LacI_Inv/interact1/p2a/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+  </sbol:ModuleDefinition>
+  <sbol:ModuleDefinition rdf:about="http://www.async.ece.utah.edu/Toggle/1.0">
+    <annot:thisAnnotation>turtleString</annot:thisAnnotation>
+    <dcterms:title>Toggle</dcterms:title>
+    <dcterms:description>Toggle</dcterms:description>
+    <sbol:role rdf:resource="http://some.ontology.org/Toggle_role"/>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/Toggle/LacISp/1.0">
+        <dcterms:title>LacISp</dcterms:title>
+        <dcterms:description>LacISp</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/Toggle/LacISp/1.0">
+        <dcterms:title>LacISp</dcterms:title>
+        <dcterms:description>LacISp</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0">
+        <dcterms:title>TetRSp</dcterms:title>
+        <dcterms:description>TetRSp</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0">
+        <dcterms:title>TetRSp</dcterms:title>
+        <dcterms:description>TetRSp</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:model rdf:resource="http://www.async.ece.utah.edu/Toggle/ToggleModel/1.0"/>
+    <sbol:module>
+      <sbol:Module rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/1.0">
+        <dcterms:title>Inv1</dcterms:title>
+        <dcterms:description>Inv1</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/1.0"/>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv2a_TetRSp/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv1a/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv2a_TetRSp/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv1a/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+      </sbol:Module>
+    </sbol:module>
+    <sbol:module>
+      <sbol:Module rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/1.0">
+        <dcterms:title>Inv2</dcterms:title>
+        <dcterms:description>Inv2</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/1.0"/>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv2b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv2b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv1b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv1b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+      </sbol:Module>
+    </sbol:module>
+    <sbol:module>
+      <sbol:Module rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/1.0">
+        <dcterms:title>Inv2</dcterms:title>
+        <dcterms:description>Inv2</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/1.0"/>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv2b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv2b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv1b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv2/Inv1b/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+      </sbol:Module>
+    </sbol:module>
+    <sbol:module>
+      <sbol:Module rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/1.0">
+        <dcterms:title>Inv1</dcterms:title>
+        <dcterms:description>Inv1</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/1.0"/>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv2a_TetRSp/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv1a/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv2a_TetRSp/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/TetROut/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/TetRSp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+        <sbol:mapsTo>
+          <sbol:MapsTo rdf:about="http://www.async.ece.utah.edu/Toggle/Inv1/Inv1a/1.0">
+            <sbol:refinement>USELOCAL</sbol:refinement>
+            <sbol:remote rdf:resource="http://www.async.ece.utah.edu/LacI_Inv/LacIIn/1.0"/>
+            <sbol:local rdf:resource="http://www.async.ece.utah.edu/Toggle/LacISp/1.0"/>
+          </sbol:MapsTo>
+        </sbol:mapsTo>
+      </sbol:Module>
+    </sbol:module>
+  </sbol:ModuleDefinition>
+  <sbol:ModuleDefinition rdf:about="http://www.async.ece.utah.edu/TetR_Inv/1.0">
+    <annot:thisAnnotation>turtleString</annot:thisAnnotation>
+    <dcterms:title>TetR_Inv</dcterms:title>
+    <dcterms:description>TetR_Inv</dcterms:description>
+    <sbol:role rdf:resource="http://some.ontology.org/Inverter"/>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0">
+        <dcterms:title>LacIOut</dcterms:title>
+        <dcterms:description>LacIOut</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#output"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0">
+        <dcterms:title>TetRInv</dcterms:title>
+        <dcterms:description>TetRInv</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/ptetlacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#private"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#none"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0">
+        <dcterms:title>TetRIn</dcterms:title>
+        <dcterms:description>TetRIn</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0">
+        <dcterms:title>TetRInv</dcterms:title>
+        <dcterms:description>TetRInv</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/ptetlacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#private"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#none"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0">
+        <dcterms:title>TetRIn</dcterms:title>
+        <dcterms:description>TetRIn</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/TetR/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#input"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0">
+        <dcterms:title>LacIOut</dcterms:title>
+        <dcterms:description>LacIOut</dcterms:description>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacI/1.0"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#output"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/1.0">
+        <dcterms:title>interact1b</dcterms:title>
+        <dcterms:description>interact1b</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/repression"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p2b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p2b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p1b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p1b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/1.0">
+        <dcterms:title>interact1b</dcterms:title>
+        <dcterms:description>interact1b</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/repression"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p2b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p2b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressed"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p1b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact1b/p1b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/repressor"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRIn/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/1.0">
+        <dcterms:title>interact2b</dcterms:title>
+        <dcterms:description>interact2b</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/production"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p4b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p3b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p3b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p4b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+    <sbol:interaction>
+      <sbol:Interaction rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/1.0">
+        <dcterms:title>interact2b</dcterms:title>
+        <dcterms:description>interact2b</dcterms:description>
+        <sbol:type rdf:resource="http://some.ontology.org/production"/>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p4b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p3b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p3b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/produced"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/LacIOut/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+        <sbol:participation>
+          <sbol:Participation rdf:about="http://www.async.ece.utah.edu/TetR_Inv/interact2b/p4b/1.0">
+            <sbol:role rdf:resource="http://some.ontology.org/producer"/>
+            <sbol:participant rdf:resource="http://www.async.ece.utah.edu/TetR_Inv/TetRInv/1.0"/>
+          </sbol:Participation>
+        </sbol:participation>
+      </sbol:Interaction>
+    </sbol:interaction>
+  </sbol:ModuleDefinition>
+  <sbol:Model rdf:about="http://www.async.ece.utah.edu/Toggle/ToggleModel/1.0">
+    <dcterms:title>ToggleModel</dcterms:title>
+    <dcterms:description>ToggleModel</dcterms:description>
+    <sbol:source rdf:resource="http://some.ontology.org/ToggleModel_source"/>
+    <sbol:language rdf:resource="http://some.ontology.org/ToggleModel_language"/>
+    <sbol:framework rdf:resource="http://some.ontology.org/ToggleModel_framework"/>
+    <sbol:role rdf:resource="http://some.ontology.org/ToggleModel_role"/>
+  </sbol:Model>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/lacICDS/1.0">
+    <dcterms:title>lacI</dcterms:title>
+    <dcterms:description>lacI</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/CDS"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/lacISeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/ptet/1.0">
+    <dcterms:title>ptet</dcterms:title>
+    <dcterms:description>ptet</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Promoter"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/ptetSeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/tetRCDS/1.0">
+    <dcterms:title>tetR</dcterms:title>
+    <dcterms:description>tetR</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/CDS"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/tetRSeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/pLactetR/1.0">
+    <dcterms:title>pLactetR</dcterms:title>
+    <dcterms:description>pLactetR</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Gene"/>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/pLactetR/C/1.0">
+        <dcterms:title>C</dcterms:title>
+        <dcterms:description>C</dcterms:description>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/tetRCDS/1.0"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/pLactetR/P/1.0">
+        <dcterms:title>P</dcterms:title>
+        <dcterms:description>P</dcterms:description>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/pLac/1.0"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:sequenceConstraint>
+      <sbol:SequenceConstraint rdf:about="http://www.async.ece.utah.edu/pLactetR/struct_constraint/1.0">
+        <sbol:restriction rdf:resource="http://sbols.org/v2#precedes"/>
+        <sbol:subject rdf:resource="http://www.async.ece.utah.edu/pLactetR/P/1.0"/>
+        <sbol:object rdf:resource="http://www.async.ece.utah.edu/pLactetR/C/1.0"/>
+      </sbol:SequenceConstraint>
+    </sbol:sequenceConstraint>
+    <sbol:sequenceConstraint>
+      <sbol:SequenceConstraint rdf:about="http://www.async.ece.utah.edu/pLactetR/struct_constraint/1.0">
+        <sbol:restriction rdf:resource="http://sbols.org/v2#precedes"/>
+        <sbol:subject rdf:resource="http://www.async.ece.utah.edu/pLactetR/P/1.0"/>
+        <sbol:object rdf:resource="http://www.async.ece.utah.edu/pLactetR/C/1.0"/>
+      </sbol:SequenceConstraint>
+    </sbol:sequenceConstraint>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/pLactetRSeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/lacICDS/1.0">
+    <dcterms:title>lacI</dcterms:title>
+    <dcterms:description>lacI</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/CDS"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/lacISeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/LacI/1.0">
+    <dcterms:title>LacI</dcterms:title>
+    <dcterms:description>LacI</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/Protein"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Transcriptionfactor"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/pLac/1.0">
+    <dcterms:title>pLac</dcterms:title>
+    <dcterms:description>pLac</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Promoter"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/pLacSeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/TetR/1.0">
+    <dcterms:title>TetR</dcterms:title>
+    <dcterms:description>TetR</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/Protein"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Transcriptionfactor"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/ptetlacI/1.0">
+    <dcterms:title>ptetlacI</dcterms:title>
+    <dcterms:description>ptetlacI</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Gene"/>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/ptetlacI/L/1.0">
+        <dcterms:title>L</dcterms:title>
+        <dcterms:description>L</dcterms:description>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/lacICDS/1.0"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/ptetlacI/T/1.0">
+        <dcterms:title>T</dcterms:title>
+        <dcterms:description>T</dcterms:description>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/ptet/1.0"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/ptetlacI/p2_structAnnotate/1.0">
+        <dcterms:title>p2_structAnnotate</dcterms:title>
+        <dcterms:description>p2_structAnnotate</dcterms:description>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/ptetlacI/p2_structAnnotate/p2_structAnnotate_range/1.0">
+            <sbol:start>0</sbol:start>
+            <sbol:end>10</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/ptetlacI/c2_structAnnotate/1.0">
+        <dcterms:title>c2_structAnnotate</dcterms:title>
+        <dcterms:description>c2_structAnnotate</dcterms:description>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/ptetlacI/c2_structAnnotate/c2_structAnnotate_range/1.0">
+            <sbol:start>11</sbol:start>
+            <sbol:end>20</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/ptetlacI/c2_structAnnotate/1.0">
+        <dcterms:title>c2_structAnnotate</dcterms:title>
+        <dcterms:description>c2_structAnnotate</dcterms:description>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/ptetlacI/c2_structAnnotate/c2_structAnnotate_range/1.0">
+            <sbol:start>11</sbol:start>
+            <sbol:end>20</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/ptetlacI/p2_structAnnotate/1.0">
+        <dcterms:title>p2_structAnnotate</dcterms:title>
+        <dcterms:description>p2_structAnnotate</dcterms:description>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/ptetlacI/p2_structAnnotate/p2_structAnnotate_range/1.0">
+            <sbol:start>0</sbol:start>
+            <sbol:end>10</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/ptetlacISeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/LacI/1.0">
+    <dcterms:title>LacI</dcterms:title>
+    <dcterms:description>LacI</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/Protein"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Transcriptionfactor"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/pLactetR/1.0">
+    <dcterms:title>pLactetR</dcterms:title>
+    <dcterms:description>pLactetR</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Gene"/>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/pLactetR/C/1.0">
+        <dcterms:title>C</dcterms:title>
+        <dcterms:description>C</dcterms:description>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/tetRCDS/1.0"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/pLactetR/P/1.0">
+        <dcterms:title>P</dcterms:title>
+        <dcterms:description>P</dcterms:description>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/pLac/1.0"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:sequenceConstraint>
+      <sbol:SequenceConstraint rdf:about="http://www.async.ece.utah.edu/pLactetR/struct_constraint/1.0">
+        <sbol:restriction rdf:resource="http://sbols.org/v2#precedes"/>
+        <sbol:subject rdf:resource="http://www.async.ece.utah.edu/pLactetR/P/1.0"/>
+        <sbol:object rdf:resource="http://www.async.ece.utah.edu/pLactetR/C/1.0"/>
+      </sbol:SequenceConstraint>
+    </sbol:sequenceConstraint>
+    <sbol:sequenceConstraint>
+      <sbol:SequenceConstraint rdf:about="http://www.async.ece.utah.edu/pLactetR/struct_constraint/1.0">
+        <sbol:restriction rdf:resource="http://sbols.org/v2#precedes"/>
+        <sbol:subject rdf:resource="http://www.async.ece.utah.edu/pLactetR/P/1.0"/>
+        <sbol:object rdf:resource="http://www.async.ece.utah.edu/pLactetR/C/1.0"/>
+      </sbol:SequenceConstraint>
+    </sbol:sequenceConstraint>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/pLactetRSeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/ptetlacI/1.0">
+    <dcterms:title>ptetlacI</dcterms:title>
+    <dcterms:description>ptetlacI</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Gene"/>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/ptetlacI/L/1.0">
+        <dcterms:title>L</dcterms:title>
+        <dcterms:description>L</dcterms:description>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/lacICDS/1.0"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/ptetlacI/T/1.0">
+        <dcterms:title>T</dcterms:title>
+        <dcterms:description>T</dcterms:description>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/ptet/1.0"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/ptetlacI/p2_structAnnotate/1.0">
+        <dcterms:title>p2_structAnnotate</dcterms:title>
+        <dcterms:description>p2_structAnnotate</dcterms:description>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/ptetlacI/p2_structAnnotate/p2_structAnnotate_range/1.0">
+            <sbol:start>0</sbol:start>
+            <sbol:end>10</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/ptetlacI/c2_structAnnotate/1.0">
+        <dcterms:title>c2_structAnnotate</dcterms:title>
+        <dcterms:description>c2_structAnnotate</dcterms:description>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/ptetlacI/c2_structAnnotate/c2_structAnnotate_range/1.0">
+            <sbol:start>11</sbol:start>
+            <sbol:end>20</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/ptetlacI/c2_structAnnotate/1.0">
+        <dcterms:title>c2_structAnnotate</dcterms:title>
+        <dcterms:description>c2_structAnnotate</dcterms:description>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/ptetlacI/c2_structAnnotate/c2_structAnnotate_range/1.0">
+            <sbol:start>11</sbol:start>
+            <sbol:end>20</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/ptetlacI/p2_structAnnotate/1.0">
+        <dcterms:title>p2_structAnnotate</dcterms:title>
+        <dcterms:description>p2_structAnnotate</dcterms:description>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/ptetlacI/p2_structAnnotate/p2_structAnnotate_range/1.0">
+            <sbol:start>0</sbol:start>
+            <sbol:end>10</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/ptetlacISeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/pLac/1.0">
+    <dcterms:title>pLac</dcterms:title>
+    <dcterms:description>pLac</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Promoter"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/pLacSeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/ptet/1.0">
+    <dcterms:title>ptet</dcterms:title>
+    <dcterms:description>ptet</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Promoter"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/ptetSeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/tetRCDS/1.0">
+    <dcterms:title>tetR</dcterms:title>
+    <dcterms:description>tetR</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
+    <sbol:role rdf:resource="http://some.ontology.org/CDS"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/tetRSeq/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/TetR/1.0">
+    <dcterms:title>TetR</dcterms:title>
+    <dcterms:description>TetR</dcterms:description>
+    <sbol:type rdf:resource="http://some.ontology.org/Protein"/>
+    <sbol:role rdf:resource="http://some.ontology.org/Transcriptionfactor"/>
+  </sbol:ComponentDefinition>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/ptetSeq/1.0">
+    <dcterms:title>ptetSeq</dcterms:title>
+    <dcterms:description>ptetSeq</dcterms:description>
+    <sbol:elements>ptetSeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/ptetSeq_encoding"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/tetRSeq/1.0">
+    <dcterms:title>tetRSeq</dcterms:title>
+    <dcterms:description>tetRSeq</dcterms:description>
+    <sbol:elements>tetRSeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/tetRSeq"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/tetRSeq/1.0">
+    <dcterms:title>tetRSeq</dcterms:title>
+    <dcterms:description>tetRSeq</dcterms:description>
+    <sbol:elements>tetRSeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/tetRSeq"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLactetRSeq/1.0">
+    <dcterms:title>pLactetRSeq</dcterms:title>
+    <dcterms:description>pLactetRSeq</dcterms:description>
+    <sbol:elements>pLactetRSeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/pLactetRSeq"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/lacISeq/1.0">
+    <dcterms:title>lacISeq</dcterms:title>
+    <dcterms:description>lacISeq</dcterms:description>
+    <sbol:elements>lacISeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/lacISeq"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/lacISeq/1.0">
+    <dcterms:title>lacISeq</dcterms:title>
+    <dcterms:description>lacISeq</dcterms:description>
+    <sbol:elements>lacISeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/lacISeq"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/ptetlacISeq/1.0">
+    <dcterms:title>ptetlacISeq</dcterms:title>
+    <dcterms:description>ptetlacISeq</dcterms:description>
+    <sbol:elements>ptetlacISeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/ptetlacISeq"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLacSeq/1.0">
+    <dcterms:title>pLacSeq</dcterms:title>
+    <dcterms:description>pLacSeq</dcterms:description>
+    <sbol:elements>pLacSeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/pLacSeq"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLacSeq/1.0">
+    <dcterms:title>pLacSeq</dcterms:title>
+    <dcterms:description>pLacSeq</dcterms:description>
+    <sbol:elements>pLacSeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/pLacSeq"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLactetRSeq/1.0">
+    <dcterms:title>pLactetRSeq</dcterms:title>
+    <dcterms:description>pLactetRSeq</dcterms:description>
+    <sbol:elements>pLactetRSeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/pLactetRSeq"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/ptetSeq/1.0">
+    <dcterms:title>ptetSeq</dcterms:title>
+    <dcterms:description>ptetSeq</dcterms:description>
+    <sbol:elements>ptetSeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/ptetSeq_encoding"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/ptetlacISeq/1.0">
+    <dcterms:title>ptetlacISeq</dcterms:title>
+    <dcterms:description>ptetlacISeq</dcterms:description>
+    <sbol:elements>ptetlacISeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="http://some.ontology.org/ptetlacISeq"/>
+  </sbol:Sequence>
+  <grn:RegulatoryReaction rdf:about="http://www.async.ece.utah.edu/GenericTopLevel/1.0">
+    <dcterms:title>GenericTopLevel</dcterms:title>
+    <dcterms:description>GenericTopLevel</dcterms:description>
+  </grn:RegulatoryReaction>
+  <grn:RegulatoryReaction rdf:about="http://www.async.ece.utah.edu/GenericTopLevel/1.0">
+    <dcterms:title>GenericTopLevel</dcterms:title>
+    <dcterms:description>GenericTopLevel</dcterms:description>
+  </grn:RegulatoryReaction>
+</rdf:RDF>

@@ -3,18 +3,19 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.sbolstandard.core2.MapsTo.RefinementType;
 
 import static org.sbolstandard.core2.URIcompliance.*;
-import static org.sbolstandard.core2.Version.*;
 
 
 public abstract class ComponentInstance extends Documented {
 	
 	private AccessType access;
-	private URI definition;
+	protected URI definition;
 	private HashMap<URI, MapsTo> mapsTos;
 	
 	public static enum AccessType {
@@ -37,8 +38,7 @@ public abstract class ComponentInstance extends Documented {
 				return AccessType.PRIVATE;
 			}
 			else {
-				// TODO: Validation?
-				return null;
+				throw new IllegalArgumentException("Unknown access URI `" + access + "'");
 			}
 		}
 		
@@ -92,7 +92,7 @@ public abstract class ComponentInstance extends Documented {
 	protected ComponentInstance(ComponentInstance component) {
 		super(component);
 		setAccess(component.getAccess());
-		setDefinition(component.getDefinition());	
+		setDefinition(component.getDefinitionURI());	
 		if (!component.getMapsTos().isEmpty()) {
 			List<MapsTo> mapsTos = new ArrayList<MapsTo>();
 			for (MapsTo mapsTo : component.getMapsTos()) {
@@ -178,12 +178,8 @@ public abstract class ComponentInstance extends Documented {
 	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
-		if (addMapsTo(mapping)) {
-			return mapping;	
-		}
-		else {
-			return null;
-		}		
+		addMapsTo(mapping);
+		return mapping;
 	}
 	
 	/**
@@ -191,61 +187,20 @@ public abstract class ComponentInstance extends Documented {
 	 * @param refinement
 	 * @param local
 	 * @param remote
-	 * @return
+	 * @return the newly created MapsTo object.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
-		if (parentPersistentIdStr != null) {
-			if (isDisplayIdCompliant(displayId)) {
-				URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' 
-						+ extractVersion(this.getIdentity()));
-				return createMapsTo(newMapsToURI, refinement, local, remote);
-			}
-			else {
-				// TODO: Warning: display ID not compliant
-				return null;
-			}
-		}
-		else {
-			// TODO: Warning: Parent persistent ID is not compliant.
-			return null;
-		}
+		String version = this.getVersion();
+		return createMapsTo(createCompliantURI(parentPersistentIdStr, displayId, version),
+				refinement, local, remote);
 	}
 	
 	/**
 	 * Adds the specified instance to the list of references. 
-	 * @param reference
 	 */
-	public boolean addMapsTo(MapsTo mapsTo) {
-		//mapsTos.put(mapTo.getIdentity(), mapTo);
-		if (isChildURIcompliant(this.getIdentity(), mapsTo.getIdentity())) {
-			URI persistentId = URI.create(extractPersistentId(mapsTo.getIdentity()));
-			// Check if URI exists in the mapsTos map.
-			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
-				mapsTos.put(mapsTo.getIdentity(), mapsTo);
-				MapsTo latestMapsTo = mapsTos.get(persistentId);
-				if (latestMapsTo == null) {
-					mapsTos.put(persistentId, mapsTo);
-				}
-				else {						
-					if (isFirstVersionNewer(extractVersion(mapsTo.getIdentity()), 
-							extractVersion(latestMapsTo.getIdentity()))) {								
-						mapsTos.put(persistentId, mapsTo);
-					}
-				}
-				return true;
-			}
-			else // key exists in mapsTos map
-				return false;
-		}
-		else { // Only check if mapTo's URI exists in all maps.
-			if (!mapsTos.containsKey(mapsTo.getIdentity())) {
-				mapsTos.put(mapsTo.getIdentity(), mapsTo);					
-				return true;
-			}
-			else // key exists in mapsTos map
-				return false;
-		}
+	public void addMapsTo(MapsTo mapsTo) {
+		addChildSafely(mapsTo, mapsTos, "mapsTo");
 	}
 	
 	/**
@@ -270,8 +225,8 @@ public abstract class ComponentInstance extends Documented {
 	 * Returns the list of reference instances owned by this instance. 
 	 * @return the list of reference instances owned by this instance.
 	 */
-	public List<MapsTo> getMapsTos() {
-		return new ArrayList<MapsTo>(mapsTos.values());
+	public Set<MapsTo> getMapsTos() {
+		return new HashSet<MapsTo>(mapsTos.values());
 	}
 	
 	/**
@@ -289,9 +244,9 @@ public abstract class ComponentInstance extends Documented {
 	 * @param mappings
 	 */
 	public void setMapsTo(
-			List<MapsTo> mappings) {
+			List<MapsTo> mapsTos) {
 		clearMapsTos();		
-		for (MapsTo reference : mappings) {
+		for (MapsTo reference : mapsTos) {
 			addMapsTo(reference);
 		}
 	}
@@ -300,16 +255,25 @@ public abstract class ComponentInstance extends Documented {
 	 * Returns field variable <code>definition</code>
 	 * @return field variable <code>definition</code>
 	 */
-	public URI getDefinition() {
+	public URI getDefinitionURI() {
 		return definition;
+	}
+	
+	/**
+	 * Returns the Component Definition referenced by this Component Instance
+	 * @return the Component Definition referenced by this Component Instance
+	 */	
+	public ComponentDefinition getDefinition() {
+		if (sbolDocument==null) return null;
+		return sbolDocument.getComponentDefinition(definition);
 	}
 
 	/**
 	 * Sets field variable <code>instantiatedComponent</code> to the specified element.
 	 * @param definitionURI
 	 */
-	public void setDefinition(URI definitionURI) {
-		this.definition = definitionURI;
+	public void setDefinition(URI definition) {
+		this.definition = definition;
 	}
 
 	protected abstract ComponentInstance deepCopy();

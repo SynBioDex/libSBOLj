@@ -15,6 +15,7 @@ public class SequenceAnnotation extends Documented {
 
 	private Location location;
 	private URI component;
+	private ComponentDefinition componentDefinition = null;
 	
 	public SequenceAnnotation(URI identity, Location location) {
 		super(identity);
@@ -38,7 +39,7 @@ public class SequenceAnnotation extends Documented {
 			this.setLocation(((GenericLocation) originalLocation).deepCopy());
 		}
 		if (sequenceAnnotation.isSetComponent()) {
-			this.setComponent(sequenceAnnotation.getComponent());
+			this.setComponent(sequenceAnnotation.getComponentURI());
 		}
 	}
 	
@@ -73,8 +74,13 @@ public class SequenceAnnotation extends Documented {
 	 * Returns field variable <code>component</code>.
 	 * @return field variable <code>component</code>
 	 */
-	public URI getComponent() {
+	public URI getComponentURI() {
 		return component;
+	}
+
+	public Component getComponent() {
+		if (componentDefinition==null) return null;
+		return componentDefinition.getComponent(component);
 	}
 
 	/**
@@ -82,6 +88,11 @@ public class SequenceAnnotation extends Documented {
 	 * @param componentURI
 	 */
 	public void setComponent(URI componentURI) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (componentDefinition.getComponent(componentURI)==null) {
+				throw new IllegalArgumentException("Component '" + componentURI + "' does not exist.");
+			}
+		}
 		this.component = componentURI;
 	}
 	
@@ -378,5 +389,19 @@ public class SequenceAnnotation extends Documented {
 		// TODO: need to set wasDerivedFrom here?
 		this.setWasDerivedFrom(this.getIdentity());
 		this.setIdentity(newIdentity);
+	}
+
+	/**
+	 * @return the componentDefinition
+	 */
+	ComponentDefinition getComponentDefinition() {
+		return componentDefinition;
+	}
+
+	/**
+	 * @param componentDefinition the componentDefinition to set
+	 */
+	void setComponentDefinition(ComponentDefinition componentDefinition) {
+		this.componentDefinition = componentDefinition;
 	}
 }

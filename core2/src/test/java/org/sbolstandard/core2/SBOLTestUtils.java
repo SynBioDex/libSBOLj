@@ -117,16 +117,15 @@ public class SBOLTestUtils {
 
 	public static void createModel(SBOLDocument document, String id, List<Annotation> annotations)
 	{
-//		Model model = document.createModel(URI.create(id),
-//				URI.create(id + "_source"),
-//				URI.create(id + "_language"),
-//				URI.create(id + "_framework"),
-//				getSetPropertyURI(id + "_role"));
+		//		Model model = document.createModel(URI.create(id),
+		//				URI.create(id + "_source"),
+		//				URI.create(id + "_language"),
+		//				URI.create(id + "_framework"),
+		//				getSetPropertyURI(id + "_role"));
 		Model model = document.createModel(URI.create(id),
 				URI.create(id + "_source"),
 				URI.create(id + "_language"),
 				URI.create(id + "_framework"));
-		model.setRoles(getSetPropertyURI(id + "_role"));
 		model.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
 		model.setDisplayId(id);
 		model.setName(id);
@@ -149,7 +148,7 @@ public class SBOLTestUtils {
 	public static Participation createParticipation(String id, URI instantiatedModule,
 			List<Annotation> annotations)
 	{
-		Participation m = new Participation(URI.create(id), null, null);
+		Participation m = new Participation(URI.create(id), null);
 		if(annotations != null)
 			m.setAnnotations(annotations);
 		return m;
@@ -185,8 +184,9 @@ public class SBOLTestUtils {
 			Set<URI> models,
 			List<Annotation> annotations)
 	{
-		ModuleDefinition m = document.createModuleDefinition(URI.create(id), roles);
-		m.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
+		ModuleDefinition m = document.createModuleDefinition(URI.create(id));
+		m.setRoles(roles);
+		//		m.setPersistentIdentity(URI.create("http://www.async.ece.utah.edu/"+id));
 		m.setDisplayId(id);
 		m.setName(id);
 		m.setDescription(id);
@@ -218,7 +218,10 @@ public class SBOLTestUtils {
 	public static Interaction createInteraction(String id, Set<URI> type,
 			List<Participation> participations, List<Annotation> annotations)
 	{
-		Interaction i = new Interaction(URI.create(id), type, participations);
+		Interaction i = new Interaction(URI.create(id), type);
+		if (participations != null) {
+			i.setParticipations(participations);
+		}
 		if (annotations != null)
 			i.setAnnotations(annotations);
 		return i;
