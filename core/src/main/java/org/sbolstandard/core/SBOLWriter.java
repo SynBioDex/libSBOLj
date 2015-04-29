@@ -31,5 +31,5 @@ public interface SBOLWriter {
 	 * @throws IOException if an IO error occurs while writing the contents of this document
 	 * @throws SBOLValidationException if a validation error occurs while writing the contents of the document
 	 */
-	public void write(SBOLDocument doc, OutputStream out) throws IOException, SBOLValidationException;
+	void write(SBOLDocument doc, OutputStream out) throws IOException, SBOLValidationException;
 }

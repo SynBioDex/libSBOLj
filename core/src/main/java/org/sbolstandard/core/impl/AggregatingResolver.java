@@ -17,7 +17,7 @@ public abstract class AggregatingResolver<E, ID> implements Resolver<E, ID> {
     private List<Resolver<E, ID>> resolvers;
 
     public AggregatingResolver() {
-        resolvers = new ArrayList<Resolver<E, ID>>();
+        resolvers = new ArrayList<>();
     }
 
     public AggregatingResolver(List<Resolver<E, ID>> resolvers) {

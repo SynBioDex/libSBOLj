@@ -102,7 +102,7 @@ public class DnaSequenceImpl extends SBOLObjectImpl implements DnaSequence {
 
     public List<Element> getAny() {
         if (any == null) {
-            any = new ArrayList<Element>();
+            any = new ArrayList<>();
         }
         return this.any;
     }

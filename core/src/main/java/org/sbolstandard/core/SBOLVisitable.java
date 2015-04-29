@@ -30,12 +30,12 @@ public interface SBOLVisitable {
      * @param visitor the visitor to accept
      * @throws T if the visitor throws T
 	 */
-	public <T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T;
+	<T extends Throwable> void accept(SBOLVisitor<T> visitor) throws T;
 	
 	
 	/**
 	 * The default equals implementation which returns <code>true</code> only if the given object is <code>==</code> to
 	 * this object.
 	 */
-	public boolean equals(Object obj);
+	boolean equals(Object obj);
 }

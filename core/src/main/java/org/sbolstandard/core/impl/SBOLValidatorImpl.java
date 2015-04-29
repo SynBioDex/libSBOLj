@@ -49,9 +49,9 @@ public class SBOLValidatorImpl implements SBOLValidator {
 	}
 
 	private static class Validator extends SBOLBaseVisitor<SBOLValidationException> {
-		private LinkedHashSet<SBOLObject> visited = new LinkedHashSet<SBOLObject>();
-		private Map<URI, SBOLObject> uris = new HashMap<URI, SBOLObject>();
-		private Map<String, SBOLObject> displayIds = new HashMap<String, SBOLObject>();
+		private LinkedHashSet<SBOLObject> visited = new LinkedHashSet<>();
+		private Map<URI, SBOLObject> uris = new HashMap<>();
+		private Map<String, SBOLObject> displayIds = new HashMap<>();
 		private DnaComponent parentComponent;
 
 		private void assertTrue(boolean condition, String message, java.util.Collection<? extends SBOLObject> objects) {

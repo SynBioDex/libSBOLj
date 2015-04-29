@@ -40,7 +40,7 @@ public interface Collection extends SBOLNamedObject, SBOLRootObject {
      *
      * @return 0 or more <code>DnaComponent</code>[s] that are in this Collection
      */
-    public java.util.Collection<DnaComponent> getComponents();
+    java.util.Collection<DnaComponent> getComponents();
 
     /**
      * Defined DNA segment for engineering biological systems, which belongs to
@@ -52,8 +52,8 @@ public interface Collection extends SBOLNamedObject, SBOLRootObject {
      *
      * @param component a <code>DnaComponent</code> that should be a member of this collection
      */
-    public void addComponent(DnaComponent component);
-	public void removeComponent(DnaComponent component);
+    void addComponent(DnaComponent component);
+	void removeComponent(DnaComponent component);
 
     /**
      * Text which is for users to read and interpret what this Collection is.

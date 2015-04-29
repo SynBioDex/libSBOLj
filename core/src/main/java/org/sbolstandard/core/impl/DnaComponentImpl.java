@@ -41,20 +41,20 @@ import org.w3c.dom.Element;
 @XmlType(name = "DnaComponent", propOrder = { "types", "displayId", "name", "description", "dnaSequence", "annotations" })
 public class DnaComponentImpl extends SBOLObjectImpl implements DnaComponent {
 	@XmlElement(name = "type", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-	protected final List<URIWrapper> types = new ArrayList<URIWrapper>();
+	protected final List<URIWrapper> types = new ArrayList<>();
 	@XmlTransient
-	protected final WrappedList<URI, URIWrapper> wrappedTypes = new WrappedList<URI, URIWrapper>(URIWrapper.class,
-	                types);
+	protected final WrappedList<URI, URIWrapper> wrappedTypes = new WrappedList<>(URIWrapper.class,
+			types);
 	@XmlElement(required = true)
 	protected String displayId;
 	protected String name;
 	protected String description;
 	protected DnaSequenceWrapper dnaSequence;
 	@XmlElement(name = "annotation")
-	protected final List<SequenceAnnotationWrapper> annotations = new ArrayList<SequenceAnnotationWrapper>();
+	protected final List<SequenceAnnotationWrapper> annotations = new ArrayList<>();
 	@XmlTransient
-	protected final WrappedList<SequenceAnnotationImpl, SequenceAnnotationWrapper> wrappedAnnotations = new WrappedList<SequenceAnnotationImpl, SequenceAnnotationWrapper>(
-	                SequenceAnnotationWrapper.class, annotations);
+	protected final WrappedList<SequenceAnnotationImpl, SequenceAnnotationWrapper> wrappedAnnotations = new WrappedList<>(
+			SequenceAnnotationWrapper.class, annotations);
 	@XmlTransient
 	protected List<Element> any;
 	
@@ -174,7 +174,7 @@ public class DnaComponentImpl extends SBOLObjectImpl implements DnaComponent {
 
 	public List<Element> getAny() {
 		if (any == null) {
-			any = new ArrayList<Element>();
+			any = new ArrayList<>();
 		}
 		return this.any;
 	}

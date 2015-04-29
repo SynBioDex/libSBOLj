@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Matthew Pocock
  */
 public abstract class SequenceAnnotationMerger extends AbstractMerger<SequenceAnnotation> {
-    public static final Merger<SequenceAnnotation> IDENTITY = new MergeIdentical<SequenceAnnotation>();
+    public static final Merger<SequenceAnnotation> IDENTITY = new MergeIdentical<>();
 
     public abstract Merger<DnaComponent> getSubComponentMerger();
 

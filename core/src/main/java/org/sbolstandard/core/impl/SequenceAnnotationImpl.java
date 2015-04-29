@@ -46,10 +46,10 @@ import org.w3c.dom.Element;
 @XmlRootElement
 public class SequenceAnnotationImpl extends SBOLObjectImpl implements SequenceAnnotation {
 
-	protected final List<PrecedeReference> precedes = new ArrayList<PrecedeReference>();
+	protected final List<PrecedeReference> precedes = new ArrayList<>();
 	@XmlTransient
-	protected final WrappedList<SequenceAnnotation, PrecedeReference> wrappedPrecedes = new WrappedList<SequenceAnnotation, PrecedeReference>(
-	                PrecedeReference.class, precedes);
+	protected final WrappedList<SequenceAnnotation, PrecedeReference> wrappedPrecedes = new WrappedList<>(
+			PrecedeReference.class, precedes);
 	@XmlElement(type = String.class)
 	@XmlJavaTypeAdapter(XmlAdapters.IntegerAdapter.class)
 	@XmlSchemaType(name = "positiveInteger")
@@ -115,7 +115,7 @@ public class SequenceAnnotationImpl extends SBOLObjectImpl implements SequenceAn
 
 	public List<Element> getAny() {
 		if (any == null) {
-			any = new ArrayList<Element>();
+			any = new ArrayList<>();
 		}
 		return this.any;
 	}

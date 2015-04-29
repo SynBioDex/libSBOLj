@@ -36,7 +36,7 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * DNA composition
      * @see #addAnnotation
      */
-    public List<SequenceAnnotation> getAnnotations();
+    List<SequenceAnnotation> getAnnotations();
 
     /**
      * New position and direction of a <code>SequenceFeature</code> that
@@ -44,8 +44,8 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * The DnaComponent could be left un-annotated, but that condition is not a very useful to users.
      * @param annotation a <code>SequenceAnnotation</code> that describes the DNA composition
      */
-    public void addAnnotation(SequenceAnnotation annotation);
-	public void removeAnnotation(SequenceAnnotation annotation);
+    void addAnnotation(SequenceAnnotation annotation);
+	void removeAnnotation(SequenceAnnotation annotation);
 	
     /**
      * Text which is for users to read and interpret what this component is.
@@ -55,7 +55,7 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * @return Human readable text describing the component
      * @see #setDescription
      */
-    public String getDescription();
+    String getDescription();
 
     /**
      * Text which is written for users to read and interpret. 
@@ -66,13 +66,13 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * tags as that may break the Json.
      * @param description human readable text describing the component
      */
-    public void setDescription(String description);
+    void setDescription(String description);
 
     /**
      * Identifier to display to users.
      * @return a human readable identifier
      */
-    public String getDisplayId();
+    String getDisplayId();
 
     /**
      * Identifier that users will see as reference to the DNA construct.
@@ -82,20 +82,20 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * letter or underscore.
      * @param displayId a human readable identifier
      */
-    public void setDisplayId(String displayId);
+    void setDisplayId(String displayId);
 
     /**
      * DNA sequence which this DnaComponent object represents.
      * @return 1 {@link DnaSequence} specifying the DNA sequence of this DnaComponent
      * @see DnaSequence
      */
-    public DnaSequence getDnaSequence();
+    DnaSequence getDnaSequence();
 
     /**
      * DNA sequence which this DnaComponent object represents.
      * @param dnaSequence specify the DnaSequence of this DnaComponent
      */
-    public void setDnaSequence(DnaSequence dnaSequence);
+    void setDnaSequence(DnaSequence dnaSequence);
 
     /**
      * The name is the most recognizable known identifier, it is often ambiguous.
@@ -103,7 +103,7 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * understanding" in CSCW field for more.
      * @return its name, commonly used to refer to this DnaComponent
      */
-    public String getName();
+    String getName();
 
     /**
      * Common name of DNA component, confers meaning of what it is.
@@ -113,7 +113,7 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * @param name its name, commonly used to refer to this DnaComponent (eg. pLac-O1)
      * @see #getName
      */
-    public void setName(String name);
+    void setName(String name);
 
     /**
      * Sequence Ontology vocabulary provides a defined term for types of DNA
@@ -121,7 +121,7 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * TO DO: implement use of SO within libSBOLj.
      * @return a Sequence Ontology (SO) vocabulary term to describe the type of DnaComponent.
      */
-    public Collection<URI> getTypes();
+    Collection<URI> getTypes();
 
     /**
      * Sequence Ontology vocabulary provides a defined term for types of DNA
@@ -129,6 +129,6 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      *
      * @param type Sequence Ontology URI specifying the type of the DnaComponent
      */
-    public void addType(URI type);
-	public void removeType(URI type);
+    void addType(URI type);
+	void removeType(URI type);
 }

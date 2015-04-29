@@ -6,11 +6,11 @@ package org.sbolstandard.core;
  * @author Matthew Pocock
  */
 public interface SbolResolver {
-    public UriResolver<Collection> getCollectionUriResolver();
-    public UriResolver<DnaComponent> getComponentUriResolver();
-    public UriResolver<DnaSequence> getSequenceUriResolver();
-    public UriResolver<SequenceAnnotation> getAnnotationUriResolver();
+    UriResolver<Collection> getCollectionUriResolver();
+    UriResolver<DnaComponent> getComponentUriResolver();
+    UriResolver<DnaSequence> getSequenceUriResolver();
+    UriResolver<SequenceAnnotation> getAnnotationUriResolver();
 
-    public DisplayIdResolver<Collection> getCollectionDisplayIdResolver();
-    public DisplayIdResolver<DnaComponent> getComponentDisplayIdResolver();
+    DisplayIdResolver<Collection> getCollectionDisplayIdResolver();
+    DisplayIdResolver<DnaComponent> getComponentDisplayIdResolver();
 }

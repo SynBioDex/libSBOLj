@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Matthew Pocock
  */
 public abstract class CollectionMerger extends AbstractMerger<Collection> {
-    public static final Merger<Collection> IDENTITY = new MergeIdentical<Collection>();
+    public static final Merger<Collection> IDENTITY = new MergeIdentical<>();
 
     public CollectionMerger() {
     }

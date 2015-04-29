@@ -11,7 +11,7 @@ import org.sbolstandard.core.MergerException;
  */
 public class DnaSequenceMerger extends AbstractMerger<DnaSequence> {
 
-    public static Merger<DnaSequence> IDENTITY = new MergeIdentical<DnaSequence>();
+    public static Merger<DnaSequence> IDENTITY = new MergeIdentical<>();
 
     @Override
     public DnaSequence merge(DnaSequence e1, DnaSequence e2) throws MergerException {

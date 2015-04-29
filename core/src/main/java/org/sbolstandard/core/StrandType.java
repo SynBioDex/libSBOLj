@@ -33,7 +33,7 @@ public enum StrandType {
 	
 	private String symbol;
 	
-	private StrandType(String symbol) {
+	StrandType(String symbol) {
 		this.symbol = symbol;
 	}
 	

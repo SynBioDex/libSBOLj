@@ -9,14 +9,14 @@ import org.sbolstandard.core.*;
  */
 public class MergeVisitor implements SBOLVisitor<MergerException> {
 
-    private Merger<Collection> collectionMerger = new Merger.MergeNullWrapper<Collection>(new CollectionMerger() {
+    private Merger<Collection> collectionMerger = new Merger.MergeNullWrapper<>(new CollectionMerger() {
         @Override
         public Merger<DnaComponent> getComponentMerger() {
             return dnaComponentMerger;
         }
     });
 
-    private Merger<DnaComponent> dnaComponentMerger = new Merger.MergeNullWrapper<DnaComponent>(new DnaComponentMerger() {
+    private Merger<DnaComponent> dnaComponentMerger = new Merger.MergeNullWrapper<>(new DnaComponentMerger() {
         @Override
         public Merger<SequenceAnnotation> getAnnotationMerger() {
             return sequenceAnnotationMerger;
@@ -28,9 +28,9 @@ public class MergeVisitor implements SBOLVisitor<MergerException> {
         }
     });
 
-    private Merger<DnaSequence> dnaSequenceMerger = new Merger.MergeNullWrapper<DnaSequence>(new DnaSequenceMerger());
+    private Merger<DnaSequence> dnaSequenceMerger = new Merger.MergeNullWrapper<>(new DnaSequenceMerger());
 
-    private Merger<SequenceAnnotation> sequenceAnnotationMerger = new Merger.MergeNullWrapper<SequenceAnnotation>(new SequenceAnnotationMerger() {
+    private Merger<SequenceAnnotation> sequenceAnnotationMerger = new Merger.MergeNullWrapper<>(new SequenceAnnotationMerger() {
         @Override
         public Merger<DnaComponent> getSubComponentMerger() {
             return dnaComponentMerger;

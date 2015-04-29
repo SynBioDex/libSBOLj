@@ -55,7 +55,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
 	@Override
     public List<SBOLRootObject> getContents() {
         if (rootObjects == null) {
-            rootObjects = new ArrayList<SBOLRootObject>();
+            rootObjects = new ArrayList<>();
         }
         return this.rootObjects;
     }
@@ -98,7 +98,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
         return new UriResolver<Collection>() {
             @Override
             public Collection resolve(final URI uri) {
-                final List<Collection> found = new ArrayList<Collection>();
+                final List<Collection> found = new ArrayList<>();
 
                 accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override
@@ -120,7 +120,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
         return new UriResolver<DnaComponent>() {
             @Override
             public DnaComponent resolve(final URI uri) {
-                final List<DnaComponent> found = new ArrayList<DnaComponent>();
+                final List<DnaComponent> found = new ArrayList<>();
 
                 accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override
@@ -142,7 +142,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
         return new UriResolver<DnaSequence>() {
             @Override
             public DnaSequence resolve(final URI uri) {
-                final List<DnaSequence> found = new ArrayList<DnaSequence>();
+                final List<DnaSequence> found = new ArrayList<>();
 
                 accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override
@@ -164,7 +164,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
         return new UriResolver<SequenceAnnotation>() {
             @Override
             public SequenceAnnotation resolve(final URI uri) {
-                final List<SequenceAnnotation> found = new ArrayList<SequenceAnnotation>();
+                final List<SequenceAnnotation> found = new ArrayList<>();
 
                 accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override
@@ -186,7 +186,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
         return new DisplayIdResolver<Collection>() {
             @Override
             public Collection resolve(final String displayId) {
-                final List<Collection> found = new ArrayList<Collection>();
+                final List<Collection> found = new ArrayList<>();
 
                 accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override
@@ -208,7 +208,7 @@ public class SBOLDocumentImpl extends SBOLVisitableImpl implements SBOLDocument,
         return new DisplayIdResolver<DnaComponent>() {
             @Override
             public DnaComponent resolve(final String displayId) {
-                final List<DnaComponent> found = new ArrayList<DnaComponent>();
+                final List<DnaComponent> found = new ArrayList<>();
 
                 accept(new SBOLBaseVisitor<RuntimeException>() {
                     @Override

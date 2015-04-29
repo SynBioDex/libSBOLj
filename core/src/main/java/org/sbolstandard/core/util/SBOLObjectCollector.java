@@ -59,7 +59,7 @@ public class SBOLObjectCollector {
 	}
 
 	private static class Collector extends SBOLBaseVisitor<RuntimeException> {
-		private Map<URI, SBOLObject> map = new HashMap<URI, SBOLObject>();
+		private Map<URI, SBOLObject> map = new HashMap<>();
 
 		private void add(SBOLObject obj) {
 			map.put(obj.getURI(), obj);

@@ -11,8 +11,8 @@ import java.util.ArrayList;
  * @author Matthew Pocock
  */
 public abstract class DnaComponentMerger extends AbstractMerger<DnaComponent> {
-    public static final Merger<DnaComponent> IDENTITY = new MergeIdentical<DnaComponent>();
-    private static final Merger<URI> identicalUri = new MergeIdentical<URI>();
+    public static final Merger<DnaComponent> IDENTITY = new MergeIdentical<>();
+    private static final Merger<URI> identicalUri = new MergeIdentical<>();
 
     public DnaComponentMerger() {
     }

@@ -44,10 +44,10 @@ public class CollectionImpl extends SBOLObjectImpl implements Collection {
 	protected String name;
 	protected String description;
 	@XmlElement(name = "component")
-	protected final List<DnaComponentWrapper> components = new ArrayList<DnaComponentWrapper>();
+	protected final List<DnaComponentWrapper> components = new ArrayList<>();
 	@XmlTransient
-	protected final WrappedList<DnaComponentImpl, DnaComponentWrapper> wrappedComponents = new WrappedList<DnaComponentImpl, DnaComponentWrapper>(
-	                DnaComponentWrapper.class, components);
+	protected final WrappedList<DnaComponentImpl, DnaComponentWrapper> wrappedComponents = new WrappedList<>(
+			DnaComponentWrapper.class, components);
 	@XmlAnyElement
 	protected List<Element> any;
 
@@ -103,7 +103,7 @@ public class CollectionImpl extends SBOLObjectImpl implements Collection {
 
 	public List<Element> getAny() {
 		if (any == null) {
-			any = new ArrayList<Element>();
+			any = new ArrayList<>();
 		}
 		return this.any;
 	}

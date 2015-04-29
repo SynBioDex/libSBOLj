@@ -94,7 +94,7 @@ public class SBOLReaderImpl implements SBOLReader {
 		@Override
 	    public void visit(DnaComponent component) {
 			Map<URI, SequenceAnnotation> previous = current;
-			current = new HashMap<URI, SequenceAnnotation>();
+			current = new HashMap<>();
 			for (SequenceAnnotation annotation : component.getAnnotations()) {
 				current.put(annotation.getURI(), annotation);
 	        }
@@ -118,8 +118,8 @@ public class SBOLReaderImpl implements SBOLReader {
 	}
 	
 	private static class DuplicateRemover extends SBOLBaseVisitor<RuntimeException> {
-		private Map<URI, SBOLObject> map = new HashMap<URI, SBOLObject>();
-		private Set<SBOLObject> duplicates = new HashSet<SBOLObject>();
+		private Map<URI, SBOLObject> map = new HashMap<>();
+		private Set<SBOLObject> duplicates = new HashSet<>();
 
 		private void add(SBOLObject obj) {
 			URI uri = obj.getURI();
@@ -142,7 +142,7 @@ public class SBOLReaderImpl implements SBOLReader {
         		removeDuplicates((List) objects); 
         	}
         	
-        	List<T> newObjs = new ArrayList<T>();
+        	List<T> newObjs = new ArrayList<>();
 	        Iterator<T> i = objects.iterator();
 	        while (i.hasNext()) {
 	        	T obj = i.next();

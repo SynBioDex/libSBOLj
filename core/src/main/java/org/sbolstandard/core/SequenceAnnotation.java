@@ -30,12 +30,12 @@ import java.util.List;
  * 5' to 3' and the <code>-</code> strand is 3' to 5'.
  */
 public interface SequenceAnnotation extends SBOLObject {
-    public List<SequenceAnnotation> getPrecedes();
-    public void addPrecede(SequenceAnnotation precede);
-	public void removePrecede(SequenceAnnotation precede);
+    List<SequenceAnnotation> getPrecedes();
+    void addPrecede(SequenceAnnotation precede);
+	void removePrecede(SequenceAnnotation precede);
 
-    public DnaComponent getSubComponent();
-    public void setSubComponent(DnaComponent subComponent);
+    DnaComponent getSubComponent();
+    void setSubComponent(DnaComponent subComponent);
 
     /**
      * First position of the Sequence Feature being annotated.
@@ -43,16 +43,16 @@ public interface SequenceAnnotation extends SBOLObject {
      * annotated.
      * @return positive integer coordinate of first base of the SequenceFeature.
      */
-    public Integer getBioStart();
-    public void setBioStart(Integer bioStart);
+    Integer getBioStart();
+    void setBioStart(Integer bioStart);
 
     /**
      * Last position of the Sequence Feature on the DnaComponent.
      * Coordinate in terms of the DnaSequence of the DnaComponent annotated.
      * @return positive integer coordinate of last base of the SequenceFeature
      */
-    public Integer getBioEnd();
-    public void setBioEnd(Integer bioEnd);
+    Integer getBioEnd();
+    void setBioEnd(Integer bioEnd);
 
     /**
      * Orientation of feature is the + or - strand.
@@ -64,6 +64,6 @@ public interface SequenceAnnotation extends SBOLObject {
      * @return <code>+</code> if feature aligns in same direction as DnaComponent,
      *         <code>-</code> if feature aligns in opposite direction as DnaComponent.
      */
-    public StrandType getStrand();
-    public void setStrand(StrandType strand);
+    StrandType getStrand();
+    void setStrand(StrandType strand);
 }

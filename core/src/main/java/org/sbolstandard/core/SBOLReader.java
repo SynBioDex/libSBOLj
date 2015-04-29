@@ -30,5 +30,5 @@ public interface SBOLReader {
 	 * @throws IOException if an IO error occurs while reading the contents of this document
 	 * @throws SBOLValidationException if a validation error occurs while reading the contents of the document
 	 */
-	public SBOLDocument read(InputStream in) throws IOException, SBOLValidationException;
+	SBOLDocument read(InputStream in) throws IOException, SBOLValidationException;
 }

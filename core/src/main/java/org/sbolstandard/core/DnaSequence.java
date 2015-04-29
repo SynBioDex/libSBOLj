@@ -31,7 +31,7 @@ public interface DnaSequence extends SBOLRootObject {
      * The sequence of DNA base pairs which are described.
      * @return a string representation of the DNA base-pair sequence
      */
-    public String getNucleotides();
+    String getNucleotides();
 
     /**
      * The sequence of DNA base pairs which are going to be described.
@@ -45,5 +45,5 @@ public interface DnaSequence extends SBOLRootObject {
      *
      * @param nucleotides a sequence of [a|c|t|g] letters
      */
-    public void setNucleotides(String nucleotides);
+    void setNucleotides(String nucleotides);
 }

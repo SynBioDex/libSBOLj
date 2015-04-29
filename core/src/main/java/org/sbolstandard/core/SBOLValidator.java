@@ -29,5 +29,5 @@ public interface SBOLValidator {
 	 * @param doc
 	 * @throws SBOLValidationException
 	 */
-	public void validate(SBOLDocument doc) throws SBOLValidationException;
+	void validate(SBOLDocument doc) throws SBOLValidationException;
 }

@@ -27,10 +27,10 @@ public interface SBOLObject extends SBOLVisitable {
 	/**
 	 * Returns the identifier for this object.
 	 */
-    public URI getURI();
+    URI getURI();
     
     /**
 	 * Sets the identifier for this object.
 	 */
-    public void setURI(URI uri);
+    void setURI(URI uri);
 }
