@@ -27,7 +27,7 @@ public class readTester {
 				file = readTester.class.getResourceAsStream("/" + path + filenameV1_1);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
-			SBOLReader.setURIPrefix("www.async.ece.utah.edu");
+			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			SBOLDocument document1 = SBOLReader.read(file);
 			//			SBOLDocument document  = SBOLReader.read(filenameRdf);
 			//			SBOLDocument document1 = SBOLReader.readRdf(filenameV1_8);
@@ -35,7 +35,8 @@ public class readTester {
 			//			SBOLDocument document3 = SBOLReader.readTurtle(filenameTurtle);
 
 			//			SBOLWriter.writeRdf(document,(System.out));
-			SBOLWriter.writeRDF(document1,(System.out));
+			SBOLWriter.writeRDF(SBOLTestUtils.writeAndRead(document1),(System.out));
+			
 			//			SBOLWriter.writeJson(document2,(System.out));
 			//			SBOLWriter.writeTurtle(document3,(System.out));
 

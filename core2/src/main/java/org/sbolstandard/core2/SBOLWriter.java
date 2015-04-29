@@ -711,7 +711,14 @@ public class SBOLWriter {
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Cut.Cut, cut.getIdentity(), NamedProperties(property)));
 		}
+		else if(location instanceof GenericLocation)
+		{
+			GenericLocation genericLocation = (GenericLocation) location;
+			property.add(NamedProperty(Sbol2Terms.GenericLocation.orientation, genericLocation.getOrientationURI()));
 
+			return NamedProperty(Sbol2Terms.Location.Location,
+					NestedDocument(Sbol2Terms.GenericLocation.GenericLocation, genericLocation.getIdentity(), NamedProperties(property)));
+		}
 		//TODO: This outer return should never occur. If so, ERR
 		return NamedProperty(Sbol2Terms.Location.Location,
 				NestedDocument(Sbol2Terms.Range.Range, location.getIdentity(), NamedProperties(property)));

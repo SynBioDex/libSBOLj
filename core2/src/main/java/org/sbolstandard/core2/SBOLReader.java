@@ -415,6 +415,7 @@ public class SBOLReader
 		URI seq_identity   = null;
 		Set<URI> roles 	   = new HashSet<URI>();
 		URI identity 	   = componentDef.getIdentity();
+		String persIdentity = "";
 
 		List<Annotation> annotations 				 = new ArrayList<Annotation>();
 		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>();
@@ -436,9 +437,9 @@ public class SBOLReader
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (setURIPrefix != null ) //TODO: check version set
 				{
-					// TODO: displayId + "/" + version
-					identity = URI.create(setURIPrefix + "/" + SBOLDocument.TopLevelTypes.componentDefinition +
-							"/" + displayId + "/1.0");
+					persIdentity = setURIPrefix + "/" + SBOLDocument.TopLevelTypes.componentDefinition +
+							"/" + displayId;
+					identity = URI.create(persIdentity + "/1.0");
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.name))
@@ -457,12 +458,12 @@ public class SBOLReader
 			{
 				SequenceAnnotation sa = parseSequenceAnnotationV1(SBOLDoc,
 						((NestedDocument<QName>) namedProperty.getValue()),
-						precedePairs, identity, ++sa_num);
+						precedePairs, persIdentity, ++sa_num);
 
 				sequenceAnnotations.add(sa);
 				// TODO: if version then + "/" + version, else skip version
 
-				URI component_identity    = URI.create(getParentURI(identity) + "/component" + ++component_num + "/1/0");
+				URI component_identity    = URI.create(persIdentity + "/component" + ++component_num + "/1.0");
 				AccessType access 		  = AccessType.PUBLIC;
 				URI instantiatedComponent = sa.getComponentURI();
 				URI originalURI 		  = ((NestedDocument<QName>) namedProperty.getValue()).getIdentity();
@@ -491,7 +492,7 @@ public class SBOLReader
 
 		for (SBOLPair pair : precedePairs)
 		{
-			URI sc_identity    			= URI.create(getParentURI(identity) + "/sequenceConstraint" + ++sc_number + "/1/0");
+			URI sc_identity    			= URI.create(persIdentity + "/sequenceConstraint" + ++sc_number + "/1/0");
 			URI restrictionURI 			= Sbol2Terms.DnaComponentV1URI.restriction;
 			RestrictionType restriction = SequenceConstraint.RestrictionType.convertToRestrictionType(restrictionURI);
 
@@ -555,7 +556,7 @@ public class SBOLReader
 			if (topLevel.getIdentity().toString().lastIndexOf('/') != -1)
 			{
 				displayId = topLevel.getIdentity().toString().substring(topLevel.getIdentity().toString().lastIndexOf('/') + 1);
-				identity = URI.create(setURIPrefix + "/" + displayId + "/1/0");
+				identity = URI.create(setURIPrefix + "/" + SBOLDocument.TopLevelTypes.sequence + "/" + displayId + "/1.0");
 			}
 		}
 
@@ -619,7 +620,8 @@ public class SBOLReader
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (setURIPrefix != null)
 				{
-					identity = URI.create(setURIPrefix + "/" + displayId + "/1/0");
+					identity = URI.create(setURIPrefix + "/" + SBOLDocument.TopLevelTypes.collection + "/" + 
+							displayId + "/1.0");
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.Collection.name))
@@ -659,18 +661,20 @@ public class SBOLReader
 
 	private static SequenceAnnotation parseSequenceAnnotationV1(
 			SBOLDocument SBOLDoc, NestedDocument<QName> sequenceAnnotation,
-			List<SBOLPair> precedePairs, URI parentURI, int sa_num)
+			List<SBOLPair> precedePairs, String parentURI, int sa_num)
 	{
 		Integer start 	 = null;
 		Integer end 	 = null;
 		String strand    = null;
 		URI componentURI = null;
 		URI identity 	 = sequenceAnnotation.getIdentity();
+		String persIdentity = "";
 		List<Annotation> annotations = new ArrayList<Annotation>();
 
 		if (setURIPrefix != null)
 		{
-			identity = URI.create(getParentURI(parentURI) + "/annotation" + sa_num + "/1/0");
+			persIdentity = parentURI + "/annotation" + sa_num;
+			identity = URI.create(persIdentity + "/1.0");
 		}
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
@@ -710,7 +714,7 @@ public class SBOLReader
 
 		if (start != null && end != null) // create SequenceAnnotation & Component
 		{
-			URI range_identity = URI.create(getParentURI(identity) + "/range/1/0");
+			URI range_identity = URI.create(persIdentity + "/range/1.0");
 			Range r = new Range(range_identity, start, end);
 			if (strand != null)
 			{
@@ -728,8 +732,7 @@ public class SBOLReader
 		}
 		else
 		{
-
-			URI dummyGenericLoc_id = URI.create(getParentURI(identity) + "/GenericLocation/1/0");
+			URI dummyGenericLoc_id = URI.create(persIdentity + "/GenericLocation/1.0");
 			GenericLocation  dummyGenericLoc = new GenericLocation(dummyGenericLoc_id);
 			if (strand != null)
 			{
