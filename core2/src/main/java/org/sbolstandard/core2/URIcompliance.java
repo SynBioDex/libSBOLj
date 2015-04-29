@@ -386,7 +386,7 @@ final class URIcompliance {
 
 	public static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]*";//"[a-zA-Z0-9_]+";
 
-	public static final String versionPattern = "^$|[^/]+"; // ^ and $ are the beginning and end of the string anchors respectively. 
+	public static final String versionPattern = "[^/]+"; // ^ and $ are the beginning and end of the string anchors respectively. 
 															// | is used to denote alternates. 
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.

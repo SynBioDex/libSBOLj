@@ -437,7 +437,8 @@ public class SBOLReader
 				if (setURIPrefix != null ) //TODO: check version set
 				{
 					// TODO: displayId + "/" + version
-					identity = URI.create(setURIPrefix + "/" + displayId + "/1/0");
+					identity = URI.create(setURIPrefix + "/" + SBOLDocument.TopLevelTypes.componentDefinition +
+							"/" + displayId + "/1.0");
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.name))
