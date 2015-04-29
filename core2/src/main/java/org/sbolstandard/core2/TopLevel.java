@@ -33,9 +33,6 @@ public TopLevel(URI identity) {
 	 * It first makes a deep copy of this object, then updates its own identity URI and all of its descendants' identity URIs
 	 * according to the given {@code URIprefix, displayId}, and {@code version}. This method also updates the {@code displayId}
 	 * and {@code version} fields for each updated object.
-	 * @param URIprefix
-	 * @param displayId
-	 * @param version
 	 * @return the copied top-level object if this object and all of its descendants have compliant URIs, and {@code null} otherwise.
 	 */
 	public abstract Identified copy(String URIprefix, String displayId, String version);

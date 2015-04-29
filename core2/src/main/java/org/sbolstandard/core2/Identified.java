@@ -35,17 +35,16 @@ public abstract class Identified {
 			this.setDisplayId(extractDisplayId(identity, 0));
 			this.setPersistentIdentity(URI.create(extractPersistentId(identity)));
 		}
-		this.annotations = new ArrayList<Annotation>();
+		this.annotations = new ArrayList<>();
 	}
 
 	/**
 	 * This copy constructor creates a new {@link Identified} class and copies all fields specified by the <code>identified</code> object.
-	 * @param identified
 	 */
 	protected Identified(Identified identified) {
 		this.setIdentity(identified.getIdentity());
 		if (identified.isSetAnnotations()) {
-			List<Annotation> clonedAnnotations = new ArrayList<Annotation>();
+			List<Annotation> clonedAnnotations = new ArrayList<>();
 			for (Annotation annotation : identified.getAnnotations()) {
 				clonedAnnotations.add(annotation.copy());
 			}
@@ -94,10 +93,7 @@ public abstract class Identified {
 	 * @return <code>true</code> if it is not <code>null</code>
 	 */
 	public boolean isSetPersistentIdentity() {
-		if (persistentIdentity == null)
-			return false;
-		else
-			return true;
+		return persistentIdentity != null;
 	}
 
 	/**
@@ -110,7 +106,6 @@ public abstract class Identified {
 
 	/**
 	 * Sets field variable <code>persistentIdentity</code> to the specified element.
-	 * @param persistentIdentity
 	 */
 	public void setPersistentIdentity(URI persistentIdentity) {
 		this.persistentIdentity = persistentIdentity;
@@ -128,17 +123,11 @@ public abstract class Identified {
 	 * @return <code>true</code> if it is not <code>null</code>
 	 */
 	public boolean isSetVersion() {
-		if (version == null)
-			return false;
-		else
-			return true;
+		return version != null;
 	}
 
 	public boolean isSetWasDerivedFrom() {
-		if (wasDerivedFrom == null)
-			return false;
-		else
-			return true;
+		return wasDerivedFrom != null;
 	}
 
 	/**
@@ -151,7 +140,6 @@ public abstract class Identified {
 
 	/**
 	 * Sets field variable <code>version</code> to the specified element.
-	 * @param version
 	 */
 	public void setVersion(String version) {
 		this.version = version;
@@ -162,10 +150,7 @@ public abstract class Identified {
 	 * @return <code>true</code> if it is not <code>null</code>
 	 */
 	public boolean isSetDisplayId() {
-		if (displayId == null)
-			return false;
-		else 
-			return true;
+		return displayId != null;
 	}
 	
 	/**
@@ -179,7 +164,6 @@ public abstract class Identified {
 		
 	/**
 	 * Set field variable <code>displayId</code> to the specified element.
-	 * @param displayId
 	 */
 	public void setDisplayId(String displayId) {
 		this.displayId = displayId;
@@ -198,7 +182,6 @@ public abstract class Identified {
 
 	/**
 	 * Sets field variable <code>wasDerivedFrom</code> to the specified value.
-	 * @param wasDerivedFrom
 	 */
 	public void setWasDerivedFrom(URI wasDerivedFrom) {
 		this.wasDerivedFrom = wasDerivedFrom;
@@ -210,17 +193,12 @@ public abstract class Identified {
 	 * @return <code>true</code> if it is not an empty list
 	 */
 	public boolean isSetAnnotations() {
-		if (annotations.isEmpty())
-			return false;
-		else
-			return true;
+		return !annotations.isEmpty();
 	}
 	
 	/**
 	 * Calls the Annotation constructor to create a new instance using the specified parameters,
 	 * then adds to the list of Annotation instances owned by this component.
-	 * @param relation
-	 * @param literal
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, String literal) {
@@ -243,7 +221,6 @@ public abstract class Identified {
 	/**
 	 * Calls the Annotation constructor to create a new instance using the specified parameters,
 	 * then adds to the list of Annotation instances owned by this component.
-	 * @param namedProperty
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(NamedProperty<QName> namedProperty) {
@@ -254,7 +231,6 @@ public abstract class Identified {
 
 	/**
 	 * Adds the specified instance to the list of structuralAnnotations.
-	 * @param annotation
 	 */
 	public void addAnnotation(Annotation annotation) {
 		// TODO: @addAnnotation, Check for duplicated entries.
@@ -263,7 +239,6 @@ public abstract class Identified {
 
 	/**
 	 * Removes the instance matching the specified URI from the list of annotations if present.
-	 * @param annotation
 	 * @return <code>True</code> if the matching instance is present.
 	 */
 	public boolean removeAnnotation(Annotation annotation) {
@@ -300,7 +275,6 @@ public abstract class Identified {
 
 	/**
 	 * Clears the existing list of structuralAnnotation instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param annotations
 	 */
 	public void setAnnotations(
 			List<Annotation> annotations) {
@@ -398,7 +372,8 @@ public abstract class Identified {
 		return true;
 	}
 
-	protected <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) {
+	@SafeVarargs
+	protected final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) {
 		if (isChildURIcompliant(this.getIdentity(), child.getIdentity())) {
 			URI persistentId = URI.create(extractPersistentId(child.getIdentity()));
 			if(keyExistsInAnyMap(persistentId, maps))

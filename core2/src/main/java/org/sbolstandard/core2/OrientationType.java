@@ -16,7 +16,7 @@ public enum OrientationType {
 	REVERSECOMPLEMENT("reverseComplement");
 	private final String orientationType;
 
-	private OrientationType(String orientationType) {
+	OrientationType(String orientationType) {
 		this.orientationType = orientationType;
 	}
 
@@ -35,7 +35,6 @@ public enum OrientationType {
 
 	/**
 	 * Convert the specified URI to its corresponding OrientationType instance. 
-	 * @param orientation
 	 * @return the corresponding OrientationType instance
 	 */
 	public static OrientationType convertToOrientationType(URI orientation) {

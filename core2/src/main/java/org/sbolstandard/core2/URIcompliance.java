@@ -33,10 +33,10 @@ final class URIcompliance {
 	/**
 	 * Extract the persistent identity URI from the given URI.
 	 * The persistent identity is simply the identity URI without the version.
-	 * @param objURI
 	 * @return the extracted persistent identity URI, <code>null</code> otherwise.
 	 */
 	public static String extractPersistentId(URI objURI) {
+		// fixme: return a String or raise an exception, don't return null
 		String URIstr = objURI.toString();
 		Pattern r = Pattern.compile(genericURIpattern1);
 		Matcher m = r.matcher(URIstr);
@@ -52,7 +52,6 @@ final class URIcompliance {
 
 	/**
 	 * Extract the URI prefix from this object's identity URI.
-	 * @param objURI
 	 * @return the extracted URI prefix, <code>null</code> otherwise.
 	 */
 	public static String extractURIprefix(URI objURI) {
@@ -72,8 +71,6 @@ final class URIcompliance {
 	 * child object's display ID; if the given index is 2, the extracted display ID is the
 	 * grand child object's display ID; if the given index is 3, the extracted display ID is the
 	 * great grand child object's display ID.
-	 * @param objURI
-	 * @param index
 	 * @return the extracted display ID.
 	 */
 	public static String extractDisplayId(URI objURI, int index) {
@@ -96,7 +93,6 @@ final class URIcompliance {
 
 	/**
 	 * Extract the version from this object's identity URI.
-	 * @param objURI
 	 * @return the version if the given URI is compliant, <code>null</code> otherwise.
 	 */
 	public static String extractVersion(URI objURI) {
@@ -140,14 +136,9 @@ final class URIcompliance {
 			r = Pattern.compile(greatGrandchildURIpattern);
 		}
 		Matcher m = r.matcher(URIstr);
-		if (m.matches()) {
-			return true;
-		}
-		else {
-			//System.out.println(URIstr + " is not compliant");
-			// TODO: Warning: top-level URI is not compliant.
-			return false;
-		}
+		//System.out.println(URIstr + " is not compliant");
+// TODO: Warning: top-level URI is not compliant.
+		return m.matches();
 	}
 	
 	public static final boolean isURIcompliantTemp(URI objURI, String URIprefix, String version, String ... displayIds) {
@@ -171,9 +162,9 @@ final class URIcompliance {
 		if (URIstr.endsWith("/")) { // version is empty. The last string extracted from the URI should be the display ID.
 			if (isDisplayIdCompliant(curExtractedStr) && curExtractedStr.equals(displayIds[0])) {
 				String extractedURIprefix = "";
-				String parentDisplayId = null;
-				String grandparentDisplayId = null;
-				String greatGrandparentDisplayId = null;
+				String parentDisplayId = null; 				// codereview: assignment to null is redundant - this is set in all code-paths, right?
+				String grandparentDisplayId = null;			// codereview: assignment to null is redundant - this is set in all code-paths, right?
+				String greatGrandparentDisplayId = null;	// codereview: assignment to null is redundant - this is set in all code-paths, right?
 				switch (displayIds.length) {				
 				case 1: // Only one display ID is provided. Should be a top-level object.
 					break;
@@ -246,13 +237,9 @@ final class URIcompliance {
 				for (int i = 0; i < curIndex; i++) {
 					extractedURIprefix = extractedURIprefix + extractedURIpieces[i];
 				}
-				if (isURIprefixCompliant(extractedURIprefix) && extractedURIprefix.equals(URIprefix)) {
-					return true;
-				}
-				else { // URI prefix not compliant
-					// TODO: Warning: URI prefix not compliant
-					return false;
-				}
+				// URI prefix not compliant
+// TODO: Warning: URI prefix not compliant
+				return isURIprefixCompliant(extractedURIprefix) && extractedURIprefix.equals(URIprefix);
 			}
 			else { // displayId not compliant
 				// TODO: Warning: displayId not compliant
@@ -260,21 +247,12 @@ final class URIcompliance {
 			}
 		}
 		else { // version is not empty
-			if (isVersionCompliant(curExtractedStr)) {
-				return true;
-				//String displayId = extractedURIpieces[versionIndex];
-			}
-			else { // version not compliant
-				return false;
-			}
+			//String displayId = extractedURIpieces[versionIndex];
+// version not compliant
+			return isVersionCompliant(curExtractedStr);
 		}
 	}
 
-	/**
-	 * @param parentURI
-	 * @param childURI
-	 * @return
-	 */
 	public static final boolean isChildURIcompliant(URI parentURI, URI childURI) {
 		String parentURIstr = parentURI.toString();
 		Pattern URIpattern = Pattern.compile(genericURIpattern1);
@@ -291,13 +269,8 @@ final class URIcompliance {
 				if (parentPartOfChildPersistId.equals(parentPersistentId)) {
 					String parentVersion = parentMatcher.group(3);
 					String childVersion = childMatcher.group(3);
-					if (parentVersion.equals(childVersion)) {
-						return true;
-					}
-					else {
-						// TODO: Warning: Versions do not match.
-						return false;
-					}
+					// TODO: Warning: Versions do not match.
+					return parentVersion.equals(childVersion);
 
 				}
 				else {
@@ -340,50 +313,23 @@ final class URIcompliance {
 		//		}
 	}
 
-	/**
-	 * @param newDisplayId
-	 * @return
-	 */
 	public static boolean isDisplayIdCompliant(String newDisplayId) {
 		Pattern r = Pattern.compile(displayIDpattern);
 		Matcher m = r.matcher(newDisplayId);
-		if (m.matches()) {
-			return true;
-		}
-		else {
-			// TODO: Warning: Display ID is not compliant.
-			return false;
-		}
+		// TODO: Warning: Display ID is not compliant.
+		return m.matches();
 	}
 
-	/**
-	 * @param newVersion
-	 * @return
-	 */
 	public static boolean isVersionCompliant(String newVersion) {
 		Pattern r = Pattern.compile(versionPattern);
 		Matcher m = r.matcher(newVersion);
-		if (m.matches()) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return m.matches();
 	}
 
-	/**
-	 * @param URIprefix
-	 * @return
-	 */
 	public static boolean isURIprefixCompliant(String URIprefix) {
 		Pattern r = Pattern.compile(URIprefixPattern);
 		Matcher m = r.matcher(URIprefix);
-		if (m.matches()) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		return m.matches();
 	}
 
 	// (?:...) is a non-capturing group

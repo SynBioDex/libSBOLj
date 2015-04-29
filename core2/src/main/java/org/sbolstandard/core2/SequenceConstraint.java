@@ -12,11 +12,11 @@ public class SequenceConstraint extends Identified {
 	private URI object;
 	private ComponentDefinition componentDefinition = null;
 	
-	public static enum RestrictionType {
+	public enum RestrictionType {
 		PRECEDES("precedes");
 		private final String restrictionType;
 
-		private RestrictionType(String restrictionType) {
+		RestrictionType(String restrictionType) {
 			this.restrictionType = restrictionType;
 		}
 		
@@ -36,7 +36,6 @@ public class SequenceConstraint extends Identified {
 				
 		/**
 		 * Convert the specified URI to its corresponding RestrictionType instance.
-		 * @param restriction
 		 * @return the corresponding RestrictionType instance.
 		 */
 		public static RestrictionType convertToRestrictionType(URI restriction) {
@@ -112,7 +111,6 @@ public class SequenceConstraint extends Identified {
 
 	/**
 	 * Sets field variable <code>restriction</code> to the specified element.
-	 * @param restriction
 	 */
 	public void setRestriction(RestrictionType restriction) {
 		this.restriction = restriction;
@@ -120,7 +118,6 @@ public class SequenceConstraint extends Identified {
 	
 	/**
 	 * Sets field variable <code>restriction</code> to the element corresponding to the specified URI.
-	 * @param restriction
 	 */
 	public void setRestriction(URI restriction) {
 		if (restriction!=null && restriction.equals(Restriction.precedes)) {
@@ -150,7 +147,6 @@ public class SequenceConstraint extends Identified {
 
 	/**
 	 * Sets field variable <code>subject</code> to the specified element.
-	 * @param subject
 	 */
 	public void setSubject(URI subject) {
 		if (componentDefinition != null && sbolDocument.isComplete()) {
@@ -183,7 +179,6 @@ public class SequenceConstraint extends Identified {
 
 	/**
 	 * Sets field variable <code>object</code> to the specified element.
-	 * @param object
 	 */
 	public void setObject(URI object) {
 		if (componentDefinition != null && sbolDocument.isComplete()) {
@@ -248,9 +243,6 @@ public class SequenceConstraint extends Identified {
 	/**
 	 * Assume this SequenceConstraint object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
-	 * @param URIprefix
-	 * @param parentDisplayId
-	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
 		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 1); // 1 indicates that this object is a child of a top-level object.

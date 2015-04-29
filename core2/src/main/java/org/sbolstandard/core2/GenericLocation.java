@@ -24,10 +24,7 @@ public class GenericLocation extends Location{
 	 * @return <code>true</code> if it is not <code>null</code>
 	 */
 	public boolean isSetOrientation() {
-		if (orientation == null)
-			return false;
-		else
-			return true;
+		return orientation != null;
 	}
 
 	/**
@@ -62,7 +59,6 @@ public class GenericLocation extends Location{
 
 	/**
 	 * Set field variable <code>orientation</code> to the specified element.
-	 * @param orientation
 	 */
 	// Created for backward compatibility to 1.1.
 	public void setOrientation(OrientationType orientation) {
@@ -71,7 +67,6 @@ public class GenericLocation extends Location{
 
 	/**
 	 * Sets field variable <code>orientation</code> to the element corresponding to the specified URI.
-	 * @param orientation
 	 */
 	public void setOrientation(URI orientation) {
 		if (orientation.equals(Orientation.inline)) {
@@ -109,9 +104,7 @@ public class GenericLocation extends Location{
 		if (getClass() != obj.getClass())
 			return false;
 		GenericLocation other = (GenericLocation) obj;
-		if (orientation != other.orientation)
-			return false;
-		return true;
+		return orientation == other.orientation;
 	}
 
 	@Override
@@ -122,10 +115,6 @@ public class GenericLocation extends Location{
 	/**
 	 * Assume this GenericLocation object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link SequenceAnnotation#updateCompliantURI(String, String, String)}.
-	 * @param URIprefix
-	 * @param grandparentDisplayId
-	 * @param parentDisplayId
-	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String grandparentDisplayId,
 			String parentDisplayId, String version) {

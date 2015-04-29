@@ -44,10 +44,7 @@ public abstract class Documented extends Identified {
 	 * @return <code>true</code> if it is not <code>null</code>
 	 */
 	public boolean isSetName() {
-		if (name == null)
-			return false;
-		else 
-			return true;
+		return name != null;
 	}
 		
 	/**
@@ -79,10 +76,7 @@ public abstract class Documented extends Identified {
 	 * @return <code>true</code> if it is not <code>null</code>
 	 */
 	public boolean isSetDescription() {
-		if (description == null)
-			return false;
-		else 
-			return true;
+		return description != null;
 	}
 	
 	/**
@@ -96,7 +90,6 @@ public abstract class Documented extends Identified {
 
 	/**
 	 * Sets field variable <code>description</code> to the specified element.
-	 * @param description
 	 */
 	// @param a description for the documented object
 	public void setDescription(String description) {

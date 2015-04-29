@@ -12,12 +12,13 @@ public class Collection extends TopLevel{
 	
 	public Collection(URI identity) {
 		super(identity);
-		this.members = new HashSet<URI>();
+		this.members = new HashSet<>();
 	}
 	
 	private Collection(Collection collection) {
 		super(collection.getIdentity());
-		Set<URI> newMembers = new HashSet<URI>();		
+		// codereview: newMembers is created and modified but never stored
+		Set<URI> newMembers = new HashSet<>();
 		for (URI member : collection.getMemberURIs()) {
 			newMembers.add(member);
 		}		
@@ -36,7 +37,6 @@ public class Collection extends TopLevel{
 	
 	/**
 	 * Adds the specified member URI to the list of members.  
-	 * @param memberURI
 	 */
 	public void addMember(URI memberURI) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -49,7 +49,6 @@ public class Collection extends TopLevel{
 	
 	/**
 	 * Removes the member matching the specified URI from the list of members if present.
-	 * @param memberURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeMember(URI memberURI) {
@@ -59,8 +58,6 @@ public class Collection extends TopLevel{
 	/**
 	 * Clears the existing list of members, then set the members of this object to  
 	 * the specified list of members.
-	 *  	 
-	 * @param members
 	 */
 	public void setMembers(Set<URI> members) {
 		clearMembers();
@@ -74,7 +71,7 @@ public class Collection extends TopLevel{
 	 * @return the set of member URIs referenced by this object.
 	 */
 	public Set<URI> getMemberURIs() {
-		Set<URI> result = new HashSet<URI>();
+		Set<URI> result = new HashSet<>();
 		result.addAll(members);
 		return result;
 	}
@@ -84,7 +81,7 @@ public class Collection extends TopLevel{
 	 * @return the set of members referenced by this object.
 	 */
 	public Set<TopLevel> getMembers() {
-		Set<TopLevel> result = new HashSet<TopLevel>();
+		Set<TopLevel> result = new HashSet<>();
 		for (URI memberURI : members) {
 			TopLevel member = sbolDocument.getTopLevel(memberURI);
 			result.add(member);
@@ -174,10 +171,7 @@ public class Collection extends TopLevel{
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		if (!isURIcompliant(this.getIdentity(), 0)) {
-			return false;
-		}
-		return true;
+		return isURIcompliant(this.getIdentity(), 0);
 	}
 	
 //	/**	

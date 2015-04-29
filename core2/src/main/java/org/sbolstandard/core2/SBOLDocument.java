@@ -43,13 +43,13 @@ public class SBOLDocument {
 	}
 
 	public SBOLDocument() {
-		genericTopLevels = new HashMap<URI, GenericTopLevel>();
-		collections = new HashMap<URI, Collection>();
-		componentDefinitions = new HashMap<URI, ComponentDefinition>();
-		models = new HashMap<URI, Model>();
-		moduleDefinitions = new HashMap<URI, ModuleDefinition>();
-		sequences = new HashMap<URI, Sequence>();
-		nameSpaces = new HashMap<URI, NamespaceBinding>();
+		genericTopLevels = new HashMap<>();
+		collections = new HashMap<>();
+		componentDefinitions = new HashMap<>();
+		models = new HashMap<>();
+		moduleDefinitions = new HashMap<>();
+		sequences = new HashMap<>();
+		nameSpaces = new HashMap<>();
 		nameSpaces.put(URI.create(Sbol2Terms.sbol2.getNamespaceURI()), Sbol2Terms.sbol2);
 		nameSpaces.put(URI.create(Sbol1Terms.rdf.getNamespaceURI()), Sbol1Terms.rdf);
 		nameSpaces.put(URI.create(Sbol2Terms.dc.getNamespaceURI()), Sbol2Terms.dc);
@@ -57,9 +57,6 @@ public class SBOLDocument {
 
 	/**
 	 * Create a new {@link ModuleDefinition} object.
-	 * @param displayId
-	 * @param version
-	 * @param roles
 	 * @return the created {@link ModuleDefinition} object.
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version) {
@@ -70,8 +67,6 @@ public class SBOLDocument {
 	
 	/**
 	 * Create a new {@link ModuleDefinition} object.
-	 * @param identity
-	 * @param roles
 	 * @return the {@link ModuleDefinition} object.
 	 */
 	public ModuleDefinition createModuleDefinition(URI identity) {
@@ -82,8 +77,6 @@ public class SBOLDocument {
 
 	/**
 	 * Appends the specified {@code ModuleDefinition} object to the end of the list of module definitions.
-	 * @param newModuleDefinition
-	 * @return {@code true} if the {@code newModuleDefinition} is successfully added, {@code false} otherwise. 
 	 */
 	public void addModuleDefinition(ModuleDefinition newModuleDefinition) {
 		addTopLevel(newModuleDefinition, moduleDefinitions, "moduleDefinition",
@@ -92,7 +85,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the object matching the specified URI from the list of modules if present.
-	 * @param moduleURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public ModuleDefinition removeModuleDefinition(URI moduleURI) {
@@ -101,7 +93,6 @@ public class SBOLDocument {
 
 	/**
 	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
-	 * @param moduleURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public ModuleDefinition getModuleDefinition(URI moduleURI) {
@@ -113,7 +104,7 @@ public class SBOLDocument {
 	 * @return the list of <code>Module</code> objects owned by this object
 	 */
 	public Set<ModuleDefinition> getModuleDefinitions() {
-		Set<ModuleDefinition> moduleDefinitions = new HashSet<ModuleDefinition>();
+		Set<ModuleDefinition> moduleDefinitions = new HashSet<>();
 		moduleDefinitions.addAll(this.moduleDefinitions.values());
 		return moduleDefinitions;
 
@@ -131,7 +122,6 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list <code>modules</code>, then appends all of the elements in the specified collection to the end of this list.
-	 * @param moduleDefinitions
 	 */
 	public void setModuleDefinitions(List<ModuleDefinition> moduleDefinitions) {
 		clearModuleDefinitions();
@@ -142,7 +132,6 @@ public class SBOLDocument {
 
 	/**
 	 * Create a new {@link Collection} object.
-	 * @param identity
 	 * @return {@link Collection} object.
 	 */
 	public Collection createCollection(URI identity) {
@@ -153,8 +142,6 @@ public class SBOLDocument {
 	
 	/**
 	 * Create a new {@link Collection} object with the default URI prefix. 
-	 * @param displayId
-	 * @param version
 	 * @return the created {@link Collection} object.
 	 */
 	public Collection createCollection(String displayId, String version) {
@@ -165,8 +152,6 @@ public class SBOLDocument {
 
 	/**
 	 * Appends the specified {@code newCollection} object to the end of the list of collections.
-	 * @param newCollection
-	 * @return {@code true} if the {@code newCollection} is successfully added, {@code false} otherwise.
 	 */
 	public void addCollection(Collection newCollection) {
 		addTopLevel(newCollection, collections, "collection",
@@ -176,7 +161,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the object matching the specified URI from the list of collections if present.
-	 * @param collectionURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Collection removeCollection(URI collectionURI) {
@@ -185,7 +169,6 @@ public class SBOLDocument {
 
 	/**
 	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
-	 * @param collectionURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Collection getCollection(URI collectionURI) {
@@ -197,7 +180,7 @@ public class SBOLDocument {
 	 * @return the list of <code>Collection</code> objects owned by this object
 	 */
 	public Set<Collection> getCollections() {
-		Set<Collection> collections = new HashSet<Collection>();
+		Set<Collection> collections = new HashSet<>();
 		collections.addAll(this.collections.values());
 		return collections;
 	}
@@ -214,7 +197,6 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list <code>collections</code>, then appends all of the elements in the specified collection to the end of this list.
-	 * @param collections
 	 */
 	public void setCollections(List<Collection> collections) {
 		clearCollections();
@@ -225,12 +207,7 @@ public class SBOLDocument {
 	
 	/**
 	 * Create a new {@link Model} object.
-	 * @param displayId
-	 * @param version
-	 * @param source
-	 * @param language
-	 * @param framework
-	 * @return the created {@link Model} object. 
+	 * @return the created {@link Model} object.
 	 */
 	public Model createModel(String displayId, String version, URI source, URI language, URI framework) {
 		validateCreationData(displayId, version);
@@ -240,11 +217,6 @@ public class SBOLDocument {
 
 	/**
 	 * Create a new {@link Model} object.
-	 * @param identity
-	 * @param source
-	 * @param language
-	 * @param framework
-	 * @param roles
 	 * @return {@link Model} object.
 	 */
 	public Model createModel(URI identity, URI source, URI language, URI framework) {
@@ -255,8 +227,6 @@ public class SBOLDocument {
 
 	/**
 	 * Appends the specified <code>model</code> to the end of the list of models.
-	 * @param newModel
-	 * @return {@code true} if the {@code newModel} is successfully added, {@code false} otherwise.
 	 */
 	public void addModel(Model newModel) {
 		addTopLevel(newModel, models, "model",
@@ -265,7 +235,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the object matching the specified URI from the list of models if present.
-	 * @param modelURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Model removeModel(URI modelURI) {
@@ -274,7 +243,6 @@ public class SBOLDocument {
 
 	/**
 	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
-	 * @param modelURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Model getModel(URI modelURI) {
@@ -287,7 +255,7 @@ public class SBOLDocument {
 	 */
 	public Set<Model> getModels() {
 		//		return (List<Model>) models.values();
-		Set<Model> models = new HashSet<Model>();
+		Set<Model> models = new HashSet<>();
 		models.addAll(this.models.values());
 		return models;
 	}
@@ -304,7 +272,6 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list <code>models</code>, then appends all of the elements in the specified model to the end of this list.
-	 * @param models
 	 */
 	public void setModels(List<Model> models) {
 		clearModels();
@@ -315,8 +282,6 @@ public class SBOLDocument {
 
 	/**
 	 * Create a new {@link ComponentDefinition} object.
-	 * @param identity
-	 * @param types
 	 * @return {@link ComponentDefinition} object.
 	 */
 	public ComponentDefinition createComponentDefinition(URI identity, Set<URI> types) {
@@ -328,9 +293,6 @@ public class SBOLDocument {
 
 	/**
 	 * Create a new {@link ComponentDefinition} object with the default URI prefix.
-	 * @param displayId
-	 * @param version
-	 * @param types
 	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
@@ -341,8 +303,6 @@ public class SBOLDocument {
 
 	/**
 	 * Appends the specified element to the end of the list of component definitions.
-	 * @param newComponentDefinition
-	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
 	 */
 	public void addComponentDefinition(ComponentDefinition newComponentDefinition) {
 		addTopLevel(newComponentDefinition, componentDefinitions, "componentDefinition",
@@ -351,7 +311,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the object matching the specified URI from the list of component definitions if present.
-	 * @param componentDefinitionURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public ComponentDefinition removeComponentDefinition(URI componentDefinitionURI) {
@@ -360,7 +319,6 @@ public class SBOLDocument {
 
 	/**
 	 * Returns the object matching the specified URI from the list of component definitions if present.
-	 * @param componentDefinitionURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public ComponentDefinition getComponentDefinition(URI componentDefinitionURI) {
@@ -373,7 +331,7 @@ public class SBOLDocument {
 	 */
 	public Set<ComponentDefinition> getComponentDefinitions() {
 		//		return (List<Component>) components.values();
-		Set<ComponentDefinition> components = new HashSet<ComponentDefinition>();
+		Set<ComponentDefinition> components = new HashSet<>();
 		components.addAll(this.componentDefinitions.values());
 		return components;
 	}
@@ -390,7 +348,6 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list of component definitions, then appends all of the elements in the specified model to the end of this list.
-	 * @param componentDefinitions
 	 */
 	public void setComponentDefinitions(List<ComponentDefinition> componentDefinitions) {
 		clearComponentDefinitions();
@@ -401,9 +358,6 @@ public class SBOLDocument {
 
 	/**
 	 * Create a new {@link Sequence} object.
-	 * @param identity
-	 * @param elements
-	 * @param encoding
 	 * @return {@link Sequence} object.
 	 */
 	public Sequence createSequence(URI identity, String elements, URI encoding) {
@@ -414,9 +368,6 @@ public class SBOLDocument {
 
 	/**
 	 * Create a new {@link Sequence} object.
-	 * @param displayId
-	 * @param elements
-	 * @param encoding
 	 * @return the created Sequence object.
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
@@ -549,10 +500,6 @@ public class SBOLDocument {
 	 * This method is ONLY valid for compliant URIs.
  	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
 	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix, display ID, and version. Then add it to its corresponding top-level objects list.
-	 * @param toplevel
-	 * @param URIprefix
-	 * @param displayId
-	 * @param version
 	 * @return the copied {@link TopLevel} object
 	 */
 	public Identified createCopy(Identified toplevel, String URIprefix, String displayId, String version) {
@@ -603,8 +550,6 @@ public class SBOLDocument {
 
 	/**
 	 * Appends the specified <code>sequence</code> to the end of the list of sequences.
-	 * @param newSequence
-	 * @return <code>true</code> if the specified sequence is successfully added.
 	 */
 	public void addSequence(Sequence newSequence) {
 		addTopLevel(newSequence, sequences, "sequence",
@@ -613,7 +558,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the object matching the specified URI from the list of structures if present.
-	 * @param sequenceURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Sequence removeSequence(URI sequenceURI) {
@@ -622,7 +566,6 @@ public class SBOLDocument {
 
 	/**
 	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
-	 * @param sequenceURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Sequence getSequence(URI sequenceURI) {
@@ -635,7 +578,7 @@ public class SBOLDocument {
 	 */
 	public Set<Sequence> getSequences() {
 		//		return (List<Structure>) structures.values();
-		Set<Sequence> structures = new HashSet<Sequence>();
+		Set<Sequence> structures = new HashSet<>();
 		structures.addAll(this.sequences.values());
 		return structures;
 	}
@@ -652,7 +595,6 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list <code>structures</code>, then appends all of the elements in the specified collection to the end of this list.
-	 * @param sequences
 	 */
 	public void setSequences(List<Sequence> sequences) {
 		clearSequences();
@@ -663,9 +605,6 @@ public class SBOLDocument {
 	
 	/**
 	 * Create a new {@link GenericTopLevel} object.
-	 * @param displayId
-	 * @param version
-	 * @param rdfType
 	 * @return the created {@link GenericTopLevel} object.
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
@@ -675,8 +614,6 @@ public class SBOLDocument {
 
 	/**
 	 * Create a new {@link GenericTopLevel} object.
-	 * @param identity
-	 * @param rdfType
 	 * @return {@link GenericTopLevel} object.
 	 */
 	public GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
@@ -687,8 +624,6 @@ public class SBOLDocument {
 
 	/**
 	 * Appends the specified {@code TopLevel} object to the end of the list of topLevels.
-	 * @param newGenericTopLevel
-	 * @return {@code true} if the {@code newTopLevel} is successfully added, {@code false} otherwise.
 	 */
 	public void addGenericTopLevel(GenericTopLevel newGenericTopLevel) {
 		addTopLevel(newGenericTopLevel, genericTopLevels, "genericTopLevel",
@@ -697,7 +632,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the object matching the specified URI from the list of topLevels if present.
-	 * @param topLevelURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public GenericTopLevel removeGenericTopLevel(URI topLevelURI) {
@@ -706,7 +640,6 @@ public class SBOLDocument {
 
 	/**
 	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
-	 * @param topLevelURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public GenericTopLevel getGenericTopLevel(URI topLevelURI) {
@@ -719,7 +652,7 @@ public class SBOLDocument {
 	 */
 	public Set<GenericTopLevel> getGenericTopLevels() {
 		//		return (List<GenericTopLevel>) topLevels.values();
-		Set<GenericTopLevel> topLevels = new HashSet<GenericTopLevel>();
+		Set<GenericTopLevel> topLevels = new HashSet<>();
 		topLevels.addAll(this.genericTopLevels.values());
 		return topLevels;
 	}
@@ -736,7 +669,6 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list <code>topLevels</code>, then appends all of the elements in the specified topLevels to the end of this list.
-	 * @param topLevels
 	 */
 	public void setGenericTopLevels(List<GenericTopLevel> topLevels) {
 		clearGenericTopLevels();
@@ -783,9 +715,6 @@ public class SBOLDocument {
 		nameSpaces.put(nameSpaceURI, NamespaceBinding(nameSpaceURI.toString(), prefix));
 	}
 	
-	/**
-	 * @param namespaceBinding
-	 */
 	public void addNamespaceBinding(NamespaceBinding namespaceBinding) {
 		nameSpaces.put(URI.create(namespaceBinding.getNamespaceURI()), namespaceBinding);
 	}
@@ -795,14 +724,13 @@ public class SBOLDocument {
 	 * @return A list of {@link NamespaceBinding}
 	 */
 	public List<NamespaceBinding> getNameSpaceBindings() {
-		List<NamespaceBinding> bindings = new ArrayList<NamespaceBinding>();
+		List<NamespaceBinding> bindings = new ArrayList<>();
 		bindings.addAll(this.nameSpaces.values());
 		return bindings;
 	}
 	
 	/**
 	 * Removes the object matching the specified URI from the list of nameSpaces if present.
-	 * @param nameSpaceURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public NamespaceBinding removeNamespaceBinding(URI nameSpaceURI) {
@@ -811,7 +739,6 @@ public class SBOLDocument {
 	
 	/**
 	 * Clears the existing list <code>modules</code>, then appends all of the elements in the specified collection to the end of this list.
-	 * @param namespaceBinding
 	 */
 	public void setNameSpaceBindings(List<NamespaceBinding> namespaceBinding) {
 		clearNamespaceBindings();
@@ -833,7 +760,6 @@ public class SBOLDocument {
 
 	/**
 	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
-	 * @param nameSpaceURI
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public NamespaceBinding getNameSpaceBinding(URI nameSpaceURI) {
@@ -911,7 +837,8 @@ public class SBOLDocument {
 		}
 	}
 
-	private <TL extends TopLevel> void addTopLevel(TL newTopLevel, Map<URI, TL> instancesMap, String typeName, Map<URI, ? extends Identified> ... maps) {
+	@SafeVarargs
+	private final <TL extends TopLevel> void addTopLevel(TL newTopLevel, Map<URI, TL> instancesMap, String typeName, Map<URI, ? extends Identified> ... maps) {
 		if (newTopLevel.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newTopLevel.getIdentity()));
 			if (keyExistsInAnyMap(persistentId, maps))

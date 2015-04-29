@@ -28,43 +28,44 @@ public class ModuleDefinition extends TopLevel {
 	
 	public ModuleDefinition(URI identity) {
 		super(identity);
-		this.roles = new HashSet<URI>();
-		this.modules = new HashMap<URI, Module>();
-		this.interactions = new HashMap<URI, Interaction>();
-		this.functionalComponents = new HashMap<URI, FunctionalComponent>();
-		this.models = new HashSet<URI>();		
+		this.roles = new HashSet<>();
+		this.modules = new HashMap<>();
+		this.interactions = new HashMap<>();
+		this.functionalComponents = new HashMap<>();
+		this.models = new HashSet<>();
 	}
 	
 	private ModuleDefinition(ModuleDefinition moduleDefinition) {
 		super(moduleDefinition);
-		Set<URI> roles = new HashSet<URI>();
+		Set<URI> roles = new HashSet<>();
 		for (URI role : moduleDefinition.getRoles()) {
 			roles.add(role);
 		}		
 		this.setRoles(roles);
 		if (!moduleDefinition.getModules().isEmpty()) {
-			List<Module> subModules = new ArrayList<Module>();
+			List<Module> subModules = new ArrayList<>();
 			for (Module subModule : moduleDefinition.getModules()) {
 				subModules.add(subModule.deepCopy());
 			}
 			this.setModules(subModules);
 		}
 		if (!moduleDefinition.getInteractions().isEmpty()) {
-			List<Interaction> interactions = new ArrayList<Interaction>();
+			List<Interaction> interactions = new ArrayList<>();
 			for (Interaction interaction : moduleDefinition.getInteractions()) {
 				interactions.add(interaction.deepCopy());
 			}
 			this.setInteractions(interactions);
 		}
 		if (!moduleDefinition.getFunctionalComponents().isEmpty()) {
-			List<FunctionalComponent> components = new ArrayList<FunctionalComponent>();
+			List<FunctionalComponent> components = new ArrayList<>();
 			for (FunctionalComponent component : moduleDefinition.getFunctionalComponents()) {
 				components.add(component.deepCopy());
 			}
 			this.setFunctionalComponents(components);
 		}
 		if (!moduleDefinition.getModels().isEmpty()) {
-			Set<URI> models = new HashSet<URI>();
+			// codereview: you are creating `models` but not doing anything with it
+			Set<URI> models = new HashSet<>();
 			for (URI model : moduleDefinition.getModelURIs()) {
 				models.add(model);
 			}
@@ -74,7 +75,6 @@ public class ModuleDefinition extends TopLevel {
 
 	/**
 	 * Adds the specified element to the set <code>roles</code> if it is not already present. 
-	 * @param roleURI
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addRole(URI roleURI) {
@@ -83,7 +83,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Removes the specified element from the set <code>roles</code> if it is present.
-	 * @param roleURI
 	 * @return <code>true<code> if this set contained the specified element
 	 */
 	public boolean removeRole(URI roleURI) {
@@ -92,7 +91,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Sets the field variable <code>roles</code> to the specified element.
-	 * @param roles
 	 */
 	public void setRoles(Set<URI> roles) {
 		clearRoles();
@@ -104,10 +102,9 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Returns the field variable <code>roles</code>.
-	 * @return
 	 */
 	public Set<URI> getRoles() {
-		Set<URI> result = new HashSet<URI>();
+		Set<URI> result = new HashSet<>();
 		result.addAll(roles);
 		return result;
 	}
@@ -142,7 +139,6 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Calls the ModuleInstantiation constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of ModuleInstantiation instances owned by this instance.
-	 * @param identity
 	 * @return the created ModuleInstantiation instance.
 	 */
 	public Module createModule(URI identity, URI moduleDefinitionURI) {
@@ -151,11 +147,6 @@ public class ModuleDefinition extends TopLevel {
 		return subModule;
 	}
 
-	/**
-	 * @param displayId
-	 * @param moduleDefinitionURI
-	 * @return
-	 */
 	public Module createModule(String displayId, URI moduleDefinitionURI) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModuleDefinition(moduleDefinitionURI)==null) {
@@ -171,8 +162,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Adds the specified instance to the list of subModules. 
-	 * @param module
-	 * @return 
 	 */
 	public void addModule(Module module) {
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
@@ -182,7 +171,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of subModules if present.
-	 * @param moduleURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Module removeModule(URI moduleURI) {
@@ -191,7 +179,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Returns the instance matching the specified URI from the list of subModules if present.
-	 * @param subModuleURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Module getModule(URI subModuleURI) {
@@ -203,7 +190,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the list of subModule instances owned by this instance.
 	 */
 	public Set<Module> getModules() {
-		return new HashSet<Module>(modules.values());
+		return new HashSet<>(modules.values());
 	}
 	
 	/**
@@ -218,7 +205,6 @@ public class ModuleDefinition extends TopLevel {
 		
 	/**
 	 * Clears the existing list of subModule instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param subModules
 	 */
 	public void setModules(List<Module> modules) {
 		clearModules();
@@ -242,7 +228,6 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Calls the Interaction constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of Interaction instances owned by this instance.
-	 * @param identity
 	 * @return the  created Interaction instance.
 	 */
 	public Interaction createInteraction(URI identity, Set<URI> type) {
@@ -251,12 +236,6 @@ public class ModuleDefinition extends TopLevel {
 		return interaction;
 	}
 	
-	/**
-	 * @param displayId
-	 * @param type
-	 * @param participations
-	 * @return
-	 */
 	public Interaction createInteraction(String displayId, Set<URI> type) {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
@@ -267,7 +246,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Adds the specified instance to the list of interactions. 
-	 * @param interaction
 	 */
 	public void addInteraction(Interaction interaction) {
 		addChildSafely(interaction, interactions, "interaction", functionalComponents, modules);
@@ -277,7 +255,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of interactions if present.
-	 * @param interactionURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Interaction removeInteraction(URI interactionURI) {
@@ -286,7 +263,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Returns the instance matching the specified URI from the list of interactions if present.
-	 * @param interactionURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Interaction getInteraction(URI interactionURI) {
@@ -298,7 +274,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the list of interaction instances owned by this instance.
 	 */
 	public Set<Interaction> getInteractions() {
-		return new HashSet<Interaction>(interactions.values());
+		return new HashSet<>(interactions.values());
 	}
 	
 	/**
@@ -313,7 +289,6 @@ public class ModuleDefinition extends TopLevel {
 		
 	/**
 	 * Clears the existing list of interaction instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param interactions
 	 */
 	public void setInteractions(
 			List<Interaction> interactions) {
@@ -338,7 +313,6 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Calls the FunctionalInstantiation constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of FunctionalInstantiation instances owned by this instance.
-	 * @param identity
 	 * @return the created {@link FunctionalComponent} instance.
 	 */
 	public FunctionalComponent createFunctionalComponent(URI identity, AccessType access, 
@@ -349,14 +323,7 @@ public class ModuleDefinition extends TopLevel {
 		return functionalComponent;
 	}
 
-	/**
-	 * @param displayId
-	 * @param access
-	 * @param functionalComponentURI
-	 * @param direction
-	 * @return
-	 */
-	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access, 
+	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
 			URI functionalComponentURI, DirectionType direction) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(functionalComponentURI)==null) {
@@ -371,7 +338,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Adds the specified instance to the list of components.
-	 * @param functionalComponent
 	 */
 	public void addFunctionalComponent(FunctionalComponent functionalComponent) {
 		addChildSafely(functionalComponent, functionalComponents, "functionalComponent", interactions, modules);
@@ -380,7 +346,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of functionalInstantiations if present.
-	 * @param componentURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public FunctionalComponent removeFunctionalComponent(URI componentURI) {
@@ -389,7 +354,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Returns the instance matching the specified URI from the list of functionalInstantiations if present.
-	 * @param componentURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public FunctionalComponent getFunctionalComponent(URI componentURI) {
@@ -401,7 +365,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the list of functionalInstantiation instances owned by this instance.
 	 */
 	public Set<FunctionalComponent> getFunctionalComponents() {
-		return new HashSet<FunctionalComponent>(functionalComponents.values());
+		return new HashSet<>(functionalComponents.values());
 	}
 	
 	/**
@@ -416,7 +380,6 @@ public class ModuleDefinition extends TopLevel {
 		
 	/**
 	 * Clears the existing list of functionalInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param components
 	 */
 	public void setFunctionalComponents(
 			List<FunctionalComponent> components) {
@@ -461,7 +424,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Adds the specified instance to the list of models. 
-	 * @param modelURI
 	 */
 	public void addModel(URI modelURI) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -474,7 +436,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of models if present.
-	 * @param modelURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeModel(URI modelURI) {
@@ -483,7 +444,6 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Clears the existing list of model instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param models
 	 */
 	public void setModels(Set<URI> models) {
 		clearModels();
@@ -498,7 +458,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the set of model URIs referenced by this instance
 	 */
 	public Set<URI> getModelURIs() {
-		Set<URI> result = new HashSet<URI>();
+		Set<URI> result = new HashSet<>();
 		result.addAll(models);
 		return result;
 	}
@@ -508,7 +468,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the set of models referenced by this instance
 	 */
 	public Set<Model> getModels() {
-		Set<Model> result = new HashSet<Model>();
+		Set<Model> result = new HashSet<>();
 		for (URI modelURI : models) {
 			Model model = sbolDocument.getModel(modelURI);
 			result.add(model);
@@ -633,12 +593,10 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Check if the specified key exists in any hash maps in this class other than the one with the specified keySet. This method
 	 * constructs a set of key sets for other hash maps first, and then checks if the key exists.
-	 * @param keySet
-	 * @param key
 	 * @return <code>true</code> if the specified key exists in other hash maps.
 	 */
 	private boolean keyExistsInOtherMaps(Set<URI> keySet, URI key) {
-		Set<Set<URI>> complementSet = new HashSet<Set<URI>>();
+		Set<Set<URI>> complementSet = new HashSet<>();
 		complementSet.add(functionalComponents.keySet());
 		complementSet.add(interactions.keySet());		
 		complementSet.remove(keySet);
@@ -691,6 +649,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateCompliantURI(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	protected boolean checkDescendantsURIcompliance() {
+		// codereview: spaghetti
 		if (!isURIcompliant(this.getIdentity(), 0)) { 	// ComponentDefinition to be copied has non-compliant URI.
 			return false;
 		}

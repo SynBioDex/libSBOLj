@@ -22,9 +22,6 @@ public class Component extends ComponentInstance{
 	/**
 	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
-	 * @param URIprefix
-	 * @param parentDisplayId
-	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
 		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 1); // 1 indicates that this object is a child of a top-level object.

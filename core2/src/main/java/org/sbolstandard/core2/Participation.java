@@ -21,13 +21,13 @@ public class Participation extends Identified {
 	
 	public Participation(URI identity, URI participant) {
 		super(identity);
-		roles = new HashSet<URI>();
+		roles = new HashSet<>();
 		setParticipant(participant);
 	}
 	
 	private Participation(Participation participation) {
 		super(participation);
-		Set<URI> roles = new HashSet<URI>();
+		Set<URI> roles = new HashSet<>();
 		for (URI role : participation.getRoles()) {
 			roles.add(role);
 		}		
@@ -50,7 +50,6 @@ public class Participation extends Identified {
 	
 	/**
 	 * Sets field variable <code>participant</code> to the specified element.
-	 * @param participant
 	 */
 	public void setParticipant(URI participant) {
 		if (participant == null) {
@@ -66,7 +65,6 @@ public class Participation extends Identified {
 	
 		/**
 	 * Adds the specified element to the set <code>roles</code> if it is not already present. 
-	 * @param roleURI
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addRole(URI roleURI) {
@@ -75,7 +73,6 @@ public class Participation extends Identified {
 	
 	/**
 	 * Removes the specified element from the set <code>roles</code> if it is present.
-	 * @param roleURI
 	 * @return <code>true<code> if this set contained the specified element
 	 */
 	public boolean removeRole(URI roleURI) {
@@ -84,7 +81,6 @@ public class Participation extends Identified {
 	
 	/**
 	 * Sets the field variable <code>roles</code> to the specified element.
-	 * @param roles
 	 */
 	public void setRoles(Set<URI> roles) {
 		clearRoles();
@@ -96,7 +92,6 @@ public class Participation extends Identified {
 	
 	/**
 	 * Returns the field variable <code>roles</code>.
-	 * @return
 	 */
 	public Set<URI> getRoles() {
 		return roles;
@@ -126,10 +121,6 @@ public class Participation extends Identified {
 	/**
 	 * Assume this Participation object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link Interaction#updateCompliantURI(String, String, String)}.
-	 * @param URIprefix
-	 * @param grandparentDisplayId
-	 * @param parentDisplayId
-	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String grandparentDisplayId,
 			String parentDisplayId, String version) {

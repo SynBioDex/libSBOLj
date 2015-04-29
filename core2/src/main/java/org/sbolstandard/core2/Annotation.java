@@ -40,7 +40,6 @@ public class Annotation {
 
 	/**
 	 * Sets the value of this Annotation object to the specified argument.
-	 * @param value
 	 */
 	public void setValue(NamedProperty<QName> value) {
 		this.value = value;
@@ -48,8 +47,7 @@ public class Annotation {
 
 	/**
 	 * Makes a deep copy of this Annotation object. 
-	 * @param displayId
-	 * @return an Annotation object that is the exact copy of this object. 
+	 * @return an Annotation object that is the exact copy of this object.
 	 */
 	private Annotation deepCopy() {
 		return new Annotation(this);
@@ -60,8 +58,7 @@ public class Annotation {
 	 * @return an Annotation object that is the exact copy of this object. 
 	 */
 	public Annotation copy() {
-		Annotation cloned = this.deepCopy();
-		return cloned;
+		return this.deepCopy();
 	}
 
 	/* (non-Javadoc)

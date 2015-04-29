@@ -25,23 +25,22 @@ public class Interaction extends Documented {
 	 * 
 	 * @param identity an identity for the interaction	 
 	 * @param type a type for the interaction
-	 * @param participations a collection of participations for the interaction
 	 */
 	public Interaction(URI identity, Set<URI> type) {
 		super(identity);
-		this.types = new HashSet<URI>(); 
+		this.types = new HashSet<>();
 		setTypes(type);
-		this.participations = new HashMap<URI, Participation>(); 
+		this.participations = new HashMap<>();
 	}
 	
 	public Interaction(Interaction interaction) {
 		super(interaction);
-		Set<URI> type = new HashSet<URI>();
+		Set<URI> type = new HashSet<>();
 		for (URI typeElement : interaction.getTypes()) {
 			type.add(URI.create(typeElement.toString()));
 		}
 		this.setTypes(type);
-		List<Participation> participations = new ArrayList<Participation>();
+		List<Participation> participations = new ArrayList<>();
 		for (Participation participation : interaction.getParticipations()) {
 			participations.add(participation.deepCopy());
 		}
@@ -51,7 +50,6 @@ public class Interaction extends Documented {
 
 	/**
 	 * Adds the specified element to the set <code>type</code> if it is not already present. 
-	 * @param typeURI
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addType(URI typeURI) {
@@ -60,7 +58,6 @@ public class Interaction extends Documented {
 	
 	/**
 	 * Removes the specified element from the set <code>type</code> if it is present.
-	 * @param typeURI
 	 * @return <code>true<code> if this set contained the specified element
 	 */
 	public boolean removeType(URI typeURI) {
@@ -72,7 +69,6 @@ public class Interaction extends Documented {
 	
 	/**
 	 * Sets the field variable <code>type</code> to the specified element.
-	 * @param type
 	 */
 	public void setTypes(Set<URI> types) {
 		if (types==null || types.size()==0) {
@@ -86,7 +82,6 @@ public class Interaction extends Documented {
 	
 	/**
 	 * Returns the field variable <code>type</code>.
-	 * @return
 	 */
 	public Set<URI> getTypes() {
 		return types;
@@ -113,18 +108,13 @@ public class Interaction extends Documented {
 	 * @return <code>true</code> if the field variable is not an empty list
 	 */
 	public boolean isSetParticipations() {
-		if (participations == null || participations.isEmpty())
-			return false;
-		else
-			return true;					
+		return !(participations == null || participations.isEmpty());
 	}
 	
 	/**
 	 * Calls the Participation constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of Participation instances owned by this instance.
-	 * @param identity
-	 * @param location
-	 * @return the  created Participation instance. 
+	 * @return the  created Participation instance.
 	 */
 	public Participation createParticipation(URI identity, URI participant) {
 		Participation participation = new Participation(identity, participant);
@@ -152,7 +142,6 @@ public class Interaction extends Documented {
 	
 	/**
 	 * Adds the specified instance to the list of participations. 
-	 * @param participation
 	 */
 	public void addParticipation(Participation participation) {
         addChildSafely(participation, participations, "participation");
@@ -162,7 +151,6 @@ public class Interaction extends Documented {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of participations if present.
-	 * @param participationURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Participation removeParticipation(URI participationURI) {
@@ -172,7 +160,6 @@ public class Interaction extends Documented {
 	
 	/**
 	 * Returns the instance matching the specified URI from the list of participations if present.
-	 * @param participationURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Participation getParticipation(URI participationURI) {
@@ -184,7 +171,7 @@ public class Interaction extends Documented {
 	 * @return the list of participation instances owned by this instance.
 	 */
 	public Set<Participation> getParticipations() {
-		return new HashSet<Participation>(participations.values());
+		return new HashSet<>(participations.values());
 	}
 	
 	/**
@@ -199,7 +186,6 @@ public class Interaction extends Documented {
 		
 	/**
 	 * Clears the existing list of participation instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param participations
 	 */
 	public void setParticipations(
 			List<Participation> participations) {
@@ -251,9 +237,6 @@ public class Interaction extends Documented {
 	/**
 	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
-	 * @param URIprefix
-	 * @param parentDisplayId
-	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
 		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 1); // 1 indicates that this object is a child of a top-level object.

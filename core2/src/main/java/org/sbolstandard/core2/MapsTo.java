@@ -12,14 +12,14 @@ public class MapsTo extends Identified{
 	private ModuleDefinition moduleDefinition = null;
 	private Module module = null;
 
-	public static enum RefinementType {
+	public enum RefinementType {
 		VERIFYIDENTICAL("verifyIdentical"),
 		USELOCAL("useLocal"), 
 		USEREMOTE("useRemote"),
 		MERGE("merge");
 		private final String refinementType;
 
-		private RefinementType(String refinementType) {
+		RefinementType(String refinementType) {
 			this.refinementType = refinementType;
 		}
 
@@ -38,7 +38,6 @@ public class MapsTo extends Identified{
 
 		/**
 		 * Convert the specified URI to its corresponding RefinementType instance. 
-		 * @param refinement
 		 * @return the corresponding RefinementType instance
 		 */
 		public static RefinementType convertToRefinementType(URI refinement) {
@@ -140,7 +139,6 @@ public class MapsTo extends Identified{
 
 	/**
 	 * Sets field variable <code>refinement</code> to the specified element.
-	 * @param refinement
 	 */
 	public void setRefinement(RefinementType refinement) {
 		this.refinement = refinement;
@@ -148,7 +146,6 @@ public class MapsTo extends Identified{
 	
 	/**
 	 * Sets field variable <code>refinement</code> according to the specified URI.
-	 * @param refinement
 	 */
 	public void setRefinement(URI refinement) {
 		if (refinement != null && refinement.equals(Refinement.merge)) {
@@ -182,7 +179,6 @@ public class MapsTo extends Identified{
 
 	/**
 	 * Sets field variable <code>local</code> to the specified element.
-	 * @param local
 	 */
 	public void setLocal(URI local) {
 		if (local==null) {
@@ -212,7 +208,6 @@ public class MapsTo extends Identified{
 
 	/**
 	 * Sets filed variable <code>remote</code> to the specified element.
-	 * @param remote
 	 */
 	public void setRemote(URI remote) {
 		if (local==null) {
@@ -281,10 +276,6 @@ public class MapsTo extends Identified{
 	/**
 	 * Assume this MapsTo object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link Component#updateCompliantURI(String, String, String)}.
-	 * @param URIprefix
-	 * @param grandparentDisplayId
-	 * @param parentDisplayId
-	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String grandparentDisplayId,
 			String parentDisplayId, String version) {

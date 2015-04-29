@@ -67,10 +67,7 @@ public class SequenceAnnotation extends Documented {
 	 * @return <code>true</code> if it is not null.
 	 */
 	public boolean isSetComponent() {
-		if (component == null)
-			return false;
-		else
-			return true;
+		return component != null;
 	}
 	
 	/**

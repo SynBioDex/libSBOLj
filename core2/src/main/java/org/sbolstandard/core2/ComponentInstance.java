@@ -18,17 +18,16 @@ public abstract class ComponentInstance extends Documented {
 	protected URI definition;
 	private HashMap<URI, MapsTo> mapsTos;
 	
-	public static enum AccessType {
+	public enum AccessType {
 		PUBLIC("public"), PRIVATE("private");
 		private final String accessType;
 
-		private AccessType(String accessType) {
+		AccessType(String accessType) {
 			this.accessType = accessType;
 		}
 
 		/**
 		 * Convert the specified URI to its corresponding AccessType instance.
-		 * @param access
 		 * @return the corresponding AccessType instance
 		 */
 		public static AccessType convertToAccessType(URI access) {
@@ -81,7 +80,7 @@ public abstract class ComponentInstance extends Documented {
 		super(identity);
 		setAccess(access);
 		setDefinition(definition);		
-		this.mapsTos = new HashMap<URI, MapsTo>();
+		this.mapsTos = new HashMap<>();
 		if (isURIcompliant(identity, 1)) {
 			this.setVersion(extractVersion(identity));
 			this.setDisplayId(extractDisplayId(identity, 0));
@@ -94,7 +93,7 @@ public abstract class ComponentInstance extends Documented {
 		setAccess(component.getAccess());
 		setDefinition(component.getDefinitionURI());	
 		if (!component.getMapsTos().isEmpty()) {
-			List<MapsTo> mapsTos = new ArrayList<MapsTo>();
+			List<MapsTo> mapsTos = new ArrayList<>();
 			for (MapsTo mapsTo : component.getMapsTos()) {
 				mapsTos.add(mapsTo.deepCopy());
 			}
@@ -133,7 +132,6 @@ public abstract class ComponentInstance extends Documented {
 
 	/**
 	 * Sets field variable <code>access</code> to the specified element.
-	 * @param access
 	 */
 	public void setAccess(AccessType access) {
 		if (access==null) {
@@ -144,7 +142,6 @@ public abstract class ComponentInstance extends Documented {
 	
 	/**
 	 * Sets field variable <code>access</code> to the element corresponding to the specified URI.
-	 * @param access
 	 */
 	public void setAccess(URI access) {
 		if (access != null && access.equals(Access.PUBLIC)) {
@@ -171,11 +168,8 @@ public abstract class ComponentInstance extends Documented {
 	/**
 	 * Calls the MapsTo constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of MapsTo instances owned by this component.
-	 * @param identity
-	 * @param refinement
-	 * @param local
-	 * @param remote
-	 * @return the created MapsTo instance. 
+	 *
+	 * @return the created MapsTo instance.
 	 */
 	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
@@ -185,10 +179,6 @@ public abstract class ComponentInstance extends Documented {
 	}
 	
 	/**
-	 * @param displayId
-	 * @param refinement
-	 * @param local
-	 * @param remote
 	 * @return the newly created MapsTo object.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
@@ -207,7 +197,6 @@ public abstract class ComponentInstance extends Documented {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of references if present.
-	 * @param mappingURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo removeMapsTo(URI mappingURI) {
@@ -216,7 +205,6 @@ public abstract class ComponentInstance extends Documented {
 	
 	/**
 	 * Returns the instance matching the specified URI from the list of references if present.
-	 * @param referenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo getMapsTo(URI referenceURI) {
@@ -228,7 +216,7 @@ public abstract class ComponentInstance extends Documented {
 	 * @return the list of reference instances owned by this instance.
 	 */
 	public Set<MapsTo> getMapsTos() {
-		return new HashSet<MapsTo>(mapsTos.values());
+		return new HashSet<>(mapsTos.values());
 	}
 	
 	/**
@@ -243,7 +231,6 @@ public abstract class ComponentInstance extends Documented {
 		
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param mappings
 	 */
 	public void setMapsTo(
 			List<MapsTo> mapsTos) {
@@ -272,7 +259,6 @@ public abstract class ComponentInstance extends Documented {
 
 	/**
 	 * Sets field variable <code>instantiatedComponent</code> to the specified element.
-	 * @param definitionURI
 	 */
 	public void setDefinition(URI definition) {
 		if (definition==null) {

@@ -39,7 +39,6 @@ public class Model extends TopLevel {
 
 	/**
 	 * Sets the field variable <code>source</code> to the specified element.
-	 * @param source
 	 */
 	public void setSource(URI source) {
 		if (source==null) {
@@ -58,7 +57,6 @@ public class Model extends TopLevel {
 
 	/**
 	 * Sets the field variable <code>language</code> to the specified element.
-	 * @param language
 	 */
 	public void setLanguage(URI language) {
 		if (language==null) {
@@ -77,7 +75,6 @@ public class Model extends TopLevel {
 	
 	/**
 	 * Sets the field variable <code>framework</code> to the specified element.
-	 * @param framework
 	 */
 	public void setFramework(URI framework) {
 		if (framework==null) {
@@ -154,10 +151,7 @@ public class Model extends TopLevel {
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		if (!isURIcompliant(this.getIdentity(), 0)) {
-			return false;
-		}
-		return true;
+		return isURIcompliant(this.getIdentity(), 0);
 	}
 	
 //	/**

@@ -28,7 +28,6 @@ public class Range extends Location{
 
 	/**
 	 * Sets field variable <code>start</code> to the specified element.
-	 * @param value
 	 */
 	public void setStart(int value) {
 		if (value<=0) {
@@ -58,7 +57,6 @@ public class Range extends Location{
 
 	/**
 	 * Sets field variable <code>end</code> to the specified element.
-	 * @param value
 	 */
 	public void setEnd(int value) {
 		if (value<=0) {
@@ -76,10 +74,7 @@ public class Range extends Location{
 	 * @return <code>true</code> if it is not <code>null</code>
 	 */
 	public boolean isSetOrientation() {
-		if (orientation == null)
-			return false;
-		else 
-			return true;
+		return orientation != null;
 	}
 	
 	/**
@@ -114,7 +109,6 @@ public class Range extends Location{
 		
 	/**
 	 * Set field variable <code>orientation</code> to the specified element.
-	 * @param orientation
 	 */
 	// Created for backward compatibility to 1.1. 
 	public void setOrientation(OrientationType orientation) {
@@ -123,7 +117,6 @@ public class Range extends Location{
 	
 	/**
 	 * Sets field variable <code>orientation</code> to the element corresponding to the specified URI.
-	 * @param orientation
 	 */
 	public void setOrientation(URI orientation) {
 		if (orientation.equals(Orientation.inline)) {
@@ -153,10 +146,6 @@ public class Range extends Location{
 	/**
 	 * Assume this Range object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link SequenceAnnotation#updateCompliantURI(String, String, String)}.
-	 * @param URIprefix
-	 * @param grandparentDisplayId
-	 * @param parentDisplayId
-	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String grandparentDisplayId, String parentDisplayId, String version) {
 		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 2); //2 indicates this object is a grandchild of a top-level object.
@@ -170,11 +159,6 @@ public class Range extends Location{
 	/**
 	 * Assume this Range object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link MultiRange#updateCompliantURI(String, String, String, String)}.
-	 * @param URIprefix
-	 * @param greatGrandparentDisplayId
-	 * @param grandparentDisplayId
-	 * @param parentDisplayId
-	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String greatGrandparentDisplayId, 
 			String grandparentDisplayId, String parentDisplayId, String version) {
@@ -209,9 +193,7 @@ public class Range extends Location{
 			return false;
 		if (orientation != other.orientation)
 			return false;
-		if (start != other.start)
-			return false;
-		return true;
+		return start == other.start;
 	}
 
 }

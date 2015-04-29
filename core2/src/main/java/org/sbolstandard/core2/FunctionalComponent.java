@@ -12,7 +12,7 @@ public class FunctionalComponent extends ComponentInstance {
 		INPUT("input"), OUTPUT("output"), INOUT("inout"), NONE("none");
 		private final String directionType;
 
-		private DirectionType(String directionType) {
+		DirectionType(String directionType) {
 			this.directionType = directionType;
 		}
 
@@ -36,6 +36,7 @@ public class FunctionalComponent extends ComponentInstance {
 		 * @return the corresponding DirectionType instance
 		 */
 		public static DirectionType convertToDirectionType(URI direction) {
+			// codereview: direction is a URI but DirectionType is an enum -- the .equals should always be returning false
 			if (direction != null) {
 				if (direction.equals(DirectionType.INOUT)) {
 					return DirectionType.INOUT;
@@ -127,12 +128,10 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Sets field variable <code>direction</code> to the specified element.
-	 * 
-	 * @param direction
 	 */
 	public void setDirection(DirectionType direction) {
 		if (direction==null) {
-			throw new IllegalArgumentException("Not a valid access type.");
+			throw new NullPointerException("Direction must not be null.");
 		}
 		this.direction = direction;
 	}
@@ -140,8 +139,6 @@ public class FunctionalComponent extends ComponentInstance {
 	/**
 	 * Sets field variable <code>direction</code> to the element corresponding
 	 * to the specified URI.
-	 * 
-	 * @param direction
 	 */
 	public void setDirection(URI direction) {
 		if (direction != null && direction.equals(Direction.input)) {
@@ -181,9 +178,7 @@ public class FunctionalComponent extends ComponentInstance {
 		if (getClass() != obj.getClass())
 			return false;
 		FunctionalComponent other = (FunctionalComponent) obj;
-		if (direction != other.direction)
-			return false;
-		return true;
+		return direction == other.direction;
 	}
 
 	@Override
@@ -194,9 +189,6 @@ public class FunctionalComponent extends ComponentInstance {
 	/**
 	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
-	 * @param URIprefix
-	 * @param parentDisplayId
-	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
 		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 1); // 1 indicates that this object is a child of a top-level object.

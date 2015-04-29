@@ -67,7 +67,7 @@ public class SequenceOntology {
 	private static void loadSO() {
 
 		// this needs to be enhanced, of course
-		so = new HashMap<String, URI>();
+		so = new HashMap<>();
 
 		// types
 		so.put("DNA", URI.create(URI_PREFIX + "SO:0000352"));		

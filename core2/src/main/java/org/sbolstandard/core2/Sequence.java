@@ -37,7 +37,6 @@ public class Sequence extends TopLevel{
 	
 	/**
 	 * Sets field variable <code>elements</code> to the specified element.
-	 * @param elements
 	 */
 	public void setElements(String elements) {
 		if (elements == null) {
@@ -56,7 +55,6 @@ public class Sequence extends TopLevel{
 	
 	/**
 	 * Sets field variable <code>encoding</code> to the specified element.
-	 * @param encoding
 	 */
 	public void setEncoding(URI encoding) {
 		if (elements == null) {
@@ -135,10 +133,7 @@ public class Sequence extends TopLevel{
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		if (!isURIcompliant(this.getIdentity(), 0)) {
-			return false;
-		}
-		return true;
+		return isURIcompliant(this.getIdentity(), 0);
 	}
 
 	

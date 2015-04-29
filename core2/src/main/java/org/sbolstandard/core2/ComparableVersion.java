@@ -209,7 +209,6 @@ class ComparableVersion
          * or QUALIFIERS.size and then resort to lexical ordering. Most comparisons are decided by the first character,
          * so this is still fast. If more characters are needed then it requires a lexical sort anyway.
          *
-         * @param qualifier
          * @return an equivalent value that can be used with lexical comparison
          */
         public static String comparableQualifier( String qualifier )
@@ -311,6 +310,7 @@ class ComparableVersion
                         Item l = left.hasNext() ? left.next() : null;
                         Item r = right.hasNext() ? right.next() : null;
 
+                        // codereview: `l` is always null in `r.compareTo( l )` -- is this intended?
                         // if this is shorter, then invert the compare and mul with -1
                         int result = l == null ? ( r == null ? 0 : -1 * r.compareTo( l ) ) : l.compareTo( r );
 
@@ -358,7 +358,7 @@ class ComparableVersion
 
         ListItem list = items;
 
-        Stack<Item> stack = new Stack<Item>();
+        Stack<Item> stack = new Stack<>();
         stack.push( list );
 
         boolean isDigit = false;

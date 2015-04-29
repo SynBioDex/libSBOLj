@@ -16,7 +16,7 @@ public class MultiRange extends Location{
 
 	public MultiRange(URI identity,List<Range> ranges) {
 		super(identity);
-		this.ranges = new HashMap<URI, Range>();
+		this.ranges = new HashMap<>();
 		setRanges(ranges);
 	}
 	
@@ -24,7 +24,8 @@ public class MultiRange extends Location{
 	private MultiRange(MultiRange multiRange) {
 		super(multiRange);
 		if (multiRange.isSetRanges()) {
-			List<Range> ranges = new ArrayList<Range>();
+			// codereview: nothing seems to happen to `ranges`
+			List<Range> ranges = new ArrayList<>();
 			for (Range range : multiRange.getRanges()) {
 				ranges.add(range.deepCopy());
 			}
@@ -37,17 +38,13 @@ public class MultiRange extends Location{
 	 * @return <code>true</code> if the field variable is not an empty list
 	 */
 	public boolean isSetRanges() {
-		if (ranges.isEmpty())
-			return false;
-		else
-			return true;					
+		return !ranges.isEmpty();
 	}
 	
 	
 	/**
 	 * Calls the Range constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of Range instances owned by this instance.
-	 * @param identity
 	 * @return the created Range instance.
 	 */
 	public Range createRange(URI identity, Integer start, Integer end) {
@@ -65,7 +62,6 @@ public class MultiRange extends Location{
 	
 	/**
 	 * Adds the specified instance to the list of structuralAnnotations. 
-	 * @param range
 	 */
 	public void addRange(Range range) {
 		addChildSafely(range, ranges, "range");
@@ -73,7 +69,6 @@ public class MultiRange extends Location{
 
 	/**
 	 * Removes the instance matching the specified URI from the list of structuralAnnotations if present.
-	 * @param rangeURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Range removeRange(URI rangeURI) {
@@ -85,7 +80,6 @@ public class MultiRange extends Location{
 	
 	/**
 	 * Returns the instance matching the specified URI from the list of structuralAnnotations if present.
-	 * @param rangeURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Range getRange(URI rangeURI) {
@@ -97,7 +91,7 @@ public class MultiRange extends Location{
 	 * @return the list of structuralAnnotation instances owned by this instance.
 	 */
 	public Set<Range> getRanges() {
-		Set<Range> ranges = new HashSet<Range>(); 
+		Set<Range> ranges = new HashSet<>();
 		ranges.addAll(this.ranges.values());
 		return ranges; 
 	}
@@ -114,7 +108,6 @@ public class MultiRange extends Location{
 		
 	/**
 	 * Clears the existing list of structuralAnnotation instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param ranges
 	 */
 	public void setRanges(List<Range> ranges) {
 		if (ranges.size()<2) {
@@ -159,10 +152,6 @@ public class MultiRange extends Location{
 	/**
 	 * Assume this MultiRange object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link SequenceAnnotation#updateCompliantURI(String, String, String)}.
-	 * @param URIprefix
-	 * @param grandParentDisplayId
-	 * @param parentDisplayId
-	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String grandparentDisplayId, 
 			String parentDisplayId, String version) {

@@ -291,7 +291,7 @@ public class SBOLWriter {
 
 	private static void writeJSON(Writer stream, DocumentRoot<QName> document) throws Exception
 	{
-		HashMap<String, Object> config = new HashMap<String,Object>();
+		HashMap<String, Object> config = new HashMap<>();
 		config.put(JsonGenerator.PRETTY_PRINTING, true);
 		JsonGenerator writer = Json.createGeneratorFactory(config).createGenerator(stream);
 		JsonIo jsonIo = new JsonIo();
@@ -321,7 +321,7 @@ public class SBOLWriter {
 	{
 		for(Collection c : collections)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonTopLevelData(list, c);
 			if(!c.getMembers().isEmpty())//(c.isSetMembers())
 			{
@@ -372,7 +372,7 @@ public class SBOLWriter {
 
 		for(ComponentDefinition c : componentDefinitions)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 
 			formatCommonTopLevelData(list,c);
 			if(c.getTypes() != null)
@@ -411,7 +411,7 @@ public class SBOLWriter {
 	{
 		for(FunctionalComponent f : functionalInstantiation)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 
 			formatCommonDocumentedData(list, f);
 
@@ -447,7 +447,7 @@ public class SBOLWriter {
 	{
 		for(Interaction i : interactions)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonDocumentedData(list, i);
 
 			if(i.getTypes() != null)
@@ -476,7 +476,7 @@ public class SBOLWriter {
 	{
 		for(Model m : models)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 
 			formatCommonTopLevelData(list,m);
 
@@ -509,7 +509,7 @@ public class SBOLWriter {
 	{
 		for(Module m : module)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 
 			formatCommonDocumentedData(list, m);
 
@@ -534,7 +534,7 @@ public class SBOLWriter {
 	{
 		for (ModuleDefinition m : module)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonTopLevelData(list,m);
 			if(m.getRoles() != null)
 			{
@@ -555,11 +555,11 @@ public class SBOLWriter {
 
 	private static List<NestedDocument<QName>> formatParticipations(Set<Participation> participations)
 	{
-		List<NestedDocument<QName>> nestedDoc = new ArrayList<NestedDocument<QName>>();
+		List<NestedDocument<QName>> nestedDoc = new ArrayList<>();
 
 		for(Participation p : participations)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, p);
 
 			if(p.getRoles() != null)
@@ -585,7 +585,7 @@ public class SBOLWriter {
 	{
 		for(SequenceAnnotation s : sequenceAnnotations)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 
 			formatCommonDocumentedData(list, s);
 			if(s.getLocation() != null)
@@ -605,7 +605,7 @@ public class SBOLWriter {
 	{
 		for(SequenceConstraint s : sequenceConstraint)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, s);
 
 			if(s.getPersistentIdentity() != null)
@@ -628,7 +628,7 @@ public class SBOLWriter {
 	{
 		for(Sequence s : sequences)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 
 			formatCommonTopLevelData(list, s);
 			if(s.getElements() != null)
@@ -646,7 +646,7 @@ public class SBOLWriter {
 	{
 		for(Component s : components)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 
 			formatCommonDocumentedData(list, s);
 			if(s.getAccess() != null)
@@ -671,7 +671,7 @@ public class SBOLWriter {
 	{
 		for(GenericTopLevel t : topLevels)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonTopLevelData(list, t);
 			topLevelDoc.add(TopLevelDocument(t.getRDFType(), t.getIdentity(), NamedProperties(list)));
 		}
@@ -679,7 +679,7 @@ public class SBOLWriter {
 
 	private static NamedProperty<QName> getLocation(Location location)
 	{
-		List<NamedProperty<QName>> property = new ArrayList<NamedProperty<QName>>();
+		List<NamedProperty<QName>> property = new ArrayList<>();
 		formatCommonIdentifiedData(property, location);
 
 		if(location instanceof Range)
@@ -727,11 +727,11 @@ public class SBOLWriter {
 
 	private static List<NestedDocument<QName>> getMapsTo(Set<MapsTo> references)
 	{
-		List<NestedDocument<QName>> nestedDoc = new ArrayList<NestedDocument<QName>>();
+		List<NestedDocument<QName>> nestedDoc = new ArrayList<>();
 
 		for(MapsTo m : references)
 		{
-			List<NamedProperty<QName>> list = new ArrayList<NamedProperty<QName>>();
+			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, m);
 			if(m.getRefinement() != null)
 				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinementURI()));
@@ -747,7 +747,7 @@ public class SBOLWriter {
 	}
 
 	private static List<TopLevelDocument<QName>> getTopLevelDocument(SBOLDocument doc) {
-		List<TopLevelDocument<QName>> topLevelDoc = new ArrayList<TopLevelDocument<QName>>();
+		List<TopLevelDocument<QName>> topLevelDoc = new ArrayList<>();
 		formatCollections(doc.getCollections(), topLevelDoc);
 		formatModuleDefinitions(doc.getModuleDefinitions(), topLevelDoc);
 		formatModels(doc.getModels(), topLevelDoc);

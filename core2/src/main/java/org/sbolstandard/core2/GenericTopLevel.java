@@ -105,10 +105,7 @@ public class GenericTopLevel extends TopLevel{
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		if (!isURIcompliant(this.getIdentity(), 0)) {
-			return false;
-		}
-		return true;
+		return isURIcompliant(this.getIdentity(), 0);
 	}
 
 }

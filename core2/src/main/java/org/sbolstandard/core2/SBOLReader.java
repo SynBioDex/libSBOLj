@@ -80,7 +80,6 @@ public class SBOLReader
 
 	/**
 	 * Set the specified authority as the prefix to all member's identity
-	 * @param authority
 	 */
 	public static void setURIPrefix(String authority)
 	{
@@ -89,8 +88,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in the given RDF filename and converts the file to an SBOLDocument
-	 * @param fileName
-	 * @return
 	 * @throws Throwable
 	 */
 	public static SBOLDocument read(String fileName) throws Throwable
@@ -102,8 +99,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in the given JSON filename and converts the file to an SBOLDocument
-	 * @param fileName
-	 * @return
 	 * @throws Throwable
 	 */
 	public static SBOLDocument readJSON(String fileName) throws Throwable
@@ -113,8 +108,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in the given RDF filename and converts the file to an SBOLDocument
-	 * @param fileName
-	 * @return
 	 * @throws Throwable
 	 */
 	public static SBOLDocument readRDF(String fileName) throws Throwable
@@ -124,8 +117,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in the given Turtle filename and converts the file to an SBOLDocument
-	 * @param fileName
-	 * @return
 	 * @throws Throwable
 	 */
 	public static SBOLDocument readTurtle(String fileName) throws Throwable
@@ -135,8 +126,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in the given JSON file and converts the file to an SBOLDocument
-	 * @param file
-	 * @return
 	 * @throws Throwable
 	 */
 	public static SBOLDocument readJSON(File file) throws Throwable
@@ -149,8 +138,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in the given RDF file and converts the file to an SBOLDocument
-	 * @param file
-	 * @return
 	 * @throws Throwable
 	 */
 	public static SBOLDocument read(File file) throws Throwable
@@ -163,8 +150,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in the given RDF file and converts the file to an SBOLDocument
-	 * @param file
-	 * @return
 	 * @throws Throwable
 	 */
 	public static SBOLDocument readRDF(File file) throws Throwable
@@ -176,8 +161,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in the given Turtle file and converts the file to an SBOLDocument
-	 * @param file
-	 * @return
 	 * @throws Throwable
 	 */
 	public static SBOLDocument readTurtle(File file) throws Throwable
@@ -190,8 +173,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in a given JSON InputStream and converts the file to an SBOLDocument
-	 * @param in
-	 * @return
 	 */
 	public static SBOLDocument readJSON(InputStream in)
 	{
@@ -224,8 +205,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument
-	 * @param in
-	 * @return
 	 */
 	public static SBOLDocument read(InputStream in)
 	{
@@ -258,8 +237,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument
-	 * @param in
-	 * @return
 	 */
 	public static SBOLDocument readRDF(InputStream in)
 	{
@@ -290,8 +267,6 @@ public class SBOLReader
 
 	/**
 	 * Takes in a given Turtle InputStream and converts the file to an SBOLDocument
-	 * @param in
-	 * @return
 	 */
 	public static SBOLDocument readTurtle(InputStream in)
 	{
@@ -413,18 +388,18 @@ public class SBOLReader
 		String name 	   = null;
 		String description = null;
 		URI seq_identity   = null;
-		Set<URI> roles 	   = new HashSet<URI>();
+		Set<URI> roles 	   = new HashSet<>();
 		URI identity 	   = componentDef.getIdentity();
 		String persIdentity = "";
 
-		List<Annotation> annotations 				 = new ArrayList<Annotation>();
-		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>();
-		List<Component> components 					 = new ArrayList<Component>();
-		List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
-		List<SBOLPair> precedePairs 				 = new ArrayList<SBOLPair>();
-		Map<URI, URI> componentDefMap 				 = new HashMap<URI, URI>();
+		List<Annotation> annotations 				 = new ArrayList<>();
+		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<>();
+		List<Component> components 					 = new ArrayList<>();
+		List<SequenceConstraint> sequenceConstraints = new ArrayList<>();
+		List<SBOLPair> precedePairs 				 = new ArrayList<>();
+		Map<URI, URI> componentDefMap 				 = new HashMap<>();
 
-		Set<URI> type = new HashSet<URI>();
+		Set<URI> type = new HashSet<>();
 		type.add(Sbol2Terms.DnaComponentV1URI.type);
 
 		int component_num = 0;
@@ -517,6 +492,7 @@ public class SBOLReader
 
 		//ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
 		ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type);
+		// todo: is roles ever not null by the time you get here?
 		if(roles != null)
 			c.setRoles(roles);
 		if(identity != componentDef.getIdentity())
@@ -549,7 +525,7 @@ public class SBOLReader
 		String description = null;
 		URI identity 	   = topLevel.getIdentity();
 		URI encoding 	   = Sbol2Terms.SequenceURI.DnaSequenceV1;
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		if (setURIPrefix != null)
 		{
@@ -610,8 +586,8 @@ public class SBOLReader
 		String name 	   = null;
 		String description = null;
 
-		Set<URI> members 			 = new HashSet<URI>();
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		Set<URI> members 			 = new HashSet<>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -669,7 +645,7 @@ public class SBOLReader
 		URI componentURI = null;
 		URI identity 	 = sequenceAnnotation.getIdentity();
 		String persIdentity = "";
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		if (setURIPrefix != null)
 		{
@@ -769,13 +745,13 @@ public class SBOLReader
 		URI structure 		   = null;
 		String version 		   = null;
 		URI wasDerivedFrom     = null;
-		Set<URI> type 		   = new HashSet<URI>();
-		Set<URI> roles 	  	   = new HashSet<URI>();
+		Set<URI> type 		   = new HashSet<>();
+		Set<URI> roles 	  	   = new HashSet<>();
 
-		List<Component> components 					 = new ArrayList<Component>();
-		List<Annotation> annotations 				 = new ArrayList<Annotation>();
-		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>();
-		List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
+		List<Component> components 					 = new ArrayList<>();
+		List<Annotation> annotations 				 = new ArrayList<>();
+		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<>();
+		List<SequenceConstraint> sequenceConstraints = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -873,7 +849,7 @@ public class SBOLReader
 		URI object 					 = null;
 		String version 				 = null;
 		URI wasDerivedFrom 			 = null;
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : sequenceConstraints.getProperties())
 		{
@@ -943,7 +919,7 @@ public class SBOLReader
 		String description 	   = null;
 		String version   	   = null;
 		URI wasDerivedFrom 	   = null;
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
@@ -1009,7 +985,7 @@ public class SBOLReader
 	private static Location parseLocation(NestedDocument<QName> location)
 	{
 		Location l 					 = null;
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		if (location.getType().equals(Sbol2Terms.Range.Range))
 		{
@@ -1030,9 +1006,10 @@ public class SBOLReader
 		else
 		{
 			System.out.println("ERR: Null. Location isn't a Range, MultiRange, or Cut.");
-			return l;
+			return l; // codereview: this is always null? do you mean this?
 		}
 
+		// codereview: this is brittle for NPEs if your if/else cascade higher up gets out of sync with the data model
 		if (!annotations.isEmpty())
 			l.setAnnotations(annotations);
 
@@ -1047,7 +1024,7 @@ public class SBOLReader
 		URI orientation 			 = null;
 		String version        	     = null;
 		URI wasDerivedFrom 			 = null;
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : typeGenLoc.getProperties())
 		{
@@ -1102,7 +1079,7 @@ public class SBOLReader
 		URI orientation 	   = null;
 		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : typeCut.getProperties())
 		{
@@ -1167,8 +1144,8 @@ public class SBOLReader
 		URI wasDerivedFrom 	   = null;
 		String displayId       = null;
 
-		List<Range> ranges 	 		 = new ArrayList<Range>();
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Range> ranges 	 		 = new ArrayList<>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : typeMultiRange.getProperties())
 		{
@@ -1221,7 +1198,7 @@ public class SBOLReader
 		URI orientation 	   = null;
 		String version 		   = null;
 		URI wasDerivedFrom     = null;
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : typeRange.getProperties())
 		{
@@ -1289,8 +1266,8 @@ public class SBOLReader
 		AccessType access 	   = null;
 		URI wasDerivedFrom 	   = null;
 
-		List<Annotation> annotations = new ArrayList<Annotation>();
-		List<MapsTo> mapsTo 		 = new ArrayList<MapsTo>();
+		List<Annotation> annotations = new ArrayList<>();
+		List<MapsTo> mapsTo 		 = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : subComponents.getProperties())
 		{
@@ -1373,7 +1350,7 @@ public class SBOLReader
 		String description 	   = null;
 		URI wasDerivedFrom 	   = null;
 
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -1437,8 +1414,9 @@ public class SBOLReader
 		URI framework 	 	   = null;
 		URI wasDerivedFrom 	   = null;
 
-		Set<URI> roles 				 = new HashSet<URI>();
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		// codereview: do you ever save `roles` anywhere?
+		Set<URI> roles 				 = new HashSet<>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -1516,8 +1494,8 @@ public class SBOLReader
 		String description 	   = null;
 		URI wasDerivedFrom 	   = null;
 
-		Set<URI> members 			 = new HashSet<URI>();
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		Set<URI> members 			 = new HashSet<>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -1584,13 +1562,13 @@ public class SBOLReader
 		String name 		   = null;
 		String description 	   = null;
 		URI wasDerivedFrom 	   = null;
-		Set<URI> roles 		   = new HashSet<URI>();
-		Set<URI> models 	   = new HashSet<URI>();
+		Set<URI> roles 		   = new HashSet<>();
+		Set<URI> models 	   = new HashSet<>();
 
-		List<FunctionalComponent> functionalComponents = new ArrayList<FunctionalComponent>();
-		List<Interaction> interactions 				   = new ArrayList<Interaction>();
-		List<Module> subModules 					   = new ArrayList<Module>();
-		List<Annotation> annotations 				   = new ArrayList<Annotation>();
+		List<FunctionalComponent> functionalComponents = new ArrayList<>();
+		List<Interaction> interactions 				   = new ArrayList<>();
+		List<Module> subModules 					   = new ArrayList<>();
+		List<Annotation> annotations 				   = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -1645,7 +1623,7 @@ public class SBOLReader
 		}
 
 		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity());
-		if (roles != null)
+		if (roles != null) // codereview: is this ever not true?
 			moduleDefinition.setRoles(roles);
 		if (persistentIdentity != null)
 			moduleDefinition.setPersistentIdentity(persistentIdentity);
@@ -1681,8 +1659,8 @@ public class SBOLReader
 		String name 		   = null;
 		String description     = null;
 		URI wasDerivedFrom 	   = null;
-		List<MapsTo> mappings 		 = new ArrayList<MapsTo>();
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<MapsTo> mappings 		 = new ArrayList<>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : module.getProperties())
 		{
@@ -1754,7 +1732,7 @@ public class SBOLReader
 		URI local 				  = null;
 		URI wasDerivedFrom 		  = null;
 
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> m : mappings.getProperties())
 		{
@@ -1815,9 +1793,9 @@ public class SBOLReader
 		String description 	   = null;
 		URI wasDerivedFrom	   = null;
 
-		Set<URI> type 		   			   = new HashSet<URI>();
-		List<Participation> participations = new ArrayList<Participation>();
-		List<Annotation> annotations 	   = new ArrayList<Annotation>();
+		Set<URI> type 		   			   = new HashSet<>();
+		List<Participation> participations = new ArrayList<>();
+		List<Annotation> annotations 	   = new ArrayList<>();
 
 		for (NamedProperty<QName> i : interaction.getProperties())
 		{
@@ -1860,7 +1838,7 @@ public class SBOLReader
 		}
 
 		Interaction i = new Interaction(interaction.getIdentity(), type);
-		if (participations != null) {
+		if (participations != null) { // codereview: is this ever not true?
 			i.setParticipations(participations);
 		}
 		if (persistentIdentity != null)
@@ -1885,10 +1863,10 @@ public class SBOLReader
 		URI persistentIdentity = null;
 		String displayId	   = null;
 		String version 		   = null;
-		Set<URI> role 		   = new HashSet<URI>();
+		Set<URI> role 		   = new HashSet<>();
 		URI participant        = null;
 		URI wasDerivedFrom 	   = null;
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> p : participation.getProperties())
 		{
@@ -1924,7 +1902,7 @@ public class SBOLReader
 		}
 
 		Participation p = new Participation(participation.getIdentity(), participant);
-		if (role != null)
+		if (role != null) // codereview: is this ever not true?
 			p.setRoles(role);
 		if (displayId != null)
 			p.setDisplayId(displayId);
@@ -1952,8 +1930,8 @@ public class SBOLReader
 		URI functionalComponentURI = null;
 		URI wasDerivedFrom 		   = null;
 
-		List<Annotation> annotations = new ArrayList<Annotation>();
-		List<MapsTo> mappings 		 = new ArrayList<MapsTo>();
+		List<Annotation> annotations = new ArrayList<>();
+		List<MapsTo> mappings 		 = new ArrayList<>();
 
 		for (NamedProperty<QName> f : functionalComponent.getProperties())
 		{
@@ -2040,7 +2018,7 @@ public class SBOLReader
 		String elements 	   = null;
 		URI encoding 		   = null;
 		URI wasDerivedFrom 	   = null;
-		List<Annotation> annotations = new ArrayList<Annotation>();
+		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{

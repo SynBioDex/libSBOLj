@@ -26,14 +26,14 @@ public class Module extends Documented {
 	public Module(URI identity, URI moduleDefinition) {
 		super(identity);
 		setDefinition(moduleDefinition);
-		this.mapsTos = new HashMap<URI, MapsTo>();
+		this.mapsTos = new HashMap<>();
 	}
 	
 	private Module(Module module) {
 		super(module);
 		this.setDefinition(module.getDefinitionURI());
 		if (!module.getMapsTos().isEmpty()) {
-			List<MapsTo> mappings = new ArrayList<MapsTo>();
+			List<MapsTo> mappings = new ArrayList<>();
 			for (MapsTo mapping : module.getMapsTos()) {
 				mappings.add(mapping.deepCopy());
 			}
@@ -57,7 +57,6 @@ public class Module extends Documented {
 
 	/**
 	 * Sets field variable <code>instantiatedModule</code> to the specified element.
-	 * @param definitionURI
 	 */
 	public void setDefinition(URI definitionURI) {
 		if (definitionURI==null) {
@@ -86,11 +85,7 @@ public class Module extends Documented {
 	/**
 	 * Calls the MapsTo constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of MapsTo instances owned by this component.
-	 * @param identity
-	 * @param refinement
-	 * @param local
-	 * @param remote
-	 * @return the created MapsTo instance. 
+	 * @return the created MapsTo instance.
 	 */
 	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
@@ -99,14 +94,6 @@ public class Module extends Documented {
 		return mapping;
 	}
 	
-	/**
-	 * @param displayId
-	 * @param version
-	 * @param refinement
-	 * @param local
-	 * @param remote
-	 * @return
-	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		String version = this.getVersion();
@@ -116,8 +103,6 @@ public class Module extends Documented {
 	
 	/**
 	 * Adds the specified instance to the list of references. 
-	 * @param mapsTo
-	 * @return
 	 */
 	public void addMapsTo(MapsTo mapsTo) {
 		if (sbolDocument.isComplete()) {
@@ -138,7 +123,6 @@ public class Module extends Documented {
 	
 	/**
 	 * Removes the instance matching the specified URI from the list of references if present.
-	 * @param referenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo removeMapsTo(URI referenceURI) {
@@ -147,7 +131,6 @@ public class Module extends Documented {
 	
 	/**
 	 * Returns the instance matching the specified URI from the list of references if present.
-	 * @param referenceURI
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo getMapsTo(URI referenceURI) {
@@ -159,7 +142,7 @@ public class Module extends Documented {
 	 * @return the list of reference instances owned by this instance.
 	 */
 	public Set<MapsTo> getMapsTos() {
-		return new HashSet<MapsTo>(mapsTos.values());
+		return new HashSet<>(mapsTos.values());
 	}
 	
 	/**
@@ -174,7 +157,6 @@ public class Module extends Documented {
 		
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @param mappings
 	 */
 	public void setMapsTos(
 			List<MapsTo> mappings) {
@@ -226,9 +208,6 @@ public class Module extends Documented {
 	/**
 	 * Assume this Module object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ModuleDefinition#copy(String, String, String)}.
-	 * @param URIprefix
-	 * @param parentDisplayId
-	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
 		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 1); // 1 indicates that this object is a child of a top-level object.
