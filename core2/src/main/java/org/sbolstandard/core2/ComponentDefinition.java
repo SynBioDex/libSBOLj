@@ -93,6 +93,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @return <code>true</code> if this set contained the specified element
 	 */
 	public boolean removeType(URI typeURI) {
+		if (types.size()==1 && types.contains(typeURI)) {
+			throw new IllegalArgumentException("Component definition " + this.getIdentity() + " must have at least one type.");
+		}
 		return types.remove(typeURI);
 	}
 	
@@ -160,6 +163,7 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public void setRoles(Set<URI> roles) {
 		clearRoles();
+		if (roles==null) return;
 		for (URI role : roles) {
 			addRole(role);
 		}
@@ -494,12 +498,12 @@ public class ComponentDefinition extends TopLevel {
 	public void addSequenceConstraint(SequenceConstraint sequenceConstraint) {
 		sequenceConstraint.setSBOLDocument(this.sbolDocument);
 		sequenceConstraint.setComponentDefinition(this);
-		if (sbolDocument.isComplete()) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sequenceConstraint.getSubject()==null) {
 				throw new IllegalArgumentException("Component '" + sequenceConstraint.getSubjectURI() + "' does not exist.");
 			}
 		}
-		if (sbolDocument.isComplete()) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sequenceConstraint.getObject()==null) {
 				throw new IllegalArgumentException("Component '" + sequenceConstraint.getObjectURI() + "' does not exist.");
 			}

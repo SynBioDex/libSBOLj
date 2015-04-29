@@ -96,6 +96,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public void setRoles(Set<URI> roles) {
 		clearRoles();
+		if (roles==null) return;
 		for (URI role : roles) {
 			addRole(role);
 		}
@@ -219,12 +220,11 @@ public class ModuleDefinition extends TopLevel {
 	 * Clears the existing list of subModule instances, then appends all of the elements in the specified collection to the end of this list.
 	 * @param subModules
 	 */
-	public void setModules(
-			List<Module> subModules) {
-		if(!getModules().isEmpty())
-			clearModules();		
-		for (Module subModule : subModules) {
-			addModule(subModule);
+	public void setModules(List<Module> modules) {
+		clearModules();
+		if (modules==null) return;
+		for (Module module : modules) {
+			addModule(module);
 		}
 	}
 	
@@ -317,7 +317,8 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public void setInteractions(
 			List<Interaction> interactions) {
-		clearInteractions();		
+		clearInteractions();	
+		if (interactions==null) return;
 		for (Interaction interaction : interactions) {
 			addInteraction(interaction);
 		}
@@ -419,7 +420,8 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public void setFunctionalComponents(
 			List<FunctionalComponent> components) {
-		clearComponents();		
+		clearComponents();	
+		if (components==null) return;
 		for (FunctionalComponent component : components) {
 			addFunctionalComponent(component);
 		}
@@ -484,9 +486,10 @@ public class ModuleDefinition extends TopLevel {
 	 * @param models
 	 */
 	public void setModels(Set<URI> models) {
-		clearRoles();
+		clearModels();
+		if (models==null) return;
 		for (URI model : models) {
-			addRole(model);
+			addModel(model);
 		}
 	}
 	

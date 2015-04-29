@@ -37,6 +37,9 @@ public class Cut extends Location{
 	 * @param at
 	 */
 	public void setAt(int at) {
+		if (at<0) {
+			throw new IllegalArgumentException("Cut "+this.getIdentity()+" must have a value greater than or equal to zero.");
+		}
 		this.at = at;
 	}
 	

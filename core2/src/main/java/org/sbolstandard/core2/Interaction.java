@@ -29,6 +29,7 @@ public class Interaction extends Documented {
 	 */
 	public Interaction(URI identity, Set<URI> type) {
 		super(identity);
+		this.types = new HashSet<URI>(); 
 		setTypes(type);
 		this.participations = new HashMap<URI, Participation>(); 
 	}
@@ -63,6 +64,9 @@ public class Interaction extends Documented {
 	 * @return <code>true<code> if this set contained the specified element
 	 */
 	public boolean removeType(URI typeURI) {
+		if (types.size()==1 && types.contains(typeURI)) {
+			throw new IllegalArgumentException("Interaction " + this.getIdentity() + " must have at least one type.");
+		}
 		return types.remove(typeURI);
 	}
 	
@@ -70,8 +74,14 @@ public class Interaction extends Documented {
 	 * Sets the field variable <code>type</code> to the specified element.
 	 * @param type
 	 */
-	public void setTypes(Set<URI> type) {
-		this.types = type;
+	public void setTypes(Set<URI> types) {
+		if (types==null || types.size()==0) {
+			throw new IllegalArgumentException("Interaction " + this.getIdentity() + " must have at least one type.");
+		}
+		clearTypes();
+		for (URI type : types) {
+			addType(type);
+		}
 	}
 	
 	/**
@@ -94,7 +104,7 @@ public class Interaction extends Documented {
 	 * Removes all entries of the list of <code>type</code> instances owned by this instance. 
 	 * The list will be empty after this call returns.
 	 */
-	public void clearTypes() {
+	void clearTypes() {
 		types.clear();
 	}
 	

@@ -42,6 +42,9 @@ public class Model extends TopLevel {
 	 * @param source
 	 */
 	public void setSource(URI source) {
+		if (source==null) {
+			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a source location.");
+		}
 		this.source = source;
 	}
 
@@ -58,6 +61,9 @@ public class Model extends TopLevel {
 	 * @param language
 	 */
 	public void setLanguage(URI language) {
+		if (language==null) {
+			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a language.");
+		}
 		this.language = language;
 	}
 
@@ -74,6 +80,9 @@ public class Model extends TopLevel {
 	 * @param framework
 	 */
 	public void setFramework(URI framework) {
+		if (framework==null) {
+			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a framework.");
+		}
 		this.framework = framework;
 	}
 

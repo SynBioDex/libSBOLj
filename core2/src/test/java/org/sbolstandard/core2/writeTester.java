@@ -471,7 +471,7 @@ public class writeTester {
 				cd,
 				getData("p2_structAnnotate"),
 				get_T(cd),
-				0, 10,
+				1, 10,
 				"p2_structAnnotate_range");
 	}
 

@@ -40,6 +40,9 @@ public class Sequence extends TopLevel{
 	 * @param elements
 	 */
 	public void setElements(String elements) {
+		if (elements == null) {
+			throw new IllegalArgumentException("Sequence is required to have elements.");
+		}
 		this.elements = elements;
 	}
 	
@@ -56,6 +59,9 @@ public class Sequence extends TopLevel{
 	 * @param encoding
 	 */
 	public void setEncoding(URI encoding) {
+		if (elements == null) {
+			throw new IllegalArgumentException("Sequence is required to have an encoding.");
+		}
 		this.encoding = encoding;
 	}
 	

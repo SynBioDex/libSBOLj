@@ -136,6 +136,9 @@ public abstract class ComponentInstance extends Documented {
 	 * @param access
 	 */
 	public void setAccess(AccessType access) {
+		if (access==null) {
+			throw new IllegalArgumentException("Not a valid access type.");
+		}
 		this.access = access;
 	}
 	
@@ -144,14 +147,13 @@ public abstract class ComponentInstance extends Documented {
 	 * @param access
 	 */
 	public void setAccess(URI access) {
-		if (access.equals(Access.PUBLIC)) {
+		if (access != null && access.equals(Access.PUBLIC)) {
 			this.access = AccessType.PUBLIC;
-		} else if (access.equals(Access.PRIVATE)) {
+		} else if (access != null && access.equals(Access.PRIVATE)) {
 			this.access = AccessType.PRIVATE;
 		}
 		else {
-			// TODO: Validation?
-			this.access = null;
+			throw new IllegalArgumentException("Not a valid access type.");
 		}
 	}
 
@@ -273,6 +275,14 @@ public abstract class ComponentInstance extends Documented {
 	 * @param definitionURI
 	 */
 	public void setDefinition(URI definition) {
+		if (definition==null) {
+			throw new IllegalArgumentException("Component "+this.getIdentity()+" must have a definition.");
+		}
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (sbolDocument.getComponentDefinition(definition)==null) {
+				throw new IllegalArgumentException("Component definition '" + definition + "' does not exist.");
+			}
+		}
 		this.definition = definition;
 	}
 

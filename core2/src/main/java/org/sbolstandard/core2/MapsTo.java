@@ -151,17 +151,19 @@ public class MapsTo extends Identified{
 	 * @param refinement
 	 */
 	public void setRefinement(URI refinement) {
-		if (refinement.equals(Refinement.merge)) {
+		if (refinement != null && refinement.equals(Refinement.merge)) {
 			this.refinement = RefinementType.MERGE;
 		}
-		else if (refinement.equals(Refinement.useLocal)) {
+		else if (refinement != null && refinement.equals(Refinement.useLocal)) {
 			this.refinement = RefinementType.USELOCAL;
 		}
-		else if (refinement.equals(Refinement.useRemote)) {
+		else if (refinement != null && refinement.equals(Refinement.useRemote)) {
 			this.refinement = RefinementType.USEREMOTE;
 		}
-		else if (refinement.equals(Refinement.verifyIdentical)) {
+		else if (refinement != null && refinement.equals(Refinement.verifyIdentical)) {
 			this.refinement = RefinementType.VERIFYIDENTICAL;
+		} else {
+			throw new IllegalArgumentException("Not a valid refinement type.");
 		}
 	}
 
@@ -183,6 +185,14 @@ public class MapsTo extends Identified{
 	 * @param local
 	 */
 	public void setLocal(URI local) {
+		if (local==null) {
+			throw new IllegalArgumentException("MapsTo "+this.getIdentity()+" must specify a local component.");
+		}
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (moduleDefinition.getFunctionalComponent(local)==null) {
+				throw new IllegalArgumentException("Functional Component '" + local + "' does not exist.");
+			}
+		}
 		this.local = local;
 	}
 
@@ -205,6 +215,14 @@ public class MapsTo extends Identified{
 	 * @param remote
 	 */
 	public void setRemote(URI remote) {
+		if (local==null) {
+			throw new IllegalArgumentException("MapsTo "+this.getIdentity()+" must specify a remote component.");
+		}
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (module.getDefinition().getFunctionalComponent(remote)==null) {
+				throw new IllegalArgumentException("Functional Component '" + remote + "' does not exist.");
+			}
+		}
 		this.remote = remote;
 	}
 

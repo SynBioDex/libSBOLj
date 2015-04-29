@@ -53,6 +53,14 @@ public class Participation extends Identified {
 	 * @param participant
 	 */
 	public void setParticipant(URI participant) {
+		if (participant == null) {
+			throw new IllegalArgumentException("Participation is required to have a participant.");
+		}
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participant)==null) {
+				throw new IllegalArgumentException("Functional component '" + participant + "' does not exist.");
+			}
+		}
 		this.participant = participant;
 	}
 	
@@ -79,7 +87,11 @@ public class Participation extends Identified {
 	 * @param roles
 	 */
 	public void setRoles(Set<URI> roles) {
-		this.roles = roles;
+		clearRoles();
+		if (roles==null) return;
+		for (URI role : roles) {
+			addRole(role);
+		}
 	}
 	
 	/**

@@ -56,6 +56,9 @@ public class SequenceAnnotation extends Documented {
 	 * @param location
 	 */
 	public void setLocation(Location location) {
+		if (location==null) {
+			throw new IllegalArgumentException("Sequence annotation "+this.getIdentity()+" must have a location.");
+		}
 		this.location = location;
 	}	
 	

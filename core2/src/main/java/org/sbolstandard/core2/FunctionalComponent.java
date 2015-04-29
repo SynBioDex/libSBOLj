@@ -131,6 +131,9 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @param direction
 	 */
 	public void setDirection(DirectionType direction) {
+		if (direction==null) {
+			throw new IllegalArgumentException("Not a valid access type.");
+		}
 		this.direction = direction;
 	}
 
@@ -141,17 +144,16 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @param direction
 	 */
 	public void setDirection(URI direction) {
-		if (direction.equals(Direction.input)) {
+		if (direction != null && direction.equals(Direction.input)) {
 			this.direction = DirectionType.INPUT;
-		} else if (direction.equals(Direction.output)) {
+		} else if (direction != null && direction.equals(Direction.output)) {
 			this.direction = DirectionType.OUTPUT;
-		} else if (direction.equals(Direction.inout)) {
+		} else if (direction != null && direction.equals(Direction.inout)) {
 			this.direction = DirectionType.INOUT;
-		} else if (direction.equals(Direction.none)) {
+		} else if (direction != null && direction.equals(Direction.none)) {
 			this.direction = DirectionType.NONE;
 		} else {
-			// TODO: Validation?
-			this.direction = null;
+			throw new IllegalArgumentException("Not a valid access type.");
 		}
 	}
 

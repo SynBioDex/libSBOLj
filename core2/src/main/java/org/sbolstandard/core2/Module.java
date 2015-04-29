@@ -60,6 +60,14 @@ public class Module extends Documented {
 	 * @param definitionURI
 	 */
 	public void setDefinition(URI definitionURI) {
+		if (definitionURI==null) {
+			throw new IllegalArgumentException("Module "+this.getIdentity()+" must have a definition.");
+		}
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (sbolDocument.getModuleDefinition(definitionURI)==null) {
+				throw new IllegalArgumentException("Module definition '" + definition + "' does not exist.");
+			}
+		}
 		this.definition = definitionURI;
 	}
 	

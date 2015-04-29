@@ -8,20 +8,20 @@ import org.sbolstandard.core2.Sbol2Terms.Orientation;
 
 public class Range extends Location{
 	
-	private int start;
-	private int end;
+	private int start = 0;
+	private int end = 0;
 	private OrientationType orientation;
 	
 	public Range(URI identity, int start, int end) {
 		super(identity);
-		setStart(start);
 		setEnd(end);
+		setStart(start);
 	}
 	
 	private Range(Range range) {
 		super(range);
-		this.setStart(range.getStart());
 		this.setEnd(range.getEnd());
+		this.setStart(range.getStart());
 		this.setOrientation(range.getOrientation());
 	}
 
@@ -31,6 +31,12 @@ public class Range extends Location{
 	 * @param value
 	 */
 	public void setStart(int value) {
+		if (value<=0) {
+			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have a start greater than zero.");
+		}
+		if (value > end) {
+			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have a start before the end.");
+		}
 		start = value;		
 	}
 	
@@ -55,6 +61,12 @@ public class Range extends Location{
 	 * @param value
 	 */
 	public void setEnd(int value) {
+		if (value<=0) {
+			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have an end greater than zero.");
+		}
+		if (value < start) {
+			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have a start before the end.");
+		}
 		end = value;
 	}
 	

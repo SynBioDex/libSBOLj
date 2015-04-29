@@ -123,12 +123,11 @@ public class SequenceConstraint extends Identified {
 	 * @param restriction
 	 */
 	public void setRestriction(URI restriction) {
-		if (restriction.equals(Restriction.precedes)) {
+		if (restriction!=null && restriction.equals(Restriction.precedes)) {
 			this.restriction = RestrictionType.PRECEDES;
 		}
 		else {
-			// TODO: Validation?
-			this.restriction = null;
+			throw new IllegalArgumentException("Not a valid restriction type.");
 		}
 	}
 
@@ -154,6 +153,14 @@ public class SequenceConstraint extends Identified {
 	 * @param subject
 	 */
 	public void setSubject(URI subject) {
+		if (componentDefinition != null && sbolDocument.isComplete()) {
+			if (componentDefinition.getComponent(subject)==null) {
+				throw new IllegalArgumentException("Component '" + subject + "' does not exist.");
+			}
+		}
+		if (subject==null) {
+			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have a subject.");
+		}
 		this.subject = subject;
 	}
 
@@ -179,6 +186,14 @@ public class SequenceConstraint extends Identified {
 	 * @param object
 	 */
 	public void setObject(URI object) {
+		if (componentDefinition != null && sbolDocument.isComplete()) {
+			if (componentDefinition.getComponent(object)==null) {
+				throw new IllegalArgumentException("Component '" + object + "' does not exist.");
+			}
+		}
+		if (object==null) {
+			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have an object.");
+		}
 		this.object = object;
 	}
 	

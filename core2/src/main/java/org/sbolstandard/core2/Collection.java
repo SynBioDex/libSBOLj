@@ -53,7 +53,6 @@ public class Collection extends TopLevel{
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeMember(URI memberURI) {
-		// TODO: Need to check if the set of members' URIs is empty. 
 		return members.remove(memberURI);
 	}
 	

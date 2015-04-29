@@ -79,9 +79,13 @@ public abstract class Identified {
 
 	/**
 	 * Sets field variable <code>identity</code> to the specified element.
-	 * @param identity
+	 * @param identity URI for the specified element.
+	 * @throws IllegalArgumentException when identity URI is null.
 	 */
 	public final void setIdentity(URI identity) {
+		if (identity == null) {
+			throw new IllegalArgumentException("Identity is a required field.");
+		}
 		this.identity = identity;
 	}
 
