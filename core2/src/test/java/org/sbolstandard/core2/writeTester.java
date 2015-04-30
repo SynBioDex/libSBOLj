@@ -259,25 +259,25 @@ public class writeTester {
 				get_tetR(SBOL2Doc_test));
 	}
 
-	private static void get_p_sequenceAnnotate (ComponentDefinition cd)
-	{
-		createSequenceAnnotationData(
-				cd,
-				getData("p_structAnnotate"),
-				get_P(cd),
-				0, 10,
-				null);
-	}
+//	private static void get_p_sequenceAnnotate (ComponentDefinition cd)
+//	{
+//		createSequenceAnnotationData(
+//				cd,
+//				getData("p_structAnnotate"),
+//				get_P(cd),
+//				0, 10,
+//				null);
+//	}
 
-	private static void get_c_sequenceAnnotate (ComponentDefinition cd)
-	{
-		createSequenceAnnotationData(
-				cd,
-				getData("p_structAnnotate"),
-				get_P(cd),
-				11, 20,
-				null);
-	}
+//	private static void get_c_sequenceAnnotate (ComponentDefinition cd)
+//	{
+//		createSequenceAnnotationData(
+//				cd,
+//				getData("p_structAnnotate"),
+//				get_P(cd),
+//				11, 20,
+//				null);
+//	}
 
 	private static SequenceConstraint get_struct_constraint (ComponentDefinition cd)
 	{

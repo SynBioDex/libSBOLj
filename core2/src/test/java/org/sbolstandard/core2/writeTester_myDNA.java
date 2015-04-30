@@ -15,8 +15,8 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
 public class writeTester_myDNA {
 
 	public static void main(String[] args) {
-		//		SBOLDocument SBOL2Doc_test = new SBOLDocument();
-		//		get_myDNA(SBOL2Doc_test);
+				SBOLDocument SBOL2Doc_test = new SBOLDocument();
+				get_myDNA(SBOL2Doc_test);
 		//		SBOLWriter.write(SBOL2Doc_test,(System.out));
 	}
 

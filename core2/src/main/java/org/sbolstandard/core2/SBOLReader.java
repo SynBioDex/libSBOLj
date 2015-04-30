@@ -92,8 +92,8 @@ public class SBOLReader
 	 */
 	public static SBOLDocument read(String fileName) throws Throwable
 	{
-		FileInputStream fis 	 = new FileInputStream(fileName);
-		String inputStreamString = new Scanner(fis, "UTF-8").useDelimiter("\\A").next();
+		//FileInputStream fis 	 = new FileInputStream(fileName);
+		//String inputStreamString = new Scanner(fis, "UTF-8").useDelimiter("\\A").next();
 		return readRDF(new File(fileName));
 	}
 
@@ -176,7 +176,8 @@ public class SBOLReader
 	 */
 	public static SBOLDocument readJSON(InputStream in)
 	{
-		String inputStreamString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
+		Scanner scanner = new Scanner(in, "UTF-8");
+		String inputStreamString = scanner.useDelimiter("\\A").next();
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		try
 		{
@@ -186,6 +187,7 @@ public class SBOLReader
 			{
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
+					scanner.close();
 					return readRDFV1(in, document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
@@ -197,9 +199,10 @@ public class SBOLReader
 		}
 		catch (Exception e)
 		{
+			scanner.close();
 			e.printStackTrace();
 		}
-
+		scanner.close();
 		return SBOLDoc;
 	}
 
@@ -208,7 +211,8 @@ public class SBOLReader
 	 */
 	public static SBOLDocument read(InputStream in)
 	{
-		String inputStreamString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
+		Scanner scanner = new Scanner(in, "UTF-8");
+		String inputStreamString = scanner.useDelimiter("\\A").next();
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		try
 		{
@@ -218,6 +222,7 @@ public class SBOLReader
 			{
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
+					scanner.close();
 					return readRDFV1(in, document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
@@ -229,9 +234,11 @@ public class SBOLReader
 		}
 		catch (Exception e)
 		{
+			scanner.close();
 			e.printStackTrace();
 		}
 
+		scanner.close();
 		return SBOLDoc;
 	}
 
@@ -240,7 +247,8 @@ public class SBOLReader
 	 */
 	public static SBOLDocument readRDF(InputStream in)
 	{
-		String inputStreamString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
+		Scanner scanner = new Scanner(in, "UTF-8");
+		String inputStreamString = scanner.useDelimiter("\\A").next();
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 
 		try
@@ -250,6 +258,7 @@ public class SBOLReader
 			{
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
+					scanner.close();
 					return readRDFV1(in, document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
@@ -259,9 +268,10 @@ public class SBOLReader
 		}
 		catch (Exception e)
 		{
+			scanner.close();
 			e.printStackTrace();
 		}
-
+		scanner.close();
 		return SBOLDoc;
 	}
 
@@ -270,7 +280,8 @@ public class SBOLReader
 	 */
 	public static SBOLDocument readTurtle(InputStream in)
 	{
-		String inputStreamString = new Scanner(in, "UTF-8").useDelimiter("\\A").next();
+		Scanner scanner = new Scanner(in, "UTF-8");
+		String inputStreamString = scanner.useDelimiter("\\A").next();
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 
 		try
@@ -280,6 +291,7 @@ public class SBOLReader
 			{
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
+					scanner.close();
 					return readRDFV1(in, document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
@@ -290,9 +302,11 @@ public class SBOLReader
 		}
 		catch (Exception e)
 		{
+			scanner.close();
 			e.printStackTrace();
 		}
 
+		scanner.close();
 		return SBOLDoc;
 	}
 
@@ -2095,6 +2109,7 @@ public class SBOLReader
 		return timestamp;
 	}*/
 
+	/*
 	private static URI getParentURI(URI identity)
 	{
 		String regex       = ".*[/]\\d+[/]\\d+";
@@ -2114,4 +2129,5 @@ public class SBOLReader
 
 		return URI.create(identity_str);
 	}
+	*/
 }

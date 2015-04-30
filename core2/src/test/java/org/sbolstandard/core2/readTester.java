@@ -34,8 +34,8 @@ public class readTester {
 			//			SBOLDocument document2 = SBOLReader.readJson(filenameJson);
 			//			SBOLDocument document3 = SBOLReader.readTurtle(filenameTurtle);
 
-			//			SBOLWriter.writeRdf(document,(System.out));
-			SBOLWriter.writeRDF(SBOLTestUtils.writeAndRead(document1),(System.out));
+			SBOLWriter.writeRDF(document1,(System.out));
+			//SBOLWriter.writeRDF(SBOLTestUtils.writeAndRead(document1),(System.out));
 			
 			//			SBOLWriter.writeJson(document2,(System.out));
 			//			SBOLWriter.writeTurtle(document3,(System.out));

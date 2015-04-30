@@ -11,7 +11,6 @@ import org.sbolstandard.core2.ComponentInstance.AccessType;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 
 import static org.sbolstandard.core2.URIcompliance.*;
-import static org.sbolstandard.core2.Version.*;
 
 /**
  * @author Zhen Zhang
@@ -595,18 +594,18 @@ public class ModuleDefinition extends TopLevel {
 	 * constructs a set of key sets for other hash maps first, and then checks if the key exists.
 	 * @return <code>true</code> if the specified key exists in other hash maps.
 	 */
-	private boolean keyExistsInOtherMaps(Set<URI> keySet, URI key) {
-		Set<Set<URI>> complementSet = new HashSet<>();
-		complementSet.add(functionalComponents.keySet());
-		complementSet.add(interactions.keySet());		
-		complementSet.remove(keySet);
-		for (Set<URI> otherKeySet : complementSet) {
-			if (otherKeySet.contains(key)) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	private boolean keyExistsInOtherMaps(Set<URI> keySet, URI key) {
+//		Set<Set<URI>> complementSet = new HashSet<>();
+//		complementSet.add(functionalComponents.keySet());
+//		complementSet.add(interactions.keySet());		
+//		complementSet.remove(keySet);
+//		for (Set<URI> otherKeySet : complementSet) {
+//			if (otherKeySet.contains(key)) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)

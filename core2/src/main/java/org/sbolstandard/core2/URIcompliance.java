@@ -362,6 +362,7 @@ final class URIcompliance {
 
 	public static final String greatGrandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){4}" + versionPattern;
 
+	@SafeVarargs
 	public static boolean keyExistsInAnyMap(URI key, Map<URI, ?>... maps) {
 		for(Map<URI, ?> map : maps) {
 			if(map.keySet().contains(key))
