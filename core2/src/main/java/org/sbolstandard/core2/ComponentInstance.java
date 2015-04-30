@@ -81,11 +81,13 @@ public abstract class ComponentInstance extends Documented {
 		setAccess(access);
 		setDefinition(definition);		
 		this.mapsTos = new HashMap<>();
+		/*
 		if (isURIcompliant(identity, 1)) {
 			this.setVersion(extractVersion(identity));
 			this.setDisplayId(extractDisplayId(identity, 0));
 			this.setPersistentIdentity(URI.create(extractPersistentId(identity)));
 		}
+		*/
 	}
 	
 	protected ComponentInstance(ComponentInstance component) {

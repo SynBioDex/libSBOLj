@@ -34,6 +34,8 @@ public class writeTester {
 
 	private static String TurtleString = "writeTesterString_v1.3.ttl";
 	private static String TurtleFile   = "writeTesterFile_v1.3.ttl";
+	
+	private static String version = "1.0";
 
 	//private static String  fileName   = "single_singleCollection.rdf";
 
@@ -165,13 +167,13 @@ public class writeTester {
 
 	private static Collection get_myParts (SBOLDocument SBOL2Doc_test)
 	{
-		SBOL2Doc_test.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		SBOL2Doc_test.setDefaultURIprefix("http://www.async.ece.utah.edu/myParts");
 		SBOL2Doc_test.setComplete(true);
 		SBOL2Doc_test.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
 		SBOL2Doc_test.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 
 		Collection myParts = createCollection(SBOL2Doc_test,
-				getData("myParts", "1.0"),
+				getData("myParts", version),
 				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
 
 		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
@@ -203,27 +205,27 @@ public class writeTester {
 	private static Identified get_topLevel (SBOLDocument SBOL2Doc_test)
 	{
 
-		return createTopLevel(SBOL2Doc_test, getData("GenericTopLevel","1.0"));
+		return createTopLevel(SBOL2Doc_test, getData("GenericTopLevel",version));
 	}
 
 	private static Sequence get_pLacSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("pLacSeq","1.0","pLacSeq_element"),
+				getData("pLacSeq",version,"pLacSeq_element"),
 				getPropertyURI("property"));
 	}
 
 	private static Sequence get_tetRSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("tetRSeq","1.0","tetRSeq_element"),
+				getData("tetRSeq",version,"tetRSeq_element"),
 				getPropertyURI("property"));
 	}
 
 	private static Sequence get_pLactetRSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("pLactetRSeq","1.0","pLactetRSeq_element"),
+				getData("pLactetRSeq",version,"pLactetRSeq_element"),
 				getPropertyURI("property"));
 	}
 
@@ -232,7 +234,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Promoter"),
-				getData("pLac","1.0"),
+				getData("pLac",version),
 				get_pLacSeq(SBOL2Doc_test));
 	}
 
@@ -241,7 +243,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("CDS"),
-				getData("tetRCDS","1.0"),
+				getData("tetRCDS",version),
 				get_tetRSeq(SBOL2Doc_test));
 	}
 
@@ -294,7 +296,7 @@ public class writeTester {
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Gene"),
-				getData("pLactetR","1.0"),
+				getData("pLactetR",version),
 				get_pLactetRSeq(SBOL2Doc_test));
 		get_P(cd);
 		get_C(cd);
@@ -307,7 +309,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("Protein"),
 				getSetPropertyURI("Transcriptionfactor"),
-				getData("LacI","1.0"),
+				getData("LacI",version),
 				null);
 	}
 
@@ -316,7 +318,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("Protein"),
 				getSetPropertyURI("Transcriptionfactor"),
-				getData("TetR","1.0"),
+				getData("TetR",version),
 				null);
 	}
 
@@ -399,7 +401,7 @@ public class writeTester {
 		ModuleDefinition md = createModuleDefinitionData(SBOL2Doc_test,
 				getSetOfURI("Inverter"),
 				getSetPropertyURI("Inverter"),
-				getData("LacI_Inv","1.0"));
+				getData("LacI_Inv",version));
 		get_LacIIn(SBOL2Doc_test,md);
 		get_TetROut(SBOL2Doc_test,md);
 		get_LacIInv(SBOL2Doc_test,md);
@@ -415,21 +417,21 @@ public class writeTester {
 	private static Sequence get_ptetSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("ptetSeq","1.0","ptetSeq_element"),
+				getData("ptetSeq",version,"ptetSeq_element"),
 				getPropertyURI("encoding"));
 	}
 
 	private static Sequence get_lacISeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("lacISeq","1.0","lacISeq_element"),
+				getData("lacISeq",version,"lacISeq_element"),
 				getPropertyURI("encoding"));
 	}
 
 	private static Sequence get_ptetlacISeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("ptetlacISeq","1.0","ptetlacISeq_element"),
+				getData("ptetlacISeq",version,"ptetlacISeq_element"),
 				getPropertyURI("encoding"));
 	}
 
@@ -438,7 +440,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Promoter"),
-				getData("ptet","1.0"),
+				getData("ptet",version),
 				get_ptetSeq(SBOL2Doc_test));
 	}
 
@@ -447,7 +449,7 @@ public class writeTester {
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("CDS"),
-				getData("lacICDS","1.0"),
+				getData("lacICDS",version),
 				get_lacISeq(SBOL2Doc_test));
 	}
 
@@ -490,7 +492,7 @@ public class writeTester {
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Gene"),
-				getData("ptetlacI","1.0"),
+				getData("ptetlacI",version),
 				get_ptetlacISeq(SBOL2Doc_test));
 		get_T(cd); 
 		get_L(cd);
@@ -580,7 +582,7 @@ public class writeTester {
 		ModuleDefinition md = createModuleDefinitionData(SBOL2Doc_test,
 				getSetOfURI("Inverter"),
 				getSetPropertyURI("Inverter"),
-				getData("TetR_Inv","1.0"));
+				getData("TetR_Inv",version));
 		get_TetRIn(SBOL2Doc_test,md);
 		get_LacIOut(SBOL2Doc_test,md);
 		get_TetRInv(SBOL2Doc_test,md);
@@ -634,7 +636,7 @@ public class writeTester {
 	private static Model get_ToggleModel(SBOLDocument SBOL2Doc_test)
 	{
 		Model m = createModelData(SBOL2Doc_test,
-				getData("ToggleModel","1.0"),
+				getData("ToggleModel",version),
 				getSetPropertyURI("ToggleModel_role"),
 				getPropertyURI("ToggleModel_source"), getPropertyURI("ToggleModel_language"), getPropertyURI("ToggleModel_framework"));
 		return m;
@@ -645,7 +647,7 @@ public class writeTester {
 		ModuleDefinition md = createModuleDefinitionData(SBOL2Doc_test,
 				getSetOfURI("Toggle_type"),
 				getSetPropertyURI("Toggle_role"),
-				getData("Toggle","1.0"));
+				getData("Toggle",version));
 		get_LacISp(SBOL2Doc_test,md);
 		get_TetRSp(SBOL2Doc_test,md);
 		get_Inv1(SBOL2Doc_test,md);
@@ -708,7 +710,9 @@ public class writeTester {
 		String displayId 	   = componentData.get(0);
 		String version 		   = componentData.get(1);
 		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevelTypes.componentDefinition
-				+ "/" + displayId + "/" + version;
+				+ "/" + displayId;
+		if (version!=null && !version.equals("")) 
+			identity += "/" + version;
 
 		ComponentDefinition c = SBOL2Doc_test.getComponentDefinition(URI.create(identity));
 		if (c==null) {
@@ -745,8 +749,11 @@ public class writeTester {
 		else if(functionalInstantiation_data.get(2).equals("none"))
 			direction = DirectionType.NONE;
 
+		String identity = md.getPersistentIdentity()+"/"+displayId;
+		if (md.isSetVersion()) 
+			identity += "/" + md.getVersion();
 		URI instantiatedComponent = c.getIdentity();
-		FunctionalComponent f = md.getFunctionalComponent(URI.create(md.getPersistentIdentity()+"/"+displayId));
+		FunctionalComponent f = md.getFunctionalComponent(URI.create(identity));
 		if (f==null) {
 			f = md.createFunctionalComponent(displayId, access, instantiatedComponent, 
 					direction);
@@ -762,7 +769,10 @@ public class writeTester {
 			Set<URI> type)
 	{
 		String displayId 	   = interaction_data.get(0);
-		Interaction interaction = md.getInteraction(URI.create(md.getPersistentIdentity()+"/"+displayId));
+		String identity = md.getPersistentIdentity()+"/"+displayId;
+		if (md.isSetVersion()) 
+			identity += "/" + md.getVersion();
+		Interaction interaction = md.getInteraction(URI.create(identity));
 		if (interaction==null) {
 			interaction = md.createInteraction(displayId, type);
 			setCommonDocumentedData(interaction, displayId, displayId);
@@ -788,7 +798,9 @@ public class writeTester {
 		String displayId 	   = modeldata.get(0);
 		String version 		   = modeldata.get(1);
 		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevelTypes.model + "/" + 
-				displayId+"/"+version;
+				displayId;
+		if (version!=null && !version.equals("")) 
+			identity += "/" + version;
 		// Model model = doc.createModel(identity, source, language, framework, roles);
 		Model model = doc.getModel(URI.create(identity));
 		if (model==null) {
@@ -805,7 +817,9 @@ public class writeTester {
 		String displayId 	   = module_data.get(0);
 		String version 		   = module_data.get(1);
 		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevelTypes.moduleDefinition + "/" 
-				+ displayId+"/"+version;
+				+ displayId;
+		if (version!=null && !version.equals("")) 
+			identity += "/" + version;
 
 		ModuleDefinition m = SBOL2Doc_test.getModuleDefinition(URI.create(identity));
 		if (m==null) {
@@ -851,7 +865,10 @@ public class writeTester {
 		Range r = new Range(locationURI, startRange, endRange);
 		r.setOrientation(Sbol2Terms.Orientation.inline);
 		Location location 	   = r;
-		SequenceAnnotation s = cd.getSequenceAnnotation(URI.create(cd.getPersistentIdentity()+"/"+displayId+"/"+cd.getVersion()));
+		String identity = cd.getPersistentIdentity()+"/"+displayId;
+		if (cd.isSetVersion()) 
+			identity += "/" + cd.getVersion();
+		SequenceAnnotation s = cd.getSequenceAnnotation(URI.create(identity));
 		if (s==null) {
 			s = cd.createSequenceAnnotation(displayId, location);
 			setCommonDocumentedData(s, displayId, displayId);
@@ -871,7 +888,10 @@ public class writeTester {
 		URI subject 		   = pre_structInstant.getIdentity();
 		URI object 			   = post_structInstant.getIdentity();
 
-		SequenceConstraint s = cd.getSequenceConstraint(URI.create(cd.getPersistentIdentity()+"/"+displayId+"/"+cd.getVersion()));
+		String identity = cd.getPersistentIdentity()+"/"+displayId;
+		if (cd.isSetVersion()) 
+			identity += "/" + cd.getVersion();
+		SequenceConstraint s = cd.getSequenceConstraint(URI.create(identity));
 		if (s==null) {
 			s = cd.createSequenceConstraint(displayId, restriction, subject, object);
 		} 
@@ -891,8 +911,11 @@ public class writeTester {
 		else if(structuralInstantiations_data.get(1).equals("private"))
 			access = AccessType.PRIVATE;
 
+		String identity = cd.getPersistentIdentity()+"/"+displayId;
+		if (cd.isSetVersion()) 
+			identity += "/" + cd.getVersion();
 		URI instantiatedComponent = c.getIdentity();
-		Component s = cd.getComponent(URI.create(cd.getPersistentIdentity()+"/"+displayId+"/"+cd.getVersion()));
+		Component s = cd.getComponent(URI.create(identity));
 		if (s==null) {
 			s = cd.createComponent(displayId, access, instantiatedComponent);
 			setCommonDocumentedData(s, displayId, displayId);
@@ -907,7 +930,9 @@ public class writeTester {
 		String version 		   = structureData.get(1);
 		String element 		   = structureData.get(2);
 		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevelTypes.sequence + "/" + 
-				displayId+"/"+version;
+				displayId;
+		if (version!=null && !version.equals("")) 
+			identity += "/" + version;
 
 		Sequence structure = SBOL2Doc_test.getSequence(URI.create(identity));
 		if (structure==null) {

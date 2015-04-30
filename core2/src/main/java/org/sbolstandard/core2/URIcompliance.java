@@ -11,7 +11,7 @@ final class URIcompliance {
 		if (!isDisplayIdCompliant(displayId)) {
 			throw new IllegalArgumentException("Display id `" + displayId + "' is not compliant");
 		}
-		if (!isVersionCompliant(version)) {
+		if (version!=null && !version.equals("") && !isVersionCompliant(version)) {
 			throw new IllegalArgumentException("Version `" + version + "' is not compliant");
 		}
 	}
@@ -42,7 +42,7 @@ final class URIcompliance {
 		Matcher m = r.matcher(URIstr);
 
 		if (m.matches()) {
-			return m.group(1).substring(0, m.group(1).lastIndexOf('/')); // remove the '/' in the end.
+			return m.group(1);
 		}
 		else {
 			return null;
@@ -79,13 +79,16 @@ final class URIcompliance {
 			return null;
 		}
 		String URIstr = objURI.toString();
-		Pattern r = Pattern.compile(genericURIpattern2);
+		Pattern r = Pattern.compile(genericURIpattern1);
 		Matcher m = r.matcher(URIstr);
 		if (m.matches()) {
+			return m.group(4);
+			/*
 			//System.out.println("group 1: " + m.group(1));
 			String displayIds = m.group(1); // toplevelId/childId/grandChildId/grandGrandChildId/
 			String[] displayIdArray = displayIds.substring(0, displayIds.lastIndexOf('/')).split("/");
 			return displayIdArray[index];
+			*/
 		}
 		else
 			return null;
@@ -99,8 +102,8 @@ final class URIcompliance {
 		String URIstr = objURI.toString();
 		Pattern r = Pattern.compile(genericURIpattern1);
 		Matcher m = r.matcher(URIstr);
-		if (m.matches())
-			return m.group(3);
+		if (m.matches() && m.groupCount()>=6)
+			return m.group(6);
 		else
 			return null;
 	}
@@ -136,7 +139,9 @@ final class URIcompliance {
 			r = Pattern.compile(greatGrandchildURIpattern);
 		}
 		Matcher m = r.matcher(URIstr);
-		//System.out.println(URIstr + " is not compliant");
+		if (!m.matches()) {
+			System.out.println(URIstr + " is not compliant");
+		}
 // TODO: Warning: top-level URI is not compliant.
 		return m.matches();
 	}
@@ -254,6 +259,17 @@ final class URIcompliance {
 	}
 
 	public static final boolean isChildURIcompliant(URI parentURI, URI childURI) {
+		String parentPersistentId = extractPersistentId(parentURI);
+		if (parentPersistentId==null) return false;
+		String childDisplayId = extractDisplayId(childURI,0);
+		if (childDisplayId==null) return false;
+		String parentVersion = extractVersion(parentURI);
+		if (parentVersion == null) {
+			return childURI.toString().equals(parentPersistentId+"/"+childDisplayId);
+		} else {
+			return childURI.toString().equals(parentPersistentId+"/"+childDisplayId+"/"+parentVersion);
+		}
+		/*
 		String parentURIstr = parentURI.toString();
 		Pattern URIpattern = Pattern.compile(genericURIpattern1);
 		Matcher parentMatcher = URIpattern.matcher(parentURIstr);
@@ -261,7 +277,7 @@ final class URIcompliance {
 			String childURIstr = childURI.toString();
 			Matcher childMatcher = URIpattern.matcher(childURIstr);
 			if (childMatcher.matches()) {
-				String parentPersistentId = parentMatcher.group(1).substring(0, parentMatcher.group(1).lastIndexOf('/')); // remove the '/' in the end.
+				String parentPersistentId = parentMatcher.group(1);.substring(0, parentMatcher.group(1).lastIndexOf('/')); // remove the '/' in the end.
 				String childPersistentId = childMatcher.group(1).substring(0, childMatcher.group(1).lastIndexOf('/')); // remove the '/' in the end.
 				// Extract the parent persistent ID from the child's persistent ID.
 				// Only need to remove the child's own display ID part.
@@ -311,6 +327,8 @@ final class URIcompliance {
 		//		else {
 		//			return false;
 		//		}
+		 * 
+		 */
 	}
 
 	public static boolean isDisplayIdCompliant(String newDisplayId) {
@@ -338,23 +356,23 @@ final class URIcompliance {
 
 	public static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]*";//"[a-zA-Z0-9_]+";
 
-	public static final String versionPattern = "[^/]+"; // ^ and $ are the beginning and end of the string anchors respectively. 
+	public static final String versionPattern = "[0-9]+[a-zA-Z0-9_\\.-]*"; // ^ and $ are the beginning and end of the string anchors respectively. 
 															// | is used to denote alternates. 
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: persistent ID
 	// group 2: URI prefix
 	// group 3: version
-	public static final String genericURIpattern1 = "((" + URIprefixPattern + ")/(?:" + displayIDpattern + "/){1,4})(" + versionPattern + ")";
+	public static final String genericURIpattern1 = "((" + URIprefixPattern + ")(/(" + displayIDpattern + ")){1,4})(/(" + versionPattern + "))?";
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: top-level display ID
 	// group 2: top-level's child display ID
 	// group 3: top-level's grand child display ID
 	// group 4: top-level's grand grand child display ID
-	public static final String genericURIpattern2 = URIprefixPattern + "/((?:" + displayIDpattern + "/){1,4})" + versionPattern;
+	public static final String genericURIpattern2 = URIprefixPattern + "/((" + displayIDpattern + "/){1,4})" + versionPattern;
 
-	public static final String toplevelURIpattern = URIprefixPattern + "/" + displayIDpattern + "/" + versionPattern;
+	public static final String toplevelURIpattern = URIprefixPattern + "/" + displayIDpattern + "(/" + versionPattern + ")?";
 
 	public static final String childURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){2}" + versionPattern;
 
