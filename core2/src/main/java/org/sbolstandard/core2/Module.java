@@ -105,12 +105,12 @@ public class Module extends Documented {
 	 * Adds the specified instance to the list of references. 
 	 */
 	public void addMapsTo(MapsTo mapsTo) {
-		if (sbolDocument.isComplete()) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocal() + "' does not exist.");
 			}
 		}
-		if (sbolDocument.isComplete()) {
+		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI())==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getRemote() + "' does not exist.");
 			}
