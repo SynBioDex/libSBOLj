@@ -279,7 +279,7 @@ public class MapsTo extends Identified{
 	 */
 	void updateCompliantURI(String URIprefix, String grandparentDisplayId,
 			String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 2); // 2 indicates that this object is a grandchild of a top-level object.
+		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 2 indicates that this object is a grandchild of a top-level object.
 		URI newIdentity = URI.create(URIprefix + '/' + grandparentDisplayId + '/' + parentDisplayId + '/' 
 				+ thisObjDisplayId + '/' + version);
 		// TODO: need to set wasDerivedFrom here?

@@ -154,7 +154,7 @@ public class MultiRange extends Location{
 	 */
 	void updateCompliantURI(String URIprefix, String grandparentDisplayId, 
 			String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 2); // 2 indicates that this object is a grandchild of a top-level object.
+		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 2 indicates that this object is a grandchild of a top-level object.
 		URI newIdentity = URI.create(URIprefix + '/' + grandparentDisplayId + '/' + parentDisplayId + '/' 
 				+ thisObjDisplayId + '/' + version);
 		if (!this.getRanges().isEmpty()) {

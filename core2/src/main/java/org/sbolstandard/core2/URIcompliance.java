@@ -73,11 +73,7 @@ final class URIcompliance {
 	 * great grand child object's display ID.
 	 * @return the extracted display ID.
 	 */
-	public static String extractDisplayId(URI objURI, int index) {
-		if (index < 0 || index > 3) {
-			// TODO: generate error message
-			return null;
-		}
+	public static String extractDisplayId(URI objURI) {
 		String URIstr = objURI.toString();
 		Pattern r = Pattern.compile(genericURIpattern1);
 		Matcher m = r.matcher(URIstr);
@@ -261,7 +257,7 @@ final class URIcompliance {
 	public static final boolean isChildURIcompliant(URI parentURI, URI childURI) {
 		String parentPersistentId = extractPersistentId(parentURI);
 		if (parentPersistentId==null) return false;
-		String childDisplayId = extractDisplayId(childURI,0);
+		String childDisplayId = extractDisplayId(childURI);
 		if (childDisplayId==null) return false;
 		String parentVersion = extractVersion(parentURI);
 		if (parentVersion == null) {

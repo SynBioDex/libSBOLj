@@ -564,7 +564,7 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractDisplayId1() {
-		String extractedDisplayId = extractDisplayId(uri1, 0);
+		String extractedDisplayId = extractDisplayId(uri1);
 		//System.out.println(extractedDisplayId);
 		assertEquals(uri1toplevelDisplayId, extractedDisplayId);
 	}
@@ -667,7 +667,7 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractDisplayId11() {
-		String extractedDisplayId = extractDisplayId(uri6, 3);
+		String extractedDisplayId = extractDisplayId(uri6);
 		//System.out.println(extractedDisplayId);
 		assertNull(extractedDisplayId);
 	}
@@ -677,7 +677,7 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractDisplayId12() {
-		String extractedDisplayId = extractDisplayId(uri8, 3);
+		String extractedDisplayId = extractDisplayId(uri8);
 		//System.out.println(extractedDisplayId);
 		assertNull(extractedDisplayId);
 	}
@@ -687,7 +687,7 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractDisplayId13() {
-		String extractedDisplayId = extractDisplayId(uri9, 3);
+		String extractedDisplayId = extractDisplayId(uri9);
 		//System.out.println(extractedDisplayId);
 		assertNull(extractedDisplayId);
 	}

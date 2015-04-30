@@ -370,7 +370,7 @@ public class SequenceAnnotation extends Documented {
 	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 1); // 1 indicates that this object is a child of a top-level object.
+		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 1 indicates that this object is a child of a top-level object.
 		URI newIdentity = URI.create(URIprefix + '/' + parentDisplayId + '/' 
 				+ thisObjDisplayId + '/' + version);
 		Location location = this.getLocation();

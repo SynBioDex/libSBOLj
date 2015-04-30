@@ -148,7 +148,7 @@ public class Range extends Location{
 	 * This method is called by {@link SequenceAnnotation#updateCompliantURI(String, String, String)}.
 	 */
 	void updateCompliantURI(String URIprefix, String grandparentDisplayId, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 2); //2 indicates this object is a grandchild of a top-level object.
+		String thisObjDisplayId = extractDisplayId(this.getIdentity()); //2 indicates this object is a grandchild of a top-level object.
 		URI newIdentity = URI.create(URIprefix + '/' + grandparentDisplayId + '/' + parentDisplayId + '/' 
 				+ thisObjDisplayId + '/' + version);
 		// TODO: need to set wasDerivedFrom here?
@@ -162,7 +162,7 @@ public class Range extends Location{
 	 */
 	void updateCompliantURI(String URIprefix, String greatGrandparentDisplayId, 
 			String grandparentDisplayId, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 3); //3 indicates this object is a great grandchild of a top-level object.
+		String thisObjDisplayId = extractDisplayId(this.getIdentity()); //3 indicates this object is a great grandchild of a top-level object.
 		URI newIdentity = URI.create(URIprefix + '/' + greatGrandparentDisplayId + '/' + grandparentDisplayId 
 				+ '/' + parentDisplayId + '/' + thisObjDisplayId + '/' + version);
 		// TODO: need to set wasDerivedFrom here?

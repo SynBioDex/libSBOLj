@@ -507,7 +507,7 @@ public class SBOLDocument {
 			URIprefix = extractURIprefix(toplevel.getIdentity());
 		}
 		if (displayId == null) {
-			displayId = extractDisplayId(toplevel.getIdentity(), 0);
+			displayId = extractDisplayId(toplevel.getIdentity());
 		}
 		if (version == null) {
 			version = extractVersion(toplevel.getIdentity());

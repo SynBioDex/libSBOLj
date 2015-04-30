@@ -210,7 +210,7 @@ public class Module extends Documented {
 	 * This method is called by {@link ModuleDefinition#copy(String, String, String)}.
 	 */
 	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity(), 1); // 1 indicates that this object is a child of a top-level object.
+		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 1 indicates that this object is a child of a top-level object.
 		URI newIdentity = URI.create(URIprefix + '/' + parentDisplayId + '/' 
 				+ thisObjDisplayId + '/' + version);
 		if (!this.getMapsTos().isEmpty()) {
