@@ -317,22 +317,17 @@ public class SBOLReader
 		{
 			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 			{
-				SBOLDoc.addNamespaceBinding(
-						NamespaceBinding(
-								Sbol2Terms.sbol2.getNamespaceURI(),
+				SBOLDoc.addNamespaceBinding(NamespaceBinding(Sbol2Terms.sbol2.getNamespaceURI(),
 								Sbol2Terms.sbol2.getPrefix()));
-				//				SBOLDoc.addNamespaceBinding(
-				//						URI.create(Sbol2Terms.sbol2.getNamespaceURI()),
-				//						Sbol2Terms.sbol2.getPrefix());
 			}
 			else
 			{
 				SBOLDoc.addNamespaceBinding(
-						NamespaceBinding(
-								n.getNamespaceURI(), n.getPrefix()));
-				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+						NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 			}
 		}
+		SBOLDoc.addNamespaceBinding(NamespaceBinding(Sbol2Terms.prov.getNamespaceURI(),
+				Sbol2Terms.prov.getPrefix()));
 		readTopLevelDocsV1(SBOLDoc, document);
 		return SBOLDoc;
 	}
@@ -481,7 +476,7 @@ public class SBOLReader
 
 		for (SBOLPair pair : precedePairs)
 		{
-			URI sc_identity    			= URI.create(persIdentity + "/sequenceConstraint" + ++sc_number + "/1/0");
+			URI sc_identity    			= URI.create(persIdentity + "/sequenceConstraint" + ++sc_number + "/1.0");
 			URI restrictionURI 			= Sbol2Terms.DnaComponentV1URI.restriction;
 			RestrictionType restriction = SequenceConstraint.RestrictionType.convertToRestrictionType(restrictionURI);
 
@@ -561,7 +556,7 @@ public class SBOLReader
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (setURIPrefix != null)
 				{
-					identity = URI.create(setURIPrefix + "/" + displayId + "/1/0");
+					identity = URI.create(setURIPrefix + "/" + displayId + "/1.0");
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))

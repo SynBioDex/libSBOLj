@@ -19,6 +19,7 @@ class Sbol2Terms
 	 */
 	public static final NamespaceBinding sbol2 = NamespaceBinding("http://sbols.org/v2#", "sbol");
 	public static final NamespaceBinding dc = NamespaceBinding("http://purl.org/dc/terms/", "dcterms");
+	public static final NamespaceBinding prov = NamespaceBinding("http://www.w3.org/ns/prov#", "prov");
 
 
 	/**
@@ -120,6 +121,7 @@ class Sbol2Terms
 		static final QName version   	 = sbol2.withLocalPart("version");
 		static final QName timeStamp   	     = sbol2.withLocalPart("timeStamp");
 		static final QName hasAnnotations 	 = sbol2.withLocalPart("annotation");
+		static final QName wasDerivedFrom	 = prov.withLocalPart("wasDerivedFrom");
 	}
 
 	/**

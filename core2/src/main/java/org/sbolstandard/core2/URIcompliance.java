@@ -136,7 +136,7 @@ final class URIcompliance {
 		}
 		Matcher m = r.matcher(URIstr);
 		if (!m.matches()) {
-			System.out.println(URIstr + " is not compliant");
+			//System.out.println(URIstr + " is not compliant");
 		}
 // TODO: Warning: top-level URI is not compliant.
 		return m.matches();

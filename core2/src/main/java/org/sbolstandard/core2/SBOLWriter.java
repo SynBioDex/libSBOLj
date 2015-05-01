@@ -352,6 +352,8 @@ public class SBOLWriter {
 			list.add(NamedProperty(Sbol2Terms.Documented.displayId, t.getDisplayId()));
 		if(t.getVersion() != null)
 			list.add(NamedProperty(Sbol2Terms.Identified.version, t.getVersion()));
+		if(t.getWasDerivedFrom() != null)
+			list.add(NamedProperty(Sbol2Terms.Identified.wasDerivedFrom, t.getWasDerivedFrom()));
 
 		if(t.isSetAnnotations())
 		{
