@@ -278,10 +278,28 @@ public class ComponentDefinition extends TopLevel {
 	
 	/**
 	 */
+	public SequenceAnnotation createSequenceAnnotation(String displayId,OrientationType orientation) {
+		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
+				new GenericLocation(URI.create(this.getPersistentIdentity().toString()+"/generic/"+this.getVersion())));
+		((GenericLocation)sa.getLocation()).setOrientation(orientation);
+		return sa;
+	}
+	
+	/**
+	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, int at) {
 		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
 				new Cut(URI.create(this.getPersistentIdentity().toString()+"/cut/"+this.getVersion()),at));
 		return sa;
+	}
+		
+	/**
+	 */
+	public SequenceAnnotation createSequenceAnnotation(String displayId, int at,OrientationType orientation) {
+		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
+				new Cut(URI.create(this.getPersistentIdentity().toString()+"/cut/"+this.getVersion()),at));
+		((Cut)sa.getLocation()).setOrientation(orientation);
+	return sa;
 	}
 	
 	/**
@@ -289,6 +307,15 @@ public class ComponentDefinition extends TopLevel {
 	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end) {
 		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
 				new Range(URI.create(this.getPersistentIdentity().toString()+"/range/"+this.getVersion()),start,end));
+		return sa;
+	}
+	
+	/**
+	 */
+	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end,OrientationType orientation) {
+		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
+				new Range(URI.create(this.getPersistentIdentity().toString()+"/range/"+this.getVersion()),start,end));
+		((Range)sa.getLocation()).setOrientation(orientation);
 		return sa;
 	}
 	

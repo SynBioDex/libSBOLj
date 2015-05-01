@@ -188,7 +188,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readRDFV1(in, document);
+					return readV1(document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -223,7 +223,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readRDFV1(in, document);
+					return readV1(document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -259,7 +259,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readRDFV1(in, document);
+					return readV1(document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -292,7 +292,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readRDFV1(in, document);
+					return readV1(document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -310,7 +310,7 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	private static SBOLDocument readRDFV1(InputStream in, DocumentRoot<QName> document)
+	private static SBOLDocument readV1(DocumentRoot<QName> document)
 	{
 		SBOLDocument SBOLDoc = new SBOLDocument();
 		for (NamespaceBinding n : document.getNamespaceBindings())
