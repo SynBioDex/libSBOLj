@@ -167,7 +167,7 @@ public class writeTester {
 
 	private static Collection get_myParts (SBOLDocument SBOL2Doc_test)
 	{
-		SBOL2Doc_test.setDefaultURIprefix("http://www.async.ece.utah.edu/myParts");
+		SBOL2Doc_test.setDefaultURIprefix("http://www.async.ece.utah.edu");
 		SBOL2Doc_test.setComplete(true);
 		SBOL2Doc_test.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
 		SBOL2Doc_test.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");

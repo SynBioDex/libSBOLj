@@ -61,8 +61,13 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version) {
 		validateCreationData(displayId, version);
-		return createModuleDefinition(createCompliantURI(defaultURIprefix, TopLevelTypes.moduleDefinition, 
+		ModuleDefinition md = createModuleDefinition(createCompliantURI(defaultURIprefix, TopLevelTypes.moduleDefinition, 
 				displayId, version));
+		md.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.moduleDefinition, 
+				displayId, ""));
+		md.setDisplayId(displayId);
+		md.setVersion(version);
+		return md;
 	}
 	
 	/**
@@ -146,8 +151,12 @@ public class SBOLDocument {
 	 */
 	public Collection createCollection(String displayId, String version) {
 		validateCreationData(displayId, version);
-		return createCollection(
+		Collection c = createCollection(
 				createCompliantURI(defaultURIprefix, TopLevelTypes.collection, displayId, version));
+		c.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.collection, displayId, ""));
+		c.setDisplayId(displayId);
+		c.setVersion(version);
+		return c;
 	}
 
 	/**
@@ -211,8 +220,12 @@ public class SBOLDocument {
 	 */
 	public Model createModel(String displayId, String version, URI source, URI language, URI framework) {
 		validateCreationData(displayId, version);
-		return createModel(createCompliantURI(defaultURIprefix, TopLevelTypes.model, displayId, version),
+		Model model = createModel(createCompliantURI(defaultURIprefix, TopLevelTypes.model, displayId, version),
 				source, language, framework);
+		model.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.model, displayId, ""));
+		model.setDisplayId(displayId);
+		model.setVersion(version);
+		return model;
 	}
 
 	/**
@@ -297,8 +310,12 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
 		validateCreationData(displayId, version);
-		return createComponentDefinition(createCompliantURI(defaultURIprefix, TopLevelTypes.componentDefinition,
+		ComponentDefinition cd = createComponentDefinition(createCompliantURI(defaultURIprefix, TopLevelTypes.componentDefinition,
 				displayId, version), types);
+		cd.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.componentDefinition, displayId,""));
+		cd.setDisplayId(displayId);
+		cd.setVersion(version);
+		return cd;
 	}
 
 	/**
@@ -372,8 +389,12 @@ public class SBOLDocument {
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
 		validateCreationData(displayId, version);
-		return createSequence(createCompliantURI(defaultURIprefix, TopLevelTypes.sequence, displayId, version), 
+		Sequence s = createSequence(createCompliantURI(defaultURIprefix, TopLevelTypes.sequence, displayId, version), 
 				elements, encoding);
+		s.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.sequence, displayId, ""));
+		s.setDisplayId(displayId);
+		s.setVersion(version);
+		return s;
 	}
 	
 //	/**
@@ -609,7 +630,11 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
 		validateCreationData(displayId, version);
-		return createGenericTopLevel(createCompliantURI(defaultURIprefix, TopLevelTypes.genericTopLevel, displayId, version), rdfType);
+		GenericTopLevel g = createGenericTopLevel(createCompliantURI(defaultURIprefix, TopLevelTypes.genericTopLevel, displayId, version), rdfType);
+		g.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.genericTopLevel, displayId, ""));
+		g.setDisplayId(displayId);
+		g.setVersion(version);
+		return g;
 	}
 
 	/**

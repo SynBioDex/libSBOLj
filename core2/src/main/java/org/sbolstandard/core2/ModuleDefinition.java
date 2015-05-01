@@ -155,7 +155,11 @@ public class ModuleDefinition extends TopLevel {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newModuleURI = createCompliantURI(URIprefix, displayId, version);
-		return createModule(newModuleURI, moduleDefinitionURI);
+		Module m = createModule(newModuleURI, moduleDefinitionURI);
+		m.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
+		m.setDisplayId(displayId);
+		m.setVersion(version);
+		return m;
 	}
 	
 	
@@ -239,7 +243,11 @@ public class ModuleDefinition extends TopLevel {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newInteractionURI = createCompliantURI(URIprefix, displayId, version);
-		return createInteraction(newInteractionURI, type);
+		Interaction i = createInteraction(newInteractionURI, type);
+		i.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
+		i.setDisplayId(displayId);
+		i.setVersion(version);
+		return i;
 	}
 	
 	
@@ -332,7 +340,11 @@ public class ModuleDefinition extends TopLevel {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newComponentDefinitionURI = createCompliantURI(URIprefix, displayId, version);
-		return createFunctionalComponent(newComponentDefinitionURI, access, functionalComponentURI, direction);
+		FunctionalComponent fc = createFunctionalComponent(newComponentDefinitionURI, access, functionalComponentURI, direction);
+		fc.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
+		fc.setDisplayId(displayId);
+		fc.setVersion(version);
+		return fc;
 	}
 	
 	/**

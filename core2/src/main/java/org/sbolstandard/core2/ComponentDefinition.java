@@ -261,7 +261,11 @@ public class ComponentDefinition extends TopLevel {
 			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
 					"'is not compliant in parent `" + this.getIdentity() +
 			        "' for " + URIprefix + " " + displayId + " " + version);
-		return createSequenceAnnotation(newSequenceAnnotationURI, location);
+		SequenceAnnotation sa = createSequenceAnnotation(newSequenceAnnotationURI, location);
+		sa.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
+		sa.setDisplayId(displayId);
+		sa.setVersion(version);
+		return sa;
 	}
 	
 	/**
@@ -353,8 +357,12 @@ public class ComponentDefinition extends TopLevel {
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		return createComponent(createCompliantURI(URIprefix, displayId, version),
+		Component c = createComponent(createCompliantURI(URIprefix, displayId, version),
 				access, componentDefinitionURI);
+		c.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
+		c.setDisplayId(displayId);
+		c.setVersion(version);
+		return c;
 	}
 	
 	/**
@@ -439,9 +447,12 @@ public class ComponentDefinition extends TopLevel {
 			RestrictionType restriction, URI subject, URI object) {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		return createSequenceConstraint(
-				createCompliantURI(URIprefix, displayId, version),
+		SequenceConstraint sc = createSequenceConstraint(createCompliantURI(URIprefix, displayId, version),
 				restriction, subject, object);
+		sc.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
+		sc.setDisplayId(displayId);
+		sc.setVersion(version);
+		return sc;
 	}
 	
 	/**

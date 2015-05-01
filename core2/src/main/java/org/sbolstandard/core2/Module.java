@@ -98,7 +98,11 @@ public class Module extends Documented {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		String version = this.getVersion();
 		URI newMapsToURI = createCompliantURI(parentPersistentIdStr, displayId, version);
-		return createMapsTo(newMapsToURI, refinement, local, remote);
+		MapsTo m = createMapsTo(newMapsToURI, refinement, local, remote);
+		m.setPersistentIdentity(createCompliantURI(parentPersistentIdStr, displayId, ""));
+		m.setDisplayId(displayId);
+		m.setVersion(version);
+		return m;
 	}
 	
 	/**

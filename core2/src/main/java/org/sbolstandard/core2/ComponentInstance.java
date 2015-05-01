@@ -186,8 +186,12 @@ public abstract class ComponentInstance extends Documented {
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		String version = this.getVersion();
-		return createMapsTo(createCompliantURI(parentPersistentIdStr, displayId, version),
+		MapsTo m = createMapsTo(createCompliantURI(parentPersistentIdStr, displayId, version),
 				refinement, local, remote);
+		m.setPersistentIdentity(createCompliantURI(parentPersistentIdStr, displayId, ""));
+		m.setDisplayId(displayId);
+		m.setVersion(version);
+		return m;
 	}
 	
 	/**

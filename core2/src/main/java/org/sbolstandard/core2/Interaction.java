@@ -136,8 +136,12 @@ public class Interaction extends Documented {
 							this.getIdentity());
 		}
 		//validateIdVersion(displayId, version);
-        return createParticipation(
+        Participation p = createParticipation(
 				createCompliantURI(parentPersistentIdStr, displayId, version), participant);
+		p.setPersistentIdentity(createCompliantURI(parentPersistentIdStr, displayId, ""));
+		p.setDisplayId(displayId);
+		p.setVersion(version);
+		return p;
 	}
 	
 	/**
