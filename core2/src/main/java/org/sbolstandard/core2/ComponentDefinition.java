@@ -267,6 +267,30 @@ public class ComponentDefinition extends TopLevel {
 		sa.setVersion(version);
 		return sa;
 	}
+
+	/**
+	 */
+	public SequenceAnnotation createSequenceAnnotation(String displayId) {
+		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
+				new GenericLocation(URI.create(this.getPersistentIdentity().toString()+"/generic/"+this.getVersion())));
+		return sa;
+	}
+	
+	/**
+	 */
+	public SequenceAnnotation createSequenceAnnotation(String displayId, int at) {
+		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
+				new Cut(URI.create(this.getPersistentIdentity().toString()+"/cut/"+this.getVersion()),at));
+		return sa;
+	}
+	
+	/**
+	 */
+	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end) {
+		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
+				new Range(URI.create(this.getPersistentIdentity().toString()+"/range/"+this.getVersion()),start,end));
+		return sa;
+	}
 	
 	/**
 	 * Adds the specified instance to the list of sequenceAnnotations. 

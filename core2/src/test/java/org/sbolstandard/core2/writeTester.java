@@ -861,16 +861,17 @@ public class writeTester {
 			String locationId)
 	{
 		String displayId	   = structuralAnnotations_data.get(0);
-		URI locationURI = URI.create(cd.getPersistentIdentity()+"/"+displayId+"/"+locationId+"/"+cd.getVersion());
-		Range r = new Range(locationURI, startRange, endRange);
-		r.setOrientation(Sbol2Terms.Orientation.inline);
-		Location location 	   = r;
+		//URI locationURI = URI.create(cd.getPersistentIdentity()+"/"+displayId+"/"+locationId+"/"+cd.getVersion());
+		//Range r = new Range(locationURI, startRange, endRange);
+		//r.setOrientation(Sbol2Terms.Orientation.inline);
+		//Location location 	   = r;
 		String identity = cd.getPersistentIdentity()+"/"+displayId;
 		if (cd.isSetVersion()) 
 			identity += "/" + cd.getVersion();
 		SequenceAnnotation s = cd.getSequenceAnnotation(URI.create(identity));
 		if (s==null) {
-			s = cd.createSequenceAnnotation(displayId, location);
+			s = cd.createSequenceAnnotation(displayId, startRange, endRange);
+			((Range)s.getLocation()).setOrientation(Sbol2Terms.Orientation.inline);
 			setCommonDocumentedData(s, displayId, displayId);
 			s.setComponent(ref_component.getIdentity());
 		} 
