@@ -731,7 +731,7 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Adds a namespace URI and its prefix. Deprecated method. Use {@link #addNamespaceBinding(NamespaceBinding)}.
+	 * Adds a namespace URI and its prefix. 
 	 * 
 	 * @param nameSpaceURI The Namespace {@link URI}
 	 * @param prefix The prefix {@link String}

@@ -1,6 +1,8 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
@@ -62,6 +64,27 @@ public class SequenceAnnotation extends Documented {
 		this.location = location;
 	}	
 	
+	public void addRange(int start,int end) {
+		if (location instanceof MultiRange) {
+			int numRanges = ((MultiRange)location).getRanges().size();
+			Range range = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString()+"/multiRange","range"+numRanges,this.getVersion()),start,end);
+			((MultiRange)location).addRange(range);
+		} else if (location instanceof Range) {
+			List<Range> ranges = new ArrayList<>();
+			location.setIdentity(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString()+"/multiRange","range0",this.getVersion()));
+			ranges.add((Range)location);
+			Range range = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString()+"/multiRange","range1",this.getVersion()),start,end);
+			ranges.add(range);
+			MultiRange multiRange = new MultiRange(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),"multiRange",this.getVersion()),ranges);
+			location = multiRange;
+		} else {
+			location = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),"range",this.getVersion()),start,end);
+		}
+	}
+
+	public void addRange(int start,int end,OrientationType orientation) {
+	}
+		
 	/**
 	 * Test if optional field variable <code>component</code> is set.
 	 * @return <code>true</code> if it is not null.

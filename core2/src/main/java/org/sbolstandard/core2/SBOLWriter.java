@@ -698,9 +698,16 @@ public class SBOLWriter {
 		else if(location instanceof MultiRange)
 		{
 			MultiRange multiRange = (MultiRange) location;
-			for(Range r : multiRange.getRanges())
-				property.add(NamedProperty(Sbol2Terms.MultiRange.hasRanges, r.getIdentity()));
-
+			for(Range range : multiRange.getRanges()) {
+				List<NamedProperty<QName>> rangeProperty = new ArrayList<>();
+				rangeProperty.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
+				rangeProperty.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
+				if(range.isSetOrientation())
+					rangeProperty.add(NamedProperty(Sbol2Terms.Range.orientation, range.getOrientationURI()));
+				property.add(NamedProperty(Sbol2Terms.MultiRange.hasRanges, 
+						NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(rangeProperty))));
+			}
+			
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.MultiRange.MultiRange, multiRange.getIdentity(), NamedProperties(property)));
 		}
