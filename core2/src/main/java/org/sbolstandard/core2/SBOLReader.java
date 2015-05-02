@@ -1237,7 +1237,7 @@ public class SBOLReader
 			multiRange.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
 			multiRange.setAnnotations(annotations);
-		return null;
+		return multiRange;
 	}
 
 	private static Range parseRange(NestedDocument<QName> typeRange)
@@ -1801,7 +1801,8 @@ public class SBOLReader
 			}
 			else if (m.getName().equals(Sbol2Terms.MapsTo.refinement))
 			{
-				refinement = RefinementType.valueOf(((Literal<QName>) m.getValue()).getValue().toString());
+				refinement = RefinementType.convertToRefinementType(URI
+						.create(((Literal<QName>) m.getValue()).getValue().toString()));
 			}
 			else if (m.getName().equals(Sbol2Terms.MapsTo.hasRemote))
 			{
@@ -1998,7 +1999,7 @@ public class SBOLReader
 			{
 				displayId = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
-			else if (functionalComponent.getType().equals(Sbol2Terms.ComponentInstance.access))
+			else if (f.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
 				access = ComponentInstance.AccessType.convertToAccessType(URI
 						.create(((Literal<QName>) f.getValue()).getValue()
@@ -2010,7 +2011,7 @@ public class SBOLReader
 						.convertToDirectionType(URI.create(((Literal<QName>) f
 								.getValue()).getValue().toString()));
 			}
-			if (f.getName().equals(Sbol2Terms.ComponentInstance.hasMapsTo))
+			else if (f.getName().equals(Sbol2Terms.ComponentInstance.hasMapsTo))
 			{
 				mappings.add(parseMapsTo((NestedDocument<QName>) f.getValue()));
 			}
@@ -2036,7 +2037,6 @@ public class SBOLReader
 			}
 
 		}
-
 		FunctionalComponent fc = new FunctionalComponent(
 				functionalComponent.getIdentity(), access,
 				functionalComponentURI, direction);

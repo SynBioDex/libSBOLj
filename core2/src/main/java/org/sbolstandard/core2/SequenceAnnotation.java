@@ -65,24 +65,42 @@ public class SequenceAnnotation extends Documented {
 	}	
 	
 	public void addRange(int start,int end) {
+		addRange(start,end,null);
+	}
+
+	public void addRange(int start,int end,OrientationType orientation) {
 		if (location instanceof MultiRange) {
 			int numRanges = ((MultiRange)location).getRanges().size();
 			Range range = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString()+"/multiRange","range"+numRanges,this.getVersion()),start,end);
+			range.setPersistentIdentity(URI.create(this.getPersistentIdentity().toString()+"/multiRange/range"+numRanges));
+			range.setDisplayId("range"+numRanges);
+			range.setVersion(this.getVersion());
+			if (orientation!=null) range.setOrientation(orientation);
 			((MultiRange)location).addRange(range);
 		} else if (location instanceof Range) {
 			List<Range> ranges = new ArrayList<>();
 			location.setIdentity(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString()+"/multiRange","range0",this.getVersion()));
+			location.setPersistentIdentity(URI.create(this.getPersistentIdentity().toString()+"/multiRange/range0"));
+			location.setDisplayId("range0");
 			ranges.add((Range)location);
 			Range range = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString()+"/multiRange","range1",this.getVersion()),start,end);
+			range.setPersistentIdentity(URI.create(this.getPersistentIdentity().toString()+"/multiRange/range1"));
+			range.setDisplayId("range1");
+			range.setVersion(this.getVersion());
+			if (orientation!=null) range.setOrientation(orientation);
 			ranges.add(range);
 			MultiRange multiRange = new MultiRange(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),"multiRange",this.getVersion()),ranges);
+			multiRange.setPersistentIdentity(URI.create(this.getPersistentIdentity().toString()+"/multiRange"));
+			multiRange.setDisplayId("multiRange");
+			multiRange.setVersion(this.getVersion());
 			location = multiRange;
 		} else {
 			location = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),"range",this.getVersion()),start,end);
+			location.setPersistentIdentity(URI.create(this.getPersistentIdentity().toString()+"/range"));
+			location.setDisplayId("range");
+			location.setVersion(this.getVersion());
+			if (orientation!=null) ((Range)location).setOrientation(orientation);
 		}
-	}
-
-	public void addRange(int start,int end,OrientationType orientation) {
 	}
 		
 	/**

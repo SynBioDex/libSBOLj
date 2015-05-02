@@ -36,15 +36,14 @@ public class FunctionalComponent extends ComponentInstance {
 		 * @return the corresponding DirectionType instance
 		 */
 		public static DirectionType convertToDirectionType(URI direction) {
-			// codereview: direction is a URI but DirectionType is an enum -- the .equals should always be returning false
 			if (direction != null) {
-				if (direction.equals(DirectionType.INOUT)) {
+				if (direction.equals(Direction.INOUT)) {
 					return DirectionType.INOUT;
-				} else if (direction.equals(DirectionType.INPUT)) {
+				} else if (direction.equals(Direction.INPUT)) {
 					return DirectionType.INPUT;
-				} else if (direction.equals(DirectionType.NONE)) {
+				} else if (direction.equals(Direction.NONE)) {
 					return DirectionType.NONE;
-				} else if (direction.equals(DirectionType.OUTPUT)) {
+				} else if (direction.equals(Direction.OUTPUT)) {
 					return DirectionType.OUTPUT;
 				} else {
 					return null;
@@ -61,16 +60,16 @@ public class FunctionalComponent extends ComponentInstance {
 		public static URI convertToURI(DirectionType direction) {
 			if (direction != null) {
 				if (direction.equals(DirectionType.INOUT)) {
-					return Direction.inout;
+					return Direction.INOUT;
 				}
 				else if (direction.equals(DirectionType.INPUT)) {
-					return Direction.input;
+					return Direction.INPUT;
 				}
 				else if (direction.equals(DirectionType.OUTPUT)) {
-					return Direction.output;
+					return Direction.OUTPUT;
 				}
 				else if (direction.equals(DirectionType.NONE)) {
-					return Direction.none;
+					return Direction.NONE;
 				}
 				else {
 					return null;
@@ -111,13 +110,13 @@ public class FunctionalComponent extends ComponentInstance {
 	public URI getDirectionURI() {
 		if (direction != null) {
 			if (direction.equals(DirectionType.INOUT)) {
-				return Direction.inout;
+				return Direction.INOUT;
 			} else if (direction.equals(DirectionType.INPUT)) {
-				return Direction.input;
+				return Direction.INPUT;
 			} else if (direction.equals(DirectionType.OUTPUT)) {
-				return Direction.output;
+				return Direction.OUTPUT;
 			} else if (direction.equals(DirectionType.NONE)) {
-				return Direction.none;
+				return Direction.NONE;
 			} else {
 				return null;
 			}
@@ -141,13 +140,13 @@ public class FunctionalComponent extends ComponentInstance {
 	 * to the specified URI.
 	 */
 	public void setDirection(URI direction) {
-		if (direction != null && direction.equals(Direction.input)) {
+		if (direction != null && direction.equals(Direction.INPUT)) {
 			this.direction = DirectionType.INPUT;
-		} else if (direction != null && direction.equals(Direction.output)) {
+		} else if (direction != null && direction.equals(Direction.OUTPUT)) {
 			this.direction = DirectionType.OUTPUT;
-		} else if (direction != null && direction.equals(Direction.inout)) {
+		} else if (direction != null && direction.equals(Direction.INOUT)) {
 			this.direction = DirectionType.INOUT;
-		} else if (direction != null && direction.equals(Direction.none)) {
+		} else if (direction != null && direction.equals(Direction.NONE)) {
 			this.direction = DirectionType.NONE;
 		} else {
 			throw new IllegalArgumentException("Not a valid access type.");
@@ -155,10 +154,10 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	private static final class Direction {
-		public static final URI	input	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "input");
-		public static final URI	output	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "output");
-		public static final URI	inout	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "inout");
-		public static final URI	none	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "none");
+		public static final URI	INPUT	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "input");
+		public static final URI	OUTPUT	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "output");
+		public static final URI	INOUT	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "inout");
+		public static final URI	NONE	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "none");
 	}
 
 	@Override

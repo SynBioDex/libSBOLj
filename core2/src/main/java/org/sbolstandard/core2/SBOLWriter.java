@@ -700,6 +700,7 @@ public class SBOLWriter {
 			MultiRange multiRange = (MultiRange) location;
 			for(Range range : multiRange.getRanges()) {
 				List<NamedProperty<QName>> rangeProperty = new ArrayList<>();
+				formatCommonIdentifiedData(rangeProperty, range);
 				rangeProperty.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
 				rangeProperty.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
 				if(range.isSetOrientation())

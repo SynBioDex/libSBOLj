@@ -4,6 +4,7 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
+import org.sbolstandard.core.SBOLValidationException;
 import org.sbolstandard.core2.ComponentInstance.AccessType;
 import org.sbolstandard.core2.FunctionalComponent.DirectionType;
 import org.sbolstandard.core2.MapsTo.RefinementType;
@@ -77,11 +79,21 @@ public class writeTester {
 	{
 		try {
 			SBOLWriter.writeRDF(SBOL2Doc_test,(System.out));
+			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test);
+			SBOLWriter.writeRDF(SBOL2Doc_test,(System.out));
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		} catch (FactoryConfigurationError e) {
 			e.printStackTrace();
 		} catch (CoreIoException e) {
+			e.printStackTrace();
+		}
+		catch (SBOLValidationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

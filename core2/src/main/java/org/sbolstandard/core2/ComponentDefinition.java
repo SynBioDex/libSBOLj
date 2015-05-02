@@ -271,52 +271,58 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId) {
-		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
-				new GenericLocation(URI.create(this.getPersistentIdentity().toString()+"/generic/"+this.getVersion())));
-		return sa;
+		return createSequenceAnnotation(displayId,(OrientationType)null);
 	}
 	
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId,OrientationType orientation) {
-		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
-				new GenericLocation(URI.create(this.getPersistentIdentity().toString()+"/generic/"+this.getVersion())));
-		((GenericLocation)sa.getLocation()).setOrientation(orientation);
-		return sa;
+		String URIprefix = this.getPersistentIdentity().toString()+"/"+displayId;
+		String version = this.getVersion();
+		GenericLocation location = new GenericLocation(createCompliantURI(URIprefix,"generic",version));
+		if (orientation!=null) location.setOrientation(orientation);
+		location.setPersistentIdentity(URI.create(URIprefix+"/generic"));
+		location.setDisplayId("generic");
+		location.setVersion(this.getVersion());
+		return createSequenceAnnotation(displayId, location);
 	}
 	
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, int at) {
-		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
-				new Cut(URI.create(this.getPersistentIdentity().toString()+"/cut/"+this.getVersion()),at));
-		return sa;
+		return createSequenceAnnotation(displayId,at,null);
 	}
 		
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, int at,OrientationType orientation) {
-		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
-				new Cut(URI.create(this.getPersistentIdentity().toString()+"/cut/"+this.getVersion()),at));
-		((Cut)sa.getLocation()).setOrientation(orientation);
-	return sa;
+		String URIprefix = this.getPersistentIdentity().toString()+"/"+displayId;
+		String version = this.getVersion();
+		Cut location = new Cut(createCompliantURI(URIprefix,"cut",version),at);
+		if (orientation!=null) location.setOrientation(orientation);
+		location.setPersistentIdentity(URI.create(URIprefix+"/cut"));
+		location.setDisplayId("cut");
+		location.setVersion(this.getVersion());
+		return createSequenceAnnotation(displayId, location);
 	}
 	
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end) {
-		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
-				new Range(URI.create(this.getPersistentIdentity().toString()+"/range/"+this.getVersion()),start,end));
-		return sa;
+		return createSequenceAnnotation(displayId,start,end,null);
 	}
 	
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end,OrientationType orientation) {
-		SequenceAnnotation sa = createSequenceAnnotation(displayId, 
-				new Range(URI.create(this.getPersistentIdentity().toString()+"/range/"+this.getVersion()),start,end));
-		((Range)sa.getLocation()).setOrientation(orientation);
-		return sa;
+		String URIprefix = this.getPersistentIdentity().toString()+"/"+displayId;
+		String version = this.getVersion();
+		Range location = new Range(createCompliantURI(URIprefix,"range",version),start,end);
+		if (orientation!=null) location.setOrientation(orientation);
+		location.setPersistentIdentity(URI.create(URIprefix+"/range"));
+		location.setDisplayId("range");
+		location.setVersion(this.getVersion());
+		return createSequenceAnnotation(displayId, location);
 	}
 	
 	/**
