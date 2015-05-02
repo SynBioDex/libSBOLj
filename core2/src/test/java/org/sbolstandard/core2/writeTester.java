@@ -884,8 +884,10 @@ public class writeTester {
 		if (s==null) {
 			s = cd.createSequenceAnnotation(displayId, startRange, endRange);
 			((Range)s.getLocation()).setOrientation(Sbol2Terms.Orientation.inline);
-			s.addRange(20, 30);
-			s.addRange(30, 40);
+			//s.addRange(20, 30);
+			//s.addRange(30, 40);
+			//s.removeRange(URI.create(s.getPersistentIdentity()+"/multiRange/range2/1.0"));
+			//s.removeRange(URI.create(s.getPersistentIdentity()+"/multiRange/range0/1.0"));
 			setCommonDocumentedData(s, displayId, displayId);
 			s.setComponent(ref_component.getIdentity());
 		} 

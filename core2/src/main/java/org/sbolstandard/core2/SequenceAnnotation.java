@@ -3,6 +3,7 @@ package org.sbolstandard.core2;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
@@ -100,6 +101,28 @@ public class SequenceAnnotation extends Documented {
 			location.setDisplayId("range");
 			location.setVersion(this.getVersion());
 			if (orientation!=null) ((Range)location).setOrientation(orientation);
+		}
+	}
+	
+	void removeRange(URI rangeURI) {
+		if (location instanceof MultiRange) {
+			try {
+				((MultiRange)location).removeRange(rangeURI);
+			} catch (Exception e) {
+				Set<Range> ranges = ((MultiRange)location).getRanges();
+				if (ranges.size()!=2) {
+					throw new IllegalArgumentException("Sequence annotation " + this.getIdentity() + 
+							" is required to have a location.");
+				}
+				for (Range range : ranges) {
+					if (range.getIdentity().equals(rangeURI)) continue;
+					location = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(), 
+							"range", this.getVersion()),range.getStart(),range.getEnd());
+					if (range.isSetOrientation()) {
+						((Range)location).setOrientation(range.getOrientation());
+					}
+				}
+			}
 		}
 	}
 		

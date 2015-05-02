@@ -70,11 +70,14 @@ public class MultiRange extends Location{
 	 * Removes the instance matching the specified URI from the list of structuralAnnotations if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Range removeRange(URI rangeURI) {
-		if (ranges.size()<3) {
+	public void removeRange(URI rangeURI) {
+		if (ranges.size()<5) {
 			throw new IllegalArgumentException("MultiRange is required to have at least two ranges.");
 		}
-		return ranges.remove(rangeURI);
+		Set<Range> range = new HashSet<>();
+		range.add(ranges.get(rangeURI));
+		ranges.values().removeAll(range);
+		//return ranges.remove(rangeURI);
 	}
 	
 	/**
