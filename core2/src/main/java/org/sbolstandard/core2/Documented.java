@@ -27,9 +27,6 @@ public abstract class Documented extends Identified {
 	
 	protected Documented(Documented documented) {
 		super(documented);
-		if (documented.isSetDisplayId()) {
-			this.setDisplayId(documented.getDisplayId());
-		}
 		if (documented.isSetName()) {
 			this.setName(documented.getName());
 		}
