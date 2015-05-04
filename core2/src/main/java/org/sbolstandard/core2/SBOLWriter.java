@@ -98,7 +98,7 @@ public class SBOLWriter {
 			throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		writeRDF(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
+				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 	}
 
@@ -155,7 +155,7 @@ public class SBOLWriter {
 			throws FactoryConfigurationError, Exception {
 
 		writeJSON(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
+				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 
 	}
@@ -217,7 +217,7 @@ public class SBOLWriter {
 			throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		writeRDF(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
+				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 	}
 
@@ -273,7 +273,7 @@ public class SBOLWriter {
 			throws FactoryConfigurationError, Exception
 	{
 		writeTurtle(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
+				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 	}
 
@@ -459,13 +459,10 @@ public class SBOLWriter {
 					list.add(NamedProperty(Sbol2Terms.Interaction.type, type));
 				}
 			}
-			if(i.isSetParticipations())
+			List<NestedDocument<QName>> participantList = formatParticipations(i.getParticipations());
+			for(NestedDocument<QName> n : participantList)
 			{
-				List<NestedDocument<QName>> participantList = formatParticipations(i.getParticipations());
-				for(NestedDocument<QName> n : participantList)
-				{
-					list.add(NamedProperty(Sbol2Terms.Interaction.hasParticipations, n));
-				}
+				list.add(NamedProperty(Sbol2Terms.Interaction.hasParticipations, n));
 			}
 
 			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasInteractions,

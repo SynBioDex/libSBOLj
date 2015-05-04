@@ -10,7 +10,7 @@ public class GenericTopLevel extends TopLevel{
 
 	private QName rdfType;
 	
-	public GenericTopLevel(URI identity, QName rdfType) {
+	GenericTopLevel(URI identity, QName rdfType) {
 		super(identity);
 		this.rdfType = rdfType;		
 	}

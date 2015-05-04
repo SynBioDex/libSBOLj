@@ -27,7 +27,7 @@ public class ComponentDefinition extends TopLevel {
 	private HashMap<URI, SequenceAnnotation> sequenceAnnotations;
 	private HashMap<URI, SequenceConstraint> sequenceConstraints;
 	
-	public ComponentDefinition(URI identity, Set<URI> types) {
+	ComponentDefinition(URI identity, Set<URI> types) {
 		super(identity);
 		this.types = new HashSet<>();
 		setTypes(types);
@@ -245,7 +245,7 @@ public class ComponentDefinition extends TopLevel {
 	 * then adds to the list of SequenceAnnotation instances owned by this instance.
 	 * @return the created SequenceAnnotation instance.
 	 */
-	public SequenceAnnotation createSequenceAnnotation(URI identity, Location location) {
+	SequenceAnnotation createSequenceAnnotation(URI identity, Location location) {
 		SequenceAnnotation sequenceAnnotation = new SequenceAnnotation(identity, location);
 		addSequenceAnnotation(sequenceAnnotation);
 		return sequenceAnnotation;
@@ -328,7 +328,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Adds the specified instance to the list of sequenceAnnotations. 
 	 */
-	public void addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
+	void addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
 		addChildSafely(sequenceAnnotation, sequenceAnnotations, "sequenceAnnotation",
 				components, sequenceConstraints);
 		sequenceAnnotation.setSBOLDocument(this.sbolDocument);
@@ -376,7 +376,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of structuralAnnotation instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setSequenceAnnotations(
+	void setSequenceAnnotations(
 			List<SequenceAnnotation> sequenceAnnotations) {
 		clearSequenceAnnotations();		
 		for (SequenceAnnotation sequenceAnnotation : sequenceAnnotations) {
@@ -400,7 +400,7 @@ public class ComponentDefinition extends TopLevel {
 	 * then adds to the list of StructuralInstantiation instances owned by this instance.
 	 * @return the created StructuralInstantiation instance.
 	 */
-	public Component createComponent(URI identity, AccessType access, URI componentDefinitionURI) {
+	Component createComponent(URI identity, AccessType access, URI componentDefinitionURI) {
 		Component subComponent = new Component(identity, access, componentDefinitionURI);
 		addComponent(subComponent);
 		return subComponent;
@@ -425,7 +425,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Adds the specified instance to the list of components.
 	 */
-	public void addComponent(Component component) {
+	void addComponent(Component component) {
 		addChildSafely(component, components, "component",
 				sequenceAnnotations, sequenceConstraints);
 		component.setSBOLDocument(this.sbolDocument);
@@ -471,7 +471,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of structuralInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setComponents(List<Component> components) {
+	void setComponents(List<Component> components) {
 		clearComponents();
 		for (Component component : components) {
 			addComponent(component);
@@ -494,7 +494,7 @@ public class ComponentDefinition extends TopLevel {
 	 * then adds to the list of StructuralConstraint instances owned by this instance.
 	 * @return the created StructuralConstraint instance.
 	 */
-	public SequenceConstraint createSequenceConstraint(URI identity, RestrictionType restriction, URI subject, URI object) {
+	SequenceConstraint createSequenceConstraint(URI identity, RestrictionType restriction, URI subject, URI object) {
 		SequenceConstraint sequenceConstraint = new SequenceConstraint(identity, restriction, subject, object);
 		addSequenceConstraint(sequenceConstraint);
 		return sequenceConstraint;
@@ -515,7 +515,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Adds the specified instance to the list of sequenceConstraints. 
 	 */
-	public void addSequenceConstraint(SequenceConstraint sequenceConstraint) {
+	void addSequenceConstraint(SequenceConstraint sequenceConstraint) {
 		sequenceConstraint.setSBOLDocument(this.sbolDocument);
 		sequenceConstraint.setComponentDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -572,7 +572,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of structuralConstraint instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setSequenceConstraints(
+	void setSequenceConstraints(
 			List<SequenceConstraint> sequenceConstraints) {
 		clearSequenceConstraints();
 		for (SequenceConstraint sequenceConstraint : sequenceConstraints) {
@@ -679,7 +679,7 @@ public class ComponentDefinition extends TopLevel {
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public ComponentDefinition copy(String URIprefix, String displayId, String version) {				
+	ComponentDefinition copy(String URIprefix, String displayId, String version) {				
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			ComponentDefinition cloned = this.deepCopy();

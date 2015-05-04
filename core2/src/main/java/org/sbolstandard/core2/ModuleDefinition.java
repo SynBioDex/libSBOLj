@@ -25,7 +25,7 @@ public class ModuleDefinition extends TopLevel {
 	private HashMap<URI, FunctionalComponent> functionalComponents;
 	private Set<URI> models;
 	
-	public ModuleDefinition(URI identity) {
+	ModuleDefinition(URI identity) {
 		super(identity);
 		this.roles = new HashSet<>();
 		this.modules = new HashMap<>();
@@ -140,7 +140,7 @@ public class ModuleDefinition extends TopLevel {
 	 * then adds to the list of ModuleInstantiation instances owned by this instance.
 	 * @return the created ModuleInstantiation instance.
 	 */
-	public Module createModule(URI identity, URI moduleDefinitionURI) {
+	Module createModule(URI identity, URI moduleDefinitionURI) {
 		Module subModule = new Module(identity, moduleDefinitionURI);
 		addModule(subModule);
 		return subModule;
@@ -166,7 +166,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Adds the specified instance to the list of subModules. 
 	 */
-	public void addModule(Module module) {
+	void addModule(Module module) {
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		module.setSBOLDocument(this.sbolDocument);
 		module.setModuleDefinition(this);
@@ -209,7 +209,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of subModule instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setModules(List<Module> modules) {
+	void setModules(List<Module> modules) {
 		clearModules();
 		if (modules==null) return;
 		for (Module module : modules) {
@@ -233,7 +233,7 @@ public class ModuleDefinition extends TopLevel {
 	 * then adds to the list of Interaction instances owned by this instance.
 	 * @return the  created Interaction instance.
 	 */
-	public Interaction createInteraction(URI identity, Set<URI> type) {
+	Interaction createInteraction(URI identity, Set<URI> type) {
 		Interaction interaction = new Interaction(identity, type);
 		addInteraction(interaction);
 		return interaction;
@@ -254,7 +254,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Adds the specified instance to the list of interactions. 
 	 */
-	public void addInteraction(Interaction interaction) {
+	void addInteraction(Interaction interaction) {
 		addChildSafely(interaction, interactions, "interaction", functionalComponents, modules);
 		interaction.setSBOLDocument(this.sbolDocument);
         interaction.setModuleDefinition(this);
@@ -297,7 +297,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of interaction instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setInteractions(
+	void setInteractions(
 			List<Interaction> interactions) {
 		clearInteractions();	
 		if (interactions==null) return;
@@ -322,7 +322,7 @@ public class ModuleDefinition extends TopLevel {
 	 * then adds to the list of FunctionalInstantiation instances owned by this instance.
 	 * @return the created {@link FunctionalComponent} instance.
 	 */
-	public FunctionalComponent createFunctionalComponent(URI identity, AccessType access, 
+	FunctionalComponent createFunctionalComponent(URI identity, AccessType access, 
 			URI functionalComponentURI, DirectionType direction) {
 		FunctionalComponent functionalComponent = 
 				new FunctionalComponent(identity, access, functionalComponentURI, direction);
@@ -350,7 +350,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Adds the specified instance to the list of components.
 	 */
-	public void addFunctionalComponent(FunctionalComponent functionalComponent) {
+	void addFunctionalComponent(FunctionalComponent functionalComponent) {
 		addChildSafely(functionalComponent, functionalComponents, "functionalComponent", interactions, modules);
 		functionalComponent.setSBOLDocument(this.sbolDocument);
 	}
@@ -392,7 +392,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of functionalInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setFunctionalComponents(
+	void setFunctionalComponents(
 			List<FunctionalComponent> components) {
 		clearComponents();	
 		if (components==null) return;
@@ -623,7 +623,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public ModuleDefinition copy(String URIprefix, String displayId, String version) {
+	ModuleDefinition copy(String URIprefix, String displayId, String version) {
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			ModuleDefinition cloned = this.deepCopy();

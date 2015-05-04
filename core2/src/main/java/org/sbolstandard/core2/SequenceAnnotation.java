@@ -20,7 +20,7 @@ public class SequenceAnnotation extends Documented {
 	private URI component;
 	private ComponentDefinition componentDefinition = null;
 	
-	public SequenceAnnotation(URI identity, Location location) {
+	SequenceAnnotation(URI identity, Location location) {
 		super(identity);
 		setLocation(location);		
 	}
@@ -58,7 +58,7 @@ public class SequenceAnnotation extends Documented {
 	 * Sets field variable <code>location</code> to the specified element.
 	 * @param location
 	 */
-	public void setLocation(Location location) {
+	void setLocation(Location location) {
 		if (location==null) {
 			throw new IllegalArgumentException("Sequence annotation "+this.getIdentity()+" must have a location.");
 		}
@@ -152,7 +152,7 @@ public class SequenceAnnotation extends Documented {
 	 * @param componentURI
 	 */
 	public void setComponent(URI componentURI) {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(componentURI)==null) {
 				throw new IllegalArgumentException("Component '" + componentURI + "' does not exist.");
 			}

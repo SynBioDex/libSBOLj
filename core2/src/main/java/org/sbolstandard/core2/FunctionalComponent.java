@@ -21,7 +21,7 @@ public class FunctionalComponent extends ComponentInstance {
 		 * 
 		 * @return direction type.
 		 */
-		public String getDirectionType() {
+		String getDirectionType() {
 			return directionType;
 		}
 
@@ -35,7 +35,7 @@ public class FunctionalComponent extends ComponentInstance {
 		 * @param direction
 		 * @return the corresponding DirectionType instance
 		 */
-		public static DirectionType convertToDirectionType(URI direction) {
+		static DirectionType convertToDirectionType(URI direction) {
 			if (direction != null) {
 				if (direction.equals(Direction.INOUT)) {
 					return DirectionType.INOUT;
@@ -57,7 +57,7 @@ public class FunctionalComponent extends ComponentInstance {
 		 * Returns the direction type in URI.
 		 * @return direction type in URI
 		 */
-		public static URI convertToURI(DirectionType direction) {
+		static URI convertToURI(DirectionType direction) {
 			if (direction != null) {
 				if (direction.equals(DirectionType.INOUT)) {
 					return Direction.INOUT;
@@ -82,7 +82,7 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 	
 
-	public FunctionalComponent(URI identity, AccessType access, URI instantiatedComponent,
+	FunctionalComponent(URI identity, AccessType access, URI instantiatedComponent,
 			DirectionType direction) {
 		super(identity, access, instantiatedComponent);
 		setDirection(direction);

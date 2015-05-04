@@ -3,11 +3,15 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
- * 
  * @author Zhen Zhang
+ * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @version 2.0
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
+
 public abstract class Documented extends Identified {
 
 	private String name;
@@ -16,7 +20,7 @@ public abstract class Documented extends Identified {
 	/**
 	 * @param identity an identity for the documented object
 	 */
-	public Documented(URI identity) {
+	Documented(URI identity) {
 		super(identity);
 	}
 	

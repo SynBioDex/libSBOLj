@@ -7,23 +7,23 @@ import java.util.regex.Pattern;
 
 final class URIcompliance {
 
-	public static void validateIdVersion(String displayId, String version) {
+	static void validateIdVersion(String displayId, String version) {
 		if (!isDisplayIdCompliant(displayId)) {
-			throw new IllegalArgumentException("Display id `" + displayId + "' is not compliant");
+			throw new IllegalArgumentException("Display id `" + displayId + "' is not valid.");
 		}
 		if (version!=null && !version.equals("") && !isVersionCompliant(version)) {
-			throw new IllegalArgumentException("Version `" + version + "' is not compliant");
+			throw new IllegalArgumentException("Version `" + version + "' is not valid.");
 		}
 	}
 
-	public static URI createCompliantURI(String prefix, String displayId, String version) {
+	static URI createCompliantURI(String prefix, String displayId, String version) {
 		if (version==null || version.equals("")) {
 			return URI.create(prefix + '/' + displayId);
 		}
 		return URI.create(prefix + '/' + displayId + '/' + version);
 	}
 	
-	public static URI createCompliantURI(String prefix, String type, String displayId, String version) {
+	static URI createCompliantURI(String prefix, String type, String displayId, String version) {
 		if (version==null || version.equals("")) {
 			return URI.create(prefix + '/' + type + '/' + displayId);
 		}
@@ -35,7 +35,7 @@ final class URIcompliance {
 	 * The persistent identity is simply the identity URI without the version.
 	 * @return the extracted persistent identity URI, <code>null</code> otherwise.
 	 */
-	public static String extractPersistentId(URI objURI) {
+	static String extractPersistentId(URI objURI) {
 		// fixme: return a String or raise an exception, don't return null
 		String URIstr = objURI.toString();
 		Pattern r = Pattern.compile(genericURIpattern1);
@@ -54,7 +54,7 @@ final class URIcompliance {
 	 * Extract the URI prefix from this object's identity URI.
 	 * @return the extracted URI prefix, <code>null</code> otherwise.
 	 */
-	public static String extractURIprefix(URI objURI) {
+	static String extractURIprefix(URI objURI) {
 		String URIstr = objURI.toString();
 		Pattern r = Pattern.compile(genericURIpattern1);
 		Matcher m = r.matcher(URIstr);
@@ -73,7 +73,7 @@ final class URIcompliance {
 	 * great grand child object's display ID.
 	 * @return the extracted display ID.
 	 */
-	public static String extractDisplayId(URI objURI) {
+	static String extractDisplayId(URI objURI) {
 		String URIstr = objURI.toString();
 		Pattern r = Pattern.compile(genericURIpattern1);
 		Matcher m = r.matcher(URIstr);
@@ -94,7 +94,7 @@ final class URIcompliance {
 	 * Extract the version from this object's identity URI.
 	 * @return the version if the given URI is compliant, <code>null</code> otherwise.
 	 */
-	public static String extractVersion(URI objURI) {
+	static String extractVersion(URI objURI) {
 		String URIstr = objURI.toString();
 		Pattern r = Pattern.compile(genericURIpattern1);
 		Matcher m = r.matcher(URIstr);
@@ -115,7 +115,7 @@ final class URIcompliance {
 	 * @param index
 	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise.
 	 */
-	public static final boolean isURIcompliant(URI objURI, int index) {
+	static final boolean isURIcompliant(URI objURI, int index) {
 		if (index < 0 || index > 3) {
 			// TODO: generate error message
 			return false;
@@ -142,7 +142,7 @@ final class URIcompliance {
 		return m.matches();
 	}
 	
-	public static final boolean isURIcompliantTemp(URI objURI, String URIprefix, String version, String ... displayIds) {
+	static final boolean isURIcompliantTemp(URI objURI, String URIprefix, String version, String ... displayIds) {
 		if (displayIds.length == 0 || displayIds.length > 4) {
 			// TODO: Exception: wrong number of display IDs.
 			return false;
@@ -254,7 +254,7 @@ final class URIcompliance {
 		}
 	}
 
-	public static final boolean isChildURIcompliant(URI parentURI, URI childURI) {
+	static final boolean isChildURIcompliant(URI parentURI, URI childURI) {
 		String parentPersistentId = extractPersistentId(parentURI);
 		if (parentPersistentId==null) return false;
 		String childDisplayId = extractDisplayId(childURI);
@@ -327,57 +327,57 @@ final class URIcompliance {
 		 */
 	}
 
-	public static boolean isDisplayIdCompliant(String newDisplayId) {
+	static boolean isDisplayIdCompliant(String newDisplayId) {
 		Pattern r = Pattern.compile(displayIDpattern);
 		Matcher m = r.matcher(newDisplayId);
 		// TODO: Warning: Display ID is not compliant.
 		return m.matches();
 	}
 
-	public static boolean isVersionCompliant(String newVersion) {
+	static boolean isVersionCompliant(String newVersion) {
 		Pattern r = Pattern.compile(versionPattern);
 		Matcher m = r.matcher(newVersion);
 		return m.matches();
 	}
 
-	public static boolean isURIprefixCompliant(String URIprefix) {
+	static boolean isURIprefixCompliant(String URIprefix) {
 		Pattern r = Pattern.compile(URIprefixPattern);
 		Matcher m = r.matcher(URIprefix);
 		return m.matches();
 	}
 
 	// (?:...) is a non-capturing group
-	//public static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
-	public static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+	//static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
+	static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
-	public static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]*";//"[a-zA-Z0-9_]+";
+	static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]*";//"[a-zA-Z0-9_]+";
 
-	public static final String versionPattern = "[0-9]+[a-zA-Z0-9_\\.-]*"; // ^ and $ are the beginning and end of the string anchors respectively. 
+	static final String versionPattern = "[0-9]+[a-zA-Z0-9_\\.-]*"; // ^ and $ are the beginning and end of the string anchors respectively. 
 															// | is used to denote alternates. 
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: persistent ID
 	// group 2: URI prefix
 	// group 3: version
-	public static final String genericURIpattern1 = "((" + URIprefixPattern + ")(/(" + displayIDpattern + ")){1,4})(/(" + versionPattern + "))?";
+	static final String genericURIpattern1 = "((" + URIprefixPattern + ")(/(" + displayIDpattern + ")){1,4})(/(" + versionPattern + "))?";
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: top-level display ID
 	// group 2: top-level's child display ID
 	// group 3: top-level's grand child display ID
 	// group 4: top-level's grand grand child display ID
-	public static final String genericURIpattern2 = URIprefixPattern + "/((" + displayIDpattern + "/){1,4})" + versionPattern;
+	static final String genericURIpattern2 = URIprefixPattern + "/((" + displayIDpattern + "/){1,4})" + versionPattern;
 
-	public static final String toplevelURIpattern = URIprefixPattern + "/" + displayIDpattern + "(/" + versionPattern + ")?";
+	static final String toplevelURIpattern = URIprefixPattern + "/" + displayIDpattern + "(/" + versionPattern + ")?";
 
-	public static final String childURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){2}" + versionPattern;
+	static final String childURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){2}" + versionPattern;
 
-	public static final String grandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){3}" + versionPattern;
+	static final String grandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){3}" + versionPattern;
 
-	public static final String greatGrandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){4}" + versionPattern;
+	static final String greatGrandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){4}" + versionPattern;
 
 	@SafeVarargs
-	public static boolean keyExistsInAnyMap(URI key, Map<URI, ?>... maps) {
+	static boolean keyExistsInAnyMap(URI key, Map<URI, ?>... maps) {
 		for(Map<URI, ?> map : maps) {
 			if(map.keySet().contains(key))
 				return true;

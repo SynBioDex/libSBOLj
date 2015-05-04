@@ -15,7 +15,7 @@ public class Model extends TopLevel {
 	private URI language;
 	private URI framework;
 
-	public Model(URI identity,URI source, URI language, URI framework) {
+	Model(URI identity,URI source, URI language, URI framework) {
 		super(identity);		
 		setSource(source);
 		setLanguage(language);
@@ -129,7 +129,7 @@ public class Model extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Model copy(String URIprefix, String displayId, String version) {
+	Model copy(String URIprefix, String displayId, String version) {
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			Model cloned = this.deepCopy();

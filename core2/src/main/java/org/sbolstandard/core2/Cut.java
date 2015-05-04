@@ -11,7 +11,7 @@ public class Cut extends Location{
 	private int at;
 	private OrientationType orientation;
 	
-	public Cut(URI identity, int at) {
+	Cut(URI identity, int at) {
 		super(identity);
 		setAt(at);
 	}

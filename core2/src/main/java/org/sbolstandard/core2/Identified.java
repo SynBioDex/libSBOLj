@@ -12,10 +12,13 @@ import static org.sbolstandard.core2.URIcompliance.*;
 import static org.sbolstandard.core2.Version.isFirstVersionNewer;
 
 /**
- *
  * @author Zhen Zhang
+ * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @version 2.0
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
 
 public abstract class Identified {
@@ -28,7 +31,7 @@ public abstract class Identified {
 	protected String displayId;
 	protected SBOLDocument sbolDocument = null;
 
-	public Identified(URI identity) {
+	Identified(URI identity) {
 		setIdentity(identity);
 		/*
 		if (isURIcompliant(identity, 0)) {
@@ -83,7 +86,7 @@ public abstract class Identified {
 	 * @param identity URI for the specified element.
 	 * @throws IllegalArgumentException when identity URI is null.
 	 */
-	public final void setIdentity(URI identity) {
+	final void setIdentity(URI identity) {
 		if (identity == null) {
 			throw new IllegalArgumentException("Identity is a required field.");
 		}
@@ -109,14 +112,14 @@ public abstract class Identified {
 	/**
 	 * Sets field variable <code>persistentIdentity</code> to the specified element.
 	 */
-	public void setPersistentIdentity(URI persistentIdentity) {
+	void setPersistentIdentity(URI persistentIdentity) {
 		this.persistentIdentity = persistentIdentity;
 	}
 
 	/**
 	 * Set optional field variable <code>persistentIdentity</code> to <code>null</code>.
 	 */
-	public void unsetPersistentIdentity() {
+	void unsetPersistentIdentity() {
 		persistentIdentity = null;
 	}
 
@@ -143,7 +146,11 @@ public abstract class Identified {
 	/**
 	 * Sets field variable <code>version</code> to the specified element.
 	 */
-	public void setVersion(String version) {
+	void setVersion(String version) {
+		if (!URIcompliance.isVersionCompliant(version)) {
+			throw new IllegalArgumentException(
+					"Version " + version + " is invalid for `" + identity + "'.");
+		}
 		this.version = version;
 	}
 	
@@ -167,14 +174,18 @@ public abstract class Identified {
 	/**
 	 * Set field variable <code>displayId</code> to the specified element.
 	 */
-	public void setDisplayId(String displayId) {
+	void setDisplayId(String displayId) {
+		if (!URIcompliance.isDisplayIdCompliant(displayId)) {
+			throw new IllegalArgumentException(
+					"Display id " + displayId + " is invalid for `" + identity + "'.");
+		}
 		this.displayId = displayId;
 	}
 	
 	/**
 	 * Set optional field variable <code>displayId</code> to <code>null</code>.
 	 */
-	public void unsetDisplayId() {
+	void unsetDisplayId() {
 		displayId = null;
 	}
 
@@ -234,13 +245,14 @@ public abstract class Identified {
 	/**
 	 * Adds the specified instance to the list of structuralAnnotations.
 	 */
-	public void addAnnotation(Annotation annotation) {
+	void addAnnotation(Annotation annotation) {
 		// TODO: @addAnnotation, Check for duplicated entries.
 		annotations.add(annotation);
 	}
 
 	/**
-	 * Removes the instance matching the specified URI from the list of annotations if present.
+	 * Removes an annotation from the list of annotations for this object.
+	 * @param annotation to remove.
 	 * @return <code>True</code> if the matching instance is present.
 	 */
 	public boolean removeAnnotation(Annotation annotation) {
@@ -278,7 +290,7 @@ public abstract class Identified {
 	/**
 	 * Clears the existing list of structuralAnnotation instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setAnnotations(
+	void setAnnotations(
 			List<Annotation> annotations) {
 		clearAnnotations();
 		for (Annotation structuralAnnotation : annotations) {

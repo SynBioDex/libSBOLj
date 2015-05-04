@@ -12,7 +12,7 @@ public class Range extends Location{
 	private int end = 0;
 	private OrientationType orientation;
 	
-	public Range(URI identity, int start, int end) {
+	Range(URI identity, int start, int end) {
 		super(identity);
 		setEnd(end);
 		setStart(start);

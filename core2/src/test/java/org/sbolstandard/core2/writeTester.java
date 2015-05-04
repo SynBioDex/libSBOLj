@@ -45,14 +45,6 @@ public class writeTester {
 	 * Top level types
 	 *
 	 */
-	static final class TopLevelTypes {
-		static final String collection = "col";
-		static final String moduleDefinition = "md";
-		static final String model = "mod";
-		static final String componentDefinition = "cd";
-		static final String sequence = "seq";
-		static final String genericTopLevel = "gen";
-	}
 
 	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
@@ -187,7 +179,13 @@ public class writeTester {
 		Collection myParts = createCollection(SBOL2Doc_test,
 				getData("myParts", version),
 				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
-
+		Collection myParts2 = createCollection(SBOL2Doc_test,
+				getData("myParts", "2.0"),
+				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
+		SBOL2Doc_test.removeCollection(myParts2.getIdentity());
+		//System.out.println(SBOL2Doc_test.getCollection(myParts.getPersistentIdentity()).getVersion());
+		
+		
 		myParts.addMember(get_pLacSeq(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_tetRSeq(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_pLactetRSeq(SBOL2Doc_test).getIdentity());
@@ -721,7 +719,7 @@ public class writeTester {
 	{
 		String displayId 	   = componentData.get(0);
 		String version 		   = componentData.get(1);
-		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevelTypes.componentDefinition
+		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevel.componentDefinition
 				+ "/" + displayId;
 		if (version!=null && !version.equals("")) 
 			identity += "/" + version;
@@ -809,7 +807,7 @@ public class writeTester {
 	{
 		String displayId 	   = modeldata.get(0);
 		String version 		   = modeldata.get(1);
-		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevelTypes.model + "/" + 
+		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevel.model + "/" + 
 				displayId;
 		if (version!=null && !version.equals("")) 
 			identity += "/" + version;
@@ -828,7 +826,7 @@ public class writeTester {
 	{
 		String displayId 	   = module_data.get(0);
 		String version 		   = module_data.get(1);
-		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevelTypes.moduleDefinition + "/" 
+		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevel.moduleDefinition + "/" 
 				+ displayId;
 		if (version!=null && !version.equals("")) 
 			identity += "/" + version;
@@ -946,7 +944,7 @@ public class writeTester {
 		String displayId 	   = structureData.get(0);
 		String version 		   = structureData.get(1);
 		String element 		   = structureData.get(2);
-		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevelTypes.sequence + "/" + 
+		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevel.sequence + "/" + 
 				displayId;
 		if (version!=null && !version.equals("")) 
 			identity += "/" + version;

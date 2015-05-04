@@ -23,7 +23,7 @@ public class Module extends Documented {
 	private URI definition;
 	private ModuleDefinition moduleDefinition = null;
 
-	public Module(URI identity, URI moduleDefinition) {
+	Module(URI identity, URI moduleDefinition) {
 		super(identity);
 		setDefinition(moduleDefinition);
 		this.mapsTos = new HashMap<>();
@@ -87,7 +87,7 @@ public class Module extends Documented {
 	 * then adds to the list of MapsTo instances owned by this component.
 	 * @return the created MapsTo instance.
 	 */
-	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
+	MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
 		addMapsTo(mapping);
@@ -108,7 +108,7 @@ public class Module extends Documented {
 	/**
 	 * Adds the specified instance to the list of references. 
 	 */
-	public void addMapsTo(MapsTo mapsTo) {
+	void addMapsTo(MapsTo mapsTo) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocal() + "' does not exist.");
@@ -162,7 +162,7 @@ public class Module extends Documented {
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setMapsTos(
+	void setMapsTos(
 			List<MapsTo> mappings) {
 		clearMapsTos();		
 		for (MapsTo mapping : mappings) {

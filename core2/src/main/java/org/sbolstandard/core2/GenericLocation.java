@@ -10,7 +10,7 @@ public class GenericLocation extends Location{
 	
 	private OrientationType orientation;
 
-	public GenericLocation(URI identity) {
+	GenericLocation(URI identity) {
 		super(identity);
 	}
 	

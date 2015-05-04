@@ -6,7 +6,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
 
 public class Component extends ComponentInstance{
 
-	public Component(URI identity, AccessType access, URI componentDefinition) {
+	Component(URI identity, AccessType access, URI componentDefinition) {
 		super(identity, access, componentDefinition);
 	}
 	

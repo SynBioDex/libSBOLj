@@ -26,14 +26,14 @@ public class Interaction extends Documented {
 	 * @param identity an identity for the interaction	 
 	 * @param type a type for the interaction
 	 */
-	public Interaction(URI identity, Set<URI> type) {
+	Interaction(URI identity, Set<URI> type) {
 		super(identity);
 		this.types = new HashSet<>();
 		setTypes(type);
 		this.participations = new HashMap<>();
 	}
 	
-	public Interaction(Interaction interaction) {
+	Interaction(Interaction interaction) {
 		super(interaction);
 		Set<URI> type = new HashSet<>();
 		for (URI typeElement : interaction.getTypes()) {
@@ -103,20 +103,20 @@ public class Interaction extends Documented {
 		types.clear();
 	}
 	
-	/**
-	 * Test if the optional field variable <code>participations</code> is set.
-	 * @return <code>true</code> if the field variable is not an empty list
-	 */
-	public boolean isSetParticipations() {
-		return !(participations == null || participations.isEmpty());
-	}
+//	/**
+//	 * Test if the optional field variable <code>participations</code> is set.
+//	 * @return <code>true</code> if the field variable is not an empty list
+//	 */
+//	public boolean isSetParticipations() {
+//		return !(participations == null || participations.isEmpty());
+//	}
 	
 	/**
 	 * Calls the Participation constructor to create a new instance using the specified parameters, 
 	 * then adds to the list of Participation instances owned by this instance.
 	 * @return the  created Participation instance.
 	 */
-	public Participation createParticipation(URI identity, URI participant) {
+	Participation createParticipation(URI identity, URI participant) {
 		Participation participation = new Participation(identity, participant);
 		addParticipation(participation);
 		return participation;
@@ -147,7 +147,7 @@ public class Interaction extends Documented {
 	/**
 	 * Adds the specified instance to the list of participations. 
 	 */
-	public void addParticipation(Participation participation) {
+	void addParticipation(Participation participation) {
         addChildSafely(participation, participations, "participation");
 		participation.setSBOLDocument(this.sbolDocument);
         participation.setModuleDefinition(moduleDefinition);
@@ -191,10 +191,9 @@ public class Interaction extends Documented {
 	/**
 	 * Clears the existing list of participation instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setParticipations(
+	void setParticipations(
 			List<Participation> participations) {
-		if(isSetParticipations())
-			clearParticipations();	
+		clearParticipations();	
 		for (Participation participation : participations) {
 			addParticipation(participation);
 		}

@@ -12,7 +12,7 @@ final class Version {
 	 * Compare the given two versions based on the Maven version scheme.
 	 * @return <code>true</code> if the <code>version1</code> is newer than <code>version2</code>, <code>false</code> otherwise.
 	 */
-	public static final boolean isFirstVersionNewer(String version1, String version2) {
+	static final boolean isFirstVersionNewer(String version1, String version2) {
 		if (version1==null) return true;
 		if (version2==null) return false;
 		ComparableVersion v1 = new ComparableVersion(version1);
