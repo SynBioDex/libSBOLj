@@ -179,7 +179,7 @@ public abstract class ComponentInstance extends Documented {
 		addMapsTo(mapping);
 		return mapping;
 	}
-	
+		
 	/**
 	 * @return the newly created MapsTo object.
 	 */

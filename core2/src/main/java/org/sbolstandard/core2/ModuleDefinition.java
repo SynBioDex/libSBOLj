@@ -145,6 +145,12 @@ public class ModuleDefinition extends TopLevel {
 		addModule(subModule);
 		return subModule;
 	}
+	
+	public Module createModule(String displayId, String moduleDefinitionId, String version) {
+		URI moduleDefinition = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
+				TopLevel.moduleDefinition, moduleDefinitionId, version);
+		return createModule(displayId,moduleDefinition);
+	}
 
 	public Module createModule(String displayId, URI moduleDefinitionURI) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -323,24 +329,31 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the created {@link FunctionalComponent} instance.
 	 */
 	FunctionalComponent createFunctionalComponent(URI identity, AccessType access, 
-			URI functionalComponentURI, DirectionType direction) {
+			URI definitionURI, DirectionType direction) {
 		FunctionalComponent functionalComponent = 
-				new FunctionalComponent(identity, access, functionalComponentURI, direction);
+				new FunctionalComponent(identity, access, definitionURI, direction);
 		addFunctionalComponent(functionalComponent);
 		return functionalComponent;
 	}
+	
+	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
+			String definition, String version, DirectionType direction) {
+		URI definitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
+				TopLevel.componentDefinition, definition, version);
+		return createFunctionalComponent(displayId,access,definitionURI,direction);
+	}
 
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
-			URI functionalComponentURI, DirectionType direction) {
+			URI definitionURI, DirectionType direction) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getComponentDefinition(functionalComponentURI)==null) {
-				throw new IllegalArgumentException("Component definition '" + functionalComponentURI + "' does not exist.");
+			if (sbolDocument.getComponentDefinition(definitionURI)==null) {
+				throw new IllegalArgumentException("Component definition '" + definitionURI + "' does not exist.");
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		URI newComponentDefinitionURI = createCompliantURI(URIprefix, displayId, version);
-		FunctionalComponent fc = createFunctionalComponent(newComponentDefinitionURI, access, functionalComponentURI, direction);
+		URI functionalComponentURI = createCompliantURI(URIprefix, displayId, version);
+		FunctionalComponent fc = createFunctionalComponent(functionalComponentURI, access, definitionURI, direction);
 		fc.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		fc.setDisplayId(displayId);
 		fc.setVersion(version);

@@ -406,6 +406,13 @@ public class ComponentDefinition extends TopLevel {
 		return subComponent;
 	}
 	
+	public Component createComponent(String displayId, AccessType access, 
+			String componentDefinition, String version) {
+		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
+				TopLevel.componentDefinition, componentDefinition, version);
+		return createComponent(displayId,access,componentDefinitionURI);
+	}
+	
 	public Component createComponent(String displayId, AccessType access, URI componentDefinitionURI) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(componentDefinitionURI)==null) {
@@ -498,6 +505,15 @@ public class ComponentDefinition extends TopLevel {
 		SequenceConstraint sequenceConstraint = new SequenceConstraint(identity, restriction, subject, object);
 		addSequenceConstraint(sequenceConstraint);
 		return sequenceConstraint;
+	}
+	
+	public SequenceConstraint createSequenceConstraint(String displayId,
+			RestrictionType restriction, String subject, String object) {
+		URI subjectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(), 
+				subject, this.getVersion());
+		URI objectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(), 
+				object, this.getVersion());
+		return createSequenceConstraint(displayId,restriction,subjectURI,objectURI);
 	}
 		
 	public SequenceConstraint createSequenceConstraint(String displayId,
