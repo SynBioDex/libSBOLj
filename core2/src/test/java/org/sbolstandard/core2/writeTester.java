@@ -81,11 +81,9 @@ public class writeTester {
 			e.printStackTrace();
 		}
 		catch (SBOLValidationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -243,7 +241,7 @@ public class writeTester {
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Promoter"),
 				getData("pLac",version),
-				get_pLacSeq(SBOL2Doc_test));
+				"pLacSeq");
 	}
 
 	private static ComponentDefinition get_tetR (SBOLDocument SBOL2Doc_test)
@@ -252,7 +250,7 @@ public class writeTester {
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("CDS"),
 				getData("tetRCDS",version),
-				get_tetRSeq(SBOL2Doc_test));
+				"tetRSeq");
 	}
 
 	private static Component get_P (ComponentDefinition cd)
@@ -264,26 +262,6 @@ public class writeTester {
 	{
 		return createComponentData(cd,getData("C", "public"),"tetRCDS");
 	}
-
-//	private static void get_p_sequenceAnnotate (ComponentDefinition cd)
-//	{
-//		createSequenceAnnotationData(
-//				cd,
-//				getData("p_structAnnotate"),
-//				get_P(cd),
-//				0, 10,
-//				null);
-//	}
-
-//	private static void get_c_sequenceAnnotate (ComponentDefinition cd)
-//	{
-//		createSequenceAnnotationData(
-//				cd,
-//				getData("p_structAnnotate"),
-//				get_P(cd),
-//				11, 20,
-//				null);
-//	}
 
 	private static SequenceConstraint get_struct_constraint (ComponentDefinition cd)
 	{
@@ -300,7 +278,7 @@ public class writeTester {
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Gene"),
 				getData("pLactetR",version),
-				get_pLactetRSeq(SBOL2Doc_test));
+				"pLactetRSeq");
 		get_P(cd);
 		get_C(cd);
 		get_struct_constraint(cd);
@@ -428,7 +406,7 @@ public class writeTester {
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Promoter"),
 				getData("ptet",version),
-				get_ptetSeq(SBOL2Doc_test));
+				"ptetSeq");
 	}
 
 	private static ComponentDefinition get_lacI (SBOLDocument SBOL2Doc_test)
@@ -437,7 +415,7 @@ public class writeTester {
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("CDS"),
 				getData("lacICDS",version),
-				get_lacISeq(SBOL2Doc_test));
+				"lacISeq");
 	}
 
 	private static Component get_T (ComponentDefinition cd)
@@ -452,22 +430,12 @@ public class writeTester {
 
 	private static SequenceAnnotation get_t_structAnnotate (ComponentDefinition cd)
 	{
-		return createSequenceAnnotationData(
-				cd,
-				getData("p2_structAnnotate"),
-				get_T(cd),
-				1, 10,
-				"p2_structAnnotate_range");
+		return createSequenceAnnotationData(cd,getData("p2_structAnnotate"),"T",1,10,"p2_structAnnotate_range");
 	}
 
 	private static SequenceAnnotation get_l_structAnnotate (ComponentDefinition cd)
 	{
-		return createSequenceAnnotationData(
-				cd,
-				getData("c2_structAnnotate"),
-				get_L(cd),
-				11, 20,
-				"c2_structAnnotate_range");
+		return createSequenceAnnotationData(cd,getData("c2_structAnnotate"),"L",11,20,"c2_structAnnotate_range");
 	}
 
 	private static ComponentDefinition get_ptetlacI (SBOLDocument SBOL2Doc_test)
@@ -476,7 +444,7 @@ public class writeTester {
 				getSetPropertyURI("DNA"),
 				getSetPropertyURI("Gene"),
 				getData("ptetlacI",version),
-				get_ptetlacISeq(SBOL2Doc_test));
+				"ptetlacISeq");
 		get_T(cd); 
 		get_L(cd);
 		get_t_structAnnotate(cd);
@@ -603,7 +571,7 @@ public class writeTester {
 		get_Inv1(SBOL2Doc_test,md);
 		get_Inv2(SBOL2Doc_test,md);
 		Model m = get_ToggleModel(SBOL2Doc_test);
-		md.addModel(m.getIdentity());
+		md.addModel(m.getDisplayId(),version);
 		//getAnnotation_List(md,createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle()));
 		return md;
 	}
@@ -655,7 +623,7 @@ public class writeTester {
 	private static ComponentDefinition createComponentDefinitionData(SBOLDocument SBOL2Doc_test,
 			Set<URI> type, Set<URI> roles,
 			List<String> componentData,
-			Sequence structureData)
+			String structureData)
 	{
 		String displayId 	   = componentData.get(0);
 		String version 		   = componentData.get(1);
@@ -670,7 +638,7 @@ public class writeTester {
 			c.setRoles(roles);
 			setCommonTopLevelData(c, displayId, displayId);
 			if(structureData != null)
-				c.setSequence(structureData.getIdentity());
+				c.setSequence(structureData,version);
 		}
 
 		return c;
@@ -804,7 +772,7 @@ public class writeTester {
 	private static SequenceAnnotation createSequenceAnnotationData(
 			ComponentDefinition cd,
 			List<String> structuralAnnotations_data,
-			Component ref_component,
+			String ref_component,
 			int startRange, int endRange,
 			String locationId)
 	{
@@ -825,7 +793,7 @@ public class writeTester {
 			//s.removeRange(URI.create(s.getPersistentIdentity()+"/multiRange/range2/1.0"));
 			//s.removeRange(URI.create(s.getPersistentIdentity()+"/multiRange/range0/1.0"));
 			setCommonDocumentedData(s, displayId, displayId);
-			s.setComponent(ref_component.getIdentity());
+			s.setComponent(ref_component);
 		} 
 		return s;
 	}

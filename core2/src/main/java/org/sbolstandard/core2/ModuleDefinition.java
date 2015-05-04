@@ -446,6 +446,12 @@ public class ModuleDefinition extends TopLevel {
 //			return true;					
 //	}
 	
+	public void addModel(String model,String version) {
+		URI modelURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
+				TopLevel.model, model, version);
+		addModel(modelURI);
+	}
+	
 	/**
 	 * Adds the specified instance to the list of models. 
 	 */

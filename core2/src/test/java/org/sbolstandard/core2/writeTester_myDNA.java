@@ -52,20 +52,14 @@ public class writeTester_myDNA {
 				getSetOfURI("chebi:DNA/1/0"),
 				getSetOfURI("so:region/1/0"),
 				getData("MyDnaComponent/1/0","MyDnaComponent","1.0","MyDnaComponent","myDNA", "This is a very simple example"),
-				get_pLacSeq(SBOL2Doc_test),
+				"pLacSeq",
 				null, null, null);
-	}
-
-	private static Sequence get_pLacSeq (SBOLDocument SBOL2Doc_test)
-	{
-		return createSequenceData(SBOL2Doc_test,
-				getData("pLacSeq/1/0","pLacSeq","1.0","pLacSeq","pLacSeq", "pLacSeq", "pLacSeq_element", "pLacSeq/pLacSeq_encoding/1/0"));
 	}
 
 	private static ComponentDefinition createComponentData(SBOLDocument SBOL2Doc_test,
 			Set<URI> type, Set<URI> roles,
 			List<String> componentData,
-			Sequence structureData,
+			String structureData,
 			List<Component> structureInstantiationData,
 			List<SequenceAnnotation> structureAnnotationData,
 			List<SequenceConstraint> structureConstraintData)
@@ -82,7 +76,7 @@ public class writeTester_myDNA {
 		setCommonTopLevelData(c, identity, persistentIdentity, version, displayId, name, description);
 
 		if(structureData != null)
-			c.setSequence(structureData.getIdentity());
+			c.setSequence(structureData,version);
 		if(structureInstantiationData != null)
 		{
 			c.setComponents(structureInstantiationData);

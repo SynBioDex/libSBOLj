@@ -146,6 +146,12 @@ public class SequenceAnnotation extends Documented {
 		if (componentDefinition==null) return null;
 		return componentDefinition.getComponent(component);
 	}
+	
+	public void setComponent(String component) {
+		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
+				component, componentDefinition.getVersion());
+		setComponent(componentURI);
+	}
 
 	/**
 	 * Sets field variable <code>component</code> to the specified element.

@@ -210,6 +210,11 @@ public class ComponentDefinition extends TopLevel {
 		return sbolDocument.getSequence(sequence);
 	}
 
+	public void setSequence(String sequence,String version) {
+		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
+				TopLevel.sequence, sequence, version);
+		setSequence(sequenceURI);
+	}
 	/**
 	 * Sets the {@link Sequence} reference to the specified element.
 	 */
