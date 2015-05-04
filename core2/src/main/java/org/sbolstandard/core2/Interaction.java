@@ -121,9 +121,15 @@ public class Interaction extends Documented {
 		addParticipation(participation);
 		return participation;
 	}
+	
+	public Participation createParticipation(String displayId, String participantId) {
+		URI participant = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(), 
+				participantId, moduleDefinition.getVersion());
+		return createParticipation(displayId,participant);
+	}
 
 	public Participation createParticipation(String displayId, URI participant) {
-		if (sbolDocument != null && sbolDocument.isComplete() && moduleDefinition != null) {
+		if (moduleDefinition != null) {
 			if (moduleDefinition.getFunctionalComponent(participant)==null) {
 				throw new IllegalArgumentException("Functional component '" + participant + "' does not exist.");
 			}

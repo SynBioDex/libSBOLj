@@ -798,7 +798,7 @@ public class writeTester {
 	private static void createMapTo(Module m, String displayId, RefinementType refinement,
 			FunctionalComponent pre_fi, FunctionalComponent post_fi)
 	{
-		m.createMapsTo(displayId, refinement, pre_fi.getIdentity(), post_fi.getIdentity());
+		m.createMapsTo(displayId, refinement, pre_fi.getDisplayId(), post_fi.getDisplayId());
 	}
 
 
@@ -858,7 +858,7 @@ public class writeTester {
 			String displayId, Set<URI> roles, FunctionalComponent fi)
 	{
 		if (i.getParticipation(URI.create(i.getPersistentIdentity()+"/"+displayId))==null) {
-			Participation p = i.createParticipation(displayId, fi.getIdentity());
+			Participation p = i.createParticipation(displayId, fi.getDisplayId());
 			p.setRoles(roles);
 		}
 	}

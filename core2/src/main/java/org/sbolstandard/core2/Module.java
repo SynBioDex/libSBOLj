@@ -94,6 +94,14 @@ public class Module extends Documented {
 		return mapping;
 	}
 	
+	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) {
+		URI local = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(), 
+				localId, moduleDefinition.getVersion());
+		URI remote = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(), 
+				remoteId, getDefinition().getVersion());
+		return createMapsTo(displayId,refinement,local,remote);
+	}
+	
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		String version = this.getVersion();
@@ -111,12 +119,12 @@ public class Module extends Documented {
 	void addMapsTo(MapsTo mapsTo) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
-				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocal() + "' does not exist.");
+				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
 			}
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI())==null) {
-				throw new IllegalArgumentException("Functional component '" + mapsTo.getRemote() + "' does not exist.");
+				throw new IllegalArgumentException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
 			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
