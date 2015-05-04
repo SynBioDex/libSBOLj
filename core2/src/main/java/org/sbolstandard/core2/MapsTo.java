@@ -4,6 +4,16 @@ import java.net.URI;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public class MapsTo extends Identified{
 	
 	private RefinementType refinement;
@@ -114,7 +124,7 @@ public class MapsTo extends Identified{
 	 * Returns the URI constant corresponds to the field variable <code>refinement</code>.
 	 * @return  <code>refinement</code>
 	 */
-	public URI getRefinementURI() {
+	URI getRefinementURI() {
 		if (refinement != null) {
 			if (refinement.equals(RefinementType.MERGE)) {
 				return Refinement.merge;
@@ -147,7 +157,7 @@ public class MapsTo extends Identified{
 	/**
 	 * Sets field variable <code>refinement</code> according to the specified URI.
 	 */
-	public void setRefinement(URI refinement) {
+	void setRefinement(URI refinement) {
 		if (refinement != null && refinement.equals(Refinement.merge)) {
 			this.refinement = RefinementType.MERGE;
 		}

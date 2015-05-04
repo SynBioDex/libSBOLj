@@ -5,10 +5,13 @@ import java.net.URI;
 import org.sbolstandard.core2.Sbol2Terms.Orientation;
 
 /**
- * 
  * @author Zhen Zhang
+ * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @version 2.0
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
 
 public enum OrientationType {

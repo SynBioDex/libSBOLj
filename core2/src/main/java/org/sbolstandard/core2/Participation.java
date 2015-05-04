@@ -8,11 +8,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 
  * @author Zhen Zhang
+ * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @version 2.0
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
+
 public class Participation extends Identified {
 	
 	private Set<URI> roles;

@@ -4,6 +4,16 @@ import java.net.URI;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public class FunctionalComponent extends ComponentInstance {
 
 	private DirectionType direction;
@@ -107,7 +117,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * 
 	 * @return direction type in URI
 	 */
-	public URI getDirectionURI() {
+	URI getDirectionURI() {
 		if (direction != null) {
 			if (direction.equals(DirectionType.INOUT)) {
 				return Direction.INOUT;
@@ -139,7 +149,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * Sets field variable <code>direction</code> to the element corresponding
 	 * to the specified URI.
 	 */
-	public void setDirection(URI direction) {
+	void setDirection(URI direction) {
 		if (direction != null && direction.equals(Direction.INPUT)) {
 			this.direction = DirectionType.INPUT;
 		} else if (direction != null && direction.equals(Direction.OUTPUT)) {

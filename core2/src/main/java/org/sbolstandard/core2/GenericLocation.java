@@ -6,6 +6,16 @@ import static org.sbolstandard.core2.URIcompliance.*;
 
 import org.sbolstandard.core2.Sbol2Terms.Orientation;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public class GenericLocation extends Location{
 	
 	private OrientationType orientation;
@@ -40,7 +50,7 @@ public class GenericLocation extends Location{
 	 * Returns the orientation type in URI.
 	 * @return orientation type in URI
 	 */
-	public URI getOrientationURI() {
+	URI getOrientationURI() {
 		if (orientation != null) {
 			if (orientation.equals(OrientationType.INLINE)) {
 				return Orientation.inline;
@@ -68,7 +78,7 @@ public class GenericLocation extends Location{
 	/**
 	 * Sets field variable <code>orientation</code> to the element corresponding to the specified URI.
 	 */
-	public void setOrientation(URI orientation) {
+	void setOrientation(URI orientation) {
 		if (orientation.equals(Orientation.inline)) {
 			this.orientation = OrientationType.INLINE;
 		} else if (orientation.equals(Orientation.reverseComplement)) {

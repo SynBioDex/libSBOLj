@@ -8,10 +8,13 @@ import java.util.Set;
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
- * 
- * @author Ernst Oberortner
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @version 2.0
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
 
 public class SequenceAnnotation extends Documented {

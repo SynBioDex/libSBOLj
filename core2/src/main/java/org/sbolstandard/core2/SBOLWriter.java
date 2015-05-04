@@ -44,10 +44,15 @@ import uk.ac.ncl.intbio.core.io.json.StringifyQName;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 /**
+ * @author Zhen Zhang
  * @author Tramy Nguyen
- * @version 2.0
- *
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
+
 public class SBOLWriter {
 
 	/*

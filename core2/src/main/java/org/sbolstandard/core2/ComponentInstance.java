@@ -11,6 +11,15 @@ import org.sbolstandard.core2.MapsTo.RefinementType;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
 
 public abstract class ComponentInstance extends Documented {
 	
@@ -115,7 +124,7 @@ public abstract class ComponentInstance extends Documented {
 	 * Returns the access type in URI.
 	 * @return access type in URI
 	 */
-	public URI getAccessURI() {
+	URI getAccessURI() {
 		if (access != null) {
 			if (access.equals(AccessType.PUBLIC)) {
 				return Access.PUBLIC;
@@ -145,7 +154,7 @@ public abstract class ComponentInstance extends Documented {
 	/**
 	 * Sets field variable <code>access</code> to the element corresponding to the specified URI.
 	 */
-	public void setAccess(URI access) {
+	void setAccess(URI access) {
 		if (access != null && access.equals(Access.PUBLIC)) {
 			this.access = AccessType.PUBLIC;
 		} else if (access != null && access.equals(Access.PRIVATE)) {

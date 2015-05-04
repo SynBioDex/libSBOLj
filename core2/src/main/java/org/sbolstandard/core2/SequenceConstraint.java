@@ -4,6 +4,16 @@ import java.net.URI;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public class SequenceConstraint extends Identified {
 
 	//private RestrictionType restriction;
