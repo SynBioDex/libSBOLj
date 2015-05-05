@@ -425,6 +425,7 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				displayId = fixDisplayId(displayId);
 				if (setURIPrefix != null ) //TODO: check version set
 				{
 					persIdentity = setURIPrefix + "/" + TopLevel.componentDefinition +
@@ -516,33 +517,34 @@ public class SBOLReader
 		}
 
 		//ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
-		ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type);
-		// todo: is roles ever not null by the time you get here?
-		if (!persIdentity.equals("")) {
-			c.setPersistentIdentity(URI.create(persIdentity));
-			c.setVersion("1.0");
+		ComponentDefinition c = SBOLDoc.getComponentDefinition(identity);
+		if (c==null) {
+			c = SBOLDoc.createComponentDefinition(identity, type);
+			if (!persIdentity.equals("")) {
+				c.setPersistentIdentity(URI.create(persIdentity));
+				c.setVersion("1.0");
+			}
+			if(roles != null)
+				c.setRoles(roles);
+			if(identity != componentDef.getIdentity())
+				c.setWasDerivedFrom(componentDef.getIdentity());
+			if (displayId != null)
+				c.setDisplayId(displayId);
+			if (name != null && !name.isEmpty())
+				c.setName(name);
+			if (description != null && !description.isEmpty())
+				c.setDescription(description);
+			if (seq_identity != null)
+				c.setSequence(seq_identity);
+			if (!annotations.isEmpty())
+				c.setAnnotations(annotations);
+			if (!sequenceAnnotations.isEmpty())
+				c.setSequenceAnnotations(sequenceAnnotations);
+			if (!components.isEmpty())
+				c.setComponents(components);
+			if (!sequenceConstraints.isEmpty())
+				c.setSequenceConstraints(sequenceConstraints);
 		}
-		if(roles != null)
-			c.setRoles(roles);
-		if(identity != componentDef.getIdentity())
-			c.setWasDerivedFrom(componentDef.getIdentity());
-		if (displayId != null)
-			c.setDisplayId(displayId);
-		if (name != null && !name.isEmpty())
-			c.setName(name);
-		if (description != null && !description.isEmpty())
-			c.setDescription(description);
-		if (seq_identity != null)
-			c.setSequence(seq_identity);
-		if (!annotations.isEmpty())
-			c.setAnnotations(annotations);
-		if (!sequenceAnnotations.isEmpty())
-			c.setSequenceAnnotations(sequenceAnnotations);
-		if (!components.isEmpty())
-			c.setComponents(components);
-		if (!sequenceConstraints.isEmpty())
-			c.setSequenceConstraints(sequenceConstraints);
-
 		return c;
 	}
 
@@ -562,6 +564,7 @@ public class SBOLReader
 			if (topLevel.getIdentity().toString().lastIndexOf('/') != -1)
 			{
 				displayId = topLevel.getIdentity().toString().substring(topLevel.getIdentity().toString().lastIndexOf('/') + 1);
+				displayId = fixDisplayId(displayId);
 				identity = URI.create(setURIPrefix + "/" + TopLevel.sequence + "/" + displayId + "/1.0");
 				persistentIdentity = URI.create(setURIPrefix + "/" + TopLevel.sequence + "/" + displayId);
 			}
@@ -595,23 +598,34 @@ public class SBOLReader
 			}
 		}
 
-		Sequence sequence = SBOLDoc.createSequence(identity, elements, encoding);
-		if(persistentIdentity!=null) {
-			sequence.setPersistentIdentity(persistentIdentity);
-			sequence.setVersion("1.0");
+		Sequence sequence = SBOLDoc.getSequence(identity);
+		if (sequence==null) {
+			sequence = SBOLDoc.createSequence(identity, elements, encoding);
+			if(persistentIdentity!=null) {
+				sequence.setPersistentIdentity(persistentIdentity);
+				sequence.setVersion("1.0");
+			}
+			if(identity != topLevel.getIdentity())
+				sequence.setWasDerivedFrom(topLevel.getIdentity());
+			if (displayId != null)
+				sequence.setDisplayId(displayId);
+			if (name != null)
+				sequence.setName(name);
+			if (description != null)
+				sequence.setDescription(description);
+			if (!annotations.isEmpty())
+				sequence.setAnnotations(annotations);
 		}
-		if(identity != topLevel.getIdentity())
-			sequence.setWasDerivedFrom(topLevel.getIdentity());
-		if (displayId != null)
-			sequence.setDisplayId(displayId);
-		if (name != null)
-			sequence.setName(name);
-		if (description != null)
-			sequence.setDescription(description);
-		if (!annotations.isEmpty())
-			sequence.setAnnotations(annotations);
-
 		return sequence;
+	}
+	
+	private static String fixDisplayId(String displayId) {
+		displayId = displayId.replaceAll("[^a-zA-Z0-9_]", "_");
+		displayId = displayId.replace(" ", "_");
+		if (Character.isDigit(displayId.charAt(0))) {
+			displayId = "_" + displayId;
+		}
+		return displayId;
 	}
 
 	private static Collection parseCollectionV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
@@ -630,6 +644,7 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol1Terms.Collection.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				displayId = fixDisplayId(displayId);
 				if (setURIPrefix != null)
 				{
 					identity = URI.create(setURIPrefix + "/" + TopLevel.collection + "/" + 
