@@ -214,8 +214,8 @@ public abstract class ComponentInstance extends Documented {
 	 * Removes the instance matching the specified URI from the list of references if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo removeMapsTo(URI mappingURI) {
-		return mapsTos.remove(mappingURI);
+	public MapsTo removeMapsTo(URI mapsToURI) {
+		return (MapsTo)removeChildSafely(mapsToURI,mapsTos);
 	}
 	
 	/**

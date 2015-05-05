@@ -2,6 +2,8 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+import static org.sbolstandard.core2.URIcompliance.*;
+
 /**
  * @author Zhen Zhang
  * @author Tramy Nguyen
@@ -11,8 +13,6 @@ import java.net.URI;
  * @author Chris Myers
  * @version 2.0-beta
  */
-
-import static org.sbolstandard.core2.URIcompliance.*;
 
 public class Component extends ComponentInstance{
 

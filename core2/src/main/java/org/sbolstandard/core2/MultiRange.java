@@ -81,11 +81,7 @@ public class MultiRange extends Location{
 		if (ranges.size()<5) {
 			throw new IllegalArgumentException("MultiRange is required to have at least two ranges.");
 		}
-		Set<Range> rangesToRemove = new HashSet<>();
-		Range range = ranges.get(rangeURI);
-		rangesToRemove.add(range);
-		ranges.values().removeAll(rangesToRemove);
-		return range;
+		return (Range)removeChildSafely(rangeURI,ranges);
 	}
 	
 	/**

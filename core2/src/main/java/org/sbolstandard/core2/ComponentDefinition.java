@@ -348,8 +348,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceAnnotation removeSequenceAnnotation(URI sequenceAnnotationURI) {
-		//URI key = URI.create(sequenceAnnotationURI.toString().toLowerCase());
-		return sequenceAnnotations.remove(sequenceAnnotationURI);
+		return (SequenceAnnotation)removeChildSafely(sequenceAnnotationURI,sequenceAnnotations);
 	}
 	
 	/**
@@ -450,9 +449,8 @@ public class ComponentDefinition extends TopLevel {
 	 * Removes the instance matching the specified URI from the list of structuralInstantiations if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Component removeComponent(URI subComponentURI) {
-		//URI key = URI.create(subComponentURI.toString().toLowerCase());
-		return components.remove(subComponentURI);
+	public Component removeComponent(URI componentURI) {
+		return (Component)removeChildSafely(componentURI,components);
 	}
 	
 	/**
@@ -561,8 +559,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceConstraint removeSequenceConstraint(URI sequenceConstraintURI) {
-		//URI key = URI.create(sequenceConstraintURI.toString().toLowerCase());
-		return sequenceConstraints.remove(sequenceConstraintURI);
+		return (SequenceConstraint)removeChildSafely(sequenceConstraintURI,sequenceConstraints);
 	}
 	
 	/**

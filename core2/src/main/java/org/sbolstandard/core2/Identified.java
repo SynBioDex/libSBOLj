@@ -2,8 +2,10 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.namespace.QName;
 
@@ -421,6 +423,14 @@ public abstract class Identified {
 			siblingsMap.put(child.getIdentity(), child);
 		}
 
+	}
+	
+	protected final <I extends Identified> Identified removeChildSafely(URI childURI, Map<URI, I> siblingsMap) {
+		Set<Identified> objectsToRemove = new HashSet<>();
+		Identified identified = siblingsMap.get(childURI);
+		objectsToRemove.add(identified);
+		siblingsMap.values().removeAll(objectsToRemove);
+		return identified;
 	}
 
 	//	/**

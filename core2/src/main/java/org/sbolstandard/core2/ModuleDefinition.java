@@ -188,7 +188,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Module removeModule(URI moduleURI) {
-		return modules.remove(moduleURI);
+		return (Module)removeChildSafely(moduleURI,modules);
 	}
 	
 	/**
@@ -276,7 +276,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Interaction removeInteraction(URI interactionURI) {
-		return interactions.remove(interactionURI);
+		return (Interaction)removeChildSafely(interactionURI,interactions);
 	}
 	
 	/**
@@ -377,8 +377,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Removes the instance matching the specified URI from the list of functionalInstantiations if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public FunctionalComponent removeFunctionalComponent(URI componentURI) {
-		return functionalComponents.remove(componentURI);
+	public FunctionalComponent removeFunctionalComponent(URI functionalComponentURI) {
+		return (FunctionalComponent)removeChildSafely(functionalComponentURI,functionalComponents);
 	}
 	
 	/**

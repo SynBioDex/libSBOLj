@@ -168,8 +168,7 @@ public class Interaction extends Documented {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Participation removeParticipation(URI participationURI) {
-		// TODO: Need to prevent removing all participations here?
-		return participations.remove(participationURI);
+		return (Participation)removeChildSafely(participationURI,participations);
 	}
 	
 	/**
