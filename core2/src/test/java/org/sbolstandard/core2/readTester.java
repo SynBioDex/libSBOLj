@@ -28,8 +28,9 @@ public class readTester {
 				file = readTester.class.getResourceAsStream("/" + path + filenameV1_11);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
-			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+			//SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			SBOLDocument document1 = SBOLReader.read(file);
+			//document1 = SBOLTestUtils.writeAndRead(document1);
 			//			SBOLDocument document  = SBOLReader.read(filenameRdf);
 			//			SBOLDocument document1 = SBOLReader.readRdf(filenameV1_8);
 			//			SBOLDocument document2 = SBOLReader.readJson(filenameJson);

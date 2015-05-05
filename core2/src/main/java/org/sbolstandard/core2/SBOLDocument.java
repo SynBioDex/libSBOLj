@@ -44,6 +44,7 @@ public class SBOLDocument {
 		nameSpaces.put(URI.create(Sbol2Terms.sbol2.getNamespaceURI()), Sbol2Terms.sbol2);
 		nameSpaces.put(URI.create(Sbol1Terms.rdf.getNamespaceURI()), Sbol1Terms.rdf);
 		nameSpaces.put(URI.create(Sbol2Terms.dc.getNamespaceURI()), Sbol2Terms.dc);
+		nameSpaces.put(URI.create(Sbol2Terms.prov.getNamespaceURI()), Sbol2Terms.prov);
 	}
 
 	/**
@@ -747,10 +748,12 @@ public class SBOLDocument {
 	
 	/**
 	 * Removes the object matching the specified URI from the list of nameSpaces if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
-	public NamespaceBinding removeNamespaceBinding(URI nameSpaceURI) {
-		return nameSpaces.remove(nameSpaceURI);
+	public void removeNamespaceBinding(URI nameSpaceURI) {
+		if (isRequiredNamespaceBinding(nameSpaceURI)) {
+			throw new IllegalStateException("Cannot remove required namespace " + nameSpaceURI.toString());
+		}
+		nameSpaces.remove(nameSpaceURI);
 	}
 	
 	/**
@@ -769,8 +772,17 @@ public class SBOLDocument {
 	public void clearNamespaceBindings() {
 		Object[] keySetArray = nameSpaces.keySet().toArray();
 		for (Object key : keySetArray) {
+			if (isRequiredNamespaceBinding((URI)key)) continue;
 			removeNamespaceBinding((URI) key);
 		}		
+	}
+	
+	boolean isRequiredNamespaceBinding(URI namespaceURI) {
+		if (namespaceURI.toString().equals(Sbol2Terms.sbol2.getNamespaceURI())) return true;
+		if (namespaceURI.toString().equals(Sbol2Terms.dc.getNamespaceURI())) return true;
+		if (namespaceURI.toString().equals(Sbol2Terms.prov.getNamespaceURI())) return true;
+		if (namespaceURI.toString().equals(Sbol1Terms.rdf.getNamespaceURI())) return true;
+		return false;
 	}
 
 
