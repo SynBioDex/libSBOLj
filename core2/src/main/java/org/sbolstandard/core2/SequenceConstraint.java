@@ -105,7 +105,7 @@ public class SequenceConstraint extends Identified {
 	 * Returns the URI corresponding to the type of restriction.
 	 * @return the URI corresponding to the type of restriction.
 	 */
-	public URI getRestrictionURI() {
+	URI getRestrictionURI() {
 		if (restriction != null) {
 			if (restriction.equals(RestrictionType.PRECEDES)) {
 				return Restriction.precedes;
@@ -129,7 +129,7 @@ public class SequenceConstraint extends Identified {
 	/**
 	 * Sets field variable <code>restriction</code> to the element corresponding to the specified URI.
 	 */
-	public void setRestriction(URI restriction) {
+	void setRestriction(URI restriction) {
 		if (restriction!=null && restriction.equals(Restriction.precedes)) {
 			this.restriction = RestrictionType.PRECEDES;
 		}

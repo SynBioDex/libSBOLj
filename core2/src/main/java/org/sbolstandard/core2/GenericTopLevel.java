@@ -93,7 +93,7 @@ public class GenericTopLevel extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public GenericTopLevel copy(String URIprefix, String displayId, String version) {
+	GenericTopLevel copy(String URIprefix, String displayId, String version) {
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			GenericTopLevel cloned = this.deepCopy();
