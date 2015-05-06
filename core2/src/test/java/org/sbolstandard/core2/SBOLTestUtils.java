@@ -3,6 +3,7 @@ package org.sbolstandard.core2;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +30,28 @@ public class SBOLTestUtils {
 	private SBOLTestUtils() {
 	}
 
+	public static SBOLDocument convertSBOL1(String fileName, String fileType)
+	{
+		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
+		if (resourceAsStream == null)
+			resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/" + fileName);
+
+		assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
+		SBOLDocument actual;
+		SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+
+		if(fileType.equals("rdf"))
+			actual = SBOLReader.readRDF(resourceAsStream);
+		else if(fileType.equals("json"))
+			actual = SBOLReader.readJSON(resourceAsStream);
+		else if(fileType.equals("turtle"))
+			actual = SBOLReader.readTurtle(resourceAsStream);
+		else
+			actual = SBOLReader.read(resourceAsStream);
+
+		return actual;
+
+	}
 
 	public static Sequence createSequence(SBOLDocument document,String id, List<Annotation> annotations)
 	{
@@ -115,13 +138,9 @@ public class SBOLTestUtils {
 	}
 
 
-	public static void createModel(SBOLDocument document, String id, List<Annotation> annotations)
+	public static Model createModel(SBOLDocument document, String id, List<Annotation> annotations)
 	{
-		//		Model model = document.createModel(URI.create(id),
-		//				URI.create(id + "_source"),
-		//				URI.create(id + "_language"),
-		//				URI.create(id + "_framework"),
-		//				getSetPropertyURI(id + "_role"));
+
 		Model model = document.createModel(URI.create(id),
 				URI.create(id + "_source"),
 				URI.create(id + "_language"),
@@ -132,6 +151,7 @@ public class SBOLTestUtils {
 		model.setDescription(id);
 		if(annotations != null)
 			model.setAnnotations(annotations);
+		return model;
 	}
 
 

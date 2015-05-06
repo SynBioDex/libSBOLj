@@ -1,10 +1,8 @@
 package org.sbolstandard.core2;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
-import org.sbolstandard.core2.ComponentDefinition;
-import org.sbolstandard.core2.SBOLDocument;
 
 public class SBOLDocumentTest {
 	SBOLDocument doc1 = new SBOLDocument();
@@ -18,8 +16,8 @@ public class SBOLDocumentTest {
 		ComponentDefinition compDef = doc1.createComponentDefinition(compDef1displayId, compDef1version, null);
 		System.out.println("foo");
 		assertNull(compDef);
-		
-		
+
+
 	}
 
 }
