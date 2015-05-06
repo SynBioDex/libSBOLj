@@ -1077,6 +1077,7 @@ public class SBOLReader
 		}
 		else
 		{
+			// TODO: probably need to throw an exception here
 			System.out.println("ERR: Null. Location isn't a Range, MultiRange, or Cut.");
 			return l; // codereview: this is always null? do you mean this?
 		}
@@ -1486,8 +1487,6 @@ public class SBOLReader
 		URI framework 	 	   = null;
 		URI wasDerivedFrom 	   = null;
 
-		// codereview: do you ever save `roles` anywhere?
-		Set<URI> roles 				 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
@@ -1516,10 +1515,6 @@ public class SBOLReader
 			{
 				framework = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Model.roles))
-			{
-				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
-			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
@@ -1538,7 +1533,6 @@ public class SBOLReader
 			}
 		}
 
-		//Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework, roles);
 		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework);
 		if (persistentIdentity != null)
 			m.setPersistentIdentity(persistentIdentity);
@@ -1695,7 +1689,7 @@ public class SBOLReader
 		}
 
 		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity());
-		if (roles != null) // codereview: is this ever not true?
+		if (!roles.isEmpty()) 
 			moduleDefinition.setRoles(roles);
 		if (persistentIdentity != null)
 			moduleDefinition.setPersistentIdentity(persistentIdentity);
@@ -1911,9 +1905,8 @@ public class SBOLReader
 		}
 
 		Interaction i = new Interaction(interaction.getIdentity(), type);
-		if (participations != null) { // codereview: is this ever not true?
+		if (!participations.isEmpty()) 
 			i.setParticipations(participations);
-		}
 		if (persistentIdentity != null)
 			i.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1936,7 +1929,7 @@ public class SBOLReader
 		URI persistentIdentity = null;
 		String displayId	   = null;
 		String version 		   = null;
-		Set<URI> role 		   = new HashSet<>();
+		Set<URI> roles 		   = new HashSet<>();
 		URI participant        = null;
 		URI wasDerivedFrom 	   = null;
 		List<Annotation> annotations = new ArrayList<>();
@@ -1957,7 +1950,7 @@ public class SBOLReader
 			}
 			else if (p.getName().equals(Sbol2Terms.Participation.role))
 			{
-				role.add(URI.create(((Literal<QName>) p.getValue()).getValue()
+				roles.add(URI.create(((Literal<QName>) p.getValue()).getValue()
 						.toString()));
 			}
 			else if (p.getName().equals(Sbol2Terms.Participation.hasParticipant))
@@ -1975,8 +1968,8 @@ public class SBOLReader
 		}
 
 		Participation p = new Participation(participation.getIdentity(), participant);
-		if (role != null) // codereview: is this ever not true?
-			p.setRoles(role);
+		if (!roles.isEmpty()) 
+			p.setRoles(roles);
 		if (displayId != null)
 			p.setDisplayId(displayId);
 		if (persistentIdentity != null)

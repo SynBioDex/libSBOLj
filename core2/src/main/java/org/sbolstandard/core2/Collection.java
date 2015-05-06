@@ -27,11 +27,11 @@ public class Collection extends TopLevel{
 	
 	private Collection(Collection collection) {
 		super(collection.getIdentity());
-		// codereview: newMembers is created and modified but never stored
 		Set<URI> newMembers = new HashSet<>();
 		for (URI member : collection.getMemberURIs()) {
 			newMembers.add(member);
-		}		
+		}	
+		this.setMembers(newMembers);
 	}
 
 //	/**

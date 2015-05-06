@@ -68,11 +68,11 @@ public class ModuleDefinition extends TopLevel {
 			this.setFunctionalComponents(components);
 		}
 		if (!moduleDefinition.getModels().isEmpty()) {
-			// codereview: you are creating `models` but not doing anything with it
 			Set<URI> models = new HashSet<>();
 			for (URI model : moduleDefinition.getModelURIs()) {
 				models.add(model);
 			}
+			this.setModels(models);
 		}
 	}
 
