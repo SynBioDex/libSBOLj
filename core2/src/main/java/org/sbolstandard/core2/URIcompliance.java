@@ -16,14 +16,14 @@ final class URIcompliance {
 		}
 	}
 
-	public static URI createCompliantURI(String prefix, String displayId, String version) {
+	static URI createCompliantURI(String prefix, String displayId, String version) {
 		if (version==null || version.equals("")) {
 			return URI.create(prefix + '/' + displayId);
 		}
 		return URI.create(prefix + '/' + displayId + '/' + version);
 	}
 	
-	public static URI createCompliantURI(String prefix, String type, String displayId, String version) {
+	static URI createCompliantURI(String prefix, String type, String displayId, String version) {
 		if (version==null || version.equals("")) {
 			return URI.create(prefix + '/' + type + '/' + displayId);
 		}
