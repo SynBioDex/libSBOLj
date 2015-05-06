@@ -43,9 +43,15 @@ import uk.ac.ncl.intbio.core.io.json.StringifyQName;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 /**
+ * @author Zhen Zhang
  * @author Tramy Nguyen
- *
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
+
 public class SBOLReader
 {
 	static class SBOLPair
@@ -188,7 +194,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readRDFV1(in, document);
+					return readV1(document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -223,7 +229,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readRDFV1(in, document);
+					return readV1(document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -259,7 +265,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readRDFV1(in, document);
+					return readV1(document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -292,7 +298,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readRDFV1(in, document);
+					return readV1(document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -310,7 +316,7 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	private static SBOLDocument readRDFV1(InputStream in, DocumentRoot<QName> document)
+	private static SBOLDocument readV1(DocumentRoot<QName> document)
 	{
 		SBOLDocument SBOLDoc = new SBOLDocument();
 		for (NamespaceBinding n : document.getNamespaceBindings())
@@ -419,9 +425,10 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				displayId = fixDisplayId(displayId);
 				if (setURIPrefix != null ) //TODO: check version set
 				{
-					persIdentity = setURIPrefix + "/" + SBOLDocument.TopLevelTypes.componentDefinition +
+					persIdentity = setURIPrefix + "/" + TopLevel.componentDefinition +
 							"/" + displayId;
 					identity = URI.create(persIdentity + "/1.0");
 				}
@@ -510,33 +517,34 @@ public class SBOLReader
 		}
 
 		//ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
-		ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type);
-		// todo: is roles ever not null by the time you get here?
-		if (!persIdentity.equals("")) {
-			c.setPersistentIdentity(URI.create(persIdentity));
-			c.setVersion("1.0");
+		ComponentDefinition c = SBOLDoc.getComponentDefinition(identity);
+		if (c==null) {
+			c = SBOLDoc.createComponentDefinition(identity, type);
+			if (!persIdentity.equals("")) {
+				c.setPersistentIdentity(URI.create(persIdentity));
+				c.setVersion("1.0");
+			}
+			if(roles != null)
+				c.setRoles(roles);
+			if(identity != componentDef.getIdentity())
+				c.setWasDerivedFrom(componentDef.getIdentity());
+			if (displayId != null)
+				c.setDisplayId(displayId);
+			if (name != null && !name.isEmpty())
+				c.setName(name);
+			if (description != null && !description.isEmpty())
+				c.setDescription(description);
+			if (seq_identity != null)
+				c.setSequence(seq_identity);
+			if (!annotations.isEmpty())
+				c.setAnnotations(annotations);
+			if (!sequenceAnnotations.isEmpty())
+				c.setSequenceAnnotations(sequenceAnnotations);
+			if (!components.isEmpty())
+				c.setComponents(components);
+			if (!sequenceConstraints.isEmpty())
+				c.setSequenceConstraints(sequenceConstraints);
 		}
-		if(roles != null)
-			c.setRoles(roles);
-		if(identity != componentDef.getIdentity())
-			c.setWasDerivedFrom(componentDef.getIdentity());
-		if (displayId != null)
-			c.setDisplayId(displayId);
-		if (name != null && !name.isEmpty())
-			c.setName(name);
-		if (description != null && !description.isEmpty())
-			c.setDescription(description);
-		if (seq_identity != null)
-			c.setSequence(seq_identity);
-		if (!annotations.isEmpty())
-			c.setAnnotations(annotations);
-		if (!sequenceAnnotations.isEmpty())
-			c.setSequenceAnnotations(sequenceAnnotations);
-		if (!components.isEmpty())
-			c.setComponents(components);
-		if (!sequenceConstraints.isEmpty())
-			c.setSequenceConstraints(sequenceConstraints);
-
 		return c;
 	}
 
@@ -556,8 +564,9 @@ public class SBOLReader
 			if (topLevel.getIdentity().toString().lastIndexOf('/') != -1)
 			{
 				displayId = topLevel.getIdentity().toString().substring(topLevel.getIdentity().toString().lastIndexOf('/') + 1);
-				identity = URI.create(setURIPrefix + "/" + SBOLDocument.TopLevelTypes.sequence + "/" + displayId + "/1.0");
-				persistentIdentity = URI.create(setURIPrefix + "/" + SBOLDocument.TopLevelTypes.sequence + "/" + displayId);
+				displayId = fixDisplayId(displayId);
+				identity = URI.create(setURIPrefix + "/" + TopLevel.sequence + "/" + displayId + "/1.0");
+				persistentIdentity = URI.create(setURIPrefix + "/" + TopLevel.sequence + "/" + displayId);
 			}
 		}
 
@@ -589,23 +598,34 @@ public class SBOLReader
 			}
 		}
 
-		Sequence sequence = SBOLDoc.createSequence(identity, elements, encoding);
-		if(persistentIdentity!=null) {
-			sequence.setPersistentIdentity(persistentIdentity);
-			sequence.setVersion("1.0");
+		Sequence sequence = SBOLDoc.getSequence(identity);
+		if (sequence==null) {
+			sequence = SBOLDoc.createSequence(identity, elements, encoding);
+			if(persistentIdentity!=null) {
+				sequence.setPersistentIdentity(persistentIdentity);
+				sequence.setVersion("1.0");
+			}
+			if(identity != topLevel.getIdentity())
+				sequence.setWasDerivedFrom(topLevel.getIdentity());
+			if (displayId != null)
+				sequence.setDisplayId(displayId);
+			if (name != null)
+				sequence.setName(name);
+			if (description != null)
+				sequence.setDescription(description);
+			if (!annotations.isEmpty())
+				sequence.setAnnotations(annotations);
 		}
-		if(identity != topLevel.getIdentity())
-			sequence.setWasDerivedFrom(topLevel.getIdentity());
-		if (displayId != null)
-			sequence.setDisplayId(displayId);
-		if (name != null)
-			sequence.setName(name);
-		if (description != null)
-			sequence.setDescription(description);
-		if (!annotations.isEmpty())
-			sequence.setAnnotations(annotations);
-
 		return sequence;
+	}
+	
+	private static String fixDisplayId(String displayId) {
+		displayId = displayId.replaceAll("[^a-zA-Z0-9_]", "_");
+		displayId = displayId.replace(" ", "_");
+		if (Character.isDigit(displayId.charAt(0))) {
+			displayId = "_" + displayId;
+		}
+		return displayId;
 	}
 
 	private static Collection parseCollectionV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
@@ -624,11 +644,12 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol1Terms.Collection.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				displayId = fixDisplayId(displayId);
 				if (setURIPrefix != null)
 				{
-					identity = URI.create(setURIPrefix + "/" + SBOLDocument.TopLevelTypes.collection + "/" + 
+					identity = URI.create(setURIPrefix + "/" + TopLevel.collection + "/" + 
 							displayId + "/1.0");
-					persistentIdentity = URI.create(setURIPrefix + "/" + SBOLDocument.TopLevelTypes.collection + "/" + 
+					persistentIdentity = URI.create(setURIPrefix + "/" + TopLevel.collection + "/" + 
 							displayId);
 				}
 			}
@@ -1056,6 +1077,7 @@ public class SBOLReader
 		}
 		else
 		{
+			// TODO: probably need to throw an exception here
 			System.out.println("ERR: Null. Location isn't a Range, MultiRange, or Cut.");
 			return l; // codereview: this is always null? do you mean this?
 		}
@@ -1237,7 +1259,7 @@ public class SBOLReader
 			multiRange.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
 			multiRange.setAnnotations(annotations);
-		return null;
+		return multiRange;
 	}
 
 	private static Range parseRange(NestedDocument<QName> typeRange)
@@ -1465,8 +1487,6 @@ public class SBOLReader
 		URI framework 	 	   = null;
 		URI wasDerivedFrom 	   = null;
 
-		// codereview: do you ever save `roles` anywhere?
-		Set<URI> roles 				 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
@@ -1495,10 +1515,6 @@ public class SBOLReader
 			{
 				framework = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Model.roles))
-			{
-				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
-			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
@@ -1517,7 +1533,6 @@ public class SBOLReader
 			}
 		}
 
-		//Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework, roles);
 		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework);
 		if (persistentIdentity != null)
 			m.setPersistentIdentity(persistentIdentity);
@@ -1674,7 +1689,7 @@ public class SBOLReader
 		}
 
 		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity());
-		if (roles != null) // codereview: is this ever not true?
+		if (!roles.isEmpty()) 
 			moduleDefinition.setRoles(roles);
 		if (persistentIdentity != null)
 			moduleDefinition.setPersistentIdentity(persistentIdentity);
@@ -1801,7 +1816,8 @@ public class SBOLReader
 			}
 			else if (m.getName().equals(Sbol2Terms.MapsTo.refinement))
 			{
-				refinement = RefinementType.valueOf(((Literal<QName>) m.getValue()).getValue().toString());
+				refinement = RefinementType.convertToRefinementType(URI
+						.create(((Literal<QName>) m.getValue()).getValue().toString()));
 			}
 			else if (m.getName().equals(Sbol2Terms.MapsTo.hasRemote))
 			{
@@ -1889,9 +1905,8 @@ public class SBOLReader
 		}
 
 		Interaction i = new Interaction(interaction.getIdentity(), type);
-		if (participations != null) { // codereview: is this ever not true?
+		if (!participations.isEmpty()) 
 			i.setParticipations(participations);
-		}
 		if (persistentIdentity != null)
 			i.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1914,7 +1929,7 @@ public class SBOLReader
 		URI persistentIdentity = null;
 		String displayId	   = null;
 		String version 		   = null;
-		Set<URI> role 		   = new HashSet<>();
+		Set<URI> roles 		   = new HashSet<>();
 		URI participant        = null;
 		URI wasDerivedFrom 	   = null;
 		List<Annotation> annotations = new ArrayList<>();
@@ -1935,7 +1950,7 @@ public class SBOLReader
 			}
 			else if (p.getName().equals(Sbol2Terms.Participation.role))
 			{
-				role.add(URI.create(((Literal<QName>) p.getValue()).getValue()
+				roles.add(URI.create(((Literal<QName>) p.getValue()).getValue()
 						.toString()));
 			}
 			else if (p.getName().equals(Sbol2Terms.Participation.hasParticipant))
@@ -1953,8 +1968,8 @@ public class SBOLReader
 		}
 
 		Participation p = new Participation(participation.getIdentity(), participant);
-		if (role != null) // codereview: is this ever not true?
-			p.setRoles(role);
+		if (!roles.isEmpty()) 
+			p.setRoles(roles);
 		if (displayId != null)
 			p.setDisplayId(displayId);
 		if (persistentIdentity != null)
@@ -1998,7 +2013,7 @@ public class SBOLReader
 			{
 				displayId = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
-			else if (functionalComponent.getType().equals(Sbol2Terms.ComponentInstance.access))
+			else if (f.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
 				access = ComponentInstance.AccessType.convertToAccessType(URI
 						.create(((Literal<QName>) f.getValue()).getValue()
@@ -2010,7 +2025,7 @@ public class SBOLReader
 						.convertToDirectionType(URI.create(((Literal<QName>) f
 								.getValue()).getValue().toString()));
 			}
-			if (f.getName().equals(Sbol2Terms.ComponentInstance.hasMapsTo))
+			else if (f.getName().equals(Sbol2Terms.ComponentInstance.hasMapsTo))
 			{
 				mappings.add(parseMapsTo((NestedDocument<QName>) f.getValue()));
 			}
@@ -2036,7 +2051,6 @@ public class SBOLReader
 			}
 
 		}
-
 		FunctionalComponent fc = new FunctionalComponent(
 				functionalComponent.getIdentity(), access,
 				functionalComponentURI, direction);

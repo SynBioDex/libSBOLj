@@ -8,18 +8,22 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 
  * @author Zhen Zhang
+ * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @version 2.0
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
+
 public class Participation extends Identified {
 	
 	private Set<URI> roles;
 	private URI participant;
 	private ModuleDefinition moduleDefinition = null;
 	
-	public Participation(URI identity, URI participant) {
+	Participation(URI identity, URI participant) {
 		super(identity);
 		roles = new HashSet<>();
 		setParticipant(participant);
@@ -55,10 +59,8 @@ public class Participation extends Identified {
 		if (participant == null) {
 			throw new IllegalArgumentException("Participation is required to have a participant.");
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participant)==null) {
-				throw new IllegalArgumentException("Functional component '" + participant + "' does not exist.");
-			}
+		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participant)==null) {
+			throw new IllegalArgumentException("Functional component '" + participant + "' does not exist.");
 		}
 		this.participant = participant;
 	}

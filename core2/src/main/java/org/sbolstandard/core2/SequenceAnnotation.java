@@ -1,14 +1,20 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
- * 
- * @author Ernst Oberortner
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @version 2.0
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
 
 public class SequenceAnnotation extends Documented {
@@ -17,7 +23,7 @@ public class SequenceAnnotation extends Documented {
 	private URI component;
 	private ComponentDefinition componentDefinition = null;
 	
-	public SequenceAnnotation(URI identity, Location location) {
+	SequenceAnnotation(URI identity, Location location) {
 		super(identity);
 		setLocation(location);		
 	}
@@ -55,13 +61,74 @@ public class SequenceAnnotation extends Documented {
 	 * Sets field variable <code>location</code> to the specified element.
 	 * @param location
 	 */
-	public void setLocation(Location location) {
+	void setLocation(Location location) {
 		if (location==null) {
 			throw new IllegalArgumentException("Sequence annotation "+this.getIdentity()+" must have a location.");
 		}
 		this.location = location;
 	}	
 	
+	public void addRange(int start,int end) {
+		addRange(start,end,null);
+	}
+
+	public void addRange(int start,int end,OrientationType orientation) {
+		if (location instanceof MultiRange) {
+			int numRanges = ((MultiRange)location).getRanges().size();
+			Range range = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString()+"/multiRange","range"+numRanges,this.getVersion()),start,end);
+			range.setPersistentIdentity(URI.create(this.getPersistentIdentity().toString()+"/multiRange/range"+numRanges));
+			range.setDisplayId("range"+numRanges);
+			range.setVersion(this.getVersion());
+			if (orientation!=null) range.setOrientation(orientation);
+			((MultiRange)location).addRange(range);
+		} else if (location instanceof Range) {
+			List<Range> ranges = new ArrayList<>();
+			location.setIdentity(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString()+"/multiRange","range0",this.getVersion()));
+			location.setPersistentIdentity(URI.create(this.getPersistentIdentity().toString()+"/multiRange/range0"));
+			location.setDisplayId("range0");
+			ranges.add((Range)location);
+			Range range = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString()+"/multiRange","range1",this.getVersion()),start,end);
+			range.setPersistentIdentity(URI.create(this.getPersistentIdentity().toString()+"/multiRange/range1"));
+			range.setDisplayId("range1");
+			range.setVersion(this.getVersion());
+			if (orientation!=null) range.setOrientation(orientation);
+			ranges.add(range);
+			MultiRange multiRange = new MultiRange(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),"multiRange",this.getVersion()),ranges);
+			multiRange.setPersistentIdentity(URI.create(this.getPersistentIdentity().toString()+"/multiRange"));
+			multiRange.setDisplayId("multiRange");
+			multiRange.setVersion(this.getVersion());
+			location = multiRange;
+		} else {
+			location = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),"range",this.getVersion()),start,end);
+			location.setPersistentIdentity(URI.create(this.getPersistentIdentity().toString()+"/range"));
+			location.setDisplayId("range");
+			location.setVersion(this.getVersion());
+			if (orientation!=null) ((Range)location).setOrientation(orientation);
+		}
+	}
+	
+	void removeRange(URI rangeURI) {
+		if (location instanceof MultiRange) {
+			try {
+				((MultiRange)location).removeRange(rangeURI);
+			} catch (Exception e) {
+				Set<Range> ranges = ((MultiRange)location).getRanges();
+				if (ranges.size()!=2) {
+					throw new IllegalArgumentException("Sequence annotation " + this.getIdentity() + 
+							" is required to have a location.");
+				}
+				for (Range range : ranges) {
+					if (range.getIdentity().equals(rangeURI)) continue;
+					location = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(), 
+							"range", this.getVersion()),range.getStart(),range.getEnd());
+					if (range.isSetOrientation()) {
+						((Range)location).setOrientation(range.getOrientation());
+					}
+				}
+			}
+		}
+	}
+		
 	/**
 	 * Test if optional field variable <code>component</code> is set.
 	 * @return <code>true</code> if it is not null.
@@ -82,13 +149,19 @@ public class SequenceAnnotation extends Documented {
 		if (componentDefinition==null) return null;
 		return componentDefinition.getComponent(component);
 	}
+	
+	public void setComponent(String component) {
+		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
+				component, componentDefinition.getVersion());
+		setComponent(componentURI);
+	}
 
 	/**
 	 * Sets field variable <code>component</code> to the specified element.
 	 * @param componentURI
 	 */
 	public void setComponent(URI componentURI) {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(componentURI)==null) {
 				throw new IllegalArgumentException("Component '" + componentURI + "' does not exist.");
 			}

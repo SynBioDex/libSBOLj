@@ -4,6 +4,16 @@ import java.net.URI;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public class SequenceConstraint extends Identified {
 
 	//private RestrictionType restriction;
@@ -67,7 +77,7 @@ public class SequenceConstraint extends Identified {
 		}
 	}
 	
-	public SequenceConstraint(URI identity, RestrictionType restriction, 
+	SequenceConstraint(URI identity, RestrictionType restriction, 
 			URI subject, URI object) {
 		super(identity);
 		setRestriction(restriction);
@@ -95,7 +105,7 @@ public class SequenceConstraint extends Identified {
 	 * Returns the URI corresponding to the type of restriction.
 	 * @return the URI corresponding to the type of restriction.
 	 */
-	public URI getRestrictionURI() {
+	URI getRestrictionURI() {
 		if (restriction != null) {
 			if (restriction.equals(RestrictionType.PRECEDES)) {
 				return Restriction.precedes;
@@ -119,7 +129,7 @@ public class SequenceConstraint extends Identified {
 	/**
 	 * Sets field variable <code>restriction</code> to the element corresponding to the specified URI.
 	 */
-	public void setRestriction(URI restriction) {
+	void setRestriction(URI restriction) {
 		if (restriction!=null && restriction.equals(Restriction.precedes)) {
 			this.restriction = RestrictionType.PRECEDES;
 		}
@@ -149,7 +159,7 @@ public class SequenceConstraint extends Identified {
 	 * Sets field variable <code>subject</code> to the specified element.
 	 */
 	public void setSubject(URI subject) {
-		if (componentDefinition != null && sbolDocument.isComplete()) {
+		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(subject)==null) {
 				throw new IllegalArgumentException("Component '" + subject + "' does not exist.");
 			}
@@ -181,7 +191,7 @@ public class SequenceConstraint extends Identified {
 	 * Sets field variable <code>object</code> to the specified element.
 	 */
 	public void setObject(URI object) {
-		if (componentDefinition != null && sbolDocument.isComplete()) {
+		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(object)==null) {
 				throw new IllegalArgumentException("Component '" + object + "' does not exist.");
 			}
@@ -257,14 +267,14 @@ public class SequenceConstraint extends Identified {
 	/**
 	 * @return the componentDefinition
 	 */
-	public ComponentDefinition getComponentDefinition() {
+	ComponentDefinition getComponentDefinition() {
 		return componentDefinition;
 	}
 
 	/**
 	 * @param componentDefinition the componentDefinition to set
 	 */
-	public void setComponentDefinition(ComponentDefinition componentDefinition) {
+	void setComponentDefinition(ComponentDefinition componentDefinition) {
 		this.componentDefinition = componentDefinition;
 	}
 }

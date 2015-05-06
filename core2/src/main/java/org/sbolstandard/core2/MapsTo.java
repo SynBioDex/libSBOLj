@@ -4,6 +4,16 @@ import java.net.URI;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public class MapsTo extends Identified{
 	
 	private RefinementType refinement;
@@ -27,7 +37,7 @@ public class MapsTo extends Identified{
 		 * Returns the refinement type.
 		 * @return refinement type.
 		 */
-		public String getRefinementType() {
+		String getRefinementType() {
 			return refinementType;
 		}
 
@@ -40,7 +50,7 @@ public class MapsTo extends Identified{
 		 * Convert the specified URI to its corresponding RefinementType instance. 
 		 * @return the corresponding RefinementType instance
 		 */
-		public static RefinementType convertToRefinementType(URI refinement) {
+		static RefinementType convertToRefinementType(URI refinement) {
 			if (refinement.equals(Refinement.merge)) {
 				return RefinementType.MERGE;
 			} 
@@ -63,7 +73,7 @@ public class MapsTo extends Identified{
 		 * Returns the refinement type in URI.
 		 * @return refinement type in URI
 		 */
-		public static URI convertToURI(RefinementType refinement) {
+		static URI convertToURI(RefinementType refinement) {
 			if (refinement != null) {
 				if (refinement.equals(RefinementType.MERGE)) {
 					return Refinement.merge;
@@ -87,7 +97,7 @@ public class MapsTo extends Identified{
 		}
 	}
 	
-	public MapsTo(URI identity, RefinementType refinement, 
+	MapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		super(identity);
 		setRefinement(refinement);
@@ -114,7 +124,7 @@ public class MapsTo extends Identified{
 	 * Returns the URI constant corresponds to the field variable <code>refinement</code>.
 	 * @return  <code>refinement</code>
 	 */
-	public URI getRefinementURI() {
+	URI getRefinementURI() {
 		if (refinement != null) {
 			if (refinement.equals(RefinementType.MERGE)) {
 				return Refinement.merge;
@@ -147,7 +157,7 @@ public class MapsTo extends Identified{
 	/**
 	 * Sets field variable <code>refinement</code> according to the specified URI.
 	 */
-	public void setRefinement(URI refinement) {
+	void setRefinement(URI refinement) {
 		if (refinement != null && refinement.equals(Refinement.merge)) {
 			this.refinement = RefinementType.MERGE;
 		}
@@ -184,7 +194,7 @@ public class MapsTo extends Identified{
 		if (local==null) {
 			throw new IllegalArgumentException("MapsTo "+this.getIdentity()+" must specify a local component.");
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (moduleDefinition!=null) {
 			if (moduleDefinition.getFunctionalComponent(local)==null) {
 				throw new IllegalArgumentException("Functional Component '" + local + "' does not exist.");
 			}
@@ -210,10 +220,10 @@ public class MapsTo extends Identified{
 	 * Sets filed variable <code>remote</code> to the specified element.
 	 */
 	public void setRemote(URI remote) {
-		if (local==null) {
+		if (remote==null) {
 			throw new IllegalArgumentException("MapsTo "+this.getIdentity()+" must specify a remote component.");
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (module!=null) {
 			if (module.getDefinition().getFunctionalComponent(remote)==null) {
 				throw new IllegalArgumentException("Functional Component '" + remote + "' does not exist.");
 			}

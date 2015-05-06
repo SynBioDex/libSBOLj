@@ -9,11 +9,21 @@ import java.util.Set;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public class MultiRange extends Location{
 	
 	private HashMap<URI, Range> ranges;
 
-	public MultiRange(URI identity,List<Range> ranges) {
+	MultiRange(URI identity,List<Range> ranges) {
 		super(identity);
 		this.ranges = new HashMap<>();
 		setRanges(ranges);
@@ -22,23 +32,21 @@ public class MultiRange extends Location{
 	
 	private MultiRange(MultiRange multiRange) {
 		super(multiRange);
-		if (multiRange.isSetRanges()) {
-			// codereview: nothing seems to happen to `ranges`
-			List<Range> ranges = new ArrayList<>();
-			for (Range range : multiRange.getRanges()) {
-				ranges.add(range.deepCopy());
-			}
+		List<Range> ranges = new ArrayList<>();
+		for (Range range : multiRange.getRanges()) {
+			ranges.add(range.deepCopy());
 		}
+		setRanges(ranges);
 	}
 
 
-	/**
-	 * Test if field variable <code>ranges</code> is set.
-	 * @return <code>true</code> if the field variable is not an empty list
-	 */
-	public boolean isSetRanges() {
-		return !ranges.isEmpty();
-	}
+//	/**
+//	 * Test if field variable <code>ranges</code> is set.
+//	 * @return <code>true</code> if the field variable is not an empty list
+//	 */
+//	public boolean isSetRanges() {
+//		return !ranges.isEmpty();
+//	}
 	
 	
 	/**
@@ -46,7 +54,7 @@ public class MultiRange extends Location{
 	 * then adds to the list of Range instances owned by this instance.
 	 * @return the created Range instance.
 	 */
-	public Range createRange(URI identity, Integer start, Integer end) {
+	Range createRange(URI identity, Integer start, Integer end) {
 		Range range = new Range(identity, start, end);
 		addRange(range);
 		return range;
@@ -62,19 +70,18 @@ public class MultiRange extends Location{
 	/**
 	 * Adds the specified instance to the list of structuralAnnotations. 
 	 */
-	public void addRange(Range range) {
+	void addRange(Range range) {
 		addChildSafely(range, ranges, "range");
 	}
 
 	/**
 	 * Removes the instance matching the specified URI from the list of structuralAnnotations if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Range removeRange(URI rangeURI) {
-		if (ranges.size()<3) {
+		if (ranges.size()<5) {
 			throw new IllegalArgumentException("MultiRange is required to have at least two ranges.");
 		}
-		return ranges.remove(rangeURI);
+		return (Range)removeChildSafely(rangeURI,ranges);
 	}
 	
 	/**
@@ -98,7 +105,7 @@ public class MultiRange extends Location{
 	/**
 	 * Removes all entries of the list of structuralAnnotation instances owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearRanges() {
+	void clearRanges() {
 		Object[] keySetArray = ranges.keySet().toArray();
 		for (Object key : keySetArray) {
 			removeRange((URI) key);
@@ -108,7 +115,7 @@ public class MultiRange extends Location{
 	/**
 	 * Clears the existing list of structuralAnnotation instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setRanges(List<Range> ranges) {
+	void setRanges(List<Range> ranges) {
 		if (ranges.size()<2) {
 			throw new IllegalArgumentException("MultiRange is required to have at least two ranges.");
 		}

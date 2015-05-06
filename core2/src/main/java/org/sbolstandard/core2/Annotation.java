@@ -8,20 +8,29 @@ import javax.xml.namespace.QName;
 
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
 
 public class Annotation {
 
 	private NamedProperty<QName> value;
 
-	public Annotation(QName qName, String literal) {
+	Annotation(QName qName, String literal) {
 		value = NamedProperty(qName,literal);
 	}
 
-	public Annotation(QName qName, URI literal) {
+	Annotation(QName qName, URI literal) {
 		value = NamedProperty(qName,literal);
 	}
 	
-	public Annotation(NamedProperty<QName> value) {
+	Annotation(NamedProperty<QName> value) {
 		this.value = value;
 	}
 	
@@ -57,7 +66,7 @@ public class Annotation {
 	 * Makes a deep copy of this Annotation object. 
 	 * @return an Annotation object that is the exact copy of this object. 
 	 */
-	public Annotation copy() {
+	Annotation copy() {
 		return this.deepCopy();
 	}
 

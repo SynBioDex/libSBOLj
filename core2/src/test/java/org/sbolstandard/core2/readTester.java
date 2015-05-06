@@ -17,18 +17,20 @@ public class readTester {
 	public static String filenameV1_8 	= "pIKE_pTAK_left_right_cassettes.xml";
 	public static String filenameV1_9 	= "pIKE_pTAK_toggle_switches.xml";
 	public static String filenameV1_10 	= "miRNA.sbol.xml";
+	public static String filenameV1_11 	= "labhost_All.xml";
 
 	public static String path = "test/data/";
 
 	public static void main(String[] args) {
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_1);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_11);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_1);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_11);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
-			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+			//SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			SBOLDocument document1 = SBOLReader.read(file);
+			//document1 = SBOLTestUtils.writeAndRead(document1);
 			//			SBOLDocument document  = SBOLReader.read(filenameRdf);
 			//			SBOLDocument document1 = SBOLReader.readRdf(filenameV1_8);
 			//			SBOLDocument document2 = SBOLReader.readJson(filenameJson);

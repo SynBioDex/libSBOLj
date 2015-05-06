@@ -6,11 +6,21 @@ import static org.sbolstandard.core2.URIcompliance.*;
 
 import javax.xml.namespace.QName;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public class GenericTopLevel extends TopLevel{
 
 	private QName rdfType;
 	
-	public GenericTopLevel(URI identity, QName rdfType) {
+	GenericTopLevel(URI identity, QName rdfType) {
 		super(identity);
 		this.rdfType = rdfType;		
 	}
@@ -83,7 +93,7 @@ public class GenericTopLevel extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public GenericTopLevel copy(String URIprefix, String displayId, String version) {
+	GenericTopLevel copy(String URIprefix, String displayId, String version) {
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			GenericTopLevel cloned = this.deepCopy();

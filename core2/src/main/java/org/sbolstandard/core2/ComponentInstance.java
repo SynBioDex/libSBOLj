@@ -11,6 +11,15 @@ import org.sbolstandard.core2.MapsTo.RefinementType;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
 
 public abstract class ComponentInstance extends Documented {
 	
@@ -30,7 +39,7 @@ public abstract class ComponentInstance extends Documented {
 		 * Convert the specified URI to its corresponding AccessType instance.
 		 * @return the corresponding AccessType instance
 		 */
-		public static AccessType convertToAccessType(URI access) {
+		static AccessType convertToAccessType(URI access) {
 			if (access.equals(Access.PUBLIC)) {
 				return AccessType.PUBLIC;
 			} else if (access.equals(Access.PRIVATE)) {
@@ -45,7 +54,7 @@ public abstract class ComponentInstance extends Documented {
 		 * Returns the access type in URI.
 		 * @return access type in URI
 		 */
-		public static URI convertToURI(AccessType access) {
+		static URI convertToURI(AccessType access) {
 			if (access != null) {
 				if (access.equals(AccessType.PUBLIC)) {
 					return Access.PUBLIC;
@@ -66,7 +75,7 @@ public abstract class ComponentInstance extends Documented {
 		 * Returns the access type.
 		 * @return access type.
 		 */
-		public String getAccessType() {
+		String getAccessType() {
 			return accessType;
 		}
 
@@ -76,7 +85,7 @@ public abstract class ComponentInstance extends Documented {
 		}
 	}
 
-	public ComponentInstance(URI identity, AccessType access, URI definition) {
+	ComponentInstance(URI identity, AccessType access, URI definition) {
 		super(identity);
 		setAccess(access);
 		setDefinition(definition);		
@@ -115,7 +124,7 @@ public abstract class ComponentInstance extends Documented {
 	 * Returns the access type in URI.
 	 * @return access type in URI
 	 */
-	public URI getAccessURI() {
+	URI getAccessURI() {
 		if (access != null) {
 			if (access.equals(AccessType.PUBLIC)) {
 				return Access.PUBLIC;
@@ -145,7 +154,7 @@ public abstract class ComponentInstance extends Documented {
 	/**
 	 * Sets field variable <code>access</code> to the element corresponding to the specified URI.
 	 */
-	public void setAccess(URI access) {
+	void setAccess(URI access) {
 		if (access != null && access.equals(Access.PUBLIC)) {
 			this.access = AccessType.PUBLIC;
 		} else if (access != null && access.equals(Access.PRIVATE)) {
@@ -173,13 +182,13 @@ public abstract class ComponentInstance extends Documented {
 	 *
 	 * @return the created MapsTo instance.
 	 */
-	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
+	MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
 		addMapsTo(mapping);
 		return mapping;
 	}
-	
+		
 	/**
 	 * @return the newly created MapsTo object.
 	 */
@@ -197,7 +206,7 @@ public abstract class ComponentInstance extends Documented {
 	/**
 	 * Adds the specified instance to the list of references. 
 	 */
-	public void addMapsTo(MapsTo mapsTo) {
+	void addMapsTo(MapsTo mapsTo) {
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
 	}
 	
@@ -205,8 +214,8 @@ public abstract class ComponentInstance extends Documented {
 	 * Removes the instance matching the specified URI from the list of references if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo removeMapsTo(URI mappingURI) {
-		return mapsTos.remove(mappingURI);
+	public MapsTo removeMapsTo(URI mapsToURI) {
+		return (MapsTo)removeChildSafely(mapsToURI,mapsTos);
 	}
 	
 	/**
@@ -238,7 +247,7 @@ public abstract class ComponentInstance extends Documented {
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setMapsTo(
+	void setMapsTo(
 			List<MapsTo> mapsTos) {
 		clearMapsTos();		
 		for (MapsTo reference : mapsTos) {

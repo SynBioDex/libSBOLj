@@ -5,10 +5,13 @@ import java.net.URI;
 import org.sbolstandard.core2.Sbol2Terms.Orientation;
 
 /**
- * 
  * @author Zhen Zhang
+ * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @version 2.0
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
 
 public enum OrientationType {
@@ -24,7 +27,7 @@ public enum OrientationType {
 	 * Returns the orientation type.
 	 * @return orientation type.
 	 */
-	public String getOrientationType() {
+	String getOrientationType() {
 		return orientationType;
 	}
 
@@ -37,7 +40,7 @@ public enum OrientationType {
 	 * Convert the specified URI to its corresponding OrientationType instance. 
 	 * @return the corresponding OrientationType instance
 	 */
-	public static OrientationType convertToOrientationType(URI orientation) {
+	static OrientationType convertToOrientationType(URI orientation) {
 		if (orientation.equals(Orientation.inline)) {
 			return OrientationType.INLINE;
 		} 
@@ -54,7 +57,7 @@ public enum OrientationType {
 	 * Returns the orientation type in URI.
 	 * @return orientation type in URI
 	 */
-	public static URI convertToURI(OrientationType orientation) {
+	static URI convertToURI(OrientationType orientation) {
 		if (orientation != null) {
 			if (orientation.equals(OrientationType.INLINE)) {
 				return Orientation.inline;

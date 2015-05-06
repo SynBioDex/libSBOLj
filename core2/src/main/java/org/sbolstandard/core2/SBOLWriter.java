@@ -44,10 +44,15 @@ import uk.ac.ncl.intbio.core.io.json.StringifyQName;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 /**
+ * @author Zhen Zhang
  * @author Tramy Nguyen
- * @version 2.0
- *
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
+
 public class SBOLWriter {
 
 	/*
@@ -98,7 +103,7 @@ public class SBOLWriter {
 			throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		writeRDF(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
+				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 	}
 
@@ -155,7 +160,7 @@ public class SBOLWriter {
 			throws FactoryConfigurationError, Exception {
 
 		writeJSON(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
+				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 
 	}
@@ -217,7 +222,7 @@ public class SBOLWriter {
 			throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		writeRDF(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
+				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 	}
 
@@ -273,7 +278,7 @@ public class SBOLWriter {
 			throws FactoryConfigurationError, Exception
 	{
 		writeTurtle(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNameSpaceBindings()),
+				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 	}
 
@@ -459,13 +464,10 @@ public class SBOLWriter {
 					list.add(NamedProperty(Sbol2Terms.Interaction.type, type));
 				}
 			}
-			if(i.isSetParticipations())
+			List<NestedDocument<QName>> participantList = formatParticipations(i.getParticipations());
+			for(NestedDocument<QName> n : participantList)
 			{
-				List<NestedDocument<QName>> participantList = formatParticipations(i.getParticipations());
-				for(NestedDocument<QName> n : participantList)
-				{
-					list.add(NamedProperty(Sbol2Terms.Interaction.hasParticipations, n));
-				}
+				list.add(NamedProperty(Sbol2Terms.Interaction.hasParticipations, n));
 			}
 
 			properties.add(NamedProperty(Sbol2Terms.ModuleDefinition.hasInteractions,
@@ -610,8 +612,6 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, s);
 
-			if(s.getPersistentIdentity() != null)
-				list.add(NamedProperty(Sbol2Terms.Identified.persistentIdentity, s.getPersistentIdentity()));
 			if(s.getRestriction() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.restriction, s.getRestrictionURI()));
 			if(s.getSubject() != null)
@@ -698,9 +698,17 @@ public class SBOLWriter {
 		else if(location instanceof MultiRange)
 		{
 			MultiRange multiRange = (MultiRange) location;
-			for(Range r : multiRange.getRanges())
-				property.add(NamedProperty(Sbol2Terms.MultiRange.hasRanges, r.getIdentity()));
-
+			for(Range range : multiRange.getRanges()) {
+				List<NamedProperty<QName>> rangeProperty = new ArrayList<>();
+				formatCommonIdentifiedData(rangeProperty, range);
+				rangeProperty.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
+				rangeProperty.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
+				if(range.isSetOrientation())
+					rangeProperty.add(NamedProperty(Sbol2Terms.Range.orientation, range.getOrientationURI()));
+				property.add(NamedProperty(Sbol2Terms.MultiRange.hasRanges, 
+						NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(rangeProperty))));
+			}
+			
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.MultiRange.MultiRange, multiRange.getIdentity(), NamedProperties(property)));
 		}

@@ -14,9 +14,14 @@ import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
  * @author Zhen Zhang
+ * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @version 2.0
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
+
 public class ModuleDefinition extends TopLevel {
 	
 	private Set<URI> roles;
@@ -25,7 +30,7 @@ public class ModuleDefinition extends TopLevel {
 	private HashMap<URI, FunctionalComponent> functionalComponents;
 	private Set<URI> models;
 	
-	public ModuleDefinition(URI identity) {
+	ModuleDefinition(URI identity) {
 		super(identity);
 		this.roles = new HashSet<>();
 		this.modules = new HashMap<>();
@@ -63,11 +68,11 @@ public class ModuleDefinition extends TopLevel {
 			this.setFunctionalComponents(components);
 		}
 		if (!moduleDefinition.getModels().isEmpty()) {
-			// codereview: you are creating `models` but not doing anything with it
 			Set<URI> models = new HashSet<>();
 			for (URI model : moduleDefinition.getModelURIs()) {
 				models.add(model);
 			}
+			this.setModels(models);
 		}
 	}
 
@@ -140,10 +145,16 @@ public class ModuleDefinition extends TopLevel {
 	 * then adds to the list of ModuleInstantiation instances owned by this instance.
 	 * @return the created ModuleInstantiation instance.
 	 */
-	public Module createModule(URI identity, URI moduleDefinitionURI) {
+	Module createModule(URI identity, URI moduleDefinitionURI) {
 		Module subModule = new Module(identity, moduleDefinitionURI);
 		addModule(subModule);
 		return subModule;
+	}
+	
+	public Module createModule(String displayId, String moduleDefinitionId, String version) {
+		URI moduleDefinition = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
+				TopLevel.moduleDefinition, moduleDefinitionId, version);
+		return createModule(displayId,moduleDefinition);
 	}
 
 	public Module createModule(String displayId, URI moduleDefinitionURI) {
@@ -166,7 +177,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Adds the specified instance to the list of subModules. 
 	 */
-	public void addModule(Module module) {
+	void addModule(Module module) {
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		module.setSBOLDocument(this.sbolDocument);
 		module.setModuleDefinition(this);
@@ -177,7 +188,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Module removeModule(URI moduleURI) {
-		return modules.remove(moduleURI);
+		return (Module)removeChildSafely(moduleURI,modules);
 	}
 	
 	/**
@@ -209,7 +220,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of subModule instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setModules(List<Module> modules) {
+	void setModules(List<Module> modules) {
 		clearModules();
 		if (modules==null) return;
 		for (Module module : modules) {
@@ -233,7 +244,7 @@ public class ModuleDefinition extends TopLevel {
 	 * then adds to the list of Interaction instances owned by this instance.
 	 * @return the  created Interaction instance.
 	 */
-	public Interaction createInteraction(URI identity, Set<URI> type) {
+	Interaction createInteraction(URI identity, Set<URI> type) {
 		Interaction interaction = new Interaction(identity, type);
 		addInteraction(interaction);
 		return interaction;
@@ -254,7 +265,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Adds the specified instance to the list of interactions. 
 	 */
-	public void addInteraction(Interaction interaction) {
+	void addInteraction(Interaction interaction) {
 		addChildSafely(interaction, interactions, "interaction", functionalComponents, modules);
 		interaction.setSBOLDocument(this.sbolDocument);
         interaction.setModuleDefinition(this);
@@ -265,7 +276,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Interaction removeInteraction(URI interactionURI) {
-		return interactions.remove(interactionURI);
+		return (Interaction)removeChildSafely(interactionURI,interactions);
 	}
 	
 	/**
@@ -297,7 +308,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of interaction instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setInteractions(
+	void setInteractions(
 			List<Interaction> interactions) {
 		clearInteractions();	
 		if (interactions==null) return;
@@ -322,25 +333,32 @@ public class ModuleDefinition extends TopLevel {
 	 * then adds to the list of FunctionalInstantiation instances owned by this instance.
 	 * @return the created {@link FunctionalComponent} instance.
 	 */
-	public FunctionalComponent createFunctionalComponent(URI identity, AccessType access, 
-			URI functionalComponentURI, DirectionType direction) {
+	FunctionalComponent createFunctionalComponent(URI identity, AccessType access, 
+			URI definitionURI, DirectionType direction) {
 		FunctionalComponent functionalComponent = 
-				new FunctionalComponent(identity, access, functionalComponentURI, direction);
+				new FunctionalComponent(identity, access, definitionURI, direction);
 		addFunctionalComponent(functionalComponent);
 		return functionalComponent;
 	}
+	
+	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
+			String definition, String version, DirectionType direction) {
+		URI definitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
+				TopLevel.componentDefinition, definition, version);
+		return createFunctionalComponent(displayId,access,definitionURI,direction);
+	}
 
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
-			URI functionalComponentURI, DirectionType direction) {
+			URI definitionURI, DirectionType direction) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getComponentDefinition(functionalComponentURI)==null) {
-				throw new IllegalArgumentException("Component definition '" + functionalComponentURI + "' does not exist.");
+			if (sbolDocument.getComponentDefinition(definitionURI)==null) {
+				throw new IllegalArgumentException("Component definition '" + definitionURI + "' does not exist.");
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		URI newComponentDefinitionURI = createCompliantURI(URIprefix, displayId, version);
-		FunctionalComponent fc = createFunctionalComponent(newComponentDefinitionURI, access, functionalComponentURI, direction);
+		URI functionalComponentURI = createCompliantURI(URIprefix, displayId, version);
+		FunctionalComponent fc = createFunctionalComponent(functionalComponentURI, access, definitionURI, direction);
 		fc.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		fc.setDisplayId(displayId);
 		fc.setVersion(version);
@@ -350,7 +368,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Adds the specified instance to the list of components.
 	 */
-	public void addFunctionalComponent(FunctionalComponent functionalComponent) {
+	void addFunctionalComponent(FunctionalComponent functionalComponent) {
 		addChildSafely(functionalComponent, functionalComponents, "functionalComponent", interactions, modules);
 		functionalComponent.setSBOLDocument(this.sbolDocument);
 	}
@@ -359,8 +377,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Removes the instance matching the specified URI from the list of functionalInstantiations if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public FunctionalComponent removeFunctionalComponent(URI componentURI) {
-		return functionalComponents.remove(componentURI);
+	public FunctionalComponent removeFunctionalComponent(URI functionalComponentURI) {
+		return (FunctionalComponent)removeChildSafely(functionalComponentURI,functionalComponents);
 	}
 	
 	/**
@@ -392,7 +410,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of functionalInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setFunctionalComponents(
+	void setFunctionalComponents(
 			List<FunctionalComponent> components) {
 		clearComponents();	
 		if (components==null) return;
@@ -432,6 +450,12 @@ public class ModuleDefinition extends TopLevel {
 //		else
 //			return true;					
 //	}
+	
+	public void addModel(String model,String version) {
+		URI modelURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
+				TopLevel.model, model, version);
+		addModel(modelURI);
+	}
 	
 	/**
 	 * Adds the specified instance to the list of models. 
@@ -623,7 +647,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public ModuleDefinition copy(String URIprefix, String displayId, String version) {
+	ModuleDefinition copy(String URIprefix, String displayId, String version) {
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			ModuleDefinition cloned = this.deepCopy();

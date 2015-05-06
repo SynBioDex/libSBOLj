@@ -13,8 +13,12 @@ import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 
 /**
  * @author Zhen Zhang
+ * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @version 2.0
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
 
 public class SBOLDocument {
@@ -29,19 +33,6 @@ public class SBOLDocument {
 	private String defaultURIprefix;
 	private boolean complete = false;
 	
-	/**
-	 * Top level types
-	 *
-	 */
-	static final class TopLevelTypes {
-		static final String collection = "col";
-		static final String moduleDefinition = "md";
-		static final String model = "mod";
-		static final String componentDefinition = "cd";
-		static final String sequence = "seq";
-		static final String genericTopLevel = "gen";
-	}
-
 	public SBOLDocument() {
 		genericTopLevels = new HashMap<>();
 		collections = new HashMap<>();
@@ -53,6 +44,7 @@ public class SBOLDocument {
 		nameSpaces.put(URI.create(Sbol2Terms.sbol2.getNamespaceURI()), Sbol2Terms.sbol2);
 		nameSpaces.put(URI.create(Sbol1Terms.rdf.getNamespaceURI()), Sbol1Terms.rdf);
 		nameSpaces.put(URI.create(Sbol2Terms.dc.getNamespaceURI()), Sbol2Terms.dc);
+		nameSpaces.put(URI.create(Sbol2Terms.prov.getNamespaceURI()), Sbol2Terms.prov);
 	}
 
 	/**
@@ -61,9 +53,9 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version) {
 		validateCreationData(displayId, version);
-		ModuleDefinition md = createModuleDefinition(createCompliantURI(defaultURIprefix, TopLevelTypes.moduleDefinition, 
+		ModuleDefinition md = createModuleDefinition(createCompliantURI(defaultURIprefix, TopLevel.moduleDefinition, 
 				displayId, version));
-		md.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.moduleDefinition, 
+		md.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.moduleDefinition, 
 				displayId, ""));
 		md.setDisplayId(displayId);
 		md.setVersion(version);
@@ -74,7 +66,7 @@ public class SBOLDocument {
 	 * Create a new {@link ModuleDefinition} object.
 	 * @return the {@link ModuleDefinition} object.
 	 */
-	public ModuleDefinition createModuleDefinition(URI identity) {
+	ModuleDefinition createModuleDefinition(URI identity) {
 		ModuleDefinition newModule = new ModuleDefinition(identity);
 		addModuleDefinition(newModule);
 		return newModule;
@@ -92,8 +84,8 @@ public class SBOLDocument {
 	 * Removes the object matching the specified URI from the list of modules if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
-	public ModuleDefinition removeModuleDefinition(URI moduleURI) {
-		return moduleDefinitions.remove(moduleURI);
+	public ModuleDefinition removeModuleDefinition(URI moduleDefinitionURI) {
+		return (ModuleDefinition)removeTopLevel(moduleDefinitionURI,moduleDefinitions);
 	}
 
 	/**
@@ -128,7 +120,7 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list <code>modules</code>, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setModuleDefinitions(List<ModuleDefinition> moduleDefinitions) {
+	void setModuleDefinitions(List<ModuleDefinition> moduleDefinitions) {
 		clearModuleDefinitions();
 		for (ModuleDefinition module : moduleDefinitions) {
 			addModuleDefinition(module);
@@ -139,7 +131,7 @@ public class SBOLDocument {
 	 * Create a new {@link Collection} object.
 	 * @return {@link Collection} object.
 	 */
-	public Collection createCollection(URI identity) {
+	Collection createCollection(URI identity) {
 		Collection newCollection = new Collection(identity);
 		addCollection(newCollection);
 		return newCollection;
@@ -152,8 +144,8 @@ public class SBOLDocument {
 	public Collection createCollection(String displayId, String version) {
 		validateCreationData(displayId, version);
 		Collection c = createCollection(
-				createCompliantURI(defaultURIprefix, TopLevelTypes.collection, displayId, version));
-		c.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.collection, displayId, ""));
+				createCompliantURI(defaultURIprefix, TopLevel.collection, displayId, version));
+		c.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.collection, displayId, ""));
 		c.setDisplayId(displayId);
 		c.setVersion(version);
 		return c;
@@ -162,8 +154,8 @@ public class SBOLDocument {
 	/**
 	 * Appends the specified {@code newCollection} object to the end of the list of collections.
 	 */
-	public void addCollection(Collection newCollection) {
-		addTopLevel(newCollection, collections, "collection",
+	public void addCollection(Collection collection) {
+		addTopLevel(collection, collections, "collection",
                 componentDefinitions, genericTopLevels, models, moduleDefinitions, sequences);
 	}
 
@@ -173,7 +165,7 @@ public class SBOLDocument {
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Collection removeCollection(URI collectionURI) {
-		return collections.remove(collectionURI);
+		return (Collection)removeTopLevel(collectionURI,collections);
 	}
 
 	/**
@@ -207,7 +199,7 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list <code>collections</code>, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setCollections(List<Collection> collections) {
+	void setCollections(List<Collection> collections) {
 		clearCollections();
 		for (Collection collection : collections) {
 			addCollection(collection);
@@ -220,9 +212,9 @@ public class SBOLDocument {
 	 */
 	public Model createModel(String displayId, String version, URI source, URI language, URI framework) {
 		validateCreationData(displayId, version);
-		Model model = createModel(createCompliantURI(defaultURIprefix, TopLevelTypes.model, displayId, version),
+		Model model = createModel(createCompliantURI(defaultURIprefix, TopLevel.model, displayId, version),
 				source, language, framework);
-		model.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.model, displayId, ""));
+		model.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.model, displayId, ""));
 		model.setDisplayId(displayId);
 		model.setVersion(version);
 		return model;
@@ -232,7 +224,7 @@ public class SBOLDocument {
 	 * Create a new {@link Model} object.
 	 * @return {@link Model} object.
 	 */
-	public Model createModel(URI identity, URI source, URI language, URI framework) {
+	Model createModel(URI identity, URI source, URI language, URI framework) {
 		Model newModel = new Model(identity, source, language, framework);
 		addModel(newModel);
 		return newModel;
@@ -251,7 +243,7 @@ public class SBOLDocument {
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Model removeModel(URI modelURI) {
-		return models.remove(modelURI);
+		return (Model)removeTopLevel(modelURI,models);
 	}
 
 	/**
@@ -286,7 +278,7 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list <code>models</code>, then appends all of the elements in the specified model to the end of this list.
 	 */
-	public void setModels(List<Model> models) {
+	void setModels(List<Model> models) {
 		clearModels();
 		for (Model model : models) {
 			addModel(model);
@@ -297,7 +289,7 @@ public class SBOLDocument {
 	 * Create a new {@link ComponentDefinition} object.
 	 * @return {@link ComponentDefinition} object.
 	 */
-	public ComponentDefinition createComponentDefinition(URI identity, Set<URI> types) {
+	ComponentDefinition createComponentDefinition(URI identity, Set<URI> types) {
 		//ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types, roles);
 		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types);
 		addComponentDefinition(newComponentDefinition);
@@ -310,9 +302,9 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
 		validateCreationData(displayId, version);
-		ComponentDefinition cd = createComponentDefinition(createCompliantURI(defaultURIprefix, TopLevelTypes.componentDefinition,
+		ComponentDefinition cd = createComponentDefinition(createCompliantURI(defaultURIprefix, TopLevel.componentDefinition,
 				displayId, version), types);
-		cd.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.componentDefinition, displayId,""));
+		cd.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.componentDefinition, displayId,""));
 		cd.setDisplayId(displayId);
 		cd.setVersion(version);
 		return cd;
@@ -331,7 +323,7 @@ public class SBOLDocument {
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public ComponentDefinition removeComponentDefinition(URI componentDefinitionURI) {
-		return componentDefinitions.remove(componentDefinitionURI);
+		return (ComponentDefinition)removeTopLevel(componentDefinitionURI,componentDefinitions);
 	}
 
 	/**
@@ -366,7 +358,7 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list of component definitions, then appends all of the elements in the specified model to the end of this list.
 	 */
-	public void setComponentDefinitions(List<ComponentDefinition> componentDefinitions) {
+	void setComponentDefinitions(List<ComponentDefinition> componentDefinitions) {
 		clearComponentDefinitions();
 		for (ComponentDefinition componentDefinition : componentDefinitions) {
 			addComponentDefinition(componentDefinition);
@@ -377,7 +369,7 @@ public class SBOLDocument {
 	 * Create a new {@link Sequence} object.
 	 * @return {@link Sequence} object.
 	 */
-	public Sequence createSequence(URI identity, String elements, URI encoding) {
+	Sequence createSequence(URI identity, String elements, URI encoding) {
 		Sequence newSequence = new Sequence(identity, elements, encoding);
 		addSequence(newSequence);
 		return newSequence;
@@ -389,9 +381,9 @@ public class SBOLDocument {
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
 		validateCreationData(displayId, version);
-		Sequence s = createSequence(createCompliantURI(defaultURIprefix, TopLevelTypes.sequence, displayId, version), 
+		Sequence s = createSequence(createCompliantURI(defaultURIprefix, TopLevel.sequence, displayId, version), 
 				elements, encoding);
-		s.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.sequence, displayId, ""));
+		s.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.sequence, displayId, ""));
 		s.setDisplayId(displayId);
 		s.setVersion(version);
 		return s;
@@ -523,7 +515,7 @@ public class SBOLDocument {
 	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix, display ID, and version. Then add it to its corresponding top-level objects list.
 	 * @return the copied {@link TopLevel} object
 	 */
-	public Identified createCopy(Identified toplevel, String URIprefix, String displayId, String version) {
+	public TopLevel createCopy(TopLevel toplevel, String URIprefix, String displayId, String version) {
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(toplevel.getIdentity());
 		}
@@ -582,7 +574,7 @@ public class SBOLDocument {
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Sequence removeSequence(URI sequenceURI) {
-		return sequences.remove(sequenceURI);
+		return (Sequence)removeTopLevel(sequenceURI,sequences);
 	}
 
 	/**
@@ -617,7 +609,7 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list <code>structures</code>, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setSequences(List<Sequence> sequences) {
+	void setSequences(List<Sequence> sequences) {
 		clearSequences();
 		for (Sequence sequence : sequences) {
 			addSequence(sequence);
@@ -630,8 +622,8 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
 		validateCreationData(displayId, version);
-		GenericTopLevel g = createGenericTopLevel(createCompliantURI(defaultURIprefix, TopLevelTypes.genericTopLevel, displayId, version), rdfType);
-		g.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevelTypes.genericTopLevel, displayId, ""));
+		GenericTopLevel g = createGenericTopLevel(createCompliantURI(defaultURIprefix, TopLevel.genericTopLevel, displayId, version), rdfType);
+		g.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.genericTopLevel, displayId, ""));
 		g.setDisplayId(displayId);
 		g.setVersion(version);
 		return g;
@@ -641,7 +633,7 @@ public class SBOLDocument {
 	 * Create a new {@link GenericTopLevel} object.
 	 * @return {@link GenericTopLevel} object.
 	 */
-	public GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
+	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
 		addGenericTopLevel(newGenericTopLevel);
 		return newGenericTopLevel;
@@ -660,7 +652,7 @@ public class SBOLDocument {
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public GenericTopLevel removeGenericTopLevel(URI topLevelURI) {
-		return genericTopLevels.remove(topLevelURI);
+		return (GenericTopLevel)removeTopLevel(topLevelURI,genericTopLevels);
 	}
 
 	/**
@@ -695,7 +687,7 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list <code>topLevels</code>, then appends all of the elements in the specified topLevels to the end of this list.
 	 */
-	public void setGenericTopLevels(List<GenericTopLevel> topLevels) {
+	void setGenericTopLevels(List<GenericTopLevel> topLevels) {
 		clearGenericTopLevels();
 		for (GenericTopLevel topLevel : topLevels) {
 			addGenericTopLevel(topLevel);
@@ -731,7 +723,7 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Adds a namespace URI and its prefix. Deprecated method. Use {@link #addNamespaceBinding(NamespaceBinding)}.
+	 * Adds a namespace URI and its prefix. 
 	 * 
 	 * @param nameSpaceURI The Namespace {@link URI}
 	 * @param prefix The prefix {@link String}
@@ -740,7 +732,7 @@ public class SBOLDocument {
 		nameSpaces.put(nameSpaceURI, NamespaceBinding(nameSpaceURI.toString(), prefix));
 	}
 	
-	public void addNamespaceBinding(NamespaceBinding namespaceBinding) {
+	void addNamespaceBinding(NamespaceBinding namespaceBinding) {
 		nameSpaces.put(URI.create(namespaceBinding.getNamespaceURI()), namespaceBinding);
 	}
 
@@ -748,7 +740,7 @@ public class SBOLDocument {
 	 * Gets the namespace bindings for the document
 	 * @return A list of {@link NamespaceBinding}
 	 */
-	public List<NamespaceBinding> getNameSpaceBindings() {
+	public List<NamespaceBinding> getNamespaceBindings() {
 		List<NamespaceBinding> bindings = new ArrayList<>();
 		bindings.addAll(this.nameSpaces.values());
 		return bindings;
@@ -756,16 +748,18 @@ public class SBOLDocument {
 	
 	/**
 	 * Removes the object matching the specified URI from the list of nameSpaces if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
-	public NamespaceBinding removeNamespaceBinding(URI nameSpaceURI) {
-		return nameSpaces.remove(nameSpaceURI);
+	public void removeNamespaceBinding(URI nameSpaceURI) {
+		if (isRequiredNamespaceBinding(nameSpaceURI)) {
+			throw new IllegalStateException("Cannot remove required namespace " + nameSpaceURI.toString());
+		}
+		nameSpaces.remove(nameSpaceURI);
 	}
 	
 	/**
 	 * Clears the existing list <code>modules</code>, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setNameSpaceBindings(List<NamespaceBinding> namespaceBinding) {
+	void setNameSpaceBindings(List<NamespaceBinding> namespaceBinding) {
 		clearNamespaceBindings();
 		for (NamespaceBinding namespace : namespaceBinding) {
 			addNamespaceBinding(namespace);
@@ -778,8 +772,17 @@ public class SBOLDocument {
 	public void clearNamespaceBindings() {
 		Object[] keySetArray = nameSpaces.keySet().toArray();
 		for (Object key : keySetArray) {
+			if (isRequiredNamespaceBinding((URI)key)) continue;
 			removeNamespaceBinding((URI) key);
 		}		
+	}
+	
+	boolean isRequiredNamespaceBinding(URI namespaceURI) {
+		if (namespaceURI.toString().equals(Sbol2Terms.sbol2.getNamespaceURI())) return true;
+		if (namespaceURI.toString().equals(Sbol2Terms.dc.getNamespaceURI())) return true;
+		if (namespaceURI.toString().equals(Sbol2Terms.prov.getNamespaceURI())) return true;
+		if (namespaceURI.toString().equals(Sbol1Terms.rdf.getNamespaceURI())) return true;
+		return false;
 	}
 
 
@@ -787,8 +790,8 @@ public class SBOLDocument {
 	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
-	public NamespaceBinding getNameSpaceBinding(URI nameSpaceURI) {
-		return nameSpaces.get(nameSpaceURI);
+	public NamespaceBinding getNamespaceBinding(URI namespaceURI) {
+		return nameSpaces.get(namespaceURI);
 	}
 
 
@@ -899,6 +902,28 @@ public class SBOLDocument {
 		}
 		newTopLevel.setSBOLDocument(this);
 	}
+	
+	private final <TL extends TopLevel> TopLevel removeTopLevel(URI topLevelURI, Map<URI, TL> instancesMap) {
+		Set<TopLevel> setToRemove = new HashSet<>();
+		TopLevel topLevel = getTopLevel(topLevelURI);
+		setToRemove.add(topLevel);
+		instancesMap.values().removeAll(setToRemove);
+		URI latestVersion = null;
+		for (TL tl : instancesMap.values()) {
+			if (topLevel.getPersistentIdentity().toString().equals(tl.getPersistentIdentity().toString())) {
+				if (latestVersion==null) {
+					latestVersion = tl.getIdentity();
+				} else if (isFirstVersionNewer(extractVersion(tl.getIdentity()),extractVersion(latestVersion))) {
+					latestVersion = tl.getIdentity();
+				}
+			}
+		}
+		if (latestVersion != null) {
+			instancesMap.put(topLevel.getPersistentIdentity(),instancesMap.get(latestVersion));
+		}
+		return topLevel;
+	}
+
 	
 	/**
 	 * Set the default URI prefix to the given prefix.

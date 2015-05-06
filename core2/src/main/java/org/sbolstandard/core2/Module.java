@@ -12,18 +12,22 @@ import org.sbolstandard.core2.MapsTo.RefinementType;
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
- * 
  * @author Zhen Zhang
+ * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @version 2.0
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
  */
+
 public class Module extends Documented {
 	
 	private HashMap<URI, MapsTo> mapsTos;
 	private URI definition;
 	private ModuleDefinition moduleDefinition = null;
 
-	public Module(URI identity, URI moduleDefinition) {
+	Module(URI identity, URI moduleDefinition) {
 		super(identity);
 		setDefinition(moduleDefinition);
 		this.mapsTos = new HashMap<>();
@@ -87,11 +91,19 @@ public class Module extends Documented {
 	 * then adds to the list of MapsTo instances owned by this component.
 	 * @return the created MapsTo instance.
 	 */
-	public MapsTo createMapsTo(URI identity, RefinementType refinement, 
+	MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
 		addMapsTo(mapping);
 		return mapping;
+	}
+	
+	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) {
+		URI local = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(), 
+				localId, moduleDefinition.getVersion());
+		URI remote = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(), 
+				remoteId, getDefinition().getVersion());
+		return createMapsTo(displayId,refinement,local,remote);
 	}
 	
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
@@ -108,15 +120,15 @@ public class Module extends Documented {
 	/**
 	 * Adds the specified instance to the list of references. 
 	 */
-	public void addMapsTo(MapsTo mapsTo) {
+	void addMapsTo(MapsTo mapsTo) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
-				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocal() + "' does not exist.");
+				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
 			}
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI())==null) {
-				throw new IllegalArgumentException("Functional component '" + mapsTo.getRemote() + "' does not exist.");
+				throw new IllegalArgumentException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
 			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
@@ -129,8 +141,8 @@ public class Module extends Documented {
 	 * Removes the instance matching the specified URI from the list of references if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo removeMapsTo(URI referenceURI) {
-		return mapsTos.remove(referenceURI);
+	public MapsTo removeMapsTo(URI mapsToURI) {
+		return (MapsTo)removeChildSafely(mapsToURI,mapsTos);
 	}
 	
 	/**
@@ -162,7 +174,7 @@ public class Module extends Documented {
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	public void setMapsTos(
+	void setMapsTos(
 			List<MapsTo> mappings) {
 		clearMapsTos();		
 		for (MapsTo mapping : mappings) {

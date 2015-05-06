@@ -4,12 +4,22 @@ import java.net.URI;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public class Sequence extends TopLevel{
 		
 	private String elements;
 	private URI encoding;
 	
-	public Sequence(URI identity, String elements, URI encoding) {
+	Sequence(URI identity, String elements, URI encoding) {
 		super(identity);
 		setElements(elements);
 		setEncoding(encoding);
