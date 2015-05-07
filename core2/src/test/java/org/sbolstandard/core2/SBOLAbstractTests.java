@@ -5,6 +5,7 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,7 +14,7 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.sbolstandard.core.SBOLValidationException;
 import org.sbolstandard.core2.ComponentInstance.AccessType;
-import org.sbolstandard.core2.FunctionalComponent.DirectionType;
+import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 /**
  * @author Tramy Nguyen
  *
@@ -26,17 +27,9 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_All_File() throws Exception
 	{
 		String fileName = "test/data/SBOL1/labhost_all.xml";
-		//		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
-		//		if (resourceAsStream == null)
-		//			resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/" + fileName);
-		//
-		//		assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
 
 		try
 		{
-			//			SBOLDocument actual;
-			//			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
-			//			actual = SBOLReader.readRDF(resourceAsStream);
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, "rdf");
 			runTest("test/data/labhost_All.rdf", actual, "rdf");
 		}
@@ -46,61 +39,418 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	@Test
+	public void test_labhost_Aspergillus_nidulans() throws Exception
+	{
+		String filename = "labhost_Aspergillus_nidulans";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Bacillus_subtilis() throws Exception
+	{
+		String filename = "labhost_Bacillus_subtilis";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Drosophila_melanogaster() throws Exception
+	{
+		String filename = "labhost_Drosophila_melanogaster";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Escherichia_Coli() throws Exception
+	{
+		String filename = "labhost_Escherichia_Coli";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Gramnegative_bacteria() throws Exception
+	{
+		String filename = "labhost_Gram-negative_bacteria";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Insect_Cells() throws Exception
+	{
+		String filename = "labhost_Insect_Cells";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Kluyveromyces_lactis() throws Exception
+	{
+		String filename = "labhost_Kluyveromyces_lactis";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Mammalian_Cells() throws Exception
+	{
+		String filename = "labhost_Mammalian_Cells";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Pichia_pastoris() throws Exception
+	{
+		String filename = "labhost_Pichia_pastoris";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Plant_Cells() throws Exception
+	{
+		String filename = "labhost_Plant_Cells";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Saccharomyces_cerevisiae() throws Exception
+	{
+		String filename = "labhost_Saccharomyces_cerevisiae";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Schizosaccharomyces_pombe() throws Exception
+	{
+		String filename = "labhost_Schizosaccharomyces_pombe";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_labhost_Unspecified() throws Exception
+	{
+		String filename = "labhost_Unspecified";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_miRNA_sbol() throws Exception
+	{
+		//TODO: This file is not parsing for some reason...
+		String filename = "miRNA_sbol";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_partial_pIKE_left_cassette() throws Exception
+	{
+		String filename = "partial_pIKE_left_cassette";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_partial_pIKE_right_casette() throws Exception
+	{
+		String filename = "partial_pIKE_right_casette";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_partial_pIKE_right_cassette() throws Exception
+	{
+		String filename = "partial_pIKE_right_cassette";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_partial_pTAK_left_cassette() throws Exception
+	{
+		String filename = "partial_pTAK_left_cassette";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_partial_pTAK_right_cassette() throws Exception
+	{
+		String filename = "partial_pTAK_right_cassette";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_pIKE_pTAK_cassettes_2() throws Exception
+	{
+		String filename = "pIKE_pTAK_cassettes 2";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_pIKE_pTAK_cassettes() throws Exception
+	{
+		String filename = "pIKE_pTAK_cassettes";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_pIKE_pTAK_left_right_cassettes() throws Exception
+	{
+		String filename = "pIKE_pTAK_left_right_cassettes";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+	@Test
+	public void test_pIKE_pTAK_toggle_switches() throws Exception
+	{
+		String filename = "pIKE_pTAK_toggle_switches";
+		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileDirectory, e);
+		}
+	}
+
+
+	@Test
+	public void test_JSONFile() throws Exception
+	{
+		SBOLDocument document = new SBOLDocument();
+		runTest("test/data/emptyJSONFile.json", document, "json");
+
+	}
+
 	//	@Test
-	//	public void test_JSONFile() throws Exception
+	//	public void test_TurtleFile() throws Exception
 	//	{
 	//		SBOLDocument document = new SBOLDocument();
-	//		runTest("test/data/emptyJSONFile.json", document, "json");
-	//
+	//		//TODO: this is not passing for some reason...
+	//		runTest("test/data/emptyTurtleFile.ttl", document, "turtle");
 	//	}
-	/*
-	@Test
-	public void test_TurtleFile() throws Exception
-	{
-		SBOLDocument document = new SBOLDocument();
-		//TODO: this is not passing for some reason...
-		runTest("test/data/emptyTurtleFile.ttl", document, "turtle");
-	}
-	 */
+
 
 	@Test
-	public void test_moduleDef_withFunctionalComponent() throws Exception
-	{
-		SBOLDocument document=new SBOLDocument();
-		//		document.setComplete(true);
-		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
-
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
-
-		String id = "testmodule";
-		ModuleDefinition testModule = document.createModuleDefinition(id, VERSION_1_0);
-		testModule.createFunctionalComponent("fc1", AccessType.PUBLIC, URI.create("cd1"), DirectionType.NONE);
-		testModule.addRole(URI.create("Inverter"));
-		runTest("test/data/moduleDef_fc.rdf", document, "rdf");
-	}
-
-	/*
-	@Test
-	public void test_collectionAnnotation() throws Exception
-	{
-		SBOLDocument document = new SBOLDocument();
-		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
-
-		//TODO: each object annotation have to match the namespacebinding created?
-		List<Annotation> collection_annotations = new ArrayList<Annotation>();
-		collection_annotations.add(new Annotation(
-				NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "TurtleString")));
-		SBOLTestUtils.createCollection(document, "myParts", collection_annotations);
-
-		runTest("test/data/collectionAnnotation.rdf", document, "rdf");
-	}
-	 */
-
-	@Test
-	public void test_modelAnnotation() throws Exception
+	public void test_memberAnnotations() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -114,157 +464,93 @@ public abstract class SBOLAbstractTests {
 		URI language    = URI.create(id + "_language");
 		URI framework   = URI.create(id + "_framework");
 
+		Collection myParts = document.createCollection("myParts", VERSION_1_0);
+		myParts.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+
 		Model someModel = document.createModel(id, VERSION_1_0, source, language, framework);
 		someModel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
-		//TODO: this is not passing because the version of this object is not set...
-		runTest("test/data/modelAnnotation.rdf", document, "rdf");
+
+		ModuleDefinition someModDef = document.createModuleDefinition("someModuleDef", VERSION_1_0);
+		someModDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+
+		Set<URI> interactionType = new HashSet<URI>();
+		interactionType.add(URI.create("DNA"));
+		Interaction someInteraction = someModDef.createInteraction("someInteraction", interactionType);
+		//		someModDef.createFunctionalComponent("someFunctionalComponent", AccessType.PUBLIC, "componentDef", VERSION_1_0, DirectionType.INOUT); //TODO replace componentDef
+		//		someInteraction.createParticipation("someParticipation", "someFunctionalComponent");
+
+		Module someModule = someModDef.createModule("someModule", "someModuleDef", VERSION_1_0);
+		String someMapsTo_id = "someMapsTo";
+		//		MapsTo someMapsTo = someModule.createMapsTo(someMapsTo_id, RefinementType.USELOCAL, "someModule", someMapsTo_id +"_remote");
+
+		String seq_id = "someSeq";
+		Sequence someSeq = document.createSequence(seq_id, VERSION_1_0, seq_id + "_element", URI.create("http://encodings.org/encoding"));
+		someSeq.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+
+		Set<URI> types = new HashSet<URI>();
+		types.add(URI.create("someCompDef_type"));
+		ComponentDefinition someCompDef = document.createComponentDefinition("someCompDef", VERSION_1_0, types);
+		someCompDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+
+		Component someComponent = someCompDef.createComponent("someComponent", AccessType.PUBLIC, "someCompDef", VERSION_1_0);
+		someComponent.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+
+		SequenceAnnotation someSequenceAnnotation = someCompDef.createSequenceAnnotation("someSequenceAnnotation", 1, 10);
+		someSequenceAnnotation.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		SequenceAnnotation someSequenceAnnotation2 = someCompDef.createSequenceAnnotation("someSequenceAnnotation2", 1, OrientationType.INLINE);
+
+		//		someSequenceAnnotation.setLocation(); //TODO range, multiRange, cut - how to access?
+
+		SequenceConstraint someSequenceConstraint = someCompDef.createSequenceConstraint("someSequenceConstraint", RestrictionType.PRECEDES, "someComponent", "someComponent");
+		someSequenceConstraint.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+
+		GenericTopLevel someGenericTopLevel = document.createGenericTopLevel("someGenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+		someGenericTopLevel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+
+
+		runTest("test/data/memberAnnotations.rdf", document, "rdf");
 	}
-	/*
+
+
 	@Test
-	public void test_moduleAnnotation() throws Exception
+	public void test_CreateAndRemoveCollections() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
+		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+
 		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
-		List<Annotation> moduleDefinition_annotations = new ArrayList<Annotation>();
-		moduleDefinition_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
-				"TurtleString")));
-		SBOLTestUtils.createModuleDefinition(document, "someModDef", null, null, null, null, null, moduleDefinition_annotations);
+		document.createCollection("myParts", VERSION_1_0);
+		document.removeCollection(URI.create("myParts"));
+
+		for(int i = 1; i < 4; i++)
+		{
+			document.createCollection("myParts" + i, VERSION_1_0);
+		}
+
+		document.clearCollections();
+		Collection myParts = document.createCollection("myParts", VERSION_1_0);
+		document.addCollection(myParts);
+		document.addCollection(myParts);
 
 
-		runTest("test/data/moduleAnnotation.rdf", document, "rdf");
-	}
-
-
-	@Test
-	public void test_Annotations() throws Exception
-	{
-		SBOLDocument document = new SBOLDocument();
-
-		List<Annotation> collection_annotations = new ArrayList<Annotation>();
-		collection_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "coll_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createCollection(document, "myParts", collection_annotations);
-
-		List<Annotation> model_annotations = new ArrayList<Annotation>();
-		model_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "model_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createModel(document, "someModel", model_annotations);
-
-		List<Annotation> moduleDefinition_annotations = new ArrayList<Annotation>();
-		moduleDefinition_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "modDef_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createModuleDefinition(document, "someModDef", null, null, null, null, null, moduleDefinition_annotations);
-
-		List<Annotation> sequence_annotations = new ArrayList<Annotation>();
-		sequence_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "seq_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createSequence(document, "someSeq", sequence_annotations); //TODO failing right here because can't create a sequence
-
-		List<Annotation> componentDefinition_annotations = new ArrayList<Annotation>();
-		componentDefinition_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "compDef_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createComponentDefinition(document, "someCompDef", null, null, null, null, null, null, componentDefinition_annotations);
-
-		List<Annotation> genericTopLevel_annotations = new ArrayList<Annotation>();
-		genericTopLevel_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "genericTopLev_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createGenericTopLevel(document, "someGenericTopLevel", genericTopLevel_annotations);
-
-		List<Annotation> component_annotations = new ArrayList<Annotation>();
-		component_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "component_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createComponent("someComponent", AccessType.PUBLIC, null, component_annotations);
-
-		List<Annotation> sequenceAnnotation_annotations = new ArrayList<Annotation>();
-		sequenceAnnotation_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "seqAnnot_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createSequenceAnnotation("someSequence", null, sequenceAnnotation_annotations);
-
-		List<Annotation> sequenceConstraint_annotations = new ArrayList<Annotation>();
-		sequenceConstraint_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "seqCon_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createSequenceConstraint("someSequenceConstraint", null, null, RestrictionType.PRECEDES, sequenceConstraint_annotations);
-
-		//TODO: unable to create a componentInstance for testing.
-		//		List<Annotation> componentInstance_annotations = new ArrayList<Annotation>();
-		//		componentInstance_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "compInstance_annot1"),
-		//				"TurtleString")));
-
-
-		List<Annotation> mapsTo_annotations = new ArrayList<Annotation>();
-		mapsTo_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "mapsTo_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createMapTo("someMapsTo", RefinementType.USELOCAL, null, null, mapsTo_annotations);
-
-		List<Annotation> location_annotations = new ArrayList<Annotation>();
-		location_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "location_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createLocation("someLocation", new Range(URI.create("someRange1"), 0, 10), location_annotations);
-
-		List<Annotation> multiRange_annotations = new ArrayList<Annotation>();
-		multiRange_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "multiRange_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createLocation("someMultiRange1", new MultiRange(URI.create("someMultiRange")), multiRange_annotations);
-
-		List<Annotation> range_annotations = new ArrayList<Annotation>();
-		range_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "range_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createLocation("someRange2", new Range(URI.create("someRange"), 0, 10), range_annotations);
-
-		List<Annotation> cut_annotations = new ArrayList<Annotation>();
-		cut_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "cut_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createLocation("someCut", new Cut(URI.create("someCut"), 10), cut_annotations);
-
-		List<Annotation> genericLocation_annotations = new ArrayList<Annotation>();
-		genericLocation_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "genericLoc_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createGenericTopLevel(document, "someGenericTopLevel", genericLocation_annotations);
-
-		List<Annotation> module_annotations = new ArrayList<Annotation>();
-		module_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "module_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createModule("someModule", null, module_annotations);
-
-		List<Annotation> interaction_annotations = new ArrayList<Annotation>();
-		interaction_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "interaction_annot1"),
-				"TurtleString")));
-		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
-		List<Participation> interact_part = new ArrayList<Participation>();
-		Participation p1a = SBOLTestUtils.createParticipation("p1a", null, null);
-		interact_part.add(p1a);
-		SBOLTestUtils.createInteraction("someInteraction", type, interact_part, interaction_annotations);
-
-		List<Annotation> functionalComponent_annotations = new ArrayList<Annotation>();
-		functionalComponent_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "funcComp_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createFunctionalComponent("someFunctionalComp", AccessType.PUBLIC, DirectionType.INOUT, null, functionalComponent_annotations);
-
-		List<Annotation> participation_annotations = new ArrayList<Annotation>();
-		participation_annotations.add(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "participation_annot1"),
-				"TurtleString")));
-		SBOLTestUtils.createParticipation("someParticipation", null, participation_annotations);
-
+		runTest("test/data/CreateAndRemoveCollections.rdf", document, "rdf");
 	}
 
 	@Test
-	public void test_singleCollection_no_Members() throws Exception
+	public void test_singleCollection() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		List<Annotation> annotations = new ArrayList<Annotation>();
-		Annotation a = new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
-				"turtleString"));
-		annotations.add(a);
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
-		SBOLTestUtils.createCollection(document, "myParts", null);
-
-		runTest("test/data/singleCollection.rdf", document);
+		document.createCollection("myParts", VERSION_1_0);
+		runTest("test/data/singleCollection.rdf", document, "rdf");
 	}
 
 
@@ -272,46 +558,64 @@ public abstract class SBOLAbstractTests {
 	public void test_multipleCollections_no_Members() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		SBOLTestUtils.createCollection(document, "myPart1", null);
-		SBOLTestUtils.createCollection(document, "myPart2", null);
-		SBOLTestUtils.createCollection(document, "myPart3", null);
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
-		runTest("test/data/multipleCollections_no_Members.rdf", document);
+		document.createCollection("myPart1", VERSION_1_0);
+		document.createCollection("myPart2", VERSION_1_0);
+		document.createCollection("myPart3", VERSION_1_0);
+
+		runTest("test/data/multipleCollections_no_Members.rdf", document, "rdf");
 	}
 
 	@Test
 	public void test_singleGenericTopLevel() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel", null);
-		runTest("test/data/singleGenericTopLevel.rdf", document);
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+
+		document.createGenericTopLevel("GenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+		runTest("test/data/singleGenericTopLevel.rdf", document, "rdf");
 	}
 
 	@Test
 	public void test_multipleGenericTopLevel() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel1", null);
-		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel2", null);
-		SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel3", null);
-		runTest("test/data/multipleGenericTopLevel.rdf", document);
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+
+		document.createGenericTopLevel("GenericTopLevel1", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction1", "grn"));
+		document.createGenericTopLevel("GenericTopLevel2", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction2", "grn"));
+		document.createGenericTopLevel("GenericTopLevel3", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction3", "grn"));
+
+		runTest("test/data/multipleGenericTopLevel.rdf", document, "rdf");
 	}
 
 	@Test
 	public void test_singleModel() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createModel(document, "ToggleModel", null);
-		runTest("test/data/singleModel.rdf", document);
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+
+		String id = "ToggleModel";
+		document.createModel( id, VERSION_1_0, URI.create(id + "_source"), URI.create(id + "_language"), URI.create(id + "_framework"));
+
+		runTest("test/data/singleModel.rdf", document, "rdf");
 	}
 
 
@@ -319,95 +623,112 @@ public abstract class SBOLAbstractTests {
 	public void test_singleSequence() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createSequence(document,"pLacSeq", null);
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
-		runTest("test/data/singleSequence.rdf", document);
+		String id = "pLacSeq";
+		document.createSequence(id, VERSION_1_0, id + "_elements", URI.create(id + "_encoding"));
+
+		runTest("test/data/singleSequence.rdf", document, "rdf");
 	}
 
 	@Test
 	public void test_multipleSquences() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-		SBOLTestUtils.createSequence(document,"pLacSeq", null);
-		SBOLTestUtils.createSequence(document,"tetRSeq", null);
-		SBOLTestUtils.createSequence(document,"pLactetRSeq", null);
-		runTest("test/data/multipleSequences.rdf", document);
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+
+		String id = "pLacSeq";
+		String id2 = "tetRSeq";
+		String id3 = "pLactetRSeq";
+
+		document.createSequence(id, VERSION_1_0, id + "_elements", URI.create(id + "_encoding"));
+		document.createSequence(id2, VERSION_1_0, id2 + "_elements", URI.create(id2 + "_encoding"));
+		document.createSequence(id3, VERSION_1_0, id3 + "_elements", URI.create(id3 + "_encoding"));
+
+		runTest("test/data/multipleSequences.rdf", document, "rdf");
 	}
 
 	@Test
 	public void test_single_emptyModuleDefinition() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
 		Set<URI> roles = SBOLTestUtils.getSetPropertyURI("Inverter");
-		//		List<FunctionalComponent> functionalComponent_data;
-		//		List<Interaction> interactionData;
-		//		List<Module> submodule_data;
-		//		Set<URI> model_data;
-		//		List<Annotation> annotations;
-		SBOLTestUtils.createModuleDefinition(document, "LacI_Inv",
-				roles, null, null, null, null, null);
+		ModuleDefinition LacI_Inv = document.createModuleDefinition("LacI_Inv", VERSION_1_0);
+		LacI_Inv.setRoles(roles);
 
-		runTest("test/data/singleModuleDefinition.rdf", document);
+		runTest("test/data/singleModuleDefinition.rdf", document, "rdf");
 	}
 
 	@Test
 	public void test_singleComponentDefinition() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Promoter");
-		SBOLTestUtils.createComponentDefinition(document, "pLac", type, role,
-				null, null, null, null, null);
+		ComponentDefinition pLac = document.createComponentDefinition("pLac", VERSION_1_0, type);
+		pLac.setRoles(role);
 
-		runTest("test/data/singleComponentDefinition.rdf", document);
+		runTest("test/data/singleComponentDefinition.rdf", document, "rdf");
 	}
 
 	@Test
 	public void test_singleCompDef_withSeq() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		URI s = SBOLTestUtils.createSequence(document, "pLacSeq", null).getIdentity(); //TODO: throwing error right here because unable to create a sequence object but rather a null object
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Promoter");
-		SBOLTestUtils.createComponentDefinition(document, "pLac", type, role,
-				s, null, null, null, null);
+		ComponentDefinition pLac = document.createComponentDefinition("pLac", VERSION_1_0, type);
+		pLac.setRoles(role);
+		//		pLac.setSequence("pLacSeq", VERSION_1_0); //TODO unable to call createSequence for this.
 
-		runTest("test/data/singleCompDef_withSeq.rdf", document);
+		runTest("test/data/singleCompDef_withSeq.rdf", document, "rdf");
 	}
 
 	@Test
 	public void test_singleFunctionalComponent() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		document.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		document.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
 		Set<URI> type = SBOLTestUtils.getSetPropertyURI("Protein");
 		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Transcriptionfactor");
-		ComponentDefinition compdef = SBOLTestUtils.createComponentDefinition(document, "LacIIn", type, role,
-				null, null, null, null, null);
-		URI compDef_id = compdef.getIdentity(); //TODO: error right here due to returning a null object thus unable to get identity.
+		ComponentDefinition LacIIn = document.createComponentDefinition("LacIIn", VERSION_1_0, type);
+		String compDef_id = LacIIn.getDisplayId();
+		LacIIn.createComponent("funcComp", AccessType.PUBLIC, compDef_id, VERSION_1_0);
 
-		AccessType accessType 		= AccessType.PUBLIC;
-		DirectionType directionType = DirectionType.INPUT;
-		SBOLTestUtils.createFunctionalComponent("LacIIn", accessType, directionType, compDef_id, null);
 
-		runTest("test/data/singleFunctionalComponent.rdf", document);
-	}*/
+		runTest("test/data/singleFunctionalComponent.rdf", document, "rdf");
+	}
 
 	//	|------------------------------------TOGGLE SWITCH------------------------------------|
 	//	|		- double check on correct use of URIs										  |
