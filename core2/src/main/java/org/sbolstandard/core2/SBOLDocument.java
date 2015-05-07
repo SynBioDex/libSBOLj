@@ -723,58 +723,91 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Adds a namespace URI and its prefix. 
+	 * Adds a namespace URI and its prefix to a SBOL document 
 	 * 
 	 * @param nameSpaceURI The Namespace {@link URI}
 	 * @param prefix The prefix {@link String}
 	 */
-	public void addNamespaceBinding(URI nameSpaceURI, String prefix) {
+	public void addNamespace(URI nameSpaceURI, String prefix) {
 		nameSpaces.put(nameSpaceURI, NamespaceBinding(nameSpaceURI.toString(), prefix));
+	}
+	
+	/**
+	 * Adds a namespace {@link QName} to a SBOL document
+	 * 
+	 * @param qName Qualified name ({@link QName}) for a namespace 
+	 */
+	public void addNamespace(QName qName) {
+		nameSpaces.put(URI.create(qName.getNamespaceURI()), NamespaceBinding(qName.getNamespaceURI(), 
+				qName.getPrefix()));
 	}
 	
 	void addNamespaceBinding(NamespaceBinding namespaceBinding) {
 		nameSpaces.put(URI.create(namespaceBinding.getNamespaceURI()), namespaceBinding);
 	}
+	
+	
+	/**
+	 *  Removes all non-required namespaces from the SBOL document.
+	 */
+	public void clearNamespaces() {
+		Object[] keySetArray = nameSpaces.keySet().toArray();
+		for (Object key : keySetArray) {
+			if (isRequiredNamespaceBinding((URI)key)) continue;
+			removeNamespace((URI) key);
+		}		
+	}
 
+	/**
+	 * Returns the namespace matching the specified URI from the list of namespaces if present.
+	 * @return the matching namespace {@link QName} if present, or <code>null</code> if not present.
+	 */
+	public QName getNamespace(URI namespaceURI) {
+		if (nameSpaces.get(namespaceURI)==null) return null;
+		return new QName(namespaceURI.toString(), "", nameSpaces.get(namespaceURI).getPrefix());
+	}
+	
+	/**
+	 * Gets the namespace bindings for the document
+	 * @return A list of {@link QName}s
+	 */
+	public List<QName> getNamespaces() {
+		List<QName> bindings = new ArrayList<>();
+		for (NamespaceBinding namespaceBinding : this.nameSpaces.values()) {
+			bindings.add(new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix()));
+		}
+		return bindings;
+	}
+	
 	/**
 	 * Gets the namespace bindings for the document
 	 * @return A list of {@link NamespaceBinding}
 	 */
-	public List<NamespaceBinding> getNamespaceBindings() {
+	List<NamespaceBinding> getNamespaceBindings() {
 		List<NamespaceBinding> bindings = new ArrayList<>();
 		bindings.addAll(this.nameSpaces.values());
 		return bindings;
 	}
 	
 	/**
-	 * Removes the object matching the specified URI from the list of nameSpaces if present.
+	 * Removes the object matching the specified URI from the list of nameSpaces, if present and not required.
+	 * @param namespaceURI {@link URI} for a namespace 
 	 */
-	public void removeNamespaceBinding(URI nameSpaceURI) {
-		if (isRequiredNamespaceBinding(nameSpaceURI)) {
-			throw new IllegalStateException("Cannot remove required namespace " + nameSpaceURI.toString());
+	public void removeNamespace(URI namespaceURI) {
+		if (isRequiredNamespaceBinding(namespaceURI)) {
+			throw new IllegalStateException("Cannot remove required namespace " + namespaceURI.toString());
 		}
-		nameSpaces.remove(nameSpaceURI);
+		nameSpaces.remove(namespaceURI);
 	}
 	
 	/**
-	 * Clears the existing list <code>modules</code>, then appends all of the elements in the specified collection to the end of this list.
+	 * Clears the existing list of <code>namespaces</code>, then appends all of the namespaces to the end of this list.
 	 */
 	void setNameSpaceBindings(List<NamespaceBinding> namespaceBinding) {
-		clearNamespaceBindings();
+		clearNamespaces();
 		for (NamespaceBinding namespace : namespaceBinding) {
 			addNamespaceBinding(namespace);
 		}
-	}
-	
-	/**
-	 * 
-	 */
-	public void clearNamespaceBindings() {
-		Object[] keySetArray = nameSpaces.keySet().toArray();
-		for (Object key : keySetArray) {
-			if (isRequiredNamespaceBinding((URI)key)) continue;
-			removeNamespaceBinding((URI) key);
-		}		
 	}
 	
 	boolean isRequiredNamespaceBinding(URI namespaceURI) {
@@ -784,16 +817,6 @@ public class SBOLDocument {
 		if (namespaceURI.toString().equals(Sbol1Terms.rdf.getNamespaceURI())) return true;
 		return false;
 	}
-
-
-	/**
-	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
-	 */
-	public NamespaceBinding getNamespaceBinding(URI namespaceURI) {
-		return nameSpaces.get(namespaceURI);
-	}
-
 
 	@Override
 	public int hashCode() {
