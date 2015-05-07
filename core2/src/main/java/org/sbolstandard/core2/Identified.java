@@ -255,7 +255,7 @@ public abstract class Identified {
 	/**
 	 * Removes an annotation from the list of annotations for this object.
 	 * @param annotation to remove.
-	 * @return <code>True</code> if the matching instance is present.
+	 * @return <code>true</code> if the matching instance is present.
 	 */
 	public boolean removeAnnotation(Annotation annotation) {
 		return annotations.remove(annotation);

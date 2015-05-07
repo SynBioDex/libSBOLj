@@ -36,7 +36,7 @@ final class URIcompliance {
 	 * @return the extracted persistent identity URI, <code>null</code> otherwise.
 	 */
 	static String extractPersistentId(URI objURI) {
-		// fixme: return a String or raise an exception, don't return null
+		// TODO: return a String or raise an exception, don't return null
 		String URIstr = objURI.toString();
 		Pattern r = Pattern.compile(genericURIpattern1);
 		Matcher m = r.matcher(URIstr);
