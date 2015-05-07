@@ -93,7 +93,7 @@ public class SequenceOntology {
 	
 	/**
 	 * Creates a new URI from the Sequence Ontology namespace with the given local name. For example, the function call
-	 * <value>term("SO_0000001")</value> will return the URI <value>http://purl.obolibrary.org/obo/SO_0000001</value>
+	 * <code>term("SO_0000001")</code> will return the URI <a>http://purl.obolibrary.org/obo/SO_0000001</a>
 	 */
 	public static final URI type(String localName) {
 		return NAMESPACE.resolve(localName);
@@ -143,7 +143,7 @@ public class SequenceOntology {
 
 	/**
 	 * Non-covalent primer binding site for initiation of replication, transcription, or reverse transcription (<a
-	 * href="http://purl.obolibrary.org/obo/SO_0005850">SO_0005850<a/>)
+	 * href="http://purl.obolibrary.org/obo/SO_0005850">SO_0005850</a>)
 	 */
 	public static final URI PRIMER_BINDING_SITE = type("SO_0005850");
 

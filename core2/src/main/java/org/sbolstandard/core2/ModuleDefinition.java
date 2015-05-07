@@ -87,7 +87,7 @@ public class ModuleDefinition extends TopLevel {
 	
 	/**
 	 * Removes the specified element from the set <code>roles</code> if it is present.
-	 * @return <code>true<code> if this set contained the specified element
+	 * @return <code>true</code> if this set contained the specified element
 	 */
 	public boolean removeRole(URI roleURI) {
 		return roles.remove(roleURI);

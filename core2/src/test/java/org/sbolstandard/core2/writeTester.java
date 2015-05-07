@@ -599,9 +599,17 @@ public class writeTester {
 		as.add(a);
 		a = new Annotation(new QName("urn:bbn.com:tasbe:grn", "Activator", "grn"),"species2");
 		as.add(a);
-		toplevel.createAnnotation(new QName("theReaction"), new QName("TheReaction"), 
+		a = toplevel.createAnnotation(new QName("theReaction"), new QName("TheReaction"), 
 				URI.create("http://www.async.ece.utah.edu/myAnnotation"), as);
-
+		/*
+		as = a.getAnnotations();
+		System.out.println(a.getQName());
+		System.out.println(a.getNestedQName());
+		System.out.println(a.getNestedIdentity());
+		for (Annotation an : as) {
+			System.out.println(an.getQName() + " = " + an.getStringValue());
+		}
+		*/
 		setCommonTopLevelData(toplevel, displayId, displayId);
 		return toplevel;
 	}

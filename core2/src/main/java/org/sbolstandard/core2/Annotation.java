@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import uk.ac.ncl.intbio.core.datatree.Literal;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 
@@ -52,9 +53,49 @@ public class Annotation {
 		this.setValue(annotation.getValue());
 	}
 	
-	// TODO: need a method to extract Annotation value
 	public QName getQName() {
 		return value.getName();
+	}
+	
+	public String getStringValue() {
+		if (value.getValue() instanceof Literal<?>) {
+			return ((Literal<QName>) value.getValue()).getValue().toString();
+		}
+		return null;
+	}
+	
+	
+	public URI getURIValue() {
+		if (value.getValue() instanceof Literal<?>) {
+			return URI.create(((Literal<QName>) value.getValue()).getValue().toString());
+		}
+		return null;
+	}
+	
+	public QName getNestedQName() {
+		if (value.getValue() instanceof NestedDocument<?>) {
+			return ((NestedDocument<QName>) value.getValue()).getType();
+		}		
+		return null;
+	}
+	
+	
+	public URI getNestedIdentity() {
+		if (value.getValue() instanceof NestedDocument<?>) {
+			return ((NestedDocument<QName>) value.getValue()).getIdentity();
+		}		
+		return null;
+	}
+	
+	public List<Annotation> getAnnotations() {
+		if (value.getValue() instanceof NestedDocument<?>) {
+			List<Annotation> annotations = new ArrayList<>();
+			for (NamedProperty<QName> namedProperty : ((NestedDocument<QName>) value.getValue()).getProperties()) {
+				annotations.add(new Annotation(namedProperty));
+			}
+			return annotations;
+		}
+		return null;
 	}
 	
 	/**
