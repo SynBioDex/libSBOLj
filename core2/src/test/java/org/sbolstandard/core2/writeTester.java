@@ -594,6 +594,13 @@ public class writeTester {
 
 		GenericTopLevel toplevel =  SBOL2Doc_test.createGenericTopLevel(displayId, version, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
 		SBOL2Doc_test.addNamespace(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		List<Annotation> as = new ArrayList<>();
+		Annotation a = new Annotation(new QName("urn:bbn.com:tasbe:grn", "Repressor", "grn"),"species1");
+		as.add(a);
+		a = new Annotation(new QName("urn:bbn.com:tasbe:grn", "Activator", "grn"),"species2");
+		as.add(a);
+		toplevel.createAnnotation(new QName("theReaction"), new QName("TheReaction"), 
+				URI.create("http://www.async.ece.utah.edu/myAnnotation"), as);
 
 		setCommonTopLevelData(toplevel, displayId, displayId);
 		return toplevel;

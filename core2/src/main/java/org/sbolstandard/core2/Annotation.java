@@ -1,12 +1,17 @@
 package org.sbolstandard.core2;
 
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperties;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NestedDocument;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
+import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 
 /**
  * @author Zhen Zhang
@@ -22,12 +27,21 @@ public class Annotation {
 
 	private NamedProperty<QName> value;
 
-	Annotation(QName qName, String literal) {
+	public Annotation(QName qName, String literal) {
 		value = NamedProperty(qName,literal);
 	}
 
-	Annotation(QName qName, URI literal) {
+	public Annotation(QName qName, URI literal) {
 		value = NamedProperty(qName,literal);
+	}
+	
+	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
+		List<NamedProperty<QName>> list = new ArrayList<>();
+		for(Annotation a : annotations)
+		{
+			list.add(a.getValue());
+		}
+		value = NamedProperty(qName, NestedDocument(nestedQName, nestedURI, NamedProperties(list)));
 	}
 	
 	Annotation(NamedProperty<QName> value) {
@@ -38,19 +52,23 @@ public class Annotation {
 		this.setValue(annotation.getValue());
 	}
 	
-
+	// TODO: need a method to extract Annotation value
+	public QName getQName() {
+		return value.getName();
+	}
+	
 	/**
 	 * Returns the value of this Annotation object.
 	 * @return the value of this Annotation object.
 	 */
-	public NamedProperty<QName> getValue() {
+	NamedProperty<QName> getValue() {
 		return value;
 	}
 
 	/**
 	 * Sets the value of this Annotation object to the specified argument.
 	 */
-	public void setValue(NamedProperty<QName> value) {
+	void setValue(NamedProperty<QName> value) {
 		this.value = value;
 	}
 
