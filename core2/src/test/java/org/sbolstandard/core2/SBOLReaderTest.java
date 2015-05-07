@@ -33,7 +33,7 @@ public class SBOLReaderTest extends SBOLAbstractTests
 		try
 		{
 			SBOLDocument actual;
-			SBOLReader.setURIPrefix("www.async.ece.utah.edu");
+			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 
 			if(fileType.equals("rdf"))
 				actual = SBOLReader.readRDF(resourceAsStream);
@@ -51,4 +51,5 @@ public class SBOLReaderTest extends SBOLAbstractTests
 			throw new AssertionError("Failed for " + fileName, e);
 		}
 	}
+
 }

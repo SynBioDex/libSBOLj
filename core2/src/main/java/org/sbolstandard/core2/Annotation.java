@@ -1,12 +1,18 @@
 package org.sbolstandard.core2;
 
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperties;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NestedDocument;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import uk.ac.ncl.intbio.core.datatree.Literal;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
+import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 
 /**
  * @author Zhen Zhang
@@ -22,12 +28,21 @@ public class Annotation {
 
 	private NamedProperty<QName> value;
 
-	Annotation(QName qName, String literal) {
+	public Annotation(QName qName, String literal) {
 		value = NamedProperty(qName,literal);
 	}
 
-	Annotation(QName qName, URI literal) {
+	public Annotation(QName qName, URI literal) {
 		value = NamedProperty(qName,literal);
+	}
+	
+	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
+		List<NamedProperty<QName>> list = new ArrayList<>();
+		for(Annotation a : annotations)
+		{
+			list.add(a.getValue());
+		}
+		value = NamedProperty(qName, NestedDocument(nestedQName, nestedURI, NamedProperties(list)));
 	}
 	
 	Annotation(NamedProperty<QName> value) {
@@ -38,19 +53,63 @@ public class Annotation {
 		this.setValue(annotation.getValue());
 	}
 	
-
+	public QName getQName() {
+		return value.getName();
+	}
+	
+	public String getStringValue() {
+		if (value.getValue() instanceof Literal<?>) {
+			return ((Literal<QName>) value.getValue()).getValue().toString();
+		}
+		return null;
+	}
+	
+	
+	public URI getURIValue() {
+		if (value.getValue() instanceof Literal<?>) {
+			return URI.create(((Literal<QName>) value.getValue()).getValue().toString());
+		}
+		return null;
+	}
+	
+	public QName getNestedQName() {
+		if (value.getValue() instanceof NestedDocument<?>) {
+			return ((NestedDocument<QName>) value.getValue()).getType();
+		}		
+		return null;
+	}
+	
+	
+	public URI getNestedIdentity() {
+		if (value.getValue() instanceof NestedDocument<?>) {
+			return ((NestedDocument<QName>) value.getValue()).getIdentity();
+		}		
+		return null;
+	}
+	
+	public List<Annotation> getAnnotations() {
+		if (value.getValue() instanceof NestedDocument<?>) {
+			List<Annotation> annotations = new ArrayList<>();
+			for (NamedProperty<QName> namedProperty : ((NestedDocument<QName>) value.getValue()).getProperties()) {
+				annotations.add(new Annotation(namedProperty));
+			}
+			return annotations;
+		}
+		return null;
+	}
+	
 	/**
 	 * Returns the value of this Annotation object.
 	 * @return the value of this Annotation object.
 	 */
-	public NamedProperty<QName> getValue() {
+	NamedProperty<QName> getValue() {
 		return value;
 	}
 
 	/**
 	 * Sets the value of this Annotation object to the specified argument.
 	 */
-	public void setValue(NamedProperty<QName> value) {
+	void setValue(NamedProperty<QName> value) {
 		this.value = value;
 	}
 
