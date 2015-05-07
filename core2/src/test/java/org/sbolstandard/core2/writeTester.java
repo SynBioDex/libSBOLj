@@ -599,7 +599,8 @@ public class writeTester {
 		as.add(a);
 		a = new Annotation(new QName("urn:bbn.com:tasbe:grn", "Activator", "grn"),"species2");
 		as.add(a);
-		a = toplevel.createAnnotation(new QName("theReaction"), new QName("TheReaction"), 
+		a = toplevel.createAnnotation(new QName("urn:bbn.com:tasbe:grn", "theReaction", "grn"), 
+				new QName("urn:bbn.com:tasbe:grn","TheReaction","grn"), 
 				URI.create("http://www.async.ece.utah.edu/myAnnotation"), as);
 		/*
 		as = a.getAnnotations();
