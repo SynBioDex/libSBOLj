@@ -62,7 +62,7 @@ public class Interaction extends Documented {
 	
 	/**
 	 * Removes the specified element from the set <code>type</code> if it is present.
-	 * @return <code>true<code> if this set contained the specified element
+	 * @return <code>true</code> if this set contained the specified element
 	 */
 	public boolean removeType(URI typeURI) {
 		if (types.size()==1 && types.contains(typeURI)) {

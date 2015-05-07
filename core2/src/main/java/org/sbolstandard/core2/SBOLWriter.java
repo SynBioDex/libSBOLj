@@ -360,7 +360,7 @@ public class SBOLWriter {
 		if(t.getWasDerivedFrom() != null)
 			list.add(NamedProperty(Sbol2Terms.Identified.wasDerivedFrom, t.getWasDerivedFrom()));
 
-		if(t.isSetAnnotations())
+		if(t.hasAnnotations())
 		{
 			for(Annotation annotation : t.getAnnotations())
 			{

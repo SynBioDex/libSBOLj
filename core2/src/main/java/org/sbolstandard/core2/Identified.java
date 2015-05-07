@@ -50,7 +50,7 @@ public abstract class Identified {
 	 */
 	protected Identified(Identified identified) {
 		this.setIdentity(identified.getIdentity());
-		if (identified.isSetAnnotations()) {
+		if (identified.hasAnnotations()) {
 			List<Annotation> clonedAnnotations = new ArrayList<>();
 			for (Annotation annotation : identified.getAnnotations()) {
 				clonedAnnotations.add(annotation.copy());
@@ -204,10 +204,10 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Test if optional field variable <code>annotations</code> is set.
+	 * Test if this instance has <code>annotations</code>.
 	 * @return <code>true</code> if it is not an empty list
 	 */
-	public boolean isSetAnnotations() {
+	public boolean hasAnnotations() {
 		return !annotations.isEmpty();
 	}
 	
@@ -238,8 +238,20 @@ public abstract class Identified {
 	 * then adds to the list of Annotation instances owned by this component.
 	 * @return the created Annotation instance.
 	 */
-	public Annotation createAnnotation(NamedProperty<QName> namedProperty) {
+	Annotation createAnnotation(NamedProperty<QName> namedProperty) {
 		Annotation annotation = new Annotation(namedProperty);
+		addAnnotation(annotation);
+		return annotation;
+	}
+	
+	
+	/**
+	 * Calls the Annotation constructor to create a new instance using the specified parameters,
+	 * then adds to the list of Annotation instances owned by this component.
+	 * @return the created Annotation instance.
+	 */
+	public Annotation createAnnotation(QName qName,QName nestedQName, URI nestedURI, List<Annotation> annotations) {
+		Annotation annotation = new Annotation(qName, nestedQName, nestedURI, annotations);
 		addAnnotation(annotation);
 		return annotation;
 	}
@@ -255,7 +267,7 @@ public abstract class Identified {
 	/**
 	 * Removes an annotation from the list of annotations for this object.
 	 * @param annotation to remove.
-	 * @return <code>True</code> if the matching instance is present.
+	 * @return <code>true</code> if the matching instance is present.
 	 */
 	public boolean removeAnnotation(Annotation annotation) {
 		return annotations.remove(annotation);
@@ -271,21 +283,18 @@ public abstract class Identified {
 	//	}
 
 	/**
-	 * Returns the list of structuralAnnotation instances owned by this instance.
-	 * @return the list of structuralAnnotation instances owned by this instance.
+	 * Returns the list of annotations owned by this instance.
+	 * @return the list of annotations owned by this instance.
 	 */
 	public List<Annotation> getAnnotations() {
+		// TODO: should likely copy the list rather than returning the list
 		return annotations;
 	}
 
 	/**
-	 * Removes all entries of the list of structuralAnnotation instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all annotations from this object.
 	 */
 	public void clearAnnotations() {
-		//		Object[] keySetArray = annotations.keySet().toArray();
-		//		for (Object key : keySetArray) {
-		//			removeAnnotation((URI) key);
-		//		}
 		annotations.clear();
 	}
 
@@ -299,22 +308,6 @@ public abstract class Identified {
 			addAnnotation(structuralAnnotation);
 		}
 	}
-
-	/**
-	 * Set optional field variable <code>annotations</code> to <code>null</code>.
-	 */
-	public void unsetAnnotations() {
-		annotations = null;
-	}
-
-	//	public void unsetMajorVersion() {
-	//		majorVersion = null;
-	//	}
-	//
-	//	public void unsetMinorVersion() {
-	//		minorVersion = null;
-	//	}
-
 
 	public void unsetWasDerivedFrom() {
 		wasDerivedFrom = null;

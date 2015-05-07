@@ -871,7 +871,7 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -957,7 +957,7 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1023,7 +1023,7 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1117,7 +1117,7 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1177,7 +1177,7 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1238,7 +1238,7 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1302,7 +1302,7 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1378,7 +1378,7 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1447,7 +1447,7 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1523,7 +1523,7 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1589,7 +1589,7 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1678,7 +1678,7 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1758,7 +1758,7 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1827,7 +1827,7 @@ public class SBOLReader
 			{
 				local = URI.create(((Literal<QName>) m.getValue()).getValue().toString());
 			}
-			else if (m.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (m.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) m.getValue()).getValue().toString());
 			}
@@ -1894,7 +1894,7 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) i.getValue()).getValue().toString();
 			}
-			else if (i.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (i.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) i.getValue()).getValue().toString());
 			}
@@ -1957,7 +1957,7 @@ public class SBOLReader
 			{
 				participant = URI.create(((Literal<QName>) p.getValue()).getValue().toString());
 			}
-			else if (p.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (p.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) p.getValue()).getValue().toString());
 			}
@@ -2041,7 +2041,7 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
-			else if (f.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (f.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) f.getValue()).getValue().toString());
 			}
@@ -2115,7 +2115,7 @@ public class SBOLReader
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(ProvTerms.Prov.wasDerivedFrom))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}

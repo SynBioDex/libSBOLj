@@ -171,8 +171,8 @@ public class writeTester {
 	{
 		SBOL2Doc_test.setDefaultURIprefix("http://www.async.ece.utah.edu");
 		SBOL2Doc_test.setComplete(true);
-		SBOL2Doc_test.addNamespaceBinding(URI.create("http://myannotation.org"), "annot");
-		SBOL2Doc_test.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		SBOL2Doc_test.addNamespace(URI.create("http://myannotation.org"), "annot");
+		SBOL2Doc_test.addNamespace(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 		Collection myParts = createCollection(SBOL2Doc_test,
 				getData("myParts", version),
 				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
@@ -593,8 +593,24 @@ public class writeTester {
 		String version 		   = topLevelData.get(1);
 
 		GenericTopLevel toplevel =  SBOL2Doc_test.createGenericTopLevel(displayId, version, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
-		SBOL2Doc_test.addNamespaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-
+		SBOL2Doc_test.addNamespace(URI.create("urn:bbn.com:tasbe:grn"), "grn");
+		List<Annotation> as = new ArrayList<>();
+		Annotation a = new Annotation(new QName("urn:bbn.com:tasbe:grn", "Repressor", "grn"),"species1");
+		as.add(a);
+		a = new Annotation(new QName("urn:bbn.com:tasbe:grn", "Activator", "grn"),"species2");
+		as.add(a);
+		a = toplevel.createAnnotation(new QName("urn:bbn.com:tasbe:grn", "theReaction", "grn"), 
+				new QName("urn:bbn.com:tasbe:grn","TheReaction","grn"), 
+				URI.create("http://www.async.ece.utah.edu/myAnnotation"), as);
+		/*
+		as = a.getAnnotations();
+		System.out.println(a.getQName());
+		System.out.println(a.getNestedQName());
+		System.out.println(a.getNestedIdentity());
+		for (Annotation an : as) {
+			System.out.println(an.getQName() + " = " + an.getStringValue());
+		}
+		*/
 		setCommonTopLevelData(toplevel, displayId, displayId);
 		return toplevel;
 	}
