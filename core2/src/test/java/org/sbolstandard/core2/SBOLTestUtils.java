@@ -37,17 +37,21 @@ public class SBOLTestUtils {
 			resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/" + fileName);
 
 		assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
-		SBOLDocument actual;
+		SBOLDocument actual = null;
 		SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 
-		if(fileType.equals("rdf"))
-			actual = SBOLReader.readRDF(resourceAsStream);
-		else if(fileType.equals("json"))
-			actual = SBOLReader.readJSON(resourceAsStream);
-		else if(fileType.equals("turtle"))
-			actual = SBOLReader.readTurtle(resourceAsStream);
-		else
-			actual = SBOLReader.read(resourceAsStream);
+		try {
+			if(fileType.equals("rdf"))
+				actual = SBOLReader.readRDF(resourceAsStream);
+			else if(fileType.equals("json"))
+				actual = SBOLReader.readJSON(resourceAsStream);
+			else if(fileType.equals("turtle"))
+				actual = SBOLReader.readTurtle(resourceAsStream);
+			else
+				actual = SBOLReader.read(resourceAsStream);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return actual;
 

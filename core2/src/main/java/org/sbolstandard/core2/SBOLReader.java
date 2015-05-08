@@ -5,6 +5,7 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
@@ -179,8 +180,9 @@ public class SBOLReader
 
 	/**
 	 * Takes in a given JSON InputStream and converts the file to an SBOLDocument
+	 * @throws Exception 
 	 */
-	public static SBOLDocument readJSON(InputStream in)
+	public static SBOLDocument readJSON(InputStream in) throws Exception
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
@@ -203,7 +205,7 @@ public class SBOLReader
 			readTopLevelDocs(SBOLDoc, document);
 
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
 			scanner.close();
 			e.printStackTrace();
@@ -250,8 +252,9 @@ public class SBOLReader
 
 	/**
 	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument
+	 * @throws Exception 
 	 */
-	public static SBOLDocument readRDF(InputStream in)
+	public static SBOLDocument readRDF(InputStream in) throws Exception
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
@@ -272,7 +275,7 @@ public class SBOLReader
 			}
 			readTopLevelDocs(SBOLDoc, document);
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
 			scanner.close();
 			e.printStackTrace();
@@ -283,8 +286,9 @@ public class SBOLReader
 
 	/**
 	 * Takes in a given Turtle InputStream and converts the file to an SBOLDocument
+	 * @throws Exception 
 	 */
-	public static SBOLDocument readTurtle(InputStream in)
+	public static SBOLDocument readTurtle(InputStream in) throws Exception
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
@@ -306,7 +310,7 @@ public class SBOLReader
 			}
 			readTopLevelDocs(SBOLDoc, document);
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
 			scanner.close();
 			e.printStackTrace();

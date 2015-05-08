@@ -10,14 +10,14 @@ public class SBOLDocumentTest {
 	String compDef1version = "1.3.2-beta";
 	String defaultURIprefix = "http://www.async.ece.utah.edu";
 
-	@Test
-	public void testCreateComponentDefinition() {
-		doc1.setDefaultURIprefix(defaultURIprefix);
-		ComponentDefinition compDef = doc1.createComponentDefinition(compDef1displayId, compDef1version, null);
-		System.out.println("foo");
-		assertNull(compDef);
-
-
-	}
+//	@Test
+//	public void testCreateComponentDefinition() {
+//		doc1.setDefaultURIprefix(defaultURIprefix);
+//		ComponentDefinition compDef = doc1.createComponentDefinition(compDef1displayId, compDef1version, null);
+//		System.out.println("foo");
+//		assertNull(compDef);
+//
+//
+//	}
 
 }
