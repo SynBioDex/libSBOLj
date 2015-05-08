@@ -179,7 +179,7 @@ public class writeTester {
 		Collection myParts2 = createCollection(SBOL2Doc_test,
 				getData("myParts", "2.0"),
 				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
-		SBOL2Doc_test.removeCollection(myParts2.getIdentity());
+		SBOL2Doc_test.removeCollection(myParts2);
 		//System.out.println(SBOL2Doc_test.getCollection(myParts.getPersistentIdentity()).getVersion());
 
 		myParts.addMember(get_LacI(SBOL2Doc_test).getIdentity());

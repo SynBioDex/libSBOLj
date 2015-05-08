@@ -522,8 +522,8 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
-		document.createCollection("myParts", VERSION_1_0);
-		document.removeCollection(URI.create("myParts")); //size of collection should be 0
+		Collection c = document.createCollection("myParts", VERSION_1_0);
+		document.removeCollection(c); //size of collection should be 0
 
 		for(int i = 1; i < 4; i++)
 		{
@@ -531,11 +531,7 @@ public abstract class SBOLAbstractTests {
 		}
 
 		document.clearCollections();
-		Collection myParts = document.createCollection("myParts", VERSION_1_0);
-		document.addCollection(myParts);
-		document.addCollection(myParts);
-
-
+		document.createCollection("myParts", VERSION_1_0);
 		runTest("test/data/CreateAndRemoveCollections.rdf", document, "rdf");
 	}
 
@@ -551,8 +547,8 @@ public abstract class SBOLAbstractTests {
 
 		Set<URI> types = new HashSet<URI>();
 		types.add((URI.create("someType")));
-		document.createComponentDefinition("someCompDef", VERSION_1_0, types);
-		document.removeComponentDefinition(URI.create("someCompDef"));
+		ComponentDefinition cd = document.createComponentDefinition("someCompDef", VERSION_1_0, types);
+		document.removeComponentDefinition(cd);
 
 		for(int i = 1; i < 4; i++)
 		{
@@ -561,12 +557,8 @@ public abstract class SBOLAbstractTests {
 		}
 
 		document.clearComponentDefinitions();
-		ComponentDefinition myParts = document.createComponentDefinition("someCompDef", VERSION_1_0, types);
-		document.addComponentDefinition(myParts);
-		document.addComponentDefinition(myParts);
-
-
-		runTest("test/data/CreateAndRemoveCollections.rdf", document, "rdf");
+		document.createComponentDefinition("someCompDef", VERSION_1_0, types);
+		runTest("test/data/CreateAndRemoveComponentDefinition.rdf", document, "rdf");
 	}
 
 	@Test
@@ -579,21 +571,18 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
-		document.createModuleDefinition("someModDef", VERSION_1_0);
-		document.removeModuleDefinition(URI.create("someModDef"));
+		ModuleDefinition md = document.createModuleDefinition("someModDef", VERSION_1_0);
+		document.removeModuleDefinition(md);
 
 		for(int i = 1; i < 4; i++)
 		{
 			document.createModuleDefinition("someModDef"+i, VERSION_1_0);
 		}
 
-		document.clearComponentDefinitions();
-		ModuleDefinition myParts = document.createModuleDefinition("someModDef", VERSION_1_0);
-		document.addModuleDefinition(myParts);
-		document.addModuleDefinition(myParts);
+		document.clearModuleDefinitions();
+		document.createModuleDefinition("someModDef", VERSION_1_0);
 
-
-		runTest("test/data/CreateAndRemoveCollections.rdf", document, "rdf");
+		runTest("test/data/CreateAndRemoveModuleDefinition.rdf", document, "rdf");
 	}
 
 	@Test
@@ -606,8 +595,8 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
-		document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
-		document.removeGenericTopLevel(URI.create("someGenTopLev"));
+		GenericTopLevel gen = document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+		document.removeGenericTopLevel(gen);
 
 		for(int i = 1; i < 4; i++)
 		{
@@ -615,11 +604,9 @@ public abstract class SBOLAbstractTests {
 		}
 
 		document.clearGenericTopLevels();
-		GenericTopLevel myParts = document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
-		document.addGenericTopLevel(myParts);
-		document.addGenericTopLevel(myParts);
+		document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
 
-		runTest("test/data/CreateAndRemoveCollections.rdf", document, "rdf");
+		runTest("test/data/CreateAndRemoveGenericTopLevel.rdf", document, "rdf");
 	}
 
 	@Test
@@ -632,8 +619,8 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
-		document.createSequence("someSequence", VERSION_1_0, "someSeq_element", URI.create("someSeq_encoding"));
-		document.removeSequence(URI.create("someSequence")); //size of sequence should be 0
+		Sequence s = document.createSequence("someSequence", VERSION_1_0, "someSeq_element", URI.create("someSeq_encoding"));
+		document.removeSequence(s); //size of sequence should be 0
 
 
 		for(int i = 1; i < 4; i++)
@@ -643,11 +630,8 @@ public abstract class SBOLAbstractTests {
 
 		document.clearSequences(); //clear all sequence. Size = 0
 		//add the same object that was removed
-		Sequence myParts = document.createSequence("someSequence", VERSION_1_0, "someSeq_element", URI.create("someSeq_encoding"));
-		document.addSequence(myParts); //adding duplicate objects
-		document.addSequence(myParts);
-
-		runTest("test/data/CreateAndRemoveCollections.rdf", document, "rdf");
+		document.createSequence("someSequence", VERSION_1_0, "someSeq_element", URI.create("someSeq_encoding"));
+		runTest("test/data/CreateAndRemoveModel.rdf", document, "rdf");
 	}
 
 	@Test

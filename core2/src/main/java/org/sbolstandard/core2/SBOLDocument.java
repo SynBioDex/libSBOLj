@@ -84,8 +84,8 @@ public class SBOLDocument {
 	 * Removes the object matching the specified URI from the list of modules if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
-	public ModuleDefinition removeModuleDefinition(URI moduleDefinitionURI) {
-		return (ModuleDefinition)removeTopLevel(moduleDefinitionURI,moduleDefinitions);
+	public void removeModuleDefinition(ModuleDefinition moduleDefinition) {
+		removeTopLevel(moduleDefinition,moduleDefinitions);
 	}
 
 	/**
@@ -111,9 +111,9 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearModuleDefinitions() {
-		Object[] keySetArray = moduleDefinitions.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeModuleDefinition((URI) key);
+		Object[] valueSetArray = moduleDefinitions.values().toArray();
+		for (Object moduleDefinition : valueSetArray) {
+			removeModuleDefinition((ModuleDefinition)moduleDefinition);
 		}
 	}
 
@@ -164,8 +164,8 @@ public class SBOLDocument {
 	 * Removes the object matching the specified URI from the list of collections if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
-	public Collection removeCollection(URI collectionURI) {
-		return (Collection)removeTopLevel(collectionURI,collections);
+	public void removeCollection(Collection collection) {
+		removeTopLevel(collection,collections);
 	}
 
 	/**
@@ -190,9 +190,9 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearCollections() {
-		Object[] keySetArray = collections.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeCollection((URI) key);
+		Object[] valueSetArray = collections.values().toArray();
+		for (Object collection : valueSetArray) {
+			removeCollection((Collection)collection);
 		}
 	}
 
@@ -242,8 +242,8 @@ public class SBOLDocument {
 	 * Removes the object matching the specified URI from the list of models if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
-	public Model removeModel(URI modelURI) {
-		return (Model)removeTopLevel(modelURI,models);
+	public void removeModel(Model model) {
+		removeTopLevel(model,models);
 	}
 
 	/**
@@ -269,9 +269,9 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearModels() {
-		Object[] keySetArray = models.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeModel((URI) key);
+		Object[] valueSetArray = models.values().toArray();
+		for (Object model : valueSetArray) {
+			removeModel((Model)model);
 		}
 	}
 
@@ -322,8 +322,8 @@ public class SBOLDocument {
 	 * Removes the object matching the specified URI from the list of component definitions if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
-	public ComponentDefinition removeComponentDefinition(URI componentDefinitionURI) {
-		return (ComponentDefinition)removeTopLevel(componentDefinitionURI,componentDefinitions);
+	public void removeComponentDefinition(ComponentDefinition componentDefinition) {
+		removeTopLevel(componentDefinition,componentDefinitions);
 	}
 
 	/**
@@ -349,9 +349,9 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearComponentDefinitions() {
-		Object[] keySetArray = componentDefinitions.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeComponentDefinition((URI) key);
+		Object[] valueSetArray = componentDefinitions.values().toArray();
+		for (Object componentDefinition : valueSetArray) {
+			removeComponentDefinition((ComponentDefinition)componentDefinition);
 		}
 	}
 
@@ -573,8 +573,8 @@ public class SBOLDocument {
 	 * Removes the object matching the specified URI from the list of structures if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
-	public Sequence removeSequence(URI sequenceURI) {
-		return (Sequence)removeTopLevel(sequenceURI,sequences);
+	public void removeSequence(Sequence sequence) {
+		removeTopLevel(sequence,sequences);
 	}
 
 	/**
@@ -600,9 +600,9 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearSequences() {
-		Object[] keySetArray = sequences.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeSequence((URI) key);
+		Object[] valueSetArray = sequences.values().toArray();
+		for (Object sequence : valueSetArray) {
+			removeSequence((Sequence)sequence);
 		}
 	}
 
@@ -651,8 +651,8 @@ public class SBOLDocument {
 	 * Removes the object matching the specified URI from the list of topLevels if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
-	public GenericTopLevel removeGenericTopLevel(URI topLevelURI) {
-		return (GenericTopLevel)removeTopLevel(topLevelURI,genericTopLevels);
+	public void removeGenericTopLevel(GenericTopLevel topLevel) {
+		removeTopLevel(topLevel,genericTopLevels);
 	}
 
 	/**
@@ -678,9 +678,9 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearGenericTopLevels() {
-		Object[] keySetArray = genericTopLevels.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeGenericTopLevel((URI) key);
+		Object[] valueSetArray = genericTopLevels.values().toArray();
+		for (Object genericTopLevel : valueSetArray) {
+			removeGenericTopLevel((GenericTopLevel)genericTopLevel);
 		}
 	}
 
@@ -926,9 +926,8 @@ public class SBOLDocument {
 		newTopLevel.setSBOLDocument(this);
 	}
 	
-	private final <TL extends TopLevel> TopLevel removeTopLevel(URI topLevelURI, Map<URI, TL> instancesMap) {
+	private final <TL extends TopLevel> void removeTopLevel(TopLevel topLevel, Map<URI, TL> instancesMap) {
 		Set<TopLevel> setToRemove = new HashSet<>();
-		TopLevel topLevel = getTopLevel(topLevelURI);
 		setToRemove.add(topLevel);
 		instancesMap.values().removeAll(setToRemove);
 		URI latestVersion = null;
@@ -944,7 +943,6 @@ public class SBOLDocument {
 		if (latestVersion != null) {
 			instancesMap.put(topLevel.getPersistentIdentity(),instancesMap.get(latestVersion));
 		}
-		return topLevel;
 	}
 
 	
