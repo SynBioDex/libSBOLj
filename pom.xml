@@ -84,7 +84,7 @@
                             <manifest>
                                 <addClasspath>true</addClasspath>
                                 <classpathPrefix>lib/</classpathPrefix>
-                                <mainClass>org.sbolstandard.core.cli.SBOLValidate</mainClass>
+                                <mainClass>org.sbolstandard.core2.SBOLValidate</mainClass>
                             </manifest>
                         </archive>
                     </configuration>
