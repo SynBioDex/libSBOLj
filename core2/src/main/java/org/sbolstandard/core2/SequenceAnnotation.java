@@ -107,22 +107,22 @@ public class SequenceAnnotation extends Documented {
 		}
 	}
 	
-	void removeRange(URI rangeURI) {
+	void removeRange(Range range) {
 		if (location instanceof MultiRange) {
 			try {
-				((MultiRange)location).removeRange(rangeURI);
+				((MultiRange)location).removeRange(range);
 			} catch (Exception e) {
 				Set<Range> ranges = ((MultiRange)location).getRanges();
 				if (ranges.size()!=2) {
 					throw new IllegalArgumentException("Sequence annotation " + this.getIdentity() + 
 							" is required to have a location.");
 				}
-				for (Range range : ranges) {
-					if (range.getIdentity().equals(rangeURI)) continue;
+				for (Range otherRange : ranges) {
+					if (otherRange.getIdentity().equals(range)) continue;
 					location = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(), 
-							"range", this.getVersion()),range.getStart(),range.getEnd());
-					if (range.isSetOrientation()) {
-						((Range)location).setOrientation(range.getOrientation());
+							"range", this.getVersion()),otherRange.getStart(),otherRange.getEnd());
+					if (otherRange.isSetOrientation()) {
+						((Range)location).setOrientation(otherRange.getOrientation());
 					}
 				}
 			}

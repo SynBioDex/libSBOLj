@@ -187,8 +187,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Removes the instance matching the specified URI from the list of subModules if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Module removeModule(URI moduleURI) {
-		return (Module)removeChildSafely(moduleURI,modules);
+	public boolean removeModule(Module module) {
+		return removeChildSafely(module,modules);
 	}
 	
 	/**
@@ -208,12 +208,12 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Removes all entries of the list of subModule instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of modules owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearModules() {
-		Object[] keySetArray = modules.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeModule((URI) key);
+		Object[] valueSetArray = modules.values().toArray();
+		for (Object module : valueSetArray) {
+			removeModule((Module)module);
 		}
 	}
 		
@@ -275,8 +275,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Removes the instance matching the specified URI from the list of interactions if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Interaction removeInteraction(URI interactionURI) {
-		return (Interaction)removeChildSafely(interactionURI,interactions);
+	public boolean removeInteraction(Interaction interaction) {
+		return removeChildSafely(interaction,interactions);
 	}
 	
 	/**
@@ -296,12 +296,12 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Removes all entries of the list of interaction instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of interactions owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearInteractions() {
-		Object[] keySetArray = interactions.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeInteraction((URI) key);
+		Object[] valueSetArray = interactions.values().toArray();
+		for (Object interaction : valueSetArray) {
+			removeInteraction((Interaction)interaction);
 		}
 	}
 		
@@ -377,8 +377,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Removes the instance matching the specified URI from the list of functionalInstantiations if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public FunctionalComponent removeFunctionalComponent(URI functionalComponentURI) {
-		return (FunctionalComponent)removeChildSafely(functionalComponentURI,functionalComponents);
+	public boolean removeFunctionalComponent(FunctionalComponent functionalComponent) {
+		return removeChildSafely(functionalComponent,functionalComponents);
 	}
 	
 	/**
@@ -398,12 +398,12 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Removes all entries of the list of functionalInstantiation instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of functional components owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearComponents() {
-		Object[] keySetArray = functionalComponents.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeFunctionalComponent((URI) key);
+	public void clearFunctionalComponents() {
+		Object[] valueSetArray = functionalComponents.values().toArray();
+		for (Object functionalComponent : valueSetArray) {
+			removeFunctionalComponent((FunctionalComponent)functionalComponent);
 		}
 	}
 		
@@ -412,7 +412,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	void setFunctionalComponents(
 			List<FunctionalComponent> components) {
-		clearComponents();	
+		clearFunctionalComponents();	
 		if (components==null) return;
 		for (FunctionalComponent component : components) {
 			addFunctionalComponent(component);

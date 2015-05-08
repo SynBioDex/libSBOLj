@@ -167,8 +167,8 @@ public class Interaction extends Documented {
 	 * Removes the instance matching the specified URI from the list of participations if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Participation removeParticipation(URI participationURI) {
-		return (Participation)removeChildSafely(participationURI,participations);
+	public boolean removeParticipation(Participation participation) {
+		return removeChildSafely(participation,participations);
 	}
 	
 	/**
@@ -188,13 +188,14 @@ public class Interaction extends Documented {
 	}
 	
 	/**
-	 * Removes all entries of the list of participation instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of participations owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearParticipations() {
-		Object[] keySetArray = participations.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeParticipation((URI) key);
+		Object[] valueSetArray = participations.values().toArray();
+		for (Object participation : valueSetArray) {
+			removeParticipation((Participation)participation);
 		}
+
 	}
 		
 	/**

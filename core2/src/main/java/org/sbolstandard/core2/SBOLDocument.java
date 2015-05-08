@@ -81,11 +81,12 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes the object matching the specified URI from the list of modules if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Removes a module definition from the list of module definitions, if present.
+	 * @param moduleDefinition object to remove.
+	 * @return true if the moduleDefinition is present and removed.
 	 */
-	public void removeModuleDefinition(ModuleDefinition moduleDefinition) {
-		removeTopLevel(moduleDefinition,moduleDefinitions);
+	public boolean removeModuleDefinition(ModuleDefinition moduleDefinition) {
+		return removeTopLevel(moduleDefinition,moduleDefinitions);
 	}
 
 	/**
@@ -161,11 +162,12 @@ public class SBOLDocument {
 
 
 	/**
-	 * Removes the object matching the specified URI from the list of collections if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Removes a collection from the list of collections, if present.
+	 * @param collection object to remove.
+	 * @return true if the collection is present and removed.
 	 */
-	public void removeCollection(Collection collection) {
-		removeTopLevel(collection,collections);
+	public boolean removeCollection(Collection collection) {
+		return removeTopLevel(collection,collections);
 	}
 
 	/**
@@ -239,11 +241,12 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes the object matching the specified URI from the list of models if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Removes a model from the list of models, if present.
+	 * @param model object to remove.
+	 * @return true if the model is present and removed.
 	 */
-	public void removeModel(Model model) {
-		removeTopLevel(model,models);
+	public boolean removeModel(Model model) {
+		return removeTopLevel(model,models);
 	}
 
 	/**
@@ -319,11 +322,12 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes the object matching the specified URI from the list of component definitions if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Removes a component definition from the list of component definitions, if present.
+	 * @param componentDefinition object to remove.
+	 * @return true if the componentDefinition is present and removed.
 	 */
-	public void removeComponentDefinition(ComponentDefinition componentDefinition) {
-		removeTopLevel(componentDefinition,componentDefinitions);
+	public boolean removeComponentDefinition(ComponentDefinition componentDefinition) {
+		return removeTopLevel(componentDefinition,componentDefinitions);
 	}
 
 	/**
@@ -570,11 +574,12 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes the object matching the specified URI from the list of structures if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Removes a sequence from the list of sequences, if present.
+	 * @param sequence object to remove.
+	 * @return true if the sequence is present and removed.
 	 */
-	public void removeSequence(Sequence sequence) {
-		removeTopLevel(sequence,sequences);
+	public boolean removeSequence(Sequence sequence) {
+		return removeTopLevel(sequence,sequences);
 	}
 
 	/**
@@ -648,11 +653,12 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes the object matching the specified URI from the list of topLevels if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Removes a generic top level from the list of generic top levels, if present.
+	 * @param genericTopLevel object to remove.
+	 * @return true if the genericTopLevel is present and removed.
 	 */
-	public void removeGenericTopLevel(GenericTopLevel topLevel) {
-		removeTopLevel(topLevel,genericTopLevels);
+	public boolean removeGenericTopLevel(GenericTopLevel genericTopLevel) {
+		return removeTopLevel(genericTopLevel,genericTopLevels);
 	}
 
 	/**
@@ -926,10 +932,10 @@ public class SBOLDocument {
 		newTopLevel.setSBOLDocument(this);
 	}
 	
-	private final <TL extends TopLevel> void removeTopLevel(TopLevel topLevel, Map<URI, TL> instancesMap) {
+	private final <TL extends TopLevel> boolean removeTopLevel(TopLevel topLevel, Map<URI, TL> instancesMap) {
 		Set<TopLevel> setToRemove = new HashSet<>();
 		setToRemove.add(topLevel);
-		instancesMap.values().removeAll(setToRemove);
+		boolean changed = instancesMap.values().removeAll(setToRemove);
 		URI latestVersion = null;
 		for (TL tl : instancesMap.values()) {
 			if (topLevel.getPersistentIdentity().toString().equals(tl.getPersistentIdentity().toString())) {
@@ -943,6 +949,7 @@ public class SBOLDocument {
 		if (latestVersion != null) {
 			instancesMap.put(topLevel.getPersistentIdentity(),instancesMap.get(latestVersion));
 		}
+		return changed;
 	}
 
 	

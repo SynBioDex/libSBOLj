@@ -418,12 +418,10 @@ public abstract class Identified {
 
 	}
 	
-	protected final <I extends Identified> Identified removeChildSafely(URI childURI, Map<URI, I> siblingsMap) {
+	protected final <I extends Identified> boolean removeChildSafely(Identified identified, Map<URI, I> siblingsMap) {
 		Set<Identified> objectsToRemove = new HashSet<>();
-		Identified identified = siblingsMap.get(childURI);
 		objectsToRemove.add(identified);
-		siblingsMap.values().removeAll(objectsToRemove);
-		return identified;
+		return siblingsMap.values().removeAll(objectsToRemove);
 	}
 
 	//	/**

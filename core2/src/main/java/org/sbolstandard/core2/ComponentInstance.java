@@ -214,8 +214,8 @@ public abstract class ComponentInstance extends Documented {
 	 * Removes the instance matching the specified URI from the list of references if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo removeMapsTo(URI mapsToURI) {
-		return (MapsTo)removeChildSafely(mapsToURI,mapsTos);
+	public boolean removeMapsTo(MapsTo mapsTo) {
+		return removeChildSafely(mapsTo,mapsTos);
 	}
 	
 	/**
@@ -235,12 +235,12 @@ public abstract class ComponentInstance extends Documented {
 	}
 	
 	/**
-	 * Removes all entries of the list of reference instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of mapsTo owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearMapsTos() {
-		Object[] keySetArray = mapsTos.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeMapsTo((URI) key);
+		Object[] valueSetArray = mapsTos.values().toArray();
+		for (Object mapsTo : valueSetArray) {
+			removeMapsTo((MapsTo)mapsTo);
 		}
 	}
 		

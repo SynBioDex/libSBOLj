@@ -77,11 +77,11 @@ public class MultiRange extends Location{
 	/**
 	 * Removes the instance matching the specified URI from the list of structuralAnnotations if present.
 	 */
-	public Range removeRange(URI rangeURI) {
+	public boolean removeRange(Range range) {
 		if (ranges.size()<5) {
 			throw new IllegalArgumentException("MultiRange is required to have at least two ranges.");
 		}
-		return (Range)removeChildSafely(rangeURI,ranges);
+		return removeChildSafely(range,ranges);
 	}
 	
 	/**
@@ -103,12 +103,12 @@ public class MultiRange extends Location{
 	}
 	
 	/**
-	 * Removes all entries of the list of structuralAnnotation instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of ranges owned by this instance. The list will be empty after this call returns.
 	 */
 	void clearRanges() {
-		Object[] keySetArray = ranges.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeRange((URI) key);
+		Object[] valueSetArray = ranges.values().toArray();
+		for (Object range : valueSetArray) {
+			removeRange((Range)range);
 		}
 	}
 		

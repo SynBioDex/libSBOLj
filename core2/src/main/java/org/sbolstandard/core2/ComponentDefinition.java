@@ -344,11 +344,12 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Removes the instance matching the specified URI from the list of structuralAnnotations if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * Removes the sequence annotation from the list of sequence annotations, if present.
+	 * @param sequenceAnnotation object to be removed.
+	 * @return true if the sequenceAnnotation is present and removed.
 	 */
-	public SequenceAnnotation removeSequenceAnnotation(URI sequenceAnnotationURI) {
-		return (SequenceAnnotation)removeChildSafely(sequenceAnnotationURI,sequenceAnnotations);
+	public boolean removeSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
+		return removeChildSafely(sequenceAnnotation,sequenceAnnotations);
 	}
 	
 	/**
@@ -371,12 +372,12 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Removes all entries of the list of structuralAnnotation instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of sequence annotations owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearSequenceAnnotations() {
-		Object[] keySetArray = sequenceAnnotations.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeSequenceAnnotation((URI) key);
+		Object[] valueSetArray = sequenceAnnotations.values().toArray();
+		for (Object sequenceAnnotation : valueSetArray) {
+			removeSequenceAnnotation((SequenceAnnotation)sequenceAnnotation);
 		}
 	}
 		
@@ -446,11 +447,12 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Removes the instance matching the specified URI from the list of structuralInstantiations if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * Removes the component from the list of components, if present.
+	 * @param component object to be removed.
+	 * @return true if the component is present and removed.
 	 */
-	public Component removeComponent(URI componentURI) {
-		return (Component)removeChildSafely(componentURI,components);
+	public boolean removeComponent(Component component) {
+		return removeChildSafely(component,components);
 	}
 	
 	/**
@@ -472,12 +474,12 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Removes all entries of the list of structuralInstantiation instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of components owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearComponents() {
-		Object[] keySetArray = components.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeComponent((URI) key);			
+		Object[] valueSetArray = components.values().toArray();
+		for (Object component : valueSetArray) {
+			removeComponent((Component)component);
 		}
 	}
 		
@@ -555,11 +557,12 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Removes the instance matching the specified URI from the list of structuralConstraints if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * Removes the sequence constraint from the list of sequence constraints, if present.
+	 * @param sequenceConstraint object to be removed.
+	 * @return true if the sequenceConstraint is present and removed.
 	 */
-	public SequenceConstraint removeSequenceConstraint(URI sequenceConstraintURI) {
-		return (SequenceConstraint)removeChildSafely(sequenceConstraintURI,sequenceConstraints);
+	public boolean removeSequenceConstraint(SequenceConstraint sequenceConstraint) {
+		return removeChildSafely(sequenceConstraint,sequenceConstraints);
 	}
 	
 	/**
@@ -581,12 +584,12 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Removes all entries of the list of structuralConstraint instances owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of the list of sequence constraints owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearSequenceConstraints() {
-		Object[] keySetArray = sequenceConstraints.keySet().toArray();
-		for (Object key : keySetArray) {
-			removeSequenceConstraint((URI) key);
+		Object[] valueSetArray = sequenceConstraints.values().toArray();
+		for (Object sequenceConstraint : valueSetArray) {
+			removeSequenceConstraint((SequenceConstraint)sequenceConstraint);
 		}
 	}
 		
