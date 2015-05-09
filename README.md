@@ -15,7 +15,7 @@ correctness of SBOL models.
 
     mvn package
 
-This will create the libSBOLj JAR file (libSBOLj-core-1.0.0-SNAPSHOT.jar) and place it into the core/target subdirectory. [link](http://maven.apache.org/guides/getting-started/index.html)
+This will create the libSBOLj JAR file (libSBOLj-core-2.0.0-SNAPSHOT.jar) and place it into the core/target subdirectory. [link](http://maven.apache.org/guides/getting-started/index.html)
 
 ## Using libSBOLj
 
@@ -23,55 +23,19 @@ This will create the libSBOLj JAR file (libSBOLj-core-1.0.0-SNAPSHOT.jar) and pl
 ### libSBOLj command line
 
 libSBOLj comes with a command-line interface (CLI) that can be used to validate SBOL files. After you build the 
-libSBOLj-core-1.0.0-SNAPSHOT.jar as described above, you can use it to validate files as follows after changing to the core/target subdirectory:
+libSBOLj-core-2.0.0-SNAPSHOT.jar as described above, you can use it to validate files as follows after changing to the core/target subdirectory:
 
     cd core/target/
-    java -jar libSBOLj-core-1.0.0-SNAPSHOT.jar test-classes/test/data/BBa_I0462.xml
+    java -jar libSBOLj-core-2.0.0-SNAPSHOT.jar <inputFile>
     
-If validation is successful, the program will print the contents of the SBOL document. Use --quiet option if you want to
-suppress this output. 
+If validation is successful, the program will print the contents of the SBOL document. You can also output the result to a file. 
 
-    java -jar libSBOLj-core-1.0.0-SNAPSHOT.jar --quiet test-classes/test/data/BBa_I0462.xml
+    java -jar libSBOLj-core-1.0.0-SNAPSHOT.jar <inputFile> -o <outputFile>
 
-If validation fails with an error, there will be a message printed about the validation error. To see an example, try
-the following command: 
+If validation fails with an error, there will be a message printed about the validation error.  In addition to checking all required validation rules, it will also check if the URIs are compliant and whether the SBOL document is complete (i.e., all referenced objects are contained within the file).  These validation checks can be turned off with the -n and -i flags, respectively.
+
+If the input file is an SBOL 1.1 file, then it will convert the file into an SBOL 2.0 file.  This conversion should be provided a default URI prefix.
+
+    java -jar libSBOLj-core-1.0.0-SNAPSHOT.jar <inputFile> -o <outputFile> -p <URIprefix>
     
-    java -jar libSBOLj-core-1.0.0-SNAPSHOT.jar test-classes/test/data/invalid01_missing_displayId.xml
     
-## Serialization in libSBOLj
-
-libSBOLj provides support for reading and writing libSBOLj documents in XML syntax. The structure of the documents is defined in two XML schema (XSD) files that can be found in the [core/src/main/resources](https://github.com/SynBioDex/libSBOLj/tree/master/core/src/main/resources) directory.
-
-A very simple SBOL document looks like this in XML:
-    
-    <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-    <rdf:RDF xmlns="http://sbols.org/v1#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-        <DnaComponent rdf:about="http://example.com/MyDnaComponent">
-            <displayId>MyDnaComponent</displayId>
-            <name>myDNA</name>
-            <description>This is a very simple example</description>
-        </DnaComponent>
-    </rdf:RDF>
-    
-More complete examples can be found in [examples/data](https://github.com/SynBioDex/libSBOLj/tree/master/examples/data)
-directory.     
-
-Note that, the XML serialization of SBOL documents have been designed to be compatible with 
-[Resource Description Format (RDF)](http://www.w3.org/RDF/). Any valid SBOL XML file can be parsed by a standard RDF
-tool that supports [RDF/XML syntax](http://www.w3.org/TR/REC-rdf-syntax/). But different RDF serializations will not be
-valid if they do not match the constraints defined in the SBOL XML schema and cannot be read by libSBOLj. 
-        
-libSBOLj provides also a more readable, human-friendly output format that aligns more closely with the SBOL object 
-model defined in the specification. The above example would look as follows in this syntax:
-     
-    SBOLDocument [
-       DnaComponent [
-          uri: http://example.com/MyDnaComponent
-          displayId: MyDnaComponent
-          description: This is a very simple example
-       ]
-    ]  
-    
-This format is only intended for presentation purposes and not to exchange libSBOLj structures and the library does not 
-provide any means to read this syntax.    
-
