@@ -746,5 +746,19 @@ public class ModuleDefinition extends TopLevel {
 		// All descendants of this ComponentDefinition object have compliant URIs.
 		return allDescendantsCompliant;		
 	}
+		
+	protected boolean isComplete() {
+		if (sbolDocument==null) return false;
+		for (URI modelURI : models) {
+			if (sbolDocument.getModel(modelURI)==null) return false;
+		}
+		for (FunctionalComponent functionalComponent : getFunctionalComponents()) {
+			if (functionalComponent.getDefinition()==null) return false;
+		}
+		for (Module module : getModules()) {
+			if (module.getDefinition()==null) return false;
+		}
+		return true;
+	}
 	
 }

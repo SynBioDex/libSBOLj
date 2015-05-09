@@ -23,7 +23,10 @@ public class SequenceConstraint extends Identified {
 	private ComponentDefinition componentDefinition = null;
 	
 	public enum RestrictionType {
-		PRECEDES("precedes");
+		PRECEDES("precedes"),
+		SAME_ORIENTATION_AS("sameOrienationAs"),
+		OPPOSITE_ORIENTATION_AS("oppositeOrienationAs");
+		
 		private final String restrictionType;
 
 		RestrictionType(String restrictionType) {
@@ -51,10 +54,13 @@ public class SequenceConstraint extends Identified {
 		public static RestrictionType convertToRestrictionType(URI restriction) {
 			if (restriction.equals(Restriction.precedes)) {
 				return RestrictionType.PRECEDES;
-			}
+			} else if (restriction.equals(Restriction.sameOrientationAs)) {
+				return RestrictionType.SAME_ORIENTATION_AS;
+			} else if (restriction.equals(Restriction.oppositeOrientationAs)) {
+				return RestrictionType.OPPOSITE_ORIENTATION_AS;
+			} 
 			else {
-				// TODO: Validation?
-				return null;
+				throw new IllegalArgumentException("Not a valid restriction type.");
 			}
 		}
 		
@@ -66,9 +72,13 @@ public class SequenceConstraint extends Identified {
 			if (restriction != null) {
 				if (restriction.equals(RestrictionType.PRECEDES)) {
 					return Restriction.precedes;
-				}
+				} else if (restriction.equals(RestrictionType.SAME_ORIENTATION_AS)) {
+					return Restriction.sameOrientationAs;
+				} else if (restriction.equals(RestrictionType.OPPOSITE_ORIENTATION_AS)) {
+					return Restriction.oppositeOrientationAs;
+				} 
 				else {
-					return null;
+					throw new IllegalArgumentException("Not a valid restriction type.");
 				}
 			}
 			else {
@@ -106,23 +116,16 @@ public class SequenceConstraint extends Identified {
 	 * @return the URI corresponding to the type of restriction.
 	 */
 	URI getRestrictionURI() {
-		if (restriction != null) {
-			if (restriction.equals(RestrictionType.PRECEDES)) {
-				return Restriction.precedes;
-			}
-			else {
-				return null;
-			}
-		}
-		else {
-			return null;
-		}
+		return RestrictionType.convertToURI(restriction);
 	}
 
 	/**
 	 * Sets field variable <code>restriction</code> to the specified element.
 	 */
 	public void setRestriction(RestrictionType restriction) {
+		if (restriction==null) {
+			throw new NullPointerException("Not a valid restriction type.");
+		}
 		this.restriction = restriction;
 	}
 	
@@ -130,12 +133,7 @@ public class SequenceConstraint extends Identified {
 	 * Sets field variable <code>restriction</code> to the element corresponding to the specified URI.
 	 */
 	void setRestriction(URI restriction) {
-		if (restriction!=null && restriction.equals(Restriction.precedes)) {
-			this.restriction = RestrictionType.PRECEDES;
-		}
-		else {
-			throw new IllegalArgumentException("Not a valid restriction type.");
-		}
+		this.restriction = RestrictionType.convertToRestrictionType(restriction);
 	}
 
 	/**
@@ -206,6 +204,10 @@ public class SequenceConstraint extends Identified {
 	private static final class Restriction {
 		public static final URI precedes = URI.create(Sbol2Terms.sbol2
 				.getNamespaceURI() + "precedes");
+		public static final URI sameOrientationAs = URI.create(Sbol2Terms.sbol2
+				.getNamespaceURI() + "sameOrientationAs");
+		public static final URI oppositeOrientationAs = URI.create(Sbol2Terms.sbol2
+				.getNamespaceURI() + "oppositeOrientationAs");
 	}
 
 

@@ -184,6 +184,14 @@ public class Collection extends TopLevel{
 		return isURIcompliant(this.getIdentity(), 0);
 	}
 	
+	protected boolean isComplete() {
+		if (sbolDocument==null) return false;
+		for (URI member : members) {
+			if (sbolDocument.getTopLevel(member)==null) return false;
+		}
+		return true;
+	}
+	
 //	/**	
 //	 * @param URIprefix
 //	 * @param displayId

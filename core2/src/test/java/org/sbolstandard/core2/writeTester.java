@@ -72,7 +72,7 @@ public class writeTester {
 		try {
 			SBOLWriter.writeRDF(SBOL2Doc_test,(System.out));
 			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test);
-			SBOLWriter.writeRDF(SBOL2Doc_test,(System.out));
+			SBOLWriter.writeRDF(SBOL2Doc_test,"/Users/myers/Downloads/writeTest.rdf");//(System.out));
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		} catch (FactoryConfigurationError e) {
@@ -217,27 +217,27 @@ public class writeTester {
 	{
 		return createSequenceData(SBOL2Doc_test,
 				getData("pLacSeq",version,"pLacSeq_element"),
-				getPropertyURI("property"));
+				Sequence.IUPAC_DNA);
 	}
 
 	private static Sequence get_tetRSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
 				getData("tetRSeq",version,"tetRSeq_element"),
-				getPropertyURI("property"));
+				Sequence.IUPAC_DNA);
 	}
 
 	private static Sequence get_pLactetRSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
 				getData("pLactetRSeq",version,"pLactetRSeq_element"),
-				getPropertyURI("property"));
+				Sequence.IUPAC_DNA);
 	}
 
 	private static ComponentDefinition get_pLac (SBOLDocument SBOL2Doc_test)
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetPropertyURI("DNA"),
+				getSetURI(ComponentDefinition.DNA),
 				getSetPropertyURI("Promoter"),
 				getData("pLac",version),
 				"pLacSeq");
@@ -246,7 +246,7 @@ public class writeTester {
 	private static ComponentDefinition get_tetR (SBOLDocument SBOL2Doc_test)
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetPropertyURI("DNA"),
+				getSetURI(ComponentDefinition.DNA),
 				getSetPropertyURI("CDS"),
 				getData("tetRCDS",version),
 				"tetRSeq");
@@ -274,7 +274,7 @@ public class writeTester {
 	private static ComponentDefinition get_pLactetR (SBOLDocument SBOL2Doc_test)
 	{
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,
-				getSetPropertyURI("DNA"),
+				getSetURI(ComponentDefinition.DNA),
 				getSetPropertyURI("Gene"),
 				getData("pLactetR",version),
 				"pLactetRSeq");
@@ -287,7 +287,7 @@ public class writeTester {
 	private static ComponentDefinition get_LacI (SBOLDocument SBOL2Doc_test)
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetPropertyURI("Protein"),
+				getSetURI(ComponentDefinition.PROTEIN),
 				getSetPropertyURI("Transcriptionfactor"),
 				getData("LacI",version),
 				null);
@@ -296,7 +296,7 @@ public class writeTester {
 	private static ComponentDefinition get_TetR (SBOLDocument SBOL2Doc_test)
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetPropertyURI("Protein"),
+				getSetURI(ComponentDefinition.PROTEIN),
 				getSetPropertyURI("Transcriptionfactor"),
 				getData("TetR",version),
 				null);
@@ -382,27 +382,27 @@ public class writeTester {
 	{
 		return createSequenceData(SBOL2Doc_test,
 				getData("ptetSeq",version,"ptetSeq_element"),
-				getPropertyURI("encoding"));
+				Sequence.IUPAC_DNA);
 	}
 
 	private static Sequence get_lacISeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
 				getData("lacISeq",version,"lacISeq_element"),
-				getPropertyURI("encoding"));
+				Sequence.IUPAC_DNA);
 	}
 
 	private static Sequence get_ptetlacISeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
 				getData("ptetlacISeq",version,"ptetlacISeq_element"),
-				getPropertyURI("encoding"));
+				Sequence.IUPAC_DNA);
 	}
 
 	private static ComponentDefinition get_ptet(SBOLDocument SBOL2Doc_test)
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetPropertyURI("DNA"),
+				getSetURI(ComponentDefinition.DNA),
 				getSetPropertyURI("Promoter"),
 				getData("ptet",version),
 				"ptetSeq");
@@ -411,7 +411,7 @@ public class writeTester {
 	private static ComponentDefinition get_lacI (SBOLDocument SBOL2Doc_test)
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetPropertyURI("DNA"),
+				getSetURI(ComponentDefinition.DNA),
 				getSetPropertyURI("CDS"),
 				getData("lacICDS",version),
 				"lacISeq");
@@ -440,7 +440,7 @@ public class writeTester {
 	private static ComponentDefinition get_ptetlacI (SBOLDocument SBOL2Doc_test)
 	{
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,
-				getSetPropertyURI("DNA"),
+				getSetURI(ComponentDefinition.DNA),
 				getSetPropertyURI("Gene"),
 				getData("ptetlacI",version),
 				"ptetlacISeq");
@@ -908,6 +908,15 @@ public class writeTester {
 			list.add(getURI(append));
 		}
 		return list;
+	}
+	
+	private static Set<URI> getSetURI(URI ... appends)
+	{
+		Set<URI> set = new HashSet<URI>();
+		for (URI append : appends) {
+			set.add(append);
+		}
+		return set;
 	}
 
 	private static Set<URI> getSetPropertyURI(String ... appends)

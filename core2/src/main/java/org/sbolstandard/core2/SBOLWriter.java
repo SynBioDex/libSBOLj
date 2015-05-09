@@ -328,7 +328,7 @@ public class SBOLWriter {
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonTopLevelData(list, c);
-			if(!c.getMembers().isEmpty())//(c.isSetMembers())
+			if(!c.getMemberURIs().isEmpty())//(c.isSetMembers())
 			{
 				for (URI member : c.getMemberURIs())
 				{
@@ -401,7 +401,7 @@ public class SBOLWriter {
 			formatComponents(c.getComponents(),list);
 			formatSequenceAnnotations(c.getSequenceAnnotations(),list);
 			formatSequenceConstraints(c.getSequenceConstraints(),list);
-			if(c.getSequence() != null)
+			if(c.getSequenceURI() != null)
 				formatSequence(c.getSequenceURI(), list);
 
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ComponentDefinition.ComponentDefinition, c.getIdentity(), NamedProperties(list)));
@@ -517,7 +517,7 @@ public class SBOLWriter {
 
 			formatCommonDocumentedData(list, m);
 
-			if(m.getDefinition() != null)
+			if(m.getDefinitionURI() != null)
 				list.add(NamedProperty(Sbol2Terms.Module.hasDefinition, m.getDefinitionURI()));
 			if(!m.getMapsTos().isEmpty())
 			{
@@ -569,7 +569,7 @@ public class SBOLWriter {
 			if(p.getRoles() != null)
 				for(URI r : p.getRoles())
 					list.add(NamedProperty(Sbol2Terms.Participation.role, r));
-			if(p.getParticipant() != null)
+			if(p.getParticipantURI() != null)
 				list.add(NamedProperty(Sbol2Terms.Participation.hasParticipant, p.getParticipantURI()));
 
 			nestedDoc.add(NestedDocument(Sbol2Terms.Participation.Participation, p.getIdentity(), NamedProperties(list)));
@@ -594,7 +594,7 @@ public class SBOLWriter {
 			formatCommonDocumentedData(list, s);
 			if(s.getLocation() != null)
 				list.add(getLocation(s.getLocation()));
-			if(s.getComponent() != null)
+			if(s.getComponentURI() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceAnnotation.hasComponent, s.getComponentURI()));
 
 			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSequenceAnnotations,
@@ -614,9 +614,9 @@ public class SBOLWriter {
 
 			if(s.getRestriction() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.restriction, s.getRestrictionURI()));
-			if(s.getSubject() != null)
+			if(s.getSubjectURI() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.hasSubject, s.getSubjectURI()));
-			if(s.getObject() != null)
+			if(s.getObjectURI() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.hasObject, s.getObjectURI()));
 
 			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasSequenceConstraints,
@@ -745,9 +745,9 @@ public class SBOLWriter {
 			formatCommonIdentifiedData(list, m);
 			if(m.getRefinement() != null)
 				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinementURI()));
-			if(m.getRemote() != null)
+			if(m.getRemoteURI() != null)
 				list.add(NamedProperty(Sbol2Terms.MapsTo.hasRemote, m.getRemoteURI()));
-			if(m.getLocal() != null)
+			if(m.getLocalURI() != null)
 				list.add(NamedProperty(Sbol2Terms.MapsTo.hasLocal, m.getLocalURI()));
 
 			nestedDoc.add(NestedDocument(Sbol2Terms.MapsTo.MapsTo, m.getIdentity(), NamedProperties(list)));

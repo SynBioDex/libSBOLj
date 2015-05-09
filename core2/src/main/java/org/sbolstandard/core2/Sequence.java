@@ -19,6 +19,11 @@ public class Sequence extends TopLevel{
 	private String elements;
 	private URI encoding;
 	
+	public static final URI IUPAC_DNA = URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html");
+	public static final URI IUPAC_RNA = URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html");
+	public static final URI IUPAC_PROTEIN = URI.create("http://www.chem.qmul.ac.uk/iupac/AminoAcid/");
+	public static final URI SMILES = URI.create("http://www.opensmiles.org/opensmiles.html");
+	
 	Sequence(URI identity, String elements, URI encoding) {
 		super(identity);
 		setElements(elements);

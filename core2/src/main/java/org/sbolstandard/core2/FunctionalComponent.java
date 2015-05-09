@@ -140,7 +140,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 */
 	public void setDirection(DirectionType direction) {
 		if (direction==null) {
-			throw new NullPointerException("Direction must not be null.");
+			throw new NullPointerException("Not a valid direction type.");
 		}
 		this.direction = direction;
 	}

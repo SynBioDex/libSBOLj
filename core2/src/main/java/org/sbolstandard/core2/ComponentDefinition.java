@@ -30,6 +30,11 @@ public class ComponentDefinition extends TopLevel {
 	private HashMap<URI, SequenceAnnotation> sequenceAnnotations;
 	private HashMap<URI, SequenceConstraint> sequenceConstraints;
 	
+	public static final URI DNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
+	public static final URI RNA = URI.create("ttp://www.biopax.org/release/biopax-level3.owl#RnaRegion");
+	public static final URI PROTEIN = URI.create("http://www.biopax.org/release/biopax-level3.owl#Protein");
+	public static final URI SMALL_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#SmallMolecule");
+	
 	ComponentDefinition(URI identity, Set<URI> types) {
 		super(identity);
 		this.types = new HashSet<>();
@@ -691,6 +696,17 @@ public class ComponentDefinition extends TopLevel {
 		}
 		// All descendants of this ComponentDefinition object have compliant URIs.
 		return allDescendantsCompliant;		
+	}
+	
+	protected boolean isComplete() {
+		if (sbolDocument==null) return false;
+		if (sequence!=null) {
+			if (getSequence()==null) return false;
+		}
+		for (Component component : getComponents()) {
+			if (component.getDefinition()==null) return false;
+		}
+		return true;
 	}
 	
 	/**
