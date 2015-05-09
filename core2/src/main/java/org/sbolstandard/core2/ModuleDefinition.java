@@ -82,6 +82,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addRole(URI roleURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return roles.add(roleURI);
 	}
 	
@@ -90,6 +91,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return <code>true</code> if this set contained the specified element
 	 */
 	public boolean removeRole(URI roleURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return roles.remove(roleURI);
 	}
 	
@@ -97,6 +99,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Sets the field variable <code>roles</code> to the specified element.
 	 */
 	public void setRoles(Set<URI> roles) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		clearRoles();
 		if (roles==null) return;
 		for (URI role : roles) {
@@ -126,6 +129,7 @@ public class ModuleDefinition extends TopLevel {
 	 * The list will be empty after this call returns.
 	 */
 	public void clearRoles() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		roles.clear();
 	}
 	
@@ -152,12 +156,14 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	public Module createModule(String displayId, String moduleDefinitionId, String version) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI moduleDefinition = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
 				TopLevel.moduleDefinition, moduleDefinitionId, version);
 		return createModule(displayId,moduleDefinition);
 	}
 
 	public Module createModule(String displayId, URI moduleDefinitionURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModuleDefinition(moduleDefinitionURI)==null) {
 				throw new IllegalArgumentException("Module definition '" + moduleDefinitionURI + "' does not exist.");
@@ -188,6 +194,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeModule(Module module) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(module,modules);
 	}
 	
@@ -211,6 +218,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Removes all entries of the list of modules owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearModules() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = modules.values().toArray();
 		for (Object module : valueSetArray) {
 			removeModule((Module)module);
@@ -251,6 +259,7 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	public Interaction createInteraction(String displayId, Set<URI> type) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newInteractionURI = createCompliantURI(URIprefix, displayId, version);
@@ -276,6 +285,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeInteraction(Interaction interaction) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(interaction,interactions);
 	}
 	
@@ -299,6 +309,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Removes all entries of the list of interactions owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearInteractions() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = interactions.values().toArray();
 		for (Object interaction : valueSetArray) {
 			removeInteraction((Interaction)interaction);
@@ -343,6 +354,7 @@ public class ModuleDefinition extends TopLevel {
 	
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
 			String definition, String version, DirectionType direction) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI definitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
 				TopLevel.componentDefinition, definition, version);
 		return createFunctionalComponent(displayId,access,definitionURI,direction);
@@ -350,6 +362,7 @@ public class ModuleDefinition extends TopLevel {
 
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
 			URI definitionURI, DirectionType direction) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(definitionURI)==null) {
 				throw new IllegalArgumentException("Component definition '" + definitionURI + "' does not exist.");
@@ -378,6 +391,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeFunctionalComponent(FunctionalComponent functionalComponent) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(functionalComponent,functionalComponents);
 	}
 	
@@ -401,6 +415,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Removes all entries of the list of functional components owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearFunctionalComponents() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = functionalComponents.values().toArray();
 		for (Object functionalComponent : valueSetArray) {
 			removeFunctionalComponent((FunctionalComponent)functionalComponent);
@@ -452,6 +467,7 @@ public class ModuleDefinition extends TopLevel {
 //	}
 	
 	public void addModel(String model,String version) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI modelURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
 				TopLevel.model, model, version);
 		addModel(modelURI);
@@ -461,6 +477,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Adds the specified instance to the list of models. 
 	 */
 	public void addModel(URI modelURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModel(modelURI)==null) {
 				throw new IllegalArgumentException("Model '" + modelURI + "' does not exist.");
@@ -474,6 +491,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeModel(URI modelURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return models.remove(modelURI);
 	}
 	
@@ -481,6 +499,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Clears the existing list of model instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
 	public void setModels(Set<URI> models) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		clearModels();
 		if (models==null) return;
 		for (URI model : models) {
@@ -524,6 +543,7 @@ public class ModuleDefinition extends TopLevel {
 	 * The list will be empty after this call returns.
 	 */
 	public void clearModels() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		models.clear();
 	}	
 

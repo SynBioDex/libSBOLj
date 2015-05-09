@@ -63,6 +63,7 @@ public class Module extends Documented {
 	 * Sets field variable <code>instantiatedModule</code> to the specified element.
 	 */
 	public void setDefinition(URI definitionURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (definitionURI==null) {
 			throw new IllegalArgumentException("Module "+this.getIdentity()+" must have a definition.");
 		}
@@ -99,6 +100,7 @@ public class Module extends Documented {
 	}
 	
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI local = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(), 
 				localId, moduleDefinition.getVersion());
 		URI remote = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(), 
@@ -107,6 +109,7 @@ public class Module extends Documented {
 	}
 	
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		String version = this.getVersion();
 		URI newMapsToURI = createCompliantURI(parentPersistentIdStr, displayId, version);
@@ -142,6 +145,7 @@ public class Module extends Documented {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeMapsTo(MapsTo mapsTo) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(mapsTo,mapsTos);
 	}
 	
@@ -165,6 +169,7 @@ public class Module extends Documented {
 	 * Removes all entries of the list of mapsTos owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearMapsTos() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = mapsTos.values().toArray();
 		for (Object mapsTo : valueSetArray) {
 			removeMapsTo((MapsTo)mapsTo);

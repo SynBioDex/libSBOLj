@@ -69,10 +69,12 @@ public class SequenceAnnotation extends Documented {
 	}	
 	
 	public void addRange(int start,int end) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		addRange(start,end,null);
 	}
 
 	public void addRange(int start,int end,OrientationType orientation) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (location instanceof MultiRange) {
 			int numRanges = ((MultiRange)location).getRanges().size();
 			Range range = new Range(URIcompliance.createCompliantURI(this.getPersistentIdentity().toString()+"/multiRange","range"+numRanges,this.getVersion()),start,end);
@@ -108,6 +110,7 @@ public class SequenceAnnotation extends Documented {
 	}
 	
 	void removeRange(Range range) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (location instanceof MultiRange) {
 			try {
 				((MultiRange)location).removeRange(range);
@@ -151,6 +154,7 @@ public class SequenceAnnotation extends Documented {
 	}
 	
 	public void setComponent(String component) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
 				component, componentDefinition.getVersion());
 		setComponent(componentURI);
@@ -161,6 +165,7 @@ public class SequenceAnnotation extends Documented {
 	 * @param componentURI
 	 */
 	public void setComponent(URI componentURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(componentURI)==null) {
 				throw new IllegalArgumentException("Component '" + componentURI + "' does not exist.");
@@ -173,6 +178,7 @@ public class SequenceAnnotation extends Documented {
 	 * Set optional field variable <code>component</code> to <code>null</code>.
 	 */
 	public void unsetComponent() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		component = null;
 	}
 

@@ -32,7 +32,8 @@ public class SBOLDocument {
 	private HashMap<URI, NamespaceBinding> nameSpaces;
 	private String defaultURIprefix;
 	private boolean complete = false;
-	
+	private boolean compliant = true;
+
 	public SBOLDocument() {
 		genericTopLevels = new HashMap<>();
 		collections = new HashMap<>();
@@ -52,6 +53,7 @@ public class SBOLDocument {
 	 * @return the created {@link ModuleDefinition} object.
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version) {
+		checkReadOnly();
 		validateCreationData(displayId, version);
 		ModuleDefinition md = createModuleDefinition(createCompliantURI(defaultURIprefix, TopLevel.moduleDefinition, 
 				displayId, version));
@@ -75,7 +77,7 @@ public class SBOLDocument {
 	/**
 	 * Appends the specified {@code ModuleDefinition} object to the end of the list of module definitions.
 	 */
-	public void addModuleDefinition(ModuleDefinition newModuleDefinition) {
+	void addModuleDefinition(ModuleDefinition newModuleDefinition) {
 		addTopLevel(newModuleDefinition, moduleDefinitions, "moduleDefinition",
                 collections, componentDefinitions, genericTopLevels, models, sequences);
 	}
@@ -86,6 +88,7 @@ public class SBOLDocument {
 	 * @return true if the moduleDefinition is present and removed.
 	 */
 	public boolean removeModuleDefinition(ModuleDefinition moduleDefinition) {
+		checkReadOnly();
 		return removeTopLevel(moduleDefinition,moduleDefinitions);
 	}
 
@@ -112,6 +115,7 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearModuleDefinitions() {
+		checkReadOnly();
 		Object[] valueSetArray = moduleDefinitions.values().toArray();
 		for (Object moduleDefinition : valueSetArray) {
 			removeModuleDefinition((ModuleDefinition)moduleDefinition);
@@ -143,6 +147,7 @@ public class SBOLDocument {
 	 * @return the created {@link Collection} object.
 	 */
 	public Collection createCollection(String displayId, String version) {
+		checkReadOnly();
 		validateCreationData(displayId, version);
 		Collection c = createCollection(
 				createCompliantURI(defaultURIprefix, TopLevel.collection, displayId, version));
@@ -155,7 +160,7 @@ public class SBOLDocument {
 	/**
 	 * Appends the specified {@code newCollection} object to the end of the list of collections.
 	 */
-	public void addCollection(Collection collection) {
+	void addCollection(Collection collection) {
 		addTopLevel(collection, collections, "collection",
                 componentDefinitions, genericTopLevels, models, moduleDefinitions, sequences);
 	}
@@ -167,6 +172,7 @@ public class SBOLDocument {
 	 * @return true if the collection is present and removed.
 	 */
 	public boolean removeCollection(Collection collection) {
+		checkReadOnly();
 		return removeTopLevel(collection,collections);
 	}
 
@@ -192,6 +198,7 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearCollections() {
+		checkReadOnly();
 		Object[] valueSetArray = collections.values().toArray();
 		for (Object collection : valueSetArray) {
 			removeCollection((Collection)collection);
@@ -213,6 +220,7 @@ public class SBOLDocument {
 	 * @return the created {@link Model} object.
 	 */
 	public Model createModel(String displayId, String version, URI source, URI language, URI framework) {
+		checkReadOnly();
 		validateCreationData(displayId, version);
 		Model model = createModel(createCompliantURI(defaultURIprefix, TopLevel.model, displayId, version),
 				source, language, framework);
@@ -235,7 +243,7 @@ public class SBOLDocument {
 	/**
 	 * Appends the specified <code>model</code> to the end of the list of models.
 	 */
-	public void addModel(Model newModel) {
+	void addModel(Model newModel) {
 		addTopLevel(newModel, models, "model",
                 collections, componentDefinitions, genericTopLevels, moduleDefinitions, sequences);
 	}
@@ -246,6 +254,7 @@ public class SBOLDocument {
 	 * @return true if the model is present and removed.
 	 */
 	public boolean removeModel(Model model) {
+		checkReadOnly();
 		return removeTopLevel(model,models);
 	}
 
@@ -272,6 +281,7 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearModels() {
+		checkReadOnly();
 		Object[] valueSetArray = models.values().toArray();
 		for (Object model : valueSetArray) {
 			removeModel((Model)model);
@@ -304,6 +314,7 @@ public class SBOLDocument {
 	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
+		checkReadOnly();
 		validateCreationData(displayId, version);
 		ComponentDefinition cd = createComponentDefinition(createCompliantURI(defaultURIprefix, TopLevel.componentDefinition,
 				displayId, version), types);
@@ -316,7 +327,7 @@ public class SBOLDocument {
 	/**
 	 * Appends the specified element to the end of the list of component definitions.
 	 */
-	public void addComponentDefinition(ComponentDefinition newComponentDefinition) {
+	void addComponentDefinition(ComponentDefinition newComponentDefinition) {
 		addTopLevel(newComponentDefinition, componentDefinitions, "componentDefinition",
                 collections, genericTopLevels, models, moduleDefinitions, sequences);
 	}
@@ -327,6 +338,7 @@ public class SBOLDocument {
 	 * @return true if the componentDefinition is present and removed.
 	 */
 	public boolean removeComponentDefinition(ComponentDefinition componentDefinition) {
+		checkReadOnly();
 		return removeTopLevel(componentDefinition,componentDefinitions);
 	}
 
@@ -363,6 +375,7 @@ public class SBOLDocument {
 	 * Clears the existing list of component definitions, then appends all of the elements in the specified model to the end of this list.
 	 */
 	void setComponentDefinitions(List<ComponentDefinition> componentDefinitions) {
+		checkReadOnly();
 		clearComponentDefinitions();
 		for (ComponentDefinition componentDefinition : componentDefinitions) {
 			addComponentDefinition(componentDefinition);
@@ -384,6 +397,7 @@ public class SBOLDocument {
 	 * @return the created Sequence object.
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
+		checkReadOnly();
 		validateCreationData(displayId, version);
 		Sequence s = createSequence(createCompliantURI(defaultURIprefix, TopLevel.sequence, displayId, version), 
 				elements, encoding);
@@ -520,6 +534,7 @@ public class SBOLDocument {
 	 * @return the copied {@link TopLevel} object
 	 */
 	public TopLevel createCopy(TopLevel toplevel, String URIprefix, String displayId, String version) {
+		checkReadOnly();
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(toplevel.getIdentity());
 		}
@@ -568,7 +583,7 @@ public class SBOLDocument {
 	/**
 	 * Appends the specified <code>sequence</code> to the end of the list of sequences.
 	 */
-	public void addSequence(Sequence newSequence) {
+	void addSequence(Sequence newSequence) {
 		addTopLevel(newSequence, sequences, "sequence",
                 collections, componentDefinitions, genericTopLevels, models, moduleDefinitions);
 	}
@@ -579,6 +594,7 @@ public class SBOLDocument {
 	 * @return true if the sequence is present and removed.
 	 */
 	public boolean removeSequence(Sequence sequence) {
+		checkReadOnly();
 		return removeTopLevel(sequence,sequences);
 	}
 
@@ -605,6 +621,7 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearSequences() {
+		checkReadOnly();
 		Object[] valueSetArray = sequences.values().toArray();
 		for (Object sequence : valueSetArray) {
 			removeSequence((Sequence)sequence);
@@ -626,6 +643,7 @@ public class SBOLDocument {
 	 * @return the created {@link GenericTopLevel} object.
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
+		checkReadOnly();
 		validateCreationData(displayId, version);
 		GenericTopLevel g = createGenericTopLevel(createCompliantURI(defaultURIprefix, TopLevel.genericTopLevel, displayId, version), rdfType);
 		g.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.genericTopLevel, displayId, ""));
@@ -647,7 +665,7 @@ public class SBOLDocument {
 	/**
 	 * Appends the specified {@code TopLevel} object to the end of the list of topLevels.
 	 */
-	public void addGenericTopLevel(GenericTopLevel newGenericTopLevel) {
+	void addGenericTopLevel(GenericTopLevel newGenericTopLevel) {
 		addTopLevel(newGenericTopLevel, genericTopLevels, "genericTopLevel",
                 collections, componentDefinitions, models, moduleDefinitions, sequences);
 	}
@@ -658,6 +676,7 @@ public class SBOLDocument {
 	 * @return true if the genericTopLevel is present and removed.
 	 */
 	public boolean removeGenericTopLevel(GenericTopLevel genericTopLevel) {
+		checkReadOnly();
 		return removeTopLevel(genericTopLevel,genericTopLevels);
 	}
 
@@ -684,6 +703,7 @@ public class SBOLDocument {
 	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
 	 */
 	public void clearGenericTopLevels() {
+		checkReadOnly();
 		Object[] valueSetArray = genericTopLevels.values().toArray();
 		for (Object genericTopLevel : valueSetArray) {
 			removeGenericTopLevel((GenericTopLevel)genericTopLevel);
@@ -757,6 +777,7 @@ public class SBOLDocument {
 	 *  Removes all non-required namespaces from the SBOL document.
 	 */
 	public void clearNamespaces() {
+		checkReadOnly();
 		Object[] keySetArray = nameSpaces.keySet().toArray();
 		for (Object key : keySetArray) {
 			if (isRequiredNamespaceBinding((URI)key)) continue;
@@ -800,6 +821,7 @@ public class SBOLDocument {
 	 * @param namespaceURI {@link URI} for a namespace 
 	 */
 	public void removeNamespace(URI namespaceURI) {
+		checkReadOnly();
 		if (isRequiredNamespaceBinding(namespaceURI)) {
 			throw new IllegalStateException("Cannot remove required namespace " + namespaceURI.toString());
 		}
@@ -990,5 +1012,19 @@ public class SBOLDocument {
 	 */
 	public void setComplete(boolean complete) {
 		this.complete = complete;
+	}
+	
+	public boolean isCompliant() {
+		return compliant;
+	}
+
+	void setCompliant(boolean compliant) {
+		this.compliant = compliant;
+	}
+	
+	void checkReadOnly() {
+		if (!compliant) {
+			throw new SBOLException("Cannot modify a non-compliant SBOL document");
+		}
 	}
 }

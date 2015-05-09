@@ -61,6 +61,7 @@ public class MultiRange extends Location{
 	}
 	
 	public Range createRange(String displayId, Integer start, Integer end) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		String version = this.getVersion();
 		URI newMapsToURI = URI.create(parentPersistentIdStr + '/' + displayId + '/' + version);
@@ -78,6 +79,7 @@ public class MultiRange extends Location{
 	 * Removes the instance matching the specified URI from the list of structuralAnnotations if present.
 	 */
 	public boolean removeRange(Range range) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (ranges.size()<5) {
 			throw new IllegalArgumentException("MultiRange is required to have at least two ranges.");
 		}

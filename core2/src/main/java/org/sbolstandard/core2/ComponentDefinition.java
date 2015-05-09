@@ -91,6 +91,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addType(URI typeURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return types.add(typeURI);
 	}
 	
@@ -99,6 +100,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return <code>true</code> if this set contained the specified element
 	 */
 	public boolean removeType(URI typeURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types.size()==1 && types.contains(typeURI)) {
 			throw new IllegalArgumentException("Component definition " + this.getIdentity() + " must have at least one type.");
 		}
@@ -109,6 +111,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Sets the field variable <code>type</code> to the specified element.
 	 */
 	public void setTypes(Set<URI> types) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types==null || types.size()==0) {
 			throw new IllegalArgumentException("Component definition " + this.getIdentity() + " must have at least one type.");
 		}
@@ -149,6 +152,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addRole(URI roleURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return roles.add(roleURI);
 	}
 	
@@ -157,6 +161,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return <code>true</code> if this set contained the specified element
 	 */
 	public boolean removeRole(URI roleURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return roles.remove(roleURI);
 	}
 	
@@ -164,6 +169,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Sets the field variable <code>roles</code> to the specified element.
 	 */
 	public void setRoles(Set<URI> roles) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		clearRoles();
 		if (roles==null) return;
 		for (URI role : roles) {
@@ -194,6 +200,7 @@ public class ComponentDefinition extends TopLevel {
 	 * The list will be empty after this call returns.
 	 */
 	public void clearRoles() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		roles.clear();
 	}
 	
@@ -219,6 +226,7 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	public void setSequence(String sequence,String version) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
 				TopLevel.sequence, sequence, version);
 		setSequence(sequenceURI);
@@ -227,6 +235,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Sets the {@link Sequence} reference to the specified element.
 	 */
 	public void setSequence(URI sequence) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getSequence(sequence)==null) {
 				throw new IllegalArgumentException("Sequence '" + sequence + "' does not exist.");
@@ -239,6 +248,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Sets the {@link Sequence} reference to <code>null</code>.
 	 */
 	public void unsetSequence() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		sequence = null;
 	}
 	
@@ -267,6 +277,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, Location location) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newSequenceAnnotationURI = createCompliantURI(URIprefix, displayId, version);
@@ -284,12 +295,14 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return createSequenceAnnotation(displayId,(OrientationType)null);
 	}
 	
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId,OrientationType orientation) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString()+"/"+displayId;
 		String version = this.getVersion();
 		GenericLocation location = new GenericLocation(createCompliantURI(URIprefix,"generic",version));
@@ -303,12 +316,14 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, int at) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return createSequenceAnnotation(displayId,at,null);
 	}
 		
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, int at,OrientationType orientation) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString()+"/"+displayId;
 		String version = this.getVersion();
 		Cut location = new Cut(createCompliantURI(URIprefix,"cut",version),at);
@@ -322,12 +337,14 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return createSequenceAnnotation(displayId,start,end,null);
 	}
 	
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end,OrientationType orientation) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString()+"/"+displayId;
 		String version = this.getVersion();
 		Range location = new Range(createCompliantURI(URIprefix,"range",version),start,end);
@@ -354,6 +371,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return true if the sequenceAnnotation is present and removed.
 	 */
 	public boolean removeSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(sequenceAnnotation,sequenceAnnotations);
 	}
 	
@@ -380,6 +398,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Removes all entries of the list of sequence annotations owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearSequenceAnnotations() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = sequenceAnnotations.values().toArray();
 		for (Object sequenceAnnotation : valueSetArray) {
 			removeSequenceAnnotation((SequenceAnnotation)sequenceAnnotation);
@@ -421,12 +440,14 @@ public class ComponentDefinition extends TopLevel {
 	
 	public Component createComponent(String displayId, AccessType access, 
 			String componentDefinition, String version) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
 				TopLevel.componentDefinition, componentDefinition, version);
 		return createComponent(displayId,access,componentDefinitionURI);
 	}
 	
 	public Component createComponent(String displayId, AccessType access, URI componentDefinitionURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(componentDefinitionURI)==null) {
 				throw new IllegalArgumentException("Component definition '" + componentDefinitionURI + "' does not exist.");
@@ -457,6 +478,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return true if the component is present and removed.
 	 */
 	public boolean removeComponent(Component component) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(component,components);
 	}
 	
@@ -482,6 +504,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Removes all entries of the list of components owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearComponents() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = components.values().toArray();
 		for (Object component : valueSetArray) {
 			removeComponent((Component)component);
@@ -522,6 +545,7 @@ public class ComponentDefinition extends TopLevel {
 	
 	public SequenceConstraint createSequenceConstraint(String displayId,
 			RestrictionType restriction, String subject, String object) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI subjectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(), 
 				subject, this.getVersion());
 		URI objectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(), 
@@ -531,6 +555,7 @@ public class ComponentDefinition extends TopLevel {
 		
 	public SequenceConstraint createSequenceConstraint(String displayId,
 			RestrictionType restriction, URI subject, URI object) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		SequenceConstraint sc = createSequenceConstraint(createCompliantURI(URIprefix, displayId, version),
@@ -567,6 +592,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return true if the sequenceConstraint is present and removed.
 	 */
 	public boolean removeSequenceConstraint(SequenceConstraint sequenceConstraint) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(sequenceConstraint,sequenceConstraints);
 	}
 	
@@ -592,6 +618,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Removes all entries of the list of sequence constraints owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearSequenceConstraints() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = sequenceConstraints.values().toArray();
 		for (Object sequenceConstraint : valueSetArray) {
 			removeSequenceConstraint((SequenceConstraint)sequenceConstraint);

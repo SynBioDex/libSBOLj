@@ -151,6 +151,7 @@ public class MapsTo extends Identified{
 	 * Sets field variable <code>refinement</code> to the specified element.
 	 */
 	public void setRefinement(RefinementType refinement) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.refinement = refinement;
 	}
 	
@@ -191,6 +192,7 @@ public class MapsTo extends Identified{
 	 * Sets field variable <code>local</code> to the specified element.
 	 */
 	public void setLocal(URI local) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (local==null) {
 			throw new IllegalArgumentException("MapsTo "+this.getIdentity()+" must specify a local component.");
 		}
@@ -220,6 +222,7 @@ public class MapsTo extends Identified{
 	 * Sets filed variable <code>remote</code> to the specified element.
 	 */
 	public void setRemote(URI remote) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (remote==null) {
 			throw new IllegalArgumentException("MapsTo "+this.getIdentity()+" must specify a remote component.");
 		}
@@ -279,7 +282,7 @@ public class MapsTo extends Identified{
 
 
 	@Override
-	public MapsTo deepCopy() {
+	protected MapsTo deepCopy() {
 		return new MapsTo(this);
 	}
 

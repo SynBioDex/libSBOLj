@@ -211,6 +211,11 @@ public class SBOLReader
 			e.printStackTrace();
 		}
 		scanner.close();
+		try {
+			SBOLValidate.validateCompliance(SBOLDoc);
+		} catch (SBOLException e) {
+			SBOLDoc.setCompliant(false);
+		}
 		return SBOLDoc;
 	}
 
@@ -281,6 +286,11 @@ public class SBOLReader
 			e.printStackTrace();
 		}
 		scanner.close();
+		try {
+			SBOLValidate.validateCompliance(SBOLDoc);
+		} catch (SBOLException e) {
+			SBOLDoc.setCompliant(false);
+		}
 		return SBOLDoc;
 	}
 
@@ -315,8 +325,12 @@ public class SBOLReader
 			scanner.close();
 			e.printStackTrace();
 		}
-
 		scanner.close();
+		try {
+			SBOLValidate.validateCompliance(SBOLDoc);
+		} catch (SBOLException e) {
+			SBOLDoc.setCompliant(false);
+		}
 		return SBOLDoc;
 	}
 
@@ -339,6 +353,11 @@ public class SBOLReader
 		SBOLDoc.addNamespaceBinding(NamespaceBinding(Sbol2Terms.prov.getNamespaceURI(),
 				Sbol2Terms.prov.getPrefix()));
 		readTopLevelDocsV1(SBOLDoc, document);
+		try {
+			SBOLValidate.validateCompliance(SBOLDoc);
+		} catch (SBOLException e) {
+			SBOLDoc.setCompliant(false);
+		}
 		return SBOLDoc;
 	}
 

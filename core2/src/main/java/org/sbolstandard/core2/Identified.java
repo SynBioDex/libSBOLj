@@ -199,6 +199,7 @@ public abstract class Identified {
 	 * Sets field variable <code>wasDerivedFrom</code> to the specified value.
 	 */
 	public void setWasDerivedFrom(URI wasDerivedFrom) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.wasDerivedFrom = wasDerivedFrom;
 
 	}
@@ -217,6 +218,7 @@ public abstract class Identified {
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, String literal) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
 		return annotation;
@@ -228,6 +230,7 @@ public abstract class Identified {
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, URI literal) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
 		return annotation;
@@ -251,6 +254,7 @@ public abstract class Identified {
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName,QName nestedQName, URI nestedURI, List<Annotation> annotations) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName, nestedQName, nestedURI, annotations);
 		addAnnotation(annotation);
 		return annotation;
@@ -270,6 +274,7 @@ public abstract class Identified {
 	 * @return <code>true</code> if the matching instance is present.
 	 */
 	public boolean removeAnnotation(Annotation annotation) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return annotations.remove(annotation);
 	}
 
@@ -295,6 +300,7 @@ public abstract class Identified {
 	 * Removes all annotations from this object.
 	 */
 	public void clearAnnotations() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		annotations.clear();
 	}
 
@@ -310,6 +316,7 @@ public abstract class Identified {
 	}
 
 	public void unsetWasDerivedFrom() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		wasDerivedFrom = null;
 	}
 	

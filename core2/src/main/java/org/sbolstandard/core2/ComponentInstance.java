@@ -145,6 +145,7 @@ public abstract class ComponentInstance extends Documented {
 	 * Sets field variable <code>access</code> to the specified element.
 	 */
 	public void setAccess(AccessType access) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (access==null) {
 			throw new IllegalArgumentException("Not a valid access type.");
 		}
@@ -193,6 +194,7 @@ public abstract class ComponentInstance extends Documented {
 	 * @return the newly created MapsTo object.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
 		String version = this.getVersion();
 		MapsTo m = createMapsTo(createCompliantURI(parentPersistentIdStr, displayId, version),
@@ -215,6 +217,7 @@ public abstract class ComponentInstance extends Documented {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeMapsTo(MapsTo mapsTo) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(mapsTo,mapsTos);
 	}
 	
@@ -238,6 +241,7 @@ public abstract class ComponentInstance extends Documented {
 	 * Removes all entries of the list of mapsTo owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearMapsTos() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = mapsTos.values().toArray();
 		for (Object mapsTo : valueSetArray) {
 			removeMapsTo((MapsTo)mapsTo);
@@ -276,6 +280,7 @@ public abstract class ComponentInstance extends Documented {
 	 * Sets field variable <code>instantiatedComponent</code> to the specified element.
 	 */
 	public void setDefinition(URI definition) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (definition==null) {
 			throw new IllegalArgumentException("Component "+this.getIdentity()+" must have a definition.");
 		}

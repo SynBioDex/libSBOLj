@@ -50,6 +50,7 @@ public class Collection extends TopLevel{
 	 */
 	public void addMember(URI memberURI) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
+			sbolDocument.checkReadOnly();
 			if (sbolDocument.getTopLevel(memberURI)==null) {
 				throw new IllegalArgumentException("Top level '" + memberURI + "' does not exist.");
 			}
@@ -62,6 +63,7 @@ public class Collection extends TopLevel{
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeMember(URI memberURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return members.remove(memberURI);
 	}
 	
@@ -70,6 +72,7 @@ public class Collection extends TopLevel{
 	 * the specified list of members.
 	 */
 	public void setMembers(Set<URI> members) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		clearMembers();
 		for (URI member : members) {
 			addMember(member);
@@ -113,6 +116,7 @@ public class Collection extends TopLevel{
 	 * Removes all of the members of this {@link Collection} object.
 	 */
 	public void clearMembers() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		members.clear();
 	}
 

@@ -139,6 +139,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * Sets field variable <code>direction</code> to the specified element.
 	 */
 	public void setDirection(DirectionType direction) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (direction==null) {
 			throw new NullPointerException("Not a valid direction type.");
 		}

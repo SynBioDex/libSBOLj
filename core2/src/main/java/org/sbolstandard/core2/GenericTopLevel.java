@@ -35,6 +35,7 @@ public class GenericTopLevel extends TopLevel{
 	}
 
 	public void setRDFType(QName rdfType) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.rdfType = rdfType;
 	}
 

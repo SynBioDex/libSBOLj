@@ -62,6 +62,7 @@ public abstract class Documented extends Identified {
 	 */
 	// @param name a name for the documented object
 	public void setName(String name) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.name = name;
 	}
 
@@ -69,6 +70,7 @@ public abstract class Documented extends Identified {
 	 * Sets optional field variable <code>name</code> to <code>null</code>.
 	 */
 	public void unsetName() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		name = null;
 	}
 	
@@ -94,6 +96,7 @@ public abstract class Documented extends Identified {
 	 */
 	// @param a description for the documented object
 	public void setDescription(String description) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.description = description;
 	}
 
@@ -101,6 +104,7 @@ public abstract class Documented extends Identified {
 	 * Set optional field variable <code>description</code> to <code>null</code>.
 	 */
 	public void unsetDescription() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		description = null;
 	}
 

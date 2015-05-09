@@ -40,6 +40,7 @@ public class Range extends Location{
 	 * Sets field variable <code>start</code> to the specified element.
 	 */
 	public void setStart(int value) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (value<=0) {
 			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have a start greater than zero.");
 		}
@@ -69,6 +70,7 @@ public class Range extends Location{
 	 * Sets field variable <code>end</code> to the specified element.
 	 */
 	public void setEnd(int value) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (value<=0) {
 			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have an end greater than zero.");
 		}
@@ -122,6 +124,7 @@ public class Range extends Location{
 	 */
 	// Created for backward compatibility to 1.1. 
 	public void setOrientation(OrientationType orientation) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.orientation = orientation;
 	}
 	
@@ -144,6 +147,7 @@ public class Range extends Location{
 	 * Set optional field variable <code>orientation</code> to <code>null</code>.
 	 */
 	public void unsetOrientation() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		orientation = null;
 	}
 

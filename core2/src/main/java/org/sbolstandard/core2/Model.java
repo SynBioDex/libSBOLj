@@ -46,6 +46,7 @@ public class Model extends TopLevel {
 	 * Sets the field variable <code>source</code> to the specified element.
 	 */
 	public void setSource(URI source) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (source==null) {
 			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a source location.");
 		}
@@ -64,6 +65,7 @@ public class Model extends TopLevel {
 	 * Sets the field variable <code>language</code> to the specified element.
 	 */
 	public void setLanguage(URI language) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (language==null) {
 			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a language.");
 		}
@@ -82,6 +84,7 @@ public class Model extends TopLevel {
 	 * Sets the field variable <code>framework</code> to the specified element.
 	 */
 	public void setFramework(URI framework) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (framework==null) {
 			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a framework.");
 		}

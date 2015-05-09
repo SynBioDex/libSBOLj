@@ -56,6 +56,7 @@ public class Participation extends Identified {
 	 * Sets field variable <code>participant</code> to the specified element.
 	 */
 	public void setParticipant(URI participant) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (participant == null) {
 			throw new IllegalArgumentException("Participation is required to have a participant.");
 		}
@@ -70,6 +71,7 @@ public class Participation extends Identified {
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addRole(URI roleURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return roles.add(roleURI);
 	}
 	
@@ -78,6 +80,7 @@ public class Participation extends Identified {
 	 * @return <code>true</code> if this set contained the specified element
 	 */
 	public boolean removeRole(URI roleURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return roles.remove(roleURI);
 	}
 	
@@ -85,6 +88,7 @@ public class Participation extends Identified {
 	 * Sets the field variable <code>roles</code> to the specified element.
 	 */
 	public void setRoles(Set<URI> roles) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		clearRoles();
 		if (roles==null) return;
 		for (URI role : roles) {
@@ -112,6 +116,7 @@ public class Participation extends Identified {
 	 * The list will be empty after this call returns.
 	 */
 	public void clearRoles() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		roles.clear();
 	}
 

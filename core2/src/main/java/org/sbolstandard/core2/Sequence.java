@@ -54,6 +54,7 @@ public class Sequence extends TopLevel{
 	 * Sets field variable <code>elements</code> to the specified element.
 	 */
 	public void setElements(String elements) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (elements == null) {
 			throw new IllegalArgumentException("Sequence is required to have elements.");
 		}
@@ -72,6 +73,7 @@ public class Sequence extends TopLevel{
 	 * Sets field variable <code>encoding</code> to the specified element.
 	 */
 	public void setEncoding(URI encoding) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (elements == null) {
 			throw new IllegalArgumentException("Sequence is required to have an encoding.");
 		}
@@ -126,7 +128,7 @@ public class Sequence extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Sequence copy(String URIprefix, String displayId, String version) {
+	protected Sequence copy(String URIprefix, String displayId, String version) {
 		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			Sequence cloned = this.deepCopy();

@@ -123,6 +123,7 @@ public class SequenceConstraint extends Identified {
 	 * Sets field variable <code>restriction</code> to the specified element.
 	 */
 	public void setRestriction(RestrictionType restriction) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (restriction==null) {
 			throw new NullPointerException("Not a valid restriction type.");
 		}
@@ -157,6 +158,7 @@ public class SequenceConstraint extends Identified {
 	 * Sets field variable <code>subject</code> to the specified element.
 	 */
 	public void setSubject(URI subject) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(subject)==null) {
 				throw new IllegalArgumentException("Component '" + subject + "' does not exist.");
@@ -189,6 +191,7 @@ public class SequenceConstraint extends Identified {
 	 * Sets field variable <code>object</code> to the specified element.
 	 */
 	public void setObject(URI object) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(object)==null) {
 				throw new IllegalArgumentException("Component '" + object + "' does not exist.");

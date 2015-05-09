@@ -57,6 +57,7 @@ public class Interaction extends Documented {
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addType(URI typeURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return types.add(typeURI);
 	}
 	
@@ -65,6 +66,7 @@ public class Interaction extends Documented {
 	 * @return <code>true</code> if this set contained the specified element
 	 */
 	public boolean removeType(URI typeURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types.size()==1 && types.contains(typeURI)) {
 			throw new IllegalArgumentException("Interaction " + this.getIdentity() + " must have at least one type.");
 		}
@@ -75,6 +77,7 @@ public class Interaction extends Documented {
 	 * Sets the field variable <code>type</code> to the specified element.
 	 */
 	public void setTypes(Set<URI> types) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types==null || types.size()==0) {
 			throw new IllegalArgumentException("Interaction " + this.getIdentity() + " must have at least one type.");
 		}
@@ -127,12 +130,14 @@ public class Interaction extends Documented {
 	}
 	
 	public Participation createParticipation(String displayId, String participantId) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI participant = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(), 
 				participantId, moduleDefinition.getVersion());
 		return createParticipation(displayId,participant);
 	}
 
 	public Participation createParticipation(String displayId, URI participant) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (moduleDefinition != null) {
 			if (moduleDefinition.getFunctionalComponent(participant)==null) {
 				throw new IllegalArgumentException("Functional component '" + participant + "' does not exist.");
@@ -168,6 +173,7 @@ public class Interaction extends Documented {
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public boolean removeParticipation(Participation participation) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(participation,participations);
 	}
 	
@@ -191,6 +197,7 @@ public class Interaction extends Documented {
 	 * Removes all entries of the list of participations owned by this instance. The list will be empty after this call returns.
 	 */
 	public void clearParticipations() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = participations.values().toArray();
 		for (Object participation : valueSetArray) {
 			removeParticipation((Participation)participation);

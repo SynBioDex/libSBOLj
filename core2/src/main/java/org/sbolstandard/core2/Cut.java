@@ -46,6 +46,7 @@ public class Cut extends Location{
 	 * Sets field variable <code>at</code> to the specified element.
 	 */
 	public void setAt(int at) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (at<0) {
 			throw new IllegalArgumentException("Cut "+this.getIdentity()+" must have a value greater than or equal to zero.");
 		}
@@ -95,6 +96,7 @@ public class Cut extends Location{
 	 */
 	// Created for backward compatibility to 1.1. 
 	public void setOrientation(OrientationType orientation) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.orientation = orientation;
 	}
 	
@@ -117,6 +119,7 @@ public class Cut extends Location{
 	 * Set optional field variable <code>orientation</code> to <code>null</code>.
 	 */
 	public void unsetOrientation() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		orientation = null;
 	}
 
