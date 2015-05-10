@@ -26,7 +26,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_labhost_All_File() throws Exception
 	{
-		String fileName = "test/data/SBOL1/labhost_all.xml";
+		String fileName = "test/data/SBOL1/labhost_All.xml";
 
 		try
 		{
