@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:annot="http://myannotation.org" xmlns:grn="urn:bbn.com:tasbe:grn" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbol="http://sbols.org/v2#">
+  <sbol:Collection rdf:about="http://www.async.ece.utah.edu/col/someSequence1/1.0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/col/someSequence1"/>
+    <sbol:displayId>someSequence1</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+  </sbol:Collection>
+  <sbol:Collection rdf:about="http://www.async.ece.utah.edu/col/someSequence2/1.0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/col/someSequence2"/>
+    <sbol:displayId>someSequence2</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+  </sbol:Collection>
+  <sbol:Collection rdf:about="http://www.async.ece.utah.edu/col/someSequence3/1.0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/col/someSequence3"/>
+    <sbol:displayId>someSequence3</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+  </sbol:Collection>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/seq/someSequence/1.0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/seq/someSequence"/>
+    <sbol:displayId>someSequence</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <sbol:elements>someSeq_element</sbol:elements>
+    <sbol:encoding rdf:resource="someSeq_encoding"/>
+  </sbol:Sequence>
+</rdf:RDF>
