@@ -1,8 +1,8 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
+//import java.util.HashMap;
+//import java.util.Map;
 
 /**
  * @author Zhen Zhang
@@ -21,15 +21,16 @@ public class SequenceOntology {
 	
 	// EO: does the SO have a 1-1 key-value mapping?
 	
-	private static Map<String, URI> so = null;
+	// private static Map<String, URI> so = null;
 	
-	private static final String URI_PREFIX = "http://purl.obolibrary.org/obo/";
+	private static final String URI_PREFIX = "http://identifiers.org/so/";
 	
 	/**
-	 * Namespace of the Sequence Ontology (<a href="http://purl.obolibrary.org/obo/">http://purl.obolibrary.org/obo/</a>).
+	 * Namespace of the Sequence Ontology (<a href="http://identifiers.org/so/">http://identifiers.org/so/</a>).
 	 */
-	public static final URI NAMESPACE = URI.create("http://purl.obolibrary.org/obo/");
+	public static final URI NAMESPACE = URI.create(URI_PREFIX);
 	
+	/*
 	public static String getTerm(URI uri) {
 
 		// if the SO terms have not been loaded,
@@ -83,74 +84,77 @@ public class SequenceOntology {
 		
 		
 		// sequence types
-		so.put("PROMOTER", URI.create(URI_PREFIX + "SO:0000167"));
+		so.put("PROMOTER", PROMOTER);
 		so.put("RBS", URI.create(URI_PREFIX + "SO:0000139"));
 		so.put("TRANSCRIPT", URI.create(URI_PREFIX + "SO:0000673"));
 		so.put("CDS", URI.create(URI_PREFIX + "SO:0000673"));
 		so.put("TERMINATOR", URI.create(URI_PREFIX + "SO:0000673"));
 		
 	}
+	*/
 	
 	/**
 	 * Creates a new URI from the Sequence Ontology namespace with the given local name. For example, the function call
 	 * <code>term("SO_0000001")</code> will return the URI <a>http://purl.obolibrary.org/obo/SO_0000001</a>
 	 */
 	public static final URI type(String localName) {
-		return NAMESPACE.resolve(localName);
+		return URI.create(URI_PREFIX+localName);
 	}
 	
 		/**
 	 * A regulatory_region composed of the TSS(s) and binding sites for TF_complexes of the basal transcription
 	 * machinery (<a href="http://purl.obolibrary.org/obo/SO_0000167">SO_0000167</a>).
 	 */
-	public static final URI PROMOTER = type("SO_0000167");
+	public static final URI PROMOTER = type("SO:0000167");
 
 	/**
 	 * A regulatory element of an operon to which activators or repressors bind, thereby effecting translation of genes
 	 * in that operon (<a href="http://purl.obolibrary.org/obo/SO_0000057">SO_0000057</a>).
 	 */
-	public static final URI OPERATOR = type("SO_0000057");
+	public static final URI OPERATOR = type("SO:0000057");
 
 	/**
 	 * A contiguous sequence which begins with, and includes, a start codon, and ends with, and includes, a stop codon
 	 * (<a href="http://purl.obolibrary.org/obo/SO_0000316">SO_0000316</a>).
 	 */
-	public static final URI CDS = type("SO_0000316");
+	public static final URI CDS = type("SO:0000316");
 
 	/**
 	 * A region at the 5' end of a mature transcript (preceding the initiation codon) that is not translated into a
 	 * protein (<a href="http://purl.obolibrary.org/obo/SO_0000204">SO_0000204</a>).
 	 */
-	public static final URI FIVE_PRIME_UTR = type("SO_0000204");
+	public static final URI FIVE_PRIME_UTR = type("SO:0000204");
 
 	/**
 	 * The sequence of DNA located either at the end of the transcript that causes RNA polymerase to terminate
 	 * transcription (<a href="http://purl.obolibrary.org/obo/SO_0000141">SO_0000141</a>).
 	 */
-	public static final URI TERMINATOR = type("SO_0000141");
+	public static final URI TERMINATOR = type("SO:0000141");
 
 	/**
 	 * A transcriptional cis regulatory region that, when located between a CM and a gene's promoter, prevents the CRM
 	 * from modulating that genes expression (<a href="http://purl.obolibrary.org/obo/SO_0000627">SO_0000627</a>)
 	 */
-	public static final URI INSULATOR = type("SO_0000627");
+	public static final URI INSULATOR = type("SO:0000627");
 
 	/**
 	 * The origin of replication; starting site for duplication of a nucleic acid molecule to give two identical copies
 	 * (<a href="http://purl.obolibrary.org/obo/SO_0000296">SO_0000296</a>).
 	 */
-	public static final URI ORIGIN_OF_REPLICATION = type("SO_0000296");
+	public static final URI ORIGIN_OF_REPLICATION = type("SO:0000296");
 
 	/**
 	 * Non-covalent primer binding site for initiation of replication, transcription, or reverse transcription (<a
 	 * href="http://purl.obolibrary.org/obo/SO_0005850">SO_0005850</a>)
 	 */
-	public static final URI PRIMER_BINDING_SITE = type("SO_0005850");
+	public static final URI PRIMER_BINDING_SITE = type("SO:0005850");
 
 	/**
 	 * Represents a region of a DNA molecule which is a nucleotide region (usually a palindrome) that is recognized by a
 	 * restriction enzyme (<a href="http://purl.obolibrary.org/obo/SO_0001687">SO_0001687</a>).
 	 */
-	public static final URI RESTRICTION_ENZYME_RECOGNITION_SITE = type("SO_0001687");
+	public static final URI RESTRICTION_ENZYME_RECOGNITION_SITE = type("SO:0001687");
+
+	public static final URI ENGINEERED_GENE = type("SO:0000280");
 
 }

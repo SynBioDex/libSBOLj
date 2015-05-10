@@ -238,7 +238,7 @@ public class writeTester {
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetURI(ComponentDefinition.DNA),
-				getSetPropertyURI("Promoter"),
+				getSetURI(SequenceOntology.PROMOTER),
 				getData("pLac",version),
 				"pLacSeq");
 	}
@@ -247,7 +247,7 @@ public class writeTester {
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetURI(ComponentDefinition.DNA),
-				getSetPropertyURI("CDS"),
+				getSetURI(SequenceOntology.CDS),
 				getData("tetRCDS",version),
 				"tetRSeq");
 	}
@@ -275,7 +275,7 @@ public class writeTester {
 	{
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,
 				getSetURI(ComponentDefinition.DNA),
-				getSetPropertyURI("Gene"),
+				getSetURI(SequenceOntology.ENGINEERED_GENE),
 				getData("pLactetR",version),
 				"pLactetRSeq");
 		get_P(cd);
@@ -288,7 +288,7 @@ public class writeTester {
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetURI(ComponentDefinition.PROTEIN),
-				getSetPropertyURI("Transcriptionfactor"),
+				null,
 				getData("LacI",version),
 				null);
 	}
@@ -297,7 +297,7 @@ public class writeTester {
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetURI(ComponentDefinition.PROTEIN),
-				getSetPropertyURI("Transcriptionfactor"),
+				null,
 				getData("TetR",version),
 				null);
 	}
@@ -319,22 +319,22 @@ public class writeTester {
 
 	private static void get_p1a (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i,displayId,getSetPropertyURI("repressor"),"LacIIn");
+		createParticipationData(i,displayId,getSetURI(SystemsBiologyOntology.INHIBITOR),"LacIIn");
 	}
 
 	private static void get_p2a (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i, displayId,getSetPropertyURI("repressed"),"LacIInv");
+		createParticipationData(i, displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"LacIInv");
 	}
 
 	private static void get_p4a (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i, displayId,getSetPropertyURI("producer"),"TetRInv");
+		createParticipationData(i, displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"TetRInv");
 	}
 
 	private static void get_p3a (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i, displayId,getSetPropertyURI("produced"),"TetROut");
+		createParticipationData(i, displayId,getSetURI(SystemsBiologyOntology.PRODUCT),"TetROut");
 	}
 
 	private static Interaction get_interact1a (SBOLDocument SBOL2Doc_test, ModuleDefinition md)
@@ -342,7 +342,7 @@ public class writeTester {
 		Interaction i = createInteractionData(
 				md,
 				getData("interact1"),
-				getSetPropertyURI("repression"));
+				getSetURI(SystemsBiologyOntology.GENETIC_SUPPRESSION));
 		get_p1a(SBOL2Doc_test, md, i, "p1a");
 		get_p2a(SBOL2Doc_test, md, i, "p2a");
 		return i;
@@ -353,7 +353,7 @@ public class writeTester {
 		Interaction i = createInteractionData(
 				md,
 				getData("interact2"),
-				getSetPropertyURI("production"));
+				getSetURI(SystemsBiologyOntology.GENETIC_PRODUCTION));
 		get_p4a(SBOL2Doc_test, md, i, "p4a");
 		get_p3a(SBOL2Doc_test, md, i, "p3a");
 		return i;
@@ -363,7 +363,7 @@ public class writeTester {
 	{
 		ModuleDefinition md = createModuleDefinitionData(SBOL2Doc_test,
 				getSetOfURI("Inverter"),
-				getSetPropertyURI("Inverter"),
+				//getSetPropertyURI("Inverter"),
 				getData("LacI_Inv",version));
 		get_LacIIn(SBOL2Doc_test,md);
 		get_TetROut(SBOL2Doc_test,md);
@@ -403,7 +403,7 @@ public class writeTester {
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetURI(ComponentDefinition.DNA),
-				getSetPropertyURI("Promoter"),
+				getSetURI(SequenceOntology.PROMOTER),
 				getData("ptet",version),
 				"ptetSeq");
 	}
@@ -412,7 +412,7 @@ public class writeTester {
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
 				getSetURI(ComponentDefinition.DNA),
-				getSetPropertyURI("CDS"),
+				getSetURI(SequenceOntology.CDS),
 				getData("lacICDS",version),
 				"lacISeq");
 	}
@@ -441,7 +441,7 @@ public class writeTester {
 	{
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,
 				getSetURI(ComponentDefinition.DNA),
-				getSetPropertyURI("Gene"),
+				getSetURI(SequenceOntology.ENGINEERED_GENE),
 				getData("ptetlacI",version),
 				"ptetlacISeq");
 		get_T(cd); 
@@ -468,22 +468,22 @@ public class writeTester {
 
 	private static void get_p1b (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i,displayId,getSetPropertyURI("repressor"),"TetRIn");
+		createParticipationData(i,displayId,getSetURI(SystemsBiologyOntology.INHIBITOR),"TetRIn");
 	}
 
 	private static void get_p2b (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i,displayId,getSetPropertyURI("repressed"),"TetRInv");
+		createParticipationData(i,displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"TetRInv");
 	}
 
 	private static void get_p4b (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i,displayId,getSetPropertyURI("producer"),"TetRInv");
+		createParticipationData(i,displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"TetRInv");
 	}
 
 	private static void get_p3b (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i,displayId,getSetPropertyURI("produced"),"LacIOut");
+		createParticipationData(i,displayId,getSetURI(SystemsBiologyOntology.PRODUCT),"LacIOut");
 	}
 
 	private static void get_interact1b (SBOLDocument SBOL2Doc_test, ModuleDefinition md)
@@ -491,7 +491,7 @@ public class writeTester {
 		Interaction i = createInteractionData(
 			md,
 			getData("interact1b"),
-			getSetPropertyURI("repression"));
+			getSetURI(SystemsBiologyOntology.GENETIC_SUPPRESSION));
 		get_p1b(SBOL2Doc_test, md, i, "p1b");
 		get_p2b(SBOL2Doc_test, md, i, "p2b");
 	}
@@ -501,7 +501,7 @@ public class writeTester {
 		Interaction i = createInteractionData(
 			md,
 			getData("interact2b"),
-			getSetPropertyURI("production"));
+			getSetURI(SystemsBiologyOntology.GENETIC_PRODUCTION));
 		get_p4b(SBOL2Doc_test, md, i, "p4b");
 		get_p3b(SBOL2Doc_test, md, i, "p3b");
 	}
@@ -510,7 +510,7 @@ public class writeTester {
 	{
 		ModuleDefinition md = createModuleDefinitionData(SBOL2Doc_test,
 				getSetOfURI("Inverter"),
-				getSetPropertyURI("Inverter"),
+				//getSetPropertyURI("Inverter"),
 				getData("TetR_Inv",version));
 		get_TetRIn(SBOL2Doc_test,md);
 		get_LacIOut(SBOL2Doc_test,md);
@@ -554,7 +554,6 @@ public class writeTester {
 	{
 		Model m = createModelData(SBOL2Doc_test,
 				getData("ToggleModel",version),
-				getSetPropertyURI("ToggleModel_role"),
 				getPropertyURI("ToggleModel_source"), getPropertyURI("ToggleModel_language"), getPropertyURI("ToggleModel_framework"));
 		return m;
 	}
@@ -563,7 +562,7 @@ public class writeTester {
 	{
 		ModuleDefinition md = createModuleDefinitionData(SBOL2Doc_test,
 				getSetOfURI("Toggle_type"),
-				getSetPropertyURI("Toggle_role"),
+				//getSetPropertyURI("Toggle_role"),
 				getData("Toggle",version));
 		get_LacISp(SBOL2Doc_test,md);
 		get_TetRSp(SBOL2Doc_test,md);
@@ -650,7 +649,8 @@ public class writeTester {
 		ComponentDefinition c = SBOL2Doc_test.getComponentDefinition(URI.create(identity));
 		if (c==null) {
 			c = SBOL2Doc_test.createComponentDefinition(displayId, version, type);
-			c.setRoles(roles);
+			if (roles!=null) 
+				c.setRoles(roles);
 			setCommonTopLevelData(c, displayId, displayId);
 			if(structureData != null)
 				c.setSequence(structureData,version);
@@ -723,7 +723,7 @@ public class writeTester {
 	}
 
 
-	private static Model createModelData(SBOLDocument doc, List<String> modeldata, Set<URI> roles,
+	private static Model createModelData(SBOLDocument doc, List<String> modeldata, 
 			URI source, URI language, URI framework)
 	{
 		String displayId 	   = modeldata.get(0);
@@ -742,7 +742,7 @@ public class writeTester {
 	}
 
 	private static ModuleDefinition createModuleDefinitionData(SBOLDocument SBOL2Doc_test,
-			Set<URI> type, Set<URI> roles,
+			Set<URI> type, /* Set<URI> roles, */
 			List<String> module_data)
 	{
 		String displayId 	   = module_data.get(0);
@@ -755,7 +755,7 @@ public class writeTester {
 		ModuleDefinition m = SBOL2Doc_test.getModuleDefinition(URI.create(identity));
 		if (m==null) {
 			m = SBOL2Doc_test.createModuleDefinition(displayId, version);
-			m.setRoles(roles);
+			//m.setRoles(roles);
 			setCommonTopLevelData(m, displayId, displayId);
 		} 
 		return m;
@@ -919,6 +919,7 @@ public class writeTester {
 		return set;
 	}
 
+	/*
 	private static Set<URI> getSetPropertyURI(String ... appends)
 	{
 		Set<URI> list = new HashSet<URI>();
@@ -928,6 +929,7 @@ public class writeTester {
 		}
 		return list;
 	}
+	*/
 
 	private static URI getURI(String append)
 	{
