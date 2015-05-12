@@ -161,10 +161,26 @@ public class SystemsBiologyOntology {
 	public static final URI UNCERTAIN_PROCESS = type("SBO:0000396");
 	public static final URI RELATIONSHIP = type("SBO:0000374");
 	public static final URI CONTROL = type("SBO:0000168");
+	public static final URI ALLOSTERIC_CONTROL = type("SBO:0000239"); 
+	public static final URI CONSUMPTION = type("SBO:0000394");
+	public static final URI INHIBITION = type("SBO:0000169");
+	public static final URI ABSOLUTE_INHIBITION = type("SBO:0000407");
+	public static final URI PRODUCTION = type("SBO:0000393");
+	public static final URI STIMULATION = type("SBO:0000170");
+	public static final URI ABSOLUTE_STIMULATION = type("SBO:0000411");
+	public static final URI CATALYSIS = type("SBO:0000172");
+	public static final URI NECESSARY_STIMULATION = type("SBO:0000171");
 	public static final URI EQUIVALENCE = type("SBO:0000392");
 	public static final URI LOGICAL_COMBINATION = type("SBO:0000237");
+	public static final URI AND = type("SBO:0000173");
+	public static final URI NOT = type("SBO:0000238");
+	public static final URI OR = type("SBO:0000174");
+	public static final URI XOR = type("SBO:0000175");
 	public static final URI LOGICAL_RELATIONSHIP = type("SBO:0000398");
 	public static final URI POSITIONAL_RELATIONSHIP = type("SBO:0000413");
+	public static final URI CIS = type("SBO:0000414");
+	public static final URI CONTAINMENT = type("SBO:0000469");
+	public static final URI TRANS = type("SBO:0000415");
 
 	// Participant roles
 	public static final URI FUNCTIONAL_COMPARTMENT = type("SBO:0000289");

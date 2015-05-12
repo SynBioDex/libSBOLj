@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.sbolstandard.core2.ComponentInstance.AccessType;
 import org.sbolstandard.core2.MapsTo.RefinementType;
 
 import static org.sbolstandard.core2.URIcompliance.*;
@@ -128,10 +129,16 @@ public class Module extends Documented {
 			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
 			}
+			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI()).getAccess().equals(AccessType.PRIVATE)) {
+				throw new IllegalArgumentException("Functional Component '" + mapsTo.getLocalURI() + "' is private.");
+			}
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI())==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
+			}
+			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
+				throw new IllegalArgumentException("Functional Component '" + mapsTo.getRemoteURI() + "' is private.");
 			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");

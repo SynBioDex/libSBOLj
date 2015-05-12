@@ -2,6 +2,8 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+import org.sbolstandard.core2.ComponentInstance.AccessType;
+
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
@@ -200,6 +202,9 @@ public class MapsTo extends Identified{
 			if (moduleDefinition.getFunctionalComponent(local)==null) {
 				throw new IllegalArgumentException("Functional Component '" + local + "' does not exist.");
 			}
+			if (moduleDefinition.getFunctionalComponent(local).getAccess().equals(AccessType.PRIVATE)) {
+				throw new IllegalArgumentException("Functional Component '" + local + "' is private.");
+			}
 		}
 		this.local = local;
 	}
@@ -229,6 +234,9 @@ public class MapsTo extends Identified{
 		if (module!=null) {
 			if (module.getDefinition().getFunctionalComponent(remote)==null) {
 				throw new IllegalArgumentException("Functional Component '" + remote + "' does not exist.");
+			}
+			if (module.getDefinition().getFunctionalComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
+				throw new IllegalArgumentException("Functional Component '" + remote + "' is private.");
 			}
 		}
 		this.remote = remote;
