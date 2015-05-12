@@ -19,7 +19,11 @@ public class Model extends TopLevel {
 	private URI source;
 	private URI language;
 	private URI framework;
-
+	
+    public static final URI SBML = URI.create("http://identifiers.org/edam/format_2585");
+    public static final URI CELLML = URI.create("http://identifiers.org/edam/format_3240");
+    public static final URI BIOPAX = URI.create("http://identifiers.org/edam/format_3156");
+	
 	Model(URI identity,URI source, URI language, URI framework) {
 		super(identity);		
 		setSource(source);

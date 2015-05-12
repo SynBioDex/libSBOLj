@@ -86,6 +86,17 @@ public class SystemsBiologyOntology {
 		return URI.create(URI_PREFIX+localName);
 	}
 	
+	// Modeling frameworks
+	public static final URI CONTINUOUS_FRAMEWORK = type("SBO:0000062"); 
+	public static final URI NON_SPATIAL_CONTINUOUS_FRAMEWORK = type("SBO:0000293"); 
+	public static final URI SPATIAL_CONTINUOUS_FRAMEWORK = type("SBO:0000292"); 
+	public static final URI DISCRETE_FRAMEWORK = type("SBO:0000063"); 
+	public static final URI NON_SPATIAL_DISCRETE_FRAMEWORK = type("SBO:0000295");
+	public static final URI SPATIAL_DISCRETE_FRAMEWORK = type("SBO:0000294");
+	public static final URI FLUX_BALANCE_FRAMEWORK = type("SBO:0000624");
+	public static final URI LOGICAL_FRAMEWORK = type("SBO:0000234");
+	public static final URI BOOLEAN_LOGICAL_FRAMEWORK = type("SBO:0000547");
+	
 	// Interaction types
 	public static final URI BIOLOGICAL_ACTIVITY = type("SBO:0000412"); 
 	public static final URI PROCESS = type("SBO:0000375"); 
