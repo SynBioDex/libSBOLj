@@ -19,7 +19,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
-public class Interaction extends Documented {
+public class Interaction extends Identified {
 
 	private Set<URI> types;
 	private HashMap<URI, Participation> participations;

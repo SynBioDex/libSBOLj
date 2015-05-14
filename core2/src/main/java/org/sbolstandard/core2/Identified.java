@@ -32,6 +32,8 @@ public abstract class Identified {
 	private URI wasDerivedFrom;
 	protected String displayId;
 	protected SBOLDocument sbolDocument = null;
+	protected String name;
+	protected String description;
 
 	Identified(URI identity) {
 		setIdentity(identity);
@@ -66,6 +68,12 @@ public abstract class Identified {
 		if (identified.isSetWasDerivedFrom()) {
 			this.setWasDerivedFrom(URI.create(identified.getWasDerivedFrom().toString()));
 		}
+		if (identified.isSetName()) {
+			this.setName(identified.getName());
+		}
+		if (identified.isSetDescription()) {
+			this.setDescription(identified.getDescription());
+		}	
 	}
 
 //	public Identified (String URIprefix, String displayId, String version) {
@@ -341,10 +349,12 @@ public abstract class Identified {
 		int result = 1;
 		result = prime * result + ((annotations == null) ? 0 : annotations.hashCode());
 		result = prime * result + ((identity == null) ? 0 : identity.hashCode());
-		result = prime * result
-				+ ((persistentIdentity == null) ? 0 : persistentIdentity.hashCode());
+		result = prime * result	+ ((persistentIdentity == null) ? 0 : persistentIdentity.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
 		result = prime * result + ((wasDerivedFrom == null) ? 0 : wasDerivedFrom.hashCode());
+		result = prime * result + ((displayId == null) ? 0 : displayId.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -372,10 +382,8 @@ public abstract class Identified {
 				return false;
 		} else if (!persistentIdentity.equals(other.persistentIdentity))
 			return false;
-
 		if (version == null) {
 			if (other.version != null)
-
 				return false;
 		} else if (!version.equals(other.version))
 			return false;
@@ -384,7 +392,21 @@ public abstract class Identified {
 				return false;
 		} else if (!wasDerivedFrom.equals(other.wasDerivedFrom))
 			return false;
-
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (displayId == null) {
+			if (other.displayId != null)
+				return false;
+		} else if (!displayId.equals(other.displayId))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
 		return true;
 	}
 
@@ -429,6 +451,70 @@ public abstract class Identified {
 		Set<Identified> objectsToRemove = new HashSet<>();
 		objectsToRemove.add(identified);
 		return siblingsMap.values().removeAll(objectsToRemove);
+	}
+
+	/**
+	 * Test if optional field variable <code>name</code> is set.
+	 * @return <code>true</code> if it is not <code>null</code>
+	 */
+	public boolean isSetName() {
+		return name != null;
+	}
+
+	/**
+	 * Returns field variable <code>name</code>.
+	 * @return field variable <code>name</code>
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Sets field variable <code>name</code> to the specified element.
+	 */
+	public void setName(String name) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		this.name = name;
+	}
+
+	/**
+	 * Sets optional field variable <code>name</code> to <code>null</code>.
+	 */
+	public void unsetName() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		name = null;
+	}
+
+	/**
+	 * Test if optional field variable <code>description</code> is set.
+	 * @return <code>true</code> if it is not <code>null</code>
+	 */
+	public boolean isSetDescription() {
+		return description != null;
+	}
+
+	/**
+	 * Returns field variable <code>description</code>.
+	 * @return field variable <code>description</code>
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Sets field variable <code>description</code> to the specified element.
+	 */
+	public void setDescription(String description) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		this.description = description;
+	}
+
+	/**
+	 * Set optional field variable <code>description</code> to <code>null</code>.
+	 */
+	public void unsetDescription() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		description = null;
 	}
 
 	//	/**

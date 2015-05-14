@@ -340,7 +340,7 @@ public class SBOLWriter {
 		}
 	}
 
-	private static void formatCommonDocumentedData (List<NamedProperty<QName>> list, Documented d)
+	private static void formatCommonDocumentedData (List<NamedProperty<QName>> list, Identified d)
 	{
 		formatCommonIdentifiedData(list, d);
 		if(d.isSetName())

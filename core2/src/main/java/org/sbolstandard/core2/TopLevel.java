@@ -12,7 +12,7 @@ import java.net.URI;
  * @version 2.0-beta
  */
 
-public abstract class TopLevel extends Documented{
+public abstract class TopLevel extends Identified {
 	
 	public static final String collection = "col";
 	public static final String moduleDefinition = "md";

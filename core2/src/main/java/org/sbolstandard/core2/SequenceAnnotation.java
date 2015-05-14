@@ -17,7 +17,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
-public class SequenceAnnotation extends Documented {
+public class SequenceAnnotation extends Identified {
 
 	private Location location;
 	private URI component;

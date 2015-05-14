@@ -21,7 +21,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
-public abstract class ComponentInstance extends Documented {
+public abstract class ComponentInstance extends Identified {
 	
 	private AccessType access;
 	protected URI definition;

@@ -582,7 +582,7 @@ public class writeTester {
 		setCommonDocumentedData(t, name, description);
 	}
 
-	private static void setCommonDocumentedData(Documented d, String name, String description)
+	private static void setCommonDocumentedData(Identified d, String name, String description)
 	{
 		d.setName(name);
 		d.setDescription(description);

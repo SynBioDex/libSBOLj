@@ -22,7 +22,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
-public class Module extends Documented {
+public class Module extends Identified {
 	
 	private HashMap<URI, MapsTo> mapsTos;
 	private URI definition;
