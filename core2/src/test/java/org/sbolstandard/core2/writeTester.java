@@ -654,8 +654,9 @@ public class writeTester {
 			if (roles!=null) 
 				c.setRoles(roles);
 			setCommonTopLevelData(c, displayId, displayId);
-			if(structureData != null)
-				c.setSequence(structureData,version);
+			if(structureData != null) {
+				c.addSequence(structureData, version);
+			}
 		}
 
 		return c;

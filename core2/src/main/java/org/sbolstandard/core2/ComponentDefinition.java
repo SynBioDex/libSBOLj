@@ -25,7 +25,7 @@ public class ComponentDefinition extends TopLevel {
 
 	private Set<URI> types;
 	private Set<URI> roles;
-	private URI sequence;
+	private Set<URI> sequences;
 	private HashMap<URI, Component> components;
 	private HashMap<URI, SequenceAnnotation> sequenceAnnotations;
 	private HashMap<URI, SequenceConstraint> sequenceConstraints;
@@ -40,6 +40,7 @@ public class ComponentDefinition extends TopLevel {
 		this.types = new HashSet<>();
 		setTypes(types);
 		this.roles = new HashSet<>();
+		this.sequences = new HashSet<>();
 		this.components = new HashMap<>();
 		this.sequenceAnnotations = new HashMap<>();
 		this.sequenceConstraints = new HashMap<>();
@@ -80,9 +81,8 @@ public class ComponentDefinition extends TopLevel {
 			}
 			this.setSequenceAnnotations(sequenceAnnotations);
 		}
-		if (componentDefinition.isSetSequence()) {
-			this.setSequence(URI.create(componentDefinition.getSequence().toString()));
-		}
+
+		this.setSequenceURIs(componentDefinition.getSequenceURIs());
 	}
 	
 	
@@ -203,55 +203,61 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		roles.clear();
 	}
-	
-	/**
-	 * Test if the referenced {@link Sequence} instance is set.
-	 * @return <code>true</code> if the field variable is not <code>null</code>
-	 */
-	public boolean isSetSequence() {
-		return sequence != null;
+
+
+	public boolean addSequence(Sequence sequence) {
+		return this.addSequenceURI(sequence.identity);
 	}
 
-	/**
-	 * Returns the URI of the referenced {@link Sequence} instance.
-	 * @return the URI of the referenced {@link Sequence} instance.
-	 */
-	public URI getSequenceURI() {
-		return sequence;
-	}
-	
-	public Sequence getSequence() {
-		if (sbolDocument==null) return null;
-		return sbolDocument.getSequence(sequence);
+	public boolean addSequenceURI(URI sequenceUri) {
+		return sequences.add(sequenceUri);
 	}
 
-	public void setSequence(String sequence,String version) {
+
+	public void addSequence(String sequence,String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
+		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
 				TopLevel.sequence, sequence, version);
-		setSequence(sequenceURI);
+		addSequenceURI(sequenceURI);
 	}
+
 	/**
-	 * Sets the {@link Sequence} reference to the specified element.
+	 * Returns the URIs of the referenced {@link Sequence} instance.
+	 * @return the URIs of the referenced {@link Sequence} instance.
 	 */
-	public void setSequence(URI sequence) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getSequence(sequence)==null) {
-				throw new IllegalArgumentException("Sequence '" + sequence + "' does not exist.");
+	public Set<URI> getSequenceURIs() {
+		return sequences;
+	}
+	
+	public Set<Sequence> getSequences() {
+		if (sbolDocument==null) return null;
+		Set<Sequence> resolved = new HashSet<>();
+		for(URI su : sequences) {
+			Sequence seq = sbolDocument.getSequence(su);
+			if(seq != null) {
+				resolved.add(seq);
 			}
 		}
-		this.sequence = sequence;
+		return resolved;
 	}
-	
-	/**
-	 * Sets the {@link Sequence} reference to <code>null</code>.
-	 */
-	public void unsetSequence() {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		sequence = null;
+
+	public void setSequenceURIs(Set<URI> seqURIs) {
+		sequences.clear();
+		sequences.addAll(seqURIs);
 	}
-	
+
+	public void clearSequences() {
+		sequences.clear();
+	}
+
+	public boolean containsSequence(Sequence sequence) {
+		return containsSequenceURI(sequence.getIdentity());
+	}
+
+	public boolean containsSequenceURI(URI sequenceUri) {
+		return sequences.contains(sequenceUri);
+	}
+
 //	/**
 //	 * Test if any {@link SequenceAnnotation} instance exists.
 //	 * @return <code>true</code> if at least one such instance exists.
@@ -374,7 +380,7 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public boolean removeSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		return removeChildSafely(sequenceAnnotation,sequenceAnnotations);
+		return removeChildSafely(sequenceAnnotation, sequenceAnnotations);
 	}
 	
 	/**
@@ -481,7 +487,7 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public boolean removeComponent(Component component) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		return removeChildSafely(component,components);
+		return removeChildSafely(component, components);
 	}
 	
 	/**
@@ -715,8 +721,8 @@ public class ComponentDefinition extends TopLevel {
 	
 	protected boolean isComplete() {
 		if (sbolDocument==null) return false;
-		if (sequence!=null) {
-			if (getSequence()==null) return false;
+		if (sequences.isEmpty()) {
+			return false;
 		}
 		for (Component component : getComponents()) {
 			if (component.getDefinition()==null) return false;
