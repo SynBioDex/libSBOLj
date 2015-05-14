@@ -401,8 +401,8 @@ public class SBOLWriter {
 			formatComponents(c.getComponents(),list);
 			formatSequenceAnnotations(c.getSequenceAnnotations(),list);
 			formatSequenceConstraints(c.getSequenceConstraints(),list);
-			if(c.getSequenceURI() != null)
-				formatSequence(c.getSequenceURI(), list);
+			for(URI sUri: c.getSequenceURIs())
+				formatSequence(sUri, list);
 
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ComponentDefinition.ComponentDefinition, c.getIdentity(), NamedProperties(list)));
 		}
