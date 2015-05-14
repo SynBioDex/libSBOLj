@@ -246,6 +246,17 @@ public class ComponentDefinition extends TopLevel {
 		sequences.addAll(seqURIs);
 	}
 
+	public void clearSequences() {
+		sequences.clear();
+	}
+
+	public boolean containsSequence(Sequence sequence) {
+		return containsSequenceURI(sequence.getIdentity());
+	}
+
+	public boolean containsSequenceURI(URI sequenceUri) {
+		return sequences.contains(sequenceUri);
+	}
 
 //	/**
 //	 * Test if any {@link SequenceAnnotation} instance exists.
