@@ -592,8 +592,9 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<>();
 
 			formatCommonDocumentedData(list, s);
-			if(s.getLocation() != null)
-				list.add(getLocation(s.getLocation()));
+			for (Location location : s.getLocations()) {
+				list.add(getLocation(location));
+			}
 			if(s.getComponentURI() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceAnnotation.hasComponent, s.getComponentURI()));
 

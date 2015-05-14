@@ -229,10 +229,10 @@ public class SBOLTestUtils {
 		return m;
 	}
 
-	public static SequenceAnnotation createSequenceAnnotation(String id, Location location,
+	public static SequenceAnnotation createSequenceAnnotation(String id, List<Location> locations,
 			List<Annotation> annotations)
 	{
-		SequenceAnnotation sa = new SequenceAnnotation(URI.create(id), location);
+		SequenceAnnotation sa = new SequenceAnnotation(URI.create(id), locations);
 		if(annotations != null)
 			sa.setAnnotations(annotations);
 		return sa;

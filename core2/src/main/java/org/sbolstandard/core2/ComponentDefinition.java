@@ -268,15 +268,15 @@ public class ComponentDefinition extends TopLevel {
 	 * then adds to the list of SequenceAnnotation instances owned by this instance.
 	 * @return the created SequenceAnnotation instance.
 	 */
-	SequenceAnnotation createSequenceAnnotation(URI identity, Location location) {
-		SequenceAnnotation sequenceAnnotation = new SequenceAnnotation(identity, location);
+	SequenceAnnotation createSequenceAnnotation(URI identity, List<Location> locations) {
+		SequenceAnnotation sequenceAnnotation = new SequenceAnnotation(identity, locations);
 		addSequenceAnnotation(sequenceAnnotation);
 		return sequenceAnnotation;
 	}
 	
 	/**
 	 */
-	public SequenceAnnotation createSequenceAnnotation(String displayId, Location location) {
+	SequenceAnnotation createSequenceAnnotation(String displayId, Location location) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
@@ -285,7 +285,9 @@ public class ComponentDefinition extends TopLevel {
 			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
 					"'is not compliant in parent `" + this.getIdentity() +
 			        "' for " + URIprefix + " " + displayId + " " + version);
-		SequenceAnnotation sa = createSequenceAnnotation(newSequenceAnnotationURI, location);
+		List<Location> locations = new ArrayList<>();
+		locations.add(location);
+		SequenceAnnotation sa = createSequenceAnnotation(newSequenceAnnotationURI, locations);
 		sa.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		sa.setDisplayId(displayId);
 		sa.setVersion(version);
@@ -681,40 +683,42 @@ public class ComponentDefinition extends TopLevel {
 				if (!allDescendantsCompliant) { // Current sequence annotation has non-compliant URI. 
 					return allDescendantsCompliant;
 				}
-				Location location = sequenceAnnotation.getLocation();
-				if (location instanceof Range) {
-					allDescendantsCompliant = allDescendantsCompliant 
-							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-					if (!allDescendantsCompliant) { // Current range has non-compliant URI. 
-						return allDescendantsCompliant;
+				Set<Location> locations = sequenceAnnotation.getLocations();
+				for (Location location : locations) {
+					if (location instanceof Range) {
+						allDescendantsCompliant = allDescendantsCompliant 
+								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
+						if (!allDescendantsCompliant) { // Current range has non-compliant URI. 
+							return allDescendantsCompliant;
+						}
 					}
-				}
-				if (location instanceof Cut) {
-					allDescendantsCompliant = allDescendantsCompliant 
-							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-					if (!allDescendantsCompliant) { // Current cut has non-compliant URI. 
-						return allDescendantsCompliant;
+					if (location instanceof Cut) {
+						allDescendantsCompliant = allDescendantsCompliant 
+								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
+						if (!allDescendantsCompliant) { // Current cut has non-compliant URI. 
+							return allDescendantsCompliant;
+						}
 					}
-				}
-				if (location instanceof GenericLocation) {
-					allDescendantsCompliant = allDescendantsCompliant 
-							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-					if (!allDescendantsCompliant) { // Current generic location has non-compliant URI. 
-						return allDescendantsCompliant;
+					if (location instanceof GenericLocation) {
+						allDescendantsCompliant = allDescendantsCompliant 
+								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
+						if (!allDescendantsCompliant) { // Current generic location has non-compliant URI. 
+							return allDescendantsCompliant;
+						}
 					}
-				}
-				if (location instanceof MultiRange) {
-					allDescendantsCompliant = allDescendantsCompliant 
-							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-					if (!allDescendantsCompliant) { // Current generic location has non-compliant URI. 
-						return allDescendantsCompliant;
-					}
-					if (!((MultiRange) location).getRanges().isEmpty()) {
-						for (Range range : ((MultiRange) location).getRanges()) {
-							allDescendantsCompliant = allDescendantsCompliant 
-									&& isChildURIcompliant(location.getIdentity(), range.getIdentity());
-							if (!allDescendantsCompliant) { // Current location has non-compliant URI. 
-								return allDescendantsCompliant;
+					if (location instanceof MultiRange) {
+						allDescendantsCompliant = allDescendantsCompliant 
+								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
+						if (!allDescendantsCompliant) { // Current generic location has non-compliant URI. 
+							return allDescendantsCompliant;
+						}
+						if (!((MultiRange) location).getRanges().isEmpty()) {
+							for (Range range : ((MultiRange) location).getRanges()) {
+								allDescendantsCompliant = allDescendantsCompliant 
+										&& isChildURIcompliant(location.getIdentity(), range.getIdentity());
+								if (!allDescendantsCompliant) { // Current location has non-compliant URI. 
+									return allDescendantsCompliant;
+								}
 							}
 						}
 					}

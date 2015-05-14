@@ -61,7 +61,7 @@ public class writeTester {
 		//		writeJsonString();
 		//		writeTurtleString();
 
-		writeRdfFile();
+		//writeRdfFile();
 
 		//writeJsonFile();
 		//writeTurtleFile();
@@ -803,8 +803,7 @@ public class writeTester {
 			identity += "/" + cd.getVersion();
 		SequenceAnnotation s = cd.getSequenceAnnotation(URI.create(identity));
 		if (s==null) {
-			s = cd.createSequenceAnnotation(displayId, startRange, endRange);
-			((Range)s.getLocation()).setOrientation(Sbol2Terms.Orientation.inline);
+			s = cd.createSequenceAnnotation(displayId, startRange, endRange, OrientationType.INLINE);
 			//s.addRange(20, 30);
 			//s.addRange(30, 40);
 			//s.removeRange(URI.create(s.getPersistentIdentity()+"/multiRange/range2/1.0"));

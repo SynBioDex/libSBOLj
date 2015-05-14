@@ -814,7 +814,9 @@ public class SBOLReader
 			}
 		}
 
-		SequenceAnnotation s = new SequenceAnnotation(identity, location);
+		List<Location> locations = new ArrayList<>();
+		locations.add(location);
+		SequenceAnnotation s = new SequenceAnnotation(identity, locations);
 		if(!persIdentity.equals("")) {
 			s.setPersistentIdentity(URI.create(persIdentity));
 			s.setDisplayId("annotation" + sa_num);
@@ -1014,6 +1016,7 @@ public class SBOLReader
 		String description 	   = null;
 		String version   	   = null;
 		URI wasDerivedFrom 	   = null;
+		List<Location> locations = new ArrayList<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
@@ -1033,6 +1036,7 @@ public class SBOLReader
 			else if (namedProperty.getName().equals(Sbol2Terms.Location.Location))
 			{
 				location = parseLocation((NestedDocument<QName>) namedProperty.getValue());
+				locations.add(location);
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.SequenceAnnotation.hasComponent))
 			{
@@ -1056,7 +1060,7 @@ public class SBOLReader
 			}
 		}
 
-		SequenceAnnotation s = new SequenceAnnotation(sequenceAnnotation.getIdentity(), location);
+		SequenceAnnotation s = new SequenceAnnotation(sequenceAnnotation.getIdentity(), locations);
 
 		if (persistentIdentity != null)
 			s.setPersistentIdentity(persistentIdentity);
