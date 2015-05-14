@@ -97,7 +97,7 @@ public class SBOLTestUtils {
 		//		componentDefinition.setDescription(id);
 
 		if (sequenceId!= null)
-			componentDefinition.addSequenceURI(sequenceId);
+			componentDefinition.addSequence(sequenceId);
 		if (sequenceAnnotations!= null)
 			componentDefinition.setSequenceAnnotations(sequenceAnnotations);
 		if (sequenceConstraints!= null)

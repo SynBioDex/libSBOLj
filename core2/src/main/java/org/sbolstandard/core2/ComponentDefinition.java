@@ -82,7 +82,7 @@ public class ComponentDefinition extends TopLevel {
 			this.setSequenceAnnotations(sequenceAnnotations);
 		}
 
-		this.setSequenceURIs(componentDefinition.getSequenceURIs());
+		this.setSequences(componentDefinition.getSequenceURIs());
 	}
 	
 	
@@ -206,11 +206,11 @@ public class ComponentDefinition extends TopLevel {
 
 
 	public boolean addSequence(Sequence sequence) {
-		return this.addSequenceURI(sequence.identity);
+		return this.addSequence(sequence.identity);
 	}
 
-	public boolean addSequenceURI(URI sequenceUri) {
-		return sequences.add(sequenceUri);
+	public boolean addSequence(URI sequenceURI) {
+		return sequences.add(sequenceURI);
 	}
 
 
@@ -218,7 +218,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
 				TopLevel.sequence, sequence, version);
-		addSequenceURI(sequenceURI);
+		addSequence(sequenceURI);
 	}
 
 	/**
@@ -241,21 +241,35 @@ public class ComponentDefinition extends TopLevel {
 		return resolved;
 	}
 
-	public void setSequenceURIs(Set<URI> seqURIs) {
-		sequences.clear();
-		sequences.addAll(seqURIs);
+	public void setSequences(Set<URI> sequences) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		clearSequences();
+		if (sequences==null) return;
+		for (URI sequence : sequences) {
+			addSequence(sequence);
+		}
 	}
 
+	/**
+	 * Removes the instance matching the specified URI from the list of sequences if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public boolean removeSequence(URI sequenceURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		return sequences.remove(sequenceURI);
+	}
+	
 	public void clearSequences() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		sequences.clear();
 	}
 
-	public boolean containsSequence(Sequence sequence) {
-		return containsSequenceURI(sequence.getIdentity());
-	}
+//	public boolean containsSequence(Sequence sequence) {
+//		return containsSequenceURI(sequence.getIdentity());
+//	}
 
-	public boolean containsSequenceURI(URI sequenceUri) {
-		return sequences.contains(sequenceUri);
+	public boolean containsSequence(URI sequenceURI) {
+		return sequences.contains(sequenceURI);
 	}
 
 //	/**

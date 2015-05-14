@@ -558,7 +558,7 @@ public class SBOLReader
 			if (description != null && !description.isEmpty())
 				c.setDescription(description);
 			if (seq_identity != null)
-				c.addSequenceURI(seq_identity);
+				c.addSequence(seq_identity);
 			if (!annotations.isEmpty())
 				c.setAnnotations(annotations);
 			if (!sequenceAnnotations.isEmpty())
@@ -917,7 +917,7 @@ public class SBOLReader
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
 		if (structure != null)
-			c.addSequenceURI(structure);
+			c.addSequence(structure);
 		if (!components.isEmpty())
 			c.setComponents(components);
 		if (!sequenceAnnotations.isEmpty())
