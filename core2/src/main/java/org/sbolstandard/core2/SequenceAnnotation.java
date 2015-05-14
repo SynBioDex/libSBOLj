@@ -494,9 +494,6 @@ public class SequenceAnnotation extends Identified {
 			if (location instanceof GenericLocation) {
 				((GenericLocation) location).updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
 			}
-			if (location instanceof MultiRange) {
-				((MultiRange) location).updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
-			}
 		}
 		// TODO: need to set wasDerivedFrom here?
 		this.setWasDerivedFrom(this.getIdentity());

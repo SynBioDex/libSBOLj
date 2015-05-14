@@ -706,22 +706,6 @@ public class ComponentDefinition extends TopLevel {
 							return allDescendantsCompliant;
 						}
 					}
-					if (location instanceof MultiRange) {
-						allDescendantsCompliant = allDescendantsCompliant 
-								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-						if (!allDescendantsCompliant) { // Current generic location has non-compliant URI. 
-							return allDescendantsCompliant;
-						}
-						if (!((MultiRange) location).getRanges().isEmpty()) {
-							for (Range range : ((MultiRange) location).getRanges()) {
-								allDescendantsCompliant = allDescendantsCompliant 
-										&& isChildURIcompliant(location.getIdentity(), range.getIdentity());
-								if (!allDescendantsCompliant) { // Current location has non-compliant URI. 
-									return allDescendantsCompliant;
-								}
-							}
-						}
-					}
 				}
 			}
 		}

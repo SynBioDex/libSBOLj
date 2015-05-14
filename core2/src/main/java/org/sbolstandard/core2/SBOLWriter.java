@@ -696,23 +696,6 @@ public class SBOLWriter {
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(property)));
 		}
-		else if(location instanceof MultiRange)
-		{
-			MultiRange multiRange = (MultiRange) location;
-			for(Range range : multiRange.getRanges()) {
-				List<NamedProperty<QName>> rangeProperty = new ArrayList<>();
-				formatCommonIdentifiedData(rangeProperty, range);
-				rangeProperty.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
-				rangeProperty.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
-				if(range.isSetOrientation())
-					rangeProperty.add(NamedProperty(Sbol2Terms.Range.orientation, range.getOrientationURI()));
-				property.add(NamedProperty(Sbol2Terms.MultiRange.hasRanges, 
-						NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(rangeProperty))));
-			}
-			
-			return NamedProperty(Sbol2Terms.Location.Location,
-					NestedDocument(Sbol2Terms.MultiRange.MultiRange, multiRange.getIdentity(), NamedProperties(property)));
-		}
 		else if(location instanceof Cut)
 		{
 			Cut cut = (Cut) location;

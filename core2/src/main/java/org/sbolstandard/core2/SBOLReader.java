@@ -1090,10 +1090,6 @@ public class SBOLReader
 		{
 			l = parseRange(location);
 		}
-		else if (location.getType().equals(Sbol2Terms.MultiRange.MultiRange))
-		{
-			l = parseMultiRange(location);
-		}
 		else if (location.getType().equals(Sbol2Terms.Cut.Cut))
 		{
 			l = parseCut(location);
@@ -1235,58 +1231,6 @@ public class SBOLReader
 			c.setAnnotations(annotations);
 
 		return c;
-	}
-
-	private static MultiRange parseMultiRange(NestedDocument<QName> typeMultiRange)
-	{
-		URI persistentIdentity = null;
-		String version 		   = null;
-		URI wasDerivedFrom 	   = null;
-		String displayId       = null;
-
-		List<Range> ranges 	 		 = new ArrayList<>();
-		List<Annotation> annotations = new ArrayList<>();
-
-		for (NamedProperty<QName> namedProperty : typeMultiRange.getProperties())
-		{
-			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
-			{
-				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
-			{
-				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.MultiRange.hasRanges))
-			{
-				ranges.add(parseRange((NestedDocument<QName>) namedProperty.getValue()));
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
-			{
-				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
-			{
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
-			}
-			else
-			{
-				annotations.add(new Annotation(namedProperty));
-			}
-		}
-
-		MultiRange multiRange = new MultiRange(typeMultiRange.getIdentity(),ranges);
-		if (displayId != null)
-			multiRange.setDisplayId(displayId);
-		if (persistentIdentity != null)
-			multiRange.setPersistentIdentity(persistentIdentity);
-		if(version != null)
-			multiRange.setVersion(version);
-		if (wasDerivedFrom != null)
-			multiRange.setWasDerivedFrom(wasDerivedFrom);
-		if (!annotations.isEmpty())
-			multiRange.setAnnotations(annotations);
-		return multiRange;
 	}
 
 	private static Range parseRange(NestedDocument<QName> typeRange)
