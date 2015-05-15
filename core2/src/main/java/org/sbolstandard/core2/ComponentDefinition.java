@@ -501,6 +501,9 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public boolean removeComponent(Component component) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		// TODO: check if in use in sequence constraints
+		// TODO: check if in use in sequence annotations
+		// TODO: check if in use in mapsTos
 		return removeChildSafely(component, components);
 	}
 	

@@ -392,6 +392,8 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public boolean removeFunctionalComponent(FunctionalComponent functionalComponent) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		// TODO: check if in use in participations
+		// TODO: check if in use in mapsTo
 		return removeChildSafely(functionalComponent,functionalComponents);
 	}
 	

@@ -199,11 +199,11 @@ public class writeTester {
 		myParts.addMember(get_tetR(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_pLactetR(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_LacI_Inv(SBOL2Doc_test).getIdentity());
-
 		myParts.addMember(get_Toggle(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_ToggleModel(SBOL2Doc_test).getIdentity());
 
 		myParts.addMember(get_topLevel(SBOL2Doc_test).getIdentity());
+
 		return myParts;
 	}
 

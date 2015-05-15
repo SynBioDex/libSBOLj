@@ -89,6 +89,16 @@ public class SBOLDocument {
 	 */
 	public boolean removeModuleDefinition(ModuleDefinition moduleDefinition) {
 		checkReadOnly();
+		if (complete) {
+			for (ModuleDefinition md : moduleDefinitions.values()) {
+				for (Module m : md.getModules()) {
+					if (m.getDefinitionURI().equals(moduleDefinition.getIdentity())) {
+						throw new SBOLException("Cannot remove " + moduleDefinition.getIdentity() + 
+								" since it is in use.");
+					}
+				}
+			}
+		}
 		return removeTopLevel(moduleDefinition,moduleDefinitions);
 	}
 
@@ -255,6 +265,14 @@ public class SBOLDocument {
 	 */
 	public boolean removeModel(Model model) {
 		checkReadOnly();
+		if (complete) {
+			for (ModuleDefinition md : moduleDefinitions.values()) {
+				if (md.containsModel(model.getIdentity())) {
+					throw new SBOLException("Cannot remove " + model.getIdentity() + 
+								" since it is in use.");
+				}
+			}
+		}
 		return removeTopLevel(model,models);
 	}
 
@@ -339,6 +357,24 @@ public class SBOLDocument {
 	 */
 	public boolean removeComponentDefinition(ComponentDefinition componentDefinition) {
 		checkReadOnly();
+		if (complete) {
+			for (ComponentDefinition cd : componentDefinitions.values()) {
+				for (Component c : cd.getComponents()) {
+					if (c.getDefinitionURI().equals(componentDefinition.getIdentity())) {
+						throw new SBOLException("Cannot remove " + componentDefinition.getIdentity() + 
+								" since it is in use.");
+					}
+				}
+			}
+			for (ModuleDefinition cd : moduleDefinitions.values()) {
+				for (FunctionalComponent c : cd.getFunctionalComponents()) {
+					if (c.getDefinitionURI().equals(componentDefinition.getIdentity())) {
+						throw new SBOLException("Cannot remove " + componentDefinition.getIdentity() + 
+								" since it is in use.");
+					}
+				}
+			}
+		}
 		return removeTopLevel(componentDefinition,componentDefinitions);
 	}
 
@@ -595,6 +631,14 @@ public class SBOLDocument {
 	 */
 	public boolean removeSequence(Sequence sequence) {
 		checkReadOnly();
+		if (complete) {
+			for (ComponentDefinition cd : componentDefinitions.values()) {
+				if (cd.containsSequence(sequence.getIdentity())) {
+					throw new SBOLException("Cannot remove " + sequence.getIdentity() + 
+							" since it is in use.");
+				}
+			}
+		}
 		return removeTopLevel(sequence,sequences);
 	}
 
@@ -955,6 +999,14 @@ public class SBOLDocument {
 	}
 	
 	private final <TL extends TopLevel> boolean removeTopLevel(TopLevel topLevel, Map<URI, TL> instancesMap) {
+		if (complete) {
+			for (Collection c : collections.values()) {
+				if (c.containsMember(topLevel.getIdentity())) {
+					throw new SBOLException("Cannot remove " + topLevel.getIdentity() + 
+								" since it is in use.");
+				}
+			}
+		}
 		Set<TopLevel> setToRemove = new HashSet<>();
 		setToRemove.add(topLevel);
 		boolean changed = instancesMap.values().removeAll(setToRemove);
