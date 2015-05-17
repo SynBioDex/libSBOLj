@@ -536,8 +536,8 @@ public class writeTester {
 	private static void get_Inv1 (SBOLDocument SBOL2Doc_test,ModuleDefinition md)
 	{
 		Module m = createModuleData(md,getData("Inv1"),"LacI_Inv");
-		createMapTo(m,"Inv1a", RefinementType.USELOCAL, "LacISp","LacIIn");
-		createMapTo(m,"Inv2a_TetRSp", RefinementType.USELOCAL, "TetRSp","TetROut");
+		createMapsTo(m,"Inv1a", RefinementType.USELOCAL, "LacISp","LacIIn");
+		createMapsTo(m,"Inv2a_TetRSp", RefinementType.USELOCAL, "TetRSp","TetROut");
 	}
 
 	private static void get_Inv2 (SBOLDocument SBOL2Doc_test,ModuleDefinition md)
@@ -546,8 +546,8 @@ public class writeTester {
 			md,
 			getData("Inv2"),
 			"TetR_Inv");
-		createMapTo(m,"Inv1b", RefinementType.USELOCAL, "LacISp","LacIOut");
-		createMapTo(m,"Inv2b", RefinementType.USELOCAL, "TetRSp","TetRIn");
+		createMapsTo(m,"Inv1b", RefinementType.USELOCAL, "LacISp","LacIOut");
+		createMapsTo(m,"Inv2b", RefinementType.USELOCAL, "TetRSp","TetRIn");
 	}
 
 	private static Model get_ToggleModel(SBOLDocument SBOL2Doc_test)
@@ -719,7 +719,7 @@ public class writeTester {
 		return "turtleString";
 	}
 
-	private static void createMapTo(Module m, String displayId, RefinementType refinement,
+	private static void createMapsTo(Module m, String displayId, RefinementType refinement,
 			String pre_fi, String post_fi)
 	{
 		m.createMapsTo(displayId, refinement, pre_fi, post_fi);

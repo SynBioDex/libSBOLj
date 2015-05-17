@@ -392,8 +392,44 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public boolean removeFunctionalComponent(FunctionalComponent functionalComponent) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		// TODO: check if in use in participations
-		// TODO: check if in use in mapsTo
+		for (Interaction i : interactions.values()) {
+			for (Participation p : i.getParticipations()) {
+				if (p.getParticipantURI().equals(functionalComponent.getIdentity())) {
+					throw new SBOLException("Cannot remove " + functionalComponent.getIdentity() + 
+							" since it is in use.");
+				}
+			}
+		}
+		for (FunctionalComponent c : functionalComponents.values()) {
+			for (MapsTo mt : c.getMapsTos()) {
+				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
+					throw new SBOLException("Cannot remove " + functionalComponent.getIdentity() + 
+							" since it is in use.");
+				}
+			}
+			
+		}
+		for (Module m : modules.values()) {
+			for (MapsTo mt : m.getMapsTos()) {
+				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
+					throw new SBOLException("Cannot remove " + functionalComponent.getIdentity() + 
+							" since it is in use.");
+				}
+			}
+			
+		}
+		if (sbolDocument!=null) {
+			for (ModuleDefinition md : sbolDocument.getModuleDefinitions()) {
+				for (Module m : md.getModules()) {
+					for (MapsTo mt : m.getMapsTos()) {
+						if (mt.getRemoteURI().equals(functionalComponent.getIdentity())) {
+							throw new SBOLException("Cannot remove " + functionalComponent.getIdentity() + 
+									" since it is in use.");
+						}
+					}					
+				}
+			}
+		}
 		return removeChildSafely(functionalComponent,functionalComponents);
 	}
 	

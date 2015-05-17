@@ -501,9 +501,42 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public boolean removeComponent(Component component) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		// TODO: check if in use in sequence constraints
-		// TODO: check if in use in sequence annotations
-		// TODO: check if in use in mapsTos
+		for (SequenceAnnotation sa : sequenceAnnotations.values()) {
+			if (sa.getComponentURI().equals(component.getIdentity())) {
+				throw new SBOLException("Cannot remove " + component.getIdentity() + 
+						" since it is in use.");
+			}
+		}
+		for (SequenceConstraint sc : sequenceConstraints.values()) {
+			if (sc.getSubjectURI().equals(component.getIdentity())) {
+				throw new SBOLException("Cannot remove " + component.getIdentity() + 
+						" since it is in use.");
+			}
+			if (sc.getObjectURI().equals(component.getIdentity())) {
+				throw new SBOLException("Cannot remove " + component.getIdentity() + 
+						" since it is in use.");
+			}
+		}
+		for (Component c : components.values()) {
+			for (MapsTo mt : c.getMapsTos()) {
+				if (mt.getLocalURI().equals(component.getIdentity())) {
+					throw new SBOLException("Cannot remove " + component.getIdentity() + 
+							" since it is in use.");
+				}
+			}
+		}
+		if (sbolDocument!=null) {
+			for (ComponentDefinition cd : sbolDocument.getComponentDefinitions()) {
+				for (Component c : cd.getComponents()) {
+					for (MapsTo mt : c.getMapsTos()) {
+						if (mt.getRemoteURI().equals(component.getIdentity())) {
+							throw new SBOLException("Cannot remove " + component.getIdentity() + 
+									" since it is in use.");
+						}
+					}					
+				}
+			}
+		}
 		return removeChildSafely(component, components);
 	}
 	
