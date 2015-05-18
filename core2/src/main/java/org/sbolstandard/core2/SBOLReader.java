@@ -25,11 +25,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-import org.sbolstandard.core2.ComponentInstance.AccessType;
-import org.sbolstandard.core2.FunctionalComponent.DirectionType;
-import org.sbolstandard.core2.MapsTo.RefinementType;
-import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
-
 import uk.ac.intbio.core.io.turtle.TurtleIo;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.IdentifiableDocument;
@@ -513,7 +508,7 @@ public class SBOLReader
 		{
 			URI sc_identity    			= URI.create(persIdentity + "/sequenceConstraint" + ++sc_number + "/1.0");
 			URI restrictionURI 			= Sbol2Terms.DnaComponentV1URI.restriction;
-			RestrictionType restriction = SequenceConstraint.RestrictionType.convertToRestrictionType(restrictionURI);
+			RestrictionType restriction = RestrictionType.convertToRestrictionType(restrictionURI);
 
 			URI subject = null;
 			URI object  = null;
@@ -958,7 +953,7 @@ public class SBOLReader
 			else if (namedProperty.getName().equals(
 					Sbol2Terms.SequenceConstraint.restriction))
 			{
-				restriction = SequenceConstraint.RestrictionType
+				restriction = RestrictionType
 						.convertToRestrictionType(URI
 								.create(((Literal<QName>) namedProperty
 										.getValue()).getValue().toString()));
@@ -1329,7 +1324,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
-				access = ComponentInstance.AccessType.convertToAccessType(URI
+				access = AccessType.convertToAccessType(URI
 						.create(((Literal<QName>) namedProperty.getValue())
 								.getValue().toString()));
 			}
@@ -1986,13 +1981,13 @@ public class SBOLReader
 			}
 			else if (f.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
-				access = ComponentInstance.AccessType.convertToAccessType(URI
+				access = AccessType.convertToAccessType(URI
 						.create(((Literal<QName>) f.getValue()).getValue()
 								.toString()));
 			}
 			else if (f.getName().equals(Sbol2Terms.FunctionalComponent.direction))
 			{
-				direction = FunctionalComponent.DirectionType
+				direction = DirectionType
 						.convertToDirectionType(URI.create(((Literal<QName>) f
 								.getValue()).getValue().toString()));
 			}

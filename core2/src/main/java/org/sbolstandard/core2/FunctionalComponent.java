@@ -18,80 +18,6 @@ public class FunctionalComponent extends ComponentInstance {
 
 	private DirectionType direction;
 
-	public enum DirectionType {
-		INPUT("input"), OUTPUT("output"), INOUT("inout"), NONE("none");
-		private final String directionType;
-
-		DirectionType(String directionType) {
-			this.directionType = directionType;
-		}
-
-		/**
-		 * Returns the direction type.
-		 * 
-		 * @return direction type.
-		 */
-		String getDirectionType() {
-			return directionType;
-		}
-
-		@Override
-		public String toString() {
-			return directionType;
-		}
-
-		/**
-		 * Convert the specified URI to its corresponding DirectionType instance.
-		 * @param direction
-		 * @return the corresponding DirectionType instance
-		 */
-		static DirectionType convertToDirectionType(URI direction) {
-			if (direction != null) {
-				if (direction.equals(Direction.INOUT)) {
-					return DirectionType.INOUT;
-				} else if (direction.equals(Direction.INPUT)) {
-					return DirectionType.INPUT;
-				} else if (direction.equals(Direction.NONE)) {
-					return DirectionType.NONE;
-				} else if (direction.equals(Direction.OUTPUT)) {
-					return DirectionType.OUTPUT;
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		}
-		
-		/**
-		 * Returns the direction type in URI.
-		 * @return direction type in URI
-		 */
-		static URI convertToURI(DirectionType direction) {
-			if (direction != null) {
-				if (direction.equals(DirectionType.INOUT)) {
-					return Direction.INOUT;
-				}
-				else if (direction.equals(DirectionType.INPUT)) {
-					return Direction.INPUT;
-				}
-				else if (direction.equals(DirectionType.OUTPUT)) {
-					return Direction.OUTPUT;
-				}
-				else if (direction.equals(DirectionType.NONE)) {
-					return Direction.NONE;
-				}
-				else {
-					return null;
-				}
-			}
-			else {
-				return null;
-			}
-		}
-	}
-	
-
 	FunctionalComponent(URI identity, AccessType access, URI definitionURI,
 			DirectionType direction) {
 		super(identity, access, definitionURI);
@@ -164,7 +90,7 @@ public class FunctionalComponent extends ComponentInstance {
 		}
 	}
 
-	private static final class Direction {
+	static final class Direction {
 		public static final URI	INPUT	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "input");
 		public static final URI	OUTPUT	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "output");
 		public static final URI	INOUT	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "inout");

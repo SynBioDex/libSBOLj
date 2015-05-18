@@ -6,9 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.sbolstandard.core2.ComponentInstance.AccessType;
-import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
-
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**

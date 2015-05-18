@@ -13,8 +13,6 @@ import javax.xml.namespace.QName;
 
 import org.junit.Test;
 import org.sbolstandard.core.SBOLValidationException;
-import org.sbolstandard.core2.ComponentInstance.AccessType;
-import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 /**
  * @author Tramy Nguyen
  *
@@ -930,7 +928,7 @@ public abstract class SBOLAbstractTests {
 		//get_struct_constraint 321
 		SequenceConstraint struct_constraint =
 				SBOLTestUtils.createSequenceConstraint("struct_constraint",
-						P.getIdentity(), C.getIdentity(), SequenceConstraint.RestrictionType.PRECEDES, null);
+						P.getIdentity(), C.getIdentity(), RestrictionType.PRECEDES, null);
 		sequenceConstraints.add(struct_constraint);
 
 		return SBOLTestUtils.createComponentDefinition(document, "pLactetR", type, role,

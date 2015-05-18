@@ -17,10 +17,6 @@ import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
 import org.sbolstandard.core.SBOLValidationException;
-import org.sbolstandard.core2.ComponentInstance.AccessType;
-import org.sbolstandard.core2.FunctionalComponent.DirectionType;
-import org.sbolstandard.core2.MapsTo.RefinementType;
-import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 
@@ -268,7 +264,7 @@ public class writeTester {
 				cd,
 				getData("struct_constraint"),
 				"P","C",
-				SequenceConstraint.RestrictionType.PRECEDES);
+				RestrictionType.PRECEDES);
 	}
 
 	private static ComponentDefinition get_pLactetR (SBOLDocument SBOL2Doc_test)
