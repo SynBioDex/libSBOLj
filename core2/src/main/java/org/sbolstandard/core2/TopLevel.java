@@ -15,11 +15,11 @@ import java.net.URI;
 public abstract class TopLevel extends Identified {
 	
 	public static final String COLLECTION = "col";
-	public static final String MODULEDEFINITION = "md";
+	public static final String MODULE_DEFINITION = "md";
 	public static final String MODEL = "mod";
-	public static final String COMPONENTDEFINITION = "cd";
+	public static final String COMPONENT_DEFINITION = "cd";
 	public static final String SEQUENCE = "seq";
-	public static final String GENERICTOPLEVEL = "gen";
+	public static final String GENERIC_TOP_LEVEL = "gen";
 		
 	TopLevel(URI identity) {
 		super(identity);

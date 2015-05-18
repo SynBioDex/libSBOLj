@@ -451,7 +451,7 @@ public class SBOLReader
 				displayId = fixDisplayId(displayId);
 				if (setURIPrefix != null ) //TODO: check version set
 				{
-					persIdentity = setURIPrefix + "/" + TopLevel.COMPONENTDEFINITION +
+					persIdentity = setURIPrefix + "/" + TopLevel.COMPONENT_DEFINITION +
 							"/" + displayId;
 					identity = URI.create(persIdentity + "/1.0");
 				}

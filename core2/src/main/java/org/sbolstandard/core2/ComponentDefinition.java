@@ -473,7 +473,7 @@ public class ComponentDefinition extends TopLevel {
 			String componentDefinition, String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
-				TopLevel.COMPONENTDEFINITION, componentDefinition, version);
+				TopLevel.COMPONENT_DEFINITION, componentDefinition, version);
 		return createComponent(displayId,access,componentDefinitionURI);
 	}
 	
