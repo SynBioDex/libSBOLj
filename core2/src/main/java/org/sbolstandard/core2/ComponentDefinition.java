@@ -398,7 +398,16 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of structuralAnnotations if present.
+	 * Returns the instance matching the specified displayId from the list of sequence annotations, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public SequenceAnnotation getSequenceAnnotation(String displayId) {		
+		return sequenceAnnotations.get(createCompliantURI(this.getPersistentIdentity().toString(),
+				displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of sequence annotations, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceAnnotation getSequenceAnnotation(URI sequenceAnnotationURI) {		
@@ -541,11 +550,19 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of structuralInstantiations if present.
+	 * Returns the instance matching the specified displayId from the list of components, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Component getComponent(URI subComponentURI) {
-		return components.get(subComponentURI);
+	public Component getComponent(String displayId) {
+		return components.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of components, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Component getComponent(URI componentURI) {
+		return components.get(componentURI);
 	}
 	
 	/**
@@ -655,7 +672,16 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of sequence constraints if present.
+	 * Returns the instance matching the specified displayId from the list of sequence constraints, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public SequenceConstraint getSequenceConstraint(String displayId) {
+		return sequenceConstraints.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,
+				this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of sequence constraints, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceConstraint getSequenceConstraint(URI sequenceConstraintURI) {

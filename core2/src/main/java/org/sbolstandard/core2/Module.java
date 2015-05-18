@@ -157,7 +157,15 @@ public class Module extends Identified {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of references if present.
+	 * Returns the instance matching the specified displayId from the list of maps to objects, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public MapsTo getMapsTo(String displayId) {
+		return mapsTos.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of maps to objects, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo getMapsTo(URI referenceURI) {

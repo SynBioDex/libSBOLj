@@ -176,9 +176,17 @@ public class Interaction extends Identified {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(participation,participations);
 	}
+
+	/**
+	 * Returns the instance matching the specified displayId from the list of participations, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Participation getParticipation(String displayId) {
+		return participations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of participations if present.
+	 * Returns the instance matching the specified URI from the list of participations, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Participation getParticipation(URI participationURI) {

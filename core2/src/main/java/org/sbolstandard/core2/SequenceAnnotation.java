@@ -65,7 +65,15 @@ public class SequenceAnnotation extends Identified {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of location if present.
+	 * Returns the instance matching the specified displayId from the list of locations, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Location getLocation(String displayId) {
+		return locations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of locations, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Location getLocation(URI locationURI) {

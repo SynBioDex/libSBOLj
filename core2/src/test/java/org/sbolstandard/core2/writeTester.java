@@ -643,12 +643,8 @@ public class writeTester {
 	{
 		String displayId 	   = componentData.get(0);
 		String version 		   = componentData.get(1);
-		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevel.componentDefinition
-				+ "/" + displayId;
-		if (version!=null && !version.equals("")) 
-			identity += "/" + version;
 
-		ComponentDefinition c = SBOL2Doc_test.getComponentDefinition(URI.create(identity));
+		ComponentDefinition c = SBOL2Doc_test.getComponentDefinition(displayId,version);
 		if (c==null) {
 			c = SBOL2Doc_test.createComponentDefinition(displayId, version, type);
 			if (roles!=null) 
@@ -685,10 +681,7 @@ public class writeTester {
 		else if(functionalInstantiation_data.get(2).equals("none"))
 			direction = DirectionType.NONE;
 
-		String identity = md.getPersistentIdentity()+"/"+displayId;
-		if (md.isSetVersion()) 
-			identity += "/" + md.getVersion();
-		FunctionalComponent f = md.getFunctionalComponent(URI.create(identity));
+		FunctionalComponent f = md.getFunctionalComponent(displayId);
 		if (f==null) {
 			f = md.createFunctionalComponent(displayId, access, c, version,	direction);
 			setCommonDocumentedData(f, displayId, displayId);
@@ -703,10 +696,7 @@ public class writeTester {
 			Set<URI> type)
 	{
 		String displayId 	   = interaction_data.get(0);
-		String identity = md.getPersistentIdentity()+"/"+displayId;
-		if (md.isSetVersion()) 
-			identity += "/" + md.getVersion();
-		Interaction interaction = md.getInteraction(URI.create(identity));
+		Interaction interaction = md.getInteraction(displayId);
 		if (interaction==null) {
 			interaction = md.createInteraction(displayId, type);
 			setCommonDocumentedData(interaction, displayId, displayId);
@@ -731,12 +721,8 @@ public class writeTester {
 	{
 		String displayId 	   = modeldata.get(0);
 		String version 		   = modeldata.get(1);
-		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevel.model + "/" + 
-				displayId;
-		if (version!=null && !version.equals("")) 
-			identity += "/" + version;
-		// Model model = doc.createModel(identity, source, language, framework, roles);
-		Model model = doc.getModel(URI.create(identity));
+
+		Model model = doc.getModel(displayId,version);
 		if (model==null) {
 			model = doc.createModel(displayId, version, source, language, framework);		
 			setCommonTopLevelData(model, displayId, displayId);
@@ -750,12 +736,8 @@ public class writeTester {
 	{
 		String displayId 	   = module_data.get(0);
 		String version 		   = module_data.get(1);
-		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevel.moduleDefinition + "/" 
-				+ displayId;
-		if (version!=null && !version.equals("")) 
-			identity += "/" + version;
 
-		ModuleDefinition m = SBOL2Doc_test.getModuleDefinition(URI.create(identity));
+		ModuleDefinition m = SBOL2Doc_test.getModuleDefinition(displayId,version);
 		if (m==null) {
 			m = SBOL2Doc_test.createModuleDefinition(displayId, version);
 			//m.setRoles(roles);
@@ -781,7 +763,7 @@ public class writeTester {
 	private static void createParticipationData(Interaction i,
 			String displayId, Set<URI> roles, String fi)
 	{
-		if (i.getParticipation(URI.create(i.getPersistentIdentity()+"/"+displayId))==null) {
+		if (i.getParticipation(displayId)==null) {
 			Participation p = i.createParticipation(displayId, fi);
 			p.setRoles(roles);
 		}
@@ -795,20 +777,10 @@ public class writeTester {
 			String locationId)
 	{
 		String displayId	   = structuralAnnotations_data.get(0);
-		//URI locationURI = URI.create(cd.getPersistentIdentity()+"/"+displayId+"/"+locationId+"/"+cd.getVersion());
-		//Range r = new Range(locationURI, startRange, endRange);
-		//r.setOrientation(Sbol2Terms.Orientation.inline);
-		//Location location 	   = r;
-		String identity = cd.getPersistentIdentity()+"/"+displayId;
-		if (cd.isSetVersion()) 
-			identity += "/" + cd.getVersion();
-		SequenceAnnotation s = cd.getSequenceAnnotation(URI.create(identity));
+
+		SequenceAnnotation s = cd.getSequenceAnnotation(displayId);
 		if (s==null) {
 			s = cd.createSequenceAnnotation(displayId, startRange, endRange, OrientationType.INLINE);
-			//s.addRange(20, 30);
-			//s.addRange(30, 40);
-			//s.removeRange(URI.create(s.getPersistentIdentity()+"/multiRange/range2/1.0"));
-			//s.removeRange(URI.create(s.getPersistentIdentity()+"/multiRange/range0/1.0"));
 			setCommonDocumentedData(s, displayId, displayId);
 			s.setComponent(ref_component);
 		} 
@@ -824,10 +796,7 @@ public class writeTester {
 	{
 		String displayId	   = structuralConstraints_data.get(0);
 
-		String identity = cd.getPersistentIdentity()+"/"+displayId;
-		if (cd.isSetVersion()) 
-			identity += "/" + cd.getVersion();
-		SequenceConstraint s = cd.getSequenceConstraint(URI.create(identity));
+		SequenceConstraint s = cd.getSequenceConstraint(displayId);
 		if (s==null) {
 			s = cd.createSequenceConstraint(displayId, restriction, subject, object);
 		} 
@@ -847,10 +816,7 @@ public class writeTester {
 		else if(structuralInstantiations_data.get(1).equals("private"))
 			access = AccessType.PRIVATE;
 
-		String identity = cd.getPersistentIdentity()+"/"+displayId;
-		if (cd.isSetVersion()) 
-			identity += "/" + cd.getVersion();
-		Component s = cd.getComponent(URI.create(identity));
+		Component s = cd.getComponent(displayId);
 		if (s==null) {
 			s = cd.createComponent(displayId, access, c, version);
 			setCommonDocumentedData(s, displayId, displayId);
@@ -864,12 +830,8 @@ public class writeTester {
 		String displayId 	   = structureData.get(0);
 		String version 		   = structureData.get(1);
 		String element 		   = structureData.get(2);
-		String identity 	   = SBOL2Doc_test.getDefaultURIprefix() + "/" + TopLevel.sequence + "/" + 
-				displayId;
-		if (version!=null && !version.equals("")) 
-			identity += "/" + version;
 
-		Sequence structure = SBOL2Doc_test.getSequence(URI.create(identity));
+		Sequence structure = SBOL2Doc_test.getSequence(displayId,version);
 		if (structure==null) {
 			structure = SBOL2Doc_test.createSequence(displayId, version, element, encoding);
 			setCommonTopLevelData(structure, displayId, displayId);

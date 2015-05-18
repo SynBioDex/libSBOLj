@@ -199,11 +199,19 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of subModules if present.
+	 * Returns the instance matching the specified displayId from the list of modules, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Module getModule(URI subModuleURI) {
-		return modules.get(subModuleURI);
+	public Module getModule(String displayId) {
+		return modules.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of modules, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Module getModule(URI moduleURI) {
+		return modules.get(moduleURI);
 	}
 	
 	/**
@@ -290,7 +298,15 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of interactions if present.
+	 * Returns the instance matching the specified displayId from the list of interactions, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Interaction getInteraction(String displayId) {
+		return interactions.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of interactions, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Interaction getInteraction(URI interactionURI) {
@@ -432,9 +448,17 @@ public class ModuleDefinition extends TopLevel {
 		}
 		return removeChildSafely(functionalComponent,functionalComponents);
 	}
+
+	/**
+	 * Returns the instance matching the specified displayId from the list of functional instantiations, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public FunctionalComponent getFunctionalComponent(String displayId) {
+		return functionalComponents.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of functionalInstantiations if present.
+	 * Returns the instance matching the specified URI from the list of functional instantiations, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public FunctionalComponent getFunctionalComponent(URI componentURI) {

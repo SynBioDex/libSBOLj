@@ -54,7 +54,7 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version) {
 		checkReadOnly();
-		validateCreationData(displayId, version);
+		validateIdentityData(displayId, version);
 		ModuleDefinition md = createModuleDefinition(createCompliantURI(defaultURIprefix, TopLevel.moduleDefinition, 
 				displayId, version));
 		md.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.moduleDefinition, 
@@ -103,7 +103,16 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
+	 * Returns the object matching the specified displayId/version from the list of model definitions, if present.
+	 * @return the matching object if present, or <code>null</code> if not present.
+	 */
+	public ModuleDefinition getModuleDefinition(String displayId,String version) {
+		validateIdentityData(displayId,version);
+		return moduleDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.moduleDefinition,displayId,version));
+	}
+	
+	/**
+	 * Returns the object matching the specified URI from the list of model definitions, if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public ModuleDefinition getModuleDefinition(URI moduleURI) {
@@ -158,7 +167,7 @@ public class SBOLDocument {
 	 */
 	public Collection createCollection(String displayId, String version) {
 		checkReadOnly();
-		validateCreationData(displayId, version);
+		validateIdentityData(displayId, version);
 		Collection c = createCollection(
 				createCompliantURI(defaultURIprefix, TopLevel.collection, displayId, version));
 		c.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.collection, displayId, ""));
@@ -187,7 +196,16 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
+	 * Returns the object matching the specified displayId/version from the list of collections, if present.
+	 * @return the matching object if present, or <code>null</code> if not present.
+	 */
+	public Collection getCollection(String displayId,String version) {
+		validateIdentityData(displayId,version);
+		return collections.get(createCompliantURI(defaultURIprefix,TopLevel.collection,displayId,version));
+	}	
+	
+	/**
+	 * Returns the object matching the specified URI from the list of collections, if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Collection getCollection(URI collectionURI) {
@@ -231,7 +249,7 @@ public class SBOLDocument {
 	 */
 	public Model createModel(String displayId, String version, URI source, URI language, URI framework) {
 		checkReadOnly();
-		validateCreationData(displayId, version);
+		validateIdentityData(displayId, version);
 		Model model = createModel(createCompliantURI(defaultURIprefix, TopLevel.model, displayId, version),
 				source, language, framework);
 		model.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.model, displayId, ""));
@@ -275,9 +293,18 @@ public class SBOLDocument {
 		}
 		return removeTopLevel(model,models);
 	}
-
+	
 	/**
-	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
+	 * Returns the object matching the specified displayId/version from the list of models, if present.
+	 * @return the matching object if present, or <code>null</code> if not present.
+	 */
+	public Model getModel(String displayId,String version) {
+		validateIdentityData(displayId,version);
+		return models.get(createCompliantURI(defaultURIprefix,TopLevel.model,displayId,version));
+	}
+	
+	/**
+	 * Returns the object matching the specified URI from the list of models, if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Model getModel(URI modelURI) {
@@ -333,7 +360,7 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
 		checkReadOnly();
-		validateCreationData(displayId, version);
+		validateIdentityData(displayId, version);
 		ComponentDefinition cd = createComponentDefinition(createCompliantURI(defaultURIprefix, TopLevel.componentDefinition,
 				displayId, version), types);
 		cd.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.componentDefinition, displayId,""));
@@ -377,7 +404,16 @@ public class SBOLDocument {
 		}
 		return removeTopLevel(componentDefinition,componentDefinitions);
 	}
-
+	
+	/**
+	 * Returns the object matching the displayId/version from the list of component definitions if present.
+	 * @return the matching object if present, or <code>null</code> if not present.
+	 */
+	public ComponentDefinition getComponentDefinition(String displayId,String version) {
+		validateIdentityData(displayId,version);
+		return componentDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.componentDefinition,displayId,version));
+	}
+	
 	/**
 	 * Returns the object matching the specified URI from the list of component definitions if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
@@ -434,7 +470,7 @@ public class SBOLDocument {
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
 		checkReadOnly();
-		validateCreationData(displayId, version);
+		validateIdentityData(displayId, version);
 		Sequence s = createSequence(createCompliantURI(defaultURIprefix, TopLevel.sequence, displayId, version), 
 				elements, encoding);
 		s.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.sequence, displayId, ""));
@@ -641,9 +677,18 @@ public class SBOLDocument {
 		}
 		return removeTopLevel(sequence,sequences);
 	}
+	
+	/**
+	 * Returns the object matching the specified displayId/version from the list of sequences, if present.
+	 * @return the matching object if present, or <code>null</code> if not present.
+	 */
+	public Sequence getSequence(String displayId,String version) {
+		validateIdentityData(displayId,version);
+		return sequences.get(createCompliantURI(defaultURIprefix,TopLevel.sequence,displayId,version));
+	}
 
 	/**
-	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
+	 * Returns the object matching the specified URI from the list of sequences, if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public Sequence getSequence(URI sequenceURI) {
@@ -688,7 +733,7 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
 		checkReadOnly();
-		validateCreationData(displayId, version);
+		validateIdentityData(displayId, version);
 		GenericTopLevel g = createGenericTopLevel(createCompliantURI(defaultURIprefix, TopLevel.genericTopLevel, displayId, version), rdfType);
 		g.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.genericTopLevel, displayId, ""));
 		g.setDisplayId(displayId);
@@ -725,7 +770,16 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the object matching the specified URI from the list of structuralConstraints if present.
+	 * Returns the object matching the specified displayId/version from the list of generic top levels if present.
+	 * @return the matching object if present, or <code>null</code> if not present.
+	 */
+	public GenericTopLevel getGenericTopLevel(String displayId, String version) {
+		validateIdentityData(displayId,version);
+		return genericTopLevels.get(createCompliantURI(defaultURIprefix,TopLevel.genericTopLevel,displayId,version));
+	}
+
+	/**
+	 * Returns the object matching the specified URI from the list of generic top levels if present.
 	 * @return the matching object if present, or <code>null</code> if not present.
 	 */
 	public GenericTopLevel getGenericTopLevel(URI topLevelURI) {
@@ -953,7 +1007,7 @@ public class SBOLDocument {
 		return true;
 	}
 
-	private void validateCreationData(String displayId, String version) {
+	private void validateIdentityData(String displayId, String version) {
 		validateIdVersion(displayId, version);
 		if (defaultURIprefix == null) {
 			throw new IllegalStateException("The defaultURIprefix is not set. Please set it to a non-null value");
