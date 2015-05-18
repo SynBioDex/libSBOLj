@@ -451,7 +451,7 @@ public class SBOLReader
 				displayId = fixDisplayId(displayId);
 				if (setURIPrefix != null ) //TODO: check version set
 				{
-					persIdentity = setURIPrefix + "/" + TopLevel.componentDefinition +
+					persIdentity = setURIPrefix + "/" + TopLevel.COMPONENTDEFINITION +
 							"/" + displayId;
 					identity = URI.create(persIdentity + "/1.0");
 				}
@@ -588,8 +588,8 @@ public class SBOLReader
 			{
 				displayId = topLevel.getIdentity().toString().substring(topLevel.getIdentity().toString().lastIndexOf('/') + 1);
 				displayId = fixDisplayId(displayId);
-				identity = URI.create(setURIPrefix + "/" + TopLevel.sequence + "/" + displayId + "/1.0");
-				persistentIdentity = URI.create(setURIPrefix + "/" + TopLevel.sequence + "/" + displayId);
+				identity = URI.create(setURIPrefix + "/" + TopLevel.SEQUENCE + "/" + displayId + "/1.0");
+				persistentIdentity = URI.create(setURIPrefix + "/" + TopLevel.SEQUENCE + "/" + displayId);
 			}
 		}
 
@@ -670,9 +670,9 @@ public class SBOLReader
 				displayId = fixDisplayId(displayId);
 				if (setURIPrefix != null)
 				{
-					identity = URI.create(setURIPrefix + "/" + TopLevel.collection + "/" + 
+					identity = URI.create(setURIPrefix + "/" + TopLevel.COLLECTION + "/" + 
 							displayId + "/1.0");
-					persistentIdentity = URI.create(setURIPrefix + "/" + TopLevel.collection + "/" + 
+					persistentIdentity = URI.create(setURIPrefix + "/" + TopLevel.COLLECTION + "/" + 
 							displayId);
 				}
 			}

@@ -158,7 +158,7 @@ public class ModuleDefinition extends TopLevel {
 	public Module createModule(String displayId, String moduleDefinitionId, String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI moduleDefinition = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
-				TopLevel.moduleDefinition, moduleDefinitionId, version);
+				TopLevel.MODULEDEFINITION, moduleDefinitionId, version);
 		return createModule(displayId,moduleDefinition);
 	}
 
@@ -372,7 +372,7 @@ public class ModuleDefinition extends TopLevel {
 			String definition, String version, DirectionType direction) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI definitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
-				TopLevel.componentDefinition, definition, version);
+				TopLevel.COMPONENTDEFINITION, definition, version);
 		return createFunctionalComponent(displayId,access,definitionURI,direction);
 	}
 
@@ -531,7 +531,7 @@ public class ModuleDefinition extends TopLevel {
 	public void addModel(String model,String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI modelURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
-				TopLevel.model, model, version);
+				TopLevel.MODEL, model, version);
 		addModel(modelURI);
 	}
 	

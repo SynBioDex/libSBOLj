@@ -217,7 +217,7 @@ public class ComponentDefinition extends TopLevel {
 	public void addSequence(String sequence,String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-				TopLevel.sequence, sequence, version);
+				TopLevel.SEQUENCE, sequence, version);
 		addSequence(sequenceURI);
 	}
 
@@ -473,7 +473,7 @@ public class ComponentDefinition extends TopLevel {
 			String componentDefinition, String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
-				TopLevel.componentDefinition, componentDefinition, version);
+				TopLevel.COMPONENTDEFINITION, componentDefinition, version);
 		return createComponent(displayId,access,componentDefinitionURI);
 	}
 	
@@ -875,7 +875,7 @@ public class ComponentDefinition extends TopLevel {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
-		result = prime * result + ((sequence == null) ? 0 : sequence.hashCode());
+		result = prime * result + ((SEQUENCE == null) ? 0 : SEQUENCE.hashCode());
 		result = prime * result
 				+ ((sequenceAnnotations == null) ? 0 : sequenceAnnotations.hashCode());
 		result = prime * result
@@ -902,10 +902,10 @@ public class ComponentDefinition extends TopLevel {
 				return false;
 		} else if (!roles.equals(other.roles))
 			return false;
-		if (sequence == null) {
-			if (other.sequence != null)
+		if (SEQUENCE == null) {
+			if (other.SEQUENCE != null)
 				return false;
-		} else if (!sequence.equals(other.sequence))
+		} else if (!SEQUENCE.equals(other.SEQUENCE))
 			return false;
 		if (sequenceAnnotations == null) {
 			if (other.sequenceAnnotations != null)

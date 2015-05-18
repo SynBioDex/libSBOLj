@@ -55,9 +55,9 @@ public class SBOLDocument {
 	public ModuleDefinition createModuleDefinition(String displayId, String version) {
 		checkReadOnly();
 		validateIdentityData(displayId, version);
-		ModuleDefinition md = createModuleDefinition(createCompliantURI(defaultURIprefix, TopLevel.moduleDefinition, 
+		ModuleDefinition md = createModuleDefinition(createCompliantURI(defaultURIprefix, TopLevel.MODULEDEFINITION, 
 				displayId, version));
-		md.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.moduleDefinition, 
+		md.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.MODULEDEFINITION, 
 				displayId, ""));
 		md.setDisplayId(displayId);
 		md.setVersion(version);
@@ -108,7 +108,7 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition getModuleDefinition(String displayId,String version) {
 		validateIdentityData(displayId,version);
-		return moduleDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.moduleDefinition,displayId,version));
+		return moduleDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.MODULEDEFINITION,displayId,version));
 	}
 	
 	/**
@@ -169,8 +169,8 @@ public class SBOLDocument {
 		checkReadOnly();
 		validateIdentityData(displayId, version);
 		Collection c = createCollection(
-				createCompliantURI(defaultURIprefix, TopLevel.collection, displayId, version));
-		c.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.collection, displayId, ""));
+				createCompliantURI(defaultURIprefix, TopLevel.COLLECTION, displayId, version));
+		c.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.COLLECTION, displayId, ""));
 		c.setDisplayId(displayId);
 		c.setVersion(version);
 		return c;
@@ -201,7 +201,7 @@ public class SBOLDocument {
 	 */
 	public Collection getCollection(String displayId,String version) {
 		validateIdentityData(displayId,version);
-		return collections.get(createCompliantURI(defaultURIprefix,TopLevel.collection,displayId,version));
+		return collections.get(createCompliantURI(defaultURIprefix,TopLevel.COLLECTION,displayId,version));
 	}	
 	
 	/**
@@ -250,9 +250,9 @@ public class SBOLDocument {
 	public Model createModel(String displayId, String version, URI source, URI language, URI framework) {
 		checkReadOnly();
 		validateIdentityData(displayId, version);
-		Model model = createModel(createCompliantURI(defaultURIprefix, TopLevel.model, displayId, version),
+		Model model = createModel(createCompliantURI(defaultURIprefix, TopLevel.MODEL, displayId, version),
 				source, language, framework);
-		model.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.model, displayId, ""));
+		model.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.MODEL, displayId, ""));
 		model.setDisplayId(displayId);
 		model.setVersion(version);
 		return model;
@@ -300,7 +300,7 @@ public class SBOLDocument {
 	 */
 	public Model getModel(String displayId,String version) {
 		validateIdentityData(displayId,version);
-		return models.get(createCompliantURI(defaultURIprefix,TopLevel.model,displayId,version));
+		return models.get(createCompliantURI(defaultURIprefix,TopLevel.MODEL,displayId,version));
 	}
 	
 	/**
@@ -361,9 +361,9 @@ public class SBOLDocument {
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
 		checkReadOnly();
 		validateIdentityData(displayId, version);
-		ComponentDefinition cd = createComponentDefinition(createCompliantURI(defaultURIprefix, TopLevel.componentDefinition,
+		ComponentDefinition cd = createComponentDefinition(createCompliantURI(defaultURIprefix, TopLevel.COMPONENTDEFINITION,
 				displayId, version), types);
-		cd.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.componentDefinition, displayId,""));
+		cd.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.COMPONENTDEFINITION, displayId,""));
 		cd.setDisplayId(displayId);
 		cd.setVersion(version);
 		return cd;
@@ -411,7 +411,7 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition getComponentDefinition(String displayId,String version) {
 		validateIdentityData(displayId,version);
-		return componentDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.componentDefinition,displayId,version));
+		return componentDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.COMPONENTDEFINITION,displayId,version));
 	}
 	
 	/**
@@ -471,9 +471,9 @@ public class SBOLDocument {
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
 		checkReadOnly();
 		validateIdentityData(displayId, version);
-		Sequence s = createSequence(createCompliantURI(defaultURIprefix, TopLevel.sequence, displayId, version), 
+		Sequence s = createSequence(createCompliantURI(defaultURIprefix, TopLevel.SEQUENCE, displayId, version), 
 				elements, encoding);
-		s.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.sequence, displayId, ""));
+		s.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.SEQUENCE, displayId, ""));
 		s.setDisplayId(displayId);
 		s.setVersion(version);
 		return s;
@@ -684,7 +684,7 @@ public class SBOLDocument {
 	 */
 	public Sequence getSequence(String displayId,String version) {
 		validateIdentityData(displayId,version);
-		return sequences.get(createCompliantURI(defaultURIprefix,TopLevel.sequence,displayId,version));
+		return sequences.get(createCompliantURI(defaultURIprefix,TopLevel.SEQUENCE,displayId,version));
 	}
 
 	/**
@@ -734,8 +734,8 @@ public class SBOLDocument {
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
 		checkReadOnly();
 		validateIdentityData(displayId, version);
-		GenericTopLevel g = createGenericTopLevel(createCompliantURI(defaultURIprefix, TopLevel.genericTopLevel, displayId, version), rdfType);
-		g.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.genericTopLevel, displayId, ""));
+		GenericTopLevel g = createGenericTopLevel(createCompliantURI(defaultURIprefix, TopLevel.GENERICTOPLEVEL, displayId, version), rdfType);
+		g.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.GENERICTOPLEVEL, displayId, ""));
 		g.setDisplayId(displayId);
 		g.setVersion(version);
 		return g;
@@ -775,7 +775,7 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel getGenericTopLevel(String displayId, String version) {
 		validateIdentityData(displayId,version);
-		return genericTopLevels.get(createCompliantURI(defaultURIprefix,TopLevel.genericTopLevel,displayId,version));
+		return genericTopLevels.get(createCompliantURI(defaultURIprefix,TopLevel.GENERICTOPLEVEL,displayId,version));
 	}
 
 	/**
