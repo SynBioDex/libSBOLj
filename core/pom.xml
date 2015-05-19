@@ -9,7 +9,7 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>${project.parent.artifactId}-core</artifactId>
+    <artifactId>libSBOLj-core</artifactId>
 
     <packaging>jar</packaging>
 
