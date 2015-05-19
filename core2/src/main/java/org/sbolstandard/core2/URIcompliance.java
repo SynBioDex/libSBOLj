@@ -23,7 +23,8 @@ final class URIcompliance {
 		return URI.create(prefix + '/' + displayId + '/' + version);
 	}
 	
-	static URI createCompliantURI(String prefix, String type, String displayId, String version) {
+	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) {
+		if (!useType) return createCompliantURI(prefix,displayId,version);
 		if (version==null || version.equals("")) {
 			return URI.create(prefix + '/' + type + '/' + displayId);
 		}

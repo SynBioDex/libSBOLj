@@ -214,7 +214,7 @@ public class ComponentDefinition extends TopLevel {
 	public void addSequence(String sequence,String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-				TopLevel.SEQUENCE, sequence, version);
+				TopLevel.SEQUENCE, sequence, version, sbolDocument.isTypesInURIs());
 		addSequence(sequenceURI);
 	}
 
@@ -470,7 +470,7 @@ public class ComponentDefinition extends TopLevel {
 			String componentDefinition, String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
-				TopLevel.COMPONENT_DEFINITION, componentDefinition, version);
+				TopLevel.COMPONENT_DEFINITION, componentDefinition, version, sbolDocument.isTypesInURIs());
 		return createComponent(displayId,access,componentDefinitionURI);
 	}
 	

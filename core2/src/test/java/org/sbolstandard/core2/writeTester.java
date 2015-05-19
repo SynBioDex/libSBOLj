@@ -45,6 +45,14 @@ public class writeTester {
 	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		//		String prURI="http://www.partsregistry.org/";
+//		SBOLDocument document = new SBOLDocument();
+//		document.setTypesInURIs(false);
+//		document.setDefaultURIprefix("http://parts.igem.org/Promoters/Catalog");
+//		document.createCollection("Anderson","");
+//		document.setDefaultURIprefix("http://parts.igem.org/Promoters/Models");
+//		document.createModel("AndersonModel","",URI.create("http://www.dummy.org"),
+//				Model.SBML,SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
+//		SBOLWriter.writeRDF(document,(System.out));
 
 		get_myParts(SBOL2Doc_test);
 
