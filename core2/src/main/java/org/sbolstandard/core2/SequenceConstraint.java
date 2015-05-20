@@ -45,14 +45,6 @@ public class SequenceConstraint extends Identified {
 	public RestrictionType getRestriction() {
 		return restriction;
 	}
-	
-	/**
-	 * Returns the URI corresponding to the type of restriction.
-	 * @return the URI corresponding to the type of restriction.
-	 */
-	URI getRestrictionURI() {
-		return RestrictionType.convertToURI(restriction);
-	}
 
 	/**
 	 * Sets field variable <code>restriction</code> to the specified element.
@@ -63,13 +55,6 @@ public class SequenceConstraint extends Identified {
 			throw new NullPointerException("Not a valid restriction type.");
 		}
 		this.restriction = restriction;
-	}
-	
-	/**
-	 * Sets field variable <code>restriction</code> to the element corresponding to the specified URI.
-	 */
-	void setRestriction(URI restriction) {
-		this.restriction = RestrictionType.convertToRestrictionType(restriction);
 	}
 
 	/**
@@ -137,17 +122,6 @@ public class SequenceConstraint extends Identified {
 		}
 		this.object = object;
 	}
-	
-	
-	static final class Restriction {
-		public static final URI precedes = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "precedes");
-		public static final URI sameOrientationAs = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "sameOrientationAs");
-		public static final URI oppositeOrientationAs = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "oppositeOrientationAs");
-	}
-
 
 	@Override
 	public int hashCode() {
@@ -158,7 +132,6 @@ public class SequenceConstraint extends Identified {
 		result = prime * result + ((subject == null) ? 0 : subject.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {

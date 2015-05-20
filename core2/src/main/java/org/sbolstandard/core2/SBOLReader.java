@@ -766,7 +766,7 @@ public class SBOLReader
 		if (start != null && end != null) // create SequenceAnnotation & Component
 		{
 			URI range_identity = URI.create(persIdentity + "/range/1.0");
-			Range r = new Range(range_identity, start, end);
+			Location r = new Range(range_identity, start, end);
 			if (!persIdentity.equals("")) {
 				r.setPersistentIdentity(URI.create(persIdentity+"/range"));
 				r.setDisplayId("range");
@@ -776,11 +776,11 @@ public class SBOLReader
 			{
 				if (strand.equals("+"))
 				{
-					r.setOrientation(Sbol2Terms.Orientation.inline);
+					r.setOrientation(OrientationType.convertToOrientationType(OrientationType.inline));
 				}
 				else if (strand.equals("-"))
 				{
-					r.setOrientation(Sbol2Terms.Orientation.reverseComplement);
+					r.setOrientation(OrientationType.convertToOrientationType(OrientationType.reverseComplement));
 				}
 
 				location = r;
@@ -799,11 +799,11 @@ public class SBOLReader
 			{
 				if (strand.equals("+"))
 				{
-					dummyGenericLoc.setOrientation(Sbol2Terms.Orientation.inline);
+					dummyGenericLoc.setOrientation(OrientationType.convertToOrientationType(OrientationType.inline));
 				}
 				else if (strand.equals("-"))
 				{
-					dummyGenericLoc.setOrientation(Sbol2Terms.Orientation.reverseComplement);
+					dummyGenericLoc.setOrientation(OrientationType.convertToOrientationType(OrientationType.reverseComplement));
 				}
 				location = dummyGenericLoc;
 			}
@@ -1149,7 +1149,7 @@ public class SBOLReader
 		if(displayId != null) 
 			gl.setDisplayId(displayId);
 		if(orientation != null)
-			gl.setOrientation(orientation);
+			gl.setOrientation(OrientationType.convertToOrientationType(orientation));
 		if(persistentIdentity != null)
 			gl.setPersistentIdentity(persistentIdentity);
 		if(version != null)
@@ -1217,7 +1217,7 @@ public class SBOLReader
 		if (displayId != null) 
 			c.setDisplayId(displayId);
 		if (orientation != null)
-			c.setOrientation(orientation);
+			c.setOrientation(OrientationType.convertToOrientationType(orientation));
 		if(version != null)
 			c.setVersion(version);
 		if (wasDerivedFrom != null)
@@ -1228,7 +1228,7 @@ public class SBOLReader
 		return c;
 	}
 
-	private static Range parseRange(NestedDocument<QName> typeRange)
+	private static Location parseRange(NestedDocument<QName> typeRange)
 	{
 		URI persistentIdentity = null;
 		String displayId       = null;
@@ -1278,13 +1278,13 @@ public class SBOLReader
 			}
 		}
 
-		Range r = new Range(typeRange.getIdentity(), start, end);
+		Location r = new Range(typeRange.getIdentity(), start, end);
 		if (displayId != null)
 			r.setDisplayId(displayId);
 		if (persistentIdentity != null)
 			r.setPersistentIdentity(persistentIdentity);
 		if (orientation != null)
-			r.setOrientation(orientation);
+			r.setOrientation(OrientationType.convertToOrientationType(orientation));
 		if(version != null)
 			r.setVersion(version);
 		if (wasDerivedFrom != null)

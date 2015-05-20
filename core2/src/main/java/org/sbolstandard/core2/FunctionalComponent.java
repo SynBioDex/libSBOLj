@@ -39,29 +39,6 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
-	 * Returns the direction type in URI.
-	 * 
-	 * @return direction type in URI
-	 */
-	URI getDirectionURI() {
-		if (direction != null) {
-			if (direction.equals(DirectionType.INOUT)) {
-				return Direction.INOUT;
-			} else if (direction.equals(DirectionType.INPUT)) {
-				return Direction.INPUT;
-			} else if (direction.equals(DirectionType.OUTPUT)) {
-				return Direction.OUTPUT;
-			} else if (direction.equals(DirectionType.NONE)) {
-				return Direction.NONE;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	/**
 	 * Sets field variable <code>direction</code> to the specified element.
 	 */
 	public void setDirection(DirectionType direction) {
@@ -70,31 +47,6 @@ public class FunctionalComponent extends ComponentInstance {
 			throw new NullPointerException("Not a valid direction type.");
 		}
 		this.direction = direction;
-	}
-
-	/**
-	 * Sets field variable <code>direction</code> to the element corresponding
-	 * to the specified URI.
-	 */
-	void setDirection(URI direction) {
-		if (direction != null && direction.equals(Direction.INPUT)) {
-			this.direction = DirectionType.INPUT;
-		} else if (direction != null && direction.equals(Direction.OUTPUT)) {
-			this.direction = DirectionType.OUTPUT;
-		} else if (direction != null && direction.equals(Direction.INOUT)) {
-			this.direction = DirectionType.INOUT;
-		} else if (direction != null && direction.equals(Direction.NONE)) {
-			this.direction = DirectionType.NONE;
-		} else {
-			throw new IllegalArgumentException("Not a valid access type.");
-		}
-	}
-
-	static final class Direction {
-		public static final URI	INPUT	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "input");
-		public static final URI	OUTPUT	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "output");
-		public static final URI	INOUT	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "inout");
-		public static final URI	NONE	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "none");
 	}
 
 	@Override

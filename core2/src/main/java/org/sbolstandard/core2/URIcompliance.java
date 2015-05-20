@@ -11,7 +11,7 @@ final class URIcompliance {
 		if (!isDisplayIdCompliant(displayId)) {
 			throw new IllegalArgumentException("Display id `" + displayId + "' is not valid.");
 		}
-		if (version!=null && !version.equals("") && !isVersionCompliant(version)) {
+		if (!isVersionCompliant(version)) {
 			throw new IllegalArgumentException("Version `" + version + "' is not valid.");
 		}
 	}
@@ -342,6 +342,7 @@ final class URIcompliance {
 	}
 
 	static boolean isVersionCompliant(String newVersion) {
+		if (newVersion.equals("")) return true;
 		Pattern r = Pattern.compile(versionPattern);
 		Matcher m = r.matcher(newVersion);
 		return m.matches();

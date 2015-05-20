@@ -59,27 +59,6 @@ public abstract class ComponentInstance extends Identified {
 	public AccessType getAccess() {
 		return access;
 	}
-	
-	/**
-	 * Returns the access type in URI.
-	 * @return access type in URI
-	 */
-	URI getAccessURI() {
-		if (access != null) {
-			if (access.equals(AccessType.PUBLIC)) {
-				return Access.PUBLIC;
-			}
-			else if (access.equals(AccessType.PRIVATE)) {
-				return Access.PRIVATE;
-			}
-			else {
-				return null;
-			}
-		}
-		else {
-			return null;
-		}
-	}
 
 	/**
 	 * Sets field variable <code>access</code> to the specified element.
@@ -91,31 +70,6 @@ public abstract class ComponentInstance extends Identified {
 		}
 		this.access = access;
 	}
-	
-	/**
-	 * Sets field variable <code>access</code> to the element corresponding to the specified URI.
-	 */
-	void setAccess(URI access) {
-		if (access != null && access.equals(Access.PUBLIC)) {
-			this.access = AccessType.PUBLIC;
-		} else if (access != null && access.equals(Access.PRIVATE)) {
-			this.access = AccessType.PRIVATE;
-		}
-		else {
-			throw new IllegalArgumentException("Not a valid access type.");
-		}
-	}
-
-//	/**
-//	 * Test if optional field variable <code>references</code> is set.
-//	 * @return <code>true</code> if it is not an empty list
-//	 */
-//	public boolean isSetMappings() {
-//		if (mapsTos.isEmpty())
-//			return false;
-//		else
-//			return true;
-//	}	
 	
 	/**
 	 * Calls the MapsTo constructor to create a new instance using the specified parameters, 
@@ -240,13 +194,5 @@ public abstract class ComponentInstance extends Identified {
 	}
 
 	protected abstract ComponentInstance deepCopy();
-	
-	
-	static final class Access {
-		public static final URI PUBLIC = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "public");
-		public static final URI PRIVATE = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "private");
-	}
 
 }

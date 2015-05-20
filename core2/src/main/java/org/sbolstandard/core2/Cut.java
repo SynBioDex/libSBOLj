@@ -4,8 +4,6 @@ import java.net.URI;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
-import org.sbolstandard.core2.Sbol2Terms.Orientation;
-
 /**
  * @author Zhen Zhang
  * @author Tramy Nguyen
@@ -19,8 +17,6 @@ import org.sbolstandard.core2.Sbol2Terms.Orientation;
 public class Cut extends Location{
 	
 	private int at;
-	private OrientationType orientation;
-	
 	Cut(URI identity, int at) {
 		super(identity);
 		setAt(at);
@@ -29,9 +25,6 @@ public class Cut extends Location{
 	private Cut(Cut cut) {
 		super(cut);
 		this.setAt(cut.getAt());
-		if (cut.isSetOrientation()) {
-			this.setOrientation(cut.getOrientation());
-		}
 	}
 
 	/**
@@ -53,76 +46,6 @@ public class Cut extends Location{
 		this.at = at;
 	}
 	
-	/**
-	 * Test if optional field variable <code>orientation</code> is set.
-	 * @return <code>true</code> if it is not <code>null</code>
-	 */
-	public boolean isSetOrientation() {
-		return orientation != null;
-	}
-	
-	/**
-	 * Returns field variable <code>orientation</code>.
-	 * @return field variable <code>orientation</code>
-	 */
-	// @return the documented object's display ID
-	public OrientationType getOrientation() {
-		return this.orientation;
-	}
-	
-	/**
-	 * Returns the orientation type in URI.
-	 * @return orientation type in URI
-	 */
-	URI getOrientationURI() {
-		if (orientation != null) {
-			if (orientation.equals(OrientationType.INLINE)) {
-				return Orientation.inline;
-			}
-			else if (orientation.equals(OrientationType.REVERSECOMPLEMENT)) {
-				return Orientation.reverseComplement;
-			}
-			else {
-				return null;
-			}
-		}
-		else {
-			return null;
-		}
-	}
-		
-	/**
-	 * Set field variable <code>orientation</code> to the specified element.
-	 */
-	// Created for backward compatibility to 1.1. 
-	public void setOrientation(OrientationType orientation) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		this.orientation = orientation;
-	}
-	
-	/**
-	 * Sets field variable <code>orientation</code> to the element corresponding to the specified URI.
-	 */
-	 void setOrientation(URI orientation) {
-		if (orientation.equals(Orientation.inline)) {
-			this.orientation = OrientationType.INLINE;
-		} else if (orientation.equals(Orientation.reverseComplement)) {
-			this.orientation = OrientationType.REVERSECOMPLEMENT;
-		}
-		else {
-			// TODO: Validation?
-			this.orientation = null;
-		}
-	}
-	
-	/**
-	 * Set optional field variable <code>orientation</code> to <code>null</code>.
-	 */
-	public void unsetOrientation() {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		orientation = null;
-	}
-
 	@Override
 	protected Cut deepCopy() {
 		return new Cut(this);

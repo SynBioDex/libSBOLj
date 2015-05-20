@@ -2,8 +2,6 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import org.sbolstandard.core2.SequenceConstraint.Restriction;
-
 public enum RestrictionType {
 	PRECEDES("precedes"),
 	SAME_ORIENTATION_AS("sameOrienationAs"),
@@ -34,11 +32,11 @@ public enum RestrictionType {
 	 * @return the corresponding RestrictionType instance.
 	 */
 	public static RestrictionType convertToRestrictionType(URI restriction) {
-		if (restriction.equals(Restriction.precedes)) {
+		if (restriction.equals(precedes)) {
 			return RestrictionType.PRECEDES;
-		} else if (restriction.equals(Restriction.sameOrientationAs)) {
+		} else if (restriction.equals(sameOrientationAs)) {
 			return RestrictionType.SAME_ORIENTATION_AS;
-		} else if (restriction.equals(Restriction.oppositeOrientationAs)) {
+		} else if (restriction.equals(oppositeOrientationAs)) {
 			return RestrictionType.OPPOSITE_ORIENTATION_AS;
 		} 
 		else {
@@ -53,11 +51,11 @@ public enum RestrictionType {
 	public static URI convertToURI(RestrictionType restriction) {
 		if (restriction != null) {
 			if (restriction.equals(RestrictionType.PRECEDES)) {
-				return Restriction.precedes;
+				return precedes;
 			} else if (restriction.equals(RestrictionType.SAME_ORIENTATION_AS)) {
-				return Restriction.sameOrientationAs;
+				return sameOrientationAs;
 			} else if (restriction.equals(RestrictionType.OPPOSITE_ORIENTATION_AS)) {
-				return Restriction.oppositeOrientationAs;
+				return oppositeOrientationAs;
 			} 
 			else {
 				throw new IllegalArgumentException("Not a valid restriction type.");
@@ -67,4 +65,9 @@ public enum RestrictionType {
 			return null;
 		}
 	}
+	
+	static final URI precedes = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "precedes");
+	static final URI sameOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "sameOrientationAs");
+	static final URI oppositeOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "oppositeOrientationAs");
+
 }

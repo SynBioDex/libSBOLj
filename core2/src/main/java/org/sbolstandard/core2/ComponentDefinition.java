@@ -366,7 +366,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString()+"/"+displayId;
 		String version = this.getVersion();
-		Range location = new Range(createCompliantURI(URIprefix,"range",version),start,end);
+		Location location = new Range(createCompliantURI(URIprefix,"range",version),start,end);
 		if (orientation!=null) location.setOrientation(orientation);
 		location.setPersistentIdentity(URI.create(URIprefix+"/range"));
 		location.setDisplayId("range");

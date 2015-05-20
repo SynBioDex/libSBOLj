@@ -44,33 +44,6 @@ public class MapsTo extends Identified{
 	public RefinementType getRefinement() {
 		return refinement;
 	}
-	
-	/**
-	 * Returns the URI constant corresponds to the field variable <code>refinement</code>.
-	 * @return  <code>refinement</code>
-	 */
-	URI getRefinementURI() {
-		if (refinement != null) {
-			if (refinement.equals(RefinementType.MERGE)) {
-				return Refinement.merge;
-			}
-			else if (refinement.equals(RefinementType.USELOCAL)) {
-				return Refinement.useLocal;
-			}
-			else if (refinement.equals(RefinementType.USEREMOTE)) {
-				return Refinement.useRemote;
-			}
-			else if (refinement.equals(RefinementType.VERIFYIDENTICAL)) {
-				return Refinement.verifyIdentical;
-			}
-			else {
-				return null;
-			}
-		}
-		else {
-			return null;
-		}
-	}
 
 	/**
 	 * Sets field variable <code>refinement</code> to the specified element.
@@ -78,26 +51,6 @@ public class MapsTo extends Identified{
 	public void setRefinement(RefinementType refinement) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.refinement = refinement;
-	}
-	
-	/**
-	 * Sets field variable <code>refinement</code> according to the specified URI.
-	 */
-	void setRefinement(URI refinement) {
-		if (refinement != null && refinement.equals(Refinement.merge)) {
-			this.refinement = RefinementType.MERGE;
-		}
-		else if (refinement != null && refinement.equals(Refinement.useLocal)) {
-			this.refinement = RefinementType.USELOCAL;
-		}
-		else if (refinement != null && refinement.equals(Refinement.useRemote)) {
-			this.refinement = RefinementType.USEREMOTE;
-		}
-		else if (refinement != null && refinement.equals(Refinement.verifyIdentical)) {
-			this.refinement = RefinementType.VERIFYIDENTICAL;
-		} else {
-			throw new IllegalArgumentException("Not a valid refinement type.");
-		}
 	}
 
 	/**
@@ -198,19 +151,6 @@ public class MapsTo extends Identified{
 			return false;
 		return true;
 	}
-	
-	
-	static final class Refinement {
-		public static final URI merge = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "merge");
-		public static final URI useLocal = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "useLocal");
-		public static final URI useRemote = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "useRemote");
-		public static final URI verifyIdentical = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "verifyIdentical");
-	}
-
 
 	@Override
 	protected MapsTo deepCopy() {

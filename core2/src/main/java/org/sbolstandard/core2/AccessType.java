@@ -2,8 +2,6 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import org.sbolstandard.core2.ComponentInstance.Access;
-
 public enum AccessType {
 	PUBLIC("public"), PRIVATE("private");
 	private final String accessType;
@@ -17,9 +15,9 @@ public enum AccessType {
 	 * @return the corresponding AccessType instance
 	 */
 	static AccessType convertToAccessType(URI access) {
-		if (access.equals(Access.PUBLIC)) {
+		if (access.equals(publicURI)) {
 			return AccessType.PUBLIC;
-		} else if (access.equals(Access.PRIVATE)) {
+		} else if (access.equals(privateURI)) {
 			return AccessType.PRIVATE;
 		}
 		else {
@@ -34,10 +32,10 @@ public enum AccessType {
 	static URI convertToURI(AccessType access) {
 		if (access != null) {
 			if (access.equals(AccessType.PUBLIC)) {
-				return Access.PUBLIC;
+				return publicURI;
 			}
 			else if (access.equals(AccessType.PRIVATE)) {
-				return Access.PRIVATE;
+				return privateURI;
 			}
 			else {
 				return null;
@@ -60,11 +58,7 @@ public enum AccessType {
 	public String toString() {
 		return accessType;
 	}
-	
-	private static final class Access {
-		public static final URI PUBLIC = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "public");
-		public static final URI PRIVATE = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "private");
-	}
+
+	static final URI publicURI = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "public");
+	static final URI privateURI = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "private");
 }

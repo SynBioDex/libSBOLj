@@ -33,7 +33,7 @@ public class SBOLDocument {
 	private String defaultURIprefix;
 	private boolean complete = false;
 	private boolean compliant = true;
-	private boolean typesInURIs = true;
+	private boolean typesInURIs = false;
 
 	public SBOLDocument() {
 		genericTopLevels = new HashMap<>();

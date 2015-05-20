@@ -2,8 +2,6 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import org.sbolstandard.core2.MapsTo.Refinement;
-
 public enum RefinementType {
 	VERIFYIDENTICAL("verifyIdentical"),
 	USELOCAL("useLocal"), 
@@ -33,16 +31,16 @@ public enum RefinementType {
 	 * @return the corresponding RefinementType instance
 	 */
 	static RefinementType convertToRefinementType(URI refinement) {
-		if (refinement.equals(Refinement.merge)) {
+		if (refinement.equals(merge)) {
 			return RefinementType.MERGE;
 		} 
-		else if (refinement.equals(Refinement.useLocal)) {
+		else if (refinement.equals(useLocal)) {
 			return RefinementType.USELOCAL;
 		}
-		else if (refinement.equals(Refinement.useRemote)) {
+		else if (refinement.equals(useRemote)) {
 			return RefinementType.USEREMOTE;
 		}
-		else if (refinement.equals(Refinement.verifyIdentical)) {
+		else if (refinement.equals(verifyIdentical)) {
 			return RefinementType.VERIFYIDENTICAL;
 		}
 		else {
@@ -58,16 +56,16 @@ public enum RefinementType {
 	static URI convertToURI(RefinementType refinement) {
 		if (refinement != null) {
 			if (refinement.equals(RefinementType.MERGE)) {
-				return Refinement.merge;
+				return merge;
 			}
 			else if (refinement.equals(RefinementType.USELOCAL)) {
-				return Refinement.useLocal;
+				return useLocal;
 			}
 			else if (refinement.equals(RefinementType.USEREMOTE)) {
-				return Refinement.useRemote;
+				return useRemote;
 			}
 			else if (refinement.equals(RefinementType.VERIFYIDENTICAL)) {
-				return Refinement.verifyIdentical;
+				return verifyIdentical;
 			}				
 			else {
 				return null;
@@ -77,4 +75,10 @@ public enum RefinementType {
 			return null;
 		}
 	}
+	
+	static final URI merge = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "merge");
+	static final URI useLocal = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "useLocal");
+	static final URI useRemote = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "useRemote");
+	static final URI verifyIdentical = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "verifyIdentical");
+
 }
