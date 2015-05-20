@@ -27,10 +27,15 @@ public class ComponentDefinition extends TopLevel {
 	private HashMap<URI, SequenceAnnotation> sequenceAnnotations;
 	private HashMap<URI, SequenceConstraint> sequenceConstraints;
 	
+	/* Types */
 	public static final URI DNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
 	public static final URI RNA = URI.create("ttp://www.biopax.org/release/biopax-level3.owl#RnaRegion");
 	public static final URI PROTEIN = URI.create("http://www.biopax.org/release/biopax-level3.owl#Protein");
 	public static final URI SMALL_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#SmallMolecule");
+	
+	/* Roles */
+	public static final URI TRANSCRIPTION_FACTOR = URI.create("http://identifiers.org/go/GO:0003700");
+	public static final URI EFFECTOR = URI.create("http://identifiers.org/chebi/CHEBI:35224");
 	
 	ComponentDefinition(URI identity, Set<URI> types) {
 		super(identity);
