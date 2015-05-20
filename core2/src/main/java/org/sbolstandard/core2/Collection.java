@@ -27,6 +27,7 @@ public class Collection extends TopLevel{
 	
 	private Collection(Collection collection) {
 		super(collection.getIdentity());
+		this.members = new HashSet<>();
 		Set<URI> newMembers = new HashSet<>();
 		for (URI member : collection.getMemberURIs()) {
 			newMembers.add(member);
@@ -168,10 +169,10 @@ public class Collection extends TopLevel{
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			Collection cloned = this.deepCopy();
 			cloned.setWasDerivedFrom(this.getIdentity());
-			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
+			cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 			cloned.setDisplayId(displayId);
 			cloned.setVersion(version);
-			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
+			URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
 			cloned.setIdentity(newIdentity);
 			return cloned;
 		}

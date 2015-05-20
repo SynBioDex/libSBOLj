@@ -31,7 +31,7 @@ public class Participation extends Identified {
 	
 	private Participation(Participation participation) {
 		super(participation);
-		Set<URI> roles = new HashSet<>();
+		roles = new HashSet<>();
 		for (URI role : participation.getRoles()) {
 			roles.add(role);
 		}		

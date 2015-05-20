@@ -27,20 +27,14 @@ public abstract class ComponentInstance extends Identified {
 	
 	ComponentInstance(URI identity, AccessType access, URI definition) {
 		super(identity);
+		this.mapsTos = new HashMap<>();
 		setAccess(access);
 		setDefinition(definition);		
-		this.mapsTos = new HashMap<>();
-		/*
-		if (isURIcompliant(identity, 1)) {
-			this.setVersion(extractVersion(identity));
-			this.setDisplayId(extractDisplayId(identity, 0));
-			this.setPersistentIdentity(URI.create(extractPersistentId(identity)));
-		}
-		*/
 	}
 	
 	protected ComponentInstance(ComponentInstance component) {
 		super(component);
+		this.mapsTos = new HashMap<>();
 		setAccess(component.getAccess());
 		setDefinition(component.getDefinitionURI());	
 		if (!component.getMapsTos().isEmpty()) {

@@ -685,52 +685,86 @@ public class SBOLDocument {
 	/**
 	 * This method is ONLY valid for compliant URIs.
  	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+	 * {@link Sequence}, or {@link GenericTopLevel}. Then add it to its corresponding top-level objects list.
+	 * @return the copied {@link TopLevel} object
+	 */
+	public TopLevel createCopy(TopLevel topLevel) {
+		return createCopy(topLevel,null,null,null);
+	}
+	
+	/**
+	 * This method is ONLY valid for compliant URIs.
+ 	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+	 * {@link Sequence}, or {@link GenericTopLevel} with the default URI prefix, display ID, and no version. Then add it to its corresponding top-level objects list.
+	 * @return the copied {@link TopLevel} object
+	 */
+	public TopLevel createCopy(TopLevel topLevel, String displayId) {
+		return createCopy(topLevel,defaultURIprefix,displayId,"");
+	}
+	
+	/**
+	 * This method is ONLY valid for compliant URIs.
+ 	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
+	 * {@link Sequence}, or {@link GenericTopLevel} with the default URI prefix, display ID, and version. Then add it to its corresponding top-level objects list.
+	 * @return the copied {@link TopLevel} object
+	 */
+	public TopLevel createCopy(TopLevel topLevel, String displayId, String version) {
+		return createCopy(topLevel,defaultURIprefix,displayId,version);
+	}
+	
+	/**
+	 * This method is ONLY valid for compliant URIs.
+ 	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
 	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix, display ID, and version. Then add it to its corresponding top-level objects list.
 	 * @return the copied {@link TopLevel} object
 	 */
-	public TopLevel createCopy(TopLevel toplevel, String URIprefix, String displayId, String version) {
+	public TopLevel createCopy(TopLevel topLevel, String URIprefix, String displayId, String version) {
 		checkReadOnly();
 		if (URIprefix == null) {
-			URIprefix = extractURIprefix(toplevel.getIdentity());
+			URIprefix = extractURIprefix(topLevel.getIdentity());
+			URIprefix = checkURIprefix(URIprefix);
+		} else {
+			URIprefix = checkURIprefix(URIprefix);
 		}
 		if (displayId == null) {
-			displayId = extractDisplayId(toplevel.getIdentity());
+			displayId = topLevel.getDisplayId();
 		}
 		if (version == null) {
-			version = extractVersion(toplevel.getIdentity());
+			version = topLevel.getVersion();
 		}
-		if (toplevel instanceof Collection) {			
-			Collection newCollection = ((Collection) toplevel).copy(URIprefix, displayId, version);
+		validateIdentityData(displayId,version);
+		if (topLevel instanceof Collection) {			
+			Collection newCollection = ((Collection) topLevel).copy(URIprefix, displayId, version);
 			addCollection(newCollection);
 			return newCollection;
 		}
-		else if (toplevel instanceof ComponentDefinition) {
-			ComponentDefinition newComponentDefinition = ((ComponentDefinition) toplevel).copy(URIprefix, displayId, version);
+		else if (topLevel instanceof ComponentDefinition) {
+			ComponentDefinition newComponentDefinition = ((ComponentDefinition) topLevel).copy(URIprefix, displayId, version);
 			addComponentDefinition(newComponentDefinition);
 			return newComponentDefinition;
 		}
-		else if (toplevel instanceof Model) {
-			Model newModel = ((Model) toplevel).copy(URIprefix, displayId, version);			
+		else if (topLevel instanceof Model) {
+			Model newModel = ((Model) topLevel).copy(URIprefix, displayId, version);			
 			addModel(newModel);
 			return newModel;
 		}
-		else if (toplevel instanceof ModuleDefinition) {
-			ModuleDefinition newModuleDefinition = ((ModuleDefinition) toplevel).copy(URIprefix, displayId, version);
+		else if (topLevel instanceof ModuleDefinition) {
+			ModuleDefinition newModuleDefinition = ((ModuleDefinition) topLevel).copy(URIprefix, displayId, version);
 			addModuleDefinition(newModuleDefinition);
 			return newModuleDefinition;
 		}
-		else if (toplevel instanceof Sequence) {
-			Sequence newSequence = ((Sequence) toplevel).copy(URIprefix, displayId, version);
+		else if (topLevel instanceof Sequence) {
+			Sequence newSequence = ((Sequence) topLevel).copy(URIprefix, displayId, version);
 			addSequence(newSequence);
 			return newSequence;
 		}
-		else if (toplevel instanceof GenericTopLevel) {
-			GenericTopLevel newGenericTopLevel = ((GenericTopLevel) toplevel).copy(URIprefix, displayId, version);
+		else if (topLevel instanceof GenericTopLevel) {
+			GenericTopLevel newGenericTopLevel = ((GenericTopLevel) topLevel).copy(URIprefix, displayId, version);
 			addGenericTopLevel(newGenericTopLevel);
 			return newGenericTopLevel;
 		}
 		else {
-			throw new IllegalArgumentException("Unable to copy " + toplevel.getIdentity());
+			throw new IllegalArgumentException("Unable to copy " + topLevel.getIdentity());
 		}
 		
 	}

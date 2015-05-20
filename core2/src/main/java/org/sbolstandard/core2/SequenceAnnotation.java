@@ -33,7 +33,7 @@ public class SequenceAnnotation extends Identified {
 	
 	private SequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
 		super(sequenceAnnotation.getIdentity());
-		//this.setLocation(sequenceAnnotation.getLocation().deepCopy());
+		this.locations = new HashMap<>();
 		if (!sequenceAnnotation.getLocations().isEmpty()) {
 			List<Location> locations = new ArrayList<>();
 			for (Location location : sequenceAnnotation.getLocations()) {
@@ -46,10 +46,6 @@ public class SequenceAnnotation extends Identified {
 		}
 	}
 
-	// TODO: createRange
-	// TODO: createCut
-	// TODO: createGenericLocation
-	
 	void addLocation(Location location) {
 		addChildSafely(location, locations, "location");
 		location.setSBOLDocument(this.sbolDocument);

@@ -33,12 +33,14 @@ public class Interaction extends Identified {
 	Interaction(URI identity, Set<URI> type) {
 		super(identity);
 		this.types = new HashSet<>();
-		setTypes(type);
 		this.participations = new HashMap<>();
+		setTypes(type);
 	}
 	
 	Interaction(Interaction interaction) {
 		super(interaction);
+		this.types = new HashSet<>();
+		this.participations = new HashMap<>();
 		Set<URI> type = new HashSet<>();
 		for (URI typeElement : interaction.getTypes()) {
 			type.add(URI.create(typeElement.toString()));

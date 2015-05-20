@@ -45,6 +45,7 @@ public abstract class Identified {
 	 */
 	protected Identified(Identified identified) {
 		this.setIdentity(identified.getIdentity());
+		this.annotations = new ArrayList<>();
 		if (identified.hasAnnotations()) {
 			List<Annotation> clonedAnnotations = new ArrayList<>();
 			for (Annotation annotation : identified.getAnnotations()) {
@@ -309,8 +310,7 @@ public abstract class Identified {
 	/**
 	 * Clears the existing list of structuralAnnotation instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setAnnotations(
-			List<Annotation> annotations) {
+	void setAnnotations(List<Annotation> annotations) {
 		clearAnnotations();
 		for (Annotation structuralAnnotation : annotations) {
 			addAnnotation(structuralAnnotation);

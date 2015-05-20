@@ -94,20 +94,6 @@ public class Range extends Location{
 		this.setWasDerivedFrom(this.getIdentity());
 		this.setIdentity(newIdentity);
 	}
-	
-	/**
-	 * Assume this Range object has compliant URI, and all given parameters have compliant forms.
-	 * This method is called by {@link MultiRange#updateCompliantURI(String, String, String, String)}.
-	 */
-	void updateCompliantURI(String URIprefix, String greatGrandparentDisplayId, 
-			String grandparentDisplayId, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity()); //3 indicates this object is a great grandchild of a top-level object.
-		URI newIdentity = URI.create(URIprefix + '/' + greatGrandparentDisplayId + '/' + grandparentDisplayId 
-				+ '/' + parentDisplayId + '/' + thisObjDisplayId + '/' + version);
-		// TODO: need to set wasDerivedFrom here?
-		this.setWasDerivedFrom(this.getIdentity());
-		this.setIdentity(newIdentity);
-	}
 
 	@Override
 	public int hashCode() {

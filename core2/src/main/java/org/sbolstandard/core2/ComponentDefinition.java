@@ -40,16 +40,22 @@ public class ComponentDefinition extends TopLevel {
 	ComponentDefinition(URI identity, Set<URI> types) {
 		super(identity);
 		this.types = new HashSet<>();
-		setTypes(types);
 		this.roles = new HashSet<>();
 		this.sequences = new HashSet<>();
 		this.components = new HashMap<>();
 		this.sequenceAnnotations = new HashMap<>();
 		this.sequenceConstraints = new HashMap<>();
+		setTypes(types);
 	}
 
 	private ComponentDefinition(ComponentDefinition componentDefinition) {
 		super(componentDefinition);
+		this.types = new HashSet<>();
+		this.roles = new HashSet<>();
+		this.sequences = new HashSet<>();
+		this.components = new HashMap<>();
+		this.sequenceAnnotations = new HashMap<>();
+		this.sequenceConstraints = new HashMap<>();
 		Set<URI> types = new HashSet<>();
 		for (URI type : componentDefinition.getTypes()) {
 			types.add(URI.create(type.toString()));
@@ -823,15 +829,15 @@ public class ComponentDefinition extends TopLevel {
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			ComponentDefinition cloned = this.deepCopy();
 			cloned.setWasDerivedFrom(this.getIdentity());
-			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
+			cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 			cloned.setDisplayId(displayId);
 			cloned.setVersion(version);
-			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
+			URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
 			cloned.setIdentity(newIdentity);
 			// Update all children's URIs
 			if (!cloned.getSequenceConstraints().isEmpty()) {
 				for (SequenceConstraint sequenceConstraint : cloned.getSequenceConstraints()) {
-					sequenceConstraint.updateCompliantURI(URIprefix, displayId, version);
+					sequenceConstraint.updateCompliantURI(cloned.getPersistentIdentity().toString(), sequenceConstraint.getDisplayId(), version);
 				}
 			}
 			if (!cloned.getSequenceAnnotations().isEmpty()) {

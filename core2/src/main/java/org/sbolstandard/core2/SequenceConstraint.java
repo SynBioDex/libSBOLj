@@ -167,12 +167,8 @@ public class SequenceConstraint extends Identified {
 	 * Assume this SequenceConstraint object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
 	 */
-	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 1 indicates that this object is a child of a top-level object.
-		URI newIdentity = URI.create(URIprefix + '/' + parentDisplayId + '/' 
-				+ thisObjDisplayId + '/' + version);
-		// SequenceConstraint does not have any children. No need to update their URIs.
-		// TODO: need to set wasDerivedFrom here?
+	void updateCompliantURI(String URIprefix, String displayId, String version) {
+		URI newIdentity = createCompliantURI(URIprefix,displayId,version);
 		this.setWasDerivedFrom(this.getIdentity());
 		this.setIdentity(newIdentity);
 	}

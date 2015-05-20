@@ -146,10 +146,10 @@ public class Model extends TopLevel {
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			Model cloned = this.deepCopy();
 			cloned.setWasDerivedFrom(this.getIdentity());	
-			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
+			cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 			cloned.setDisplayId(displayId);
 			cloned.setVersion(version);
-			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
+			URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
 			cloned.setIdentity(newIdentity);
 			return cloned;
 		}

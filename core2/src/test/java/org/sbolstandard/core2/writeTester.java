@@ -33,7 +33,7 @@ public class writeTester {
 	private static String TurtleString = "writeTesterString_v1.3.ttl";
 	private static String TurtleFile   = "writeTesterFile_v1.3.ttl";
 	
-	private static String version = "";//1.0";
+	private static String version = "1.0";
 
 	//private static String  fileName   = "single_singleCollection.rdf";
 
@@ -45,8 +45,14 @@ public class writeTester {
 	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		get_myParts(SBOL2Doc_test);
+		SBOLDocument sbolDoc = new SBOLDocument();
+		sbolDoc.setDefaultURIprefix("http://www.some.org");
+		ComponentDefinition cd = SBOL2Doc_test.getComponentDefinition("pLactetR", "1.0");
+		sbolDoc.createCopy(cd);//, "pLactetR","2.0");
+		ModuleDefinition md = SBOL2Doc_test.getModuleDefinition("LacI_Inv", "1.0");
+		sbolDoc.createCopy(md);//, "LacI_Inv","2.0");
 
-		writeRdfOutputStream();
+		writeRdfOutputStream(sbolDoc);
 
 		//		writeJsonOutputStream();
 		//		writeTurtleOutputStream();
@@ -61,7 +67,7 @@ public class writeTester {
 		//writeTurtleFile();
 	}
 
-	public static void writeRdfOutputStream()
+	public static void writeRdfOutputStream(SBOLDocument SBOL2Doc_test)
 	{
 		try {
 			SBOLWriter.writeRDF(SBOL2Doc_test,(System.out));
@@ -161,7 +167,7 @@ public class writeTester {
 		}
 	}
 
-	private static Collection get_myParts (SBOLDocument SBOL2Doc_test)
+	private static void get_myParts (SBOLDocument SBOL2Doc_test)
 	{
 		SBOL2Doc_test.setDefaultURIprefix("http://www.async.ece.utah.edu");
 		SBOL2Doc_test.setComplete(true);
@@ -197,8 +203,6 @@ public class writeTester {
 		myParts.addMember(get_ToggleModel(SBOL2Doc_test).getIdentity());
 
 		myParts.addMember(get_topLevel(SBOL2Doc_test).getIdentity());
-
-		return myParts;
 	}
 
 	private static Identified get_topLevel (SBOLDocument SBOL2Doc_test)
@@ -825,12 +829,12 @@ public class writeTester {
 		String version 		   = structureData.get(1);
 		String element 		   = structureData.get(2);
 
-		Sequence structure = SBOL2Doc_test.getSequence(displayId,version);
-		if (structure==null) {
-			structure = SBOL2Doc_test.createSequence(displayId, version, element, encoding);
-			setCommonTopLevelData(structure, displayId, displayId);
+		Sequence sequence = SBOL2Doc_test.getSequence(displayId,version);
+		if (sequence==null) {
+			sequence = SBOL2Doc_test.createSequence(displayId, version, element, encoding);
+			setCommonTopLevelData(sequence, displayId, displayId);
 		} 
-		return structure;
+		return sequence;
 	}
 
 	/**

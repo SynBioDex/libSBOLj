@@ -38,7 +38,11 @@ public class ModuleDefinition extends TopLevel {
 	
 	private ModuleDefinition(ModuleDefinition moduleDefinition) {
 		super(moduleDefinition);
-		Set<URI> roles = new HashSet<>();
+		this.roles = new HashSet<>();
+		this.modules = new HashMap<>();
+		this.interactions = new HashMap<>();
+		this.functionalComponents = new HashMap<>();
+		this.models = new HashSet<>();
 		for (URI role : moduleDefinition.getRoles()) {
 			roles.add(role);
 		}		
@@ -731,10 +735,10 @@ public class ModuleDefinition extends TopLevel {
 				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
 			ModuleDefinition cloned = this.deepCopy();
 			cloned.setWasDerivedFrom(this.getIdentity());
-			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
+			cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 			cloned.setDisplayId(displayId);
 			cloned.setVersion(version);
-			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
+			URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
 			cloned.setIdentity(newIdentity);
 			// Update all children's URIs
 			if (!cloned.getModules().isEmpty()) {
