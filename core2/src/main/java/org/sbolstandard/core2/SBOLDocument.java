@@ -50,16 +50,31 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link ModuleDefinition} object.
+	 * Create a new {@link ModuleDefinition} object with default URI prefix and no version.
+	 * @return the created {@link ModuleDefinition} object.
+	 */
+	public ModuleDefinition createModuleDefinition(String displayId) {
+		return createModuleDefinition(defaultURIprefix,displayId,"");
+	}
+
+	/**
+	 * Create a new {@link ModuleDefinition} object with default URI prefix.
 	 * @return the created {@link ModuleDefinition} object.
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version) {
+		return createModuleDefinition(defaultURIprefix,displayId,version);
+	}
+	
+	/**
+	 * Create a new {@link ModuleDefinition} object.
+	 * @return the created {@link ModuleDefinition} object.
+	 */
+	public ModuleDefinition createModuleDefinition(String URIprefix,String displayId, String version) {
 		checkReadOnly();
+		URIprefix = checkURIprefix(URIprefix);
 		validateIdentityData(displayId, version);
-		ModuleDefinition md = createModuleDefinition(createCompliantURI(defaultURIprefix, TopLevel.MODULE_DEFINITION, 
-				displayId, version, typesInURIs));
-		md.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.MODULE_DEFINITION, 
-				displayId, "", typesInURIs));
+		ModuleDefinition md = createModuleDefinition(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, version, typesInURIs));
+		md.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, "", typesInURIs));
 		md.setDisplayId(displayId);
 		md.setVersion(version);
 		return md;
@@ -163,16 +178,32 @@ public class SBOLDocument {
 	}
 	
 	/**
+	 * Create a new {@link Collection} object with the default URI prefix and no version. 
+	 * @return the created {@link Collection} object.
+	 */
+	public Collection createCollection(String displayId) {
+		return createCollection(defaultURIprefix,displayId,"");
+	}
+	
+	/**
 	 * Create a new {@link Collection} object with the default URI prefix. 
 	 * @return the created {@link Collection} object.
 	 */
 	public Collection createCollection(String displayId, String version) {
+		return createCollection(defaultURIprefix,displayId,version);
+	}
+	
+	/**
+	 * Create a new {@link Collection} object.
+	 * @return the created {@link Collection} object.
+	 */
+	public Collection createCollection(String URIprefix, String displayId, String version) {
 		checkReadOnly();
+		URIprefix = checkURIprefix(URIprefix);
 		validateIdentityData(displayId, version);
-		Collection c = createCollection(
-				createCompliantURI(defaultURIprefix, TopLevel.COLLECTION, displayId, version, typesInURIs));
-		c.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.COLLECTION, displayId, "", typesInURIs));
+		Collection c = createCollection(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, version, typesInURIs));
 		c.setDisplayId(displayId);
+		c.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, "", typesInURIs));
 		c.setVersion(version);
 		return c;
 	}
@@ -243,17 +274,34 @@ public class SBOLDocument {
 			addCollection(collection);
 		}
 	}
+
+	/**
+	 * Create a new {@link Model} object with default URI prefix and no version.
+	 * @return the created {@link Model} object.
+	 */
+	public Model createModel(String displayId, URI source, URI language, URI framework) {
+		return createModel(defaultURIprefix,displayId,"",source,language,framework);
+	}	
+	
+	/**
+	 * Create a new {@link Model} object with default URI prefix.
+	 * @return the created {@link Model} object.
+	 */
+	public Model createModel(String displayId, String version, URI source, URI language, URI framework) {
+		return createModel(defaultURIprefix,displayId,version,source,language,framework);
+	}	
 	
 	/**
 	 * Create a new {@link Model} object.
 	 * @return the created {@link Model} object.
 	 */
-	public Model createModel(String displayId, String version, URI source, URI language, URI framework) {
+	public Model createModel(String URIprefix, String displayId, String version, URI source, URI language, URI framework) {
 		checkReadOnly();
+		URIprefix = checkURIprefix(URIprefix);
 		validateIdentityData(displayId, version);
-		Model model = createModel(createCompliantURI(defaultURIprefix, TopLevel.MODEL, displayId, version, typesInURIs),
+		Model model = createModel(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, version, typesInURIs),
 				source, language, framework);
-		model.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.MODEL, displayId, "", typesInURIs));
+		model.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, "", typesInURIs));
 		model.setDisplayId(displayId);
 		model.setVersion(version);
 		return model;
@@ -354,18 +402,35 @@ public class SBOLDocument {
 		addComponentDefinition(newComponentDefinition);
 		return newComponentDefinition;
 	}
-
+	
+	/**
+	 * Create a new {@link ComponentDefinition} object with the default URI prefix and no version.
+	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
+	 */
+	public ComponentDefinition createComponentDefinition(String displayId, Set<URI> types) {
+		return createComponentDefinition(defaultURIprefix,displayId,"",types);
+	}
+	
 	/**
 	 * Create a new {@link ComponentDefinition} object with the default URI prefix.
 	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
+		return createComponentDefinition(defaultURIprefix,displayId,version,types);
+	}
+
+	/**
+	 * Create a new {@link ComponentDefinition} object with the default URI prefix.
+	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
+	 */
+	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, Set<URI> types) {
 		checkReadOnly();
+		URIprefix = checkURIprefix(URIprefix);
 		validateIdentityData(displayId, version);
-		ComponentDefinition cd = createComponentDefinition(createCompliantURI(defaultURIprefix, TopLevel.COMPONENT_DEFINITION,
+		ComponentDefinition cd = createComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
 				displayId, version, typesInURIs), types);
-		cd.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.COMPONENT_DEFINITION, displayId,"", typesInURIs));
 		cd.setDisplayId(displayId);
+		cd.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION, displayId,"", typesInURIs));
 		cd.setVersion(version);
 		return cd;
 	}
@@ -466,15 +531,32 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link Sequence} object.
+	 * Create a new {@link Sequence} object with default URI prefix and no version.
+	 * @return the created Sequence object.
+	 */
+	public Sequence createSequence(String displayId, String elements, URI encoding) {
+		return createSequence(defaultURIprefix,displayId,"",elements,encoding);
+	}
+
+	/**
+	 * Create a new {@link Sequence} object with default URI prefix.
 	 * @return the created Sequence object.
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
+		return createSequence(defaultURIprefix,displayId,version,elements,encoding);
+	}
+	
+	/**
+	 * Create a new {@link Sequence} object.
+	 * @return the created Sequence object.
+	 */
+	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) {
 		checkReadOnly();
+		URIprefix = checkURIprefix(URIprefix);
 		validateIdentityData(displayId, version);
-		Sequence s = createSequence(createCompliantURI(defaultURIprefix, TopLevel.SEQUENCE, displayId, version, typesInURIs), 
+		Sequence s = createSequence(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, version, typesInURIs), 
 				elements, encoding);
-		s.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.SEQUENCE, displayId, "", typesInURIs));
+		s.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, "", typesInURIs));
 		s.setDisplayId(displayId);
 		s.setVersion(version);
 		return s;
@@ -727,16 +809,33 @@ public class SBOLDocument {
 			addSequence(sequence);
 		}
 	}
+
+	/**
+	 * Create a new {@link GenericTopLevel} object with default URI prefix and no version.
+	 * @return the created {@link GenericTopLevel} object.
+	 */
+	public GenericTopLevel createGenericTopLevel(String displayId, QName rdfType) {
+		return createGenericTopLevel(defaultURIprefix,displayId,"",rdfType);
+	}
+
+	/**
+	 * Create a new {@link GenericTopLevel} object with default URI prefix.
+	 * @return the created {@link GenericTopLevel} object.
+	 */
+	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
+		return createGenericTopLevel(defaultURIprefix,displayId,version,rdfType);
+	}
 	
 	/**
 	 * Create a new {@link GenericTopLevel} object.
 	 * @return the created {@link GenericTopLevel} object.
 	 */
-	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
+	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) {
 		checkReadOnly();
+		URIprefix = checkURIprefix(URIprefix);
 		validateIdentityData(displayId, version);
-		GenericTopLevel g = createGenericTopLevel(createCompliantURI(defaultURIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
-		g.setPersistentIdentity(createCompliantURI(defaultURIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
+		GenericTopLevel g = createGenericTopLevel(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
+		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
 		g.setDisplayId(displayId);
 		g.setVersion(version);
 		return g;
@@ -1081,6 +1180,15 @@ public class SBOLDocument {
 		return changed;
 	}
 
+	String checkURIprefix(String URIprefix) {
+		if (!URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
+			URIprefix += "/";
+		}
+		if (!isURIprefixCompliant(URIprefix)) {
+			throw new IllegalArgumentException("URI prefix '"+URIprefix+"' is invalid");
+		}
+		return URIprefix;
+	}
 	
 	/**
 	 * Set the default URI prefix to the given prefix.

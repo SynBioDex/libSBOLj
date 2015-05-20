@@ -33,7 +33,7 @@ public class writeTester {
 	private static String TurtleString = "writeTesterString_v1.3.ttl";
 	private static String TurtleFile   = "writeTesterFile_v1.3.ttl";
 	
-	private static String version = "1.0";
+	private static String version = "";//1.0";
 
 	//private static String  fileName   = "single_singleCollection.rdf";
 
@@ -44,39 +44,6 @@ public class writeTester {
 
 	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
-		//		String prURI="http://www.partsregistry.org/";
-//		SBOLDocument document = new SBOLDocument();
-//		document.setTypesInURIs(false);
-//		document.setDefaultURIprefix("http://parts.igem.org/Promoters/Catalog");
-//		document.createCollection("Anderson","");
-//		document.setDefaultURIprefix("http://parts.igem.org/Promoters/Models");
-//		document.createModel("AndersonModel","",URI.create("http://www.dummy.org"),
-//				Model.SBML,SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
-//		SBOLWriter.writeRDF(document,(System.out));
-//		String prURI="http://partsregistry.org/Part#";
-//        SBOLDocument document = new SBOLDocument();        
-//        
-//        document.setDefaultURIprefix(prURI);        
-//        document.setTypesInURIs(false);
-//        
-//        //http://parts.igem.org/Part:BBa_J23119
-//        ComponentDefinition promoter = document.createComponentDefinition(
-//                "BBa_J23119",
-//                null,
-//                new HashSet<URI>(Arrays.asList(
-//                        URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegiBIon"),
-//                        URI.create("http://identifiers.org/chebi/CHEBI:4705")                                                
-//                        )));
-//                promoter.setRoles(new HashSet<URI>(Arrays.asList(
-//                        URI.create("http://identifiers.org/so/SO:0000167"),
-//                        URI.create("http://identifiers.org/so/SO:0000613")                                                
-//                        )));
-//        
-//        promoter.setName("J23119 promoter");
-//        promoter.setDescription("Constitutive promoter");    
-//        
-//        SBOLWriter.write(document,(System.out));
-
 		get_myParts(SBOL2Doc_test);
 
 		writeRdfOutputStream();
@@ -203,10 +170,10 @@ public class writeTester {
 		Collection myParts = createCollection(SBOL2Doc_test,
 				getData("myParts", version),
 				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
-		Collection myParts2 = createCollection(SBOL2Doc_test,
-				getData("myParts", "2.0"),
-				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
-		SBOL2Doc_test.removeCollection(myParts2);
+//		Collection myParts2 = createCollection(SBOL2Doc_test,
+//				getData("myParts", "2.0"),
+//				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
+		//SBOL2Doc_test.removeCollection(myParts2);
 		//System.out.println(SBOL2Doc_test.getCollection(myParts.getPersistentIdentity()).getVersion());
 
 		myParts.addMember(get_LacI(SBOL2Doc_test).getIdentity());
