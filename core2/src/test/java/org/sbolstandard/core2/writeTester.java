@@ -53,6 +53,29 @@ public class writeTester {
 //		document.createModel("AndersonModel","",URI.create("http://www.dummy.org"),
 //				Model.SBML,SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 //		SBOLWriter.writeRDF(document,(System.out));
+//		String prURI="http://partsregistry.org/Part#";
+//        SBOLDocument document = new SBOLDocument();        
+//        
+//        document.setDefaultURIprefix(prURI);        
+//        document.setTypesInURIs(false);
+//        
+//        //http://parts.igem.org/Part:BBa_J23119
+//        ComponentDefinition promoter = document.createComponentDefinition(
+//                "BBa_J23119",
+//                null,
+//                new HashSet<URI>(Arrays.asList(
+//                        URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegiBIon"),
+//                        URI.create("http://identifiers.org/chebi/CHEBI:4705")                                                
+//                        )));
+//                promoter.setRoles(new HashSet<URI>(Arrays.asList(
+//                        URI.create("http://identifiers.org/so/SO:0000167"),
+//                        URI.create("http://identifiers.org/so/SO:0000613")                                                
+//                        )));
+//        
+//        promoter.setName("J23119 promoter");
+//        promoter.setDescription("Constitutive promoter");    
+//        
+//        SBOLWriter.write(document,(System.out));
 
 		get_myParts(SBOL2Doc_test);
 

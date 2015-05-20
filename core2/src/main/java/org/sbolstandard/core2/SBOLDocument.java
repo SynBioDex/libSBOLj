@@ -1087,6 +1087,9 @@ public class SBOLDocument {
 	 * @param defaultURIprefix
 	 */
 	public void setDefaultURIprefix(String defaultURIprefix) {
+		if (!defaultURIprefix.endsWith("/") && !defaultURIprefix.endsWith(":") && !defaultURIprefix.endsWith("#")) {
+			defaultURIprefix += "/";
+		}
 		if (isURIprefixCompliant(defaultURIprefix)) {
 			this.defaultURIprefix = defaultURIprefix;	
 		}
