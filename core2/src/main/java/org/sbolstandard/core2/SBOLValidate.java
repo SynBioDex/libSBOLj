@@ -21,8 +21,9 @@ public class SBOLValidate {
 				+ "and printing the document contents if validation succeeds");
 		System.err.println();
 		System.err.println("Usage:");
-		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -p <URIprefix>]");
+		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -p <URIprefix> -v <version>]");
 		System.err.println();
+		System.err.println("-t  uses types in URIs");
 		System.err.println("-i  incomplete SBOL document");
 		System.err.println("-n  non-compliant SBOL document");
 		System.exit(1);
@@ -74,12 +75,16 @@ public class SBOLValidate {
 		String fileName = "";
 		String outputFile = "";
 		String URIPrefix = "";
+		String version = "";
 		boolean complete = true;
 		boolean compliant = true;
+		boolean typesInURI = false;
 		int i = 0;
 		while (i < args.length) {
 			if (args[i].equals("-i")) {
 				complete = false;
+			} else if (args[i].equals("-t")) {
+				typesInURI = true;
 			} else if (args[i].equals("-n")) {
 				compliant = false;
 			} else if (args[i].equals("-o")) {
@@ -94,6 +99,12 @@ public class SBOLValidate {
 				}
 				URIPrefix = args[i+1];
 				i++;
+			} else if (args[i].equals("-v")) {
+				if (i+1 >= args.length) {
+					usage();
+				}
+				version = args[i+1];
+				i++;
 			} else if (fileName.equals("")) {
 				fileName = args[i];
 			} else {
@@ -106,6 +117,8 @@ public class SBOLValidate {
 			if (!URIPrefix.equals("")) {
 				SBOLReader.setURIPrefix(URIPrefix);
 			}
+			SBOLReader.setTypesInURI(typesInURI);
+			SBOLReader.setVersion(version);
 	        SBOLDocument doc = SBOLReader.read(fileName);
 	        if (compliant) validateCompliance(doc);
 	        if (complete) validateCompleteness(doc);
