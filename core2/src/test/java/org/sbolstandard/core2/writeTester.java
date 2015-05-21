@@ -781,7 +781,7 @@ public class writeTester {
 
 		SequenceAnnotation s = cd.getSequenceAnnotation(displayId);
 		if (s==null) {
-			s = cd.createSequenceAnnotation(displayId, startRange, endRange, OrientationType.INLINE);
+			s = cd.createSequenceAnnotation(displayId, "range", startRange, endRange, OrientationType.INLINE);
 			setCommonDocumentedData(s, displayId, displayId);
 			s.setComponent(ref_component);
 		} 

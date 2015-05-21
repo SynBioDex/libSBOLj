@@ -493,9 +493,9 @@ public abstract class SBOLAbstractTests {
 		Component someComponent = someCompDef.createComponent("someComponent", AccessType.PUBLIC, "someCompDef", VERSION_1_0);
 		someComponent.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
-		SequenceAnnotation someSequenceAnnotation = someCompDef.createSequenceAnnotation("someSequenceAnnotation", 1, 10);
+		SequenceAnnotation someSequenceAnnotation = someCompDef.createSequenceAnnotation("someSequenceAnnotation", "cut", 1, 10);
 		someSequenceAnnotation.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
-		SequenceAnnotation someSequenceAnnotation2 = someCompDef.createSequenceAnnotation("someSequenceAnnotation2", 1, OrientationType.INLINE);
+		SequenceAnnotation someSequenceAnnotation2 = someCompDef.createSequenceAnnotation("someSequenceAnnotation2", "cut", 1, OrientationType.INLINE);
 
 		//		someSequenceAnnotation.setLocation(); //TODO range, multiRange, cut - how to access?
 

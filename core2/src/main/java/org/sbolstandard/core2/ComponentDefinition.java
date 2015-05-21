@@ -306,63 +306,63 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 */
-	public SequenceAnnotation createSequenceAnnotation(String displayId) {
+	public SequenceAnnotation createSequenceAnnotation(String displayId,String locationId) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		return createSequenceAnnotation(displayId,(OrientationType)null);
+		return createSequenceAnnotation(displayId,locationId,(OrientationType)null);
 	}
 	
 	/**
 	 */
-	public SequenceAnnotation createSequenceAnnotation(String displayId,OrientationType orientation) {
+	public SequenceAnnotation createSequenceAnnotation(String displayId,String locationId,OrientationType orientation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString()+"/"+displayId;
 		String version = this.getVersion();
-		GenericLocation location = new GenericLocation(createCompliantURI(URIprefix,"generic",version));
+		GenericLocation location = new GenericLocation(createCompliantURI(URIprefix,locationId,version));
 		if (orientation!=null) location.setOrientation(orientation);
-		location.setPersistentIdentity(URI.create(URIprefix+"/generic"));
-		location.setDisplayId("generic");
+		location.setPersistentIdentity(URI.create(URIprefix+"/"+locationId));
+		location.setDisplayId(locationId);
 		location.setVersion(this.getVersion());
 		return createSequenceAnnotation(displayId, location);
 	}
 	
 	/**
 	 */
-	public SequenceAnnotation createSequenceAnnotation(String displayId, int at) {
+	public SequenceAnnotation createSequenceAnnotation(String displayId, String locationId, int at) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		return createSequenceAnnotation(displayId,at,null);
+		return createSequenceAnnotation(displayId,locationId,at,null);
 	}
 		
 	/**
 	 */
-	public SequenceAnnotation createSequenceAnnotation(String displayId, int at,OrientationType orientation) {
+	public SequenceAnnotation createSequenceAnnotation(String displayId,String locationId,int at,OrientationType orientation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString()+"/"+displayId;
 		String version = this.getVersion();
-		Cut location = new Cut(createCompliantURI(URIprefix,"cut",version),at);
+		Cut location = new Cut(createCompliantURI(URIprefix,locationId,version),at);
 		if (orientation!=null) location.setOrientation(orientation);
-		location.setPersistentIdentity(URI.create(URIprefix+"/cut"));
-		location.setDisplayId("cut");
+		location.setPersistentIdentity(URI.create(URIprefix+"/"+locationId));
+		location.setDisplayId(locationId);
 		location.setVersion(this.getVersion());
 		return createSequenceAnnotation(displayId, location);
 	}
 	
 	/**
 	 */
-	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end) {
+	public SequenceAnnotation createSequenceAnnotation(String displayId, String locationId, int start, int end) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		return createSequenceAnnotation(displayId,start,end,null);
+		return createSequenceAnnotation(displayId,locationId,start,end,null);
 	}
 	
 	/**
 	 */
-	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end,OrientationType orientation) {
+	public SequenceAnnotation createSequenceAnnotation(String displayId, String locationId, int start, int end,OrientationType orientation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString()+"/"+displayId;
 		String version = this.getVersion();
-		Location location = new Range(createCompliantURI(URIprefix,"range",version),start,end);
+		Location location = new Range(createCompliantURI(URIprefix,locationId,version),start,end);
 		if (orientation!=null) location.setOrientation(orientation);
-		location.setPersistentIdentity(URI.create(URIprefix+"/range"));
-		location.setDisplayId("range");
+		location.setPersistentIdentity(URI.create(URIprefix+"/"+locationId));
+		location.setDisplayId(locationId);
 		location.setVersion(this.getVersion());
 		return createSequenceAnnotation(displayId, location);
 	}
