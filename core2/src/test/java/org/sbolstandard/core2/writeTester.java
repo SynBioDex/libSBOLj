@@ -48,9 +48,11 @@ public class writeTester {
 		SBOLDocument sbolDoc = new SBOLDocument();
 		sbolDoc.setDefaultURIprefix("http://www.some.org");
 		ComponentDefinition cd = SBOL2Doc_test.getComponentDefinition("pLactetR", "1.0");
-		sbolDoc.createCopy(cd);//, "pLactetR","2.0");
+		sbolDoc.createCopy(cd,"pLactetR2","2.0");
+		cd = SBOL2Doc_test.getComponentDefinition("ptetlacI", "1.0");
+		sbolDoc.createCopy(cd,"ptetLacI2","2.0");
 		ModuleDefinition md = SBOL2Doc_test.getModuleDefinition("LacI_Inv", "1.0");
-		sbolDoc.createCopy(md);//, "LacI_Inv","2.0");
+		sbolDoc.createCopy(md,"LacI_Inv2","2.0");
 
 		writeRdfOutputStream(sbolDoc);
 

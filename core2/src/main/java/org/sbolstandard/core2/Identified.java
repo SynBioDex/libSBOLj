@@ -53,6 +53,9 @@ public abstract class Identified {
 			}
 			this.setAnnotations(clonedAnnotations);
 		}
+		if (identified.isSetDisplayId()) {
+			this.setDisplayId(identified.getDisplayId());
+		}
 		if (identified.isSetVersion()) {
 			this.setVersion(identified.getVersion());
 		}

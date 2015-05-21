@@ -142,20 +142,14 @@ public class Model extends TopLevel {
 	 */
 	@Override
 	Model copy(String URIprefix, String displayId, String version) {
-		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
-				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
-			Model cloned = this.deepCopy();
-			cloned.setWasDerivedFrom(this.getIdentity());	
-			cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
-			cloned.setDisplayId(displayId);
-			cloned.setVersion(version);
-			URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
-			cloned.setIdentity(newIdentity);
-			return cloned;
-		}
-		else {
-			return null; 	
-		}
+		Model cloned = this.deepCopy();
+		cloned.setWasDerivedFrom(this.getIdentity());	
+		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		cloned.setDisplayId(displayId);
+		cloned.setVersion(version);
+		URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
+		cloned.setIdentity(newIdentity);
+		return cloned;
 	}
 
 	/* (non-Javadoc)

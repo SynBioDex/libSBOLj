@@ -168,9 +168,15 @@ public class SequenceConstraint extends Identified {
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) {
-		URI newIdentity = createCompliantURI(URIprefix,displayId,version);
 		this.setWasDerivedFrom(this.getIdentity());
-		this.setIdentity(newIdentity);
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
+		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		this.setDisplayId(displayId);
+		this.setVersion(version);
+		String subjectId = extractDisplayId(subject);
+		this.setSubject(createCompliantURI(URIprefix,subjectId,version));
+		String objectId = extractDisplayId(object);
+		this.setObject(createCompliantURI(URIprefix,objectId,version));
 	}
 
 	/**

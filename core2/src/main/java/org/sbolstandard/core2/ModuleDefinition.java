@@ -44,37 +44,18 @@ public class ModuleDefinition extends TopLevel {
 		this.functionalComponents = new HashMap<>();
 		this.models = new HashSet<>();
 		for (URI role : moduleDefinition.getRoles()) {
-			roles.add(role);
+			this.addRole(role);
 		}		
-		this.setRoles(roles);
-		if (!moduleDefinition.getModules().isEmpty()) {
-			List<Module> subModules = new ArrayList<>();
-			for (Module subModule : moduleDefinition.getModules()) {
-				subModules.add(subModule.deepCopy());
-			}
-			this.setModules(subModules);
+		for (Module subModule : moduleDefinition.getModules()) {
+			this.addModule(subModule.deepCopy());
 		}
-		if (!moduleDefinition.getInteractions().isEmpty()) {
-			List<Interaction> interactions = new ArrayList<>();
-			for (Interaction interaction : moduleDefinition.getInteractions()) {
-				interactions.add(interaction.deepCopy());
-			}
-			this.setInteractions(interactions);
+		for (Interaction interaction : moduleDefinition.getInteractions()) {
+			this.addInteraction(interaction.deepCopy());
 		}
-		if (!moduleDefinition.getFunctionalComponents().isEmpty()) {
-			List<FunctionalComponent> components = new ArrayList<>();
-			for (FunctionalComponent component : moduleDefinition.getFunctionalComponents()) {
-				components.add(component.deepCopy());
-			}
-			this.setFunctionalComponents(components);
+		for (FunctionalComponent component : moduleDefinition.getFunctionalComponents()) {
+			this.addFunctionalComponent(component.deepCopy());
 		}
-		if (!moduleDefinition.getModels().isEmpty()) {
-			Set<URI> models = new HashSet<>();
-			for (URI model : moduleDefinition.getModelURIs()) {
-				models.add(model);
-			}
-			this.setModels(models);
-		}
+		this.setModels(moduleDefinition.getModelURIs());
 	}
 
 
@@ -731,36 +712,32 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	@Override
 	ModuleDefinition copy(String URIprefix, String displayId, String version) {
-		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
-				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
-			ModuleDefinition cloned = this.deepCopy();
-			cloned.setWasDerivedFrom(this.getIdentity());
-			cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
-			cloned.setDisplayId(displayId);
-			cloned.setVersion(version);
-			URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
-			cloned.setIdentity(newIdentity);
-			// Update all children's URIs
-			if (!cloned.getModules().isEmpty()) {
-				for (Module module : cloned.getModules()) {
-					module.updateCompliantURI(URIprefix, displayId, version);
-				}
-			}
-			if (!cloned.getInteractions().isEmpty()) {
-				for (Interaction SequenceAnnotation : cloned.getInteractions()) {
-					SequenceAnnotation.updateCompliantURI(URIprefix, displayId, version);
-				}	
-			}
-			if (!cloned.getFunctionalComponents().isEmpty()) {
-				for (FunctionalComponent component : cloned.getFunctionalComponents()) {
-					component.updateCompliantURI(URIprefix, displayId, version);
-				}
-			}
-			return cloned;
+		ModuleDefinition cloned = this.deepCopy();
+		cloned.setWasDerivedFrom(this.getIdentity());
+		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		cloned.setDisplayId(displayId);
+		cloned.setVersion(version);
+		URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
+		cloned.setIdentity(newIdentity);
+		int count = 0;
+		for (Module module : cloned.getModules()) {
+			if (!module.isSetDisplayId()) module.setDisplayId("module"+ ++count);
+			module.updateCompliantURI(this.getPersistentIdentity().toString(), 
+					module.getDisplayId(),version);
 		}
-		else {
-			return null; 	
+		count = 0;
+		for (Interaction interaction : cloned.getInteractions()) {
+			if (!interaction.isSetDisplayId()) interaction.setDisplayId("interaction"+ ++count);
+			interaction.updateCompliantURI(this.getPersistentIdentity().toString(), 
+					interaction.getDisplayId(),version);
 		}
+		count = 0;
+		for (FunctionalComponent component : cloned.getFunctionalComponents()) {
+			if (!component.isSetDisplayId()) component.setDisplayId("functionalComponent"+ ++count);
+			component.updateCompliantURI(this.getPersistentIdentity().toString(), 
+					component.getDisplayId(),version);
+		}
+		return cloned;
 	}
 
 	/* (non-Javadoc)

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import static org.sbolstandard.core2.URIcompliance.*;
@@ -56,40 +57,21 @@ public class ComponentDefinition extends TopLevel {
 		this.components = new HashMap<>();
 		this.sequenceAnnotations = new HashMap<>();
 		this.sequenceConstraints = new HashMap<>();
-		Set<URI> types = new HashSet<>();
 		for (URI type : componentDefinition.getTypes()) {
-			types.add(URI.create(type.toString()));
+			this.addType(URI.create(type.toString()));
 		}
-		setTypes(types);
-		if (!componentDefinition.getRoles().isEmpty()) {
-			Set<URI> roles = new HashSet<>();
-			for (URI role : componentDefinition.getRoles()) {
-				roles.add(URI.create(role.toString()));
-			}
-			this.setRoles(roles);
+		for (URI role : componentDefinition.getRoles()) {
+			this.addRole(URI.create(role.toString()));
 		}		
-		if (!componentDefinition.getComponents().isEmpty()) {
-			List<Component> subComponents = new ArrayList<>();
-			for (Component subComponent : componentDefinition.getComponents()) {
-				subComponents.add(subComponent.deepCopy());
-			}
-			this.setComponents(subComponents);
+		for (Component subComponent : componentDefinition.getComponents()) {
+			this.addComponent(subComponent.deepCopy());
 		}		
-		if (!componentDefinition.getSequenceConstraints().isEmpty()) {
-			List<SequenceConstraint> sequenceConstraints = new ArrayList<>();
-			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
-				sequenceConstraints.add(sequenceConstraint.deepCopy());
-			}
-			this.setSequenceConstraints(sequenceConstraints);
+		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
+			this.addSequenceConstraint(sequenceConstraint.deepCopy());
 		}
-		if (!componentDefinition.getSequenceAnnotations().isEmpty()) {
-			List<SequenceAnnotation> sequenceAnnotations = new ArrayList<>();
-			for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
-				sequenceAnnotations.add(sequenceAnnotation.deepCopy());
-			}
-			this.setSequenceAnnotations(sequenceAnnotations);
+		for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
+			this.addSequenceAnnotation(sequenceAnnotation.deepCopy());
 		}
-
 		this.setSequences(componentDefinition.getSequenceURIs());
 	}
 	
@@ -510,7 +492,7 @@ public class ComponentDefinition extends TopLevel {
 				sequenceAnnotations, sequenceConstraints);
 		component.setSBOLDocument(this.sbolDocument);
 	}
-	
+
 	/**
 	 * Removes the component from the list of components, if present.
 	 * @param component object to be removed.
@@ -825,36 +807,34 @@ public class ComponentDefinition extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	ComponentDefinition copy(String URIprefix, String displayId, String version) {				
-		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
-				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
-			ComponentDefinition cloned = this.deepCopy();
-			cloned.setWasDerivedFrom(this.getIdentity());
-			cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
-			cloned.setDisplayId(displayId);
-			cloned.setVersion(version);
-			URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
-			cloned.setIdentity(newIdentity);
-			// Update all children's URIs
-			if (!cloned.getSequenceConstraints().isEmpty()) {
-				for (SequenceConstraint sequenceConstraint : cloned.getSequenceConstraints()) {
-					sequenceConstraint.updateCompliantURI(cloned.getPersistentIdentity().toString(), sequenceConstraint.getDisplayId(), version);
-				}
-			}
-			if (!cloned.getSequenceAnnotations().isEmpty()) {
-				for (SequenceAnnotation SequenceAnnotation : cloned.getSequenceAnnotations()) {
-					SequenceAnnotation.updateCompliantURI(URIprefix, displayId, version);
-				}	
-			}
-			if (!cloned.getComponents().isEmpty()) {
-				for (Component component : cloned.getComponents()) {
-					component.updateCompliantURI(URIprefix, displayId, version);
-				}
-			}
-			return cloned;
+		ComponentDefinition cloned = this.deepCopy();
+		cloned.setWasDerivedFrom(this.getIdentity());
+		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		cloned.setDisplayId(displayId);
+		cloned.setVersion(version);
+		URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
+		cloned.setIdentity(newIdentity);
+		int count = 0;
+		for (Component component : cloned.getComponents()) {
+			cloned.removeChildSafely(component, components);
+			if (!component.isSetDisplayId()) component.setDisplayId("component"+ ++count);
+			component.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+					component.getDisplayId(),version);
+			cloned.addComponent(component);
 		}
-		else {
-			return null; 	
+		count = 0;
+		for (SequenceConstraint sequenceConstraint : cloned.getSequenceConstraints()) {
+			if (!sequenceConstraint.isSetDisplayId()) sequenceConstraint.setDisplayId("sequenceConstraint"+ ++count);
+			sequenceConstraint.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+					sequenceConstraint.getDisplayId(),version);
 		}
+		count = 0;
+		for (SequenceAnnotation sequenceAnnotation : cloned.getSequenceAnnotations()) {
+			if (!sequenceAnnotation.isSetDisplayId()) sequenceAnnotation.setDisplayId("sequenceAnnotation"+ ++count);
+			sequenceAnnotation.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+					sequenceAnnotation.getDisplayId(),version);
+		}
+		return cloned;
 	}
 	
 //	/**
@@ -910,10 +890,10 @@ public class ComponentDefinition extends TopLevel {
 				return false;
 		} else if (!roles.equals(other.roles))
 			return false;
-		if (SEQUENCE == null) {
-			if (other.SEQUENCE != null)
+		if (sequences == null) {
+			if (other.sequences != null)
 				return false;
-		} else if (!SEQUENCE.equals(other.SEQUENCE))
+		} else if (!sequences.equals(other.sequences))
 			return false;
 		if (sequenceAnnotations == null) {
 			if (other.sequenceAnnotations != null)

@@ -1,5 +1,7 @@
 package org.sbolstandard.core2;
 
+import static org.sbolstandard.core2.URIcompliance.*;
+
 import java.net.URI;
 
 /**
@@ -57,5 +59,17 @@ public abstract class Location extends Identified{
 	public void unsetOrientation() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		orientation = null;
+	}
+	
+	/**
+	 * Assume this Range object has compliant URI, and all given parameters have compliant forms.
+	 * This method is called by {@link SequenceAnnotation#updateCompliantURI(String, String, String)}.
+	 */
+	void updateCompliantURI(String URIprefix, String displayId, String version) {
+		this.setWasDerivedFrom(this.getIdentity());
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
+		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		this.setDisplayId(displayId);
+		this.setVersion(version);
 	}
 }

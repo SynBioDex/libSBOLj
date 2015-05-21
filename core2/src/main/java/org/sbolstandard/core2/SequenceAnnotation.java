@@ -32,14 +32,10 @@ public class SequenceAnnotation extends Identified {
 	}
 	
 	private SequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
-		super(sequenceAnnotation.getIdentity());
+		super(sequenceAnnotation);
 		this.locations = new HashMap<>();
-		if (!sequenceAnnotation.getLocations().isEmpty()) {
-			List<Location> locations = new ArrayList<>();
-			for (Location location : sequenceAnnotation.getLocations()) {
-				locations.add(location.deepCopy());
-			}
-			this.setLocations(locations);
+		for (Location location : sequenceAnnotation.getLocations()) {
+			addLocation(location.deepCopy());
 		}
 		if (sequenceAnnotation.isSetComponent()) {
 			this.setComponent(sequenceAnnotation.getComponentURI());
@@ -484,24 +480,17 @@ public class SequenceAnnotation extends Identified {
 	 * @param parentDisplayId
 	 * @param version
 	 */
-	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 1 indicates that this object is a child of a top-level object.
-		URI newIdentity = URI.create(URIprefix + '/' + parentDisplayId + '/' 
-				+ thisObjDisplayId + '/' + version);
-		for (Location location : locations.values()) {
-			if (location instanceof Range) {
-				((Range) location).updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
-			}
-			if (location instanceof Cut) {
-				((Cut) location).updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
-			}
-			if (location instanceof GenericLocation) {
-				((GenericLocation) location).updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
-			}
-		}
-		// TODO: need to set wasDerivedFrom here?
+	void updateCompliantURI(String URIprefix, String displayId, String version) {
 		this.setWasDerivedFrom(this.getIdentity());
-		this.setIdentity(newIdentity);
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
+		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		this.setDisplayId(displayId);
+		this.setVersion(version);
+		int count = 0;
+		for (Location location : this.getLocations()) {
+			if (!location.isSetDisplayId()) location.setDisplayId("location"+ ++count);
+			location.updateCompliantURI(this.getPersistentIdentity().toString(),location.getDisplayId(),version);
+		}
 	}
 
 	/**

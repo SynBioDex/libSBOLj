@@ -2,11 +2,12 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 final class URIcompliance {
-
+	
 	static void validateIdVersion(String displayId, String version) {
 		if (!isDisplayIdCompliant(displayId)) {
 			throw new IllegalArgumentException("Display id `" + displayId + "' is not valid.");
@@ -86,12 +87,6 @@ final class URIcompliance {
 		Matcher m = r.matcher(URIstr);
 		if (m.matches()) {
 			return m.group(4);
-			/*
-			//System.out.println("group 1: " + m.group(1));
-			String displayIds = m.group(1); // toplevelId/childId/grandChildId/grandGrandChildId/
-			String[] displayIdArray = displayIds.substring(0, displayIds.lastIndexOf('/')).split("/");
-			return displayIdArray[index];
-			*/
 		}
 		else
 			return null;
@@ -337,7 +332,6 @@ final class URIcompliance {
 	static boolean isDisplayIdCompliant(String newDisplayId) {
 		Pattern r = Pattern.compile(displayIDpattern);
 		Matcher m = r.matcher(newDisplayId);
-		// TODO: Warning: Display ID is not compliant.
 		return m.matches();
 	}
 

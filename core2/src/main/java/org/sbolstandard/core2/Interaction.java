@@ -268,19 +268,18 @@ public class Interaction extends Identified {
 	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
 	 */
-	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 1 indicates that this object is a child of a top-level object.
-		URI newIdentity = URI.create(URIprefix + '/' + parentDisplayId + '/' 
-				+ thisObjDisplayId + '/' + version);
-		if (!this.getParticipations().isEmpty()) {
-			// Update children's URIs
-			for (Participation participation : this.getParticipations()) {
-				participation.updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
-			}
-		}
-		// TODO: need to set wasDerivedFrom here?
+	void updateCompliantURI(String URIprefix, String displayId, String version) {
 		this.setWasDerivedFrom(this.getIdentity());
-		this.setIdentity(newIdentity);		
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));		
+		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		this.setDisplayId(displayId);
+		this.setVersion(version);
+		int count = 0;
+		for (Participation participation : this.getParticipations()) {
+			if (!participation.isSetDisplayId()) participation.setDisplayId("participation"+ ++count);
+			participation.updateCompliantURI(this.getPersistentIdentity().toString(), 
+					participation.getDisplayId(), version);
+		}
 	}
 
 	/**
