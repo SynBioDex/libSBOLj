@@ -336,6 +336,9 @@ final class URIcompliance {
 	}
 
 	static boolean isVersionCompliant(String newVersion) {
+		if (newVersion==null) {
+			throw new IllegalArgumentException("Version must not be null");
+		}
 		if (newVersion.equals("")) return true;
 		Pattern r = Pattern.compile(versionPattern);
 		Matcher m = r.matcher(newVersion);

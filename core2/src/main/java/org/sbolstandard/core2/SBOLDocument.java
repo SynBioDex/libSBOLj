@@ -1215,6 +1215,9 @@ public class SBOLDocument {
 	}
 
 	String checkURIprefix(String URIprefix) {
+		if (URIprefix==null) {
+			throw new IllegalArgumentException("URI prefix must not be null");
+		}
 		if (!URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
 			URIprefix += "/";
 		}
