@@ -19,7 +19,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
-public class Interaction extends Documented {
+public class Interaction extends Identified {
 
 	private Set<URI> types;
 	private HashMap<URI, Participation> participations;
@@ -33,12 +33,14 @@ public class Interaction extends Documented {
 	Interaction(URI identity, Set<URI> type) {
 		super(identity);
 		this.types = new HashSet<>();
-		setTypes(type);
 		this.participations = new HashMap<>();
+		setTypes(type);
 	}
 	
 	Interaction(Interaction interaction) {
 		super(interaction);
+		this.types = new HashSet<>();
+		this.participations = new HashMap<>();
 		Set<URI> type = new HashSet<>();
 		for (URI typeElement : interaction.getTypes()) {
 			type.add(URI.create(typeElement.toString()));
@@ -176,9 +178,17 @@ public class Interaction extends Documented {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(participation,participations);
 	}
+
+	/**
+	 * Returns the instance matching the specified displayId from the list of participations, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Participation getParticipation(String displayId) {
+		return participations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of participations if present.
+	 * Returns the instance matching the specified URI from the list of participations, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Participation getParticipation(URI participationURI) {
@@ -258,19 +268,22 @@ public class Interaction extends Documented {
 	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
 	 */
-	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 1 indicates that this object is a child of a top-level object.
-		URI newIdentity = URI.create(URIprefix + '/' + parentDisplayId + '/' 
-				+ thisObjDisplayId + '/' + version);
-		if (!this.getParticipations().isEmpty()) {
-			// Update children's URIs
-			for (Participation participation : this.getParticipations()) {
-				participation.updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
-			}
-		}
-		// TODO: need to set wasDerivedFrom here?
+	void updateCompliantURI(String URIprefix, String displayId, String version) {
 		this.setWasDerivedFrom(this.getIdentity());
-		this.setIdentity(newIdentity);		
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));		
+		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		this.setDisplayId(displayId);
+		this.setVersion(version);
+		int count = 0;
+		for (Participation participation : this.getParticipations()) {
+			if (!participation.isSetDisplayId()) participation.setDisplayId("participation"+ ++count);
+			participation.updateCompliantURI(this.getPersistentIdentity().toString(), 
+					participation.getDisplayId(), version);
+			this.removeChildSafely(participation, this.participations);
+			this.addParticipation(participation);
+			String participantId = extractDisplayId(participation.getParticipantURI());
+			participation.setParticipant(createCompliantURI(URIprefix,participantId,version));
+		}
 	}
 
 	/**

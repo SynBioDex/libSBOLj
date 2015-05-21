@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.sbolstandard.core2.MapsTo.RefinementType;
-
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
@@ -21,86 +19,22 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
-public abstract class ComponentInstance extends Documented {
+public abstract class ComponentInstance extends Identified {
 	
 	private AccessType access;
 	protected URI definition;
-	private HashMap<URI, MapsTo> mapsTos;
+	protected HashMap<URI, MapsTo> mapsTos;
 	
-	public enum AccessType {
-		PUBLIC("public"), PRIVATE("private");
-		private final String accessType;
-
-		AccessType(String accessType) {
-			this.accessType = accessType;
-		}
-
-		/**
-		 * Convert the specified URI to its corresponding AccessType instance.
-		 * @return the corresponding AccessType instance
-		 */
-		static AccessType convertToAccessType(URI access) {
-			if (access.equals(Access.PUBLIC)) {
-				return AccessType.PUBLIC;
-			} else if (access.equals(Access.PRIVATE)) {
-				return AccessType.PRIVATE;
-			}
-			else {
-				throw new IllegalArgumentException("Unknown access URI `" + access + "'");
-			}
-		}
-		
-		/**
-		 * Returns the access type in URI.
-		 * @return access type in URI
-		 */
-		static URI convertToURI(AccessType access) {
-			if (access != null) {
-				if (access.equals(AccessType.PUBLIC)) {
-					return Access.PUBLIC;
-				}
-				else if (access.equals(AccessType.PRIVATE)) {
-					return Access.PRIVATE;
-				}
-				else {
-					return null;
-				}
-			}
-			else {
-				return null;
-			}
-		}
-
-		/**
-		 * Returns the access type.
-		 * @return access type.
-		 */
-		String getAccessType() {
-			return accessType;
-		}
-
-		@Override
-		public String toString() {
-			return accessType;
-		}
-	}
-
 	ComponentInstance(URI identity, AccessType access, URI definition) {
 		super(identity);
+		this.mapsTos = new HashMap<>();
 		setAccess(access);
 		setDefinition(definition);		
-		this.mapsTos = new HashMap<>();
-		/*
-		if (isURIcompliant(identity, 1)) {
-			this.setVersion(extractVersion(identity));
-			this.setDisplayId(extractDisplayId(identity, 0));
-			this.setPersistentIdentity(URI.create(extractPersistentId(identity)));
-		}
-		*/
 	}
 	
 	protected ComponentInstance(ComponentInstance component) {
 		super(component);
+		this.mapsTos = new HashMap<>();
 		setAccess(component.getAccess());
 		setDefinition(component.getDefinitionURI());	
 		if (!component.getMapsTos().isEmpty()) {
@@ -119,27 +53,6 @@ public abstract class ComponentInstance extends Documented {
 	public AccessType getAccess() {
 		return access;
 	}
-	
-	/**
-	 * Returns the access type in URI.
-	 * @return access type in URI
-	 */
-	URI getAccessURI() {
-		if (access != null) {
-			if (access.equals(AccessType.PUBLIC)) {
-				return Access.PUBLIC;
-			}
-			else if (access.equals(AccessType.PRIVATE)) {
-				return Access.PRIVATE;
-			}
-			else {
-				return null;
-			}
-		}
-		else {
-			return null;
-		}
-	}
 
 	/**
 	 * Sets field variable <code>access</code> to the specified element.
@@ -151,31 +64,6 @@ public abstract class ComponentInstance extends Documented {
 		}
 		this.access = access;
 	}
-	
-	/**
-	 * Sets field variable <code>access</code> to the element corresponding to the specified URI.
-	 */
-	void setAccess(URI access) {
-		if (access != null && access.equals(Access.PUBLIC)) {
-			this.access = AccessType.PUBLIC;
-		} else if (access != null && access.equals(Access.PRIVATE)) {
-			this.access = AccessType.PRIVATE;
-		}
-		else {
-			throw new IllegalArgumentException("Not a valid access type.");
-		}
-	}
-
-//	/**
-//	 * Test if optional field variable <code>references</code> is set.
-//	 * @return <code>true</code> if it is not an empty list
-//	 */
-//	public boolean isSetMappings() {
-//		if (mapsTos.isEmpty())
-//			return false;
-//		else
-//			return true;
-//	}	
 	
 	/**
 	 * Calls the MapsTo constructor to create a new instance using the specified parameters, 
@@ -222,11 +110,18 @@ public abstract class ComponentInstance extends Documented {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of references if present.
+	 * Returns the instance matching the specified displayId from the list of maps to objects, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public MapsTo getMapsTo(URI referenceURI) {
-		return mapsTos.get(referenceURI);
+	public MapsTo getMapsTo(String displayId) {
+		return mapsTos.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}	
+	/**
+	 * Returns the instance matching the specified URI from the list of maps to objects, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public MapsTo getMapsTo(URI mapsToURI) {
+		return mapsTos.get(mapsToURI);
 	}
 	
 	/**
@@ -293,14 +188,5 @@ public abstract class ComponentInstance extends Documented {
 	}
 
 	protected abstract ComponentInstance deepCopy();
-	
-	
-	private static final class Access {
-		public static final URI PUBLIC = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "public");
-		public static final URI PRIVATE = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "private");
-	}
-	
 
 }

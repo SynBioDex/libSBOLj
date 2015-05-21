@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.sbolstandard.core2.MapsTo.RefinementType;
-
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
@@ -21,7 +19,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
-public class Module extends Documented {
+public class Module extends Identified {
 	
 	private HashMap<URI, MapsTo> mapsTos;
 	private URI definition;
@@ -29,19 +27,16 @@ public class Module extends Documented {
 
 	Module(URI identity, URI moduleDefinition) {
 		super(identity);
-		setDefinition(moduleDefinition);
 		this.mapsTos = new HashMap<>();
+		setDefinition(moduleDefinition);
 	}
 	
 	private Module(Module module) {
 		super(module);
+		this.mapsTos = new HashMap<>();
 		this.setDefinition(module.getDefinitionURI());
-		if (!module.getMapsTos().isEmpty()) {
-			List<MapsTo> mappings = new ArrayList<>();
-			for (MapsTo mapping : module.getMapsTos()) {
-				mappings.add(mapping.deepCopy());
-			}
-			this.setMapsTos(mappings);
+		for (MapsTo mapping : module.getMapsTos()) {
+			this.addMapsTo(mapping.deepCopy());
 		}
 	}
 
@@ -128,10 +123,16 @@ public class Module extends Documented {
 			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
 			}
+			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI()).getAccess().equals(AccessType.PRIVATE)) {
+				throw new IllegalArgumentException("Functional Component '" + mapsTo.getLocalURI() + "' is private.");
+			}
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI())==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
+			}
+			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
+				throw new IllegalArgumentException("Functional Component '" + mapsTo.getRemoteURI() + "' is private.");
 			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
@@ -150,7 +151,15 @@ public class Module extends Documented {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of references if present.
+	 * Returns the instance matching the specified displayId from the list of maps to objects, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public MapsTo getMapsTo(String displayId) {
+		return mapsTos.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of maps to objects, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public MapsTo getMapsTo(URI referenceURI) {
@@ -230,19 +239,20 @@ public class Module extends Documented {
 	 * Assume this Module object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ModuleDefinition#copy(String, String, String)}.
 	 */
-	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 1 indicates that this object is a child of a top-level object.
-		URI newIdentity = URI.create(URIprefix + '/' + parentDisplayId + '/' 
-				+ thisObjDisplayId + '/' + version);
-		if (!this.getMapsTos().isEmpty()) {
-			// Update children's URIs
-			for (MapsTo mapsTo : this.getMapsTos()) {
-				mapsTo.updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
-			}
-		}
-		// TODO: need to set wasDerivedFrom here?
+	void updateCompliantURI(String URIprefix, String displayId, String version) {
 		this.setWasDerivedFrom(this.getIdentity());
-		this.setIdentity(newIdentity);		
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));		
+		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		this.setDisplayId(displayId);
+		this.setVersion(version);
+		for (MapsTo mapsTo : this.getMapsTos()) {
+			mapsTo.updateCompliantURI(this.getPersistentIdentity().toString(), 
+					mapsTo.getDisplayId(), version);
+			this.removeChildSafely(mapsTo, this.mapsTos);
+			this.addMapsTo(mapsTo);
+			String localId = extractDisplayId(mapsTo.getLocalURI());
+			mapsTo.setLocal(createCompliantURI(URIprefix,localId,version));
+		}
 	}
 	
 	ModuleDefinition getModuleDefinition() {

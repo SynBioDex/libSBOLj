@@ -75,8 +75,9 @@ public class writeTester_myDNA {
 		//		ComponentDefinition c = SBOL2Doc_test.createComponentDefinition(identity, type, roles);
 		setCommonTopLevelData(c, identity, persistentIdentity, version, displayId, name, description);
 
-		if(structureData != null)
-			c.setSequence(structureData,version);
+		if(structureData != null) {
+			c.addSequence(structureData, version);
+		}
 		if(structureInstantiationData != null)
 		{
 			c.setComponents(structureInstantiationData);
@@ -113,7 +114,7 @@ public class writeTester_myDNA {
 		setCommonDocumentedData(t, identity, persistentIdentity, version, displayId, name, description);
 	}
 
-	private static void setCommonDocumentedData (Documented d, URI identity, URI persistentIdentity,
+	private static void setCommonDocumentedData (Identified d, URI identity, URI persistentIdentity,
 			String version, String displayId, String name, String description)
 	{
 		d.setDisplayId(displayId);

@@ -19,16 +19,18 @@ public class readTester {
 	public static String filenameV1_10 	= "miRNA.sbol.xml";
 	public static String filenameV1_11 	= "SBOL1/labhost_All.xml";
 
-	public static String path = "test/data/";
+	public static String path = "test/data/SBOL1/";
 
 	public static void main(String[] args) {
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_11);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_1);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_11);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_1);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
 			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+			SBOLReader.setVersion("1.0");
+			SBOLReader.setTypesInURI(true);
 			SBOLDocument document1 = SBOLReader.read(file);
 			//document1.setDefaultURIprefix("http://www.some.org");
 			//document1.createCollection("abc", "1.0");

@@ -31,6 +31,20 @@ public class Annotation {
 	public Annotation(QName qName, String literal) {
 		value = NamedProperty(qName,literal);
 	}
+	
+	public Annotation(QName qName, int literal) {
+		value = NamedProperty(qName,literal);
+	}
+
+	/*
+	public Annotation(QName qName, double literal) {
+		value = NamedProperty(qName,literal);
+	}
+	
+	public Annotation(QName qName, boolean literal) {
+		value = NamedProperty(qName,literal);
+	}
+	*/
 
 	public Annotation(QName qName, URI literal) {
 		value = NamedProperty(qName,literal);

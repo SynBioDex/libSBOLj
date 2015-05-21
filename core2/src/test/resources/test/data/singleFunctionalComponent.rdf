@@ -1,17 +1,17 @@
 <?xml version="1.0" ?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:annot="http://myannotation.org" xmlns:grn="urn:bbn.com:tasbe:grn" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbol="http://sbols.org/v2#">
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/cd/LacIIn/1.0">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/cd/LacIIn"/>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:annot="http://myannotation.org" xmlns:grn="urn:bbn.com:tasbe:grn" xmlns:sbol="http://sbols.org/v2#" xmlns:prov="http://www.w3.org/ns/prov#">
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/LacIIn/1.0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/LacIIn"/>
     <sbol:displayId>LacIIn</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:type rdf:resource="http://some.ontology.org/Protein"/>
     <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/cd/LacIIn/funcComp/1.0">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/cd/LacIIn/funcComp"/>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/LacIIn/funcComp/1.0">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/LacIIn/funcComp"/>
         <sbol:displayId>funcComp</sbol:displayId>
         <sbol:version>1.0</sbol:version>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/cd/LacIIn/1.0"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/LacIIn/1.0"/>
       </sbol:Component>
     </sbol:component>
   </sbol:ComponentDefinition>

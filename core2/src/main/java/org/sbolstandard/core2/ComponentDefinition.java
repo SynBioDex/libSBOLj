@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
-
-import org.sbolstandard.core2.ComponentInstance.AccessType;
-import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 
@@ -25,64 +23,56 @@ public class ComponentDefinition extends TopLevel {
 
 	private Set<URI> types;
 	private Set<URI> roles;
-	private URI sequence;
+	private Set<URI> sequences;
 	private HashMap<URI, Component> components;
 	private HashMap<URI, SequenceAnnotation> sequenceAnnotations;
 	private HashMap<URI, SequenceConstraint> sequenceConstraints;
 	
+	/* Types */
 	public static final URI DNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
 	public static final URI RNA = URI.create("ttp://www.biopax.org/release/biopax-level3.owl#RnaRegion");
 	public static final URI PROTEIN = URI.create("http://www.biopax.org/release/biopax-level3.owl#Protein");
 	public static final URI SMALL_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#SmallMolecule");
 	
+	/* Roles */
+	public static final URI TRANSCRIPTION_FACTOR = URI.create("http://identifiers.org/go/GO:0003700");
+	public static final URI EFFECTOR = URI.create("http://identifiers.org/chebi/CHEBI:35224");
+	
 	ComponentDefinition(URI identity, Set<URI> types) {
 		super(identity);
 		this.types = new HashSet<>();
-		setTypes(types);
 		this.roles = new HashSet<>();
+		this.sequences = new HashSet<>();
 		this.components = new HashMap<>();
 		this.sequenceAnnotations = new HashMap<>();
 		this.sequenceConstraints = new HashMap<>();
+		setTypes(types);
 	}
 
 	private ComponentDefinition(ComponentDefinition componentDefinition) {
 		super(componentDefinition);
-		Set<URI> types = new HashSet<>();
+		this.types = new HashSet<>();
+		this.roles = new HashSet<>();
+		this.sequences = new HashSet<>();
+		this.components = new HashMap<>();
+		this.sequenceAnnotations = new HashMap<>();
+		this.sequenceConstraints = new HashMap<>();
 		for (URI type : componentDefinition.getTypes()) {
-			types.add(URI.create(type.toString()));
+			this.addType(URI.create(type.toString()));
 		}
-		setTypes(types);
-		if (!componentDefinition.getRoles().isEmpty()) {
-			Set<URI> roles = new HashSet<>();
-			for (URI role : componentDefinition.getRoles()) {
-				roles.add(URI.create(role.toString()));
-			}
-			this.setRoles(roles);
+		for (URI role : componentDefinition.getRoles()) {
+			this.addRole(URI.create(role.toString()));
 		}		
-		if (!componentDefinition.getComponents().isEmpty()) {
-			List<Component> subComponents = new ArrayList<>();
-			for (Component subComponent : componentDefinition.getComponents()) {
-				subComponents.add(subComponent.deepCopy());
-			}
-			this.setComponents(subComponents);
+		for (Component subComponent : componentDefinition.getComponents()) {
+			this.addComponent(subComponent.deepCopy());
 		}		
-		if (!componentDefinition.getSequenceConstraints().isEmpty()) {
-			List<SequenceConstraint> sequenceConstraints = new ArrayList<>();
-			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
-				sequenceConstraints.add(sequenceConstraint.deepCopy());
-			}
-			this.setSequenceConstraints(sequenceConstraints);
+		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
+			this.addSequenceConstraint(sequenceConstraint.deepCopy());
 		}
-		if (!componentDefinition.getSequenceAnnotations().isEmpty()) {
-			List<SequenceAnnotation> sequenceAnnotations = new ArrayList<>();
-			for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
-				sequenceAnnotations.add(sequenceAnnotation.deepCopy());
-			}
-			this.setSequenceAnnotations(sequenceAnnotations);
+		for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
+			this.addSequenceAnnotation(sequenceAnnotation.deepCopy());
 		}
-		if (componentDefinition.isSetSequence()) {
-			this.setSequence(URI.create(componentDefinition.getSequence().toString()));
-		}
+		this.setSequences(componentDefinition.getSequenceURIs());
 	}
 	
 	
@@ -203,55 +193,75 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		roles.clear();
 	}
-	
-	/**
-	 * Test if the referenced {@link Sequence} instance is set.
-	 * @return <code>true</code> if the field variable is not <code>null</code>
-	 */
-	public boolean isSetSequence() {
-		return sequence != null;
+
+
+	public boolean addSequence(Sequence sequence) {
+		return this.addSequence(sequence.identity);
+	}
+
+	public boolean addSequence(URI sequenceURI) {
+		return sequences.add(sequenceURI);
+	}
+
+
+	public void addSequence(String sequence,String version) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
+				TopLevel.SEQUENCE, sequence, version, sbolDocument.isTypesInURIs());
+		addSequence(sequenceURI);
 	}
 
 	/**
-	 * Returns the URI of the referenced {@link Sequence} instance.
-	 * @return the URI of the referenced {@link Sequence} instance.
+	 * Returns the URIs of the referenced {@link Sequence} instance.
+	 * @return the URIs of the referenced {@link Sequence} instance.
 	 */
-	public URI getSequenceURI() {
-		return sequence;
+	public Set<URI> getSequenceURIs() {
+		return sequences;
 	}
 	
-	public Sequence getSequence() {
+	public Set<Sequence> getSequences() {
 		if (sbolDocument==null) return null;
-		return sbolDocument.getSequence(sequence);
-	}
-
-	public void setSequence(String sequence,String version) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
-				TopLevel.sequence, sequence, version);
-		setSequence(sequenceURI);
-	}
-	/**
-	 * Sets the {@link Sequence} reference to the specified element.
-	 */
-	public void setSequence(URI sequence) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getSequence(sequence)==null) {
-				throw new IllegalArgumentException("Sequence '" + sequence + "' does not exist.");
+		Set<Sequence> resolved = new HashSet<>();
+		for(URI su : sequences) {
+			Sequence seq = sbolDocument.getSequence(su);
+			if(seq != null) {
+				resolved.add(seq);
 			}
 		}
-		this.sequence = sequence;
+		return resolved;
 	}
-	
-	/**
-	 * Sets the {@link Sequence} reference to <code>null</code>.
-	 */
-	public void unsetSequence() {
+
+	public void setSequences(Set<URI> sequences) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		sequence = null;
+		clearSequences();
+		if (sequences==null) return;
+		for (URI sequence : sequences) {
+			addSequence(sequence);
+		}
+	}
+
+	/**
+	 * Removes the instance matching the specified URI from the list of sequences if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public boolean removeSequence(URI sequenceURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		return sequences.remove(sequenceURI);
 	}
 	
+	public void clearSequences() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		sequences.clear();
+	}
+
+//	public boolean containsSequence(Sequence sequence) {
+//		return containsSequenceURI(sequence.getIdentity());
+//	}
+
+	public boolean containsSequence(URI sequenceURI) {
+		return sequences.contains(sequenceURI);
+	}
+
 //	/**
 //	 * Test if any {@link SequenceAnnotation} instance exists.
 //	 * @return <code>true</code> if at least one such instance exists.
@@ -268,15 +278,15 @@ public class ComponentDefinition extends TopLevel {
 	 * then adds to the list of SequenceAnnotation instances owned by this instance.
 	 * @return the created SequenceAnnotation instance.
 	 */
-	SequenceAnnotation createSequenceAnnotation(URI identity, Location location) {
-		SequenceAnnotation sequenceAnnotation = new SequenceAnnotation(identity, location);
+	SequenceAnnotation createSequenceAnnotation(URI identity, List<Location> locations) {
+		SequenceAnnotation sequenceAnnotation = new SequenceAnnotation(identity, locations);
 		addSequenceAnnotation(sequenceAnnotation);
 		return sequenceAnnotation;
 	}
 	
 	/**
 	 */
-	public SequenceAnnotation createSequenceAnnotation(String displayId, Location location) {
+	SequenceAnnotation createSequenceAnnotation(String displayId, Location location) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
@@ -285,7 +295,9 @@ public class ComponentDefinition extends TopLevel {
 			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
 					"'is not compliant in parent `" + this.getIdentity() +
 			        "' for " + URIprefix + " " + displayId + " " + version);
-		SequenceAnnotation sa = createSequenceAnnotation(newSequenceAnnotationURI, location);
+		List<Location> locations = new ArrayList<>();
+		locations.add(location);
+		SequenceAnnotation sa = createSequenceAnnotation(newSequenceAnnotationURI, locations);
 		sa.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		sa.setDisplayId(displayId);
 		sa.setVersion(version);
@@ -347,7 +359,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString()+"/"+displayId;
 		String version = this.getVersion();
-		Range location = new Range(createCompliantURI(URIprefix,"range",version),start,end);
+		Location location = new Range(createCompliantURI(URIprefix,"range",version),start,end);
 		if (orientation!=null) location.setOrientation(orientation);
 		location.setPersistentIdentity(URI.create(URIprefix+"/range"));
 		location.setDisplayId("range");
@@ -372,11 +384,20 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public boolean removeSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		return removeChildSafely(sequenceAnnotation,sequenceAnnotations);
+		return removeChildSafely(sequenceAnnotation, sequenceAnnotations);
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of structuralAnnotations if present.
+	 * Returns the instance matching the specified displayId from the list of sequence annotations, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public SequenceAnnotation getSequenceAnnotation(String displayId) {		
+		return sequenceAnnotations.get(createCompliantURI(this.getPersistentIdentity().toString(),
+				displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of sequence annotations, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceAnnotation getSequenceAnnotation(URI sequenceAnnotationURI) {		
@@ -442,7 +463,7 @@ public class ComponentDefinition extends TopLevel {
 			String componentDefinition, String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
-				TopLevel.componentDefinition, componentDefinition, version);
+				TopLevel.COMPONENT_DEFINITION, componentDefinition, version, sbolDocument.isTypesInURIs());
 		return createComponent(displayId,access,componentDefinitionURI);
 	}
 	
@@ -471,7 +492,7 @@ public class ComponentDefinition extends TopLevel {
 				sequenceAnnotations, sequenceConstraints);
 		component.setSBOLDocument(this.sbolDocument);
 	}
-	
+
 	/**
 	 * Removes the component from the list of components, if present.
 	 * @param component object to be removed.
@@ -479,15 +500,59 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public boolean removeComponent(Component component) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		return removeChildSafely(component,components);
+		for (SequenceAnnotation sa : sequenceAnnotations.values()) {
+			if (sa.getComponentURI().equals(component.getIdentity())) {
+				throw new SBOLException("Cannot remove " + component.getIdentity() + 
+						" since it is in use.");
+			}
+		}
+		for (SequenceConstraint sc : sequenceConstraints.values()) {
+			if (sc.getSubjectURI().equals(component.getIdentity())) {
+				throw new SBOLException("Cannot remove " + component.getIdentity() + 
+						" since it is in use.");
+			}
+			if (sc.getObjectURI().equals(component.getIdentity())) {
+				throw new SBOLException("Cannot remove " + component.getIdentity() + 
+						" since it is in use.");
+			}
+		}
+		for (Component c : components.values()) {
+			for (MapsTo mt : c.getMapsTos()) {
+				if (mt.getLocalURI().equals(component.getIdentity())) {
+					throw new SBOLException("Cannot remove " + component.getIdentity() + 
+							" since it is in use.");
+				}
+			}
+		}
+		if (sbolDocument!=null) {
+			for (ComponentDefinition cd : sbolDocument.getComponentDefinitions()) {
+				for (Component c : cd.getComponents()) {
+					for (MapsTo mt : c.getMapsTos()) {
+						if (mt.getRemoteURI().equals(component.getIdentity())) {
+							throw new SBOLException("Cannot remove " + component.getIdentity() + 
+									" since it is in use.");
+						}
+					}					
+				}
+			}
+		}
+		return removeChildSafely(component, components);
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of structuralInstantiations if present.
+	 * Returns the instance matching the specified displayId from the list of components, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Component getComponent(URI subComponentURI) {
-		return components.get(subComponentURI);
+	public Component getComponent(String displayId) {
+		return components.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of components, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Component getComponent(URI componentURI) {
+		return components.get(componentURI);
 	}
 	
 	/**
@@ -597,7 +662,16 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of sequence constraints if present.
+	 * Returns the instance matching the specified displayId from the list of sequence constraints, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public SequenceConstraint getSequenceConstraint(String displayId) {
+		return sequenceConstraints.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,
+				this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of sequence constraints, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public SequenceConstraint getSequenceConstraint(URI sequenceConstraintURI) {
@@ -681,41 +755,27 @@ public class ComponentDefinition extends TopLevel {
 				if (!allDescendantsCompliant) { // Current sequence annotation has non-compliant URI. 
 					return allDescendantsCompliant;
 				}
-				Location location = sequenceAnnotation.getLocation();
-				if (location instanceof Range) {
-					allDescendantsCompliant = allDescendantsCompliant 
-							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-					if (!allDescendantsCompliant) { // Current range has non-compliant URI. 
-						return allDescendantsCompliant;
+				Set<Location> locations = sequenceAnnotation.getLocations();
+				for (Location location : locations) {
+					if (location instanceof Range) {
+						allDescendantsCompliant = allDescendantsCompliant 
+								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
+						if (!allDescendantsCompliant) { // Current range has non-compliant URI. 
+							return allDescendantsCompliant;
+						}
 					}
-				}
-				if (location instanceof Cut) {
-					allDescendantsCompliant = allDescendantsCompliant 
-							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-					if (!allDescendantsCompliant) { // Current cut has non-compliant URI. 
-						return allDescendantsCompliant;
+					if (location instanceof Cut) {
+						allDescendantsCompliant = allDescendantsCompliant 
+								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
+						if (!allDescendantsCompliant) { // Current cut has non-compliant URI. 
+							return allDescendantsCompliant;
+						}
 					}
-				}
-				if (location instanceof GenericLocation) {
-					allDescendantsCompliant = allDescendantsCompliant 
-							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-					if (!allDescendantsCompliant) { // Current generic location has non-compliant URI. 
-						return allDescendantsCompliant;
-					}
-				}
-				if (location instanceof MultiRange) {
-					allDescendantsCompliant = allDescendantsCompliant 
-							&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-					if (!allDescendantsCompliant) { // Current generic location has non-compliant URI. 
-						return allDescendantsCompliant;
-					}
-					if (!((MultiRange) location).getRanges().isEmpty()) {
-						for (Range range : ((MultiRange) location).getRanges()) {
-							allDescendantsCompliant = allDescendantsCompliant 
-									&& isChildURIcompliant(location.getIdentity(), range.getIdentity());
-							if (!allDescendantsCompliant) { // Current location has non-compliant URI. 
-								return allDescendantsCompliant;
-							}
+					if (location instanceof GenericLocation) {
+						allDescendantsCompliant = allDescendantsCompliant 
+								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
+						if (!allDescendantsCompliant) { // Current generic location has non-compliant URI. 
+							return allDescendantsCompliant;
 						}
 					}
 				}
@@ -727,8 +787,8 @@ public class ComponentDefinition extends TopLevel {
 	
 	protected boolean isComplete() {
 		if (sbolDocument==null) return false;
-		if (sequence!=null) {
-			if (getSequence()==null) return false;
+		if (sequences.isEmpty()) {
+			return false;
 		}
 		for (Component component : getComponents()) {
 			if (component.getDefinition()==null) return false;
@@ -747,36 +807,38 @@ public class ComponentDefinition extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	ComponentDefinition copy(String URIprefix, String displayId, String version) {				
-		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
-				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
-			ComponentDefinition cloned = this.deepCopy();
-			cloned.setWasDerivedFrom(this.getIdentity());
-			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
-			cloned.setDisplayId(displayId);
-			cloned.setVersion(version);
-			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
-			cloned.setIdentity(newIdentity);
-			// Update all children's URIs
-			if (!cloned.getSequenceConstraints().isEmpty()) {
-				for (SequenceConstraint sequenceConstraint : cloned.getSequenceConstraints()) {
-					sequenceConstraint.updateCompliantURI(URIprefix, displayId, version);
-				}
-			}
-			if (!cloned.getSequenceAnnotations().isEmpty()) {
-				for (SequenceAnnotation SequenceAnnotation : cloned.getSequenceAnnotations()) {
-					SequenceAnnotation.updateCompliantURI(URIprefix, displayId, version);
-				}	
-			}
-			if (!cloned.getComponents().isEmpty()) {
-				for (Component component : cloned.getComponents()) {
-					component.updateCompliantURI(URIprefix, displayId, version);
-				}
-			}
-			return cloned;
+		ComponentDefinition cloned = this.deepCopy();
+		cloned.setWasDerivedFrom(this.getIdentity());
+		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		cloned.setDisplayId(displayId);
+		cloned.setVersion(version);
+		URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
+		cloned.setIdentity(newIdentity);
+		int count = 0;
+		for (Component component : cloned.getComponents()) {
+			if (!component.isSetDisplayId()) component.setDisplayId("component"+ ++count);
+			component.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+					component.getDisplayId(),version);
+			cloned.removeChildSafely(component, cloned.components);
+			cloned.addComponent(component);
 		}
-		else {
-			return null; 	
+		count = 0;
+		for (SequenceConstraint sequenceConstraint : cloned.getSequenceConstraints()) {
+			if (!sequenceConstraint.isSetDisplayId()) sequenceConstraint.setDisplayId("sequenceConstraint"+ ++count);
+			sequenceConstraint.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+					sequenceConstraint.getDisplayId(),version);
+			cloned.removeChildSafely(sequenceConstraint, cloned.sequenceConstraints);
+			cloned.addSequenceConstraint(sequenceConstraint);
 		}
+		count = 0;
+		for (SequenceAnnotation sequenceAnnotation : cloned.getSequenceAnnotations()) {
+			if (!sequenceAnnotation.isSetDisplayId()) sequenceAnnotation.setDisplayId("sequenceAnnotation"+ ++count);
+			sequenceAnnotation.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+					sequenceAnnotation.getDisplayId(),version);
+			cloned.removeChildSafely(sequenceAnnotation, cloned.sequenceAnnotations);
+			cloned.addSequenceAnnotation(sequenceAnnotation);
+		}
+		return cloned;
 	}
 	
 //	/**
@@ -805,7 +867,7 @@ public class ComponentDefinition extends TopLevel {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
-		result = prime * result + ((sequence == null) ? 0 : sequence.hashCode());
+		result = prime * result + ((SEQUENCE == null) ? 0 : SEQUENCE.hashCode());
 		result = prime * result
 				+ ((sequenceAnnotations == null) ? 0 : sequenceAnnotations.hashCode());
 		result = prime * result
@@ -832,10 +894,10 @@ public class ComponentDefinition extends TopLevel {
 				return false;
 		} else if (!roles.equals(other.roles))
 			return false;
-		if (sequence == null) {
-			if (other.sequence != null)
+		if (sequences == null) {
+			if (other.sequences != null)
 				return false;
-		} else if (!sequence.equals(other.sequence))
+		} else if (!sequences.equals(other.sequences))
 			return false;
 		if (sequenceAnnotations == null) {
 			if (other.sequenceAnnotations != null)

@@ -340,7 +340,7 @@ public class SBOLWriter {
 		}
 	}
 
-	private static void formatCommonDocumentedData (List<NamedProperty<QName>> list, Documented d)
+	private static void formatCommonDocumentedData (List<NamedProperty<QName>> list, Identified d)
 	{
 		formatCommonIdentifiedData(list, d);
 		if(d.isSetName())
@@ -401,8 +401,8 @@ public class SBOLWriter {
 			formatComponents(c.getComponents(),list);
 			formatSequenceAnnotations(c.getSequenceAnnotations(),list);
 			formatSequenceConstraints(c.getSequenceConstraints(),list);
-			if(c.getSequenceURI() != null)
-				formatSequence(c.getSequenceURI(), list);
+			for(URI sUri: c.getSequenceURIs())
+				formatSequence(sUri, list);
 
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ComponentDefinition.ComponentDefinition, c.getIdentity(), NamedProperties(list)));
 		}
@@ -425,9 +425,9 @@ public class SBOLWriter {
 			if(f.getDefinitionURI() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinitionURI()));
 			if(f.getAccess() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, f.getAccessURI()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, AccessType.convertToURI(f.getAccess())));
 			if(f.getDirection() != null)
-				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, f.getDirectionURI()));
+				list.add(NamedProperty(Sbol2Terms.FunctionalComponent.direction, DirectionType.convertToURI(f.getDirection())));
 			if(!f.getMapsTos().isEmpty())
 			{
 				List<NestedDocument<QName>> referenceList = getMapsTo(f.getMapsTos());
@@ -592,8 +592,9 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<>();
 
 			formatCommonDocumentedData(list, s);
-			if(s.getLocation() != null)
-				list.add(getLocation(s.getLocation()));
+			for (Location location : s.getLocations()) {
+				list.add(getLocation(location));
+			}
 			if(s.getComponentURI() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceAnnotation.hasComponent, s.getComponentURI()));
 
@@ -613,7 +614,7 @@ public class SBOLWriter {
 			formatCommonIdentifiedData(list, s);
 
 			if(s.getRestriction() != null)
-				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.restriction, s.getRestrictionURI()));
+				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.restriction, RestrictionType.convertToURI(s.getRestriction())));
 			if(s.getSubjectURI() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.hasSubject, s.getSubjectURI()));
 			if(s.getObjectURI() != null)
@@ -652,7 +653,7 @@ public class SBOLWriter {
 
 			formatCommonDocumentedData(list, s);
 			if(s.getAccess() != null)
-				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, s.getAccessURI()));
+				list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, AccessType.convertToURI(s.getAccess())));
 			if(s.getDefinitionURI() != null)
 				list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinitionURI()));
 			if(s.getMapsTos() != null)
@@ -690,33 +691,17 @@ public class SBOLWriter {
 			property.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
 			property.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
 			if(range.isSetOrientation())
-				property.add(NamedProperty(Sbol2Terms.Range.orientation, range.getOrientationURI()));
+				property.add(NamedProperty(Sbol2Terms.Range.orientation, OrientationType.convertToURI(range.getOrientation())));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(property)));
-		}
-		else if(location instanceof MultiRange)
-		{
-			MultiRange multiRange = (MultiRange) location;
-			for(Range range : multiRange.getRanges()) {
-				List<NamedProperty<QName>> rangeProperty = new ArrayList<>();
-				formatCommonIdentifiedData(rangeProperty, range);
-				rangeProperty.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
-				rangeProperty.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
-				if(range.isSetOrientation())
-					rangeProperty.add(NamedProperty(Sbol2Terms.Range.orientation, range.getOrientationURI()));
-				property.add(NamedProperty(Sbol2Terms.MultiRange.hasRanges, 
-						NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(rangeProperty))));
-			}
-			
-			return NamedProperty(Sbol2Terms.Location.Location,
-					NestedDocument(Sbol2Terms.MultiRange.MultiRange, multiRange.getIdentity(), NamedProperties(property)));
 		}
 		else if(location instanceof Cut)
 		{
 			Cut cut = (Cut) location;
 			property.add(NamedProperty(Sbol2Terms.Cut.at, cut.getAt()));
-			property.add(NamedProperty(Sbol2Terms.Cut.orientation, cut.getOrientationURI()));
+			if (cut.isSetOrientation())
+				property.add(NamedProperty(Sbol2Terms.Cut.orientation, OrientationType.convertToURI(cut.getOrientation())));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Cut.Cut, cut.getIdentity(), NamedProperties(property)));
@@ -724,7 +709,8 @@ public class SBOLWriter {
 		else if(location instanceof GenericLocation)
 		{
 			GenericLocation genericLocation = (GenericLocation) location;
-			property.add(NamedProperty(Sbol2Terms.GenericLocation.orientation, genericLocation.getOrientationURI()));
+			if (genericLocation.isSetOrientation())
+				property.add(NamedProperty(Sbol2Terms.GenericLocation.orientation, OrientationType.convertToURI(genericLocation.getOrientation())));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.GenericLocation.GenericLocation, genericLocation.getIdentity(), NamedProperties(property)));
@@ -744,7 +730,7 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, m);
 			if(m.getRefinement() != null)
-				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, m.getRefinementURI()));
+				list.add(NamedProperty(Sbol2Terms.MapsTo.refinement, RefinementType.convertToURI(m.getRefinement())));
 			if(m.getRemoteURI() != null)
 				list.add(NamedProperty(Sbol2Terms.MapsTo.hasRemote, m.getRemoteURI()));
 			if(m.getLocalURI() != null)

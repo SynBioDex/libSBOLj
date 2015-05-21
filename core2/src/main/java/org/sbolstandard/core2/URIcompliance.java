@@ -2,32 +2,40 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 final class URIcompliance {
-
+	
 	static void validateIdVersion(String displayId, String version) {
 		if (!isDisplayIdCompliant(displayId)) {
 			throw new IllegalArgumentException("Display id `" + displayId + "' is not valid.");
 		}
-		if (version!=null && !version.equals("") && !isVersionCompliant(version)) {
+		if (!isVersionCompliant(version)) {
 			throw new IllegalArgumentException("Version `" + version + "' is not valid.");
 		}
 	}
 
 	static URI createCompliantURI(String prefix, String displayId, String version) {
-		if (version==null || version.equals("")) {
-			return URI.create(prefix + '/' + displayId);
+		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
+			prefix += "/";
 		}
-		return URI.create(prefix + '/' + displayId + '/' + version);
+		if (version==null || version.equals("")) {
+			return URI.create(prefix + displayId);
+		}
+		return URI.create(prefix + displayId + '/' + version);
 	}
 	
-	static URI createCompliantURI(String prefix, String type, String displayId, String version) {
-		if (version==null || version.equals("")) {
-			return URI.create(prefix + '/' + type + '/' + displayId);
+	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) {
+		if (!useType) return createCompliantURI(prefix,displayId,version);
+		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
+			prefix += "/";
 		}
-		return URI.create(prefix + '/' + type + '/' + displayId + '/' + version);
+		if (version==null || version.equals("")) {
+			return URI.create(prefix + type + '/' + displayId);
+		}
+		return URI.create(prefix + type + '/' + displayId + '/' + version);
 	}
 
 	/**
@@ -79,12 +87,6 @@ final class URIcompliance {
 		Matcher m = r.matcher(URIstr);
 		if (m.matches()) {
 			return m.group(4);
-			/*
-			//System.out.println("group 1: " + m.group(1));
-			String displayIds = m.group(1); // toplevelId/childId/grandChildId/grandGrandChildId/
-			String[] displayIdArray = displayIds.substring(0, displayIds.lastIndexOf('/')).split("/");
-			return displayIdArray[index];
-			*/
 		}
 		else
 			return null;
@@ -330,24 +332,30 @@ final class URIcompliance {
 	static boolean isDisplayIdCompliant(String newDisplayId) {
 		Pattern r = Pattern.compile(displayIDpattern);
 		Matcher m = r.matcher(newDisplayId);
-		// TODO: Warning: Display ID is not compliant.
 		return m.matches();
 	}
 
 	static boolean isVersionCompliant(String newVersion) {
+		if (newVersion==null) {
+			throw new IllegalArgumentException("Version must not be null");
+		}
+		if (newVersion.equals("")) return true;
 		Pattern r = Pattern.compile(versionPattern);
 		Matcher m = r.matcher(newVersion);
 		return m.matches();
 	}
 
 	static boolean isURIprefixCompliant(String URIprefix) {
-		Pattern r = Pattern.compile(URIprefixPattern);
+		Pattern r = Pattern.compile(URIprefixPattern+delimiter);
 		Matcher m = r.matcher(URIprefix);
 		return m.matches();
 	}
 
 	// (?:...) is a non-capturing group
 	//static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
+	
+	static final String delimiter = "[/|#|:]";
+			
 	static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
 	static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]*";//"[a-zA-Z0-9_]+";
@@ -359,22 +367,22 @@ final class URIcompliance {
 	// group 1: persistent ID
 	// group 2: URI prefix
 	// group 3: version
-	static final String genericURIpattern1 = "((" + URIprefixPattern + ")(/(" + displayIDpattern + ")){1,4})(/(" + versionPattern + "))?";
+	static final String genericURIpattern1 = "((" + URIprefixPattern + ")("+delimiter+"(" + displayIDpattern + ")){1,4})(/(" + versionPattern + "))?";
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: top-level display ID
 	// group 2: top-level's child display ID
 	// group 3: top-level's grand child display ID
 	// group 4: top-level's grand grand child display ID
-	static final String genericURIpattern2 = URIprefixPattern + "/((" + displayIDpattern + "/){1,4})" + versionPattern;
+	static final String genericURIpattern2 = URIprefixPattern + delimiter + "((" + displayIDpattern + "/){1,4})" + versionPattern;
 
-	static final String toplevelURIpattern = URIprefixPattern + "/" + displayIDpattern + "(/" + versionPattern + ")?";
+	static final String toplevelURIpattern = URIprefixPattern + delimiter + displayIDpattern + "(/" + versionPattern + ")?";
 
-	static final String childURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){2}" + versionPattern;
+	static final String childURIpattern = URIprefixPattern + delimiter + "(?:" + displayIDpattern + "/){2}" + versionPattern;
 
-	static final String grandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){3}" + versionPattern;
+	static final String grandchildURIpattern = URIprefixPattern + delimiter + "(?:" + displayIDpattern + "/){3}" + versionPattern;
 
-	static final String greatGrandchildURIpattern = URIprefixPattern + "/(?:" + displayIDpattern + "/){4}" + versionPattern;
+	static final String greatGrandchildURIpattern = URIprefixPattern + delimiter + "(?:" + displayIDpattern + "/){4}" + versionPattern;
 
 	@SafeVarargs
 	static boolean keyExistsInAnyMap(URI key, Map<URI, ?>... maps) {

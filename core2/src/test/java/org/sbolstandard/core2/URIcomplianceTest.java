@@ -7,7 +7,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
 import static org.sbolstandard.core2.URIcompliance.extractPersistentId;
 import static org.sbolstandard.core2.URIcompliance.extractURIprefix;
 import static org.sbolstandard.core2.URIcompliance.extractVersion;
@@ -558,16 +557,6 @@ public class URIcomplianceTest {
 		//System.out.println(extractedURIprefix);
 		assertEquals(uri7prefixStr, extractedURIprefix);
 	}
-	 */
-	/**
-	 * Test the extracted top-level display ID string for the compliant top-level URI.
-	 */
-	@Test
-	public void testExtractDisplayId1() {
-		String extractedDisplayId = extractDisplayId(uri1);
-		//System.out.println(extractedDisplayId);
-		assertEquals(uri1toplevelDisplayId, extractedDisplayId);
-	}
 
 	//TODO: NOT PASSING
 	//	/**
@@ -660,37 +649,6 @@ public class URIcomplianceTest {
 	//		//System.out.println(extractedDisplayId);
 	//		assertEquals("_p2_structAnnotate_range", extractedDisplayId);
 	//	}
-
-
-	/**
-	 * Test <code>null<\code> for extractDisplayId for the compliant child URI.
-	 */
-	@Test
-	public void testExtractDisplayId11() {
-		String extractedDisplayId = extractDisplayId(uri6);
-		//System.out.println(extractedDisplayId);
-		assertNull(extractedDisplayId);
-	}
-
-	/**
-	 * Test <code>null<\code> for extractDisplayId for the compliant grand child URI.
-	 */
-	@Test
-	public void testExtractDisplayId12() {
-		String extractedDisplayId = extractDisplayId(uri8);
-		//System.out.println(extractedDisplayId);
-		assertNull(extractedDisplayId);
-	}
-
-	/**
-	 * Test <code>null<\code> for extractDisplayId for the compliant great grand child URI.
-	 */
-	@Test
-	public void testExtractDisplayId13() {
-		String extractedDisplayId = extractDisplayId(uri9);
-		//System.out.println(extractedDisplayId);
-		assertNull(extractedDisplayId);
-	}
 
 	/**
 	 * Test <code>null<\code> for extractVersion for the compliant top-level URI.

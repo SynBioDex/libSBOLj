@@ -14,10 +14,6 @@ import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
 import org.sbolstandard.core.SBOLValidationException;
-import org.sbolstandard.core2.ComponentInstance.AccessType;
-import org.sbolstandard.core2.FunctionalComponent.DirectionType;
-import org.sbolstandard.core2.MapsTo.RefinementType;
-import org.sbolstandard.core2.SequenceConstraint.RestrictionType;
 
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 
@@ -97,7 +93,7 @@ public class SBOLTestUtils {
 		//		componentDefinition.setDescription(id);
 
 		if (sequenceId!= null)
-			componentDefinition.setSequence(sequenceId);
+			componentDefinition.addSequence(sequenceId);
 		if (sequenceAnnotations!= null)
 			componentDefinition.setSequenceAnnotations(sequenceAnnotations);
 		if (sequenceConstraints!= null)
@@ -229,10 +225,10 @@ public class SBOLTestUtils {
 		return m;
 	}
 
-	public static SequenceAnnotation createSequenceAnnotation(String id, Location location,
+	public static SequenceAnnotation createSequenceAnnotation(String id, List<Location> locations,
 			List<Annotation> annotations)
 	{
-		SequenceAnnotation sa = new SequenceAnnotation(URI.create(id), location);
+		SequenceAnnotation sa = new SequenceAnnotation(URI.create(id), locations);
 		if(annotations != null)
 			sa.setAnnotations(annotations);
 		return sa;

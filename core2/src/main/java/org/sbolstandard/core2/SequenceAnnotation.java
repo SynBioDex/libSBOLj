@@ -2,6 +2,8 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,62 +19,91 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
-public class SequenceAnnotation extends Documented {
+public class SequenceAnnotation extends Identified {
 
-	private Location location;
+	private HashMap<URI, Location> locations;
 	private URI component;
 	private ComponentDefinition componentDefinition = null;
 	
-	SequenceAnnotation(URI identity, Location location) {
+	SequenceAnnotation(URI identity, List<Location> locations) {
 		super(identity);
-		setLocation(location);		
+		this.locations = new HashMap<>();
+		this.setLocations(locations);		
 	}
 	
 	private SequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
-		super(sequenceAnnotation.getIdentity());
-		//this.setLocation(sequenceAnnotation.getLocation().deepCopy());
-		Location originalLocation = sequenceAnnotation.getLocation();
-		if(originalLocation instanceof MultiRange) {
-			this.setLocation(((MultiRange) originalLocation).deepCopy());
-		}
-		else if(originalLocation instanceof Range) {
-			this.setLocation(((Range) originalLocation).deepCopy());
-		}
-		else if(originalLocation instanceof Cut) {
-			this.setLocation(((Cut) originalLocation).deepCopy());
-		}
-		else if(originalLocation instanceof GenericLocation) {
-			this.setLocation(((GenericLocation) originalLocation).deepCopy());
+		super(sequenceAnnotation);
+		this.locations = new HashMap<>();
+		for (Location location : sequenceAnnotation.getLocations()) {
+			addLocation(location.deepCopy());
 		}
 		if (sequenceAnnotation.isSetComponent()) {
 			this.setComponent(sequenceAnnotation.getComponentURI());
 		}
 	}
-	
-	/**
-	 * Returns field variable <code>location</code>.
-	 * @return field variable <code>location</code>
-	 */
-	public Location getLocation() {
-		return location;
-	}
 
-	/**
-	 * Sets field variable <code>location</code> to the specified element.
-	 * @param location
-	 */
-	void setLocation(Location location) {
-		if (location==null) {
-			throw new IllegalArgumentException("Sequence annotation "+this.getIdentity()+" must have a location.");
-		}
-		this.location = location;
-	}	
+	void addLocation(Location location) {
+		addChildSafely(location, locations, "location");
+		location.setSBOLDocument(this.sbolDocument);
+	}
 	
-	public void addRange(int start,int end) {
+	/**
+	 * Removes the instance matching the specified URI from the list of locations if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public boolean removeLocation(Location location) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		addRange(start,end,null);
+		return removeChildSafely(location,locations);
+	}
+	
+	/**
+	 * Returns the instance matching the specified displayId from the list of locations, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Location getLocation(String displayId) {
+		return locations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of locations, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Location getLocation(URI locationURI) {
+		return locations.get(locationURI);
+	}
+	
+	/**
+	 * Returns the list of location instances owned by this instance. 
+	 * @return the list of location instances owned by this instance.
+	 */
+	public Set<Location> getLocations() {
+		return new HashSet<>(locations.values());
+	}
+	
+	/**
+	 * Removes all entries of the list of locations owned by this instance. The list will be empty after this call returns.
+	 */
+	public void clearLocations() {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		Object[] valueSetArray = locations.values().toArray();
+		for (Object location : valueSetArray) {
+			removeLocation((Location)location);
+		}
+	}
+		
+	/**
+	 * Clears the existing list of location instances, then appends all of the elements in the specified collection to the end of this list.
+	 */
+	void setLocations(
+			List<Location> locations) {
+		clearLocations();	
+		if (locations==null) return;
+		for (Location location : locations) {
+			addLocation(location);
+		}
 	}
 
+	/*
 	public void addRange(int start,int end,OrientationType orientation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (location instanceof MultiRange) {
@@ -131,6 +162,7 @@ public class SequenceAnnotation extends Documented {
 			}
 		}
 	}
+	*/
 		
 	/**
 	 * Test if optional field variable <code>component</code> is set.
@@ -410,7 +442,7 @@ public class SequenceAnnotation extends Documented {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((component == null) ? 0 : component.hashCode());
-		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((locations == null) ? 0 : locations.hashCode());
 		return result;
 	}
 
@@ -428,10 +460,10 @@ public class SequenceAnnotation extends Documented {
 				return false;
 		} else if (!component.equals(other.component))
 			return false;
-		if (location == null) {
-			if (other.location != null)
+		if (locations == null) {
+			if (other.locations != null)
 				return false;
-		} else if (!location.equals(other.location))
+		} else if (!locations.equals(other.locations))
 			return false;
 		return true;
 	}
@@ -448,26 +480,21 @@ public class SequenceAnnotation extends Documented {
 	 * @param parentDisplayId
 	 * @param version
 	 */
-	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 1 indicates that this object is a child of a top-level object.
-		URI newIdentity = URI.create(URIprefix + '/' + parentDisplayId + '/' 
-				+ thisObjDisplayId + '/' + version);
-		Location location = this.getLocation();
-		if (location instanceof Range) {
-			((Range) location).updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
-		}
-		if (location instanceof Cut) {
-			((Cut) location).updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
-		}
-		if (location instanceof GenericLocation) {
-			((GenericLocation) location).updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
-		}
-		if (location instanceof MultiRange) {
-			((MultiRange) location).updateCompliantURI(URIprefix, parentDisplayId, thisObjDisplayId, version);
-		}
-		// TODO: need to set wasDerivedFrom here?
+	void updateCompliantURI(String URIprefix, String displayId, String version) {
 		this.setWasDerivedFrom(this.getIdentity());
-		this.setIdentity(newIdentity);
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
+		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		this.setDisplayId(displayId);
+		this.setVersion(version);
+		String componentId = extractDisplayId(component);
+		this.setComponent(createCompliantURI(URIprefix,componentId,version));
+		int count = 0;
+		for (Location location : this.getLocations()) {
+			if (!location.isSetDisplayId()) location.setDisplayId("location"+ ++count);
+			location.updateCompliantURI(this.getPersistentIdentity().toString(),location.getDisplayId(),version);
+			this.removeChildSafely(location, this.locations);
+			this.addLocation(location);
+		}
 	}
 
 	/**

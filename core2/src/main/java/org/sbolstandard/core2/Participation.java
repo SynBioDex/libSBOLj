@@ -31,7 +31,7 @@ public class Participation extends Identified {
 	
 	private Participation(Participation participation) {
 		super(participation);
-		Set<URI> roles = new HashSet<>();
+		roles = new HashSet<>();
 		for (URI role : participation.getRoles()) {
 			roles.add(role);
 		}		
@@ -129,14 +129,12 @@ public class Participation extends Identified {
 	 * Assume this Participation object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link Interaction#updateCompliantURI(String, String, String)}.
 	 */
-	void updateCompliantURI(String URIprefix, String grandparentDisplayId,
-			String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 2 indicates that this object is a grandchild of a top-level object.
-		URI newIdentity = URI.create(URIprefix + '/' + grandparentDisplayId + '/' + parentDisplayId + '/' 
-				+ thisObjDisplayId + '/' + version);
-		// TODO: need to set wasDerivedFrom here?
+	void updateCompliantURI(String URIprefix, String displayId, String version) {
 		this.setWasDerivedFrom(this.getIdentity());
-		this.setIdentity(newIdentity);
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
+		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		this.setDisplayId(displayId);
+		this.setVersion(version);
 	}
 
 	/**

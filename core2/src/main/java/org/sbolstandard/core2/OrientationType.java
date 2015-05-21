@@ -2,8 +2,6 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import org.sbolstandard.core2.Sbol2Terms.Orientation;
-
 /**
  * @author Zhen Zhang
  * @author Tramy Nguyen
@@ -41,10 +39,10 @@ public enum OrientationType {
 	 * @return the corresponding OrientationType instance
 	 */
 	static OrientationType convertToOrientationType(URI orientation) {
-		if (orientation.equals(Orientation.inline)) {
+		if (orientation.equals(inline)) {
 			return OrientationType.INLINE;
 		} 
-		else if (orientation.equals(Orientation.reverseComplement)) {
+		else if (orientation.equals(reverseComplement)) {
 			return OrientationType.REVERSECOMPLEMENT;
 		}
 		else {
@@ -60,10 +58,10 @@ public enum OrientationType {
 	static URI convertToURI(OrientationType orientation) {
 		if (orientation != null) {
 			if (orientation.equals(OrientationType.INLINE)) {
-				return Orientation.inline;
+				return inline;
 			}
 			else if (orientation.equals(OrientationType.REVERSECOMPLEMENT)) {
-				return Orientation.reverseComplement;
+				return reverseComplement;
 			}
 			else {
 				return null;
@@ -73,42 +71,8 @@ public enum OrientationType {
 			return null;
 		}
 	}
+	
+
+	static final URI inline 		  = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "inline");
+	static final URI reverseComplement = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "reverseComplement");
 }
-	
-	
-	//------Begin: Orientation from 1.1 ---------
-//	/**
-//	 * Represents <code>+</code> strand which is 5' to 3'.
-//	 * @deprecated As of release 2.0, replaced by {@link #inline}}
-//	 */
-//	POSITIVE("+"), 
-//	
-//	/**
-//	 * Represents <code>-</code> strand which is 3' to 5'.
-//	 * @deprecated As of release 2.0, replaced by {@link #reverseComplement}}
-//	 */
-//	NEGATIVE("-");
-	
-//	Orientation() {
-//		
-//	}
-//	
-//	private String symbol;
-//	
-//	private OrientationType(String symbol) {
-//		this.symbol = symbol;
-//	}
-//	
-//	/**
-//	 * Returns the symbol (inline or reverseComplement) for this strand type. 
-//	 */
-//	public String getSymbol() {
-//		return symbol;
-//	}
-//	
-//	@Override
-//	public String toString() {
-//		return symbol;
-//	}
-	//------End: Orientation from 1.1 ---------
-	

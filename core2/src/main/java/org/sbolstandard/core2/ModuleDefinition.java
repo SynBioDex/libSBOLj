@@ -7,9 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.sbolstandard.core2.ComponentInstance.AccessType;
-import org.sbolstandard.core2.FunctionalComponent.DirectionType;
-
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
@@ -41,39 +38,24 @@ public class ModuleDefinition extends TopLevel {
 	
 	private ModuleDefinition(ModuleDefinition moduleDefinition) {
 		super(moduleDefinition);
-		Set<URI> roles = new HashSet<>();
+		this.roles = new HashSet<>();
+		this.modules = new HashMap<>();
+		this.interactions = new HashMap<>();
+		this.functionalComponents = new HashMap<>();
+		this.models = new HashSet<>();
 		for (URI role : moduleDefinition.getRoles()) {
-			roles.add(role);
+			this.addRole(role);
 		}		
-		this.setRoles(roles);
-		if (!moduleDefinition.getModules().isEmpty()) {
-			List<Module> subModules = new ArrayList<>();
-			for (Module subModule : moduleDefinition.getModules()) {
-				subModules.add(subModule.deepCopy());
-			}
-			this.setModules(subModules);
+		for (Module subModule : moduleDefinition.getModules()) {
+			this.addModule(subModule.deepCopy());
 		}
-		if (!moduleDefinition.getInteractions().isEmpty()) {
-			List<Interaction> interactions = new ArrayList<>();
-			for (Interaction interaction : moduleDefinition.getInteractions()) {
-				interactions.add(interaction.deepCopy());
-			}
-			this.setInteractions(interactions);
+		for (Interaction interaction : moduleDefinition.getInteractions()) {
+			this.addInteraction(interaction.deepCopy());
 		}
-		if (!moduleDefinition.getFunctionalComponents().isEmpty()) {
-			List<FunctionalComponent> components = new ArrayList<>();
-			for (FunctionalComponent component : moduleDefinition.getFunctionalComponents()) {
-				components.add(component.deepCopy());
-			}
-			this.setFunctionalComponents(components);
+		for (FunctionalComponent component : moduleDefinition.getFunctionalComponents()) {
+			this.addFunctionalComponent(component.deepCopy());
 		}
-		if (!moduleDefinition.getModels().isEmpty()) {
-			Set<URI> models = new HashSet<>();
-			for (URI model : moduleDefinition.getModelURIs()) {
-				models.add(model);
-			}
-			this.setModels(models);
-		}
+		this.setModels(moduleDefinition.getModelURIs());
 	}
 
 
@@ -158,7 +140,7 @@ public class ModuleDefinition extends TopLevel {
 	public Module createModule(String displayId, String moduleDefinitionId, String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI moduleDefinition = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
-				TopLevel.moduleDefinition, moduleDefinitionId, version);
+				TopLevel.MODULE_DEFINITION, moduleDefinitionId, version, sbolDocument.isTypesInURIs());
 		return createModule(displayId,moduleDefinition);
 	}
 
@@ -199,11 +181,19 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of subModules if present.
+	 * Returns the instance matching the specified displayId from the list of modules, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public Module getModule(URI subModuleURI) {
-		return modules.get(subModuleURI);
+	public Module getModule(String displayId) {
+		return modules.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of modules, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Module getModule(URI moduleURI) {
+		return modules.get(moduleURI);
 	}
 	
 	/**
@@ -290,7 +280,15 @@ public class ModuleDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of interactions if present.
+	 * Returns the instance matching the specified displayId from the list of interactions, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public Interaction getInteraction(String displayId) {
+		return interactions.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+	}
+	
+	/**
+	 * Returns the instance matching the specified URI from the list of interactions, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public Interaction getInteraction(URI interactionURI) {
@@ -356,7 +354,7 @@ public class ModuleDefinition extends TopLevel {
 			String definition, String version, DirectionType direction) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI definitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
-				TopLevel.componentDefinition, definition, version);
+				TopLevel.COMPONENT_DEFINITION, definition, version, sbolDocument.isTypesInURIs());
 		return createFunctionalComponent(displayId,access,definitionURI,direction);
 	}
 
@@ -392,11 +390,57 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public boolean removeFunctionalComponent(FunctionalComponent functionalComponent) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		for (Interaction i : interactions.values()) {
+			for (Participation p : i.getParticipations()) {
+				if (p.getParticipantURI().equals(functionalComponent.getIdentity())) {
+					throw new SBOLException("Cannot remove " + functionalComponent.getIdentity() + 
+							" since it is in use.");
+				}
+			}
+		}
+		for (FunctionalComponent c : functionalComponents.values()) {
+			for (MapsTo mt : c.getMapsTos()) {
+				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
+					throw new SBOLException("Cannot remove " + functionalComponent.getIdentity() + 
+							" since it is in use.");
+				}
+			}
+			
+		}
+		for (Module m : modules.values()) {
+			for (MapsTo mt : m.getMapsTos()) {
+				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
+					throw new SBOLException("Cannot remove " + functionalComponent.getIdentity() + 
+							" since it is in use.");
+				}
+			}
+			
+		}
+		if (sbolDocument!=null) {
+			for (ModuleDefinition md : sbolDocument.getModuleDefinitions()) {
+				for (Module m : md.getModules()) {
+					for (MapsTo mt : m.getMapsTos()) {
+						if (mt.getRemoteURI().equals(functionalComponent.getIdentity())) {
+							throw new SBOLException("Cannot remove " + functionalComponent.getIdentity() + 
+									" since it is in use.");
+						}
+					}					
+				}
+			}
+		}
 		return removeChildSafely(functionalComponent,functionalComponents);
+	}
+
+	/**
+	 * Returns the instance matching the specified displayId from the list of functional instantiations, if present.
+	 * @return the matching instance if present, or <code>null</code> if not present.
+	 */
+	public FunctionalComponent getFunctionalComponent(String displayId) {
+		return functionalComponents.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of functionalInstantiations if present.
+	 * Returns the instance matching the specified URI from the list of functional instantiations, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
 	public FunctionalComponent getFunctionalComponent(URI componentURI) {
@@ -469,7 +513,7 @@ public class ModuleDefinition extends TopLevel {
 	public void addModel(String model,String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI modelURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
-				TopLevel.model, model, version);
+				TopLevel.MODEL, model, version, sbolDocument.isTypesInURIs());
 		addModel(modelURI);
 	}
 	
@@ -668,36 +712,38 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	@Override
 	ModuleDefinition copy(String URIprefix, String displayId, String version) {
-		if (this.checkDescendantsURIcompliance() && isURIprefixCompliant(URIprefix)
-				&& isDisplayIdCompliant(displayId) && isVersionCompliant(version)) {
-			ModuleDefinition cloned = this.deepCopy();
-			cloned.setWasDerivedFrom(this.getIdentity());
-			cloned.setPersistentIdentity(URI.create(URIprefix + '/' + displayId));
-			cloned.setDisplayId(displayId);
-			cloned.setVersion(version);
-			URI newIdentity = URI.create(URIprefix + '/' + displayId + '/' + version);			
-			cloned.setIdentity(newIdentity);
-			// Update all children's URIs
-			if (!cloned.getModules().isEmpty()) {
-				for (Module module : cloned.getModules()) {
-					module.updateCompliantURI(URIprefix, displayId, version);
-				}
-			}
-			if (!cloned.getInteractions().isEmpty()) {
-				for (Interaction SequenceAnnotation : cloned.getInteractions()) {
-					SequenceAnnotation.updateCompliantURI(URIprefix, displayId, version);
-				}	
-			}
-			if (!cloned.getFunctionalComponents().isEmpty()) {
-				for (FunctionalComponent component : cloned.getFunctionalComponents()) {
-					component.updateCompliantURI(URIprefix, displayId, version);
-				}
-			}
-			return cloned;
+		ModuleDefinition cloned = this.deepCopy();
+		cloned.setWasDerivedFrom(this.getIdentity());
+		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		cloned.setDisplayId(displayId);
+		cloned.setVersion(version);
+		URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
+		cloned.setIdentity(newIdentity);
+		int count = 0;
+		for (FunctionalComponent component : cloned.getFunctionalComponents()) {
+			if (!component.isSetDisplayId()) component.setDisplayId("functionalComponent"+ ++count);
+			component.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+					component.getDisplayId(),version);
+			cloned.removeChildSafely(component, cloned.functionalComponents);
+			cloned.addFunctionalComponent(component);
 		}
-		else {
-			return null; 	
+		count = 0;
+		for (Module module : cloned.getModules()) {
+			if (!module.isSetDisplayId()) module.setDisplayId("module"+ ++count);
+			module.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+					module.getDisplayId(),version);
+			cloned.removeChildSafely(module, cloned.modules);
+			cloned.addModule(module);
 		}
+		count = 0;
+		for (Interaction interaction : cloned.getInteractions()) {
+			if (!interaction.isSetDisplayId()) interaction.setDisplayId("interaction"+ ++count);
+			interaction.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+					interaction.getDisplayId(),version);
+			cloned.removeChildSafely(interaction, cloned.interactions);
+			cloned.addInteraction(interaction);
+		}
+		return cloned;
 	}
 
 	/* (non-Javadoc)

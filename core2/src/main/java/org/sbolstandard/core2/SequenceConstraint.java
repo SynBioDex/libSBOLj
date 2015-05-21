@@ -22,71 +22,6 @@ public class SequenceConstraint extends Identified {
 	private URI object;
 	private ComponentDefinition componentDefinition = null;
 	
-	public enum RestrictionType {
-		PRECEDES("precedes"),
-		SAME_ORIENTATION_AS("sameOrienationAs"),
-		OPPOSITE_ORIENTATION_AS("oppositeOrienationAs");
-		
-		private final String restrictionType;
-
-		RestrictionType(String restrictionType) {
-			this.restrictionType = restrictionType;
-		}
-		
-		/**
-		 * Returns the restriction type.
-		 * @return restriction type.
-		 */
-		public String getRestrictionType() {
-			return restrictionType;
-		}
-
-		@Override
-		public String toString() {
-			return restrictionType;
-		}
-		
-				
-		/**
-		 * Convert the specified URI to its corresponding RestrictionType instance.
-		 * @return the corresponding RestrictionType instance.
-		 */
-		public static RestrictionType convertToRestrictionType(URI restriction) {
-			if (restriction.equals(Restriction.precedes)) {
-				return RestrictionType.PRECEDES;
-			} else if (restriction.equals(Restriction.sameOrientationAs)) {
-				return RestrictionType.SAME_ORIENTATION_AS;
-			} else if (restriction.equals(Restriction.oppositeOrientationAs)) {
-				return RestrictionType.OPPOSITE_ORIENTATION_AS;
-			} 
-			else {
-				throw new IllegalArgumentException("Not a valid restriction type.");
-			}
-		}
-		
-		/**
-		 * Returns the restriction type in URI.
-		 * @return restriction type in URI
-		 */
-		public static URI convertToURI(RestrictionType restriction) {
-			if (restriction != null) {
-				if (restriction.equals(RestrictionType.PRECEDES)) {
-					return Restriction.precedes;
-				} else if (restriction.equals(RestrictionType.SAME_ORIENTATION_AS)) {
-					return Restriction.sameOrientationAs;
-				} else if (restriction.equals(RestrictionType.OPPOSITE_ORIENTATION_AS)) {
-					return Restriction.oppositeOrientationAs;
-				} 
-				else {
-					throw new IllegalArgumentException("Not a valid restriction type.");
-				}
-			}
-			else {
-				return null;
-			}
-		}
-	}
-	
 	SequenceConstraint(URI identity, RestrictionType restriction, 
 			URI subject, URI object) {
 		super(identity);
@@ -110,14 +45,6 @@ public class SequenceConstraint extends Identified {
 	public RestrictionType getRestriction() {
 		return restriction;
 	}
-	
-	/**
-	 * Returns the URI corresponding to the type of restriction.
-	 * @return the URI corresponding to the type of restriction.
-	 */
-	URI getRestrictionURI() {
-		return RestrictionType.convertToURI(restriction);
-	}
 
 	/**
 	 * Sets field variable <code>restriction</code> to the specified element.
@@ -128,13 +55,6 @@ public class SequenceConstraint extends Identified {
 			throw new NullPointerException("Not a valid restriction type.");
 		}
 		this.restriction = restriction;
-	}
-	
-	/**
-	 * Sets field variable <code>restriction</code> to the element corresponding to the specified URI.
-	 */
-	void setRestriction(URI restriction) {
-		this.restriction = RestrictionType.convertToRestrictionType(restriction);
 	}
 
 	/**
@@ -202,17 +122,6 @@ public class SequenceConstraint extends Identified {
 		}
 		this.object = object;
 	}
-	
-	
-	private static final class Restriction {
-		public static final URI precedes = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "precedes");
-		public static final URI sameOrientationAs = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "sameOrientationAs");
-		public static final URI oppositeOrientationAs = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "oppositeOrientationAs");
-	}
-
 
 	@Override
 	public int hashCode() {
@@ -223,7 +132,6 @@ public class SequenceConstraint extends Identified {
 		result = prime * result + ((subject == null) ? 0 : subject.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -259,14 +167,16 @@ public class SequenceConstraint extends Identified {
 	 * Assume this SequenceConstraint object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
 	 */
-	void updateCompliantURI(String URIprefix, String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 1 indicates that this object is a child of a top-level object.
-		URI newIdentity = URI.create(URIprefix + '/' + parentDisplayId + '/' 
-				+ thisObjDisplayId + '/' + version);
-		// SequenceConstraint does not have any children. No need to update their URIs.
-		// TODO: need to set wasDerivedFrom here?
+	void updateCompliantURI(String URIprefix, String displayId, String version) {
 		this.setWasDerivedFrom(this.getIdentity());
-		this.setIdentity(newIdentity);
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
+		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		this.setDisplayId(displayId);
+		this.setVersion(version);
+		String subjectId = extractDisplayId(subject);
+		this.setSubject(createCompliantURI(URIprefix,subjectId,version));
+		String objectId = extractDisplayId(object);
+		this.setObject(createCompliantURI(URIprefix,objectId,version));
 	}
 
 	/**

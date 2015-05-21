@@ -22,81 +22,6 @@ public class MapsTo extends Identified{
 	private ModuleDefinition moduleDefinition = null;
 	private Module module = null;
 
-	public enum RefinementType {
-		VERIFYIDENTICAL("verifyIdentical"),
-		USELOCAL("useLocal"), 
-		USEREMOTE("useRemote"),
-		MERGE("merge");
-		private final String refinementType;
-
-		RefinementType(String refinementType) {
-			this.refinementType = refinementType;
-		}
-
-		/**
-		 * Returns the refinement type.
-		 * @return refinement type.
-		 */
-		String getRefinementType() {
-			return refinementType;
-		}
-
-		@Override
-		public String toString() {
-			return refinementType;
-		}
-
-		/**
-		 * Convert the specified URI to its corresponding RefinementType instance. 
-		 * @return the corresponding RefinementType instance
-		 */
-		static RefinementType convertToRefinementType(URI refinement) {
-			if (refinement.equals(Refinement.merge)) {
-				return RefinementType.MERGE;
-			} 
-			else if (refinement.equals(Refinement.useLocal)) {
-				return RefinementType.USELOCAL;
-			}
-			else if (refinement.equals(Refinement.useRemote)) {
-				return RefinementType.USEREMOTE;
-			}
-			else if (refinement.equals(Refinement.verifyIdentical)) {
-				return RefinementType.VERIFYIDENTICAL;
-			}
-			else {
-				// TODO: Validation?
-				return null;
-			}
-		}
-
-		/**
-		 * Returns the refinement type in URI.
-		 * @return refinement type in URI
-		 */
-		static URI convertToURI(RefinementType refinement) {
-			if (refinement != null) {
-				if (refinement.equals(RefinementType.MERGE)) {
-					return Refinement.merge;
-				}
-				else if (refinement.equals(RefinementType.USELOCAL)) {
-					return Refinement.useLocal;
-				}
-				else if (refinement.equals(RefinementType.USEREMOTE)) {
-					return Refinement.useRemote;
-				}
-				else if (refinement.equals(RefinementType.VERIFYIDENTICAL)) {
-					return Refinement.verifyIdentical;
-				}				
-				else {
-					return null;
-				}
-			}
-			else {
-				return null;
-			}
-		}
-	}
-	
 	MapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
 		super(identity);
@@ -119,33 +44,6 @@ public class MapsTo extends Identified{
 	public RefinementType getRefinement() {
 		return refinement;
 	}
-	
-	/**
-	 * Returns the URI constant corresponds to the field variable <code>refinement</code>.
-	 * @return  <code>refinement</code>
-	 */
-	URI getRefinementURI() {
-		if (refinement != null) {
-			if (refinement.equals(RefinementType.MERGE)) {
-				return Refinement.merge;
-			}
-			else if (refinement.equals(RefinementType.USELOCAL)) {
-				return Refinement.useLocal;
-			}
-			else if (refinement.equals(RefinementType.USEREMOTE)) {
-				return Refinement.useRemote;
-			}
-			else if (refinement.equals(RefinementType.VERIFYIDENTICAL)) {
-				return Refinement.verifyIdentical;
-			}
-			else {
-				return null;
-			}
-		}
-		else {
-			return null;
-		}
-	}
 
 	/**
 	 * Sets field variable <code>refinement</code> to the specified element.
@@ -153,26 +51,6 @@ public class MapsTo extends Identified{
 	public void setRefinement(RefinementType refinement) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.refinement = refinement;
-	}
-	
-	/**
-	 * Sets field variable <code>refinement</code> according to the specified URI.
-	 */
-	void setRefinement(URI refinement) {
-		if (refinement != null && refinement.equals(Refinement.merge)) {
-			this.refinement = RefinementType.MERGE;
-		}
-		else if (refinement != null && refinement.equals(Refinement.useLocal)) {
-			this.refinement = RefinementType.USELOCAL;
-		}
-		else if (refinement != null && refinement.equals(Refinement.useRemote)) {
-			this.refinement = RefinementType.USEREMOTE;
-		}
-		else if (refinement != null && refinement.equals(Refinement.verifyIdentical)) {
-			this.refinement = RefinementType.VERIFYIDENTICAL;
-		} else {
-			throw new IllegalArgumentException("Not a valid refinement type.");
-		}
 	}
 
 	/**
@@ -199,6 +77,9 @@ public class MapsTo extends Identified{
 		if (moduleDefinition!=null) {
 			if (moduleDefinition.getFunctionalComponent(local)==null) {
 				throw new IllegalArgumentException("Functional Component '" + local + "' does not exist.");
+			}
+			if (moduleDefinition.getFunctionalComponent(local).getAccess().equals(AccessType.PRIVATE)) {
+				throw new IllegalArgumentException("Functional Component '" + local + "' is private.");
 			}
 		}
 		this.local = local;
@@ -229,6 +110,9 @@ public class MapsTo extends Identified{
 		if (module!=null) {
 			if (module.getDefinition().getFunctionalComponent(remote)==null) {
 				throw new IllegalArgumentException("Functional Component '" + remote + "' does not exist.");
+			}
+			if (module.getDefinition().getFunctionalComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
+				throw new IllegalArgumentException("Functional Component '" + remote + "' is private.");
 			}
 		}
 		this.remote = remote;
@@ -267,19 +151,6 @@ public class MapsTo extends Identified{
 			return false;
 		return true;
 	}
-	
-	
-	private static final class Refinement {
-		public static final URI merge = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "merge");
-		public static final URI useLocal = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "useLocal");
-		public static final URI useRemote = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "useRemote");
-		public static final URI verifyIdentical = URI.create(Sbol2Terms.sbol2
-				.getNamespaceURI() + "verifyIdentical");
-	}
-
 
 	@Override
 	protected MapsTo deepCopy() {
@@ -290,14 +161,12 @@ public class MapsTo extends Identified{
 	 * Assume this MapsTo object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link Component#updateCompliantURI(String, String, String)}.
 	 */
-	void updateCompliantURI(String URIprefix, String grandparentDisplayId,
-			String parentDisplayId, String version) {
-		String thisObjDisplayId = extractDisplayId(this.getIdentity()); // 2 indicates that this object is a grandchild of a top-level object.
-		URI newIdentity = URI.create(URIprefix + '/' + grandparentDisplayId + '/' + parentDisplayId + '/' 
-				+ thisObjDisplayId + '/' + version);
-		// TODO: need to set wasDerivedFrom here?
+	void updateCompliantURI(String URIprefix, String displayId, String version) {
 		this.setWasDerivedFrom(this.getIdentity());
-		this.setIdentity(newIdentity);
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
+		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
+		this.setDisplayId(displayId);
+		this.setVersion(version);
 	}
 
 	/**
