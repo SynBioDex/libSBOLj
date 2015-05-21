@@ -700,7 +700,8 @@ public class SBOLWriter {
 		{
 			Cut cut = (Cut) location;
 			property.add(NamedProperty(Sbol2Terms.Cut.at, cut.getAt()));
-			property.add(NamedProperty(Sbol2Terms.Cut.orientation, OrientationType.convertToURI(cut.getOrientation())));
+			if (cut.isSetOrientation())
+				property.add(NamedProperty(Sbol2Terms.Cut.orientation, OrientationType.convertToURI(cut.getOrientation())));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Cut.Cut, cut.getIdentity(), NamedProperties(property)));
@@ -708,7 +709,8 @@ public class SBOLWriter {
 		else if(location instanceof GenericLocation)
 		{
 			GenericLocation genericLocation = (GenericLocation) location;
-			property.add(NamedProperty(Sbol2Terms.GenericLocation.orientation, OrientationType.convertToURI(genericLocation.getOrientation())));
+			if (genericLocation.isSetOrientation())
+				property.add(NamedProperty(Sbol2Terms.GenericLocation.orientation, OrientationType.convertToURI(genericLocation.getOrientation())));
 
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.GenericLocation.GenericLocation, genericLocation.getIdentity(), NamedProperties(property)));
