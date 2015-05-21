@@ -45,16 +45,17 @@ public class writeTester {
 	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		get_myParts(SBOL2Doc_test);
+		/*
 		SBOLDocument sbolDoc = new SBOLDocument();
 		sbolDoc.setDefaultURIprefix("http://www.some.org");
 		ComponentDefinition cd = SBOL2Doc_test.getComponentDefinition("pLactetR", "1.0");
 		sbolDoc.createCopy(cd,"pLactetR2","2.0");
 		cd = SBOL2Doc_test.getComponentDefinition("ptetlacI", "1.0");
 		sbolDoc.createCopy(cd,"ptetLacI2","2.0");
-		ModuleDefinition md = SBOL2Doc_test.getModuleDefinition("LacI_Inv", "1.0");
-		sbolDoc.createCopy(md,"LacI_Inv2","2.0");
-
-		writeRdfOutputStream(sbolDoc);
+		ModuleDefinition md = SBOL2Doc_test.getModuleDefinition("Toggle", "1.0");
+		sbolDoc.createCopy(md,"Toggle2","2.0");
+		*/
+		writeRdfOutputStream(SBOL2Doc_test);
 
 		//		writeJsonOutputStream();
 		//		writeTurtleOutputStream();

@@ -29,6 +29,8 @@ public class readTester {
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
 			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+			SBOLReader.setVersion("1.0");
+			SBOLReader.setTypesInURI(true);
 			SBOLDocument document1 = SBOLReader.read(file);
 			//document1.setDefaultURIprefix("http://www.some.org");
 			//document1.createCollection("abc", "1.0");

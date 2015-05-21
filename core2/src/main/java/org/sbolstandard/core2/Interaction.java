@@ -283,7 +283,6 @@ public class Interaction extends Identified {
 			this.addParticipation(participation);
 			String participantId = extractDisplayId(participation.getParticipantURI());
 			participation.setParticipant(createCompliantURI(URIprefix,participantId,version));
-			// TODO: update participant
 		}
 	}
 

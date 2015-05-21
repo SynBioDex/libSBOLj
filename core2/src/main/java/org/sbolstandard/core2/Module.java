@@ -27,19 +27,16 @@ public class Module extends Identified {
 
 	Module(URI identity, URI moduleDefinition) {
 		super(identity);
-		setDefinition(moduleDefinition);
 		this.mapsTos = new HashMap<>();
+		setDefinition(moduleDefinition);
 	}
 	
 	private Module(Module module) {
 		super(module);
+		this.mapsTos = new HashMap<>();
 		this.setDefinition(module.getDefinitionURI());
-		if (!module.getMapsTos().isEmpty()) {
-			List<MapsTo> mappings = new ArrayList<>();
-			for (MapsTo mapping : module.getMapsTos()) {
-				mappings.add(mapping.deepCopy());
-			}
-			this.setMapsTos(mappings);
+		for (MapsTo mapping : module.getMapsTos()) {
+			this.addMapsTo(mapping.deepCopy());
 		}
 	}
 
@@ -253,7 +250,8 @@ public class Module extends Identified {
 					mapsTo.getDisplayId(), version);
 			this.removeChildSafely(mapsTo, this.mapsTos);
 			this.addMapsTo(mapsTo);
-			// TODO: update local 
+			String localId = extractDisplayId(mapsTo.getLocalURI());
+			mapsTo.setLocal(createCompliantURI(URIprefix,localId,version));
 		}
 	}
 	

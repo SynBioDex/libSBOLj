@@ -44,7 +44,8 @@ public class Component extends ComponentInstance{
 					mapsTo.getDisplayId(), version);
 			this.removeChildSafely(mapsTo, this.mapsTos);
 			this.addMapsTo(mapsTo);
-			// TODO: update local
+			String localId = extractDisplayId(mapsTo.getLocalURI());
+			mapsTo.setLocal(createCompliantURI(URIprefix,localId,version));
 		}
 	}
 }
