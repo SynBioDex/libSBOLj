@@ -36,6 +36,6 @@ If validation fails with an error, there will be a message printed about the val
 
 If the input file is an SBOL 1.1 file, then it will convert the file into an SBOL 2.0 file.  This conversion should be provided a default URI prefix.  It can also be provided a default version, if desired.  Finally, the -t flag will insert the type of top level objects into the URI during conversion, if desired.
 
-    java -jar libSBOLj-core-1.0.0-SNAPSHOT.jar <inputFile> -o <outputFile> -p <URIprefix> -v <version>
+    java -jar libSBOLj-core-1.0.0-SNAPSHOT.jar <inFile> -o <outFile> -p <URIprefix> -v <version>
     
     
