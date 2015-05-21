@@ -279,6 +279,11 @@ public class Interaction extends Identified {
 			if (!participation.isSetDisplayId()) participation.setDisplayId("participation"+ ++count);
 			participation.updateCompliantURI(this.getPersistentIdentity().toString(), 
 					participation.getDisplayId(), version);
+			this.removeChildSafely(participation, this.participations);
+			this.addParticipation(participation);
+			String participantId = extractDisplayId(participation.getParticipantURI());
+			participation.setParticipant(createCompliantURI(URIprefix,participantId,version));
+			// TODO: update participant
 		}
 	}
 

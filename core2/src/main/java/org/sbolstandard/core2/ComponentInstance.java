@@ -23,7 +23,7 @@ public abstract class ComponentInstance extends Identified {
 	
 	private AccessType access;
 	protected URI definition;
-	private HashMap<URI, MapsTo> mapsTos;
+	protected HashMap<URI, MapsTo> mapsTos;
 	
 	ComponentInstance(URI identity, AccessType access, URI definition) {
 		super(identity);

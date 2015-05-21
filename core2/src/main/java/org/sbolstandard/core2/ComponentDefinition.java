@@ -816,10 +816,10 @@ public class ComponentDefinition extends TopLevel {
 		cloned.setIdentity(newIdentity);
 		int count = 0;
 		for (Component component : cloned.getComponents()) {
-			cloned.removeChildSafely(component, components);
 			if (!component.isSetDisplayId()) component.setDisplayId("component"+ ++count);
 			component.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
 					component.getDisplayId(),version);
+			cloned.removeChildSafely(component, cloned.components);
 			cloned.addComponent(component);
 		}
 		count = 0;
@@ -827,12 +827,16 @@ public class ComponentDefinition extends TopLevel {
 			if (!sequenceConstraint.isSetDisplayId()) sequenceConstraint.setDisplayId("sequenceConstraint"+ ++count);
 			sequenceConstraint.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
 					sequenceConstraint.getDisplayId(),version);
+			cloned.removeChildSafely(sequenceConstraint, cloned.sequenceConstraints);
+			cloned.addSequenceConstraint(sequenceConstraint);
 		}
 		count = 0;
 		for (SequenceAnnotation sequenceAnnotation : cloned.getSequenceAnnotations()) {
 			if (!sequenceAnnotation.isSetDisplayId()) sequenceAnnotation.setDisplayId("sequenceAnnotation"+ ++count);
 			sequenceAnnotation.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
 					sequenceAnnotation.getDisplayId(),version);
+			cloned.removeChildSafely(sequenceAnnotation, cloned.sequenceAnnotations);
+			cloned.addSequenceAnnotation(sequenceAnnotation);
 		}
 		return cloned;
 	}

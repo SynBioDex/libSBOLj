@@ -251,6 +251,9 @@ public class Module extends Identified {
 		for (MapsTo mapsTo : this.getMapsTos()) {
 			mapsTo.updateCompliantURI(this.getPersistentIdentity().toString(), 
 					mapsTo.getDisplayId(), version);
+			this.removeChildSafely(mapsTo, this.mapsTos);
+			this.addMapsTo(mapsTo);
+			// TODO: update local 
 		}
 	}
 	

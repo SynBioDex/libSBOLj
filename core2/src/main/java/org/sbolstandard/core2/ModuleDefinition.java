@@ -720,22 +720,28 @@ public class ModuleDefinition extends TopLevel {
 		URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
 		cloned.setIdentity(newIdentity);
 		int count = 0;
+		for (FunctionalComponent component : cloned.getFunctionalComponents()) {
+			if (!component.isSetDisplayId()) component.setDisplayId("functionalComponent"+ ++count);
+			component.updateCompliantURI(this.getPersistentIdentity().toString(), 
+					component.getDisplayId(),version);
+			cloned.removeChildSafely(component, cloned.functionalComponents);
+			cloned.addFunctionalComponent(component);
+		}
+		count = 0;
 		for (Module module : cloned.getModules()) {
 			if (!module.isSetDisplayId()) module.setDisplayId("module"+ ++count);
 			module.updateCompliantURI(this.getPersistentIdentity().toString(), 
 					module.getDisplayId(),version);
+			cloned.removeChildSafely(module, cloned.modules);
+			cloned.addModule(module);
 		}
 		count = 0;
 		for (Interaction interaction : cloned.getInteractions()) {
 			if (!interaction.isSetDisplayId()) interaction.setDisplayId("interaction"+ ++count);
 			interaction.updateCompliantURI(this.getPersistentIdentity().toString(), 
 					interaction.getDisplayId(),version);
-		}
-		count = 0;
-		for (FunctionalComponent component : cloned.getFunctionalComponents()) {
-			if (!component.isSetDisplayId()) component.setDisplayId("functionalComponent"+ ++count);
-			component.updateCompliantURI(this.getPersistentIdentity().toString(), 
-					component.getDisplayId(),version);
+			cloned.removeChildSafely(interaction, cloned.interactions);
+			cloned.addInteraction(interaction);
 		}
 		return cloned;
 	}

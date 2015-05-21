@@ -486,10 +486,14 @@ public class SequenceAnnotation extends Identified {
 		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		this.setDisplayId(displayId);
 		this.setVersion(version);
+		String componentId = extractDisplayId(component);
+		this.setComponent(createCompliantURI(URIprefix,componentId,version));
 		int count = 0;
 		for (Location location : this.getLocations()) {
 			if (!location.isSetDisplayId()) location.setDisplayId("location"+ ++count);
 			location.updateCompliantURI(this.getPersistentIdentity().toString(),location.getDisplayId(),version);
+			this.removeChildSafely(location, this.locations);
+			this.addLocation(location);
 		}
 	}
 
