@@ -78,9 +78,6 @@ public class MapsTo extends Identified{
 			if (moduleDefinition.getFunctionalComponent(local)==null) {
 				throw new IllegalArgumentException("Functional Component '" + local + "' does not exist.");
 			}
-			if (moduleDefinition.getFunctionalComponent(local).getAccess().equals(AccessType.PRIVATE)) {
-				throw new IllegalArgumentException("Functional Component '" + local + "' is private.");
-			}
 		}
 		this.local = local;
 	}

@@ -123,9 +123,6 @@ public class Module extends Identified {
 			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
 			}
-			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI()).getAccess().equals(AccessType.PRIVATE)) {
-				throw new IllegalArgumentException("Functional Component '" + mapsTo.getLocalURI() + "' is private.");
-			}
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI())==null) {
