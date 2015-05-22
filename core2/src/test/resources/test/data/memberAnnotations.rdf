@@ -60,9 +60,9 @@
         <sbol:version>1.0</sbol:version>
         <annot:thisAnnotation>turtleString</annot:thisAnnotation>
         <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation/range/1.0">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation/range"/>
-            <sbol:displayId>range</sbol:displayId>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation/cut/1.0">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation/cut"/>
+            <sbol:displayId>cut</sbol:displayId>
             <sbol:version>1.0</sbol:version>
             <sbol:start>1</sbol:start>
             <sbol:end>10</sbol:end>

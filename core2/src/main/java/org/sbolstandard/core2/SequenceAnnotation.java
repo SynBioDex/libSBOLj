@@ -41,7 +41,47 @@ public class SequenceAnnotation extends Identified {
 			this.setComponent(sequenceAnnotation.getComponentURI());
 		}
 	}
+	
+	public void addGenericLocation(String displayId) {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		GenericLocation genericLocation = new GenericLocation(identity);
+		addLocation(genericLocation);
+	}
+	
+	public void addGenericLocation(String displayId,OrientationType orientation) {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		GenericLocation genericLocation = new GenericLocation(identity);
+		genericLocation.setOrientation(orientation);
+		addLocation(genericLocation);
+	}
 
+	public void addCut(String displayId,int at) {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Cut cut = new Cut(identity,at);
+		addLocation(cut);
+	}
+	
+	public void addCut(String displayId,int at,OrientationType orientation) {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Cut cut = new Cut(identity,at);
+		cut.setOrientation(orientation);
+		addLocation(cut);
+	}
+	
+
+	public void addRange(String displayId,int start,int end) {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Range range = new Range(identity,start,end);
+		addLocation(range);
+	}
+	
+	public void addRange(String displayId,int start,int end,OrientationType orientation) {
+		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
+		Range range = new Range(identity,start,end);
+		range.setOrientation(orientation);
+		addLocation(range);
+	}
+	
 	void addLocation(Location location) {
 		addChildSafely(location, locations, "location");
 		location.setSBOLDocument(this.sbolDocument);
