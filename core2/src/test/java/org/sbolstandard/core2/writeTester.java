@@ -178,12 +178,8 @@ public class writeTester {
 		SBOL2Doc_test.addNamespace(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 		Collection myParts = createCollection(SBOL2Doc_test,
 				getData("myParts", version),
-				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
-//		Collection myParts2 = createCollection(SBOL2Doc_test,
-//				getData("myParts", "2.0"),
-//				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle())));
-		//SBOL2Doc_test.removeCollection(myParts2);
-		//System.out.println(SBOL2Doc_test.getCollection(myParts.getPersistentIdentity()).getVersion());
+				getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),"stringAnnotation"),
+					createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),URI.create("http://www.someannotation.org"))));
 
 		myParts.addMember(get_LacI(SBOL2Doc_test).getIdentity());
 		myParts.addMember(get_TetR(SBOL2Doc_test).getIdentity());
@@ -637,6 +633,12 @@ public class writeTester {
 
 	}
 
+	private static Annotation createAnnotation(QName relation, URI value)
+	{
+		return new Annotation(NamedProperty(relation, value));
+
+	}
+	
 	private static ComponentDefinition createComponentDefinitionData(SBOLDocument SBOL2Doc_test,
 			Set<URI> type, Set<URI> roles,
 			List<String> componentData,
@@ -674,9 +676,9 @@ public class writeTester {
 
 		DirectionType direction = null;
 		if(functionalInstantiation_data.get(2).equals("input"))
-			direction = DirectionType.INPUT;
+			direction = DirectionType.IN;
 		else if(functionalInstantiation_data.get(2).equals("output"))
-			direction = DirectionType.OUTPUT;
+			direction = DirectionType.OUT;
 		else if(functionalInstantiation_data.get(2).equals("inout"))
 			direction = DirectionType.INOUT;
 		else if(functionalInstantiation_data.get(2).equals("none"))
