@@ -35,7 +35,7 @@ public class ComponentDefinition extends TopLevel {
 	public static final URI SMALL_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#SmallMolecule");
 	
 	/* Roles */
-	public static final URI TRANSCRIPTION_FACTOR = URI.create("http://identifiers.org/go/GO:0003700");
+	//public static final URI TRANSCRIPTION_FACTOR = URI.create("http://identifiers.org/go/GO:0003700");
 	public static final URI EFFECTOR = URI.create("http://identifiers.org/chebi/CHEBI:35224");
 	
 	ComponentDefinition(URI identity, Set<URI> types) {

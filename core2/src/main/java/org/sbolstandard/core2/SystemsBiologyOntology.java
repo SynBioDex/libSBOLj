@@ -89,7 +89,8 @@ public class SystemsBiologyOntology {
 	// Modeling frameworks
 	/**
 	 * Modelling approach where the quantities of participants are considered continuous,
-	 * and represented by real values. The associated simulation methods make use of differential equations.
+	 * and represented by real values (<a href="http://identifiers.org/biomodels.sbo/SBO:0000062">SBO:0000062</a>). 
+	 * The associated simulation methods make use of differential equations.
 	 */
 	public static final URI CONTINUOUS_FRAMEWORK 		 	 = type("SBO:0000062");
 
@@ -460,7 +461,7 @@ public class SystemsBiologyOntology {
 
 	/**
 	 * The process by which two or more proteins interact non-covalently to form a protein
-	 * complex (<a href="?sboId=SBO:0000297" title="Display this term">SBO:0000297</a>).
+	 * complex.
 	 */
 	public static final URI PROTEIN_COMPLEX_FORMATION 			   = type("SBO:0000526");
 
@@ -484,8 +485,7 @@ public class SystemsBiologyOntology {
 	public static final URI STATE_VARIABLE_ASSIGNMENT 			   = type("SBO:0000464");
 
 	/**
-	 * A process that can modify the state of petri net
-	 * 'places'[<a href="?sboId=SBO:0000593" title="Display this term">SBO:0000593</a>].
+	 * A process that can modify the state of petri net 'places'.
 	 */
 	public static final URI PETRI_NET_TRANSITION 				   = type("SBO:0000591");
 
