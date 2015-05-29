@@ -1,8 +1,9 @@
 package org.sbolstandard.core2;
 
-import java.net.URI;
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
+import static org.sbolstandard.core2.URIcompliance.isURIcompliant;
 
-import static org.sbolstandard.core2.URIcompliance.*;
+import java.net.URI;
 
 /**
  * @author Zhen Zhang
@@ -13,24 +14,36 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @author Chris Myers
  * @version 2.0-beta
  */
- 
+
 public class Model extends TopLevel {
-		
+
 	private URI source;
 	private URI language;
 	private URI framework;
-	
-    public static final URI SBML = URI.create("http://identifiers.org/edam/format_2585");
-    public static final URI CELLML = URI.create("http://identifiers.org/edam/format_3240");
-    public static final URI BIOPAX = URI.create("http://identifiers.org/edam/format_3156");
-	
+
+	/**
+	 * Systems Biology Markup Language (SBML), the standard XML format for models of biological
+	 * processes such as for example metabolism, cell signaling, and gene regulation.
+	 */
+	public static final URI SBML = URI.create("http://identifiers.org/edam/format_2585");
+
+	/**
+	 * CellML, the format for mathematical models of biological and other networks.
+	 */
+	public static final URI CELLML = URI.create("http://identifiers.org/edam/format_3240");
+
+	/**
+	 * BioPAX is an exchange format for pathway data, with its data model defined in OWL.
+	 */
+	public static final URI BIOPAX = URI.create("http://identifiers.org/edam/format_3156");
+
 	Model(URI identity,URI source, URI language, URI framework) {
-		super(identity);		
+		super(identity);
 		setSource(source);
 		setLanguage(language);
 		setFramework(framework);
 	}
-	
+
 	private Model(Model model) {
 		super(model);
 		this.setSource(model.getSource());
@@ -83,7 +96,7 @@ public class Model extends TopLevel {
 	public URI getFramework() {
 		return framework;
 	}
-	
+
 	/**
 	 * Sets the field variable <code>framework</code> to the specified element.
 	 */
@@ -143,11 +156,11 @@ public class Model extends TopLevel {
 	@Override
 	Model copy(String URIprefix, String displayId, String version) {
 		Model cloned = this.deepCopy();
-		cloned.setWasDerivedFrom(this.getIdentity());	
+		cloned.setWasDerivedFrom(this.getIdentity());
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
 		cloned.setVersion(version);
-		URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
+		URI newIdentity = createCompliantURI(URIprefix,displayId,version);
 		cloned.setIdentity(newIdentity);
 		return cloned;
 	}
@@ -159,43 +172,43 @@ public class Model extends TopLevel {
 	protected boolean checkDescendantsURIcompliance() {
 		return isURIcompliant(this.getIdentity(), 0);
 	}
-	
-//	/**
-//	 * @param newDisplayId
-//	 * @return
-//	 */
-//	public Model copy(String newDisplayId) {
-//		Model cloned = (Model) this.deepCopy();
-//		cloned.updateCompliantURI(newDisplayId);
-//		return cloned;
-//	}
-//
-//	/* (non-Javadoc)
-//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
-//	 */
-//	protected void updateCompliantURI(String newDisplayId) {
-//		super.updateCompliantURI(newDisplayId);
-//		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {				
-//		}
-//	}
-//	
-//	/**
-//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
-//	 * @param newVersion
-//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
-//	 */
-//	public Model newVersion(String newVersion) {
-//		Model cloned = (Model) super.newVersion(newVersion);		
-//		cloned.updateVersion(newVersion);
-//		return cloned;
-//	}
-//	
-//	/* (non-Javadoc)
-//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
-//	 */
-//	protected void updateVersion(String newVersion) {
-//		super.updateVersion(newVersion);
-//		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
-//		}
-//	}
+
+	//	/**
+	//	 * @param newDisplayId
+	//	 * @return
+	//	 */
+	//	public Model copy(String newDisplayId) {
+	//		Model cloned = (Model) this.deepCopy();
+	//		cloned.updateCompliantURI(newDisplayId);
+	//		return cloned;
+	//	}
+	//
+	//	/* (non-Javadoc)
+	//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
+	//	 */
+	//	protected void updateCompliantURI(String newDisplayId) {
+	//		super.updateCompliantURI(newDisplayId);
+	//		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
+	//		}
+	//	}
+	//
+	//	/**
+	//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0".
+	//	 * @param newVersion
+	//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+	//	 */
+	//	public Model newVersion(String newVersion) {
+	//		Model cloned = (Model) super.newVersion(newVersion);
+	//		cloned.updateVersion(newVersion);
+	//		return cloned;
+	//	}
+	//
+	//	/* (non-Javadoc)
+	//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+	//	 */
+	//	protected void updateVersion(String newVersion) {
+	//		super.updateVersion(newVersion);
+	//		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
+	//		}
+	//	}
 }

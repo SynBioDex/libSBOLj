@@ -1,13 +1,14 @@
 package org.sbolstandard.core2;
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
+import static org.sbolstandard.core2.URIcompliance.isChildURIcompliant;
+import static org.sbolstandard.core2.URIcompliance.isURIcompliant;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
-
-import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
  * @author Zhen Zhang
@@ -27,17 +28,22 @@ public class ComponentDefinition extends TopLevel {
 	private HashMap<URI, Component> components;
 	private HashMap<URI, SequenceAnnotation> sequenceAnnotations;
 	private HashMap<URI, SequenceConstraint> sequenceConstraints;
-	
+
 	/* Types */
 	public static final URI DNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
-	public static final URI RNA = URI.create("ttp://www.biopax.org/release/biopax-level3.owl#RnaRegion");
+	public static final URI RNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#RnaRegion");
 	public static final URI PROTEIN = URI.create("http://www.biopax.org/release/biopax-level3.owl#Protein");
 	public static final URI SMALL_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#SmallMolecule");
-	
+
 	/* Roles */
 	//public static final URI TRANSCRIPTION_FACTOR = URI.create("http://identifiers.org/go/GO:0003700");
+	/**
+	 * A small molecule which increases (activator) or decreases (inhibitor) the activity of an
+	 * (allosteric) enzyme by binding to the enzyme at the regulatory site
+	 * (which is different from the substrate-binding catalytic site).
+	 */
 	public static final URI EFFECTOR = URI.create("http://identifiers.org/chebi/CHEBI:35224");
-	
+
 	ComponentDefinition(URI identity, Set<URI> types) {
 		super(identity);
 		this.types = new HashSet<>();
@@ -62,10 +68,10 @@ public class ComponentDefinition extends TopLevel {
 		}
 		for (URI role : componentDefinition.getRoles()) {
 			this.addRole(URI.create(role.toString()));
-		}		
+		}
 		for (Component subComponent : componentDefinition.getComponents()) {
 			this.addComponent(subComponent.deepCopy());
-		}		
+		}
 		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
 			this.addSequenceConstraint(sequenceConstraint.deepCopy());
 		}
@@ -74,17 +80,17 @@ public class ComponentDefinition extends TopLevel {
 		}
 		this.setSequences(componentDefinition.getSequenceURIs());
 	}
-	
-	
+
+
 	/**
-	 * Adds the specified element to the set <code>type</code> if it is not already present. 
+	 * Adds the specified element to the set <code>type</code> if it is not already present.
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addType(URI typeURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return types.add(typeURI);
 	}
-	
+
 	/**
 	 * Removes the specified element from the set <code>type</code> if it is present.
 	 * @return <code>true</code> if this set contained the specified element
@@ -96,7 +102,7 @@ public class ComponentDefinition extends TopLevel {
 		}
 		return types.remove(typeURI);
 	}
-	
+
 	/**
 	 * Sets the field variable <code>type</code> to the specified element.
 	 */
@@ -110,7 +116,7 @@ public class ComponentDefinition extends TopLevel {
 			addType(type);
 		}
 	}
-	
+
 	/**
 	 * Returns the field variable <code>type</code>.
 	 * @return the set of URIs for <code>type</code>.
@@ -120,32 +126,32 @@ public class ComponentDefinition extends TopLevel {
 		result.addAll(types);
 		return result;
 	}
-	
+
 	/**
-	 * Returns true if the set <code>type</code> contains the specified element. 
+	 * Returns true if the set <code>type</code> contains the specified element.
 	 * @return <code>true</code> if this set contains the specified element.
 	 */
 	public boolean containsType(URI typeURI) {
 		return types.contains(typeURI);
 	}
-	
+
 	/**
-	 * Removes all entries of the list of <code>type</code> instances owned by this instance. 
+	 * Removes all entries of the list of <code>type</code> instances owned by this instance.
 	 * The list will be empty after this call returns.
 	 */
 	void clearTypes() {
 		types.clear();
 	}
-	
+
 	/**
-	 * Adds the specified element to the set <code>roles</code> if it is not already present. 
+	 * Adds the specified element to the set <code>roles</code> if it is not already present.
 	 * @return <code>true</code> if this set did not already contain the specified element.
 	 */
 	public boolean addRole(URI roleURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return roles.add(roleURI);
 	}
-	
+
 	/**
 	 * Removes the specified element from the set <code>roles</code> if it is present.
 	 * @return <code>true</code> if this set contained the specified element
@@ -154,7 +160,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return roles.remove(roleURI);
 	}
-	
+
 	/**
 	 * Sets the field variable <code>roles</code> to the specified element.
 	 */
@@ -166,7 +172,7 @@ public class ComponentDefinition extends TopLevel {
 			addRole(role);
 		}
 	}
-	
+
 	/**
 	 * Returns the field variable <code>roles</code>.
 	 * @return the set of URIs for <code>roles</code>.
@@ -176,17 +182,17 @@ public class ComponentDefinition extends TopLevel {
 		result.addAll(roles);
 		return result;
 	}
-	
+
 	/**
-	 * Returns true if the set <code>roles</code> contains the specified element. 
+	 * Returns true if the set <code>roles</code> contains the specified element.
 	 * @return <code>true</code> if this set contains the specified element.
 	 */
 	public boolean containsRole(URI rolesURI) {
 		return roles.contains(rolesURI);
 	}
-	
+
 	/**
-	 * Removes all entries of the list of <code>roles</code> instances owned by this instance. 
+	 * Removes all entries of the list of <code>roles</code> instances owned by this instance.
 	 * The list will be empty after this call returns.
 	 */
 	public void clearRoles() {
@@ -218,7 +224,7 @@ public class ComponentDefinition extends TopLevel {
 	public Set<URI> getSequenceURIs() {
 		return sequences;
 	}
-	
+
 	public Set<Sequence> getSequences() {
 		if (sbolDocument==null) return null;
 		Set<Sequence> resolved = new HashSet<>();
@@ -248,33 +254,33 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return sequences.remove(sequenceURI);
 	}
-	
+
 	public void clearSequences() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		sequences.clear();
 	}
 
-//	public boolean containsSequence(Sequence sequence) {
-//		return containsSequenceURI(sequence.getIdentity());
-//	}
+	//	public boolean containsSequence(Sequence sequence) {
+	//		return containsSequenceURI(sequence.getIdentity());
+	//	}
 
 	public boolean containsSequence(URI sequenceURI) {
 		return sequences.contains(sequenceURI);
 	}
 
-//	/**
-//	 * Test if any {@link SequenceAnnotation} instance exists.
-//	 * @return <code>true</code> if at least one such instance exists.
-//	 */
-//	public boolean isSetSequenceAnnotations() {
-//		if (sequenceAnnotations.isEmpty())
-//			return false;
-//		else
-//			return true;					
-//	}
-	
+	//	/**
+	//	 * Test if any {@link SequenceAnnotation} instance exists.
+	//	 * @return <code>true</code> if at least one such instance exists.
+	//	 */
+	//	public boolean isSetSequenceAnnotations() {
+	//		if (sequenceAnnotations.isEmpty())
+	//			return false;
+	//		else
+	//			return true;
+	//	}
+
 	/**
-	 * Calls the SequenceAnnotation constructor to create a new instance using the specified parameters, 
+	 * Calls the SequenceAnnotation constructor to create a new instance using the specified parameters,
 	 * then adds to the list of SequenceAnnotation instances owned by this instance.
 	 * @return the created SequenceAnnotation instance.
 	 */
@@ -283,7 +289,7 @@ public class ComponentDefinition extends TopLevel {
 		addSequenceAnnotation(sequenceAnnotation);
 		return sequenceAnnotation;
 	}
-	
+
 	/**
 	 */
 	SequenceAnnotation createSequenceAnnotation(String displayId, Location location) {
@@ -294,7 +300,7 @@ public class ComponentDefinition extends TopLevel {
 		if (!isChildURIcompliant(this.getIdentity(), newSequenceAnnotationURI))
 			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
 					"'is not compliant in parent `" + this.getIdentity() +
-			        "' for " + URIprefix + " " + displayId + " " + version);
+					"' for " + URIprefix + " " + displayId + " " + version);
 		List<Location> locations = new ArrayList<>();
 		locations.add(location);
 		SequenceAnnotation sa = createSequenceAnnotation(newSequenceAnnotationURI, locations);
@@ -310,7 +316,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return createSequenceAnnotation(displayId,locationId,(OrientationType)null);
 	}
-	
+
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId,String locationId,OrientationType orientation) {
@@ -324,14 +330,14 @@ public class ComponentDefinition extends TopLevel {
 		location.setVersion(this.getVersion());
 		return createSequenceAnnotation(displayId, location);
 	}
-	
+
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, String locationId, int at) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return createSequenceAnnotation(displayId,locationId,at,null);
 	}
-		
+
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId,String locationId,int at,OrientationType orientation) {
@@ -345,14 +351,14 @@ public class ComponentDefinition extends TopLevel {
 		location.setVersion(this.getVersion());
 		return createSequenceAnnotation(displayId, location);
 	}
-	
+
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, String locationId, int start, int end) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return createSequenceAnnotation(displayId,locationId,start,end,null);
 	}
-	
+
 	/**
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, String locationId, int start, int end,OrientationType orientation) {
@@ -366,9 +372,9 @@ public class ComponentDefinition extends TopLevel {
 		location.setVersion(this.getVersion());
 		return createSequenceAnnotation(displayId, location);
 	}
-	
+
 	/**
-	 * Adds the specified instance to the list of sequenceAnnotations. 
+	 * Adds the specified instance to the list of sequenceAnnotations.
 	 */
 	void addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
 		addChildSafely(sequenceAnnotation, sequenceAnnotations, "sequenceAnnotation",
@@ -376,7 +382,7 @@ public class ComponentDefinition extends TopLevel {
 		sequenceAnnotation.setSBOLDocument(this.sbolDocument);
 		sequenceAnnotation.setComponentDefinition(this);
 	}
-	
+
 	/**
 	 * Removes the sequence annotation from the list of sequence annotations, if present.
 	 * @param sequenceAnnotation object to be removed.
@@ -386,35 +392,35 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(sequenceAnnotation, sequenceAnnotations);
 	}
-	
+
 	/**
 	 * Returns the instance matching the specified displayId from the list of sequence annotations, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public SequenceAnnotation getSequenceAnnotation(String displayId) {		
+	public SequenceAnnotation getSequenceAnnotation(String displayId) {
 		return sequenceAnnotations.get(createCompliantURI(this.getPersistentIdentity().toString(),
 				displayId,this.getVersion()));
 	}
-	
+
 	/**
 	 * Returns the instance matching the specified URI from the list of sequence annotations, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
 	 */
-	public SequenceAnnotation getSequenceAnnotation(URI sequenceAnnotationURI) {		
+	public SequenceAnnotation getSequenceAnnotation(URI sequenceAnnotationURI) {
 		return sequenceAnnotations.get(sequenceAnnotationURI);
 	}
-	
+
 	/**
-	 * Returns the list of structuralAnnotation instances owned by this instance. 
+	 * Returns the list of structuralAnnotation instances owned by this instance.
 	 * @return the list of structuralAnnotation instances owned by this instance.
 	 */
 	public Set<SequenceAnnotation> getSequenceAnnotations() {
-//		return (List<SequenceAnnotation>) structuralAnnotations.values();
+		//		return (List<SequenceAnnotation>) structuralAnnotations.values();
 		Set<SequenceAnnotation> sequenceAnnotations = new HashSet<>();
 		sequenceAnnotations.addAll(this.sequenceAnnotations.values());
-		return sequenceAnnotations; 
+		return sequenceAnnotations;
 	}
-	
+
 	/**
 	 * Removes all entries of the list of sequence annotations owned by this instance. The list will be empty after this call returns.
 	 */
@@ -425,31 +431,31 @@ public class ComponentDefinition extends TopLevel {
 			removeSequenceAnnotation((SequenceAnnotation)sequenceAnnotation);
 		}
 	}
-		
+
 	/**
 	 * Clears the existing list of structuralAnnotation instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
 	void setSequenceAnnotations(
 			List<SequenceAnnotation> sequenceAnnotations) {
-		clearSequenceAnnotations();		
+		clearSequenceAnnotations();
 		for (SequenceAnnotation sequenceAnnotation : sequenceAnnotations) {
 			addSequenceAnnotation(sequenceAnnotation);
 		}
 	}
-	
-//	/**
-//	 * Test if the optional field variable <code>structuralInstantiations</code> is set.
-//	 * @return <code>true</code> if the field variable is not an empty list
-//	 */
-//	public boolean isSetSubComponents() {
-//		if (subComponents.isEmpty())
-//			return false;
-//		else
-//			return true;
-//	}
+
+	//	/**
+	//	 * Test if the optional field variable <code>structuralInstantiations</code> is set.
+	//	 * @return <code>true</code> if the field variable is not an empty list
+	//	 */
+	//	public boolean isSetSubComponents() {
+	//		if (subComponents.isEmpty())
+	//			return false;
+	//		else
+	//			return true;
+	//	}
 
 	/**
-	 * Calls the StructuralInstantiation constructor to create a new instance using the specified parameters, 
+	 * Calls the StructuralInstantiation constructor to create a new instance using the specified parameters,
 	 * then adds to the list of StructuralInstantiation instances owned by this instance.
 	 * @return the created StructuralInstantiation instance.
 	 */
@@ -458,15 +464,15 @@ public class ComponentDefinition extends TopLevel {
 		addComponent(subComponent);
 		return subComponent;
 	}
-	
-	public Component createComponent(String displayId, AccessType access, 
+
+	public Component createComponent(String displayId, AccessType access,
 			String componentDefinition, String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(), 
+		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
 				TopLevel.COMPONENT_DEFINITION, componentDefinition, version, sbolDocument.isTypesInURIs());
 		return createComponent(displayId,access,componentDefinitionURI);
 	}
-	
+
 	public Component createComponent(String displayId, AccessType access, URI componentDefinitionURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -483,7 +489,7 @@ public class ComponentDefinition extends TopLevel {
 		c.setVersion(version);
 		return c;
 	}
-	
+
 	/**
 	 * Adds the specified instance to the list of components.
 	 */
@@ -502,24 +508,24 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		for (SequenceAnnotation sa : sequenceAnnotations.values()) {
 			if (sa.getComponentURI().equals(component.getIdentity())) {
-				throw new SBOLException("Cannot remove " + component.getIdentity() + 
+				throw new SBOLException("Cannot remove " + component.getIdentity() +
 						" since it is in use.");
 			}
 		}
 		for (SequenceConstraint sc : sequenceConstraints.values()) {
 			if (sc.getSubjectURI().equals(component.getIdentity())) {
-				throw new SBOLException("Cannot remove " + component.getIdentity() + 
+				throw new SBOLException("Cannot remove " + component.getIdentity() +
 						" since it is in use.");
 			}
 			if (sc.getObjectURI().equals(component.getIdentity())) {
-				throw new SBOLException("Cannot remove " + component.getIdentity() + 
+				throw new SBOLException("Cannot remove " + component.getIdentity() +
 						" since it is in use.");
 			}
 		}
 		for (Component c : components.values()) {
 			for (MapsTo mt : c.getMapsTos()) {
 				if (mt.getLocalURI().equals(component.getIdentity())) {
-					throw new SBOLException("Cannot remove " + component.getIdentity() + 
+					throw new SBOLException("Cannot remove " + component.getIdentity() +
 							" since it is in use.");
 				}
 			}
@@ -529,16 +535,16 @@ public class ComponentDefinition extends TopLevel {
 				for (Component c : cd.getComponents()) {
 					for (MapsTo mt : c.getMapsTos()) {
 						if (mt.getRemoteURI().equals(component.getIdentity())) {
-							throw new SBOLException("Cannot remove " + component.getIdentity() + 
+							throw new SBOLException("Cannot remove " + component.getIdentity() +
 									" since it is in use.");
 						}
-					}					
+					}
 				}
 			}
 		}
 		return removeChildSafely(component, components);
 	}
-	
+
 	/**
 	 * Returns the instance matching the specified displayId from the list of components, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
@@ -546,7 +552,7 @@ public class ComponentDefinition extends TopLevel {
 	public Component getComponent(String displayId) {
 		return components.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
 	}
-	
+
 	/**
 	 * Returns the instance matching the specified URI from the list of components, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
@@ -554,17 +560,17 @@ public class ComponentDefinition extends TopLevel {
 	public Component getComponent(URI componentURI) {
 		return components.get(componentURI);
 	}
-	
+
 	/**
-	 * Returns the list of {@link Component} instances owned by this instance. 
+	 * Returns the list of {@link Component} instances owned by this instance.
 	 * @return the list of {@link Component} instances owned by this instance.
 	 */
 	public Set<Component> getComponents() {
 		Set<Component> structuralInstantiations = new HashSet<>();
 		structuralInstantiations.addAll(this.components.values());
-		return structuralInstantiations; 
+		return structuralInstantiations;
 	}
-	
+
 	/**
 	 * Removes all entries of the list of components owned by this instance. The list will be empty after this call returns.
 	 */
@@ -575,7 +581,7 @@ public class ComponentDefinition extends TopLevel {
 			removeComponent((Component)component);
 		}
 	}
-		
+
 	/**
 	 * Clears the existing list of structuralInstantiation instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
@@ -585,20 +591,20 @@ public class ComponentDefinition extends TopLevel {
 			addComponent(component);
 		}
 	}
-	
-//	/**
-//	 * Test if the optional field variable <code>sequenceConstraints</code> is set.
-//	 * @return <code>true</code> if the field variable is not an empty list
-//	 */
-//	public boolean isSetSequenceConstraints() {
-//		if (sequenceConstraints.isEmpty())
-//			return false;
-//		else
-//			return true;
-//	}
-	
+
+	//	/**
+	//	 * Test if the optional field variable <code>sequenceConstraints</code> is set.
+	//	 * @return <code>true</code> if the field variable is not an empty list
+	//	 */
+	//	public boolean isSetSequenceConstraints() {
+	//		if (sequenceConstraints.isEmpty())
+	//			return false;
+	//		else
+	//			return true;
+	//	}
+
 	/**
-	 * Calls the StructuralConstraint constructor to create a new instance using the specified parameters, 
+	 * Calls the StructuralConstraint constructor to create a new instance using the specified parameters,
 	 * then adds to the list of StructuralConstraint instances owned by this instance.
 	 * @return the created StructuralConstraint instance.
 	 */
@@ -607,17 +613,17 @@ public class ComponentDefinition extends TopLevel {
 		addSequenceConstraint(sequenceConstraint);
 		return sequenceConstraint;
 	}
-	
+
 	public SequenceConstraint createSequenceConstraint(String displayId,
 			RestrictionType restriction, String subject, String object) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		URI subjectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(), 
+		URI subjectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),
 				subject, this.getVersion());
-		URI objectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(), 
+		URI objectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),
 				object, this.getVersion());
 		return createSequenceConstraint(displayId,restriction,subjectURI,objectURI);
 	}
-		
+
 	public SequenceConstraint createSequenceConstraint(String displayId,
 			RestrictionType restriction, URI subject, URI object) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -630,9 +636,9 @@ public class ComponentDefinition extends TopLevel {
 		sc.setVersion(version);
 		return sc;
 	}
-	
+
 	/**
-	 * Adds the specified instance to the list of sequenceConstraints. 
+	 * Adds the specified instance to the list of sequenceConstraints.
 	 */
 	void addSequenceConstraint(SequenceConstraint sequenceConstraint) {
 		sequenceConstraint.setSBOLDocument(this.sbolDocument);
@@ -650,7 +656,7 @@ public class ComponentDefinition extends TopLevel {
 		addChildSafely(sequenceConstraint, sequenceConstraints, "sequenceConstraint",
 				components, sequenceAnnotations);
 	}
-	
+
 	/**
 	 * Removes the sequence constraint from the list of sequence constraints, if present.
 	 * @param sequenceConstraint object to be removed.
@@ -660,7 +666,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(sequenceConstraint,sequenceConstraints);
 	}
-	
+
 	/**
 	 * Returns the instance matching the specified displayId from the list of sequence constraints, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
@@ -669,7 +675,7 @@ public class ComponentDefinition extends TopLevel {
 		return sequenceConstraints.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,
 				this.getVersion()));
 	}
-	
+
 	/**
 	 * Returns the instance matching the specified URI from the list of sequence constraints, if present.
 	 * @return the matching instance if present, or <code>null</code> if not present.
@@ -677,17 +683,17 @@ public class ComponentDefinition extends TopLevel {
 	public SequenceConstraint getSequenceConstraint(URI sequenceConstraintURI) {
 		return sequenceConstraints.get(sequenceConstraintURI);
 	}
-	
+
 	/**
-	 * Returns the list of {@link SequenceConstraint} instances owned by this instance. 
+	 * Returns the list of {@link SequenceConstraint} instances owned by this instance.
 	 * @return the list of {@link SequenceConstraint} instances owned by this instance.
 	 */
 	public Set<SequenceConstraint> getSequenceConstraints() {
 		Set<SequenceConstraint> sequenceConstraints = new HashSet<>();
 		sequenceConstraints.addAll(this.sequenceConstraints.values());
-		return sequenceConstraints; 
+		return sequenceConstraints;
 	}
-	
+
 	/**
 	 * Removes all entries of the list of sequence constraints owned by this instance. The list will be empty after this call returns.
 	 */
@@ -698,7 +704,7 @@ public class ComponentDefinition extends TopLevel {
 			removeSequenceConstraint((SequenceConstraint)sequenceConstraint);
 		}
 	}
-		
+
 	/**
 	 * Clears the existing list of structuralConstraint instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
@@ -709,10 +715,11 @@ public class ComponentDefinition extends TopLevel {
 			addSequenceConstraint(sequenceConstraint);
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateCompliantURI(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	protected boolean checkDescendantsURIcompliance() {
 		// codereview: this method is spagetti.
 		if (!isURIcompliant(this.getIdentity(), 0)) { 	// ComponentDefinition to be copied has non-compliant URI.
@@ -724,57 +731,57 @@ public class ComponentDefinition extends TopLevel {
 				allDescendantsCompliant = allDescendantsCompliant
 						&& isChildURIcompliant(this.getIdentity(), sequenceConstraint.getIdentity());
 				// SequenceConstraint does not have any child classes. No need to check further.
-				if (!allDescendantsCompliant) { // Current sequence constraint has non-compliant URI. 
+				if (!allDescendantsCompliant) { // Current sequence constraint has non-compliant URI.
 					return allDescendantsCompliant;
 				}
 			}
 		}
 		if (!this.getComponents().isEmpty()) {
 			for (Component component : this.getComponents()) {
-				allDescendantsCompliant = allDescendantsCompliant 
+				allDescendantsCompliant = allDescendantsCompliant
 						&& isChildURIcompliant(this.getIdentity(), component.getIdentity());
-				if (!allDescendantsCompliant) { // Current component has non-compliant URI. 
+				if (!allDescendantsCompliant) { // Current component has non-compliant URI.
 					return allDescendantsCompliant;
 				}
 				if (!component.getMapsTos().isEmpty()) {
 					// Check compliance of Component's children
 					for (MapsTo mapsTo : component.getMapsTos()) {
-						allDescendantsCompliant = allDescendantsCompliant 
+						allDescendantsCompliant = allDescendantsCompliant
 								&& isChildURIcompliant(component.getIdentity(), mapsTo.getIdentity());
-						if (!allDescendantsCompliant) { // Current mapsTo has non-compliant URI. 
+						if (!allDescendantsCompliant) { // Current mapsTo has non-compliant URI.
 							return allDescendantsCompliant;
 						}
-					}					
+					}
 				}
 			}
 		}
 		if (!this.getSequenceAnnotations().isEmpty()) {
 			for (SequenceAnnotation sequenceAnnotation : this.getSequenceAnnotations()) {
-				allDescendantsCompliant = allDescendantsCompliant 
+				allDescendantsCompliant = allDescendantsCompliant
 						&& isChildURIcompliant(this.getIdentity(), sequenceAnnotation.getIdentity());
-				if (!allDescendantsCompliant) { // Current sequence annotation has non-compliant URI. 
+				if (!allDescendantsCompliant) { // Current sequence annotation has non-compliant URI.
 					return allDescendantsCompliant;
 				}
 				Set<Location> locations = sequenceAnnotation.getLocations();
 				for (Location location : locations) {
 					if (location instanceof Range) {
-						allDescendantsCompliant = allDescendantsCompliant 
+						allDescendantsCompliant = allDescendantsCompliant
 								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-						if (!allDescendantsCompliant) { // Current range has non-compliant URI. 
+						if (!allDescendantsCompliant) { // Current range has non-compliant URI.
 							return allDescendantsCompliant;
 						}
 					}
 					if (location instanceof Cut) {
-						allDescendantsCompliant = allDescendantsCompliant 
+						allDescendantsCompliant = allDescendantsCompliant
 								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-						if (!allDescendantsCompliant) { // Current cut has non-compliant URI. 
+						if (!allDescendantsCompliant) { // Current cut has non-compliant URI.
 							return allDescendantsCompliant;
 						}
 					}
 					if (location instanceof GenericLocation) {
-						allDescendantsCompliant = allDescendantsCompliant 
+						allDescendantsCompliant = allDescendantsCompliant
 								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
-						if (!allDescendantsCompliant) { // Current generic location has non-compliant URI. 
+						if (!allDescendantsCompliant) { // Current generic location has non-compliant URI.
 							return allDescendantsCompliant;
 						}
 					}
@@ -782,9 +789,9 @@ public class ComponentDefinition extends TopLevel {
 			}
 		}
 		// All descendants of this ComponentDefinition object have compliant URIs.
-		return allDescendantsCompliant;		
+		return allDescendantsCompliant;
 	}
-	
+
 	protected boolean isComplete() {
 		if (sbolDocument==null) return false;
 		if (sequences.isEmpty()) {
@@ -795,29 +802,31 @@ public class ComponentDefinition extends TopLevel {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Provide a deep copy of this object.
 	 */
+	@Override
 	protected ComponentDefinition deepCopy() {
 		return new ComponentDefinition(this);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
-	ComponentDefinition copy(String URIprefix, String displayId, String version) {				
+	@Override
+	ComponentDefinition copy(String URIprefix, String displayId, String version) {
 		ComponentDefinition cloned = this.deepCopy();
 		cloned.setWasDerivedFrom(this.getIdentity());
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
 		cloned.setVersion(version);
-		URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
+		URI newIdentity = createCompliantURI(URIprefix,displayId,version);
 		cloned.setIdentity(newIdentity);
 		int count = 0;
 		for (Component component : cloned.getComponents()) {
 			if (!component.isSetDisplayId()) component.setDisplayId("component"+ ++count);
-			component.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+			component.updateCompliantURI(cloned.getPersistentIdentity().toString(),
 					component.getDisplayId(),version);
 			cloned.removeChildSafely(component, cloned.components);
 			cloned.addComponent(component);
@@ -825,7 +834,7 @@ public class ComponentDefinition extends TopLevel {
 		count = 0;
 		for (SequenceConstraint sequenceConstraint : cloned.getSequenceConstraints()) {
 			if (!sequenceConstraint.isSetDisplayId()) sequenceConstraint.setDisplayId("sequenceConstraint"+ ++count);
-			sequenceConstraint.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+			sequenceConstraint.updateCompliantURI(cloned.getPersistentIdentity().toString(),
 					sequenceConstraint.getDisplayId(),version);
 			cloned.removeChildSafely(sequenceConstraint, cloned.sequenceConstraints);
 			cloned.addSequenceConstraint(sequenceConstraint);
@@ -833,34 +842,34 @@ public class ComponentDefinition extends TopLevel {
 		count = 0;
 		for (SequenceAnnotation sequenceAnnotation : cloned.getSequenceAnnotations()) {
 			if (!sequenceAnnotation.isSetDisplayId()) sequenceAnnotation.setDisplayId("sequenceAnnotation"+ ++count);
-			sequenceAnnotation.updateCompliantURI(cloned.getPersistentIdentity().toString(), 
+			sequenceAnnotation.updateCompliantURI(cloned.getPersistentIdentity().toString(),
 					sequenceAnnotation.getDisplayId(),version);
 			cloned.removeChildSafely(sequenceAnnotation, cloned.sequenceAnnotations);
 			cloned.addSequenceAnnotation(sequenceAnnotation);
 		}
 		return cloned;
 	}
-	
-//	/**
-//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
-//	 * @param newVersion
-//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
-//	 */
-//	public ComponentDefinition newVersion(String newVersion) {
-//		ComponentDefinition cloned = (ComponentDefinition) super.newVersion(newVersion);		
-//		cloned.updateVersion(newVersion);
-//		return cloned;
-//	}
-//	
-//	/* (non-Javadoc)
-//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
-//	 */
-//	protected void updateVersion(String newVersion) {
-//		super.updateVersion(newVersion);
-//		if (isTopLevelURIcompliant(this.getIdentity())) {
-//			// TODO Change all of its children's versions in their URIs.
-//		}
-//	}
+
+	//	/**
+	//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0".
+	//	 * @param newVersion
+	//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+	//	 */
+	//	public ComponentDefinition newVersion(String newVersion) {
+	//		ComponentDefinition cloned = (ComponentDefinition) super.newVersion(newVersion);
+	//		cloned.updateVersion(newVersion);
+	//		return cloned;
+	//	}
+	//
+	//	/* (non-Javadoc)
+	//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+	//	 */
+	//	protected void updateVersion(String newVersion) {
+	//		super.updateVersion(newVersion);
+	//		if (isTopLevelURIcompliant(this.getIdentity())) {
+	//			// TODO Change all of its children's versions in their URIs.
+	//		}
+	//	}
 
 	@Override
 	public int hashCode() {
@@ -921,5 +930,5 @@ public class ComponentDefinition extends TopLevel {
 			return false;
 		return true;
 	}
-	
+
 }

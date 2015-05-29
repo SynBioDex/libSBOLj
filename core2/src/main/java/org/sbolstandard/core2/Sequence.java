@@ -1,8 +1,9 @@
 package org.sbolstandard.core2;
 
-import java.net.URI;
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
+import static org.sbolstandard.core2.URIcompliance.isURIcompliant;
 
-import static org.sbolstandard.core2.URIcompliance.*;
+import java.net.URI;
 
 /**
  * @author Zhen Zhang
@@ -15,33 +16,41 @@ import static org.sbolstandard.core2.URIcompliance.*;
  */
 
 public class Sequence extends TopLevel{
-		
+
 	private String elements;
 	private URI encoding;
-	
+
 	public static final URI IUPAC_DNA = URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html");
 	public static final URI IUPAC_RNA = URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html");
 	public static final URI IUPAC_PROTEIN = URI.create("http://www.chem.qmul.ac.uk/iupac/AminoAcid/");
+
+	/**
+	 * SMILES was originally developed as a proprietary specification by Daylight Chemical
+	 * Information Systems Since the introduction of SMILES in the late 1980’s, it has become
+	 * widely accepted as a defacto standard for exchange of molecular structures. Many
+	 * independent SMILES software packages have been written in C, C++, Java, Python, LISP,
+	 * and probably even FORTRAN.
+	 */
 	public static final URI SMILES = URI.create("http://www.opensmiles.org/opensmiles.html");
-	
+
 	Sequence(URI identity, String elements, URI encoding) {
 		super(identity);
 		setElements(elements);
 		setEncoding(encoding);
 	}
-	
+
 	private Sequence(Sequence sequence) {
 		super(sequence.getIdentity());
 		this.setElements(sequence.getElements());
 		this.setEncoding(sequence.getEncoding());
 	}
-	
-//	public Sequence(String authority, String Id, String elements, URI encoding) {
-//		super(authority, Id);
-//		setElements(elements);
-//		setEncoding(encoding);
-//	}
-	
+
+	//	public Sequence(String authority, String Id, String elements, URI encoding) {
+	//		super(authority, Id);
+	//		setElements(elements);
+	//		setEncoding(encoding);
+	//	}
+
 	/**
 	 * Returns field variable <code>elements</code>.
 	 * @return field variable <code>elements</code>
@@ -49,7 +58,7 @@ public class Sequence extends TopLevel{
 	public String getElements() {
 		return elements;
 	}
-	
+
 	/**
 	 * Sets field variable <code>elements</code> to the specified element.
 	 */
@@ -60,7 +69,7 @@ public class Sequence extends TopLevel{
 		}
 		this.elements = elements;
 	}
-	
+
 	/**
 	 * Returns field variable <code>encoding</code>.
 	 * @return field variable <code>encoding</code>
@@ -68,7 +77,7 @@ public class Sequence extends TopLevel{
 	public URI getEncoding() {
 		return encoding;
 	}
-	
+
 	/**
 	 * Sets field variable <code>encoding</code> to the specified element.
 	 */
@@ -79,14 +88,14 @@ public class Sequence extends TopLevel{
 		}
 		this.encoding = encoding;
 	}
-	
-//	/**
-//	 * Replace the authority in the object's URI with the specified one, and make the same replacement for all of its children objects.
-//	 * @param authority
-//	 */
-//	public void setAuthority(String authority) {
-//		// TODO Need to change the parent's authority?
-//	}
+
+	//	/**
+	//	 * Replace the authority in the object's URI with the specified one, and make the same replacement for all of its children objects.
+	//	 * @param authority
+	//	 */
+	//	public void setAuthority(String authority) {
+	//		// TODO Need to change the parent's authority?
+	//	}
 
 	@Override
 	public int hashCode() {
@@ -123,7 +132,7 @@ public class Sequence extends TopLevel{
 	protected Sequence deepCopy() {
 		return new Sequence(this);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
@@ -134,7 +143,7 @@ public class Sequence extends TopLevel{
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
 		cloned.setVersion(version);
-		URI newIdentity = createCompliantURI(URIprefix,displayId,version);			
+		URI newIdentity = createCompliantURI(URIprefix,displayId,version);
 		cloned.setIdentity(newIdentity);
 		return cloned;
 	}
@@ -147,34 +156,34 @@ public class Sequence extends TopLevel{
 		return isURIcompliant(this.getIdentity(), 0);
 	}
 
-	
-//	/**
-//	 * @param newDisplayId
-//	 * @return
-//	 */
-//	public Sequence copy(String newDisplayId) {
-//		Sequence cloned = (Sequence) super.copy(newDisplayId);
-//		cloned.updateCompliantURI(newDisplayId);
-//		return cloned;
-//	}
-//	
-//	/**
-//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
-//	 * @param newVersion
-//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
-//	 */
-//	public Sequence newVersion(String newVersion) {
-//		Sequence cloned = (Sequence) super.newVersion(newVersion);		
-//		cloned.updateVersion(newVersion);
-//		return cloned;
-//	}
-	
-//	/* (non-Javadoc)
-//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
-//	 */
-//	public void updateVersion(String newVersion) {
-//		super.updateVersion(newVersion);
-//		if (isURIcompliant(this.getIdentity())) {			
-//		}
-//	}
+
+	//	/**
+	//	 * @param newDisplayId
+	//	 * @return
+	//	 */
+	//	public Sequence copy(String newDisplayId) {
+	//		Sequence cloned = (Sequence) super.copy(newDisplayId);
+	//		cloned.updateCompliantURI(newDisplayId);
+	//		return cloned;
+	//	}
+	//
+	//	/**
+	//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0".
+	//	 * @param newVersion
+	//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+	//	 */
+	//	public Sequence newVersion(String newVersion) {
+	//		Sequence cloned = (Sequence) super.newVersion(newVersion);
+	//		cloned.updateVersion(newVersion);
+	//		return cloned;
+	//	}
+
+	//	/* (non-Javadoc)
+	//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
+	//	 */
+	//	public void updateVersion(String newVersion) {
+	//		super.updateVersion(newVersion);
+	//		if (isURIcompliant(this.getIdentity())) {
+	//		}
+	//	}
 }
