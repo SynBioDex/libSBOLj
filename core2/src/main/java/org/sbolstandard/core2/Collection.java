@@ -49,14 +49,14 @@ public class Collection extends TopLevel{
 	/**
 	 * Adds the specified member URI to the list of members.  
 	 */
-	public void addMember(URI memberURI) {
+	public boolean addMember(URI memberURI) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			sbolDocument.checkReadOnly();
 			if (sbolDocument.getTopLevel(memberURI)==null) {
 				throw new IllegalArgumentException("Top level '" + memberURI + "' does not exist.");
 			}
 		}
-		members.add(memberURI);
+		return members.add(memberURI);
 	}
 	
 	/**

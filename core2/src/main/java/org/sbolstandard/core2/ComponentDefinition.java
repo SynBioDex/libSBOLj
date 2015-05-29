@@ -234,11 +234,11 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 
-	public void addSequence(String sequence,String version) {
+	public boolean addSequence(String sequence,String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
 				TopLevel.SEQUENCE, sequence, version, sbolDocument.isTypesInURIs());
-		addSequence(sequenceURI);
+		return addSequence(sequenceURI);
 	}
 
 	/**
