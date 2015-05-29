@@ -30,9 +30,33 @@ public class ComponentDefinition extends TopLevel {
 	private HashMap<URI, SequenceConstraint> sequenceConstraints;
 
 	/* Types */
+	/**
+	 * A physical entity consisting of a sequence of deoxyribonucleotide monophosphates; a deoxyribonucleic acid
+	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">DNA</a>).
+	 */
 	public static final URI DNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
+
+	/**
+	 * A physical entity consisting of a sequence of ribonucleotide monophosphates; a ribonucleic acid
+	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">RNA</a>).
+	 * Aspects of the state of the RNA molecule, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
+	 */
 	public static final URI RNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#RnaRegion");
+
+	/**
+	 * A physical entity consisting of a sequence of amino acids; a protein monomer; a single polypeptide
+	 * chain (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">Protein</a>). Aspects of the state of the protein, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
+	 */
 	public static final URI PROTEIN = URI.create("http://www.biopax.org/release/biopax-level3.owl#Protein");
+
+	/**
+	 * A small bioactive molecule (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">SmallMolecule</a>). Small is not precisely defined, but includes all metabolites and most drugs
+	 * and does not include large polymers, including complex carbohydrates. Aspects of the state of the small
+	 * molecule, including cellular location and binding features, are defined here, using properties
+	 * inherited from PhysicalEntity.
+	 */
 	public static final URI SMALL_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#SmallMolecule");
 
 	/* Roles */
@@ -40,7 +64,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * A small molecule which increases (activator) or decreases (inhibitor) the activity of an
 	 * (allosteric) enzyme by binding to the enzyme at the regulatory site
-	 * (which is different from the substrate-binding catalytic site).
+	 * (which is different from the substrate-binding catalytic site) (<a href="http://identifiers.org/chebi/CHEBI:35224">Effector</a>).
 	 */
 	public static final URI EFFECTOR = URI.create("http://identifiers.org/chebi/CHEBI:35224");
 

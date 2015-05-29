@@ -20,15 +20,30 @@ public class Sequence extends TopLevel{
 	private String elements;
 	private URI encoding;
 
+	/**
+	 * Nomenclature for Incompletely Specified Bases in Nucleic Acid Sequences
+	 * (<a href="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html">IUPAC_DNA</a>).
+	 */
 	public static final URI IUPAC_DNA = URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html");
+
+	/**
+	 * Nomenclature for Incompletely Specified Bases in Nucleic Acid Sequences
+	 * (<a href="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html">IUPAC_RNA</a>).
+	 */
 	public static final URI IUPAC_RNA = URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html");
+
+	/**
+	 * Nomenclature and Symbolism for Amino Acids and Peptides
+	 * (<a href="http://www.chem.qmul.ac.uk/iupac/AminoAcid/">IUPAC_PROTEIN</a>).
+	 */
 	public static final URI IUPAC_PROTEIN = URI.create("http://www.chem.qmul.ac.uk/iupac/AminoAcid/");
 
 	/**
 	 * SMILES was originally developed as a proprietary specification by Daylight Chemical
 	 * Information Systems Since the introduction of SMILES in the late 1980’s, it has become
-	 * widely accepted as a defacto standard for exchange of molecular structures. Many
-	 * independent SMILES software packages have been written in C, C++, Java, Python, LISP,
+	 * widely accepted as a defacto standard for exchange of molecular structures
+	 * (<a href="http://www.opensmiles.org/opensmiles.html">SMILES</a>).
+	 * Many independent SMILES software packages have been written in C, C++, Java, Python, LISP,
 	 * and probably even FORTRAN.
 	 */
 	public static final URI SMILES = URI.create("http://www.opensmiles.org/opensmiles.html");
