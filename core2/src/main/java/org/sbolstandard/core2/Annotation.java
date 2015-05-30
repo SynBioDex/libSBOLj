@@ -29,10 +29,16 @@ public class Annotation {
 	private NamedProperty<QName> value;
 
 	public Annotation(QName qName, String literal) {
+		if (qName.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		value = NamedProperty(qName,literal);
 	}
 	
 	public Annotation(QName qName, int literal) {
+		if (qName.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		value = NamedProperty(qName,literal);
 	}
 
@@ -47,10 +53,19 @@ public class Annotation {
 	*/
 
 	public Annotation(QName qName, URI literal) {
+		if (qName.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		value = NamedProperty(qName,literal);
 	}
 	
 	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
+		if (qName.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
+		if (nestedQName.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(nestedQName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		List<NamedProperty<QName>> list = new ArrayList<>();
 		for(Annotation a : annotations)
 		{
@@ -60,6 +75,9 @@ public class Annotation {
 	}
 	
 	Annotation(NamedProperty<QName> value) {
+		if (value.getName().getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(value.getName().getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		this.value = value;
 	}
 	

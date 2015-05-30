@@ -880,6 +880,9 @@ public class SBOLDocument {
 	 * @return {@link GenericTopLevel} object.
 	 */
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
+		if (rdfType.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
 		addGenericTopLevel(newGenericTopLevel);
 		return newGenericTopLevel;
@@ -1191,7 +1194,7 @@ public class SBOLDocument {
 			for (Collection c : collections.values()) {
 				if (c.containsMember(topLevel.getIdentity())) {
 					throw new SBOLException("Cannot remove " + topLevel.getIdentity() + 
-								" since it is in use.");
+							" since it is in use.");
 				}
 			}
 		}

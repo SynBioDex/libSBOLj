@@ -22,7 +22,10 @@ public class GenericTopLevel extends TopLevel{
 	
 	GenericTopLevel(URI identity, QName rdfType) {
 		super(identity);
-		this.rdfType = rdfType;		
+		this.rdfType = rdfType;
+		if (rdfType.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 	}
 	
 	private GenericTopLevel(GenericTopLevel genericTopLevel) {
