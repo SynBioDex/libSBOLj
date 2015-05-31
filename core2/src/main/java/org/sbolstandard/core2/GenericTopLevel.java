@@ -53,6 +53,9 @@ public class GenericTopLevel extends TopLevel{
 	 */
 	public void setRDFType(QName rdfType) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		if (rdfType == null) {
+			throw new IllegalArgumentException("RDF type is a required field.");
+		}
 		this.rdfType = rdfType;
 	}
 
