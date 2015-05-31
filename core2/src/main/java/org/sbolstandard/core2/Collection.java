@@ -45,9 +45,16 @@ public class Collection extends TopLevel{
 //		else
 //			return true;					
 //	}
-	
+
 	/**
-	 * Adds the specified member URI to the list of members.  
+	 * Adds the given member URI to this Collection object's
+	 * set of reference member URIs.
+	 * 
+	 * @param memberURI
+	 * @return {@code true} if this set did not already contain the given member URI.
+ 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely
+	 *             specifies all URIs and the given {@code memberURI} is not found in them.
 	 */
 	public boolean addMember(URI memberURI) {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -58,10 +65,18 @@ public class Collection extends TopLevel{
 		}
 		return members.add(memberURI);
 	}
-	
+
 	/**
-	 * Removes the member matching the specified URI from the list of members if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * Removes the given member reference from the set of member references.
+	 * <p>
+	 * If this Collection object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @return {@code true} if the matching member reference is removed successfully,
+	 *         {@code false} otherwise.      
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public boolean removeMember(URI memberURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -69,8 +84,16 @@ public class Collection extends TopLevel{
 	}
 	
 	/**
-	 * Clears the existing list of members, then set the members of this object to  
-	 * the specified list of members.
+	 * Clears the existing set of member references first, then adds the given
+	 * set of the member references to this Collection object.
+	 * <p>
+	 * If this Collection object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param members
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public void setMembers(Set<URI> members) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -81,18 +104,20 @@ public class Collection extends TopLevel{
 	}
 	
 	/**
-	 * Returns the set of member URIs referenced by this object.
-	 * @return the set of member URIs referenced by this object.
+	 * Returns the set of member URIs referenced by this Collection object.
+	 * 
+	 * @return the set of member URIs referenced by this Collection object.
 	 */
 	public Set<URI> getMemberURIs() {
 		Set<URI> result = new HashSet<>();
 		result.addAll(members);
 		return result;
 	}
-	
+		
 	/**
-	 * Returns the set of members referenced by this object.
-	 * @return the set of members referenced by this object.
+	 * Returns the set of Member instances referenced by this Collection object.
+	 * 
+	 * @return the set of Member instances referenced by this Collection object.
 	 */
 	public Set<TopLevel> getMembers() {
 		Set<TopLevel> result = new HashSet<>();
@@ -104,17 +129,25 @@ public class Collection extends TopLevel{
 	}
 	
 	/**
-	 * Returns {@code true} if the {@code members} of this {@link Collection} object 
-	 * contains the specified argument. 
-	 * @return {@code true} if the {@code members} of this {@link Collection} object 
-	 * contains the specified argument.  
- 	 */
+	 * Checks if the given member URI is included in this Collection
+	 * object's set of reference member URIs.
+	 * 
+	 * @param memberURI
+	 * @return {@code true} if this set contains the given URI.
+	 */
 	public boolean containsMember(URI memberURI) {
 		return members.contains(memberURI);
 	}
 
 	/**
-	 * Removes all of the members of this {@link Collection} object.
+	 * Removes all entries of this Collection object's set of reference
+	 * member URIs. The set will be empty after this call returns.
+  	 * <p>
+	 * If this Collection object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant 
 	 */
 	public void clearMembers() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

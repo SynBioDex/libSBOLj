@@ -193,7 +193,7 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
-	 * Adds the specified role URI to this ComponentDefinition object's set of role URIs.
+	 * Adds the given role URI to this ComponentDefinition object's set of role URIs.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
@@ -313,7 +313,7 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
-	 * Adds the URI of the given Sequence instance to this ComponentDefinition object's
+	 * Adds the given Sequence URI to this ComponentDefinition object's
 	 * set of reference Sequence URIs.
 	 * 
 	 * @param sequenceURI

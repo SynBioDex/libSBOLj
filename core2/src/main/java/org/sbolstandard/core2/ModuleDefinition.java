@@ -61,7 +61,7 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Adds the specified role URI to this ModuleDefinition's set of role URIs.
+	 * Adds the given role URI to this ModuleDefinition's set of role URIs.
 	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
@@ -306,8 +306,13 @@ public class ModuleDefinition extends TopLevel {
 
 	/**
 	 * Removes all entries of this ModuleDefinition object's list of Module
-	 * objects.
-	 * The set will be empty after this call returns.
+	 * objects. The set will be empty after this call returns.
+  	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant*  
 	 */
 	public void clearModules() {
 		if (sbolDocument != null)
@@ -766,11 +771,12 @@ public class ModuleDefinition extends TopLevel {
 	 * an {@link IllegalArgumentException} is thrown.
 	 * 
 	 * @param modelURI
+	 * @return {@code true} if this set did not already contain the given Model
+	 *         instance URI.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely
 	 *             specifies all URIs and the given {@code modelURI} is not found in them.
-	 * @return {@code true} if this set did not already contain the given Model
-	 *         instance URI.
+
 	 */
 	public boolean addModel(URI modelURI) {
 		if (sbolDocument != null)
@@ -825,9 +831,9 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Returns the set of Model URIs referenced by this ModuleDefinition's object.
+	 * Returns the set of Model URIs referenced by this ModuleDefinition object.
 	 * 
-	 * @return the set of Model URIs referenced by this ModuleDefinition's object.
+	 * @return the set of Model URIs referenced by this ModuleDefinition object.
 	 */
 	public Set<URI> getModelURIs() {
 		Set<URI> result = new HashSet<>();
@@ -863,6 +869,12 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Removes all entries of this ModuleDefinition object's set of reference
 	 * Model URIs. The set will be empty after this call returns.
+ 	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public void clearModels() {
 		if (sbolDocument != null)
