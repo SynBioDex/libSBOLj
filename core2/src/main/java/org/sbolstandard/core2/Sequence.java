@@ -67,15 +67,25 @@ public class Sequence extends TopLevel{
 	//	}
 
 	/**
-	 * Returns field variable <code>elements</code>.
-	 * @return field variable <code>elements</code>
+	 * Returns the {@code elements} property of this Sequence object.
+	 * 
+	 * @return the {@code elements} property of this Sequence object.
 	 */
 	public String getElements() {
 		return elements;
 	}
-
+	
 	/**
-	 * Sets field variable <code>elements</code> to the specified element.
+	 * Sets the {@code elements} property to the given argument.  
+	 * <p>
+	 * If this Sequence object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param elements
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the given {@code elements} argument is {@code null}
 	 */
 	public void setElements(String elements) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -84,33 +94,35 @@ public class Sequence extends TopLevel{
 		}
 		this.elements = elements;
 	}
-
+	
 	/**
-	 * Returns field variable <code>encoding</code>.
-	 * @return field variable <code>encoding</code>
+	 * Returns the {@code encoding} property of this Sequence object.
+	 * 
+	 * @return the {@code encoding} property of this Sequence object.
 	 */
 	public URI getEncoding() {
 		return encoding;
 	}
 
 	/**
-	 * Sets field variable <code>encoding</code> to the specified element.
+	 * Sets the {@code encoding} property to the given argument.  
+	 * <p>
+	 * If this Sequence object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param encoding
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the given {@code encoding} argument is {@code null}
 	 */
 	public void setEncoding(URI encoding) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		if (elements == null) {
+		if (encoding == null) {
 			throw new IllegalArgumentException("Sequence is required to have an encoding.");
 		}
 		this.encoding = encoding;
 	}
-
-	//	/**
-	//	 * Replace the authority in the object's URI with the specified one, and make the same replacement for all of its children objects.
-	//	 * @param authority
-	//	 */
-	//	public void setAuthority(String authority) {
-	//		// TODO Need to change the parent's authority?
-	//	}
 
 	@Override
 	public int hashCode() {

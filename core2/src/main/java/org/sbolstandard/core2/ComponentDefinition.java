@@ -163,9 +163,9 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
-	 * Returns the set of type instances owned by this ComponentDefinition object.
+	 * Returns the set of type URIs owned by this ComponentDefinition object.
 	 * 
-	 * @return the set of type instances owned by this ComponentDefinition object.
+	 * @return the set of type URIs owned by this ComponentDefinition object.
 	 */
 	public Set<URI> getTypes() {
 		Set<URI> result = new HashSet<>();
@@ -174,16 +174,11 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Checks if the given type URI is included in this ComponentDefinition
 	 * object's set of reference type URIs.
 	 * 
 	 * @param typeURI
 	 * @return {@code true} if this set contains the given URI.
-=======
-	 * Returns true if the set <code>type</code> contains the specified element.
-	 * @return <code>true</code> if this set contains the specified element.
->>>>>>> refs/remotes/origin/develop
 	 */
 	public boolean containsType(URI typeURI) {
 		return types.contains(typeURI);
@@ -250,9 +245,9 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
-	 * Returns the set of role instances owned by this ComponentDefinition object.
+	 * Returns the set of role URIs owned by this ComponentDefinition object.
 	 * 
-	 * @return the set of role instances owned by this ComponentDefinition object.
+	 * @return the set of role URIs owned by this ComponentDefinition object.
 	 */
 	public Set<URI> getRoles() {
 		Set<URI> result = new HashSet<>();
@@ -261,23 +256,17 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Checks if the given role URI is included in this ComponentDefinition
 	 * object's set of reference role URIs.
 	 * 
 	 * @param roleURI
 	 * @return {@code true} if this set contains the given URI.
-=======
-	 * Returns true if the set <code>roles</code> contains the specified element.
-	 * @return <code>true</code> if this set contains the specified element.
->>>>>>> refs/remotes/origin/develop
 	 */
 	public boolean containsRole(URI roleURI) {
 		return roles.contains(roleURI);
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Removes all entries of this ComponentDefinition object's set of role URIs.
 	 * The set will be empty after this call returns.
 	 * <p>
@@ -286,10 +275,6 @@ public class ComponentDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 * 
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
-=======
-	 * Removes all entries of the list of <code>roles</code> instances owned by this instance.
-	 * The list will be empty after this call returns.
->>>>>>> refs/remotes/origin/develop
 	 */
 	public void clearRoles() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

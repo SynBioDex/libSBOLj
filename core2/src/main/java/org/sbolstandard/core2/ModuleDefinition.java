@@ -117,9 +117,9 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Returns the set of role instances owned by this ModuleDefinition object.
+	 * Returns the set of role URIs owned by this ModuleDefinition object.
 	 * 
-	 * @return the set of role instances owned by this ModuleDefinition object.
+	 * @return the set of role URIs owned by this ModuleDefinition object.
 	 */
 	public Set<URI> getRoles() {
 		Set<URI> result = new HashSet<>();
