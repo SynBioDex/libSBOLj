@@ -32,11 +32,25 @@ public class GenericTopLevel extends TopLevel{
 		super(genericTopLevel);
 		this.setRDFType(genericTopLevel.getRDFType());
 	}
-	
+
+	/**
+	 * Returns the RDF type property of this GenericTopLevel object.
+	 * @return the RDF type property of this GenericTopLevel object.
+	 */
 	public QName getRDFType() {
 		return rdfType;
 	}
 
+	/**
+	 * Set the RDF type property of this GenericTopLevel object to the specified one.
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *
+	 * @param rdfType
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 */
 	public void setRDFType(QName rdfType) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.rdfType = rdfType;
