@@ -30,23 +30,30 @@ public abstract class Location extends Identified{
 	protected abstract Location deepCopy();
 
 	/**
-	 * Test if optional field variable <code>orientation</code> is set.
-	 * @return <code>true</code> if it is not <code>null</code>
+	 * Test if the orientation property is set.
+	 * @return {@code true} if it is not {@code null}
 	 */
 	public boolean isSetOrientation() {
 		return orientation != null;
 	}
 
 	/**
-	 * Returns field variable <code>orientation</code>.
-	 * @return field variable <code>orientation</code>
+	 * Returns the orientation property of this object.
+	 * @return the orientation property of this object.
 	 */
 	public OrientationType getOrientation() {
 		return this.orientation;
 	}
 
 	/**
-	 * Set field variable <code>orientation</code> to the specified element.
+	 * Sets the orientation property of this object to the given one.
+	 * <p>
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param orientation
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public void setOrientation(OrientationType orientation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -54,7 +61,13 @@ public abstract class Location extends Identified{
 	}
 
 	/**
-	 * Set optional field variable <code>orientation</code> to <code>null</code>.
+	 * Sets the orientation property of this object to {@code null}.
+	 * <p>
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public void unsetOrientation() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

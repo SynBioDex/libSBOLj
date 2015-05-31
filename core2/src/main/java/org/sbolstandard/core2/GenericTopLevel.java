@@ -51,6 +51,7 @@ public class GenericTopLevel extends TopLevel{
 	 *
 	 * @param rdfType
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the given {@code rdfType} argument is {@code null}
 	 */
 	public void setRDFType(QName rdfType) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
