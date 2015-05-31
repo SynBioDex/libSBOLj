@@ -30,16 +30,25 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
-	 * Returns field variable <code>direction</code> to the specified element.
+	 * Returns the direction property of this FunctionalComponent object.
 	 * 
-	 * @return field variable <code>direction</code> to the specified element
+	 * @return the direction property of this FunctionalComponent object
 	 */
 	public DirectionType getDirection() {
 		return direction;
 	}
 
 	/**
-	 * Sets field variable <code>direction</code> to the specified element.
+	 * Sets the direction property of this FunctionalComponent object to the given one.
+	 * <p>
+	 * If this FunctionalComponent object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the given {@code direction} is {@code null}
+	 * 
 	 */
 	public void setDirection(DirectionType direction) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
