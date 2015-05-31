@@ -55,15 +55,25 @@ public class Model extends TopLevel {
 	}
 
 	/**
-	 * Returns the field variable <code>source</code> to the specified element.
-	 * @return the field variable <code>source</code> to the specified element
+	 * Returns the URI of the source property of this Model object.
+	 * 
+	 * @return the URI of the source property of this Model object
 	 */
 	public URI getSource() {
 		return source;
 	}
 
 	/**
-	 * Sets the field variable <code>source</code> to the specified element.
+	 * Sets the {@code source} property to the given argument.  
+	 * <p>
+	 * If this Model object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param source
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the given {@code source} argument is {@code null}
 	 */
 	public void setSource(URI source) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -74,15 +84,25 @@ public class Model extends TopLevel {
 	}
 
 	/**
-	 * Returns the field variable <code>language</code>.
-	 * @return the field variable <code>language</code>
+	 * Returns the URI of the language property of this Model object.
+	 * 
+	 * @return the URI of the language property of this Model object
 	 */
 	public URI getLanguage() {
 		return language;
 	}
 
 	/**
-	 * Sets the field variable <code>language</code> to the specified element.
+	 * Sets the {@code language} property to the given argument.  
+	 * <p>
+	 * If this Model object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param language
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the given {@code language} argument is {@code null}
 	 */
 	public void setLanguage(URI language) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -93,15 +113,25 @@ public class Model extends TopLevel {
 	}
 
 	/**
-	 * Returns the field variable <code>framework</code>.
-	 * @return the field variable <code>framework</code>
+	 * Returns the URI of the framework property of this Model object.
+	 * 
+	 * @return the URI of the framework property of this Model object
 	 */
 	public URI getFramework() {
 		return framework;
 	}
-
+	
 	/**
-	 * Sets the field variable <code>framework</code> to the specified element.
+	 * Sets the {@code framework} property to the given argument.  
+	 * <p>
+	 * If this Model object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param framework
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the given {@code framework} argument is {@code null}
 	 */
 	public void setFramework(URI framework) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
