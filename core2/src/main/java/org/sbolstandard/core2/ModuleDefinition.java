@@ -78,7 +78,7 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Removes the specified role reference from the set of role references.
+	 * Removes the given role reference from the set of role references.
 	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
@@ -95,7 +95,7 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Clears the existing set of role references first, then adds the specified
+	 * Clears the existing set of role references first, then adds the given
 	 * set of the role references to this ModuleDefinition object.
 	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
@@ -586,7 +586,7 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Removes the given FunctionalComponent instance from the list of
+	 * Removes the given FunctionalComponent instance from this ModuleDefinition object's list of
 	 * FunctionalComponent instances.
 	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
@@ -646,7 +646,8 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Returns the instance matching the given displayId from the list of FunctionalComponent instances.
+	 * Returns the FunctionalComponent instance matching the given {@code displayId} from 
+	 * this ModuleDefinition object's list of FunctionalComponent instances.
 	 * 
 	 * @return the matching instance if present, or {@code null} otherwise.
 	 */
@@ -656,8 +657,8 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Returns the instance matching the given FunctionalComponent URI from the
-	 * list of FunctionalComponent instances.
+	 * Returns the FunctionalComponent instance matching the given {@code componentURI} from this
+	 * ModuleDefinition object's list of FunctionalComponent instances.
 	 * 
 	 * @return the matching FunctionalComponent instance if present, or
 	 *         {@code null} otherwise.

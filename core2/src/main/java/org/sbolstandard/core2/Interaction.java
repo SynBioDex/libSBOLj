@@ -19,6 +19,10 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
+/**
+ * @author zhangz
+ *
+ */
 public class Interaction extends Identified {
 
 	private Set<URI> types;
@@ -53,10 +57,15 @@ public class Interaction extends Identified {
 		this.setParticipations(participations);
 	}
 
-
 	/**
-	 * Adds the specified element to the set <code>type</code> if it is not already present. 
-	 * @return <code>true</code> if this set did not already contain the specified element.
+	 * Adds the given type URI to this Interaction's set of reference type URIs.
+	 * <p>
+	 * If this Interaction object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param typeURI
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public boolean addType(URI typeURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -64,8 +73,17 @@ public class Interaction extends Identified {
 	}
 	
 	/**
-	 * Removes the specified element from the set <code>type</code> if it is present.
-	 * @return <code>true</code> if this set contained the specified element
+	 * Removes the given type reference from the set of type references.
+	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param typeURI
+	 * @return {@code true} if the matching type reference is removed successfully, {@code false} otherwise.
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if this Interaction object has only one element matching the given 
+	 * {@code typeURI} before removal.
 	 */
 	public boolean removeType(URI typeURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -76,7 +94,16 @@ public class Interaction extends Identified {
 	}
 	
 	/**
-	 * Sets the field variable <code>type</code> to the specified element.
+	 * Clears the existing set of type references first, then adds the given
+	 * set of the type references to this Interaction object.
+	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *
+	 * @param types
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the given {@code types} argument is either {@code null} or empty
 	 */
 	public void setTypes(Set<URI> types) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -90,15 +117,20 @@ public class Interaction extends Identified {
 	}
 	
 	/**
-	 * Returns the field variable <code>type</code>.
+	 * Returns the set of type URIs owned by this Interaction object.
+	 * 
+	 * @return the set of type URIs owned by this Interaction object.
 	 */
 	public Set<URI> getTypes() {
 		return types;
 	}
 	
 	/**
-	 * Returns true if the set <code>type</code> contains the specified element. 
-	 * @return <code>true</code> if this set contains the specified element.
+	 * Checks if the given type URI is included in this Interaction
+	 * object's set of reference type URIs.
+	 * 
+	 * @param typeURI
+	 * @return {@code true} if this set contains the given URI, {@code false} otherwise.
 	 */
 	public boolean containsType(URI typeURI) {
 		return types.contains(typeURI);
@@ -131,6 +163,24 @@ public class Interaction extends Identified {
 		return participation;
 	}
 	
+	/**
+	 * Creates a child Participation instance for this Interaction
+	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant Participation URI with this Interaction object's
+	 * persistent identity URI, the given {@code paricipantId}, and this Interaction object's version.
+	 * It then calls {@link #createParticipation(String, URI)}
+	 * with this component definition URI.
+	 * 
+	 * @param displayId
+	 * @param participantId
+	 * @return a Participation instance
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 */
 	public Participation createParticipation(String displayId, String participantId) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI participant = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(), 
@@ -138,6 +188,27 @@ public class Interaction extends Identified {
 		return createParticipation(displayId,participant);
 	}
 
+	/**
+	 * Creates a child Participation instance for this Interaction
+	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant Participation URI with this Interaction object's
+	 * persistent identity URI, the given {@code displayId}, and this Interaction object's version.
+	 * 
+	 * 
+	 * @param displayId
+	 * @param participant
+	 * @return a Participation instance
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the FunctionalComponent URI referenced by the Participation 
+	 * instance, i.e. {@code participant}, does not belong to the list of FunctionalComponent instances owned by
+	 * this Interaction's parent ModuleDefinition instance.
+	 * @throws IllegalStateException if this Interaction instance has non-standard compliant identity
+	 */
 	public Participation createParticipation(String displayId, URI participant) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (moduleDefinition != null) {
@@ -169,10 +240,19 @@ public class Interaction extends Identified {
 		participation.setSBOLDocument(this.sbolDocument);
         participation.setModuleDefinition(moduleDefinition);
 	}
-	
+
 	/**
-	 * Removes the instance matching the specified URI from the list of participations if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * Removes the given Participation instance from this Interaction object's list of
+	 * Participation instances.
+	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *	
+	 * @param participation
+	 * @return {@code true} if the matching Participation instance is removed successfully,
+	 *         {@code false} otherwise.
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public boolean removeParticipation(Participation participation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -180,31 +260,50 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Returns the instance matching the specified displayId from the list of participations, if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * Returns the Participation instance matching the given {@code displayId} from 
+	 * this Interaction object's list of Participation instances.
+	 * 
+	 * @param displayId
+	 * @return the matching instance if present, or {@code null} otherwise.
 	 */
 	public Participation getParticipation(String displayId) {
 		return participations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of participations, if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * Returns the Participation instance matching the given {@code participationURI} from this
+	 * Interaction object's list of Participation instances.
+	 * 
+	 * @return the matching Participation instance if present, or
+	 *         {@code null} otherwise.
 	 */
 	public Participation getParticipation(URI participationURI) {
 		return participations.get(participationURI);
 	}
 	
 	/**
-	 * Returns the list of participation instances owned by this instance. 
-	 * @return the list of participation instances owned by this instance.
+	 * Returns the set of Participation instances owned by this
+	 * Interaction object.
+	 * 
+	 * @return the set of the set of Participation instances owned by this
+	 * Interaction object.
 	 */
 	public Set<Participation> getParticipations() {
 		return new HashSet<>(participations.values());
 	}
-	
+
 	/**
-	 * Removes all entries of the list of participations owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of this Interaction object's list of SequenceAnnotation objects.
+	 * The list will be empty after this call returns.
+	 * <p>
+	 * If this Interaction object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method calls {@link #removeParticipation(Participation)} to iteratively remove
+	 * each Participation instance owned by this object.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public void clearParticipations() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -287,7 +386,9 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * @return the moduleDefinition
+	 * Returns this Interaction object's parent ModuleDefinition instance.
+	 * 
+	 * @return this Interaction object's parent ModuleDefinition instance
 	 */
 	ModuleDefinition getModuleDefinition() {
 		return moduleDefinition;

@@ -35,6 +35,7 @@ public class GenericTopLevel extends TopLevel{
 
 	/**
 	 * Returns the RDF type property of this GenericTopLevel object.
+	 * 
 	 * @return the RDF type property of this GenericTopLevel object.
 	 */
 	public QName getRDFType() {
