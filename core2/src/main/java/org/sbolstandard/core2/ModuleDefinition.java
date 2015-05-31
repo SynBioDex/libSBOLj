@@ -452,6 +452,12 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Removes all entries of this ModuleDefinition object's list of Instance objects.
 	 * The list will be empty after this call returns.
+ 	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public void clearInteractions() {
 		if (sbolDocument != null)
@@ -590,6 +596,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Before removing the given FunctionalComponent instance, this method
 	 * checks if it is referenced by any children and grandchildren instances of this ModuleDefinition object.
 	 *	
+	 * @param functionalComponent
 	 * @return {@code true} if the matching FunctionalComponent instance is removed successfully,
 	 *         {@code false} otherwise.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
@@ -672,8 +679,13 @@ public class ModuleDefinition extends TopLevel {
 
 	/**
 	 * Removes all entries of this ModuleDefinition object's list of
-	 * FunctionalComponent objects.
-	 * The list will be empty after this call returns.
+	 * FunctionalComponent objects. The list will be empty after this call returns.
+ 	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public void clearFunctionalComponents() {
 		if (sbolDocument != null)
