@@ -85,10 +85,16 @@ public class Annotation {
 		this.setValue(annotation.getValue());
 	}
 	
+	/**
+	 * @return
+	 */
 	public QName getQName() {
 		return value.getName();
 	}
 	
+	/**
+	 * @return
+	 */
 	public String getStringValue() {
 		if (value.getValue() instanceof Literal<?>) {
 			return ((Literal<QName>) value.getValue()).getValue().toString();
@@ -97,6 +103,9 @@ public class Annotation {
 	}
 	
 	
+	/**
+	 * @return
+	 */
 	public URI getURIValue() {
 		if (value.getValue() instanceof Literal<?>) {
 			return URI.create(((Literal<QName>) value.getValue()).getValue().toString());
@@ -104,6 +113,9 @@ public class Annotation {
 		return null;
 	}
 	
+	/**
+	 * @return
+	 */
 	public QName getNestedQName() {
 		if (value.getValue() instanceof NestedDocument<?>) {
 			return ((NestedDocument<QName>) value.getValue()).getType();
@@ -112,6 +124,9 @@ public class Annotation {
 	}
 	
 	
+	/**
+	 * @return
+	 */
 	public URI getNestedIdentity() {
 		if (value.getValue() instanceof NestedDocument<?>) {
 			return ((NestedDocument<QName>) value.getValue()).getIdentity();
@@ -119,6 +134,9 @@ public class Annotation {
 		return null;
 	}
 	
+	/**
+	 * @return
+	 */
 	public List<Annotation> getAnnotations() {
 		if (value.getValue() instanceof NestedDocument<?>) {
 			List<Annotation> annotations = new ArrayList<>();

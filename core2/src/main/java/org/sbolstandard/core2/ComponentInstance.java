@@ -47,15 +47,24 @@ public abstract class ComponentInstance extends Identified {
 	}
 
 	/**
-	 * Returns field variable <code>access</code>.
-	 * @return field variable <code>access</code>
+	 * Returns the access property of this object.
+	 * 
+	 * @return the access property of this object
 	 */
 	public AccessType getAccess() {
 		return access;
 	}
 
 	/**
-	 * Sets field variable <code>access</code> to the specified element.
+	 * Sets the access property of this object to the given one.
+	 * <p>
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param access
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws if the given {@code access} argument is {@code null}
 	 */
 	public void setAccess(AccessType access) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -78,8 +87,25 @@ public abstract class ComponentInstance extends Identified {
 		return mapping;
 	}
 		
+
 	/**
-	 * @return the newly created MapsTo object.
+	 * Creates a child MapsTo instance for this object with the given arguments, 
+	 * and then adds to this object's list of MapsTo instances.
+	 * <p>
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant MapsTo URI with the default
+	 * URI prefix for this SBOLDocument instance, and the given {@code displayId} 
+	 * and this object's version.
+	 * 
+	 * @param displayId
+	 * @param refinement
+	 * @param local
+	 * @param remote
+	 * @return a MapsTo instance
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -100,9 +126,21 @@ public abstract class ComponentInstance extends Identified {
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
 	}
 	
-	/**
-	 * Removes the instance matching the specified URI from the list of references if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
+ 	/**
+	 * Removes the given MapsTo instance from the list of
+	 * MapsTo instances.
+	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *	
+	 * @param mapsTo
+	 * @return {@code true} if the matching MapsTo instance is removed successfully,
+	 *         {@code false} otherwise.
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 *
+	 * @param mapsTo
+	 * @return
 	 */
 	public boolean removeMapsTo(MapsTo mapsTo) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -110,30 +148,43 @@ public abstract class ComponentInstance extends Identified {
 	}
 	
 	/**
-	 * Returns the instance matching the specified displayId from the list of maps to objects, if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
-	 */
+	 * Returns the MapsTo instance owned by this object that matches the given display ID.
+	 * 
+	 * @param mapsToURI
+	 * @return the MapsTo instance owned by this object that matches the given display ID
+	 */	
 	public MapsTo getMapsTo(String displayId) {
 		return mapsTos.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
-	}	
+	}
+	
 	/**
-	 * Returns the instance matching the specified URI from the list of maps to objects, if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
-	 */
+	 * Returns the MapsTo instance owned by this object that matches the given URI.
+	 * 
+	 * @param mapsToURI
+	 * @return the MapsTo instance owned by this object that matches the given URI
+	 */	
 	public MapsTo getMapsTo(URI mapsToURI) {
 		return mapsTos.get(mapsToURI);
 	}
 	
 	/**
-	 * Returns the list of reference instances owned by this instance. 
-	 * @return the list of reference instances owned by this instance.
+	 * Returns the set of MapsTo instances owned by this object.
+	 * 
+	 * @return the set of MapsTo instances owned by this object.
 	 */
 	public Set<MapsTo> getMapsTos() {
 		return new HashSet<>(mapsTos.values());
 	}
-	
+
 	/**
-	 * Removes all entries of the list of mapsTo owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of this object's list of
+	 * MapsTo objects. The list will be empty after this call returns.
+ 	 * <p>
+	 * If this object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public void clearMapsTos() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -155,16 +206,19 @@ public abstract class ComponentInstance extends Identified {
 	}
 	
 	/**
-	 * Returns field variable <code>definition</code>
-	 * @return field variable <code>definition</code>
-	 */
+	 * Returns the reference Component Definition URI.
+	 * 
+	 * @return the reference Component Definition URI
+	 */	
 	public URI getDefinitionURI() {
 		return definition;
 	}
 	
 	/**
-	 * Returns the Component Definition referenced by this Component Instance
-	 * @return the Component Definition referenced by this Component Instance
+	 * Returns the Component Definition instance referenced by this object.
+	 * 
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null},
+	 * the Component Definition instance referenced by this object otherwise.
 	 */	
 	public ComponentDefinition getDefinition() {
 		if (sbolDocument==null) return null;
@@ -172,7 +226,18 @@ public abstract class ComponentInstance extends Identified {
 	}
 
 	/**
-	 * Sets field variable <code>instantiatedComponent</code> to the specified element.
+	 * Sets the definition property of this object to the given one.
+	 * <p>
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param definition
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws if the given {@code definition} argument is {@code null}
+	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies 
+	 * 		all URIs and the given definition URI is not found in them.
+	 *             
 	 */
 	public void setDefinition(URI definition) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
