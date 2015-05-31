@@ -118,6 +118,7 @@ public class ModuleDefinition extends TopLevel {
 
 	/**
 	 * Returns the set of role instances owned by this ModuleDefinition object.
+	 * 
 	 * @return the set of role instances owned by this ModuleDefinition object.
 	 */
 	public Set<URI> getRoles() {
@@ -139,6 +140,12 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Removes all entries of this ModuleDefinition object's set of role URIs.
 	 * The set will be empty after this call returns.
+	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public void clearRoles() {
 		if (sbolDocument != null)
@@ -268,8 +275,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the Module instance matching the given displayId from the list of
 	 * Module instances.
 	 * 
-	 * @return the matching Module instance if present, or <code>null</code> if
-	 *         not present.
+	 * @return the matching Module instance if present, or {@code null} otherwise.
 	 */
 	public Module getModule(String displayId) {
 		return modules.get(createCompliantURI(this.getPersistentIdentity().toString(), displayId,
@@ -280,8 +286,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the instance matching the given URI from the list of Module instances.
 	 * 
 	 * 
-	 * @return the matching Module instance if present, or <code>null</code> if
-	 *         not present.
+	 * @return the matching Module instance if present, or {@code null} otherwise.
+	 *         
 	 */
 	public Module getModule(URI moduleURI) {
 		return modules.get(moduleURI);
@@ -439,9 +445,7 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Removes all entries of this ModuleDefinition object's list of Instance
-	 * objects.
-	 * 
+	 * Removes all entries of this ModuleDefinition object's list of Instance objects.
 	 * The list will be empty after this call returns.
 	 */
 	public void clearInteractions() {
@@ -632,7 +636,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Returns the instance matching the given displayId from the list of FunctionalComponent instances.
 	 * 
-	 * @return the matching instance if present, or {@code null} if not present.
+	 * @return the matching instance if present, or {@code null} otherwise.
 	 */
 	public FunctionalComponent getFunctionalComponent(String displayId) {
 		return functionalComponents.get(createCompliantURI(this.getPersistentIdentity().toString(),
@@ -644,7 +648,7 @@ public class ModuleDefinition extends TopLevel {
 	 * list of FunctionalComponent instances.
 	 * 
 	 * @return the matching FunctionalComponent instance if present, or
-	 *         {@code null} if not present.
+	 *         {@code null} otherwise.
 	 */
 	public FunctionalComponent getFunctionalComponent(URI componentURI) {
 		return functionalComponents.get(componentURI);
@@ -690,10 +694,10 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Adds the URI of the given Model instance to this ComponentDefinition's
+	 * Adds the URI of the given Model instance to this ModuleDefinition's
 	 * set of reference Model URIs.
 	 * <p>
-	 * If this ComponentDefinition object belongs to an SBOLDocument instance,
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance,
 	 * then the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
@@ -701,17 +705,14 @@ public class ModuleDefinition extends TopLevel {
 	 * If the SBOLDocument instance already completely specifies all its
 	 * reference URIs and the given model's URI
 	 * is not found in them, then an {@link IllegalArgumentException} is thrown.
+	 * <p>
+	 * This method calls {@link # addModel(URI)} with this component definition URI.
 	 * 
 	 * @param model
-	 * @throws SBOLException
-	 *             if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException
-	 *             if the associated SBOLDocument instance already completely specifies all URIs
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies all URIs
 	 *             and the given Model instance's URI is not found in them.
-	 * @return {@code true} if this set did not already contain the given Model
-	 *         instance URI.
 	 */
-
 	public void addModel(Model model) {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
@@ -725,14 +726,17 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * 
-	 * Creates a compliant model URI and then adds it to this ModuleDefinition
-	 * object's set of reference model URIs. The model argument specifies the reference
+	 * Creates a compliant Model URI and then adds it to this ModuleDefinition
+	 * object's set of reference Model URIs. The model argument specifies the reference
 	 * Model's display ID, and the version argument specifies its version.
 	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed be edited.
+	 * <p>
+	 * This method creates a compliant Model URI with the default URI prefix for this SBOLDocument instance, 
+	 * and the given {@code definition} and {@code version}. 
+	 * This method then calls {@link # addModel(URI)} with this component definition URI.
 	 * 
 	 * @param model
 	 * @param version
@@ -756,8 +760,8 @@ public class ModuleDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 * <p>
 	 * If the SBOLDocument instance already completely specifies all its
-	 * reference URIs and the given {@code modelURI}
-	 * is not found in them, then an {@link IllegalArgumentException} is thrown.
+	 * reference URIs and the given {@code modelURI} is not found in them, then 
+	 * an {@link IllegalArgumentException} is thrown.
 	 * 
 	 * @param modelURI
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
@@ -820,7 +824,6 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the set of Model URIs referenced by this ModuleDefinition's object.
 	 * 
 	 * @return the set of Model URIs referenced by this ModuleDefinition's object.
-	 *         
 	 */
 	public Set<URI> getModelURIs() {
 		Set<URI> result = new HashSet<>();
@@ -855,8 +858,7 @@ public class ModuleDefinition extends TopLevel {
 
 	/**
 	 * Removes all entries of this ModuleDefinition object's set of reference
-	 * Model URIs.
-	 * The set will be empty after this call returns.
+	 * Model URIs. The set will be empty after this call returns.
 	 */
 	public void clearModels() {
 		if (sbolDocument != null)
