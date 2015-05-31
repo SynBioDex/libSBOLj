@@ -57,8 +57,8 @@ public class Collection extends TopLevel{
 	 *             specifies all URIs and the given {@code memberURI} is not found in them.
 	 */
 	public boolean addMember(URI memberURI) {
+		if (sbolDocument != null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
-			sbolDocument.checkReadOnly();
 			if (sbolDocument.getTopLevel(memberURI)==null) {
 				throw new IllegalArgumentException("Top level '" + memberURI + "' does not exist.");
 			}
