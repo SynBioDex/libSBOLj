@@ -6,10 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
@@ -53,6 +51,7 @@ public class SBOLTestUtils {
 
 	}
 
+	/*
 	public static Sequence createSequence(SBOLDocument document,String id, List<Annotation> annotations)
 	{
 		//		Sequence sequence = document.createSequence("http://www.async.ece.utah.edu",
@@ -286,7 +285,7 @@ public class SBOLTestUtils {
 			c.setAnnotations(annotations);
 		return c;
 	}
-
+	 */
 
 	public static SBOLDocument writeAndRead(SBOLDocument doc)
 			throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
@@ -297,6 +296,8 @@ public class SBOLTestUtils {
 		return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 	}
 
+
+	/*
 	public static URI createCompliantIdentity(String id)
 	{
 		return URI.create("http://www.async.ece.utah.edu/" + id + "/1/0");
@@ -311,6 +312,7 @@ public class SBOLTestUtils {
 	{
 		return URI.create("http://www.async.ece.utah.edu/" + append);
 	}
+	 */
 
 	public static Set<URI> getSetPropertyURI(String ... appends)
 	{
@@ -326,4 +328,5 @@ public class SBOLTestUtils {
 	{
 		return URI.create("http://some.ontology.org/" + append);
 	}
+
 }

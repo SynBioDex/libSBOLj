@@ -713,7 +713,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies all URIs
 	 *             and the given Model instance's URI is not found in them.
 	 */
-	public void addModel(Model model) {
+	public boolean addModel(Model model) {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -722,7 +722,7 @@ public class ModuleDefinition extends TopLevel {
 						+ "' does not exist.");
 			}
 		}
-		this.addModel(model.getIdentity());
+		return this.addModel(model.getIdentity());
 	}
 
 	/**
@@ -741,13 +741,15 @@ public class ModuleDefinition extends TopLevel {
 	 * @param model
 	 * @param version
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @return {@code true} if this set did not already contain the given Model
+	 *         instance URI.
 	 */
-	public void addModel(String model, String version) {
+	public boolean addModel(String model, String version) {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		URI modelURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
 		TopLevel.MODEL, model, version, sbolDocument.isTypesInURIs());
-		addModel(modelURI);
+		return addModel(modelURI);
 	}
 
 	/**
@@ -767,8 +769,10 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely
 	 *             specifies all URIs and the given {@code modelURI} is not found in them.
+	 * @return {@code true} if this set did not already contain the given Model
+	 *         instance URI.
 	 */
-	public void addModel(URI modelURI) {
+	public boolean addModel(URI modelURI) {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -776,7 +780,7 @@ public class ModuleDefinition extends TopLevel {
 				throw new IllegalArgumentException("Model '" + modelURI + "' does not exist.");
 			}
 		}
-		models.add(modelURI);
+		return models.add(modelURI);
 	}
 
 	/**
