@@ -38,15 +38,23 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Returns field variable <code>refinement</code>.
-	 * @return field variable <code>refinement</code>
+	 * Returns the refinement property of this MapsTo object.
+	 * 
+	 * @return the refinement property of this MapsTo object.
 	 */
 	public RefinementType getRefinement() {
 		return refinement;
 	}
 
 	/**
-	 * Sets field variable <code>refinement</code> to the specified element.
+	 * Sets the refinement property of this MapsTo object to the given one. 
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param refinement
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public void setRefinement(RefinementType refinement) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -54,20 +62,38 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Returns field variable <code>local</code>.
-	 * @return field variable <code>local</code>
+	 * Returns the local FunctionalComponent URI that this object refers to.
+	 * 
+	 * @return the local FunctionalComponent URI that this object refers to
 	 */
 	public URI getLocalURI() {
 		return local;
 	}
 	
+	/**
+	 * Returns the local FunctionalComponent instance that this object refers to.
+	 * 
+	 * @return the local FunctionalComponent instance that this object refers to, 
+	 * if this MapsTo object's reference ModuleDefinition instance is not {@code null};
+	 * {@code null} otherwise.
+	 */
 	public FunctionalComponent getLocal() {
 		if (moduleDefinition==null) return null;
 		return moduleDefinition.getFunctionalComponent(local);
 	}
 
 	/**
-	 * Sets field variable <code>local</code> to the specified element.
+	 * Sets the local property of this MapsTo object to the given one.
+ 	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param local
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the given {@code local} argument is {@code null}
+	 * @throws IllegalArgumentException if the given {@code local} argument is not found in 
+	 * this MapsTo object's reference ModuleDefinition instance's list of functional components.
 	 */
 	public void setLocal(URI local) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -83,21 +109,45 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Returns field variable <code>remote</code>.
-	 * @return field variable <code>remote</code>
+	 * Returns the remote FunctionalComponent URI that this object refers to.
+	 * 
+	 * @return the remote FunctionalComponent URI that this object refers to
 	 */
+
 	public URI getRemoteURI() {
 		return remote;
 	}
-	
+ 
+	/**
+	 * Returns the remote FunctionalComponent instance that this object refers to.
+	 * 
+	 * @return the remote FunctionalComponent instance that this object refers to, 
+	 * if this MapsTo object's parent Module instance is not {@code null} and this
+	 * Module instance's reference ModuleDefinition instance is not {@code null};
+	 * {@code null} otherwise.   
+	 */
 	public FunctionalComponent getRemote() {
 		if (module==null) return null;
 		if (module.getDefinition()==null) return null;
 		return module.getDefinition().getFunctionalComponent(remote);
 	}
-
+	
 	/**
-	 * Sets filed variable <code>remote</code> to the specified element.
+	 * Sets the remote property of this MapsTo object to the given one.
+ 	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param remote
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the given {@code remote} argument is {@code null}
+	 * @throws IllegalArgumentException if the given {@code remote} argument is not found in 
+	 * the list of functional components that are owned by the ModuleDefinition instance that
+	 * this MapsTo object's parent Module instance refers to.
+	 * @throws IllegalArgumentException if the given {@code remote} argument refers to a FunctionalComponent
+	 * with {@code private} access type that is owned by the ModuleDefinition instance that
+	 * this MapsTo object's parent Module instance refers to.
 	 */
 	public void setRemote(URI remote) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
