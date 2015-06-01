@@ -312,7 +312,7 @@ public class ModuleDefinition extends TopLevel {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant*  
+	 * @throws SBOLException if the associated SBOLDocument is not compliant 
 	 */
 	public void clearModules() {
 		if (sbolDocument != null)
@@ -417,10 +417,8 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the instance matching the given Interaction displayId from the
 	 * list of Interaction instances.
 	 * 
-	 * @return the matching instance if present, or <code>null</code> if not
-	 *         present.
+	 * @return the matching instance if present, {@code null} otherwise.
 	 */
-
 	public Interaction getInteraction(String displayId) {
 		return interactions.get(createCompliantURI(this.getPersistentIdentity().toString(),
 				displayId, this.getVersion()));
@@ -431,8 +429,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the instance matching the given Interaction URI from the list of
 	 * Interaction instances.
 	 * 
-	 * @return the matching instance if present, or <code>null</code> if not
-	 *         present.
+	 * @return the matching instance if present, {@code null} otherwise.
 	 */
 	public Interaction getInteraction(URI interactionURI) {
 		return interactions.get(interactionURI);

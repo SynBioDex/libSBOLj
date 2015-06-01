@@ -74,8 +74,8 @@ public class MapsTo extends Identified{
 	 * Returns the local FunctionalComponent instance that this object refers to.
 	 * 
 	 * @return the local FunctionalComponent instance that this object refers to, 
-	 * if this MapsTo object's reference ModuleDefinition instance is not {@code null};
-	 * {@code null} otherwise.
+	 * if the ModuleDefinition instance that this MapsTo object's parent Module 
+	 * instance refers to is not {@code null}; {@code null} otherwise.
 	 */
 	public FunctionalComponent getLocal() {
 		if (moduleDefinition==null) return null;
