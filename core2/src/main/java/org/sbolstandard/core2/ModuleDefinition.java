@@ -130,6 +130,7 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Checks if the given role URI is included in this ModuleDefinition
 	 * object's set of reference role URIs.
+	 * 
 	 * @param roleURI
 	 * @return {@code true} if this set contains the specified URI.
 	 */
