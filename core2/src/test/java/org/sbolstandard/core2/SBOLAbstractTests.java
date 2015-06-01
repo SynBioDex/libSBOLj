@@ -314,7 +314,7 @@ public abstract class SBOLAbstractTests {
 		promoter.createAnnotation(new QName(myAppURI, "datasheet", myAppPrefix), topLevel.getIdentity());
 		promoter.setWasDerivedFrom(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));
 
-		SBOLWriter.write(document,(System.out));
+		//SBOLWriter.write(document,(System.out));
 		runTest("test/data/GenericTopLevelOutput.rdf", document, "rdf");
 	}
 

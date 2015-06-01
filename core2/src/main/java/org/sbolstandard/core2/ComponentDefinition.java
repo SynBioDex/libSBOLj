@@ -852,6 +852,7 @@ public class ComponentDefinition extends TopLevel {
 		addChildSafely(component, components, "component",
 				sequenceAnnotations, sequenceConstraints);
 		component.setSBOLDocument(this.sbolDocument);
+		component.setComponentDefinition(this);
 	}
 	
 	/**
