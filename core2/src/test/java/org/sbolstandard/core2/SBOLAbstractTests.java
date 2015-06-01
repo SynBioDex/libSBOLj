@@ -66,7 +66,8 @@ public abstract class SBOLAbstractTests {
 				URI.create("http://parts.igem.org/cgi/partsdb/part_info.cgi?part_name=BBa_J23119"),
 				new ArrayList<Annotation>(Arrays.asList(sigmaFactor,regulation)));
 
-		SBOLWriter.write(document,(System.out));
+		//		SBOLWriter.write(document,(System.out));
+		runTest("test/data/AnnotationOutput.rdf", document, "rdf");
 	}
 
 	@Test
@@ -84,196 +85,195 @@ public abstract class SBOLAbstractTests {
 		col.addMember(URI.create("http://partsregistry.org/Part:BBa_J23119"));
 		col.addMember(URI.create("http://partsregistry.org/Part:BBa_J23118"));
 
-		SBOLWriter.write(document,(System.out));
+		//		SBOLWriter.write(document,(System.out));
+		runTest("test/data/CollectionOutput.rdf", document, "rdf");
 	}
 
-		@Test
-		public void test_ComponentDefinitionOutput() throws Exception
-		{
-			//TODO: createSequenceAnnotation() used in testing does not match sbols parameters
-			String prURI="http://partsregistry.org";
-	
-			String prPrefix="pr";
-			SBOLDocument document = new SBOLDocument();
-			document.setTypesInURIs(true);
-			document.addNamespace(URI.create(prURI), prPrefix);
-			document.setDefaultURIprefix(prURI);
-			/*Sequence seqdevice=document.createSequence(
+	@Test
+	public void test_ComponentDefinitionOutput() throws Exception
+	{
+		String prURI="http://partsregistry.org";
+
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+		document.setTypesInURIs(true);
+		document.addNamespace(URI.create(prURI), prPrefix);
+		document.setDefaultURIprefix(prURI);
+		/*Sequence seqdevice=document.createSequence(
 					"BBa_F2620",
 				     "",
 					 "",
 					URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
 					);
-			 */
-	
-			Sequence seqpTetR=document.createSequence(
-					"BBa_R0040",
-					"",
-					"tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac",
-					URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
-					);
-	
-			Sequence seqRbs=document.createSequence(
-					"BBa_B0034",
-					"",
-					"aaagaggagaaa",
-					URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
-					);
-	
-			Sequence seqCds=document.createSequence(
-					"BBa_C0062",
-					"",
-					"atgcttatctgatatgactaaaatggtacattgtgaatattatttactcgcgatcatttatcctcattctatggttaaatctgatatttcaatcctagataattaccctaaaaaatggaggcaatattatgatgacgctaatttaataaaatatgatcctatagtagattattctaactccaatcattcaccaattaattggaatatatttgaaaacaatgctgtaaataaaaaatctccaaatgtaattaaagaagcgaaaacatcaggtcttatcactgggtttagtttccctattcatacggctaacaatggcttcggaatgcttagttttgcacattcagaaaaagacaactatatagatagtttatttttacatgcgtgtatgaacataccattaattgttccttctctagttgataattatcgaaaaataaatatagcaaataataaatcaaacaacgatttaaccaaaagagaaaaagaatgtttagcgtgggcatgcgaaggaaaaagctcttgggatatttcaaaaatattaggttgcagtgagcgtactgtcactttccatttaaccaatgcgcaaatgaaactcaatacaacaaaccgctgccaaagtatttctaaagcaattttaacaggagcaattgattgcccatactttaaaaattaataacactgatagtgctagtgtagatcac",
-					URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
-					);
-	
-			Sequence seqTer=document.createSequence(
-					"BBa_B0015",
-					"",
-					"ccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata",
-					URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
-					);
-	
-			Sequence seqPluxR=document.createSequence(
-					"BBa_R0062",
-					"",
-					"acctgtaggatcgtacaggtttacgcaagaaaatggtttgttatagtcgaataaa",
-					URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
-					);
-	
-			ComponentDefinition pTetR = document.createComponentDefinition(
-					"BBa_R0040",
-					"",
-					new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
-	
-			pTetR.addRole(SequenceOntology.PROMOTER);
-			pTetR.setName("BBa_R0040");
-			pTetR.setDescription("TetR repressible promoter");
-			pTetR.addSequence(seqpTetR.getIdentity());
-	
-			ComponentDefinition rbs = document.createComponentDefinition(
-					"BBa_B0034",
-					"",
-					new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
-	
-	
-			rbs.addRole(SequenceOntology.RIBOSOME_ENTRY_SITE);
-			rbs.setName("BBa_B0034");
-			rbs.setDescription("RBS based on Elowitz repressilator");
-			rbs.addSequence(seqRbs.getIdentity());
-	
-			ComponentDefinition cds = document.createComponentDefinition(
-					"BBa_C0062",
-					"",
-					new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
-			cds.addRole(SequenceOntology.CDS);
-			cds.setName("BBa_C0062");
-			cds.setDescription("luxR coding sequence");
-			cds.addSequence(seqCds.getIdentity());
-	
-			ComponentDefinition ter = document.createComponentDefinition(
-					"BBa_B0015",
-					"",
-					new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
-	
-			ter.addRole(URI.create("http://identifiers.org/so/SO:0000141"));
-			ter.setName("BBa_B0015");
-			ter.setDescription("Double terminator");
-			ter.addSequence(seqTer.getIdentity());
-	
-			ComponentDefinition pluxR = document.createComponentDefinition(
-					"BBa_R0062",
-					"",
-					new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
-			pluxR.addRole(SequenceOntology.PROMOTER);//
-			pluxR.setName("BBa_R0062");
-			pluxR.setDescription("LuxR inducible promoter");
-			pluxR.addSequence(seqPluxR.getIdentity());
-	
-	
-			ComponentDefinition device = document.createComponentDefinition(
-					"BBa_F2620",
-					"",
-					new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
-			device.addRole(URI.create("http://identifiers.org/so/SO:00001411"));//biological region
-			device.setName("BBa_F2620");
-			device.setDescription("3OC6HSL -> PoPS Receiver");
-			//device.addSequence(seqdevice.getIdentity());
-	
-			Component comPtetR=device.createComponent("pTetR", AccessType.PUBLIC, pTetR.getIdentity());
-			Component comRbs=device.createComponent("rbs", AccessType.PUBLIC,cds.getIdentity());
-			Component comCds=device.createComponent("luxR", AccessType.PUBLIC, rbs.getIdentity());
-			Component comTer=device.createComponent("ter", AccessType.PUBLIC, ter.getIdentity());
-			Component comPluxR=device.createComponent( "pLuxR", AccessType.PUBLIC, pluxR.getIdentity());
-	
-	
-			int start=1;
-			int end=seqPluxR.getElements().length();
-	
-			SequenceAnnotation anno=device.createSequenceAnnotation("anno1", "range", start, end, OrientationType.INLINE);
-			anno.setComponent(comPtetR.getIdentity());
-	
-			start=end+1;
-			end=seqRbs.getElements().length() + end + 1;
-			SequenceAnnotation anno2= device.createSequenceAnnotation("anno2", "range", start,end,OrientationType.INLINE);
-			anno2.setComponent(comRbs.getIdentity());
-	
-			start=end+1;
-			end=seqCds.getElements().length() + end + 1;
-			SequenceAnnotation anno3= device.createSequenceAnnotation("anno3", "range", start,end,OrientationType.INLINE);
-			anno3.setComponent(comCds.getIdentity());
-	
-			start=end+1;
-			end=seqTer.getElements().length() + end + 1;
-			SequenceAnnotation anno4= device.createSequenceAnnotation("anno4", "range", start,end,OrientationType.INLINE);
-			anno4.setComponent(comTer.getIdentity());
-	
-			start=end+1;
-			end=seqPluxR.getElements().length() + end + 1;
-			SequenceAnnotation anno5= device.createSequenceAnnotation("anno5", "range", start,end,OrientationType.INLINE);
-			anno5.setComponent(comPluxR.getIdentity());
-	
-			SBOLWriter.write(document,(System.out));
-		}
+		 */
+
+		Sequence seqpTetR=document.createSequence(
+				"BBa_R0040",
+				"",
+				"tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac",
+				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
+				);
+
+		Sequence seqRbs=document.createSequence(
+				"BBa_B0034",
+				"",
+				"aaagaggagaaa",
+				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
+				);
+
+		Sequence seqCds=document.createSequence(
+				"BBa_C0062",
+				"",
+				"atgcttatctgatatgactaaaatggtacattgtgaatattatttactcgcgatcatttatcctcattctatggttaaatctgatatttcaatcctagataattaccctaaaaaatggaggcaatattatgatgacgctaatttaataaaatatgatcctatagtagattattctaactccaatcattcaccaattaattggaatatatttgaaaacaatgctgtaaataaaaaatctccaaatgtaattaaagaagcgaaaacatcaggtcttatcactgggtttagtttccctattcatacggctaacaatggcttcggaatgcttagttttgcacattcagaaaaagacaactatatagatagtttatttttacatgcgtgtatgaacataccattaattgttccttctctagttgataattatcgaaaaataaatatagcaaataataaatcaaacaacgatttaaccaaaagagaaaaagaatgtttagcgtgggcatgcgaaggaaaaagctcttgggatatttcaaaaatattaggttgcagtgagcgtactgtcactttccatttaaccaatgcgcaaatgaaactcaatacaacaaaccgctgccaaagtatttctaaagcaattttaacaggagcaattgattgcccatactttaaaaattaataacactgatagtgctagtgtagatcac",
+				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
+				);
+
+		Sequence seqTer=document.createSequence(
+				"BBa_B0015",
+				"",
+				"ccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata",
+				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
+				);
+
+		Sequence seqPluxR=document.createSequence(
+				"BBa_R0062",
+				"",
+				"acctgtaggatcgtacaggtttacgcaagaaaatggtttgttatagtcgaataaa",
+				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
+				);
+
+		ComponentDefinition pTetR = document.createComponentDefinition(
+				"BBa_R0040",
+				"",
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+
+		pTetR.addRole(SequenceOntology.PROMOTER);
+		pTetR.setName("BBa_R0040");
+		pTetR.setDescription("TetR repressible promoter");
+		pTetR.addSequence(seqpTetR.getIdentity());
+
+		ComponentDefinition rbs = document.createComponentDefinition(
+				"BBa_B0034",
+				"",
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
 
 
-		@Test
-		public void test_CutExample() throws Exception
-		{
-		//TODO: createSequenceAnnotation() used in testing does not match sbols parameters
-			String prURI="http://partsregistry.org";
-			SBOLDocument document = new SBOLDocument();
-			document.setDefaultURIprefix(prURI);
-			document.setTypesInURIs(true);
-			ComponentDefinition promoter = document.createComponentDefinition(
-					"BBa_J23119",
-					"",
-					new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
-			promoter.addRole(SequenceOntology.PROMOTER);
-			promoter.addRole(URI.create("http://identifiers.org/so/SO:0000613"));
-	
-			promoter.setName("J23119 promoter");
-			promoter.setDescription("Constitutive promoter");
-			promoter.setWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
-	
-			document.setDefaultURIprefix(prURI);
-			Sequence seq=document.createSequence(
-					"BBa_J23119",
-					"",
-					"ttgacagctagctcagtcctaggtataatgctagc",
-					URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
-					);
-			seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
-			promoter.addSequence(seq.getIdentity());
-	
-			//promoter.createSequenceAnnotation("cut", 10);
-			promoter.createSequenceAnnotation("cutat10", "cut", 10, OrientationType.INLINE);
-			promoter.createSequenceAnnotation("cutat12", "cut", 12, OrientationType.INLINE);
-	
-	
-	
-			SBOLWriter.write(document,(System.out));
-		}
+		rbs.addRole(SequenceOntology.RIBOSOME_ENTRY_SITE);
+		rbs.setName("BBa_B0034");
+		rbs.setDescription("RBS based on Elowitz repressilator");
+		rbs.addSequence(seqRbs.getIdentity());
+
+		ComponentDefinition cds = document.createComponentDefinition(
+				"BBa_C0062",
+				"",
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+		cds.addRole(SequenceOntology.CDS);
+		cds.setName("BBa_C0062");
+		cds.setDescription("luxR coding sequence");
+		cds.addSequence(seqCds.getIdentity());
+
+		ComponentDefinition ter = document.createComponentDefinition(
+				"BBa_B0015",
+				"",
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+
+		ter.addRole(URI.create("http://identifiers.org/so/SO:0000141"));
+		ter.setName("BBa_B0015");
+		ter.setDescription("Double terminator");
+		ter.addSequence(seqTer.getIdentity());
+
+		ComponentDefinition pluxR = document.createComponentDefinition(
+				"BBa_R0062",
+				"",
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+		pluxR.addRole(SequenceOntology.PROMOTER);//
+		pluxR.setName("BBa_R0062");
+		pluxR.setDescription("LuxR inducible promoter");
+		pluxR.addSequence(seqPluxR.getIdentity());
+
+
+		ComponentDefinition device = document.createComponentDefinition(
+				"BBa_F2620",
+				"",
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+		device.addRole(URI.create("http://identifiers.org/so/SO:00001411"));//biological region
+		device.setName("BBa_F2620");
+		device.setDescription("3OC6HSL -> PoPS Receiver");
+		//device.addSequence(seqdevice.getIdentity());
+
+		Component comPtetR=device.createComponent("pTetR", AccessType.PUBLIC, pTetR.getIdentity());
+		Component comRbs=device.createComponent("rbs", AccessType.PUBLIC,cds.getIdentity());
+		Component comCds=device.createComponent("luxR", AccessType.PUBLIC, rbs.getIdentity());
+		Component comTer=device.createComponent("ter", AccessType.PUBLIC, ter.getIdentity());
+		Component comPluxR=device.createComponent( "pLuxR", AccessType.PUBLIC, pluxR.getIdentity());
+
+
+		int start=1;
+		int end=seqPluxR.getElements().length();
+
+		SequenceAnnotation anno=device.createSequenceAnnotation("anno1", "range", start, end, OrientationType.INLINE);
+		anno.setComponent(comPtetR.getIdentity());
+
+		start=end+1;
+		end=seqRbs.getElements().length() + end + 1;
+		SequenceAnnotation anno2= device.createSequenceAnnotation("anno2", "range", start,end,OrientationType.INLINE);
+		anno2.setComponent(comRbs.getIdentity());
+
+		start=end+1;
+		end=seqCds.getElements().length() + end + 1;
+		SequenceAnnotation anno3= device.createSequenceAnnotation("anno3", "range", start,end,OrientationType.INLINE);
+		anno3.setComponent(comCds.getIdentity());
+
+		start=end+1;
+		end=seqTer.getElements().length() + end + 1;
+		SequenceAnnotation anno4= device.createSequenceAnnotation("anno4", "range", start,end,OrientationType.INLINE);
+		anno4.setComponent(comTer.getIdentity());
+
+		start=end+1;
+		end=seqPluxR.getElements().length() + end + 1;
+		SequenceAnnotation anno5= device.createSequenceAnnotation("anno5", "range", start,end,OrientationType.INLINE);
+		anno5.setComponent(comPluxR.getIdentity());
+
+		//			SBOLWriter.write(document,(System.out));
+		runTest("test/data/ComponentDefinitionOutput.rdf", document, "rdf");
+	}
+
+
+	@Test
+	public void test_CutExample() throws Exception
+	{
+		String prURI="http://partsregistry.org";
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		ComponentDefinition promoter = document.createComponentDefinition(
+				"BBa_J23119",
+				"",
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+		promoter.addRole(SequenceOntology.PROMOTER);
+		promoter.addRole(URI.create("http://identifiers.org/so/SO:0000613"));
+
+		promoter.setName("J23119 promoter");
+		promoter.setDescription("Constitutive promoter");
+		promoter.setWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
+
+		document.setDefaultURIprefix(prURI);
+		Sequence seq=document.createSequence(
+				"BBa_J23119",
+				"",
+				"ttgacagctagctcagtcctaggtataatgctagc",
+				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
+				);
+		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
+		promoter.addSequence(seq.getIdentity());
+
+		//promoter.createSequenceAnnotation("cut", 10);
+		promoter.createSequenceAnnotation("cutat10", "cut", 10, OrientationType.INLINE);
+		promoter.createSequenceAnnotation("cutat12", "cut", 12, OrientationType.INLINE);
+
+		//			SBOLWriter.write(document,(System.out));
+		runTest("test/data/CutExample.rdf", document, "rdf");
+	}
 
 	@Test
 	public void test_GenericTopLevelOutput() throws Exception
@@ -283,7 +283,7 @@ public abstract class SBOLAbstractTests {
 		String prURI="http://www.partsregistry.org";
 
 		SBOLDocument document = new SBOLDocument();
-		document.addNamespace(URI.create(myAppURI+ "/") , myAppPrefix);
+		document.addNamespace(URI.create(myAppURI) , myAppPrefix);
 
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(true);
@@ -315,6 +315,7 @@ public abstract class SBOLAbstractTests {
 		promoter.setWasDerivedFrom(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));
 
 		SBOLWriter.write(document,(System.out));
+		runTest("test/data/GenericTopLevelOutput.rdf", document, "rdf");
 	}
 
 	@Test
@@ -335,7 +336,8 @@ public abstract class SBOLAbstractTests {
 		model.setName("pIKE_Toggle_1 toggle switch");
 
 
-		SBOLWriter.write(document,(System.out));
+		//		SBOLWriter.write(document,(System.out));
+		runTest("test/data/ModelOutput.rdf", document, "rdf");
 	}
 
 	@Test
@@ -348,7 +350,8 @@ public abstract class SBOLAbstractTests {
 	public void test_SBOLDocumentOutput() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
-		SBOLWriter.write(document,(System.out));
+		//		SBOLWriter.write(document,(System.out));
+		runTest("test/data/SBOLDocumentOutput.rdf", document, "rdf");
 	}
 
 	@Test
@@ -401,7 +404,8 @@ public abstract class SBOLAbstractTests {
 
 		//promoter.setSequence(seq.getIdentity());
 
-		SBOLWriter.write(document,(System.out));
+		//		SBOLWriter.write(document,(System.out));
+		runTest("test/data/SequenceConstraintOutput.rdf", document, "rdf");
 	}
 
 	@Test
@@ -419,7 +423,8 @@ public abstract class SBOLAbstractTests {
 				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
 				);
 		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
-		SBOLWriter.write(document,(System.out));
+		//		SBOLWriter.write(document,(System.out));
+		runTest("test/data/SequenceOutput.rdf", document, "rdf");
 	}
 
 	@Test
@@ -454,7 +459,8 @@ public abstract class SBOLAbstractTests {
 				);
 		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		promoter.addSequence(seq.getIdentity());
-		SBOLWriter.write(document,(System.out));
+		//		SBOLWriter.write(document,(System.out));
+		runTest("test/data/SimpleComponentDefinitionExample.rdf", document, "rdf");
 	}
 
 	private static final NamespaceBinding example=NamespaceBinding ("http://sbolstandard.org/example/", "example");
@@ -483,8 +489,8 @@ public abstract class SBOLAbstractTests {
 
 		module.createInteraction("express_GFP", new HashSet<URI>(Arrays.asList(URI.create("Transcription"))));
 
-
-		SBOLWriter.write(document,(System.out));
+		//		SBOLWriter.write(document,(System.out));
+		runTest("test/data/SimpleModuleDefinition.rdf", document, "rdf");
 	}
 
 	private static void setDefaultNameSpace(SBOLDocument document, String uri)
@@ -494,21 +500,6 @@ public abstract class SBOLAbstractTests {
 			uri=uri.substring(0,uri.length()-1);
 		}
 		document.setDefaultURIprefix(uri);
-	}
-
-	@Test
-	public void test_App() throws Exception
-	{
-		//		AnnotationOutput.main(null);
-		//		CollectionOutput.main(null);
-		//		ComponentDefinitionOutput.main(null);
-		//		GenericTopLevelOutput.main(null);
-		//		ModelOutput.main(null);
-		//		ModuleDefinitionOutput.main(null);
-		//		SBOLDocumentOutput.main(null);
-		//		SequenceConstraintOutput.main(null);
-		//		SequenceOutput.main(null);
-		//		SimpleComponentDefinitionExample.main(null);
 	}
 
 	@Test
