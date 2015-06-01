@@ -31,10 +31,19 @@ public class Range extends Location{
 		this.setStart(range.getStart());
 	}
 
-
 	/**
-	 * Sets field variable <code>start</code> to the specified element.
-	 */
+	 * Sets the start position of this Range object.
+ 	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *
+	 * @param value
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the given {@code value} is less or equal to 0.
+	 * @throws IllegalArgumentException if the given {@code value} is greater than 
+	 * the {@code end} value of this Range object.
+	 */ 
 	public void setStart(int value) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (value<=0) {
@@ -47,24 +56,36 @@ public class Range extends Location{
 	}
 	
 	/**
-	 * Returns field variable <code>start</code>.
-	 * @return field variable <code>start</code>
+	 * Returns the start position of this Range object.
+	 * 
+	 * @return the start position of this Range object.
 	 */
 	public int getStart() {		
 		return start;
 	}
 
 	/**
-	 * Returns field variable <code>end</code>.
-	 * @return field variable <code>end</code>
+	 * Returns the end position of this Range object.
+	 * 
+	 * @return the end position of this Range object.
 	 */
 	public int getEnd() {
 		return end;
 	}
 
 	/**
-	 * Sets field variable <code>end</code> to the specified element.
-	 */
+	 * Sets the end position of this Range object.
+ 	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *
+	 * @param value
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the given {@code value} is less or equal to 0.
+	 * @throws IllegalArgumentException if the given {@code value} is less than 
+	 * the {@code start} value of this Range object.
+	 */ 
 	public void setEnd(int value) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (value<=0) {

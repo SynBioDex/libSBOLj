@@ -17,7 +17,7 @@ public enum RestrictionType {
 	 * Returns the restriction type.
 	 * @return restriction type.
 	 */
-	public String getRestrictionType() {
+	String getRestrictionType() {
 		return restrictionType;
 	}
 
@@ -31,7 +31,7 @@ public enum RestrictionType {
 	 * Convert the specified URI to its corresponding RestrictionType instance.
 	 * @return the corresponding RestrictionType instance.
 	 */
-	public static RestrictionType convertToRestrictionType(URI restriction) {
+	static RestrictionType convertToRestrictionType(URI restriction) {
 		if (restriction.equals(precedes)) {
 			return RestrictionType.PRECEDES;
 		} else if (restriction.equals(sameOrientationAs)) {
@@ -48,7 +48,7 @@ public enum RestrictionType {
 	 * Returns the restriction type in URI.
 	 * @return restriction type in URI
 	 */
-	public static URI convertToURI(RestrictionType restriction) {
+	static URI convertToURI(RestrictionType restriction) {
 		if (restriction != null) {
 			if (restriction.equals(RestrictionType.PRECEDES)) {
 				return precedes;
