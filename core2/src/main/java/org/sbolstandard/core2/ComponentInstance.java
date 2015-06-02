@@ -206,19 +206,19 @@ public abstract class ComponentInstance extends Identified {
 	}
 	
 	/**
-	 * Returns the reference Component Definition URI.
+	 * Returns the reference ComponentDefinition URI.
 	 * 
-	 * @return the reference Component Definition URI
+	 * @return the reference ComponentDefinition URI
 	 */	
 	public URI getDefinitionURI() {
 		return definition;
 	}
 	
 	/**
-	 * Returns the Component Definition instance referenced by this object.
+	 * Returns the ComponentDefinition instance referenced by this object.
 	 * 
 	 * @return {@code null} if the associated SBOLDocument instance is {@code null},
-	 * the Component Definition instance referenced by this object otherwise.
+	 * the ComponentDefinition instance referenced by this object otherwise.
 	 */	
 	public ComponentDefinition getDefinition() {
 		if (sbolDocument==null) return null;
