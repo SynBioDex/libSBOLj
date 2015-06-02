@@ -16,8 +16,6 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.sbolstandard.core.SBOLValidationException;
 
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
-
 /**
  * @author Goksel Misirli
  * @author Tramy Nguyen
@@ -314,7 +312,7 @@ public abstract class SBOLAbstractTests {
 		promoter.createAnnotation(new QName(myAppURI, "datasheet", myAppPrefix), topLevel.getIdentity());
 		promoter.setWasDerivedFrom(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));
 
-		SBOLWriter.write(document,(System.out));
+		//		SBOLWriter.write(document,(System.out));
 		runTest("test/data/GenericTopLevelOutput.rdf", document, "rdf");
 	}
 
@@ -340,10 +338,116 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/ModelOutput.rdf", document, "rdf");
 	}
 
+
 	@Test
 	public void test_ModuleDefinitionOutput() throws Exception
 	{
-		//TODO
+		SBOLDocument document = new SBOLDocument();
+
+		setDefaultNameSpace(document, SBOLTestUtils.pr.getNamespaceURI());
+		ComponentDefinition gfp     = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_E0040"),"gfp", ComponentDefinition.DNA, SequenceOntology.CDS, "gfp coding sequence");
+		ComponentDefinition tetR    = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_C0040"),"tetR", ComponentDefinition.DNA, SequenceOntology.CDS, "tetR coding sequence");
+		ComponentDefinition lacI    = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_C0012"),"lacI", ComponentDefinition.DNA, SequenceOntology.CDS, "lacI coding sequence");
+		ComponentDefinition placI   = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_R0010"), "pLacI", ComponentDefinition.DNA, SequenceOntology.PROMOTER, "pLacI promoter");
+		ComponentDefinition ptetR   = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_R0040"),"pTetR", ComponentDefinition.DNA, SequenceOntology.PROMOTER, "pTet promoter");
+		ComponentDefinition rbslacI = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61101"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS1"); //TODO: RIBOSOME_ENTRY_SITE is RBS?
+		ComponentDefinition rbstetR = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61120"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS2");
+		ComponentDefinition rbsgfp  = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61130"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS2");
+
+		setDefaultNameSpace(document, SBOLTestUtils.uniprot.getNamespaceURI());
+		ComponentDefinition GFP  = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.uniprot.withLocalPart("P42212"), "GFP",ComponentDefinition.PROTEIN, SystemsBiologyOntology.PRODUCT, "GFP protein");
+		ComponentDefinition TetR = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.uniprot.withLocalPart("Q6QR72"), "TetR",ComponentDefinition.PROTEIN, SystemsBiologyOntology.INHIBITOR, "TetR protein");
+		ComponentDefinition LacI = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.uniprot.withLocalPart("P03023"),"LacI", ComponentDefinition.PROTEIN, SystemsBiologyOntology.INHIBITOR, "LacI protein");
+
+		setDefaultNameSpace(document, SBOLTestUtils.pr.getNamespaceURI());
+		ComponentDefinition lacITerminator = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("ECK120029600"),"ECK120029600", ComponentDefinition.DNA, SequenceOntology.TERMINATOR, "Terminator1");
+		ComponentDefinition tetRTerminator = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("ECK120033736"), "ECK120033736",ComponentDefinition.DNA, SequenceOntology.TERMINATOR, "Terminator2");
+
+		setDefaultNameSpace(document, SBOLTestUtils.vpr.getNamespaceURI());
+		ComponentDefinition tetRInverter = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.vpr.withLocalPart("pIKELeftCassette_1"), "TetR Inverter", ComponentDefinition.DNA, SequenceOntology.ENGINEERED_GENE, "TetR Inverter");
+		ComponentDefinition lacIInverter = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.vpr.withLocalPart("pIKERightCassette_1"), "LacI Inverter", ComponentDefinition.DNA, SequenceOntology.ENGINEERED_GENE, "LacI Inverter");
+		ComponentDefinition toggleSwitch = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.vpr.withLocalPart("pIKE_Toggle_1"), "LacI/TetR Toggle Swicth", ComponentDefinition.DNA, SequenceOntology.ENGINEERED_GENE, "LacI/TetR Toggle Swicth");
+
+		//tetR inverter sequences
+		SBOLTestUtils.addPRSequence(document, ptetR,"tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac");
+		SBOLTestUtils.addPRSequence(document, rbslacI,"aaagacaggacc");
+		SBOLTestUtils.addPRSequence(document, lacI,"atggtgaatgtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcaggctgcaaacgacgaaaactacgctttagtagcttaataa");
+		SBOLTestUtils.addPRSequence(document, lacITerminator,"ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa");
+
+		//lacI inverter sequences
+		SBOLTestUtils.addPRSequence(document, placI,"tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac");
+		SBOLTestUtils.addPRSequence(document, rbstetR,"aaagacaggacc");
+		SBOLTestUtils.addPRSequence(document, tetR,"atgtccagattagataaaagtaaagtgattaacagcgcattagagctgcttaatgaggtcggaatcgaaggtttaacaacccgtaaactcgcccagaagctaggtgtagagcagcctacattgtattggcatgtaaaaaataagcgggctttgctcgacgccttagccattgagatgttagataggcaccatactcacttttgccctttagaaggggaaagctggcaagattttttacgtaataacgctaaaagttttagatgtgctttactaagtcatcgcgatggagcaaaagtacatttaggtacacggcctacagaaaaacagtatgaaactctcgaaaatcaattagcctttttatgccaacaaggtttttcactagagaatgcattatatgcactcagcgctgtggggcattttactttaggttgcgtattggaagatcaagagcatcaagtcgctaaagaagaaagggaaacacctactactgatagtatgccgccattattacgacaagctatcgaattatttgatcaccaaggtgcagagccagccttcttattcggccttgaattgatcatatgcggattagaaaaacaacttaaatgtgaaagtgggtccgctgcaaacgacgaaaactacgctttagtagcttaataa");
+		SBOLTestUtils.addPRSequence(document, rbsgfp,"aaagaaacgaca");
+		SBOLTestUtils.addPRSequence(document, gfp,"atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagaccacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa");
+		SBOLTestUtils.addPRSequence(document, tetRTerminator,"ttcagccaaaaaacttaagaccgccggtcttgtccactaccttgcagtaatgcggtggacaggatcggcggttttcttttctcttctcaa");
+
+		SBOLTestUtils.addSubComponents(document, tetRInverter, ptetR,rbslacI,lacI,lacITerminator);
+		SBOLTestUtils.addSubComponents(document, lacIInverter, placI,rbstetR,tetR,rbsgfp,gfp,tetRTerminator);
+		SBOLTestUtils.addSubComponents(document, toggleSwitch, tetRInverter,lacIInverter);
+
+		/*ModuleDefinition laciInverterModuleDef=document.createModuleDefinition(toURI(example.withLocalPart("laci_inverter")),
+				new HashSet<URI>(Arrays.asList(Terms.moduleRoles.inverter)));
+		 */
+		setDefaultNameSpace(document, SBOLTestUtils.example.getNamespaceURI());
+		ModuleDefinition laciInverterModuleDef=document.createModuleDefinition("laci_inverter");
+		laciInverterModuleDef.addRole(SBOLTestUtils.Terms.moduleRoles.inverter); //TODO: where to add inverter in core2 package so this line of code could be called from?
+
+
+		ModuleDefinition tetRInverterModuleDef=document.createModuleDefinition("tetr_inverter");
+		tetRInverterModuleDef.addRole(SBOLTestUtils.Terms.moduleRoles.inverter);
+
+		SBOLTestUtils.createInverter(document,laciInverterModuleDef,placI,LacI);
+
+		SBOLTestUtils.createInverter(document,tetRInverterModuleDef,ptetR,TetR);
+
+		ModuleDefinition toggleSwitchModuleDef=document.createModuleDefinition("toggle_switch");
+		toggleSwitchModuleDef.addRole(SBOLTestUtils.toURI(SBOLTestUtils.example.withLocalPart("module_role/toggle_switch")));
+
+		FunctionalComponent  toggleSwitchModuleDef_TetR=toggleSwitchModuleDef.createFunctionalComponent(
+				"TetR", AccessType.PUBLIC, TetR.getIdentity(), DirectionType.INOUT);
+
+		FunctionalComponent  toggleSwitchModuleDef_LacI=toggleSwitchModuleDef.createFunctionalComponent(
+				"LacI" ,
+				AccessType.PUBLIC,
+				LacI.getIdentity(),
+				DirectionType.INOUT);
+
+
+		Module lacInverterSubModule=toggleSwitchModuleDef.createModule(
+				"laci_inverter",
+				laciInverterModuleDef.getIdentity());
+
+		lacInverterSubModule.createMapsTo(
+				"LacI_mapping",
+				RefinementType.USEREMOTE,
+				laciInverterModuleDef.getFunctionalComponent("TF").getIdentity(),
+				toggleSwitchModuleDef_LacI.getIdentity());
+
+
+		Module tetRInverterSubModule=toggleSwitchModuleDef.createModule(
+				"tetr_inverter",
+				tetRInverterModuleDef.getIdentity());
+
+		tetRInverterSubModule.createMapsTo(
+				"TetR_mapping",
+				RefinementType.USEREMOTE,
+				tetRInverterModuleDef.getFunctionalComponent("TF").getIdentity(),
+				toggleSwitchModuleDef_TetR.getIdentity());
+
+		Model model=document.createModel(
+				"toogleswicth",
+				URI.create("http://virtualparts.org/part/pIKE_Toggle_1"),
+				Model.SBML,
+				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
+
+		//new HashSet<URI>(Arrays.asList(URI.create("http://sbols.org/v2#module_model")))
+
+
+		toggleSwitchModuleDef.addModel(model.getIdentity());
+
+		//		SBOLWriter.write(document,(System.out));
+		runTest("test/data/ModuleDefinitionOutput.rdf", document, "rdf");
 	}
 
 	@Test
@@ -463,14 +567,12 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/SimpleComponentDefinitionExample.rdf", document, "rdf");
 	}
 
-	private static final NamespaceBinding example=NamespaceBinding ("http://sbolstandard.org/example/", "example");
-
 	@Test
 	public void test_SimpleModuleDefinition() throws Exception
 	{
 		SBOLDocument document = new SBOLDocument();
 
-		setDefaultNameSpace(document, example.getNamespaceURI());
+		setDefaultNameSpace(document, SBOLTestUtils.example.getNamespaceURI());
 		document.setTypesInURIs(true);
 
 		ModuleDefinition module=document.createModuleDefinition("GFP_expression");
@@ -918,15 +1020,6 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/emptyJSONFile.json", document, "json");
 
 	}
-
-	//	@Test
-	//	public void test_TurtleFile() throws Exception
-	//	{
-	//		SBOLDocument document = new SBOLDocument();
-	//		//TODO: this is not passing for some reason...
-	//		runTest("test/data/emptyTurtleFile.ttl", document, "turtle");
-	//	}
-
 
 	@Test
 	public void test_memberAnnotations() throws Exception
