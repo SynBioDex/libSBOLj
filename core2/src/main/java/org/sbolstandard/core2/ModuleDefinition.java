@@ -581,6 +581,7 @@ public class ModuleDefinition extends TopLevel {
 		addChildSafely(functionalComponent, functionalComponents, "functionalComponent",
 				interactions, modules);
 		functionalComponent.setSBOLDocument(this.sbolDocument);
+		functionalComponent.setModuleDefinition(this);
 	}
 
 	/**

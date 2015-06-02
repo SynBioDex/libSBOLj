@@ -21,6 +21,8 @@ public class MapsTo extends Identified{
 	private URI remote; // URI of a remote component instantiation
 	private ModuleDefinition moduleDefinition = null;
 	private Module module = null;
+	private ComponentDefinition componentDefinition = null;
+	private ComponentInstance componentInstance = null;
 
 	MapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
@@ -77,9 +79,13 @@ public class MapsTo extends Identified{
 	 * if the ModuleDefinition instance that this MapsTo object's parent Module 
 	 * instance refers to is not {@code null}; {@code null} otherwise.
 	 */
-	public FunctionalComponent getLocal() {
-		if (moduleDefinition==null) return null;
-		return moduleDefinition.getFunctionalComponent(local);
+	public ComponentInstance getLocal() {
+		if (moduleDefinition!=null) {
+			return moduleDefinition.getFunctionalComponent(local);
+		} else if (componentDefinition!=null) {
+			return componentDefinition.getComponent(local);
+		}
+		return null;
 	}
 
 	/**
@@ -104,6 +110,10 @@ public class MapsTo extends Identified{
 			if (moduleDefinition.getFunctionalComponent(local)==null) {
 				throw new IllegalArgumentException("Functional Component '" + local + "' does not exist.");
 			}
+		} else if (componentDefinition!=null) {
+			if (componentDefinition.getComponent(local)==null) {
+				throw new IllegalArgumentException("Component '" + local + "' does not exist.");
+			}
 		}
 		this.local = local;
 	}
@@ -126,10 +136,15 @@ public class MapsTo extends Identified{
 	 * Module instance's reference ModuleDefinition instance is not {@code null};
 	 * {@code null} otherwise.   
 	 */
-	public FunctionalComponent getRemote() {
-		if (module==null) return null;
-		if (module.getDefinition()==null) return null;
-		return module.getDefinition().getFunctionalComponent(remote);
+	public ComponentInstance getRemote() {
+		if (module!=null) {
+			if (module.getDefinition()==null) return null;
+			return module.getDefinition().getFunctionalComponent(remote);
+		} else if (componentInstance!=null) {
+			if (componentInstance.getDefinition()==null) return null;
+			return componentInstance.getDefinition().getComponent(remote);
+		}
+		return null;
 	}
 	
 	/**
@@ -160,6 +175,13 @@ public class MapsTo extends Identified{
 			}
 			if (module.getDefinition().getFunctionalComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
 				throw new IllegalArgumentException("Functional Component '" + remote + "' is private.");
+			}
+		} else if (componentInstance!=null) {
+			if (componentInstance.getDefinition().getComponent(remote)==null) {
+				throw new IllegalArgumentException("Component '" + remote + "' does not exist.");
+			}
+			if (componentInstance.getDefinition().getComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
+				throw new IllegalArgumentException("Component '" + remote + "' is private.");
 			}
 		}
 		this.remote = remote;
@@ -237,6 +259,22 @@ public class MapsTo extends Identified{
 
 	void setModule(Module module) {
 		this.module = module;
+	}
+
+	ComponentDefinition getComponentDefinition() {
+		return componentDefinition;
+	}
+
+	void setComponentDefinition(ComponentDefinition componentDefinition) {
+		this.componentDefinition = componentDefinition;
+	}
+
+	ComponentInstance getComponentInstance() {
+		return componentInstance;
+	}
+
+	void setComponentInstance(ComponentInstance componentInstance) {
+		this.componentInstance = componentInstance;
 	}
 
 }
