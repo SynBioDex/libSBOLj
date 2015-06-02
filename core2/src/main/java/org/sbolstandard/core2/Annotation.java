@@ -42,7 +42,6 @@ public class Annotation {
 		value = NamedProperty(qName,literal);
 	}
 
-	/*
 	public Annotation(QName qName, double literal) {
 		value = NamedProperty(qName,literal);
 	}
@@ -50,7 +49,6 @@ public class Annotation {
 	public Annotation(QName qName, boolean literal) {
 		value = NamedProperty(qName,literal);
 	}
-	*/
 
 	public Annotation(QName qName, URI literal) {
 		if (qName.getPrefix().toString().equals("sbol")) {
