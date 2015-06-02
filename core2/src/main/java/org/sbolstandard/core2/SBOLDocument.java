@@ -92,7 +92,7 @@ public class SBOLDocument {
 	 * Creates a ModuleDefinition instance with this SBOLDocument object's {@code defaultURIprefix} 
 	 * and the given arguments, and then adds it to this SBOLDocument object's list of ModuleDefinition instances.
 	 * <p>
-	 * This method calls {@link #{@link #createModuleDefinition(String, String, String)} to do the following
+	 * This method calls {@link #createModuleDefinition(String, String, String)} to do the following
 	 * validity checks and create a ModuleDefinition instance.
 	 * <p>
 	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance

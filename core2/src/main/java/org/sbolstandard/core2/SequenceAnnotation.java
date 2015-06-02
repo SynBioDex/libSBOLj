@@ -55,12 +55,21 @@ public class SequenceAnnotation extends Identified {
 		addLocation(genericLocation);
 	}
 
+	/**
+	 * @param displayId
+	 * @param at
+	 */
 	public void addCut(String displayId,int at) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Cut cut = new Cut(identity,at);
 		addLocation(cut);
 	}
 	
+	/**
+	 * @param displayId
+	 * @param at
+	 * @param orientation
+	 */
 	public void addCut(String displayId,int at,OrientationType orientation) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Cut cut = new Cut(identity,at);
