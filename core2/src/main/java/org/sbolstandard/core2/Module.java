@@ -110,7 +110,7 @@ public class Module extends Identified {
 	 * @param refinement
 	 * @param local
 	 * @param remote
-	 * @return
+	 * @return new MapsTo object
 	 */
 	MapsTo createMapsTo(URI identity, RefinementType refinement, 
 			URI local, URI remote) {
@@ -136,8 +136,8 @@ public class Module extends Identified {
 	 *  
 	 * @param displayId
 	 * @param refinement
-	 * @param local
-	 * @param remote
+	 * @param localId
+	 * @param remoteId
 	 * @return a MapsTo instance
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the SBOLDocument instance already completely 

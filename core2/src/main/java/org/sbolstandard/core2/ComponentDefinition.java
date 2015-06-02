@@ -294,7 +294,7 @@ public class ComponentDefinition extends TopLevel {
 	 * reference URIs and the given model's URI
 	 * is not found in them, then an {@link IllegalArgumentException} is thrown.
 	 * <p>
-	 * This method calls {@link # addSequence(URI)} with this Sequence URI.
+	 * This method calls {@link #addSequence(URI)} with this Sequence URI.
 	 * 
 	 * @param sequence
 	 * @return {@code true} if this set did not already contain the given Sequence instance URI.
@@ -515,7 +515,7 @@ public class ComponentDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 *  
 	 * @param displayId
-	 * @param location
+	 * @param locationId
 	 * @return a SequenceAnnotation instance
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI.
@@ -641,7 +641,6 @@ public class ComponentDefinition extends TopLevel {
 	 * @param locationId
 	 * @param start
 	 * @param end
-	 * @param orientation
 	 * @return a SequenceAnnotation instance
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant 

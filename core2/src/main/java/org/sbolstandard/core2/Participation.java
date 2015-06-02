@@ -151,8 +151,8 @@ public class Participation extends Identified {
 	 * @param roleURI
 	 * @return {@code true} if this set contains the specified URI.
 	 */
-	public boolean containsRole(URI rolesURI) {
-		return roles.contains(rolesURI);
+	public boolean containsRole(URI roleURI) {
+		return roles.contains(roleURI);
 	}
 
 	/**

@@ -725,7 +725,7 @@ public class ModuleDefinition extends TopLevel {
 	 * reference URIs and the given model's URI
 	 * is not found in them, then an {@link IllegalArgumentException} is thrown.
 	 * <p>
-	 * This method calls {@link # addModel(URI)} with this component definition URI.
+	 * This method calls {@link #addModel(URI)} with this component definition URI.
 	 * 
 	 * @param model
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
@@ -755,7 +755,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <p>
 	 * This method creates a compliant Model URI with the default URI prefix for this SBOLDocument instance, 
 	 * and the given {@code definition} and {@code version}. 
-	 * This method then calls {@link # addModel(URI)} with this component definition URI.
+	 * This method then calls {@link #addModel(URI)} with this component definition URI.
 	 * 
 	 * @param model
 	 * @param version

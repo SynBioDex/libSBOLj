@@ -175,7 +175,7 @@ public class SBOLDocument {
 	
 	/**
 	 * @param identity
-	 * @return
+	 * @return the new module definition
 	 */
 	ModuleDefinition createModuleDefinition(URI identity) {
 		ModuleDefinition newModule = new ModuleDefinition(identity);
@@ -247,7 +247,7 @@ public class SBOLDocument {
 	 * Returns the ModuleDefinition instance matching the given {@code modelURI} from this
 	 * SBOLDocument object's list of ModuleDefinition instances.
 	 * 
-	 * @param modulelURI
+	 * @param moduleURI
 	 * @return the matching ModuleDefinition instance if present, or {@code null} otherwise.      
 	 */
 	public ModuleDefinition getModuleDefinition(URI moduleURI) {
@@ -655,7 +655,7 @@ public class SBOLDocument {
 	 * @param source
 	 * @param language
 	 * @param framework
-	 * @return
+	 * @return the new model
 	 */
 	Model createModel(URI identity, URI source, URI language, URI framework) {
 		Model newModel = new Model(identity, source, language, framework);
@@ -769,7 +769,7 @@ public class SBOLDocument {
 	/**
 	 * @param identity
 	 * @param types
-	 * @return
+	 * @return the new component definition
 	 */
 	ComponentDefinition createComponentDefinition(URI identity, Set<URI> types) {
 		//ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types, roles);
@@ -1734,7 +1734,7 @@ public class SBOLDocument {
 	/**
 	 * @param identity
 	 * @param rdfType
-	 * @return
+	 * @return the new generic top level
 	 */
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
 		if (rdfType.getPrefix().toString().equals("sbol")) {

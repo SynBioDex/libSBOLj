@@ -198,8 +198,6 @@ public class FunctionalComponent extends ComponentInstance {
 	 *         {@code false} otherwise.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 *
-	 * @param mapsTo
-	 * @return
 	 */
 	public boolean removeMapsTo(MapsTo mapsTo) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -209,7 +207,7 @@ public class FunctionalComponent extends ComponentInstance {
 	/**
 	 * Returns the MapsTo instance owned by this object that matches the given display ID.
 	 * 
-	 * @param mapsToURI
+	 * @param displayId
 	 * @return the MapsTo instance owned by this object that matches the given display ID
 	 */
 	public MapsTo getMapsTo(String displayId) {
