@@ -68,7 +68,7 @@ public class Participation extends Identified {
 	 * 
 	 * @param participant
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
-	 * @throws if the given {@code participant} argument is {@code null}
+	 * @throws IllegalArgumentException if the given {@code participant} argument is {@code null}
 	 * @throws IllegalArgumentException if the associated ModuleDefinition instance is not {@code null} and
 	 * given {@code participant} URI is not found in its list of FunctionalComponent instances.
 	 */
@@ -151,8 +151,8 @@ public class Participation extends Identified {
 	 * @param roleURI
 	 * @return {@code true} if this set contains the specified URI.
 	 */
-	public boolean containsRole(URI rolesURI) {
-		return roles.contains(rolesURI);
+	public boolean containsRole(URI roleURI) {
+		return roles.contains(roleURI);
 	}
 
 	/**

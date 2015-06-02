@@ -39,6 +39,9 @@ class SBOLException extends RuntimeException {
 		this.objects = Collections.unmodifiableList(new ArrayList<>(objects));
 	}
 
+	/**
+	 * Creates a new exception instance with the given message and objects causing the problem.
+	 */
     public SBOLException(String message, Throwable cause, Identified ... objects) {
         super(message, cause);
         this.objects = Collections.unmodifiableList(Arrays.asList(objects));

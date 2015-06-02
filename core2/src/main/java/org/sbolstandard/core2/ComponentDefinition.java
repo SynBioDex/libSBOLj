@@ -294,7 +294,7 @@ public class ComponentDefinition extends TopLevel {
 	 * reference URIs and the given model's URI
 	 * is not found in them, then an {@link IllegalArgumentException} is thrown.
 	 * <p>
-	 * This method calls {@link # addSequence(URI)} with this Sequence URI.
+	 * This method calls {@link #addSequence(URI)} with this Sequence URI.
 	 * 
 	 * @param sequence
 	 * @return {@code true} if this set did not already contain the given Sequence instance URI.
@@ -402,6 +402,7 @@ public class ComponentDefinition extends TopLevel {
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
+	 * @param sequenceURI
 	 * @return {@code true} if the matching Sequence reference is removed successfully,
 	 *         {@code false} otherwise.      
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
@@ -475,13 +476,7 @@ public class ComponentDefinition extends TopLevel {
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * <p>
-	 * This method creates a compliant SequenceAnnotation URI with the default
-	 * URI prefix for this SBOLDocument instance, the given {@code displayId}, and this
-	 * ComponentDefinition object's version.
-	 * It then calls {@link #createSequenceAnnotation(String, AccessType, URI)}
-	 * with this component definition URI.
-	 *  
+	 * 
 	 * @param displayId
 	 * @param location
 	 * @return a SequenceAnnotation instance
@@ -512,15 +507,15 @@ public class ComponentDefinition extends TopLevel {
 	 * object with the given arguments, and then adds to this ComponentDefinition's 
 	 * list of SequenceAnnotation instances. 
 	 * <p>
+	 * This method calls {@link #createSequenceAnnotation(String, String, OrientationType)} with 
+	 * a {@code null} OrientationType. 
+	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * <p>
-	 * This method calls {@link #createSequenceAnnotation(String, String, OrientationType)} with 
-	 * a {@code null} OrientationType. 
 	 *  
 	 * @param displayId
-	 * @param location
+	 * @param locationId
 	 * @return a SequenceAnnotation instance
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI.
@@ -539,9 +534,14 @@ public class ComponentDefinition extends TopLevel {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
-	 * This method creates a compliant SequenceAnnotation URI with the default
-	 * URI prefix for this SBOLDocument instance, the given {@code locationId}, and this
+	 * This method first creates a GenericLocal instance with a compliant URI. This URI is composed
+	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation 
+	 * instance {@code displayId}, the given {@code locationId}, and this
 	 * ComponentDefinition object's version. 
+	 * <p>
+	 * I then creates a SequenceAnnotation instance with a compliant URI. This URI is composed of
+	 * this ComponentDefinition object's persistent identity, the given SequenceAnnotation {@code displayId},
+	 * and this ComponentDefinition object's version. 
 	 * 
 	 * @param displayId
 	 * @param locationId
@@ -595,9 +595,14 @@ public class ComponentDefinition extends TopLevel {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
-	 * This method creates a compliant SequenceAnnotation URI with the default
-	 * URI prefix for this SBOLDocument instance, the given {@code displayId}, and this
-	 * ComponentDefinition object's version.
+	 * This method first creates a GenericLocal instance with a compliant URI. This URI is composed
+	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation 
+	 * instance {@code displayId}, the given {@code locationId}, and this
+	 * ComponentDefinition object's version. 
+	 * <p>
+	 * I then creates a SequenceAnnotation instance with a compliant URI. This URI is composed of
+	 * this ComponentDefinition object's persistent identity, the given SequenceAnnotation {@code displayId},
+	 * and this ComponentDefinition object's version. 
 	 *  
 	 * @param displayId
 	 * @param locationId
@@ -619,26 +624,59 @@ public class ComponentDefinition extends TopLevel {
 		location.setVersion(this.getVersion());
 		return createSequenceAnnotation(displayId, location);
 	}
-
+	
 	/**
+  	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
+	 * object with the given arguments, and then adds to this ComponentDefinition's 
+	 * list of SequenceAnnotation instances. 
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method calls {@link #createSequenceAnnotation(String, String, int, int, OrientationType)} with 
+	 * a {@code null} OrientationType.
+	 *  
 	 * @param displayId
 	 * @param locationId
 	 * @param start
 	 * @param end
-	 * @return
-	 */
+	 * @return a SequenceAnnotation instance
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant 
+	 * in this ComponentDefinition object's URI.
+	 */	
 	public SequenceAnnotation createSequenceAnnotation(String displayId, String locationId, int start, int end) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return createSequenceAnnotation(displayId,locationId,start,end,null);
 	}
-
+	
 	/**
+	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
+	 * object with the given arguments, and then adds to this ComponentDefinition's 
+	 * list of SequenceAnnotation instances. 
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method first creates a GenericLocal instance with a compliant URI. This URI is composed
+	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation 
+	 * instance {@code displayId}, the given {@code locationId}, and this
+	 * ComponentDefinition object's version. 
+	 * <p>
+	 * I then creates a SequenceAnnotation instance with a compliant URI. This URI is composed of
+	 * this ComponentDefinition object's persistent identity, the given SequenceAnnotation {@code displayId},
+	 * and this ComponentDefinition object's version. 
+	 * 
 	 * @param displayId
 	 * @param locationId
 	 * @param start
 	 * @param end
 	 * @param orientation
-	 * @return
+	 * @return a SequenceAnnotation instance
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI.
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, String locationId, int start, int end,OrientationType orientation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -670,6 +708,7 @@ public class ComponentDefinition extends TopLevel {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
+	 * @param sequenceAnnotation
 	 * @return {@code true} if the matching SequenceAnnotation instance is removed successfully, {@code false} otherwise.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
@@ -681,6 +720,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Returns the instance matching the given displayId from the list of SequenceAnnotation instances.
 	 * 
+	 * @param displayId
 	 * @return the matching SequenceAnnotation instance if present, or {@code null} otherwise.
 	 */
 	public SequenceAnnotation getSequenceAnnotation(String displayId) {
@@ -692,6 +732,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Returns the instance matching the given SequenceAnnotation URI from the
 	 * list of SequenceAnnotation instances.
 	 * 
+	 * @param sequenceAnnotationURI
 	 * @return the matching SequenceAnnotation instance if present, or
 	 *         {@code null} otherwise.
 	 */
@@ -852,6 +893,7 @@ public class ComponentDefinition extends TopLevel {
 		addChildSafely(component, components, "component",
 				sequenceAnnotations, sequenceConstraints);
 		component.setSBOLDocument(this.sbolDocument);
+		component.setComponentDefinition(this);
 	}
 	
 	/**
@@ -866,6 +908,7 @@ public class ComponentDefinition extends TopLevel {
 	 * checks if it is referenced by any children and grandchildren 
 	 * instances of this ComponentDefinition object.
 	 *	
+	 * @param component
 	 * @return {@code true} if the matching Component instance is removed successfully,
 	 *         {@code false} otherwise.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
@@ -914,7 +957,8 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Returns the instance matching the given displayId from the list of Component instances.
-	 * 
+	 *
+	 * @param displayId
 	 * @return the matching Component instance if present, or {@code null} otherwise.
 	 */
 	public Component getComponent(String displayId) {
@@ -925,6 +969,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Returns the instance matching the given Component URI from the
 	 * list of Component instances.
 	 * 
+	 * @param componentURI
 	 * @return the matching Component instance if present, or
 	 *         {@code null} otherwise.
 	 */
@@ -1099,6 +1144,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Returns the instance matching the given displayId from the list of SequenceConstraint instances.
 	 * 
+	 * @param displayId
 	 * @return the matching SequenceConstraint instance if present, or {@code null} otherwise.
 	 */
 	public SequenceConstraint getSequenceConstraint(String displayId) {
@@ -1110,6 +1156,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Returns the instance matching the given SequenceConstraint URI from the
 	 * list of SequenceConstraint instances.
 	 * 
+	 * @param sequenceConstraintURI
 	 * @return the matching SequenceConstraint instance if present, or
 	 *         {@code null} otherwise.
 	 */

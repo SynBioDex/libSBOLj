@@ -218,7 +218,6 @@ public class ModuleDefinition extends TopLevel {
 	 * @param moduleDefinitionURI
 	 * @return a Module instance
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
-	 *             
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies all URIs and the given {@code definitionURI}
                is not found in them.
 	 */
@@ -265,7 +264,6 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 *             
 	 */
-
 	public boolean removeModule(Module module) {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
@@ -276,6 +274,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the Module instance matching the given displayId from the list of
 	 * Module instances.
 	 * 
+	 * @param displayId
 	 * @return the matching Module instance if present, or {@code null} otherwise.
 	 */
 	public Module getModule(String displayId) {
@@ -286,10 +285,9 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Returns the instance matching the given URI from the list of Module instances.
 	 * 
-	 * 
+	 * @param moduleURI
 	 * @return the matching Module instance if present, or {@code null} otherwise.
-	 *         
-	 */
+	 */	
 	public Module getModule(URI moduleURI) {
 		return modules.get(moduleURI);
 	}
@@ -405,6 +403,7 @@ public class ModuleDefinition extends TopLevel {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
+	 * @param interaction
 	 * @return {@code true} if the matching Interaction instance is removed successfully, {@code false} otherwise.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
@@ -418,6 +417,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the instance matching the given Interaction displayId from the
 	 * list of Interaction instances.
 	 * 
+	 * @param displayId
 	 * @return the matching instance if present, {@code null} otherwise.
 	 */
 	public Interaction getInteraction(String displayId) {
@@ -426,10 +426,10 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * 
 	 * Returns the instance matching the given Interaction URI from the list of
 	 * Interaction instances.
-	 * 
+	 *
+	 * @param interactionURI
 	 * @return the matching instance if present, {@code null} otherwise.
 	 */
 	public Interaction getInteraction(URI interactionURI) {
@@ -581,6 +581,7 @@ public class ModuleDefinition extends TopLevel {
 		addChildSafely(functionalComponent, functionalComponents, "functionalComponent",
 				interactions, modules);
 		functionalComponent.setSBOLDocument(this.sbolDocument);
+		functionalComponent.setModuleDefinition(this);
 	}
 
 	/**
@@ -646,9 +647,10 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Returns the FunctionalComponent instance matching the given {@code displayId} from 
 	 * this ModuleDefinition object's list of FunctionalComponent instances.
-	 * 
+	 *
+	 * @param displayId
 	 * @return the matching instance if present, or {@code null} otherwise.
-	 */
+	 */	
 	public FunctionalComponent getFunctionalComponent(String displayId) {
 		return functionalComponents.get(createCompliantURI(this.getPersistentIdentity().toString(),
 				displayId, this.getVersion()));
@@ -658,6 +660,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the FunctionalComponent instance matching the given {@code componentURI} from this
 	 * ModuleDefinition object's list of FunctionalComponent instances.
 	 * 
+	 * @param componentURI
 	 * @return the matching FunctionalComponent instance if present, or
 	 *         {@code null} otherwise.
 	 */
@@ -722,7 +725,7 @@ public class ModuleDefinition extends TopLevel {
 	 * reference URIs and the given model's URI
 	 * is not found in them, then an {@link IllegalArgumentException} is thrown.
 	 * <p>
-	 * This method calls {@link # addModel(URI)} with this component definition URI.
+	 * This method calls {@link #addModel(URI)} with this component definition URI.
 	 * 
 	 * @param model
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
@@ -752,7 +755,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <p>
 	 * This method creates a compliant Model URI with the default URI prefix for this SBOLDocument instance, 
 	 * and the given {@code definition} and {@code version}. 
-	 * This method then calls {@link # addModel(URI)} with this component definition URI.
+	 * This method then calls {@link #addModel(URI)} with this component definition URI.
 	 * 
 	 * @param model
 	 * @param version
@@ -808,6 +811,7 @@ public class ModuleDefinition extends TopLevel {
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
+	 * @param modelURI
 	 * @return {@code true} if the matching Model reference is removed successfully,
 	 *         {@code false} otherwise.      
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
