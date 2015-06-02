@@ -106,7 +106,7 @@ final class URIcompliance {
 	}
 
 	/**
-	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/){1,4}⟨version⟩.
+	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,4}⟨version⟩.
 	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
 	 * the level of the given object. If the given index is 0, then {@code objURI} is checked as a top-level URI for compliance;
 	 * if the given index is 1, then {@code objURI} is checked as a child of a top-level URI for compliance;

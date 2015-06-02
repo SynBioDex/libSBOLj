@@ -46,7 +46,7 @@ public abstract class ComponentInstance extends Identified {
 	 * 
 	 * @param access
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
-	 * @throws if the given {@code access} argument is {@code null}
+	 * @throws IllegalArgumentException if the given {@code access} argument is {@code null}
 	 */
 	public void setAccess(AccessType access) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -85,7 +85,7 @@ public abstract class ComponentInstance extends Identified {
 	 * 
 	 * @param definition
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
-	 * @throws if the given {@code definition} argument is {@code null}
+	 * @throws IllegalArgumentException if the given {@code definition} argument is {@code null}
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies 
 	 * 		all URIs and the given definition URI is not found in them.
 	 *             
