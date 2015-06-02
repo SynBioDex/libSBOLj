@@ -73,11 +73,12 @@ public class MapsTo extends Identified{
 	}
 	
 	/**
-	 * Returns the local FunctionalComponent instance that this object refers to.
+	 * Returns the local ComponentInstance instance that this object refers to.
 	 * 
-	 * @return the local FunctionalComponent instance that this object refers to, 
-	 * if the ModuleDefinition instance that this MapsTo object's parent Module 
-	 * instance refers to is not {@code null}; {@code null} otherwise.
+	 * @return the local ComponentInstance instance that this object refers to
+	 * if this MapsTo object's reference ModuleDefinition instance is not {@code null},
+	 * or if this MapsTo object's parent ComponentInstance instance is not {@code null}; 
+	 * or {@code null} otherwise.    
 	 */
 	public ComponentInstance getLocal() {
 		if (moduleDefinition!=null) {
@@ -129,12 +130,14 @@ public class MapsTo extends Identified{
 	}
  
 	/**
-	 * Returns the remote FunctionalComponent instance that this object refers to.
+	 * Returns the remote ComponentInstance instance that this object refers to.
 	 * 
-	 * @return the remote FunctionalComponent instance that this object refers to, 
-	 * if this MapsTo object's parent Module instance is not {@code null} and this
-	 * Module instance's reference ModuleDefinition instance is not {@code null};
-	 * {@code null} otherwise.   
+	 * @return the remote ComponentInstance instance that this object refers to,
+	 * if this MapsTo object's parent Module instance is not {@code null} and its
+	 * reference ModuleDefinition instance is not {@code null}, 
+	 * or if this MapsTo object's parent ComponentInstance instance is not {@code null} 
+	 * and its reference ComponentDefinition instance is not {@code null};
+	 * or {@code null} otherwise.    
 	 */
 	public ComponentInstance getRemote() {
 		if (module!=null) {
