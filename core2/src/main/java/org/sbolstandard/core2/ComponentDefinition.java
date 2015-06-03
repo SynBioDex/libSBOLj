@@ -967,7 +967,7 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
-	 * Returns the instance matching the given Component URI from the
+	 * Returns the instance matching the given {@code componentURI} from the
 	 * list of Component instances.
 	 * 
 	 * @param componentURI

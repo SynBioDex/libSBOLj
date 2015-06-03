@@ -42,20 +42,47 @@ public class SequenceAnnotation extends Identified {
 		}
 	}
 	
+	/**
+	 * Creates a GenericLocation instance with the given arguments, 
+	 * and then adds to this SequenceAnnotation object's list of locations.
+	 * <p>
+	 * This method creates the GenericLocation instance's identity URI with the persistent identity of this
+	 * SequenceAnnotation object, the given {@code displayId} of the GenericLocation instance. 
+	 *  
+	 * @param displayId
+	 */
 	public void addGenericLocation(String displayId) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		GenericLocation genericLocation = new GenericLocation(identity);
 		addLocation(genericLocation);
 	}
 	
+	/**
+	 * Creates a GenericLocation instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * list of locations.
+	 * <p>
+	 * This method creates the GenericLocation instance's identity URI with the persistent identity of this
+	 * SequenceAnnotation object, the given {@code displayId} of the GenericLocation instance. 
+	 * The orientation property
+	 * of the created GenericLocation instance is set to the given {@code orientation}.
+	 *  
+	 * @param displayId
+	 * @param orientation
+ 	 */
 	public void addGenericLocation(String displayId,OrientationType orientation) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		GenericLocation genericLocation = new GenericLocation(identity);
 		genericLocation.setOrientation(orientation);
 		addLocation(genericLocation);
 	}
-
+	
 	/**
+	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * list of locations.
+	 * <p>
+	 * This method creates the Cut instance's identity URI with the persistent identity of this
+	 * SequenceAnnotation object, the given {@code displayId} of the Cut instance. 
+	 *  
 	 * @param displayId
 	 * @param at
 	 */
@@ -66,6 +93,13 @@ public class SequenceAnnotation extends Identified {
 	}
 	
 	/**
+	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * list of locations.
+	 * <p>
+	 * This method creates the Cut instance's identity URI with the persistent identity of this
+	 * SequenceAnnotation object, the given {@code displayId} of the Cut instance. The orientation property
+	 * of the created Cut instance is set to the given {@code orientation}.
+	 *  
 	 * @param displayId
 	 * @param at
 	 * @param orientation
@@ -76,14 +110,37 @@ public class SequenceAnnotation extends Identified {
 		cut.setOrientation(orientation);
 		addLocation(cut);
 	}
-	
 
+	/**
+	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * list of locations.
+	 * <p>
+	 * This method creates the Range instance's identity URI with the persistent identity of this
+	 * SequenceAnnotation object, the given {@code displayId} of the Range instance. 
+	 * 
+	 * @param displayId
+	 * @param start
+	 * @param end
+	 */
 	public void addRange(String displayId,int start,int end) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Range range = new Range(identity,start,end);
 		addLocation(range);
 	}
 	
+	/**
+ 	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * list of locations.
+	 * <p>
+	 * This method creates the Range instance's identity URI with the persistent identity of this
+	 * SequenceAnnotation object, the given {@code displayId} of the Range instance. The orientation property
+	 * of the created Range instance is set to the given {@code orientation}.
+	 * 
+	 * @param displayId
+	 * @param start
+	 * @param end
+	 * @param orientation
+	 */
 	public void addRange(String displayId,int start,int end,OrientationType orientation) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Range range = new Range(identity,start,end);
@@ -97,40 +154,62 @@ public class SequenceAnnotation extends Identified {
 	}
 	
 	/**
-	 * Removes the instance matching the specified URI from the list of locations if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
-	 */
+	 * Removes the given Location instance from the list of Location
+	 * instances.
+	 * <p>
+	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. 
+	 * Only a compliant SBOLDocument instance is allowed to be edited.
+	 * 
+	 * @param location
+	 * @return {@code true} if the matching Location instance is removed successfully, {@code false} otherwise.
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 */	
 	public boolean removeLocation(Location location) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(location,locations);
 	}
 	
 	/**
-	 * Returns the instance matching the specified displayId from the list of locations, if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * Returns the Location instance owned by this SequenceAnnotation object 
+	 * that matches the given {@code displayId}
+	 * 
+	 * @param displayId
+	 * @return the matching Location instance
 	 */
 	public Location getLocation(String displayId) {
 		return locations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
 	}
 	
 	/**
-	 * Returns the instance matching the specified URI from the list of locations, if present.
-	 * @return the matching instance if present, or <code>null</code> if not present.
+	 * Returns the Location instance owned by this SequenceAnnotation object 
+	 * that matches the given {@code displayId}
+	 * 
+	 * @param locationURI
+	 * @return the matching Location instance URI
 	 */
 	public Location getLocation(URI locationURI) {
 		return locations.get(locationURI);
 	}
 	
 	/**
-	 * Returns the list of location instances owned by this instance. 
-	 * @return the list of location instances owned by this instance.
+	 * Returns the set of Location instances referenced by this SequenceAnnotation object.
+	 * 
+	 * @return the set of Location instances referenced by this SequenceAnnotation object.
 	 */
 	public Set<Location> getLocations() {
 		return new HashSet<>(locations.values());
 	}
-	
+
 	/**
-	 * Removes all entries of the list of locations owned by this instance. The list will be empty after this call returns.
+	 * Removes all entries of this SequenceAnnotation object's list of Location
+	 * instances. The set will be empty after this call returns.
+  	 * <p>
+	 * If this SequenceAnnotation object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. 
+	 * Only a compliant SBOLDocument instance is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant  
 	 */
 	public void clearLocations() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -214,36 +293,72 @@ public class SequenceAnnotation extends Identified {
 	*/
 		
 	/**
-	 * Test if optional field variable <code>component</code> is set.
-	 * @return <code>true</code> if it is not null.
+	 * Test if the reference Component instance is set.
+	 *  
+	 * @return {@code true} if it refers to a Component instance; {@code false} otherwise.
 	 */
 	public boolean isSetComponent() {
 		return component != null;
 	}
-	
+
 	/**
-	 * Returns field variable <code>component</code>.
-	 * @return field variable <code>component</code>
+	 * Returns the Component URI that this SequenceAnnotation object refers to.
+	 * 
+	 * @return the Component URI that this SequenceAnnotation object refers to
 	 */
 	public URI getComponentURI() {
 		return component;
 	}
 
+	/**
+	 * Returns the Component instance that this SequenceAnnotation object refers to.
+	 * 
+	 * @return the Component instance that this SequenceAnnotation object refers to,
+	 * if the associated SBOLDocument instance is not {@code null}; {@code null} otherwise 
+	 */
 	public Component getComponent() {
 		if (componentDefinition==null) return null;
 		return componentDefinition.getComponent(component);
 	}
 	
-	public void setComponent(String component) {
+	/**
+	 * Sets the reference component URI to the URI of the Component instance matching the 
+	 * given {@code displayId}.
+	 * <p>
+	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant URI for the reference Component instance using the
+	 * persistent identity of this SequenceAnnotation object's parent ComponentDefinition instance,
+	 * the given {@code displayId}, and the parent ComponentDefinition instance's version.
+	 * It then calls {@link #setComponent(URI)} to set the reference.
+	 * 
+	 * @param displayId
+ 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the associated ComponentDefinition object is not {@code null},
+	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
+	 * list of Component instances.
+	 */
+	public void setComponent(String displayId) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
-				component, componentDefinition.getVersion());
+				displayId, componentDefinition.getVersion());
 		setComponent(componentURI);
 	}
 
 	/**
-	 * Sets field variable <code>component</code> to the specified element.
+	 * Sets the reference component URI to the given {@code componentURI}.
+	 * <p>
+	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
 	 * @param componentURI
+ 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the associated ComponentDefinition object is not {@code null},
+	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
+	 * list of Component instances.
 	 */
 	public void setComponent(URI componentURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -256,7 +371,13 @@ public class SequenceAnnotation extends Identified {
 	}
 	
 	/**
-	 * Set optional field variable <code>component</code> to <code>null</code>.
+	 * Dereference the component URI by setting it to {@code null}.
+	 * <p>
+	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public void unsetComponent() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -554,7 +675,7 @@ public class SequenceAnnotation extends Identified {
 	}
 
 	/**
-	 * @param componentDefinition the componentDefinition to set
+	 * @param componentDefinition
 	 */
 	void setComponentDefinition(ComponentDefinition componentDefinition) {
 		this.componentDefinition = componentDefinition;
