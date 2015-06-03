@@ -65,6 +65,7 @@ public class Interaction extends Identified {
 	 * is allowed to be edited.
 	 * 
 	 * @param typeURI
+	 * @return {@code true} if this set did not already contain the specified role.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public boolean addType(URI typeURI) {
@@ -274,6 +275,7 @@ public class Interaction extends Identified {
 	 * Returns the Participation instance matching the given {@code participationURI} from this
 	 * Interaction object's list of Participation instances.
 	 * 
+	 * @param participationURI
 	 * @return the matching Participation instance if present, or
 	 *         {@code null} otherwise.
 	 */

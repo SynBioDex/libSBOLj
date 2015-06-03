@@ -22,16 +22,21 @@ class SBOLException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
 	private final List<Identified> objects;
-
+	
 	/**
 	 * Creates a new exception instance with the given message and objects causing the problem.
+	 * @param message
+	 * @param objects
 	 */
 	public SBOLException(String message, Identified ... objects) {
 		this(message, Arrays.asList(objects));
 	}
-
+	
 	/**
 	 * Creates a new exception instance with the given message and objects causing the problem.
+	 * 
+	 * @param message
+	 * @param objects
 	 */
 	public SBOLException(String message, java.util.Collection<? extends Identified> objects) {
 		super(formatMessage(message, objects));
@@ -39,9 +44,13 @@ class SBOLException extends RuntimeException {
 		this.objects = Collections.unmodifiableList(new ArrayList<>(objects));
 	}
 
-	/**
-	 * Creates a new exception instance with the given message and objects causing the problem.
-	 */
+    /**
+     * Creates a new exception instance with the given message and objects causing the problem.
+     * 
+     * @param message
+     * @param cause
+     * @param objects
+     */
     public SBOLException(String message, Throwable cause, Identified ... objects) {
         super(message, cause);
         this.objects = Collections.unmodifiableList(Arrays.asList(objects));
@@ -49,7 +58,9 @@ class SBOLException extends RuntimeException {
 
     /**
 	 * Creates a new exception instance with the given cause but no specific objects for the problem.
-	 */
+	 * 
+	 * @param cause
+	 */	
 	public SBOLException(Throwable cause) {
 		super(cause);
 
@@ -60,6 +71,8 @@ class SBOLException extends RuntimeException {
 	 * Returns the list of objects relevant for the validation exception. This list may be empty if the exact object
 	 * for the validation exception is not known. In those cases, the {@link #getCause() cause} of the exception can 
 	 * provide more information.
+	 * 
+	 * @return a collection of Identified instances
 	 */
 	public java.util.Collection<Identified> getObjects() {
 		return objects;

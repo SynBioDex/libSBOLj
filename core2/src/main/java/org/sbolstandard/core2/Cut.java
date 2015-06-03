@@ -44,6 +44,7 @@ public class Cut extends Location{
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
+	 * @param at 
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code at} value is less than 0
 	 */

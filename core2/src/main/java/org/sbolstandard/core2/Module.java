@@ -52,8 +52,8 @@ public class Module extends Identified {
 	/**
 	 * Returns the ModuleDefinition instance that this Module object refers to.
 	 * 
-	 * @return the ModuleDefinition instance that this Module object refers to
-	 * if the associated SBOLDocument instance is not {@code null}, {@code null} otherwise 
+	 * @return the ModuleDefinition instance that this Module object refers to,
+	 * if the associated SBOLDocument instance is not {@code null}; {@code null} otherwise 
 	 */
 	public ModuleDefinition getDefinition() {
 		if (sbolDocument==null) return null;
@@ -61,7 +61,7 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Sets the reference definition URI to the given value.
+	 * Sets the reference definition URI to the given {@code definitionURI}.
 	 * <p>
 	 * If this Module object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
@@ -236,26 +236,20 @@ public class Module extends Identified {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
+	 * @param mapsTo
 	 * @return {@code true} if the matching MapsTo instance is removed successfully, {@code false} otherwise.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
-	 */
+	 */	
 	public boolean removeMapsTo(MapsTo mapsTo) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(mapsTo,mapsTos);
 	}
-	
-		/**
-	 * 
-	 * 
-	 * @return the ModuleDefinition instance that this Module object refers to
-	 * if the associated SBOLDocument instance is not {@code null}, {@code null} otherwise 
-	 */
-	
+
 	/**
 	 * Returns the MapsTo instance owned by this Module object that matches the given {@code displayId}
 	 * 
 	 * @param displayId
-	 * @return the matching MapsTo instance.
+	 * @return the matching MapsTo instance
 	 */
 	public MapsTo getMapsTo(String displayId) {
 		return mapsTos.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
@@ -265,7 +259,7 @@ public class Module extends Identified {
 	 * Returns the MapsTo instance owned by this Module object that matches the given {@code displayId}
 	 * 
 	 * @param referenceURI
-	 * @return the matching MapsTo URI
+	 * @return the matching MapsTo instnace URI
 	 */
 	public MapsTo getMapsTo(URI referenceURI) {
 		return mapsTos.get(referenceURI);
@@ -281,8 +275,8 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Removes all entries of this Module object's list of Module
-	 * objects. The set will be empty after this call returns.
+	 * Removes all entries of this Module object's list of MapsTo
+	 * instances. The set will be empty after this call returns.
   	 * <p>
 	 * If this Module object belongs to an SBOLDocument instance,
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance

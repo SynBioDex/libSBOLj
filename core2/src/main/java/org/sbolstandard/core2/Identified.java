@@ -302,8 +302,12 @@ public abstract class Identified {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @param qName
+	 * @param nestedQName
+	 * @param nestedURI
+	 * @param annotations
 	 * @return the created Annotation instance.
+	 * @throws SBOLException if the associated SBOLDocument is not compliant 
 	 */
 	public Annotation createAnnotation(QName qName,QName nestedQName, URI nestedURI, List<Annotation> annotations) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

@@ -113,6 +113,7 @@ public class ComponentDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 * 
 	 * @param typeURI
+	 * @return @return {@code true} if this set did not already contain the given Sequence instance URI.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public boolean addType(URI typeURI) {
@@ -966,7 +967,7 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
-	 * Returns the instance matching the given Component URI from the
+	 * Returns the instance matching the given {@code componentURI} from the
 	 * list of Component instances.
 	 * 
 	 * @param componentURI

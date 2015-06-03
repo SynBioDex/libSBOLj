@@ -74,10 +74,11 @@ public class Collection extends TopLevel{
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
+	 * @param memberURI
 	 * @return {@code true} if the matching member reference is removed successfully,
 	 *         {@code false} otherwise.      
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
-	 */
+	 */	
 	public boolean removeMember(URI memberURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return members.remove(memberURI);
