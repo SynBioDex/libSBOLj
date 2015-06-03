@@ -311,10 +311,11 @@ public class SequenceAnnotation extends Identified {
 	}
 
 	/**
-	 * Returns the Component instance that this SequenceAnnotation object refers to.
+	 * Returns the Component instance this SequenceAnnotation object refers to.
 	 * 
-	 * @return the Component instance that this SequenceAnnotation object refers to,
-	 * if the associated SBOLDocument instance is not {@code null}; {@code null} otherwise 
+	 * @return the Component instance this SequenceAnnotation object refers to,
+	 * if the associated ComponentDefinition instance is not {@code null}, 
+	 * or {@code null} otherwise 
 	 */
 	public Component getComponent() {
 		if (componentDefinition==null) return null;
@@ -322,7 +323,7 @@ public class SequenceAnnotation extends Identified {
 	}
 	
 	/**
-	 * Sets the reference component URI to the URI of the Component instance matching the 
+	 * Sets the reference Component URI to the URI of the Component instance matching the 
 	 * given {@code displayId}.
 	 * <p>
 	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
