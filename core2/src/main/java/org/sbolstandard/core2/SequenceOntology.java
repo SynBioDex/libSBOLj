@@ -96,6 +96,8 @@ public class SequenceOntology {
 	/**
 	 * Creates a new URI from the Sequence Ontology namespace with the given local name. For example, the function call
 	 * <code>term("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
+	 * @param localName 
+	 * @return the created URI
 	 */
 	public static final URI type(String localName) {
 		return URI.create(URI_PREFIX+localName);

@@ -62,6 +62,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
+	 * @param direction
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code direction} is {@code null}
 	 * 

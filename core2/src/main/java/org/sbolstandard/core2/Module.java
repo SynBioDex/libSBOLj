@@ -236,9 +236,10 @@ public class Module extends Identified {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
+	 * @param mapsTo
 	 * @return {@code true} if the matching MapsTo instance is removed successfully, {@code false} otherwise.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
-	 */
+	 */	
 	public boolean removeMapsTo(MapsTo mapsTo) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(mapsTo,mapsTos);

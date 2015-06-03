@@ -371,6 +371,7 @@ public class ModuleDefinition extends TopLevel {
 	 * 
 	 * @param displayId
 	 * @param types
+	 * @return the created Interaction instance
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public Interaction createInteraction(String displayId, Set<URI> types) {
@@ -728,6 +729,8 @@ public class ModuleDefinition extends TopLevel {
 	 * This method calls {@link #addModel(URI)} with this component definition URI.
 	 * 
 	 * @param model
+	 * @return {@code true} if this set did not already contain the given Model
+	 *         instance
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies all URIs
 	 *             and the given Model instance's URI is not found in them.
@@ -759,9 +762,9 @@ public class ModuleDefinition extends TopLevel {
 	 * 
 	 * @param model
 	 * @param version
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 * @return {@code true} if this set did not already contain the given Model
 	 *         instance URI.
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public boolean addModel(String model, String version) {
 		if (sbolDocument != null)

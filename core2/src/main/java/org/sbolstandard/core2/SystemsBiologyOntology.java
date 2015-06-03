@@ -81,6 +81,8 @@ public class SystemsBiologyOntology {
 	/**
 	 * Creates a new URI from the Systems Biology Ontology namespace with the given local name. For example, the function call
 	 * <code>term("SBO_0000001")</code> will return the URI <a>http://purl.obolibrary.org/obo/SBO_0000001</a>
+	 * @param localName 
+	 * @return the created URI
 	 */
 	public static final URI type(String localName) {
 		return URI.create(URI_PREFIX+localName);
