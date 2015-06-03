@@ -32,6 +32,9 @@ public class SBOLValidate {
 		System.exit(1);
 	}
 	
+	/**
+	 * @param sbolDocument
+	 */
 	public static void validateCompliance(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
 			if (!collection.checkDescendantsURIcompliance()) 
