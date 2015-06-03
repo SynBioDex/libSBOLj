@@ -12,6 +12,9 @@ package org.sbolstandard.core2;
 
 public class SBOLValidate {
 	
+	/**
+	 * the current SBOL version
+	 */
 	public static final String SBOLVersion = "2.0";
 	
 	private static void usage() {		

@@ -35,6 +35,11 @@ public class SBOLDocument {
 	private boolean compliant = true;
 	private boolean typesInURIs = false;
 
+	/**
+	 * Creates a new SBOLDocument instance with one empty list for the namespaces and for each top-level instance,
+	 * and then adds the following namespaces: {@link Sbol2Terms#sbol2}, {@link Sbol1Terms#rdf}, {@link Sbol2Terms#dc},
+	 * and {@link Sbol2Terms#prov}.
+	 */
 	public SBOLDocument() {
 		genericTopLevels = new HashMap<>();
 		collections = new HashMap<>();

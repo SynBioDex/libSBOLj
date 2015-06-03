@@ -13,7 +13,14 @@ import java.net.URI;
  */
 
 public enum OrientationType {
+	/**
+	 * The region specified by this Location MUST be on the elements of a Sequence.
+	 */
 	INLINE("inline"), 
+	/**
+	 * The region specified by this Location MUST be on the reverse-complement translation of the elements of a Sequence. 
+	 * The exact nature of this translation depends on the encoding of the Sequence.
+	 */
 	REVERSECOMPLEMENT("reverseComplement");
 	private final String orientationType;
 

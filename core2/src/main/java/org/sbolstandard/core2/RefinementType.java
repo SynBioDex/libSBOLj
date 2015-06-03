@@ -2,10 +2,40 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public enum RefinementType {
+	/**
+	 * The definition properties of the local and remote ComponentInstance objects 
+	 * MUST refer to the same ComponentDefinition.
+	 */
 	VERIFYIDENTICAL("verifyIdentical"),
+	/**
+	 * In the context of the ComponentDefinition or ModuleDefinition that contains 
+	 * the owner of the MapsTo, all references to the definition property
+	 * of the remote ComponentInstance MUST dereference to that of the local 
+	 * ComponentInstance instead. 
+	 */
 	USELOCAL("useLocal"), 
+	/**
+	 * All references to the definition property of the local ComponentInstance 
+	 * MUST dereference to that of the remote ComponentInstance instead.
+	 */
 	USEREMOTE("useRemote"),
+	/**
+	 * In the context of the ComponentDefinition or ModuleDefinition that contains 
+	 * the owner of the MapsTo, all references to the definition property 
+	 * of the local ComponentInstance or that of the remote ComponentInstance MUST 
+	 * dereference to both properties.
+	 */
 	MERGE("merge");
 	private final String refinementType;
 
