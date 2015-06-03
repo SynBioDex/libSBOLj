@@ -113,6 +113,9 @@ public class SequenceConstraint extends Identified {
 		if (subjectURI==null) {
 			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have a subject.");
 		}
+		if (subjectURI==object) {
+			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have different subject and object.");
+		}
 		this.subject = subjectURI;
 	}
 
@@ -161,6 +164,9 @@ public class SequenceConstraint extends Identified {
 		}
 		if (objectURI==null) {
 			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have an object.");
+		}
+		if (objectURI==subject) {
+			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have different subject and object.");
 		}
 		this.object = objectURI;
 	}
