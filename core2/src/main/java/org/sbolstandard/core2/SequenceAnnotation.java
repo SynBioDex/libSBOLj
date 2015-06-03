@@ -102,6 +102,9 @@ public class SequenceAnnotation extends Identified {
 	 */
 	public boolean removeLocation(Location location) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		if (locations.size()==1 && locations.containsValue(location)) {
+			throw new IllegalArgumentException("Sequence annotation " + this.getIdentity() + " must have at least one location.");
+		}
 		return removeChildSafely(location,locations);
 	}
 	
@@ -132,7 +135,7 @@ public class SequenceAnnotation extends Identified {
 	/**
 	 * Removes all entries of the list of locations owned by this instance. The list will be empty after this call returns.
 	 */
-	public void clearLocations() {
+	void clearLocations() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = locations.values().toArray();
 		for (Object location : valueSetArray) {
