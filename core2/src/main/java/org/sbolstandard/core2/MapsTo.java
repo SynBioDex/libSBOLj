@@ -173,18 +173,22 @@ public class MapsTo extends Identified{
 			throw new IllegalArgumentException("MapsTo "+this.getIdentity()+" must specify a remote component.");
 		}
 		if (module!=null) {
-			if (module.getDefinition().getFunctionalComponent(remote)==null) {
-				throw new IllegalArgumentException("Functional Component '" + remote + "' does not exist.");
-			}
-			if (module.getDefinition().getFunctionalComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
-				throw new IllegalArgumentException("Functional Component '" + remote + "' is private.");
+			if (module.getDefinition()!=null) {
+				if (module.getDefinition().getFunctionalComponent(remote)==null) {
+					throw new IllegalArgumentException("Functional Component '" + remote + "' does not exist.");
+				}
+				if (module.getDefinition().getFunctionalComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
+					throw new IllegalArgumentException("Functional Component '" + remote + "' is private.");
+				}
 			}
 		} else if (componentInstance!=null) {
-			if (componentInstance.getDefinition().getComponent(remote)==null) {
-				throw new IllegalArgumentException("Component '" + remote + "' does not exist.");
-			}
-			if (componentInstance.getDefinition().getComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
-				throw new IllegalArgumentException("Component '" + remote + "' is private.");
+			if (componentInstance.getDefinition()!=null) {
+				if (componentInstance.getDefinition().getComponent(remote)==null) {
+					throw new IllegalArgumentException("Component '" + remote + "' does not exist.");
+				}
+				if (componentInstance.getDefinition().getComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
+					throw new IllegalArgumentException("Component '" + remote + "' is private.");
+				}
 			}
 		}
 		this.remote = remote;
