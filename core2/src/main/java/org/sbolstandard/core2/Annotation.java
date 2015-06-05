@@ -28,13 +28,27 @@ public class Annotation {
 
 	private NamedProperty<QName> value;
 
+	/**
+	 * Constructs an Annotation instance using the given {@code qName} and the {@code literal} string.
+	 *  
+	 * @param qName
+	 * @param literal
+	 * @throws SBOLException if the local part of the given {@code qName} is not an SBOL object.
+	 */
 	public Annotation(QName qName, String literal) {
 		if (qName.getPrefix().toString().equals("sbol")) {
 			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 		value = NamedProperty(qName,literal);
 	}
-
+	
+	/**
+	 * Constructs an Annotation instance using the given {@code qName} and the {@code literal} integer.
+	 *  
+	 * @param qName
+	 * @param literal
+	 * @throws SBOLException if the local part of the given {@code qName} is not an SBOL object.
+	 */
 	public Annotation(QName qName, int literal) {
 		if (qName.getPrefix().toString().equals("sbol")) {
 			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
@@ -42,14 +56,35 @@ public class Annotation {
 		value = NamedProperty(qName,literal);
 	}
 
+	/**
+	 * Constructs an Annotation instance using the given {@code qName} and the {@code double} type {@code literal}.
+	 *  
+	 * @param qName
+	 * @param literal
+	 * @throws SBOLException if the local part of the given {@code qName} is not an SBOL object.
+	 */
 	public Annotation(QName qName, double literal) {
 		value = NamedProperty(qName, literal);
 	}
 
+	/**
+	 * Constructs an Annotation instance using the given {@code qName} and the {@code boolean} type {@code literal}.
+	 *  
+	 * @param qName
+	 * @param literal
+	 * @throws SBOLException if the local part of the given {@code qName} is not an SBOL object.
+	 */
 	public Annotation(QName qName, boolean literal) {
 		value = NamedProperty(qName,literal);
 	}
-
+	
+	/**
+	 * Constructs an Annotation instance using the given {@code qName} and the URI type {@code literal}.
+	 *  
+	 * @param qName
+	 * @param literal
+	 * @throws SBOLException if the local part of the given {@code qName} is not an SBOL object.
+	 */
 	public Annotation(QName qName, URI literal) {
 		if (qName.getPrefix().toString().equals("sbol")) {
 			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
@@ -57,6 +92,13 @@ public class Annotation {
 		value = NamedProperty(qName,literal);
 	}
 
+	/**
+	 * @param qName
+	 * @param nestedQName
+	 * @param nestedURI
+	 * @param annotations
+	 * @throws SBOLException
+	 */
 	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
 		if (qName.getPrefix().toString().equals("sbol")) {
 			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
@@ -83,10 +125,22 @@ public class Annotation {
 		this.setValue(annotation.getValue());
 	}
 
+	/**
+	 * Returns the name of the {@code value} property.
+	 * 
+	 * @return the name of the {@code value} property
+	 */
 	public QName getQName() {
 		return value.getName();
 	}
 
+	/**
+	 * Returns a string representation of the {@code value} property.
+	 * 
+	 * @return a string representation of the {@code value} property if its 
+	 * value is of a Literal type defined by {@link uk.ac.ncl.intbio.core.datatree.Literal}, or {@code null}
+	 * otherwise.
+	 */
 	public String getStringValue() {
 		if (value.getValue() instanceof Literal<?>) {
 			return ((Literal<QName>) value.getValue()).getValue().toString();
@@ -94,6 +148,13 @@ public class Annotation {
 		return null;
 	}
 
+	/**
+	 * Returns a URI representation of the {@code value} property.
+	 * 
+	 * @return a URI representation of the {@code value} property if its
+	 * the value is of a Literal type defined by {@link uk.ac.ncl.intbio.core.datatree.Literal}, 
+	 * or {@code null} otherwise.
+	 */
 	public URI getURIValue() {
 		if (value.getValue() instanceof Literal<?>) {
 			return URI.create(((Literal<QName>) value.getValue()).getValue().toString());
@@ -101,6 +162,13 @@ public class Annotation {
 		return null;
 	}
 
+	/**
+	 * Returns the type of the nested {@code value} property.
+	 *  
+	 * @return the type of the nested QName {@code value} property if its value is
+	 * of a NestedDocument type (see {@link uk.ac.ncl.intbio.core.datatree.NestedDocument}),
+	 * or {@code null} otherwise.
+	 */
 	public QName getNestedQName() {
 		if (value.getValue() instanceof NestedDocument<?>) {
 			return ((NestedDocument<QName>) value.getValue()).getType();
@@ -108,6 +176,13 @@ public class Annotation {
 		return null;
 	}
 
+	/**
+	 * Returns the identity URI of the nested {@code value} property.
+	 *  
+	 * @return the identity URI of the nested QName {@code value} property if its value is
+	 * of a NestedDocument type (see {@link uk.ac.ncl.intbio.core.datatree.NestedDocument}),
+	 * or {@code null} otherwise.
+	 */
 	public URI getNestedIdentity() {
 		if (value.getValue() instanceof NestedDocument<?>) {
 			return ((NestedDocument<QName>) value.getValue()).getIdentity();
@@ -115,6 +190,13 @@ public class Annotation {
 		return null;
 	}
 
+	/**
+	 * Returns the list of Annotations of the nested {@code value} property.
+	 * 
+	 * @return the list of Annotations of the nested {@code value} property if its value is
+	 * of a NestedDocument type (see {@link uk.ac.ncl.intbio.core.datatree.NestedDocument}),
+	 * or {@code null} otherwise.
+	 */
 	public List<Annotation> getAnnotations() {
 		if (value.getValue() instanceof NestedDocument<?>) {
 			List<Annotation> annotations = new ArrayList<>();
@@ -128,6 +210,7 @@ public class Annotation {
 
 	/**
 	 * Returns the value of this Annotation object.
+	 * 
 	 * @return the value of this Annotation object.
 	 */
 	NamedProperty<QName> getValue() {

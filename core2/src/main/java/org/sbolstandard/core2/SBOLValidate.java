@@ -33,7 +33,11 @@ public class SBOLValidate {
 	}
 	
 	/**
+	 * Validate URI compliance in the given {@code sbolDocument}.
+	 * 
 	 * @param sbolDocument
+	 * @throws SBOLException if any top-level objects or any of their children or grandchildren 
+	 * in the given {@code sbolDocument} contain a non-compliant URI.
 	 */
 	public static void validateCompliance(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
@@ -62,6 +66,13 @@ public class SBOLValidate {
 		}
 	}
 
+	/**
+	 * Validate if all URI references to SBOL objects are in the same given {@code sbolDocument}.
+	 * 
+	 * @param sbolDocument
+	 * @throws SBOLException if any reference made by Collection, ComponentDefinition,
+	 * or ModuleDefinition is not in the given {@code sbolDocument}
+	 */
 	public static void validateCompleteness(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
 			if (!collection.isComplete()) 
@@ -77,6 +88,28 @@ public class SBOLValidate {
 		}
 	}
 	
+	/**
+	 * Command line method for reading an input file and producing an output file. 
+	 * <p>
+	 * By default, validations on compliance and completeness are performed, and types
+	 * for top-level objects are not used in URIs.
+	 * <p>
+	 * Options:
+	 * <p> 
+	 * "-t" uses types in URIs,
+	 * <p>
+	 * "-i" turns off completeness checking,
+	 * <p>
+	 * "-n" indicates a non-compliant SBOL document,
+	 * <p>
+	 * "-o" specifies an output filename,
+	 * <p>
+	 * "-p" specifies the default URI prefix of the output file, and 
+	 * <p>
+	 * "-v" returns the version of the libSBOLj. 
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		String fileName = "";
 		String outputFile = "";

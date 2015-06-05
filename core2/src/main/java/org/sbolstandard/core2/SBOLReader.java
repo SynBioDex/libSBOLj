@@ -197,7 +197,7 @@ public class SBOLReader
 	 * Takes in the given RDF file and converts the file to an SBOLDocument.
 	 * 
 	 * @param file
-	 * @return
+	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
 	 */
 	public static SBOLDocument read(File file) throws Throwable
@@ -327,7 +327,7 @@ public class SBOLReader
 	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument.
 	 * 
 	 * @param in
-	 * @return
+	 * @return the converted SBOLDocument instance
 	 * @throws Exception 
 	 * @throws IOException
 	 */
