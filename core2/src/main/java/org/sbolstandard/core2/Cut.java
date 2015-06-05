@@ -2,8 +2,6 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
-import static org.sbolstandard.core2.URIcompliance.*;
-
 /**
  * @author Zhen Zhang
  * @author Tramy Nguyen

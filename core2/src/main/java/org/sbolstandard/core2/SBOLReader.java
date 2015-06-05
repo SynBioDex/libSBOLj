@@ -197,7 +197,7 @@ public class SBOLReader
 	 * Takes in the given RDF file and converts the file to an SBOLDocument.
 	 * 
 	 * @param file
-	 * @return
+	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
 	 */
 	public static SBOLDocument read(File file) throws Throwable
@@ -327,7 +327,7 @@ public class SBOLReader
 	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument.
 	 * 
 	 * @param in
-	 * @return
+	 * @return the converted SBOLDocument instance
 	 * @throws Exception 
 	 * @throws IOException
 	 */
@@ -436,11 +436,6 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	/**
-	 * @param stream
-	 * @return
-	 * @throws Exception
-	 */
 	private static DocumentRoot<QName> readJSON(Reader stream) throws Exception
 	{
 		JsonReader reader 		  = Json.createReaderFactory(Collections.<String, Object> emptyMap()).createReader(stream);
@@ -887,8 +882,8 @@ public class SBOLReader
 				{
 					dummyGenericLoc.setOrientation(OrientationType.convertToOrientationType(OrientationType.reverseComplement));
 				}
-				location = dummyGenericLoc;
 			}
+			location = dummyGenericLoc;
 		}
 
 		List<Location> locations = new ArrayList<>();

@@ -2,7 +2,6 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

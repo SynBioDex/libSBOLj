@@ -604,6 +604,38 @@ public abstract class SBOLAbstractTests {
 	}
 
 	@Test
+	public void test_BBa_I0462_File() throws Exception
+	{
+		String fileName = "test/data/SBOL1/BBa_I0462.xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, "rdf");
+			runTest("test/data/BBa_I0462.rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+	
+	@Test
+	public void test_BBa_T9002_File() throws Exception
+	{
+		String fileName = "test/data/SBOL1/BBa_T9002.xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, "rdf");
+			runTest("test/data/BBa_T9002.rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+	
+	@Test
 	public void test_labhost_All_File() throws Exception
 	{
 		String fileName = "test/data/SBOL1/labhost_All.xml";
