@@ -11,12 +11,13 @@ final class URIcompliance {
 		if (!isDisplayIdCompliant(displayId)) {
 			throw new IllegalArgumentException("Display id `" + displayId + "' is not valid.");
 		}
-		if (!isVersionCompliant(version)) {
+		if (version!=null && !isVersionCompliant(version)) {
 			throw new IllegalArgumentException("Version `" + version + "' is not valid.");
 		}
 	}
 
 	static URI createCompliantURI(String prefix, String displayId, String version) {
+		validateIdVersion(displayId, version);
 		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
 			prefix += "/";
 		}
@@ -27,6 +28,7 @@ final class URIcompliance {
 	}
 	
 	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) {
+		validateIdVersion(displayId, version);
 		if (!useType) return createCompliantURI(prefix,displayId,version);
 		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
 			prefix += "/";

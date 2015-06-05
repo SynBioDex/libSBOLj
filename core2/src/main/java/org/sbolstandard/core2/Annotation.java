@@ -93,6 +93,9 @@ public class Annotation {
 	}
 
 	/**
+	 * Constructs a nested Annotation instance using the given {@code qName}, {@code nestedQName}, 
+	 * {@code nestedURI}, and a list of {@code annotations} to include.
+	 *
 	 * @param qName
 	 * @param nestedQName
 	 * @param nestedURI
@@ -250,7 +253,7 @@ public class Annotation {
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -266,10 +269,41 @@ public class Annotation {
 		if (value == null) {
 			if (other.value != null)
 				return false;
-		} else if (!value.equals(other.value))
-			//return false;
-			// TODO: Hack here. Need to wait for equals and hashCode to be implemented in NamedProperty.
-			return true;
+		} else if (!value.equals(other.value)) {
+ 			if (!this.getQName().equals(other.getQName())) {
+				return false;
+			} else if ((this.getValue().getValue() instanceof Literal<?>) && 
+					(other.getValue().getValue() instanceof Literal<?>)) {
+				if (!this.getStringValue().equals(other.getStringValue())) {
+					return false;
+				} 
+			} else if ((this.getValue().getValue() instanceof NestedDocument<?>) && 
+					(other.getValue().getValue() instanceof NestedDocument<?>)) {
+				if (!this.getNestedQName().equals(other.getNestedQName())) {
+					return false;
+				}
+				if (!this.getNestedIdentity().equals(other.getNestedIdentity())) {
+					return false;
+				}
+				if (this.getAnnotations().size()!=other.getAnnotations().size()) {
+					return false;
+				}
+				for (Annotation annotation1 : this.getAnnotations()) {
+					boolean foundIt = false;
+					for (Annotation annotation2 : other.getAnnotations()) {
+						if (annotation1.equals(annotation2)) {
+							foundIt = true;
+							break;
+						}
+					}
+					if (foundIt==false) break;
+				}
+					
+			} else {
+				return false;
+			}
+ 			return true;
+		}
 		return true;
 	}
 

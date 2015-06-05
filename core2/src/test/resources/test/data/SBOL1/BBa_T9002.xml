@@ -167,6 +167,30 @@
    </s:SequenceAnnotation>
   </s:annotation>
   <s:annotation>
+   <s:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_5114_1">
+    <s:precedes rdf:resource="http://partsregistry.org/anot/an_5591_5339_2"/>
+    <s:subComponent>
+     <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_F2620">
+      <s:displayId>BBa_F2620</s:displayId>
+      <s:description>3OC&lt;sub&gt;6&lt;/sub&gt;HSL -&gt; PoPS Receiver</s:description>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/signalling"/>
+     </s:DnaComponent>
+    </s:subComponent>
+   </s:SequenceAnnotation>
+  </s:annotation>
+  <s:annotation>
+   <s:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_5339_2">
+    <s:subComponent>
+     <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_E0240">
+      <s:displayId>BBa_E0240</s:displayId>
+      <s:name>GFP report</s:name>
+      <s:description>GFP generator</s:description>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/reporter"/>
+     </s:DnaComponent>
+    </s:subComponent>
+   </s:SequenceAnnotation>
+  </s:annotation>
+  <s:annotation>
    <s:SequenceAnnotation rdf:about="http://partsregistry.org/anot/sc_5591_1_1">
     <s:precedes rdf:resource="http://partsregistry.org/anot/an_5591_5339_2"/>
     <s:subComponent>
