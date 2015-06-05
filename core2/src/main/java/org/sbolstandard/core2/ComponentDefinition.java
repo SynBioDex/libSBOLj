@@ -1288,8 +1288,8 @@ public class ComponentDefinition extends TopLevel {
 
 	protected boolean isComplete() {
 		if (sbolDocument==null) return false;
-		if (sequences.isEmpty()) {
-			return false;
+		for (URI sequenceURI : sequences) {
+			if (sbolDocument.getSequence(sequenceURI)==null) return false;
 		}
 		for (Component component : getComponents()) {
 			if (component.getDefinition()==null) return false;
