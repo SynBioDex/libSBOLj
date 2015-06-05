@@ -436,11 +436,6 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	/**
-	 * @param stream
-	 * @return
-	 * @throws Exception
-	 */
 	private static DocumentRoot<QName> readJSON(Reader stream) throws Exception
 	{
 		JsonReader reader 		  = Json.createReaderFactory(Collections.<String, Object> emptyMap()).createReader(stream);
@@ -887,8 +882,8 @@ public class SBOLReader
 				{
 					dummyGenericLoc.setOrientation(OrientationType.convertToOrientationType(OrientationType.reverseComplement));
 				}
-				location = dummyGenericLoc;
 			}
+			location = dummyGenericLoc;
 		}
 
 		List<Location> locations = new ArrayList<>();
