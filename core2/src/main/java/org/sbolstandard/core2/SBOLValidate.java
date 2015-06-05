@@ -126,6 +126,7 @@ public class SBOLValidate {
 			SBOLReader.setTypesInURI(typesInURI);
 			SBOLReader.setVersion(version);
 	        SBOLDocument doc = SBOLReader.read(fileName);
+	        doc.setTypesInURIs(typesInURI);
 	        if (compliant) validateCompliance(doc);
 	        if (complete) validateCompleteness(doc);
 	        System.out.println("Validation successful, no errors.");
