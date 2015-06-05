@@ -843,47 +843,44 @@ public class SBOLReader
 		if (start != null && end != null) // create SequenceAnnotation & Component
 		{
 			URI range_identity = createCompliantURI(persIdentity,"range",version);
-			Location r = new Range(range_identity, start, end);
+			location = new Range(range_identity, start, end);
 			if (!persIdentity.equals("")) {
-				r.setPersistentIdentity(createCompliantURI(persIdentity,"range",""));
-				r.setDisplayId("range");
-				r.setVersion(version);
+				location.setPersistentIdentity(createCompliantURI(persIdentity,"range",""));
+				location.setDisplayId("range");
+				location.setVersion(version);
 			}
 			if (strand != null)
 			{
 				if (strand.equals("+"))
 				{
-					r.setOrientation(OrientationType.convertToOrientationType(OrientationType.inline));
+					location.setOrientation(OrientationType.convertToOrientationType(OrientationType.inline));
 				}
 				else if (strand.equals("-"))
 				{
-					r.setOrientation(OrientationType.convertToOrientationType(OrientationType.reverseComplement));
+					location.setOrientation(OrientationType.convertToOrientationType(OrientationType.reverseComplement));
 				}
-
-				location = r;
 			}
 		}
 		else
 		{
-			URI dummyGenericLoc_id = createCompliantURI(persIdentity,"GenericLocation",version);
-			GenericLocation  dummyGenericLoc = new GenericLocation(dummyGenericLoc_id);
+			URI dummyGenericLoc_id = createCompliantURI(persIdentity,"genericLocation",version);
+			location = new GenericLocation(dummyGenericLoc_id);
 			if (!persIdentity.equals("")) {
-				dummyGenericLoc.setPersistentIdentity(createCompliantURI(persIdentity,"GenericLocation",""));
-				dummyGenericLoc.setDisplayId("range");
-				dummyGenericLoc.setVersion(version);
+				location.setPersistentIdentity(createCompliantURI(persIdentity,"genericLocation",""));
+				location.setDisplayId("genericLocation");
+				location.setVersion(version);
 			}
 			if (strand != null)
 			{
 				if (strand.equals("+"))
 				{
-					dummyGenericLoc.setOrientation(OrientationType.convertToOrientationType(OrientationType.inline));
+					location.setOrientation(OrientationType.convertToOrientationType(OrientationType.inline));
 				}
 				else if (strand.equals("-"))
 				{
-					dummyGenericLoc.setOrientation(OrientationType.convertToOrientationType(OrientationType.reverseComplement));
+					location.setOrientation(OrientationType.convertToOrientationType(OrientationType.reverseComplement));
 				}
 			}
-			location = dummyGenericLoc;
 		}
 
 		List<Location> locations = new ArrayList<>();
