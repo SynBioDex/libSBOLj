@@ -29,28 +29,41 @@ public class Annotation {
 	private NamedProperty<QName> value;
 
 	public Annotation(QName qName, String literal) {
-		value = NamedProperty(qName,literal);
-	}
-	
-	public Annotation(QName qName, int literal) {
+		if (qName.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		value = NamedProperty(qName,literal);
 	}
 
-	/*
-	public Annotation(QName qName, double literal) {
+	public Annotation(QName qName, int literal) {
+		if (qName.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		value = NamedProperty(qName,literal);
 	}
-	
+
+	public Annotation(QName qName, double literal) {
+		value = NamedProperty(qName, literal);
+	}
+
 	public Annotation(QName qName, boolean literal) {
 		value = NamedProperty(qName,literal);
 	}
-	*/
 
 	public Annotation(QName qName, URI literal) {
+		if (qName.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		value = NamedProperty(qName,literal);
 	}
-	
+
 	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
+		if (qName.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
+		if (nestedQName.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(nestedQName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		List<NamedProperty<QName>> list = new ArrayList<>();
 		for(Annotation a : annotations)
 		{
@@ -58,49 +71,50 @@ public class Annotation {
 		}
 		value = NamedProperty(qName, NestedDocument(nestedQName, nestedURI, NamedProperties(list)));
 	}
-	
+
 	Annotation(NamedProperty<QName> value) {
+		if (value.getName().getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(value.getName().getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		this.value = value;
 	}
-	
+
 	private Annotation(Annotation annotation) {
 		this.setValue(annotation.getValue());
 	}
-	
+
 	public QName getQName() {
 		return value.getName();
 	}
-	
+
 	public String getStringValue() {
 		if (value.getValue() instanceof Literal<?>) {
 			return ((Literal<QName>) value.getValue()).getValue().toString();
 		}
 		return null;
 	}
-	
-	
+
 	public URI getURIValue() {
 		if (value.getValue() instanceof Literal<?>) {
 			return URI.create(((Literal<QName>) value.getValue()).getValue().toString());
 		}
 		return null;
 	}
-	
+
 	public QName getNestedQName() {
 		if (value.getValue() instanceof NestedDocument<?>) {
 			return ((NestedDocument<QName>) value.getValue()).getType();
-		}		
+		}
 		return null;
 	}
-	
-	
+
 	public URI getNestedIdentity() {
 		if (value.getValue() instanceof NestedDocument<?>) {
 			return ((NestedDocument<QName>) value.getValue()).getIdentity();
-		}		
+		}
 		return null;
 	}
-	
+
 	public List<Annotation> getAnnotations() {
 		if (value.getValue() instanceof NestedDocument<?>) {
 			List<Annotation> annotations = new ArrayList<>();
@@ -111,7 +125,7 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns the value of this Annotation object.
 	 * @return the value of this Annotation object.
@@ -128,16 +142,16 @@ public class Annotation {
 	}
 
 	/**
-	 * Makes a deep copy of this Annotation object. 
+	 * Makes a deep copy of this Annotation object.
 	 * @return an Annotation object that is the exact copy of this object.
 	 */
 	private Annotation deepCopy() {
 		return new Annotation(this);
 	}
-	
+
 	/**
-	 * Makes a deep copy of this Annotation object. 
-	 * @return an Annotation object that is the exact copy of this object. 
+	 * Makes a deep copy of this Annotation object.
+	 * @return an Annotation object that is the exact copy of this object.
 	 */
 	Annotation copy() {
 		return this.deepCopy();
@@ -171,7 +185,7 @@ public class Annotation {
 				return false;
 		} else if (!value.equals(other.value))
 			//return false;
-		// TODO: Hack here. Need to wait for equals and hashCode to be implemented in NamedProperty.
+			// TODO: Hack here. Need to wait for equals and hashCode to be implemented in NamedProperty.
 			return true;
 		return true;
 	}

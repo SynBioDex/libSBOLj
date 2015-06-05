@@ -35,6 +35,11 @@ public class SBOLDocument {
 	private boolean compliant = true;
 	private boolean typesInURIs = false;
 
+	/**
+	 * Creates a new SBOLDocument instance with one empty list for the namespaces and for each top-level instance,
+	 * and then adds the following namespaces: {@link Sbol2Terms#sbol2}, {@link Sbol1Terms#rdf}, {@link Sbol2Terms#dc},
+	 * and {@link Sbol2Terms#prov}.
+	 */
 	public SBOLDocument() {
 		genericTopLevels = new HashMap<>();
 		collections = new HashMap<>();
@@ -50,24 +55,117 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link ModuleDefinition} object with default URI prefix and no version.
-	 * @return the created {@link ModuleDefinition} object.
+	 * Creates a ModuleDefinition instance with this SBOLDocument object's {@code defaultURIprefix}, 
+	 * the given arguments, and an empty version string, and then    
+	 * adds it to this SBOLDocument object's list of ModuleDefinition instances.
+	 * <p>
+	 * This method calls {@link #createModuleDefinition(String, String, String)} to do the following
+	 * validity checks and create a ModuleDefinition instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
+	 * then "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} is not {@code null} and is valid.
+	 * <p>
+	 * A ModuleDefinition instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#MODULE_DEFINITION}, 
+	 * the given {@code displayId}, and an empty version string.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 *
+ 	 * @param displayId
+	 * @return the created ModuleDefinition instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created ModuleDefinition instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created ModuleDefinition instance's identity URI
+	 * exists in this SBOLDocument object's list of ModuleDefinition instances.
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId) {
 		return createModuleDefinition(defaultURIprefix,displayId,"");
 	}
-
+		
 	/**
-	 * Create a new {@link ModuleDefinition} object with default URI prefix.
-	 * @return the created {@link ModuleDefinition} object.
+	 * Creates a ModuleDefinition instance with this SBOLDocument object's {@code defaultURIprefix} 
+	 * and the given arguments, and then adds it to this SBOLDocument object's list of ModuleDefinition instances.
+	 * <p>
+	 * This method calls {@link #createModuleDefinition(String, String, String)} to do the following
+	 * validity checks and create a ModuleDefinition instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} and {@code version} arguments are not {@code null} 
+	 * and are both valid.	
+	 * <p>
+	 * A ModuleDefinition instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#MODULE_DEFINITION}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 * 
+	 * @param displayId
+	 * @param version
+	 * @return the created ModuleDefinition instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created ModuleDefinition instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created ModuleDefinition instance's identity URI
+	 * exists in this SBOLDocument object's list of ModuleDefinition instances.
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version) {
 		return createModuleDefinition(defaultURIprefix,displayId,version);
 	}
 	
 	/**
-	 * Create a new {@link ModuleDefinition} object.
-	 * @return the created {@link ModuleDefinition} object.
+	 * Creates a ModuleDefinition instance with the given arguments, and then adds it to this SBOLDocument
+	 * object's list of ModuleDefinition instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires that the given {@code URIprefix}, {@code displayId}, 
+	 * and {@code version} are not {@code null} and are valid. 
+	 * <p>
+	 * A ModuleDefinition instance is created with a compliant URI. This URI is composed from 
+	 * the given {@code URIprefix}, the optional type {@link TopLevel#MODULE_DEFINITION}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly. 
+	 * 
+ 	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @return the created ModuleDefinition instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created ModuleDefinition instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created ModuleDefinition instance's identity URI
+	 * exists in this SBOLDocument object's list of ModuleDefinition instances.
 	 */
 	public ModuleDefinition createModuleDefinition(String URIprefix,String displayId, String version) {
 		checkReadOnly();
@@ -81,8 +179,8 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a new {@link ModuleDefinition} object.
-	 * @return the {@link ModuleDefinition} object.
+	 * @param identity
+	 * @return the new module definition
 	 */
 	ModuleDefinition createModuleDefinition(URI identity) {
 		ModuleDefinition newModule = new ModuleDefinition(identity);
@@ -97,11 +195,21 @@ public class SBOLDocument {
 		addTopLevel(newModuleDefinition, moduleDefinitions, "moduleDefinition",
                 collections, componentDefinitions, genericTopLevels, models, sequences);
 	}
-
+	
 	/**
-	 * Removes a module definition from the list of module definitions, if present.
-	 * @param moduleDefinition object to remove.
-	 * @return true if the moduleDefinition is present and removed.
+	 * Removes the given {@code moduleDefinition} from this SBOLDocument object's list of ModuleDefinition instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param moduleDefinition
+	 * @return {@code true} if the given {@code moduleDefinition} is successfully removed, {@code false} otherwise.
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and one of its ModuleDefinition instances has a Module instance that refers to the given 
+	 * {@code moduleDefinition} (see {@link Module#getDefinitionURI()}).
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and the given {@code moduleDefinition} is referenced by any of its Collection instances as a member.
 	 */
 	public boolean removeModuleDefinition(ModuleDefinition moduleDefinition) {
 		checkReadOnly();
@@ -119,8 +227,21 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the object matching the specified displayId/version from the list of model definitions, if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the ModuleDefinition instance matching the given {@code displayId} 
+	 * and {@code version} from this SBOLDocument object's list of 
+	 * ModuleDefinition instances.
+	 * <p>
+	 * A compliant ModuleDefinition URI is created first using the {@code defaultURIprefix}, 
+	 * the optional type {@link TopLevel#MODULE_DEFINITION}, the given {@code displayId} 
+	 * and {@code version}. This URI is used to look up the ModuleDefinition instance 
+	 * in this SBOLDocument object.
+	 *  
+	 * @param displayId
+	 * @param version
+	 * @return the matching ModuleDefinition instance if present, or {@code null} otherwise.
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
 	 */
 	public ModuleDefinition getModuleDefinition(String displayId,String version) {
 		validateIdentityData(displayId,version);
@@ -128,26 +249,30 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Returns the object matching the specified URI from the list of model definitions, if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the ModuleDefinition instance matching the given {@code modelURI} from this
+	 * SBOLDocument object's list of ModuleDefinition instances.
+	 * 
+	 * @param moduleURI
+	 * @return the matching ModuleDefinition instance if present, or {@code null} otherwise.      
 	 */
 	public ModuleDefinition getModuleDefinition(URI moduleURI) {
 		return moduleDefinitions.get(moduleURI);
 	}
 
 	/**
-	 * Returns the list of <code>Module</code> objects owned by this object.
-	 * @return the list of <code>Module</code> objects owned by this object
+	 * Returns the set of {@code ModuleDefinition} instances owned by this SBOLDocument object.
+	 * 
+	 * @return the set of {@code ModuleDefinition} instances owned by this SBOLDocument object.
 	 */
 	public Set<ModuleDefinition> getModuleDefinitions() {
 		Set<ModuleDefinition> moduleDefinitions = new HashSet<>();
 		moduleDefinitions.addAll(this.moduleDefinitions.values());
 		return moduleDefinitions;
-
 	}
 
 	/**
-	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
+	 * Removes all entries in the list of ModuleDefinition instances 
+	 * owned by this SBOLDocument object. The list will be empty after this call returns.
 	 */
 	public void clearModuleDefinitions() {
 		checkReadOnly();
@@ -178,24 +303,120 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a new {@link Collection} object with the default URI prefix and no version. 
-	 * @return the created {@link Collection} object.
+	 * Creates a Collection instance with this SBOLDocument object's {@code defaultURIprefix}, 
+	 * the given {@code displayId} argument, and an empty version string, and then    
+	 * adds it to this SBOLDocument object's list of Collection instances.
+	 * <p>
+	 * This method calls {@link #createCollection(String, String, String)} to do the following
+	 * validity checks and create a Collection instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} argument is not {@code null} and is valid.
+	 * <p>
+	 * A Collection instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#COLLECTION}, 
+	 * the given {@code displayId}, and an empty version string.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 *  
+	 * @param displayId
+	 * @return the created Collection instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the defaultURIprefix is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created Collection instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Collection instance's identity URI
+	 * exists in this SBOLDocument object's list of Collection instances.
 	 */
 	public Collection createCollection(String displayId) {
 		return createCollection(defaultURIprefix,displayId,"");
 	}
 	
 	/**
-	 * Create a new {@link Collection} object with the default URI prefix. 
-	 * @return the created {@link Collection} object.
+	 * Creates a Collection instance with this SBOLDocument object's {@code defaultURIprefix} and 
+	 * the given arguments, and then adds it to this SBOLDocument object's list of Collection instances.
+	 * <p>
+	 * This method calls {@link #createCollection(String, String, String)} to do the following
+	 * validity checks and create a Collection instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code URIprefix}, {@code displayId}, and {@code version} are not
+	 * {@code null} and valid.
+	 * <p>
+	 * A Collection instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#COLLECTION}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 *  
+	 * @param displayId
+	 * @param version
+	 * @return the created Collection instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the defaultURIprefix is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created Collection instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Collection instance's identity URI
+	 * exists in this SBOLDocument object's list of Collection instances.
 	 */
 	public Collection createCollection(String displayId, String version) {
 		return createCollection(defaultURIprefix,displayId,version);
 	}
 	
 	/**
-	 * Create a new {@link Collection} object.
-	 * @return the created {@link Collection} object.
+	 * Creates a Collection instance with the given arguments, and then adds it to this SBOLDocument
+	 * object's list of Collection instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code URIprefix}, {@code displayId}, and {@code version} are not
+	 * {@code null} and valid.
+	 * <p>
+	 * A Collection instance is created with a compliant URI. This URI is composed from 
+	 * the given {@code URIprefix}, the optional type {@link TopLevel#COLLECTION}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 *  
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @return the created Collection instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the defaultURIprefix is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created Collection instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Collection instance's identity URI
+	 * exists in this SBOLDocument object's list of Collection instances.
 	 */
 	public Collection createCollection(String URIprefix, String displayId, String version) {
 		checkReadOnly();
@@ -216,20 +437,39 @@ public class SBOLDocument {
                 componentDefinitions, genericTopLevels, models, moduleDefinitions, sequences);
 	}
 
-
 	/**
-	 * Removes a collection from the list of collections, if present.
-	 * @param collection object to remove.
-	 * @return true if the collection is present and removed.
+	 * Removes the given {@code collection} from this SBOLDocument object's list of Collection instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param collection
+	 * @return {@code true} if the given {@code collection} is successfully removed, {@code false} otherwise.
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and the given {@code collection} is referenced by any of its Collection instances as a member.
 	 */
 	public boolean removeCollection(Collection collection) {
 		checkReadOnly();
 		return removeTopLevel(collection,collections);
 	}
-
+	
 	/**
-	 * Returns the object matching the specified displayId/version from the list of collections, if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the Collection instance matching the given {@code displayId} 
+	 * and {@code version} from this SBOLDocument object's list of 
+	 * Collection instances.
+	 * <p>
+	 * A compliant Collection URI is created first using the {@code defaultURIprefix}, 
+	 * the optional type {@link TopLevel#COLLECTION}, the given {@code displayId} 
+	 * and {@code version}. This URI is used to look up the Collection instance 
+	 * in this SBOLDocument object.
+	 *  
+	 * @param displayId
+	 * @param version
+	 * @return the matching Collection instance if present, or {@code null} otherwise.
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
 	 */
 	public Collection getCollection(String displayId,String version) {
 		validateIdentityData(displayId,version);
@@ -237,16 +477,21 @@ public class SBOLDocument {
 	}	
 	
 	/**
-	 * Returns the object matching the specified URI from the list of collections, if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the Collection instance matching the given {@code collectionURI} from this
+	 * SBOLDocument object's list of Collection instances.
+	 * 
+	 * @param collectionURI
+	 * @return the matching Collection instance if present, or {@code null} otherwise.
+	 *         
 	 */
 	public Collection getCollection(URI collectionURI) {
 		return collections.get(collectionURI);
 	}
 
 	/**
-	 * Returns the list of <code>Collection</code> objects owned by this object.
-	 * @return the list of <code>Collection</code> objects owned by this object
+	 * Returns the set of {@code Collection} instances owned by this SBOLDocument object.
+	 * 
+	 * @return the set of {@code Collection} instances owned by this SBOLDocument object.
 	 */
 	public Set<Collection> getCollections() {
 		Set<Collection> collections = new HashSet<>();
@@ -255,7 +500,8 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
+	 * Removes all entries in the list of Collection instances 
+	 * owned by this SBOLDocument object. The list will be empty after this call returns.
 	 */
 	public void clearCollections() {
 		checkReadOnly();
@@ -276,24 +522,126 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link Model} object with default URI prefix and no version.
-	 * @return the created {@link Model} object.
+	 * Creates a Model instance with this SBOLDocument object's {@code defaultURIprefix}, 
+	 * the given arguments, and an empty version string, and then    
+	 * adds it to this SBOLDocument object's list of Model instances.
+	 * <p>
+	 * This method calls {@link #createModel(String, String, String, URI, URI, URI)} to do the following
+	 * validity checks and create a Model instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
+	 * then "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} is not {@code null} and is valid.
+	 * <p>
+	 * A Model instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#MODEL}, 
+	 * the given {@code displayId}, and an empty version string.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 * 	  
+ 	 * @param displayId
+	 * @param source
+	 * @param language
+	 * @param framework
+	 * @return the created Model instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created Model instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Model instance's identity URI
+	 * exists in this SBOLDocument object's list of Model instances.
 	 */
 	public Model createModel(String displayId, URI source, URI language, URI framework) {
 		return createModel(defaultURIprefix,displayId,"",source,language,framework);
 	}	
-	
+
 	/**
-	 * Create a new {@link Model} object with default URI prefix.
-	 * @return the created {@link Model} object.
+	 * Creates a Model instance with this SBOLDocument object's {@code defaultURIprefix} 
+	 * and the given arguments, and then adds it to this SBOLDocument object's list of Model instances.
+	 * <p>
+	 * This method calls {@link #createModel(String, String, String, URI, URI, URI)} to do the following
+	 * validity checks and create a Model instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} and {@code version} arguments are not {@code null} 
+	 * and are both valid.	
+	 * <p>
+	 * A Model instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#MODEL}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 * 
+	 * @param displayId
+	 * @param version
+	 * @param source
+	 * @param language
+	 * @param framework
+	 * @return the created Model instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created Model instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Model instance's identity URI
+	 * exists in this SBOLDocument object's list of Model instances.
 	 */
 	public Model createModel(String displayId, String version, URI source, URI language, URI framework) {
 		return createModel(defaultURIprefix,displayId,version,source,language,framework);
 	}	
-	
+
 	/**
-	 * Create a new {@link Model} object.
-	 * @return the created {@link Model} object.
+	 * Creates a Model instance with the given arguments, and then adds it to this SBOLDocument
+	 * object's list of Model instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires that the given {@code URIprefix}, {@code displayId}, 
+	 * and {@code version} are not {@code null} and are valid.
+	 * <p>
+	 * A Model instance is created with a compliant URI. This URI is composed from 
+	 * the given {@code URIprefix}, the optional type {@link TopLevel#MODEL}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly. 
+	 * 
+ 	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param source
+	 * @param language
+	 * @param framework
+	 * @return the created Model instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created Model instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Model instance's identity URI
+	 * exists in this SBOLDocument object's list of Model instances.
 	 */
 	public Model createModel(String URIprefix, String displayId, String version, URI source, URI language, URI framework) {
 		checkReadOnly();
@@ -308,8 +656,11 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link Model} object.
-	 * @return {@link Model} object.
+	 * @param identity
+	 * @param source
+	 * @param language
+	 * @param framework
+	 * @return the new model
 	 */
 	Model createModel(URI identity, URI source, URI language, URI framework) {
 		Model newModel = new Model(identity, source, language, framework);
@@ -326,9 +677,19 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes a model from the list of models, if present.
-	 * @param model object to remove.
-	 * @return true if the model is present and removed.
+	 * Removes the given {@code model} from this SBOLDocument object's list of Model instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param model
+	 * @return {@code true} if the given {@code model} is successfully removed, {@code false} otherwise.
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and one of its ModuleDefinition instances refers to the given {@code model}
+	 * (see {@link ModuleDefinition#containsModel(URI)}).
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and the given {@code model} is referenced by any of its Collection instances as a member.
 	 */
 	public boolean removeModel(Model model) {
 		checkReadOnly();
@@ -344,8 +705,21 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Returns the object matching the specified displayId/version from the list of models, if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the Model instance matching the given {@code displayId} 
+	 * and {@code version} from this SBOLDocument object's list of 
+	 * Model instances.
+	 * <p>
+	 * A compliant Model URI is created first using the {@code defaultURIprefix}, 
+	 * the optional type {@link TopLevel#MODEL}, the given {@code displayId} 
+	 * and {@code version}. This URI is used to look up the Model instance 
+	 * in this SBOLDocument object.
+	 *  
+	 * @param displayId
+	 * @param version
+	 * @return the matching Model instance if present, or {@code null} otherwise.
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
 	 */
 	public Model getModel(String displayId,String version) {
 		validateIdentityData(displayId,version);
@@ -353,16 +727,20 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Returns the object matching the specified URI from the list of models, if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the Model instance matching the given {@code modelURI} from this
+	 * SBOLDocument object's list of Model instances.
+	 * 
+	 * @param modelURI
+	 * @return the matching Model instance if present, or {@code null} otherwise.      
 	 */
 	public Model getModel(URI modelURI) {
 		return models.get(modelURI);
 	}
 
 	/**
-	 * Returns the list of <code>Model</code> objects owned by this object.
-	 * @return the list of <code>Model</code> objects owned by this object
+	 * Returns the set of {@code Model} instances owned by this SBOLDocument object.
+	 * 
+	 * @return the set of {@code Model} instances owned by this SBOLDocument object.
 	 */
 	public Set<Model> getModels() {
 		//		return (List<Model>) models.values();
@@ -370,9 +748,10 @@ public class SBOLDocument {
 		models.addAll(this.models.values());
 		return models;
 	}
-
+	
 	/**
-	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
+	 * Removes all entries in the list of Model instances 
+	 * owned by this SBOLDocument object. The list will be empty after this call returns.
 	 */
 	public void clearModels() {
 		checkReadOnly();
@@ -393,8 +772,9 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link ComponentDefinition} object.
-	 * @return {@link ComponentDefinition} object.
+	 * @param identity
+	 * @param types
+	 * @return the new component definition
 	 */
 	ComponentDefinition createComponentDefinition(URI identity, Set<URI> types) {
 		//ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types, roles);
@@ -404,24 +784,120 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Create a new {@link ComponentDefinition} object with the default URI prefix and no version.
-	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
+	 * Creates a ComponentDefinition instance with this SBOLDocument object's {@code defaultURIprefix}, 
+	 * the given arguments, and empty version string, and then    
+	 * adds it to this SBOLDocument object's list of ComponentDefinition instances.
+	 * <p>
+	 * This method calls {@link #createComponentDefinition(String, String, String, Set)} to do the following
+	 * validity checks and create a ComponentDefinition instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
+	 * then "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} is not {@code null} and is valid.
+	 * <p>
+	 * A ComponentDefinition instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#COMPONENT_DEFINITION}, 
+	 * the given {@code displayId}, and an empty version string.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 * 
+	 * @param displayId
+	 * @param types
+	 * @return the created ComponentDefinition instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's identity URI
+	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, Set<URI> types) {
 		return createComponentDefinition(defaultURIprefix,displayId,"",types);
 	}
-	
+
 	/**
-	 * Create a new {@link ComponentDefinition} object with the default URI prefix.
-	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
+	 * Creates a ComponentDefinition instance with this SBOLDocument object's {@code defaultURIprefix} 
+	 * and the given arguments, and then adds it to this SBOLDocument object's list of ComponentDefinition instances.
+	 * <p>
+	 * This method calls {@link #createComponentDefinition(String, String, String, Set)} to do the following
+	 * validity checks and create a ComponentDefinition instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} and {@code version} arguments are not {@code null} 
+	 * and are both valid.	
+	 * <p>
+ 	 * A ComponentDefinition instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#COMPONENT_DEFINITION}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 * 
+	 * @param displayId
+	 * @param version
+	 * @param types
+	 * @return the created ComponentDefinition instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's identity URI
+	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
 		return createComponentDefinition(defaultURIprefix,displayId,version,types);
 	}
-
+	
 	/**
-	 * Create a new {@link ComponentDefinition} object with the default URI prefix.
-	 * @return {@code true} if the {@code newComponentDefinition} is successfully added, {@code false} otherwise.
+	 * Creates a ComponentDefinition instance with the given arguments, and then adds it to this SBOLDocument
+	 * object's list of ComponentDefinition instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires that the given {@code URIprefix}, {@code displayId}, 
+	 * and {@code version} are not {@code null} and are valid. 
+	 * <p>
+	 * A ComponentDefinition instance is created with a compliant URI. This URI is composed from 
+	 * the given {@code URIprefix}, the optional type {@link TopLevel#COMPONENT_DEFINITION}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 * 
+ 	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param types
+	 * @return the created ComponentDefinition instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's identity URI
+	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
 	 */
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, Set<URI> types) {
 		checkReadOnly();
@@ -444,9 +920,22 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes a component definition from the list of component definitions, if present.
-	 * @param componentDefinition object to remove.
-	 * @return true if the componentDefinition is present and removed.
+	 * Removes the given {@code componentDefinition} from this SBOLDocument object's list of ComponentDefinition instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param componentDefinition
+	 * @return {@code true} if the given {@code componentDefinition} is successfully removed, {@code false} otherwise.
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and the given {@code componentDefinition} is referenced by any of its ComponentDefinition instances.
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and one of its ModuleDefinition instances owns a FunctionalComponent instance that
+	 * refers to the given {@code componentDefinition} as its {@code definition} 
+	 * (see {@link FunctionalComponent#getDefinitionURI()}).
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and the given {@code componentDefinition} is referenced by any of its Collection instances as a member.
 	 */
 	public boolean removeComponentDefinition(ComponentDefinition componentDefinition) {
 		checkReadOnly();
@@ -459,8 +948,8 @@ public class SBOLDocument {
 					}
 				}
 			}
-			for (ModuleDefinition cd : moduleDefinitions.values()) {
-				for (FunctionalComponent c : cd.getFunctionalComponents()) {
+			for (ModuleDefinition md : moduleDefinitions.values()) {
+				for (FunctionalComponent c : md.getFunctionalComponents()) {
 					if (c.getDefinitionURI().equals(componentDefinition.getIdentity())) {
 						throw new SBOLException("Cannot remove " + componentDefinition.getIdentity() + 
 								" since it is in use.");
@@ -472,8 +961,21 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Returns the object matching the displayId/version from the list of component definitions if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the ComponentDefinition instance matching the given {@code displayId} 
+	 * and {@code version} from this SBOLDocument object's list of 
+	 * ComponentDefinition instances.
+	 * <p>
+	 * A compliant ComponentDefinition URI is created first using the {@code defaultURIprefix}, 
+	 * the optional type {@link TopLevel#COMPONENT_DEFINITION}, the given {@code displayId} 
+	 * and {@code version}. This URI is used to look up the ComponentDefinition instance 
+	 * in this SBOLDocument object.
+	 *  
+	 * @param displayId
+	 * @param version
+	 * @return the matching ComponentDefinition instance if present, or {@code null} otherwise.
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
 	 */
 	public ComponentDefinition getComponentDefinition(String displayId,String version) {
 		validateIdentityData(displayId,version);
@@ -481,16 +983,20 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Returns the object matching the specified URI from the list of component definitions if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the ComponentDefinition instance matching the given {@code componentDefinitionURI} from this
+	 * SBOLDocument object's list of ComponentDefinition instances.
+	 * 
+	 * @param componentDefinitionURI
+	 * @return the matching ComponentDefinition instance if present, or {@code null} otherwise.      
 	 */
 	public ComponentDefinition getComponentDefinition(URI componentDefinitionURI) {
 		return componentDefinitions.get(componentDefinitionURI);
 	}
 
 	/**
-	 * Returns the list of <code>ComponentDefinition</code> objects owned by this object.
-	 * @return the list of <code>ComponentDefinition</code> objects owned by this object
+	 * Returns the set of {@code ComponentDefinition} instances owned by this SBOLDocument object.
+	 * 
+	 * @return the set of {@code ComponentDefinition} instances owned by this SBOLDocument object.
 	 */
 	public Set<ComponentDefinition> getComponentDefinitions() {
 		//		return (List<Component>) components.values();
@@ -500,7 +1006,8 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
+	 * Removes all entries in the list of ComponentDefinition instances 
+	 * owned by this SBOLDocument object. The list will be empty after this call returns.
 	 */
 	public void clearComponentDefinitions() {
 		Object[] valueSetArray = componentDefinitions.values().toArray();
@@ -510,7 +1017,7 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Clears the existing list of component definitions, then appends all of the elements in the specified model to the end of this list.
+	 * @param componentDefinitions
 	 */
 	void setComponentDefinitions(List<ComponentDefinition> componentDefinitions) {
 		checkReadOnly();
@@ -520,35 +1027,138 @@ public class SBOLDocument {
 		}
 	}
 
+
 	/**
-	 * Create a new {@link Sequence} object.
-	 * @return {@link Sequence} object.
+	 * @param identity
+	 * @param elements
+	 * @param encoding
+	 * @return the created Sequence instance
 	 */
 	Sequence createSequence(URI identity, String elements, URI encoding) {
 		Sequence newSequence = new Sequence(identity, elements, encoding);
 		addSequence(newSequence);
 		return newSequence;
 	}
-
+	
 	/**
-	 * Create a new {@link Sequence} object with default URI prefix and no version.
-	 * @return the created Sequence object.
+	 * Creates a Sequence instance with this SBOLDocument object's {@code defaultURIprefix}, 
+	 * the given arguments, and an empty version string, and then    
+	 * adds it to this SBOLDocument object's list of Sequence instances.
+	 * <p>
+	 * This method calls {@link #createSequence(String, String, String, String, URI)} to do the following
+	 * validity checks and create a Sequence instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
+	 * then "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} is not {@code null} and is valid.
+	 * <p>
+	 * A Sequence instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#SEQUENCE}, 
+	 * the given {@code displayId}, and an empty version string.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 * 
+ 	 * @param displayId
+	 * @param elements
+	 * @param encoding
+	 * @return the created Sequence instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created Sequence instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Sequence instance's identity URI
+	 * exists in this SBOLDocument object's list of Sequence instances.
 	 */
 	public Sequence createSequence(String displayId, String elements, URI encoding) {
 		return createSequence(defaultURIprefix,displayId,"",elements,encoding);
 	}
 
 	/**
-	 * Create a new {@link Sequence} object with default URI prefix.
-	 * @return the created Sequence object.
+	 * Creates a Sequence instance with this SBOLDocument object's {@code defaultURIprefix} 
+	 * and the given arguments, and then adds it to this SBOLDocument object's list of Sequence instances.
+	 * <p>
+	 * This method calls {@link #createSequence(String, String, String, String, URI)} to do the following
+	 * validity checks and create a Sequence instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} and {@code version} arguments are not {@code null} 
+	 * and are both valid.
+	 * <p>	
+	 * A Sequence instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#SEQUENCE}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 * 
+	 * 
+ 	 * @param displayId
+	 * @param version
+	 * @param elements
+	 * @param encoding
+	 * @return the created Sequence instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created Sequence instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Sequence instance's identity URI
+	 * exists in this SBOLDocument object's list of Sequence instances.
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) {
 		return createSequence(defaultURIprefix,displayId,version,elements,encoding);
 	}
 	
 	/**
-	 * Create a new {@link Sequence} object.
-	 * @return the created Sequence object.
+	 * Creates a Sequence instance with the given arguments, and then adds it to this SBOLDocument
+	 * object's list of Sequence instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires that the given {@code URIprefix}, {@code displayId}, 
+	 * and {@code version} are not {@code null} and are valid. 
+	 * <p>
+	 * A Sequence instance is created with a compliant URI. This URI is composed from 
+	 * the given {@code URIprefix}, the optional type {@link TopLevel#SEQUENCE}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly. 
+	 * 
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param elements
+	 * @param encoding
+	 * @return the created Sequence instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created Sequence instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Sequence instance's identity URI
+	 * exists in this SBOLDocument object's list of Sequence instances.
 	 */
 	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) {
 		checkReadOnly();
@@ -683,40 +1293,168 @@ public class SBOLDocument {
 //	}
 	
 	/**
-	 * This method is ONLY valid for compliant URIs.
- 	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link GenericTopLevel}. Then add it to its corresponding top-level objects list.
-	 * @return the copied {@link TopLevel} object
+ 	 * Creates an identical copy of the given TopLevel instance.
+	 * <p>
+	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
+	 * validity checks and create a copy top-level instance. 
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
+	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.  
+	 * <p>
+	 * If either the given {@code displayId} or {@code version}, then the corresponding field
+	 * is extracted from the given {@code topLevel} instance. Both extracted fields are required
+	 * to be valid and not {@code null}.
+	 * <p>
+	 * A top-level instance with a compliant URI using the given arguments,
+	 * and then its display ID, persistent identity, and version fields are set. This 
+	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object. 
+	 * 
+	 * @param topLevel
+	 * @return the created top-level instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws IllegalArgumentException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
 	 */
 	public TopLevel createCopy(TopLevel topLevel) {
 		return createCopy(topLevel,null,null,null);
 	}
 	
 	/**
-	 * This method is ONLY valid for compliant URIs.
- 	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link GenericTopLevel} with the default URI prefix, display ID, and no version. Then add it to its corresponding top-level objects list.
-	 * @return the copied {@link TopLevel} object
+ 	 * Creates a copy of the given TopLevel instance with this SBOLDocument object's {@code defaultURIprefix}
+ 	 * the given arguments, and an empty version string, and then adds it to the 
+ 	 * corresponding top-level list owned by this SBOLDocument object.
+	 * <p>
+	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
+	 * validity checks and create a copy top-level instance. 
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
+	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.  
+	 * <p>
+	 * If either the given {@code displayId} or {@code version}, then the corresponding field
+	 * is extracted from the given {@code topLevel} instance. Both extracted fields are required
+	 * to be valid and not {@code null}.
+	 * <p>
+	 * A top-level instance with a compliant URI using the given arguments,
+	 * and then its display ID, persistent identity, and version fields are set. This 
+	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object. 
+	 * 
+	 * @param topLevel
+	 * @param displayId
+	 * @return the created top-level instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws IllegalArgumentException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String displayId) {
 		return createCopy(topLevel,defaultURIprefix,displayId,"");
 	}
 	
 	/**
-	 * This method is ONLY valid for compliant URIs.
- 	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link GenericTopLevel} with the default URI prefix, display ID, and version. Then add it to its corresponding top-level objects list.
-	 * @return the copied {@link TopLevel} object
+ 	 * Creates a copy of the given TopLevel instance with this SBOLDocument object's {@code defaultURIprefix}
+ 	 * and the given arguments, and then adds it to the 
+ 	 * corresponding top-level list owned by this SBOLDocument object.
+	 * <p>
+	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
+	 * validity checks and create a copy top-level instance. 
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
+	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.  
+	 * <p>
+	 * If either the given {@code displayId} or {@code version}, then the corresponding field
+	 * is extracted from the given {@code topLevel} instance. Both extracted fields are required
+	 * to be valid and not {@code null}.
+	 * <p>
+	 * A top-level instance with a compliant URI using the given arguments,
+	 * and then its display ID, persistent identity, and version fields are set. This 
+	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object. 
+	 * 
+	 * @param topLevel
+	 * @param displayId
+	 * @param version
+	 * @return the created top-level instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws IllegalArgumentException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String displayId, String version) {
 		return createCopy(topLevel,defaultURIprefix,displayId,version);
 	}
 	
 	/**
-	 * This method is ONLY valid for compliant URIs.
- 	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix, display ID, and version. Then add it to its corresponding top-level objects list.
-	 * @return the copied {@link TopLevel} object
+ 	 * Creates a copy of the given TopLevel instance with the given arguments, and then adds it to 
+ 	 * the corresponding top-level list owned by this SBOLDocument object.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the given {@code URIprefix} is {@code null}, then it is extracted from the given
+	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.  
+	 * <p>
+	 * If either the given {@code displayId} or {@code version}, then the corresponding field
+	 * is extracted from the given {@code topLevel} instance. Both extracted fields are required
+	 * to be valid and not {@code null}.
+	 * <p>
+	 * A top-level instance with a compliant URI is created using the given arguments,
+	 * and then its display ID, persistent identity, and version fields are set. This 
+	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object. 
+	 * 
+	 * @param topLevel
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @return the created top-level instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws IllegalArgumentException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String URIprefix, String displayId, String version) {
 		checkReadOnly();
@@ -765,8 +1503,7 @@ public class SBOLDocument {
 		}
 		else {
 			throw new IllegalArgumentException("Unable to copy " + topLevel.getIdentity());
-		}
-		
+		}	
 	}
 
 	/**
@@ -778,9 +1515,19 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes a sequence from the list of sequences, if present.
-	 * @param sequence object to remove.
-	 * @return true if the sequence is present and removed.
+	 * Removes the given {@code sequence} from this SBOLDocument object's list of Sequence instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param sequence
+	 * @return {@code true} if the given {@code sequence} is successfully removed, {@code false} otherwise.
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and one of its ComponentDefinition instances refers to the given {@code sequence}
+	 * (see {@link ComponentDefinition#containsSequence(URI)}).
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and the given {@code sequence} is referenced by any of its Collection instances as a member.
 	 */
 	public boolean removeSequence(Sequence sequence) {
 		checkReadOnly();
@@ -796,8 +1543,21 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Returns the object matching the specified displayId/version from the list of sequences, if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the Sequence instance matching the given {@code displayId} 
+	 * and {@code version} from this SBOLDocument object's list of 
+	 * Sequence instances.
+	 * <p>
+	 * A compliant Sequence URI is created first using the {@code defaultURIprefix}, 
+	 * the optional type {@link TopLevel#SEQUENCE}, the given {@code displayId} 
+	 * and {@code version}. This URI is used to look up the Sequence instance 
+	 * in this SBOLDocument object.
+	 *  
+	 * @param displayId
+	 * @param version
+	 * @return the matching Sequence instance if present, or {@code null} otherwise.
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
 	 */
 	public Sequence getSequence(String displayId,String version) {
 		validateIdentityData(displayId,version);
@@ -805,16 +1565,20 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the object matching the specified URI from the list of sequences, if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the Sequence instance matching the given {@code modelURI} from this
+	 * SBOLDocument object's list of Sequence instances.
+	 * 
+	 * @param sequenceURI
+	 * @return the matching Sequence instance if present, or {@code null} otherwise.      
 	 */
 	public Sequence getSequence(URI sequenceURI) {
 		return sequences.get(sequenceURI);
 	}
 
 	/**
-	 * Returns the list of <code>Structure</code> objects owned by this object.
-	 * @return the list of <code>Structure</code> objects owned by this object
+	 * Returns the set of {@code Sequence} instances owned by this SBOLDocument object.
+	 * 
+	 * @return the set of {@code Sequence} instances owned by this SBOLDocument object.
 	 */
 	public Set<Sequence> getSequences() {
 		//		return (List<Structure>) structures.values();
@@ -824,7 +1588,8 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
+	 * Removes all entries in the list of Sequence instances 
+	 * owned by this SBOLDocument object. The list will be empty after this call returns.
 	 */
 	public void clearSequences() {
 		checkReadOnly();
@@ -845,24 +1610,120 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link GenericTopLevel} object with default URI prefix and no version.
-	 * @return the created {@link GenericTopLevel} object.
+	 * Creates a GenericTopLevel instance with this SBOLDocument object's {@code defaultURIprefix}, 
+	 * the given arguments, and an empty version string, and then    
+	 * adds it to this SBOLDocument object's list of GenericTopLevel instances.
+	 * <p>
+	 * This method calls {@link #createGenericTopLevel(String, String, String, QName)} to do the following
+	 * validity checks and create a GenericTopLevel instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
+	 * then "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} is not {@code null} and is valid.
+	 * <p>
+	 * A GenericTopLevel instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#GENERIC_TOP_LEVEL}, 
+	 * the given {@code displayId}, and an empty version string.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 * 
+	 * @param displayId
+	 * @param rdfType
+	 * @return the created GenericTopLevel instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created GenericTopLevel instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created GenericTopLevel instance's identity URI
+	 * exists in this SBOLDocument object's list of GenericTopLevel instances.
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, QName rdfType) {
 		return createGenericTopLevel(defaultURIprefix,displayId,"",rdfType);
 	}
 
 	/**
-	 * Create a new {@link GenericTopLevel} object with default URI prefix.
-	 * @return the created {@link GenericTopLevel} object.
+	 * Creates a GenericTopLevel instance with this SBOLDocument object's {@code defaultURIprefix} 
+	 * and the given arguments, and then adds it to this SBOLDocument object's list of GenericTopLevel instances.
+	 * <p>
+	 * This method calls {@link #createGenericTopLevel(String, String, String, QName)} to do the following
+	 * validity checks and create a GenericTopLevel instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} and {@code version} arguments are not {@code null} 
+	 * and are both valid.	
+	 * <p>
+	 * A GenericTopLevel instance is created with a compliant URI. This URI is composed from 
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#GENERIC_TOP_LEVEL}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 * 
+	 * @param displayId
+	 * @param version
+	 * @param rdfType
+	 * @return the created GenericTopLevel instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created GenericTopLevel instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created GenericTopLevel instance's identity URI
+	 * exists in this SBOLDocument object's list of GenericTopLevel instances.
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) {
 		return createGenericTopLevel(defaultURIprefix,displayId,version,rdfType);
 	}
 	
 	/**
-	 * Create a new {@link GenericTopLevel} object.
-	 * @return the created {@link GenericTopLevel} object.
+	 * Creates a GenericTopLevel instance with the given arguments, and then adds it to this SBOLDocument
+	 * object's list of GenericTopLevel instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires that the given {@code URIprefix}, {@code displayId}, 
+	 * and {@code version} are not {@code null} and are valid.
+	 * <p>
+	 * A GenericTopLevel instance is created with a compliant URI. This URI is composed from 
+	 * the given {@code URIprefix}, the optional type {@link TopLevel#GENERIC_TOP_LEVEL}, 
+	 * the given {@code displayId}, and {@code version}. 
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 * 
+ 	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param rdfType
+	 * @return the created GenericTopLevel instance
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created GenericTopLevel instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created GenericTopLevel instance's identity URI
+	 * exists in this SBOLDocument object's list of GenericTopLevel instances.
 	 */
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) {
 		checkReadOnly();
@@ -876,10 +1737,14 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Create a new {@link GenericTopLevel} object.
-	 * @return {@link GenericTopLevel} object.
+	 * @param identity
+	 * @param rdfType
+	 * @return the new generic top level
 	 */
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
+		if (rdfType.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
 		addGenericTopLevel(newGenericTopLevel);
 		return newGenericTopLevel;
@@ -892,11 +1757,18 @@ public class SBOLDocument {
 		addTopLevel(newGenericTopLevel, genericTopLevels, "genericTopLevel",
                 collections, componentDefinitions, models, moduleDefinitions, sequences);
 	}
-
+	
 	/**
-	 * Removes a generic top level from the list of generic top levels, if present.
-	 * @param genericTopLevel object to remove.
-	 * @return true if the genericTopLevel is present and removed.
+	 * Removes the given {@code genericTopLevel} from this SBOLDocument object's list of GenericTopLevel instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param genericTopLevel
+	 * @return {@code true} if the given {@code genericTopLevel} is successfully removed, {@code false} otherwise.
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and the given {@code genericTopLevel} is referenced by any of its Collection instances as a member.
 	 */
 	public boolean removeGenericTopLevel(GenericTopLevel genericTopLevel) {
 		checkReadOnly();
@@ -904,8 +1776,21 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the object matching the specified displayId/version from the list of generic top levels if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the GenericTopLevel instance matching the given {@code displayId} 
+	 * and {@code version} from this SBOLDocument object's list of 
+	 * GenericTopLevel instances.
+	 * <p>
+	 * A compliant GenericTopLevel URI is created first using the {@code defaultURIprefix}, 
+	 * the optional type {@link TopLevel#GENERIC_TOP_LEVEL}, the given {@code displayId} 
+	 * and {@code version}. This URI is used to look up the GenericTopLevel instance 
+	 * in this SBOLDocument object.
+	 *  
+	 * @param displayId
+	 * @param version
+	 * @return the matching GenericTopLevel instance if present, or {@code null} otherwise.
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
 	 */
 	public GenericTopLevel getGenericTopLevel(String displayId, String version) {
 		validateIdentityData(displayId,version);
@@ -913,16 +1798,20 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the object matching the specified URI from the list of generic top levels if present.
-	 * @return the matching object if present, or <code>null</code> if not present.
+	 * Returns the GenericTopLevel instance matching the given {@code topLevelURI} from this
+	 * SBOLDocument object's list of GenericTopLevel instances.
+	 * 
+	 * @param topLevelURI
+	 * @return the matching GenericTopLevel instance if present, or {@code null} otherwise.      
 	 */
 	public GenericTopLevel getGenericTopLevel(URI topLevelURI) {
 		return genericTopLevels.get(topLevelURI);
 	}
 
 	/**
-	 * Returns the list of <code>GenericTopLevel</code> objects owned by this object.
-	 * @return the list of <code>GenericTopLevel</code> objects owned by this object
+	 * Returns the set of {@code GenericTopLevel} instances owned by this SBOLDocument object.
+	 * 
+	 * @return the set of {@code GenericTopLevel} instances owned by this SBOLDocument object.
 	 */
 	public Set<GenericTopLevel> getGenericTopLevels() {
 		//		return (List<GenericTopLevel>) topLevels.values();
@@ -930,9 +1819,10 @@ public class SBOLDocument {
 		topLevels.addAll(this.genericTopLevels.values());
 		return topLevels;
 	}
-
+	
 	/**
-	 * Removes all entries of the list of structuralConstraint objects owned by this object. The list will be empty after this call returns.
+	 * Removes all entries in the list of GenericTopLevel instances 
+	 * owned by this SBOLDocument object. The list will be empty after this call returns.
 	 */
 	public void clearGenericTopLevels() {
 		checkReadOnly();
@@ -952,6 +1842,13 @@ public class SBOLDocument {
 		}
 	}
 	
+	/**
+	 * Returns the top-level instance matching the given {@code topLevelURI} from this
+	 * SBOLDocument object's lists of top-level instances.
+	 * 
+	 * @param topLevelURI
+	 * @return the matching top-level instance if present, or {@code null} otherwise.      
+	 */
 	public TopLevel getTopLevel(URI topLevelURI) {
 		TopLevel topLevel = collections.get(topLevelURI);
 		if (topLevel!=null) {
@@ -1004,7 +1901,6 @@ public class SBOLDocument {
 		nameSpaces.put(URI.create(namespaceBinding.getNamespaceURI()), namespaceBinding);
 	}
 	
-	
 	/**
 	 *  Removes all non-required namespaces from the SBOL document.
 	 */
@@ -1018,8 +1914,11 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the namespace matching the specified URI from the list of namespaces if present.
-	 * @return the matching namespace {@link QName} if present, or <code>null</code> if not present.
+	 * Returns the {@link QName} instance matching the given {@code modelURI} from this
+	 * SBOLDocument object's list of namespace QName instances.
+	 * 
+	 * @param namespaceURI
+	 * @return the matching instance if present, or {@code null} otherwise.      
 	 */
 	public QName getNamespace(URI namespaceURI) {
 		if (nameSpaces.get(namespaceURI)==null) return null;
@@ -1027,8 +1926,9 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Gets the namespace bindings for the document
-	 * @return A list of {@link QName}s
+	 * Returns the list of namespace bindings owned by this SBOLDocument object.
+	 * 
+	 * @return the list of namespace bindings owned by this SBOLDocument object.
 	 */
 	public List<QName> getNamespaces() {
 		List<QName> bindings = new ArrayList<>();
@@ -1049,8 +1949,16 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Removes the object matching the specified URI from the list of nameSpaces, if present and not required.
-	 * @param namespaceURI {@link URI} for a namespace 
+	 * Removes the given {@code namespaceURI} from this SBOLDocument object's list of ModuleDefinition instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param namespaceURI
+	 * @throws SBOLException if this SBOLDocument object is not compliant
+	 * @throws IllegalStateException if the given {@code namespaceURI} belongs to one of the
+	 * following required namespace binding: {@link Sbol2Terms#sbol2}, {@link Sbol2Terms#dc},
+	 * {@link Sbol2Terms#prov}, or {@link Sbol1Terms#rdf}. 
 	 */
 	public void removeNamespace(URI namespaceURI) {
 		checkReadOnly();
@@ -1186,12 +2094,21 @@ public class SBOLDocument {
 		newTopLevel.setSBOLDocument(this);
 	}
 	
+	/**
+	 * Removes the given {@code topLevel} from this SBOLDocument object's list of TopLevel instances.
+	 * 
+	 * @param topLevel
+	 * @param instancesMap
+	 * @return {@code true} if the given {@code topLevel} is successfully removed, {@code false} otherwise.
+	 * @throws SBOLException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
+	 * and the given {@code topLevel} is referenced by one of its Collection instances as a member.
+	 */
 	private final <TL extends TopLevel> boolean removeTopLevel(TopLevel topLevel, Map<URI, TL> instancesMap) {
 		if (complete) {
 			for (Collection c : collections.values()) {
 				if (c.containsMember(topLevel.getIdentity())) {
 					throw new SBOLException("Cannot remove " + topLevel.getIdentity() + 
-								" since it is in use.");
+							" since it is in use.");
 				}
 			}
 		}
@@ -1214,6 +2131,16 @@ public class SBOLDocument {
 		return changed;
 	}
 
+	/**
+	 * Check the given {@code URIprefix} to make sure it is not {@code null} and is compliant,
+	 * and if URIprefix does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of the given {@code URIprefix}.
+	 *   
+	 * @param URIprefix
+	 * @return URIprefix
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 */
 	String checkURIprefix(String URIprefix) {
 		if (URIprefix==null) {
 			throw new IllegalArgumentException("URI prefix must not be null");
@@ -1228,9 +2155,11 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Set the default URI prefix to the given prefix.
+	 * Sets the default URI prefix to the given {@code defaultURIprefix}.
+	 * 
 	 * @param defaultURIprefix
 	 */
+	
 	public void setDefaultURIprefix(String defaultURIprefix) {
 		if (!defaultURIprefix.endsWith("/") && !defaultURIprefix.endsWith(":") && !defaultURIprefix.endsWith("#")) {
 			defaultURIprefix += "/";
@@ -1245,30 +2174,41 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Returns the default URI prefix.
-	 * @return the default URI prefix.
+	 * Returns the default URI prefix of this SBOLDocument object 
+	 * 
+	 * @return the default URI prefix of this SBOLDocument object
 	 */
 	public String getDefaultURIprefix() {
 		return defaultURIprefix;
 	}
 
 	/** 
-	 * Returns true if the complete flag is set.
-	 * @return true if the complete flag is set.
+	 * Returns {@code true} if the {@code complete} flag for this SBOLDocument object is set. 
+	 * This flag is set to {@code true} if all objects are present within this SBOLDocument object,
+	 * i.e. all URI references point to actual objects. 
+	 * 
+	 * @return {@code true} if the complete flag is set, {@code false} otherwise
 	 */
 	public boolean isComplete() {
 		return complete;
 	}
 
 	/**
-	 * Sets the complete flag which when true indicates the SBOL Document is complete and any URIs that 
-	 * cannot be dereferenced to a valid object cause an exception to be thrown.
+	 * Sets the complete flag which when true indicates this SBOLDocument object is complete 
+	 * and any URIs that cannot be dereferenced to a valid object cause an exception to be thrown. 
+	 * 
 	 * @param complete
 	 */
 	public void setComplete(boolean complete) {
 		this.complete = complete;
 	}
 	
+	/**
+	 * Returns {@code true} if all URIs in this SBOLDocument object are compliant.
+	 * 
+	 * @return {@code true} if all URIs in this SBOLDocument object are compliant, 
+	 * {@code false} otherwise
+	 */
 	public boolean isCompliant() {
 		return compliant;
 	}
@@ -1277,10 +2217,23 @@ public class SBOLDocument {
 		this.compliant = compliant;
 	}
 	
+	/**
+	 * Returns {@code true} if all top-level instances URIs include top-level types specified in the
+	 * {@link TopLevel} class.
+	 *  
+	 * @return {@code true} if all top-level instances URIs include top-level types specified in the
+	 * {@link TopLevel} class, {@code false} otherwise
+	 */
 	public boolean isTypesInURIs() {
 		return typesInURIs;
 	}
 
+	/**
+	 * Sets the flag to the given {@code typesInURIs} to determine if the type of a top-level object is included in its compliant URI.
+	 * The type is included in a top-level URI is this flag is set to {@code true}, and it is not included otherwise.
+	 *  
+	 * @param typesInURIs
+	 */
 	public void setTypesInURIs(boolean typesInURIs) {
 		this.typesInURIs = typesInURIs;
 	}

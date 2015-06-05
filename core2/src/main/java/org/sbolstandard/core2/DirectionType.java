@@ -2,8 +2,33 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public enum DirectionType {
-	IN("in"), OUT("out"), INOUT("inout"), NONE("none");
+	/**
+	 * The "in" direction type indicates a FunctionalComponent can be used as input.
+	 */
+	IN("in"), 
+	/**
+	 * The "out" direction type indicates a FunctionalComponent can be used as output.
+	 */
+	OUT("out"), 
+	/**
+	 * The "inout" direction type indicates a FunctionalComponent can be used as both input or output.
+	 */
+	INOUT("inout"), 
+	/**
+	 * The "none" direction type indicates a FunctionalComponent is neither input nor output.
+	 */
+	NONE("none");
 	private final String directionType;
 
 	DirectionType(String directionType) {

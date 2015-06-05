@@ -22,20 +22,42 @@ public class GenericTopLevel extends TopLevel{
 	
 	GenericTopLevel(URI identity, QName rdfType) {
 		super(identity);
-		this.rdfType = rdfType;		
+		this.rdfType = rdfType;
+		if (rdfType.getPrefix().toString().equals("sbol")) {
+			throw new SBOLException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+		}
 	}
 	
 	private GenericTopLevel(GenericTopLevel genericTopLevel) {
 		super(genericTopLevel);
 		this.setRDFType(genericTopLevel.getRDFType());
 	}
-	
+
+	/**
+	 * Returns the RDF type property of this GenericTopLevel object.
+	 * 
+	 * @return the RDF type property of this GenericTopLevel object.
+	 */
 	public QName getRDFType() {
 		return rdfType;
 	}
 
+	/**
+	 * Set the RDF type property of this GenericTopLevel object to the specified one.
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *
+	 * @param rdfType
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the given {@code rdfType} argument is {@code null}
+	 */
 	public void setRDFType(QName rdfType) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		if (rdfType == null) {
+			throw new IllegalArgumentException("RDF type is a required field.");
+		}
 		this.rdfType = rdfType;
 	}
 

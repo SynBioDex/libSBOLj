@@ -2,9 +2,38 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+
 public enum RestrictionType {
+	
+	/**
+	 * The position of the subject Component MUST precede that of the object Component. 
+	 * If each one is associated with a SequenceAnnotation, then the SequenceAnnotation 
+	 * associated with the subject Component MUST specify a region that starts before 
+	 * the region specified by the SequenceAnnotation associated with the object Component.
+	 */
 	PRECEDES("precedes"),
+	/**
+	 * The subject and object Component objects MUST have the same orientation. 
+	 * If each one is associated with a SequenceAnnotation, then the orientation URIs
+	 * of the Location objects of the first SequenceAnnotation MUST be represented
+	 * among those of the second SequenceAnnotation, and vice versa.  
+	 */
 	SAME_ORIENTATION_AS("sameOrienationAs"),
+	/**
+	 * The subject and object Component objects MUST have opposite orientations.
+	 * If each one is associated with a SequenceAnnotation, then the orientation URIs
+	 * of the Location objects of one SequenceAnnotation MUST NOT be represented
+	 * among those of the other SequenceAnnotation.  
+	 */
 	OPPOSITE_ORIENTATION_AS("oppositeOrienationAs");
 	
 	private final String restrictionType;
@@ -17,7 +46,7 @@ public enum RestrictionType {
 	 * Returns the restriction type.
 	 * @return restriction type.
 	 */
-	public String getRestrictionType() {
+	String getRestrictionType() {
 		return restrictionType;
 	}
 
@@ -31,7 +60,7 @@ public enum RestrictionType {
 	 * Convert the specified URI to its corresponding RestrictionType instance.
 	 * @return the corresponding RestrictionType instance.
 	 */
-	public static RestrictionType convertToRestrictionType(URI restriction) {
+	static RestrictionType convertToRestrictionType(URI restriction) {
 		if (restriction.equals(precedes)) {
 			return RestrictionType.PRECEDES;
 		} else if (restriction.equals(sameOrientationAs)) {
@@ -48,7 +77,7 @@ public enum RestrictionType {
 	 * Returns the restriction type in URI.
 	 * @return restriction type in URI
 	 */
-	public static URI convertToURI(RestrictionType restriction) {
+	static URI convertToURI(RestrictionType restriction) {
 		if (restriction != null) {
 			if (restriction.equals(RestrictionType.PRECEDES)) {
 				return precedes;

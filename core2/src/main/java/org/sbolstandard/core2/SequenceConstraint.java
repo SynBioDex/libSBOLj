@@ -36,18 +36,26 @@ public class SequenceConstraint extends Identified {
 		this.setSubject(sequenceConstraint.getSubjectURI());
 		this.setObject(sequenceConstraint.getObjectURI());
 	}
-
-
+	
 	/**
-	 * Returns field variable <code>restriction</code>.
-	 * @return field variable <code>restriction</code>
+	 * Returns the restriction property of this SequenceConstraint object.
+	 * 
+	 * @return the restriction property of this SequenceConstraint object
 	 */
 	public RestrictionType getRestriction() {
 		return restriction;
 	}
 
 	/**
-	 * Sets field variable <code>restriction</code> to the specified element.
+	 * Sets the restriction property to the given {@code restriction}.
+	 * <p>
+	 * If this SequenceConstraint restriction belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. 
+	 * Only a compliant SBOLDocument instance is allowed to be edited.
+	 * 
+	 * @param restriction
+ 	 * @throws SBOLException if the associated SBOLDocument is not compliant	 
+	 * @throws NullPointerException if the given {@code restriction} is {@code null}.
 	 */
 	public void setRestriction(RestrictionType restriction) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -58,16 +66,21 @@ public class SequenceConstraint extends Identified {
 	}
 
 	/**
-	 * Returns field variable <code>subject</code>.
-	 * @return field variable <code>subject</code>
+	 * Returns the subject Component URI that this SequenceConstraint object refers to.
+	 * 
+	 * @return the subject Component URI that this SequenceConstraint object refers to
 	 */
 	public URI getSubjectURI() {
 		return subject;
 	}
 
 	/**
-	 * Returns the Functional Component referenced as the subject.
-	 * @return the Functional Component referenced as the subject.
+	 * Returns the subject Component instance this SequenceConstraint object refers to.
+	 * <p>
+	 * This method calls {@link ComponentDefinition#getComponent(URI)},
+	 * 
+	 * @return the subject Component instance this SequenceConstraint object refers to,
+	 * if the associated ComponentDefinition instance is not {@code null}, or {@code null} otherwise
 	 */
 	public Component getSubject() {
 		if (componentDefinition==null) return null;
@@ -75,32 +88,51 @@ public class SequenceConstraint extends Identified {
 	}
 
 	/**
-	 * Sets field variable <code>subject</code> to the specified element.
+	 * Sets the reference subject Component URI to the given {@code subjectURI}.
+	 * <p>
+	 * If this SequenceConstraint subject belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. 
+	 * Only a compliant SBOLDocument instance is allowed to be edited.
+	 * 
+	 * 
+	 * @param subjectURI
+ 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the associated ComponentDefinition subject
+	 * is not {@code null}, and the given {@code subjectURI} does not exist in 
+	 * its associated ComponentDefinition subject's
+	 * list of Component instances.
+	 * @throws IllegalArgumentException if the given {@code subjectURI} is {@code null}.
 	 */
-	public void setSubject(URI subject) {
+	public void setSubject(URI subjectURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
-			if (componentDefinition.getComponent(subject)==null) {
-				throw new IllegalArgumentException("Component '" + subject + "' does not exist.");
+			if (componentDefinition.getComponent(subjectURI)==null) {
+				throw new IllegalArgumentException("Component '" + subjectURI + "' does not exist.");
 			}
 		}
-		if (subject==null) {
+		if (subjectURI==null) {
 			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have a subject.");
 		}
-		this.subject = subject;
+		if (subjectURI==object) {
+			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have different subject and object.");
+		}
+		this.subject = subjectURI;
 	}
 
 	/**
-	 * Returns field variable <code>object</code>. 
-	 * @return field variable <code>object</code>
+	 * Returns the object Component URI that this SequenceConstraint object refers to.
+	 * 
+	 * @return the object Component URI that this SequenceConstraint object refers to
 	 */
 	public URI getObjectURI() {
 		return object;
 	}
 	
 	/**
-	 * Returns the Functional Component referenced as the object.
-	 * @return the Functional Component referenced as the object.
+	 * Returns the object Component instance this SequenceConstraint object refers to.
+	 * 
+	 * @return the object Component instance this SequenceConstraint object refers to,
+	 * if the associated ComponentDefinition instance is not {@code null}, or {@code null} otherwise
 	 */
 	public Component getObject() {
 		if (componentDefinition==null) return null;
@@ -108,19 +140,35 @@ public class SequenceConstraint extends Identified {
 	}
 
 	/**
-	 * Sets field variable <code>object</code> to the specified element.
+	 * Sets the reference object Component URI to the given {@code objectURI}.
+	 * <p>
+	 * If this SequenceConstraint object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. 
+	 * Only a compliant SBOLDocument instance is allowed to be edited.
+	 * 
+	 * 
+	 * @param objectURI
+ 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the associated ComponentDefinition object
+	 * is not {@code null}, and the given {@code objectURI} does not exist in 
+	 * its associated ComponentDefinition object's
+	 * list of Component instances.
+	 * @throws IllegalArgumentException if the given {@code objectURI} is {@code null}.
 	 */
-	public void setObject(URI object) {
+	public void setObject(URI objectURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
-			if (componentDefinition.getComponent(object)==null) {
-				throw new IllegalArgumentException("Component '" + object + "' does not exist.");
+			if (componentDefinition.getComponent(objectURI)==null) {
+				throw new IllegalArgumentException("Component '" + objectURI + "' does not exist.");
 			}
 		}
-		if (object==null) {
+		if (objectURI==null) {
 			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have an object.");
 		}
-		this.object = object;
+		if (objectURI==subject) {
+			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have different subject and object.");
+		}
+		this.object = objectURI;
 	}
 
 	@Override

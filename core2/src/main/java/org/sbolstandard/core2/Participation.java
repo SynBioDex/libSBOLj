@@ -40,20 +40,37 @@ public class Participation extends Identified {
 	}
 
 	/**
-	 * Returns field variable <code>participant</code>.
-	 * @return field variable <code>participant</code>
+	 * Returns the FunctionalComponent URI that this Particiaption object refers to.
+	 * 
+	 * @return the FunctionalComponent URI that this Particiaption object refers to
 	 */
 	public URI getParticipantURI() {
 		return participant;
 	}
-
+	
+	/**
+	 * Returns the FunctionalComponent instance that this Participation object refers to.
+	 * 
+	 * @return the FunctionalComponent instance that this Participation object refers to
+	 * if the associated SBOLDocument instance is not {@code null}, {@code null} otherwise 
+	 */
 	public FunctionalComponent getParticipant() {
 		if (moduleDefinition==null) return null;
 		return moduleDefinition.getFunctionalComponent(participant);
 	}
 	
 	/**
-	 * Sets field variable <code>participant</code> to the specified element.
+	 * Sets the participant property of this object to the given one.
+	 * <p>
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param participant
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the given {@code participant} argument is {@code null}
+	 * @throws IllegalArgumentException if the associated ModuleDefinition instance is not {@code null} and
+	 * given {@code participant} URI is not found in its list of FunctionalComponent instances.
 	 */
 	public void setParticipant(URI participant) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -66,9 +83,16 @@ public class Participation extends Identified {
 		this.participant = participant;
 	}
 	
-		/**
-	 * Adds the specified element to the set <code>roles</code> if it is not already present. 
-	 * @return <code>true</code> if this set did not already contain the specified element.
+	/**
+	 * Adds the given role URI to this Participation's set of role URIs.
+	 * <p>
+	 * If this Participation object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *
+	 * @param roleURI
+	 * @return {@code true} if this set did not already contain the specified role.
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public boolean addRole(URI roleURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -76,8 +100,15 @@ public class Participation extends Identified {
 	}
 	
 	/**
-	 * Removes the specified element from the set <code>roles</code> if it is present.
-	 * @return <code>true</code> if this set contained the specified element
+	 * Removes the given role reference from the set of role references.
+	 * <p>
+	 * If this Participation object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param roleURI
+	 * @return {@code true} if the matching role reference is removed successfully, {@code false} otherwise.
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public boolean removeRole(URI roleURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -85,7 +116,15 @@ public class Participation extends Identified {
 	}
 	
 	/**
-	 * Sets the field variable <code>roles</code> to the specified element.
+	 * Clears the existing set of role references first, then adds the given
+	 * set of the role references to this Participation object.
+	 * <p>
+	 * If this Participation object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *
+	 * @param roles
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public void setRoles(Set<URI> roles) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -95,25 +134,36 @@ public class Participation extends Identified {
 			addRole(role);
 		}
 	}
-	
+
 	/**
-	 * Returns the field variable <code>roles</code>.
+	 * Returns the set of role URIs owned by this Participation object.
+	 * 
+	 * @return the set of role URIs owned by this Participation object.
 	 */
 	public Set<URI> getRoles() {
 		return roles;
 	}
 	
 	/**
-	 * Returns true if the set <code>roles</code> contains the specified element. 
-	 * @return <code>true</code> if this set contains the specified element.
+	 * Checks if the given role URI is included in this Participation
+	 * object's set of reference role URIs.
+	 * 
+	 * @param roleURI
+	 * @return {@code true} if this set contains the specified URI.
 	 */
-	public boolean containsRole(URI rolesURI) {
-		return roles.contains(rolesURI);
+	public boolean containsRole(URI roleURI) {
+		return roles.contains(roleURI);
 	}
-	
+
 	/**
-	 * Removes all entries of the list of <code>roles</code> instances owned by this instance.
-	 * The list will be empty after this call returns.
+	 * Removes all entries of this Participation object's set of role URIs.
+	 * The set will be empty after this call returns.
+	 * <p>
+	 * If this Participation object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public void clearRoles() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

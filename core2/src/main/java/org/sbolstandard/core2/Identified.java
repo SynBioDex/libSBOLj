@@ -81,8 +81,9 @@ public abstract class Identified {
 //	}
 
 	/**
-	 * Returns field variable <code>identity</code>.
-	 * @return field variable <code>identity</code>
+	 * Returns the identity URI of this object.
+	 * 
+	 * @return the identity URI of this object.
 	 */
 	public URI getIdentity() {
 		return identity;
@@ -101,16 +102,18 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Test if optional field variable <code>persistentIdentity</code> is set.
-	 * @return <code>true</code> if it is not <code>null</code>
+	 * Test if the persistent identity URI is set.
+	 * 
+	 * @return {@code true} if it is not {@code null}
 	 */
 	public boolean isSetPersistentIdentity() {
 		return persistentIdentity != null;
 	}
 
 	/**
-	 * Returns field variable <code>persistentIdentity</code>.
-	 * @return field variable <code>persistentIdentity</code>
+	 * Returns the persistent identity URI of this object.
+	 * 
+	 * @return the persistent identity URI of this object.
 	 */
 	public URI getPersistentIdentity() {
 		return persistentIdentity;
@@ -124,27 +127,34 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Set optional field variable <code>persistentIdentity</code> to <code>null</code>.
+	 * Set optional field variable <code>persistentIdentity</code> to {@code null}.
 	 */
 	void unsetPersistentIdentity() {
 		persistentIdentity = null;
 	}
 
 	/**
-	 * Test if optional field variable <code>version</code> is set.
-	 * @return <code>true</code> if it is not <code>null</code>
+	 * Test if the version is set.
+	 * 
+	 * @return {@code true} if it is not {@code null}
 	 */
 	public boolean isSetVersion() {
 		return version != null;
 	}
 
+	/**
+	 * Test if the {@code wasDerivedFrom} property is set.
+	 * 
+	 * @return {@code true} if it is not {@code null}
+	 */
 	public boolean isSetWasDerivedFrom() {
 		return wasDerivedFrom != null;
 	}
 
 	/**
-	 * Returns field variable <code>version</code>.
-	 * @return field variable <code>version</code>.
+	 * Returns this object's version.
+	 * 
+	 * @return this object's version.
 	 */
 	public String getVersion() {
 		return version;
@@ -163,18 +173,19 @@ public abstract class Identified {
 	}
 	
 	/**
-	 * Test if optional field variable <code>displayId</code> is set.
-	 * @return <code>true</code> if it is not <code>null</code>
+	 * Test if the display ID is set.
+	 * 
+	 * @return {@code true} if it is not {@code null}
 	 */
 	public boolean isSetDisplayId() {
 		return displayId != null;
 	}
 	
 	/**
-	 * Returns field variable <code>displayId</code>.
-	 * @return field variable <code>displayId</code>
+	 * Returns the display ID of this object.
+	 * 
+	 * @return the display ID of this object.
 	 */
-	// @return the documented object's display ID
 	public String getDisplayId() {
 		return displayId;
 	}
@@ -191,19 +202,32 @@ public abstract class Identified {
 	}
 	
 	/**
-	 * Set optional field variable <code>displayId</code> to <code>null</code>.
+	 * Set optional field variable <code>displayId</code> to {@code null}.
 	 */
 	void unsetDisplayId() {
 		displayId = null;
 	}
 
+	/**
+	 * Returns the {@code wasDerivedFrom} property of this object.
+	 * 
+	 * @return the {@code wasDerivedFrom} property of this object.
+	 */
 	public URI getWasDerivedFrom() {
 		return wasDerivedFrom;
 	}
 
 	/**
-	 * Sets field variable <code>wasDerivedFrom</code> to the specified value.
-	 */
+	 * Sets the {@code wasDerivedFrom} property of this object to the specified one. 
+	 * <p>
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param wasDerivedFrom
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 */	
 	public void setWasDerivedFrom(URI wasDerivedFrom) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.wasDerivedFrom = wasDerivedFrom;
@@ -211,16 +235,25 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Test if this instance has <code>annotations</code>.
-	 * @return <code>true</code> if it is not an empty list
+	 * Test if this object has any Annotation instances.
+	 * 
+	 * @return {@code true} if this object has any Annotation objects
 	 */
 	public boolean hasAnnotations() {
 		return !annotations.isEmpty();
 	}
-	
+
 	/**
-	 * Calls the Annotation constructor to create a new instance using the specified parameters,
-	 * then adds to the list of Annotation instances owned by this component.
+	 * Creates an Annotation instance using the given parameters,
+	 * then adds to this object's list of Annotation instances.
+  	 * <p>
+	 * If this object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *
+	 * @param qName
+	 * @param literal the literal string
+	 * @throws SBOLException if the associated SBOLDocument is not compliant 
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, String literal) {
@@ -229,10 +262,18 @@ public abstract class Identified {
 		addAnnotation(annotation);
 		return annotation;
 	}
-
+	
 	/**
-	 * Calls the Annotation constructor to create a new instance using the specified parameters,
-	 * then adds to the list of Annotation instances owned by this component.
+	 * Creates an Annotation instance using the given parameters,
+	 * then adds to this object's list of Annotation instances.
+  	 * <p>
+	 * If this object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param qName
+	 * @param literal the literal URI
+	 * @throws SBOLException if the associated SBOLDocument is not compliant 
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, URI literal) {
@@ -253,11 +294,20 @@ public abstract class Identified {
 		return annotation;
 	}
 	
-	
 	/**
-	 * Calls the Annotation constructor to create a new instance using the specified parameters,
-	 * then adds to the list of Annotation instances owned by this component.
+	 * Creates an Annotation instance with nested annotations using the given parameters,
+	 * then adds to this object's list of Annotation instances.
+  	 * <p>
+	 * If this object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param qName
+	 * @param nestedQName
+	 * @param nestedURI
+	 * @param annotations
 	 * @return the created Annotation instance.
+	 * @throws SBOLException if the associated SBOLDocument is not compliant 
 	 */
 	public Annotation createAnnotation(QName qName,QName nestedQName, URI nestedURI, List<Annotation> annotations) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -273,11 +323,19 @@ public abstract class Identified {
 		// TODO: @addAnnotation, Check for duplicated entries.
 		annotations.add(annotation);
 	}
-
+	
 	/**
-	 * Removes an annotation from the list of annotations for this object.
-	 * @param annotation to remove.
-	 * @return <code>true</code> if the matching instance is present.
+	 * Removes the given Annotation instance from the list of
+	 * Annotation instances.
+	 * <p>
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *	
+	 * @param annotation
+	 * @return {@code true} if the matching Annotation instance is removed successfully,
+	 *         {@code false} otherwise.
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public boolean removeAnnotation(Annotation annotation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -287,15 +345,16 @@ public abstract class Identified {
 	//	/**
 	//	 * Returns the instance matching the specified URI from the list of annotations if present.
 	//	 * @param structuralAnnotationURI
-	//	 * @return the matching instance if present, or <code>null</code> if not present.
+	//	 * @return the matching instance if present, or {@code null} if not present.
 	//	 */
 	//	public Annotation getAnnotation(URI structuralAnnotationURI) {
 	//		return annotations.get(structuralAnnotationURI);
 	//	}
 
 	/**
-	 * Returns the list of annotations owned by this instance.
-	 * @return the list of annotations owned by this instance.
+	 * Returns the list of Annotation instances owned by this object.
+	 * 
+	 * @return the list of Annotation instances owned by this object.
 	 */
 	public List<Annotation> getAnnotations() {
 		// TODO: should likely copy the list rather than returning the list
@@ -303,7 +362,14 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Removes all annotations from this object.
+	 * Removes all entries of this object's list of Annotation
+	 * objects. The set will be empty after this call returns.
+  	 * <p>
+	 * If this object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant 
 	 */
 	public void clearAnnotations() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -319,7 +385,17 @@ public abstract class Identified {
 			addAnnotation(structuralAnnotation);
 		}
 	}
-
+	
+	/**
+	 * Sets the {@code wasDerivedFrom} property to {@code null}.
+	 * <p> 	 
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 */
 	public void unsetWasDerivedFrom() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		wasDerivedFrom = null;
@@ -451,31 +527,48 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Test if optional field variable <code>name</code> is set.
-	 * @return <code>true</code> if it is not <code>null</code>
+	 * Test if the name is set.
+	 * 
+	 * @return {@code true} if it is not {@code null}
 	 */
 	public boolean isSetName() {
 		return name != null;
 	}
 
 	/**
-	 * Returns field variable <code>name</code>.
-	 * @return field variable <code>name</code>
+	 * Returns the name property of this object.
+	 * 
+	 * @return the name property of this object.
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * Sets field variable <code>name</code> to the specified element.
-	 */
+	 * Sets the name of this object to the specified one. 
+	 * <p>
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param name
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 */	 
 	public void setName(String name) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.name = name;
 	}
-
+	
 	/**
-	 * Sets optional field variable <code>name</code> to <code>null</code>.
+	 * Sets the name of this object to {@code null}.
+	 * <p> 	 
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public void unsetName() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -483,23 +576,33 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Test if optional field variable <code>description</code> is set.
-	 * @return <code>true</code> if it is not <code>null</code>
+	 * Test if the description property is set.
+	 * 
+	 * @return {@code true} if it is not {@code null}
 	 */
 	public boolean isSetDescription() {
 		return description != null;
 	}
 
 	/**
-	 * Returns field variable <code>description</code>.
-	 * @return field variable <code>description</code>
+	 * Returns the description property of this object.
+	 * 
+	 * @return the description property of this object.
 	 */
 	public String getDescription() {
 		return description;
 	}
 
 	/**
-	 * Sets field variable <code>description</code> to the specified element.
+	 * Sets the description property of this object to the specified one. 
+	 * <p>
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param description
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public void setDescription(String description) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -507,7 +610,14 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Set optional field variable <code>description</code> to <code>null</code>.
+	 * Sets the description property to {@code null}.
+	 * <p> 	 
+	 * If this object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
 	public void unsetDescription() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

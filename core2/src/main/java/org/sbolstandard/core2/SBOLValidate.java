@@ -12,6 +12,9 @@ package org.sbolstandard.core2;
 
 public class SBOLValidate {
 	
+	/**
+	 * the current SBOL version
+	 */
 	public static final String SBOLVersion = "2.0";
 	
 	private static void usage() {		
@@ -29,6 +32,9 @@ public class SBOLValidate {
 		System.exit(1);
 	}
 	
+	/**
+	 * @param sbolDocument
+	 */
 	public static void validateCompliance(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
 			if (!collection.checkDescendantsURIcompliance()) 
@@ -120,6 +126,7 @@ public class SBOLValidate {
 			SBOLReader.setTypesInURI(typesInURI);
 			SBOLReader.setVersion(version);
 	        SBOLDocument doc = SBOLReader.read(fileName);
+	        doc.setTypesInURIs(typesInURI);
 	        if (compliant) validateCompliance(doc);
 	        if (complete) validateCompleteness(doc);
 	        System.out.println("Validation successful, no errors.");

@@ -50,6 +50,10 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
+/**
+ * @author zhangz
+ *
+ */
 public class SBOLReader
 {
 	static class SBOLPair
@@ -86,7 +90,9 @@ public class SBOLReader
 
 	/**
 	 * Set the specified authority as the prefix to all member's identity
-	 */
+	 * 
+	 *  @param URIprefix
+	 */	
 	public static void setURIPrefix(String URIprefix)
 	{
 		SBOLReader.URIPrefix = URIprefix;
@@ -94,7 +100,9 @@ public class SBOLReader
 
 	/**
 	 * Set the specified authority as the prefix to all member's identity
-	 */
+	 * 
+	 * @param version
+	 */	
 	public static void setVersion(String version)
 	{
 		SBOLReader.version = version;
@@ -102,6 +110,8 @@ public class SBOLReader
 	
 	/**
 	 * Set the specified authority as the prefix to all member's identity
+	 * 
+	 * @param typesInURI
 	 */
 	public static void setTypesInURI(boolean typesInURI)
 	{
@@ -109,7 +119,12 @@ public class SBOLReader
 	}
 	
 	/**
-	 * Takes in the given RDF filename and converts the file to an SBOLDocument
+	 * Takes in the given RDF filename and converts the file to an SBOLDocument.
+	 * <p>
+	 * This method calls {@link #readRDF(File)}.
+	 * 
+	 * @param fileName
+	 * @return the converted SBOLDocument
 	 * @throws Throwable
 	 */
 	public static SBOLDocument read(String fileName) throws Throwable
@@ -120,7 +135,12 @@ public class SBOLReader
 	}
 
 	/**
-	 * Takes in the given JSON filename and converts the file to an SBOLDocument
+	 * Takes in the given JSON filename and converts the file to an SBOLDocument.
+	 * <p>
+	 * This method calls {@link #readJSON(File)}
+	 * 
+	 * @param fileName
+	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
 	 */
 	public static SBOLDocument readJSON(String fileName) throws Throwable
@@ -129,16 +149,26 @@ public class SBOLReader
 	}
 
 	/**
-	 * Takes in the given RDF filename and converts the file to an SBOLDocument
+	 * Takes in the given RDF filename and converts the file to an SBOLDocument.
+	 * <p>
+	 * This method calls {@link #readRDF(File)}
+	 * 
+	 * @param fileName
+	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
-	 */
+	 */	
 	public static SBOLDocument readRDF(String fileName) throws Throwable
 	{
 		return readRDF(new File(fileName));
 	}
 
 	/**
-	 * Takes in the given Turtle filename and converts the file to an SBOLDocument
+	 * Takes in the given Turtle filename and converts the file to an SBOLDocument.
+	 * <p>
+	 * This method calls {@link #readTurtle(File)}.
+	 * 
+	 * @param fileName
+	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
 	 */
 	public static SBOLDocument readTurtle(String fileName) throws Throwable
@@ -147,7 +177,12 @@ public class SBOLReader
 	}
 
 	/**
-	 * Takes in the given JSON file and converts the file to an SBOLDocument
+	 * Takes in the given JSON file and converts the file to an SBOLDocument.
+	 * <p>
+	 * This method calls {@link #readJSON(InputStream)}.
+	 * 
+	 * @param file
+	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
 	 */
 	public static SBOLDocument readJSON(File file) throws Throwable
@@ -157,9 +192,12 @@ public class SBOLReader
 
 		return readJSON(buffer);
 	}
-
+	
 	/**
-	 * Takes in the given RDF file and converts the file to an SBOLDocument
+	 * Takes in the given RDF file and converts the file to an SBOLDocument.
+	 * 
+	 * @param file
+	 * @return
 	 * @throws Throwable
 	 */
 	public static SBOLDocument read(File file) throws Throwable
@@ -171,7 +209,12 @@ public class SBOLReader
 	}
 
 	/**
-	 * Takes in the given RDF file and converts the file to an SBOLDocument
+	 * Takes in the given RDF file and converts the file to an SBOLDocument.
+	 * <p>
+	 * This method calls {@link #readRDF(InputStream)}.
+	 * 
+	 * @param file
+	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
 	 */
 	public static SBOLDocument readRDF(File file) throws Throwable
@@ -183,6 +226,10 @@ public class SBOLReader
 
 	/**
 	 * Takes in the given Turtle file and converts the file to an SBOLDocument
+	 * <p>
+	 * This method calls {@link #readTurtle(InputStream)} 
+	 * @param file
+	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
 	 */
 	public static SBOLDocument readTurtle(File file) throws Throwable
@@ -195,6 +242,9 @@ public class SBOLReader
 
 	/**
 	 * Takes in a given JSON InputStream and converts the file to an SBOLDocument
+	 *
+	 * @param in
+	 * @return the converted SBOLDocument instance
 	 * @throws Exception 
 	 */
 	public static SBOLDocument readJSON(InputStream in) throws Exception
@@ -233,9 +283,12 @@ public class SBOLReader
 		}
 		return SBOLDoc;
 	}
-
+	
 	/**
-	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument
+	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument.
+	 * 
+	 * @param in
+	 * @return the converted SBOLDocument instance 
 	 */
 	public static SBOLDocument read(InputStream in)
 	{
@@ -271,8 +324,12 @@ public class SBOLReader
 	}
 
 	/**
-	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument
+	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument.
+	 * 
+	 * @param in
+	 * @return
 	 * @throws Exception 
+	 * @throws IOException
 	 */
 	public static SBOLDocument readRDF(InputStream in) throws Exception
 	{
@@ -311,7 +368,10 @@ public class SBOLReader
 
 	/**
 	 * Takes in a given Turtle InputStream and converts the file to an SBOLDocument
-	 * @throws Exception 
+	 *
+	 * @param in
+	 * @return the converted SBOLDocument instance
+	 * @throws Exception
 	 */
 	public static SBOLDocument readTurtle(InputStream in) throws Exception
 	{
@@ -376,6 +436,11 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
+	/**
+	 * @param stream
+	 * @return
+	 * @throws Exception
+	 */
 	private static DocumentRoot<QName> readJSON(Reader stream) throws Exception
 	{
 		JsonReader reader 		  = Json.createReaderFactory(Collections.<String, Object> emptyMap()).createReader(stream);

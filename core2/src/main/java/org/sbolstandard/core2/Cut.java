@@ -28,15 +28,25 @@ public class Cut extends Location{
 	}
 
 	/**
-	 * Returns field variable <code>at</code>.
-	 * @return field variable <code>at</code>
+	 * Returns the {@code at} property of this Cut object.
+	 * 
+	 * @return the {@code at} property of this Cut object
 	 */
 	public int getAt() {
 		return at;
 	}
 
 	/**
-	 * Sets field variable <code>at</code> to the specified element.
+	 * Sets the {@code at} property of this Cut object to the given one.
+	 * <p>
+	 * If this Cut object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * 
+	 * @param at 
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the given {@code at} value is less than 0
 	 */
 	public void setAt(int at) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
