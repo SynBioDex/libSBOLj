@@ -11,7 +11,7 @@ final class URIcompliance {
 		if (!isDisplayIdCompliant(displayId)) {
 			throw new IllegalArgumentException("Display id `" + displayId + "' is not valid.");
 		}
-		if (!isVersionCompliant(version)) {
+		if (version!=null && !isVersionCompliant(version)) {
 			throw new IllegalArgumentException("Version `" + version + "' is not valid.");
 		}
 	}
