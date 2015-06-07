@@ -174,7 +174,7 @@ public class writeTester {
 	{
 		SBOL2Doc_test.setDefaultURIprefix("http://www.async.ece.utah.edu");
 		SBOL2Doc_test.setComplete(true);
-		SBOL2Doc_test.addNamespace(URI.create("http://myannotation.org"), "annot");
+		SBOL2Doc_test.addNamespace(URI.create("http://myannotation.org/"), "annot");
 		SBOL2Doc_test.addNamespace(URI.create("urn:bbn.com:tasbe:grn"), "grn");
 		Collection myParts = createCollection(SBOL2Doc_test,
 				getData("myParts", version),

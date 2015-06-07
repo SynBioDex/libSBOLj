@@ -61,7 +61,7 @@ class Sbol2Terms
 		static final QName hasSequence			  = sbol2.withLocalPart("sequence");
 		static final QName hasSequenceAnnotations = sbol2.withLocalPart("sequenceAnnotation");
 		static final QName hasSequenceConstraints = sbol2.withLocalPart("sequenceConstraint");
-		static final QName hasComponent = sbol2.withLocalPart("component"); //TODO should this be functionalComponent? check uml diagram
+		static final QName hasComponent = sbol2.withLocalPart("component"); 
 	}
 
 	/**
@@ -188,8 +188,7 @@ class Sbol2Terms
 		static final QName Module 				= sbol2.withLocalPart("Module");
 		static final QName hasMapsTo			    = sbol2.withLocalPart("mapsTo");
 		static final QName hasDefinition		    = sbol2.withLocalPart("definition");
-		//TODO: double check hasInstantiatedModule
-		static final QName hasInstantiatedModule = sbol2.withLocalPart("instantiatedModule");
+		//static final QName hasInstantiatedModule = sbol2.withLocalPart("instantiatedModule");
 	}
 
 	/**

@@ -1884,6 +1884,9 @@ public class SBOLDocument {
 	 * @param prefix The prefix {@link String}
 	 */
 	public void addNamespace(URI nameSpaceURI, String prefix) {
+//		if (!URIcompliance.isURIprefixCompliant(nameSpaceURI.toString())) {
+//			throw new SBOLException("Namespace URI " + nameSpaceURI.toString() + " is not valid.");
+//		}
 		nameSpaces.put(nameSpaceURI, NamespaceBinding(nameSpaceURI.toString(), prefix));
 	}
 	

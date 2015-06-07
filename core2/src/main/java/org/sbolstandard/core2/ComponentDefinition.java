@@ -1344,27 +1344,6 @@ public class ComponentDefinition extends TopLevel {
 		return cloned;
 	}
 
-	//	/**
-	//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0".
-	//	 * @param newVersion
-	//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
-	//	 */
-	//	public ComponentDefinition newVersion(String newVersion) {
-	//		ComponentDefinition cloned = (ComponentDefinition) super.newVersion(newVersion);
-	//		cloned.updateVersion(newVersion);
-	//		return cloned;
-	//	}
-	//
-	//	/* (non-Javadoc)
-	//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
-	//	 */
-	//	protected void updateVersion(String newVersion) {
-	//		super.updateVersion(newVersion);
-	//		if (isTopLevelURIcompliant(this.getIdentity())) {
-	//			// TODO Change all of its children's versions in their URIs.
-	//		}
-	//	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
