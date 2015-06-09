@@ -524,7 +524,7 @@ public class SBOLReader
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				displayId = fixDisplayId(displayId);
-				if (URIPrefix != null ) //TODO: check version set
+				if (URIPrefix != null ) 
 				{
 					persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
 					identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
@@ -549,7 +549,6 @@ public class SBOLReader
 						precedePairs, persIdentity, ++sa_num);
 
 				sequenceAnnotations.add(sa);
-				// TODO: if version then + "/" + version, else skip version
 
 				URI component_identity    = createCompliantURI(persIdentity,"component" + ++component_num,version);
 				AccessType access 		  = AccessType.PUBLIC;
@@ -943,7 +942,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasComponent))
 			{
-				components.add(parseSubComponent(((NestedDocument<QName>) namedProperty.getValue())));
+				components.add(parseComponent(((NestedDocument<QName>) namedProperty.getValue())));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequence))
 			{
@@ -1006,7 +1005,7 @@ public class SBOLReader
 		return c;
 	}
 
-	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraints)
+	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraint)
 	{
 		URI persistentIdentity 		 = null;
 		String displayId             = null;
@@ -1017,7 +1016,10 @@ public class SBOLReader
 		URI wasDerivedFrom 			 = null;
 		List<Annotation> annotations = new ArrayList<>();
 
-		for (NamedProperty<QName> namedProperty : sequenceConstraints.getProperties())
+		if (!sequenceConstraint.getType().equals(Sbol2Terms.SequenceConstraint.SequenceConstraint)) {
+			throw new SBOLException(sequenceConstraint.getType() + " is not a valid sequence constraint.");
+		}
+		for (NamedProperty<QName> namedProperty : sequenceConstraint.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
@@ -1061,7 +1063,7 @@ public class SBOLReader
 			}
 		}
 
-		SequenceConstraint s = new SequenceConstraint(sequenceConstraints.getIdentity(), restriction, subject, object);
+		SequenceConstraint s = new SequenceConstraint(sequenceConstraint.getIdentity(), restriction, subject, object);
 		if (displayId != null)
 			s.setDisplayId(displayId);
 		if (persistentIdentity != null)
@@ -1087,7 +1089,10 @@ public class SBOLReader
 		URI wasDerivedFrom 	   = null;
 		List<Location> locations = new ArrayList<>();
 		List<Annotation> annotations = new ArrayList<>();
-
+		
+		if (!sequenceAnnotation.getType().equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation)) {
+			throw new SBOLException(sequenceAnnotation.getType() + " is not a valid sequence annotation.");
+		}
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
@@ -1153,8 +1158,6 @@ public class SBOLReader
 	private static Location parseLocation(NestedDocument<QName> location)
 	{
 		Location l 					 = null;
-		List<Annotation> annotations = new ArrayList<>();
-
 		if (location.getType().equals(Sbol2Terms.Range.Range))
 		{
 			l = parseRange(location);
@@ -1169,15 +1172,8 @@ public class SBOLReader
 		}
 		else
 		{
-			// TODO: probably need to throw an exception here
-			System.out.println("ERR: Null. Location isn't a Range, MultiRange, or Cut.");
-			return l; // codereview: this is always null? do you mean this?
+			throw new SBOLException(location.getType() + " is not a valid location type.");
 		}
-
-		// codereview: this is brittle for NPEs if your if/else cascade higher up gets out of sync with the data model
-		if (!annotations.isEmpty())
-			l.setAnnotations(annotations);
-
 		return l;
 
 	}
@@ -1281,8 +1277,7 @@ public class SBOLReader
 
 		if (at == null)
 		{
-			// TODO: how to handle problems with data model when at is null
-			System.out.println("ERR: at is Null. Problem is data model");
+			throw new SBOLException("Cut requires at property.");
 		}
 
 		Cut c = new Cut(typeCut.getIdentity(), at);
@@ -1368,7 +1363,7 @@ public class SBOLReader
 		return r;
 	}
 
-	private static Component parseSubComponent(NestedDocument<QName> subComponents)
+	private static Component parseComponent(NestedDocument<QName> component)
 	{
 		URI persistentIdentity = null;
 		String version 		   = null;
@@ -1382,7 +1377,10 @@ public class SBOLReader
 		List<Annotation> annotations = new ArrayList<>();
 		List<MapsTo> mapsTo 		 = new ArrayList<>();
 
-		for (NamedProperty<QName> namedProperty : subComponents.getProperties())
+		if (!component.getType().equals(Sbol2Terms.Component.Component)) {
+			throw new SBOLException(component.getType() + " is not a valid component.");
+		}
+		for (NamedProperty<QName> namedProperty : component.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
@@ -1428,7 +1426,7 @@ public class SBOLReader
 			}
 		}
 
-		Component c = new Component(subComponents.getIdentity(), access, subComponentURI);
+		Component c = new Component(component.getIdentity(), access, subComponentURI);
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
 		if(version != null)
@@ -1696,7 +1694,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModule))
 			{
-				subModules.add(parseSubModule(((NestedDocument<QName>) namedProperty.getValue())));
+				subModules.add(parseModule(((NestedDocument<QName>) namedProperty.getValue())));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasInteractions))
 			{
@@ -1704,7 +1702,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasfunctionalComponent))
 			{
-				functionalComponents.add(parseFunctionalComponents((NestedDocument<QName>) namedProperty.getValue()));
+				functionalComponents.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue()));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModels))
 			{
@@ -1756,7 +1754,7 @@ public class SBOLReader
 		return moduleDefinition;
 	}
 
-	private static Module parseSubModule(NestedDocument<QName> module)
+	private static Module parseModule(NestedDocument<QName> module)
 	{
 		URI persistentIdentity = null;
 		String version 		   = null;
@@ -1768,6 +1766,9 @@ public class SBOLReader
 		List<MapsTo> mappings 		 = new ArrayList<>();
 		List<Annotation> annotations = new ArrayList<>();
 
+		if (!module.getType().equals(Sbol2Terms.Module.Module)) {
+			throw new SBOLException(module.getType() + " is not a valid module.");
+		}
 		for (NamedProperty<QName> namedProperty : module.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
@@ -1828,7 +1829,7 @@ public class SBOLReader
 		return submodule;
 	}
 
-	private static MapsTo parseMapsTo(NestedDocument<QName> mappings)
+	private static MapsTo parseMapsTo(NestedDocument<QName> mapsTo)
 	{
 		URI persistentIdentity    = null;
 		String displayId		  = null;
@@ -1840,7 +1841,10 @@ public class SBOLReader
 
 		List<Annotation> annotations = new ArrayList<>();
 
-		for (NamedProperty<QName> m : mappings.getProperties())
+		if (!mapsTo.getType().equals(Sbol2Terms.MapsTo.MapsTo)) {
+			throw new SBOLException(mapsTo.getType() + " is not a valid mapsTo.");
+		}
+		for (NamedProperty<QName> m : mapsTo.getProperties())
 		{
 			if (m.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
@@ -1877,7 +1881,7 @@ public class SBOLReader
 			}
 		}
 
-		MapsTo map = new MapsTo(mappings.getIdentity(), refinement, local, remote);
+		MapsTo map = new MapsTo(mapsTo.getIdentity(), refinement, local, remote);
 		if (displayId != null)
 			map.setDisplayId(displayId);
 		if (persistentIdentity != null)
@@ -1904,6 +1908,9 @@ public class SBOLReader
 		List<Participation> participations = new ArrayList<>();
 		List<Annotation> annotations 	   = new ArrayList<>();
 
+		if (!interaction.getType().equals(Sbol2Terms.Interaction.Interaction)) {
+			throw new SBOLException(interaction.getType() + " is not a valid interaction.");
+		}
 		for (NamedProperty<QName> i : interaction.getProperties())
 		{
 			if (i.getName().equals(Sbol2Terms.Identified.persistentIdentity))
@@ -1974,6 +1981,9 @@ public class SBOLReader
 		URI wasDerivedFrom 	   = null;
 		List<Annotation> annotations = new ArrayList<>();
 
+		if (!participation.getType().equals(Sbol2Terms.Participation.Participation)) {
+			throw new SBOLException(participation.getType() + " is not a valid participation.");
+		}
 		for (NamedProperty<QName> p : participation.getProperties())
 		{
 			if (p.getName().equals(Sbol2Terms.Identified.persistentIdentity))
@@ -2023,8 +2033,7 @@ public class SBOLReader
 		return p;
 	}
 
-	private static FunctionalComponent parseFunctionalComponents(
-			NestedDocument<QName> functionalComponent)
+	private static FunctionalComponent parseFunctionalComponent(NestedDocument<QName> functionalComponent)
 	{
 		URI persistentIdentity 	   = null;
 		String version 			   = null;
@@ -2039,6 +2048,9 @@ public class SBOLReader
 		List<Annotation> annotations = new ArrayList<>();
 		List<MapsTo> mappings 		 = new ArrayList<>();
 
+		if (!functionalComponent.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent)) {
+			throw new SBOLException(functionalComponent.getType() + " is not a valid functional component.");
+		}
 		for (NamedProperty<QName> f : functionalComponent.getProperties())
 		{
 			if (f.getName().equals(Sbol2Terms.Identified.persistentIdentity))

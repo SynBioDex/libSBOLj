@@ -130,12 +130,14 @@ final class URIcompliance {
 		else if (index == 1) {
 			r = Pattern.compile(childURIpattern);
 		}
-		else if (index == 2) {
+		else /*if (index == 2)*/ {
 			r = Pattern.compile(grandchildURIpattern);
 		}
+		/*
 		else { // index == 3
 			r = Pattern.compile(greatGrandchildURIpattern);
 		}
+		*/
 		Matcher m = r.matcher(URIstr);
 		if (!m.matches()) {
 			//System.out.println(URIstr + " is not compliant");
@@ -367,14 +369,14 @@ final class URIcompliance {
 	// group 1: persistent ID
 	// group 2: URI prefix
 	// group 3: version
-	static final String genericURIpattern1 = "((" + URIprefixPattern + ")("+delimiter+"(" + displayIDpattern + ")){1,4})(/(" + versionPattern + "))?";
+	static final String genericURIpattern1 = "((" + URIprefixPattern + ")("+delimiter+"(" + displayIDpattern + ")){1,3})(/(" + versionPattern + "))?";
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: top-level display ID
 	// group 2: top-level's child display ID
 	// group 3: top-level's grand child display ID
 	// group 4: top-level's grand grand child display ID
-	static final String genericURIpattern2 = URIprefixPattern + delimiter + "((" + displayIDpattern + "/){1,4})" + versionPattern;
+	static final String genericURIpattern2 = URIprefixPattern + delimiter + "((" + displayIDpattern + "/){1,3})" + versionPattern;
 
 	static final String toplevelURIpattern = URIprefixPattern + delimiter + displayIDpattern + "(/" + versionPattern + ")?";
 
@@ -382,7 +384,7 @@ final class URIcompliance {
 
 	static final String grandchildURIpattern = URIprefixPattern + delimiter + "(?:" + displayIDpattern + "/){3}" + versionPattern;
 
-	static final String greatGrandchildURIpattern = URIprefixPattern + delimiter + "(?:" + displayIDpattern + "/){4}" + versionPattern;
+	//static final String greatGrandchildURIpattern = URIprefixPattern + delimiter + "(?:" + displayIDpattern + "/){4}" + versionPattern;
 
 	@SafeVarargs
 	static boolean keyExistsInAnyMap(URI key, Map<URI, ?>... maps) {
