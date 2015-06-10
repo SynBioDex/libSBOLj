@@ -11,6 +11,11 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import uk.ac.ncl.intbio.core.datatree.Literal;
+import uk.ac.ncl.intbio.core.datatree.Literal.BooleanLiteral;
+import uk.ac.ncl.intbio.core.datatree.Literal.DoubleLiteral;
+import uk.ac.ncl.intbio.core.datatree.Literal.IntegerLiteral;
+import uk.ac.ncl.intbio.core.datatree.Literal.StringLiteral;
+import uk.ac.ncl.intbio.core.datatree.Literal.UriLiteral;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 
@@ -136,16 +141,58 @@ public class Annotation {
 	public QName getQName() {
 		return value.getName();
 	}
-
+	
+	/**
+	 * Returns a Boolean representation of the {@code value} property.
+	 * 
+	 * @return a Boolean representation of the {@code value} property if its 
+	 * value is of a BooleanLiteral type defined by {@link uk.ac.ncl.intbio.core.datatree.BooleanLiteral}, or {@code null}
+	 * otherwise.
+	 */
+	public Boolean getBooleanValue() {
+		if (value.getValue() instanceof BooleanLiteral) {
+			return ((BooleanLiteral<QName>) value.getValue()).getValue();
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns a Double representation of the {@code value} property.
+	 * 
+	 * @return a Double representation of the {@code value} property if its 
+	 * value is of a DoubleLiteral type defined by {@link uk.ac.ncl.intbio.core.datatree.DoubleLiteral}, or {@code null}
+	 * otherwise.
+	 */
+	public Double getDoubleValue() {
+		if (value.getValue() instanceof DoubleLiteral) {
+			return ((DoubleLiteral<QName>) value.getValue()).getValue();
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns a Integer representation of the {@code value} property.
+	 * 
+	 * @return a Integer representation of the {@code value} property if its 
+	 * value is of a IntegerLiteral type defined by {@link uk.ac.ncl.intbio.core.datatree.IntegerLiteral}, or {@code null}
+	 * otherwise.
+	 */
+	public Integer getIntegerValue() {
+		if (value.getValue() instanceof IntegerLiteral) {
+			return ((IntegerLiteral<QName>) value.getValue()).getValue();
+		}
+		return null;
+	}
+	
 	/**
 	 * Returns a string representation of the {@code value} property.
 	 * 
 	 * @return a string representation of the {@code value} property if its 
-	 * value is of a Literal type defined by {@link uk.ac.ncl.intbio.core.datatree.Literal}, or {@code null}
+	 * value is of a StringLiteral type defined by {@link uk.ac.ncl.intbio.core.datatree.StringLiteral}, or {@code null}
 	 * otherwise.
 	 */
 	public String getStringValue() {
-		if (value.getValue() instanceof Literal<?>) {
+		if (value.getValue() instanceof StringLiteral) {
 			return ((Literal<QName>) value.getValue()).getValue().toString();
 		}
 		return null;
@@ -155,12 +202,12 @@ public class Annotation {
 	 * Returns a URI representation of the {@code value} property.
 	 * 
 	 * @return a URI representation of the {@code value} property if its
-	 * the value is of a Literal type defined by {@link uk.ac.ncl.intbio.core.datatree.Literal}, 
+	 * the value is of a UriLiteral type defined by {@link uk.ac.ncl.intbio.core.datatree.UriLiteral}, 
 	 * or {@code null} otherwise.
 	 */
 	public URI getURIValue() {
-		if (value.getValue() instanceof Literal<?>) {
-			return URI.create(((Literal<QName>) value.getValue()).getValue().toString());
+		if (value.getValue() instanceof UriLiteral) {
+			return ((UriLiteral<QName>) value.getValue()).getValue();
 		}
 		return null;
 	}
