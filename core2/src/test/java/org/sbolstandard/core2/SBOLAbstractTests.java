@@ -24,7 +24,7 @@ import org.sbolstandard.core.SBOLValidationException;
 public abstract class SBOLAbstractTests {
 
 	String VERSION_1_0 = "1.0";
-
+	//kii
 	@Test
 	public void test_AnnotationOutput() throws Exception
 	{
