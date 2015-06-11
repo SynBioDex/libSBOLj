@@ -19,7 +19,7 @@ import org.sbolstandard.core.SBOLValidationException;
 /**
  * @author Goksel Misirli
  * @author Tramy Nguyen
- * h
+ *
  *
  */
 public abstract class SBOLAbstractTests {
