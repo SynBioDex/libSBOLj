@@ -854,6 +854,8 @@ public abstract class SBOLAbstractTests {
 			throw new AssertionError("Failed for " + fileDirectory, e);
 		}
 	}
+	
+	
 
 	@Test
 	public void test_labhost_Unspecified() throws Exception
