@@ -25,6 +25,8 @@ public abstract class SBOLAbstractTests {
 
 	String VERSION_1_0 = "1.0";
 
+	//test
+	
 	@Test
 	public void test_AnnotationOutput() throws Exception
 	{
