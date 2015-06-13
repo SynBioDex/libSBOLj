@@ -185,16 +185,16 @@ public class ModuleDefinition extends TopLevel {
 	 * definition URI.
 	 * 
 	 * @param displayId
-	 * @param moduleId
+	 * @param moduleDefinitionId
 	 * @param version
 	 * @return a Module instance
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
 	 */
-	public Module createModule(String displayId, String moduleId, String version) {
+	public Module createModule(String displayId, String moduleDefinitionId, String version) {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		URI module = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-		TopLevel.MODULE_DEFINITION, moduleId, version, sbolDocument.isTypesInURIs());
+		TopLevel.MODULE_DEFINITION, moduleDefinitionId, version, sbolDocument.isTypesInURIs());
 		return createModule(displayId, module);
 	}
 
@@ -514,18 +514,18 @@ public class ModuleDefinition extends TopLevel {
 	 * 
 	 * @param displayId
 	 * @param access
-	 * @param definition
+	 * @param definitionId
 	 * @param version
 	 * @param direction
 	 * @return a FunctionalComponent instance
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
-			String definition, String version, DirectionType direction) {
+			String definitionId, String version, DirectionType direction) {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		URI definitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-				TopLevel.COMPONENT_DEFINITION, definition, version, sbolDocument.isTypesInURIs());
+				TopLevel.COMPONENT_DEFINITION, definitionId, version, sbolDocument.isTypesInURIs());
 		return createFunctionalComponent(displayId, access, definitionURI, direction);
 	}
 
@@ -547,7 +547,7 @@ public class ModuleDefinition extends TopLevel {
 	 * 
 	 * @param displayId
 	 * @param access
-	 * @param fcURI
+	 * @param componentDefinitionURI
 	 * @param direction
 	 * @return a FunctionalComponent instance
 	 * @throws SBOLException if the associated SBOLDocument is not compliant.
@@ -555,12 +555,12 @@ public class ModuleDefinition extends TopLevel {
 	           specifies all URIs and the given {@code definitionURI} is not found in them.
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
-			URI fcURI, DirectionType direction) {
+			URI componentDefinitionURI, DirectionType direction) {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getComponentDefinition(fcURI) == null) {
-				throw new IllegalArgumentException("Component '" + fcURI
+			if (sbolDocument.getComponentDefinition(componentDefinitionURI) == null) {
+				throw new IllegalArgumentException("Component definition '" + componentDefinitionURI
 						+ "' does not exist.");
 			}
 		}
@@ -568,7 +568,7 @@ public class ModuleDefinition extends TopLevel {
 		String version = this.getVersion();
 		URI functionalComponentURI = createCompliantURI(URIprefix, displayId, version);
 		FunctionalComponent fc = createFunctionalComponent(functionalComponentURI, access,
-				fcURI, direction);
+				componentDefinitionURI, direction);
 		fc.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		fc.setDisplayId(displayId);
 		fc.setVersion(version);
@@ -661,12 +661,12 @@ public class ModuleDefinition extends TopLevel {
 	 * Returns the FunctionalComponent instance matching the given {@code componentURI} from this
 	 * ModuleDefinition object's list of FunctionalComponent instances.
 	 * 
-	 * @param componentURI
+	 * @param functionalComponentURI
 	 * @return the matching FunctionalComponent instance if present, or
 	 *         {@code null} otherwise.
 	 */
-	public FunctionalComponent getFunctionalComponent(URI componentURI) {
-		return functionalComponents.get(componentURI);
+	public FunctionalComponent getFunctionalComponent(URI functionalComponentURI) {
+		return functionalComponents.get(functionalComponentURI);
 	}
 
 	/**
@@ -760,17 +760,17 @@ public class ModuleDefinition extends TopLevel {
 	 * and the given {@code definition} and {@code version}. 
 	 * This method then calls {@link #addModel(URI)} with this component definition URI.
 	 * 
-	 * @param model
+	 * @param modelId
 	 * @param version
 	 * @return {@code true} if this set did not already contain the given Model
 	 *         instance URI.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
-	public boolean addModel(String model, String version) {
+	public boolean addModel(String modelId, String version) {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		URI modelURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-		TopLevel.MODEL, model, version, sbolDocument.isTypesInURIs());
+		TopLevel.MODEL, modelId, version, sbolDocument.isTypesInURIs());
 		return addModel(modelURI);
 	}
 

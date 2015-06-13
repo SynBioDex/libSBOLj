@@ -33,7 +33,7 @@ public class SBOLValidate {
 	}
 	
 	/**
-	 * Validate URI compliance in the given {@code sbolDocument}.
+	 * Validate SBOL objects are compliant in the given {@code sbolDocument}.
 	 * 
 	 * @param sbolDocument
 	 * @throws SBOLException if any top-level objects or any of their children or grandchildren 

@@ -146,8 +146,7 @@ public class Annotation {
 	 * Returns a Boolean representation of the {@code value} property.
 	 * 
 	 * @return a Boolean representation of the {@code value} property if its 
-	 * value is of a BooleanLiteral type defined by {@link uk.ac.ncl.intbio.core.datatree.BooleanLiteral}, or {@code null}
-	 * otherwise.
+	 * value is of Boolean type, or {@code null} otherwise.
 	 */
 	public Boolean getBooleanValue() {
 		if (value.getValue() instanceof BooleanLiteral) {
@@ -160,8 +159,7 @@ public class Annotation {
 	 * Returns a Double representation of the {@code value} property.
 	 * 
 	 * @return a Double representation of the {@code value} property if its 
-	 * value is of a DoubleLiteral type defined by {@link uk.ac.ncl.intbio.core.datatree.DoubleLiteral}, or {@code null}
-	 * otherwise.
+	 * value is of Double type, or {@code null} otherwise.
 	 */
 	public Double getDoubleValue() {
 		if (value.getValue() instanceof DoubleLiteral) {
@@ -174,8 +172,7 @@ public class Annotation {
 	 * Returns a Integer representation of the {@code value} property.
 	 * 
 	 * @return a Integer representation of the {@code value} property if its 
-	 * value is of a IntegerLiteral type defined by {@link uk.ac.ncl.intbio.core.datatree.IntegerLiteral}, or {@code null}
-	 * otherwise.
+	 * value is of Integer type, or {@code null} otherwise.
 	 */
 	public Integer getIntegerValue() {
 		if (value.getValue() instanceof IntegerLiteral) {
@@ -188,8 +185,7 @@ public class Annotation {
 	 * Returns a string representation of the {@code value} property.
 	 * 
 	 * @return a string representation of the {@code value} property if its 
-	 * value is of a StringLiteral type defined by {@link uk.ac.ncl.intbio.core.datatree.StringLiteral}, or {@code null}
-	 * otherwise.
+	 * value is of String type, or {@code null} otherwise.
 	 */
 	public String getStringValue() {
 		if (value.getValue() instanceof StringLiteral) {
@@ -202,8 +198,7 @@ public class Annotation {
 	 * Returns a URI representation of the {@code value} property.
 	 * 
 	 * @return a URI representation of the {@code value} property if its
-	 * the value is of a UriLiteral type defined by {@link uk.ac.ncl.intbio.core.datatree.UriLiteral}, 
-	 * or {@code null} otherwise.
+	 * the value is of a URI type, or {@code null} otherwise.
 	 */
 	public URI getURIValue() {
 		if (value.getValue() instanceof UriLiteral) {
@@ -215,9 +210,8 @@ public class Annotation {
 	/**
 	 * Returns the type of the nested {@code value} property.
 	 *  
-	 * @return the type of the nested QName {@code value} property if its value is
-	 * of a NestedDocument type (see {@link uk.ac.ncl.intbio.core.datatree.NestedDocument}),
-	 * or {@code null} otherwise.
+	 * @return the nested QName of the {@code value} property if its value is
+	 * of a nested list of Annotations, or {@code null} otherwise.
 	 */
 	public QName getNestedQName() {
 		if (value.getValue() instanceof NestedDocument<?>) {
@@ -230,8 +224,7 @@ public class Annotation {
 	 * Returns the identity URI of the nested {@code value} property.
 	 *  
 	 * @return the identity URI of the nested QName {@code value} property if its value is
-	 * of a NestedDocument type (see {@link uk.ac.ncl.intbio.core.datatree.NestedDocument}),
-	 * or {@code null} otherwise.
+	 * of a nested list of Annotations, or {@code null} otherwise.
 	 */
 	public URI getNestedIdentity() {
 		if (value.getValue() instanceof NestedDocument<?>) {
@@ -244,8 +237,7 @@ public class Annotation {
 	 * Returns the list of Annotations of the nested {@code value} property.
 	 * 
 	 * @return the list of Annotations of the nested {@code value} property if its value is
-	 * of a NestedDocument type (see {@link uk.ac.ncl.intbio.core.datatree.NestedDocument}),
-	 * or {@code null} otherwise.
+	 * of a nested list of Annotations, or {@code null} otherwise.
 	 */
 	public List<Annotation> getAnnotations() {
 		if (value.getValue() instanceof NestedDocument<?>) {
@@ -319,9 +311,29 @@ public class Annotation {
 		} else if (!value.equals(other.value)) {
  			if (!this.getQName().equals(other.getQName())) {
 				return false;
-			} else if ((this.getValue().getValue() instanceof Literal<?>) && 
-					(other.getValue().getValue() instanceof Literal<?>)) {
+			} else if ((this.getValue().getValue() instanceof StringLiteral<?>) && 
+					(other.getValue().getValue() instanceof StringLiteral<?>)) {
 				if (!this.getStringValue().equals(other.getStringValue())) {
+					return false;
+				} 
+			} else if ((this.getValue().getValue() instanceof BooleanLiteral<?>) && 
+					(other.getValue().getValue() instanceof BooleanLiteral<?>)) {
+				if (!this.getBooleanValue().equals(other.getBooleanValue())) {
+					return false;
+				} 
+			} else if ((this.getValue().getValue() instanceof DoubleLiteral<?>) && 
+					(other.getValue().getValue() instanceof DoubleLiteral<?>)) {
+				if (!this.getDoubleValue().equals(other.getDoubleValue())) {
+					return false;
+				} 
+			} else if ((this.getValue().getValue() instanceof IntegerLiteral<?>) && 
+					(other.getValue().getValue() instanceof IntegerLiteral<?>)) {
+				if (!this.getIntegerValue().equals(other.getIntegerValue())) {
+					return false;
+				} 
+			} else if ((this.getValue().getValue() instanceof UriLiteral<?>) && 
+					(other.getValue().getValue() instanceof UriLiteral<?>)) {
+				if (!this.getURIValue().equals(other.getURIValue())) {
 					return false;
 				} 
 			} else if ((this.getValue().getValue() instanceof NestedDocument<?>) && 

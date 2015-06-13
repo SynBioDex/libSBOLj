@@ -613,8 +613,8 @@ public class SBOLWriter {
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, s);
 
-			if(s.getRestriction() != null)
-				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.restriction, RestrictionType.convertToURI(s.getRestriction())));
+			if(s.getRestrictionURI() != null)
+				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.restriction, s.getRestrictionURI()));
 			if(s.getSubjectURI() != null)
 				list.add(NamedProperty(Sbol2Terms.SequenceConstraint.hasSubject, s.getSubjectURI()));
 			if(s.getObjectURI() != null)

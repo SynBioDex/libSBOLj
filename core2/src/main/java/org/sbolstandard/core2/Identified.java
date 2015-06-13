@@ -270,6 +270,66 @@ public abstract class Identified {
 	 * If this object belongs to an SBOLDocument instance,
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
+	 *
+	 * @param qName
+	 * @param literal the literal double
+	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @return the created Annotation instance.
+	 */
+	public Annotation createAnnotation(QName qName, double literal) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		Annotation annotation = new Annotation(qName,literal);
+		addAnnotation(annotation);
+		return annotation;
+	}
+	
+	/**
+	 * Creates an Annotation instance using the given parameters,
+	 * then adds to this object's list of Annotation instances.
+  	 * <p>
+	 * If this object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *
+	 * @param qName
+	 * @param literal the literal int
+	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @return the created Annotation instance.
+	 */
+	public Annotation createAnnotation(QName qName, int literal) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		Annotation annotation = new Annotation(qName,literal);
+		addAnnotation(annotation);
+		return annotation;
+	}
+	
+	/**
+	 * Creates an Annotation instance using the given parameters,
+	 * then adds to this object's list of Annotation instances.
+  	 * <p>
+	 * If this object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 *
+	 * @param qName
+	 * @param literal the literal boolean
+	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @return the created Annotation instance.
+	 */
+	public Annotation createAnnotation(QName qName, boolean literal) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		Annotation annotation = new Annotation(qName,literal);
+		addAnnotation(annotation);
+		return annotation;
+	}
+	
+	/**
+	 * Creates an Annotation instance using the given parameters,
+	 * then adds to this object's list of Annotation instances.
+  	 * <p>
+	 * If this object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
 	 * 
 	 * @param qName
 	 * @param literal the literal URI

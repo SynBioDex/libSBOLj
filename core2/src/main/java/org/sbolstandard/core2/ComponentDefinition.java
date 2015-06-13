@@ -118,6 +118,12 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public boolean addType(URI typeURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		if (typeURI.equals(DNA)||typeURI.equals(RNA)||typeURI.equals(PROTEIN)||typeURI.equals(SMALL_MOLECULE)) {
+			if (this.containsType(DNA)||this.containsType(RNA)||this.containsType(PROTEIN)||this.containsType(SMALL_MOLECULE)) {
+				throw new IllegalArgumentException("Component definition " + this.getIdentity() + 
+						" must have only one type from Table 2 in the specification.");
+			}
+		}
 		return types.add(typeURI);
 	}
 
@@ -336,15 +342,15 @@ public class ComponentDefinition extends TopLevel {
 	 * URI prefix for this SBOLDocument instance, and the given {@code sequence} and {@code version}.
 	 * It then calls {@link #addSequence(URI)} with this Sequence URI.
 	 * 
-	 * @param sequence
+	 * @param sequenceId
 	 * @param version
 	 * @return {@code true} if this set did not already contain the given Sequence instance URI.
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
-	public boolean addSequence(String sequence,String version) {
+	public boolean addSequence(String sequenceId,String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-				TopLevel.SEQUENCE, sequence, version, sbolDocument.isTypesInURIs());
+				TopLevel.SEQUENCE, sequenceId, version, sbolDocument.isTypesInURIs());
 		return addSequence(sequenceURI);
 	}
 	
@@ -831,16 +837,16 @@ public class ComponentDefinition extends TopLevel {
 	 *  
 	 * @param displayId
 	 * @param access
-	 * @param componentDefinition
+	 * @param componentDefinitionId
 	 * @param version
 	 * @return a Component instance
 	 * @throws SBOLException if the associated SBOLDocument is not compliant
 	 */
 	public Component createComponent(String displayId, AccessType access, 
-			String componentDefinition, String version) {
+			String componentDefinitionId, String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-				TopLevel.COMPONENT_DEFINITION, componentDefinition, version, sbolDocument.isTypesInURIs());
+				TopLevel.COMPONENT_DEFINITION, componentDefinitionId, version, sbolDocument.isTypesInURIs());
 		return createComponent(displayId,access,componentDefinitionURI);
 	}
 	

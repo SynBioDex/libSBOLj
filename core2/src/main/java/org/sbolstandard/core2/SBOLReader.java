@@ -584,8 +584,8 @@ public class SBOLReader
 		for (SBOLPair pair : precedePairs)
 		{
 			URI sc_identity    			= createCompliantURI(persIdentity,"sequenceConstraint" + ++sc_number,version);
-			URI restrictionURI 			= Sbol2Terms.DnaComponentV1URI.restriction;
-			RestrictionType restriction = RestrictionType.convertToRestrictionType(restrictionURI);
+			URI restrictionURI 			= RestrictionType.convertToURI(RestrictionType.PRECEDES);
+			//RestrictionType restriction = RestrictionType.convertToRestrictionType(restrictionURI);
 
 			URI subject = null;
 			URI object  = null;
@@ -602,7 +602,7 @@ public class SBOLReader
 				}
 			}
 
-			SequenceConstraint sc = new SequenceConstraint(sc_identity, restriction, subject, object);
+			SequenceConstraint sc = new SequenceConstraint(sc_identity, restrictionURI, subject, object);
 			if (!persIdentity.equals("")) {
 				sc.setPersistentIdentity(createCompliantURI(persIdentity,"sequenceConstraint"+sc_number,version));
 				sc.setDisplayId("sequenceConstraint"+sc_number);
@@ -1014,7 +1014,7 @@ public class SBOLReader
 	{
 		URI persistentIdentity 		 = null;
 		String displayId             = null;
-		RestrictionType restriction  = null;
+		URI restriction  			 = null;
 		URI subject 				 = null;
 		URI object 					 = null;
 		String version 				 = null;
@@ -1034,10 +1034,8 @@ public class SBOLReader
 			else if (namedProperty.getName().equals(
 					Sbol2Terms.SequenceConstraint.restriction))
 			{
-				restriction = RestrictionType
-						.convertToRestrictionType(URI
-								.create(((Literal<QName>) namedProperty
-										.getValue()).getValue().toString()));
+				restriction = URI.create(((Literal<QName>) namedProperty
+										.getValue()).getValue().toString());
 
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.SequenceConstraint.hasSubject))

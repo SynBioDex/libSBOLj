@@ -274,7 +274,7 @@ class Sbol2Terms
 	static final class DnaComponentV1URI {
 		static final URI roles = URI.create("http://purl.obolibrary.org/obo/SO_0000804");
 		static final URI type  = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
-		static final URI restriction  = URI.create(sbol2.getNamespaceURI() + "precedes");
+		//static final URI restriction  = URI.create(sbol2.getNamespaceURI() + "precedes");
 	}
 
 	// Moved to ComponentInstance
