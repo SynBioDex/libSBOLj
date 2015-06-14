@@ -447,7 +447,7 @@ public class URIcomplianceTest {
 
 	@Test
 	public void testIsURIcompliant6() {
-		assertFalse(isURIcompliant(uri12, 0));
+		assertFalse(isURIcompliant(uri12));
 	}
 
 	@Test
@@ -768,7 +768,7 @@ public class URIcomplianceTest {
 
 	@Test
 	public void testIsTopLevelURIcompliant1() {
-		assertTrue(isURIcompliant(uri1, 0));
+		assertTrue(isURIcompliant(uri1));
 	}
 
 	/*//TODO NOT PASSING
@@ -784,7 +784,7 @@ public class URIcomplianceTest {
 
 	@Test
 	public void testIsTopLevelURIcompliant4() {
-		assertFalse(isURIcompliant(uri4, 0));
+		assertFalse(isURIcompliant(uri4));
 	}
 	// TODO: Test isVersionCompliant
 }

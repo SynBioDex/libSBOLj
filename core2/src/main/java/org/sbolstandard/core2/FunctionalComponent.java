@@ -153,7 +153,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		String parentPersistentIdStr = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		MapsTo m = createMapsTo(createCompliantURI(parentPersistentIdStr, displayId, version),
 				refinement, local, remote);

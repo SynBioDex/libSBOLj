@@ -15,27 +15,27 @@ import java.net.URI;
 public abstract class TopLevel extends Identified {
 	
 	/**
-	 * the abbreviation for the Collection type in URI
+	 * The abbreviation for the Collection type in URI
 	 */
 	public static final String COLLECTION = "col";
 	/**
-	 * the abbreviation for the ModuleDefinition type in URI
+	 * The abbreviation for the ModuleDefinition type in URI
 	 */
 	public static final String MODULE_DEFINITION = "md";
 	/**
-	 * the abbreviation for the Model type in URI
+	 * The abbreviation for the Model type in URI
 	 */
 	public static final String MODEL = "mod";
 	/**
-	 * the abbreviation for the ComponentDefinition type in URI
+	 * The abbreviation for the ComponentDefinition type in URI
 	 */
 	public static final String COMPONENT_DEFINITION = "cd";
 	/**
-	 * the abbreviation for the Sequence type in URI
+	 * The abbreviation for the Sequence type in URI
 	 */
 	public static final String SEQUENCE = "seq";
 	/**
-	 * the abbreviation for the GenericTopLevel type in URI
+	 * The abbreviation for the GenericTopLevel type in URI
 	 */
 	public static final String GENERIC_TOP_LEVEL = "gen";
 		

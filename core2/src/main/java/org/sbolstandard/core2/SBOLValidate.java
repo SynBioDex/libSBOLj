@@ -20,7 +20,7 @@ public class SBOLValidate {
 	private static void usage() {		
 		System.err.println("libSBOLj version " + SBOLVersion);
 		System.err.println("Description: Validates the contents of an SBOL document,\n" 
-				+ "converting from SBOL 1.1 to SBOL 2.0, if necessary,\n" 
+				+ "converting from SBOL 1.1 to SBOL " + SBOLVersion + ", if necessary,\n" 
 				+ "and printing the document contents if validation succeeds");
 		System.err.println();
 		System.err.println("Usage:");
@@ -33,7 +33,7 @@ public class SBOLValidate {
 	}
 	
 	/**
-	 * Validate URI compliance in the given {@code sbolDocument}.
+	 * Validate SBOL objects are compliant in the given {@code sbolDocument}.
 	 * 
 	 * @param sbolDocument
 	 * @throws SBOLException if any top-level objects or any of their children or grandchildren 

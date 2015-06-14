@@ -368,8 +368,7 @@ public class writeTester {
 		get_TetRInv(SBOL2Doc_test,md);
 		get_interact1a(SBOL2Doc_test,md);
 		get_interact2a(SBOL2Doc_test,md);
-		//TODO
-		//getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle()))
+		getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle()));
 		return md;
 	}
 
@@ -426,12 +425,12 @@ public class writeTester {
 
 	private static SequenceAnnotation get_t_structAnnotate (ComponentDefinition cd)
 	{
-		return createSequenceAnnotationData(cd,getData("p2_structAnnotate"),"T",1,10,"p2_structAnnotate_range");
+		return createSequenceAnnotationData(cd,getData("p2_structAnnotate"),"ptet",1,10,"p2_structAnnotate_range");
 	}
 
 	private static SequenceAnnotation get_l_structAnnotate (ComponentDefinition cd)
 	{
-		return createSequenceAnnotationData(cd,getData("c2_structAnnotate"),"L",11,20,"c2_structAnnotate_range");
+		return createSequenceAnnotationData(cd,getData("c2_structAnnotate"),"lacICDS",11,20,"c2_structAnnotate_range");
 	}
 
 	private static ComponentDefinition get_ptetlacI (SBOLDocument SBOL2Doc_test)
@@ -441,8 +440,8 @@ public class writeTester {
 				getSetURI(SequenceOntology.ENGINEERED_GENE),
 				getData("ptetlacI",version),
 				"ptetlacISeq");
-		get_T(cd); 
-		get_L(cd);
+		//get_T(cd); 
+		//get_L(cd);
 		get_t_structAnnotate(cd);
 		get_l_structAnnotate(cd);
 		return cd;
@@ -514,8 +513,7 @@ public class writeTester {
 		get_TetRInv(SBOL2Doc_test,md);
 		get_interact1b(SBOL2Doc_test,md);
 		get_interact2b(SBOL2Doc_test,md);
-// TODO
-//		getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle()))
+		getAnnotation_List(createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"),createTurtle()));
 		return md;
 	}
 
@@ -783,7 +781,7 @@ public class writeTester {
 
 		SequenceAnnotation s = cd.getSequenceAnnotation(displayId);
 		if (s==null) {
-			s = cd.createSequenceAnnotation(displayId, "range", startRange, endRange, OrientationType.INLINE);
+			s = cd.createSequenceAnnotation(displayId, startRange, endRange, OrientationType.INLINE, ref_component);
 			setCommonDocumentedData(s, displayId, displayId);
 			s.setComponent(ref_component);
 		} 

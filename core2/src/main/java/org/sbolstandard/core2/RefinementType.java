@@ -74,8 +74,7 @@ public enum RefinementType {
 			return RefinementType.VERIFYIDENTICAL;
 		}
 		else {
-			// TODO: Validation?
-			return null;
+			throw new IllegalArgumentException("Unknown refinement URI `" + refinement + "'");
 		}
 	}
 
