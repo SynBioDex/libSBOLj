@@ -196,7 +196,7 @@ public class Module extends Identified {
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		String parentPersistentIdStr = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newMapsToURI = createCompliantURI(parentPersistentIdStr, displayId, version);
 		MapsTo m = createMapsTo(newMapsToURI, refinement, local, remote);

@@ -1012,7 +1012,7 @@ public class ModuleDefinition extends TopLevel {
 
 	protected boolean checkDescendantsURIcompliance() {
 		// codereview: spaghetti
-		if (!isURIcompliant(this.getIdentity(), 0)) { // ComponentDefinition to
+		if (!isURIcompliant(this.getIdentity())) { // ComponentDefinition to
 														// be copied has
 														// non-compliant URI.
 			return false;

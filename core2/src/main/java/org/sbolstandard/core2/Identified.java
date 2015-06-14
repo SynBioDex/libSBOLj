@@ -380,7 +380,9 @@ public abstract class Identified {
 	 * Adds the specified instance to the list of structuralAnnotations.
 	 */
 	void addAnnotation(Annotation annotation) {
-		// TODO: @addAnnotation, Check for duplicated entries.
+		if (annotations.contains(annotation)) {
+			throw new IllegalArgumentException("Annotation already exists.");
+		}
 		annotations.add(annotation);
 	}
 	
@@ -417,7 +419,8 @@ public abstract class Identified {
 	 * @return the list of Annotation instances owned by this object.
 	 */
 	public List<Annotation> getAnnotations() {
-		// TODO: should likely copy the list rather than returning the list
+		List<Annotation> annotations = new ArrayList<>();
+		annotations.addAll(this.annotations);
 		return annotations;
 	}
 
@@ -441,8 +444,8 @@ public abstract class Identified {
 	 */
 	void setAnnotations(List<Annotation> annotations) {
 		clearAnnotations();
-		for (Annotation structuralAnnotation : annotations) {
-			addAnnotation(structuralAnnotation);
+		for (Annotation annotation : annotations) {
+			addAnnotation(annotation);
 		}
 	}
 	
@@ -504,6 +507,7 @@ public abstract class Identified {
 			if (other.annotations != null)
 				return false;
 		} else if (!annotations.equals(other.annotations))
+			// TODO: seems to be order dependent for some reason
 			return false;
 		if (identity == null) {
 			if (other.identity != null)

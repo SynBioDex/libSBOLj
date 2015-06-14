@@ -20,7 +20,7 @@ public class SBOLValidate {
 	private static void usage() {		
 		System.err.println("libSBOLj version " + SBOLVersion);
 		System.err.println("Description: Validates the contents of an SBOL document,\n" 
-				+ "converting from SBOL 1.1 to SBOL 2.0, if necessary,\n" 
+				+ "converting from SBOL 1.1 to SBOL " + SBOLVersion + ", if necessary,\n" 
 				+ "and printing the document contents if validation succeeds");
 		System.err.println();
 		System.err.println("Usage:");

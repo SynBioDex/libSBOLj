@@ -667,7 +667,45 @@ public class ComponentDefinition extends TopLevel {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
-	 * This method first creates a GenericLocal instance with a compliant URI. This URI is composed
+	 * This method first creates a Range Location instance with a compliant URI. This URI is composed
+	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation 
+	 * instance {@code displayId}, the given {@code locationId}, and this
+	 * ComponentDefinition object's version. 
+	 * <p>
+	 * I then creates a SequenceAnnotation instance with a compliant URI. This URI is composed of
+	 * this ComponentDefinition object's persistent identity, the given SequenceAnnotation {@code displayId},
+	 * and this ComponentDefinition object's version. 
+	 * 
+	 * @param displayId
+	 * @param start
+	 * @param end
+	 * @param orientation
+	 * @param componentDefinitionId
+	 * @return a SequenceAnnotation instance
+	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI.
+	 */
+	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end,OrientationType orientation,
+			String componentDefinitionId) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		SequenceAnnotation sequenceAnnotation = createSequenceAnnotation(displayId,"range",start,end,orientation);
+		if (this.getComponent(componentDefinitionId)==null) {
+			createComponent(componentDefinitionId,AccessType.PUBLIC,componentDefinitionId,"");
+		}
+		sequenceAnnotation.setComponent(componentDefinitionId);
+		return sequenceAnnotation;
+	}
+	
+	/**
+	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
+	 * object with the given arguments, and then adds to this ComponentDefinition's 
+	 * list of SequenceAnnotation instances. 
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method first creates a Range Location instance with a compliant URI. This URI is composed
 	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation 
 	 * instance {@code displayId}, the given {@code locationId}, and this
 	 * ComponentDefinition object's version. 
@@ -992,9 +1030,9 @@ public class ComponentDefinition extends TopLevel {
 	 *         ComponentDefinition object.
 	 */         
 	public Set<Component> getComponents() {
-		Set<Component> structuralInstantiations = new HashSet<>();
-		structuralInstantiations.addAll(this.components.values());
-		return structuralInstantiations;
+		Set<Component> components = new HashSet<>();
+		components.addAll(this.components.values());
+		return components;
 	}
 
 	/**
@@ -1222,7 +1260,7 @@ public class ComponentDefinition extends TopLevel {
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
 		// codereview: this method is spagetti.
-		if (!isURIcompliant(this.getIdentity(), 0)) { 	// ComponentDefinition to be copied has non-compliant URI.
+		if (!isURIcompliant(this.getIdentity())) { 	// ComponentDefinition to be copied has non-compliant URI.
 			return false;
 		}
 		boolean allDescendantsCompliant = true;

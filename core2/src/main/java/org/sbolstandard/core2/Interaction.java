@@ -217,7 +217,7 @@ public class Interaction extends Identified {
 				throw new IllegalArgumentException("Functional component '" + participant + "' does not exist.");
 			}
 		}
-		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		String parentPersistentIdStr = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		if(parentPersistentIdStr == null) {
 			throw new IllegalStateException(
