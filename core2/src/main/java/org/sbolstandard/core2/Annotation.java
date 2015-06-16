@@ -31,7 +31,7 @@ import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 
 public class Annotation {
 
-	private NamedProperty<QName> value;
+	private NamedProperty<QName> value; 
 
 	/**
 	 * Constructs an Annotation instance using the given {@code qName} and the {@code literal} string.
