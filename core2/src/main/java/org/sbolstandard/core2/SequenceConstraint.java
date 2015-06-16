@@ -71,7 +71,7 @@ public class SequenceConstraint extends Identified {
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * @param restriction
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant	 
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
 	 * @throws NullPointerException if the given {@code restriction} is {@code null}.
 	 */
 	public void setRestriction(RestrictionType restriction) {
@@ -90,7 +90,7 @@ public class SequenceConstraint extends Identified {
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * @param restrictionURI
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant	 
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
 	 * @throws NullPointerException if the given {@code restriction} is {@code null}.
 	 */
 	public void setRestriction(URI restrictionURI) {
@@ -132,7 +132,7 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * 
 	 * @param subjectURI
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated ComponentDefinition subject
 	 * is not {@code null}, and the given {@code subjectURI} does not exist in 
 	 * its associated ComponentDefinition subject's
@@ -184,7 +184,7 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * 
 	 * @param objectURI
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated ComponentDefinition object
 	 * is not {@code null}, and the given {@code objectURI} does not exist in 
 	 * its associated ComponentDefinition object's

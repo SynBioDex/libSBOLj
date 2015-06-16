@@ -226,7 +226,7 @@ public abstract class Identified {
 	 * is allowed to be edited.
 	 * 
 	 * @param wasDerivedFrom
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */	
 	public void setWasDerivedFrom(URI wasDerivedFrom) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -253,7 +253,7 @@ public abstract class Identified {
 	 *
 	 * @param qName
 	 * @param literal the literal string
-	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant 
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, String literal) {
@@ -273,7 +273,7 @@ public abstract class Identified {
 	 *
 	 * @param qName
 	 * @param literal the literal double
-	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant 
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, double literal) {
@@ -293,7 +293,7 @@ public abstract class Identified {
 	 *
 	 * @param qName
 	 * @param literal the literal int
-	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant 
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, int literal) {
@@ -313,7 +313,7 @@ public abstract class Identified {
 	 *
 	 * @param qName
 	 * @param literal the literal boolean
-	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant 
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, boolean literal) {
@@ -333,7 +333,7 @@ public abstract class Identified {
 	 * 
 	 * @param qName
 	 * @param literal the literal URI
-	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant 
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, URI literal) {
@@ -367,7 +367,7 @@ public abstract class Identified {
 	 * @param nestedURI
 	 * @param annotations
 	 * @return the created Annotation instance.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant 
 	 */
 	public Annotation createAnnotation(QName qName,QName nestedQName, URI nestedURI, List<Annotation> annotations) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -397,7 +397,7 @@ public abstract class Identified {
 	 * @param annotation
 	 * @return {@code true} if the matching Annotation instance is removed successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public boolean removeAnnotation(Annotation annotation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -432,7 +432,7 @@ public abstract class Identified {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant 
 	 */
 	public void clearAnnotations() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -457,7 +457,7 @@ public abstract class Identified {
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void unsetWasDerivedFrom() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -617,7 +617,7 @@ public abstract class Identified {
 	 * is allowed to be edited.
 	 * 
 	 * @param name
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */	 
 	public void setName(String name) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -632,7 +632,7 @@ public abstract class Identified {
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void unsetName() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -666,7 +666,7 @@ public abstract class Identified {
 	 * is allowed to be edited.
 	 * 
 	 * @param description
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void setDescription(String description) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -681,7 +681,7 @@ public abstract class Identified {
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void unsetDescription() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

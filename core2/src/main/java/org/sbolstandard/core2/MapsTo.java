@@ -56,7 +56,7 @@ public class MapsTo extends Identified{
 	 * is allowed to be edited.
 	 * 
 	 * @param refinement
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void setRefinement(RefinementType refinement) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -97,7 +97,7 @@ public class MapsTo extends Identified{
 	 * is allowed to be edited.
 	 * 
 	 * @param local
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code local} argument is {@code null}
 	 * @throws IllegalArgumentException if the given {@code local} argument is not found in 
 	 * this MapsTo object's reference ModuleDefinition instance's list of functional components.
@@ -158,7 +158,7 @@ public class MapsTo extends Identified{
 	 * is allowed to be edited.
 	 * 
 	 * @param remote
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code remote} argument is {@code null}
 	 * @throws IllegalArgumentException if the given {@code remote} argument is not found in 
 	 * the list of functional components that are owned by the ModuleDefinition instance that

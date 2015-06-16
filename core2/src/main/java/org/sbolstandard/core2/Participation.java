@@ -67,7 +67,7 @@ public class Participation extends Identified {
 	 * is allowed to be edited.
 	 * 
 	 * @param participant
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code participant} argument is {@code null}
 	 * @throws IllegalArgumentException if the associated ModuleDefinition instance is not {@code null} and
 	 * given {@code participant} URI is not found in its list of FunctionalComponent instances.
@@ -92,7 +92,7 @@ public class Participation extends Identified {
 	 *
 	 * @param roleURI
 	 * @return {@code true} if this set did not already contain the specified role.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public boolean addRole(URI roleURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -108,7 +108,7 @@ public class Participation extends Identified {
 	 * 
 	 * @param roleURI
 	 * @return {@code true} if the matching role reference is removed successfully, {@code false} otherwise.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public boolean removeRole(URI roleURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -124,7 +124,7 @@ public class Participation extends Identified {
 	 * is allowed to be edited.
 	 *
 	 * @param roles
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void setRoles(Set<URI> roles) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -163,7 +163,7 @@ public class Participation extends Identified {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearRoles() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

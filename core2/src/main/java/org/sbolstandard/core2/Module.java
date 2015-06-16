@@ -75,7 +75,7 @@ public class Module extends Identified {
 	 * a MapsTo instance.  
 	 * 
 	 * @param definitionURI
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code definitionURI} is {@code null} 
 	 * @throws IllegalArgumentException if the SBOLDocument instance already completely 
 	 * specifies all URIs and the given {@code definitionURI} argument is not found in 
@@ -140,7 +140,7 @@ public class Module extends Identified {
 	 * @param localId
 	 * @param remoteId
 	 * @return a MapsTo instance
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the SBOLDocument instance already completely 
 	 * specifies all URIs and the given {@code local} argument is not found in the list 
 	 * of functional components that are owned by the ModuleDefinition instance that 
@@ -180,7 +180,7 @@ public class Module extends Identified {
 	 * @param local
 	 * @param remote
 	 * @return a MapsTo instance
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the SBOLDocument instance already completely 
 	 * specifies all URIs and the given {@code local} argument is not found in the list 
 	 * of functional components that are owned by the ModuleDefinition instance that 
@@ -239,7 +239,7 @@ public class Module extends Identified {
 	 * 
 	 * @param mapsTo
 	 * @return {@code true} if the matching MapsTo instance is removed successfully, {@code false} otherwise.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */	
 	public boolean removeMapsTo(MapsTo mapsTo) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -283,7 +283,7 @@ public class Module extends Identified {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant  
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant  
 	 */
 	public void clearMapsTos() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

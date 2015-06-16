@@ -15,7 +15,7 @@ import java.util.List;
  * @version 2.0-beta
  */
 
-class SBOLException extends RuntimeException {
+class SBOLValidationException extends RuntimeException {
 	/**
 	 * 
 	 */
@@ -28,7 +28,7 @@ class SBOLException extends RuntimeException {
 	 * @param message
 	 * @param objects
 	 */
-	public SBOLException(String message, Identified ... objects) {
+	public SBOLValidationException(String message, Identified ... objects) {
 		this(message, Arrays.asList(objects));
 	}
 	
@@ -38,7 +38,7 @@ class SBOLException extends RuntimeException {
 	 * @param message
 	 * @param objects
 	 */
-	public SBOLException(String message, java.util.Collection<? extends Identified> objects) {
+	public SBOLValidationException(String message, java.util.Collection<? extends Identified> objects) {
 		super(formatMessage(message, objects));
 
 		this.objects = Collections.unmodifiableList(new ArrayList<>(objects));
@@ -51,7 +51,7 @@ class SBOLException extends RuntimeException {
      * @param cause
      * @param objects
      */
-    public SBOLException(String message, Throwable cause, Identified ... objects) {
+    public SBOLValidationException(String message, Throwable cause, Identified ... objects) {
         super(message, cause);
         this.objects = Collections.unmodifiableList(Arrays.asList(objects));
     }
@@ -61,7 +61,7 @@ class SBOLException extends RuntimeException {
 	 * 
 	 * @param cause
 	 */	
-	public SBOLException(Throwable cause) {
+	public SBOLValidationException(Throwable cause) {
 		super(cause);
 
 		this.objects = Collections.emptyList();

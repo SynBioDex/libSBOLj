@@ -38,11 +38,11 @@ public class Annotation {
 	 *  
 	 * @param qName
 	 * @param literal
-	 * @throws SBOLException if the local part of the given {@code qName} is not an SBOL object.
+	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, String literal) {
 		if (qName.getPrefix().toString().equals("sbol")) {
-			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 		value = NamedProperty(qName,literal);
 	}
@@ -52,11 +52,11 @@ public class Annotation {
 	 *  
 	 * @param qName
 	 * @param literal
-	 * @throws SBOLException if the local part of the given {@code qName} is not an SBOL object.
+	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, int literal) {
 		if (qName.getPrefix().toString().equals("sbol")) {
-			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 		value = NamedProperty(qName,literal);
 	}
@@ -66,7 +66,7 @@ public class Annotation {
 	 *  
 	 * @param qName
 	 * @param literal
-	 * @throws SBOLException if the local part of the given {@code qName} is not an SBOL object.
+	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, double literal) {
 		value = NamedProperty(qName, literal);
@@ -77,7 +77,7 @@ public class Annotation {
 	 *  
 	 * @param qName
 	 * @param literal
-	 * @throws SBOLException if the local part of the given {@code qName} is not an SBOL object.
+	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, boolean literal) {
 		value = NamedProperty(qName,literal);
@@ -88,11 +88,11 @@ public class Annotation {
 	 *  
 	 * @param qName
 	 * @param literal
-	 * @throws SBOLException if the local part of the given {@code qName} is not an SBOL object.
+	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, URI literal) {
 		if (qName.getPrefix().toString().equals("sbol")) {
-			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 		value = NamedProperty(qName,literal);
 	}
@@ -105,14 +105,14 @@ public class Annotation {
 	 * @param nestedQName
 	 * @param nestedURI
 	 * @param annotations
-	 * @throws SBOLException
+	 * @throws SBOLValidationException
 	 */
 	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
 		if (qName.getPrefix().toString().equals("sbol")) {
-			throw new SBOLException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 		if (nestedQName.getPrefix().toString().equals("sbol")) {
-			throw new SBOLException(nestedQName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(nestedQName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 		List<NamedProperty<QName>> list = new ArrayList<>();
 		for(Annotation a : annotations)
@@ -124,7 +124,7 @@ public class Annotation {
 
 	Annotation(NamedProperty<QName> value) {
 		if (value.getName().getPrefix().toString().equals("sbol")) {
-			throw new SBOLException(value.getName().getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(value.getName().getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 		this.value = value;
 	}
