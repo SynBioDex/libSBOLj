@@ -348,6 +348,10 @@ public class SequenceAnnotation extends Identified {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
 				displayId, componentDefinition.getVersion());
+		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && componentDefinition!=null &&
+				componentDefinition.getComponent(componentURI)==null) {
+			componentDefinition.createComponent(displayId,AccessType.PUBLIC,displayId,"");
+		}
 		setComponent(componentURI);
 	}
 
@@ -449,10 +453,14 @@ public class SequenceAnnotation extends Identified {
 	}
 
 	/**
-	 * @return the componentDefinition
+	 * Get the component definition for the component annotated by this sequence annotation.
+	 * @return the component definition annotated by this sequence annotation.
 	 */
-	ComponentDefinition getComponentDefinition() {
-		return componentDefinition;
+	public ComponentDefinition getComponentDefinition() {
+		if (componentDefinition!=null) {
+			return componentDefinition.getComponent(component).getDefinition();
+		}
+		return null;
 	}
 
 	/**

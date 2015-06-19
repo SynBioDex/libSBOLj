@@ -28,6 +28,7 @@ public abstract class Identified {
 	protected URI identity;
 	private URI persistentIdentity;
 	private String version;
+	// TODO: can this be a set instead?
 	private List<Annotation> annotations;
 	private URI wasDerivedFrom;
 	protected String displayId;
@@ -506,7 +507,7 @@ public abstract class Identified {
 		if (annotations == null) {
 			if (other.annotations != null)
 				return false;
-		} else if (!annotations.equals(other.annotations))
+		} else if (!annotations.containsAll(other.annotations))
 			// TODO: seems to be order dependent for some reason
 			return false;
 		if (identity == null) {

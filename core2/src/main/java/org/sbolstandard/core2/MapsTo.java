@@ -88,6 +88,19 @@ public class MapsTo extends Identified{
 		}
 		return null;
 	}
+	
+	/**
+	 * Get the component definition for the local element of this mapsTo.
+	 * @return the component definition for the local element of this mapsTo.
+	 */
+	public ComponentDefinition getLocalDefinition() {
+		if (moduleDefinition!=null) {
+			return moduleDefinition.getFunctionalComponent(local).getDefinition();
+		} else if (componentDefinition!=null) {
+			return componentDefinition.getComponent(local).getDefinition();
+		}
+		return null;
+	}
 
 	/**
 	 * Sets the local property of this MapsTo object to the given one.
@@ -146,6 +159,21 @@ public class MapsTo extends Identified{
 		} else if (componentInstance!=null) {
 			if (componentInstance.getDefinition()==null) return null;
 			return componentInstance.getDefinition().getComponent(remote);
+		}
+		return null;
+	}
+	
+	/**
+	 * Get the component definition for the remote element of this mapsTo.
+	 * @return the component definition for the remote element of this mapsTo.
+	 */
+	public ComponentDefinition getRemoteDefinition() {
+		if (module!=null) {
+			if (module.getDefinition()==null) return null;
+			return module.getDefinition().getFunctionalComponent(remote).getDefinition();
+		} else if (componentInstance!=null) {
+			if (componentInstance.getDefinition()==null) return null;
+			return componentInstance.getDefinition().getComponent(remote).getDefinition();
 		}
 		return null;
 	}

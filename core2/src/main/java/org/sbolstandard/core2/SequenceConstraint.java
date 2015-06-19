@@ -122,6 +122,17 @@ public class SequenceConstraint extends Identified {
 		if (componentDefinition==null) return null;
 		return componentDefinition.getComponent(subject);
 	}
+	
+	/**
+	 * Get the component definition for the subject of this sequence constraint.
+	 * @return the component definition for the subject of this sequence constraint.
+	 */
+	public ComponentDefinition getSubjectDefinition() {
+		if (componentDefinition!=null) {
+			return componentDefinition.getComponent(subject).getDefinition();
+		}
+		return null;
+	}
 
 	/**
 	 * Sets the reference subject Component URI to the given {@code subjectURI}.
@@ -173,6 +184,18 @@ public class SequenceConstraint extends Identified {
 	public Component getObject() {
 		if (componentDefinition==null) return null;
 		return componentDefinition.getComponent(object);
+	}
+	
+	
+	/**
+	 * Get the component definition for the object of this sequence constraint.
+	 * @return the component definition for the object of this sequence constraint.
+	 */
+	public ComponentDefinition getObjectDefinition() {
+		if (componentDefinition!=null) {
+			return componentDefinition.getComponent(object).getDefinition();
+		}
+		return null;
 	}
 
 	/**

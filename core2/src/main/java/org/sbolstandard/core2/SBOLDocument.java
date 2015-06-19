@@ -34,6 +34,7 @@ public class SBOLDocument {
 	private boolean complete = false;
 	private boolean compliant = true;
 	private boolean typesInURIs = false;
+	private boolean createDefaults = false;
 
 	/**
 	 * Creates a new SBOLDocument instance with one empty list for the namespaces and for each top-level instance,
@@ -2239,6 +2240,14 @@ public class SBOLDocument {
 	 */
 	public void setTypesInURIs(boolean typesInURIs) {
 		this.typesInURIs = typesInURIs;
+	}
+
+	public boolean isCreateDefaults() {
+		return createDefaults;
+	}
+
+	public void setCreateDefaults(boolean createDefaults) {
+		this.createDefaults = createDefaults;
 	}
 
 	void checkReadOnly() {

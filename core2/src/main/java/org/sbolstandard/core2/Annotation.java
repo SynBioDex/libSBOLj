@@ -143,6 +143,18 @@ public class Annotation {
 	}
 	
 	/**
+	 * Checks if the annotation is a boolean {@code value} property.
+	 * 
+	 * @return true if the annotation is a boolean {@code value} property.
+	 */
+	public boolean isBooleanValue() {
+		if (value.getValue() instanceof BooleanLiteral<?>) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Returns a Boolean representation of the {@code value} property.
 	 * 
 	 * @return a Boolean representation of the {@code value} property if its 
@@ -153,6 +165,18 @@ public class Annotation {
 			return ((BooleanLiteral<QName>) value.getValue()).getValue();
 		}
 		return null;
+	}
+	
+	/**
+	 * Checks if the annotation is a double {@code value} property.
+	 * 
+	 * @return true if the annotation is a double {@code value} property.
+	 */
+	public boolean isDoubleValue() {
+		if (value.getValue() instanceof DoubleLiteral<?>) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -169,6 +193,18 @@ public class Annotation {
 	}
 	
 	/**
+	 * Checks if the annotation is a integer {@code value} property.
+	 * 
+	 * @return true if the annotation is a integer {@code value} property.
+	 */
+	public boolean isIntegerValue() {
+		if (value.getValue() instanceof IntegerLiteral<?>) {
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Returns a Integer representation of the {@code value} property.
 	 * 
 	 * @return a Integer representation of the {@code value} property if its 
@@ -179,6 +215,18 @@ public class Annotation {
 			return ((IntegerLiteral<QName>) value.getValue()).getValue();
 		}
 		return null;
+	}
+	
+	/**
+	 * Checks if the annotation is a string {@code value} property.
+	 * 
+	 * @return true if the annotation is a string {@code value} property.
+	 */
+	public boolean isStringValue() {
+		if (value.getValue() instanceof StringLiteral<?>) {
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -233,6 +281,18 @@ public class Annotation {
 		return null;
 	}
 
+	/**
+	 * Checks if the annotation is a nested {@code value} property.
+	 * 
+	 * @return true if the annotation is a nested {@code value} property.
+	 */
+	public boolean isNestedAnnotations() {
+		if (value.getValue() instanceof NestedDocument<?>) {
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * Returns the list of Annotations of the nested {@code value} property.
 	 * 

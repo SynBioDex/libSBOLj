@@ -184,9 +184,14 @@ public class Interaction extends Identified {
 	 */
 	public Participation createParticipation(String displayId, String participantId) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		URI participant = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(), 
+		URI participantURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(), 
 				participantId, moduleDefinition.getVersion());
-		return createParticipation(displayId,participant);
+		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
+				moduleDefinition.getFunctionalComponent(participantURI)==null) {
+			moduleDefinition.createFunctionalComponent(participantId,AccessType.PUBLIC,participantId,"",
+					DirectionType.INOUT);
+		}
+		return createParticipation(displayId,participantURI);
 	}
 
 	/**

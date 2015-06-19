@@ -58,6 +58,17 @@ public class Participation extends Identified {
 		if (moduleDefinition==null) return null;
 		return moduleDefinition.getFunctionalComponent(participant);
 	}
+
+	/**
+	 * Get the component definition for the participant of this participation.
+	 * @return the component definition for the participant of this participation.
+	 */
+	public ComponentDefinition getParticipantDefinition() {
+		if (moduleDefinition!=null) {
+			return moduleDefinition.getFunctionalComponent(participant).getDefinition();
+		}
+		return null;
+	}
 	
 	/**
 	 * Sets the participant property of this object to the given one.

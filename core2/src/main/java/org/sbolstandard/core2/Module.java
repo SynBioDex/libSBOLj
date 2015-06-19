@@ -156,11 +156,15 @@ public class Module extends Identified {
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		URI local = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(), 
+		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(), 
 				localId, moduleDefinition.getVersion());
+		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
+				moduleDefinition.getFunctionalComponent(localURI)==null) {
+			moduleDefinition.createFunctionalComponent(localId,AccessType.PUBLIC,localId,"",DirectionType.INOUT);
+		}
 		URI remote = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(), 
 				remoteId, getDefinition().getVersion());
-		return createMapsTo(displayId,refinement,local,remote);
+		return createMapsTo(displayId,refinement,localURI,remote);
 	}
 	
 	/**

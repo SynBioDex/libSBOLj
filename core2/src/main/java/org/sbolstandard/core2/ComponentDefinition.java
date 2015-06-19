@@ -685,16 +685,16 @@ public class ComponentDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI.
 	 */
-	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end,OrientationType orientation,
-			String componentDefinitionId) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		SequenceAnnotation sequenceAnnotation = createSequenceAnnotation(displayId,"range",start,end,orientation);
-		if (this.getComponent(componentDefinitionId)==null) {
-			createComponent(componentDefinitionId,AccessType.PUBLIC,componentDefinitionId,"");
-		}
-		sequenceAnnotation.setComponent(componentDefinitionId);
-		return sequenceAnnotation;
-	}
+//	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end,OrientationType orientation,
+//			String componentDefinitionId) {
+//		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+//		SequenceAnnotation sequenceAnnotation = createSequenceAnnotation(displayId,"range",start,end,orientation);
+//		if (this.getComponent(componentDefinitionId)==null) {
+//			createComponent(componentDefinitionId,AccessType.PUBLIC,componentDefinitionId,"");
+//		}
+//		sequenceAnnotation.setComponent(componentDefinitionId);
+//		return sequenceAnnotation;
+//	}
 	
 	/**
 	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
@@ -1105,18 +1105,26 @@ public class ComponentDefinition extends TopLevel {
 	 * 
 	 * @param displayId
 	 * @param restriction
-	 * @param subject
-	 * @param object
+	 * @param subjectId
+	 * @param objectId
 	 * @return a SequenceConstraint instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public SequenceConstraint createSequenceConstraint(String displayId,
-			RestrictionType restriction, String subject, String object) {
+			RestrictionType restriction, String subjectId, String objectId) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI subjectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),
-				subject, this.getVersion());
+				subjectId, this.getVersion());
+		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && 
+				this.getComponent(subjectURI)==null) {
+			this.createComponent(subjectId,AccessType.PUBLIC,subjectId,"");
+		}
 		URI objectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),
-				object, this.getVersion());
+				objectId, this.getVersion());
+		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && 
+				this.getComponent(objectURI)==null) {
+			this.createComponent(objectId,AccessType.PUBLIC,objectId,"");
+		}
 		return createSequenceConstraint(displayId,restriction,subjectURI,objectURI);
 	}
 
