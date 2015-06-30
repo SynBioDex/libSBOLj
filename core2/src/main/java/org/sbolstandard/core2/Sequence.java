@@ -84,7 +84,7 @@ public class Sequence extends TopLevel{
 	 * is allowed to be edited.
 	 * 
 	 * @param elements
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code elements} argument is {@code null}
 	 */
 	public void setElements(String elements) {
@@ -113,7 +113,7 @@ public class Sequence extends TopLevel{
 	 * is allowed to be edited.
 	 * 
 	 * @param encoding
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code encoding} argument is {@code null}
 	 */
 	public void setEncoding(URI encoding) {

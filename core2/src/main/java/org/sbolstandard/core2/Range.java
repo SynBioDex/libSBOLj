@@ -37,7 +37,7 @@ public class Range extends Location{
 	 * is allowed to be edited.
 	 *
 	 * @param value
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code value} is less or equal to 0.
 	 * @throws IllegalArgumentException if the given {@code value} is greater than 
 	 * the {@code end} value of this Range object.
@@ -79,7 +79,7 @@ public class Range extends Location{
 	 * is allowed to be edited.
 	 *
 	 * @param value
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code value} is less or equal to 0.
 	 * @throws IllegalArgumentException if the given {@code value} is less than 
 	 * the {@code start} value of this Range object.

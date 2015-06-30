@@ -639,7 +639,7 @@ public class SBOLWriter {
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.GenericLocation.GenericLocation, genericLocation.getIdentity(), NamedProperties(property)));
 		}
-		throw new SBOLException("Invalid location class.");
+		throw new SBOLValidationException("Invalid location class.");
 	}
 
 	private static List<NestedDocument<QName>> getMapsTo(Set<MapsTo> references)

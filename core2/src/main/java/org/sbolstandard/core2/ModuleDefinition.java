@@ -69,7 +69,7 @@ public class ModuleDefinition extends TopLevel {
 	 *
 	 * @param roleURI
 	 * @return {@code true} if this set did not already contain the specified role.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public boolean addRole(URI roleURI) {
 		if (sbolDocument != null)
@@ -86,7 +86,7 @@ public class ModuleDefinition extends TopLevel {
 	 * 
 	 * @param roleURI
 	 * @return {@code true} if the matching role reference is removed successfully, {@code false} otherwise.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public boolean removeRole(URI roleURI) {
 		if (sbolDocument != null)
@@ -103,7 +103,7 @@ public class ModuleDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 *
 	 * @param roles
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void setRoles(Set<URI> roles) {
 		if (sbolDocument != null)
@@ -146,7 +146,7 @@ public class ModuleDefinition extends TopLevel {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearRoles() {
 		if (sbolDocument != null)
@@ -188,7 +188,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param moduleDefinitionId
 	 * @param version
 	 * @return a Module instance
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public Module createModule(String displayId, String moduleDefinitionId, String version) {
 		if (sbolDocument != null)
@@ -217,7 +217,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param displayId
 	 * @param moduleDefinitionURI
 	 * @return a Module instance
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies all URIs and the given {@code definitionURI}
                is not found in them.
 	 */
@@ -261,7 +261,7 @@ public class ModuleDefinition extends TopLevel {
 	 * 
 	 * @param module
 	 * @return {@code true} if the matching Module instance is removed successfully, {@code false} otherwise.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 *             
 	 */
 	public boolean removeModule(Module module) {
@@ -311,7 +311,7 @@ public class ModuleDefinition extends TopLevel {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant 
 	 */
 	public void clearModules() {
 		if (sbolDocument != null)
@@ -332,7 +332,7 @@ public class ModuleDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 * 
 	 * @param modules
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 *             
 	 */
 	void setModules(List<Module> modules) {
@@ -372,7 +372,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param displayId
 	 * @param types
 	 * @return the created Interaction instance
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public Interaction createInteraction(String displayId, Set<URI> types) {
 		if (sbolDocument != null)
@@ -406,7 +406,7 @@ public class ModuleDefinition extends TopLevel {
 	 * 
 	 * @param interaction
 	 * @return {@code true} if the matching Interaction instance is removed successfully, {@code false} otherwise.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public boolean removeInteraction(Interaction interaction) {
 		if (sbolDocument != null)
@@ -456,7 +456,7 @@ public class ModuleDefinition extends TopLevel {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearInteractions() {
 		if (sbolDocument != null)
@@ -518,7 +518,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param version
 	 * @param direction
 	 * @return a FunctionalComponent instance
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
 			String definitionId, String version, DirectionType direction) {
@@ -550,7 +550,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param componentDefinitionURI
 	 * @param direction
 	 * @return a FunctionalComponent instance
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely
 	           specifies all URIs and the given {@code definitionURI} is not found in them.
 	 */
@@ -599,8 +599,8 @@ public class ModuleDefinition extends TopLevel {
 	 * @param functionalComponent
 	 * @return {@code true} if the matching FunctionalComponent instance is removed successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
-	 * @throws SBOLException the given FunctionalComponent instance is referenced.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException the given FunctionalComponent instance is referenced.
 	 */
 	public boolean removeFunctionalComponent(FunctionalComponent functionalComponent) {
 		if (sbolDocument != null)
@@ -608,7 +608,7 @@ public class ModuleDefinition extends TopLevel {
 		for (Interaction i : interactions.values()) {
 			for (Participation p : i.getParticipations()) {
 				if (p.getParticipantURI().equals(functionalComponent.getIdentity())) {
-					throw new SBOLException("Cannot remove " + functionalComponent.getIdentity() +
+					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
 					" since it is in use.");
 				}
 			}
@@ -616,7 +616,7 @@ public class ModuleDefinition extends TopLevel {
 		for (FunctionalComponent c : functionalComponents.values()) {
 			for (MapsTo mt : c.getMapsTos()) {
 				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
-					throw new SBOLException("Cannot remove " + functionalComponent.getIdentity() +
+					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
 					" since it is in use.");
 				}
 			}
@@ -624,7 +624,7 @@ public class ModuleDefinition extends TopLevel {
 		for (Module m : modules.values()) {
 			for (MapsTo mt : m.getMapsTos()) {
 				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
-					throw new SBOLException("Cannot remove " + functionalComponent.getIdentity() +
+					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
 					" since it is in use.");
 				}
 			}
@@ -634,7 +634,7 @@ public class ModuleDefinition extends TopLevel {
 				for (Module m : md.getModules()) {
 					for (MapsTo mt : m.getMapsTos()) {
 						if (mt.getRemoteURI().equals(functionalComponent.getIdentity())) {
-							throw new SBOLException("Cannot remove "
+							throw new SBOLValidationException("Cannot remove "
 									+ functionalComponent.getIdentity() +
 									" since it is in use.");
 						}
@@ -688,7 +688,7 @@ public class ModuleDefinition extends TopLevel {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearFunctionalComponents() {
 		if (sbolDocument != null)
@@ -731,7 +731,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param model
 	 * @return {@code true} if this set did not already contain the given Model
 	 *         instance
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies all URIs
 	 *             and the given Model instance's URI is not found in them.
 	 */
@@ -764,7 +764,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param version
 	 * @return {@code true} if this set did not already contain the given Model
 	 *         instance URI.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public boolean addModel(String modelId, String version) {
 		if (sbolDocument != null)
@@ -790,7 +790,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param modelURI
 	 * @return {@code true} if this set did not already contain the given Model
 	 *         instance URI.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely
 	 *             specifies all URIs and the given {@code modelURI} is not found in them.
 
@@ -817,7 +817,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param modelURI
 	 * @return {@code true} if the matching Model reference is removed successfully,
 	 *         {@code false} otherwise.      
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public boolean removeModel(URI modelURI) {
 		if (sbolDocument != null)
@@ -835,7 +835,7 @@ public class ModuleDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 * 
 	 * @param models
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void setModels(Set<URI> models) {
 		if (sbolDocument != null)
@@ -892,7 +892,7 @@ public class ModuleDefinition extends TopLevel {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearModels() {
 		if (sbolDocument != null)

@@ -63,7 +63,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * is allowed to be edited.
 	 * 
 	 * @param direction
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code direction} is {@code null}
 	 * 
 	 */
@@ -197,7 +197,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @param mapsTo
 	 * @return {@code true} if the matching MapsTo instance is removed successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 *
 	 */
 	public boolean removeMapsTo(MapsTo mapsTo) {
@@ -242,7 +242,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearMapsTos() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

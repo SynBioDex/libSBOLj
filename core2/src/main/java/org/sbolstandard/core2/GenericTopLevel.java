@@ -24,7 +24,7 @@ public class GenericTopLevel extends TopLevel{
 		super(identity);
 		this.rdfType = rdfType;
 		if (rdfType.getPrefix().toString().equals("sbol")) {
-			throw new SBOLException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 	}
 	
@@ -50,7 +50,7 @@ public class GenericTopLevel extends TopLevel{
 	 * is allowed to be edited.
 	 *
 	 * @param rdfType
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code rdfType} argument is {@code null}
 	 */
 	public void setRDFType(QName rdfType) {

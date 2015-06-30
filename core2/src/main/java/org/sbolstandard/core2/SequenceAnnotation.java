@@ -163,7 +163,7 @@ public class SequenceAnnotation extends Identified {
 	 * 
 	 * @param location
 	 * @return {@code true} if the matching Location instance is removed successfully, {@code false} otherwise.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */	
 	public boolean removeLocation(Location location) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -212,7 +212,7 @@ public class SequenceAnnotation extends Identified {
 	 * then the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant  
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant  
 	 */
 	void clearLocations() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -339,7 +339,7 @@ public class SequenceAnnotation extends Identified {
 	 * It then calls {@link #setComponent(URI)} to set the reference.
 	 * 
 	 * @param displayId
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated ComponentDefinition object is not {@code null},
 	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
 	 * list of Component instances.
@@ -348,6 +348,10 @@ public class SequenceAnnotation extends Identified {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
 				displayId, componentDefinition.getVersion());
+		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && componentDefinition!=null &&
+				componentDefinition.getComponent(componentURI)==null) {
+			componentDefinition.createComponent(displayId,AccessType.PUBLIC,displayId,"");
+		}
 		setComponent(componentURI);
 	}
 
@@ -359,7 +363,7 @@ public class SequenceAnnotation extends Identified {
 	 * is allowed to be edited.
 	 * 
 	 * @param componentURI
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated ComponentDefinition object is not {@code null},
 	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
 	 * list of Component instances.
@@ -381,7 +385,7 @@ public class SequenceAnnotation extends Identified {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void unsetComponent() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -449,10 +453,14 @@ public class SequenceAnnotation extends Identified {
 	}
 
 	/**
-	 * @return the componentDefinition
+	 * Get the component definition for the component annotated by this sequence annotation.
+	 * @return the component definition annotated by this sequence annotation.
 	 */
-	ComponentDefinition getComponentDefinition() {
-		return componentDefinition;
+	public ComponentDefinition getComponentDefinition() {
+		if (componentDefinition!=null) {
+			return componentDefinition.getComponent(component).getDefinition();
+		}
+		return null;
 	}
 
 	/**

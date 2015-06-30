@@ -53,7 +53,7 @@ public abstract class Location extends Identified{
 	 * is allowed to be edited.
 	 * 
 	 * @param orientation
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void setOrientation(OrientationType orientation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -67,7 +67,7 @@ public abstract class Location extends Identified{
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void unsetOrientation() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

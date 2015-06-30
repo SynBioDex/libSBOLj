@@ -277,7 +277,7 @@ public class SBOLReader
 		scanner.close();
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLException e) {
+		} catch (SBOLValidationException e) {
 			SBOLDoc.setCompliant(false);
 		}
 		return SBOLDoc;
@@ -359,7 +359,7 @@ public class SBOLReader
 		scanner.close();
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLException e) {
+		} catch (SBOLValidationException e) {
 			SBOLDoc.setCompliant(false);
 		}
 		return SBOLDoc;
@@ -402,7 +402,7 @@ public class SBOLReader
 		scanner.close();
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLException e) {
+		} catch (SBOLValidationException e) {
 			SBOLDoc.setCompliant(false);
 		}
 		return SBOLDoc;
@@ -429,7 +429,7 @@ public class SBOLReader
 		readTopLevelDocsV1(SBOLDoc, document);
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLException e) {
+		} catch (SBOLValidationException e) {
 			SBOLDoc.setCompliant(false);
 		}
 		return SBOLDoc;
@@ -1022,7 +1022,7 @@ public class SBOLReader
 		List<Annotation> annotations = new ArrayList<>();
 
 		if (!sequenceConstraint.getType().equals(Sbol2Terms.SequenceConstraint.SequenceConstraint)) {
-			throw new SBOLException(sequenceConstraint.getType() + " is not a valid sequence constraint.");
+			throw new SBOLValidationException(sequenceConstraint.getType() + " is not a valid sequence constraint.");
 		}
 		for (NamedProperty<QName> namedProperty : sequenceConstraint.getProperties())
 		{
@@ -1094,7 +1094,7 @@ public class SBOLReader
 		List<Annotation> annotations = new ArrayList<>();
 		
 		if (!sequenceAnnotation.getType().equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation)) {
-			throw new SBOLException(sequenceAnnotation.getType() + " is not a valid sequence annotation.");
+			throw new SBOLValidationException(sequenceAnnotation.getType() + " is not a valid sequence annotation.");
 		}
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
@@ -1175,7 +1175,7 @@ public class SBOLReader
 		}
 		else
 		{
-			throw new SBOLException(location.getType() + " is not a valid location type.");
+			throw new SBOLValidationException(location.getType() + " is not a valid location type.");
 		}
 		return l;
 
@@ -1290,7 +1290,7 @@ public class SBOLReader
 
 		if (at == null)
 		{
-			throw new SBOLException("Cut requires at property.");
+			throw new SBOLValidationException("Cut requires at property.");
 		}
 
 		Cut c = new Cut(typeCut.getIdentity(), at);
@@ -1401,7 +1401,7 @@ public class SBOLReader
 		}
 
 		if (!component.getType().equals(Sbol2Terms.Component.Component)) {
-			throw new SBOLException(component.getType() + " is not a valid component.");
+			throw new SBOLValidationException(component.getType() + " is not a valid component.");
 		}
 		for (NamedProperty<QName> namedProperty : component.getProperties())
 		{
@@ -1795,7 +1795,7 @@ public class SBOLReader
 		}
 
 		if (!module.getType().equals(Sbol2Terms.Module.Module)) {
-			throw new SBOLException(module.getType() + " is not a valid module.");
+			throw new SBOLValidationException(module.getType() + " is not a valid module.");
 		}
 		for (NamedProperty<QName> namedProperty : module.getProperties())
 		{
@@ -1870,7 +1870,7 @@ public class SBOLReader
 		List<Annotation> annotations = new ArrayList<>();
 
 		if (!mapsTo.getType().equals(Sbol2Terms.MapsTo.MapsTo)) {
-			throw new SBOLException(mapsTo.getType() + " is not a valid mapsTo.");
+			throw new SBOLValidationException(mapsTo.getType() + " is not a valid mapsTo.");
 		}
 		for (NamedProperty<QName> m : mapsTo.getProperties())
 		{
@@ -1937,7 +1937,7 @@ public class SBOLReader
 		List<Annotation> annotations 	   = new ArrayList<>();
 
 		if (!interaction.getType().equals(Sbol2Terms.Interaction.Interaction)) {
-			throw new SBOLException(interaction.getType() + " is not a valid interaction.");
+			throw new SBOLValidationException(interaction.getType() + " is not a valid interaction.");
 		}
 		for (NamedProperty<QName> i : interaction.getProperties())
 		{
@@ -2015,7 +2015,7 @@ public class SBOLReader
 		}
 
 		if (!participation.getType().equals(Sbol2Terms.Participation.Participation)) {
-			throw new SBOLException(participation.getType() + " is not a valid participation.");
+			throw new SBOLValidationException(participation.getType() + " is not a valid participation.");
 		}
 		for (NamedProperty<QName> p : participation.getProperties())
 		{
@@ -2088,7 +2088,7 @@ public class SBOLReader
 		}
 
 		if (!functionalComponent.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent)) {
-			throw new SBOLException(functionalComponent.getType() + " is not a valid functional component.");
+			throw new SBOLValidationException(functionalComponent.getType() + " is not a valid functional component.");
 		}
 		for (NamedProperty<QName> f : functionalComponent.getProperties())
 		{

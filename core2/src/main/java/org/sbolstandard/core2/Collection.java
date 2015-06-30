@@ -52,7 +52,7 @@ public class Collection extends TopLevel{
 	 * 
 	 * @param memberURI
 	 * @return {@code true} if this set did not already contain the given member URI.
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely
 	 *             specifies all URIs and the given {@code memberURI} is not found in them.
 	 */
@@ -77,7 +77,7 @@ public class Collection extends TopLevel{
 	 * @param memberURI
 	 * @return {@code true} if the matching member reference is removed successfully,
 	 *         {@code false} otherwise.      
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */	
 	public boolean removeMember(URI memberURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -94,7 +94,7 @@ public class Collection extends TopLevel{
 	 * is allowed to be edited.
 	 * 
 	 * @param members
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void setMembers(Set<URI> members) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -148,7 +148,7 @@ public class Collection extends TopLevel{
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant 
 	 */
 	public void clearMembers() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
