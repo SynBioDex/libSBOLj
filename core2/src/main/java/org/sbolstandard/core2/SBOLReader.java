@@ -96,6 +96,14 @@ public class SBOLReader
 	{
 		SBOLReader.URIPrefix = URIprefix;
 	}
+	
+	/**
+	 * Remove the default URI prefix
+	 */
+	public static void unsetURIPrefix()
+	{
+		SBOLReader.URIPrefix = null;
+	}
 
 	/**
 	 * Set the specified authority as the prefix to all member's identity
