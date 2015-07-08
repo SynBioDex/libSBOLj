@@ -461,9 +461,12 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractPersistentId1() {
-		String extractedPersistentId = extractPersistentId(uri4);
-		//System.out.println(extractedPersistentId);
-		assertNull(extractedPersistentId);
+		try {
+			extractPersistentId(uri4);
+		} catch (IllegalArgumentException e) {
+			return;
+		}
+		assert(false);
 	}
 
 
@@ -482,9 +485,12 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractPersistentId3() {
-		String extractedPersistentId = extractPersistentId(uri6);
-		//System.out.println(extractedPersistentId);
-		assertNull(extractedPersistentId);
+		try {
+			extractPersistentId(uri6);
+		} catch (IllegalArgumentException e) {
+			return;
+		}
+		assert(false);
 	}
 
 	/**
@@ -502,9 +508,12 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractPersistentId5() {
-		String extractedPersistentId = extractPersistentId(uri8);
-		//System.out.println(extractedPersistentId);
-		assertNull(extractedPersistentId);
+		try {
+			extractPersistentId(uri8);
+		} catch (IllegalArgumentException e) {
+			return;
+		}
+		assert(false);
 	}
 
 	/**
@@ -522,9 +531,12 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractPersistentId7() {
-		String extractedPersistentId = extractPersistentId(uri9);
-		//System.out.println(extractedPersistentId);
-		assertNull(extractedPersistentId);
+		try {
+			extractPersistentId(uri9);
+		} catch (IllegalArgumentException e) {
+			return;
+		}
+		assert(false);
 	}
 
 	/**
