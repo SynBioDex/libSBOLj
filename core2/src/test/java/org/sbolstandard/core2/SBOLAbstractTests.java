@@ -26,7 +26,7 @@ public abstract class SBOLAbstractTests {
 
 	String VERSION_1_0 = "1.0";
 
-	//kii
+
 	@Test
 	public void test_AnnotationOutput() throws Exception
 	{
@@ -856,8 +856,8 @@ public abstract class SBOLAbstractTests {
 			throw new AssertionError("Failed for " + fileDirectory, e);
 		}
 	}
-	
-	
+
+
 
 	@Test
 	public void test_labhost_Unspecified() throws Exception
