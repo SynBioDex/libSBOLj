@@ -9,7 +9,9 @@ import java.util.HashSet;
 import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.DirectionType;
 import org.sbolstandard.core2.FunctionalComponent;
+import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.ModuleDefinition;
+import org.sbolstandard.core2.Participation;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLWriter;
 
@@ -43,7 +45,10 @@ public class SimpleModuleDefinition {
 				URI.create("http://sbolstandard.org/example/GFP"),
 				DirectionType.OUT);
 		
-		module.createInteraction("express_GFP", new HashSet<URI>(Arrays.asList(URI.create("Transcription"))));
+		Interaction interaction=module.createInteraction("express_GFP", new HashSet<URI>(Arrays.asList(URI.create("Transcription"))));
+		interaction.createParticipation("CDS", cds.getIdentity());
+		interaction.createParticipation("Protein", protein.getIdentity());
+		
 			
 		SBOLWriter.write(document,(System.out));	
     }

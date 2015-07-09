@@ -7,7 +7,7 @@ import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.SystemsBiologyOntology;
 
 /**
- * This example shows how to create {@link org.sbolstandard.core2.Model} entities. In the example the Model entity refers to an ODE model in the SBML format.
+ * This example shows how to create {@link org.sbolstandard.core2.Model} entities. In the example, the Model entity refers to an ODE model in the SBML format.
  *
  */
 public class ModelOutput {

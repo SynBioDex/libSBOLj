@@ -11,7 +11,7 @@ import org.sbolstandard.core2.SequenceOntology;
 
 /**
  * This example shows to add constraints between subcomponents of a ComponentDefinition entity using {@link org.sbolstandard.core2.SequenceConstraint} entities.
- * In the example, a promoter has two sub components: a core promoter region and and a binding site. 
+ * In the example, a promoter has two subcomponents: a core promoter region and and a binding site. 
  * Using a SequenceConstraint entity, it is specified that the core promoter region precedes the binding site.
  *
  */

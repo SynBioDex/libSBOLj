@@ -11,7 +11,7 @@ import org.sbolstandard.core2.SequenceOntology;
 
 /**
  * This example shows how to create simple {@link org.sbolstandard.core2.ComponentDefinition} entities. 
- * A ComponentDefinition entity is created for a promoter part and its nucleotide sequence is associated using a Sequence entity.
+ * A ComponentDefinition entity is created for a promoter part, and its nucleotide sequence is associated using a Sequence entity.
  *
  */
 public class SimpleComponentDefinitionExample {
