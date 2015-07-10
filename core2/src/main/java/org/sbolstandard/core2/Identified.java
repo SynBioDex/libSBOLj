@@ -508,7 +508,6 @@ public abstract class Identified {
 			if (other.annotations != null)
 				return false;
 		} else if (!annotations.containsAll(other.annotations))
-			// TODO: seems to be order dependent for some reason
 			return false;
 		if (identity == null) {
 			if (other.identity != null)
