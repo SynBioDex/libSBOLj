@@ -72,7 +72,7 @@ public class Model extends TopLevel {
 	 * is allowed to be edited.
 	 * 
 	 * @param source
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code source} argument is {@code null}
 	 */
 	public void setSource(URI source) {
@@ -101,7 +101,7 @@ public class Model extends TopLevel {
 	 * is allowed to be edited.
 	 * 
 	 * @param language
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code language} argument is {@code null}
 	 */
 	public void setLanguage(URI language) {
@@ -130,7 +130,7 @@ public class Model extends TopLevel {
 	 * is allowed to be edited.
 	 * 
 	 * @param framework
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code framework} argument is {@code null}
 	 */
 	public void setFramework(URI framework) {
@@ -203,7 +203,7 @@ public class Model extends TopLevel {
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		return isURIcompliant(this.getIdentity(), 0);
+		return isURIcompliant(this.getIdentity());
 	}
 
 	//	/**

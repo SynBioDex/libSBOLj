@@ -99,7 +99,7 @@ public class Component extends ComponentInstance{
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		String parentPersistentIdStr = extractPersistentId(this.getIdentity());
+		String parentPersistentIdStr = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		MapsTo m = createMapsTo(createCompliantURI(parentPersistentIdStr, displayId, version),
 				refinement, local, remote);
@@ -113,7 +113,7 @@ public class Component extends ComponentInstance{
 	 * Adds the specified instance to the list of references. 
 	 */
 	void addMapsTo(MapsTo mapsTo) {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (sbolDocument != null) {
 			if (componentDefinition.getComponent(mapsTo.getLocalURI())==null) {
 				throw new IllegalArgumentException("Component '" + mapsTo.getLocalURI() + "' does not exist.");
 			}
@@ -143,7 +143,7 @@ public class Component extends ComponentInstance{
 	 * @param mapsTo
 	 * @return {@code true} if the matching MapsTo instance is removed successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 *
 	 */
 	public boolean removeMapsTo(MapsTo mapsTo) {
@@ -188,7 +188,7 @@ public class Component extends ComponentInstance{
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearMapsTos() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();

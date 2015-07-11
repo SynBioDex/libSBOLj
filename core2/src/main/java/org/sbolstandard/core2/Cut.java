@@ -43,7 +43,7 @@ public class Cut extends Location{
 	 * is allowed to be edited.
 	 * 
 	 * @param at 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code at} value is less than 0
 	 */
 	public void setAt(int at) {

@@ -1,5 +1,6 @@
 package org.sbolstandard.core2;
 
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
 import java.io.BufferedInputStream;
@@ -37,8 +38,6 @@ import uk.ac.ncl.intbio.core.io.IoReader;
 import uk.ac.ncl.intbio.core.io.json.JsonIo;
 import uk.ac.ncl.intbio.core.io.json.StringifyQName;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
-
-import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
  * @author Zhen Zhang
@@ -90,39 +89,47 @@ public class SBOLReader
 
 	/**
 	 * Set the specified authority as the prefix to all member's identity
-	 * 
+	 *
 	 *  @param URIprefix
-	 */	
+	 */
 	public static void setURIPrefix(String URIprefix)
 	{
 		SBOLReader.URIPrefix = URIprefix;
 	}
+	
+	/**
+	 * Remove the default URI prefix
+	 */
+	public static void unsetURIPrefix()
+	{
+		SBOLReader.URIPrefix = null;
+	}
 
 	/**
 	 * Set the specified authority as the prefix to all member's identity
-	 * 
+	 *
 	 * @param version
-	 */	
+	 */
 	public static void setVersion(String version)
 	{
 		SBOLReader.version = version;
 	}
-	
+
 	/**
 	 * Set the specified authority as the prefix to all member's identity
-	 * 
+	 *
 	 * @param typesInURI
 	 */
 	public static void setTypesInURI(boolean typesInURI)
 	{
 		SBOLReader.typesInURI = typesInURI;
 	}
-	
+
 	/**
 	 * Takes in the given RDF filename and converts the file to an SBOLDocument.
 	 * <p>
 	 * This method calls {@link #readRDF(File)}.
-	 * 
+	 *
 	 * @param fileName
 	 * @return the converted SBOLDocument
 	 * @throws Throwable
@@ -138,7 +145,7 @@ public class SBOLReader
 	 * Takes in the given JSON filename and converts the file to an SBOLDocument.
 	 * <p>
 	 * This method calls {@link #readJSON(File)}
-	 * 
+	 *
 	 * @param fileName
 	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
@@ -152,11 +159,11 @@ public class SBOLReader
 	 * Takes in the given RDF filename and converts the file to an SBOLDocument.
 	 * <p>
 	 * This method calls {@link #readRDF(File)}
-	 * 
+	 *
 	 * @param fileName
 	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
-	 */	
+	 */
 	public static SBOLDocument readRDF(String fileName) throws Throwable
 	{
 		return readRDF(new File(fileName));
@@ -166,7 +173,7 @@ public class SBOLReader
 	 * Takes in the given Turtle filename and converts the file to an SBOLDocument.
 	 * <p>
 	 * This method calls {@link #readTurtle(File)}.
-	 * 
+	 *
 	 * @param fileName
 	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
@@ -180,7 +187,7 @@ public class SBOLReader
 	 * Takes in the given JSON file and converts the file to an SBOLDocument.
 	 * <p>
 	 * This method calls {@link #readJSON(InputStream)}.
-	 * 
+	 *
 	 * @param file
 	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
@@ -192,10 +199,10 @@ public class SBOLReader
 
 		return readJSON(buffer);
 	}
-	
+
 	/**
 	 * Takes in the given RDF file and converts the file to an SBOLDocument.
-	 * 
+	 *
 	 * @param file
 	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
@@ -212,7 +219,7 @@ public class SBOLReader
 	 * Takes in the given RDF file and converts the file to an SBOLDocument.
 	 * <p>
 	 * This method calls {@link #readRDF(InputStream)}.
-	 * 
+	 *
 	 * @param file
 	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
@@ -227,7 +234,7 @@ public class SBOLReader
 	/**
 	 * Takes in the given Turtle file and converts the file to an SBOLDocument
 	 * <p>
-	 * This method calls {@link #readTurtle(InputStream)} 
+	 * This method calls {@link #readTurtle(InputStream)}
 	 * @param file
 	 * @return the converted SBOLDocument instance
 	 * @throws Throwable
@@ -245,7 +252,7 @@ public class SBOLReader
 	 *
 	 * @param in
 	 * @return the converted SBOLDocument instance
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static SBOLDocument readJSON(InputStream in) throws Exception
 	{
@@ -278,17 +285,17 @@ public class SBOLReader
 		scanner.close();
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLException e) {
+		} catch (SBOLValidationException e) {
 			SBOLDoc.setCompliant(false);
 		}
 		return SBOLDoc;
 	}
-	
+
 	/**
 	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument.
-	 * 
+	 *
 	 * @param in
-	 * @return the converted SBOLDocument instance 
+	 * @return the converted SBOLDocument instance
 	 */
 	public static SBOLDocument read(InputStream in)
 	{
@@ -325,10 +332,10 @@ public class SBOLReader
 
 	/**
 	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument.
-	 * 
+	 *
 	 * @param in
 	 * @return the converted SBOLDocument instance
-	 * @throws Exception 
+	 * @throws Exception
 	 * @throws IOException
 	 */
 	public static SBOLDocument readRDF(InputStream in) throws Exception
@@ -360,7 +367,7 @@ public class SBOLReader
 		scanner.close();
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLException e) {
+		} catch (SBOLValidationException e) {
 			SBOLDoc.setCompliant(false);
 		}
 		return SBOLDoc;
@@ -403,7 +410,7 @@ public class SBOLReader
 		scanner.close();
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLException e) {
+		} catch (SBOLValidationException e) {
 			SBOLDoc.setCompliant(false);
 		}
 		return SBOLDoc;
@@ -417,7 +424,7 @@ public class SBOLReader
 			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 			{
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(Sbol2Terms.sbol2.getNamespaceURI(),
-								Sbol2Terms.sbol2.getPrefix()));
+						Sbol2Terms.sbol2.getPrefix()));
 			}
 			else
 			{
@@ -430,7 +437,7 @@ public class SBOLReader
 		readTopLevelDocsV1(SBOLDoc, document);
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLException e) {
+		} catch (SBOLValidationException e) {
 			SBOLDoc.setCompliant(false);
 		}
 		return SBOLDoc;
@@ -524,7 +531,7 @@ public class SBOLReader
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				displayId = fixDisplayId(displayId);
-				if (URIPrefix != null ) //TODO: check version set
+				if (URIPrefix != null ) 
 				{
 					persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
 					identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
@@ -549,7 +556,6 @@ public class SBOLReader
 						precedePairs, persIdentity, ++sa_num);
 
 				sequenceAnnotations.add(sa);
-				// TODO: if version then + "/" + version, else skip version
 
 				URI component_identity    = createCompliantURI(persIdentity,"component" + ++component_num,version);
 				AccessType access 		  = AccessType.PUBLIC;
@@ -586,8 +592,8 @@ public class SBOLReader
 		for (SBOLPair pair : precedePairs)
 		{
 			URI sc_identity    			= createCompliantURI(persIdentity,"sequenceConstraint" + ++sc_number,version);
-			URI restrictionURI 			= Sbol2Terms.DnaComponentV1URI.restriction;
-			RestrictionType restriction = RestrictionType.convertToRestrictionType(restrictionURI);
+			URI restrictionURI 			= RestrictionType.convertToURI(RestrictionType.PRECEDES);
+			//RestrictionType restriction = RestrictionType.convertToRestrictionType(restrictionURI);
 
 			URI subject = null;
 			URI object  = null;
@@ -604,7 +610,7 @@ public class SBOLReader
 				}
 			}
 
-			SequenceConstraint sc = new SequenceConstraint(sc_identity, restriction, subject, object);
+			SequenceConstraint sc = new SequenceConstraint(sc_identity, restrictionURI, subject, object);
 			if (!persIdentity.equals("")) {
 				sc.setPersistentIdentity(createCompliantURI(persIdentity,"sequenceConstraint"+sc_number,version));
 				sc.setDisplayId("sequenceConstraint"+sc_number);
@@ -715,7 +721,7 @@ public class SBOLReader
 		}
 		return sequence;
 	}
-	
+
 	private static String fixDisplayId(String displayId) {
 		displayId = displayId.replaceAll("[^a-zA-Z0-9_]", "_");
 		displayId = displayId.replace(" ", "_");
@@ -804,6 +810,12 @@ public class SBOLReader
 			persIdentity = createCompliantURI(parentURI,"annotation"+sa_num,"").toString();
 			identity = createCompliantURI(parentURI,"annotation"+sa_num,version);
 		}
+
+		if (!sequenceAnnotation.getType().equals(Sbol1Terms.SequenceAnnotations.SequenceAnnotation))
+		{
+			throw new IllegalArgumentException("QName has to be" + Sbol1Terms.SequenceAnnotations.SequenceAnnotation.toString());
+		}
+
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol1Terms.SequenceAnnotations.bioStart))
@@ -943,7 +955,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasComponent))
 			{
-				components.add(parseSubComponent(((NestedDocument<QName>) namedProperty.getValue())));
+				components.add(parseComponent(((NestedDocument<QName>) namedProperty.getValue())));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequence))
 			{
@@ -1006,18 +1018,21 @@ public class SBOLReader
 		return c;
 	}
 
-	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraints)
+	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraint)
 	{
 		URI persistentIdentity 		 = null;
 		String displayId             = null;
-		RestrictionType restriction  = null;
+		URI restriction  			 = null;
 		URI subject 				 = null;
 		URI object 					 = null;
 		String version 				 = null;
 		URI wasDerivedFrom 			 = null;
 		List<Annotation> annotations = new ArrayList<>();
 
-		for (NamedProperty<QName> namedProperty : sequenceConstraints.getProperties())
+		if (!sequenceConstraint.getType().equals(Sbol2Terms.SequenceConstraint.SequenceConstraint)) {
+			throw new SBOLValidationException(sequenceConstraint.getType() + " is not a valid sequence constraint.");
+		}
+		for (NamedProperty<QName> namedProperty : sequenceConstraint.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
@@ -1027,10 +1042,8 @@ public class SBOLReader
 			else if (namedProperty.getName().equals(
 					Sbol2Terms.SequenceConstraint.restriction))
 			{
-				restriction = RestrictionType
-						.convertToRestrictionType(URI
-								.create(((Literal<QName>) namedProperty
-										.getValue()).getValue().toString()));
+				restriction = URI.create(((Literal<QName>) namedProperty
+										.getValue()).getValue().toString());
 
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.SequenceConstraint.hasSubject))
@@ -1061,7 +1074,7 @@ public class SBOLReader
 			}
 		}
 
-		SequenceConstraint s = new SequenceConstraint(sequenceConstraints.getIdentity(), restriction, subject, object);
+		SequenceConstraint s = new SequenceConstraint(sequenceConstraint.getIdentity(), restriction, subject, object);
 		if (displayId != null)
 			s.setDisplayId(displayId);
 		if (persistentIdentity != null)
@@ -1087,7 +1100,10 @@ public class SBOLReader
 		URI wasDerivedFrom 	   = null;
 		List<Location> locations = new ArrayList<>();
 		List<Annotation> annotations = new ArrayList<>();
-
+		
+		if (!sequenceAnnotation.getType().equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation)) {
+			throw new SBOLValidationException(sequenceAnnotation.getType() + " is not a valid sequence annotation.");
+		}
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
@@ -1153,8 +1169,6 @@ public class SBOLReader
 	private static Location parseLocation(NestedDocument<QName> location)
 	{
 		Location l 					 = null;
-		List<Annotation> annotations = new ArrayList<>();
-
 		if (location.getType().equals(Sbol2Terms.Range.Range))
 		{
 			l = parseRange(location);
@@ -1169,15 +1183,8 @@ public class SBOLReader
 		}
 		else
 		{
-			// TODO: probably need to throw an exception here
-			System.out.println("ERR: Null. Location isn't a Range, MultiRange, or Cut.");
-			return l; // codereview: this is always null? do you mean this?
+			throw new SBOLValidationException(location.getType() + " is not a valid location type.");
 		}
-
-		// codereview: this is brittle for NPEs if your if/else cascade higher up gets out of sync with the data model
-		if (!annotations.isEmpty())
-			l.setAnnotations(annotations);
-
 		return l;
 
 	}
@@ -1190,6 +1197,11 @@ public class SBOLReader
 		String version        	     = null;
 		URI wasDerivedFrom 			 = null;
 		List<Annotation> annotations = new ArrayList<>();
+
+		if (!typeGenLoc.getType().equals(Sbol2Terms.GenericLocation.GenericLocation))
+		{
+			throw new IllegalArgumentException("QName has to be" + Sbol2Terms.GenericLocation.GenericLocation.toString());
+		}
 
 		for (NamedProperty<QName> namedProperty : typeGenLoc.getProperties())
 		{
@@ -1220,7 +1232,7 @@ public class SBOLReader
 		}
 
 		GenericLocation gl = new GenericLocation(typeGenLoc.getIdentity());
-		if(displayId != null) 
+		if(displayId != null)
 			gl.setDisplayId(displayId);
 		if(orientation != null)
 			gl.setOrientation(OrientationType.convertToOrientationType(orientation));
@@ -1246,12 +1258,17 @@ public class SBOLReader
 		URI wasDerivedFrom 	   = null;
 		List<Annotation> annotations = new ArrayList<>();
 
+		if (!typeCut.getType().equals(Sbol2Terms.Cut.Cut))
+		{
+			throw new IllegalArgumentException("QName has to be" + Sbol2Terms.Cut.Cut.toString());
+		}
+
 		for (NamedProperty<QName> namedProperty : typeCut.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
-			} 
+			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
@@ -1281,14 +1298,13 @@ public class SBOLReader
 
 		if (at == null)
 		{
-			// TODO: how to handle problems with data model when at is null
-			System.out.println("ERR: at is Null. Problem is data model");
+			throw new SBOLValidationException("Cut requires at property.");
 		}
 
 		Cut c = new Cut(typeCut.getIdentity(), at);
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
-		if (displayId != null) 
+		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (orientation != null)
 			c.setOrientation(OrientationType.convertToOrientationType(orientation));
@@ -1312,6 +1328,11 @@ public class SBOLReader
 		String version 		   = null;
 		URI wasDerivedFrom     = null;
 		List<Annotation> annotations = new ArrayList<>();
+
+		if (!typeRange.getType().equals(Sbol2Terms.Range.Range))
+		{
+			throw new IllegalArgumentException("QName has to be" + Sbol2Terms.Range.Range.toString());
+		}
 
 		for (NamedProperty<QName> namedProperty : typeRange.getProperties())
 		{
@@ -1368,7 +1389,7 @@ public class SBOLReader
 		return r;
 	}
 
-	private static Component parseSubComponent(NestedDocument<QName> subComponents)
+	private static Component parseComponent(NestedDocument<QName> component)
 	{
 		URI persistentIdentity = null;
 		String version 		   = null;
@@ -1382,7 +1403,15 @@ public class SBOLReader
 		List<Annotation> annotations = new ArrayList<>();
 		List<MapsTo> mapsTo 		 = new ArrayList<>();
 
-		for (NamedProperty<QName> namedProperty : subComponents.getProperties())
+		if (!component.getType().equals(Sbol2Terms.Component.Component))
+		{
+			throw new IllegalArgumentException("QName has to be " + Sbol2Terms.Component.Component.toString());
+		}
+
+		if (!component.getType().equals(Sbol2Terms.Component.Component)) {
+			throw new SBOLValidationException(component.getType() + " is not a valid component.");
+		}
+		for (NamedProperty<QName> namedProperty : component.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
@@ -1428,7 +1457,7 @@ public class SBOLReader
 			}
 		}
 
-		Component c = new Component(subComponents.getIdentity(), access, subComponentURI);
+		Component c = new Component(component.getIdentity(), access, subComponentURI);
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
 		if(version != null)
@@ -1696,7 +1725,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModule))
 			{
-				subModules.add(parseSubModule(((NestedDocument<QName>) namedProperty.getValue())));
+				subModules.add(parseModule(((NestedDocument<QName>) namedProperty.getValue())));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasInteractions))
 			{
@@ -1704,7 +1733,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasfunctionalComponent))
 			{
-				functionalComponents.add(parseFunctionalComponents((NestedDocument<QName>) namedProperty.getValue()));
+				functionalComponents.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue()));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModels))
 			{
@@ -1729,7 +1758,7 @@ public class SBOLReader
 		}
 
 		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity());
-		if (!roles.isEmpty()) 
+		if (!roles.isEmpty())
 			moduleDefinition.setRoles(roles);
 		if (persistentIdentity != null)
 			moduleDefinition.setPersistentIdentity(persistentIdentity);
@@ -1756,7 +1785,7 @@ public class SBOLReader
 		return moduleDefinition;
 	}
 
-	private static Module parseSubModule(NestedDocument<QName> module)
+	private static Module parseModule(NestedDocument<QName> module)
 	{
 		URI persistentIdentity = null;
 		String version 		   = null;
@@ -1768,6 +1797,14 @@ public class SBOLReader
 		List<MapsTo> mappings 		 = new ArrayList<>();
 		List<Annotation> annotations = new ArrayList<>();
 
+		if (!module.getType().equals(Sbol2Terms.Module.Module))
+		{
+			throw new IllegalArgumentException("QName has to be " + Sbol2Terms.Module.Module.toString());
+		}
+
+		if (!module.getType().equals(Sbol2Terms.Module.Module)) {
+			throw new SBOLValidationException(module.getType() + " is not a valid module.");
+		}
 		for (NamedProperty<QName> namedProperty : module.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
@@ -1828,7 +1865,7 @@ public class SBOLReader
 		return submodule;
 	}
 
-	private static MapsTo parseMapsTo(NestedDocument<QName> mappings)
+	private static MapsTo parseMapsTo(NestedDocument<QName> mapsTo)
 	{
 		URI persistentIdentity    = null;
 		String displayId		  = null;
@@ -1840,7 +1877,10 @@ public class SBOLReader
 
 		List<Annotation> annotations = new ArrayList<>();
 
-		for (NamedProperty<QName> m : mappings.getProperties())
+		if (!mapsTo.getType().equals(Sbol2Terms.MapsTo.MapsTo)) {
+			throw new SBOLValidationException(mapsTo.getType() + " is not a valid mapsTo.");
+		}
+		for (NamedProperty<QName> m : mapsTo.getProperties())
 		{
 			if (m.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
@@ -1877,7 +1917,7 @@ public class SBOLReader
 			}
 		}
 
-		MapsTo map = new MapsTo(mappings.getIdentity(), refinement, local, remote);
+		MapsTo map = new MapsTo(mapsTo.getIdentity(), refinement, local, remote);
 		if (displayId != null)
 			map.setDisplayId(displayId);
 		if (persistentIdentity != null)
@@ -1904,6 +1944,9 @@ public class SBOLReader
 		List<Participation> participations = new ArrayList<>();
 		List<Annotation> annotations 	   = new ArrayList<>();
 
+		if (!interaction.getType().equals(Sbol2Terms.Interaction.Interaction)) {
+			throw new SBOLValidationException(interaction.getType() + " is not a valid interaction.");
+		}
 		for (NamedProperty<QName> i : interaction.getProperties())
 		{
 			if (i.getName().equals(Sbol2Terms.Identified.persistentIdentity))
@@ -1945,7 +1988,7 @@ public class SBOLReader
 		}
 
 		Interaction i = new Interaction(interaction.getIdentity(), type);
-		if (!participations.isEmpty()) 
+		if (!participations.isEmpty())
 			i.setParticipations(participations);
 		if (persistentIdentity != null)
 			i.setPersistentIdentity(persistentIdentity);
@@ -1974,6 +2017,14 @@ public class SBOLReader
 		URI wasDerivedFrom 	   = null;
 		List<Annotation> annotations = new ArrayList<>();
 
+		if (!participation.getType().equals(Sbol2Terms.Participation.Participation))
+		{
+			throw new IllegalArgumentException("QName has to be " + Sbol2Terms.Participation.Participation.toString());
+		}
+
+		if (!participation.getType().equals(Sbol2Terms.Participation.Participation)) {
+			throw new SBOLValidationException(participation.getType() + " is not a valid participation.");
+		}
 		for (NamedProperty<QName> p : participation.getProperties())
 		{
 			if (p.getName().equals(Sbol2Terms.Identified.persistentIdentity))
@@ -2008,7 +2059,7 @@ public class SBOLReader
 		}
 
 		Participation p = new Participation(participation.getIdentity(), participant);
-		if (!roles.isEmpty()) 
+		if (!roles.isEmpty())
 			p.setRoles(roles);
 		if (displayId != null)
 			p.setDisplayId(displayId);
@@ -2023,8 +2074,7 @@ public class SBOLReader
 		return p;
 	}
 
-	private static FunctionalComponent parseFunctionalComponents(
-			NestedDocument<QName> functionalComponent)
+	private static FunctionalComponent parseFunctionalComponent(NestedDocument<QName> functionalComponent)
 	{
 		URI persistentIdentity 	   = null;
 		String version 			   = null;
@@ -2039,6 +2089,15 @@ public class SBOLReader
 		List<Annotation> annotations = new ArrayList<>();
 		List<MapsTo> mappings 		 = new ArrayList<>();
 
+
+		if (!functionalComponent.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent))
+		{
+			throw new IllegalArgumentException("QName has to be " + Sbol2Terms.FunctionalComponent.FunctionalComponent.toString());
+		}
+
+		if (!functionalComponent.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent)) {
+			throw new SBOLValidationException(functionalComponent.getType() + " is not a valid functional component.");
+		}
 		for (NamedProperty<QName> f : functionalComponent.getProperties())
 		{
 			if (f.getName().equals(Sbol2Terms.Identified.persistentIdentity))
@@ -2220,5 +2279,5 @@ public class SBOLReader
 
 		return URI.create(identity_str);
 	}
-	*/
+	 */
 }

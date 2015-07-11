@@ -20,7 +20,7 @@ public class SBOLValidate {
 	private static void usage() {		
 		System.err.println("libSBOLj version " + SBOLVersion);
 		System.err.println("Description: Validates the contents of an SBOL document,\n" 
-				+ "converting from SBOL 1.1 to SBOL 2.0, if necessary,\n" 
+				+ "converting from SBOL 1.1 to SBOL " + SBOLVersion + ", if necessary,\n" 
 				+ "and printing the document contents if validation succeeds");
 		System.err.println();
 		System.err.println("Usage:");
@@ -33,36 +33,36 @@ public class SBOLValidate {
 	}
 	
 	/**
-	 * Validate URI compliance in the given {@code sbolDocument}.
+	 * Validate SBOL objects are compliant in the given {@code sbolDocument}.
 	 * 
 	 * @param sbolDocument
-	 * @throws SBOLException if any top-level objects or any of their children or grandchildren 
+	 * @throws SBOLValidationException if any top-level objects or any of their children or grandchildren 
 	 * in the given {@code sbolDocument} contain a non-compliant URI.
 	 */
 	public static void validateCompliance(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
 			if (!collection.checkDescendantsURIcompliance()) 
-				throw new SBOLException("Collection contains non-compliant URI",collection);
+				throw new SBOLValidationException("Collection contains non-compliant URI",collection);
 		}
 		for (Sequence sequence : sbolDocument.getSequences()) {
 			if (!sequence.checkDescendantsURIcompliance()) 
-				throw new SBOLException("Sequence contains non-compliant URI",sequence);
+				throw new SBOLValidationException("Sequence contains non-compliant URI",sequence);
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			if (!componentDefinition.checkDescendantsURIcompliance()) 
-				throw new SBOLException("Component definition contains non-compliant URI",componentDefinition);
+				throw new SBOLValidationException("Component definition contains non-compliant URI",componentDefinition);
 		}
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
 			if (!moduleDefinition.checkDescendantsURIcompliance()) 	
-				throw new SBOLException("Module definition contains non-compliant URI",moduleDefinition);
+				throw new SBOLValidationException("Module definition contains non-compliant URI",moduleDefinition);
 		}
 		for (Model model : sbolDocument.getModels()) {
 			if (!model.checkDescendantsURIcompliance()) 
-				throw new SBOLException("Model contains non-compliant URI",model);
+				throw new SBOLValidationException("Model contains non-compliant URI",model);
 		}
 		for (GenericTopLevel genericTopLevel : sbolDocument.getGenericTopLevels()) {
 			if (!genericTopLevel.checkDescendantsURIcompliance()) 
-				throw new SBOLException("Generic top level contains non-compliant URI",genericTopLevel);
+				throw new SBOLValidationException("Generic top level contains non-compliant URI",genericTopLevel);
 		}
 	}
 
@@ -70,21 +70,21 @@ public class SBOLValidate {
 	 * Validate if all URI references to SBOL objects are in the same given {@code sbolDocument}.
 	 * 
 	 * @param sbolDocument
-	 * @throws SBOLException if any reference made by Collection, ComponentDefinition,
+	 * @throws SBOLValidationException if any reference made by Collection, ComponentDefinition,
 	 * or ModuleDefinition is not in the given {@code sbolDocument}
 	 */
 	public static void validateCompleteness(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
 			if (!collection.isComplete()) 
-				throw new SBOLException("Collection is not complete",collection);
+				throw new SBOLValidationException("Collection is not complete",collection);
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			if (!componentDefinition.isComplete()) 
-				throw new SBOLException("Component definition is not complete",componentDefinition);
+				throw new SBOLValidationException("Component definition is not complete",componentDefinition);
 		}
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
 			if (!moduleDefinition.isComplete()) 	
-				throw new SBOLException("Module definition is not complete",moduleDefinition);
+				throw new SBOLValidationException("Module definition is not complete",moduleDefinition);
 		}
 	}
 	

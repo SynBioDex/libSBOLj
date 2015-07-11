@@ -163,7 +163,7 @@ public class SequenceAnnotation extends Identified {
 	 * 
 	 * @param location
 	 * @return {@code true} if the matching Location instance is removed successfully, {@code false} otherwise.
-	 * @throws SBOLException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */	
 	public boolean removeLocation(Location location) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -212,7 +212,7 @@ public class SequenceAnnotation extends Identified {
 	 * then the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant  
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant  
 	 */
 	void clearLocations() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -339,7 +339,7 @@ public class SequenceAnnotation extends Identified {
 	 * It then calls {@link #setComponent(URI)} to set the reference.
 	 * 
 	 * @param displayId
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated ComponentDefinition object is not {@code null},
 	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
 	 * list of Component instances.
@@ -348,6 +348,10 @@ public class SequenceAnnotation extends Identified {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
 				displayId, componentDefinition.getVersion());
+		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && componentDefinition!=null &&
+				componentDefinition.getComponent(componentURI)==null) {
+			componentDefinition.createComponent(displayId,AccessType.PUBLIC,displayId,"");
+		}
 		setComponent(componentURI);
 	}
 
@@ -359,7 +363,7 @@ public class SequenceAnnotation extends Identified {
 	 * is allowed to be edited.
 	 * 
 	 * @param componentURI
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated ComponentDefinition object is not {@code null},
 	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
 	 * list of Component instances.
@@ -381,235 +385,12 @@ public class SequenceAnnotation extends Identified {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void unsetComponent() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		component = null;
 	}
-
-//	/**
-//	 * 
-//	 * @param identity an identity for the sequence annotation
-//	 * @param displayId a display ID for the sequence annotation
-//	 * @param start a starting position for the sequence annotation
-//	 * @param end an ending position for the sequence annotation
-//	 */
-//	public StructuralAnnotation(URI identity, String displayId, int start, int end) {
-//		this(identity, displayId);
-//		//this.start = start;
-//		//this.end = end;
-//	}
-
-//	/**
-//	 * @deprecated Creating an empty Sequence object is not recommended. 
-//	 * 
-//	 */	 
-//	public StructuralAnnotation() {
-//		
-//	}
-
-//	/**
-//	 * 
-//	 * @return the sequence annotation's starting position
-//	 */
-//	public int getStart() {
-//		return start;
-//	}
-	
-//	/**
-//	 * 
-//     * First position of the Sequence Feature being annotated.
-//     * Start coordinate is in terms of the Sequence of the SequenceComponent
-//     * annotated.
-//     * @return positive integer coordinate of first base of the SequenceFeature.
-//     * @deprecated As of release 2.0, replaced by {@link #getStart}.      
-//     */
-//	public Integer getBioStart() {
-//		if (location instanceof Range) {
-//			return ((Range) location).getStart();
-//		}		
-//		return null;		
-//	}
-
-//	/**
-//	 * 
-//	 * @return the sequence annotation's orientation
-//	 */
-//	public Orientation getOrientation() {
-//		return orientation;
-//	}
-	
-//	/**
-//     * Orientation of feature is the + or - strand.
-//     * 
-//     * Sequences used are by convention assumed 5' to 3', therefore the 
-//     * <code>+</code> strand is 5' to 3' and the <code>-</code> strand 
-//     * is 3' to 5'.
-//     *
-//     * @return <code>+</code> if feature aligns in same direction as DnaComponent,
-//     *         <code>-</code> if feature aligns in opposite direction as DnaComponent.
-//     * @deprecated As of release 2.0, replaced by {@link #getOrientation()}
-//     */
-//	public Orientation getStrand() {
-//		Location loc = getLocation();
-//		if (loc instanceof OrientedRange) {			
-//			Orientation ori = ((OrientedRange) loc).getOrientation();
-//			if (ori.equals(Orientation.inline)) {				
-//				return Orientation.POSITIVE;
-//			}
-//			else {
-//				return Orientation.NEGATIVE;
-//			}
-//		}
-//		return null;
-//	}
-//	
-//	/**
-//	 * @param value
-//	 * @deprecated As of release 2.0, replaced by {@link #setOrientation()}
-//	 */
-//	public void setStrand(Orientation value) {
-////		if (value.equals(Orientation.POSITIVE)) {
-////			this.orientation = Orientation.inline;
-////		}
-////		else if (value.equals(Orientation.NEGATIVE)) {
-////			this.orientation = Orientation.reverseComplement;
-////		}
-//		Location loc = getLocation();		
-//		if (loc instanceof OrientedRange) {
-//			if (value.equals(Orientation.POSITIVE)) {
-//				((OrientedRange) loc).setOrientation(Orientation.inline);
-//			}
-//			else if (value.equals(Orientation.NEGATIVE)) {
-//				((OrientedRange) loc).setOrientation(Orientation.reverseComplement);
-//			}
-//			
-//			// TODO: strand should be + or -. 
-//		}
-//		// TODO: Error message. 
-//	}
-	
-//	/**
-//	 * 
-//	 * @return the sequence annotation's subcomponent instantiation
-//	 */
-//	public ComponentInstantiation getSubComponentInstantiation() {
-//		return component;
-//	}
-	
-//	// TRAMY - PUT BACK
-//	/**
-//	 * @return
-//	 * @deprecated As of release 2.0, replaced by {@link #getSubComponentInstantiation()}
-//	 */
-//	public SequenceComponent getSubComponent() {
-////		if (component != null) {
-////			Component tmp = component.getInstantiatedComponent();
-////			if (tmp instanceof SequenceComponent) {
-////				return (SequenceComponent) tmp;
-////			}
-////			else {
-////				return null;				
-////			}
-////		}
-//		return null;
-//	}
-	
-//	/**
-//	 * 
-//	 * @param subComponentInstantiation a subcomponent instantiation for the sequence annotation
-//	 */
-//	public void setSubComponentInstantiation(ComponentInstantiation subComponentInstantiation) {
-//		this.component = subComponentInstantiation;
-//	}
-	
-//	/**
-//	 * Warning: Default URI and displayId are generated for a new component instantiation.
-//	 * Make sure they do not conflict with existing ones.
-//	 * @throws URISyntaxException 
-//	 * @deprecated As of release 2.0, replaced by {@link #setSubComponentInstantiation(ComponentInstantiation)}
-//	 * // TRAMY - PUT BACK
-//	 */
-//	public void setSubComponent(SequenceComponent subComponent) {
-////		String identityStr = getIdentity().toString() + "/" + subComponent.getDisplayId();
-////		URI identity = URI.create(identityStr);
-////		String displayId = getDisplayId() + "_" + subComponent.getDisplayId();				
-////		this.component = new ComponentInstantiation(identity, displayId, subComponent);
-//	}
-
-//	/**
-//	 * 
-//	 * @return a collection of sequence annotations preceded by this sequence annotation
-//	 */
-//	public Collection<StructuralAnnotation> getPrecededAnnotations() {
-//		return precededAnnotations;
-//	}
-//
-//	/**
-//	 * 
-//	 * @param precededAnnotation a preceded sequence annotation for this sequence annotation
-//	 */
-//	public void addPrecededAnnotation(StructuralAnnotation precededAnnotation) {
-//		precededAnnotations.add(precededAnnotation);
-//	}
-		
-//	public void setStart(Integer value) {
-//		this.start = value;
-//	}
-	
-//	/**
-//	 * @param value
-//	 * @deprecated As of release 2.0, replaced by {@link #setStart(Integer)}
-//	 */
-//	public void setBioStart(Integer value) {
-//		//this.start = value;	
-//		if (location instanceof Range) {
-//			((Range) location).setStart(value);
-//		}
-//	}
-	
-//	/**
-//     * Last position of the Sequence Feature on the DnaComponent.
-//     * Coordinate in terms of the DnaSequence of the DnaComponent annotated.
-//     *      
-//	 * @return the sequence annotation's ending position
-//	 */
-//	public int getEnd() {
-//		if (location instanceof Range) {
-//			return ((Range) location).getEnd();
-//		}
-//		//return 0;
-//		
-//	}
-	
-//	/**
-//	 * Last position of the Sequence Feature on the DnaComponent.
-//	 * Coordinate in terms of the DnaSequence of the DnaComponent annotated.
-//	 * @return positive integer coordinate of last base of the SequenceFeature
-//	 * @deprecated As of release 2.0, replaced by {@link #getEnd(Integer)}
-//	 */
-//	public Integer getBioEnd() {
-//		if (location instanceof Range) {
-//			return ((Range) location).getEnd();
-//		}		
-//		return null;
-//	}
-
-//	public void setEnd(Integer value) {
-//		this.end = value;
-//	}
-	
-//	/**
-//	 * @param value
-//	 * @deprecated As of release 2.0, replaced by {@link #setEnd(Integer)}
-//	 */
-//	public void setBioEnd(Integer value) {
-//		// this.end = value;
-//		if (location instanceof Range) {
-//			((Range) location).setEnd(value);
-//		}
-//	}
 
 	@Override
 	public int hashCode() {
@@ -672,10 +453,14 @@ public class SequenceAnnotation extends Identified {
 	}
 
 	/**
-	 * @return the componentDefinition
+	 * Get the component definition for the component annotated by this sequence annotation.
+	 * @return the component definition annotated by this sequence annotation.
 	 */
-	ComponentDefinition getComponentDefinition() {
-		return componentDefinition;
+	public ComponentDefinition getComponentDefinition() {
+		if (componentDefinition!=null) {
+			return componentDefinition.getComponent(component).getDefinition();
+		}
+		return null;
 	}
 
 	/**

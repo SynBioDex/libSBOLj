@@ -56,7 +56,7 @@ public class MapsTo extends Identified{
 	 * is allowed to be edited.
 	 * 
 	 * @param refinement
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void setRefinement(RefinementType refinement) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -88,6 +88,19 @@ public class MapsTo extends Identified{
 		}
 		return null;
 	}
+	
+	/**
+	 * Get the component definition for the local element of this mapsTo.
+	 * @return the component definition for the local element of this mapsTo.
+	 */
+	public ComponentDefinition getLocalDefinition() {
+		if (moduleDefinition!=null) {
+			return moduleDefinition.getFunctionalComponent(local).getDefinition();
+		} else if (componentDefinition!=null) {
+			return componentDefinition.getComponent(local).getDefinition();
+		}
+		return null;
+	}
 
 	/**
 	 * Sets the local property of this MapsTo object to the given one.
@@ -97,7 +110,7 @@ public class MapsTo extends Identified{
 	 * is allowed to be edited.
 	 * 
 	 * @param local
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code local} argument is {@code null}
 	 * @throws IllegalArgumentException if the given {@code local} argument is not found in 
 	 * this MapsTo object's reference ModuleDefinition instance's list of functional components.
@@ -151,6 +164,21 @@ public class MapsTo extends Identified{
 	}
 	
 	/**
+	 * Get the component definition for the remote element of this mapsTo.
+	 * @return the component definition for the remote element of this mapsTo.
+	 */
+	public ComponentDefinition getRemoteDefinition() {
+		if (module!=null) {
+			if (module.getDefinition()==null) return null;
+			return module.getDefinition().getFunctionalComponent(remote).getDefinition();
+		} else if (componentInstance!=null) {
+			if (componentInstance.getDefinition()==null) return null;
+			return componentInstance.getDefinition().getComponent(remote).getDefinition();
+		}
+		return null;
+	}
+	
+	/**
 	 * Sets the remote property of this MapsTo object to the given one.
  	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
@@ -158,7 +186,7 @@ public class MapsTo extends Identified{
 	 * is allowed to be edited.
 	 * 
 	 * @param remote
-	 * @throws SBOLException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code remote} argument is {@code null}
 	 * @throws IllegalArgumentException if the given {@code remote} argument is not found in 
 	 * the list of functional components that are owned by the ModuleDefinition instance that

@@ -14,11 +14,11 @@ import java.net.URI;
 
 public enum AccessType {
 	/**
-	 * The "public" access type indicates that the ComponentInstance MAY be referred to by MapsTo objects.
+	 * The "public" access type indicates that the ComponentInstance MAY be referred to by remote references in MapsTo objects.
 	 */
 	PUBLIC("public"), 
 	/**
-	 * The "private" access type The ComponentInstance MUST NOT be referred to by any MapsTo object.
+	 * The "private" access type indicates that the ComponentInstance MUST NOT be referred to by remote references in MapsTo objects.
 	 */
 	PRIVATE("private");
 	private final String accessType;

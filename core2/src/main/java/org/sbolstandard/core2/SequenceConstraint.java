@@ -17,13 +17,19 @@ import static org.sbolstandard.core2.URIcompliance.*;
 public class SequenceConstraint extends Identified {
 
 	//private RestrictionType restriction;
-	private RestrictionType restriction;
+	private URI restriction;
 	private URI subject;
 	private URI object;
 	private ComponentDefinition componentDefinition = null;
 	
-	SequenceConstraint(URI identity, RestrictionType restriction, 
-			URI subject, URI object) {
+	SequenceConstraint(URI identity, URI restriction, URI subject, URI object) {
+		super(identity);
+		setRestriction(restriction);
+		setSubject(subject);
+		setObject(object);
+	}
+	
+	SequenceConstraint(URI identity, RestrictionType restriction, URI subject, URI object) {
 		super(identity);
 		setRestriction(restriction);
 		setSubject(subject);
@@ -32,7 +38,7 @@ public class SequenceConstraint extends Identified {
 	
 	private SequenceConstraint(SequenceConstraint sequenceConstraint) {
 		super(sequenceConstraint);
-		this.setRestriction(sequenceConstraint.getRestriction());
+		this.setRestriction(sequenceConstraint.getRestrictionURI());
 		this.setSubject(sequenceConstraint.getSubjectURI());
 		this.setObject(sequenceConstraint.getObjectURI());
 	}
@@ -43,8 +49,19 @@ public class SequenceConstraint extends Identified {
 	 * @return the restriction property of this SequenceConstraint object
 	 */
 	public RestrictionType getRestriction() {
+		return RestrictionType.convertToRestrictionType(restriction);
+	}
+	
+	
+	/**
+	 * Returns the restriction property of this SequenceConstraint object.
+	 * 
+	 * @return the restriction property of this SequenceConstraint object
+	 */
+	public URI getRestrictionURI() {
 		return restriction;
 	}
+
 
 	/**
 	 * Sets the restriction property to the given {@code restriction}.
@@ -54,7 +71,7 @@ public class SequenceConstraint extends Identified {
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * @param restriction
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant	 
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
 	 * @throws NullPointerException if the given {@code restriction} is {@code null}.
 	 */
 	public void setRestriction(RestrictionType restriction) {
@@ -62,7 +79,26 @@ public class SequenceConstraint extends Identified {
 		if (restriction==null) {
 			throw new NullPointerException("Not a valid restriction type.");
 		}
-		this.restriction = restriction;
+		this.restriction = RestrictionType.convertToURI(restriction);
+	}
+	
+	/**
+	 * Sets the restriction property to the given {@code restrictionURI}.
+	 * <p>
+	 * If this SequenceConstraint restriction belongs to an SBOLDocument instance, then
+	 * the SBOLDocument instance is checked for compliance first. 
+	 * Only a compliant SBOLDocument instance is allowed to be edited.
+	 * 
+	 * @param restrictionURI
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
+	 * @throws NullPointerException if the given {@code restriction} is {@code null}.
+	 */
+	public void setRestriction(URI restrictionURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		if (restrictionURI==null) {
+			throw new NullPointerException("Not a valid restriction type.");
+		}
+		this.restriction = restrictionURI;
 	}
 
 	/**
@@ -86,6 +122,17 @@ public class SequenceConstraint extends Identified {
 		if (componentDefinition==null) return null;
 		return componentDefinition.getComponent(subject);
 	}
+	
+	/**
+	 * Get the component definition for the subject of this sequence constraint.
+	 * @return the component definition for the subject of this sequence constraint.
+	 */
+	public ComponentDefinition getSubjectDefinition() {
+		if (componentDefinition!=null) {
+			return componentDefinition.getComponent(subject).getDefinition();
+		}
+		return null;
+	}
 
 	/**
 	 * Sets the reference subject Component URI to the given {@code subjectURI}.
@@ -96,7 +143,7 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * 
 	 * @param subjectURI
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated ComponentDefinition subject
 	 * is not {@code null}, and the given {@code subjectURI} does not exist in 
 	 * its associated ComponentDefinition subject's
@@ -138,6 +185,18 @@ public class SequenceConstraint extends Identified {
 		if (componentDefinition==null) return null;
 		return componentDefinition.getComponent(object);
 	}
+	
+	
+	/**
+	 * Get the component definition for the object of this sequence constraint.
+	 * @return the component definition for the object of this sequence constraint.
+	 */
+	public ComponentDefinition getObjectDefinition() {
+		if (componentDefinition!=null) {
+			return componentDefinition.getComponent(object).getDefinition();
+		}
+		return null;
+	}
 
 	/**
 	 * Sets the reference object Component URI to the given {@code objectURI}.
@@ -148,7 +207,7 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * 
 	 * @param objectURI
- 	 * @throws SBOLException if the associated SBOLDocument is not compliant
+ 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated ComponentDefinition object
 	 * is not {@code null}, and the given {@code objectURI} does not exist in 
 	 * its associated ComponentDefinition object's
@@ -195,7 +254,7 @@ public class SequenceConstraint extends Identified {
 				return false;
 		} else if (!object.equals(other.object))
 			return false;
-		if (restriction != other.restriction)
+		if (!restriction.equals(other.restriction))
 			return false;
 		if (subject == null) {
 			if (other.subject != null)

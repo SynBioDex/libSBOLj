@@ -20,10 +20,12 @@ import org.sbolstandard.core.SBOLValidationException;
  * @author Goksel Misirli
  * @author Tramy Nguyen
  *
+ *
  */
 public abstract class SBOLAbstractTests {
 
 	String VERSION_1_0 = "1.0";
+
 
 	@Test
 	public void test_AnnotationOutput() throws Exception
@@ -618,7 +620,7 @@ public abstract class SBOLAbstractTests {
 			throw new AssertionError("Failed for " + fileName, e);
 		}
 	}
-	
+
 	@Test
 	public void test_BBa_T9002_File() throws Exception
 	{
@@ -634,7 +636,7 @@ public abstract class SBOLAbstractTests {
 			throw new AssertionError("Failed for " + fileName, e);
 		}
 	}
-	
+
 	@Test
 	public void test_labhost_All_File() throws Exception
 	{
@@ -854,6 +856,8 @@ public abstract class SBOLAbstractTests {
 			throw new AssertionError("Failed for " + fileDirectory, e);
 		}
 	}
+
+
 
 	@Test
 	public void test_labhost_Unspecified() throws Exception
