@@ -113,7 +113,7 @@ public class Component extends ComponentInstance{
 	 * Adds the specified instance to the list of references. 
 	 */
 	void addMapsTo(MapsTo mapsTo) {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (sbolDocument != null) {
 			if (componentDefinition.getComponent(mapsTo.getLocalURI())==null) {
 				throw new IllegalArgumentException("Component '" + mapsTo.getLocalURI() + "' does not exist.");
 			}
