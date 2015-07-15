@@ -171,7 +171,7 @@ public class SBOLDocument {
 	public ModuleDefinition createModuleDefinition(String URIprefix,String displayId, String version) {
 		checkReadOnly();
 		URIprefix = checkURIprefix(URIprefix);
-		validateIdentityData(displayId, version);
+		validateIdVersion(displayId, version);
 		ModuleDefinition md = createModuleDefinition(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, version, typesInURIs));
 		md.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, "", typesInURIs));
 		md.setDisplayId(displayId);
@@ -422,7 +422,7 @@ public class SBOLDocument {
 	public Collection createCollection(String URIprefix, String displayId, String version) {
 		checkReadOnly();
 		URIprefix = checkURIprefix(URIprefix);
-		validateIdentityData(displayId, version);
+		validateIdVersion(displayId, version);
 		Collection c = createCollection(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, version, typesInURIs));
 		c.setDisplayId(displayId);
 		c.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, "", typesInURIs));
@@ -647,7 +647,7 @@ public class SBOLDocument {
 	public Model createModel(String URIprefix, String displayId, String version, URI source, URI language, URI framework) {
 		checkReadOnly();
 		URIprefix = checkURIprefix(URIprefix);
-		validateIdentityData(displayId, version);
+		validateIdVersion(displayId, version);
 		Model model = createModel(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, version, typesInURIs),
 				source, language, framework);
 		model.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, "", typesInURIs));
@@ -903,7 +903,7 @@ public class SBOLDocument {
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, Set<URI> types) {
 		checkReadOnly();
 		URIprefix = checkURIprefix(URIprefix);
-		validateIdentityData(displayId, version);
+		validateIdVersion(displayId, version);
 		ComponentDefinition cd = createComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
 				displayId, version, typesInURIs), types);
 		cd.setDisplayId(displayId);
@@ -1164,7 +1164,7 @@ public class SBOLDocument {
 	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) {
 		checkReadOnly();
 		URIprefix = checkURIprefix(URIprefix);
-		validateIdentityData(displayId, version);
+		validateIdVersion(displayId, version);
 		Sequence s = createSequence(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, version, typesInURIs), 
 				elements, encoding);
 		s.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, "", typesInURIs));
@@ -1471,7 +1471,7 @@ public class SBOLDocument {
 		if (version == null) {
 			version = topLevel.getVersion();
 		}
-		validateIdentityData(displayId,version);
+		validateIdVersion(displayId,version);
 		if (topLevel instanceof Collection) {			
 			Collection newCollection = ((Collection) topLevel).copy(URIprefix, displayId, version);
 			addCollection(newCollection);
@@ -1729,7 +1729,7 @@ public class SBOLDocument {
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) {
 		checkReadOnly();
 		URIprefix = checkURIprefix(URIprefix);
-		validateIdentityData(displayId, version);
+		validateIdVersion(displayId, version);
 		GenericTopLevel g = createGenericTopLevel(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
 		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
 		g.setDisplayId(displayId);

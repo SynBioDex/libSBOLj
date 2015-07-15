@@ -32,15 +32,19 @@ public class readTester {
 			SBOLReader.setVersion("1.0");
 			SBOLReader.setTypesInURI(true);
 			SBOLDocument document1 = SBOLReader.read(file);
+			SBOLDocument document2 = new SBOLDocument();
+			for (ComponentDefinition cd : document1.getComponentDefinitions()) {
+				document2.createCopy(cd);
+			}
 			//document1.setDefaultURIprefix("http://www.some.org");
 			//document1.createCollection("abc", "1.0");
-			document1 = SBOLTestUtils.writeAndRead(document1);
+			document2 = SBOLTestUtils.writeAndRead(document2);
 			//			SBOLDocument document  = SBOLReader.read(filenameRdf);
 			//			SBOLDocument document1 = SBOLReader.readRdf(filenameV1_8);
 			//			SBOLDocument document2 = SBOLReader.readJson(filenameJson);
 			//			SBOLDocument document3 = SBOLReader.readTurtle(filenameTurtle);
 
-			SBOLWriter.writeRDF(document1,(System.out));
+			SBOLWriter.writeRDF(document2,(System.out));
 			//SBOLWriter.writeRDF(SBOLTestUtils.writeAndRead(document1),(System.out));
 			
 			//			SBOLWriter.writeJson(document2,(System.out));

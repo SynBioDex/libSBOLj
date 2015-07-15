@@ -557,7 +557,7 @@ public class SBOLReader
 
 				sequenceAnnotations.add(sa);
 
-				URI component_identity    = createCompliantURI(persIdentity,"component" + ++component_num,version);
+				URI component_identity    = createCompliantURI(persIdentity,"component" + component_num,version);
 				AccessType access 		  = AccessType.PUBLIC;
 				URI instantiatedComponent = sa.getComponentURI();
 				URI originalURI 		  = ((NestedDocument<QName>) namedProperty.getValue()).getIdentity();
@@ -567,10 +567,11 @@ public class SBOLReader
 
 				Component component = new Component(component_identity, access, instantiatedComponent);
 				if (!persIdentity.equals("")) {
-					component.setPersistentIdentity(createCompliantURI(persIdentity,"component" + ++component_num,""));
+					component.setPersistentIdentity(createCompliantURI(persIdentity,"component" + component_num,""));
 					component.setDisplayId("component"+component_num);
 					component.setVersion(version);
 				}
+				component_num++;
 				components.add(component);
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.dnaSequence))
