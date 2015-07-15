@@ -20,6 +20,11 @@
             <artifactId>libSBOLj-core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.parent.groupId}</groupId>
+            <artifactId>libSBOLj-core2</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 
         <!-- test dependencies -->
         <dependency>
