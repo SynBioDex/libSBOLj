@@ -1,5 +1,13 @@
 <?xml version="1.0" ?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbol="http://sbols.org/v2#">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sbol="http://sbols.org/v2#" xmlns:prov="http://www.w3.org/ns/prov#">
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/cd/LacI_operator">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/LacI_operator"/>
+    <sbol:displayId>LacI_operator</sbol:displayId>
+    <dcterms:title>LacI operator</dcterms:title>
+    <dcterms:description>LacI binding site</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000057"/>
+  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://partsregistry.org/cd/BBa_K174004">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_K174004"/>
     <sbol:displayId>BBa_K174004</sbol:displayId>
@@ -16,14 +24,6 @@
         <sbol:object rdf:resource="http://partsregistry.org/cd/LacI_operator"/>
       </sbol:SequenceConstraint>
     </sbol:sequenceConstraint>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/cd/LacI_operator">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/LacI_operator"/>
-    <sbol:displayId>LacI_operator</sbol:displayId>
-    <dcterms:title>LacI operator</dcterms:title>
-    <dcterms:description>LacI binding site</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000057"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://partsregistry.org/cd/pspac">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/pspac"/>
