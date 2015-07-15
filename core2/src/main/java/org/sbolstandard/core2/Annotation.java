@@ -407,6 +407,7 @@ public class Annotation {
 				if (this.getAnnotations().size()!=other.getAnnotations().size()) {
 					return false;
 				}
+				// TODO: this may have an order dependence, also need to be sure it is in the other list, duplicates?
 				for (Annotation annotation1 : this.getAnnotations()) {
 					boolean foundIt = false;
 					for (Annotation annotation2 : other.getAnnotations()) {
