@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:annot="http://myannotation.org" xmlns:grn="urn:bbn.com:tasbe:grn" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbol="http://sbols.org/v2#">
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLacSeq/1.0">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pLacSeq"/>
-    <sbol:displayId>pLacSeq</sbol:displayId>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:annot="http://myannotation.org" xmlns:grn="urn:bbn.com:tasbe:grn" xmlns:sbol="http://sbols.org/v2#" xmlns:prov="http://www.w3.org/ns/prov#">
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLactetRSeq/1.0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pLactetRSeq"/>
+    <sbol:displayId>pLactetRSeq</sbol:displayId>
     <sbol:version>1.0</sbol:version>
-    <sbol:elements>pLacSeq_elements</sbol:elements>
-    <sbol:encoding rdf:resource="pLacSeq_encoding"/>
+    <sbol:elements>pLactetRSeq_elements</sbol:elements>
+    <sbol:encoding rdf:resource="pLactetRSeq_encoding"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/tetRSeq/1.0">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/tetRSeq"/>
@@ -14,11 +14,11 @@
     <sbol:elements>tetRSeq_elements</sbol:elements>
     <sbol:encoding rdf:resource="tetRSeq_encoding"/>
   </sbol:Sequence>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLactetRSeq/1.0">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pLactetRSeq"/>
-    <sbol:displayId>pLactetRSeq</sbol:displayId>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLacSeq/1.0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pLacSeq"/>
+    <sbol:displayId>pLacSeq</sbol:displayId>
     <sbol:version>1.0</sbol:version>
-    <sbol:elements>pLactetRSeq_elements</sbol:elements>
-    <sbol:encoding rdf:resource="pLactetRSeq_encoding"/>
+    <sbol:elements>pLacSeq_elements</sbol:elements>
+    <sbol:encoding rdf:resource="pLacSeq_encoding"/>
   </sbol:Sequence>
 </rdf:RDF>
