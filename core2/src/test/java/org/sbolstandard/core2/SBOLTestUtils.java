@@ -32,27 +32,27 @@ public class SBOLTestUtils {
 	{
 	}
 
-	public static final NamespaceBinding example=NamespaceBinding ("http://sbolstandard.org/example/", "example");
-	public static final NamespaceBinding biopax=NamespaceBinding ("http://www.biopax.org/release/biopax-level3.owl#", "biopax");
-	public static final NamespaceBinding so=NamespaceBinding ("http://identifiers.org/so/", "so");
-	public static final NamespaceBinding sbo=NamespaceBinding ("http://identifiers.org/biomodels.sbo/", "sbo");
-	public static final NamespaceBinding pr=NamespaceBinding ("http://www.partsregistry.org/", "pr");
-	public static final NamespaceBinding vpr=NamespaceBinding ("http://www.virtualparts.org/part/", "vpr");
-	public static final NamespaceBinding uniprot=NamespaceBinding ("http://identifiers.org/uniprot/", "uniprot");
+	public static final NamespaceBinding example = NamespaceBinding ("http://sbolstandard.org/example/", "example");
+	public static final NamespaceBinding biopax  = NamespaceBinding ("http://www.biopax.org/release/biopax-level3.owl#", "biopax");
+	public static final NamespaceBinding so 	 = NamespaceBinding ("http://identifiers.org/so/", "so");
+	public static final NamespaceBinding sbo	 = NamespaceBinding ("http://identifiers.org/biomodels.sbo/", "sbo");
+	public static final NamespaceBinding pr 	 = NamespaceBinding ("http://www.partsregistry.org/", "pr");
+	public static final NamespaceBinding vpr 	 = NamespaceBinding ("http://www.virtualparts.org/part/", "vpr");
+	public static final NamespaceBinding uniprot = NamespaceBinding ("http://identifiers.org/uniprot/", "uniprot");
 
 
 	public static class Terms
 	{
 		public static class sequenceTypes
 		{
-			public static URI nucleotides=URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html");
-			public static URI aminoacids=URI.create("http://www.chem.qmul.ac.uk/iupac/AminoAcid/");
-			public static URI atoms=URI.create("http://www.opensmiles.org/opensmiles.html");
+			public static URI nucleotides = URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html");
+			public static URI aminoacids  = URI.create("http://www.chem.qmul.ac.uk/iupac/AminoAcid/");
+			public static URI atoms  	  = URI.create("http://www.opensmiles.org/opensmiles.html");
 		}
 
 		public static class moduleRoles
 		{
-			public static URI inverter=URI.create("http://parts.igem.org/cgi/partsdb/pgroup.cgi?pgroup=inverter");
+			public static URI inverter = URI.create("http://parts.igem.org/cgi/partsdb/pgroup.cgi?pgroup=inverter");
 
 		}
 	}
