@@ -1,8 +1,6 @@
 package org.sbolstandard.core2;
 
-import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static org.sbolstandard.core2.URIcompliance.isChildURIcompliant;
-import static org.sbolstandard.core2.URIcompliance.isURIcompliant;
+import static org.sbolstandard.core2.URIcompliance.*;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -1012,16 +1010,12 @@ public class ModuleDefinition extends TopLevel {
 
 	protected boolean checkDescendantsURIcompliance() {
 		// codereview: spaghetti
-		if (!isURIcompliant(this.getIdentity())) { // ComponentDefinition to
-														// be copied has
-														// non-compliant URI.
-			return false;
-		}
+		if (!isTopLevelURIformCompliant(this.getIdentity())) return false;
 		boolean allDescendantsCompliant = true;
 		if (!this.getModules().isEmpty()) {
 			for (Module module : this.getModules()) {
 				allDescendantsCompliant = allDescendantsCompliant
-				&& isChildURIcompliant(this.getIdentity(), module.getIdentity());
+				&& isChildURIcompliant(this, module);
 				if (!allDescendantsCompliant) { // Current sequence constraint
 												// has non-compliant URI.
 					return allDescendantsCompliant;
@@ -1030,7 +1024,7 @@ public class ModuleDefinition extends TopLevel {
 					// Check compliance of Module's children
 					for (MapsTo mapsTo : module.getMapsTos()) {
 						allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(module.getIdentity(), mapsTo.getIdentity());
+						&& isChildURIcompliant(module, mapsTo);
 						if (!allDescendantsCompliant) { // Current mapsTo has
 														// non-compliant URI.
 							return allDescendantsCompliant;
@@ -1042,7 +1036,7 @@ public class ModuleDefinition extends TopLevel {
 		if (!this.getFunctionalComponents().isEmpty()) {
 			for (FunctionalComponent functionalComponent : this.getFunctionalComponents()) {
 				allDescendantsCompliant = allDescendantsCompliant
-				&& isChildURIcompliant(this.getIdentity(), functionalComponent.getIdentity());
+				&& isChildURIcompliant(this, functionalComponent);
 				if (!allDescendantsCompliant) { // Current component has
 												// non-compliant URI.
 					return allDescendantsCompliant;
@@ -1051,8 +1045,7 @@ public class ModuleDefinition extends TopLevel {
 					// Check compliance of Component's children
 					for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
 						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(functionalComponent.getIdentity(),
-										mapsTo.getIdentity());
+								&& isChildURIcompliant(functionalComponent, mapsTo);
 						if (!allDescendantsCompliant) { // Current mapsTo has
 														// non-compliant URI.
 							return allDescendantsCompliant;
@@ -1064,14 +1057,14 @@ public class ModuleDefinition extends TopLevel {
 		if (!this.getInteractions().isEmpty()) {
 			for (Interaction interaction : this.getInteractions()) {
 				allDescendantsCompliant = allDescendantsCompliant
-				&& isChildURIcompliant(this.getIdentity(), interaction.getIdentity());
+				&& isChildURIcompliant(this, interaction);
 				if (!allDescendantsCompliant) { // Current interaction has
 												// non-compliant URI.
 					return allDescendantsCompliant;
 				}
 				for (Participation participation : interaction.getParticipations()) {
 					allDescendantsCompliant = allDescendantsCompliant
-					&& isChildURIcompliant(interaction.getIdentity(), participation.getIdentity());
+					&& isChildURIcompliant(interaction, participation);
 					if (!allDescendantsCompliant) { // Current participation has
 													// non-compliant URI.
 						return allDescendantsCompliant;
