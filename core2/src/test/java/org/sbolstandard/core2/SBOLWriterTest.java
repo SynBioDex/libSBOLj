@@ -10,6 +10,7 @@ public class SBOLWriterTest extends SBOLAbstractTests {
 	public void runTest(final String fileName, final SBOLDocument expected, String fileType) throws Exception {
 		assumeNotNull(expected);
 		SBOLDocument actual = SBOLTestUtils.writeAndRead(expected);
+		SBOLValidate.validateCompliance(actual);
 		assertTrue(actual.equals(expected));
 	}
 
