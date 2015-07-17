@@ -524,6 +524,26 @@ public class SBOLReader
 
 		int component_num = 0;
 		int sa_num 		  = 0;
+		
+		if (URIPrefix != null)
+		{
+			int slash = componentDef.getIdentity().toString().lastIndexOf('/');
+			int pound = componentDef.getIdentity().toString().lastIndexOf('#');
+			int colon = componentDef.getIdentity().toString().lastIndexOf(':');
+			
+			if (slash!=-1 && slash > pound && slash > colon) {
+				displayId = componentDef.getIdentity().toString().substring(slash + 1);
+			} else if (pound!=-1 && pound > colon) {
+				displayId = componentDef.getIdentity().toString().substring(pound + 1);
+			} else if (colon!=-1) {
+				displayId = componentDef.getIdentity().toString().substring(colon + 1);
+			} else {
+				displayId = componentDef.getIdentity().toString();
+			}
+			displayId = fixDisplayId(displayId);
+			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+			persIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI).toString();
+		}
 
 		for (NamedProperty<QName> namedProperty : componentDef.getProperties())
 		{
@@ -665,13 +685,22 @@ public class SBOLReader
 
 		if (URIPrefix != null)
 		{
-			if (topLevel.getIdentity().toString().lastIndexOf('/') != -1)
-			{
-				displayId = topLevel.getIdentity().toString().substring(topLevel.getIdentity().toString().lastIndexOf('/') + 1);
-				displayId = fixDisplayId(displayId);
-				identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
-				persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
+			int slash = topLevel.getIdentity().toString().lastIndexOf('/');
+			int pound = topLevel.getIdentity().toString().lastIndexOf('#');
+			int colon = topLevel.getIdentity().toString().lastIndexOf(':');
+			
+			if (slash!=-1 && slash > pound && slash > colon) {
+				displayId = topLevel.getIdentity().toString().substring(slash + 1);
+			} else if (pound!=-1 && pound > colon) {
+				displayId = topLevel.getIdentity().toString().substring(pound + 1);
+			} else if (colon!=-1) {
+				displayId = topLevel.getIdentity().toString().substring(colon + 1);
+			} else {
+				displayId = topLevel.getIdentity().toString();
 			}
+			displayId = fixDisplayId(displayId);
+			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+			persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
 		}
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())

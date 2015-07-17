@@ -549,7 +549,7 @@ public abstract class Identified {
 
 	@SafeVarargs
 	protected final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) {
-		if (isChildURIcompliant(this.getIdentity(), child.getIdentity())) {
+			if (isChildURIformCompliant(this.getIdentity(), child.getIdentity())) {
 			URI persistentId = URI.create(extractPersistentId(child.getIdentity()));
 			if(keyExistsInAnyMap(persistentId, maps))
 				throw new IllegalArgumentException(
@@ -571,7 +571,7 @@ public abstract class Identified {
 				}
 			}
 		}
-		else { // Only check if participation's URI exists in all maps.
+		else { // Only check if URI exists in all maps.
             if(keyExistsInAnyMap(child.getIdentity(), maps))
                 throw new IllegalArgumentException(
                         "Instance for identity `" + child.identity +

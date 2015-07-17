@@ -1,7 +1,6 @@
 package org.sbolstandard.core2;
 
-import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static org.sbolstandard.core2.URIcompliance.isURIcompliant;
+import static org.sbolstandard.core2.URIcompliance.*;
 
 import java.net.URI;
 
@@ -203,7 +202,7 @@ public class Model extends TopLevel {
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		return isURIcompliant(this.getIdentity());
+		return isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	//	/**

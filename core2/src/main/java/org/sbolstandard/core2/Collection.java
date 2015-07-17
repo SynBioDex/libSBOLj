@@ -214,7 +214,7 @@ public class Collection extends TopLevel{
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		return isURIcompliant(this.getIdentity());
+		return isTopLevelURIformCompliant(this.getIdentity());
 	}
 	
 	protected boolean isComplete() {
