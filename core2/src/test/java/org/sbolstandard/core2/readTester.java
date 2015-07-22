@@ -23,9 +23,9 @@ public class readTester {
 
 	public static void main(String[] args) {
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_1);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_9);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_1);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_9);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
 			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
@@ -35,6 +35,9 @@ public class readTester {
 			SBOLDocument document2 = new SBOLDocument();
 			for (ComponentDefinition cd : document1.getComponentDefinitions()) {
 				document2.createCopy(cd);
+			}
+			for (Sequence s : document1.getSequences()) {
+				document2.createCopy(s);
 			}
 			//document1.setDefaultURIprefix("http://www.some.org");
 			//document1.createCollection("abc", "1.0");
