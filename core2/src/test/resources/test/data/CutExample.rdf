@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbol="http://sbols.org/v2#">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sbol="http://sbols.org/v2#" xmlns:prov="http://www.w3.org/ns/prov#">
   <sbol:ComponentDefinition rdf:about="http://partsregistry.org/cd/BBa_J23119">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_J23119"/>
     <sbol:displayId>BBa_J23119</sbol:displayId>
@@ -10,20 +10,6 @@
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000613"/>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/cd/BBa_J23119/cutat10">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_J23119/cutat10"/>
-        <sbol:displayId>cutat10</sbol:displayId>
-        <sbol:location>
-          <sbol:Cut rdf:about="http://partsregistry.org/cd/BBa_J23119/cutat10/cut">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_J23119/cutat10/cut"/>
-            <sbol:displayId>cut</sbol:displayId>
-            <sbol:at>10</sbol:at>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Cut>
-        </sbol:location>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/cd/BBa_J23119/cutat12">
         <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_J23119/cutat12"/>
         <sbol:displayId>cutat12</sbol:displayId>
@@ -32,6 +18,20 @@
             <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_J23119/cutat12/cut"/>
             <sbol:displayId>cut</sbol:displayId>
             <sbol:at>12</sbol:at>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Cut>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/cd/BBa_J23119/cutat10">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_J23119/cutat10"/>
+        <sbol:displayId>cutat10</sbol:displayId>
+        <sbol:location>
+          <sbol:Cut rdf:about="http://partsregistry.org/cd/BBa_J23119/cutat10/cut">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_J23119/cutat10/cut"/>
+            <sbol:displayId>cut</sbol:displayId>
+            <sbol:at>10</sbol:at>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Cut>
         </sbol:location>
