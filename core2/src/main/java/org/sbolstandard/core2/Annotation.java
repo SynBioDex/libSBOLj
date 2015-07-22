@@ -42,7 +42,7 @@ public class Annotation {
 	 */
 	public Annotation(QName qName, String literal) {
 		if (qName.getPrefix().toString().equals("sbol")) {
-			throw new SBOLValidationException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 		}
 		value = NamedProperty(qName,literal);
 	}
@@ -56,7 +56,7 @@ public class Annotation {
 	 */
 	public Annotation(QName qName, int literal) {
 		if (qName.getPrefix().toString().equals("sbol")) {
-			throw new SBOLValidationException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 		}
 		value = NamedProperty(qName,literal);
 	}
@@ -92,7 +92,7 @@ public class Annotation {
 	 */
 	public Annotation(QName qName, URI literal) {
 		if (qName.getPrefix().toString().equals("sbol")) {
-			throw new SBOLValidationException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 		}
 		value = NamedProperty(qName,literal);
 	}
@@ -109,10 +109,10 @@ public class Annotation {
 	 */
 	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
 		if (qName.getPrefix().toString().equals("sbol")) {
-			throw new SBOLValidationException(qName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 		}
 		if (nestedQName.getPrefix().toString().equals("sbol")) {
-			throw new SBOLValidationException(nestedQName.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(nestedQName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 		}
 		List<NamedProperty<QName>> list = new ArrayList<>();
 		for(Annotation a : annotations)
@@ -124,7 +124,7 @@ public class Annotation {
 
 	Annotation(NamedProperty<QName> value) {
 		if (value.getName().getPrefix().toString().equals("sbol")) {
-			throw new SBOLValidationException(value.getName().getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException(value.getName().getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 		}
 		this.value = value;
 	}
