@@ -520,7 +520,7 @@ public class SBOLReader
 		Map<URI, URI> componentDefMap 				 = new HashMap<>();
 
 		Set<URI> type = new HashSet<>();
-		type.add(Sbol2Terms.DnaComponentV1URI.type);
+		type.add(ComponentDefinition.DNA);
 
 		int component_num = 0;
 		int sa_num 		  = 0;
@@ -547,6 +547,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.type))
 			{
+				// TODO: conversion to proper SO term when possible
 				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.annotations))
@@ -586,7 +587,7 @@ public class SBOLReader
 		}
 
 		if (roles.isEmpty())
-			roles.add(Sbol2Terms.DnaComponentV1URI.roles);
+			roles.add(SequenceOntology.ENGINEERED_REGION);
 
 		int sc_number = 0;
 
