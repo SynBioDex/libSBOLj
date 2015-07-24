@@ -18,14 +18,15 @@ public class readTester {
 	public static String filenameV1_9 	= "pIKE_pTAK_toggle_switches.xml";
 	public static String filenameV1_10 	= "miRNA.sbol.xml";
 	public static String filenameV1_11 	= "SBOL1/labhost_All.xml";
+	public static String filenameV1_12 	= "BBa_I0462.xml";
 
 	public static String path = "test/data/SBOL1/";
 
 	public static void main(String[] args) {
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_9);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_12);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_9);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_12);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
 			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
