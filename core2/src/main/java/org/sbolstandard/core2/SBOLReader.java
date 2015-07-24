@@ -527,6 +527,7 @@ public class SBOLReader
 		
 		if (URIPrefix != null)
 		{
+			// TODO: remove delimiters delimiters at end of string
 			int slash = componentDef.getIdentity().toString().lastIndexOf('/');
 			int pound = componentDef.getIdentity().toString().lastIndexOf('#');
 			int colon = componentDef.getIdentity().toString().lastIndexOf(':');
@@ -686,6 +687,7 @@ public class SBOLReader
 
 		if (URIPrefix != null)
 		{
+			// TODO: remove delimiters delimiters at end of string
 			int slash = topLevel.getIdentity().toString().lastIndexOf('/');
 			int pound = topLevel.getIdentity().toString().lastIndexOf('#');
 			int colon = topLevel.getIdentity().toString().lastIndexOf(':');
@@ -772,7 +774,8 @@ public class SBOLReader
 
 		Set<URI> members 			 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
-
+		
+		// TODO: need URI conversion code here.
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol1Terms.Collection.displayId))
