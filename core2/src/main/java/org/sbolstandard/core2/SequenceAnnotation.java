@@ -436,7 +436,9 @@ public class SequenceAnnotation extends Identified {
 	 * @param version
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) {
-		this.setWasDerivedFrom(this.getIdentity());
+		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
+			this.setWasDerivedFrom(this.getIdentity());
+		}
 		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
 		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		this.setDisplayId(displayId);

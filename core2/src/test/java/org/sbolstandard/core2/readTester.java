@@ -34,10 +34,14 @@ public class readTester {
 			SBOLDocument document1 = SBOLReader.read(file);
 			SBOLDocument document2 = new SBOLDocument();
 			for (ComponentDefinition cd : document1.getComponentDefinitions()) {
-				document2.createCopy(cd);
+				ComponentDefinition cd2 = (ComponentDefinition) document2.createCopy(cd);
+				if (!cd.equals(cd2)) 
+					System.out.println(cd.getIdentity() + " " + cd.equals(cd2));
 			}
 			for (Sequence s : document1.getSequences()) {
-				document2.createCopy(s);
+				Sequence s2 = (Sequence) document2.createCopy(s);
+				if (!s.equals(s2))
+					System.out.println(s.getIdentity() + " " + s.equals(s2));
 			}
 			//document1.setDefaultURIprefix("http://www.some.org");
 			//document1.createCollection("abc", "1.0");
