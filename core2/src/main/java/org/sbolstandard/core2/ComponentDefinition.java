@@ -1,7 +1,5 @@
 package org.sbolstandard.core2;
-import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static org.sbolstandard.core2.URIcompliance.isChildURIcompliant;
-import static org.sbolstandard.core2.URIcompliance.isURIcompliant;
+import static org.sbolstandard.core2.URIcompliance.*;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -496,10 +494,10 @@ public class ComponentDefinition extends TopLevel {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newSequenceAnnotationURI = createCompliantURI(URIprefix, displayId, version);
-		if (!isChildURIcompliant(this.getIdentity(), newSequenceAnnotationURI))
-			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
-					"'is not compliant in parent `" + this.getIdentity() +
-					"' for " + URIprefix + " " + displayId + " " + version);
+//		if (!isChildURIcompliant(this.getIdentity(), newSequenceAnnotationURI))
+//			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
+//					"'is not compliant in parent `" + this.getIdentity() +
+//					"' for " + URIprefix + " " + displayId + " " + version);
 		List<Location> locations = new ArrayList<>();
 		locations.add(location);
 		SequenceAnnotation sa = createSequenceAnnotation(newSequenceAnnotationURI, locations);
@@ -1268,14 +1266,12 @@ public class ComponentDefinition extends TopLevel {
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
 		// codereview: this method is spagetti.
-		if (!isURIcompliant(this.getIdentity())) { 	// ComponentDefinition to be copied has non-compliant URI.
-			return false;
-		}
+		if (!isTopLevelURIformCompliant(this.getIdentity())) return false;
 		boolean allDescendantsCompliant = true;
 		if (!this.getSequenceConstraints().isEmpty()) {
 			for (SequenceConstraint sequenceConstraint : this.getSequenceConstraints()) {
 				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this.getIdentity(), sequenceConstraint.getIdentity());
+						&& isChildURIcompliant(this, sequenceConstraint);
 				// SequenceConstraint does not have any child classes. No need to check further.
 				if (!allDescendantsCompliant) { // Current sequence constraint has non-compliant URI.
 					return allDescendantsCompliant;
@@ -1285,7 +1281,7 @@ public class ComponentDefinition extends TopLevel {
 		if (!this.getComponents().isEmpty()) {
 			for (Component component : this.getComponents()) {
 				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this.getIdentity(), component.getIdentity());
+						&& isChildURIcompliant(this, component);
 				if (!allDescendantsCompliant) { // Current component has non-compliant URI.
 					return allDescendantsCompliant;
 				}
@@ -1293,7 +1289,7 @@ public class ComponentDefinition extends TopLevel {
 					// Check compliance of Component's children
 					for (MapsTo mapsTo : component.getMapsTos()) {
 						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(component.getIdentity(), mapsTo.getIdentity());
+								&& isChildURIcompliant(component, mapsTo);
 						if (!allDescendantsCompliant) { // Current mapsTo has non-compliant URI.
 							return allDescendantsCompliant;
 						}
@@ -1304,7 +1300,7 @@ public class ComponentDefinition extends TopLevel {
 		if (!this.getSequenceAnnotations().isEmpty()) {
 			for (SequenceAnnotation sequenceAnnotation : this.getSequenceAnnotations()) {
 				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this.getIdentity(), sequenceAnnotation.getIdentity());
+						&& isChildURIcompliant(this, sequenceAnnotation);
 				if (!allDescendantsCompliant) { // Current sequence annotation has non-compliant URI.
 					return allDescendantsCompliant;
 				}
@@ -1312,21 +1308,21 @@ public class ComponentDefinition extends TopLevel {
 				for (Location location : locations) {
 					if (location instanceof Range) {
 						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
+								&& isChildURIcompliant(sequenceAnnotation, location);
 						if (!allDescendantsCompliant) { // Current range has non-compliant URI.
 							return allDescendantsCompliant;
 						}
 					}
 					if (location instanceof Cut) {
 						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
+								&& isChildURIcompliant(sequenceAnnotation, location);
 						if (!allDescendantsCompliant) { // Current cut has non-compliant URI.
 							return allDescendantsCompliant;
 						}
 					}
 					if (location instanceof GenericLocation) {
 						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(sequenceAnnotation.getIdentity(), location.getIdentity());
+								&& isChildURIcompliant(sequenceAnnotation, location);
 						if (!allDescendantsCompliant) { // Current generic location has non-compliant URI.
 							return allDescendantsCompliant;
 						}
@@ -1363,11 +1359,15 @@ public class ComponentDefinition extends TopLevel {
 	@Override
 	ComponentDefinition copy(String URIprefix, String displayId, String version) {
 		ComponentDefinition cloned = this.deepCopy();
-		cloned.setWasDerivedFrom(this.getIdentity());
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
 		cloned.setVersion(version);
 		URI newIdentity = createCompliantURI(URIprefix,displayId,version);
+		if (!this.getIdentity().equals(newIdentity)) {
+			cloned.setWasDerivedFrom(this.getIdentity());
+		} else {
+			cloned.setWasDerivedFrom(this.getWasDerivedFrom());
+		}
 		cloned.setIdentity(newIdentity);
 		int count = 0;
 		for (Component component : cloned.getComponents()) {

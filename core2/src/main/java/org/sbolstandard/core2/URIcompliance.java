@@ -105,6 +105,56 @@ final class URIcompliance {
 			return null;
 	}
 
+	static final boolean isURIcompliant(Identified identified) {
+		if (!identified.isSetDisplayId()) return false;
+		if (!identified.isSetPersistentIdentity()) return false;
+		if (!identified.getPersistentIdentity().toString().endsWith("/"+identified.getDisplayId()) &&
+			!identified.getPersistentIdentity().toString().endsWith("#"+identified.getDisplayId()) &&
+			!identified.getPersistentIdentity().toString().endsWith(":"+identified.getDisplayId())) return false;
+		if (!identified.isSetVersion()) {
+			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString())) return false;
+		} else {
+			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString()+"/"
+					+identified.getVersion())) return false;
+		}
+		return true;
+	}
+	
+	// TODO: this method is only checking URIs and not other fields.  It also is only allowing / delimiter.
+	// Seems to be needed for addChildSafely method.  Should investigate further.
+	static final boolean isChildURIformCompliant(URI parentURI, URI childURI) {
+		String parentPersistentId = extractPersistentId(parentURI);
+		if (parentPersistentId==null) return false;
+		String childDisplayId = extractDisplayId(childURI);
+		if (childDisplayId==null) return false;
+		String parentVersion = extractVersion(parentURI);
+		if (parentVersion == null) {
+			return childURI.toString().equals(parentPersistentId+"/"+childDisplayId);
+		} else {
+			return childURI.toString().equals(parentPersistentId+"/"+childDisplayId+"/"+parentVersion);
+		}
+	}
+
+	static final boolean isChildURIcompliant(Identified parent, Identified child) {
+		//URI parentURI = parent.getIdentity();
+		//URI childURI = child.getIdentity();
+		//String parentPersistentId = extractPersistentId(parentURI);
+		//if (parentPersistentId==null) return false;
+		//String childDisplayId = extractDisplayId(childURI);
+		//if (childDisplayId==null) return false;
+		//String parentVersion = extractVersion(parentURI);
+		if (!isURIcompliant(child)) return false;
+		if (!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+"/"+child.getDisplayId()) &&
+				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+"#"+child.getDisplayId()) &&
+				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+":"+child.getDisplayId())) return false;
+		if (parent.isSetVersion()) {
+			if (!child.isSetVersion()||!child.getVersion().equals(parent.getVersion())) return false;
+		} else if (child.isSetVersion()) {
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
 	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
@@ -112,12 +162,24 @@ final class URIcompliance {
 	 * @param objURI
 	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise.
 	 */
-	static final boolean isURIcompliant(URI objURI) {
+	static final boolean isTopLevelURIformCompliant(URI topLevelURI) {
 		Pattern r;
-		String URIstr = objURI.toString();		
+		String URIstr = topLevelURI.toString();		
 		r = Pattern.compile(toplevelURIpattern);
 		Matcher m = r.matcher(URIstr);
-		return m.matches();
+		return (m.matches());
+	}
+	
+	/**
+	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
+	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
+	 * the level of the given object. 
+	 * @param objURI
+	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise.
+	 */
+	static final boolean isTopLevelURIcompliant(TopLevel topLevel) {
+		if (!isTopLevelURIformCompliant(topLevel.getIdentity())) return false;
+		return isURIcompliant(topLevel);
 	}
 	
 //	static final boolean isURIcompliantTemp(URI objURI, String URIprefix, String version, String ... displayIds) {
@@ -229,19 +291,6 @@ final class URIcompliance {
 //			return isVersionCompliant(curExtractedStr);
 //		}
 //	}
-
-	static final boolean isChildURIcompliant(URI parentURI, URI childURI) {
-		String parentPersistentId = extractPersistentId(parentURI);
-		if (parentPersistentId==null) return false;
-		String childDisplayId = extractDisplayId(childURI);
-		if (childDisplayId==null) return false;
-		String parentVersion = extractVersion(parentURI);
-		if (parentVersion == null) {
-			return childURI.toString().equals(parentPersistentId+"/"+childDisplayId);
-		} else {
-			return childURI.toString().equals(parentPersistentId+"/"+childDisplayId+"/"+parentVersion);
-		}
-	}
 
 	static boolean isDisplayIdCompliant(String newDisplayId) {
 		Pattern r = Pattern.compile(displayIDpattern);

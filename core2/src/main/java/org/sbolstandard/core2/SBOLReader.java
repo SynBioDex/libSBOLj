@@ -520,10 +520,17 @@ public class SBOLReader
 		Map<URI, URI> componentDefMap 				 = new HashMap<>();
 
 		Set<URI> type = new HashSet<>();
-		type.add(Sbol2Terms.DnaComponentV1URI.type);
+		type.add(ComponentDefinition.DNA);
 
 		int component_num = 0;
 		int sa_num 		  = 0;
+		
+		if (URIPrefix != null)
+		{
+			displayId = findDisplayId(componentDef.getIdentity().toString());
+			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+			persIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI).toString();
+		}
 
 		for (NamedProperty<QName> namedProperty : componentDef.getProperties())
 		{
@@ -547,6 +554,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.type))
 			{
+				// TODO: conversion to proper SO term when possible
 				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.annotations))
@@ -586,7 +594,7 @@ public class SBOLReader
 		}
 
 		if (roles.isEmpty())
-			roles.add(Sbol2Terms.DnaComponentV1URI.roles);
+			roles.add(SequenceOntology.ENGINEERED_REGION);
 
 		int sc_number = 0;
 
@@ -665,13 +673,9 @@ public class SBOLReader
 
 		if (URIPrefix != null)
 		{
-			if (topLevel.getIdentity().toString().lastIndexOf('/') != -1)
-			{
-				displayId = topLevel.getIdentity().toString().substring(topLevel.getIdentity().toString().lastIndexOf('/') + 1);
-				displayId = fixDisplayId(displayId);
-				identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
-				persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
-			}
+			displayId = findDisplayId(topLevel.getIdentity().toString());
+			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+			persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
 		}
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
@@ -731,6 +735,34 @@ public class SBOLReader
 		}
 		return displayId;
 	}
+	
+	private static String findDisplayId(String topLevelIdentity) {
+		String displayId = null;
+		
+		topLevelIdentity = topLevelIdentity.trim();
+		while (topLevelIdentity.endsWith("/")||
+				topLevelIdentity.endsWith("#")||
+				topLevelIdentity.endsWith(":")) {
+			topLevelIdentity = topLevelIdentity.replaceAll("/$","");
+			topLevelIdentity = topLevelIdentity.replaceAll("#$","");
+			topLevelIdentity = topLevelIdentity.replaceAll(":$","");
+		}
+		int slash = topLevelIdentity.lastIndexOf('/');
+		int pound = topLevelIdentity.lastIndexOf('#');
+		int colon = topLevelIdentity.lastIndexOf(':');
+		
+		if (slash!=-1 && slash > pound && slash > colon) {
+			displayId = topLevelIdentity.substring(slash + 1);
+		} else if (pound!=-1 && pound > colon) {
+			displayId = topLevelIdentity.substring(pound + 1);
+		} else if (colon!=-1) {
+			displayId = topLevelIdentity.substring(colon + 1);
+		} else {
+			displayId = topLevelIdentity.toString();
+		}
+		displayId = fixDisplayId(displayId);
+		return displayId;
+	}
 
 	private static Collection parseCollectionV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
 	{
@@ -742,7 +774,13 @@ public class SBOLReader
 
 		Set<URI> members 			 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
-
+		
+		if (URIPrefix != null)
+		{
+			displayId = findDisplayId(topLevel.getIdentity().toString());
+			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+			persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
+		}
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol1Terms.Collection.displayId))

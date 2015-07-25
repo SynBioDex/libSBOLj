@@ -41,27 +41,29 @@ public class SBOLValidate {
 	 */
 	public static void validateCompliance(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
-			if (!collection.checkDescendantsURIcompliance()) 
+			if (!URIcompliance.isTopLevelURIcompliant(collection) || !collection.checkDescendantsURIcompliance()) 
 				throw new SBOLValidationException("Collection contains non-compliant URI",collection);
 		}
 		for (Sequence sequence : sbolDocument.getSequences()) {
-			if (!sequence.checkDescendantsURIcompliance()) 
+			if (!URIcompliance.isTopLevelURIcompliant(sequence) || !sequence.checkDescendantsURIcompliance()) {
 				throw new SBOLValidationException("Sequence contains non-compliant URI",sequence);
+			}
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
-			if (!componentDefinition.checkDescendantsURIcompliance()) 
+			if (!URIcompliance.isTopLevelURIcompliant(componentDefinition) || !componentDefinition.checkDescendantsURIcompliance()) {
 				throw new SBOLValidationException("Component definition contains non-compliant URI",componentDefinition);
+			}
 		}
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
-			if (!moduleDefinition.checkDescendantsURIcompliance()) 	
+			if (!URIcompliance.isTopLevelURIcompliant(moduleDefinition) || !moduleDefinition.checkDescendantsURIcompliance()) 	
 				throw new SBOLValidationException("Module definition contains non-compliant URI",moduleDefinition);
 		}
 		for (Model model : sbolDocument.getModels()) {
-			if (!model.checkDescendantsURIcompliance()) 
+			if (!URIcompliance.isTopLevelURIcompliant(model) || !model.checkDescendantsURIcompliance()) 
 				throw new SBOLValidationException("Model contains non-compliant URI",model);
 		}
 		for (GenericTopLevel genericTopLevel : sbolDocument.getGenericTopLevels()) {
-			if (!genericTopLevel.checkDescendantsURIcompliance()) 
+			if (!URIcompliance.isTopLevelURIcompliant(genericTopLevel) || !genericTopLevel.checkDescendantsURIcompliance()) 
 				throw new SBOLValidationException("Generic top level contains non-compliant URI",genericTopLevel);
 		}
 	}

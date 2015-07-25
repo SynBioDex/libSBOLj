@@ -31,7 +31,7 @@
     <dcterms:title>I0462</dcterms:title>
     <dcterms:description>LuxR protein generator</dcterms:description>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/SO_0000804"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000804"/>
     <sbol:component>
       <sbol:Component rdf:about="http://www.async.ece.utah.edu/BBa_I0462/component2">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/component2"/>
@@ -107,11 +107,11 @@
         <sbol:component rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/component0"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq_d23749adb3a7e0e2f09168cb7267a6113b238973"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/d23749adb3a7e0e2f09168cb7267a6113b238973"/>
   </sbol:ComponentDefinition>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/seq_d23749adb3a7e0e2f09168cb7267a6113b238973">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/seq_d23749adb3a7e0e2f09168cb7267a6113b238973"/>
-    <sbol:displayId>seq_d23749adb3a7e0e2f09168cb7267a6113b238973</sbol:displayId>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/d23749adb3a7e0e2f09168cb7267a6113b238973">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/d23749adb3a7e0e2f09168cb7267a6113b238973"/>
+    <sbol:displayId>d23749adb3a7e0e2f09168cb7267a6113b238973</sbol:displayId>
     <prov:wasDerivedFrom rdf:resource="http://sbols.org/seq#d23749adb3a7e0e2f09168cb7267a6113b238973"/>
     <sbol:elements>aaagaggagaaatactagatgaaaaacataaatgccgacgacacatacagaataattaataaaattaaagcttgtagaagcaataatgatattaatcaatgcttatctgatatgactaaaatggtacattgtgaatattatttactcgcgatcatttatcctcattctatggttaaatctgatatttcaatcctagataattaccctaaaaaatggaggcaatattatgatgacgctaatttaataaaatatgatcctatagtagattattctaactccaatcattcaccaattaattggaatatatttgaaaacaatgctgtaaataaaaaatctccaaatgtaattaaagaagcgaaaacatcaggtcttatcactgggtttagtttccctattcatacggctaacaatggcttcggaatgcttagttttgcacattcagaaaaagacaactatatagatagtttatttttacatgcgtgtatgaacataccattaattgttccttctctagttgataattatcgaaaaataaatatagcaaataataaatcaaacaacgatttaaccaaaagagaaaaagaatgtttagcgtgggcatgcgaaggaaaaagctcttgggatatttcaaaaatattaggttgcagtgagcgtactgtcactttccatttaaccaatgcgcaaatgaaactcaatacaacaaaccgctgccaaagtatttctaaagcaattttaacaggagcaattgattgcccatactttaaaaattaataacactgatagtgctagtgtagatcactactagagccaggcatcaaataaaacgaaaggctcagtcgaaagactgggcctttcgttttatctgttgtttgtcggtgaacgctctctactagagtcacactggctcaccttcgggtgggcctttctgcgtttata</sbol:elements>
     <sbol:encoding rdf:resource="http://dx.doi.org/10.1021/bi00822a023"/>

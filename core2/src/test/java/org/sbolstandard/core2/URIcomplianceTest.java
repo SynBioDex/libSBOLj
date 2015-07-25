@@ -445,10 +445,10 @@ public class URIcomplianceTest {
 		assertEquals(uri1, uri2);
 	}
 
-	@Test
-	public void testIsURIcompliant6() {
-		assertFalse(isURIcompliant(uri12));
-	}
+//	@Test
+//	public void testIsURIcompliant6() {
+//		assertFalse(isURIcompliant(uri12));
+//	}
 
 	@Test
 	public void testIDcase() {
@@ -743,25 +743,25 @@ public class URIcomplianceTest {
 		assertEquals("1.0.02-SNAPSHOT", extractedVersion);
 	}
 
-	@Test
-	public void testIsChildURIcompliant1() {
-		assertFalse(isChildURIcompliant(uri1, uri5));
-	}
-
-	@Test
-	public void testIsChildURIcompliant2() {
-		assertTrue(isChildURIcompliant(URI.create("http://www.async.ece.utah.edu/LacI_Inv/interaction_1/1.0.1-beta"), uri7));
-	}
-
-	@Test
-	public void testIsChildURIcompliant3() {
-		assertTrue(isChildURIcompliant(URI.create("http://www.async.ece.utah.edu/pLac/ptetlacISeq/multi_range/1.0.02-SNAPSHOT"), uri10));
-	}
-
-	@Test
-	public void testIsChildURIcompliant4() {
-		assertFalse(isChildURIcompliant(URI.create("http://www.async.ece.utah.edu/LacI_Inv/interaction_1/1.0.1-alpha"), uri7));
-	}
+//	@Test
+//	public void testIsChildURIcompliant1() {
+//		assertFalse(isChildURIcompliant(uri1, uri5));
+//	}
+//
+//	@Test
+//	public void testIsChildURIcompliant2() {
+//		assertTrue(isChildURIcompliant(URI.create("http://www.async.ece.utah.edu/LacI_Inv/interaction_1/1.0.1-beta"), uri7));
+//	}
+//
+//	@Test
+//	public void testIsChildURIcompliant3() {
+//		assertTrue(isChildURIcompliant(URI.create("http://www.async.ece.utah.edu/pLac/ptetlacISeq/multi_range/1.0.02-SNAPSHOT"), uri10));
+//	}
+//
+//	@Test
+//	public void testIsChildURIcompliant4() {
+//		assertFalse(isChildURIcompliant(URI.create("http://www.async.ece.utah.edu/LacI_Inv/interaction_1/1.0.1-alpha"), uri7));
+//	}
 
 	@Test
 	public void testIsDisplayIdCompliant1() {
@@ -778,10 +778,10 @@ public class URIcomplianceTest {
 		assertTrue(isDisplayIdCompliant("_l2I3DDv"));
 	}
 
-	@Test
-	public void testIsTopLevelURIcompliant1() {
-		assertTrue(isURIcompliant(uri1));
-	}
+//	@Test
+//	public void testIsTopLevelURIcompliant1() {
+//		assertTrue(isURIcompliant(uri1));
+//	}
 
 	/*//TODO NOT PASSING
 	@Test
@@ -794,9 +794,9 @@ public class URIcomplianceTest {
 		assertFalse(isURIcompliant(uri10, 0));
 	}*/
 
-	@Test
-	public void testIsTopLevelURIcompliant4() {
-		assertFalse(isURIcompliant(uri4));
-	}
+//	@Test
+//	public void testIsTopLevelURIcompliant4() {
+//		assertFalse(isURIcompliant(uri4));
+//	}
 	// TODO: Test isVersionCompliant
 }

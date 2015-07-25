@@ -18,7 +18,7 @@
     <dcterms:description>green fluorescent protein derived from jellyfish Aequeora victoria wild-type GFP (SwissProt: P42212</dcterms:description>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
-    <sbol:sequence rdf:resource="urn:0a9f5ec9-e70e-4ed1-93b1-50d4b8b1a36c"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/_0a9f5ec9_e70e_4ed1_93b1_50d4b8b1a36c"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/Reporter">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/Reporter"/>
@@ -311,7 +311,10 @@
     <sbol:elements>atgagcacaaaaaagaaaccattaacacaagagcagcttgaggacgcacgtcgccttaaagcaatttatgaaaaaaagaaaaatgaacttggcttatcccaggaatctgtcgcagacaagatggggatggggcagtcaggcgttggtgctttatttaatggcatcaatgcattaaatgcttataacgccgcattgcttgcaaaaattctcaaagttagcgttgaagaatttagcccttcaatcgccagagaaatctacgagatgtatgaagcggttagtatgcagccgtcacttagaagtgagtatgagtaccctgttttttctcatgttcaggcagggatgttctcacctgagcttagaacctttaccaaaggtgatgcggagagatgggtaagcacaaccaaaaaagccagtgattctgcattctggcttgaggttgaaggtaattccatgaccgcaccaacaggctccaagccaagctttcctgacggaatgttaattctcgttgaccctgagcaggctgttgagccaggtgatttctgcatagccagacttgggggtgatgagtttaccttcaagaaactgatcagggatagcggtcaggtgtttttacaaccactaaacccacagtacccaatgatcccatgcaatgagagttgttccgttgtggggaaagttatcgctagtcagtggcctgaagagacgtttggcgctgcaaacgacgaaaactacgctttagtagcttaataa</sbol:elements>
     <sbol:encoding rdf:resource="http://dx.doi.org/10.1021/bi00822a023"/>
   </sbol:Sequence>
-  <sbol:Sequence rdf:about="urn:0a9f5ec9-e70e-4ed1-93b1-50d4b8b1a36c">
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/_0a9f5ec9_e70e_4ed1_93b1_50d4b8b1a36c">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/_0a9f5ec9_e70e_4ed1_93b1_50d4b8b1a36c"/>
+    <sbol:displayId>_0a9f5ec9_e70e_4ed1_93b1_50d4b8b1a36c</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="urn:0a9f5ec9-e70e-4ed1-93b1-50d4b8b1a36c"/>
     <sbol:elements>atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagaccacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa</sbol:elements>
     <sbol:encoding rdf:resource="http://dx.doi.org/10.1021/bi00822a023"/>
   </sbol:Sequence>

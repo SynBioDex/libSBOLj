@@ -1633,7 +1633,7 @@
     <dcterms:description>green fluorescent protein derived from jellyfish Aequeora victoria wild-type GFP (SwissProt: P42212</dcterms:description>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
-    <sbol:sequence rdf:resource="urn:0fb4a103-86c4-4d90-8e73-d35ca45b4cf7_sequence"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/_0fb4a103_86c4_4d90_8e73_d35ca45b4cf7_sequence"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/BBa_C0040">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_C0040"/>
@@ -2563,7 +2563,10 @@
     <sbol:elements>atggtgaatgtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcaggctgcaaacgacgaaaactacgctttagtagcttaataa</sbol:elements>
     <sbol:encoding rdf:resource="http://dx.doi.org/10.1021/bi00822a023"/>
   </sbol:Sequence>
-  <sbol:Sequence rdf:about="urn:0fb4a103-86c4-4d90-8e73-d35ca45b4cf7_sequence">
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/_0fb4a103_86c4_4d90_8e73_d35ca45b4cf7_sequence">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/_0fb4a103_86c4_4d90_8e73_d35ca45b4cf7_sequence"/>
+    <sbol:displayId>_0fb4a103_86c4_4d90_8e73_d35ca45b4cf7_sequence</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="urn:0fb4a103-86c4-4d90-8e73-d35ca45b4cf7_sequence"/>
     <sbol:elements>atgcgtaaaggagaagaacttttcactggagttgtcccaattcttgttgaattagatggtgatgttaatgggcacaaattttctgtcagtggagagggtgaaggtgatgcaacatacggaaaacttacccttaaatttatttgcactactggaaaactacctgttccatggccaacacttgtcactactttcggttatggtgttcaatgctttgcgagatacccagatcatatgaaacagcatgactttttcaagagtgccatgcccgaaggttatgtacaggaaagaactatatttttcaaagatgacgggaactacaagacacgtgctgaagtcaagtttgaaggtgatacccttgttaatagaatcgagttaaaaggtattgattttaaagaagatggaaacattcttggacacaaattggaatacaactataactcacacaatgtatacatcatggcagacaaacaaaagaatggaatcaaagttaacttcaaaattagacacaacattgaagatggaagcgttcaactagcagaccattatcaacaaaatactccaattggcgatggccctgtccttttaccagacaaccattacctgtccacacaatctgccctttcgaaagatcccaacgaaaagagagaccacatggtccttcttgagtttgtaacagctgctgggattacacatggcatggatgaactatacaaataataa</sbol:elements>
     <sbol:encoding rdf:resource="http://dx.doi.org/10.1021/bi00822a023"/>
   </sbol:Sequence>

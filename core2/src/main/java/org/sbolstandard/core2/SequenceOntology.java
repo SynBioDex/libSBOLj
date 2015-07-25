@@ -93,6 +93,8 @@ public class SequenceOntology {
 	}
 	*/
 	
+	// TODO: need method to convert from 1.1 SO term to 2.0
+	
 	/**
 	 * Creates a new URI from the Sequence Ontology namespace with the given local name. For example, the function call
 	 * <code>term("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
@@ -180,5 +182,10 @@ public class SequenceOntology {
 	 * A gene that is engineered (<a href="http://identifiers.org/so/SO:0000280">SO:0000280</a>).
 	 */
 	public static final URI ENGINEERED_GENE = type("SO:0000280");
+	
+	/**
+	 * A region that is engineered (<a href="http://identifiers.org/so/SO:0000804">SO:0000804</a>).
+	 */
+	public static final URI ENGINEERED_REGION = type("SO:0000804");
 
 }

@@ -271,11 +271,11 @@ class Sbol2Terms
 		static final URI DnaSequenceV1 = URI.create("http://dx.doi.org/10.1021/bi00822a023");
 	}
 
-	static final class DnaComponentV1URI {
-		static final URI roles = URI.create("http://purl.obolibrary.org/obo/SO_0000804");
-		static final URI type  = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
-		//static final URI restriction  = URI.create(sbol2.getNamespaceURI() + "precedes");
-	}
+//	static final class DnaComponentV1URI {
+//		static final URI roles = URI.create("http://purl.obolibrary.org/obo/SO_0000804");
+//		static final URI type  = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
+//		//static final URI restriction  = URI.create(sbol2.getNamespaceURI() + "precedes");
+//	}
 
 	// Moved to ComponentInstance
 	//	static final class Access {

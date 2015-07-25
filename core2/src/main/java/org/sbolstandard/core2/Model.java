@@ -1,7 +1,6 @@
 package org.sbolstandard.core2;
 
-import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static org.sbolstandard.core2.URIcompliance.isURIcompliant;
+import static org.sbolstandard.core2.URIcompliance.*;
 
 import java.net.URI;
 
@@ -189,11 +188,15 @@ public class Model extends TopLevel {
 	@Override
 	Model copy(String URIprefix, String displayId, String version) {
 		Model cloned = this.deepCopy();
-		cloned.setWasDerivedFrom(this.getIdentity());
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
 		cloned.setVersion(version);
 		URI newIdentity = createCompliantURI(URIprefix,displayId,version);
+		if (!this.getIdentity().equals(newIdentity)) {
+			cloned.setWasDerivedFrom(this.getIdentity());
+		} else {
+			cloned.setWasDerivedFrom(this.getWasDerivedFrom());
+		}
 		cloned.setIdentity(newIdentity);
 		return cloned;
 	}
@@ -203,7 +206,7 @@ public class Model extends TopLevel {
 	 */
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
-		return isURIcompliant(this.getIdentity());
+		return isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	//	/**
