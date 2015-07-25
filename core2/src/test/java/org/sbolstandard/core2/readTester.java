@@ -24,9 +24,9 @@ public class readTester {
 
 	public static void main(String[] args) {
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_12);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_9);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_12);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_9);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
 			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
