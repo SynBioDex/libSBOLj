@@ -44,11 +44,6 @@ public class SBOLFactory {
 	private SBOLFactory() {
 	}
 
-	private static final SBOLReader READER = null; //TODO: is this safe to point to null?
-	private static final SBOLWriter WRITER = null; //TODO: is this safe to point to null?
-
-
-
 	/**
 	 * Creates a fresh SBOL document instance and populates its contents from the given XML source. The reader will
 	 * perform validation automatically. The documents read by this reader are guaranteed to be valid so it is not
@@ -58,7 +53,7 @@ public class SBOLFactory {
 	 * @throws SBOLValidationException if the contents of the document is not valid
 	 */
 	public static SBOLDocument read(InputStream in) throws IOException, SBOLValidationException {
-		return READER.read(in);
+		return SBOLReader.read(in);
 	}
 
 	/**
@@ -70,7 +65,7 @@ public class SBOLFactory {
 	public static void write(SBOLDocument doc, OutputStream out) throws IOException, SBOLValidationException {
 		try
 		{
-			WRITER.write(doc, out);
+			SBOLWriter.write(doc, out);
 		}
 		catch (XMLStreamException e)
 		{

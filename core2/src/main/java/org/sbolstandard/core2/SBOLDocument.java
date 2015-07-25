@@ -2188,7 +2188,7 @@ public class SBOLDocument {
 
 	/** 
 	 * Returns {@code true} if the {@code complete} flag for this SBOLDocument object is set. 
-	 * This flag is set to {@code true} if all objects are present within this SBOLDocument object,
+	 * This flag is set to {@code true} if all objects are must be present within this SBOLDocument object,
 	 * i.e. all URI references point to actual objects. 
 	 * 
 	 * @return {@code true} if the complete flag is set, {@code false} otherwise
@@ -2222,30 +2222,39 @@ public class SBOLDocument {
 	}
 	
 	/**
-	 * Returns {@code true} if all top-level instances URIs include top-level types specified in the
-	 * {@link TopLevel} class.
+	 * Returns {@code true} if types are to be inserted into top-level URIs.
 	 *  
-	 * @return {@code true} if all top-level instances URIs include top-level types specified in the
-	 * {@link TopLevel} class, {@code false} otherwise
+	 * @return {@code true} if types are to be inserted into top-level URIs, {@code false} otherwise
 	 */
 	public boolean isTypesInURIs() {
 		return typesInURIs;
 	}
 
 	/**
-	 * Sets the flag to the given {@code typesInURIs} to determine if the type of a top-level object is included in its compliant URI.
-	 * The type is included in a top-level URI is this flag is set to {@code true}, and it is not included otherwise.
+	 * Sets the flag to the given {@code typesInURIs} to determine if types are to be inserted into top-level URIs.
 	 *  
 	 * @param typesInURIs
 	 */
 	public void setTypesInURIs(boolean typesInURIs) {
 		this.typesInURIs = typesInURIs;
 	}
-
+	
+	/**
+	 * Returns {@code true} if default component instances should be created when not present.
+	 *  
+	 * @return {@code true} if default component instances should be created when not present,
+	 * {@code false} otherwise
+	 */
 	public boolean isCreateDefaults() {
 		return createDefaults;
 	}
 
+	/**
+	 * Sets the flag to the given {@code createDefaults} to determine if default component instances
+	 * should be created when not present.
+	 *  
+	 * @param createDefaults
+	 */
 	public void setCreateDefaults(boolean createDefaults) {
 		this.createDefaults = createDefaults;
 	}

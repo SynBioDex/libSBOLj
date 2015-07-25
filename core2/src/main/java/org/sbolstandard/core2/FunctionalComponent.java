@@ -105,7 +105,9 @@ public class FunctionalComponent extends ComponentInstance {
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) {
-		this.setWasDerivedFrom(this.getIdentity());
+		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
+			this.setWasDerivedFrom(this.getIdentity());
+		}
 		this.setIdentity(createCompliantURI(URIprefix,displayId,version));		
 		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		this.setDisplayId(displayId);
