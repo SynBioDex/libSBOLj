@@ -1,109 +1,29 @@
 <?xml version="1.0" ?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns2="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbol="http://sbols.org/v2#">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns2="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sbol="http://sbols.org/v2#" xmlns:prov="http://www.w3.org/ns/prov#">
   <sbol:Collection rdf:about="http://www.async.ece.utah.edu/Gram_negative_bacteria">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/Gram_negative_bacteria"/>
     <sbol:displayId>Gram_negative_bacteria</sbol:displayId>
     <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Collection:Gram-negative_bacteria"/>
     <dcterms:title>Collection of Gram-negative bacteria features</dcterms:title>
     <dcterms:description>This is a collection of features that have been associated with Gram-negative bacteria plasmids downloaded from the SnapGene Resources repository (http://www.snapgene.com).</dcterms:description>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/CmR_013"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/pBBR1_Rep"/>
     <sbol:member rdf:resource="http://www.async.ece.utah.edu/TpR"/>
-    <sbol:member rdf:resource="http://www.async.ece.utah.edu/KanR_002"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/tonB_terminator_002"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/araBAD_promoter_001"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/soxR_terminator"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/araBAD_promoter_002"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/MCS_093"/>
     <sbol:member rdf:resource="http://www.async.ece.utah.edu/MCS_079"/>
     <sbol:member rdf:resource="http://www.async.ece.utah.edu/araC_002"/>
-    <sbol:member rdf:resource="http://www.async.ece.utah.edu/pBBR1_Rep"/>
-    <sbol:member rdf:resource="http://www.async.ece.utah.edu/MCS_093"/>
-    <sbol:member rdf:resource="http://www.async.ece.utah.edu/soxR_terminator"/>
-    <sbol:member rdf:resource="http://www.async.ece.utah.edu/tonB_terminator_002"/>
-    <sbol:member rdf:resource="http://www.async.ece.utah.edu/CmR_013"/>
-    <sbol:member rdf:resource="http://www.async.ece.utah.edu/araBAD_promoter_001"/>
+    <sbol:member rdf:resource="http://www.async.ece.utah.edu/KanR_002"/>
     <sbol:member rdf:resource="http://www.async.ece.utah.edu/AmpR_015"/>
-    <sbol:member rdf:resource="http://www.async.ece.utah.edu/araBAD_promoter_002"/>
   </sbol:Collection>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/pBBR1_Rep">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pBBR1_Rep"/>
     <sbol:displayId>pBBR1_Rep</sbol:displayId>
     <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:pBBR1_Rep"/>
     <dcterms:title>pBBR1 Rep</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="so:0000316"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/soxR_terminator">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/soxR_terminator"/>
-    <sbol:displayId>soxR_terminator</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:soxR_terminator"/>
-    <dcterms:title>soxR terminator</dcterms:title>
-    <dcterms:description>bidirectional E. coli soxR transcription terminator</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="so:0000141"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/MCS_093">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/MCS_093"/>
-    <sbol:displayId>MCS_093</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:MCS-093"/>
-    <dcterms:title>MCS-093</dcterms:title>
-    <dcterms:description>multiple cloning site</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="SO:0000001"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/AmpR_015">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AmpR_015"/>
-    <sbol:displayId>AmpR_015</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:AmpR-015"/>
-    <dcterms:title>AmpR-015</dcterms:title>
-    <dcterms:description>confers resistance to ampicillin, carbenicillin, and related antibiotics</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="so:0000316"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/CmR_013">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/CmR_013"/>
-    <sbol:displayId>CmR_013</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:CmR-013"/>
-    <dcterms:title>CmR-013</dcterms:title>
-    <dcterms:description>confers resistance to chloramphenicol</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="so:0000316"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/araBAD_promoter_002">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/araBAD_promoter_002"/>
-    <sbol:displayId>araBAD_promoter_002</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:araBAD_promoter-002"/>
-    <dcterms:title>araBAD promoter-002</dcterms:title>
-    <dcterms:description>promoter of the L-arabinose operon of E. coli; the araC regulatory gene is transcribed in the opposite</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="so:0000167"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/araBAD_promoter_001">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/araBAD_promoter_001"/>
-    <sbol:displayId>araBAD_promoter_001</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:araBAD_promoter-001"/>
-    <dcterms:title>araBAD promoter-001</dcterms:title>
-    <dcterms:description>promoter of the L-arabinose operon of E. coli; the araC regulatory gene is transcribed in the opposite</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="so:0000167"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/MCS_079">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/MCS_079"/>
-    <sbol:displayId>MCS_079</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:MCS-079"/>
-    <dcterms:title>MCS-079</dcterms:title>
-    <dcterms:description>multiple cloning site</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="SO:0000001"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/KanR_002">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/KanR_002"/>
-    <sbol:displayId>KanR_002</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:KanR-002"/>
-    <dcterms:title>KanR-002</dcterms:title>
-    <dcterms:description>confers resistance to kanamycin</dcterms:description>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="so:0000316"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
@@ -118,11 +38,12 @@
     <sbol:role rdf:resource="so:0000141"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/araC_002">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/araC_002"/>
-    <sbol:displayId>araC_002</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:araC-002"/>
-    <dcterms:title>araC-002</dcterms:title>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/KanR_002">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/KanR_002"/>
+    <sbol:displayId>KanR_002</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:KanR-002"/>
+    <dcterms:title>KanR-002</dcterms:title>
+    <dcterms:description>confers resistance to kanamycin</dcterms:description>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="so:0000316"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
@@ -133,6 +54,85 @@
     <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:TpR"/>
     <dcterms:title>TpR</dcterms:title>
     <dcterms:description>confers resistance to trimethoprim</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="so:0000316"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/CmR_013">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/CmR_013"/>
+    <sbol:displayId>CmR_013</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:CmR-013"/>
+    <dcterms:title>CmR-013</dcterms:title>
+    <dcterms:description>confers resistance to chloramphenicol</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="so:0000316"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/soxR_terminator">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/soxR_terminator"/>
+    <sbol:displayId>soxR_terminator</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:soxR_terminator"/>
+    <dcterms:title>soxR terminator</dcterms:title>
+    <dcterms:description>bidirectional E. coli soxR transcription terminator</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="so:0000141"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/AmpR_015">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AmpR_015"/>
+    <sbol:displayId>AmpR_015</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:AmpR-015"/>
+    <dcterms:title>AmpR-015</dcterms:title>
+    <dcterms:description>confers resistance to ampicillin, carbenicillin, and related antibiotics</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="so:0000316"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/MCS_093">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/MCS_093"/>
+    <sbol:displayId>MCS_093</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:MCS-093"/>
+    <dcterms:title>MCS-093</dcterms:title>
+    <dcterms:description>multiple cloning site</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="SO:0000001"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/MCS_079">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/MCS_079"/>
+    <sbol:displayId>MCS_079</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:MCS-079"/>
+    <dcterms:title>MCS-079</dcterms:title>
+    <dcterms:description>multiple cloning site</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="SO:0000001"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/araBAD_promoter_001">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/araBAD_promoter_001"/>
+    <sbol:displayId>araBAD_promoter_001</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:araBAD_promoter-001"/>
+    <dcterms:title>araBAD promoter-001</dcterms:title>
+    <dcterms:description>promoter of the L-arabinose operon of E. coli; the araC regulatory gene is transcribed in the opposite</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="so:0000167"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/araBAD_promoter_002">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/araBAD_promoter_002"/>
+    <sbol:displayId>araBAD_promoter_002</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:araBAD_promoter-002"/>
+    <dcterms:title>araBAD promoter-002</dcterms:title>
+    <dcterms:description>promoter of the L-arabinose operon of E. coli; the araC regulatory gene is transcribed in the opposite</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="so:0000167"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/araC_002">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/araC_002"/>
+    <sbol:displayId>araC_002</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:araC-002"/>
+    <dcterms:title>araC-002</dcterms:title>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="so:0000316"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq"/>
