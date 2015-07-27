@@ -33,32 +33,19 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
 //import org.sbolstandard.core.impl.SBOLWriterImpl;
 //import org.sbolstandard.core.impl.SequenceAnnotationImpl;
 
-/**
- * SBOL factory class that provides functionality to create SBOL objects and utility classes such as readers, writers,
- * and validators.
- *
- * @author Evren Sirin
- */
 public class SBOLFactory {
 	// This class only provides static fields, cannot be instantiated
 	private SBOLFactory() {
 	}
 
-	private static final SBOLReader READER = null; //TODO: is this safe to point to null?
-	private static final SBOLWriter WRITER = null; //TODO: is this safe to point to null?
-
-
-
 	/**
 	 * Creates a fresh SBOL document instance and populates its contents from the given XML source. The reader will
-	 * perform validation automatically. The documents read by this reader are guaranteed to be valid so it is not
-	 * necessary to perform {@link #validate(SBOLDocument) validation}. If the contents of the document is changed
-	 * afterwards, validation will be needed.
+	 * perform validation automatically. 
 	 *
 	 * @throws SBOLValidationException if the contents of the document is not valid
 	 */
 	public static SBOLDocument read(InputStream in) throws IOException, SBOLValidationException {
-		return READER.read(in);
+		return SBOLReader.read(in);
 	}
 
 	/**
@@ -70,7 +57,7 @@ public class SBOLFactory {
 	public static void write(SBOLDocument doc, OutputStream out) throws IOException, SBOLValidationException {
 		try
 		{
-			WRITER.write(doc, out);
+			SBOLWriter.write(doc, out);
 		}
 		catch (XMLStreamException e)
 		{

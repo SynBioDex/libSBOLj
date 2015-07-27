@@ -527,20 +527,7 @@ public class SBOLReader
 		
 		if (URIPrefix != null)
 		{
-			int slash = componentDef.getIdentity().toString().lastIndexOf('/');
-			int pound = componentDef.getIdentity().toString().lastIndexOf('#');
-			int colon = componentDef.getIdentity().toString().lastIndexOf(':');
-			
-			if (slash!=-1 && slash > pound && slash > colon) {
-				displayId = componentDef.getIdentity().toString().substring(slash + 1);
-			} else if (pound!=-1 && pound > colon) {
-				displayId = componentDef.getIdentity().toString().substring(pound + 1);
-			} else if (colon!=-1) {
-				displayId = componentDef.getIdentity().toString().substring(colon + 1);
-			} else {
-				displayId = componentDef.getIdentity().toString();
-			}
-			displayId = fixDisplayId(displayId);
+			displayId = findDisplayId(componentDef.getIdentity().toString());
 			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
 			persIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI).toString();
 		}
@@ -686,20 +673,7 @@ public class SBOLReader
 
 		if (URIPrefix != null)
 		{
-			int slash = topLevel.getIdentity().toString().lastIndexOf('/');
-			int pound = topLevel.getIdentity().toString().lastIndexOf('#');
-			int colon = topLevel.getIdentity().toString().lastIndexOf(':');
-			
-			if (slash!=-1 && slash > pound && slash > colon) {
-				displayId = topLevel.getIdentity().toString().substring(slash + 1);
-			} else if (pound!=-1 && pound > colon) {
-				displayId = topLevel.getIdentity().toString().substring(pound + 1);
-			} else if (colon!=-1) {
-				displayId = topLevel.getIdentity().toString().substring(colon + 1);
-			} else {
-				displayId = topLevel.getIdentity().toString();
-			}
-			displayId = fixDisplayId(displayId);
+			displayId = findDisplayId(topLevel.getIdentity().toString());
 			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
 			persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
 		}
@@ -761,6 +735,34 @@ public class SBOLReader
 		}
 		return displayId;
 	}
+	
+	private static String findDisplayId(String topLevelIdentity) {
+		String displayId = null;
+		
+		topLevelIdentity = topLevelIdentity.trim();
+		while (topLevelIdentity.endsWith("/")||
+				topLevelIdentity.endsWith("#")||
+				topLevelIdentity.endsWith(":")) {
+			topLevelIdentity = topLevelIdentity.replaceAll("/$","");
+			topLevelIdentity = topLevelIdentity.replaceAll("#$","");
+			topLevelIdentity = topLevelIdentity.replaceAll(":$","");
+		}
+		int slash = topLevelIdentity.lastIndexOf('/');
+		int pound = topLevelIdentity.lastIndexOf('#');
+		int colon = topLevelIdentity.lastIndexOf(':');
+		
+		if (slash!=-1 && slash > pound && slash > colon) {
+			displayId = topLevelIdentity.substring(slash + 1);
+		} else if (pound!=-1 && pound > colon) {
+			displayId = topLevelIdentity.substring(pound + 1);
+		} else if (colon!=-1) {
+			displayId = topLevelIdentity.substring(colon + 1);
+		} else {
+			displayId = topLevelIdentity.toString();
+		}
+		displayId = fixDisplayId(displayId);
+		return displayId;
+	}
 
 	private static Collection parseCollectionV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
 	{
@@ -772,7 +774,13 @@ public class SBOLReader
 
 		Set<URI> members 			 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
-
+		
+		if (URIPrefix != null)
+		{
+			displayId = findDisplayId(topLevel.getIdentity().toString());
+			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+			persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
+		}
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol1Terms.Collection.displayId))

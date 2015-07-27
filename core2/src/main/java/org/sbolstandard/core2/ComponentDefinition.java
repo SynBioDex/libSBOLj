@@ -1359,11 +1359,15 @@ public class ComponentDefinition extends TopLevel {
 	@Override
 	ComponentDefinition copy(String URIprefix, String displayId, String version) {
 		ComponentDefinition cloned = this.deepCopy();
-		cloned.setWasDerivedFrom(this.getIdentity());
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
 		cloned.setVersion(version);
 		URI newIdentity = createCompliantURI(URIprefix,displayId,version);
+		if (!this.getIdentity().equals(newIdentity)) {
+			cloned.setWasDerivedFrom(this.getIdentity());
+		} else {
+			cloned.setWasDerivedFrom(this.getWasDerivedFrom());
+		}
 		cloned.setIdentity(newIdentity);
 		int count = 0;
 		for (Component component : cloned.getComponents()) {
