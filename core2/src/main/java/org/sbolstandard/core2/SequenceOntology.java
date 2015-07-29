@@ -94,14 +94,14 @@ public class SequenceOntology {
 	 */
 
 	// TODO: need method to convert from 1.1 SO term to 2.0
-	public static URI convertSeqOntologyV1(String term)
+	static URI convertSeqOntologyV1(String term)
 	{
 		String v1SO 	   = "http://purl.obolibrary.org/obo/SO_";
 		String v2SO 	   = "http://identifiers.org/so/SO:";
 		String convertedSO = term;
-		if(term.contains(v1SO))
+		if(term.startsWith(v1SO))
 		{
-			convertedSO.replace(v1SO, v2SO);
+			convertedSO = convertedSO.replace(v1SO, v2SO);
 			return URI.create(convertedSO);
 		}
 		return URI.create(convertedSO);
