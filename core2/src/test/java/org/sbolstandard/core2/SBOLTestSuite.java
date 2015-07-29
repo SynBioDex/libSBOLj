@@ -11,7 +11,6 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Matthew Pocock
  * @author Goksel Misirli
  * @author Chris Myers
- *
  */
 @RunWith(Suite.class)
 @SuiteClasses(

@@ -16,20 +16,20 @@ import java.net.URI;
 
 public class SequenceOntology {
 
-	// the map that contains all SO terms 
+	// the map that contains all SO terms
 	// will get initialized at the first access
-	
+
 	// EO: does the SO have a 1-1 key-value mapping?
-	
+
 	// private static Map<String, URI> so = null;
-	
+
 	private static final String URI_PREFIX = "http://identifiers.org/so/";
-	
+
 	/**
 	 * Namespace of the Sequence Ontology (<a href="http://identifiers.org/so/">http://identifiers.org/so/</a>).
 	 */
 	public static final URI NAMESPACE = URI.create(URI_PREFIX);
-	
+
 	/*
 	public static String getTerm(URI uri) {
 
@@ -38,21 +38,21 @@ public class SequenceOntology {
 		if(null == so) {
 			loadSO();
 		}
-		
+
 
 		// EO: is there a more efficient solution?
 		// the answer will depend on the answer to the question above
 		if(so.containsValue(uri) && null != uri) {
 			// here, we need to iterate over the SO terms
 			for(String term : so.keySet()) {
-				// if the URI of the current SO term matches the provided URI, 
+				// if the URI of the current SO term matches the provided URI,
 				// then we return the term
 				if(so.get(term).toString().equalsIgnoreCase(uri.toString())) {
 					return term;
 				}
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -62,49 +62,61 @@ public class SequenceOntology {
 		if(null == so) {
 			loadSO();
 		}
-		
+
 		if(null != term) {
 			return so.get(term.toUpperCase());
 		}
-		
+
 		return null;
 	}
-	
+
 	private static void loadSO() {
 
 		// this needs to be enhanced, of course
 		so = new HashMap<>();
 
 		// types
-		so.put("DNA", URI.create(URI_PREFIX + "SO:0000352"));		
+		so.put("DNA", URI.create(URI_PREFIX + "SO:0000352"));
 		so.put("PROTEIN", URI.create(URI_PREFIX + "SO:0001217"));
 		so.put("COMPLEX", URI.create(URI_PREFIX + "SO:0001784"));
 		so.put("GENE", URI.create(URI_PREFIX + "SO:0000704"));
 		so.put("SMALL MOLECULE", URI.create(URI_PREFIX + "SO:0001854"));
-		
-		
+
+
 		// sequence types
 		so.put("PROMOTER", PROMOTER);
 		so.put("RBS", URI.create(URI_PREFIX + "SO:0000139"));
 		so.put("TRANSCRIPT", URI.create(URI_PREFIX + "SO:0000673"));
 		so.put("CDS", URI.create(URI_PREFIX + "SO:0000673"));
 		so.put("TERMINATOR", URI.create(URI_PREFIX + "SO:0000673"));
-		
+
 	}
-	*/
-	
+	 */
+
 	// TODO: need method to convert from 1.1 SO term to 2.0
-	
+	public static URI convertSeqOntologyV1(String term)
+	{
+		String v1SO 	   = "http://purl.obolibrary.org/obo/SO_";
+		String v2SO 	   = "http://identifiers.org/so/SO:";
+		String convertedSO = term;
+		if(term.contains(v1SO))
+		{
+			convertedSO.replace(v1SO, v2SO);
+			return URI.create(convertedSO);
+		}
+		return URI.create(convertedSO);
+	}
+
 	/**
 	 * Creates a new URI from the Sequence Ontology namespace with the given local name. For example, the function call
 	 * <code>term("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
-	 * @param localName 
+	 * @param localName
 	 * @return the created URI
 	 */
 	public static final URI type(String localName) {
 		return URI.create(URI_PREFIX+localName);
 	}
-	
+
 	/**
 	 * A regulatory_region composed of the TSS(s) and binding sites for TF_complexes of the basal transcription
 	 * machinery (<a href="http://identifiers.org/so/SO:0000167">SO:0000167</a>).
@@ -160,7 +172,7 @@ public class SequenceOntology {
 	public static final URI RIBOSOME_ENTRY_SITE = type("SO:0000139");
 
 	/**
-	 * A region (or regions) that includes all of the sequence elements necessary to encode a functional transcript. 
+	 * A region (or regions) that includes all of the sequence elements necessary to encode a functional transcript.
 	 * A gene may include regulatory regions, transcribed regions and/or other functional sequence regions (<a
 	 * href="http://identifiers.org/so/SO:0000704">SO:0000704</a>)
 	 */
@@ -171,7 +183,7 @@ public class SequenceOntology {
 	 * href="http://identifiers.org/so/SO:0000234">SO:0000234</a>)
 	 */
 	public static final URI MRNA = type("SO:0000234");
-	
+
 	/**
 	 * Represents a region of a DNA molecule which is a nucleotide region (usually a palindrome) that is recognized by a
 	 * restriction enzyme (<a href="http://identifiers.org/so/SO:0001687">SO:0001687</a>).
@@ -182,7 +194,7 @@ public class SequenceOntology {
 	 * A gene that is engineered (<a href="http://identifiers.org/so/SO:0000280">SO:0000280</a>).
 	 */
 	public static final URI ENGINEERED_GENE = type("SO:0000280");
-	
+
 	/**
 	 * A region that is engineered (<a href="http://identifiers.org/so/SO:0000804">SO:0000804</a>).
 	 */
