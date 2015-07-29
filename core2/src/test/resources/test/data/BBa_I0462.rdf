@@ -8,22 +8,6 @@
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://purl.obolibrary.org/obo/SO_0000141"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/BBa_C0062">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_C0062"/>
-    <sbol:displayId>BBa_C0062</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://partsregistry.org/Part:BBa_C0062"/>
-    <dcterms:title>luxR</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/BBa_B0034">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_B0034"/>
-    <sbol:displayId>BBa_B0034</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://partsregistry.org/Part:BBa_B0034"/>
-    <dcterms:title>B0034</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/SO_0000139"/>
-  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/BBa_I0462">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_I0462"/>
     <sbol:displayId>BBa_I0462</sbol:displayId>
@@ -74,23 +58,6 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/BBa_I0462/annotation3">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/annotation3"/>
-        <sbol:displayId>annotation3</sbol:displayId>
-        <prov:wasDerivedFrom rdf:resource="http://sbols.org/anot#3456789"/>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/BBa_I0462/annotation3/range">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/annotation3/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>808</sbol:start>
-            <sbol:end>936</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/component2"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/BBa_I0462/annotation1">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/annotation1"/>
         <sbol:displayId>annotation1</sbol:displayId>
@@ -107,7 +74,40 @@
         <sbol:component rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/component0"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/BBa_I0462/annotation3">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/annotation3"/>
+        <sbol:displayId>annotation3</sbol:displayId>
+        <prov:wasDerivedFrom rdf:resource="http://sbols.org/anot#3456789"/>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/BBa_I0462/annotation3/range">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/annotation3/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>808</sbol:start>
+            <sbol:end>936</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/component2"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/d23749adb3a7e0e2f09168cb7267a6113b238973"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/BBa_C0062">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_C0062"/>
+    <sbol:displayId>BBa_C0062</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://partsregistry.org/Part:BBa_C0062"/>
+    <dcterms:title>luxR</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/BBa_B0034">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_B0034"/>
+    <sbol:displayId>BBa_B0034</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://partsregistry.org/Part:BBa_B0034"/>
+    <dcterms:title>B0034</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/SO_0000139"/>
   </sbol:ComponentDefinition>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/d23749adb3a7e0e2f09168cb7267a6113b238973">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/d23749adb3a7e0e2f09168cb7267a6113b238973"/>

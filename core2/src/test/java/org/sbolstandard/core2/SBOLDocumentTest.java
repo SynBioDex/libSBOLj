@@ -38,13 +38,13 @@ public class SBOLDocumentTest {
 		String createCopyURI = "URI";
 		URI SeqURI = URI.create(SequenceURI);
 		Sequence seq = document.createSequence(SequenceDisplayID, SequenceVersion, SequenceElements, SeqURI);
-//		Sequence seq2 = (Sequence)document2.createCopy(seq, SequenceURI, SequenceDisplayID, SequenceVersion);
+		Sequence seq2 = (Sequence)document2.createCopy(seq, SequenceURI, SequenceDisplayID, SequenceVersion);
 		Sequence seq3 = (Sequence)document2.createCopy(seq);
 		
-//		seq2.unsetWasDerivedFrom();
+		seq2.unsetWasDerivedFrom();
 		seq3.unsetWasDerivedFrom();
 		
-//		assertTrue(seq.equals(seq2));
+		assertTrue(seq.equals(seq2));
 		assertTrue(seq.equals(seq3));
 		assertEquals(seq, seq3);
 //		if(seq.equals(seq3)){

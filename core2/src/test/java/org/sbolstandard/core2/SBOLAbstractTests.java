@@ -27,6 +27,45 @@ public abstract class SBOLAbstractTests {
 	String VERSION_1_0 = "1.0";
 
 	@Test
+	public void test_methods() throws Exception
+	{
+		String prURI="http://partsregistry.org";
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		document.addNamespace(URI.create(prURI), prPrefix);
+		
+		String CD_ID = "ID";
+		String CD_Version = "1.0";
+		Set<URI> CD_Types = new HashSet<URI>();
+		CD_Types.add(URI.create("www.example.com"));
+		
+		String SeqID = "ID2";
+		String SeqVersion = "1.0";
+		String SeqElements = "some_element";
+		URI SeqEncoding = URI.create("www.example2.com");
+		
+		String ComponentID = "CID";
+		String ComponentVersion = "1.0";
+		
+		String SeqAnnID = "Sequence_annotation_ID";
+		String SeqAnnLocID = "locationID";
+		
+		String SC_ID = "SequenceConstraintID";
+		String SC_SubID = "SubjectID";
+		String SC_ObjID = "ObjectID";
+		Sequence Seq = document.createSequence(SeqID, SeqVersion, SeqElements, SeqEncoding);
+		ComponentDefinition CD = document.createComponentDefinition(CD_ID, CD_Version, CD_Types);
+		CD.addSequence(Seq);
+		CD.createComponent(ComponentID, AccessType.PRIVATE, CD_ID, ComponentVersion);
+		CD.createSequenceAnnotation(SeqAnnID, SeqAnnLocID);
+		CD.createSequenceConstraint(SC_ID, RestrictionType.OPPOSITE_ORIENTATION_AS, SC_SubID, SC_ObjID);
+		
+		runTest("test/data/test_Methods.rdf", document, "rdf");
+	}
+	
+	@Test
 	public void test_Model_remove() throws Exception
 	{
 		String prURI="http://partsregistry.org";
