@@ -18,6 +18,7 @@ public class readTester {
 	public static String filenameV1_9 	= "pIKE_pTAK_toggle_switches.xml";
 	public static String filenameV1_10 	= "miRNA.sbol.xml";
 	public static String filenameV1_11 	= "SBOL1/labhost_All.xml";
+	public static String filenameV1_12 	= "BBa_I0462.xml";
 
 	public static String path = "test/data/SBOL1/";
 
@@ -34,10 +35,14 @@ public class readTester {
 			SBOLDocument document1 = SBOLReader.read(file);
 			SBOLDocument document2 = new SBOLDocument();
 			for (ComponentDefinition cd : document1.getComponentDefinitions()) {
-				document2.createCopy(cd);
+				ComponentDefinition cd2 = (ComponentDefinition) document2.createCopy(cd);
+				if (!cd.equals(cd2)) 
+					System.out.println(cd.getIdentity() + " " + cd.equals(cd2));
 			}
 			for (Sequence s : document1.getSequences()) {
-				document2.createCopy(s);
+				Sequence s2 = (Sequence) document2.createCopy(s);
+				if (!s.equals(s2))
+					System.out.println(s.getIdentity() + " " + s.equals(s2));
 			}
 			//document1.setDefaultURIprefix("http://www.some.org");
 			//document1.createCollection("abc", "1.0");
