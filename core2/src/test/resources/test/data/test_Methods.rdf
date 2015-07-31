@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:pr="http://partsregistry.org" xmlns:sbol="http://sbols.org/v2#" xmlns:prov="http://www.w3.org/ns/prov#">
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/cd/ID/1.0">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/ID"/>
+    <sbol:displayId>ID</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <sbol:type rdf:resource="www.example.com"/>
+    <sbol:component>
+      <sbol:Component rdf:about="http://partsregistry.org/cd/ID/CID/1.0">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/ID/CID"/>
+        <sbol:displayId>CID</sbol:displayId>
+        <sbol:version>1.0</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#private"/>
+        <sbol:definition rdf:resource="http://partsregistry.org/cd/ID/1.0"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/cd/ID/Sequence_annotation_ID/1.0">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/ID/Sequence_annotation_ID"/>
+        <sbol:displayId>Sequence_annotation_ID</sbol:displayId>
+        <sbol:version>1.0</sbol:version>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="http://partsregistry.org/cd/ID/Sequence_annotation_ID/locationID/1.0">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/ID/Sequence_annotation_ID/locationID"/>
+            <sbol:displayId>locationID</sbol:displayId>
+            <sbol:version>1.0</sbol:version>
+          </sbol:GenericLocation>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceConstraint>
+      <sbol:SequenceConstraint rdf:about="http://partsregistry.org/cd/ID/SequenceConstraintID/1.0">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/ID/SequenceConstraintID"/>
+        <sbol:displayId>SequenceConstraintID</sbol:displayId>
+        <sbol:version>1.0</sbol:version>
+        <sbol:restriction rdf:resource="http://sbols.org/v2#oppositeOrientationAs"/>
+        <sbol:subject rdf:resource="http://partsregistry.org/cd/ID/SubjectID/1.0"/>
+        <sbol:object rdf:resource="http://partsregistry.org/cd/ID/ObjectID/1.0"/>
+      </sbol:SequenceConstraint>
+    </sbol:sequenceConstraint>
+    <sbol:sequence rdf:resource="http://partsregistry.org/seq/ID2/1.0"/>
+  </sbol:ComponentDefinition>
+  <sbol:Sequence rdf:about="http://partsregistry.org/seq/ID2/1.0">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/seq/ID2"/>
+    <sbol:displayId>ID2</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <sbol:elements>some_element</sbol:elements>
+    <sbol:encoding rdf:resource="www.example2.com"/>
+  </sbol:Sequence>
+</rdf:RDF>

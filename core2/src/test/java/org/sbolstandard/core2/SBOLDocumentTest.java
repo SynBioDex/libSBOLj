@@ -13,7 +13,7 @@ import org.junit.Test;
 public class SBOLDocumentTest {
 
 	@Test
-	public void Test_Sequence_CopyCreate() {
+	public void Test_Sequence_CopyCreate_Create() {
 		
 		String prURI="http://partsregistry.org";
 		String prPrefix="pr";
@@ -38,19 +38,19 @@ public class SBOLDocumentTest {
 		String createCopyURI = "URI";
 		URI SeqURI = URI.create(SequenceURI);
 		Sequence seq = document.createSequence(SequenceDisplayID, SequenceVersion, SequenceElements, SeqURI);
-//		Sequence seq2 = (Sequence)document2.createCopy(seq, SequenceURI, SequenceDisplayID, SequenceVersion);
+		Sequence seq2 = (Sequence)document2.createCopy(seq, SequenceURI, SequenceDisplayID, SequenceVersion);
 		Sequence seq3 = (Sequence)document2.createCopy(seq);
 		
+		seq2.unsetWasDerivedFrom();
 		seq3.unsetWasDerivedFrom();
 		
+		//assertTrue(seq.equals(seq2));
 		assertTrue(seq.equals(seq3));
 		assertEquals(seq, seq3);
 //		if(seq.equals(seq3)){
 //			System.out.println("True");
 //		}
-//		else{System.out.println("False");}
-//		
-		
+//		else{System.out.println("False");}	
 	}
 
 	@Test
@@ -128,13 +128,23 @@ public class SBOLDocumentTest {
 		document2.setDefaultURIprefix(prURI2);
 		document2.setTypesInURIs(true);
 		
+		String prURI3="http://partsregistry3.org";
+		String prPrefix3="pr3";
+		SBOLDocument document3 = new SBOLDocument();
+		document3.setDefaultURIprefix(prURI3);
+		document3.setTypesInURIs(true);
+		
 		String Col1ID = "ID";
+		String Col3ID = "ID3";
 		String Col1Version = "1.0";
 		Collection Col1 = document1.createCollection(Col1ID, Col1Version);
 		Collection Col2 = (Collection)document2.createCopy(Col1);
+//		Collection Col3 = (Collection)document3.createCopy(Col1, Col1ID);
 		
+//		Col3.unsetWasDerivedFrom();
 		Col2.unsetWasDerivedFrom();
 		
+//		assertTrue(Col1.equals(Col3));
 		assertTrue(Col1.equals(Col2));
 	}
 	
@@ -163,7 +173,32 @@ public class SBOLDocumentTest {
 		
 		assertTrue(CD1.equals(CD2));
 	}
+	
+	@Test
+	public void Test_ModuleDefinition_CreateCopy(){
+		
+		String prURI="http://partsregistry.org";
+		String prPrefix="pr";
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(prURI);
+		document1.setTypesInURIs(true);
+		
+		String prURI2="http://partsregistry2.org";
+		String prPrefix2="pr2";
+		SBOLDocument document2 = new SBOLDocument();
+		document2.setDefaultURIprefix(prURI2);
+		document2.setTypesInURIs(true);
+		
+		String MD1_ID = "ID";
+		String MD1_Version = "1.0";
+		ModuleDefinition MD1 = document1.createModuleDefinition(MD1_ID, MD1_Version);
+		ModuleDefinition MD2 = (ModuleDefinition)document2.createCopy(MD1);
+		
+		MD2.unsetWasDerivedFrom();
+		
+		assertTrue(MD1.equals(MD2));
+	}
+	
+	
 }
-
-
 

@@ -96,7 +96,7 @@ public class SBOLReader
 	{
 		SBOLReader.URIPrefix = URIprefix;
 	}
-	
+
 	/**
 	 * Remove the default URI prefix
 	 */
@@ -524,7 +524,7 @@ public class SBOLReader
 
 		int component_num = 0;
 		int sa_num 		  = 0;
-		
+
 		if (URIPrefix != null)
 		{
 			displayId = findDisplayId(componentDef.getIdentity().toString());
@@ -538,7 +538,7 @@ public class SBOLReader
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				displayId = fixDisplayId(displayId);
-				if (URIPrefix != null ) 
+				if (URIPrefix != null )
 				{
 					persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
 					identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
@@ -555,7 +555,9 @@ public class SBOLReader
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.type))
 			{
 				// TODO: conversion to proper SO term when possible
-				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				URI convertedSO = SequenceOntology.convertSeqOntologyV1(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				roles.add(convertedSO);
+				//				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.annotations))
 			{
@@ -735,10 +737,10 @@ public class SBOLReader
 		}
 		return displayId;
 	}
-	
+
 	private static String findDisplayId(String topLevelIdentity) {
 		String displayId = null;
-		
+
 		topLevelIdentity = topLevelIdentity.trim();
 		while (topLevelIdentity.endsWith("/")||
 				topLevelIdentity.endsWith("#")||
@@ -750,7 +752,7 @@ public class SBOLReader
 		int slash = topLevelIdentity.lastIndexOf('/');
 		int pound = topLevelIdentity.lastIndexOf('#');
 		int colon = topLevelIdentity.lastIndexOf(':');
-		
+
 		if (slash!=-1 && slash > pound && slash > colon) {
 			displayId = topLevelIdentity.substring(slash + 1);
 		} else if (pound!=-1 && pound > colon) {
@@ -774,7 +776,7 @@ public class SBOLReader
 
 		Set<URI> members 			 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
-		
+
 		if (URIPrefix != null)
 		{
 			displayId = findDisplayId(topLevel.getIdentity().toString());
@@ -1082,7 +1084,7 @@ public class SBOLReader
 					Sbol2Terms.SequenceConstraint.restriction))
 			{
 				restriction = URI.create(((Literal<QName>) namedProperty
-										.getValue()).getValue().toString());
+						.getValue()).getValue().toString());
 
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.SequenceConstraint.hasSubject))
@@ -1139,7 +1141,7 @@ public class SBOLReader
 		URI wasDerivedFrom 	   = null;
 		List<Location> locations = new ArrayList<>();
 		List<Annotation> annotations = new ArrayList<>();
-		
+
 		if (!sequenceAnnotation.getType().equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation)) {
 			throw new SBOLValidationException(sequenceAnnotation.getType() + " is not a valid sequence annotation.");
 		}
