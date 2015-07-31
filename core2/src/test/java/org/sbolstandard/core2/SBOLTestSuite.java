@@ -18,7 +18,8 @@ import org.junit.runners.Suite.SuiteClasses;
 //						SBOLGenerateFile.class,
 			SBOLReaderTest.class,
 			SBOLWriterTest.class,
-			URIcomplianceTest.class
+			URIcomplianceTest.class,
+			SBOLDocumentTest.class
 		}
 		)
 
