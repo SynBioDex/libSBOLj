@@ -26,7 +26,161 @@ public abstract class SBOLAbstractTests {
 
 	String VERSION_1_0 = "1.0";
 
+	@Test
+	public void test_methods() throws Exception
+	{
+		String prURI="http://partsregistry.org";
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		document.addNamespace(URI.create(prURI), prPrefix);
+		
+		String CD_ID = "ID";
+		String CD_Version = "1.0";
+		Set<URI> CD_Types = new HashSet<URI>();
+		CD_Types.add(URI.create("www.example.com"));
+		
+		String SeqID = "ID2";
+		String SeqVersion = "1.0";
+		String SeqElements = "some_element";
+		URI SeqEncoding = URI.create("www.example2.com");
+		
+		String ComponentID = "CID";
+		String ComponentVersion = "1.0";
+		
+		String SeqAnnID = "Sequence_annotation_ID";
+		String SeqAnnLocID = "locationID";
+		
+		String SC_ID = "SequenceConstraintID";
+		String SC_SubID = "SubjectID";
+		String SC_ObjID = "ObjectID";
+		Sequence Seq = document.createSequence(SeqID, SeqVersion, SeqElements, SeqEncoding);
+		ComponentDefinition CD = document.createComponentDefinition(CD_ID, CD_Version, CD_Types);
+		CD.addSequence(Seq);
+		CD.createComponent(ComponentID, AccessType.PRIVATE, CD_ID, ComponentVersion);
+		CD.createSequenceAnnotation(SeqAnnID, SeqAnnLocID);
+		CD.createSequenceConstraint(SC_ID, RestrictionType.OPPOSITE_ORIENTATION_AS, SC_SubID, SC_ObjID);
+		
+		runTest("test/data/test_Methods.rdf", document, "rdf");
+	}
+	
+	@Test
+	public void test_Model_remove() throws Exception
+	{
+		String prURI="http://partsregistry.org";
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		document.addNamespace(URI.create(prURI), prPrefix);
 
+		String M1_ID = "ID";
+		String M1_Version = "1.0";
+		String M1_Source = "www.example.com";
+		String M1_Language = "www.example1.com";
+		String M1_Framework = "www.example2.com";
+		URI M1_URISource = URI.create(M1_Source);
+		URI M1_URILanguage = URI.create(M1_Language);
+		URI M1_URI_Framework = URI.create(M1_Framework);
+		
+		Model M1 = document.createModel(M1_ID, M1_Version, M1_URISource, M1_URILanguage, M1_URI_Framework);
+		document.removeModel(M1);
+		
+		runTest("test/data/test_Model_remove.rdf", document, "rdf");
+	}
+	
+	@Test
+	public void test_Sequence_remove() throws Exception
+	{
+		String prURI="http://partsregistry.org";
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		document.addNamespace(URI.create(prURI), prPrefix);
+		
+		String SeqID = "ID";
+		String SeqVersion = "1.0";
+		String SeqElements = "Element";
+		URI SeqEncoding = URI.create("www.example.com");
+		Sequence Seq = document.createSequence(SeqID, SeqVersion, SeqElements, SeqEncoding);
+		document.removeSequence(Seq);
+		runTest("test/data/test_Sequence_remove.rdf", document, "rdf");
+	}
+	
+	@Test
+	public void test_Collection_remove() throws Exception
+	{
+		String prURI="http://partsregistry.org";
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		document.addNamespace(URI.create(prURI), prPrefix);
+		
+		String Col1_ID = "ID";
+		String Col1_Version = "1.0";
+		Collection Col1 = document.createCollection(Col1_ID, Col1_Version);
+		document.removeCollection(Col1);
+		runTest("test/data/test_Collection_remove.rdf", document, "rdf");
+	}
+	
+	@Test
+	public void test_ModuleDefinition_remove() throws Exception
+	{
+		String prURI="http://partsregistry.org";
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		document.addNamespace(URI.create(prURI), prPrefix);
+		
+		String MD_ID = "ID";
+		String MD_Version = "1.0";
+		ModuleDefinition MD = document.createModuleDefinition(MD_ID, MD_Version);
+		document.removeModuleDefinition(MD);
+		runTest("test/data/test_ModuleDefinition_remove.rdf", document, "rdf");
+	}
+	
+	@Test
+	public void test_ComponentDefinition_remove() throws Exception
+	{
+		String prURI="http://partsregistry.org";
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		document.addNamespace(URI.create(prURI), prPrefix);
+		
+		String CD_ID = "ID";
+		String CD_Version = "1.0";
+		Set<URI> CD_Types = new HashSet<URI>();
+		CD_Types.add(URI.create("www.example.com"));
+		ComponentDefinition CD = document.createComponentDefinition(CD_ID, CD_Version, CD_Types);
+		document.removeComponentDefinition(CD);
+		runTest("test/data/test_ComponentDefinition_remove.rdf", document, "rdf");
+	}
+	
+	@Test
+	public void test_GenericTopLevel_remove() throws Exception
+	{
+		String prURI="http://partsregistry.org";
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		document.addNamespace(URI.create(prURI), prPrefix);
+		
+		String GTL_ID = "ID";
+		String GTL_Version = "1.0";
+		String GTL_Qname = "name";
+		GenericTopLevel GTL = document.createGenericTopLevel(GTL_ID, GTL_Version, QName.valueOf(GTL_Qname));
+		document.removeGenericTopLevel(GTL);
+		runTest("test/data/test_GenericTopLevel_remove.rdf", document, "rdf");
+	}
+	
+	
 	@Test
 	public void test_AnnotationOutput() throws Exception
 	{
