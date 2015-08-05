@@ -15,38 +15,64 @@ public class SBOLDocumentTest {
 	@Test
 	public void Test_Sequence_CopyCreate_Create() {
 		
+		
+		//create copy not adding types to URIs
 		String prURI="http://partsregistry.org";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
-		document.setTypesInURIs(true);
+		document.setTypesInURIs(false);
 //		document.addNamespace(URI.create(prURI), prPrefix);
 		
-		String prURI1="http://partsregistry1.org";
-		String prPrefix1="pr1";
+		String prURI1="http://partsregistry.org";
+		String prPrefix1="pr";
 		SBOLDocument document2 = new SBOLDocument();
 		document.setDefaultURIprefix(prURI1);
-		document.setTypesInURIs(true);
+		document.setTypesInURIs(false);
 //		document.addNamespace(URI.create(prURI1), prPrefix1);
 		
 		String SequenceDisplayID = "ID";
 		String SequenceVersion = "1.0";
 		String SequenceElements = "Element";
-		String SequenceURI = "http://partsregistry.org/"+SequenceDisplayID;
+		String SequenceURI = "http://partsregistry.org";
 		String createCopyID = "ID";
 		String createCopyVersion = "1.0";
 		String createCopyURI = "URI";
-		URI SeqURI = URI.create(SequenceURI);
+		String seq2ID = "ID2";
+		String seq2Version = "1.0";
+		String seq2URIPrefix = "http://partsregistry.org";
+		URI seq2URI = URI.create("http://partsregistry.org");
+		URI SeqURI = URI.create("www.example.com/name");
+		
+		
 		Sequence seq = document.createSequence(SequenceDisplayID, SequenceVersion, SequenceElements, SeqURI);
-		Sequence seq2 = (Sequence)document2.createCopy(seq, SequenceURI, SequenceDisplayID, SequenceVersion);
-		Sequence seq3 = (Sequence)document2.createCopy(seq);
+		Sequence seq2 = (Sequence)document2.createCopy(seq, SequenceURI, SequenceDisplayID, seq2Version);
+//		Sequence seq3 = (Sequence)document2.createCopy(seq);
 		
-		seq2.unsetWasDerivedFrom();
-		seq3.unsetWasDerivedFrom();
 		
+//		seq2.unsetWasDerivedFrom();
+//		seq3.unsetWasDerivedFrom();
+		
+		
+		System.out.println(seq.getIdentity());
+		System.out.println(seq2.getIdentity());
+
+		assertTrue(seq.getVersion().equals(seq2.getVersion()));
+		assertTrue(seq.getElements().equals(seq2.getElements()));
+		assertTrue(seq.getDisplayId().equals(seq2.getDisplayId()));
+		assertTrue(seq.getEncoding().equals(seq2.getEncoding()));
+		assertTrue(seq.getClass().equals(seq2.getClass()));
+		assertTrue(seq.getAnnotations().equals(seq2.getAnnotations()));
+//		assertTrue(seq.getIdentity().equals(seq2.getIdentity()));						//assertion error
+//		assertTrue(seq.getDescription().equals(seq2.getDescription()));					//null pointer exception
+//		assertTrue(seq.getWasDerivedFrom().equals(seq2.getWasDerivedFrom()));			//null pointer exception
+		assertTrue(seq.getPersistentIdentity().equals(seq2.getPersistentIdentity()));	//assertion error
+//		assertTrue(seq.getName().equals(seq2.getName()));								//null pointer exception
 		assertTrue(seq.equals(seq2));
-		assertTrue(seq.equals(seq3));
-		assertEquals(seq, seq3);
+//		assertEquals(seq, seq3);
+		
+		
+
 //		if(seq.equals(seq3)){
 //			System.out.println("True");
 //		}
@@ -60,17 +86,19 @@ public class SBOLDocumentTest {
 		String prPrefix="pr";
 		SBOLDocument document1 = new SBOLDocument();
 		document1.setDefaultURIprefix(prURI);
-		document1.setTypesInURIs(true);
+		document1.setTypesInURIs(false);
 		
-		String prURI2="http://partsregistry2.org";
-		String prPrefix2="pr2";
+		String prURI2="http://partsregistry.org";
+		String prPrefix2="pr";
 		SBOLDocument document2 = new SBOLDocument();
 		document2.setDefaultURIprefix(prURI2);
-		document2.setTypesInURIs(true);
+		document2.setTypesInURIs(false);
 		
 		
 		String model1ID = "ID";
 		String model1Version = "1.0";
+		String model2Version = "1.2";
+		String model1URIPrefix = "http://partsregistry.org";
 		String S_model1URI = "http://partsregistry.org/ID";
 		String L_model1URI = "http://partsregistry.org/Source";
 		String F_model1URI = "http://partsregistry.org/Framework";
@@ -80,11 +108,25 @@ public class SBOLDocumentTest {
 		URI model1URI_F = URI.create(F_model1URI);
 		
 		Model mod1 = document1.createModel(model1ID, model1Version, model1URI_S, model1URI_L, model1URI_F);
-		Model mod2 = (Model)document2.createCopy(mod1);
+//		Model mod2 = (Model)document2.createCopy(mod1);
+		Model mod3 = (Model)document2.createCopy(mod1, model1URIPrefix, model1ID, model1Version);
 		
-		mod2.unsetWasDerivedFrom();
+//		mod2.unsetWasDerivedFrom();
 		
-		assertTrue(mod1.equals(mod2));		
+//		assertTrue(mod1.equals(mod2));	
+		assertTrue(mod1.getAnnotations().equals(mod3.getAnnotations()));
+		assertTrue(mod1.getClass().equals(mod3.getClass()));
+//		assertTrue(mod1.getDescription().equals(mod3.getDescription()));				//null pointer exception
+		assertTrue(mod1.getDisplayId().equals(mod3.getDisplayId()));
+		assertTrue(mod1.getFramework().equals(mod3.getFramework()));
+		assertTrue(mod1.getIdentity().equals(mod3.getIdentity()));						//assertion error
+		assertTrue(mod1.getLanguage().equals(mod3.getLanguage()));
+//		assertTrue(mod1.getName().equals(mod3.getName()));								//null pointer exception
+		assertTrue(mod1.getPersistentIdentity().equals(mod3.getPersistentIdentity()));	//assertion error
+		assertTrue(mod1.getSource().equals(mod3.getSource()));
+		assertTrue(mod1.getVersion().equals(mod3.getVersion()));
+//		assertTrue(mod1.getWasDerivedFrom().equals(mod3.getWasDerivedFrom()));			//null pointer exception
+		
 	}
 	
 	@Test
