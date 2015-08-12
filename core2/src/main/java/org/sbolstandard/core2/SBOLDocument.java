@@ -195,6 +195,24 @@ public class SBOLDocument {
 	void addModuleDefinition(ModuleDefinition newModuleDefinition) {
 		addTopLevel(newModuleDefinition, moduleDefinitions, "moduleDefinition",
                 collections, componentDefinitions, genericTopLevels, models, sequences);
+		for (FunctionalComponent functionalComponent : newModuleDefinition.getFunctionalComponents()) {
+			functionalComponent.setSBOLDocument(this);
+			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+				mapsTo.setSBOLDocument(this);
+			}
+		}
+		for (Module module : newModuleDefinition.getModules()) {
+			module.setSBOLDocument(this);
+			for (MapsTo mapsTo : module.getMapsTos()) {
+				mapsTo.setSBOLDocument(this);
+			}
+		}
+		for (Interaction interaction : newModuleDefinition.getInteractions()) {
+			interaction.setSBOLDocument(this);
+			for (Participation participation : interaction.getParticipations()) {
+				participation.setSBOLDocument(this);
+			}
+		}
 	}
 	
 	/**
@@ -918,6 +936,21 @@ public class SBOLDocument {
 	void addComponentDefinition(ComponentDefinition newComponentDefinition) {
 		addTopLevel(newComponentDefinition, componentDefinitions, "componentDefinition",
                 collections, genericTopLevels, models, moduleDefinitions, sequences);
+		for (Component component : newComponentDefinition.getComponents()) {
+			component.setSBOLDocument(this);
+			for (MapsTo mapsTo : component.getMapsTos()) {
+				mapsTo.setSBOLDocument(this);
+			}
+		}
+		for (SequenceAnnotation sequenceAnnotation : newComponentDefinition.getSequenceAnnotations()) {
+			sequenceAnnotation.setSBOLDocument(this);
+			for (Location location : sequenceAnnotation.getLocations()) {
+				location.setSBOLDocument(this);
+			}
+		}
+		for (SequenceConstraint sequenceConstraint : newComponentDefinition.getSequenceConstraints()) {
+			sequenceConstraint.setSBOLDocument(this);
+		}
 	}
 
 	/**
@@ -1472,7 +1505,7 @@ public class SBOLDocument {
 			version = topLevel.getVersion();
 		}
 		validateIdVersion(displayId,version);
-		if (topLevel instanceof Collection) {			
+		if (topLevel instanceof Collection) {
 			Collection newCollection = ((Collection) topLevel).copy(URIprefix, displayId, version);
 			addCollection(newCollection);
 			return newCollection;
