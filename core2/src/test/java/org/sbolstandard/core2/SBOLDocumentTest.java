@@ -31,6 +31,12 @@ public class SBOLDocumentTest {
 		document.setTypesInURIs(false);
 //		document.addNamespace(URI.create(prURI1), prPrefix1);
 		
+		String prURI2="http://partsregistry.org";
+		String prPrefix2="pr";
+		SBOLDocument document3 = new SBOLDocument();
+		document.setDefaultURIprefix(prURI2);
+		document.setTypesInURIs(false);
+		
 		String SequenceDisplayID = "ID";
 		String SequenceVersion = "1.0";
 		String SequenceElements = "Element";
@@ -47,7 +53,7 @@ public class SBOLDocumentTest {
 		
 		Sequence seq = document.createSequence(SequenceDisplayID, SequenceVersion, SequenceElements, SeqURI);
 		Sequence seq2 = (Sequence)document2.createCopy(seq, SequenceURI, SequenceDisplayID, seq2Version);
-//		Sequence seq3 = (Sequence)document2.createCopy(seq);
+		Sequence seq3 = (Sequence)document3.createCopy(seq, SequenceDisplayID);
 		
 		
 //		seq2.unsetWasDerivedFrom();
@@ -69,7 +75,8 @@ public class SBOLDocumentTest {
 		assertTrue(seq.getPersistentIdentity().equals(seq2.getPersistentIdentity()));	//assertion error
 //		assertTrue(seq.getName().equals(seq2.getName()));								//null pointer exception
 		assertTrue(seq.equals(seq2));
-//		assertEquals(seq, seq3);
+//		assertTrue(seq.equals(seq3));
+		
 		
 		
 
