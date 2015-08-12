@@ -1505,7 +1505,7 @@ public class SBOLDocument {
 			version = topLevel.getVersion();
 		}
 		validateIdVersion(displayId,version);
-		if (topLevel instanceof Collection) {			
+		if (topLevel instanceof Collection) {
 			Collection newCollection = ((Collection) topLevel).copy(URIprefix, displayId, version);
 			addCollection(newCollection);
 			return newCollection;

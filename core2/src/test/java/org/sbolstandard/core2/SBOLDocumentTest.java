@@ -145,6 +145,8 @@ public class SBOLDocumentTest {
 		//		Col3.unsetWasDerivedFrom();
 		Col2.unsetWasDerivedFrom();
 
+		//System.out.println(Col1.getIdentity());
+		//System.out.println(Col2.getIdentity());
 		//		assertTrue(Col1.equals(Col3));
 		assertTrue(Col1.equals(Col2));
 	}
