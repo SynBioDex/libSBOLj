@@ -124,7 +124,11 @@ public class Annotation {
 
 	Annotation(NamedProperty<QName> value) {
 		if (value.getName().getPrefix().toString().equals("sbol")) {
-			throw new SBOLValidationException(value.getName().getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
+			if (value.getName().equals(Sbol2Terms.Identified.timeStamp)) {
+				System.out.println("Warning: sbol:timeStamp is deprecated");
+			} else { 
+				throw new SBOLValidationException(value.getName().getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
+			}
 		}
 		this.value = value;
 	}

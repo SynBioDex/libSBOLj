@@ -62,6 +62,7 @@ class Sbol2Terms
 		static final QName hasSequenceAnnotations = sbol2.withLocalPart("sequenceAnnotation");
 		static final QName hasSequenceConstraints = sbol2.withLocalPart("sequenceConstraint");
 		static final QName hasComponent = sbol2.withLocalPart("component"); 
+		static final QName hasSubComponent = sbol2.withLocalPart("subComponent"); 
 	}
 
 	/**
@@ -83,17 +84,6 @@ class Sbol2Terms
 		static final QName Cut 		  = sbol2.withLocalPart("Cut");
 		static final QName at 		  = sbol2.withLocalPart("at");
 		static final QName orientation = sbol2.withLocalPart("orientation");
-	}
-
-	/**
-	 * A group of qualified terms for the SBOL Documented interface
-	 *
-	 */
-	static final class Documented {
-		static final QName Documented  = sbol2.withLocalPart("Documented");
-		static final QName displayId   = sbol2.withLocalPart("displayId");
-		static final QName title 	  = dc.withLocalPart("title");
-		static final QName description = dc.withLocalPart("description");
 	}
 
 	/**
@@ -122,6 +112,9 @@ class Sbol2Terms
 		static final QName timeStamp   	     = sbol2.withLocalPart("timeStamp");
 		static final QName hasAnnotations 	 = sbol2.withLocalPart("annotation");
 		static final QName wasDerivedFrom	 = prov.withLocalPart("wasDerivedFrom");
+		static final QName displayId   = sbol2.withLocalPart("displayId");
+		static final QName title 	  = dc.withLocalPart("title");
+		static final QName description = dc.withLocalPart("description");
 	}
 
 	/**
@@ -174,6 +167,7 @@ class Sbol2Terms
 		static final QName ModuleDefinition 	  = sbol2.withLocalPart("ModuleDefinition");
 		static final QName roles			   	  = sbol2.withLocalPart("role");
 		static final QName hasModule	       	  = sbol2.withLocalPart("module");
+		static final QName hasSubModule	       	  = sbol2.withLocalPart("subModule");
 		static final QName hasInteractions  	  = sbol2.withLocalPart("interaction");
 		static final QName hasModels 	   		  = sbol2.withLocalPart("model");
 		static final QName hasfunctionalComponent = sbol2.withLocalPart("functionalComponent");
@@ -187,6 +181,7 @@ class Sbol2Terms
 	static final class Module {
 		static final QName Module 				= sbol2.withLocalPart("Module");
 		static final QName hasMapsTo			    = sbol2.withLocalPart("mapsTo");
+		static final QName hasMapping			    = sbol2.withLocalPart("mapping");
 		static final QName hasDefinition		    = sbol2.withLocalPart("definition");
 		//static final QName hasInstantiatedModule = sbol2.withLocalPart("instantiatedModule");
 	}

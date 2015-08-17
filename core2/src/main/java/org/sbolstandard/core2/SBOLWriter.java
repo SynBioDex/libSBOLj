@@ -332,34 +332,30 @@ public class SBOLWriter {
 		}
 	}
 
-	private static void formatCommonDocumentedData (List<NamedProperty<QName>> list, Identified d)
-	{
-		formatCommonIdentifiedData(list, d);
-		if(d.isSetName())
-			list.add(NamedProperty(Sbol2Terms.Documented.title, d.getName()));
-		if(d.isSetDescription())
-			list.add(NamedProperty(Sbol2Terms.Documented.description, d.getDescription()));
-	}
-
 	private static void formatCommonIdentifiedData (List<NamedProperty<QName>> list, Identified t)
 	{
 		if(t.isSetPersistentIdentity())
 			list.add(NamedProperty(Sbol2Terms.Identified.persistentIdentity, t.getPersistentIdentity()));
 		if(t.isSetDisplayId())
-			list.add(NamedProperty(Sbol2Terms.Documented.displayId, t.getDisplayId()));
+			list.add(NamedProperty(Sbol2Terms.Identified.displayId, t.getDisplayId()));
 		if(t.isSetVersion())
 			list.add(NamedProperty(Sbol2Terms.Identified.version, t.getVersion()));
 		if(t.isSetWasDerivedFrom())
 			list.add(NamedProperty(Sbol2Terms.Identified.wasDerivedFrom, t.getWasDerivedFrom()));
+		if(t.isSetName())
+			list.add(NamedProperty(Sbol2Terms.Identified.title, t.getName()));
+		if(t.isSetDescription())
+			list.add(NamedProperty(Sbol2Terms.Identified.description, t.getDescription()));
 		for(Annotation annotation : t.getAnnotations())
 		{
-			list.add(annotation.getValue());
+			if (!annotation.getValue().getName().getPrefix().equals("sbol"))
+				list.add(annotation.getValue());
 		}
 	}
 
 	private static void formatCommonTopLevelData (List<NamedProperty<QName>> list, TopLevel t)
 	{
-		formatCommonDocumentedData(list,t);
+		formatCommonIdentifiedData(list,t);
 	}
 
 	private static void formatComponentDefinitions (Set<ComponentDefinition> componentDefinitions, List<TopLevelDocument<QName>> topLevelDoc)
@@ -400,7 +396,7 @@ public class SBOLWriter {
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
 
-			formatCommonDocumentedData(list, f);
+			formatCommonIdentifiedData(list, f);
 
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinitionURI()));
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, AccessType.convertToURI(f.getAccess())));
@@ -428,7 +424,7 @@ public class SBOLWriter {
 		for(Interaction i : interactions)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonDocumentedData(list, i);
+			formatCommonIdentifiedData(list, i);
 			for(URI type : i.getTypes())
 			{
 				list.add(NamedProperty(Sbol2Terms.Interaction.type, type));
@@ -477,7 +473,7 @@ public class SBOLWriter {
 		for(Module m : module)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonDocumentedData(list, m);
+			formatCommonIdentifiedData(list, m);
 			list.add(NamedProperty(Sbol2Terms.Module.hasDefinition, m.getDefinitionURI()));
 			List<NestedDocument<QName>> referenceList = getMapsTo(m.getMapsTos());
 			for(NestedDocument<QName> n : referenceList)
@@ -535,7 +531,7 @@ public class SBOLWriter {
 		for(SequenceAnnotation s : sequenceAnnotations)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonDocumentedData(list, s);
+			formatCommonIdentifiedData(list, s);
 			for (Location location : s.getLocations()) {
 				list.add(getLocation(location));
 			}
@@ -583,7 +579,7 @@ public class SBOLWriter {
 		for(Component s : components)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonDocumentedData(list, s);
+			formatCommonIdentifiedData(list, s);
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, AccessType.convertToURI(s.getAccess())));
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinitionURI()));
 			List<NestedDocument<QName>> referenceList = getMapsTo(s.getMapsTos());
