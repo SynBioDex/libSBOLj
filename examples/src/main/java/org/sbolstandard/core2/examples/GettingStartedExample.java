@@ -9,7 +9,6 @@ import org.sbolstandard.core2.RestrictionType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
-import org.sbolstandard.core2.SequenceConstraint;
 import org.sbolstandard.core2.SequenceOntology;
 
 /**
@@ -121,7 +120,7 @@ public class GettingStartedExample {
 		// For pIKELeftCassette, create sequence constraint that says BBa_R0040 precedes BBa_C0012.
 		// Note that with CreateDefaults that components get created automatically.
 		// The position of the subject Component MUST precede that of the object Component. 
-		SequenceConstraint seqConstraint = pIKELeftCassette.createSequenceConstraint(
+		pIKELeftCassette.createSequenceConstraint(
 				"pIKELeftCassette_sc",
 				RestrictionType.PRECEDES,
 				TetR_promoter.getDisplayId(), 
@@ -137,7 +136,7 @@ public class GettingStartedExample {
 		
 		// Copying objects
 		ComponentDefinition TetR_promoter_copy = (ComponentDefinition) document.createCopy(TetR_promoter, "BBa_K137046");
-		Sequence seq_K137046 = document.createSequence(
+		document.createSequence(
 				"seq_K137046",
 				"",
 				"gtgctcagtatctctatcactgatagggatgtcaatctctatcactgatagggactctagtatat"
