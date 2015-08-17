@@ -107,7 +107,7 @@ public abstract class Identified {
 	 * 
 	 * @return {@code true} if it is not {@code null}
 	 */
-	boolean isSetPersistentIdentity() {
+	public boolean isSetPersistentIdentity() {
 		return persistentIdentity != null;
 	}
 
@@ -178,7 +178,7 @@ public abstract class Identified {
 	 * 
 	 * @return {@code true} if it is not {@code null}
 	 */
-	boolean isSetDisplayId() {
+	public boolean isSetDisplayId() {
 		return displayId != null;
 	}
 	
