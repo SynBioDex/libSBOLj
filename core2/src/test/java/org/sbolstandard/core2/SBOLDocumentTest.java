@@ -77,13 +77,9 @@ public class SBOLDocumentTest {
 		assertTrue(seq.getClass().equals(seq2.getClass()));
 		assertTrue(seq.getAnnotations().equals(seq2.getAnnotations()));
 //		assertTrue(seq.getIdentity().equals(seq2.getIdentity()));						//assertion error
-		System.out.println(seq.getDescription());
-		System.out.println(seq2.getDescription());
 		assertTrue(seq.getDescription().equals(seq2.getDescription()));					//assertion error
 //		assertTrue(seq.getWasDerivedFrom().equals(seq2.getWasDerivedFrom()));			//null pointer exception
 		assertTrue(seq.getPersistentIdentity().equals(seq2.getPersistentIdentity()));	//assertion error
-		System.out.println(seq.getName());
-		System.out.println(seq2.getName());
 		assertTrue(seq.getName().equals(seq2.getName()));								//assertion error, name is not getting copied  
 		assertTrue(seq.equals(seq2));
 		
@@ -215,8 +211,8 @@ public class SBOLDocumentTest {
 		String Col3ID = "ID3";
 		String Col1Version = "1.0";
 		Collection Col1 = document1.createCollection(Col1ID, Col1Version);
-//		Col1.setDescription("description");
-//		Col1.setName("Col1");
+		Col1.setDescription("description");
+		Col1.setName("Col1");
 		Collection Col2 = (Collection)document2.createCopy(Col1);
 //		Collection Col3 = (Collection)document3.createCopy(Col1, Col1ID);
 		
@@ -227,9 +223,9 @@ public class SBOLDocumentTest {
 		assertTrue(Col1.equals(Col2));
 		assertTrue(Col1.getAnnotations().equals(Col2.getAnnotations()));
 		assertTrue(Col1.getClass().equals(Col2.getClass()));
-//		assertTrue(Col1.getDescription().equals(Col2.getDescription())); ----------------------------------------------------------
-//		assertTrue(Col1.getDisplayId().equals(Col2.getDisplayId()));   //display id should be equal
-//		assertTrue(Col1.getName().equals(Col2.getName()));
+		assertTrue(Col1.getDescription().equals(Col2.getDescription())); 
+		assertTrue(Col1.getDisplayId().equals(Col2.getDisplayId()));   //display id should be equal
+		assertTrue(Col1.getName().equals(Col2.getName()));
 		assertTrue(Col1.getPersistentIdentity().equals(Col2.getPersistentIdentity()));
 		assertTrue(Col1.getVersion().equals(Col2.getVersion()));
 	}
@@ -307,7 +303,7 @@ public class SBOLDocumentTest {
 		assertTrue(MD1.getClass().equals(MD2.getClass()));
 		assertTrue(MD1.getDescription().equals(MD2.getDescription()));
 		assertTrue(MD1.getDisplayId().equals(MD2.getDisplayId()));
-//		assertTrue(MD1.getFunctionalComponent(FuncDefID).equals(MD2.getFunctionalComponent(FuncDefID)));   //do functional components not get copied?
+		assertTrue(MD1.getFunctionalComponent(FuncID).equals(MD2.getFunctionalComponent(FuncID)));   //do functional components not get copied?
 		assertTrue(MD1.getModels().equals(MD2.getModels()));
 		assertTrue(MD1.getName().equals(MD2.getName()));
 		assertTrue(MD1.getPersistentIdentity().equals(MD2.getPersistentIdentity()));
