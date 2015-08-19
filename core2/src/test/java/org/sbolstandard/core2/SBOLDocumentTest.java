@@ -86,6 +86,7 @@ public class SBOLDocumentTest {
 		System.out.println(seq2.getName());
 		assertTrue(seq.getName().equals(seq2.getName()));								//assertion error, name is not getting copied  
 		assertTrue(seq.equals(seq2));
+		
 //		assertTrue(seq.equals(seq3));
 		
 		
