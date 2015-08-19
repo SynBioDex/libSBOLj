@@ -32,13 +32,17 @@ public enum AccessType {
 	 * @return the corresponding AccessType instance
 	 */
 	static AccessType convertToAccessType(URI access) {
-		if (access.equals(publicURI)) {
-			return AccessType.PUBLIC;
-		} else if (access.equals(privateURI)) {
-			return AccessType.PRIVATE;
-		}
-		else {
-			throw new IllegalArgumentException("Unknown access URI `" + access + "'");
+		if (access!=null) {
+			if (access.equals(publicURI)) {
+				return AccessType.PUBLIC;
+			} else if (access.equals(privateURI)) {
+				return AccessType.PRIVATE;
+			}
+			else {
+				throw new IllegalArgumentException("Unknown access URI `" + access + "'");
+			}
+		} else {
+			throw new IllegalArgumentException("access URI cannot be null");
 		}
 	}
 	

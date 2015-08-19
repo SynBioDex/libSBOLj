@@ -67,8 +67,8 @@ public class SBOLDocumentTest {
 //		seq3.unsetWasDerivedFrom();
 		
 		
-		System.out.println(seq.getIdentity());
-		System.out.println(seq2.getIdentity());
+//		System.out.println(seq.getIdentity());
+//		System.out.println(seq2.getIdentity());
 
 		assertTrue(seq.getVersion().equals(seq2.getVersion()));
 		assertTrue(seq.getElements().equals(seq2.getElements()));

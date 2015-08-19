@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 final class URIcompliance {
 	
 	static void validateIdVersion(String displayId, String version) {
-		if (!isDisplayIdCompliant(displayId)) {
+		if (displayId!=null && !isDisplayIdCompliant(displayId)) {
 			throw new IllegalArgumentException("Display id `" + displayId + "' is not valid.");
 		}
 		if (version!=null && !isVersionCompliant(version)) {

@@ -1492,6 +1492,9 @@ public class SBOLDocument {
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String URIprefix, String displayId, String version) {
 		checkReadOnly();
+		if (!URIcompliance.isTopLevelURIcompliant(topLevel)) {
+			throw new SBOLValidationException("Cannot copy a non-compliant SBOL object");
+		}
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
 			URIprefix = checkURIprefix(URIprefix);
