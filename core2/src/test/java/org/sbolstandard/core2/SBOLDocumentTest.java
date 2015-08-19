@@ -14,8 +14,6 @@ public class SBOLDocumentTest {
 
 	@Test
 	public void Test_Sequence_CopyCreate_Create() {
-		
-		
 		//create copy not adding types to URIs
 		String prURI="http://partsregistry.org";
 		String prPrefix="pr";
@@ -23,7 +21,6 @@ public class SBOLDocumentTest {
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(false);
 //		document.addNamespace(URI.create(prURI), prPrefix);
-		
 		String prURI1="http://partsregistry.org";
 		String prPrefix1="pr";
 		SBOLDocument document2 = new SBOLDocument();
@@ -34,6 +31,12 @@ public class SBOLDocumentTest {
 		String prURI2="http://partsregistry.org";
 		String prPrefix2="pr";
 		SBOLDocument document3 = new SBOLDocument();
+		document.setDefaultURIprefix(prURI2);
+		document.setTypesInURIs(false);
+		
+		String prURI3="http://partsregistry.org";
+		String prPrefix3="pr";
+		SBOLDocument document4 = new SBOLDocument();
 		document.setDefaultURIprefix(prURI2);
 		document.setTypesInURIs(false);
 		
@@ -53,10 +56,11 @@ public class SBOLDocumentTest {
 		
 		Sequence seq = document.createSequence(SequenceDisplayID, SequenceVersion, SequenceElements, SeqURI);
 		seq.setDescription("description");
-//		seq.setName("seq");
+		seq.setName("seq");
 		Sequence seq2 = (Sequence)document2.createCopy(seq, SequenceURI, SequenceDisplayID, seq2Version);
-		seq2.setDescription("description");
+//		seq2.setDescription("description");
 		Sequence seq3 = (Sequence)document3.createCopy(seq, SequenceDisplayID);
+//		Sequence seq4 = (Sequence)document4.createCopy(seq, prPrefix, SequenceDisplayID , SequenceVersion);
 		
 		
 //		seq2.unsetWasDerivedFrom();
@@ -73,10 +77,14 @@ public class SBOLDocumentTest {
 		assertTrue(seq.getClass().equals(seq2.getClass()));
 		assertTrue(seq.getAnnotations().equals(seq2.getAnnotations()));
 //		assertTrue(seq.getIdentity().equals(seq2.getIdentity()));						//assertion error
-//		assertTrue(seq.getDescription().equals(seq2.getDescription()));					//null pointer exception ----------------------------------------------------------
+		System.out.println(seq.getDescription());
+		System.out.println(seq2.getDescription());
+		assertTrue(seq.getDescription().equals(seq2.getDescription()));					//assertion error
 //		assertTrue(seq.getWasDerivedFrom().equals(seq2.getWasDerivedFrom()));			//null pointer exception
 		assertTrue(seq.getPersistentIdentity().equals(seq2.getPersistentIdentity()));	//assertion error
-//		assertTrue(seq.getName().equals(seq2.getName()));								//null pointer exception
+		System.out.println(seq.getName());
+		System.out.println(seq2.getName());
+		assertTrue(seq.getName().equals(seq2.getName()));								//assertion error, name is not getting copied  
 		assertTrue(seq.equals(seq2));
 //		assertTrue(seq.equals(seq3));
 		
