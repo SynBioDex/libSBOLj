@@ -686,7 +686,7 @@ public class SBOLReader
 			{
 				elements = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (URIPrefix != null)
@@ -694,11 +694,11 @@ public class SBOLReader
 					identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
 				}
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -957,10 +957,10 @@ public class SBOLReader
 	private static ComponentDefinition parseComponentDefinitions(
 			SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String displayId 	   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		URI structure 		   = null;
 		String version 		   = null;
 		URI wasDerivedFrom     = null;
@@ -982,7 +982,7 @@ public class SBOLReader
 			{
 				persistentIdentity  = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -998,6 +998,11 @@ public class SBOLReader
 			{
 				components.add(parseComponent(((NestedDocument<QName>) namedProperty.getValue())));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSubComponent))
+			{
+				System.out.println("Warning: tag should be sbol:component, not sbol:subComponent.");
+				components.add(parseComponent(((NestedDocument<QName>) namedProperty.getValue())));
+			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequence))
 			{
 				structure = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
@@ -1010,11 +1015,11 @@ public class SBOLReader
 			{
 				sequenceConstraints.add(parseSequenceConstraint(((NestedDocument<QName>) namedProperty.getValue())));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1061,8 +1066,10 @@ public class SBOLReader
 
 	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraint)
 	{
-		URI persistentIdentity 		 = null;
-		String displayId             = null;
+		String displayId 	   = URIcompliance.extractDisplayId(sequenceConstraint.getIdentity());
+		String name 	 	   = null;
+		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(sequenceConstraint.getIdentity()));
 		URI restriction  			 = null;
 		URI subject 				 = null;
 		URI object 					 = null;
@@ -1097,9 +1104,17 @@ public class SBOLReader
 			{
 				object = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
+			{
+				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
+			{
+				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
@@ -1118,6 +1133,10 @@ public class SBOLReader
 		SequenceConstraint s = new SequenceConstraint(sequenceConstraint.getIdentity(), restriction, subject, object);
 		if (displayId != null)
 			s.setDisplayId(displayId);
+		if (name != null) 
+			s.setName(name);
+		if (description != null) 
+			s.setDescription(description); 
 		if (persistentIdentity != null)
 			s.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1131,12 +1150,12 @@ public class SBOLReader
 
 	private static SequenceAnnotation parseSequenceAnnotation(NestedDocument<QName> sequenceAnnotation)
 	{
-		URI persistentIdentity = null;
-		String displayId 	   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(sequenceAnnotation.getIdentity());
+		String name 	 	   = null;
+		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(sequenceAnnotation.getIdentity()));
 		Location location 	   = null;
 		URI componentURI 	   = null;
-		String name 		   = null;
-		String description 	   = null;
 		String version   	   = null;
 		URI wasDerivedFrom 	   = null;
 		List<Location> locations = new ArrayList<>();
@@ -1151,7 +1170,7 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1168,11 +1187,11 @@ public class SBOLReader
 			{
 				componentURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1232,8 +1251,10 @@ public class SBOLReader
 
 	private static GenericLocation parseGenericLocation(NestedDocument<QName> typeGenLoc)
 	{
-		URI persistentIdentity       = null;
-		String displayId			 = null;
+		String displayId 	   = URIcompliance.extractDisplayId(typeGenLoc.getIdentity());
+		String name 	 	   = null;
+		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(typeGenLoc.getIdentity()));
 		URI orientation 			 = null;
 		String version        	     = null;
 		URI wasDerivedFrom 			 = null;
@@ -1250,9 +1271,17 @@ public class SBOLReader
 			{
 				orientation = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
+			{
+				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
+			{
+				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
@@ -1275,6 +1304,10 @@ public class SBOLReader
 		GenericLocation gl = new GenericLocation(typeGenLoc.getIdentity());
 		if(displayId != null)
 			gl.setDisplayId(displayId);
+		if (name != null) 
+			gl.setName(name);
+		if (description != null) 
+			gl.setDescription(description); 
 		if(orientation != null)
 			gl.setOrientation(OrientationType.convertToOrientationType(orientation));
 		if(persistentIdentity != null)
@@ -1291,8 +1324,10 @@ public class SBOLReader
 
 	private static Cut parseCut(NestedDocument<QName> typeCut)
 	{
-		URI persistentIdentity = null;
-		String displayId	   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(typeCut.getIdentity());
+		String name 	 	   = null;
+		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(typeCut.getIdentity()));
 		Integer at 			   = null;
 		URI orientation 	   = null;
 		String version 		   = null;
@@ -1310,9 +1345,17 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
+			{
+				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
+			{
+				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Cut.at))
 			{
@@ -1347,6 +1390,10 @@ public class SBOLReader
 			c.setPersistentIdentity(persistentIdentity);
 		if (displayId != null)
 			c.setDisplayId(displayId);
+		if (name != null) 
+			c.setName(name);
+		if (description != null) 
+			c.setDescription(description); 
 		if (orientation != null)
 			c.setOrientation(OrientationType.convertToOrientationType(orientation));
 		if(version != null)
@@ -1361,8 +1408,10 @@ public class SBOLReader
 
 	private static Location parseRange(NestedDocument<QName> typeRange)
 	{
-		URI persistentIdentity = null;
-		String displayId       = null;
+		String displayId 	   = URIcompliance.extractDisplayId(typeRange.getIdentity());
+		String name 	 	   = null;
+		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(typeRange.getIdentity()));
 		Integer start 		   = null;
 		Integer end 		   = null;
 		URI orientation 	   = null;
@@ -1387,9 +1436,17 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
+			{
+				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
+			{
+				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Range.end))
 			{
@@ -1417,6 +1474,10 @@ public class SBOLReader
 		Location r = new Range(typeRange.getIdentity(), start, end);
 		if (displayId != null)
 			r.setDisplayId(displayId);
+		if (name != null) 
+			r.setName(name);
+		if (description != null) 
+			r.setDescription(description); 
 		if (persistentIdentity != null)
 			r.setPersistentIdentity(persistentIdentity);
 		if (orientation != null)
@@ -1432,11 +1493,11 @@ public class SBOLReader
 
 	private static Component parseComponent(NestedDocument<QName> component)
 	{
-		URI persistentIdentity = null;
-		String version 		   = null;
-		String displayId 	   = null;
-		String name 		   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(component.getIdentity());
+		String name 	 	   = null;
 		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(component.getIdentity()));
+		String version 		   = null;
 		URI subComponentURI    = null;
 		AccessType access 	   = null;
 		URI wasDerivedFrom 	   = null;
@@ -1462,15 +1523,18 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
-				access = AccessType.convertToAccessType(URI
-						.create(((Literal<QName>) namedProperty.getValue())
-								.getValue().toString()));
+				String accessTypeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				if (accessTypeStr.startsWith("http://www.sbolstandard.org/")) {
+					System.out.println("Warning: namespace for access types should be http://sbols.org/v2#");
+					accessTypeStr = accessTypeStr.replace("http://www.sbolstandard.org/", "http://sbols.org/v2#");
+				}
+				access = AccessType.convertToAccessType(URI.create(accessTypeStr));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapsTo))
 			{
@@ -1480,11 +1544,11 @@ public class SBOLReader
 			{
 				subComponentURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1526,11 +1590,11 @@ public class SBOLReader
 	private static GenericTopLevel parseGenericTopLevel(SBOLDocument SBOLDoc,
 			TopLevelDocument<QName> topLevel)
 	{
-		URI persistentIdentity = null;
-		String version 		   = null;
-		String displayId 	   = null;
-		String name 		   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String name 	 	   = null;
 		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
 
 		List<Annotation> annotations = new ArrayList<>();
@@ -1545,15 +1609,15 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1587,11 +1651,11 @@ public class SBOLReader
 
 	private static Model parseModels(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		URI persistentIdentity = null;
-		String version 		   = null;
-		String displayId 	   = null;
-		String name 		   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String name 	 	   = null;
 		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		String version 		   = null;
 		URI source 			   = null;
 		URI language 		   = null;
 		URI framework 	 	   = null;
@@ -1609,7 +1673,7 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1625,11 +1689,11 @@ public class SBOLReader
 			{
 				framework = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1663,11 +1727,11 @@ public class SBOLReader
 
 	private static Collection parseCollections(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		URI persistentIdentity = null;
-		String version 		   = null;
-		String displayId 	   = null;
-		String name 		   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String name 	 	   = null;
 		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
 
 		Set<URI> members 			 = new HashSet<>();
@@ -1683,7 +1747,7 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1691,11 +1755,11 @@ public class SBOLReader
 			{
 				members.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1732,11 +1796,11 @@ public class SBOLReader
 	private static ModuleDefinition parseModuleDefinition(SBOLDocument SBOLDoc,
 			TopLevelDocument<QName> topLevel)
 	{
-		URI persistentIdentity = null;
-		String version 	       = null;
-		String displayId 	   = null;
-		String name 		   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String name 	 	   = null;
 		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		String version 	       = null;
 		URI wasDerivedFrom 	   = null;
 		Set<URI> roles 		   = new HashSet<>();
 		Set<URI> models 	   = new HashSet<>();
@@ -1756,7 +1820,7 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1768,6 +1832,11 @@ public class SBOLReader
 			{
 				subModules.add(parseModule(((NestedDocument<QName>) namedProperty.getValue())));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasSubModule))
+			{
+				System.out.println("Warning: tag should be sbol:module, not sbol:subModule.");
+				subModules.add(parseModule(((NestedDocument<QName>) namedProperty.getValue())));
+			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasInteractions))
 			{
 				interactions.add(parseInteraction(((NestedDocument<QName>) namedProperty.getValue())));
@@ -1776,15 +1845,20 @@ public class SBOLReader
 			{
 				functionalComponents.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasComponent))
+			{
+				System.out.println("Warning: tag should be sbol:functionalComponent, not sbol:component.");
+				functionalComponents.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue()));
+			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModels))
 			{
 				models.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1828,12 +1902,12 @@ public class SBOLReader
 
 	private static Module parseModule(NestedDocument<QName> module)
 	{
-		URI persistentIdentity = null;
+		String displayId 	   = URIcompliance.extractDisplayId(module.getIdentity());
+		String name 	 	   = null;
+		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(module.getIdentity()));
 		String version 		   = null;
-		String displayId 	   = null;
 		URI definitionURI 	   = null;
-		String name 		   = null;
-		String description     = null;
 		URI wasDerivedFrom 	   = null;
 		List<MapsTo> mappings 		 = new ArrayList<>();
 		List<Annotation> annotations = new ArrayList<>();
@@ -1856,7 +1930,7 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1864,15 +1938,20 @@ public class SBOLReader
 			{
 				mappings.add(parseMapsTo((NestedDocument<QName>) namedProperty.getValue()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapping))
+			{
+				System.out.println("Warning: tag should be sbol:mapTo, not sbol:mapping.");
+				mappings.add(parseMapsTo((NestedDocument<QName>) namedProperty.getValue()));
+			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasDefinition))
 			{
 				definitionURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -1908,8 +1987,10 @@ public class SBOLReader
 
 	private static MapsTo parseMapsTo(NestedDocument<QName> mapsTo)
 	{
-		URI persistentIdentity    = null;
-		String displayId		  = null;
+		String displayId 	   = URIcompliance.extractDisplayId(mapsTo.getIdentity());
+		String name 	 	   = null;
+		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(mapsTo.getIdentity()));
 		String version 	  	 	  = null;
 		URI remote 				  = null;
 		RefinementType refinement = null;
@@ -1927,9 +2008,17 @@ public class SBOLReader
 			{
 				persistentIdentity = URI.create(((Literal<QName>) m.getValue()).getValue().toString());
 			}
-			else if (m.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (m.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) m.getValue()).getValue().toString();
+			}
+			else if (m.getName().equals(Sbol2Terms.Identified.title))
+			{
+				name = ((Literal<QName>) m.getValue()).getValue().toString();
+			}
+			else if (m.getName().equals(Sbol2Terms.Identified.description))
+			{
+				description = ((Literal<QName>) m.getValue()).getValue().toString();
 			}
 			else if (m.getName().equals(Sbol2Terms.Identified.version))
 			{
@@ -1937,8 +2026,12 @@ public class SBOLReader
 			}
 			else if (m.getName().equals(Sbol2Terms.MapsTo.refinement))
 			{
-				refinement = RefinementType.convertToRefinementType(URI
-						.create(((Literal<QName>) m.getValue()).getValue().toString()));
+				String refinementStr = ((Literal<QName>) m.getValue()).getValue().toString();
+				if (!refinementStr.startsWith("http://sbols.org/v2#")) {
+					System.out.println("Warning: namespace for refinement types should be http://sbols.org/v2#");
+					refinementStr = "http://sbols.org/v2#" + refinementStr;
+				}
+				refinement = RefinementType.convertToRefinementType(URI.create(refinementStr));
 			}
 			else if (m.getName().equals(Sbol2Terms.MapsTo.hasRemote))
 			{
@@ -1961,6 +2054,10 @@ public class SBOLReader
 		MapsTo map = new MapsTo(mapsTo.getIdentity(), refinement, local, remote);
 		if (displayId != null)
 			map.setDisplayId(displayId);
+		if (name != null) 
+			map.setName(name);
+		if (description != null) 
+			map.setDescription(description); 
 		if (persistentIdentity != null)
 			map.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1974,11 +2071,11 @@ public class SBOLReader
 
 	private static Interaction parseInteraction(NestedDocument<QName> interaction)
 	{
-		URI persistentIdentity = null;
-		String version 		   = null;
-		String displayId 	   = null;
-		String name 		   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(interaction.getIdentity());
+		String name 	 	   = null;
 		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(interaction.getIdentity()));
+		String version 		   = null;
 		URI wasDerivedFrom	   = null;
 
 		Set<URI> type 		   			   = new HashSet<>();
@@ -1998,7 +2095,7 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) i.getValue()).getValue().toString();
 			}
-			else if (i.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (i.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) i.getValue()).getValue().toString();
 			}
@@ -2010,11 +2107,11 @@ public class SBOLReader
 			{
 				participations.add(parseParticipation((NestedDocument<QName>) i.getValue()));
 			}
-			else if (i.getName().equals(Sbol2Terms.Documented.title))
+			else if (i.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) i.getValue()).getValue().toString();
 			}
-			else if (i.getName().equals(Sbol2Terms.Documented.description))
+			else if (i.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) i.getValue()).getValue().toString();
 			}
@@ -2050,8 +2147,10 @@ public class SBOLReader
 
 	private static Participation parseParticipation(NestedDocument<QName> participation)
 	{
-		URI persistentIdentity = null;
-		String displayId	   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(participation.getIdentity());
+		String name 	 	   = null;
+		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(participation.getIdentity()));
 		String version 		   = null;
 		Set<URI> roles 		   = new HashSet<>();
 		URI participant        = null;
@@ -2076,9 +2175,17 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) p.getValue()).getValue().toString();
 			}
-			else if (p.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (p.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) p.getValue()).getValue().toString();
+			}
+			else if (p.getName().equals(Sbol2Terms.Identified.title))
+			{
+				name = ((Literal<QName>) p.getValue()).getValue().toString();
+			}
+			else if (p.getName().equals(Sbol2Terms.Identified.description))
+			{
+				description = ((Literal<QName>) p.getValue()).getValue().toString();
 			}
 			else if (p.getName().equals(Sbol2Terms.Participation.role))
 			{
@@ -2104,6 +2211,10 @@ public class SBOLReader
 			p.setRoles(roles);
 		if (displayId != null)
 			p.setDisplayId(displayId);
+		if (name != null) 
+			p.setName(name);
+		if (description != null) 
+			p.setDescription(description); 
 		if (persistentIdentity != null)
 			p.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -2117,11 +2228,11 @@ public class SBOLReader
 
 	private static FunctionalComponent parseFunctionalComponent(NestedDocument<QName> functionalComponent)
 	{
-		URI persistentIdentity 	   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(functionalComponent.getIdentity());
+		String name 	 	   = null;
+		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(functionalComponent.getIdentity()));
 		String version 			   = null;
-		String displayId 		   = null;
-		String name 			   = null;
-		String description 		   = null;
 		AccessType access 		   = null;
 		DirectionType direction    = null;
 		URI functionalComponentURI = null;
@@ -2149,21 +2260,29 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
-			else if (f.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (f.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
 			else if (f.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
-				access = AccessType.convertToAccessType(URI
-						.create(((Literal<QName>) f.getValue()).getValue()
-								.toString()));
+				String accessTypeStr = ((Literal<QName>) f.getValue()).getValue().toString();
+				if (accessTypeStr.startsWith("http://www.sbolstandard.org/")) {
+					System.out.println("Warning: namespace for access types should be http://sbols.org/v2#");
+					accessTypeStr = accessTypeStr.replace("http://www.sbolstandard.org/", "http://sbols.org/v2#");
+				}
+				access = AccessType.convertToAccessType(URI.create(accessTypeStr));
 			}
 			else if (f.getName().equals(Sbol2Terms.FunctionalComponent.direction))
 			{
-				direction = DirectionType
-						.convertToDirectionType(URI.create(((Literal<QName>) f
-								.getValue()).getValue().toString()));
+				String directionTypeStr = ((Literal<QName>) f.getValue()).getValue().toString();
+				if (directionTypeStr.startsWith("http://www.sbolstandard.org/")) {
+					System.out.println("Warning: namespace for direction types should be http://sbols.org/v2#");
+					directionTypeStr = directionTypeStr.replace("http://www.sbolstandard.org/", "http://sbols.org/v2#");
+					directionTypeStr = directionTypeStr.replace("input","in");
+					directionTypeStr = directionTypeStr.replace("output","out");
+				}
+				direction = DirectionType.convertToDirectionType(URI.create(directionTypeStr));
 			}
 			else if (f.getName().equals(Sbol2Terms.ComponentInstance.hasMapsTo))
 			{
@@ -2173,11 +2292,11 @@ public class SBOLReader
 			{
 				functionalComponentURI = URI.create(((Literal<QName>) f.getValue()).getValue().toString());
 			}
-			else if (f.getName().equals(Sbol2Terms.Documented.title))
+			else if (f.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
-			else if (f.getName().equals(Sbol2Terms.Documented.description))
+			else if (f.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
@@ -2215,11 +2334,11 @@ public class SBOLReader
 
 	private static Sequence parseSequences(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		URI persistentIdentity = null;
-		String version 		   = null;
-		String displayId 	   = null;
-		String name 		   = null;
+		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String name 	 	   = null;
 		String description 	   = null;
+		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		String version 		   = null;
 		String elements 	   = null;
 		URI encoding 		   = null;
 		URI wasDerivedFrom 	   = null;
@@ -2235,7 +2354,7 @@ public class SBOLReader
 			{
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.displayId))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
@@ -2247,11 +2366,11 @@ public class SBOLReader
 			{
 				encoding = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.title))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Documented.description))
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}

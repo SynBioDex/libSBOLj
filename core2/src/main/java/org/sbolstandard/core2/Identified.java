@@ -20,7 +20,7 @@ import static org.sbolstandard.core2.Version.isFirstVersionNewer;
  * @author Matthew Pocock
  * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.0.1-beta
  */
 
 public abstract class Identified {

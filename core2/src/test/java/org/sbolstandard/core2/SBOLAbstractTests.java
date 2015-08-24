@@ -25,46 +25,80 @@ import org.sbolstandard.core.SBOLValidationException;
 public abstract class SBOLAbstractTests {
 
 	String VERSION_1_0 = "1.0";
-
-	@Test
-	public void test_methods() throws Exception
-	{
-		String prURI="http://partsregistry.org";
-		String prPrefix="pr";
-		SBOLDocument document = new SBOLDocument();
-		document.setDefaultURIprefix(prURI);
-		document.setTypesInURIs(true);
-		document.addNamespace(URI.create(prURI), prPrefix);
-		
-		String CD_ID = "ID";
-		String CD_Version = "1.0";
-		Set<URI> CD_Types = new HashSet<URI>();
-		CD_Types.add(URI.create("www.example.com"));
-		
-		String SeqID = "ID2";
-		String SeqVersion = "1.0";
-		String SeqElements = "some_element";
-		URI SeqEncoding = URI.create("www.example2.com");
-		
-		String ComponentID = "CID";
-		String ComponentVersion = "1.0";
-		
-		String SeqAnnID = "Sequence_annotation_ID";
-		String SeqAnnLocID = "locationID";
-		
-		String SC_ID = "SequenceConstraintID";
-		String SC_SubID = "SubjectID";
-		String SC_ObjID = "ObjectID";
-		Sequence Seq = document.createSequence(SeqID, SeqVersion, SeqElements, SeqEncoding);
-		ComponentDefinition CD = document.createComponentDefinition(CD_ID, CD_Version, CD_Types);
-		CD.addSequence(Seq);
-		CD.createComponent(ComponentID, AccessType.PRIVATE, CD_ID, ComponentVersion);
-		CD.createSequenceAnnotation(SeqAnnID, SeqAnnLocID);
-		CD.createSequenceConstraint(SC_ID, RestrictionType.OPPOSITE_ORIENTATION_AS, SC_SubID, SC_ObjID);
-		
-		runTest("test/data/test_Methods.rdf", document, "rdf");
-	}
 	
+	
+//	@Test
+//	public void test_methods() throws Exception
+//	{
+//		//this method tests all remove methods for all top level
+//		String prURI="http://partsregistry.org";
+//		String prPrefix="pr";
+//		SBOLDocument document = new SBOLDocument();
+//		document.setDefaultURIprefix(prURI);
+//		document.setTypesInURIs(true);
+//		document.addNamespace(URI.create(prURI), prPrefix);
+//		
+//		String prURI2="http://partsregistry.org";
+//		String prPrefix2 ="pr";
+//		SBOLDocument document2 = new SBOLDocument();
+//		document2.setDefaultURIprefix(prURI);
+//		document2.setTypesInURIs(true);
+//		document2.addNamespace(URI.create(prURI), prPrefix);
+//		
+//		String CD_ID = "ID";
+//		String CD_Version = "1.0";
+//		Set<URI> CD_Types = new HashSet<URI>();
+//		CD_Types.add(URI.create("www.example.com"));
+//		
+//		String SeqID = "ID2";
+//		String SeqVersion = "1.0";
+//		String SeqElements = "some_element";
+//		URI SeqEncoding = URI.create("www.example2.com");
+//		
+//		String ComponentID = "CID";
+//		String ComponentVersion = "1.0";
+//		
+//		String SeqAnnID = "Sequence_annotation_ID";
+//		String SeqAnnLocID = "locationID";
+//		
+//		String SC_ID = "SequenceConstraintID";
+//		String SC_SubID = "SubjectID";
+//		String SC_ObjID = "ObjectID";
+//		
+//		String ModuleDefID = "ModuleDefinitionID";
+//		String ModuleDefVersion = "1.0";
+//		
+//		String GTL_ID = "generictoplevelID";
+//		String GTL_Version = "1.0";
+//		
+//		String ModelID = "ModelDisplayID";
+//		String ModelVersion = "1.0";
+//		URI source = URI.create("www.examplesource.com");
+//		URI language = URI.create("www.examplelanguage.com");
+//		URI framework = URI.create("www.exampleframework.com");
+//		
+//		String CollectionID = "CollectionID";
+//		String CollectionVersion = "1.0";
+//		
+//		Sequence Seq = document.createSequence(SeqID, SeqVersion, SeqElements, SeqEncoding);	//create sequence
+//		ComponentDefinition CD = document.createComponentDefinition(CD_ID, CD_Version, CD_Types);	//create component definition
+//		CD.addSequence(Seq);
+//		CD.createComponent(ComponentID, AccessType.PRIVATE, CD_ID, ComponentVersion);
+//		CD.createSequenceAnnotation(SeqAnnID, SeqAnnLocID);
+//		CD.createSequenceConstraint(SC_ID, RestrictionType.OPPOSITE_ORIENTATION_AS, SC_SubID, SC_ObjID);
+//		ModuleDefinition MD = document.createModuleDefinition(ModuleDefID, ModuleDefVersion);
+////		GenericTopLevel GTL = document.createGenericTopLevel(GTL_ID, GTL_Version, QName.valueOf(GTL_Version));
+//		Model Mod = document.createModel(ModelID, ModelVersion, source, language, framework);
+////		Collection Col = document.createCollection(CollectionID, CollectionVersion);
+////		
+//		document.removeSequence(Seq);
+//		document.removeComponentDefinition(CD);
+//		document.removeModuleDefinition(MD);
+//		document.removeModel(Mod);
+//		runTest("test/data/test_Methods.rdf", document, "rdf");
+//	}
+
+
 	@Test
 	public void test_Model_remove() throws Exception
 	{
@@ -86,7 +120,6 @@ public abstract class SBOLAbstractTests {
 		
 		Model M1 = document.createModel(M1_ID, M1_Version, M1_URISource, M1_URILanguage, M1_URI_Framework);
 		document.removeModel(M1);
-		
 		runTest("test/data/test_Model_remove.rdf", document, "rdf");
 	}
 	

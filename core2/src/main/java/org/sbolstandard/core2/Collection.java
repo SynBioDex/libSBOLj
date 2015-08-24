@@ -26,7 +26,8 @@ public class Collection extends TopLevel{
 	}
 	
 	private Collection(Collection collection) {
-		super(collection.getIdentity());
+		//super(collection.getIdentity());
+		super(collection);
 		this.members = new HashSet<>();
 		Set<URI> newMembers = new HashSet<>();
 		for (URI member : collection.getMemberURIs()) {
