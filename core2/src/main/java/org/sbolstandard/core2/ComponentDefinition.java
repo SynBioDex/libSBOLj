@@ -325,6 +325,12 @@ public class ComponentDefinition extends TopLevel {
 	 * @return {@code true} if this set did not already contain the given Sequence instance URI.
 	 */
 	public boolean addSequence(URI sequenceURI) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (sbolDocument.getSequence(sequenceURI)==null) {
+				throw new IllegalArgumentException("Sequence '" + sequenceURI + "' does not exist.");
+			}
+		}
 		return sequences.add(sequenceURI);
 	}
 	
