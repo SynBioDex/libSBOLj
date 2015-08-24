@@ -1492,6 +1492,9 @@ public class SBOLDocument {
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String URIprefix, String displayId, String version) {
 		checkReadOnly();
+		if (!URIcompliance.isTopLevelURIcompliant(topLevel)) {
+			throw new SBOLValidationException("Cannot copy a non-compliant SBOL object");
+		}
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
 			URIprefix = checkURIprefix(URIprefix);
@@ -1505,7 +1508,7 @@ public class SBOLDocument {
 			version = topLevel.getVersion();
 		}
 		validateIdVersion(displayId,version);
-		if (topLevel instanceof Collection) {			
+		if (topLevel instanceof Collection) {
 			Collection newCollection = ((Collection) topLevel).copy(URIprefix, displayId, version);
 			addCollection(newCollection);
 			return newCollection;

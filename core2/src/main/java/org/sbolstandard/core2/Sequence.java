@@ -54,7 +54,8 @@ public class Sequence extends TopLevel{
 	}
 
 	private Sequence(Sequence sequence) {
-		super(sequence.getIdentity());
+		//super(sequence.getIdentity());
+		super(sequence);
 		this.setElements(sequence.getElements());
 		this.setEncoding(sequence.getEncoding());
 	}

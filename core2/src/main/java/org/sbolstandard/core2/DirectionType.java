@@ -65,10 +65,10 @@ public enum DirectionType {
 			} else if (direction.equals(out)) {
 				return DirectionType.OUT;
 			} else {
-				return null;
+				throw new IllegalArgumentException("Unknown direction URI `" + direction + "'");
 			}
 		} else {
-			return null;
+			throw new IllegalArgumentException("direction URI cannot be null");
 		}
 	}
 	

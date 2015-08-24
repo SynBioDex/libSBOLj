@@ -15,7 +15,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses(
 		{
-//						SBOLGenerateFile.class,
+//									SBOLGenerateFile.class,
 			SBOLReaderTest.class,
 			SBOLWriterTest.class,
 			URIcomplianceTest.class,
