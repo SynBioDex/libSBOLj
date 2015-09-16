@@ -557,7 +557,6 @@ public class SBOLReader
 				// TODO: conversion to proper SO term when possible
 				URI convertedSO = SequenceOntology.convertSeqOntologyV1(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 				roles.add(convertedSO);
-				//				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.annotations))
 			{
@@ -632,7 +631,8 @@ public class SBOLReader
 
 		//ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
 		ComponentDefinition c = SBOLDoc.getComponentDefinition(identity);
-		if (c==null) {
+		if (c==null)
+		{
 			c = SBOLDoc.createComponentDefinition(identity, type);
 			if (!persIdentity.equals("")) {
 				c.setPersistentIdentity(URI.create(persIdentity));
@@ -738,14 +738,14 @@ public class SBOLReader
 		}
 
 		//TODO: to fix
-		//		Sequence oldS = SBOLDoc.getSequence(topLevel.getIdentity());
-		//		if (oldS == null) {
-		//			SBOLDoc.addSequence(sequence);
-		//		} else {
-		//			if (!sequence.equals(oldS)) {
-		//				throw new SBOLValidationException("The specified Sequence does not exist.");
-		//			}
-		//		}
+		//				Sequence oldS = SBOLDoc.getSequence(topLevel.getIdentity());
+		//				if (oldS == null) {
+		//					SBOLDoc.addSequence(sequence);
+		//				} else {
+		//					if (!sequence.equals(oldS)) {
+		//						throw new SBOLValidationException("The specified Sequence does not exist.");
+		//					}
+		//				}
 		return sequence;
 	}
 
@@ -834,7 +834,8 @@ public class SBOLReader
 			}
 		}
 
-		Collection c = SBOLDoc.createCollection(identity);
+		//		Collection c = SBOLDoc.createCollection(identity);
+		Collection c = new Collection(identity);
 		if (persistentIdentity!=null) {
 			c.setPersistentIdentity(persistentIdentity);
 			c.setVersion(version);
@@ -852,15 +853,14 @@ public class SBOLReader
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
 
-		//TODO: to fix
-		//		Collection oldC = SBOLDoc.getCollection(topLevel.getIdentity());
-		//		if (oldC == null) {
-		//			SBOLDoc.addCollection(c);
-		//		} else {
-		//			if (!c.equals(oldC)) {
-		//				throw new SBOLValidationException("The specified Collection does not exist.");
-		//			}
-		//		}
+		Collection oldC = SBOLDoc.getCollection(topLevel.getIdentity());
+		if (oldC == null) {
+			SBOLDoc.addCollection(c);
+		} else {
+			if (!c.equals(oldC)) {
+				throw new SBOLValidationException("The specified Collection does not exist.");
+			}
+		}
 		return c;
 	}
 
@@ -1065,8 +1065,8 @@ public class SBOLReader
 
 		//ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
 		//c.setPersistentIdentity(topLevel.getOptionalUriPropertyValue(Sbol2Terms.Identified.persistentIdentity));
-		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type);
-
+		//		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type);
+		ComponentDefinition c = new ComponentDefinition(topLevel.getIdentity(), type);
 		if(roles != null)
 			c.setRoles(roles);
 		if (displayId != null)
@@ -1092,15 +1092,14 @@ public class SBOLReader
 		if (wasDerivedFrom != null)
 			c.setWasDerivedFrom(wasDerivedFrom);
 
-		//TODO: to fix
-		//		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(topLevel.getIdentity());
-		//		if (oldC == null) {
-		//			SBOLDoc.addComponentDefinition(c);
-		//		} else {
-		//			if (!c.equals(oldC)) {
-		//				throw new SBOLValidationException("The specified ComponentDefinition does not exist.");
-		//			}
-		//		}
+		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(topLevel.getIdentity());
+		if (oldC == null) {
+			SBOLDoc.addComponentDefinition(c);
+		} else {
+			if (!c.equals(oldC)) {
+				throw new SBOLValidationException("The specified ComponentDefinition does not exist.");
+			}
+		}
 		return c;
 	}
 
@@ -1671,7 +1670,8 @@ public class SBOLReader
 			}
 		}
 
-		GenericTopLevel t = SBOLDoc.createGenericTopLevel(topLevel.getIdentity(), topLevel.getType());
+		//		GenericTopLevel t = SBOLDoc.createGenericTopLevel(topLevel.getIdentity(), topLevel.getType());
+		GenericTopLevel t = new GenericTopLevel(topLevel.getIdentity(), topLevel.getType());
 		if (persistentIdentity != null)
 			t.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1687,15 +1687,14 @@ public class SBOLReader
 		if (!annotations.isEmpty())
 			t.setAnnotations(annotations);
 
-		//TODO: to fix
-		//		GenericTopLevel oldG = SBOLDoc.getGenericTopLevel(topLevel.getIdentity());
-		//		if (oldG == null) {
-		//			SBOLDoc.addGenericTopLevel(t);
-		//		} else {
-		//			if (!t.equals(oldG)) {
-		//				throw new SBOLValidationException("The specified GenericTopLevel does not exist.");
-		//			}
-		//		}
+		GenericTopLevel oldG = SBOLDoc.getGenericTopLevel(topLevel.getIdentity());
+		if (oldG == null) {
+			SBOLDoc.addGenericTopLevel(t);
+		} else {
+			if (!t.equals(oldG)) {
+				throw new SBOLValidationException("The specified GenericTopLevel does not exist.");
+			}
+		}
 		return t;
 	}
 
@@ -1757,7 +1756,8 @@ public class SBOLReader
 			}
 		}
 
-		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework);
+		//		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework);
+		Model m = new Model(topLevel.getIdentity(), source, language, framework);
 		if (persistentIdentity != null)
 			m.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1773,15 +1773,14 @@ public class SBOLReader
 		if (!annotations.isEmpty())
 			m.setAnnotations(annotations);
 
-		//TODO: to fix
-		//		Model oldM = SBOLDoc.getModel(topLevel.getIdentity());
-		//		if (oldM == null) {
-		//			SBOLDoc.addModel(m);
-		//		} else {
-		//			if (!m.equals(oldM)) {
-		//				throw new SBOLValidationException("The specified Model does not exist.");
-		//			}
-		//		}
+		Model oldM = SBOLDoc.getModel(topLevel.getIdentity());
+		if (oldM == null) {
+			SBOLDoc.addModel(m);
+		} else {
+			if (!m.equals(oldM)) {
+				throw new SBOLValidationException("The specified Model does not exist.");
+			}
+		}
 		return m;
 	}
 
@@ -1833,7 +1832,7 @@ public class SBOLReader
 			}
 		}
 
-		Collection c = SBOLDoc.createCollection(topLevel.getIdentity());
+		Collection c = new Collection(topLevel.getIdentity());
 		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (version != null)
@@ -1851,15 +1850,14 @@ public class SBOLReader
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
 
-		//TODO: to fix
-		//		Collection oldC = SBOLDoc.getCollection(topLevel.getIdentity());
-		//		if (oldC == null) {
-		//			SBOLDoc.addCollection(c);
-		//		} else {
-		//			if (!c.equals(oldC)) {
-		//				throw new SBOLValidationException("The specified Collection does not exist.");
-		//			}
-		//		}
+		Collection oldC = SBOLDoc.getCollection(topLevel.getIdentity());
+		if (oldC == null) {
+			SBOLDoc.addCollection(c);
+		} else {
+			if (!c.equals(oldC)) {
+				throw new SBOLValidationException("The specified Collection does not exist.");
+			}
+		}
 		return c;
 	}
 
@@ -1942,7 +1940,8 @@ public class SBOLReader
 			}
 		}
 
-		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity());
+		//		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity());
+		ModuleDefinition moduleDefinition = new ModuleDefinition(topLevel.getIdentity());
 		if (!roles.isEmpty())
 			moduleDefinition.setRoles(roles);
 		if (persistentIdentity != null)
@@ -1968,15 +1967,14 @@ public class SBOLReader
 		if (!annotations.isEmpty())
 			moduleDefinition.setAnnotations(annotations);
 
-		//TODO: to fix
-		//		ModuleDefinition oldM = SBOLDoc.getModuleDefinition(topLevel.getIdentity());
-		//		if (oldM == null) {
-		//			SBOLDoc.addModuleDefinition(moduleDefinition);
-		//		} else {
-		//			if (!moduleDefinition.equals(oldM)) {
-		//				throw new SBOLValidationException("The specified ModuleDefinition does not exist.");
-		//			}
-		//		}
+		ModuleDefinition oldM = SBOLDoc.getModuleDefinition(topLevel.getIdentity());
+		if (oldM == null) {
+			SBOLDoc.addModuleDefinition(moduleDefinition);
+		} else {
+			if (!moduleDefinition.equals(oldM)) {
+				throw new SBOLValidationException("The specified ModuleDefinition does not exist.");
+			}
+		}
 		return moduleDefinition;
 	}
 
@@ -2464,8 +2462,8 @@ public class SBOLReader
 			}
 		}
 
-		Sequence sequence = SBOLDoc.createSequence(topLevel.getIdentity(),
-				elements, encoding);
+		//		Sequence sequence = SBOLDoc.createSequence(topLevel.getIdentity(), elements, encoding);
+		Sequence sequence = new Sequence(topLevel.getIdentity(), elements, encoding);
 		if (persistentIdentity != null)
 			sequence.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -2481,15 +2479,14 @@ public class SBOLReader
 		if (!annotations.isEmpty())
 			sequence.setAnnotations(annotations);
 
-		//TODO: to fix
-		//		Sequence oldS = SBOLDoc.getSequence(topLevel.getIdentity());
-		//		if (oldS == null) {
-		//			SBOLDoc.addSequence(sequence);
-		//		} else {
-		//			if (!sequence.equals(oldS)) {
-		//				throw new SBOLValidationException("The specified Sequence does not exist.");
-		//			}
-		//		}
+		Sequence oldS = SBOLDoc.getSequence(topLevel.getIdentity());
+		if (oldS == null) {
+			SBOLDoc.addSequence(sequence);
+		} else {
+			if (!sequence.equals(oldS)) {
+				throw new SBOLValidationException("The specified Sequence does not exist.");
+			}
+		}
 		return sequence;
 	}
 
