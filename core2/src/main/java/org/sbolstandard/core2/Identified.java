@@ -524,11 +524,14 @@ public abstract class Identified {
 				return false;
 		} else if (!version.equals(other.version))
 			return false;
+		// TODO: taking this out for now because it causes problems with comparisons with 1.1 converted data
+		/*
 		if (wasDerivedFrom == null) {
 			if (other.wasDerivedFrom != null)
 				return false;
 		} else if (!wasDerivedFrom.equals(other.wasDerivedFrom))
 			return false;
+			*/
 		if (description == null) {
 			if (other.description != null)
 				return false;
@@ -688,6 +691,14 @@ public abstract class Identified {
 		description = null;
 	}
 
+	@Override
+	public String toString() {
+		return "Identified [identity=" + identity + ", persistentIdentity=" + persistentIdentity
+				+ ", version=" + version + ", annotations=" + annotations + ", wasDerivedFrom="
+				+ wasDerivedFrom + ", displayId=" + displayId
+				+ ", name=" + name + ", description=" + description + "]";
+	}
+	
 	//	/**
 	//	 * @return
 	//	 * @deprecated As of release 2.0, replaced by {@link #getIdentity()}

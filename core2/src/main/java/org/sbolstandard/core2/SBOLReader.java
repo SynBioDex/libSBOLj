@@ -629,46 +629,41 @@ public class SBOLReader
 			sequenceConstraints.add(sc);
 		}
 
-		//ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
-		ComponentDefinition c = SBOLDoc.getComponentDefinition(identity);
-		if (c==null)
-		{
-			c = SBOLDoc.createComponentDefinition(identity, type);
-			if (!persIdentity.equals("")) {
-				c.setPersistentIdentity(URI.create(persIdentity));
-				c.setVersion(version);
-			}
-			if(roles != null)
-				c.setRoles(roles);
-			if(identity != componentDef.getIdentity())
-				c.setWasDerivedFrom(componentDef.getIdentity());
-			if (displayId != null)
-				c.setDisplayId(displayId);
-			if (name != null && !name.isEmpty())
-				c.setName(name);
-			if (description != null && !description.isEmpty())
-				c.setDescription(description);
-			if (seq_identity != null)
-				c.addSequence(seq_identity);
-			if (!annotations.isEmpty())
-				c.setAnnotations(annotations);
-			if (!sequenceAnnotations.isEmpty())
-				c.setSequenceAnnotations(sequenceAnnotations);
-			if (!components.isEmpty())
-				c.setComponents(components);
-			if (!sequenceConstraints.isEmpty())
-				c.setSequenceConstraints(sequenceConstraints);
+		ComponentDefinition c = new ComponentDefinition(identity, type);
+		if (!persIdentity.equals("")) {
+			c.setPersistentIdentity(URI.create(persIdentity));
+			c.setVersion(version);
 		}
+		if(roles != null)
+			c.setRoles(roles);
+		if(identity != componentDef.getIdentity())
+			c.setWasDerivedFrom(componentDef.getIdentity());
+		if (displayId != null)
+			c.setDisplayId(displayId);
+		if (name != null && !name.isEmpty())
+			c.setName(name);
+		if (description != null && !description.isEmpty())
+			c.setDescription(description);
+		if (seq_identity != null)
+			c.addSequence(seq_identity);
+		if (!annotations.isEmpty())
+			c.setAnnotations(annotations);
+		if (!sequenceAnnotations.isEmpty())
+			c.setSequenceAnnotations(sequenceAnnotations);
+		if (!components.isEmpty())
+			c.setComponents(components);
+		if (!sequenceConstraints.isEmpty())
+			c.setSequenceConstraints(sequenceConstraints);
 
 		//TODO: to fix
-		//		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(componentDef.getIdentity());
-		//		if (oldC == null) {
-		//			SBOLDoc.addComponentDefinition(c);
-		//		} else {
-		//			if (!c.equals(oldC)) {
-		//				throw new SBOLValidationException("The specified ComponentDefinition does not exist.");
-		//			}
-		//		}
+		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(identity);
+		if (oldC == null) {
+			SBOLDoc.addComponentDefinition(c);
+		} else {
+			if (!c.equals(oldC)) {
+				throw new SBOLValidationException("Multiple non-identical ComponentDefinitions with identity "+identity);
+			}
+		}
 		return c;
 	}
 
@@ -718,34 +713,30 @@ public class SBOLReader
 			}
 		}
 
-		Sequence sequence = SBOLDoc.getSequence(identity);
-		if (sequence==null) {
-			sequence = SBOLDoc.createSequence(identity, elements, encoding);
-			if(persistentIdentity!=null) {
-				sequence.setPersistentIdentity(persistentIdentity);
-				sequence.setVersion(version);
-			}
-			if(identity != topLevel.getIdentity())
-				sequence.setWasDerivedFrom(topLevel.getIdentity());
-			if (displayId != null)
-				sequence.setDisplayId(displayId);
-			if (name != null)
-				sequence.setName(name);
-			if (description != null)
-				sequence.setDescription(description);
-			if (!annotations.isEmpty())
-				sequence.setAnnotations(annotations);
+		Sequence sequence = new Sequence(identity, elements, encoding);
+		if(persistentIdentity!=null) {
+			sequence.setPersistentIdentity(persistentIdentity);
+			sequence.setVersion(version);
 		}
+		if(identity != topLevel.getIdentity())
+			sequence.setWasDerivedFrom(topLevel.getIdentity());
+		if (displayId != null)
+			sequence.setDisplayId(displayId);
+		if (name != null)
+			sequence.setName(name);
+		if (description != null)
+			sequence.setDescription(description);
+		if (!annotations.isEmpty())
+			sequence.setAnnotations(annotations);
 
-		//TODO: to fix
-		//				Sequence oldS = SBOLDoc.getSequence(topLevel.getIdentity());
-		//				if (oldS == null) {
-		//					SBOLDoc.addSequence(sequence);
-		//				} else {
-		//					if (!sequence.equals(oldS)) {
-		//						throw new SBOLValidationException("The specified Sequence does not exist.");
-		//					}
-		//				}
+		Sequence oldS = SBOLDoc.getSequence(identity);
+		if (oldS == null) {
+			SBOLDoc.addSequence(sequence);
+		} else {
+			if (!sequence.equals(oldS)) {
+				throw new SBOLValidationException("Multiple non-identical Sequences with identity "+identity);
+			}
+		}
 		return sequence;
 	}
 
@@ -773,7 +764,7 @@ public class SBOLReader
 		int pound = topLevelIdentity.lastIndexOf('#');
 		int colon = topLevelIdentity.lastIndexOf(':');
 
-		if (slash!=-1 && slash > pound && slash > colon) {
+		if (slash!=-1 /*&& slash > pound && slash > colon*/) {
 			displayId = topLevelIdentity.substring(slash + 1);
 		} else if (pound!=-1 && pound > colon) {
 			displayId = topLevelIdentity.substring(pound + 1);

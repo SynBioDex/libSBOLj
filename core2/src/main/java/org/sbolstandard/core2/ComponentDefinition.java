@@ -1462,4 +1462,11 @@ public class ComponentDefinition extends TopLevel {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "ComponentDefinition [types=" + types + ", roles=" + roles + ", sequences="
+				+ sequences + ", components=" + components + ", sequenceAnnotations="
+				+ sequenceAnnotations + ", sequenceConstraints=" + sequenceConstraints + "]";
+	}
+
 }
