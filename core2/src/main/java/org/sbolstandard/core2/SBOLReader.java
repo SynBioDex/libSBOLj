@@ -299,9 +299,15 @@ public class SBOLReader
 	 */
 	public static SBOLDocument read(InputStream in)
 	{
+		SBOLDocument SBOLDoc     = new SBOLDocument();
+		read(SBOLDoc,in);
+		return SBOLDoc;
+	}
+
+	static void read(SBOLDocument SBOLDoc,InputStream in)
+	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
-		SBOLDocument SBOLDoc     = new SBOLDocument();
 		try
 		{
 			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
@@ -311,7 +317,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readV1(document);
+					readV1(document);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -327,7 +333,6 @@ public class SBOLReader
 		}
 
 		scanner.close();
-		return SBOLDoc;
 	}
 
 	/**
