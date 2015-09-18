@@ -2,6 +2,7 @@ package org.sbolstandard.core2;
 
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.util.*;
 
@@ -2299,5 +2300,10 @@ public class SBOLDocument {
 		if (!compliant) {
 			throw new SBOLValidationException("Cannot modify a non-compliant SBOL document");
 		}
+	}
+	
+	// TODO: NEEDS JAVADOC
+	void read(InputStream in) {
+		SBOLReader.read(this, in);
 	}
 }

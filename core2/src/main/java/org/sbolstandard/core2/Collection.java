@@ -17,7 +17,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
  */
 
 public class Collection extends TopLevel{
-	
+
 	private Set<URI> members;
 	
 	Collection(URI identity) {

@@ -187,6 +187,11 @@ public class Sequence extends TopLevel{
 		return isTopLevelURIformCompliant(this.getIdentity());
 	}
 
+	@Override
+	public String toString() {
+		return "Sequence [elements=" + elements + ", encoding=" + encoding + "]";
+	}
+
 
 	//	/**
 	//	 * @param newDisplayId
