@@ -27,12 +27,14 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import uk.ac.intbio.core.io.turtle.TurtleIo;
+import uk.ac.ncl.intbio.core.datatree.Datatree;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.IdentifiableDocument;
 import uk.ac.ncl.intbio.core.datatree.Literal;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
+import uk.ac.ncl.intbio.core.datatree.PropertyValue;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
 import uk.ac.ncl.intbio.core.io.IoReader;
 import uk.ac.ncl.intbio.core.io.json.JsonIo;
@@ -262,16 +264,21 @@ public class SBOLReader
 		try
 		{
 			DocumentRoot<QName> document = readJSON(new StringReader(inputStreamString));
+			
+			boolean sbol2 = false;
 
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
+				if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))
 				{
-					scanner.close();
-					return readV1(document);
+					sbol2 = true;
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+			}
+			if (!sbol2) {
+				scanner.close();
+				readV1(document);				
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -312,15 +319,20 @@ public class SBOLReader
 		{
 			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
 
+			boolean sbol2 = false;
+
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
+				if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))
 				{
-					scanner.close();
-					readV1(document);
+					sbol2 = true;
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
+			}
+			if (!sbol2) {
+				scanner.close();
+				readV1(document);				
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -352,16 +364,23 @@ public class SBOLReader
 		try
 		{
 			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
+			
+			boolean sbol2 = false;
+
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
+				if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))
 				{
-					scanner.close();
-					return readV1(document);
+					sbol2 = true;
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
+			if (!sbol2) {
+				scanner.close();
+				readV1(document);				
+			}
+			
 			readTopLevelDocs(SBOLDoc, document);
 		}
 		catch (IOException e)
@@ -394,17 +413,23 @@ public class SBOLReader
 		try
 		{
 			DocumentRoot<QName> document = readTurtle(new StringReader(inputStreamString));
+			
+			boolean sbol2 = false;
+
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
+				if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))
 				{
-					scanner.close();
-					return readV1(document);
+					sbol2 = true;
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
-
 			}
+			if (!sbol2) {
+				scanner.close();
+				readV1(document);				
+			}
+			
 			readTopLevelDocs(SBOLDoc, document);
 		}
 		catch (IOException e)
@@ -489,12 +514,156 @@ public class SBOLReader
 
 	private static void readTopLevelDocs(SBOLDocument SBOLDoc, DocumentRoot<QName> document)
 	{
-		for (TopLevelDocument<QName> topLevel : document.getTopLevelDocuments())
-		{
-			if (topLevel.getType().equals(Sbol2Terms.Collection.Collection))
+		Map<URI, NestedDocument<QName>> nested = new HashMap<URI, NestedDocument<QName>>();
+		List<TopLevelDocument<QName>> topLevels = new ArrayList<TopLevelDocument<QName>>();
+		for (TopLevelDocument<QName> topLevel : document.getTopLevelDocuments()) {
+			if (topLevel.getType()
+					.equals(NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart(
+							"Description"))) {
+				for (PropertyValue<QName> value : topLevel.getPropertyValues(NamespaceBinding(
+						"http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart("type"))) {
+					Literal<QName> type = ((Literal<QName>) value);
+					if (type.getValue().toString()
+							.equals(Sbol2Terms.Component.Component.toString().replaceAll("\\{|\\}", ""))) {
+						nested.put(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString().equals(Sbol2Terms.Cut.Cut.toString().replaceAll("\\{|\\}", ""))) {
+						nested.add(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type
+							.getValue()
+							.toString()
+							.equals(Sbol2Terms.FunctionalComponent.FunctionalComponent.toString().replaceAll("\\{|\\}",
+									""))) {
+						nested.add(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.GenericLocation.GenericLocation.toString().replaceAll("\\{|\\}", ""))) {
+						nested.add(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Interaction.Interaction.toString().replaceAll("\\{|\\}", ""))) {
+						nested.add(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Location.Location.toString().replaceAll("\\{|\\}", ""))) {
+						nested.add(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.MapsTo.MapsTo.toString().replaceAll("\\{|\\}", ""))) {
+						nested.add(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Module.Module.toString().replaceAll("\\{|\\}", ""))) {
+						nested.add(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Participation.Participation.toString().replaceAll("\\{|\\}", ""))) {
+						nested.add(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Range.Range.toString().replaceAll("\\{|\\}", ""))) {
+						nested.add(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type
+							.getValue()
+							.toString()
+							.equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation.toString().replaceAll("\\{|\\}",
+									""))) {
+						nested.add(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type
+							.getValue()
+							.toString()
+							.equals(Sbol2Terms.SequenceConstraint.SequenceConstraint.toString().replaceAll("\\{|\\}",
+									""))) {
+						nested.add(Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else {
+						topLevels.add(topLevel);
+					}
+				}
+			}
+		}
+		
+		for (TopLevelDocument<QName> topLevel : topLevels) {
+			if (topLevel.getType()
+					.equals(NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart(
+							"Description"))) {
+				boolean sbol2Namespace = false;
+				for (PropertyValue<QName> value : topLevel.getPropertyValues(NamespaceBinding(
+						"http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart("type"))) {
+					Literal<QName> type = ((Literal<QName>) value);
+					if (type.getValue().toString()
+							.equals(Sbol2Terms.Collection.Collection.toString().replaceAll("\\{|\\}", ""))) {
+						parseCollections(SBOLDoc, topLevel);
+						sbol2Namespace = true;
+						break;
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.ModuleDefinition.ModuleDefinition.toString().replaceAll("\\{|\\}", ""))) {
+						parseModuleDefinition(SBOLDoc, topLevel, nested);
+						sbol2Namespace = true;
+						break;
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Model.Model.toString().replaceAll("\\{|\\}", ""))) {
+						parseModels(SBOLDoc, topLevel);
+						sbol2Namespace = true;
+						break;
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Sequence.Sequence.toString().replaceAll("\\{|\\}", ""))) {
+						parseSequences(SBOLDoc, topLevel);
+						sbol2Namespace = true;
+						break;
+					}
+					else if (type
+							.getValue()
+							.toString()
+							.equals(Sbol2Terms.ComponentDefinition.ComponentDefinition.toString().replaceAll("\\{|\\}",
+									""))) {
+						parseComponentDefinitions(SBOLDoc, topLevel);
+						sbol2Namespace = true;
+						break;
+					}
+					else if (type.getValue().toString().contains(Sbol2Terms.sbol2.getNamespaceURI())) {
+						sbol2Namespace = true;
+						break;
+					}
+				}
+				if (!sbol2Namespace) {
+					parseGenericTopLevel(SBOLDoc, topLevel);
+				}
+			}
+			else if (topLevel.getType().equals(Sbol2Terms.Collection.Collection))
 				parseCollections(SBOLDoc, topLevel);
 			else if (topLevel.getType().equals(Sbol2Terms.ModuleDefinition.ModuleDefinition))
-				parseModuleDefinition(SBOLDoc, topLevel);
+				parseModuleDefinition(SBOLDoc, topLevel, nested);
 			else if (topLevel.getType().equals(Sbol2Terms.Model.Model))
 				parseModels(SBOLDoc, topLevel);
 			else if (topLevel.getType().equals(Sbol2Terms.Sequence.Sequence))
@@ -1858,7 +2027,7 @@ public class SBOLReader
 	}
 
 	private static ModuleDefinition parseModuleDefinition(SBOLDocument SBOLDoc,
-			TopLevelDocument<QName> topLevel)
+			TopLevelDocument<QName> topLevel, List<NestedDocument<QName>> nested)
 	{
 		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
@@ -1894,7 +2063,12 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModule))
 			{
-				subModules.add(parseModule(((NestedDocument<QName>) namedProperty.getValue())));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					subModules.add(parseModule(((NestedDocument<QName>) namedProperty.getValue())));
+				}
+				else {
+					
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasSubModule))
 			{
