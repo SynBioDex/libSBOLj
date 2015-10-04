@@ -278,7 +278,7 @@ public class SBOLReader
 			}
 			if (!sbol2) {
 				scanner.close();
-				readV1(document);				
+				return readV1(document);				
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -378,7 +378,7 @@ public class SBOLReader
 			}
 			if (!sbol2) {
 				scanner.close();
-				readV1(document);				
+				return readV1(document);				
 			}
 			
 			readTopLevelDocs(SBOLDoc, document);
@@ -427,7 +427,7 @@ public class SBOLReader
 			}
 			if (!sbol2) {
 				scanner.close();
-				readV1(document);				
+				return readV1(document);				
 			}
 			
 			readTopLevelDocs(SBOLDoc, document);
