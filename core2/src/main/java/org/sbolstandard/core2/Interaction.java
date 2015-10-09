@@ -409,5 +409,11 @@ public class Interaction extends Identified {
 	void setModuleDefinition(ModuleDefinition moduleDefinition) {
 		this.moduleDefinition = moduleDefinition;
 	}
+
+	@Override
+	public String toString() {
+		return "Interaction [types=" + types + ", participations=" + participations
+				+ ", moduleDefinition=" + moduleDefinition + "]";
+	}
 	
 }

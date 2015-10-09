@@ -2306,4 +2306,14 @@ public class SBOLDocument {
 	void read(InputStream in) {
 		SBOLReader.read(this, in);
 	}
+
+	@Override
+	public String toString() {
+		return "SBOLDocument [genericTopLevels=" + genericTopLevels + ", collections="
+				+ collections + ", componentDefinitions=" + componentDefinitions + ", models="
+				+ models + ", moduleDefinitions=" + moduleDefinitions + ", sequences=" + sequences
+				+ ", nameSpaces=" + nameSpaces + ", defaultURIprefix=" + defaultURIprefix
+				+ ", complete=" + complete + ", compliant=" + compliant + ", typesInURIs="
+				+ typesInURIs + ", createDefaults=" + createDefaults + "]";
+	}
 }

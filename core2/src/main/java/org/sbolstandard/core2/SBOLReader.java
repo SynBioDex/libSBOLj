@@ -666,6 +666,8 @@ public class SBOLReader
 			SBOLDoc.addComponentDefinition(c);
 		} else {
 			if (!c.equals(oldC)) {
+				//System.out.println(c.toString());
+				//System.out.println(oldC.toString());
 				throw new SBOLValidationException("Multiple non-identical ComponentDefinitions with identity "+identity);
 			}
 		}

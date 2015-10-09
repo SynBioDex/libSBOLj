@@ -81,4 +81,9 @@ public class Cut extends Location{
 			return false;
 		return orientation == other.orientation;
 	}
+
+	@Override
+	public String toString() {
+		return "Cut [at=" + at + "]";
+	}
 }

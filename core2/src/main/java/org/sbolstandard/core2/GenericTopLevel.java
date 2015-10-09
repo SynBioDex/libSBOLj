@@ -139,4 +139,9 @@ public class GenericTopLevel extends TopLevel{
 		return isTopLevelURIformCompliant(this.getIdentity());
 	}
 
+	@Override
+	public String toString() {
+		return "GenericTopLevel [rdfType=" + rdfType + "]";
+	}
+
 }
