@@ -192,34 +192,4 @@ public class Sequence extends TopLevel{
 		return "Sequence [elements=" + elements + ", encoding=" + encoding + "]";
 	}
 
-
-	//	/**
-	//	 * @param newDisplayId
-	//	 * @return
-	//	 */
-	//	public Sequence copy(String newDisplayId) {
-	//		Sequence cloned = (Sequence) super.copy(newDisplayId);
-	//		cloned.updateCompliantURI(newDisplayId);
-	//		return cloned;
-	//	}
-	//
-	//	/**
-	//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0".
-	//	 * @param newVersion
-	//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
-	//	 */
-	//	public Sequence newVersion(String newVersion) {
-	//		Sequence cloned = (Sequence) super.newVersion(newVersion);
-	//		cloned.updateVersion(newVersion);
-	//		return cloned;
-	//	}
-
-	//	/* (non-Javadoc)
-	//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
-	//	 */
-	//	public void updateVersion(String newVersion) {
-	//		super.updateVersion(newVersion);
-	//		if (isURIcompliant(this.getIdentity())) {
-	//		}
-	//	}
 }

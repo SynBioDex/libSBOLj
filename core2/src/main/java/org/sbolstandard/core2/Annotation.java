@@ -431,4 +431,9 @@ public class Annotation {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Annotation [value=" + value + "]";
+	}
+
 }
