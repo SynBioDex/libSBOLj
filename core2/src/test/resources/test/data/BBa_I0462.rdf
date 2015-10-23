@@ -1,5 +1,13 @@
 <?xml version="1.0" ?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:sbol="http://sbols.org/v2#" xmlns:prov="http://www.w3.org/ns/prov#">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbol="http://sbols.org/v2#">
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/BBa_B0015">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_B0015"/>
+    <sbol:displayId>BBa_B0015</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://partsregistry.org/Part:BBa_B0015"/>
+    <dcterms:title>B0015</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
+  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/BBa_I0462">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_I0462"/>
     <sbol:displayId>BBa_I0462</sbol:displayId>
@@ -8,14 +16,6 @@
     <dcterms:description>LuxR protein generator</dcterms:description>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000804"/>
-    <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/BBa_I0462/component2">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/component2"/>
-        <sbol:displayId>component2</sbol:displayId>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/BBa_B0015"/>
-      </sbol:Component>
-    </sbol:component>
     <sbol:component>
       <sbol:Component rdf:about="http://www.async.ece.utah.edu/BBa_I0462/component1">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/component1"/>
@@ -30,6 +30,14 @@
         <sbol:displayId>component0</sbol:displayId>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/BBa_B0034"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/BBa_I0462/component2">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_I0462/component2"/>
+        <sbol:displayId>component2</sbol:displayId>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/BBa_B0015"/>
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceAnnotation>
@@ -84,14 +92,6 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/seq_d23749adb3a7e0e2f09168cb7267a6113b238973"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/BBa_B0015">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_B0015"/>
-    <sbol:displayId>BBa_B0015</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://partsregistry.org/Part:BBa_B0015"/>
-    <dcterms:title>B0015</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/BBa_C0062">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/BBa_C0062"/>
