@@ -264,21 +264,19 @@ public class SBOLReader
 		try
 		{
 			DocumentRoot<QName> document = readJSON(new StringReader(inputStreamString));
-			
-			boolean sbol2 = false;
 
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))
+				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
-					sbol2 = true;
+					scanner.close();
+					readV1(SBOLDoc,document);				
+					return SBOLDoc;
 				}
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
-			if (!sbol2) {
-				scanner.close();
-				return readV1(document);				
+			for (NamespaceBinding n : document.getNamespaceBindings())
+			{
+				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -318,21 +316,18 @@ public class SBOLReader
 		try
 		{
 			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
-
-			boolean sbol2 = false;
-
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))
+				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
-					sbol2 = true;
+					scanner.close();
+					readV1(SBOLDoc,document);	
+					return;
 				}
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
-			if (!sbol2) {
-				scanner.close();
-				readV1(document);				
+			for (NamespaceBinding n : document.getNamespaceBindings())
+			{
+				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -365,20 +360,18 @@ public class SBOLReader
 		{
 			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
 			
-			boolean sbol2 = false;
-
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))
+				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
-					sbol2 = true;
+					scanner.close();
+					readV1(SBOLDoc,document);
+					return SBOLDoc;
 				}
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
-			if (!sbol2) {
-				scanner.close();
-				return readV1(document);				
+			for (NamespaceBinding n : document.getNamespaceBindings())
+			{
+				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 			}
 			
 			readTopLevelDocs(SBOLDoc, document);
@@ -413,23 +406,19 @@ public class SBOLReader
 		try
 		{
 			DocumentRoot<QName> document = readTurtle(new StringReader(inputStreamString));
-			
-			boolean sbol2 = false;
-
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))
+				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
-					sbol2 = true;
+					scanner.close();
+					readV1(SBOLDoc,document);	
+					return SBOLDoc;
 				}
+			}
+			for (NamespaceBinding n : document.getNamespaceBindings())
+			{
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
-			if (!sbol2) {
-				scanner.close();
-				return readV1(document);				
-			}
-			
 			readTopLevelDocs(SBOLDoc, document);
 		}
 		catch (IOException e)
@@ -446,9 +435,8 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	private static SBOLDocument readV1(DocumentRoot<QName> document)
+	private static SBOLDocument readV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document)
 	{
-		SBOLDocument SBOLDoc = new SBOLDocument();
 		for (NamespaceBinding n : document.getNamespaceBindings())
 		{
 			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))

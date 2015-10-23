@@ -209,7 +209,6 @@ public class SBOLTestUtils {
 	{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		SBOLWriter.write(doc, out);
-
 		return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 	}
 
