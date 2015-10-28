@@ -30,7 +30,7 @@ public class SBOLDocument {
 	private HashMap<URI, Model> models;
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
-	private HashMap<URI, NamespaceBinding> nameSpaces;
+	private HashMap<String, NamespaceBinding> nameSpaces;
 	private String defaultURIprefix;
 	private boolean complete = false;
 	private boolean compliant = true;
@@ -50,10 +50,10 @@ public class SBOLDocument {
 		moduleDefinitions = new HashMap<>();
 		sequences = new HashMap<>();
 		nameSpaces = new HashMap<>();
-		nameSpaces.put(URI.create(Sbol2Terms.sbol2.getNamespaceURI()), Sbol2Terms.sbol2);
-		nameSpaces.put(URI.create(Sbol1Terms.rdf.getNamespaceURI()), Sbol1Terms.rdf);
-		nameSpaces.put(URI.create(Sbol2Terms.dc.getNamespaceURI()), Sbol2Terms.dc);
-		nameSpaces.put(URI.create(Sbol2Terms.prov.getNamespaceURI()), Sbol2Terms.prov);
+		nameSpaces.put(Sbol2Terms.sbol2.getPrefix(), Sbol2Terms.sbol2);
+		nameSpaces.put(Sbol1Terms.rdf.getPrefix(), Sbol1Terms.rdf);
+		nameSpaces.put(Sbol2Terms.dc.getPrefix(), Sbol2Terms.dc);
+		nameSpaces.put(Sbol2Terms.prov.getPrefix(), Sbol2Terms.prov);
 	}
 
 	/**
@@ -1780,7 +1780,8 @@ public class SBOLDocument {
 	 * @return the new generic top level
 	 */
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
-		if (rdfType.getPrefix().toString().equals("sbol")) {
+		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
+				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
@@ -1925,7 +1926,7 @@ public class SBOLDocument {
 //		if (!URIcompliance.isURIprefixCompliant(nameSpaceURI.toString())) {
 //			throw new SBOLException("Namespace URI " + nameSpaceURI.toString() + " is not valid.");
 //		}
-		nameSpaces.put(nameSpaceURI, NamespaceBinding(nameSpaceURI.toString(), prefix));
+		nameSpaces.put(prefix, NamespaceBinding(nameSpaceURI.toString(), prefix));
 	}
 	
 	/**
@@ -1934,12 +1935,12 @@ public class SBOLDocument {
 	 * @param qName Qualified name ({@link QName}) for a namespace 
 	 */
 	public void addNamespace(QName qName) {
-		nameSpaces.put(URI.create(qName.getNamespaceURI()), NamespaceBinding(qName.getNamespaceURI(), 
+		nameSpaces.put(qName.getPrefix(), NamespaceBinding(qName.getNamespaceURI(), 
 				qName.getPrefix()));
 	}
 	
 	void addNamespaceBinding(NamespaceBinding namespaceBinding) {
-		nameSpaces.put(URI.create(namespaceBinding.getNamespaceURI()), namespaceBinding);
+		nameSpaces.put(namespaceBinding.getPrefix(), namespaceBinding);
 	}
 	
 	/**

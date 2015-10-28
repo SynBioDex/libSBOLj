@@ -41,7 +41,8 @@ public class Annotation {
 	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, String literal) {
-		if (qName.getPrefix().toString().equals("sbol")) {
+		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
+				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 		}
 		value = NamedProperty(qName,literal);
@@ -55,7 +56,8 @@ public class Annotation {
 	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, int literal) {
-		if (qName.getPrefix().toString().equals("sbol")) {
+		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
+				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 		}
 		value = NamedProperty(qName,literal);
@@ -91,7 +93,8 @@ public class Annotation {
 	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, URI literal) {
-		if (qName.getPrefix().toString().equals("sbol")) {
+		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
+				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 		}
 		value = NamedProperty(qName,literal);
@@ -108,10 +111,12 @@ public class Annotation {
 	 * @throws SBOLValidationException
 	 */
 	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
-		if (qName.getPrefix().toString().equals("sbol")) {
+		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
+				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 		}
-		if (nestedQName.getPrefix().toString().equals("sbol")) {
+		if (nestedQName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
+				nestedQName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(nestedQName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 		}
 		List<NamedProperty<QName>> list = new ArrayList<>();
@@ -123,7 +128,8 @@ public class Annotation {
 	}
 
 	Annotation(NamedProperty<QName> value) {
-		if (value.getName().getPrefix().toString().equals("sbol")) {
+		if (value.getName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
+				value.getName().getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			if (value.getName().equals(Sbol2Terms.Identified.timeStamp)) {
 				System.out.println("Warning: sbol:timeStamp is deprecated");
 			} else { 

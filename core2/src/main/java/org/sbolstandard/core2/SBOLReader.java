@@ -126,6 +126,42 @@ public class SBOLReader
 	{
 		SBOLReader.typesInURI = typesInURI;
 	}
+	
+	private static String getSBOLVersion(DocumentRoot<QName> document) 
+	{
+		boolean foundRDF = false;
+		boolean foundDC = false;
+		boolean foundProv = false;
+		boolean foundSBOL1 = false;
+		boolean foundSBOL2 = false;
+		for (NamespaceBinding n : document.getNamespaceBindings())
+		{
+			if (n.getNamespaceURI().equals(Sbol1Terms.rdf.getNamespaceURI())) foundRDF = true;
+			if (n.getNamespaceURI().equals(Sbol2Terms.prov.getNamespaceURI())) foundProv = true;
+			if (n.getNamespaceURI().equals(Sbol2Terms.dc.getNamespaceURI())) foundDC = true;
+			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))	foundSBOL1 = true;
+			if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))	foundSBOL2 = true;
+		}
+		if (!foundSBOL1 && !foundSBOL2) {
+			throw new SBOLValidationException("No SBOL namespace found.");
+		}
+		else if (foundSBOL1 && !foundSBOL2) return "v1";
+		else if (foundSBOL2 && !foundSBOL1) {
+			if (!foundRDF) {
+				throw new SBOLValidationException("No RDF namespace found.");
+			}
+			if (!foundDC) {
+				throw new SBOLValidationException("No dublin core namespace found.");
+			}
+			if (!foundProv) {
+				throw new SBOLValidationException("No provenance namespace found.");
+			}		
+			return "v2";
+		}
+		else {
+			throw new SBOLValidationException("A SBOL document cannot have SBOL namespaces with different versions.");
+		}
+	}
 
 	/**
 	 * Takes in the given RDF filename and converts the file to an SBOLDocument.
@@ -265,14 +301,11 @@ public class SBOLReader
 		{
 			DocumentRoot<QName> document = readJSON(new StringReader(inputStreamString));
 
-			for (NamespaceBinding n : document.getNamespaceBindings())
+			if (getSBOLVersion(document).equals("v1")) 
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
-				{
-					scanner.close();
-					readV1(SBOLDoc,document);				
-					return SBOLDoc;
-				}
+				scanner.close();
+				readV1(SBOLDoc,document);	
+				return SBOLDoc;
 			}
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
@@ -316,14 +349,11 @@ public class SBOLReader
 		try
 		{
 			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
-			for (NamespaceBinding n : document.getNamespaceBindings())
+			if (getSBOLVersion(document).equals("v1")) 
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
-				{
-					scanner.close();
-					readV1(SBOLDoc,document);	
-					return;
-				}
+				scanner.close();
+				readV1(SBOLDoc,document);	
+				return;
 			}
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
@@ -360,14 +390,11 @@ public class SBOLReader
 		{
 			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
 			
-			for (NamespaceBinding n : document.getNamespaceBindings())
+			if (getSBOLVersion(document).equals("v1")) 
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
-				{
-					scanner.close();
-					readV1(SBOLDoc,document);
-					return SBOLDoc;
-				}
+				scanner.close();
+				readV1(SBOLDoc,document);	
+				return SBOLDoc;
 			}
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
@@ -406,14 +433,11 @@ public class SBOLReader
 		try
 		{
 			DocumentRoot<QName> document = readTurtle(new StringReader(inputStreamString));
-			for (NamespaceBinding n : document.getNamespaceBindings())
+			if (getSBOLVersion(document).equals("v1")) 
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
-				{
-					scanner.close();
-					readV1(SBOLDoc,document);	
-					return SBOLDoc;
-				}
+				scanner.close();
+				readV1(SBOLDoc,document);	
+				return SBOLDoc;
 			}
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{

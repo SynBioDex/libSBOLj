@@ -1235,13 +1235,13 @@ public abstract class SBOLAbstractTests {
 	}
 
 
-	@Test
-	public void test_JSONFile() throws Exception
-	{
-		SBOLDocument document = new SBOLDocument();
-		runTest("test/data/emptyJSONFile.json", document, "json");
-
-	}
+//	@Test
+//	public void test_JSONFile() throws Exception
+//	{
+//		SBOLDocument document = new SBOLDocument();
+//		runTest("test/data/emptyJSONFile.json", document, "json");
+//
+//	}
 
 	@Test
 	public void test_memberAnnotations() throws Exception
