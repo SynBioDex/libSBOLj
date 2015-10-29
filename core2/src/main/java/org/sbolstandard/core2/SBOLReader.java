@@ -27,12 +27,14 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import uk.ac.intbio.core.io.turtle.TurtleIo;
+import uk.ac.ncl.intbio.core.datatree.Datatree;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.IdentifiableDocument;
 import uk.ac.ncl.intbio.core.datatree.Literal;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
+import uk.ac.ncl.intbio.core.datatree.PropertyValue;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
 import uk.ac.ncl.intbio.core.io.IoReader;
 import uk.ac.ncl.intbio.core.io.json.JsonIo;
@@ -123,6 +125,42 @@ public class SBOLReader
 	public static void setTypesInURI(boolean typesInURI)
 	{
 		SBOLReader.typesInURI = typesInURI;
+	}
+	
+	private static String getSBOLVersion(DocumentRoot<QName> document) 
+	{
+		boolean foundRDF = false;
+		boolean foundDC = false;
+		boolean foundProv = false;
+		boolean foundSBOL1 = false;
+		boolean foundSBOL2 = false;
+		for (NamespaceBinding n : document.getNamespaceBindings())
+		{
+			if (n.getNamespaceURI().equals(Sbol1Terms.rdf.getNamespaceURI())) foundRDF = true;
+			if (n.getNamespaceURI().equals(Sbol2Terms.prov.getNamespaceURI())) foundProv = true;
+			if (n.getNamespaceURI().equals(Sbol2Terms.dc.getNamespaceURI())) foundDC = true;
+			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))	foundSBOL1 = true;
+			if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))	foundSBOL2 = true;
+		}
+		if (!foundSBOL1 && !foundSBOL2) {
+			throw new SBOLValidationException("No SBOL namespace found.");
+		}
+		else if (foundSBOL1 && !foundSBOL2) return "v1";
+		else if (foundSBOL2 && !foundSBOL1) {
+			if (!foundRDF) {
+				throw new SBOLValidationException("No RDF namespace found.");
+			}
+			if (!foundDC) {
+				throw new SBOLValidationException("No dublin core namespace found.");
+			}
+			if (!foundProv) {
+				throw new SBOLValidationException("No provenance namespace found.");
+			}		
+			return "v2";
+		}
+		else {
+			throw new SBOLValidationException("A SBOL document cannot have SBOL namespaces with different versions.");
+		}
 	}
 
 	/**
@@ -263,15 +301,15 @@ public class SBOLReader
 		{
 			DocumentRoot<QName> document = readJSON(new StringReader(inputStreamString));
 
+			if (getSBOLVersion(document).equals("v1")) 
+			{
+				scanner.close();
+				readV1(SBOLDoc,document);	
+				return SBOLDoc;
+			}
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
-				{
-					scanner.close();
-					return readV1(document);
-				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -299,22 +337,27 @@ public class SBOLReader
 	 */
 	public static SBOLDocument read(InputStream in)
 	{
+		SBOLDocument SBOLDoc     = new SBOLDocument();
+		read(SBOLDoc,in);
+		return SBOLDoc;
+	}
+
+	static void read(SBOLDocument SBOLDoc,InputStream in)
+	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
-		SBOLDocument SBOLDoc     = new SBOLDocument();
 		try
 		{
 			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
-
+			if (getSBOLVersion(document).equals("v1")) 
+			{
+				scanner.close();
+				readV1(SBOLDoc,document);	
+				return;
+			}
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
-				{
-					scanner.close();
-					return readV1(document);
-				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
 
 			readTopLevelDocs(SBOLDoc, document);
@@ -327,7 +370,6 @@ public class SBOLReader
 		}
 
 		scanner.close();
-		return SBOLDoc;
 	}
 
 	/**
@@ -347,16 +389,18 @@ public class SBOLReader
 		try
 		{
 			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
+			
+			if (getSBOLVersion(document).equals("v1")) 
+			{
+				scanner.close();
+				readV1(SBOLDoc,document);	
+				return SBOLDoc;
+			}
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
-				{
-					scanner.close();
-					return readV1(document);
-				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
 			}
+			
 			readTopLevelDocs(SBOLDoc, document);
 		}
 		catch (IOException e)
@@ -389,16 +433,15 @@ public class SBOLReader
 		try
 		{
 			DocumentRoot<QName> document = readTurtle(new StringReader(inputStreamString));
+			if (getSBOLVersion(document).equals("v1")) 
+			{
+				scanner.close();
+				readV1(SBOLDoc,document);	
+				return SBOLDoc;
+			}
 			for (NamespaceBinding n : document.getNamespaceBindings())
 			{
-				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
-				{
-					scanner.close();
-					return readV1(document);
-				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
-
 			}
 			readTopLevelDocs(SBOLDoc, document);
 		}
@@ -416,9 +459,8 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	private static SBOLDocument readV1(DocumentRoot<QName> document)
+	private static SBOLDocument readV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document)
 	{
-		SBOLDocument SBOLDoc = new SBOLDocument();
 		for (NamespaceBinding n : document.getNamespaceBindings())
 		{
 			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
@@ -484,18 +526,219 @@ public class SBOLReader
 
 	private static void readTopLevelDocs(SBOLDocument SBOLDoc, DocumentRoot<QName> document)
 	{
-		for (TopLevelDocument<QName> topLevel : document.getTopLevelDocuments())
-		{
+		Map<URI, NestedDocument<QName>> nested = new HashMap<URI, NestedDocument<QName>>();
+		List<TopLevelDocument<QName>> topLevels = new ArrayList<TopLevelDocument<QName>>();
+		for (TopLevelDocument<QName> topLevel : document.getTopLevelDocuments()) {
+			if (topLevel.getType().equals(NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf")
+					.withLocalPart("Description"))) {
+				for (PropertyValue<QName> value : topLevel.getPropertyValues(
+						NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart("type"))) {
+					Literal<QName> type = ((Literal<QName>) value);
+					if (type.getValue().toString()
+							.equals(Sbol2Terms.Component.Component.toString().replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.Component.Component, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+									.equals(Sbol2Terms.Cut.Cut.toString().replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.Cut.Cut, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+									.equals(Sbol2Terms.FunctionalComponent.FunctionalComponent.toString()
+											.replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.FunctionalComponent.FunctionalComponent, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+									.equals(Sbol2Terms.GenericLocation.GenericLocation.toString().replaceAll("\\{|\\}",
+											""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.GenericLocation.GenericLocation, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+									.equals(Sbol2Terms.Interaction.Interaction.toString().replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.Interaction.Interaction, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+									.equals(Sbol2Terms.Location.Location.toString().replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.Location.Location, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+									.equals(Sbol2Terms.MapsTo.MapsTo.toString().replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.MapsTo.MapsTo, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+									.equals(Sbol2Terms.Module.Module.toString().replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.Module.Module, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+									.equals(Sbol2Terms.Participation.Participation.toString().replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.Participation.Participation, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+									.equals(Sbol2Terms.Range.Range.toString().replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.Range.Range, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+									.equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation.toString()
+											.replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.SequenceAnnotation.SequenceAnnotation, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString().equals(Sbol2Terms.SequenceConstraint.SequenceConstraint
+									.toString().replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.SequenceConstraint.SequenceConstraint, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Collection.Collection.toString().replaceAll("\\{|\\}", ""))) {
+						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								Sbol2Terms.Collection.Collection, topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.ModuleDefinition.ModuleDefinition.toString().replaceAll("\\{|\\}", ""))) {
+						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								Sbol2Terms.ModuleDefinition.ModuleDefinition, topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Model.Model.toString().replaceAll("\\{|\\}", ""))) {
+						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								Sbol2Terms.Model.Model, topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Sequence.Sequence.toString().replaceAll("\\{|\\}", ""))) {
+						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								Sbol2Terms.Sequence.Sequence, topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type
+							.getValue()
+							.toString()
+							.equals(Sbol2Terms.ComponentDefinition.ComponentDefinition.toString().replaceAll("\\{|\\}",
+									""))) {
+						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								Sbol2Terms.ComponentDefinition.ComponentDefinition, topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else {
+						topLevels.add(topLevel);
+					}
+				}
+			} else if (topLevel.getType().equals(Sbol2Terms.Component.Component)
+					|| topLevel.getType().equals(Sbol2Terms.Cut.Cut)
+					|| topLevel.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent)
+					|| topLevel.getType().equals(Sbol2Terms.GenericLocation.GenericLocation)
+					|| topLevel.getType().equals(Sbol2Terms.Interaction.Interaction)
+					|| topLevel.getType().equals(Sbol2Terms.Location.Location)
+					|| topLevel.getType().equals(Sbol2Terms.MapsTo.MapsTo)
+					|| topLevel.getType().equals(Sbol2Terms.Module.Module)
+					|| topLevel.getType().equals(Sbol2Terms.Participation.Participation)
+					|| topLevel.getType().equals(Sbol2Terms.Range.Range)
+					|| topLevel.getType().equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation)
+					|| topLevel.getType().equals(Sbol2Terms.SequenceConstraint.SequenceConstraint)) {
+				nested.put(topLevel.getIdentity(),
+						Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								topLevel.getType(), topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+			} else {
+				topLevels.add(topLevel);
+			}
+		}
+		
+		for (TopLevelDocument<QName> topLevel : topLevels) {
+//			if (topLevel.getType()
+//					.equals(NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart(
+//							"Description"))) {
+//				boolean sbol2Namespace = false;
+//				for (PropertyValue<QName> value : topLevel.getPropertyValues(NamespaceBinding(
+//						"http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart("type"))) {
+//					Literal<QName> type = ((Literal<QName>) value);
+//					if (type.getValue().toString()
+//							.equals(Sbol2Terms.Collection.Collection.toString().replaceAll("\\{|\\}", ""))) {
+//						parseCollections(SBOLDoc, topLevel);
+//						sbol2Namespace = true;
+//						break;
+//					}
+//					else if (type.getValue().toString()
+//							.equals(Sbol2Terms.ModuleDefinition.ModuleDefinition.toString().replaceAll("\\{|\\}", ""))) {
+//						parseModuleDefinition(SBOLDoc, topLevel, nested);
+//						sbol2Namespace = true;
+//						break;
+//					}
+//					else if (type.getValue().toString()
+//							.equals(Sbol2Terms.Model.Model.toString().replaceAll("\\{|\\}", ""))) {
+//						parseModels(SBOLDoc, topLevel);
+//						sbol2Namespace = true;
+//						break;
+//					}
+//					else if (type.getValue().toString()
+//							.equals(Sbol2Terms.Sequence.Sequence.toString().replaceAll("\\{|\\}", ""))) {
+//						parseSequences(SBOLDoc, topLevel);
+//						sbol2Namespace = true;
+//						break;
+//					}
+//					else if (type
+//							.getValue()
+//							.toString()
+//							.equals(Sbol2Terms.ComponentDefinition.ComponentDefinition.toString().replaceAll("\\{|\\}",
+//									""))) {
+//						parseComponentDefinitions(SBOLDoc, topLevel);
+//						sbol2Namespace = true;
+//						break;
+//					}
+//					else if (type.getValue().toString().contains(Sbol2Terms.sbol2.getNamespaceURI())) {
+//						sbol2Namespace = true;
+//						break;
+//					}
+//				}
+//				if (!sbol2Namespace) {
+//					parseGenericTopLevel(SBOLDoc, topLevel);
+//				}
+//			}
 			if (topLevel.getType().equals(Sbol2Terms.Collection.Collection))
 				parseCollections(SBOLDoc, topLevel);
 			else if (topLevel.getType().equals(Sbol2Terms.ModuleDefinition.ModuleDefinition))
-				parseModuleDefinition(SBOLDoc, topLevel);
+				parseModuleDefinition(SBOLDoc, topLevel, nested);
 			else if (topLevel.getType().equals(Sbol2Terms.Model.Model))
 				parseModels(SBOLDoc, topLevel);
 			else if (topLevel.getType().equals(Sbol2Terms.Sequence.Sequence))
 				parseSequences(SBOLDoc, topLevel);
 			else if (topLevel.getType().equals(Sbol2Terms.ComponentDefinition.ComponentDefinition))
-				parseComponentDefinitions(SBOLDoc, topLevel);
+				parseComponentDefinitions(SBOLDoc, topLevel, nested);
 			else
 				parseGenericTopLevel(SBOLDoc, topLevel);
 		}
@@ -557,7 +800,6 @@ public class SBOLReader
 				// TODO: conversion to proper SO term when possible
 				URI convertedSO = SequenceOntology.convertSeqOntologyV1(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 				roles.add(convertedSO);
-				//				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.annotations))
 			{
@@ -630,34 +872,42 @@ public class SBOLReader
 			sequenceConstraints.add(sc);
 		}
 
-		//ComponentDefinition c = SBOLDoc.createComponentDefinition(identity, type, roles);
-		ComponentDefinition c = SBOLDoc.getComponentDefinition(identity);
-		if (c==null) {
-			c = SBOLDoc.createComponentDefinition(identity, type);
-			if (!persIdentity.equals("")) {
-				c.setPersistentIdentity(URI.create(persIdentity));
-				c.setVersion(version);
+		ComponentDefinition c = new ComponentDefinition(identity, type);
+		if (!persIdentity.equals("")) {
+			c.setPersistentIdentity(URI.create(persIdentity));
+			c.setVersion(version);
+		}
+		if(roles != null)
+			c.setRoles(roles);
+		if(identity != componentDef.getIdentity())
+			c.setWasDerivedFrom(componentDef.getIdentity());
+		if (displayId != null)
+			c.setDisplayId(displayId);
+		if (name != null && !name.isEmpty())
+			c.setName(name);
+		if (description != null && !description.isEmpty())
+			c.setDescription(description);
+		if (seq_identity != null)
+			c.addSequence(seq_identity);
+		if (!annotations.isEmpty())
+			c.setAnnotations(annotations);
+		if (!sequenceAnnotations.isEmpty())
+			c.setSequenceAnnotations(sequenceAnnotations);
+		if (!components.isEmpty())
+			c.setComponents(components);
+		if (!sequenceConstraints.isEmpty())
+			c.setSequenceConstraints(sequenceConstraints);
+
+		//TODO: to fix
+		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(identity);
+		if (oldC == null) {
+			SBOLDoc.addComponentDefinition(c);
+		} else {
+			if (!c.equals(oldC)) {
+				//System.out.println(c.toString());
+				//System.out.println(oldC.toString());
+				throw new SBOLValidationException("Multiple non-identical ComponentDefinitions with identity "+identity);
 			}
-			if(roles != null)
-				c.setRoles(roles);
-			if(identity != componentDef.getIdentity())
-				c.setWasDerivedFrom(componentDef.getIdentity());
-			if (displayId != null)
-				c.setDisplayId(displayId);
-			if (name != null && !name.isEmpty())
-				c.setName(name);
-			if (description != null && !description.isEmpty())
-				c.setDescription(description);
-			if (seq_identity != null)
-				c.addSequence(seq_identity);
-			if (!annotations.isEmpty())
-				c.setAnnotations(annotations);
-			if (!sequenceAnnotations.isEmpty())
-				c.setSequenceAnnotations(sequenceAnnotations);
-			if (!components.isEmpty())
-				c.setComponents(components);
-			if (!sequenceConstraints.isEmpty())
-				c.setSequenceConstraints(sequenceConstraints);
 		}
 		return c;
 	}
@@ -708,23 +958,29 @@ public class SBOLReader
 			}
 		}
 
-		Sequence sequence = SBOLDoc.getSequence(identity);
-		if (sequence==null) {
-			sequence = SBOLDoc.createSequence(identity, elements, encoding);
-			if(persistentIdentity!=null) {
-				sequence.setPersistentIdentity(persistentIdentity);
-				sequence.setVersion(version);
+		Sequence sequence = new Sequence(identity, elements, encoding);
+		if(persistentIdentity!=null) {
+			sequence.setPersistentIdentity(persistentIdentity);
+			sequence.setVersion(version);
+		}
+		if(identity != topLevel.getIdentity())
+			sequence.setWasDerivedFrom(topLevel.getIdentity());
+		if (displayId != null)
+			sequence.setDisplayId(displayId);
+		if (name != null)
+			sequence.setName(name);
+		if (description != null)
+			sequence.setDescription(description);
+		if (!annotations.isEmpty())
+			sequence.setAnnotations(annotations);
+
+		Sequence oldS = SBOLDoc.getSequence(identity);
+		if (oldS == null) {
+			SBOLDoc.addSequence(sequence);
+		} else {
+			if (!sequence.equals(oldS)) {
+				throw new SBOLValidationException("Multiple non-identical Sequences with identity "+identity);
 			}
-			if(identity != topLevel.getIdentity())
-				sequence.setWasDerivedFrom(topLevel.getIdentity());
-			if (displayId != null)
-				sequence.setDisplayId(displayId);
-			if (name != null)
-				sequence.setName(name);
-			if (description != null)
-				sequence.setDescription(description);
-			if (!annotations.isEmpty())
-				sequence.setAnnotations(annotations);
 		}
 		return sequence;
 	}
@@ -753,7 +1009,7 @@ public class SBOLReader
 		int pound = topLevelIdentity.lastIndexOf('#');
 		int colon = topLevelIdentity.lastIndexOf(':');
 
-		if (slash!=-1 && slash > pound && slash > colon) {
+		if (slash!=-1 /*&& slash > pound && slash > colon*/) {
 			displayId = topLevelIdentity.substring(slash + 1);
 		} else if (pound!=-1 && pound > colon) {
 			displayId = topLevelIdentity.substring(pound + 1);
@@ -814,7 +1070,8 @@ public class SBOLReader
 			}
 		}
 
-		Collection c = SBOLDoc.createCollection(identity);
+		//		Collection c = SBOLDoc.createCollection(identity);
+		Collection c = new Collection(identity);
 		if (persistentIdentity!=null) {
 			c.setPersistentIdentity(persistentIdentity);
 			c.setVersion(version);
@@ -831,6 +1088,15 @@ public class SBOLReader
 			c.setMembers(members);
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
+
+		Collection oldC = SBOLDoc.getCollection(topLevel.getIdentity());
+		if (oldC == null) {
+			SBOLDoc.addCollection(c);
+		} else {
+			if (!c.equals(oldC)) {
+				throw new SBOLValidationException("The specified Collection does not exist.");
+			}
+		}
 		return c;
 	}
 
@@ -955,7 +1221,7 @@ public class SBOLReader
 	}
 
 	private static ComponentDefinition parseComponentDefinitions(
-			SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+			SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested)
 	{
 		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
@@ -996,12 +1262,24 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasComponent))
 			{
-				components.add(parseComponent(((NestedDocument<QName>) namedProperty.getValue())));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					components.add(parseComponent(((NestedDocument<QName>) namedProperty.getValue()), nested));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					components.add(parseComponent(nested.get(uri), nested));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSubComponent))
 			{
 				System.out.println("Warning: tag should be sbol:component, not sbol:subComponent.");
-				components.add(parseComponent(((NestedDocument<QName>) namedProperty.getValue())));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					components.add(parseComponent(((NestedDocument<QName>) namedProperty.getValue()), nested));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					components.add(parseComponent(nested.get(uri), nested));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequence))
 			{
@@ -1009,11 +1287,23 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequenceAnnotations))
 			{
-				sequenceAnnotations.add(parseSequenceAnnotation((NestedDocument<QName>) namedProperty.getValue()));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					sequenceAnnotations.add(parseSequenceAnnotation(((NestedDocument<QName>) namedProperty.getValue()), nested));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					sequenceAnnotations.add(parseSequenceAnnotation(nested.get(uri), nested));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequenceConstraints))
 			{
-				sequenceConstraints.add(parseSequenceConstraint(((NestedDocument<QName>) namedProperty.getValue())));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					sequenceConstraints.add(parseSequenceConstraint(((NestedDocument<QName>) namedProperty.getValue())));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					sequenceConstraints.add(parseSequenceConstraint(nested.get(uri)));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
@@ -1035,8 +1325,8 @@ public class SBOLReader
 
 		//ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type, roles);
 		//c.setPersistentIdentity(topLevel.getOptionalUriPropertyValue(Sbol2Terms.Identified.persistentIdentity));
-		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type);
-
+		//		ComponentDefinition c = SBOLDoc.createComponentDefinition(topLevel.getIdentity(), type);
+		ComponentDefinition c = new ComponentDefinition(topLevel.getIdentity(), type);
 		if(roles != null)
 			c.setRoles(roles);
 		if (displayId != null)
@@ -1061,6 +1351,15 @@ public class SBOLReader
 			c.setVersion(version);
 		if (wasDerivedFrom != null)
 			c.setWasDerivedFrom(wasDerivedFrom);
+
+		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(topLevel.getIdentity());
+		if (oldC == null) {
+			SBOLDoc.addComponentDefinition(c);
+		} else {
+			if (!c.equals(oldC)) {
+				throw new SBOLValidationException("The specified ComponentDefinition does not exist.");
+			}
+		}
 		return c;
 	}
 
@@ -1133,10 +1432,10 @@ public class SBOLReader
 		SequenceConstraint s = new SequenceConstraint(sequenceConstraint.getIdentity(), restriction, subject, object);
 		if (displayId != null)
 			s.setDisplayId(displayId);
-		if (name != null) 
+		if (name != null)
 			s.setName(name);
-		if (description != null) 
-			s.setDescription(description); 
+		if (description != null)
+			s.setDescription(description);
 		if (persistentIdentity != null)
 			s.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1148,7 +1447,7 @@ public class SBOLReader
 		return s;
 	}
 
-	private static SequenceAnnotation parseSequenceAnnotation(NestedDocument<QName> sequenceAnnotation)
+	private static SequenceAnnotation parseSequenceAnnotation(NestedDocument<QName> sequenceAnnotation, Map<URI, NestedDocument<QName>> nested)
 	{
 		String displayId 	   = URIcompliance.extractDisplayId(sequenceAnnotation.getIdentity());
 		String name 	 	   = null;
@@ -1180,7 +1479,13 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Location.Location))
 			{
-				location = parseLocation((NestedDocument<QName>) namedProperty.getValue());
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					location = parseLocation((NestedDocument<QName>) namedProperty.getValue());
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					location = parseLocation(nested.get(uri));
+				}
 				locations.add(location);
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.SequenceAnnotation.hasComponent))
@@ -1304,10 +1609,10 @@ public class SBOLReader
 		GenericLocation gl = new GenericLocation(typeGenLoc.getIdentity());
 		if(displayId != null)
 			gl.setDisplayId(displayId);
-		if (name != null) 
+		if (name != null)
 			gl.setName(name);
-		if (description != null) 
-			gl.setDescription(description); 
+		if (description != null)
+			gl.setDescription(description);
 		if(orientation != null)
 			gl.setOrientation(OrientationType.convertToOrientationType(orientation));
 		if(persistentIdentity != null)
@@ -1390,10 +1695,10 @@ public class SBOLReader
 			c.setPersistentIdentity(persistentIdentity);
 		if (displayId != null)
 			c.setDisplayId(displayId);
-		if (name != null) 
+		if (name != null)
 			c.setName(name);
-		if (description != null) 
-			c.setDescription(description); 
+		if (description != null)
+			c.setDescription(description);
 		if (orientation != null)
 			c.setOrientation(OrientationType.convertToOrientationType(orientation));
 		if(version != null)
@@ -1474,10 +1779,10 @@ public class SBOLReader
 		Location r = new Range(typeRange.getIdentity(), start, end);
 		if (displayId != null)
 			r.setDisplayId(displayId);
-		if (name != null) 
+		if (name != null)
 			r.setName(name);
-		if (description != null) 
-			r.setDescription(description); 
+		if (description != null)
+			r.setDescription(description);
 		if (persistentIdentity != null)
 			r.setPersistentIdentity(persistentIdentity);
 		if (orientation != null)
@@ -1491,7 +1796,7 @@ public class SBOLReader
 		return r;
 	}
 
-	private static Component parseComponent(NestedDocument<QName> component)
+	private static Component parseComponent(NestedDocument<QName> component, Map<URI, NestedDocument<QName>> nested)
 	{
 		String displayId 	   = URIcompliance.extractDisplayId(component.getIdentity());
 		String name 	 	   = null;
@@ -1538,7 +1843,13 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapsTo))
 			{
-				mapsTo.add(parseMapsTo((NestedDocument<QName>) namedProperty.getValue()));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					mapsTo.add(parseMapsTo(((NestedDocument<QName>) namedProperty.getValue())));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					mapsTo.add(parseMapsTo(nested.get(uri)));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentInstance.hasComponentDefinition))
 			{
@@ -1631,7 +1942,8 @@ public class SBOLReader
 			}
 		}
 
-		GenericTopLevel t = SBOLDoc.createGenericTopLevel(topLevel.getIdentity(), topLevel.getType());
+		//		GenericTopLevel t = SBOLDoc.createGenericTopLevel(topLevel.getIdentity(), topLevel.getType());
+		GenericTopLevel t = new GenericTopLevel(topLevel.getIdentity(), topLevel.getType());
 		if (persistentIdentity != null)
 			t.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1646,6 +1958,15 @@ public class SBOLReader
 			t.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
 			t.setAnnotations(annotations);
+
+		GenericTopLevel oldG = SBOLDoc.getGenericTopLevel(topLevel.getIdentity());
+		if (oldG == null) {
+			SBOLDoc.addGenericTopLevel(t);
+		} else {
+			if (!t.equals(oldG)) {
+				throw new SBOLValidationException("The specified GenericTopLevel does not exist.");
+			}
+		}
 		return t;
 	}
 
@@ -1707,7 +2028,8 @@ public class SBOLReader
 			}
 		}
 
-		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework);
+		//		Model m = SBOLDoc.createModel(topLevel.getIdentity(), source, language, framework);
+		Model m = new Model(topLevel.getIdentity(), source, language, framework);
 		if (persistentIdentity != null)
 			m.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -1722,6 +2044,15 @@ public class SBOLReader
 			m.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
 			m.setAnnotations(annotations);
+
+		Model oldM = SBOLDoc.getModel(topLevel.getIdentity());
+		if (oldM == null) {
+			SBOLDoc.addModel(m);
+		} else {
+			if (!m.equals(oldM)) {
+				throw new SBOLValidationException("The specified Model does not exist.");
+			}
+		}
 		return m;
 	}
 
@@ -1773,7 +2104,7 @@ public class SBOLReader
 			}
 		}
 
-		Collection c = SBOLDoc.createCollection(topLevel.getIdentity());
+		Collection c = new Collection(topLevel.getIdentity());
 		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (version != null)
@@ -1790,11 +2121,20 @@ public class SBOLReader
 			c.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
+
+		Collection oldC = SBOLDoc.getCollection(topLevel.getIdentity());
+		if (oldC == null) {
+			SBOLDoc.addCollection(c);
+		} else {
+			if (!c.equals(oldC)) {
+				throw new SBOLValidationException("The specified Collection does not exist.");
+			}
+		}
 		return c;
 	}
 
 	private static ModuleDefinition parseModuleDefinition(SBOLDocument SBOLDoc,
-			TopLevelDocument<QName> topLevel)
+			TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested)
 	{
 		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
@@ -1830,25 +2170,54 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModule))
 			{
-				subModules.add(parseModule(((NestedDocument<QName>) namedProperty.getValue())));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					subModules.add(parseModule(((NestedDocument<QName>) namedProperty.getValue()), nested));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					subModules.add(parseModule(nested.get(uri), nested));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasSubModule))
 			{
 				System.out.println("Warning: tag should be sbol:module, not sbol:subModule.");
-				subModules.add(parseModule(((NestedDocument<QName>) namedProperty.getValue())));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					subModules.add(parseModule(((NestedDocument<QName>) namedProperty.getValue()), nested));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					subModules.add(parseModule(nested.get(uri), nested));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasInteractions))
 			{
-				interactions.add(parseInteraction(((NestedDocument<QName>) namedProperty.getValue())));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					interactions.add(parseInteraction((NestedDocument<QName>) namedProperty.getValue(), nested));
+				} else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					interactions.add(parseInteraction(nested.get(uri), nested));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasfunctionalComponent))
 			{
-				functionalComponents.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue()));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					functionalComponents
+							.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue(), nested));
+				} else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					functionalComponents.add(parseFunctionalComponent(nested.get(uri), nested));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasComponent))
 			{
 				System.out.println("Warning: tag should be sbol:functionalComponent, not sbol:component.");
-				functionalComponents.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue()));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					functionalComponents
+							.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue(), nested));
+				} else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					functionalComponents.add(parseFunctionalComponent(nested.get(uri), nested));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.hasModels))
 			{
@@ -1872,7 +2241,8 @@ public class SBOLReader
 			}
 		}
 
-		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity());
+		//		ModuleDefinition moduleDefinition = SBOLDoc.createModuleDefinition(topLevel.getIdentity());
+		ModuleDefinition moduleDefinition = new ModuleDefinition(topLevel.getIdentity());
 		if (!roles.isEmpty())
 			moduleDefinition.setRoles(roles);
 		if (persistentIdentity != null)
@@ -1897,10 +2267,19 @@ public class SBOLReader
 			moduleDefinition.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
 			moduleDefinition.setAnnotations(annotations);
+
+		ModuleDefinition oldM = SBOLDoc.getModuleDefinition(topLevel.getIdentity());
+		if (oldM == null) {
+			SBOLDoc.addModuleDefinition(moduleDefinition);
+		} else {
+			if (!moduleDefinition.equals(oldM)) {
+				throw new SBOLValidationException("The specified ModuleDefinition does not exist.");
+			}
+		}
 		return moduleDefinition;
 	}
 
-	private static Module parseModule(NestedDocument<QName> module)
+	private static Module parseModule(NestedDocument<QName> module, Map<URI, NestedDocument<QName>> nested)
 	{
 		String displayId 	   = URIcompliance.extractDisplayId(module.getIdentity());
 		String name 	 	   = null;
@@ -1936,12 +2315,24 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapsTo))
 			{
-				mappings.add(parseMapsTo((NestedDocument<QName>) namedProperty.getValue()));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					mappings.add(parseMapsTo(((NestedDocument<QName>) namedProperty.getValue())));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					mappings.add(parseMapsTo(nested.get(uri)));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapping))
 			{
 				System.out.println("Warning: tag should be sbol:mapTo, not sbol:mapping.");
-				mappings.add(parseMapsTo((NestedDocument<QName>) namedProperty.getValue()));
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					mappings.add(parseMapsTo(((NestedDocument<QName>) namedProperty.getValue())));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					mappings.add(parseMapsTo(nested.get(uri)));
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasDefinition))
 			{
@@ -2054,10 +2445,10 @@ public class SBOLReader
 		MapsTo map = new MapsTo(mapsTo.getIdentity(), refinement, local, remote);
 		if (displayId != null)
 			map.setDisplayId(displayId);
-		if (name != null) 
+		if (name != null)
 			map.setName(name);
-		if (description != null) 
-			map.setDescription(description); 
+		if (description != null)
+			map.setDescription(description);
 		if (persistentIdentity != null)
 			map.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -2069,7 +2460,7 @@ public class SBOLReader
 		return map;
 	}
 
-	private static Interaction parseInteraction(NestedDocument<QName> interaction)
+	private static Interaction parseInteraction(NestedDocument<QName> interaction, Map<URI, NestedDocument<QName>> nested)
 	{
 		String displayId 	   = URIcompliance.extractDisplayId(interaction.getIdentity());
 		String name 	 	   = null;
@@ -2105,7 +2496,13 @@ public class SBOLReader
 			}
 			else if (i.getName().equals(Sbol2Terms.Interaction.hasParticipations))
 			{
-				participations.add(parseParticipation((NestedDocument<QName>) i.getValue()));
+				if (i.getValue() instanceof NestedDocument) {
+					participations.add(parseParticipation(((NestedDocument<QName>) i.getValue())));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)i.getValue()).getValue();
+					participations.add(parseParticipation(nested.get(uri)));
+				}
 			}
 			else if (i.getName().equals(Sbol2Terms.Identified.title))
 			{
@@ -2211,10 +2608,10 @@ public class SBOLReader
 			p.setRoles(roles);
 		if (displayId != null)
 			p.setDisplayId(displayId);
-		if (name != null) 
+		if (name != null)
 			p.setName(name);
-		if (description != null) 
-			p.setDescription(description); 
+		if (description != null)
+			p.setDescription(description);
 		if (persistentIdentity != null)
 			p.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -2226,7 +2623,7 @@ public class SBOLReader
 		return p;
 	}
 
-	private static FunctionalComponent parseFunctionalComponent(NestedDocument<QName> functionalComponent)
+	private static FunctionalComponent parseFunctionalComponent(NestedDocument<QName> functionalComponent, Map<URI, NestedDocument<QName>> nested)
 	{
 		String displayId 	   = URIcompliance.extractDisplayId(functionalComponent.getIdentity());
 		String name 	 	   = null;
@@ -2286,7 +2683,13 @@ public class SBOLReader
 			}
 			else if (f.getName().equals(Sbol2Terms.ComponentInstance.hasMapsTo))
 			{
-				mappings.add(parseMapsTo((NestedDocument<QName>) f.getValue()));
+				if (f.getValue() instanceof NestedDocument) {
+					mappings.add(parseMapsTo(((NestedDocument<QName>) f.getValue())));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)f.getValue()).getValue();
+					mappings.add(parseMapsTo(nested.get(uri)));
+				}
 			}
 			else if (f.getName().equals(Sbol2Terms.ComponentInstance.hasComponentDefinition))
 			{
@@ -2384,8 +2787,8 @@ public class SBOLReader
 			}
 		}
 
-		Sequence sequence = SBOLDoc.createSequence(topLevel.getIdentity(),
-				elements, encoding);
+		//		Sequence sequence = SBOLDoc.createSequence(topLevel.getIdentity(), elements, encoding);
+		Sequence sequence = new Sequence(topLevel.getIdentity(), elements, encoding);
 		if (persistentIdentity != null)
 			sequence.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -2400,6 +2803,15 @@ public class SBOLReader
 			sequence.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
 			sequence.setAnnotations(annotations);
+
+		Sequence oldS = SBOLDoc.getSequence(topLevel.getIdentity());
+		if (oldS == null) {
+			SBOLDoc.addSequence(sequence);
+		} else {
+			if (!sequence.equals(oldS)) {
+				throw new SBOLValidationException("The specified Sequence does not exist.");
+			}
+		}
 		return sequence;
 	}
 

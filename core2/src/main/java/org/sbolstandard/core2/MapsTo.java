@@ -314,4 +314,12 @@ public class MapsTo extends Identified{
 		this.componentInstance = componentInstance;
 	}
 
+	@Override
+	public String toString() {
+		return "MapsTo [refinement=" + refinement + ", local=" + local + ", remote=" + remote
+				+ ", moduleDefinition=" + moduleDefinition + ", module=" + module
+				+ ", componentDefinition=" + componentDefinition + ", componentInstance="
+				+ componentInstance + "]";
+	}
+
 }

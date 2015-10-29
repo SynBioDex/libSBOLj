@@ -214,4 +214,10 @@ public class Participation extends Identified {
 		this.moduleDefinition = moduleDefinition;
 	}
 
+	@Override
+	public String toString() {
+		return "Participation [roles=" + roles + ", participant=" + participant
+				+ ", moduleDefinition=" + moduleDefinition + "]";
+	}
+
 }

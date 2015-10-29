@@ -271,4 +271,10 @@ public class FunctionalComponent extends ComponentInstance {
 	void setModuleDefinition(ModuleDefinition moduleDefinition) {
 		this.moduleDefinition = moduleDefinition;
 	}
+
+	@Override
+	public String toString() {
+		return "FunctionalComponent [direction=" + direction + ", mapsTos=" + mapsTos
+				+ ", moduleDefinition=" + moduleDefinition + "]";
+	}
 }

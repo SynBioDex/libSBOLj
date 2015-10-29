@@ -301,4 +301,10 @@ public class SequenceConstraint extends Identified {
 	void setComponentDefinition(ComponentDefinition componentDefinition) {
 		this.componentDefinition = componentDefinition;
 	}
+
+	@Override
+	public String toString() {
+		return "SequenceConstraint [restriction=" + restriction + ", subject=" + subject
+				+ ", object=" + object + ", componentDefinition=" + componentDefinition + "]";
+	}
 }

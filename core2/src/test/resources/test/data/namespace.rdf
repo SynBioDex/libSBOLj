@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sb="http://sbols.org/v2#">
+  <sb:ComponentDefinition rdf:about="http://partsregistry.org/cd/BBa_J23119">
+    <sb:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_J23119"/>
+    <sb:displayId>BBa_J23119</sb:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://partsregistry.org/Part:BBa_J23119"/>
+    <sb:type rdf:resource="http://identifiers.org/chebi/CHEBI:4705"/>
+    <sb:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sb:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+    <sb:role rdf:resource="http://identifiers.org/so/SO:0000613"/>
+    <sb:sequence rdf:resource="http://partsregistry.org/seq/BBa_J23119"/>
+  </sb:ComponentDefinition>
+  <sb:Sequence rdf:about="http://partsregistry.org/seq/BBa_J23119">
+    <sb:persistentIdentity rdf:resource="http://partsregistry.org/seq/BBa_J23119"/>
+    <sb:displayId>BBa_J23119</sb:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://parts.igem.org/Part:BBa_J23119:Design"/>
+    <sb:elements>ttgacagctagctcagtcctaggtataatgctagc</sb:elements>
+    <sb:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+  </sb:Sequence>
+</rdf:RDF>
