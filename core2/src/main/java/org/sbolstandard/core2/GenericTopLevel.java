@@ -23,7 +23,8 @@ public class GenericTopLevel extends TopLevel{
 	GenericTopLevel(URI identity, QName rdfType) {
 		super(identity);
 		this.rdfType = rdfType;
-		if (rdfType.getPrefix().toString().equals("sbol")) {
+		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
+				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 	}
@@ -137,6 +138,11 @@ public class GenericTopLevel extends TopLevel{
 	@Override
 	protected boolean checkDescendantsURIcompliance() {
 		return isTopLevelURIformCompliant(this.getIdentity());
+	}
+
+	@Override
+	public String toString() {
+		return "GenericTopLevel [rdfType=" + rdfType + "]";
 	}
 
 }

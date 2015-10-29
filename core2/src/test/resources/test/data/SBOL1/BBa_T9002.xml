@@ -81,11 +81,11 @@
     <s:precedes rdf:resource="http://partsregistry.org/anot/an_5591_149_7"/>
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_R0062">
-      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0005836"/>
-      <s:displayId>BBa_R0062</s:displayId>
-      <s:name>lux pR</s:name>
-      <s:description>Promoter (luxR &amp; HSL regulated -- lux pR)</s:description>
-      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/regulatory"/>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+      <s:displayId>BBa_C0062</s:displayId>
+      <s:name>luxr</s:name>
+      <s:description>luxR repressor/activator, (no LVA?)</s:description>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/coding"/>
      </s:DnaComponent>
     </s:subComponent>
    </s:SequenceAnnotation>
@@ -229,7 +229,11 @@
     <s:strand>+</s:strand>
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_R0040">
-      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/biobrick"/>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0005836"/>
+      <s:displayId>BBa_R0040</s:displayId>
+      <s:name>p(tetR)</s:name>
+      <s:description>TetR repressible promoter</s:description>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/regulatory"/>
      </s:DnaComponent>
     </s:subComponent>
    </s:SequenceAnnotation>
@@ -286,7 +290,10 @@
     <s:strand>+</s:strand>
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_B0034">
-      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/biobrick"/>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000552"/>
+      <s:displayId>BBa_B0034</s:displayId>
+      <s:description>RBS (Elowitz 1999) -- defines RBS efficiency</s:description>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/rbs"/>
      </s:DnaComponent>
     </s:subComponent>
    </s:SequenceAnnotation>
@@ -313,7 +320,11 @@
     <s:strand>+</s:strand>
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_C0062">
-      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/biobrick"/>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+      <s:displayId>BBa_C0062</s:displayId>
+      <s:name>luxr</s:name>
+      <s:description>luxR repressor/activator, (no LVA?)</s:description>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/coding"/>
      </s:DnaComponent>
     </s:subComponent>
    </s:SequenceAnnotation>
@@ -398,7 +409,10 @@
     <s:strand>+</s:strand>
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_B0010">
-      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/biobrick"/>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000141"/>
+      <s:displayId>BBa_B0010</s:displayId>
+      <s:description>T1 from E. coli rrnB</s:description>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/terminator"/>
      </s:DnaComponent>
     </s:subComponent>
    </s:SequenceAnnotation>
@@ -497,7 +511,11 @@
     <s:strand>+</s:strand>
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_R0062">
-      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/biobrick"/>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+      <s:displayId>BBa_C0062</s:displayId>
+      <s:name>luxr</s:name>
+      <s:description>luxR repressor/activator, (no LVA?)</s:description>
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/coding"/>
      </s:DnaComponent>
     </s:subComponent>
    </s:SequenceAnnotation>
