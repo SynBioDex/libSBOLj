@@ -28,12 +28,12 @@ public class readTester {
 
 	public static void main(String[] args) {
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_16);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_12);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_16);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_12);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
-			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+			//SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			//SBOLReader.setVersion("1.0");
 			//SBOLReader.setTypesInURI(true);
 			SBOLDocument document1 = SBOLReader.read(file);

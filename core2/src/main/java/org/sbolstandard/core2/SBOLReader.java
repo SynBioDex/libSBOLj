@@ -60,6 +60,7 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
  */
 public class SBOLReader
 {
+
 	static class SBOLPair
 	{
 		private URI left;
@@ -91,6 +92,7 @@ public class SBOLReader
 	private static String URIPrefix	= null;
 	private static String version = "";
 	private static boolean typesInURI = false;
+	private static boolean dropObjectsWithDuplicateURIs = false;
 
 	/**
 	 * Set the specified authority as the prefix to all member's identity
@@ -128,6 +130,24 @@ public class SBOLReader
 	public static void setTypesInURI(boolean typesInURI)
 	{
 		SBOLReader.typesInURI = typesInURI;
+	}
+	
+	/**
+	 * Check if objects with duplicate URIs should be dropped.
+	 * 
+	 * @return if objects with duplicate URIs should be dropped.
+	 */
+	public static boolean isDropObjectsWithDuplicateURIs() {
+		return dropObjectsWithDuplicateURIs;
+	}
+	
+	/**
+	 * Set if objects with duplicate URIs should be dropped.
+	 * 
+	 * @param dropObjectsWithDuplicateURIs
+	 */
+	public static void setDropObjectsWithDuplicateURIs(boolean dropObjectsWithDuplicateURIs) {
+		SBOLReader.dropObjectsWithDuplicateURIs = dropObjectsWithDuplicateURIs;
 	}
 	
 	private static String getSBOLVersion(DocumentRoot<QName> document) 
@@ -646,55 +666,6 @@ public class SBOLReader
 		}
 		
 		for (TopLevelDocument<QName> topLevel : topLevels) {
-//			if (topLevel.getType()
-//					.equals(NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart(
-//							"Description"))) {
-//				boolean sbol2Namespace = false;
-//				for (PropertyValue<QName> value : topLevel.getPropertyValues(NamespaceBinding(
-//						"http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart("type"))) {
-//					Literal<QName> type = ((Literal<QName>) value);
-//					if (type.getValue().toString()
-//							.equals(Sbol2Terms.Collection.Collection.toString().replaceAll("\\{|\\}", ""))) {
-//						parseCollections(SBOLDoc, topLevel);
-//						sbol2Namespace = true;
-//						break;
-//					}
-//					else if (type.getValue().toString()
-//							.equals(Sbol2Terms.ModuleDefinition.ModuleDefinition.toString().replaceAll("\\{|\\}", ""))) {
-//						parseModuleDefinition(SBOLDoc, topLevel, nested);
-//						sbol2Namespace = true;
-//						break;
-//					}
-//					else if (type.getValue().toString()
-//							.equals(Sbol2Terms.Model.Model.toString().replaceAll("\\{|\\}", ""))) {
-//						parseModels(SBOLDoc, topLevel);
-//						sbol2Namespace = true;
-//						break;
-//					}
-//					else if (type.getValue().toString()
-//							.equals(Sbol2Terms.Sequence.Sequence.toString().replaceAll("\\{|\\}", ""))) {
-//						parseSequences(SBOLDoc, topLevel);
-//						sbol2Namespace = true;
-//						break;
-//					}
-//					else if (type
-//							.getValue()
-//							.toString()
-//							.equals(Sbol2Terms.ComponentDefinition.ComponentDefinition.toString().replaceAll("\\{|\\}",
-//									""))) {
-//						parseComponentDefinitions(SBOLDoc, topLevel);
-//						sbol2Namespace = true;
-//						break;
-//					}
-//					else if (type.getValue().toString().contains(Sbol2Terms.sbol2.getNamespaceURI())) {
-//						sbol2Namespace = true;
-//						break;
-//					}
-//				}
-//				if (!sbol2Namespace) {
-//					parseGenericTopLevel(SBOLDoc, topLevel);
-//				}
-//			}
 			if (topLevel.getType().equals(Sbol2Terms.Collection.Collection))
 				parseCollections(SBOLDoc, topLevel);
 			else if (topLevel.getType().equals(Sbol2Terms.ModuleDefinition.ModuleDefinition))
@@ -737,8 +708,8 @@ public class SBOLReader
 		if (URIPrefix != null)
 		{
 			displayId = findDisplayId(componentDef.getIdentity().toString());
-			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
-			persIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI).toString();
+			identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
+			persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
 		}
 
 		for (NamedProperty<QName> namedProperty : componentDef.getProperties())
@@ -864,14 +835,25 @@ public class SBOLReader
 		if (!sequenceConstraints.isEmpty())
 			c.setSequenceConstraints(sequenceConstraints);
 
-		//TODO: to fix
 		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(identity);
 		if (oldC == null) {
 			SBOLDoc.addComponentDefinition(c);
+		} else if (c.isSetWasDerivedFrom() && oldC.isSetWasDerivedFrom() &&
+				!c.getWasDerivedFrom().equals(oldC.getWasDerivedFrom())) { 
+			// Try to get by was derived from
+			do {
+				displayId = displayId + "_";
+				identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
+				persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
+			} while (SBOLDoc.getComponentDefinition(identity)!=null);
+			c = c.copy(URIPrefix, displayId, version);
+			if(identity != componentDef.getIdentity())
+				c.setWasDerivedFrom(componentDef.getIdentity());
+			SBOLDoc.addComponentDefinition(c);
+		} else if (dropObjectsWithDuplicateURIs) { 
+			return oldC; 
 		} else {
 			if (!c.equals(oldC)) {
-				//System.out.println(c.toString());
-				//System.out.println(oldC.toString());
 				throw new SBOLValidationException("Multiple non-identical ComponentDefinitions with identity "+identity);
 			}
 		}
@@ -943,6 +925,20 @@ public class SBOLReader
 		Sequence oldS = SBOLDoc.getSequence(identity);
 		if (oldS == null) {
 			SBOLDoc.addSequence(sequence);
+		} else if (sequence.isSetWasDerivedFrom() && oldS.isSetWasDerivedFrom() &&
+				!sequence.getWasDerivedFrom().equals(oldS.getWasDerivedFrom())) { 
+			// Try to get by was derived from
+			do {
+				displayId = displayId + "_";
+				identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+				persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
+			} while (SBOLDoc.getSequence(identity)!=null);
+			sequence.setIdentity(identity);
+			sequence.setDisplayId(displayId);
+			sequence.setPersistentIdentity(persistentIdentity);
+			SBOLDoc.addSequence(sequence);
+		} else if (dropObjectsWithDuplicateURIs) { 
+			return oldS;
 		} else {
 			if (!sequence.equals(oldS)) {
 				throw new SBOLValidationException("Multiple non-identical Sequences with identity "+identity);
