@@ -43,8 +43,11 @@ public class SBOLFactory {
 	 * perform validation automatically. 
 	 *
 	 * @throws SBOLValidationException if the contents of the document is not valid
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 * @throws CoreIoException 
 	 */
-	public static SBOLDocument read(InputStream in) throws IOException, SBOLValidationException {
+	public static SBOLDocument read(InputStream in) throws IOException, SBOLValidationException, CoreIoException, XMLStreamException, FactoryConfigurationError {
 		return SBOLReader.read(in);
 	}
 

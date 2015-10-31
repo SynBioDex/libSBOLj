@@ -23,7 +23,9 @@ import java.util.Set;
 import javax.json.Json;
 import javax.json.JsonReader;
 import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import uk.ac.intbio.core.io.turtle.TurtleIo;
@@ -36,6 +38,7 @@ import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 import uk.ac.ncl.intbio.core.datatree.PropertyValue;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
+import uk.ac.ncl.intbio.core.io.CoreIoException;
 import uk.ac.ncl.intbio.core.io.IoReader;
 import uk.ac.ncl.intbio.core.io.json.JsonIo;
 import uk.ac.ncl.intbio.core.io.json.StringifyQName;
@@ -290,36 +293,25 @@ public class SBOLReader
 	 *
 	 * @param in
 	 * @return the converted SBOLDocument instance
-	 * @throws Exception
+	 * @throws CoreIoException
 	 */
-	public static SBOLDocument readJSON(InputStream in) throws Exception
+	public static SBOLDocument readJSON(InputStream in) throws CoreIoException
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
 		SBOLDocument SBOLDoc     = new SBOLDocument();
-		try
-		{
-			DocumentRoot<QName> document = readJSON(new StringReader(inputStreamString));
-
-			if (getSBOLVersion(document).equals("v1")) 
-			{
-				scanner.close();
-				readV1(SBOLDoc,document);	
-				return SBOLDoc;
-			}
-			for (NamespaceBinding n : document.getNamespaceBindings())
-			{
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-			}
-
-			readTopLevelDocs(SBOLDoc, document);
-
-		}
-		catch (IOException e)
+		DocumentRoot<QName> document = readJSON(new StringReader(inputStreamString));
+		if (getSBOLVersion(document).equals("v1")) 
 		{
 			scanner.close();
-			e.printStackTrace();
+			readV1(SBOLDoc,document);	
+			return SBOLDoc;
 		}
+		for (NamespaceBinding n : document.getNamespaceBindings())
+		{
+			SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+		}
+		readTopLevelDocs(SBOLDoc, document);
 		scanner.close();
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
@@ -334,41 +326,34 @@ public class SBOLReader
 	 *
 	 * @param in
 	 * @return the converted SBOLDocument instance
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
 	 */
-	public static SBOLDocument read(InputStream in)
+	public static SBOLDocument read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		read(SBOLDoc,in);
 		return SBOLDoc;
 	}
 
-	static void read(SBOLDocument SBOLDoc,InputStream in)
+	static void read(SBOLDocument SBOLDoc,InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
-		try
-		{
-			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
-			if (getSBOLVersion(document).equals("v1")) 
-			{
-				scanner.close();
-				readV1(SBOLDoc,document);	
-				return;
-			}
-			for (NamespaceBinding n : document.getNamespaceBindings())
-			{
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-			}
-
-			readTopLevelDocs(SBOLDoc, document);
-
-		}
-		catch (Exception e)
+		DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
+		if (getSBOLVersion(document).equals("v1")) 
 		{
 			scanner.close();
-			e.printStackTrace();
+			readV1(SBOLDoc,document);	
+			return;
+		}
+		for (NamespaceBinding n : document.getNamespaceBindings())
+		{
+			SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 		}
 
+		readTopLevelDocs(SBOLDoc, document);
 		scanner.close();
 	}
 
@@ -377,37 +362,27 @@ public class SBOLReader
 	 *
 	 * @param in
 	 * @return the converted SBOLDocument instance
-	 * @throws Exception
-	 * @throws IOException
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
 	 */
-	public static SBOLDocument readRDF(InputStream in) throws Exception
+	public static SBOLDocument readRDF(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
 		SBOLDocument SBOLDoc     = new SBOLDocument();
-
-		try
-		{
-			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
-			
-			if (getSBOLVersion(document).equals("v1")) 
-			{
-				scanner.close();
-				readV1(SBOLDoc,document);	
-				return SBOLDoc;
-			}
-			for (NamespaceBinding n : document.getNamespaceBindings())
-			{
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-			}
-			
-			readTopLevelDocs(SBOLDoc, document);
-		}
-		catch (IOException e)
+		DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
+		if (getSBOLVersion(document).equals("v1")) 
 		{
 			scanner.close();
-			e.printStackTrace();
+			readV1(SBOLDoc,document);	
+			return SBOLDoc;
 		}
+		for (NamespaceBinding n : document.getNamespaceBindings())
+		{
+			SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+		}
+		readTopLevelDocs(SBOLDoc, document);
 		scanner.close();
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
@@ -422,34 +397,25 @@ public class SBOLReader
 	 *
 	 * @param in
 	 * @return the converted SBOLDocument instance
-	 * @throws Exception
+	 * @throws CoreIoException
 	 */
-	public static SBOLDocument readTurtle(InputStream in) throws Exception
+	public static SBOLDocument readTurtle(InputStream in) throws CoreIoException
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
 		SBOLDocument SBOLDoc     = new SBOLDocument();
-
-		try
-		{
-			DocumentRoot<QName> document = readTurtle(new StringReader(inputStreamString));
-			if (getSBOLVersion(document).equals("v1")) 
-			{
-				scanner.close();
-				readV1(SBOLDoc,document);	
-				return SBOLDoc;
-			}
-			for (NamespaceBinding n : document.getNamespaceBindings())
-			{
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-			}
-			readTopLevelDocs(SBOLDoc, document);
-		}
-		catch (IOException e)
+		DocumentRoot<QName> document = readTurtle(new StringReader(inputStreamString));
+		if (getSBOLVersion(document).equals("v1")) 
 		{
 			scanner.close();
-			e.printStackTrace();
+			readV1(SBOLDoc,document);	
+			return SBOLDoc;
 		}
+		for (NamespaceBinding n : document.getNamespaceBindings())
+		{
+			SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+		}
+		readTopLevelDocs(SBOLDoc, document);
 		scanner.close();
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
@@ -485,7 +451,7 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	private static DocumentRoot<QName> readJSON(Reader stream) throws Exception
+	private static DocumentRoot<QName> readJSON(Reader stream) throws CoreIoException
 	{
 		JsonReader reader 		  = Json.createReaderFactory(Collections.<String, Object> emptyMap()).createReader(stream);
 		JsonIo jsonIo 	  		  = new JsonIo();
@@ -494,14 +460,14 @@ public class SBOLReader
 		return StringifyQName.string2qname.mapDR(root);
 	}
 
-	private static DocumentRoot<QName> readRDF(Reader reader) throws Exception
+	private static DocumentRoot<QName> readRDF(Reader reader) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader(reader);
 		RdfIo rdfIo 			  = new RdfIo();
 		return rdfIo.createIoReader(xmlReader).read();
 	}
 
-	private static DocumentRoot<QName> readTurtle(Reader reader) throws Exception
+	private static DocumentRoot<QName> readTurtle(Reader reader) throws CoreIoException 
 	{
 		TurtleIo turtleIo = new TurtleIo();
 		return turtleIo.createIoReader(reader).read();
@@ -2814,42 +2780,4 @@ public class SBOLReader
 		}
 		return sequence;
 	}
-
-	/*private static Timestamp getTimestamp(String timeStamp)
-	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		java.util.Date date  = null;
-		try
-		{
-			date = sdf.parse(timeStamp);
-		}
-		catch (ParseException e)
-		{
-			e.printStackTrace();
-		}
-		java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
-		return timestamp;
-	}*/
-
-	/*
-	private static URI getParentURI(URI identity)
-	{
-		String regex       = ".*[/]\\d+[/]\\d+";
-		String regex_minor = ".*[/]\\d+[/]";
-		String regex_major = ".*[/]\\d+";
-		String regex_end   = ".*[/]";
-
-		String identity_str = identity.toString();
-
-		while (identity_str.matches(regex)
-				|| identity_str.matches(regex_minor)
-				|| identity_str.matches(regex_major)
-				|| identity_str.matches(regex_end))
-		{
-			identity_str = identity_str.substring(0, identity_str.length() - 1);
-		}
-
-		return URI.create(identity_str);
-	}
-	 */
 }

@@ -7,10 +7,13 @@ import java.net.URI;
 import java.util.*;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 import static org.sbolstandard.core2.Version.*;
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 /**
  * @author Zhen Zhang
@@ -2304,7 +2307,7 @@ public class SBOLDocument {
 	}
 	
 	// TODO: NEEDS JAVADOC
-	void read(InputStream in) {
+	void read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError {
 		SBOLReader.read(this, in);
 	}
 
