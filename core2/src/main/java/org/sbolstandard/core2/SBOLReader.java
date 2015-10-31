@@ -840,7 +840,12 @@ public class SBOLReader
 			SBOLDoc.addComponentDefinition(c);
 		} else if (c.isSetWasDerivedFrom() && oldC.isSetWasDerivedFrom() &&
 				!c.getWasDerivedFrom().equals(oldC.getWasDerivedFrom())) { 
-			// Try to get by was derived from
+			Set<TopLevel> topLevels = SBOLDoc.getByWasDerivedFrom(c.getWasDerivedFrom());
+			for (TopLevel topLevel : topLevels) {
+				if (topLevel instanceof ComponentDefinition) {
+					return (ComponentDefinition) topLevel;
+				}
+			}
 			do {
 				displayId = displayId + "_";
 				identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
@@ -927,7 +932,12 @@ public class SBOLReader
 			SBOLDoc.addSequence(sequence);
 		} else if (sequence.isSetWasDerivedFrom() && oldS.isSetWasDerivedFrom() &&
 				!sequence.getWasDerivedFrom().equals(oldS.getWasDerivedFrom())) { 
-			// Try to get by was derived from
+			Set<TopLevel> topLevels = SBOLDoc.getByWasDerivedFrom(sequence.getWasDerivedFrom());
+			for (TopLevel top : topLevels) {
+				if (top instanceof Sequence) {
+					return (Sequence) top;
+				}
+			}
 			do {
 				displayId = displayId + "_";
 				identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);

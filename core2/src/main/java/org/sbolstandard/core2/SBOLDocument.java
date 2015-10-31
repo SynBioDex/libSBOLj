@@ -1920,6 +1920,53 @@ public class SBOLDocument {
 	}
 
 	/**
+	 * Creates a set of TopLevels with derived from the same object 
+	 * as specified by the wasDerivedFrom parameter.
+	 * @param wasDerivedFrom
+	 * @return Set of TopLevels with a matching wasDerivedFrom URI.
+	 */
+	public Set<TopLevel> getByWasDerivedFrom(URI wasDerivedFrom) {
+		Set<TopLevel> topLevels = new HashSet<>();
+		for (Collection topLevel : collections.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (Sequence topLevel : sequences.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (Model topLevel : models.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (GenericTopLevel topLevel : genericTopLevels.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (ComponentDefinition topLevel : componentDefinitions.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (ModuleDefinition topLevel : moduleDefinitions.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		return topLevels;
+	}
+
+	/**
 	 * Adds a namespace URI and its prefix to a SBOL document 
 	 * 
 	 * @param nameSpaceURI The Namespace {@link URI}
