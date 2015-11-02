@@ -52,7 +52,7 @@ final class URIcompliance {
 			return m.group(1);
 		}
 		else {
-			throw new IllegalArgumentException(objURI + " does not include a valid persistentIdentity.");
+			return null;//throw new IllegalArgumentException(objURI + " does not include a valid persistentIdentity.");
 		}
 
 	}

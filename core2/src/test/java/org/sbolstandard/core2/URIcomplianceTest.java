@@ -461,9 +461,7 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractPersistentId1() {
-		try {
-			extractPersistentId(uri4);
-		} catch (IllegalArgumentException e) {
+		if (extractPersistentId(uri4)==null) {
 			return;
 		}
 		assert(false);
@@ -485,9 +483,7 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractPersistentId3() {
-		try {
-			extractPersistentId(uri6);
-		} catch (IllegalArgumentException e) {
+		if (extractPersistentId(uri6)==null) {
 			return;
 		}
 		assert(false);
@@ -508,9 +504,7 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractPersistentId5() {
-		try {
-			extractPersistentId(uri8);
-		} catch (IllegalArgumentException e) {
+		if (extractPersistentId(uri8)==null) {
 			return;
 		}
 		assert(false);
@@ -531,9 +525,7 @@ public class URIcomplianceTest {
 	 */
 	@Test
 	public void testExtractPersistentId7() {
-		try {
-			extractPersistentId(uri9);
-		} catch (IllegalArgumentException e) {
+		if (extractPersistentId(uri9)==null) {
 			return;
 		}
 		assert(false);

@@ -412,8 +412,7 @@ public class Interaction extends Identified {
 
 	@Override
 	public String toString() {
-		return "Interaction [types=" + types + ", participations=" + participations
-				+ ", moduleDefinition=" + moduleDefinition + "]";
+		return "Interaction [types=" + types + ", participations=" + participations + "]";
 	}
 	
 }

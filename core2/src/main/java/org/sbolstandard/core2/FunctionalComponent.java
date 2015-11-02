@@ -274,7 +274,6 @@ public class FunctionalComponent extends ComponentInstance {
 
 	@Override
 	public String toString() {
-		return "FunctionalComponent [direction=" + direction + ", mapsTos=" + mapsTos
-				+ ", moduleDefinition=" + moduleDefinition + "]";
+		return "FunctionalComponent [direction=" + direction + ", mapsTos=" + mapsTos + "]";
 	}
 }

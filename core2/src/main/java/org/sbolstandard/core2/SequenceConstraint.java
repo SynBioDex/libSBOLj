@@ -305,6 +305,6 @@ public class SequenceConstraint extends Identified {
 	@Override
 	public String toString() {
 		return "SequenceConstraint [restriction=" + restriction + ", subject=" + subject
-				+ ", object=" + object + ", componentDefinition=" + componentDefinition + "]";
+				+ ", object=" + object + "]";
 	}
 }
