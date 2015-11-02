@@ -216,8 +216,7 @@ public class Participation extends Identified {
 
 	@Override
 	public String toString() {
-		return "Participation [roles=" + roles + ", participant=" + participant
-				+ ", moduleDefinition=" + moduleDefinition + "]";
+		return "Participation [roles=" + roles + ", participant=" + participant + "]";
 	}
 
 }

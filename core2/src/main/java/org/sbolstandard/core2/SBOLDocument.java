@@ -7,10 +7,13 @@ import java.net.URI;
 import java.util.*;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
 
 import static org.sbolstandard.core2.URIcompliance.*;
 import static org.sbolstandard.core2.Version.*;
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 /**
  * @author Zhen Zhang
@@ -1917,6 +1920,53 @@ public class SBOLDocument {
 	}
 
 	/**
+	 * Creates a set of TopLevels with derived from the same object 
+	 * as specified by the wasDerivedFrom parameter.
+	 * @param wasDerivedFrom
+	 * @return Set of TopLevels with a matching wasDerivedFrom URI.
+	 */
+	public Set<TopLevel> getByWasDerivedFrom(URI wasDerivedFrom) {
+		Set<TopLevel> topLevels = new HashSet<>();
+		for (Collection topLevel : collections.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (Sequence topLevel : sequences.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (Model topLevel : models.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (GenericTopLevel topLevel : genericTopLevels.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (ComponentDefinition topLevel : componentDefinitions.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (ModuleDefinition topLevel : moduleDefinitions.values()) {
+			if (topLevel.isSetWasDerivedFrom() && 
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		return topLevels;
+	}
+
+	/**
 	 * Adds a namespace URI and its prefix to a SBOL document 
 	 * 
 	 * @param nameSpaceURI The Namespace {@link URI}
@@ -2304,7 +2354,7 @@ public class SBOLDocument {
 	}
 	
 	// TODO: NEEDS JAVADOC
-	void read(InputStream in) {
+	void read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError {
 		SBOLReader.read(this, in);
 	}
 
