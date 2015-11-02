@@ -476,18 +476,7 @@ public class SBOLDocumentTest {
 		
 	}
 	
-	@Test
-	public void Test_getSequence()
-	{
-		String preURI="http://partsregistry.org";
-		SBOLDocument document1 = new SBOLDocument();
-		document1.setDefaultURIprefix(preURI);
-		document1.setTypesInURIs(true);
-		document1.setComplete(true);
-		document1.setCreateDefaults(true);
-		
-		
-	}
+	
 	
 	/*the following series of tests check the Sequence class*/
 	@Test
@@ -501,20 +490,114 @@ public class SBOLDocumentTest {
 		document1.setComplete(true);
 		document1.setCreateDefaults(true);
 		
-		assertTrue(document1.getSequence(new URI("http://partsregistry.org/seq_187")).equals(document1.getSequence(new URI("http://partsregistry.org/seq_187")))); 
 		//build a gene Lac1
+		assertTrue(document1.getSequence(new URI("http://partsregistry.org/seq_187")).equals(document1.getSequence(new URI("http://partsregistry.org/seq_187")))); 
+		
 		//Sequence lac1 = document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA);
 		
 		//assertTrue(lac1.equals(document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA)));
-		
 	}
 	
+	/*the following tests check ComponentDefinition class*/
 	
-	
-	
-	
+	/*
+	 * Throws IllegalArgumentException if ComponentDefinition
+	 * has muliple types associated
+	 */
+	@Test
+	public void test_AddType()
+	{
+		String preURI="http://partsregistry.org";
+		
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA, URI.create("http://identifiers.org/chebi/CHEBI : 4705")));
+		
+		
+		//create a ComponentDefinition
+		ComponentDefinition TetR_promoter = document1.createComponentDefinition("BBa_R0040", types);
+		document1.addComponentDefinition(TetR_promoter);
+		
+		//TetR_promoter.setTypes();
+		try
+		{
+			
+			
+		}
+		catch(IllegalArgumentException e)
+		{
+			
+		}
+	}
+	@Test
+	public void test_removeType() throws URISyntaxException
+	{
+		String preURI="http://partsregistry.org";
+		
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA, URI.create("http://identifiers.org/chebi/CHEBI:4705")));
+		
+		//create a ComponentDefinition
+		ComponentDefinition TetR_promoter = document1.createComponentDefinition("Meher", types);
 
+		document1.addComponentDefinition(TetR_promoter);
+		
+		//can I get document's URI?
+		assertTrue(TetR_promoter.removeType(new URI(document1.getDefaultURIprefix())));
+	}
 	
+	@Test
+	public void test_setTypes() throws URISyntaxException
+	{
+	
+		String preURI="http://partsregistry.org";
+		HashSet <URI> types = null;
+		try
+		{
+			//create a ComponentDefinition
+			ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			TetR_promoter.setTypes(types);
+			fail();
+		}
+		catch(IllegalArgumentException e){}
+		
+		try
+		{
+			types = new HashSet <URI >();
+			//create a ComponentDefinition
+			ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			TetR_promoter.setTypes(types);
+			fail();
+		}
+		catch(IllegalArgumentException e){}
+				
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA, URI.create("http://identifiers.org/chebi/CHEBI:4705")));
+		ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+
+		//try and set types
+		TetR_promoter.setTypes(types);
+		
+		//grab types to see if a success
+		try{
+			assertTrue(TetR_promoter.getTypes().equals(types));
+		}
+		catch(Exception e){}
+	}
 	
 	
 	
