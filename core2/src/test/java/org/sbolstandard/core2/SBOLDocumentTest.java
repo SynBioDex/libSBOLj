@@ -1,6 +1,8 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,6 +10,7 @@ import javax.sound.sampled.AudioFileFormat.Type;
 import javax.xml.namespace.QName;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 public class SBOLDocumentTest {
@@ -309,6 +312,210 @@ public class SBOLDocumentTest {
 		assertTrue(MD1.getPersistentIdentity().equals(MD2.getPersistentIdentity()));
 		assertTrue(MD1.getVersion().equals(MD2.getVersion()));
 	}
+	
+	
+	@Test
+	public void Test_getModuleDefinition() throws URISyntaxException{
+		
+		String preURI="http://partsregistry.org";
+		String displayID = "Anderson";
+		String version = "version1.0";
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		try
+		{
+			document1.getModuleDefinition(null, version);
+			fail();
+		}
+		catch(IllegalArgumentException e)
+		{
+			
+		}
+		try
+		{
+			document1.getModuleDefinition(displayID, "/");
+			fail();
+		}
+		catch(IllegalArgumentException e)
+		{
+			
+		}
+
+	}
+	
+	@Test
+	public void Test_getCollection() throws URISyntaxException
+	{
+		
+		String preURI="http://partsregistry.org";
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		URI uri = new URI(document1.getDefaultURIprefix());
+		
+		try{
+		document1.getCollection(uri).getMembers();
+		fail();
+		}
+		catch(NullPointerException e)
+		{
+			
+		}
+	}
+	
+	
+	/*The following tests are testing the SBOLDocument methods pertaining 
+	 * only to the topLevel Module Definition. 
+	 * 
+	 * 
+	 */
+	@Test
+	public void test_removeModuleDefinition() throws URISyntaxException
+	{
+		
+		String preURI="http://partsregistry.org";
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		//make a ModuleDefinition 
+		ModuleDefinition holdModels = new ModuleDefinition(new URI(preURI));
+		
+		URI language = new URI("http://identifiers.org/edam/format_2585");
+		URI framework = new URI("http://identifiers.org/biomodels.sbo/SBO:0000062");
+		URI role = new URI("http://sbols.org/v2#module_model");
+		
+		//make a Model to add to the ModuleDefinition
+		Model firstModel = new Model(new URI(preURI), language, framework, role);
+		
+		//add a Model into the ModuleDefinition
+		holdModels.addModel(firstModel);
+		
+		document1.addModuleDefinition(holdModels);
+		
+		document1.removeModuleDefinition(holdModels);
+		
+		assertTrue(document1.removeModuleDefinition(holdModels) == false);
+	    	
+	}
+	
+	
+	@Test 
+	public void test_getModuleDefinitionWithIDAndVersion() throws URISyntaxException
+	{
+		
+		String preURI="http://partsregistry.org";
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		
+		//make a ModuleDefinition 
+		ModuleDefinition holdModels = new ModuleDefinition(new URI(preURI));
+		
+		try{
+		holdModels.setDisplayId("");
+		fail();
+		}
+		catch(IllegalArgumentException e)
+		{
+			System.out.println(e.getMessage());
+		}
+		
+		//holdModels.setDisplayId("Anderson Promoter");
+		holdModels.setVersion("1.0");
+		
+		URI language = new URI("http://identifiers.org/edam/format_2585");
+		URI framework = new URI("http://identifiers.org/biomodels.sbo/SBO:0000062");
+		URI role = new URI("http://sbols.org/v2#module_model");
+		
+		assertTrue(holdModels.getIdentity().toString().equals(preURI));
+		
+		assertTrue(document1.getModuleDefinition(holdModels.getDisplayId(), holdModels.getDisplayId()).equals(holdModels));
+		
+	}
+	
+	@Test
+	public void Test_setEncoding()
+	{
+		
+		String preURI="http://partsregistry.org";
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		Sequence s = document1.createSequence("seq_187", "tcctat", Sequence.IUPAC_DNA);
+		
+		try
+		{
+			s.setEncoding(null);
+			fail();
+			
+		}
+		catch(IllegalArgumentException e){}
+		
+		try
+		{
+		 s.setElements(null);
+		fail();
+		}
+		catch(IllegalArgumentException e){}
+		
+	}
+	
+	@Test
+	public void Test_getSequence()
+	{
+		String preURI="http://partsregistry.org";
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		
+	}
+	
+	/*the following series of tests check the Sequence class*/
+	@Test
+	public void test_SequenceEquals() throws URISyntaxException
+	{
+		String preURI="http://partsregistry.org";
+		
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		assertTrue(document1.getSequence(new URI("http://partsregistry.org/seq_187")).equals(document1.getSequence(new URI("http://partsregistry.org/seq_187")))); 
+		//build a gene Lac1
+		//Sequence lac1 = document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA);
+		
+		//assertTrue(lac1.equals(document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA)));
+		
+	}
+	
+	
+	
+	
+	
+
+	
+	
 	
 	
 }
