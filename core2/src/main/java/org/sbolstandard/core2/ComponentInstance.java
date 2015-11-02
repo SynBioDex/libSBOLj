@@ -105,4 +105,9 @@ public abstract class ComponentInstance extends Identified {
 
 	protected abstract ComponentInstance deepCopy();
 
+	@Override
+	public String toString() {
+		return "ComponentInstance [access=" + access + ", definition=" + definition + "]";
+	}
+
 }

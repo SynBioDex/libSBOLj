@@ -87,4 +87,9 @@ public abstract class Location extends Identified{
 		this.setDisplayId(displayId);
 		this.setVersion(version);
 	}
+
+	@Override
+	public String toString() {
+		return "Location [orientation=" + orientation + "]";
+	}
 }

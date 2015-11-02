@@ -209,42 +209,10 @@ public class Model extends TopLevel {
 		return isTopLevelURIformCompliant(this.getIdentity());
 	}
 
-	//	/**
-	//	 * @param newDisplayId
-	//	 * @return
-	//	 */
-	//	public Model copy(String newDisplayId) {
-	//		Model cloned = (Model) this.deepCopy();
-	//		cloned.updateCompliantURI(newDisplayId);
-	//		return cloned;
-	//	}
-	//
-	//	/* (non-Javadoc)
-	//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
-	//	 */
-	//	protected void updateCompliantURI(String newDisplayId) {
-	//		super.updateCompliantURI(newDisplayId);
-	//		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
-	//		}
-	//	}
-	//
-	//	/**
-	//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0".
-	//	 * @param newVersion
-	//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
-	//	 */
-	//	public Model newVersion(String newVersion) {
-	//		Model cloned = (Model) super.newVersion(newVersion);
-	//		cloned.updateVersion(newVersion);
-	//		return cloned;
-	//	}
-	//
-	//	/* (non-Javadoc)
-	//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
-	//	 */
-	//	protected void updateVersion(String newVersion) {
-	//		super.updateVersion(newVersion);
-	//		if (UriCompliance.isTopLevelURIcompliant(this.getIdentity())) {
-	//		}
-	//	}
+	@Override
+	public String toString() {
+		return "Model [source=" + source + ", language=" + language + ", framework=" + framework
+				+ "]";
+	}
+
 }
