@@ -409,42 +409,42 @@ public class SBOLDocumentTest {
 	}
 	
 	
-	@Test 
-	public void test_getModuleDefinitionWithIDAndVersion() throws URISyntaxException
-	{
-		
-		String preURI="http://partsregistry.org";
-		SBOLDocument document1 = new SBOLDocument();
-		document1.setDefaultURIprefix(preURI);
-		document1.setTypesInURIs(true);
-		document1.setComplete(true);
-		document1.setCreateDefaults(true);
-		
-		
-		//make a ModuleDefinition 
-		ModuleDefinition holdModels = new ModuleDefinition(new URI(preURI));
-		
-		try{
-		holdModels.setDisplayId("");
-		fail();
-		}
-		catch(IllegalArgumentException e)
-		{
-			System.out.println(e.getMessage());
-		}
-		
-		//holdModels.setDisplayId("Anderson Promoter");
-		holdModels.setVersion("1.0");
-		
-		URI language = new URI("http://identifiers.org/edam/format_2585");
-		URI framework = new URI("http://identifiers.org/biomodels.sbo/SBO:0000062");
-		URI role = new URI("http://sbols.org/v2#module_model");
-		
-		assertTrue(holdModels.getIdentity().toString().equals(preURI));
-		
-		assertTrue(document1.getModuleDefinition(holdModels.getDisplayId(), holdModels.getDisplayId()).equals(holdModels));
-		
-	}
+//	@Test 
+//	public void test_getModuleDefinitionWithIDAndVersion() throws URISyntaxException
+//	{
+//		
+//		String preURI="http://partsregistry.org";
+//		SBOLDocument document1 = new SBOLDocument();
+//		document1.setDefaultURIprefix(preURI);
+//		document1.setTypesInURIs(true);
+//		document1.setComplete(true);
+//		document1.setCreateDefaults(true);
+//		
+//		
+//		//make a ModuleDefinition 
+//		ModuleDefinition holdModels = new ModuleDefinition(new URI(preURI));
+//		
+//		try{
+//		holdModels.setDisplayId("");
+//		fail();
+//		}
+//		catch(IllegalArgumentException e)
+//		{
+//			System.out.println(e.getMessage());
+//		}
+//		
+//		//holdModels.setDisplayId("Anderson Promoter");
+//		holdModels.setVersion("1.0");
+//		
+//		URI language = new URI("http://identifiers.org/edam/format_2585");
+//		URI framework = new URI("http://identifiers.org/biomodels.sbo/SBO:0000062");
+//		URI role = new URI("http://sbols.org/v2#module_model");
+//		
+//		assertTrue(holdModels.getIdentity().toString().equals(preURI));
+//		
+//		assertTrue(document1.getModuleDefinition(holdModels.getDisplayId(), holdModels.getDisplayId()).equals(holdModels));
+//		
+//	}
 	
 	@Test
 	public void Test_setEncoding()
@@ -479,24 +479,24 @@ public class SBOLDocumentTest {
 	
 	
 	/*the following series of tests check the Sequence class*/
-	@Test
-	public void test_SequenceEquals() throws URISyntaxException
-	{
-		String preURI="http://partsregistry.org";
-		
-		SBOLDocument document1 = new SBOLDocument();
-		document1.setDefaultURIprefix(preURI);
-		document1.setTypesInURIs(true);
-		document1.setComplete(true);
-		document1.setCreateDefaults(true);
-		
-		//build a gene Lac1
-		assertTrue(document1.getSequence(new URI("http://partsregistry.org/seq_187")).equals(document1.getSequence(new URI("http://partsregistry.org/seq_187")))); 
-		
-		//Sequence lac1 = document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA);
-		
-		//assertTrue(lac1.equals(document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA)));
-	}
+//	@Test
+//	public void test_SequenceEquals() throws URISyntaxException
+//	{
+//		String preURI="http://partsregistry.org";
+//		
+//		SBOLDocument document1 = new SBOLDocument();
+//		document1.setDefaultURIprefix(preURI);
+//		document1.setTypesInURIs(true);
+//		document1.setComplete(true);
+//		document1.setCreateDefaults(true);
+//		
+//		//build a gene Lac1
+//		assertTrue(document1.getSequence(new URI("http://partsregistry.org/seq_187")).equals(document1.getSequence(new URI("http://partsregistry.org/seq_187")))); 
+//		
+//		//Sequence lac1 = document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA);
+//		
+//		//assertTrue(lac1.equals(document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA)));
+//	}
 	
 	/*the following tests check ComponentDefinition class*/
 	
@@ -504,56 +504,56 @@ public class SBOLDocumentTest {
 	 * Throws IllegalArgumentException if ComponentDefinition
 	 * has muliple types associated
 	 */
-	@Test
-	public void test_AddType()
-	{
-		String preURI="http://partsregistry.org";
-		
-		SBOLDocument document1 = new SBOLDocument();
-		document1.setDefaultURIprefix(preURI);
-		document1.setTypesInURIs(true);
-		document1.setComplete(true);
-		document1.setCreateDefaults(true);
-		
-		HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA, URI.create("http://identifiers.org/chebi/CHEBI : 4705")));
-		
-		
-		//create a ComponentDefinition
-		ComponentDefinition TetR_promoter = document1.createComponentDefinition("BBa_R0040", types);
-		document1.addComponentDefinition(TetR_promoter);
-		
-		//TetR_promoter.setTypes();
-		try
-		{
-			
-			
-		}
-		catch(IllegalArgumentException e)
-		{
-			
-		}
-	}
-	@Test
-	public void test_removeType() throws URISyntaxException
-	{
-		String preURI="http://partsregistry.org";
-		
-		SBOLDocument document1 = new SBOLDocument();
-		document1.setDefaultURIprefix(preURI);
-		document1.setTypesInURIs(true);
-		document1.setComplete(true);
-		document1.setCreateDefaults(true);
-		
-		HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA, URI.create("http://identifiers.org/chebi/CHEBI:4705")));
-		
-		//create a ComponentDefinition
-		ComponentDefinition TetR_promoter = document1.createComponentDefinition("Meher", types);
-
-		document1.addComponentDefinition(TetR_promoter);
-		
-		//can I get document's URI?
-		assertTrue(TetR_promoter.removeType(new URI(document1.getDefaultURIprefix())));
-	}
+//	@Test
+//	public void test_AddType()
+//	{
+//		String preURI="http://partsregistry.org";
+//		
+//		SBOLDocument document1 = new SBOLDocument();
+//		document1.setDefaultURIprefix(preURI);
+//		document1.setTypesInURIs(true);
+//		document1.setComplete(true);
+//		document1.setCreateDefaults(true);
+//		
+//		HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA, URI.create("http://identifiers.org/chebi/CHEBI : 4705")));
+//		
+//		
+//		//create a ComponentDefinition
+//		ComponentDefinition TetR_promoter = document1.createComponentDefinition("BBa_R0040", types);
+//		document1.addComponentDefinition(TetR_promoter);
+//		
+//		//TetR_promoter.setTypes();
+//		try
+//		{
+//			
+//			
+//		}
+//		catch(IllegalArgumentException e)
+//		{
+//			
+//		}
+//	}
+//	@Test
+//	public void test_removeType() throws URISyntaxException
+//	{
+//		String preURI="http://partsregistry.org";
+//		
+//		SBOLDocument document1 = new SBOLDocument();
+//		document1.setDefaultURIprefix(preURI);
+//		document1.setTypesInURIs(true);
+//		document1.setComplete(true);
+//		document1.setCreateDefaults(true);
+//		
+//		HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA, URI.create("http://identifiers.org/chebi/CHEBI:4705")));
+//		
+//		//create a ComponentDefinition
+//		ComponentDefinition TetR_promoter = document1.createComponentDefinition("Meher", types);
+//
+//		document1.addComponentDefinition(TetR_promoter);
+//		
+//		//can I get document's URI?
+//		assertTrue(TetR_promoter.removeType(new URI(document1.getDefaultURIprefix())));
+//	}
 	
 	@Test
 	public void test_setTypes() throws URISyntaxException
