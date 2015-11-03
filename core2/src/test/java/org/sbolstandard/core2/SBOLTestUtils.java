@@ -57,7 +57,7 @@ public class SBOLTestUtils {
 		}
 	}
 
-	public static SBOLDocument convertSBOL1(String fileName, String fileType, boolean dropDuplicates)
+	public static SBOLDocument convertSBOL1(String fileName, String URIprefix, String fileType, boolean dropDuplicates)
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
@@ -65,7 +65,7 @@ public class SBOLTestUtils {
 
 		assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
 		SBOLDocument actual = null;
-		SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+		SBOLReader.setURIPrefix(URIprefix);
 		SBOLReader.setDropObjectsWithDuplicateURIs(dropDuplicates);
 
 		try {

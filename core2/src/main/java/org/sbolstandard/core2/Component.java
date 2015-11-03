@@ -220,6 +220,8 @@ public class Component extends ComponentInstance{
 
 	@Override
 	public String toString() {
-		return "Component [mapsTos=" + mapsTos + "]";
+		return "Component [mapsTos=" + mapsTos + ", definition=" + definition + ", identity="
+				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
+				+ description + "]";
 	}
 }

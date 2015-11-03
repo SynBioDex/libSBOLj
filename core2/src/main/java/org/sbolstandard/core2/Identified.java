@@ -695,8 +695,8 @@ public abstract class Identified {
 	public String toString() {
 		return "Identified [identity=" + identity + ", persistentIdentity=" + persistentIdentity
 				+ ", version=" + version + ", annotations=" + annotations + ", wasDerivedFrom="
-				+ wasDerivedFrom + ", displayId=" + displayId
-				+ ", name=" + name + ", description=" + description + "]";
+				+ wasDerivedFrom + ", displayId=" + displayId + ", name=" + name + ", description="
+				+ description + "]";
 	}
 	
 	//	/**

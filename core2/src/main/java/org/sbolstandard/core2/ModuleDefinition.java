@@ -1103,6 +1103,7 @@ public class ModuleDefinition extends TopLevel {
 	public String toString() {
 		return "ModuleDefinition [roles=" + roles + ", modules=" + modules + ", interactions="
 				+ interactions + ", functionalComponents=" + functionalComponents + ", models="
-				+ models + "]";
+				+ models + ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
+				+ ", description=" + description + "]";
 	}
 }

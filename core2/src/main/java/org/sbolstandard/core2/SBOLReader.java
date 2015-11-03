@@ -375,6 +375,11 @@ public class SBOLReader
 
 		readTopLevelDocs(SBOLDoc, document);
 		scanner.close();
+		try {
+			SBOLValidate.validateCompliance(SBOLDoc);
+		} catch (SBOLValidationException e) {
+			SBOLDoc.setCompliant(false);
+		}
 	}
 
 	/**
@@ -690,7 +695,7 @@ public class SBOLReader
 		URI seq_identity   = null;
 		Set<URI> roles 	   = new HashSet<>();
 		URI identity 	   = componentDef.getIdentity();
-		String persIdentity = "";
+		String persIdentity = componentDef.getIdentity().toString();
 
 		List<Annotation> annotations 				 = new ArrayList<>();
 		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<>();
@@ -828,8 +833,13 @@ public class SBOLReader
 			c.addSequence(seq_identity);
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
-		if (!sequenceAnnotations.isEmpty())
-			c.setSequenceAnnotations(sequenceAnnotations);
+		if (!sequenceAnnotations.isEmpty()) {
+			for (SequenceAnnotation sa : sequenceAnnotations) {
+				if (!dropObjectsWithDuplicateURIs || c.getSequenceAnnotation(sa.getIdentity())==null) {
+					c.addSequenceAnnotation(sa);
+				}
+			}
+		}
 		if (!components.isEmpty())
 			c.setComponents(components);
 		if (!sequenceConstraints.isEmpty())
@@ -872,7 +882,7 @@ public class SBOLReader
 		String name   	   = null;
 		String description = null;
 		URI identity 	   = topLevel.getIdentity();
-		URI persistentIdentity = null;
+		URI persistentIdentity = topLevel.getIdentity();
 		URI encoding 	   = Sbol2Terms.SequenceURI.DnaSequenceV1;
 		List<Annotation> annotations = new ArrayList<>();
 
@@ -1081,7 +1091,7 @@ public class SBOLReader
 		String strand    = null;
 		URI componentURI = null;
 		URI identity 	 = sequenceAnnotation.getIdentity();
-		String persIdentity = "";
+		String persIdentity = sequenceAnnotation.getIdentity().toString();
 		List<Annotation> annotations = new ArrayList<>();
 
 		if (URIPrefix != null)
@@ -1195,10 +1205,10 @@ public class SBOLReader
 	private static ComponentDefinition parseComponentDefinitions(
 			SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		URI structure 		   = null;
 		String version 		   = null;
 		URI wasDerivedFrom     = null;
@@ -1337,10 +1347,10 @@ public class SBOLReader
 
 	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraint)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(sequenceConstraint.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(sequenceConstraint.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(sequenceConstraint.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(sequenceConstraint.getIdentity()));
 		URI restriction  			 = null;
 		URI subject 				 = null;
 		URI object 					 = null;
@@ -1421,10 +1431,10 @@ public class SBOLReader
 
 	private static SequenceAnnotation parseSequenceAnnotation(NestedDocument<QName> sequenceAnnotation, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(sequenceAnnotation.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(sequenceAnnotation.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(sequenceAnnotation.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(sequenceAnnotation.getIdentity()));
 		Location location 	   = null;
 		URI componentURI 	   = null;
 		String version   	   = null;
@@ -1528,10 +1538,10 @@ public class SBOLReader
 
 	private static GenericLocation parseGenericLocation(NestedDocument<QName> typeGenLoc)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(typeGenLoc.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(typeGenLoc.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(typeGenLoc.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(typeGenLoc.getIdentity()));
 		URI orientation 			 = null;
 		String version        	     = null;
 		URI wasDerivedFrom 			 = null;
@@ -1601,10 +1611,10 @@ public class SBOLReader
 
 	private static Cut parseCut(NestedDocument<QName> typeCut)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(typeCut.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(typeCut.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(typeCut.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(typeCut.getIdentity()));
 		Integer at 			   = null;
 		URI orientation 	   = null;
 		String version 		   = null;
@@ -1685,10 +1695,10 @@ public class SBOLReader
 
 	private static Location parseRange(NestedDocument<QName> typeRange)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(typeRange.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(typeRange.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(typeRange.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(typeRange.getIdentity()));
 		Integer start 		   = null;
 		Integer end 		   = null;
 		URI orientation 	   = null;
@@ -1770,10 +1780,10 @@ public class SBOLReader
 
 	private static Component parseComponent(NestedDocument<QName> component, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(component.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(component.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(component.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(component.getIdentity()));
 		String version 		   = null;
 		URI subComponentURI    = null;
 		AccessType access 	   = null;
@@ -1873,10 +1883,10 @@ public class SBOLReader
 	private static GenericTopLevel parseGenericTopLevel(SBOLDocument SBOLDoc,
 			TopLevelDocument<QName> topLevel)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
 
@@ -1944,10 +1954,10 @@ public class SBOLReader
 
 	private static Model parseModels(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
 		URI source 			   = null;
 		URI language 		   = null;
@@ -2030,10 +2040,10 @@ public class SBOLReader
 
 	private static Collection parseCollections(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
 
@@ -2108,10 +2118,10 @@ public class SBOLReader
 	private static ModuleDefinition parseModuleDefinition(SBOLDocument SBOLDoc,
 			TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 	       = null;
 		URI wasDerivedFrom 	   = null;
 		Set<URI> roles 		   = new HashSet<>();
@@ -2253,10 +2263,10 @@ public class SBOLReader
 
 	private static Module parseModule(NestedDocument<QName> module, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(module.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(module.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(module.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(module.getIdentity()));
 		String version 		   = null;
 		URI definitionURI 	   = null;
 		URI wasDerivedFrom 	   = null;
@@ -2350,10 +2360,10 @@ public class SBOLReader
 
 	private static MapsTo parseMapsTo(NestedDocument<QName> mapsTo)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(mapsTo.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(mapsTo.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(mapsTo.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(mapsTo.getIdentity()));
 		String version 	  	 	  = null;
 		URI remote 				  = null;
 		RefinementType refinement = null;
@@ -2434,10 +2444,10 @@ public class SBOLReader
 
 	private static Interaction parseInteraction(NestedDocument<QName> interaction, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(interaction.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(interaction.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(interaction.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(interaction.getIdentity()));
 		String version 		   = null;
 		URI wasDerivedFrom	   = null;
 
@@ -2516,10 +2526,10 @@ public class SBOLReader
 
 	private static Participation parseParticipation(NestedDocument<QName> participation)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(participation.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(participation.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(participation.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(participation.getIdentity()));
 		String version 		   = null;
 		Set<URI> roles 		   = new HashSet<>();
 		URI participant        = null;
@@ -2597,10 +2607,10 @@ public class SBOLReader
 
 	private static FunctionalComponent parseFunctionalComponent(NestedDocument<QName> functionalComponent, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(functionalComponent.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(functionalComponent.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(functionalComponent.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(functionalComponent.getIdentity()));
 		String version 			   = null;
 		AccessType access 		   = null;
 		DirectionType direction    = null;
@@ -2709,10 +2719,10 @@ public class SBOLReader
 
 	private static Sequence parseSequences(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null; //URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null; //URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
 		String elements 	   = null;
 		URI encoding 		   = null;

@@ -1,6 +1,8 @@
 package org.sbolstandard.core2;
 
 import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class readTester {
 	public static String filenameRdf 	= "writeTesterString_v1.3.rdf";
@@ -27,6 +29,7 @@ public class readTester {
 	public static String path = "test/data/";
 
 	public static void main(String[] args) {
+				
 		try {
 			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_12);
 			if (file == null)
@@ -74,5 +77,4 @@ public class readTester {
 		}
 
 	}
-
 }

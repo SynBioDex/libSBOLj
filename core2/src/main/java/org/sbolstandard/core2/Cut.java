@@ -84,6 +84,8 @@ public class Cut extends Location{
 
 	@Override
 	public String toString() {
-		return "Cut [at=" + at + "]";
+		return "Cut [at=" + at + ", orientation=" + orientation + ", identity=" + identity
+				+ ", displayId=" + displayId + ", name=" + name + ", description=" + description
+				+ "]";
 	}
 }

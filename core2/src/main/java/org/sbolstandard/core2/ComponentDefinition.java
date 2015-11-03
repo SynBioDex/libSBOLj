@@ -1466,7 +1466,9 @@ public class ComponentDefinition extends TopLevel {
 	public String toString() {
 		return "ComponentDefinition [types=" + types + ", roles=" + roles + ", sequences="
 				+ sequences + ", components=" + components + ", sequenceAnnotations="
-				+ sequenceAnnotations + ", sequenceConstraints=" + sequenceConstraints + "]";
+				+ sequenceAnnotations + ", sequenceConstraints=" + sequenceConstraints
+				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
+				+ ", description=" + description + "]";
 	}
 
 }
