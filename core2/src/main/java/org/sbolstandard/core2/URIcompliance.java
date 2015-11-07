@@ -116,9 +116,6 @@ final class URIcompliance {
 		} else {
 			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString()+"/"
 					+identified.getVersion())) {
-				System.out.println(identified.identity.toString());
-				System.out.println(identified.getPersistentIdentity().toString()+"/"
-					+identified.getVersion());
 				return false;
 			}
 		}
