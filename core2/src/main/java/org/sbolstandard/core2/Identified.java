@@ -165,7 +165,10 @@ public abstract class Identified {
 	 * Sets field variable <code>version</code> to the specified element.
 	 */
 	void setVersion(String version) {
-		if (version==null || version.equals("")) return;
+		if (version==null || version.equals("")) {
+			this.version=null;
+			return;
+		}
 		if (!URIcompliance.isVersionCompliant(version)) {
 			throw new IllegalArgumentException(
 					"Version " + version + " is invalid for `" + identity + "'.");

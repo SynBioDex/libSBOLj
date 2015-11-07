@@ -2,7 +2,15 @@ package org.sbolstandard.core2;
 
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.*;
 
@@ -2352,10 +2360,189 @@ public class SBOLDocument {
 			throw new SBOLValidationException("Cannot modify a non-compliant SBOL document");
 		}
 	}
+
+	/**
+	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
+	 *
+	 * @param fileName
+	 * @return the converted SBOLDocument instance
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 * @throws FileNotFoundException 
+	 */
+	public void read(String fileName) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+		read(new File(fileName));
+	}
+
+	/**
+	 * Takes in a given fileName and fileType, and add the data read to this SBOLDocument.
+	 *
+	 * @param fileName
+	 * @param fileType
+	 * @return the converted SBOLDocument instance
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 * @throws FileNotFoundException 
+	 */
+	public void read(String fileName,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+		read(new File(fileName),fileType);
+	}
 	
-	// TODO: NEEDS JAVADOC
-	void read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError {
-		SBOLReader.read(this, in);
+	/**
+	 * Takes in a given RDF File and add the data read to this SBOLDocument.
+	 *
+	 * @param file
+	 * @return the converted SBOLDocument instance
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 * @throws FileNotFoundException 
+	 */
+	public void read(File file) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+		FileInputStream stream     = new FileInputStream(file);
+		BufferedInputStream buffer = new BufferedInputStream(stream);
+		SBOLReader.read(this, buffer, SBOLReader.RDF);
+	}
+	
+	/**
+	 * Takes in a given file and fileType, and add the data read to this SBOLDocument.
+	 *
+	 * @param file
+	 * @param fileType
+	 * @return the converted SBOLDocument instance
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 * @throws FileNotFoundException 
+	 */
+	public void read(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+		FileInputStream stream     = new FileInputStream(file);
+		BufferedInputStream buffer = new BufferedInputStream(stream);
+		SBOLReader.read(this, buffer, fileType);
+	}
+	
+	/**
+	 * Takes in a given RDF InputStream and add the data read to this SBOLDocument.
+	 *
+	 * @param in
+	 * @return the converted SBOLDocument instance
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 */
+	public void read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError {
+		SBOLReader.read(this, in, SBOLReader.RDF);
+	}
+	
+	/**
+	 * Takes in a given InputStream and fileType, and add the data read to this SBOLDocument.
+	 *
+	 * @param in
+	 * @param fileType
+	 * @return the converted SBOLDocument instance
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 */
+	public void read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError {
+		SBOLReader.read(this, in, fileType);
+	}
+
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * file name in RDF format
+	 * @param filename
+	 * @throws IOException 
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 */
+	public void write(String filename) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		SBOLWriter.write(this, new File(filename));
+	}
+
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * file name in fileType format
+	 * @param filename
+	 * @param fileType
+	 * @throws IOException 
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 */
+	public void write(String filename,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		SBOLWriter.write(this, new File(filename), fileType);
+	}
+
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * file in RDF format
+	 * @param file
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 * @throws IOException 
+	 */
+	public void write(File file) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		FileOutputStream stream = new FileOutputStream(file);
+		BufferedOutputStream buffer = new BufferedOutputStream(stream);
+		SBOLWriter.write(this, buffer);
+		stream.close();
+		buffer.close();
+	}
+
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * file in fileType format
+	 * @param file
+	 * @param fileType
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 * @throws IOException 
+	 */
+	public void write(File file,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		FileOutputStream stream = new FileOutputStream(file);
+		BufferedOutputStream buffer = new BufferedOutputStream(stream);
+		SBOLWriter.write(this, buffer, fileType);
+		stream.close();
+		buffer.close();
+	}
+	
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output 
+	 * stream in RDF format
+	 * @param out
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 * @throws IOException 
+	 */
+	public void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		SBOLWriter.write(this, out);
+	}
+
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * stream in fileType format
+	 * @param out
+	 * @param fileType
+	 * @throws CoreIoException 
+	 * @throws FactoryConfigurationError 
+	 * @throws XMLStreamException 
+	 * @throws IOException 
+	 */
+	public void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		SBOLWriter.write(this, out, fileType);
 	}
 
 	@Override

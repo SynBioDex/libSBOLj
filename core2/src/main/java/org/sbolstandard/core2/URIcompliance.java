@@ -115,7 +115,12 @@ final class URIcompliance {
 			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString())) return false;
 		} else {
 			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString()+"/"
-					+identified.getVersion())) return false;
+					+identified.getVersion())) {
+				System.out.println(identified.identity.toString());
+				System.out.println(identified.getPersistentIdentity().toString()+"/"
+					+identified.getVersion());
+				return false;
+			}
 		}
 		return true;
 	}
