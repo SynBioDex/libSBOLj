@@ -2365,7 +2365,6 @@ public class SBOLDocument {
 	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
 	 *
 	 * @param fileName
-	 * @return the converted SBOLDocument instance
 	 * @throws CoreIoException 
 	 * @throws FactoryConfigurationError 
 	 * @throws XMLStreamException 
@@ -2380,7 +2379,6 @@ public class SBOLDocument {
 	 *
 	 * @param fileName
 	 * @param fileType
-	 * @return the converted SBOLDocument instance
 	 * @throws CoreIoException 
 	 * @throws FactoryConfigurationError 
 	 * @throws XMLStreamException 
@@ -2394,7 +2392,6 @@ public class SBOLDocument {
 	 * Takes in a given RDF File and add the data read to this SBOLDocument.
 	 *
 	 * @param file
-	 * @return the converted SBOLDocument instance
 	 * @throws CoreIoException 
 	 * @throws FactoryConfigurationError 
 	 * @throws XMLStreamException 
@@ -2411,7 +2408,6 @@ public class SBOLDocument {
 	 *
 	 * @param file
 	 * @param fileType
-	 * @return the converted SBOLDocument instance
 	 * @throws CoreIoException 
 	 * @throws FactoryConfigurationError 
 	 * @throws XMLStreamException 
@@ -2427,7 +2423,6 @@ public class SBOLDocument {
 	 * Takes in a given RDF InputStream and add the data read to this SBOLDocument.
 	 *
 	 * @param in
-	 * @return the converted SBOLDocument instance
 	 * @throws CoreIoException 
 	 * @throws FactoryConfigurationError 
 	 * @throws XMLStreamException 
@@ -2441,7 +2436,6 @@ public class SBOLDocument {
 	 *
 	 * @param in
 	 * @param fileType
-	 * @return the converted SBOLDocument instance
 	 * @throws CoreIoException 
 	 * @throws FactoryConfigurationError 
 	 * @throws XMLStreamException 
