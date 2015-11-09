@@ -683,6 +683,29 @@ public class SBOLDocumentTest {
 			assertTrue(TetR_promoter.removeType(ComponentDefinition.DNA));
 		}
 		
+		@Test
+		public void removeRole_CD() throws URISyntaxException
+		{
+			HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
+			ComponentDefinition TetR_promoter = null;
+			TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			URI promoter_role = new URI("http://identifiers.org/so/SO:0000167");
+			assertTrue(TetR_promoter.addRole(promoter_role));
+			assertTrue(TetR_promoter.removeRole(promoter_role));
+			
+		}
+		
+		@Test
+		public void containsRole_CD() throws URISyntaxException
+		{
+			HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
+			ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			URI promoter_role = new URI("http://identifiers.org/so/SO:0000167");
+			assertTrue(TetR_promoter.addRole(promoter_role));
+			assertTrue(TetR_promoter.containsRole(promoter_role));
+		}
+		
+		
 	
 	
 	
