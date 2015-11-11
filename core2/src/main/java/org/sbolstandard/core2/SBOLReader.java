@@ -254,11 +254,11 @@ public class SBOLReader
 	 * @return the converted SBOLDocument instance
 	 * @throws Exception
 	 */
-	public static SBOLDocument readJSON(InputStream in) throws Exception
+	public static SBOLDocument readJSON(SBOLDocument SBOLDoc,InputStream in) throws Exception
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
-		SBOLDocument SBOLDoc     = new SBOLDocument();
+
 		try
 		{
 			DocumentRoot<QName> document = readJSON(new StringReader(inputStreamString));
@@ -268,7 +268,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readV1(document);
+					return readV1(document, SBOLDoc);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -304,7 +304,52 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	static void read(SBOLDocument SBOLDoc,InputStream in)
+	public static SBOLDocument readRDF(InputStream in)
+	{
+		SBOLDocument SBOLDoc     = new SBOLDocument();
+		try
+		{
+			readRDF(SBOLDoc,in);
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return SBOLDoc;
+	}
+
+	public static SBOLDocument readJSON(InputStream in)
+	{
+		SBOLDocument SBOLDoc     = new SBOLDocument();
+		try
+		{
+			readJSON(SBOLDoc,in);
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return SBOLDoc;
+	}
+
+	public static SBOLDocument readTurtle(InputStream in)
+	{
+		SBOLDocument SBOLDoc     = new SBOLDocument();
+		try
+		{
+			readTurtle(SBOLDoc,in);
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return SBOLDoc;
+	}
+
+	static void read(SBOLDocument SBOLDoc, InputStream in)
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
@@ -317,7 +362,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					readV1(document);
+					readV1(document, SBOLDoc);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -343,11 +388,11 @@ public class SBOLReader
 	 * @throws Exception
 	 * @throws IOException
 	 */
-	public static SBOLDocument readRDF(InputStream in) throws Exception
+	public static SBOLDocument readRDF(SBOLDocument SBOLDoc,InputStream in) throws Exception
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
-		SBOLDocument SBOLDoc     = new SBOLDocument();
+
 
 		try
 		{
@@ -357,7 +402,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readV1(document);
+					return readV1(document, SBOLDoc);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -385,11 +430,11 @@ public class SBOLReader
 	 * @return the converted SBOLDocument instance
 	 * @throws Exception
 	 */
-	public static SBOLDocument readTurtle(InputStream in) throws Exception
+	public static SBOLDocument readTurtle(SBOLDocument SBOLDoc,InputStream in) throws Exception
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
-		SBOLDocument SBOLDoc     = new SBOLDocument();
+
 
 		try
 		{
@@ -399,7 +444,7 @@ public class SBOLReader
 				if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
 				{
 					scanner.close();
-					return readV1(document);
+					return readV1(document, SBOLDoc);
 				}
 				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
 				//				SBOLDoc.addNamespaceBinding(URI.create(n.getNamespaceURI()), n.getPrefix());
@@ -421,9 +466,8 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	private static SBOLDocument readV1(DocumentRoot<QName> document)
+	private static SBOLDocument readV1(DocumentRoot<QName> document, SBOLDocument SBOLDoc)
 	{
-		SBOLDocument SBOLDoc = new SBOLDocument();
 		for (NamespaceBinding n : document.getNamespaceBindings())
 		{
 			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))
@@ -559,7 +603,6 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.type))
 			{
-				// TODO: conversion to proper SO term when possible
 				URI convertedSO = SequenceOntology.convertSeqOntologyV1(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 				roles.add(convertedSO);
 			}
@@ -606,8 +649,8 @@ public class SBOLReader
 
 		for (SBOLPair pair : precedePairs)
 		{
-			URI sc_identity    			= createCompliantURI(persIdentity,"sequenceConstraint" + ++sc_number,version);
-			URI restrictionURI 			= RestrictionType.convertToURI(RestrictionType.PRECEDES);
+			URI sc_identity    	= createCompliantURI(persIdentity,"sequenceConstraint" + ++sc_number,version);
+			URI restrictionURI 	= RestrictionType.convertToURI(RestrictionType.PRECEDES);
 			//RestrictionType restriction = RestrictionType.convertToRestrictionType(restrictionURI);
 
 			URI subject = null;
@@ -660,7 +703,6 @@ public class SBOLReader
 		if (!sequenceConstraints.isEmpty())
 			c.setSequenceConstraints(sequenceConstraints);
 
-		//TODO: to fix
 		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(identity);
 		if (oldC == null) {
 			SBOLDoc.addComponentDefinition(c);
@@ -854,7 +896,7 @@ public class SBOLReader
 			SBOLDoc.addCollection(c);
 		} else {
 			if (!c.equals(oldC)) {
-				throw new SBOLValidationException("The specified Collection does not exist.");
+				throw new SBOLValidationException("Multiple non-identical Collection with identity "+ topLevel.getIdentity());
 			}
 		}
 		return c;
@@ -1093,7 +1135,7 @@ public class SBOLReader
 			SBOLDoc.addComponentDefinition(c);
 		} else {
 			if (!c.equals(oldC)) {
-				throw new SBOLValidationException("The specified ComponentDefinition does not exist.");
+				throw new SBOLValidationException("Multiple non-identical ComponentDefinitions with identity "+topLevel.getIdentity());
 			}
 		}
 		return c;
@@ -1688,7 +1730,7 @@ public class SBOLReader
 			SBOLDoc.addGenericTopLevel(t);
 		} else {
 			if (!t.equals(oldG)) {
-				throw new SBOLValidationException("The specified GenericTopLevel does not exist.");
+				throw new SBOLValidationException("Multiple non-identical GenericTopLevel with identity "+topLevel.getIdentity());
 			}
 		}
 		return t;
@@ -1774,7 +1816,7 @@ public class SBOLReader
 			SBOLDoc.addModel(m);
 		} else {
 			if (!m.equals(oldM)) {
-				throw new SBOLValidationException("The specified Model does not exist.");
+				throw new SBOLValidationException("Multiple non-identical ComponentDefinitions with identity "+ topLevel.getIdentity());
 			}
 		}
 		return m;
@@ -1851,7 +1893,7 @@ public class SBOLReader
 			SBOLDoc.addCollection(c);
 		} else {
 			if (!c.equals(oldC)) {
-				throw new SBOLValidationException("The specified Collection does not exist.");
+				throw new SBOLValidationException("Multiple non-identical Collection with identity "+topLevel.getIdentity());
 			}
 		}
 		return c;
@@ -1968,7 +2010,7 @@ public class SBOLReader
 			SBOLDoc.addModuleDefinition(moduleDefinition);
 		} else {
 			if (!moduleDefinition.equals(oldM)) {
-				throw new SBOLValidationException("The specified ModuleDefinition does not exist.");
+				throw new SBOLValidationException("Multiple non-identical ModuleDefinition with identity "+topLevel.getIdentity());
 			}
 		}
 		return moduleDefinition;
@@ -2480,7 +2522,7 @@ public class SBOLReader
 			SBOLDoc.addSequence(sequence);
 		} else {
 			if (!sequence.equals(oldS)) {
-				throw new SBOLValidationException("The specified Sequence does not exist.");
+				throw new SBOLValidationException("Multiple non-identical Sequence with identity "+topLevel.getIdentity());
 			}
 		}
 		return sequence;

@@ -55,6 +55,155 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 public class SBOLWriter {
 
+	public static void write(String filename) throws FileNotFoundException
+	{
+		SBOLDocument doc = new SBOLDocument();
+		write(doc, new File(filename));
+	}
+
+	public static void writeRDF(String filename) throws FileNotFoundException
+	{
+		SBOLDocument doc = new SBOLDocument();
+		writeRDF(doc, new File(filename));
+	}
+
+	public static void writeJSON(String filename) throws FileNotFoundException
+	{
+		SBOLDocument doc = new SBOLDocument();
+		writeJSON(doc, new File(filename));
+	}
+
+	public static void writeTurtle(String filename) throws FileNotFoundException
+	{
+		SBOLDocument doc = new SBOLDocument();
+		try
+		{
+			writeTurtle(doc, new File(filename));
+		}
+		catch (Throwable e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void write(File file) throws FileNotFoundException{
+		SBOLDocument doc = new SBOLDocument();
+		write(doc, file);
+	}
+
+	public static void writeRDF(File file) throws FileNotFoundException{
+		SBOLDocument doc = new SBOLDocument();
+		writeRDF(doc, file);
+	}
+
+	public static void writeTurtle(File file) throws FileNotFoundException{
+		SBOLDocument doc = new SBOLDocument();
+		try
+		{
+			writeTurtle(doc, file);
+		}
+		catch (Throwable e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void writeJSON(File file) throws FileNotFoundException{
+		SBOLDocument doc = new SBOLDocument();
+		writeJSON(doc, file);
+	}
+
+	public static void write(OutputStream out)
+	{
+		SBOLDocument doc = new SBOLDocument();
+		try
+		{
+			write(doc, out);
+		}
+		catch (XMLStreamException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (FactoryConfigurationError e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (CoreIoException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void writeRDF(OutputStream out)
+	{
+		SBOLDocument doc = new SBOLDocument();
+
+		try
+		{
+			writeRDF(doc, out);
+		}
+		catch (XMLStreamException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (FactoryConfigurationError e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (CoreIoException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void writeJSON(OutputStream out)
+	{
+		SBOLDocument doc = new SBOLDocument();
+
+		try
+		{
+			writeJSON(doc, out);
+		}
+		catch (FactoryConfigurationError e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void writeTurtle(OutputStream out)
+	{
+		SBOLDocument doc = new SBOLDocument();
+
+		try
+		{
+			writeTurtle(doc, out);
+		}
+		catch (FactoryConfigurationError e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
 	 * in RDF format.
