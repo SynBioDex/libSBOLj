@@ -85,6 +85,31 @@ public class SBOLTestUtils {
 
 	}
 
+	public static SBOLDocument convertRDFTripleStore(String fileName, String fileType)
+	{
+		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
+		if (resourceAsStream == null)
+			resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/" + fileName);
+
+		assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
+		SBOLDocument actual = null;
+		try {
+			if(fileType.equals("rdf"))
+				actual = SBOLReader.read(resourceAsStream);
+			else if(fileType.equals("json"))
+				actual = SBOLReader.read(resourceAsStream,SBOLReader.JSON);
+			else if(fileType.equals("turtle"))
+				actual = SBOLReader.read(resourceAsStream,SBOLReader.TURTLE);
+			else
+				actual = SBOLReader.read(resourceAsStream);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return actual;
+
+	}
+	
 	public static void setDefaultNameSpace(SBOLDocument document, String uri)
 	{
 		if (uri.endsWith("/"))

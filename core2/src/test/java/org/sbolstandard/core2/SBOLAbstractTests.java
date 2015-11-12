@@ -811,6 +811,70 @@ public abstract class SBOLAbstractTests {
 	}
 
 	@Test
+	public void test_igem1_File() throws Exception
+	{
+		String fileName = "test/data/RDF/igem1.xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
+			runTest("test/data/igem1.rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+
+	@Test
+	public void test_igem2_File() throws Exception
+	{
+		String fileName = "test/data/RDF/igem2.xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
+			runTest("test/data/igem2.rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+	
+	@Test
+	public void test_igem3_File() throws Exception
+	{
+		String fileName = "test/data/RDF/igem3.xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
+			runTest("test/data/igem3.rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+	
+	@Test
+	public void test_toggle_File() throws Exception
+	{
+		String fileName = "test/data/RDF/toggle.xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
+			runTest("test/data/toggle.rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+	
+	@Test
 	public void test_BBa_T9002_File() throws Exception
 	{
 		String fileName = "test/data/SBOL1/BBa_T9002.xml";
