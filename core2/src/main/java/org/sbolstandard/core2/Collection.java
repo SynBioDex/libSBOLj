@@ -229,49 +229,11 @@ public class Collection extends TopLevel{
 		}
 		return true;
 	}
-	
-//	/**	
-//	 * @param URIprefix
-//	 * @param displayId
-//	 * @param version
-//	 * @return
-//	 */
-//	public Collection copy(String URIprefix, String displayId, String version) {
-//		Collection cloned = (Collection) super.copy(displayId);
-//		if (cloned.updateCompliantURI(displayId)) {
-//			return cloned;
-//		}
-//		else {
-//			return null;
-//		}
-//		
-//	}
 
-//	/* (non-Javadoc)
-//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateDisplayId(java.lang.String)
-//	 */
-//	protected void updateCompliantURI(String newDisplayId) {
-//		super.updateCompliantURI(newDisplayId);
-//		if (isTopLevelURIcompliant(this.getIdentity())) {			
-//			
-//		}
-//	}
-	
-//	/* (non-Javadoc)
-//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#newVersion(java.lang.String)
-//	 */
-//	public Collection newVersion(String newVersion) {
-//		Collection cloned = (Collection) super.copy(newVersion);
-//		cloned.updateVersion(newVersion);
-//		return cloned;
-//	}
-	
-//	/* (non-Javadoc)
-//	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateVersion(java.lang.String)
-//	 */
-//	protected void updateVersion(String newVersion) {
-//		super.updateVersion(newVersion);
-//		if (isTopLevelURIcompliant(this.getIdentity())) {
-//		}
-//	}
+	@Override
+	public String toString() {
+		return "Collection [members=" + members + ", identity=" + identity + ", displayId="
+				+ displayId + ", name=" + name + ", description=" + description + "]";
+	}
+
 }

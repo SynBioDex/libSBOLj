@@ -46,4 +46,11 @@ public class GenericLocation extends Location{
 	protected GenericLocation deepCopy() {
 		return new GenericLocation(this);
 	}
+
+	@Override
+	public String toString() {
+		return "GenericLocation [orientation=" + orientation + ", identity=" + identity
+				+ ", displayId=" + displayId + ", name=" + name + ", description=" + description
+				+ "]";
+	}
 }

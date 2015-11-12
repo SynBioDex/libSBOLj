@@ -377,5 +377,12 @@ public class Module extends Identified {
 		this.moduleDefinition = moduleDefinition;
 	}
 
+	@Override
+	public String toString() {
+		return "Module [mapsTos=" + mapsTos + ", definition=" + definition + ", identity="
+				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
+				+ description + "]";
+	}
+
 }
 

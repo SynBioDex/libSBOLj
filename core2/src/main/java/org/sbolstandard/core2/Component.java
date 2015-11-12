@@ -217,4 +217,11 @@ public class Component extends ComponentInstance{
 	void setComponentDefinition(ComponentDefinition componentDefinition) {
 		this.componentDefinition = componentDefinition;
 	}
+
+	@Override
+	public String toString() {
+		return "Component [mapsTos=" + mapsTos + ", definition=" + definition + ", identity="
+				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
+				+ description + "]";
+	}
 }

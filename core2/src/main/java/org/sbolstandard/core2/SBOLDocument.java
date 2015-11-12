@@ -10,7 +10,15 @@ import static org.sbolstandard.core2.URIcompliance.validateIdVersion;
 import static org.sbolstandard.core2.Version.isFirstVersionNewer;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +28,11 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 /**
  * @author Zhen Zhang
@@ -41,7 +52,7 @@ public class SBOLDocument {
 	private HashMap<URI, Model> models;
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
-	private HashMap<URI, NamespaceBinding> nameSpaces;
+	private HashMap<String, NamespaceBinding> nameSpaces;
 	private String defaultURIprefix;
 	private boolean complete = false;
 	private boolean compliant = true;
@@ -61,10 +72,10 @@ public class SBOLDocument {
 		moduleDefinitions = new HashMap<>();
 		sequences = new HashMap<>();
 		nameSpaces = new HashMap<>();
-		nameSpaces.put(URI.create(Sbol2Terms.sbol2.getNamespaceURI()), Sbol2Terms.sbol2);
-		nameSpaces.put(URI.create(Sbol1Terms.rdf.getNamespaceURI()), Sbol1Terms.rdf);
-		nameSpaces.put(URI.create(Sbol2Terms.dc.getNamespaceURI()), Sbol2Terms.dc);
-		nameSpaces.put(URI.create(Sbol2Terms.prov.getNamespaceURI()), Sbol2Terms.prov);
+		nameSpaces.put(Sbol2Terms.sbol2.getPrefix(), Sbol2Terms.sbol2);
+		nameSpaces.put(Sbol1Terms.rdf.getPrefix(), Sbol1Terms.rdf);
+		nameSpaces.put(Sbol2Terms.dc.getPrefix(), Sbol2Terms.dc);
+		nameSpaces.put(Sbol2Terms.prov.getPrefix(), Sbol2Terms.prov);
 	}
 
 	/**
@@ -1791,7 +1802,8 @@ public class SBOLDocument {
 	 * @return the new generic top level
 	 */
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) {
-		if (rdfType.getPrefix().toString().equals("sbol")) {
+		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
+				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
@@ -1927,16 +1939,65 @@ public class SBOLDocument {
 	}
 
 	/**
+	 * Creates a set of TopLevels with derived from the same object
+	 * as specified by the wasDerivedFrom parameter.
+	 * @param wasDerivedFrom
+	 * @return Set of TopLevels with a matching wasDerivedFrom URI.
+	 */
+	public Set<TopLevel> getByWasDerivedFrom(URI wasDerivedFrom) {
+		Set<TopLevel> topLevels = new HashSet<>();
+		for (Collection topLevel : collections.values()) {
+			if (topLevel.isSetWasDerivedFrom() &&
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (Sequence topLevel : sequences.values()) {
+			if (topLevel.isSetWasDerivedFrom() &&
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (Model topLevel : models.values()) {
+			if (topLevel.isSetWasDerivedFrom() &&
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (GenericTopLevel topLevel : genericTopLevels.values()) {
+			if (topLevel.isSetWasDerivedFrom() &&
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (ComponentDefinition topLevel : componentDefinitions.values()) {
+			if (topLevel.isSetWasDerivedFrom() &&
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		for (ModuleDefinition topLevel : moduleDefinitions.values()) {
+			if (topLevel.isSetWasDerivedFrom() &&
+					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
+				topLevels.add(topLevel);
+			}
+		}
+		return topLevels;
+	}
+
+	/**
 	 * Adds a namespace URI and its prefix to a SBOL document
 	 *
 	 * @param nameSpaceURI The Namespace {@link URI}
 	 * @param prefix The prefix {@link String}
 	 */
 	public void addNamespace(URI nameSpaceURI, String prefix) {
+
 		//		if (!URIcompliance.isURIprefixCompliant(nameSpaceURI.toString())) {
 		//			throw new SBOLException("Namespace URI " + nameSpaceURI.toString() + " is not valid.");
 		//		}
-		nameSpaces.put(nameSpaceURI, NamespaceBinding(nameSpaceURI.toString(), prefix));
+		nameSpaces.put(prefix, NamespaceBinding(nameSpaceURI.toString(), prefix));
+
 	}
 
 	/**
@@ -1945,12 +2006,13 @@ public class SBOLDocument {
 	 * @param qName Qualified name ({@link QName}) for a namespace
 	 */
 	public void addNamespace(QName qName) {
-		nameSpaces.put(URI.create(qName.getNamespaceURI()), NamespaceBinding(qName.getNamespaceURI(),
+
+		nameSpaces.put(qName.getPrefix(), NamespaceBinding(qName.getNamespaceURI(),
 				qName.getPrefix()));
 	}
 
 	void addNamespaceBinding(NamespaceBinding namespaceBinding) {
-		nameSpaces.put(URI.create(namespaceBinding.getNamespaceURI()), namespaceBinding);
+		nameSpaces.put(namespaceBinding.getPrefix(), namespaceBinding);
 	}
 
 	/**
@@ -2313,20 +2375,193 @@ public class SBOLDocument {
 		}
 	}
 
-	// TODO: NEEDS JAVADOC
-	void read(InputStream in) {
-		SBOLReader.read(this, in);
+
+	/**
+	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
+	 *
+	 * @param fileName
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws FileNotFoundException
+	 */
+	public void read(String fileName) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+		read(new File(fileName));
 	}
 
-	void readRDF(InputStream in) {
-		SBOLReader.read(this, in);
+	/**
+	 * Takes in a given fileName and fileType, and add the data read to this SBOLDocument.
+	 *
+	 * @param fileName
+	 * @param fileType
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws FileNotFoundException
+	 */
+	public void read(String fileName,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+		read(new File(fileName),fileType);
 	}
 
-	void readTurtle(InputStream in) {
-		SBOLReader.read(this, in);
+	/**
+	 * Takes in a given RDF File and add the data read to this SBOLDocument.
+	 *
+	 * @param file
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws FileNotFoundException
+	 */
+	public void read(File file) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+		FileInputStream stream     = new FileInputStream(file);
+		BufferedInputStream buffer = new BufferedInputStream(stream);
+		SBOLReader.read(this, buffer, SBOLReader.RDF);
 	}
 
-	void readJSON(InputStream in) {
-		SBOLReader.read(this, in);
+	/**
+	 * Takes in a given file and fileType, and add the data read to this SBOLDocument.
+	 *
+	 * @param file
+	 * @param fileType
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws FileNotFoundException
+	 */
+	public void read(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+		FileInputStream stream     = new FileInputStream(file);
+		BufferedInputStream buffer = new BufferedInputStream(stream);
+		SBOLReader.read(this, buffer, fileType);
+	}
+
+	/**
+	 * Takes in a given RDF InputStream and add the data read to this SBOLDocument.
+	 *
+	 * @param in
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 */
+	public void read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError {
+		SBOLReader.read(this, in, SBOLReader.RDF);
+	}
+
+	/**
+	 * Takes in a given InputStream and fileType, and add the data read to this SBOLDocument.
+	 *
+	 * @param in
+	 * @param fileType
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 */
+	public void read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError {
+		SBOLReader.read(this, in, fileType);
+	}
+
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * file name in RDF format
+	 * @param filename
+	 * @throws IOException
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 */
+	public void write(String filename) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		SBOLWriter.write(this, new File(filename));
+	}
+
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * file name in fileType format
+	 * @param filename
+	 * @param fileType
+	 * @throws IOException
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 */
+	public void write(String filename,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		SBOLWriter.write(this, new File(filename), fileType);
+	}
+
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * file in RDF format
+	 * @param file
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws IOException
+	 */
+	public void write(File file) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		FileOutputStream stream = new FileOutputStream(file);
+		BufferedOutputStream buffer = new BufferedOutputStream(stream);
+		SBOLWriter.write(this, buffer);
+		stream.close();
+		buffer.close();
+	}
+
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * file in fileType format
+	 * @param file
+	 * @param fileType
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws IOException
+	 */
+	public void write(File file,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		FileOutputStream stream = new FileOutputStream(file);
+		BufferedOutputStream buffer = new BufferedOutputStream(stream);
+		SBOLWriter.write(this, buffer, fileType);
+		stream.close();
+		buffer.close();
+	}
+
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * stream in RDF format
+	 * @param out
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws IOException
+	 */
+	public void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		SBOLWriter.write(this, out);
+	}
+
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * stream in fileType format
+	 * @param out
+	 * @param fileType
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws IOException
+	 */
+	public void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		SBOLWriter.write(this, out, fileType);
+	}
+
+	@Override
+	public String toString() {
+		return "SBOLDocument [genericTopLevels=" + genericTopLevels + ", collections="
+				+ collections + ", componentDefinitions=" + componentDefinitions + ", models="
+				+ models + ", moduleDefinitions=" + moduleDefinitions + ", sequences=" + sequences
+				+ ", nameSpaces=" + nameSpaces + ", defaultURIprefix=" + defaultURIprefix
+				+ ", complete=" + complete + ", compliant=" + compliant + ", typesInURIs="
+				+ typesInURIs + ", createDefaults=" + createDefaults + "]";
+
 	}
 }

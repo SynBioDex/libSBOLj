@@ -1098,4 +1098,65 @@ public class ModuleDefinition extends TopLevel {
 		}
 		return true;
 	}
+
+	public ModuleDefinition flatten(String prefix,String displayId,String version) {
+		return flattenRecurse().copy(prefix, displayId, version);
+	}
+	
+	private ModuleDefinition flattenRecurse() {
+		ModuleDefinition flatModuleDefinition = this.deepCopy();
+		for (Module module : this.getModules()) {
+			ModuleDefinition flatModule = module.getDefinition().flattenRecurse();
+			for (FunctionalComponent fc : flatModule.getFunctionalComponents()) {
+			    boolean foundIt = false;
+			    URI oldURI = fc.getIdentity();
+			    URI newURI = null;
+				for (MapsTo mapsTo : module.getMapsTos()) {
+					if (mapsTo.getRemoteURI().equals(fc.getIdentity())) {
+						newURI = mapsTo.getLocalURI();
+						FunctionalComponent topFc = flatModuleDefinition.getFunctionalComponent(newURI);
+						if (mapsTo.getRefinement()==RefinementType.USEREMOTE) {
+							topFc.setDefinition(fc.getDefinitionURI());
+						} else if (mapsTo.getRefinement()==RefinementType.VERIFYIDENTICAL) {
+							if (!topFc.getDefinitionURI().equals(fc.getDefinitionURI())) {
+								throw new SBOLValidationException("Component definitions in mapsTo '" + mapsTo.getIdentity()
+										+ "' are not identical.");
+							}
+						} else if (mapsTo.getRefinement()==RefinementType.MERGE) {
+							// TODO: merge?
+						}
+						foundIt = true;
+						break;
+					}
+				}
+				if (!foundIt) {
+					FunctionalComponent newFC = fc.deepCopy();
+					newFC.updateCompliantURI(this.getPersistentIdentity().toString(), 
+							module.getDisplayId() + "__" + fc.getDisplayId(), this.getVersion());
+					newURI = newFC.getIdentity();
+					flatModuleDefinition.addFunctionalComponent(newFC);
+				} 
+				for (Interaction i : flatModule.getInteractions()) {
+					for (Participation p : i.getParticipations()) {
+						if (p.getParticipantURI().equals(oldURI)) {
+							p.setParticipant(newURI);
+						}
+					}
+				}
+			}
+			for (Interaction i : flatModule.getInteractions()) {
+				flatModuleDefinition.addInteraction(i.deepCopy());
+			}
+		}
+		flatModuleDefinition.clearModules();
+		return flatModuleDefinition;
+	}
+
+	@Override
+	public String toString() {
+		return "ModuleDefinition [roles=" + roles + ", modules=" + modules + ", interactions="
+				+ interactions + ", functionalComponents=" + functionalComponents + ", models="
+				+ models + ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
+				+ ", description=" + description + "]";
+	}
 }

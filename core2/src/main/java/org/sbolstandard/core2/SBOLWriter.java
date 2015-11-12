@@ -10,7 +10,6 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.TopLevelDocuments;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -53,186 +52,44 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
  * @version 2.0-beta
  */
 
-public class SBOLWriter {
-
-	public static void write(String filename) throws FileNotFoundException
-	{
-		SBOLDocument doc = new SBOLDocument();
-		write(doc, new File(filename));
-	}
-
-	public static void writeRDF(String filename) throws FileNotFoundException
-	{
-		SBOLDocument doc = new SBOLDocument();
-		writeRDF(doc, new File(filename));
-	}
-
-	public static void writeJSON(String filename) throws FileNotFoundException
-	{
-		SBOLDocument doc = new SBOLDocument();
-		writeJSON(doc, new File(filename));
-	}
-
-	public static void writeTurtle(String filename) throws FileNotFoundException
-	{
-		SBOLDocument doc = new SBOLDocument();
-		try
-		{
-			writeTurtle(doc, new File(filename));
-		}
-		catch (Throwable e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void write(File file) throws FileNotFoundException{
-		SBOLDocument doc = new SBOLDocument();
-		write(doc, file);
-	}
-
-	public static void writeRDF(File file) throws FileNotFoundException{
-		SBOLDocument doc = new SBOLDocument();
-		writeRDF(doc, file);
-	}
-
-	public static void writeTurtle(File file) throws FileNotFoundException{
-		SBOLDocument doc = new SBOLDocument();
-		try
-		{
-			writeTurtle(doc, file);
-		}
-		catch (Throwable e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeJSON(File file) throws FileNotFoundException{
-		SBOLDocument doc = new SBOLDocument();
-		writeJSON(doc, file);
-	}
-
-	public static void write(OutputStream out)
-	{
-		SBOLDocument doc = new SBOLDocument();
-		try
-		{
-			write(doc, out);
-		}
-		catch (XMLStreamException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (FactoryConfigurationError e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (CoreIoException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeRDF(OutputStream out)
-	{
-		SBOLDocument doc = new SBOLDocument();
-
-		try
-		{
-			writeRDF(doc, out);
-		}
-		catch (XMLStreamException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (FactoryConfigurationError e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (CoreIoException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeJSON(OutputStream out)
-	{
-		SBOLDocument doc = new SBOLDocument();
-
-		try
-		{
-			writeJSON(doc, out);
-		}
-		catch (FactoryConfigurationError e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeTurtle(OutputStream out)
-	{
-		SBOLDocument doc = new SBOLDocument();
-
-		try
-		{
-			writeTurtle(doc, out);
-		}
-		catch (FactoryConfigurationError e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (Exception e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+public class SBOLWriter
+{
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
 	 * in RDF format.
 	 * @param doc
 	 * @param file
-	 * @throws FileNotFoundException
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws IOException
 	 */
-	public static void write(SBOLDocument doc, File file) throws FileNotFoundException{
+	public static void write(SBOLDocument doc, File file) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
-		try
-		{
-			write(doc, buffer);
-		}
-		catch (XMLStreamException e) { }
-		catch (FactoryConfigurationError  e) { }
-		catch (CoreIoException e) { }
-		finally
-		{
-			try
-			{
-				try
-				{
-					stream.close();
-				}
-				finally { buffer.close(); }
-			}
-			catch (IOException e) { }
-		}
+		write(doc, buffer);
+		stream.close();
+		buffer.close();
+	}
+
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
+	 * in the specified fileType format.
+	 * @param doc
+	 * @param file
+	 * @param fileType
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws IOException
+	 */
+	public static void write(SBOLDocument doc, File file, String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException{
+		FileOutputStream stream = new FileOutputStream(file);
+		BufferedOutputStream buffer = new BufferedOutputStream(stream);
+		write(doc, buffer, fileType);
+		stream.close();
+		buffer.close();
 	}
 
 	/**
@@ -257,189 +114,61 @@ public class SBOLWriter {
 	 * file name in RDF format
 	 * @param doc
 	 * @param filename
-	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
 	 */
-	public static void write(SBOLDocument doc, String filename) throws FileNotFoundException
+	public static void write(SBOLDocument doc, String filename) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{
 		write(doc, new File(filename));
 	}
 
 	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
-	 * in JSON format.
-	 * @param doc
-	 * @param file
-	 * @throws FileNotFoundException
-	 */
-	public static void writeJSON(SBOLDocument doc, File file) throws FileNotFoundException{
-		FileOutputStream stream = new FileOutputStream(file);
-		BufferedOutputStream buffer = new BufferedOutputStream(stream);
-		try
-		{
-			writeJSON(doc, buffer);
-		}
-		catch (XMLStreamException e) { }
-		catch (FactoryConfigurationError  e) { }
-		catch (CoreIoException e) { }
-		catch (Throwable e) { e.printStackTrace();}
-		finally
-		{
-			try
-			{
-				try { stream.close(); }
-				finally { buffer.close(); }
-			}
-			catch (IOException e) { }
-		}
-	}
-
-	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
-	 * in JSON format.
-	 * @param doc
-	 * @param out
-	 * @throws FactoryConfigurationError
-	 * @throws Exception
-	 */
-	public static void writeJSON(SBOLDocument doc, OutputStream out)
-			throws FactoryConfigurationError, Exception {
-
-		writeJSON(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
-						TopLevelDocuments(getTopLevelDocument(doc))));
-
-	}
-
-	/**
-	 * * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
-	 * file name in JSON format
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
+	 * filename in specified fileType format
 	 * @param doc
 	 * @param filename
-	 * @throws FileNotFoundException
+	 * @param fileType
+	 * @throws IOException
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
 	 */
-	public static void writeJSON(SBOLDocument doc, String filename) throws FileNotFoundException
+	public static void write(SBOLDocument doc, String filename, String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{
-		writeJSON(doc, new File(filename));
-	}
-
-	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
-	 * in RDF format.
-	 * @param doc
-	 * @param file
-	 * @throws FileNotFoundException
-	 */
-	public static void writeRDF(SBOLDocument doc, File file) throws FileNotFoundException
-	{
-		FileOutputStream stream = new FileOutputStream(file);
-		BufferedOutputStream buffer = new BufferedOutputStream(stream);
-		try
-		{
-			writeRDF(doc, buffer);
-		}
-		catch (XMLStreamException e) { }
-		catch (FactoryConfigurationError  e) { }
-		catch (CoreIoException e) { }
-		finally
-		{
-			try
-			{
-				try
-				{
-					stream.close();
-				}
-				finally { buffer.close(); }
-			}
-			catch (IOException e) { }
-		}
+		write(doc, new File(filename), fileType);
 	}
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
-	 * in RDF format.
+	 * in the specified fileType format.
 	 * @param doc
 	 * @param out
+	 * @param fileType
 	 * @throws XMLStreamException
 	 * @throws FactoryConfigurationError
 	 * @throws CoreIoException
 	 */
-	public static void writeRDF(SBOLDocument doc, OutputStream out)
+	public static void write(SBOLDocument doc, OutputStream out, String fileType)
 			throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
-		writeRDF(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
-						TopLevelDocuments(getTopLevelDocument(doc))));
-	}
-
-	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
-	 * file name in RDF format
-	 * @param doc
-	 * @param filename
-	 * @throws FileNotFoundException
-	 */
-	public static void writeRDF(SBOLDocument doc, String filename) throws FileNotFoundException
-	{
-		writeRDF(doc, new File(filename));
-	}
-
-	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
-	 * in Turtle format.
-	 * @param doc
-	 * @param file
-	 * @throws Throwable
-	 */
-	public static void writeTurtle(SBOLDocument doc, File file) throws Throwable{
-		FileOutputStream stream 	= new FileOutputStream(file);
-		BufferedOutputStream buffer = new BufferedOutputStream(stream);
-		try
-		{
-			writeTurtle(doc, buffer);
-		}
-		catch (XMLStreamException e) { }
-		catch (FactoryConfigurationError  e) { }
-		catch (CoreIoException e) { }
-		finally
-		{
-			try
-			{
-				try { stream.close(); }
-				finally { buffer.close(); }
-			}
-			catch (IOException e) { }
+		if (fileType.equals(SBOLReader.JSON)) {
+			writeJSON(new OutputStreamWriter(out),
+					DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
+							TopLevelDocuments(getTopLevelDocument(doc))));
+		} else if (fileType.equals(SBOLReader.TURTLE)){
+			writeTurtle(new OutputStreamWriter(out),
+					DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
+							TopLevelDocuments(getTopLevelDocument(doc))));
+		} else {
+			writeRDF(new OutputStreamWriter(out),
+					DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
+							TopLevelDocuments(getTopLevelDocument(doc))));
 		}
 	}
 
-	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
-	 * in Turtle format.
-	 * @param doc
-	 * @param out
-	 * @throws FactoryConfigurationError
-	 * @throws Exception
-	 */
-	public static void writeTurtle(SBOLDocument doc, OutputStream out)
-			throws FactoryConfigurationError, Exception
-	{
-		writeTurtle(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
-						TopLevelDocuments(getTopLevelDocument(doc))));
-	}
-
-	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
-	 * file name in Turtle format
-	 * @param doc
-	 * @param filename
-	 * @throws Throwable
-	 */
-	public static void writeTurtle(SBOLDocument doc, String filename) throws Throwable
-	{
-		writeTurtle(doc, new File(filename));
-	}
-
-	private static void writeJSON(Writer stream, DocumentRoot<QName> document) throws Exception
+	private static void writeJSON(Writer stream, DocumentRoot<QName> document) throws CoreIoException
 	{
 		HashMap<String, Object> config = new HashMap<>();
 		config.put(JsonGenerator.PRETTY_PRINTING, true);
@@ -459,7 +188,7 @@ public class SBOLWriter {
 		xmlWriter.close();
 	}
 
-	private static void writeTurtle(Writer stream, DocumentRoot<QName> document) throws Exception
+	private static void writeTurtle(Writer stream, DocumentRoot<QName> document) throws CoreIoException
 	{
 		PrintWriter printWriter = new PrintWriter(stream);
 		TurtleIo turtleIo = new TurtleIo();

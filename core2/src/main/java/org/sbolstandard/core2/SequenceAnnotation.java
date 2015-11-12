@@ -471,4 +471,11 @@ public class SequenceAnnotation extends Identified {
 	void setComponentDefinition(ComponentDefinition componentDefinition) {
 		this.componentDefinition = componentDefinition;
 	}
+
+	@Override
+	public String toString() {
+		return "SequenceAnnotation [locations=" + locations + ", component=" + component
+				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
+				+ ", description=" + description + "]";
+	}
 }
