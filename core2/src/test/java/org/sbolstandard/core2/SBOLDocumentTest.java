@@ -705,6 +705,84 @@ public class SBOLDocumentTest {
 			assertTrue(TetR_promoter.containsRole(promoter_role));
 		}
 		
+		@Test 
+		public void addSeq_CD() throws URISyntaxException 
+		{
+			String preURI="http://doesnotexist.com";
+			SBOLDocument document1 = new SBOLDocument();
+			document1.setDefaultURIprefix(preURI);
+			document1.setTypesInURIs(true);
+			document1.setComplete(true);
+			document1.setCreateDefaults(true);
+			
+			HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
+			ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			
+			document1.addComponentDefinition(TetR_promoter);
+			
+			Sequence s = new Sequence(Sequence.IUPAC_DNA, "", Sequence.IUPAC_DNA);
+			try
+			{
+				assertTrue(TetR_promoter.addSequence(s));
+			}
+			catch(IllegalArgumentException e){}
+			
+			try
+			{
+				TetR_promoter.addSequence(new Sequence(null, null, null));
+				fail();	
+			}
+			catch(IllegalArgumentException e){}
+		
+			ComponentDefinition TetR_promoter2 = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			try
+			{
+			  	assertTrue(TetR_promoter2.addSequence(s));
+			}
+			catch(IllegalArgumentException e){}
+			
+		} 
+		
+		@Test
+		public void removeSeq_CD() throws URISyntaxException
+		{		
+			//create a CD and add sequence to it. 
+			HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
+			ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			Sequence s = new Sequence(Sequence.IUPAC_DNA, "", Sequence.IUPAC_DNA);
+			TetR_promoter.addSequence(s);
+			
+			//case 1: document1 is null
+			try
+			{
+				assertTrue(TetR_promoter.containsSequence(Sequence.IUPAC_DNA));
+				assertTrue(TetR_promoter.removeSequence(Sequence.IUPAC_DNA));	
+				TetR_promoter.clearSequences();
+			}
+			catch(IllegalArgumentException e){}
+			
+			//case 2: document is not null
+			String preURI="http://doesnotexist.com";
+			SBOLDocument document1 = new SBOLDocument();
+			document1.setDefaultURIprefix(preURI);
+			document1.setTypesInURIs(true);
+			document1.setComplete(true);
+			document1.setCreateDefaults(true);
+			
+			Sequence s2 = new Sequence(Sequence.IUPAC_PROTEIN, "", Sequence.IUPAC_DNA);
+			TetR_promoter.addSequence(s2);
+			document1.addComponentDefinition(TetR_promoter);
+			try
+			{
+				assertTrue(TetR_promoter.containsSequence(Sequence.IUPAC_PROTEIN));
+				assertFalse(TetR_promoter.containsSequence(Sequence.IUPAC_RNA));
+				assertTrue(TetR_promoter.removeSequence(Sequence.IUPAC_PROTEIN));	
+				//assertTrue(TetR_promoter.getSequences().size() == 0);
+			}
+			catch(IllegalArgumentException e){}
+		}
+		
+		
 		
 	
 	
