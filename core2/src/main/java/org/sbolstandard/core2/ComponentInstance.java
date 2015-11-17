@@ -107,7 +107,9 @@ public abstract class ComponentInstance extends Identified {
 
 	@Override
 	public String toString() {
-		return "ComponentInstance [access=" + access + ", definition=" + definition + "]";
+		return "ComponentInstance [access=" + access + ", definition=" + definition + ", identity="
+				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
+				+ description + "]";
 	}
 
 }

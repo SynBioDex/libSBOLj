@@ -474,6 +474,8 @@ public class SequenceAnnotation extends Identified {
 
 	@Override
 	public String toString() {
-		return "SequenceAnnotation [locations=" + locations + ", component=" + component + "]";
+		return "SequenceAnnotation [locations=" + locations + ", component=" + component
+				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
+				+ ", description=" + description + "]";
 	}
 }

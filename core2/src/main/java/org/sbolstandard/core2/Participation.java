@@ -31,11 +31,10 @@ public class Participation extends Identified {
 	
 	private Participation(Participation participation) {
 		super(participation);
-		roles = new HashSet<>();
+		this.roles = new HashSet<>();
 		for (URI role : participation.getRoles()) {
-			roles.add(role);
-		}		
-		this.setRoles(roles);
+			this.addRole(URI.create(role.toString()));
+		}	
 		this.setParticipant(participation.getParticipantURI());
 	}
 
@@ -216,7 +215,9 @@ public class Participation extends Identified {
 
 	@Override
 	public String toString() {
-		return "Participation [roles=" + roles + ", participant=" + participant + "]";
+		return "Participation [roles=" + roles + ", participant=" + participant + ", identity="
+				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
+				+ description + "]";
 	}
 
 }

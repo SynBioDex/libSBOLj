@@ -1,5 +1,14 @@
 <?xml version="1.0" ?>
 <rdf:RDF xmlns:prov="http://www.w3.org/ns/prov#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:pr="http://partsregistry.org" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/">
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/cd/BBa_B0015">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_B0015"/>
+    <sbol:displayId>BBa_B0015</sbol:displayId>
+    <dcterms:title>BBa_B0015</dcterms:title>
+    <dcterms:description>Double terminator</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
+    <sbol:sequence rdf:resource="http://partsregistry.org/seq/BBa_B0015"/>
+  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://partsregistry.org/cd/BBa_F2620">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_F2620"/>
     <sbol:displayId>BBa_F2620</sbol:displayId>
@@ -48,22 +57,6 @@
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/cd/BBa_F2620/anno4">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_F2620/anno4"/>
-        <sbol:displayId>anno4</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/cd/BBa_F2620/anno4/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_F2620/anno4/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>771</sbol:start>
-            <sbol:end>900</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/cd/BBa_F2620/ter"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/cd/BBa_F2620/anno2">
         <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_F2620/anno2"/>
         <sbol:displayId>anno2</sbol:displayId>
@@ -93,6 +86,22 @@
           </sbol:Range>
         </sbol:location>
         <sbol:component rdf:resource="http://partsregistry.org/cd/BBa_F2620/pLuxR"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/cd/BBa_F2620/anno4">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_F2620/anno4"/>
+        <sbol:displayId>anno4</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/cd/BBa_F2620/anno4/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_F2620/anno4/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>771</sbol:start>
+            <sbol:end>900</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/cd/BBa_F2620/ter"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -127,15 +136,6 @@
         <sbol:component rdf:resource="http://partsregistry.org/cd/BBa_F2620/luxR"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/cd/BBa_B0015">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_B0015"/>
-    <sbol:displayId>BBa_B0015</sbol:displayId>
-    <dcterms:title>BBa_B0015</dcterms:title>
-    <dcterms:description>Double terminator</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
-    <sbol:sequence rdf:resource="http://partsregistry.org/seq/BBa_B0015"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://partsregistry.org/cd/BBa_R0062">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/cd/BBa_R0062"/>

@@ -316,7 +316,9 @@ public class MapsTo extends Identified{
 
 	@Override
 	public String toString() {
-		return "MapsTo [refinement=" + refinement + ", local=" + local + ", remote=" + remote + "]";
+		return "MapsTo [refinement=" + refinement + ", local=" + local + ", remote=" + remote
+				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
+				+ ", description=" + description + "]";
 	}
 
 }
