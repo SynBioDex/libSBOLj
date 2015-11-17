@@ -225,7 +225,7 @@ public class SBOLReader
 	/**
 	 * Takes in the given RDF filename and converts the file to an SBOLDocument.
 	 * <p>
-	 * This method calls {@link #readRDF(File)}.
+	 * This method calls {@link #read(File)}.
 	 *
 	 * @param fileName
 	 * @return the converted SBOLDocument
