@@ -1,6 +1,8 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,6 +10,7 @@ import javax.sound.sampled.AudioFileFormat.Type;
 import javax.xml.namespace.QName;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 public class SBOLDocumentTest {
@@ -309,6 +312,480 @@ public class SBOLDocumentTest {
 		assertTrue(MD1.getPersistentIdentity().equals(MD2.getPersistentIdentity()));
 		assertTrue(MD1.getVersion().equals(MD2.getVersion()));
 	}
+	
+	
+	@Test
+	public void Test_getModuleDefinition() throws URISyntaxException{
+		
+		String preURI="http://partsregistry.org";
+		String displayID = "Anderson";
+		String version = "version1.0";
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		try
+		{
+			document1.getModuleDefinition(null, version);
+			fail();
+		}
+		catch(IllegalArgumentException e)
+		{
+			
+		}
+		try
+		{
+			document1.getModuleDefinition(displayID, "/");
+			fail();
+		}
+		catch(IllegalArgumentException e)
+		{
+			
+		}
+
+	}
+	
+	@Test
+	public void Test_getCollection() throws URISyntaxException
+	{
+		
+		String preURI="http://partsregistry.org";
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		URI uri = new URI(document1.getDefaultURIprefix());
+		
+		try{
+		document1.getCollection(uri).getMembers();
+		fail();
+		}
+		catch(NullPointerException e)
+		{
+			
+		}
+	}
+	
+	
+	/*The following tests are testing the SBOLDocument methods pertaining 
+	 * only to the topLevel Module Definition. 
+	 * 
+	 * 
+	 */
+	@Test
+	public void test_removeModuleDefinition() throws URISyntaxException
+	{
+		
+		String preURI="http://partsregistry.org";
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		//make a ModuleDefinition 
+		ModuleDefinition holdModels = new ModuleDefinition(new URI(preURI));
+		
+		URI language = new URI("http://identifiers.org/edam/format_2585");
+		URI framework = new URI("http://identifiers.org/biomodels.sbo/SBO:0000062");
+		URI role = new URI("http://sbols.org/v2#module_model");
+		
+		//make a Model to add to the ModuleDefinition
+		Model firstModel = new Model(new URI(preURI), language, framework, role);
+		
+		//add a Model into the ModuleDefinition
+		holdModels.addModel(firstModel);
+		
+		document1.addModuleDefinition(holdModels);
+		
+		document1.removeModuleDefinition(holdModels);
+		
+		assertTrue(document1.removeModuleDefinition(holdModels) == false);
+	    	
+	}
+	
+	
+//	@Test 
+//	public void test_getModuleDefinitionWithIDAndVersion() throws URISyntaxException
+//	{
+//		
+//		String preURI="http://partsregistry.org";
+//		SBOLDocument document1 = new SBOLDocument();
+//		document1.setDefaultURIprefix(preURI);
+//		document1.setTypesInURIs(true);
+//		document1.setComplete(true);
+//		document1.setCreateDefaults(true);
+//		
+//		
+//		//make a ModuleDefinition 
+//		ModuleDefinition holdModels = new ModuleDefinition(new URI(preURI));
+//		
+//		try{
+//		holdModels.setDisplayId("");
+//		fail();
+//		}
+//		catch(IllegalArgumentException e)
+//		{
+//			System.out.println(e.getMessage());
+//		}
+//		
+//		//holdModels.setDisplayId("Anderson Promoter");
+//		holdModels.setVersion("1.0");
+//		
+//		URI language = new URI("http://identifiers.org/edam/format_2585");
+//		URI framework = new URI("http://identifiers.org/biomodels.sbo/SBO:0000062");
+//		URI role = new URI("http://sbols.org/v2#module_model");
+//		
+//		assertTrue(holdModels.getIdentity().toString().equals(preURI));
+//		
+//		assertTrue(document1.getModuleDefinition(holdModels.getDisplayId(), holdModels.getDisplayId()).equals(holdModels));
+//		
+//	}
+	
+	@Test
+	public void Test_setEncoding()
+	{
+		
+		String preURI="http://partsregistry.org";
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		Sequence s = document1.createSequence("seq_187", "tcctat", Sequence.IUPAC_DNA);
+		
+		try
+		{
+			s.setEncoding(null);
+			fail();
+			
+		}
+		catch(IllegalArgumentException e){}
+		
+		try
+		{
+		 s.setElements(null);
+		fail();
+		}
+		catch(IllegalArgumentException e){}
+		
+	}
+	
+	/*the following series of tests check the Sequence class*/
+	
+//	@Test
+//	public void test_SequenceEquals() throws URISyntaxException
+//	{
+//		String preURI="http://partsregistry.org";
+//		
+//		SBOLDocument document1 = new SBOLDocument();
+//		document1.setDefaultURIprefix(preURI);
+//		document1.setTypesInURIs(true);
+//		document1.setComplete(true);
+//		document1.setCreateDefaults(true);
+//		
+//		//build a gene Lac1
+//		assertTrue(document1.getSequence(new URI("http://partsregistry.org/seq_187")).equals(document1.getSequence(new URI("http://partsregistry.org/seq_187")))); 
+//		
+//		//Sequence lac1 = document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA);
+//		
+//		//assertTrue(lac1.equals(document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA)));
+//	}
+	
+	/*the following tests check ComponentDefinition class*/
+	
+	/*
+	 * Throws IllegalArgumentException if ComponentDefinition
+	 * has muliple types associated
+	 */
+/*	@Test
+	public void test_AddType() throws URISyntaxException
+	{
+		String preURI="http://partsregistry.org";
+		
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.RNA, URI.create("http://identifiers.org/chebi/CHEBI:4705")));
+		ComponentDefinition TetR_promoter = null;
+		try
+		{
+			//create a ComponentDefinition
+			TetR_promoter = document1.createComponentDefinition("BBa_R0040", types);
+			document1.addComponentDefinition(TetR_promoter);
+			assertTrue(TetR_promoter.addType(new URI(document1.getDefaultURIprefix())) == TetR_promoter.getTypes().contains(ComponentDefinition.RNA));
+			
+		}
+		catch(IllegalArgumentException e){}
+		
+		try
+		{
+			TetR_promoter.addType(new URI(document1.getDefaultURIprefix()));
+			fail();	
+		}
+		catch(IllegalArgumentException e){}
+	} 
+	@Test
+	public void test_removeType() throws URISyntaxException
+	{
+		String preURI="http://partsregistry.org";
+		
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		
+		//HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.RNA, URI.create("http://identifiers.org/chebi/CHEBI:4705")));
+		HashSet <URI> types = new HashSet <URI >(Arrays.asList(new URI(document1.getDefaultURIprefix())));
+		ComponentDefinition TetR_promoter = document1.createComponentDefinition("BBa_R0040", types);
+		document1.addComponentDefinition(TetR_promoter);
+
+		try
+		{
+			//create a ComponentDefinition
+			TetR_promoter.addType(new URI(document1.getDefaultURIprefix()));
+
+			TetR_promoter.removeType(new URI(document1.getDefaultURIprefix()));
+			fail();
+		}
+		catch(IllegalArgumentException e){}
+	} */
+	
+	@Test
+	public void test_setTypes() throws URISyntaxException
+	{
+	
+		String preURI="http://partsregistry.org";
+		HashSet <URI> types = null;
+		try
+		{
+			//create a ComponentDefinition
+			ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			TetR_promoter.setTypes(types);
+			fail();
+		}
+		catch(IllegalArgumentException e){}
+		
+		try
+		{
+			types = new HashSet <URI >();
+			//create a ComponentDefinition
+			ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			TetR_promoter.setTypes(types);
+			fail();
+		}
+		catch(IllegalArgumentException e){}
+				
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		document1.setComplete(true);
+		document1.setCreateDefaults(true);
+		
+		types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA, URI.create("http://identifiers.org/chebi/CHEBI:4705")));
+		ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+
+		//try and set types
+		TetR_promoter.setTypes(types);
+		
+		//grab types to see if a success
+		try{
+			assertTrue(TetR_promoter.getTypes().equals(types));
+		}
+		catch(Exception e){}
+	}
+	
+	/* The following are a series of tests pertaining to ComponentDefinition class */
+	
+	@Test
+	public void addType_CD() throws URISyntaxException
+	{
+		String preURI="http://partsregistry.org";
+		
+		SBOLDocument document1 = new SBOLDocument();
+		document1.setDefaultURIprefix(preURI);
+		document1.setTypesInURIs(true);
+		
+		HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
+		ComponentDefinition TetR_promoter = null;
+		TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+
+		try 
+		{
+			 TetR_promoter.addType(ComponentDefinition.DNA);
+			 fail();	
+		} 
+		catch(IllegalArgumentException e){}
+		
+		types = new HashSet <URI >(Arrays.asList(ComponentDefinition.RNA));
+		TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+
+		try
+		{
+			 TetR_promoter.addType(ComponentDefinition.RNA);
+			 fail();
+		}
+		catch(IllegalArgumentException e){}
+		
+		types = new HashSet <URI >(Arrays.asList(ComponentDefinition.PROTEIN));
+		TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+
+		try
+		{
+			 TetR_promoter.addType(ComponentDefinition.PROTEIN);
+			 fail();
+		}
+		catch(IllegalArgumentException e){}
+		
+		types = new HashSet <URI >(Arrays.asList(ComponentDefinition.SMALL_MOLECULE));
+		TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+
+		try
+		{
+			 TetR_promoter.addType(ComponentDefinition.SMALL_MOLECULE);
+			 fail();
+		}
+		catch(IllegalArgumentException e){}
+		
+		types = new HashSet <URI >(Arrays.asList(ComponentDefinition.SMALL_MOLECULE));
+		TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+
+		try
+		{
+			 assertTrue(TetR_promoter.addType(ComponentDefinition.DNA));
+		}
+		catch(IllegalArgumentException e){}
+		
+		//else a SBOLDocument can't be null --> this is checked further up the hierarchy
+	}
+	
+		@Test
+		public void removeType_CD() throws URISyntaxException
+		{
+			HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
+			ComponentDefinition TetR_promoter = null;
+			TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			
+			try
+			{
+				TetR_promoter.removeType(ComponentDefinition.DNA);
+				fail();
+			}
+			catch(IllegalArgumentException e){}
+			TetR_promoter.addType( URI.create("http://identifiers.org/chebi/CHEBI:4705"));
+			assertTrue(TetR_promoter.removeType(ComponentDefinition.DNA));
+		}
+		
+		@Test
+		public void removeRole_CD() throws URISyntaxException
+		{
+			HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
+			ComponentDefinition TetR_promoter = null;
+			TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			URI promoter_role = new URI("http://identifiers.org/so/SO:0000167");
+			assertTrue(TetR_promoter.addRole(promoter_role));
+			assertTrue(TetR_promoter.removeRole(promoter_role));
+			
+		}
+		
+		@Test
+		public void containsRole_CD() throws URISyntaxException
+		{
+			HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
+			ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			URI promoter_role = new URI("http://identifiers.org/so/SO:0000167");
+			assertTrue(TetR_promoter.addRole(promoter_role));
+			assertTrue(TetR_promoter.containsRole(promoter_role));
+		}
+		
+		@Test 
+		public void addSeq_CD() throws URISyntaxException 
+		{
+			String preURI="http://doesnotexist.com";
+			SBOLDocument document1 = new SBOLDocument();
+			document1.setDefaultURIprefix(preURI);
+			document1.setTypesInURIs(true);
+			document1.setComplete(true);
+			document1.setCreateDefaults(true);
+			
+			HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
+			ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			
+			document1.addComponentDefinition(TetR_promoter);
+			
+			Sequence s = new Sequence(Sequence.IUPAC_DNA, "", Sequence.IUPAC_DNA);
+			try
+			{
+				assertTrue(TetR_promoter.addSequence(s));
+			}
+			catch(IllegalArgumentException e){}
+			
+			try
+			{
+				TetR_promoter.addSequence(new Sequence(null, null, null));
+				fail();	
+			}
+			catch(IllegalArgumentException e){}
+		
+			ComponentDefinition TetR_promoter2 = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			try
+			{
+			  	assertTrue(TetR_promoter2.addSequence(s));
+			}
+			catch(IllegalArgumentException e){}
+			
+		} 
+		
+		@Test
+		public void removeSeq_CD() throws URISyntaxException
+		{		
+			//create a CD and add sequence to it. 
+			HashSet <URI> types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
+			ComponentDefinition TetR_promoter = new ComponentDefinition(new URI("http://partsregistry.org"), types);
+			Sequence s = new Sequence(Sequence.IUPAC_DNA, "", Sequence.IUPAC_DNA);
+			TetR_promoter.addSequence(s);
+			
+			//case 1: document1 is null
+			try
+			{
+				assertTrue(TetR_promoter.containsSequence(Sequence.IUPAC_DNA));
+				assertTrue(TetR_promoter.removeSequence(Sequence.IUPAC_DNA));	
+				TetR_promoter.clearSequences();
+			}
+			catch(IllegalArgumentException e){}
+			
+			//case 2: document is not null
+			String preURI="http://doesnotexist.com";
+			SBOLDocument document1 = new SBOLDocument();
+			document1.setDefaultURIprefix(preURI);
+			document1.setTypesInURIs(true);
+			document1.setComplete(true);
+			document1.setCreateDefaults(true);
+			
+			Sequence s2 = new Sequence(Sequence.IUPAC_PROTEIN, "", Sequence.IUPAC_DNA);
+			TetR_promoter.addSequence(s2);
+			document1.addComponentDefinition(TetR_promoter);
+			try
+			{
+				assertTrue(TetR_promoter.containsSequence(Sequence.IUPAC_PROTEIN));
+				assertFalse(TetR_promoter.containsSequence(Sequence.IUPAC_RNA));
+				assertTrue(TetR_promoter.removeSequence(Sequence.IUPAC_PROTEIN));	
+				//assertTrue(TetR_promoter.getSequences().size() == 0);
+			}
+			catch(IllegalArgumentException e){}
+		}
+		
+		
+		
+	
+	
 	
 	
 }

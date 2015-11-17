@@ -25,7 +25,7 @@ import org.sbolstandard.core.SBOLValidationException;
 public abstract class SBOLAbstractTests {
 
 	String VERSION_1_0 = "1.0";
-	
+	String URIprefix = "http://www.async.ece.utah.edu";
 	
 //	@Test
 //	public void test_methods() throws Exception
@@ -799,8 +799,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "rdf", false);
 			runTest("test/data/BBa_I0462.rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileName, null, "rdf", false);
+			runTest("test/data/BBa_I0462_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -808,21 +810,87 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
-//	@Test
-//	public void test_BBa_T9002_File() throws Exception
-//	{
-//		String fileName = "test/data/SBOL1/BBa_T9002.xml";
-//
-//		try
-//		{
-//			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, "rdf");
-//			runTest("test/data/BBa_T9002.rdf", actual, "rdf");
-//		}
-//		catch (SBOLValidationException e)
-//		{
-//			throw new AssertionError("Failed for " + fileName, e);
-//		}
-//	}
+	@Test
+	public void test_igem1_File() throws Exception
+	{
+		String fileName = "test/data/RDF/igem1.xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
+			runTest("test/data/igem1.rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+
+	@Test
+	public void test_igem2_File() throws Exception
+	{
+		String fileName = "test/data/RDF/igem2.xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
+			runTest("test/data/igem2.rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+	
+	@Test
+	public void test_igem3_File() throws Exception
+	{
+		String fileName = "test/data/RDF/igem3.xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
+			runTest("test/data/igem3.rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+	
+	@Test
+	public void test_toggle_File() throws Exception
+	{
+		String fileName = "test/data/RDF/toggle.xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
+			runTest("test/data/toggle.rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+	
+	@Test
+	public void test_BBa_T9002_File() throws Exception
+	{
+		String fileName = "test/data/SBOL1/BBa_T9002.xml";
+
+		try
+		{
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "rdf", true);
+			runTest("test/data/BBa_T9002.rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileName, null, "rdf", true);
+			runTest("test/data/BBa_T9002_orig.rdf", actual, "rdf");
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
 
 	@Test
 	public void test_labhost_All_File() throws Exception
@@ -831,8 +899,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "rdf", false);
 			runTest("test/data/labhost_All.rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileName, null, "rdf", false);
+			runTest("test/data/labhost_All_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -848,8 +918,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -865,8 +937,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -882,8 +956,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -899,8 +975,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -916,8 +994,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -933,8 +1013,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -950,8 +1032,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -967,8 +1051,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -984,8 +1070,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1001,8 +1089,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1018,8 +1108,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1035,8 +1127,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1054,8 +1148,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1072,7 +1168,7 @@ public abstract class SBOLAbstractTests {
 	//
 	//		try
 	//		{
-	//			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+	//			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 	//			runTest("test/data/" + filename + ".rdf", actual, "rdf");
 	//		}
 	//		catch (SBOLValidationException e)
@@ -1089,8 +1185,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1106,8 +1204,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1123,8 +1223,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1140,8 +1242,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1157,8 +1261,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1174,8 +1280,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", true);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", true);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1191,8 +1299,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", true);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", true);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1208,8 +1318,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", true);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", true);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1225,8 +1337,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
 			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
 		}
 		catch (SBOLValidationException e)
 		{

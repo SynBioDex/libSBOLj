@@ -23,11 +23,11 @@ public class SBOLReaderTest extends SBOLAbstractTests
 			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 
 			if(fileType.equals("rdf"))
-				actual = SBOLReader.readRDF(resourceAsStream);
+				actual = SBOLReader.read(resourceAsStream);
 			else if (fileType.equals("json"))
-				actual = SBOLReader.readJSON(resourceAsStream);
+				actual = SBOLReader.read(resourceAsStream,SBOLReader.JSON);
 			else if (fileType.equals("turtle"))
-				actual = SBOLReader.readTurtle(resourceAsStream);
+				actual = SBOLReader.read(resourceAsStream,SBOLReader.TURTLE);
 			else
 				actual = SBOLReader.read(resourceAsStream);
 

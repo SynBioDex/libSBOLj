@@ -129,7 +129,9 @@ public class Range extends Location{
 
 	@Override
 	public String toString() {
-		return "Range [start=" + start + ", end=" + end + "]";
+		return "Range [start=" + start + ", end=" + end + ", orientation=" + orientation
+				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
+				+ ", description=" + description + "]";
 	}
 
 }

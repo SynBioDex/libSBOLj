@@ -6,7 +6,7 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
@@ -23,7 +23,9 @@ import java.util.Set;
 import javax.json.Json;
 import javax.json.JsonReader;
 import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import uk.ac.intbio.core.io.turtle.TurtleIo;
@@ -36,6 +38,7 @@ import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 import uk.ac.ncl.intbio.core.datatree.PropertyValue;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
+import uk.ac.ncl.intbio.core.io.CoreIoException;
 import uk.ac.ncl.intbio.core.io.IoReader;
 import uk.ac.ncl.intbio.core.io.json.JsonIo;
 import uk.ac.ncl.intbio.core.io.json.StringifyQName;
@@ -57,6 +60,11 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
  */
 public class SBOLReader
 {
+
+	public static final String RDF = "RDF";
+	public static final String JSON = "JSON";
+	public static final String TURTLE = "TURTLE";
+
 	static class SBOLPair
 	{
 		private URI left;
@@ -88,6 +96,7 @@ public class SBOLReader
 	private static String URIPrefix	= null;
 	private static String version = "";
 	private static boolean typesInURI = false;
+	private static boolean dropObjectsWithDuplicateURIs = false;
 
 	/**
 	 * Set the specified authority as the prefix to all member's identity
@@ -126,8 +135,26 @@ public class SBOLReader
 	{
 		SBOLReader.typesInURI = typesInURI;
 	}
-	
-	private static String getSBOLVersion(DocumentRoot<QName> document) 
+
+	/**
+	 * Check if objects with duplicate URIs should be dropped.
+	 *
+	 * @return if objects with duplicate URIs should be dropped.
+	 */
+	public static boolean isDropObjectsWithDuplicateURIs() {
+		return dropObjectsWithDuplicateURIs;
+	}
+
+	/**
+	 * Set if objects with duplicate URIs should be dropped.
+	 *
+	 * @param dropObjectsWithDuplicateURIs
+	 */
+	public static void setDropObjectsWithDuplicateURIs(boolean dropObjectsWithDuplicateURIs) {
+		SBOLReader.dropObjectsWithDuplicateURIs = dropObjectsWithDuplicateURIs;
+	}
+
+	private static String getSBOLVersion(DocumentRoot<QName> document)
 	{
 		boolean foundRDF = false;
 		boolean foundDC = false;
@@ -155,7 +182,7 @@ public class SBOLReader
 			}
 			if (!foundProv) {
 				throw new SBOLValidationException("No provenance namespace found.");
-			}		
+			}
 			return "v2";
 		}
 		else {
@@ -164,9 +191,41 @@ public class SBOLReader
 	}
 
 	/**
+	 * Takes in a given RDF filename and returns the SBOL version of the file.
+	 *
+	 * @param fileName
+	 * @return the SBOL version of the file.
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws FileNotFoundException
+	 */
+	public static String getSBOLVersion(String fileName) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
+	{
+		return getSBOLVersion(fileName,RDF);
+	}
+
+	/**
+	 * Takes in a given filename and fileType, and returns the SBOL version of the file.
+	 *
+	 * @param fileName
+	 * @return the SBOL version of the file.
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws FileNotFoundException
+	 */
+	public static String getSBOLVersion(String fileName, String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
+	{
+		FileInputStream stream     = new FileInputStream(new File(fileName));
+		BufferedInputStream buffer = new BufferedInputStream(stream);
+		return getSBOLVersion(buffer,fileType);
+	}
+
+	/**
 	 * Takes in the given RDF filename and converts the file to an SBOLDocument.
 	 * <p>
-	 * This method calls {@link #readRDF(File)}.
+	 * This method calls {@link #read(File)}.
 	 *
 	 * @param fileName
 	 * @return the converted SBOLDocument
@@ -174,68 +233,35 @@ public class SBOLReader
 	 */
 	public static SBOLDocument read(String fileName) throws Throwable
 	{
-		//FileInputStream fis 	 = new FileInputStream(fileName);
-		//String inputStreamString = new Scanner(fis, "UTF-8").useDelimiter("\\A").next();
-		return readRDF(new File(fileName));
+		return read(new File(fileName));
 	}
 
 	/**
-	 * Takes in the given JSON filename and converts the file to an SBOLDocument.
-	 * <p>
-	 * This method calls {@link #readJSON(File)}
+	 * Takes in the given filename and fileType, and converts the file to an SBOLDocument.
 	 *
 	 * @param fileName
-	 * @return the converted SBOLDocument instance
+	 * @param fileType
+	 * @return the converted SBOLDocument
 	 * @throws Throwable
 	 */
-	public static SBOLDocument readJSON(String fileName) throws Throwable
+	public static SBOLDocument read(String fileName,String fileType) throws Throwable
 	{
-		return readJSON(new File(fileName));
+		return read(new File(fileName),fileType);
 	}
 
 	/**
-	 * Takes in the given RDF filename and converts the file to an SBOLDocument.
-	 * <p>
-	 * This method calls {@link #readRDF(File)}
-	 *
-	 * @param fileName
-	 * @return the converted SBOLDocument instance
-	 * @throws Throwable
-	 */
-	public static SBOLDocument readRDF(String fileName) throws Throwable
-	{
-		return readRDF(new File(fileName));
-	}
-
-	/**
-	 * Takes in the given Turtle filename and converts the file to an SBOLDocument.
-	 * <p>
-	 * This method calls {@link #readTurtle(File)}.
-	 *
-	 * @param fileName
-	 * @return the converted SBOLDocument instance
-	 * @throws Throwable
-	 */
-	public static SBOLDocument readTurtle(String fileName) throws Throwable
-	{
-		return readTurtle(new File(fileName));
-	}
-
-	/**
-	 * Takes in the given JSON file and converts the file to an SBOLDocument.
-	 * <p>
-	 * This method calls {@link #readJSON(InputStream)}.
+	 * Takes in a given RDF File and returns the SBOL version of the file.
 	 *
 	 * @param file
-	 * @return the converted SBOLDocument instance
-	 * @throws Throwable
+	 * @return the SBOL version of the file.
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws FileNotFoundException
 	 */
-	public static SBOLDocument readJSON(File file) throws Throwable
+	public static String getSBOLVersion(File file) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
 	{
-		FileInputStream stream 	   = new FileInputStream(file);
-		BufferedInputStream buffer = new BufferedInputStream(stream);
-
-		return readJSON(buffer);
+		return getSBOLVersion(file,RDF);
 	}
 
 	/**
@@ -243,90 +269,74 @@ public class SBOLReader
 	 *
 	 * @param file
 	 * @return the converted SBOLDocument instance
-	 * @throws Throwable
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws CoreIoException
+	 * @throws FileNotFoundException
 	 */
-	public static SBOLDocument read(File file) throws Throwable
+	public static SBOLDocument read(File file) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
-		FileInputStream stream 	   = new FileInputStream(file);
-		BufferedInputStream buffer = new BufferedInputStream(stream);
-
-		return read(buffer);
+		return read(file);
 	}
 
 	/**
-	 * Takes in the given RDF file and converts the file to an SBOLDocument.
-	 * <p>
-	 * This method calls {@link #readRDF(InputStream)}.
+	 * Takes in the given file and fileType, and convert the file to an SBOLDocument.
 	 *
 	 * @param file
 	 * @return the converted SBOLDocument instance
-	 * @throws Throwable
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws CoreIoException
+	 * @throws FileNotFoundException
 	 */
-	public static SBOLDocument readRDF(File file) throws Throwable
+	public static SBOLDocument read(File file,String fileType) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
-		return readRDF(buffer);
+		return read(buffer,fileType);
 	}
 
 	/**
-	 * Takes in the given Turtle file and converts the file to an SBOLDocument
-	 * <p>
-	 * This method calls {@link #readTurtle(InputStream)}
+	 * Takes in a given File and fileType, and returns the SBOL version of the file.
+	 *
 	 * @param file
-	 * @return the converted SBOLDocument instance
-	 * @throws Throwable
+	 * @return the SBOL version of the file.
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws FileNotFoundException
 	 */
-	public static SBOLDocument readTurtle(File file) throws Throwable
+	public static String getSBOLVersion(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
 	{
-		FileInputStream stream 	   = new FileInputStream(file);
+		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
-
-		return readTurtle(buffer);
+		return getSBOLVersion(buffer,fileType);
 	}
 
 	/**
-	 * Takes in a given JSON InputStream and converts the file to an SBOLDocument
+	 * Takes in a given InputStream and fieType, and returns the SBOL version of the file.
 	 *
 	 * @param in
-	 * @return the converted SBOLDocument instance
-	 * @throws Exception
+	 * @param fileType
+	 * @return the SBOL version of the JSON file.
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
 	 */
-	public static SBOLDocument readJSON(InputStream in) throws Exception
+	public static String getSBOLVersion(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
-		SBOLDocument SBOLDoc     = new SBOLDocument();
-		try
-		{
-			DocumentRoot<QName> document = readJSON(new StringReader(inputStreamString));
-
-			if (getSBOLVersion(document).equals("v1")) 
-			{
-				scanner.close();
-				readV1(SBOLDoc,document);	
-				return SBOLDoc;
-			}
-			for (NamespaceBinding n : document.getNamespaceBindings())
-			{
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-			}
-
-			readTopLevelDocs(SBOLDoc, document);
-
-		}
-		catch (IOException e)
-		{
-			scanner.close();
-			e.printStackTrace();
+		DocumentRoot<QName> document = null;
+		if (fileType.equals(JSON)) {
+			document = readJSON(new StringReader(inputStreamString));
+		} else if (fileType.equals(TURTLE)) {
+			document = readTurtle(new StringReader(inputStreamString));
+		} else {
+			document = readRDF(new StringReader(inputStreamString));
 		}
 		scanner.close();
-		try {
-			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLValidationException e) {
-			SBOLDoc.setCompliant(false);
-		}
-		return SBOLDoc;
+		return getSBOLVersion(document);
 	}
 
 	/**
@@ -334,129 +344,83 @@ public class SBOLReader
 	 *
 	 * @param in
 	 * @return the converted SBOLDocument instance
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
 	 */
-	public static SBOLDocument read(InputStream in)
+	public static SBOLDocument read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
-		read(SBOLDoc,in);
+		read(SBOLDoc,in,RDF);
 		return SBOLDoc;
 	}
 
-	static void read(SBOLDocument SBOLDoc,InputStream in)
-	{
-		Scanner scanner = new Scanner(in, "UTF-8");
-		String inputStreamString = scanner.useDelimiter("\\A").next();
-		try
-		{
-			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
-			if (getSBOLVersion(document).equals("v1")) 
-			{
-				scanner.close();
-				readV1(SBOLDoc,document);	
-				return;
-			}
-			for (NamespaceBinding n : document.getNamespaceBindings())
-			{
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-			}
-
-			readTopLevelDocs(SBOLDoc, document);
-
-		}
-		catch (Exception e)
-		{
-			scanner.close();
-			e.printStackTrace();
-		}
-
-		scanner.close();
-	}
-
 	/**
-	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument.
+	 * Takes in a given InputStream and fileType, and convert the file to an SBOLDocument.
 	 *
 	 * @param in
+	 * @param fileType
 	 * @return the converted SBOLDocument instance
-	 * @throws Exception
-	 * @throws IOException
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
 	 */
-	public static SBOLDocument readRDF(InputStream in) throws Exception
+	public static SBOLDocument read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
+	{
+		SBOLDocument SBOLDoc     = new SBOLDocument();
+		read(SBOLDoc,in,fileType);
+		return SBOLDoc;
+	}
+
+
+	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
-		SBOLDocument SBOLDoc     = new SBOLDocument();
 
-		try
-		{
-			DocumentRoot<QName> document = readRDF(new StringReader(inputStreamString));
-			
-			if (getSBOLVersion(document).equals("v1")) 
-			{
-				scanner.close();
-				readV1(SBOLDoc,document);	
-				return SBOLDoc;
-			}
-			for (NamespaceBinding n : document.getNamespaceBindings())
-			{
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-			}
-			
-			readTopLevelDocs(SBOLDoc, document);
+		DocumentRoot<QName> document = null;
+		if (fileType.equals(JSON)) {
+			document = readJSON(new StringReader(inputStreamString));
+		} else if (fileType.equals(TURTLE)){
+			document = readTurtle(new StringReader(inputStreamString));
+		} else {
+			document = readRDF(new StringReader(inputStreamString));
 		}
-		catch (IOException e)
+		if (getSBOLVersion(document).equals("v1"))
 		{
 			scanner.close();
-			e.printStackTrace();
+			readV1(SBOLDoc,document);
+			return;
 		}
+
+		for (NamespaceBinding n : document.getNamespaceBindings())
+
+		{
+			SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+
+		}
+
+		readTopLevelDocs(SBOLDoc, document);
 		scanner.close();
 		try {
 			SBOLValidate.validateCompliance(SBOLDoc);
 		} catch (SBOLValidationException e) {
 			SBOLDoc.setCompliant(false);
 		}
-		return SBOLDoc;
 	}
 
 	/**
-	 * Takes in a given Turtle InputStream and converts the file to an SBOLDocument
+	 * Takes in a given RDF InputStream and returns the SBOL version of the file.
 	 *
 	 * @param in
-	 * @return the converted SBOLDocument instance
-	 * @throws Exception
+	 * @return the SBOL version of the file.
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
 	 */
-	public static SBOLDocument readTurtle(InputStream in) throws Exception
+	public static String getSBOLVersion(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
-		Scanner scanner = new Scanner(in, "UTF-8");
-		String inputStreamString = scanner.useDelimiter("\\A").next();
-		SBOLDocument SBOLDoc     = new SBOLDocument();
-
-		try
-		{
-			DocumentRoot<QName> document = readTurtle(new StringReader(inputStreamString));
-			if (getSBOLVersion(document).equals("v1")) 
-			{
-				scanner.close();
-				readV1(SBOLDoc,document);	
-				return SBOLDoc;
-			}
-			for (NamespaceBinding n : document.getNamespaceBindings())
-			{
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
-			}
-			readTopLevelDocs(SBOLDoc, document);
-		}
-		catch (IOException e)
-		{
-			scanner.close();
-			e.printStackTrace();
-		}
-		scanner.close();
-		try {
-			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLValidationException e) {
-			SBOLDoc.setCompliant(false);
-		}
-		return SBOLDoc;
+		return getSBOLVersion(in,RDF);
 	}
 
 	private static SBOLDocument readV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document)
@@ -485,7 +449,7 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	private static DocumentRoot<QName> readJSON(Reader stream) throws Exception
+	private static DocumentRoot<QName> readJSON(Reader stream) throws CoreIoException
 	{
 		JsonReader reader 		  = Json.createReaderFactory(Collections.<String, Object> emptyMap()).createReader(stream);
 		JsonIo jsonIo 	  		  = new JsonIo();
@@ -494,14 +458,14 @@ public class SBOLReader
 		return StringifyQName.string2qname.mapDR(root);
 	}
 
-	private static DocumentRoot<QName> readRDF(Reader reader) throws Exception
+	private static DocumentRoot<QName> readRDF(Reader reader) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader(reader);
 		RdfIo rdfIo 			  = new RdfIo();
 		return rdfIo.createIoReader(xmlReader).read();
 	}
 
-	private static DocumentRoot<QName> readTurtle(Reader reader) throws Exception
+	private static DocumentRoot<QName> readTurtle(Reader reader) throws CoreIoException
 	{
 		TurtleIo turtleIo = new TurtleIo();
 		return turtleIo.createIoReader(reader).read();
@@ -542,80 +506,80 @@ public class SBOLReader
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else if (type.getValue().toString()
-									.equals(Sbol2Terms.Cut.Cut.toString().replaceAll("\\{|\\}", ""))) {
+							.equals(Sbol2Terms.Cut.Cut.toString().replaceAll("\\{|\\}", ""))) {
 						nested.put(topLevel.getIdentity(),
 								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 										Sbol2Terms.Cut.Cut, topLevel.getIdentity(),
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else if (type.getValue().toString()
-									.equals(Sbol2Terms.FunctionalComponent.FunctionalComponent.toString()
-											.replaceAll("\\{|\\}", ""))) {
+							.equals(Sbol2Terms.FunctionalComponent.FunctionalComponent.toString()
+									.replaceAll("\\{|\\}", ""))) {
 						nested.put(topLevel.getIdentity(),
 								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 										Sbol2Terms.FunctionalComponent.FunctionalComponent, topLevel.getIdentity(),
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else if (type.getValue().toString()
-									.equals(Sbol2Terms.GenericLocation.GenericLocation.toString().replaceAll("\\{|\\}",
-											""))) {
+							.equals(Sbol2Terms.GenericLocation.GenericLocation.toString().replaceAll("\\{|\\}",
+									""))) {
 						nested.put(topLevel.getIdentity(),
 								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 										Sbol2Terms.GenericLocation.GenericLocation, topLevel.getIdentity(),
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else if (type.getValue().toString()
-									.equals(Sbol2Terms.Interaction.Interaction.toString().replaceAll("\\{|\\}", ""))) {
+							.equals(Sbol2Terms.Interaction.Interaction.toString().replaceAll("\\{|\\}", ""))) {
 						nested.put(topLevel.getIdentity(),
 								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 										Sbol2Terms.Interaction.Interaction, topLevel.getIdentity(),
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else if (type.getValue().toString()
-									.equals(Sbol2Terms.Location.Location.toString().replaceAll("\\{|\\}", ""))) {
+							.equals(Sbol2Terms.Location.Location.toString().replaceAll("\\{|\\}", ""))) {
 						nested.put(topLevel.getIdentity(),
 								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 										Sbol2Terms.Location.Location, topLevel.getIdentity(),
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else if (type.getValue().toString()
-									.equals(Sbol2Terms.MapsTo.MapsTo.toString().replaceAll("\\{|\\}", ""))) {
+							.equals(Sbol2Terms.MapsTo.MapsTo.toString().replaceAll("\\{|\\}", ""))) {
 						nested.put(topLevel.getIdentity(),
 								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 										Sbol2Terms.MapsTo.MapsTo, topLevel.getIdentity(),
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else if (type.getValue().toString()
-									.equals(Sbol2Terms.Module.Module.toString().replaceAll("\\{|\\}", ""))) {
+							.equals(Sbol2Terms.Module.Module.toString().replaceAll("\\{|\\}", ""))) {
 						nested.put(topLevel.getIdentity(),
 								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 										Sbol2Terms.Module.Module, topLevel.getIdentity(),
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else if (type.getValue().toString()
-									.equals(Sbol2Terms.Participation.Participation.toString().replaceAll("\\{|\\}", ""))) {
+							.equals(Sbol2Terms.Participation.Participation.toString().replaceAll("\\{|\\}", ""))) {
 						nested.put(topLevel.getIdentity(),
 								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 										Sbol2Terms.Participation.Participation, topLevel.getIdentity(),
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else if (type.getValue().toString()
-									.equals(Sbol2Terms.Range.Range.toString().replaceAll("\\{|\\}", ""))) {
+							.equals(Sbol2Terms.Range.Range.toString().replaceAll("\\{|\\}", ""))) {
 						nested.put(topLevel.getIdentity(),
 								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 										Sbol2Terms.Range.Range, topLevel.getIdentity(),
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else if (type.getValue().toString()
-									.equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation.toString()
-											.replaceAll("\\{|\\}", ""))) {
+							.equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation.toString()
+									.replaceAll("\\{|\\}", ""))) {
 						nested.put(topLevel.getIdentity(),
 								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 										Sbol2Terms.SequenceAnnotation.SequenceAnnotation, topLevel.getIdentity(),
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else if (type.getValue().toString().equals(Sbol2Terms.SequenceConstraint.SequenceConstraint
-									.toString().replaceAll("\\{|\\}", ""))) {
+							.toString().replaceAll("\\{|\\}", ""))) {
 						nested.put(topLevel.getIdentity(),
 								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 										Sbol2Terms.SequenceConstraint.SequenceConstraint, topLevel.getIdentity(),
@@ -678,57 +642,8 @@ public class SBOLReader
 				topLevels.add(topLevel);
 			}
 		}
-		
+
 		for (TopLevelDocument<QName> topLevel : topLevels) {
-//			if (topLevel.getType()
-//					.equals(NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart(
-//							"Description"))) {
-//				boolean sbol2Namespace = false;
-//				for (PropertyValue<QName> value : topLevel.getPropertyValues(NamespaceBinding(
-//						"http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart("type"))) {
-//					Literal<QName> type = ((Literal<QName>) value);
-//					if (type.getValue().toString()
-//							.equals(Sbol2Terms.Collection.Collection.toString().replaceAll("\\{|\\}", ""))) {
-//						parseCollections(SBOLDoc, topLevel);
-//						sbol2Namespace = true;
-//						break;
-//					}
-//					else if (type.getValue().toString()
-//							.equals(Sbol2Terms.ModuleDefinition.ModuleDefinition.toString().replaceAll("\\{|\\}", ""))) {
-//						parseModuleDefinition(SBOLDoc, topLevel, nested);
-//						sbol2Namespace = true;
-//						break;
-//					}
-//					else if (type.getValue().toString()
-//							.equals(Sbol2Terms.Model.Model.toString().replaceAll("\\{|\\}", ""))) {
-//						parseModels(SBOLDoc, topLevel);
-//						sbol2Namespace = true;
-//						break;
-//					}
-//					else if (type.getValue().toString()
-//							.equals(Sbol2Terms.Sequence.Sequence.toString().replaceAll("\\{|\\}", ""))) {
-//						parseSequences(SBOLDoc, topLevel);
-//						sbol2Namespace = true;
-//						break;
-//					}
-//					else if (type
-//							.getValue()
-//							.toString()
-//							.equals(Sbol2Terms.ComponentDefinition.ComponentDefinition.toString().replaceAll("\\{|\\}",
-//									""))) {
-//						parseComponentDefinitions(SBOLDoc, topLevel);
-//						sbol2Namespace = true;
-//						break;
-//					}
-//					else if (type.getValue().toString().contains(Sbol2Terms.sbol2.getNamespaceURI())) {
-//						sbol2Namespace = true;
-//						break;
-//					}
-//				}
-//				if (!sbol2Namespace) {
-//					parseGenericTopLevel(SBOLDoc, topLevel);
-//				}
-//			}
 			if (topLevel.getType().equals(Sbol2Terms.Collection.Collection))
 				parseCollections(SBOLDoc, topLevel);
 			else if (topLevel.getType().equals(Sbol2Terms.ModuleDefinition.ModuleDefinition))
@@ -753,7 +668,7 @@ public class SBOLReader
 		URI seq_identity   = null;
 		Set<URI> roles 	   = new HashSet<>();
 		URI identity 	   = componentDef.getIdentity();
-		String persIdentity = "";
+		String persIdentity = componentDef.getIdentity().toString();
 
 		List<Annotation> annotations 				 = new ArrayList<>();
 		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<>();
@@ -771,8 +686,8 @@ public class SBOLReader
 		if (URIPrefix != null)
 		{
 			displayId = findDisplayId(componentDef.getIdentity().toString());
-			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
-			persIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI).toString();
+			identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
+			persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
 		}
 
 		for (NamedProperty<QName> namedProperty : componentDef.getProperties())
@@ -797,7 +712,6 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.type))
 			{
-				// TODO: conversion to proper SO term when possible
 				URI convertedSO = SequenceOntology.convertSeqOntologyV1(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 				roles.add(convertedSO);
 			}
@@ -844,8 +758,8 @@ public class SBOLReader
 
 		for (SBOLPair pair : precedePairs)
 		{
-			URI sc_identity    			= createCompliantURI(persIdentity,"sequenceConstraint" + ++sc_number,version);
-			URI restrictionURI 			= RestrictionType.convertToURI(RestrictionType.PRECEDES);
+			URI sc_identity    	= createCompliantURI(persIdentity,"sequenceConstraint" + ++sc_number,version);
+			URI restrictionURI 	= RestrictionType.convertToURI(RestrictionType.PRECEDES);
 			//RestrictionType restriction = RestrictionType.convertToRestrictionType(restrictionURI);
 
 			URI subject = null;
@@ -891,21 +805,42 @@ public class SBOLReader
 			c.addSequence(seq_identity);
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
-		if (!sequenceAnnotations.isEmpty())
-			c.setSequenceAnnotations(sequenceAnnotations);
+		if (!sequenceAnnotations.isEmpty()) {
+			for (SequenceAnnotation sa : sequenceAnnotations) {
+				if (!dropObjectsWithDuplicateURIs || c.getSequenceAnnotation(sa.getIdentity())==null) {
+					c.addSequenceAnnotation(sa);
+				}
+			}
+		}
 		if (!components.isEmpty())
 			c.setComponents(components);
 		if (!sequenceConstraints.isEmpty())
 			c.setSequenceConstraints(sequenceConstraints);
 
-		//TODO: to fix
 		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(identity);
 		if (oldC == null) {
 			SBOLDoc.addComponentDefinition(c);
+		} else if (c.isSetWasDerivedFrom() && oldC.isSetWasDerivedFrom() &&
+				!c.getWasDerivedFrom().equals(oldC.getWasDerivedFrom())) {
+			Set<TopLevel> topLevels = SBOLDoc.getByWasDerivedFrom(c.getWasDerivedFrom());
+			for (TopLevel topLevel : topLevels) {
+				if (topLevel instanceof ComponentDefinition) {
+					return (ComponentDefinition) topLevel;
+				}
+			}
+			do {
+				displayId = displayId + "_";
+				identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
+				persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
+			} while (SBOLDoc.getComponentDefinition(identity)!=null);
+			c = c.copy(URIPrefix, displayId, version);
+			if(identity != componentDef.getIdentity())
+				c.setWasDerivedFrom(componentDef.getIdentity());
+			SBOLDoc.addComponentDefinition(c);
+		} else if (dropObjectsWithDuplicateURIs) {
+			return oldC;
 		} else {
 			if (!c.equals(oldC)) {
-				//System.out.println(c.toString());
-				//System.out.println(oldC.toString());
 				throw new SBOLValidationException("Multiple non-identical ComponentDefinitions with identity "+identity);
 			}
 		}
@@ -919,7 +854,7 @@ public class SBOLReader
 		String name   	   = null;
 		String description = null;
 		URI identity 	   = topLevel.getIdentity();
-		URI persistentIdentity = null;
+		URI persistentIdentity = topLevel.getIdentity();
 		URI encoding 	   = Sbol2Terms.SequenceURI.DnaSequenceV1;
 		List<Annotation> annotations = new ArrayList<>();
 
@@ -977,6 +912,25 @@ public class SBOLReader
 		Sequence oldS = SBOLDoc.getSequence(identity);
 		if (oldS == null) {
 			SBOLDoc.addSequence(sequence);
+		} else if (sequence.isSetWasDerivedFrom() && oldS.isSetWasDerivedFrom() &&
+				!sequence.getWasDerivedFrom().equals(oldS.getWasDerivedFrom())) {
+			Set<TopLevel> topLevels = SBOLDoc.getByWasDerivedFrom(sequence.getWasDerivedFrom());
+			for (TopLevel top : topLevels) {
+				if (top instanceof Sequence) {
+					return (Sequence) top;
+				}
+			}
+			do {
+				displayId = displayId + "_";
+				identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+				persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
+			} while (SBOLDoc.getSequence(identity)!=null);
+			sequence.setIdentity(identity);
+			sequence.setDisplayId(displayId);
+			sequence.setPersistentIdentity(persistentIdentity);
+			SBOLDoc.addSequence(sequence);
+		} else if (dropObjectsWithDuplicateURIs) {
+			return oldS;
 		} else {
 			if (!sequence.equals(oldS)) {
 				throw new SBOLValidationException("Multiple non-identical Sequences with identity "+identity);
@@ -1094,7 +1048,7 @@ public class SBOLReader
 			SBOLDoc.addCollection(c);
 		} else {
 			if (!c.equals(oldC)) {
-				throw new SBOLValidationException("The specified Collection does not exist.");
+				throw new SBOLValidationException("Multiple non-identical Collection with identity "+ topLevel.getIdentity());
 			}
 		}
 		return c;
@@ -1109,7 +1063,7 @@ public class SBOLReader
 		String strand    = null;
 		URI componentURI = null;
 		URI identity 	 = sequenceAnnotation.getIdentity();
-		String persIdentity = "";
+		String persIdentity = sequenceAnnotation.getIdentity().toString();
 		List<Annotation> annotations = new ArrayList<>();
 
 		if (URIPrefix != null)
@@ -1223,10 +1177,10 @@ public class SBOLReader
 	private static ComponentDefinition parseComponentDefinitions(
 			SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		URI structure 		   = null;
 		String version 		   = null;
 		URI wasDerivedFrom     = null;
@@ -1357,7 +1311,7 @@ public class SBOLReader
 			SBOLDoc.addComponentDefinition(c);
 		} else {
 			if (!c.equals(oldC)) {
-				throw new SBOLValidationException("The specified ComponentDefinition does not exist.");
+				throw new SBOLValidationException("Multiple non-identical ComponentDefinitions with identity "+topLevel.getIdentity());
 			}
 		}
 		return c;
@@ -1365,10 +1319,10 @@ public class SBOLReader
 
 	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraint)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(sequenceConstraint.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(sequenceConstraint.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(sequenceConstraint.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(sequenceConstraint.getIdentity()));
 		URI restriction  			 = null;
 		URI subject 				 = null;
 		URI object 					 = null;
@@ -1449,10 +1403,10 @@ public class SBOLReader
 
 	private static SequenceAnnotation parseSequenceAnnotation(NestedDocument<QName> sequenceAnnotation, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(sequenceAnnotation.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(sequenceAnnotation.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(sequenceAnnotation.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(sequenceAnnotation.getIdentity()));
 		Location location 	   = null;
 		URI componentURI 	   = null;
 		String version   	   = null;
@@ -1556,10 +1510,10 @@ public class SBOLReader
 
 	private static GenericLocation parseGenericLocation(NestedDocument<QName> typeGenLoc)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(typeGenLoc.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(typeGenLoc.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(typeGenLoc.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(typeGenLoc.getIdentity()));
 		URI orientation 			 = null;
 		String version        	     = null;
 		URI wasDerivedFrom 			 = null;
@@ -1629,10 +1583,10 @@ public class SBOLReader
 
 	private static Cut parseCut(NestedDocument<QName> typeCut)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(typeCut.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(typeCut.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(typeCut.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(typeCut.getIdentity()));
 		Integer at 			   = null;
 		URI orientation 	   = null;
 		String version 		   = null;
@@ -1713,10 +1667,10 @@ public class SBOLReader
 
 	private static Location parseRange(NestedDocument<QName> typeRange)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(typeRange.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(typeRange.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(typeRange.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(typeRange.getIdentity()));
 		Integer start 		   = null;
 		Integer end 		   = null;
 		URI orientation 	   = null;
@@ -1798,10 +1752,10 @@ public class SBOLReader
 
 	private static Component parseComponent(NestedDocument<QName> component, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(component.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(component.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(component.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(component.getIdentity()));
 		String version 		   = null;
 		URI subComponentURI    = null;
 		AccessType access 	   = null;
@@ -1901,10 +1855,10 @@ public class SBOLReader
 	private static GenericTopLevel parseGenericTopLevel(SBOLDocument SBOLDoc,
 			TopLevelDocument<QName> topLevel)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
 
@@ -1964,7 +1918,7 @@ public class SBOLReader
 			SBOLDoc.addGenericTopLevel(t);
 		} else {
 			if (!t.equals(oldG)) {
-				throw new SBOLValidationException("The specified GenericTopLevel does not exist.");
+				throw new SBOLValidationException("Multiple non-identical GenericTopLevel with identity "+topLevel.getIdentity());
 			}
 		}
 		return t;
@@ -1972,10 +1926,10 @@ public class SBOLReader
 
 	private static Model parseModels(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
 		URI source 			   = null;
 		URI language 		   = null;
@@ -2050,7 +2004,7 @@ public class SBOLReader
 			SBOLDoc.addModel(m);
 		} else {
 			if (!m.equals(oldM)) {
-				throw new SBOLValidationException("The specified Model does not exist.");
+				throw new SBOLValidationException("Multiple non-identical ComponentDefinitions with identity "+ topLevel.getIdentity());
 			}
 		}
 		return m;
@@ -2058,10 +2012,10 @@ public class SBOLReader
 
 	private static Collection parseCollections(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
 
@@ -2127,7 +2081,7 @@ public class SBOLReader
 			SBOLDoc.addCollection(c);
 		} else {
 			if (!c.equals(oldC)) {
-				throw new SBOLValidationException("The specified Collection does not exist.");
+				throw new SBOLValidationException("Multiple non-identical Collection with identity "+topLevel.getIdentity());
 			}
 		}
 		return c;
@@ -2136,10 +2090,10 @@ public class SBOLReader
 	private static ModuleDefinition parseModuleDefinition(SBOLDocument SBOLDoc,
 			TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 	       = null;
 		URI wasDerivedFrom 	   = null;
 		Set<URI> roles 		   = new HashSet<>();
@@ -2202,7 +2156,7 @@ public class SBOLReader
 			{
 				if (namedProperty.getValue() instanceof NestedDocument) {
 					functionalComponents
-							.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue(), nested));
+					.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue(), nested));
 				} else {
 					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
 					functionalComponents.add(parseFunctionalComponent(nested.get(uri), nested));
@@ -2213,7 +2167,7 @@ public class SBOLReader
 				System.out.println("Warning: tag should be sbol:functionalComponent, not sbol:component.");
 				if (namedProperty.getValue() instanceof NestedDocument) {
 					functionalComponents
-							.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue(), nested));
+					.add(parseFunctionalComponent((NestedDocument<QName>) namedProperty.getValue(), nested));
 				} else {
 					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
 					functionalComponents.add(parseFunctionalComponent(nested.get(uri), nested));
@@ -2273,7 +2227,7 @@ public class SBOLReader
 			SBOLDoc.addModuleDefinition(moduleDefinition);
 		} else {
 			if (!moduleDefinition.equals(oldM)) {
-				throw new SBOLValidationException("The specified ModuleDefinition does not exist.");
+				throw new SBOLValidationException("Multiple non-identical ModuleDefinition with identity "+topLevel.getIdentity());
 			}
 		}
 		return moduleDefinition;
@@ -2281,10 +2235,10 @@ public class SBOLReader
 
 	private static Module parseModule(NestedDocument<QName> module, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(module.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(module.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(module.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(module.getIdentity()));
 		String version 		   = null;
 		URI definitionURI 	   = null;
 		URI wasDerivedFrom 	   = null;
@@ -2378,10 +2332,10 @@ public class SBOLReader
 
 	private static MapsTo parseMapsTo(NestedDocument<QName> mapsTo)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(mapsTo.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(mapsTo.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(mapsTo.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(mapsTo.getIdentity()));
 		String version 	  	 	  = null;
 		URI remote 				  = null;
 		RefinementType refinement = null;
@@ -2462,10 +2416,10 @@ public class SBOLReader
 
 	private static Interaction parseInteraction(NestedDocument<QName> interaction, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(interaction.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(interaction.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(interaction.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(interaction.getIdentity()));
 		String version 		   = null;
 		URI wasDerivedFrom	   = null;
 
@@ -2544,10 +2498,10 @@ public class SBOLReader
 
 	private static Participation parseParticipation(NestedDocument<QName> participation)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(participation.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(participation.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(participation.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(participation.getIdentity()));
 		String version 		   = null;
 		Set<URI> roles 		   = new HashSet<>();
 		URI participant        = null;
@@ -2625,10 +2579,10 @@ public class SBOLReader
 
 	private static FunctionalComponent parseFunctionalComponent(NestedDocument<QName> functionalComponent, Map<URI, NestedDocument<QName>> nested)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(functionalComponent.getIdentity());
+		String displayId 	   = null;//URIcompliance.extractDisplayId(functionalComponent.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(functionalComponent.getIdentity()));
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(functionalComponent.getIdentity()));
 		String version 			   = null;
 		AccessType access 		   = null;
 		DirectionType direction    = null;
@@ -2737,10 +2691,10 @@ public class SBOLReader
 
 	private static Sequence parseSequences(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
 	{
-		String displayId 	   = URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String displayId 	   = null; //URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
 		String description 	   = null;
-		URI persistentIdentity = URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		URI persistentIdentity = null; //URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
 		String elements 	   = null;
 		URI encoding 		   = null;
@@ -2809,47 +2763,9 @@ public class SBOLReader
 			SBOLDoc.addSequence(sequence);
 		} else {
 			if (!sequence.equals(oldS)) {
-				throw new SBOLValidationException("The specified Sequence does not exist.");
+				throw new SBOLValidationException("Multiple non-identical Sequence with identity "+topLevel.getIdentity());
 			}
 		}
 		return sequence;
 	}
-
-	/*private static Timestamp getTimestamp(String timeStamp)
-	{
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-		java.util.Date date  = null;
-		try
-		{
-			date = sdf.parse(timeStamp);
-		}
-		catch (ParseException e)
-		{
-			e.printStackTrace();
-		}
-		java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
-		return timestamp;
-	}*/
-
-	/*
-	private static URI getParentURI(URI identity)
-	{
-		String regex       = ".*[/]\\d+[/]\\d+";
-		String regex_minor = ".*[/]\\d+[/]";
-		String regex_major = ".*[/]\\d+";
-		String regex_end   = ".*[/]";
-
-		String identity_str = identity.toString();
-
-		while (identity_str.matches(regex)
-				|| identity_str.matches(regex_minor)
-				|| identity_str.matches(regex_major)
-				|| identity_str.matches(regex_end))
-		{
-			identity_str = identity_str.substring(0, identity_str.length() - 1);
-		}
-
-		return URI.create(identity_str);
-	}
-	 */
 }

@@ -1,6 +1,8 @@
 package org.sbolstandard.core2;
 
 import java.io.InputStream;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class readTester {
 	public static String filenameRdf 	= "writeTesterString_v1.3.rdf";
@@ -27,13 +29,14 @@ public class readTester {
 	public static String path = "test/data/";
 
 	public static void main(String[] args) {
+				
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_16);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_12);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_16);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_12);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
-			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+			//SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			//SBOLReader.setVersion("1.0");
 			//SBOLReader.setTypesInURI(true);
 			SBOLDocument document1 = SBOLReader.read(file);
@@ -60,7 +63,7 @@ public class readTester {
 			//			SBOLDocument document2 = SBOLReader.readJson(filenameJson);
 			//			SBOLDocument document3 = SBOLReader.readTurtle(filenameTurtle);
 
-			SBOLWriter.writeRDF(document1,(System.out));
+			SBOLWriter.write(document1,(System.out));
 			//SBOLWriter.writeRDF(SBOLTestUtils.writeAndRead(document1),(System.out));
 			
 			//			SBOLWriter.writeJson(document2,(System.out));
@@ -74,5 +77,4 @@ public class readTester {
 		}
 
 	}
-
 }

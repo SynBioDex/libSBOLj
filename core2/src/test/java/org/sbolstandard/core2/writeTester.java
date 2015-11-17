@@ -2,8 +2,6 @@ package org.sbolstandard.core2;
 
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -23,19 +21,8 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
 public class writeTester {
 
 	private static SBOLDocument SBOL2Doc_test = new SBOLDocument();
-
-	private static String  rdfString   = "writeTesterString_v1.3.rdf";
-	private static String  rdfFile 	   = "writeTesterFile_v1.3.rdf";
-
-	private static String JsonString   = "writeTesterString_v1.3.json";
-	private static String JsonFile 	   = "writeTesterFile_v1.3.json";
-
-	private static String TurtleString = "writeTesterString_v1.3.ttl";
-	private static String TurtleFile   = "writeTesterFile_v1.3.ttl";
 	
 	private static String version = "1.0";
-
-	//private static String  fileName   = "single_singleCollection.rdf";
 
 	/**
 	 * Top level types
@@ -45,37 +32,18 @@ public class writeTester {
 	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		get_myParts(SBOL2Doc_test);
-		/*
-		SBOLDocument sbolDoc = new SBOLDocument();
-		sbolDoc.setDefaultURIprefix("http://www.some.org");
-		ComponentDefinition cd = SBOL2Doc_test.getComponentDefinition("pLactetR", "1.0");
-		sbolDoc.createCopy(cd,"pLactetR2","2.0");
-		cd = SBOL2Doc_test.getComponentDefinition("ptetlacI", "1.0");
-		sbolDoc.createCopy(cd,"ptetLacI2","2.0");
-		ModuleDefinition md = SBOL2Doc_test.getModuleDefinition("Toggle", "1.0");
-		sbolDoc.createCopy(md,"Toggle2","2.0");
-		*/
-		writeRdfOutputStream(SBOL2Doc_test);
-
-		//		writeJsonOutputStream();
-		//		writeTurtleOutputStream();
-
-		//		writeRdfString();
-		//		writeJsonString();
-		//		writeTurtleString();
-
-		//writeRdfFile();
-
-		//writeJsonFile();
-		//writeTurtleFile();
+		SBOLDocument doc = new SBOLDocument();
+		ModuleDefinition md = (SBOL2Doc_test.getModuleDefinition("Toggle", "1.0")).flatten("http://foo.com","GC","");
+		doc.createCopy(md);
+		writeRdfOutputStream(doc);
 	}
 
 	public static void writeRdfOutputStream(SBOLDocument SBOL2Doc_test)
 	{
 		try {
-			SBOLWriter.writeRDF(SBOL2Doc_test,(System.out));
+			SBOLWriter.write(SBOL2Doc_test,(System.out));
 			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test);
-			SBOLWriter.writeRDF(SBOL2Doc_test,"/Users/myers/Downloads/writeTest.rdf");//(System.out));
+			SBOLWriter.write(SBOL2Doc_test,"/Users/myers/Downloads/writeTest.rdf");//(System.out));
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		} catch (FactoryConfigurationError e) {
@@ -87,85 +55,6 @@ public class writeTester {
 			e.printStackTrace();
 		}
 		catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeJsonOutputStream()
-	{
-		try {
-			SBOLWriter.writeJSON(SBOL2Doc_test,(System.out));
-		} catch (FactoryConfigurationError e) {
-			e.printStackTrace();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeTurtleOutputStream()
-	{
-		try {
-			SBOLWriter.writeTurtle(SBOL2Doc_test,(System.out));
-		} catch (FactoryConfigurationError e) {
-			e.printStackTrace();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeRdfString()
-	{
-		try {
-			SBOLWriter.writeRDF(SBOL2Doc_test, rdfString);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeJsonString()
-	{
-		try {
-			SBOLWriter.writeJSON(SBOL2Doc_test, JsonString);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeTurtleString()
-	{
-		try {
-			SBOLWriter.writeTurtle(SBOL2Doc_test, TurtleString);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
-
-
-	public static void writeJsonFile()
-	{
-		try {
-			SBOLWriter.writeJSON(SBOL2Doc_test, new File(JsonFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeTurtleFile()
-	{
-		try {
-			SBOLWriter.writeJSON(SBOL2Doc_test, new File(TurtleFile));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void writeRdfFile()
-	{
-		try {
-			SBOLWriter.writeRDF(SBOL2Doc_test, new File(rdfFile)); 
-		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -322,12 +211,12 @@ public class writeTester {
 
 	private static void get_p2a (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i, displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"LacI");
+		createParticipationData(i, displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"pLactetR");
 	}
 
 	private static void get_p4a (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i, displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"TetR");
+		createParticipationData(i, displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"pLactetR");
 	}
 
 	private static void get_p3a (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
@@ -470,12 +359,12 @@ public class writeTester {
 
 	private static void get_p2b (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i,displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"TetR");
+		createParticipationData(i,displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"ptetlacI");
 	}
 
 	private static void get_p4b (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
 	{
-		createParticipationData(i,displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"TetR");
+		createParticipationData(i,displayId,getSetURI(SystemsBiologyOntology.PROMOTER),"ptetlacI");
 	}
 
 	private static void get_p3b (SBOLDocument SBOL2Doc_test, ModuleDefinition md, Interaction i, String displayId)
@@ -538,10 +427,7 @@ public class writeTester {
 
 	private static void get_Inv2 (SBOLDocument SBOL2Doc_test,ModuleDefinition md)
 	{
-		Module m = createModuleData(
-			md,
-			getData("Inv2"),
-			"TetR_Inv");
+		Module m = createModuleData(md,getData("Inv2"),"TetR_Inv");
 		createMapsTo(m,"Inv1b", RefinementType.USELOCAL, "LacI","LacI");
 		createMapsTo(m,"Inv2b", RefinementType.USELOCAL, "TetR","TetR");
 	}

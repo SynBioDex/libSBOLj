@@ -232,7 +232,8 @@ public class Collection extends TopLevel{
 
 	@Override
 	public String toString() {
-		return "Collection [members=" + members + "]";
+		return "Collection [members=" + members + ", identity=" + identity + ", displayId="
+				+ displayId + ", name=" + name + ", description=" + description + "]";
 	}
 
 }

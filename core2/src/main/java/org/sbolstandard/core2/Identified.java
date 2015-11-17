@@ -165,7 +165,10 @@ public abstract class Identified {
 	 * Sets field variable <code>version</code> to the specified element.
 	 */
 	void setVersion(String version) {
-		if (version==null || version.equals("")) return;
+		if (version==null || version.equals("")) {
+			this.version=null;
+			return;
+		}
 		if (!URIcompliance.isVersionCompliant(version)) {
 			throw new IllegalArgumentException(
 					"Version " + version + " is invalid for `" + identity + "'.");
@@ -552,7 +555,7 @@ public abstract class Identified {
 
 	@SafeVarargs
 	protected final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) {
-			if (isChildURIformCompliant(this.getIdentity(), child.getIdentity())) {
+		if (isChildURIformCompliant(this.getIdentity(), child.getIdentity())) {
 			URI persistentId = URI.create(extractPersistentId(child.getIdentity()));
 			if(keyExistsInAnyMap(persistentId, maps))
 				throw new IllegalArgumentException(
@@ -695,8 +698,8 @@ public abstract class Identified {
 	public String toString() {
 		return "Identified [identity=" + identity + ", persistentIdentity=" + persistentIdentity
 				+ ", version=" + version + ", annotations=" + annotations + ", wasDerivedFrom="
-				+ wasDerivedFrom + ", displayId=" + displayId
-				+ ", name=" + name + ", description=" + description + "]";
+				+ wasDerivedFrom + ", displayId=" + displayId + ", name=" + name + ", description="
+				+ description + "]";
 	}
 	
 	//	/**

@@ -90,6 +90,7 @@ public abstract class Location extends Identified{
 
 	@Override
 	public String toString() {
-		return "Location [orientation=" + orientation + "]";
+		return "Location [orientation=" + orientation + ", identity=" + identity + ", displayId="
+				+ displayId + ", name=" + name + ", description=" + description + "]";
 	}
 }
