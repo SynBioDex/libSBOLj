@@ -43,7 +43,7 @@ public class writeTester {
 		try {
 			SBOLWriter.write(SBOL2Doc_test,(System.out));
 			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test);
-			SBOLWriter.write(SBOL2Doc_test,"/Users/myers/Downloads/writeTest.rdf");//(System.out));
+			SBOLWriter.write(SBOL2Doc_test,System.out);
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		} catch (FactoryConfigurationError e) {
