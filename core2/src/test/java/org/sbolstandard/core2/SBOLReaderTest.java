@@ -4,8 +4,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 
-import org.sbolstandard.core.SBOLValidationException;
-
 public class SBOLReaderTest extends SBOLAbstractTests
 {
 	@Override
