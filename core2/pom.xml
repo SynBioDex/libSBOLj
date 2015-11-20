@@ -9,7 +9,7 @@
 		<version>2.0</version>
 	</parent>
 
-	<artifactId>libSBOLj</artifactId>
+	<artifactId>libSBOLj-core2</artifactId>
 
 	<properties>
 		<sbol-data.version>0.1.2</sbol-data.version>
@@ -41,11 +41,6 @@
 			<groupId>uk.ac.ncl.intbio</groupId>
 			<artifactId>sbol-data-nativeSbol</artifactId>
 			<version>${sbol-data.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.sbolstandard</groupId>
-			<artifactId>libSBOLj-core</artifactId>
-			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

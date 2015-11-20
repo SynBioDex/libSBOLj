@@ -14,7 +14,6 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
-import org.sbolstandard.core.SBOLValidationException;
 
 /**
  * @author Goksel Misirli

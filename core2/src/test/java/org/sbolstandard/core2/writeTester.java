@@ -14,8 +14,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
-import org.sbolstandard.core.SBOLValidationException;
-
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 public class writeTester {

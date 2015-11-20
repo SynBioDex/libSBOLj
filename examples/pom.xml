@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
-            <artifactId>libSBOLj</artifactId>
+            <artifactId>libSBOLj-core2</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
 
