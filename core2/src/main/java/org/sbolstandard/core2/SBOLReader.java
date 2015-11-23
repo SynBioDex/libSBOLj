@@ -1181,11 +1181,11 @@ public class SBOLReader
 		String name 	 	   = null;
 		String description 	   = null;
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
-		URI structure 		   = null;
 		String version 		   = null;
 		URI wasDerivedFrom     = null;
 		Set<URI> type 		   = new HashSet<>();
 		Set<URI> roles 	  	   = new HashSet<>();
+		Set<URI> structures	   = new HashSet<>();
 
 		List<Component> components 					 = new ArrayList<>();
 		List<Annotation> annotations 				 = new ArrayList<>();
@@ -1237,7 +1237,8 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequence))
 			{
-				structure = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				structures.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				//structure = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequenceAnnotations))
 			{
@@ -1287,8 +1288,8 @@ public class SBOLReader
 			c.setDisplayId(displayId);
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
-		if (structure != null)
-			c.addSequence(structure);
+		if (!structures.isEmpty())
+			c.setSequences(structures);
 		if (!components.isEmpty())
 			c.setComponents(components);
 		if (!sequenceAnnotations.isEmpty())
