@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.sbolstandard</groupId>
-    <artifactId>libSBOLj</artifactId>
+    <artifactId>libSBOLj-parent</artifactId>
     <version>2.0</version>
     <packaging>pom</packaging>
     <name>libSBOLj</name>
@@ -57,9 +57,8 @@
     </properties>
 
     <modules>
-        
-        <module>core2</module>
-        
+         <module>core</module>
+         <module>core2</module>
     </modules>
 
     <build>
