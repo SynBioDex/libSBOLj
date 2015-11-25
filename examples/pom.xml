@@ -17,11 +17,6 @@
         <!-- dependencies used by libSBOLj -->
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
-            <artifactId>libSBOLj-core</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.parent.groupId}</groupId>
             <artifactId>libSBOLj</artifactId>
             <version>2.0</version>
         </dependency>

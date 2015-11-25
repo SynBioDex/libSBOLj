@@ -81,6 +81,145 @@
     <sbol:role rdf:resource="http://purl.obolibrary.org/obo/promoter"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
   </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_B0012">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_B0012"/>
+    <sbol:displayId>BBa_B0012</sbol:displayId>
+    <dcterms:description>TE from coliphageT7</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/terminator"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565197">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565197"/>
+    <sbol:displayId>f_1565197</sbol:displayId>
+    <dcterms:title>stem_loop</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/stem_loop"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000313"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565233">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565233"/>
+    <sbol:displayId>f_1565233</sbol:displayId>
+    <dcterms:title>RBS</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000552"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/rbs"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_E0040">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_E0040"/>
+    <sbol:displayId>BBa_E0040</sbol:displayId>
+    <dcterms:title>GFP</dcterms:title>
+    <dcterms:description>green fluorescent protein derived from jellyfish Aequeora victoria wild-type GFP (SwissProt: P42212</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/coding"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565252">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565252"/>
+    <sbol:displayId>f_1565252</sbol:displayId>
+    <dcterms:title>polya</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000553"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/polya"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_B0032">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_B0032"/>
+    <sbol:displayId>BBa_B0032</sbol:displayId>
+    <dcterms:description>RBS.3 (medium) -- derivative of BBa_0030</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000552"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/rbs"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565164">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565164"/>
+    <sbol:displayId>f_1565164</sbol:displayId>
+    <dcterms:title>TetR 1</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/binding"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000409"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_C0062">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_C0062"/>
+    <sbol:displayId>BBa_C0062</sbol:displayId>
+    <dcterms:title>luxr</dcterms:title>
+    <dcterms:description>luxR repressor/activator, (no LVA?)</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/coding"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565251">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565251"/>
+    <sbol:displayId>f_1565251</sbol:displayId>
+    <dcterms:title>T7 TE</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/stem_loop"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000313"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565166">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565166"/>
+    <sbol:displayId>f_1565166</sbol:displayId>
+    <dcterms:title>-35</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/promoter"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_R0040">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_R0040"/>
+    <sbol:displayId>BBa_R0040</sbol:displayId>
+    <dcterms:title>p(tetR)</dcterms:title>
+    <dcterms:description>TetR repressible promoter</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/regulatory"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0005836"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565168">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565168"/>
+    <sbol:displayId>f_1565168</sbol:displayId>
+    <dcterms:title>-10</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/promoter"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565241">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565241"/>
+    <sbol:displayId>f_1565241</sbol:displayId>
+    <dcterms:title>stem_loop</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/stem_loop"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000313"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565190">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565190"/>
+    <sbol:displayId>f_1565190</sbol:displayId>
+    <dcterms:title>A</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0001017"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/s_mutation"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565187">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565187"/>
+    <sbol:displayId>f_1565187</sbol:displayId>
+    <dcterms:title>luxR</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/cds"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565231">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565231"/>
+    <sbol:displayId>f_1565231</sbol:displayId>
+    <dcterms:title>RBS-3\Weak</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000552"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/rbs"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565172">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565172"/>
+    <sbol:displayId>f_1565172</sbol:displayId>
+    <dcterms:title>conserved</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/conserved"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000856"/>
+  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_T9002">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_T9002"/>
     <sbol:displayId>BBa_T9002</sbol:displayId>
@@ -481,141 +620,51 @@
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565232">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565232"/>
-        <sbol:displayId>annotation41</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565186">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565186"/>
+        <sbol:displayId>annotation25</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565232/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565232/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565186/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565186/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1070</sbol:start>
-            <sbol:end>1082</sbol:end>
+            <sbol:start>81</sbol:start>
+            <sbol:end>82</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component40"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component24"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565207">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565207"/>
-        <sbol:displayId>annotation32</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565187">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565187"/>
+        <sbol:displayId>annotation24</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565207/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565207/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565187/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565187/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>965</sbol:start>
-            <sbol:end>984</sbol:end>
+            <sbol:start>81</sbol:start>
+            <sbol:end>830</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component31"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component23"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565165">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565165"/>
-        <sbol:displayId>annotation17</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565221">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565221"/>
+        <sbol:displayId>annotation36</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565165/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565165/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565221/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565221/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1</sbol:start>
-            <sbol:end>54</sbol:end>
+            <sbol:start>1007</sbol:start>
+            <sbol:end>1061</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component16"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565240">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565240"/>
-        <sbol:displayId>annotation44</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565240/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565240/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1817</sbol:start>
-            <sbol:end>1896</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component43"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565206">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565206"/>
-        <sbol:displayId>annotation31</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565206/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565206/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>958</sbol:start>
-            <sbol:end>998</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component30"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565164">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565164"/>
-        <sbol:displayId>annotation16</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565164/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565164/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1</sbol:start>
-            <sbol:end>19</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component15"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_603_9">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_603_9"/>
-        <sbol:displayId>annotation9</sbol:displayId>
-        <sbol:location>
-          <sbol:GenericLocation rdf:about="http://partsregistry.org/anot/an_5591_603_9/genericLocation">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_603_9/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-          </sbol:GenericLocation>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component8"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_161_3">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_161_3"/>
-        <sbol:displayId>annotation3</sbol:displayId>
-        <sbol:location>
-          <sbol:GenericLocation rdf:about="http://partsregistry.org/anot/an_5591_161_3/genericLocation">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_161_3/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-          </sbol:GenericLocation>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component2"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565241">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565241"/>
-        <sbol:displayId>annotation45</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565241/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565241/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1828</sbol:start>
-            <sbol:end>1871</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component44"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component35"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -635,19 +684,125 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565221">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565221"/>
-        <sbol:displayId>annotation36</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565235">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565235"/>
+        <sbol:displayId>annotation43</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565221/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565221/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565235/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565235/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1007</sbol:start>
-            <sbol:end>1061</sbol:end>
+            <sbol:start>1089</sbol:start>
+            <sbol:end>1808</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component35"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component42"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_603_9">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_603_9"/>
+        <sbol:displayId>annotation9</sbol:displayId>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="http://partsregistry.org/anot/an_5591_603_9/genericLocation">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_603_9/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+          </sbol:GenericLocation>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component8"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565172">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565172"/>
+        <sbol:displayId>annotation22</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565172/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565172/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>67</sbol:start>
+            <sbol:end>70</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component21"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_161_3">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_161_3"/>
+        <sbol:displayId>annotation3</sbol:displayId>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="http://partsregistry.org/anot/an_5591_161_3/genericLocation">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_161_3/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+          </sbol:GenericLocation>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component2"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565173">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565173"/>
+        <sbol:displayId>annotation21</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565173/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565173/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>63</sbol:start>
+            <sbol:end>74</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component20"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565250">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565250"/>
+        <sbol:displayId>annotation46</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565250/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565250/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>1905</sbol:start>
+            <sbol:end>1945</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component45"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565190">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565190"/>
+        <sbol:displayId>annotation27</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565190/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565190/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>572</sbol:start>
+            <sbol:end>572</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component26"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565222">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565222"/>
+        <sbol:displayId>annotation37</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565222/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565222/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>1026</sbol:start>
+            <sbol:end>1031</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component36"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -680,19 +835,35 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565252">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565252"/>
-        <sbol:displayId>annotation48</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565209">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565209"/>
+        <sbol:displayId>annotation34</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565252/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565252/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565209/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565209/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1932</sbol:start>
-            <sbol:end>1945</sbol:end>
+            <sbol:start>991</sbol:start>
+            <sbol:end>991</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component47"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component33"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565223">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565223"/>
+        <sbol:displayId>annotation38</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565223/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565223/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>1048</sbol:start>
+            <sbol:end>1053</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component37"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -709,67 +880,67 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565186">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565186"/>
-        <sbol:displayId>annotation25</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565253">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565253"/>
+        <sbol:displayId>annotation49</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565186/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565186/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565253/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565253/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>81</sbol:start>
-            <sbol:end>82</sbol:end>
+            <sbol:start>1938</sbol:start>
+            <sbol:end>1938</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component24"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component48"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565208">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565208"/>
-        <sbol:displayId>annotation33</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565197">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565197"/>
+        <sbol:displayId>annotation30</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565208/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565208/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565197/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565197/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>985</sbol:start>
-            <sbol:end>998</sbol:end>
+            <sbol:start>881</sbol:start>
+            <sbol:end>924</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component32"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component29"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565168">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565168"/>
-        <sbol:displayId>annotation20</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565207">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565207"/>
+        <sbol:displayId>annotation32</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565168/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565168/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565207/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565207/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>43</sbol:start>
-            <sbol:end>48</sbol:end>
+            <sbol:start>965</sbol:start>
+            <sbol:end>984</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component19"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component31"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565233">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565233"/>
-        <sbol:displayId>annotation42</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565240">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565240"/>
+        <sbol:displayId>annotation44</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565233/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565233/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565240/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565240/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1076</sbol:start>
-            <sbol:end>1079</sbol:end>
+            <sbol:start>1817</sbol:start>
+            <sbol:end>1896</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component41"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component43"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -783,38 +954,6 @@
           </sbol:GenericLocation>
         </sbol:location>
         <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component1"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565191">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565191"/>
-        <sbol:displayId>annotation28</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565191/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565191/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>837</sbol:start>
-            <sbol:end>861</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component27"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565235">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565235"/>
-        <sbol:displayId>annotation43</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565235/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565235/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1089</sbol:start>
-            <sbol:end>1808</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component42"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -857,125 +996,35 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565209">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565209"/>
-        <sbol:displayId>annotation34</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565251">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565251"/>
+        <sbol:displayId>annotation47</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565209/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565209/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565251/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565251/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>991</sbol:start>
-            <sbol:end>991</sbol:end>
+            <sbol:start>1912</sbol:start>
+            <sbol:end>1931</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component33"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component46"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_5339_2">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_5339_2"/>
-        <sbol:displayId>annotation12</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565232">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565232"/>
+        <sbol:displayId>annotation41</sbol:displayId>
         <sbol:location>
-          <sbol:GenericLocation rdf:about="http://partsregistry.org/anot/an_5591_5339_2/genericLocation">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_5339_2/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-          </sbol:GenericLocation>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component11"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565224">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565224"/>
-        <sbol:displayId>annotation39</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565224/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565224/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565232/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565232/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1059</sbol:start>
-            <sbol:end>1059</sbol:end>
+            <sbol:start>1070</sbol:start>
+            <sbol:end>1082</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component38"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565189">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565189"/>
-        <sbol:displayId>annotation26</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565189/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565189/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>254</sbol:start>
-            <sbol:end>254</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component25"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_5309_8">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_5309_8"/>
-        <sbol:displayId>annotation8</sbol:displayId>
-        <sbol:location>
-          <sbol:GenericLocation rdf:about="http://partsregistry.org/anot/an_5591_5309_8/genericLocation">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_5309_8/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-          </sbol:GenericLocation>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component7"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565223">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565223"/>
-        <sbol:displayId>annotation38</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565223/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565223/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1048</sbol:start>
-            <sbol:end>1053</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component37"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565190">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565190"/>
-        <sbol:displayId>annotation27</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565190/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565190/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>572</sbol:start>
-            <sbol:end>572</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component26"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565187">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565187"/>
-        <sbol:displayId>annotation24</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565187/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565187/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>81</sbol:start>
-            <sbol:end>830</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component23"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component40"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -995,6 +1044,112 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_5339_2">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_5339_2"/>
+        <sbol:displayId>annotation12</sbol:displayId>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="http://partsregistry.org/anot/an_5591_5339_2/genericLocation">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_5339_2/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+          </sbol:GenericLocation>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component11"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565241">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565241"/>
+        <sbol:displayId>annotation45</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565241/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565241/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>1828</sbol:start>
+            <sbol:end>1871</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component44"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565191">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565191"/>
+        <sbol:displayId>annotation28</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565191/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565191/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>837</sbol:start>
+            <sbol:end>861</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component27"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_5309_8">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_5309_8"/>
+        <sbol:displayId>annotation8</sbol:displayId>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="http://partsregistry.org/anot/an_5591_5309_8/genericLocation">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_5309_8/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+          </sbol:GenericLocation>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component7"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565164">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565164"/>
+        <sbol:displayId>annotation16</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565164/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565164/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>1</sbol:start>
+            <sbol:end>19</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component15"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565188">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565188"/>
+        <sbol:displayId>annotation23</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565188/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565188/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>81</sbol:start>
+            <sbol:end>836</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component22"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565165">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565165"/>
+        <sbol:displayId>annotation17</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565165/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565165/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>1</sbol:start>
+            <sbol:end>54</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component16"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_603_4">
         <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_603_4"/>
         <sbol:displayId>annotation4</sbol:displayId>
@@ -1008,144 +1163,51 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565222">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565222"/>
-        <sbol:displayId>annotation37</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565252">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565252"/>
+        <sbol:displayId>annotation48</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565222/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565222/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565252/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565252/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1026</sbol:start>
-            <sbol:end>1031</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component36"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565172">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565172"/>
-        <sbol:displayId>annotation22</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565172/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565172/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>67</sbol:start>
-            <sbol:end>70</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component21"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565220">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565220"/>
-        <sbol:displayId>annotation35</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565220/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565220/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1007</sbol:start>
-            <sbol:end>1026</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component34"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565197">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565197"/>
-        <sbol:displayId>annotation30</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565197/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565197/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>881</sbol:start>
-            <sbol:end>924</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component29"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_187_1">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_187_1"/>
-        <sbol:displayId>annotation1</sbol:displayId>
-        <sbol:location>
-          <sbol:GenericLocation rdf:about="http://partsregistry.org/anot/an_5591_187_1/genericLocation">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_187_1/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-          </sbol:GenericLocation>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component0"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565173">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565173"/>
-        <sbol:displayId>annotation21</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565173/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565173/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>63</sbol:start>
-            <sbol:end>74</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component20"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565250">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565250"/>
-        <sbol:displayId>annotation46</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565250/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565250/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1905</sbol:start>
+            <sbol:start>1932</sbol:start>
             <sbol:end>1945</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component45"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component47"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565253">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565253"/>
-        <sbol:displayId>annotation49</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565224">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565224"/>
+        <sbol:displayId>annotation39</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565253/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565253/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565224/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565224/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1938</sbol:start>
-            <sbol:end>1938</sbol:end>
+            <sbol:start>1059</sbol:start>
+            <sbol:end>1059</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component48"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component38"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565251">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565251"/>
-        <sbol:displayId>annotation47</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565206">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565206"/>
+        <sbol:displayId>annotation31</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565251/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565251/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565206/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565206/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1912</sbol:start>
-            <sbol:end>1931</sbol:end>
+            <sbol:start>958</sbol:start>
+            <sbol:end>998</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component46"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component30"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -1165,6 +1227,35 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_187_1">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_187_1"/>
+        <sbol:displayId>annotation1</sbol:displayId>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="http://partsregistry.org/anot/an_5591_187_1/genericLocation">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_187_1/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+          </sbol:GenericLocation>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component0"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565208">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565208"/>
+        <sbol:displayId>annotation33</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565208/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565208/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>985</sbol:start>
+            <sbol:end>998</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component32"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_145_10">
         <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/an_5591_145_10"/>
         <sbol:displayId>annotation10</sbol:displayId>
@@ -1178,19 +1269,67 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565188">
-        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565188"/>
-        <sbol:displayId>annotation23</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565233">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565233"/>
+        <sbol:displayId>annotation42</sbol:displayId>
         <sbol:location>
-          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565188/range">
-            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565188/range"/>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565233/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565233/range"/>
             <sbol:displayId>range</sbol:displayId>
-            <sbol:start>81</sbol:start>
-            <sbol:end>836</sbol:end>
+            <sbol:start>1076</sbol:start>
+            <sbol:end>1079</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component22"/>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component41"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565220">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565220"/>
+        <sbol:displayId>annotation35</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565220/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565220/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>1007</sbol:start>
+            <sbol:end>1026</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component34"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565168">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565168"/>
+        <sbol:displayId>annotation20</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565168/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565168/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>43</sbol:start>
+            <sbol:end>48</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component19"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://partsregistry.org/anot/f_1565189">
+        <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565189"/>
+        <sbol:displayId>annotation26</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://partsregistry.org/anot/f_1565189/range">
+            <sbol:persistentIdentity rdf:resource="http://partsregistry.org/anot/f_1565189/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>254</sbol:start>
+            <sbol:end>254</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/part/BBa_T9002/component25"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceConstraint>
@@ -1302,145 +1441,6 @@
       </sbol:SequenceConstraint>
     </sbol:sequenceConstraint>
     <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_5591"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_B0012">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_B0012"/>
-    <sbol:displayId>BBa_B0012</sbol:displayId>
-    <dcterms:description>TE from coliphageT7</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/terminator"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565197">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565197"/>
-    <sbol:displayId>f_1565197</sbol:displayId>
-    <dcterms:title>stem_loop</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/stem_loop"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000313"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565233">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565233"/>
-    <sbol:displayId>f_1565233</sbol:displayId>
-    <dcterms:title>RBS</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000552"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/rbs"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_E0040">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_E0040"/>
-    <sbol:displayId>BBa_E0040</sbol:displayId>
-    <dcterms:title>GFP</dcterms:title>
-    <dcterms:description>green fluorescent protein derived from jellyfish Aequeora victoria wild-type GFP (SwissProt: P42212</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/coding"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565252">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565252"/>
-    <sbol:displayId>f_1565252</sbol:displayId>
-    <dcterms:title>polya</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000553"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/polya"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_B0032">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_B0032"/>
-    <sbol:displayId>BBa_B0032</sbol:displayId>
-    <dcterms:description>RBS.3 (medium) -- derivative of BBa_0030</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000552"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/rbs"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565164">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565164"/>
-    <sbol:displayId>f_1565164</sbol:displayId>
-    <dcterms:title>TetR 1</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/binding"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000409"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_C0062">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_C0062"/>
-    <sbol:displayId>BBa_C0062</sbol:displayId>
-    <dcterms:title>luxr</dcterms:title>
-    <dcterms:description>luxR repressor/activator, (no LVA?)</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/coding"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565251">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565251"/>
-    <sbol:displayId>f_1565251</sbol:displayId>
-    <dcterms:title>T7 TE</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/stem_loop"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000313"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565166">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565166"/>
-    <sbol:displayId>f_1565166</sbol:displayId>
-    <dcterms:title>-35</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/promoter"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_R0040">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_R0040"/>
-    <sbol:displayId>BBa_R0040</sbol:displayId>
-    <dcterms:title>p(tetR)</dcterms:title>
-    <dcterms:description>TetR repressible promoter</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/regulatory"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0005836"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565168">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565168"/>
-    <sbol:displayId>f_1565168</sbol:displayId>
-    <dcterms:title>-10</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/promoter"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565241">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565241"/>
-    <sbol:displayId>f_1565241</sbol:displayId>
-    <dcterms:title>stem_loop</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/stem_loop"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000313"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565190">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565190"/>
-    <sbol:displayId>f_1565190</sbol:displayId>
-    <dcterms:title>A</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0001017"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/s_mutation"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565187">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565187"/>
-    <sbol:displayId>f_1565187</sbol:displayId>
-    <dcterms:title>luxR</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/cds"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565231">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565231"/>
-    <sbol:displayId>f_1565231</sbol:displayId>
-    <dcterms:title>RBS-3\Weak</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000552"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/rbs"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565172">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565172"/>
-    <sbol:displayId>f_1565172</sbol:displayId>
-    <dcterms:title>conserved</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://purl.obolibrary.org/obo/conserved"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000856"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://partsregistry.org/feat/f_1565220">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/feat/f_1565220"/>
