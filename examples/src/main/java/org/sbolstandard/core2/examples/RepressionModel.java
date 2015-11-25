@@ -15,6 +15,7 @@ import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
+import org.sbolstandard.core2.SystemsBiologyOntology;
 
 
 public class RepressionModel {
@@ -131,7 +132,7 @@ public class RepressionModel {
 		ComponentDefinition gRNA_b_coding_sequence = repressionDoc.createComponentDefinition("gRNA_b_coding_sequence", "1.0", DNAType);
 		repressionDoc.getComponentDefinition("gRNA_b_coding_sequence", "1.0").addSequence(gRNA_b_seq);
 		//gRNA_b_terminator
-		ComponentDefinition gRNA_b_terminator = repressionDoc.createComponentDefinition("gRNA_b_terminator", DNAType); 
+		ComponentDefinition gRNA_b_terminator = repressionDoc.createComponentDefinition("gRNA_b_terminator", "1.0", DNAType); 
 		
 		//pieced together version of gRNA
 		ComponentDefinition gRNA_components = repressionDoc.createComponentDefinition("gRNA_components", "1.0", DNAType);
@@ -239,15 +240,7 @@ public class RepressionModel {
 		CRISPR_Repression_Template.createFunctionalComponent("target_protein_generic_FC", AccessType.PUBLIC, "target_protein_generic", "1.0", DirectionType.OUT);
 		CRISPR_Repression_Template.createFunctionalComponent("target_gene_generic_FC", AccessType.PUBLIC, "target_gene_generic", "1.0", DirectionType.NONE);
 
-		//interactions within CRISPR_Repression_Template Module Definition
-		URI non_convelent = null;
-		try 
-		{
-			non_convelent = new URI("http://identifiers.org/biomodels.sbo/SBO:0000177");
-		} 
-		catch (URISyntaxException e) {}
-		
-		CRISPR_Repression_Template.createInteraction("Cas9Complex_Formation", (HashSet<URI>)Arrays.asList(non_convelent));
+		CRISPR_Repression_Template.createInteraction("Cas9Complex_Formation", (HashSet<URI>)Arrays.asList(SystemsBiologyOntology.NON_COVALENT_BINDING));
 		
 		//get CAS9Complex_Formation interaction and add participants
 		CRISPR_Repression_Template.getInteraction("Cas9Complex_Formation").createParticipation("cas9m_participant", "cas9_generic_FC").addRole(new URI("SBO:0000011"));
@@ -255,6 +248,17 @@ public class RepressionModel {
 		CRISPR_Repression_Template.getInteraction("Cas9Complex_Formation").createParticipation("cas9_complex_generic_participant", "cas9_complex_generic_FC").addRole(new URI("SBO:0000010"));
 
 		//TODO: possible further interactions in CRISPR_Repression_Template Module Definition
+		//SystemsBiologyOntology.GENETIC_PRODUCTION;
+		//SystemsBiologyOntology.PROMOTER;
+		//SystemsBiologyOntology.PRODUCT;
+
+		//SystemsBiologyOntology.GENETIC_ENHANCEMENT;
+		//SystemsBiologyOntology.STIMULATOR;
+		//SystemsBiologyOntology.PROMOTER;
+		
+		//SystemsBiologyOntology.GENETIC_SUPPRESSION;
+		//SystemsBiologyOntology.INHIBITOR
+		//SystemsBiologyOntology.PROMOTER;
 		
 		
 		ModuleDefinition CRISPR_Repression = repressionDoc.createModuleDefinition("CRISPR_Repression", "1.0");
@@ -292,7 +296,7 @@ public class RepressionModel {
 
 
 		try{
-			SBOLWriter.write(repressionDoc, "Document.SBOL");
+			SBOLWriter.write(repressionDoc, "crispr.rdf");
 			//repressionDoc.wr
 		}
 		catch(Exception e){}
