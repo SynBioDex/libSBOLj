@@ -9,7 +9,7 @@
         <version>2.0</version>
     </parent>
 
-    <artifactId>libSBOLj</artifactId>
+    <artifactId>libSBOLj-core</artifactId>
 
     <packaging>jar</packaging>
 
