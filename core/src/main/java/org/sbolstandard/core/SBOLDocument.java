@@ -24,6 +24,7 @@ import org.sbolstandard.core.util.SBOLObjectCollector;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public interface SBOLDocument extends SBOLVisitable {
 	/**
 	 * Returns the top-level objects contained in this document. Top level objects may contain other SBOL objects. For

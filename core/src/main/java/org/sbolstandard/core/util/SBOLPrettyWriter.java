@@ -33,6 +33,7 @@ import org.sbolstandard.core.SequenceAnnotation;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public class SBOLPrettyWriter implements SBOLWriter {
 	public SBOLPrettyWriter() {
 	}

@@ -23,6 +23,7 @@ import java.io.InputStream;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public interface SBOLReader {
 	/**
 	 * Reads the contents of an SBOL document from the given input stream into a newly created document instance.
