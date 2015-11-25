@@ -17,7 +17,7 @@
         <!-- dependencies used by libSBOLj -->
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
-            <artifactId>libSBOLj</artifactId>
+            <artifactId>libSBOLj-core</artifactId>
             <version>1.0</version>
         </dependency>
         <dependency>

@@ -6,7 +6,7 @@
     <artifactId>libSBOLj-parent</artifactId>
     <version>2.0</version>
     <packaging>pom</packaging>
-    <name>libSBOLj</name>
+    <name>libSBOLj-parent</name>
     <description>Implementation of the SBOL 2.0 data standard.</description>
     <url>https://github.com/SynBioDex/libSBOLj</url>
 
@@ -174,3 +174,4 @@
 		</profile>
 	</profiles>	
 </project>
+
