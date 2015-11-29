@@ -1,22 +1,28 @@
 package org.sbolstandard.core2.examples;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
 
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
+
 import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.DirectionType;
-import org.sbolstandard.core2.FunctionalComponent;
 import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.RefinementType;
+import org.sbolstandard.core2.RestrictionType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceOntology;
 import org.sbolstandard.core2.SystemsBiologyOntology;
+
+import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 /*
  * CRISPR_Repression Model Example
@@ -30,16 +36,90 @@ public class RepressionModel {
 
 	public static void main(String[] args) throws URISyntaxException {
 	
-		String prURI="http://www.async.ece.utah.edu/CRISPR_Example";
-		String version = "";
-		SBOLDocument repressionDoc = new SBOLDocument();
-
-		repressionDoc.setDefaultURIprefix(prURI);
-		repressionDoc.setTypesInURIs(false);
-		repressionDoc.setComplete(true);
-		repressionDoc.setCreateDefaults(true);
+		String prURI="http://sbols.org/CRISPR_Example";
+		String version = "1.0";
+	
+		// ComponentDefinition types
+		HashSet<URI> ProteinType = new HashSet<URI>();
+		ProteinType.add(ComponentDefinition.PROTEIN);
 		
-		//make sequences for CD		
+		HashSet<URI> DNAType = new HashSet<URI>();
+		DNAType.add(ComponentDefinition.DNA);
+		
+		HashSet<URI> RNAType = new HashSet<URI>();
+		RNAType.add(ComponentDefinition.RNA);
+
+        // Interaction Types
+		HashSet<URI> non_covalent_type = new HashSet<URI>();
+		non_covalent_type.add(SystemsBiologyOntology.NON_COVALENT_BINDING);
+		
+		HashSet<URI> enhancement = new HashSet<URI>();
+		enhancement.add(SystemsBiologyOntology.GENETIC_ENHANCEMENT);
+		
+		HashSet<URI> production = new HashSet<URI>();
+		production.add(SystemsBiologyOntology.GENETIC_PRODUCTION);
+		
+		HashSet<URI> suppression = new HashSet<URI>();
+		suppression.add(SystemsBiologyOntology.GENETIC_SUPPRESSION);
+		
+		SBOLDocument doc = new SBOLDocument();
+
+		doc.setDefaultURIprefix(prURI);
+		doc.setTypesInURIs(false);
+		doc.setComplete(true);
+		doc.setCreateDefaults(true);
+		
+		// Create ComponentDefinition for cas9_generic gene
+		doc.createComponentDefinition("cas9_generic_gene", version, DNAType).addRole(SequenceOntology.PROMOTER);
+		
+		// Create ComponentDefinition for cas9_generic protein
+		doc.createComponentDefinition("cas9_generic", version, ProteinType);
+
+		// Create ComponentDefinition for gRNA_generic gene
+		doc.createComponentDefinition("gRNA_generic_gene",version, DNAType).addRole(SequenceOntology.PROMOTER);
+		
+		// Create ComponentDefinition for gRNA_generic RNA
+		doc.createComponentDefinition("gRNA_generic",version, RNAType);
+
+		// Create ComponentDefinition for cas9_gRNA_complex
+		doc.createComponentDefinition("cas9_gRNA_complex",version, ProteinType);
+
+		// Create ComponentDefinition for target gene
+		doc.createComponentDefinition("target_gene",version, DNAType).addRole(SequenceOntology.PROMOTER);
+
+		// Create ComponentDefinition for target protein
+		doc.createComponentDefinition("target",version, ProteinType);
+
+		// Create ModuleDefinition for CRISPR_Repression_Template		
+		ModuleDefinition  CRISPR_Template = doc.createModuleDefinition("CRISPR_Template", version);
+
+		// Complex Formation Interaction for Cas9m_BFP and gRNA 
+		Interaction Cas9Complex_Formation = CRISPR_Template.createInteraction("cas9_complex_formation", non_covalent_type);
+		Cas9Complex_Formation.createParticipation("cas9_generic", "cas9_generic").addRole(SystemsBiologyOntology.REACTANT);
+		Cas9Complex_Formation.createParticipation("gRNA_generic", "gRNA_generic").addRole(SystemsBiologyOntology.REACTANT);
+		Cas9Complex_Formation.createParticipation("cas9_gRNA_complex", "cas9_gRNA_complex").addRole(SystemsBiologyOntology.PRODUCT);
+		
+		// Production of cas9m_generic from cas9m_generic_gene
+		Interaction cas9m_production = CRISPR_Template.createInteraction("cas9_generic_production", production);
+		cas9m_production.createParticipation("cas9_generic_gene", "cas9_generic_gene").addRole(SystemsBiologyOntology.PROMOTER);
+		cas9m_production.createParticipation("cas9_generic", "cas9_generic").addRole(SystemsBiologyOntology.PRODUCT);
+		
+		// Production of gRNA from gRNA gene
+		Interaction gRNA_production = CRISPR_Template.createInteraction("gRNA_production", production);
+		gRNA_production.createParticipation("gRNA_generic_gene", "gRNA_generic_gene").addRole(SystemsBiologyOntology.PROMOTER);
+		gRNA_production.createParticipation("gRNA_generic", "gRNA_generic").addRole(SystemsBiologyOntology.PRODUCT);
+
+		// Production of target from target gene
+		Interaction EYFP_production = CRISPR_Template.createInteraction("target_production", production);
+		EYFP_production.createParticipation("target_gene", "target_gene").addRole(SystemsBiologyOntology.PROMOTER);
+		EYFP_production.createParticipation("target", "target").addRole(SystemsBiologyOntology.PRODUCT);
+	
+		// Inhibition of target by cas9m_BFP_gRNA 
+		Interaction target_generic_gene_inhibition = CRISPR_Template.createInteraction("target_gene_inhibition", suppression);
+		target_generic_gene_inhibition.createParticipation("cas9_gRNA_complex", "cas9_gRNA_complex").addRole(SystemsBiologyOntology.INHIBITOR);
+		target_generic_gene_inhibition.createParticipation("target_gene", "target_gene").addRole(SystemsBiologyOntology.PROMOTER);
+		
+		// Create Sequence for CRa_U6 promoter
 		String CRa_U6_seq_elements = "GGTTTACCGAGCTCTTATTGGTTTTCAAACTTCATTGACTGTGCC" +
                 "AAGGTCGGGCAGGAAGAGGGCCTATTTCCCATGATTCCTTCATAT" +
                 "TTGCATATACGATACAAGGCTGTTAGAGAGATAATTAGAATTAAT" +
@@ -51,10 +131,9 @@ public class RepressionModel {
                 "AGAGCTATGCTGGAAACAGCAGAAATAGCAAGTTTAAATAAGGCT" +
                 "AGTCCGTTATCAACTTGAAAAAGTGGCACCGAGTCGGTGCTTTTT" +
                 "TTGGTGCGTTTTTATGCTTGTAGTATTGTATAATGTTTTT";
+		doc.createSequence("CRa_U6_seq", version, CRa_U6_seq_elements, Sequence.IUPAC_DNA); 
 		
-		
-		Sequence cra_u6_seq = repressionDoc.createSequence("CRa_U6_promoter_seq", CRa_U6_seq_elements, Sequence.IUPAC_DNA); //find promoter type from ontology
-		
+		// Create Sequence for gRNA_b coding sequence
 		String gRNA_b_elements = "AAGGTCGGGCAGGAAGAGGGCCTATTTCCCATGATTCCTTCATAT" +
                 "TTGCATATACGATACAAGGCTGTTAGAGAGATAATTAGAATTAAT" +
                 "TTGACTGTAAACACAAAGATATTAGTACAAAATACGTGACGTAGA" +
@@ -64,9 +143,9 @@ public class RepressionModel {
                 "CATCAGGAACATGTGTTTAAGAGCTATGCTGGAAACAGCAGAAAT" +
                 "AGCAAGTTTAAATAAGGCTAGTCCGTTATCAACTTGAAAAAGTGG" +
                 "CACCGAGTCGGTGCTTTTTTT";
+		doc.createSequence("gRNA_b_seq", version, gRNA_b_elements, Sequence.IUPAC_DNA);
 		
-		Sequence gRNA_b_seq = repressionDoc.createSequence("gRNA_b_seq", gRNA_b_elements, Sequence.IUPAC_DNA);
-		
+		// Create Sequence for mKate
 		String mKate_seq_elements = "TCTAAGGGCGAAGAGCTGATTAAGGAGAACATGCACATGAAGCTG" +
                 "TACATGGAGGGCACCGTGAACAACCACCACTTCAAGTGCACATCC" +
                 "GAGGGCGAAGGCAAGCCCTACGAGGGCACCCAGACCATGAGAATC" +
@@ -86,9 +165,9 @@ public class RepressionModel {
                 "GTCTACTATGTGGACAGAAGACTGGAAAGAATCAAGGAGGCCGAC" +
                 "AAAGAGACCTACGTCGAGCAGCACGAGGTGGCTGTGGCCAGATAC" +
                 "TGCG";
-		
-		Sequence mKate_seq = repressionDoc.createSequence("mKate_seq", mKate_seq_elements, Sequence.IUPAC_DNA);
+		doc.createSequence("mKate_seq", version, mKate_seq_elements, Sequence.IUPAC_DNA);
 
+		// Create Sequence for CRP_b promoter
 		String CRP_b_seq_elements =  "GCTCCGAATTTCTCGACAGATCTCATGTGATTACGCCAAGCTACG" +
                 "GGCGGAGTACTGTCCTCCGAGCGGAGTACTGTCCTCCGAGCGGAG" +
                 "TACTGTCCTCCGAGCGGAGTACTGTCCTCCGAGCGGAGTTCTGTC" +
@@ -96,248 +175,144 @@ public class RepressionModel {
                 "TCTAGGCGTGTACGGTGGGAGGCCTATATAAGCAGAGCTCGTTTA" +
                 "GTGAACCGTCAGATCGCCTCGAGTACCTCATCAGGAACATGTTGG" +
                 "ATCCAATTCGACC";
+		doc.createSequence("CRP_b_seq", version, CRP_b_seq_elements, Sequence.IUPAC_DNA);
 		
-		Sequence CRP_b_seq = repressionDoc.createSequence("CRP_b_seq", CRP_b_seq_elements, Sequence.IUPAC_DNA);
-
-		//make ComponentDefinitions for the ModuleDefinitions
+		// Create ComponentDefinition for a Constitutive Promoter
+		doc.createComponentDefinition("pConst", version, DNAType);
 		
-		HashSet<URI> ProteinType = new HashSet<URI>();
-		ProteinType.add(ComponentDefinition.PROTEIN);
+		// Create ComponentDefinition for cas9m_BFP coding sequence
+		doc.createComponentDefinition("cas9m_BFP_cds", version, DNAType);
 		
-		HashSet<URI> DNAType = new HashSet<URI>();
-		DNAType.add(ComponentDefinition.DNA);
-		
-		HashSet<URI> RNAType = new HashSet<URI>();
-		RNAType.add(ComponentDefinition.RNA);
-		
-		//the cas9m_BFP protein which is unspecified
-		ComponentDefinition Cas9m_BFP = repressionDoc.createComponentDefinition("Cas9m_BFP", version, ProteinType);
-		
-		//cas9m_BFP coding sequence
-		ComponentDefinition cas9m_BFP_CDS = repressionDoc.createComponentDefinition("cas9m_BFP_CDS", version, DNAType);
-		
-		//pConst
-		ComponentDefinition pConst = repressionDoc.createComponentDefinition("pConst", version, DNAType);
-		
-		//pieced together version of cas9
-		ComponentDefinition cas9m_BFP_gene = repressionDoc.createComponentDefinition("cas9m_BFP_gene", version, DNAType);
+		// Create ComponentDefinition for cas9m_BFP gene
+		ComponentDefinition cas9m_BFP_gene = doc.createComponentDefinition("cas9m_BFP_gene", version, DNAType);
 		cas9m_BFP_gene.addRole(SequenceOntology.PROMOTER);
+		cas9m_BFP_gene.createSequenceConstraint("cas9m_BFP_gene_constraint", RestrictionType.PRECEDES, "pConst", "cas9m_BFP_cds");
 		
-		//add the components to cas9
-		cas9m_BFP_gene.createComponent("cas9_BFP_component", AccessType.PUBLIC, cas9m_BFP_CDS.getIdentity());
-		cas9m_BFP_gene.createComponent("cas9m_BFP_promoter_component", AccessType.PUBLIC, pConst.getIdentity());
+		// Create ComponentDefintion for cas9m_BFP protein
+		doc.createComponentDefinition("cas9m_BFP", version, ProteinType);
+		
+		// Create ComponentDefintion for CRa_U6 promoter
+		ComponentDefinition CRa_U6 = doc.createComponentDefinition("CRa_U6", version, DNAType);
+		CRa_U6.addRole(SequenceOntology.PROMOTER);
+		CRa_U6.addSequence("CRa_U6_seq",version);
+		
+		// Create ComponentDefintion for gRNA_b coding sequence
+		ComponentDefinition gRNA_b_cds = doc.createComponentDefinition("gRNA_b_cds", version, DNAType);
+		gRNA_b_cds.addRole(SequenceOntology.CDS);
+		gRNA_b_cds.addSequence("gRNA_b_seq", version);
+		
+		// Create ComponentDefinition for gRNA_b terminator
+		doc.createComponentDefinition("gRNA_b_terminator", version, DNAType).addRole(SequenceOntology.TERMINATOR); 
+		
+		// Create ComponentDefinition for gRNA_b gene
+		ComponentDefinition gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", version, DNAType);
+		gRNA_b_gene.addRole(SequenceOntology.PROMOTER);
+		cas9m_BFP_gene.createSequenceConstraint("gRNA_b_gene_constraint1", RestrictionType.PRECEDES, "CRa_U6", "gRNA_b_cds");
+		cas9m_BFP_gene.createSequenceConstraint("gRNA_b_gene_constraint2", RestrictionType.PRECEDES, "gRNA_b_cds","gRNA_b_terminator");
 
-		//gRNA_b mRNA
-		ComponentDefinition gRNA_b_mRNA = repressionDoc.createComponentDefinition("gRNA_b_mRNA", version, RNAType);
+		// Create ComponentDefinition for gRNA_b RNA
+		doc.createComponentDefinition("gRNA_b", version, RNAType);
+		  
+		// Create ComponentDefinition for cas9m_BFP gRNA_b complex 
+		doc.createComponentDefinition("cas9m_BFP_gRNA_b", version, ProteinType);
 		
-		//CRa_U6 promoter
-		ComponentDefinition CRa_U6_promoter = repressionDoc.createComponentDefinition("CRa_U6_promoter", version, DNAType);
+		// Create ComponentDefinition for mKate coding sequence
+		ComponentDefinition mKate_cds = doc.createComponentDefinition("mKate_cds", version, DNAType);
+		mKate_cds.addRole(SequenceOntology.CDS);
+		mKate_cds.addSequence("mKate_seq", version);
 		
-		repressionDoc.getComponentDefinition(CRa_U6_promoter.getIdentity()).addSequence(cra_u6_seq);
-		
-		//gRNA_b coding sequence
-		ComponentDefinition gRNA_b_coding_sequence = repressionDoc.createComponentDefinition("gRNA_b_coding_sequence", version, DNAType);
-		repressionDoc.getComponentDefinition(gRNA_b_coding_sequence.getIdentity()).addSequence(gRNA_b_seq);
-		
-		//gRNA_b_terminator
-		ComponentDefinition gRNA_b_terminator = repressionDoc.createComponentDefinition("gRNA_b_terminator", version, DNAType); 
-		
-		//pieced together version of gRNA
-		ComponentDefinition gRNA_gene = repressionDoc.createComponentDefinition("gRNA_gene", version, DNAType);
-		gRNA_gene.addRole(SequenceOntology.PROMOTER);
-		
-		//add the components gRNA
-		gRNA_gene.createComponent("CRa_U6_promoter_component", AccessType.PUBLIC, CRa_U6_promoter.getIdentity());
-		gRNA_gene.createComponent("gRNA_b_coding_seq_component", AccessType.PUBLIC, gRNA_b_coding_sequence.getIdentity());
-		gRNA_gene.createComponent("gRNA_b_terminator_component", AccessType.PUBLIC, gRNA_b_terminator.getDisplayId(), version);
-		
-		//unspecified_mKate_protein
-		ComponentDefinition mKate = repressionDoc.createComponentDefinition("mKate", version, ProteinType);
-		
-		//mKate_coding_sequence
-		ComponentDefinition mKate_coding_sequence = repressionDoc.createComponentDefinition("mKate_coding_sequence", version, DNAType);
-		repressionDoc.getComponentDefinition(mKate_coding_sequence.getIdentity()).addSequence(mKate_seq);
-		
-		//mKate CD pieced together
-		ComponentDefinition mKate_gene = repressionDoc.createComponentDefinition("mKate_gene", version, DNAType);
+		// Create ComponentDefinition for mKate gene
+		ComponentDefinition mKate_gene = doc.createComponentDefinition("mKate_gene", version, DNAType);
 		mKate_gene.addRole(SequenceOntology.PROMOTER);
+		mKate_gene.createSequenceConstraint("mKate_gene_constraint", RestrictionType.PRECEDES, "pConst", "mKate_cds");
 		
-		//add components to mKate_components
-		mKate_gene.createComponent("mKate_promoter_component", AccessType.PUBLIC, pConst.getIdentity());
-		mKate_gene.createComponent("mKate_codingSeq_component", AccessType.PUBLIC, mKate_coding_sequence.getIdentity());
-		
-		//Gal4VP16 protein
-		ComponentDefinition Gal4VP16 = repressionDoc.createComponentDefinition("Gal4VP16", version, ProteinType);
+		// Create ComponentDefinition for mKate protein
+		doc.createComponentDefinition("mKate", version, ProteinType);
 
-		//make Gal4VP16_codng Sequence
-		ComponentDefinition Gal4VP16_coding_sequence = repressionDoc.createComponentDefinition("Gal4VP16_coding_sequence", version, DNAType);
+		// Create ComponentDefinition for Gal4VP16 coding sequence
+		ComponentDefinition Gal4VP16_cds = doc.createComponentDefinition("Gal4VP16_cds", version, DNAType);
+		Gal4VP16_cds.addRole(SequenceOntology.CDS);
 		
-		//make pieced together version of Gal4VP16_components
-		ComponentDefinition Gal4VP16_gene = repressionDoc.createComponentDefinition("Gal4VP16_gene", version, DNAType);
+		// Create ComponentDefintion for Gal4VP16 gene
+		ComponentDefinition Gal4VP16_gene = doc.createComponentDefinition("Gal4VP16_gene", version, DNAType);
 		Gal4VP16_gene.addRole(SequenceOntology.PROMOTER);
+		Gal4VP16_gene.createSequenceConstraint("GAL4VP16_gene_constraint", RestrictionType.PRECEDES, "pConst", "Gal4VP16_cds");
 		
-		//add components to Gal4VP16_components
-		Gal4VP16_gene.createComponent("Gal4VP16_promoter_component", AccessType.PUBLIC, pConst.getIdentity());
-		Gal4VP16_gene.createComponent("Gal4VP16_codingSeq_component", AccessType.PUBLIC, Gal4VP16_coding_sequence.getIdentity());
-  
-		//cas9m_BFP_gRNA_b 
-		ComponentDefinition cas9m_BFP_gRNA_b = repressionDoc.createComponentDefinition("cas9m_BFP_gRNA_b", version, ProteinType);
-
-		//EYFP_protein
-		ComponentDefinition EYFP = repressionDoc.createComponentDefinition("EYFP", version, ProteinType);
+		// Create ComponentDefintion for Gal4VP16 protein
+		doc.createComponentDefinition("Gal4VP16", version, ProteinType);
 		
-		//EYFP genetic coding sequence
-		ComponentDefinition EYFP_coding_sequence = repressionDoc.createComponentDefinition("EYFP_coding_sequence", version, DNAType);
+		// Create ComponentDefinition for CRP_b promoter
+		ComponentDefinition CRP_b = doc.createComponentDefinition("CRP_b", version, DNAType);
+		CRP_b.addRole(SequenceOntology.PROMOTER);
+		CRP_b.addSequence("CRP_b_seq", version);
 		
-		//CRP_b_promoter
-		ComponentDefinition CRP_b_promoter = repressionDoc.createComponentDefinition("CRP_b_promoter", version, ProteinType);
-		repressionDoc.getComponentDefinition(CRP_b_promoter.getIdentity()).addSequence(CRP_b_seq);
+		// Create ComponentDefintiion for EYFP coding sequence
+		ComponentDefinition EYFP_cds = doc.createComponentDefinition("EYFP_cds", version, DNAType);
+		EYFP_cds.addRole(SequenceOntology.CDS);
 		
-		//piece together components for EYFP_components
-		ComponentDefinition EYFP_gene = repressionDoc.createComponentDefinition("EYFP_gene", version, DNAType);
+		// Create ComponentDefinition for EYFP gene
+		ComponentDefinition EYFP_gene = doc.createComponentDefinition("EYFP_gene", version, DNAType);
 		EYFP_gene.addRole(SequenceOntology.PROMOTER);
-		
-		//add components to EYFP_components
-		EYFP_gene.createComponent("EYFP_coding_sequence_component", AccessType.PUBLIC, EYFP_coding_sequence.getIdentity());
-		EYFP_gene.createComponent("CRP_b_promoter_component", AccessType.PUBLIC, CRP_b_promoter.getIdentity());
-			
-		//create Component Definition for CRISPR_Repression_Template
-		
-		//cas9_generic
-		ComponentDefinition cas9_generic = repressionDoc.createComponentDefinition("cas9_generic",version, ProteinType);
-				
-		//cas9_gene_generic
-		ComponentDefinition cas9_gene_generic = repressionDoc.createComponentDefinition("cas9_gene_generic",version, DNAType);
-		cas9_gene_generic.addRole(SequenceOntology.PROMOTER);
-		
-		//gRNA_generic
-		ComponentDefinition gRNA_generic = repressionDoc.createComponentDefinition("gRNA_generic",version, ProteinType);
+		EYFP_gene.createSequenceConstraint("EYFP_gene_constraint", RestrictionType.PRECEDES, "CRP_b", "EYFP_cds");
 
-		//gRNA_gene_generic
-		ComponentDefinition gRNA_gene_generic = repressionDoc.createComponentDefinition("gRNA_gene_generic",version, DNAType);
-		gRNA_gene_generic.addRole(SequenceOntology.PROMOTER);
+		// Create ComponentDefintiion for EYFP protein
+		doc.createComponentDefinition("EYFP", version, ProteinType);
 
-		//cas9_complex_generic
-		ComponentDefinition cas9_complex_generic = repressionDoc.createComponentDefinition("cas9_complex_generic",version, ProteinType);
+		// Create ModuleDefintion for CRISPR Repression
+		ModuleDefinition CRISPR_Repression = doc.createModuleDefinition("CRISPR_Repression", version);
+		
+		// Create the FunctionalComponents for the ModuleDefinition CRISPR_Repression
+		CRISPR_Repression.createFunctionalComponent("cas9m_BFP", AccessType.PRIVATE, "cas9m_BFP", version, DirectionType.NONE);
+		CRISPR_Repression.createFunctionalComponent("cas9m_BFP_gene", AccessType.PRIVATE, "cas9m_BFP_gene", version, DirectionType.NONE);
+		
+		CRISPR_Repression.createFunctionalComponent("gRNA_b", AccessType.PRIVATE, "gRNA_b", version, DirectionType.NONE);
+		CRISPR_Repression.createFunctionalComponent("gRNA_b_gene", AccessType.PRIVATE, "gRNA_b_gene", version, DirectionType.NONE);
 
-		//target_protein_generic
-		ComponentDefinition target_protein_generic = repressionDoc.createComponentDefinition("target_protein_generic",version, ProteinType);
+		CRISPR_Repression.createFunctionalComponent("mKate", AccessType.PRIVATE, "mKate", version, DirectionType.NONE);
+		CRISPR_Repression.createFunctionalComponent("mKate_gene", AccessType.PRIVATE, "mKate_gene", version, DirectionType.NONE);
 
-		//target_gene_generic
-		ComponentDefinition target_gene_generic = repressionDoc.createComponentDefinition("target_gene_generic",version, DNAType);
-		target_gene_generic.addRole(SequenceOntology.PROMOTER);
+		CRISPR_Repression.createFunctionalComponent("Gal4VP16", AccessType.PRIVATE, "Gal4VP16", version, DirectionType.NONE);
+		CRISPR_Repression.createFunctionalComponent("Gal4VP16_gene", AccessType.PRIVATE, "Gal4VP16_gene", version, DirectionType.NONE);
 
-		//add ModuleDefinition CRISPR_Repression_Template		
-		ModuleDefinition  CRISPR_Repression_Template = repressionDoc.createModuleDefinition("CRISPR_Repression_Template", version);
-		
-		//add Functional Components 
-		FunctionalComponent cas9_generic_FC = CRISPR_Repression_Template.createFunctionalComponent("cas9_generic", AccessType.PUBLIC, cas9_generic.getIdentity(), DirectionType.IN);
-		FunctionalComponent cas9_gene_generic_FC = CRISPR_Repression_Template.createFunctionalComponent("cas9_gene_generic", AccessType.PUBLIC, cas9_gene_generic.getIdentity(), DirectionType.IN);
-		FunctionalComponent gRNA_generic_FC = CRISPR_Repression_Template.createFunctionalComponent("gRNA_generic", AccessType.PUBLIC, gRNA_generic.getIdentity(), DirectionType.IN);
-		FunctionalComponent gRNA_gene_generic_FC = CRISPR_Repression_Template.createFunctionalComponent("gRNA_gene_generic", AccessType.PUBLIC, gRNA_gene_generic.getIdentity(), DirectionType.IN);
-		FunctionalComponent cas9_complex_generic_FC = CRISPR_Repression_Template.createFunctionalComponent("cas9_complex_generic", AccessType.PUBLIC, cas9_complex_generic.getIdentity(), DirectionType.IN);
-		FunctionalComponent target_protein_generic_FC = CRISPR_Repression_Template.createFunctionalComponent("target_protein_generic", AccessType.PUBLIC, target_protein_generic.getIdentity(), DirectionType.OUT);
-		FunctionalComponent target_gene_generic_FC = CRISPR_Repression_Template.createFunctionalComponent("target_gene_generic", AccessType.PUBLIC, target_gene_generic.getIdentity(), DirectionType.IN);
-		
-		
-		ModuleDefinition CRISPR_Repression = repressionDoc.createModuleDefinition("CRISPR_Repression", version);
-		
-		//create the functionalComponents for the module definition CRISPR_Repression
-		FunctionalComponent Cas9m_BFP_FC =  CRISPR_Repression.createFunctionalComponent("Cas9m_BFP", AccessType.PUBLIC,Cas9m_BFP.getIdentity(), DirectionType.NONE);
-		FunctionalComponent cas9m_BFP_gene_FC = CRISPR_Repression.createFunctionalComponent("cas9m_BFP_gene", AccessType.PUBLIC,cas9m_BFP_gene.getIdentity(), DirectionType.NONE);
-		
-		FunctionalComponent gRNA_b_mRNA_FC = CRISPR_Repression.createFunctionalComponent("gRNA_b_mRNA", AccessType.PUBLIC,gRNA_b_mRNA.getIdentity(), DirectionType.NONE);
-		FunctionalComponent gRNA_gene_FC = CRISPR_Repression.createFunctionalComponent("gRNA_gene", AccessType.PUBLIC,gRNA_gene.getIdentity(), DirectionType.NONE);
+		CRISPR_Repression.createFunctionalComponent("EYFP", AccessType.PRIVATE, "EYFP", version, DirectionType.NONE);
+		CRISPR_Repression.createFunctionalComponent("EYFP_gene", AccessType.PRIVATE, "EYFP_gene", version, DirectionType.NONE);
 
-		FunctionalComponent mKate_FC = CRISPR_Repression.createFunctionalComponent("mKate", AccessType.PUBLIC, mKate.getIdentity(), DirectionType.NONE);
-		FunctionalComponent mKate_gene_FC = CRISPR_Repression.createFunctionalComponent("mKate_gene", AccessType.PUBLIC,mKate_gene.getIdentity(), DirectionType.NONE);
+		CRISPR_Repression.createFunctionalComponent("cas9m_BFP_gRNA_b", AccessType.PRIVATE,"cas9m_BFP_gRNA_b", version, DirectionType.NONE);
 
-		FunctionalComponent Gal4VP16_FC = CRISPR_Repression.createFunctionalComponent("Gal4VP16", AccessType.PUBLIC,Gal4VP16.getIdentity(), DirectionType.NONE);
-		FunctionalComponent Gal4VP16_gene_FC = CRISPR_Repression.createFunctionalComponent("Gal4VP16_gene", AccessType.PUBLIC,Gal4VP16_gene.getIdentity(), DirectionType.NONE);
-		FunctionalComponent EYFP_FC = CRISPR_Repression.createFunctionalComponent("EYFP", AccessType.PUBLIC, EYFP.getIdentity(), DirectionType.NONE);
-		FunctionalComponent EYFP_gene_FC = CRISPR_Repression.createFunctionalComponent("EYFP_gene", AccessType.PUBLIC,EYFP_gene.getIdentity(), DirectionType.NONE);
-
-		FunctionalComponent cas9m_BFP_gRNA_b_FC = CRISPR_Repression.createFunctionalComponent("cas9m_BFP_gRNA_b", AccessType.PUBLIC,cas9m_BFP_gRNA_b.getIdentity(), DirectionType.NONE);
-
-		
-		//create template module
-		Module CRISPR_Repression_Template_Module = CRISPR_Repression.createModule("CRISPR_Repression_Template_Module", "CRISPR_Repression_Template", version);
-		
-		//add MapsTo of Module Template in CRISPR_MODULEDefinition
-		CRISPR_Repression_Template_Module.createMapsTo("crispr_cas9_mapping", RefinementType.USELOCAL, Cas9m_BFP_FC.getIdentity(), cas9_generic_FC.getIdentity());
-		CRISPR_Repression_Template_Module.createMapsTo("crispr_cas9_gene_mapping", RefinementType.USELOCAL, cas9m_BFP_gene_FC.getIdentity(), cas9_gene_generic_FC.getIdentity());
-		CRISPR_Repression_Template_Module.createMapsTo("gRNA_b_mapping", RefinementType.USELOCAL, gRNA_b_mRNA_FC.getIdentity(), gRNA_generic_FC.getIdentity());
-		CRISPR_Repression_Template_Module.createMapsTo("gRNA_b_gene_mapping", RefinementType.USELOCAL, gRNA_gene_FC.getIdentity(), gRNA_gene_generic_FC.getIdentity());
-		CRISPR_Repression_Template_Module.createMapsTo("cas9_complex_mapping", RefinementType.USELOCAL, cas9m_BFP_gRNA_b_FC.getIdentity(), cas9_complex_generic_FC.getIdentity());
-		CRISPR_Repression_Template_Module.createMapsTo("EYFP_mapping", RefinementType.USELOCAL, EYFP_FC.getIdentity(), target_protein_generic_FC.getIdentity());
-		CRISPR_Repression_Template_Module.createMapsTo("EYFP_gene_mapping", RefinementType.USELOCAL, EYFP_gene_FC.getIdentity(), target_gene_generic_FC.getIdentity());
-
-
-        /*add interactions*/
-		HashSet<URI> non_covalent_type = new HashSet<URI>();
-		non_covalent_type.add(SystemsBiologyOntology.NON_COVALENT_BINDING);
-		
-		HashSet<URI> enhancement = new HashSet<URI>();
-		enhancement.add(SystemsBiologyOntology.GENETIC_ENHANCEMENT);
-		
-		HashSet<URI> production = new HashSet<URI>();
-		production.add(SystemsBiologyOntology.GENETIC_PRODUCTION);
-		
-		HashSet<URI> suppression = new HashSet<URI>();
-		suppression.add(SystemsBiologyOntology.GENETIC_SUPPRESSION);
-		
-		Interaction Cas9Complex_Formation = CRISPR_Repression_Template.createInteraction("Cas9Complex_Formation", non_covalent_type);
-		
-		//get CAS9Complex_Formation interaction and add participants
-		Cas9Complex_Formation.createParticipation("cas9m_participant", cas9_generic_FC.getIdentity()).addRole(SystemsBiologyOntology.REACTANT);
-		Cas9Complex_Formation.createParticipation("gRNA_generic_participant", gRNA_generic_FC.getIdentity()).addRole(SystemsBiologyOntology.REACTANT);
-		Cas9Complex_Formation.createParticipation("cas9_complex_generic_participant", cas9_complex_generic_FC.getIdentity()).addRole(SystemsBiologyOntology.PRODUCT);
-		
-	
-		Interaction cas9m_production = CRISPR_Repression_Template.createInteraction("cas9m_production", production);
-		
-		cas9m_production.createParticipation("cas9m_participant", cas9_generic_FC.getIdentity()).addRole(SystemsBiologyOntology.PRODUCT);
-		cas9m_production.createParticipation("cas9m_gene_participant", cas9_gene_generic_FC.getIdentity()).addRole(SystemsBiologyOntology.PROMOTER);
-
-		
-		Interaction gRNA_production = CRISPR_Repression_Template.createInteraction("gRNA_production", production);
-		
-		gRNA_production.createParticipation("gRNA_generic_participant", gRNA_generic_FC.getIdentity()).addRole(SystemsBiologyOntology.PRODUCT);
-		gRNA_production.createParticipation("gRNA_gene_generic_participant", gRNA_gene_generic_FC.getIdentity()).addRole(SystemsBiologyOntology.PROMOTER);
-
-		Interaction EYFP_production = CRISPR_Repression_Template.createInteraction("EYFP_production", production);
-		
-		EYFP_production.createParticipation("EYFP_generic_production", target_protein_generic_FC.getIdentity()).addRole(SystemsBiologyOntology.PRODUCT);
-		EYFP_production.createParticipation("EYFP_gene_generic_production", target_gene_generic_FC.getIdentity()).addRole(SystemsBiologyOntology.PROMOTER);
-	
-		Interaction target_generic_gene_inhibition = CRISPR_Repression_Template.createInteraction("target_generic_gene_inhibition", suppression);
-
-		target_generic_gene_inhibition.createParticipation("cas9m_BFP_gRNA_b_participant", cas9_complex_generic_FC.getIdentity()).addRole(SystemsBiologyOntology.INHIBITOR);
-		target_generic_gene_inhibition.createParticipation("EYFP_generic_production", target_gene_generic_FC.getIdentity()).addRole(SystemsBiologyOntology.PROMOTER);
-
-		/*add the interactions for the crispr_Repression*/
+		/* Production of mKate from the mKate gene */
 		Interaction mKate_production = CRISPR_Repression.createInteraction("mKate_production", production);
-		
-		mKate_production.createParticipation("mKate_participant", mKate_FC.getIdentity()).addRole(SystemsBiologyOntology.PRODUCT);
-		mKate_production.createParticipation("mKate_gene_participant", mKate_gene_FC.getIdentity()).addRole(SystemsBiologyOntology.PROMOTER);
+		mKate_production.createParticipation("mKate", "mKate").addRole(SystemsBiologyOntology.PRODUCT);
+		mKate_production.createParticipation("mKate_gene", "mKate_gene").addRole(SystemsBiologyOntology.PROMOTER);
 
-		
+		// Production of GAL4VP16 from the GAL4VP16 gene
 		Interaction GAL4VP16_production = CRISPR_Repression.createInteraction("GAL4VP16_production", production);
+		GAL4VP16_production.createParticipation("GAL4VP16_gene", "Gal4VP16_gene").addRole(SystemsBiologyOntology.PROMOTER);
+		GAL4VP16_production.createParticipation("GAL4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.PRODUCT);
 		
-		GAL4VP16_production.createParticipation("GAL4VP16_participant", Gal4VP16_FC.getIdentity()).addRole(SystemsBiologyOntology.PRODUCT);
-		GAL4VP16_production.createParticipation("GAL4VP16_gene_participant", Gal4VP16_gene_FC.getIdentity()).addRole(SystemsBiologyOntology.PROMOTER);
-		
+		// Activation of EYFP production by GAL4VP16
 		Interaction EYFP_Activation = CRISPR_Repression.createInteraction("EYFP_Activation", enhancement);
+		EYFP_Activation.createParticipation("GAL4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.STIMULATOR);
+		EYFP_Activation.createParticipation("EYFP_gene", "EYFP_gene").addRole(SystemsBiologyOntology.PROMOTER);
 		
-		EYFP_Activation.createParticipation("GAL4VP16_activation_participant", Gal4VP16_FC.getIdentity()).addRole(SystemsBiologyOntology.STIMULATOR);
-		EYFP_Activation.createParticipation("GAL4VP16_gene_activation_participant", EYFP_gene_FC.getIdentity()).addRole(SystemsBiologyOntology.PROMOTER);
-
+		// Create Template Module
+		Module Template_Module = CRISPR_Repression.createModule("CRISPR_Template", "CRISPR_Template", version);
 		
-		try{
-			SBOLWriter.write(repressionDoc, "/Users/myers/Downloads/crispr.rdf");
+		// Add MapsTos to Template Module 
+		Template_Module.createMapsTo("cas9m_BFP_map", RefinementType.USELOCAL, "cas9m_BFP", "cas9_generic");
+		Template_Module.createMapsTo("cas9m_BFP_gene_map", RefinementType.USELOCAL, "cas9m_BFP_gene", "cas9_generic_gene");
+		Template_Module.createMapsTo("gRNA_b_map", RefinementType.USELOCAL, "gRNA_b", "gRNA_generic");
+		Template_Module.createMapsTo("gRNA_b_gene_map", RefinementType.USELOCAL, "gRNA_b_gene", "gRNA_generic_gene");
+		Template_Module.createMapsTo("cas9m_BFP_gRNA_map", RefinementType.USELOCAL, "cas9m_BFP_gRNA_b", "cas9_gRNA_complex");
+		Template_Module.createMapsTo("EYFP_map", RefinementType.USELOCAL, "EYFP", "target");
+		Template_Module.createMapsTo("EYFP_gene_map", RefinementType.USELOCAL, "EYFP_gene", "target_gene");
+		
+		try {
+			SBOLWriter.write(doc, "/Users/myers/Downloads/crispr.rdf");
 		}
-		catch(Exception e){}
-				
+		catch (XMLStreamException | FactoryConfigurationError | CoreIoException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
