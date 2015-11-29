@@ -35,10 +35,7 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
 public class RepressionModel {
 
 	public static void main(String[] args) throws URISyntaxException {
-	
-		String prURI="http://sbols.org/CRISPR_Example";
-		String version = "1.0";
-	
+
 		// ComponentDefinition types
 		HashSet<URI> ProteinType = new HashSet<URI>();
 		ProteinType.add(ComponentDefinition.PROTEIN);
@@ -64,10 +61,12 @@ public class RepressionModel {
 		
 		SBOLDocument doc = new SBOLDocument();
 
-		doc.setDefaultURIprefix(prURI);
+		doc.setDefaultURIprefix("http://sbols.org/CRISPR_Example/");
 		doc.setTypesInURIs(false);
 		doc.setComplete(true);
 		doc.setCreateDefaults(true);
+		
+		String version = "1.0";
 		
 		// Create ComponentDefinition for cas9_generic gene
 		doc.createComponentDefinition("cas9_generic_gene", version, DNAType).addRole(SequenceOntology.PROMOTER);
