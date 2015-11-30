@@ -45,6 +45,9 @@ public class RepressionModel {
 		
 		HashSet<URI> RNAType = new HashSet<URI>();
 		RNAType.add(ComponentDefinition.RNA);
+		
+		HashSet<URI> ComplexType = new HashSet<URI>();
+		RNAType.add(ComponentDefinition.COMPLEX);
 
         // Interaction Types
 		HashSet<URI> non_covalent_type = new HashSet<URI>();
@@ -81,7 +84,7 @@ public class RepressionModel {
 		doc.createComponentDefinition("gRNA_generic",version, RNAType);
 
 		// Create ComponentDefinition for cas9_gRNA_complex
-		doc.createComponentDefinition("cas9_gRNA_complex",version, ProteinType);
+		doc.createComponentDefinition("cas9_gRNA_complex",version, ComplexType);
 
 		// Create ComponentDefinition for target gene
 		doc.createComponentDefinition("target_gene",version, DNAType).addRole(SequenceOntology.PROMOTER);
@@ -213,7 +216,7 @@ public class RepressionModel {
 		doc.createComponentDefinition("gRNA_b", version, RNAType);
 		  
 		// Create ComponentDefinition for cas9m_BFP gRNA_b complex 
-		doc.createComponentDefinition("cas9m_BFP_gRNA_b", version, ProteinType);
+		doc.createComponentDefinition("cas9m_BFP_gRNA_b", version, ComplexType);
 		
 		// Create ComponentDefinition for mKate coding sequence
 		ComponentDefinition mKate_cds = doc.createComponentDefinition("mKate_cds", version, DNAType);
