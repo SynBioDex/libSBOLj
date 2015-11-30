@@ -47,7 +47,7 @@ public class RepressionModel {
 		RNAType.add(ComponentDefinition.RNA);
 		
 		HashSet<URI> ComplexType = new HashSet<URI>();
-		RNAType.add(ComponentDefinition.COMPLEX);
+		ComplexType.add(ComponentDefinition.COMPLEX);
 
         // Interaction Types
 		HashSet<URI> non_covalent_type = new HashSet<URI>();
@@ -65,7 +65,6 @@ public class RepressionModel {
 		SBOLDocument doc = new SBOLDocument();
 
 		doc.setDefaultURIprefix("http://sbols.org/CRISPR_Example/");
-		doc.setTypesInURIs(false);
 		doc.setComplete(true);
 		doc.setCreateDefaults(true);
 		
