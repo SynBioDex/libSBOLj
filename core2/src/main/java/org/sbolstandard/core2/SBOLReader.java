@@ -215,7 +215,7 @@ public class SBOLReader
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 */
-	public static String getSBOLVersion(String fileName, String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
+	static String getSBOLVersion(String fileName, String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
 	{
 		FileInputStream stream     = new FileInputStream(new File(fileName));
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -244,7 +244,7 @@ public class SBOLReader
 	 * @return the converted SBOLDocument
 	 * @throws Throwable
 	 */
-	public static SBOLDocument read(String fileName,String fileType) throws Throwable
+	static SBOLDocument read(String fileName,String fileType) throws Throwable
 	{
 		return read(new File(fileName),fileType);
 	}
@@ -289,7 +289,7 @@ public class SBOLReader
 	 * @throws CoreIoException
 	 * @throws FileNotFoundException
 	 */
-	public static SBOLDocument read(File file,String fileType) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError
+	static SBOLDocument read(File file,String fileType) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -306,7 +306,7 @@ public class SBOLReader
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 */
-	public static String getSBOLVersion(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
+	static String getSBOLVersion(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -323,7 +323,7 @@ public class SBOLReader
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 */
-	public static String getSBOLVersion(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
+	static String getSBOLVersion(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
@@ -365,7 +365,7 @@ public class SBOLReader
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 */
-	public static SBOLDocument read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
+	static SBOLDocument read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		read(SBOLDoc,in,fileType);

@@ -2399,7 +2399,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 */
-	public void read(String fileName,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+	void read(String fileName,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
 		read(new File(fileName),fileType);
 	}
 
@@ -2428,7 +2428,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 */
-	public void read(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+	void read(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
 		SBOLReader.read(this, buffer, fileType);
@@ -2455,7 +2455,7 @@ public class SBOLDocument {
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 */
-	public void read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError {
+	void read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError {
 		SBOLReader.read(this, in, fileType);
 	}
 
@@ -2483,7 +2483,7 @@ public class SBOLDocument {
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 */
-	public void write(String filename,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(String filename,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{
 		SBOLWriter.write(this, new File(filename), fileType);
 	}
@@ -2516,7 +2516,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws IOException
 	 */
-	public void write(File file,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(File file,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -2549,7 +2549,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws IOException
 	 */
-	public void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{
 		SBOLWriter.write(this, out, fileType);
 	}
