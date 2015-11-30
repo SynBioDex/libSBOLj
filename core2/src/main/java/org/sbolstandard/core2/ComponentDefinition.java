@@ -57,6 +57,20 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public static final URI SMALL_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#SmallMolecule");
 
+	/**
+	 * A physical entity whose structure is comprised of other physical entities bound to each other covalently or non-covalently, 
+	 * at least one of which is a macromolecule (e.g. protein, DNA, or RNA) and the Stoichiometry of the components are known. 
+	 * Comment: Complexes must be stable enough to function as a biological unit; in general, the temporary association of an enzyme 
+	 * with its substrate(s) should not be considered or represented as a complex. A complex is the physical product of an interaction 
+	 * (complexAssembly) and is not itself considered an interaction. The boundaries on the size of complexes described by this class 
+	 * are not defined here, although possible, elements of the cell such a mitochondria would typically not be described using this 
+	 * class (later versions of this ontology may include a cellularComponent class to represent these). The strength of binding cannot 
+	 * be described currently, but may be included in future versions of the ontology, depending on community need. Examples: Ribosome, 
+	 * RNA polymerase II. Other examples of this class include complexes of multiple protein monomers and complexes of proteins and small 
+	 * molecules.
+	 */
+	public static final URI COMPLEX = URI.create("http://www.biopax.org/release/biopax-level3.owl#Complex");
+
 	/* Roles */
 	//public static final URI TRANSCRIPTION_FACTOR = URI.create("http://identifiers.org/go/GO:0003700");
 	/**
