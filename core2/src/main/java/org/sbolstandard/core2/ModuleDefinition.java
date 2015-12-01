@@ -384,6 +384,38 @@ public class ModuleDefinition extends TopLevel {
 		i.setVersion(version);
 		return i;
 	}
+	
+	/**
+	 * Creates a child Interaction object for this ModuleDefinition object with
+	 * the given arguments, and then adds to this ModuleDefinition's list of Interaction instances.
+	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant Interaction URI with the default URI
+	 * prefix for this SBOLDocument instance, the given {@code displayId}, and this
+	 * ModuleDefinition object's version.
+	 * 
+	 * @param displayId
+	 * @param type
+	 * @return the created Interaction instance
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 */
+	public Interaction createInteraction(String displayId, URI type) {
+		if (sbolDocument != null)
+			sbolDocument.checkReadOnly();
+		String URIprefix = this.getPersistentIdentity().toString();
+		String version = this.getVersion();
+		URI newInteractionURI = createCompliantURI(URIprefix, displayId, version);
+		HashSet<URI> types = new HashSet<URI>();
+		types.add(type);
+		Interaction i = createInteraction(newInteractionURI, types);
+		i.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
+		i.setDisplayId(displayId);
+		i.setVersion(version);
+		return i;
+	}
 
 	/**
 	 * Adds the given Interaction instance to the list of Interaction instances.
