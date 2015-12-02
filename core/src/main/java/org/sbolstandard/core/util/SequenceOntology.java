@@ -25,6 +25,7 @@ import java.net.URI;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public class SequenceOntology {
 	private SequenceOntology() {
 	}

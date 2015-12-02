@@ -20,6 +20,7 @@ package org.sbolstandard.core;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public enum StrandType {
 	/**
 	 * Represents <code>+</code> strand which is 5' to 3'.

@@ -26,6 +26,7 @@ package org.sbolstandard.core;
  * biology work. Both experimental work and theoretical sequence composition
  * research heavily depends on this information.
  */
+@Deprecated
 public interface DnaSequence extends SBOLRootObject {
     /**
      * The sequence of DNA base pairs which are described.

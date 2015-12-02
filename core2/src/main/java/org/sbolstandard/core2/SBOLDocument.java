@@ -864,6 +864,49 @@ public class SBOLDocument {
 	public ComponentDefinition createComponentDefinition(String displayId, Set<URI> types) {
 		return createComponentDefinition(defaultURIprefix,displayId,"",types);
 	}
+	
+
+	/**
+	 * Creates a ComponentDefinition instance with this SBOLDocument object's {@code defaultURIprefix},
+	 * the given arguments, and empty version string, and then
+	 * adds it to this SBOLDocument object's list of ComponentDefinition instances.
+	 * <p>
+	 * This method calls {@link #createComponentDefinition(String, String, String, URI)} to do the following
+	 * validity checks and create a ComponentDefinition instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
+	 * then "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} is not {@code null} and is valid.
+	 * <p>
+	 * A ComponentDefinition instance is created with a compliant URI. This URI is composed from
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#COMPONENT_DEFINITION},
+	 * the given {@code displayId}, and an empty version string.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 *
+	 * @param displayId
+	 * @param type
+	 * @return the created ComponentDefinition instance
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's identity URI
+	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
+	 */
+	public ComponentDefinition createComponentDefinition(String displayId, URI type) {
+		HashSet<URI> types = new HashSet<URI>();
+		types.add(type);
+		return createComponentDefinition(defaultURIprefix,displayId,"",types);
+	}
 
 	/**
 	 * Creates a ComponentDefinition instance with this SBOLDocument object's {@code defaultURIprefix}
@@ -903,6 +946,49 @@ public class SBOLDocument {
 	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) {
+		return createComponentDefinition(defaultURIprefix,displayId,version,types);
+	}
+	
+	/**
+	 * Creates a ComponentDefinition instance with this SBOLDocument object's {@code defaultURIprefix}
+	 * and the given arguments, and then adds it to this SBOLDocument object's list of ComponentDefinition instances.
+	 * <p>
+	 * This method calls {@link #createComponentDefinition(String, String, String, URI)} to do the following
+	 * validity checks and create a ComponentDefinition instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the {@code defaultURIprefix} field to be set, and
+	 * the given {@code displayId} and {@code version} arguments are not {@code null}
+	 * and are both valid.
+	 * <p>
+	 * A ComponentDefinition instance is created with a compliant URI. This URI is composed from
+	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#COMPONENT_DEFINITION},
+	 * the given {@code displayId}, and {@code version}.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 *
+	 * @param displayId
+	 * @param version
+	 * @param type
+	 * @return the created ComponentDefinition instance
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's identity URI
+	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
+	 */
+	public ComponentDefinition createComponentDefinition(String displayId, String version, URI type) {
+		HashSet<URI> types = new HashSet<URI>();
+		types.add(type);
 		return createComponentDefinition(defaultURIprefix,displayId,version,types);
 	}
 
@@ -945,6 +1031,55 @@ public class SBOLDocument {
 		checkReadOnly();
 		URIprefix = checkURIprefix(URIprefix);
 		validateIdVersion(displayId, version);
+		ComponentDefinition cd = createComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
+				displayId, version, typesInURIs), types);
+		cd.setDisplayId(displayId);
+		cd.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION, displayId,"", typesInURIs));
+		cd.setVersion(version);
+		return cd;
+	}
+
+	/**
+	 * Creates a ComponentDefinition instance with the given arguments, and then adds it to this SBOLDocument
+	 * object's list of ComponentDefinition instances.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires that the given {@code URIprefix}, {@code displayId},
+	 * and {@code version} are not {@code null} and are valid.
+	 * <p>
+	 * A ComponentDefinition instance is created with a compliant URI. This URI is composed from
+	 * the given {@code URIprefix}, the optional type {@link TopLevel#COMPONENT_DEFINITION},
+	 * the given {@code displayId}, and {@code version}.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 *
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param type
+	 * @return the created ComponentDefinition instance
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws IllegalArgumentException if the {@code defaultURIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's identity URI
+	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
+	 */
+	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, URI type) {
+		checkReadOnly();
+		URIprefix = checkURIprefix(URIprefix);
+		validateIdVersion(displayId, version);
+		HashSet<URI> types = new HashSet<URI>();
+		types.add(type);
 		ComponentDefinition cd = createComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
 				displayId, version, typesInURIs), types);
 		cd.setDisplayId(displayId);
@@ -2399,7 +2534,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 */
-	public void read(String fileName,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+	void read(String fileName,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
 		read(new File(fileName),fileType);
 	}
 
@@ -2428,7 +2563,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 */
-	public void read(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
+	void read(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
 		SBOLReader.read(this, buffer, fileType);
@@ -2455,7 +2590,7 @@ public class SBOLDocument {
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 */
-	public void read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError {
+	void read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError {
 		SBOLReader.read(this, in, fileType);
 	}
 
@@ -2483,7 +2618,7 @@ public class SBOLDocument {
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 */
-	public void write(String filename,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(String filename,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{
 		SBOLWriter.write(this, new File(filename), fileType);
 	}
@@ -2516,7 +2651,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws IOException
 	 */
-	public void write(File file,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(File file,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -2549,7 +2684,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws IOException
 	 */
-	public void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{
 		SBOLWriter.write(this, out, fileType);
 	}

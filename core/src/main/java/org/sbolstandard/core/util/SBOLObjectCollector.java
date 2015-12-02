@@ -32,6 +32,7 @@ import org.sbolstandard.core.SequenceAnnotation;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public class SBOLObjectCollector {
 	/**
 	 * Convenience function for {@link #collectFrom(Iterable)} function. 

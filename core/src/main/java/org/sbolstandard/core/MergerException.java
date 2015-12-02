@@ -5,6 +5,7 @@ package org.sbolstandard.core;
  *
  * @author Matthew Pocock
  */
+@Deprecated
 public class MergerException extends Exception {
     public MergerException() {
     }

@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 

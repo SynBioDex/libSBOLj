@@ -215,7 +215,7 @@ public class SBOLReader
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 */
-	public static String getSBOLVersion(String fileName, String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
+	static String getSBOLVersion(String fileName, String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
 	{
 		FileInputStream stream     = new FileInputStream(new File(fileName));
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -244,7 +244,7 @@ public class SBOLReader
 	 * @return the converted SBOLDocument
 	 * @throws Throwable
 	 */
-	public static SBOLDocument read(String fileName,String fileType) throws Throwable
+	static SBOLDocument read(String fileName,String fileType) throws Throwable
 	{
 		return read(new File(fileName),fileType);
 	}
@@ -289,7 +289,7 @@ public class SBOLReader
 	 * @throws CoreIoException
 	 * @throws FileNotFoundException
 	 */
-	public static SBOLDocument read(File file,String fileType) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError
+	static SBOLDocument read(File file,String fileType) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -306,7 +306,7 @@ public class SBOLReader
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 */
-	public static String getSBOLVersion(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
+	static String getSBOLVersion(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -323,7 +323,7 @@ public class SBOLReader
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 */
-	public static String getSBOLVersion(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
+	static String getSBOLVersion(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
@@ -365,7 +365,7 @@ public class SBOLReader
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 */
-	public static SBOLDocument read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
+	static SBOLDocument read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		read(SBOLDoc,in,fileType);
@@ -1181,11 +1181,11 @@ public class SBOLReader
 		String name 	 	   = null;
 		String description 	   = null;
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
-		URI structure 		   = null;
 		String version 		   = null;
 		URI wasDerivedFrom     = null;
 		Set<URI> type 		   = new HashSet<>();
 		Set<URI> roles 	  	   = new HashSet<>();
+		Set<URI> structures	   = new HashSet<>();
 
 		List<Component> components 					 = new ArrayList<>();
 		List<Annotation> annotations 				 = new ArrayList<>();
@@ -1237,7 +1237,8 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequence))
 			{
-				structure = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				structures.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				//structure = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSequenceAnnotations))
 			{
@@ -1287,8 +1288,8 @@ public class SBOLReader
 			c.setDisplayId(displayId);
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
-		if (structure != null)
-			c.addSequence(structure);
+		if (!structures.isEmpty())
+			c.setSequences(structures);
 		if (!components.isEmpty())
 			c.setComponents(components);
 		if (!sequenceAnnotations.isEmpty())

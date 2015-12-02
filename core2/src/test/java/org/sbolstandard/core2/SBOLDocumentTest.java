@@ -478,24 +478,13 @@ public class SBOLDocumentTest {
 	
 	/*the following series of tests check the Sequence class*/
 	
-//	@Test
-//	public void test_SequenceEquals() throws URISyntaxException
-//	{
-//		String preURI="http://partsregistry.org";
-//		
-//		SBOLDocument document1 = new SBOLDocument();
-//		document1.setDefaultURIprefix(preURI);
-//		document1.setTypesInURIs(true);
-//		document1.setComplete(true);
-//		document1.setCreateDefaults(true);
-//		
-//		//build a gene Lac1
-//		assertTrue(document1.getSequence(new URI("http://partsregistry.org/seq_187")).equals(document1.getSequence(new URI("http://partsregistry.org/seq_187")))); 
-//		
-//		//Sequence lac1 = document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA);
-//		
-//		//assertTrue(lac1.equals(document1.createSequence("seq_187", "tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac", Sequence.IUPAC_DNA)));
-//	}
+	@Test
+	public void test_SequenceEquals() throws URISyntaxException
+	{
+		//Sequence s = new Sequence(Sequence.IUPAC_DNA, "", null);
+		
+			
+	}
 	
 	/*the following tests check ComponentDefinition class*/
 	

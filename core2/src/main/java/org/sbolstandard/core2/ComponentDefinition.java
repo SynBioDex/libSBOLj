@@ -57,6 +57,20 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public static final URI SMALL_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#SmallMolecule");
 
+	/**
+	 * A physical entity whose structure is comprised of other physical entities bound to each other covalently or non-covalently, 
+	 * at least one of which is a macromolecule (e.g. protein, DNA, or RNA) and the Stoichiometry of the components are known. 
+	 * Comment: Complexes must be stable enough to function as a biological unit; in general, the temporary association of an enzyme 
+	 * with its substrate(s) should not be considered or represented as a complex. A complex is the physical product of an interaction 
+	 * (complexAssembly) and is not itself considered an interaction. The boundaries on the size of complexes described by this class 
+	 * are not defined here, although possible, elements of the cell such a mitochondria would typically not be described using this 
+	 * class (later versions of this ontology may include a cellularComponent class to represent these). The strength of binding cannot 
+	 * be described currently, but may be included in future versions of the ontology, depending on community need. Examples: Ribosome, 
+	 * RNA polymerase II. Other examples of this class include complexes of multiple protein monomers and complexes of proteins and small 
+	 * molecules.
+	 */
+	public static final URI COMPLEX = URI.create("http://www.biopax.org/release/biopax-level3.owl#Complex");
+
 	/* Roles */
 	//public static final URI TRANSCRIPTION_FACTOR = URI.create("http://identifiers.org/go/GO:0003700");
 	/**
@@ -343,7 +357,7 @@ public class ComponentDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 * <p>
 	 * This method creates a compliant Sequence URI with the default
-	 * URI prefix for this SBOLDocument instance, and the given {@code sequence} and {@code version}.
+	 * URI prefix for this SBOLDocument instance, and the given {@code sequenceId} and {@code version}.
 	 * It then calls {@link #addSequence(URI)} with this Sequence URI.
 	 * 
 	 * @param sequenceId
@@ -356,6 +370,26 @@ public class ComponentDefinition extends TopLevel {
 		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
 				TopLevel.SEQUENCE, sequenceId, version, sbolDocument.isTypesInURIs());
 		return addSequence(sequenceURI);
+	}
+	
+	/**
+	 * Adds the URI of the given Sequence instance to this ComponentDefinition object's
+	 * set of reference Sequence URIs.
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant Sequence URI with the default
+	 * URI prefix for this SBOLDocument instance, and the given {@code sequenceId}
+	 * It then calls {@link #addSequence(URI)} with this Sequence URI.
+	 * 
+	 * @param sequenceId
+	 * @return {@code true} if this set did not already contain the given Sequence instance URI.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 */
+	public boolean addSequence(String sequenceId) {
+		return addSequence(sequenceId,"");
 	}
 	
 	/**
@@ -890,6 +924,30 @@ public class ComponentDefinition extends TopLevel {
 		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
 				TopLevel.COMPONENT_DEFINITION, componentDefinitionId, version, sbolDocument.isTypesInURIs());
 		return createComponent(displayId,access,componentDefinitionURI);
+	}
+	
+	/**
+	 * Creates a child Component instance for this ComponentDefinition
+	 * object with the given arguments, and then adds to this ComponentDefinition's list of Component
+	 * instances.
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant Component URI with the default
+	 * URI prefix for this SBOLDocument instance, and the given {@code displayId}.
+	 * It then calls {@link #createComponent(String, AccessType, URI)}
+	 * with this component definition URI.
+	 *  
+	 * @param displayId
+	 * @param access
+	 * @param componentDefinitionId
+	 * @return a Component instance
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 */
+	public Component createComponent(String displayId, AccessType access, String componentDefinitionId) {
+		return createComponent(displayId,access,componentDefinitionId,"");
 	}
 	
 	/**

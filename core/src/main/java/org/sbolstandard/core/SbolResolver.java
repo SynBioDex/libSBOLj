@@ -5,6 +5,7 @@ package org.sbolstandard.core;
  *
  * @author Matthew Pocock
  */
+@Deprecated
 public interface SbolResolver {
     UriResolver<Collection> getCollectionUriResolver();
     UriResolver<DnaComponent> getComponentUriResolver();
