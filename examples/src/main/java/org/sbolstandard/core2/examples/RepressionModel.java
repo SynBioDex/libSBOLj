@@ -259,7 +259,7 @@ public class RepressionModel {
 		
 		// Activation of EYFP production by GAL4VP16
 		Interaction EYFP_Activation = CRPb_circuit.createInteraction("EYFP_Activation", SystemsBiologyOntology.GENETIC_ENHANCEMENT);
-		EYFP_Activation.createParticipation("GAL4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.STIMULATOR);
+		EYFP_Activation.createParticipation("Gal4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.STIMULATOR);
 		EYFP_Activation.createParticipation("EYFP_gene", "EYFP_gene").addRole(SystemsBiologyOntology.PROMOTER);
 		
 		// Degradation of mKate
