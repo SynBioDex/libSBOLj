@@ -178,7 +178,7 @@ public class ModuleDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 * <p>
 	 * This method creates a compliant Module URI with the default URI prefix
-	 * for this SBOLDocument instance, and the given {@code displayId} and {@code version}.
+	 * for this SBOLDocument instance, and the given {@code moduleDefinitionId} and {@code version}.
 	 * It then calls {@link #createModule(String, URI)} with this component
 	 * definition URI.
 	 * 
@@ -196,6 +196,29 @@ public class ModuleDefinition extends TopLevel {
 		return createModule(displayId, module);
 	}
 
+	/**
+	 * Creates a child Module instance for this ModuleDefinition object with the
+	 * specified arguments, and then adds to this ModuleDefinition's list of Module instances.
+	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant Module URI with the default URI prefix
+	 * for this SBOLDocument instance, and the given {@code moduleDefinitionId}.
+	 * It then calls {@link #createModule(String, URI)} with this component
+	 * definition URI.
+	 * 
+	 * @param displayId
+	 * @param moduleDefinitionId
+	 * @return a Module instance
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 */
+	public Module createModule(String displayId, String moduleDefinitionId) {
+		return createModule(displayId, moduleDefinitionId, "");
+	}
+	
 	/**
 	 * Creates a child Module instance for this ModuleDefinition object with the
 	 * specified arguments, and then adds to this ModuleDefinition's list of Module instances.
@@ -558,6 +581,33 @@ public class ModuleDefinition extends TopLevel {
 				TopLevel.COMPONENT_DEFINITION, definitionId, version, sbolDocument.isTypesInURIs());
 		return createFunctionalComponent(displayId, access, definitionURI, direction);
 	}
+	
+	/**
+	 * Creates a child FunctionalComponent instance for this ModuleDefinition
+	 * object with the given arguments, and then adds to this ModuleDefinition's list of FunctionalComponent
+	 * instances.
+	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance
+	 * is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant FunctionalComponent URI with the default
+	 * URI prefix for this SBOLDocument instance, and the given {@code definitionId}.
+	 * It then calls {@link #createFunctionalComponent(String, AccessType, URI,DirectionType)}
+	 * with this component definition URI.
+	 * 
+	 * @param displayId
+	 * @param access
+	 * @param definitionId
+	 * @param direction
+	 * @return a FunctionalComponent instance
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 */
+	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
+			String definitionId, DirectionType direction) {
+		return createFunctionalComponent(displayId, access, definitionId, "", direction);
+	}
 
 	/**
 	 * Creates a child FunctionalComponent instance for this ModuleDefinition
@@ -804,6 +854,28 @@ public class ModuleDefinition extends TopLevel {
 		return addModel(modelURI);
 	}
 
+	/**
+	 * Creates a compliant Model URI and then adds it to this ModuleDefinition
+	 * object's set of reference Model URIs. The model argument specifies the reference
+	 * Model's display ID, and the version argument specifies its version.
+	 * <p>
+	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed be edited.
+	 * <p>
+	 * This method creates a compliant Model URI with the default URI prefix for this SBOLDocument instance, 
+	 * and the given {@code modelId}.
+	 * This method then calls {@link #addModel(URI)} with this component definition URI.
+	 * 
+	 * @param modelId
+	 * @return {@code true} if this set did not already contain the given Model
+	 *         instance URI.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 */
+	public boolean addModel(String modelId) {
+		return addModel(modelId,"");
+	}
+	
 	/**
 	 * Adds the given Model URI to this ModuleDefinition's set of reference
 	 * Model URIs.

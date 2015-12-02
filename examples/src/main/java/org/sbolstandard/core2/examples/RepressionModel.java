@@ -167,13 +167,13 @@ public class RepressionModel {
 		// Create ComponentDefintion for CRa_U6 promoter
 		ComponentDefinition CRa_U6 = doc.createComponentDefinition("CRa_U6", version, ComponentDefinition.DNA);
 		CRa_U6.addRole(SequenceOntology.PROMOTER);
-		CRa_U6.addSequence("CRa_U6_seq",version);
+		CRa_U6.addSequence("CRa_U6_seq");
 		
 		// Create ComponentDefintion for gRNA_b coding sequence
 		ComponentDefinition gRNA_b_nc = doc.createComponentDefinition("gRNA_b_nc", version, ComponentDefinition.DNA);
 		// TODO: need to change gRNA gene
 		gRNA_b_nc.addRole(SequenceOntology.CDS);
-		gRNA_b_nc.addSequence("gRNA_b_seq", version);
+		gRNA_b_nc.addSequence("gRNA_b_seq");
 		
 		// Create ComponentDefinition for gRNA_b terminator
 		doc.createComponentDefinition("gRNA_b_terminator", version, ComponentDefinition.DNA).addRole(SequenceOntology.TERMINATOR); 
@@ -193,7 +193,7 @@ public class RepressionModel {
 		// Create ComponentDefinition for mKate coding sequence
 		ComponentDefinition mKate_cds = doc.createComponentDefinition("mKate_cds", version, ComponentDefinition.DNA);
 		mKate_cds.addRole(SequenceOntology.CDS);
-		mKate_cds.addSequence("mKate_seq", version);
+		mKate_cds.addSequence("mKate_seq");
 		
 		// Create ComponentDefinition for mKate gene
 		ComponentDefinition mKate_gene = doc.createComponentDefinition("mKate_gene", version, ComponentDefinition.DNA);
@@ -218,7 +218,7 @@ public class RepressionModel {
 		// Create ComponentDefinition for CRP_b promoter
 		ComponentDefinition CRP_b = doc.createComponentDefinition("CRP_b", version, ComponentDefinition.DNA);
 		CRP_b.addRole(SequenceOntology.PROMOTER);
-		CRP_b.addSequence("CRP_b_seq", "");
+		CRP_b.addSequence("CRP_b_seq");
 		
 		// Create ComponentDefintiion for EYFP coding sequence
 		ComponentDefinition EYFP_cds = doc.createComponentDefinition("EYFP_cds", version, ComponentDefinition.DNA);

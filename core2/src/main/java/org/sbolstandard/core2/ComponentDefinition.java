@@ -357,7 +357,7 @@ public class ComponentDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 * <p>
 	 * This method creates a compliant Sequence URI with the default
-	 * URI prefix for this SBOLDocument instance, and the given {@code sequence} and {@code version}.
+	 * URI prefix for this SBOLDocument instance, and the given {@code sequenceId} and {@code version}.
 	 * It then calls {@link #addSequence(URI)} with this Sequence URI.
 	 * 
 	 * @param sequenceId
@@ -370,6 +370,26 @@ public class ComponentDefinition extends TopLevel {
 		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
 				TopLevel.SEQUENCE, sequenceId, version, sbolDocument.isTypesInURIs());
 		return addSequence(sequenceURI);
+	}
+	
+	/**
+	 * Adds the URI of the given Sequence instance to this ComponentDefinition object's
+	 * set of reference Sequence URIs.
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance,
+	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant Sequence URI with the default
+	 * URI prefix for this SBOLDocument instance, and the given {@code sequenceId}
+	 * It then calls {@link #addSequence(URI)} with this Sequence URI.
+	 * 
+	 * @param sequenceId
+	 * @return {@code true} if this set did not already contain the given Sequence instance URI.
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 */
+	public boolean addSequence(String sequenceId) {
+		return addSequence(sequenceId,"");
 	}
 	
 	/**
@@ -904,6 +924,30 @@ public class ComponentDefinition extends TopLevel {
 		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
 				TopLevel.COMPONENT_DEFINITION, componentDefinitionId, version, sbolDocument.isTypesInURIs());
 		return createComponent(displayId,access,componentDefinitionURI);
+	}
+	
+	/**
+	 * Creates a child Component instance for this ComponentDefinition
+	 * object with the given arguments, and then adds to this ComponentDefinition's list of Component
+	 * instances.
+	 * <p>
+	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant Component URI with the default
+	 * URI prefix for this SBOLDocument instance, and the given {@code displayId}.
+	 * It then calls {@link #createComponent(String, AccessType, URI)}
+	 * with this component definition URI.
+	 *  
+	 * @param displayId
+	 * @param access
+	 * @param componentDefinitionId
+	 * @return a Component instance
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 */
+	public Component createComponent(String displayId, AccessType access, String componentDefinitionId) {
+		return createComponent(displayId,access,componentDefinitionId,"");
 	}
 	
 	/**
