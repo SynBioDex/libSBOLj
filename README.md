@@ -5,37 +5,78 @@ the [Synthetic Biology Open Language (SBOL)](http://www.sbolstandard.org/sbolsta
 work with SBOL objects, the functionality to read and write SBOL documents as XML/RDF files, and a validator to check the 
 correctness of SBOL models. 
 
+
 ## Getting the libSBOLj source
 
-1. Create a GitHub account. [link](https://github.com/)
-2. Download and set up Git. [link](https://help.github.com/articles/set-up-git)
-3. Fork the libSBOLj repository and clone it to your machine. [link](https://help.github.com/articles/fork-a-repo)
-4. Download and set up Maven. [link](http://maven.apache.org/download.cgi)
-5. Change to your libSBOLj directory via the command line and execute the following command:
+1. [Create](https://github.com/) a GitHub account.
+2. [Setup](https://help.github.com/articles/set-up-git) Git on your machine.
+3. [Clone](https://help.github.com/articles/cloning-a-repository/) the libSBOLj GitHub repository to your machine.
 
-    mvn package
+## Compiling and Packaging libSBOLj 
 
-This will create the libSBOLj JAR file (libSBOLj-core2-2.0.0-SNAPSHOT-withDependencies.jar) and place it into the core2/target subdirectory. [link](http://maven.apache.org/guides/getting-started/index.html)
+1. [Setup](http://maven.apache.org/download.cgi) Apache Maven. A tutorial on using Apache Maven is provided [here](http://maven.apache.org/guides/getting-started/index.html).
 
-## Using libSBOLj
+2. In the command line, change to the libSBOLj directory (e.g. ```cd /path/to/libSBOLj```) and execute the following command
 
+```
+mvn package
+```
 
-### libSBOLj command line
+This will compile the libSBOLj source files, package the compiled source into a libSBOLj JAR file (libSBOLj-core-2.0.0-SNAPSHOT.jar), and place the JAR file into the ```core/target``` sub-directory. 
+
+## Using the libSBOLj library
+
+### In a Maven project:
+
+1. As first step, the libSBOLj JAR file must be added to the local Maven repository. 
+
+```
+mvn install:install-file \ 
+    -Dfile=/path/to/libSBOLj/core2/target/libSBOLj-core2-2.0.0-SNAPSHOT.jar \
+    -DgroupId=org.sbolstandard \
+    -DartifactId=libSBOLj-core2 \
+    -Dversion=2.0.0-SNAPSHOT \
+    -Dpackaging=jar
+```
+
+After libSBOLj is stored in the local Maven repository, it can be integrated into multiple Maven projects. That is, this step must be performed only after compiling and packaging the library. 
+
+2. In a Maven project that utilizes the libSBOLj library, add a dependency in the Maven project's ```pom.xml``` file.
+
+```
+<dependency>
+	<groupId>org.sbolstandard</groupId>
+	<artifactId>libSBOLj-core2</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
+	<scope>compile</scope>
+</dependency>
+```
+ 
+### In the command line:
 
 libSBOLj comes with a command-line interface (CLI) that can be used to validate SBOL files. After you build the 
-libSBOLj-core2-2.0.0-SNAPSHOT-withDependencies.jar as described above, you can use it to validate files as follows after changing to the core2/target subdirectory:
+libSBOLj-core-2.0.0-SNAPSHOT.jar as described above, you can use it to validate files as follows after changing to the core/target subdirectory:
 
-    cd core2/target/
-    java -jar libSBOLj-core2-2.0.0-SNAPSHOT-withDependencies.jar <inputFile>
+```
+cd core/target/
+java -jar libSBOLj-core-2.0.0-SNAPSHOT.jar <inputFile>
+```
     
 If validation is successful, the program will print the contents of the SBOL document. You can also output the result to a file. 
 
-    java -jar libSBOLj-core2-2.0.0-SNAPSHOT-withDependencies.jar <inputFile> -o <outputFile>
+```
+java -jar libSBOLj-core-1.0.0-SNAPSHOT.jar <inputFile> -o <outputFile>
+```
 
 If validation fails with an error, there will be a message printed about the validation error.  In addition to checking all required validation rules, it will also check if the URIs are compliant and whether the SBOL document is complete (i.e., all referenced objects are contained within the file).  These validation checks can be turned off with the -n and -i flags, respectively.
 
-If the input file is an SBOL 1.1 file, then it will convert the file into an SBOL 2.0 file.  This conversion should be provided a default URI prefix with the -p flag.  It can also be provided a default version, if desired.  Finally, the -t flag will insert the type of top level objects into the URI during conversion, if desired.
+If the input file is an SBOL 1.1 file, then it will convert the file into an SBOL 2.0 file.  This conversion should be provided a default URI prefix.  It can also be provided a default version, if desired.  Finally, the -t flag will insert the type of top level objects into the URI during conversion, if desired.
 
-    java -jar libSBOLj-core2-2.0.0-SNAPSHOT-withDependencies.jar <in> -o <out> -p <prefix> -v <version>
-    
-    
+```
+java -jar libSBOLj-core-1.0.0-SNAPSHOT.jar <inFile> -o <outFile> -p <URIprefix> -v <version>
+```
+
+## Developing the libSBOLj library
+
+ 1. Fork the libSBOLj repository. ([link](https://help.github.com/articles/fork-a-repo))
+ 
