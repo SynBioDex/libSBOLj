@@ -27,27 +27,13 @@ This will compile the libSBOLj source files, package the compiled source into a 
 
 ### In a Maven project:
 
-1. As first step, the libSBOLj JAR file must be added to the local Maven repository. 
-
-```
-mvn install:install-file \ 
-    -Dfile=/path/to/libSBOLj/core2/target/libSBOLj-core2-2.0.0-SNAPSHOT.jar \
-    -DgroupId=org.sbolstandard \
-    -DartifactId=libSBOLj-core2 \
-    -Dversion=2.0.0-SNAPSHOT \
-    -Dpackaging=jar
-```
-
-After libSBOLj is stored in the local Maven repository, it can be integrated into multiple Maven projects. That is, this step must be performed only after compiling and packaging the library. 
-
-2. In a Maven project that utilizes the libSBOLj library, add a dependency in the Maven project's ```pom.xml``` file.
+In a Maven project that utilizes the libSBOLj library, add a dependency in the Maven project's ```pom.xml``` file.
 
 ```
 <dependency>
 	<groupId>org.sbolstandard</groupId>
-	<artifactId>libSBOLj-core2</artifactId>
-	<version>2.0.0-SNAPSHOT</version>
-	<scope>compile</scope>
+	<artifactId>libSBOLj</artifactId>
+	<version>2.0.0</version>
 </dependency>
 ```
  
@@ -74,8 +60,3 @@ If the input file is an SBOL 1.1 file, then it will convert the file into an SBO
 ```
 java -jar libSBOLj-core-1.0.0-SNAPSHOT.jar <inFile> -o <outFile> -p <URIprefix> -v <version>
 ```
-
-## Developing the libSBOLj library
-
- 1. Fork the libSBOLj repository. ([link](https://help.github.com/articles/fork-a-repo))
-
