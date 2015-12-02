@@ -170,9 +170,10 @@ public class RepressionModel {
 		CRa_U6.addSequence("CRa_U6_seq",version);
 		
 		// Create ComponentDefintion for gRNA_b coding sequence
-		ComponentDefinition gRNA_b_cds = doc.createComponentDefinition("gRNA_b_cds", version, ComponentDefinition.DNA);
-		gRNA_b_cds.addRole(SequenceOntology.CDS);
-		gRNA_b_cds.addSequence("gRNA_b_seq", version);
+		ComponentDefinition gRNA_b_nc = doc.createComponentDefinition("gRNA_b_nc", version, ComponentDefinition.DNA);
+		// TODO: need to change gRNA gene
+		gRNA_b_nc.addRole(SequenceOntology.CDS);
+		gRNA_b_nc.addSequence("gRNA_b_seq", version);
 		
 		// Create ComponentDefinition for gRNA_b terminator
 		doc.createComponentDefinition("gRNA_b_terminator", version, ComponentDefinition.DNA).addRole(SequenceOntology.TERMINATOR); 
@@ -180,8 +181,8 @@ public class RepressionModel {
 		// Create ComponentDefinition for gRNA_b gene
 		ComponentDefinition gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", version, ComponentDefinition.DNA);
 		gRNA_b_gene.addRole(SequenceOntology.PROMOTER);
-		cas9m_BFP_gene.createSequenceConstraint("gRNA_b_gene_constraint1", RestrictionType.PRECEDES, "CRa_U6", "gRNA_b_cds");
-		cas9m_BFP_gene.createSequenceConstraint("gRNA_b_gene_constraint2", RestrictionType.PRECEDES, "gRNA_b_cds","gRNA_b_terminator");
+		cas9m_BFP_gene.createSequenceConstraint("gRNA_b_gene_constraint1", RestrictionType.PRECEDES, "CRa_U6", "gRNA_b_nc");
+		cas9m_BFP_gene.createSequenceConstraint("gRNA_b_gene_constraint2", RestrictionType.PRECEDES, "gRNA_b_nc","gRNA_b_terminator");
 
 		// Create ComponentDefinition for gRNA_b RNA
 		doc.createComponentDefinition("gRNA_b", version, ComponentDefinition.RNA);
@@ -217,7 +218,7 @@ public class RepressionModel {
 		// Create ComponentDefinition for CRP_b promoter
 		ComponentDefinition CRP_b = doc.createComponentDefinition("CRP_b", version, ComponentDefinition.DNA);
 		CRP_b.addRole(SequenceOntology.PROMOTER);
-		CRP_b.addSequence("CRP_b_seq", version);
+		CRP_b.addSequence("CRP_b_seq", "");
 		
 		// Create ComponentDefintiion for EYFP coding sequence
 		ComponentDefinition EYFP_cds = doc.createComponentDefinition("EYFP_cds", version, ComponentDefinition.DNA);
@@ -232,43 +233,43 @@ public class RepressionModel {
 		doc.createComponentDefinition("EYFP", version, ComponentDefinition.PROTEIN);
 
 		// Create ModuleDefintion for CRISPR Repression
-		ModuleDefinition CRISPR_Repression = doc.createModuleDefinition("CRISPR_Repression", version);
+		ModuleDefinition CRPb_circuit = doc.createModuleDefinition("CRPb_characterization_Circuit", version);
 		
 		// Create the FunctionalComponents for the ModuleDefinition CRISPR_Repression
-		CRISPR_Repression.createFunctionalComponent("cas9m_BFP", AccessType.PRIVATE, "cas9m_BFP", version, DirectionType.NONE);
-		CRISPR_Repression.createFunctionalComponent("cas9m_BFP_gene", AccessType.PRIVATE, "cas9m_BFP_gene", version, DirectionType.NONE);
+		CRPb_circuit.createFunctionalComponent("cas9m_BFP", AccessType.PRIVATE, "cas9m_BFP", version, DirectionType.NONE);
+		CRPb_circuit.createFunctionalComponent("cas9m_BFP_gene", AccessType.PRIVATE, "cas9m_BFP_gene", version, DirectionType.NONE);
 		
-		CRISPR_Repression.createFunctionalComponent("gRNA_b", AccessType.PRIVATE, "gRNA_b", version, DirectionType.NONE);
-		CRISPR_Repression.createFunctionalComponent("gRNA_b_gene", AccessType.PRIVATE, "gRNA_b_gene", version, DirectionType.NONE);
+		CRPb_circuit.createFunctionalComponent("gRNA_b", AccessType.PRIVATE, "gRNA_b", version, DirectionType.NONE);
+		CRPb_circuit.createFunctionalComponent("gRNA_b_gene", AccessType.PRIVATE, "gRNA_b_gene", version, DirectionType.NONE);
 
-		CRISPR_Repression.createFunctionalComponent("mKate", AccessType.PRIVATE, "mKate", version, DirectionType.NONE);
-		CRISPR_Repression.createFunctionalComponent("mKate_gene", AccessType.PRIVATE, "mKate_gene", version, DirectionType.NONE);
+		CRPb_circuit.createFunctionalComponent("mKate", AccessType.PRIVATE, "mKate", version, DirectionType.NONE);
+		CRPb_circuit.createFunctionalComponent("mKate_gene", AccessType.PRIVATE, "mKate_gene", version, DirectionType.NONE);
 
-		CRISPR_Repression.createFunctionalComponent("Gal4VP16", AccessType.PRIVATE, "Gal4VP16", version, DirectionType.NONE);
-		CRISPR_Repression.createFunctionalComponent("Gal4VP16_gene", AccessType.PRIVATE, "Gal4VP16_gene", version, DirectionType.NONE);
+		CRPb_circuit.createFunctionalComponent("Gal4VP16", AccessType.PRIVATE, "Gal4VP16", version, DirectionType.NONE);
+		CRPb_circuit.createFunctionalComponent("Gal4VP16_gene", AccessType.PRIVATE, "Gal4VP16_gene", version, DirectionType.NONE);
 
-		CRISPR_Repression.createFunctionalComponent("EYFP", AccessType.PRIVATE, "EYFP", version, DirectionType.NONE);
-		CRISPR_Repression.createFunctionalComponent("EYFP_gene", AccessType.PRIVATE, "EYFP_gene", version, DirectionType.NONE);
+		CRPb_circuit.createFunctionalComponent("EYFP", AccessType.PRIVATE, "EYFP", version, DirectionType.NONE);
+		CRPb_circuit.createFunctionalComponent("EYFP_gene", AccessType.PRIVATE, "EYFP_gene", version, DirectionType.NONE);
 
-		CRISPR_Repression.createFunctionalComponent("cas9m_BFP_gRNA_b", AccessType.PRIVATE,"cas9m_BFP_gRNA_b", version, DirectionType.NONE);
+		CRPb_circuit.createFunctionalComponent("cas9m_BFP_gRNA_b", AccessType.PRIVATE,"cas9m_BFP_gRNA_b", version, DirectionType.NONE);
 
 		/* Production of mKate from the mKate gene */
-		Interaction mKate_production = CRISPR_Repression.createInteraction("mKate_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
+		Interaction mKate_production = CRPb_circuit.createInteraction("mKate_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
 		mKate_production.createParticipation("mKate", "mKate").addRole(SystemsBiologyOntology.PRODUCT);
 		mKate_production.createParticipation("mKate_gene", "mKate_gene").addRole(SystemsBiologyOntology.PROMOTER);
 
 		// Production of GAL4VP16 from the GAL4VP16 gene
-		Interaction GAL4VP16_production = CRISPR_Repression.createInteraction("GAL4VP16_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
+		Interaction GAL4VP16_production = CRPb_circuit.createInteraction("GAL4VP16_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
 		GAL4VP16_production.createParticipation("GAL4VP16_gene", "Gal4VP16_gene").addRole(SystemsBiologyOntology.PROMOTER);
 		GAL4VP16_production.createParticipation("GAL4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.PRODUCT);
 		
 		// Activation of EYFP production by GAL4VP16
-		Interaction EYFP_Activation = CRISPR_Repression.createInteraction("EYFP_Activation", SystemsBiologyOntology.GENETIC_ENHANCEMENT);
+		Interaction EYFP_Activation = CRPb_circuit.createInteraction("EYFP_Activation", SystemsBiologyOntology.GENETIC_ENHANCEMENT);
 		EYFP_Activation.createParticipation("GAL4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.STIMULATOR);
 		EYFP_Activation.createParticipation("EYFP_gene", "EYFP_gene").addRole(SystemsBiologyOntology.PROMOTER);
 		
 		// Create Template Module
-		Module Template_Module = CRISPR_Repression.createModule("CRISPR_Template", "CRISPR_Template", version);
+		Module Template_Module = CRPb_circuit.createModule("CRISPR_Template", "CRISPR_Template", version);
 		
 		// Add MapsTos to Template Module 
 		Template_Module.createMapsTo("cas9m_BFP_map", RefinementType.USELOCAL, "cas9m_BFP", "cas9_generic");
