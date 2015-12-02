@@ -42,14 +42,8 @@ public class RepressionModel {
 		
 		String version = "1.0";
 		
-		// Create ComponentDefinition for cas9_generic gene
-		doc.createComponentDefinition("cas9_generic_gene", version, ComponentDefinition.DNA).addRole(SequenceOntology.PROMOTER);
-		
 		// Create ComponentDefinition for cas9_generic protein
 		doc.createComponentDefinition("cas9_generic", version, ComponentDefinition.PROTEIN);
-
-		// Create ComponentDefinition for gRNA_generic gene
-		doc.createComponentDefinition("gRNA_generic_gene",version, ComponentDefinition.DNA).addRole(SequenceOntology.PROMOTER);
 		
 		// Create ComponentDefinition for gRNA_generic RNA
 		doc.createComponentDefinition("gRNA_generic",version, ComponentDefinition.RNA);
@@ -71,16 +65,6 @@ public class RepressionModel {
 		Cas9Complex_Formation.createParticipation("cas9_generic", "cas9_generic").addRole(SystemsBiologyOntology.REACTANT);
 		Cas9Complex_Formation.createParticipation("gRNA_generic", "gRNA_generic").addRole(SystemsBiologyOntology.REACTANT);
 		Cas9Complex_Formation.createParticipation("cas9_gRNA_complex", "cas9_gRNA_complex").addRole(SystemsBiologyOntology.PRODUCT);
-		
-		// Production of cas9m_generic from cas9m_generic_gene
-		Interaction cas9m_production = CRISPR_Template.createInteraction("cas9_generic_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
-		cas9m_production.createParticipation("cas9_generic_gene", "cas9_generic_gene").addRole(SystemsBiologyOntology.PROMOTER);
-		cas9m_production.createParticipation("cas9_generic", "cas9_generic").addRole(SystemsBiologyOntology.PRODUCT);
-		
-		// Production of gRNA from gRNA gene
-		Interaction gRNA_production = CRISPR_Template.createInteraction("gRNA_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
-		gRNA_production.createParticipation("gRNA_generic_gene", "gRNA_generic_gene").addRole(SystemsBiologyOntology.PROMOTER);
-		gRNA_production.createParticipation("gRNA_generic", "gRNA_generic").addRole(SystemsBiologyOntology.PRODUCT);
 
 		// Production of target from target gene
 		Interaction EYFP_production = CRISPR_Template.createInteraction("target_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
@@ -259,23 +243,55 @@ public class RepressionModel {
 		mKate_production.createParticipation("mKate_gene", "mKate_gene").addRole(SystemsBiologyOntology.PROMOTER);
 
 		// Production of GAL4VP16 from the GAL4VP16 gene
-		Interaction GAL4VP16_production = CRPb_circuit.createInteraction("GAL4VP16_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
-		GAL4VP16_production.createParticipation("GAL4VP16_gene", "Gal4VP16_gene").addRole(SystemsBiologyOntology.PROMOTER);
-		GAL4VP16_production.createParticipation("GAL4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.PRODUCT);
+		Interaction GAL4VP16_production = CRPb_circuit.createInteraction("Gal4VP16_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
+		GAL4VP16_production.createParticipation("Gal4VP16_gene", "Gal4VP16_gene").addRole(SystemsBiologyOntology.PROMOTER);
+		GAL4VP16_production.createParticipation("Gal4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.PRODUCT);
+
+		// Production of cas9m_BFP from the cas9m_BFP gene
+		Interaction cas9m_BFP_production = CRPb_circuit.createInteraction("cas9m_BFP_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
+		cas9m_BFP_production.createParticipation("cas9m_BFP_gene", "cas9m_BFP_gene").addRole(SystemsBiologyOntology.PROMOTER);
+		cas9m_BFP_production.createParticipation("cas9m_BFP", "cas9m_BFP").addRole(SystemsBiologyOntology.PRODUCT);
+
+		// Production of gRNA_b from the gRNA_b gene
+		Interaction gRNA_b_production = CRPb_circuit.createInteraction("gRNA_b_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
+		gRNA_b_production.createParticipation("gRNA_b_gene", "gRNA_b_gene").addRole(SystemsBiologyOntology.PROMOTER);
+		gRNA_b_production.createParticipation("gRNA_b", "gRNA_b").addRole(SystemsBiologyOntology.PRODUCT);
 		
 		// Activation of EYFP production by GAL4VP16
 		Interaction EYFP_Activation = CRPb_circuit.createInteraction("EYFP_Activation", SystemsBiologyOntology.GENETIC_ENHANCEMENT);
 		EYFP_Activation.createParticipation("GAL4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.STIMULATOR);
 		EYFP_Activation.createParticipation("EYFP_gene", "EYFP_gene").addRole(SystemsBiologyOntology.PROMOTER);
 		
+		// Degradation of mKate
+		Interaction mKate_deg = CRPb_circuit.createInteraction("mKate_deg", SystemsBiologyOntology.DEGRADATION);
+		mKate_deg.createParticipation("mKate", "mKate").addRole(SystemsBiologyOntology.REACTANT);
+		
+		// Degradation of GAL4VP16
+		Interaction GAL4VP16_deg = CRPb_circuit.createInteraction("Gal4VP16_deg", SystemsBiologyOntology.DEGRADATION);
+		GAL4VP16_deg.createParticipation("Gal4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.REACTANT);
+		
+		// Degradation of cas9m_BFP
+		Interaction cas9m_BFP_deg = CRPb_circuit.createInteraction("cas9m_BFP_deg", SystemsBiologyOntology.DEGRADATION);
+		cas9m_BFP_deg.createParticipation("cas9m_BFP", "cas9m_BFP").addRole(SystemsBiologyOntology.REACTANT);
+		
+		// Degradation of gRNA_b
+		Interaction gRNA_b_deg = CRPb_circuit.createInteraction("gRNA_b_deg", SystemsBiologyOntology.DEGRADATION);
+		gRNA_b_deg.createParticipation("gRNA_b", "gRNA_b").addRole(SystemsBiologyOntology.REACTANT);
+		
+		// Degradation of EYFP
+		Interaction EYFP_deg = CRPb_circuit.createInteraction("EYFP_deg", SystemsBiologyOntology.DEGRADATION);
+		EYFP_deg.createParticipation("EYFP", "EYFP").addRole(SystemsBiologyOntology.REACTANT);
+		
+		// Degradation of cas9m_BFP_gRNA_b
+		Interaction cas9m_BFP_gRNA_b_deg = CRPb_circuit.createInteraction("cas9m_BFP_gRNA_b_deg", SystemsBiologyOntology.DEGRADATION);
+		cas9m_BFP_gRNA_b_deg.createParticipation("cas9m_BFP_gRNA_b", "cas9m_BFP_gRNA_b").addRole(SystemsBiologyOntology.REACTANT);
+		
 		// Create Template Module
 		Module Template_Module = CRPb_circuit.createModule("CRISPR_Template", "CRISPR_Template", version);
 		
 		// Add MapsTos to Template Module 
 		Template_Module.createMapsTo("cas9m_BFP_map", RefinementType.USELOCAL, "cas9m_BFP", "cas9_generic");
-		Template_Module.createMapsTo("cas9m_BFP_gene_map", RefinementType.USELOCAL, "cas9m_BFP_gene", "cas9_generic_gene");
 		Template_Module.createMapsTo("gRNA_b_map", RefinementType.USELOCAL, "gRNA_b", "gRNA_generic");
-		Template_Module.createMapsTo("gRNA_b_gene_map", RefinementType.USELOCAL, "gRNA_b_gene", "gRNA_generic_gene");
 		Template_Module.createMapsTo("cas9m_BFP_gRNA_map", RefinementType.USELOCAL, "cas9m_BFP_gRNA_b", "cas9_gRNA_complex");
 		Template_Module.createMapsTo("EYFP_map", RefinementType.USELOCAL, "EYFP", "target");
 		Template_Module.createMapsTo("EYFP_gene_map", RefinementType.USELOCAL, "EYFP_gene", "target_gene");
