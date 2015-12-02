@@ -19,12 +19,13 @@ In a Maven project that utilizes the libSBOLj library, add a dependency in the M
  
 ## In a non-Maven project:
 
-Download libSBOLj-<version>-withDependencies.jar from the latest github release.
+
+Download ```libSBOLj-<version>-withDependencies.jar``` from the latest github release.
 
 ## Running in the command line:
 
 libSBOLj comes with a command-line interface (CLI) that can be used to validate SBOL files. You can execute 
-libSBOLj-<version>-withDependencies.jar to validate and convert files as follows.
+```libSBOLj-<version>-withDependencies.jar``` to validate and convert files as follows.
 
 ```
 java -jar libSBOLj-<version>-withDependencies.jar <inputFile>
@@ -62,5 +63,5 @@ java -jar libSBOLj-<version>-withDependencies <inFile> -o <outFile> -p <URIprefi
 mvn package
 ```
 
-This will compile the libSBOLj source files, package the compiled source into a libSBOLj JAR file (libSBOLj-<version>-SNAPSHOT-withDependencies.jar), and place the JAR file into the ```core2/target``` sub-directory. 
+This will compile the libSBOLj source files, package the compiled source into a libSBOLj JAR file (```libSBOLj-<version>-SNAPSHOT-withDependencies.jar```), and place the JAR file into the ```core2/target``` sub-directory. 
 
