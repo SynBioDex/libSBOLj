@@ -84,7 +84,7 @@ public class SBOLWriter
 	 * @throws XMLStreamException
 	 * @throws IOException
 	 */
-	public static void write(SBOLDocument doc, File file, String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException{
+	static void write(SBOLDocument doc, File file, String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
 		write(doc, buffer, fileType);
@@ -135,7 +135,7 @@ public class SBOLWriter
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 */
-	public static void write(SBOLDocument doc, String filename, String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	static void write(SBOLDocument doc, String filename, String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{
 		write(doc, new File(filename), fileType);
 	}
@@ -150,7 +150,7 @@ public class SBOLWriter
 	 * @throws FactoryConfigurationError
 	 * @throws CoreIoException
 	 */
-	public static void write(SBOLDocument doc, OutputStream out, String fileType)
+	static void write(SBOLDocument doc, OutputStream out, String fileType)
 			throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		if (fileType.equals(SBOLReader.JSON)) {

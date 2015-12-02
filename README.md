@@ -5,7 +5,6 @@ the [Synthetic Biology Open Language (SBOL)](http://www.sbolstandard.org/sbolsta
 work with SBOL objects, the functionality to read and write SBOL documents as XML/RDF files, and a validator to check the 
 correctness of SBOL models. 
 
-
 ## Getting the libSBOLj source
 
 1. [Create](https://github.com/) a GitHub account.
@@ -79,4 +78,4 @@ java -jar libSBOLj-core-1.0.0-SNAPSHOT.jar <inFile> -o <outFile> -p <URIprefix> 
 ## Developing the libSBOLj library
 
  1. Fork the libSBOLj repository. ([link](https://help.github.com/articles/fork-a-repo))
- 
+

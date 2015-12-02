@@ -5,6 +5,7 @@ package org.sbolstandard.core;
  *
  * @author Matthew Pocock
  */
+@Deprecated
 public interface SBOLNamedObject extends SBOLObject {
     /**
      * Get the text which is for users to read and interpret what this represents.

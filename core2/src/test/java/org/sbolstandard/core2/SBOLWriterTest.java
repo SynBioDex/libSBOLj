@@ -2,6 +2,7 @@ package org.sbolstandard.core2;
 
 import static org.junit.Assert.assertTrue;
 
+
 import org.junit.Assume;
 
 public class SBOLWriterTest extends SBOLAbstractTests {

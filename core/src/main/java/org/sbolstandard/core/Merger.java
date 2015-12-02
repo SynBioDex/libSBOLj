@@ -5,6 +5,7 @@ package org.sbolstandard.core;
  *
  * @author Matthew Pocock
  */
+@Deprecated
 public interface Merger<E> {
     /**
      * Merge the two entities. The result should contain all the data in the two inputs.

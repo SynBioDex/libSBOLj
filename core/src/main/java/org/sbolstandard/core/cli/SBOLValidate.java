@@ -31,6 +31,7 @@ import org.sbolstandard.core.util.SBOLPrettyWriter;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public class SBOLValidate {
 	private SBOLValidate() {		
 	}
