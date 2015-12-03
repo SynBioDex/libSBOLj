@@ -72,7 +72,7 @@ public class RepressionModel {
 		EYFP_production.createParticipation("target", "target").addRole(SystemsBiologyOntology.PRODUCT);
 	
 		// Inhibition of target by cas9m_BFP_gRNA 
-		Interaction target_generic_gene_inhibition = CRISPR_Template.createInteraction("target_gene_inhibition", SystemsBiologyOntology.GENETIC_SUPPRESSION);
+		Interaction target_generic_gene_inhibition = CRISPR_Template.createInteraction("target_gene_inhibition", SystemsBiologyOntology.INHIBITION);
 		target_generic_gene_inhibition.createParticipation("cas9_gRNA_complex", "cas9_gRNA_complex").addRole(SystemsBiologyOntology.INHIBITOR);
 		target_generic_gene_inhibition.createParticipation("target_gene", "target_gene").addRole(SystemsBiologyOntology.PROMOTER);
 		
@@ -258,7 +258,7 @@ public class RepressionModel {
 		gRNA_b_production.createParticipation("gRNA_b", "gRNA_b").addRole(SystemsBiologyOntology.PRODUCT);
 		
 		// Activation of EYFP production by GAL4VP16
-		Interaction EYFP_Activation = CRPb_circuit.createInteraction("EYFP_Activation", SystemsBiologyOntology.GENETIC_ENHANCEMENT);
+		Interaction EYFP_Activation = CRPb_circuit.createInteraction("EYFP_Activation", SystemsBiologyOntology.STIMULATION);
 		EYFP_Activation.createParticipation("Gal4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.STIMULATOR);
 		EYFP_Activation.createParticipation("EYFP_gene", "EYFP_gene").addRole(SystemsBiologyOntology.PROMOTER);
 		
@@ -297,9 +297,9 @@ public class RepressionModel {
 		Template_Module.createMapsTo("EYFP_gene_map", RefinementType.USELOCAL, "EYFP_gene", "target_gene");
 		
 		try {
-			SBOLWriter.write(doc, "/Users/myers/Downloads/crispr.rdf");
+			SBOLWriter.write(doc, System.out);
 		}
-		catch (XMLStreamException | FactoryConfigurationError | CoreIoException | IOException e) {
+		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

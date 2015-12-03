@@ -233,7 +233,7 @@ public class SBOLReader
 	 */
 	public static SBOLDocument read(String fileName) throws Throwable
 	{
-		return read(new File(fileName));
+		return read(fileName,RDF);
 	}
 
 	/**
@@ -276,7 +276,7 @@ public class SBOLReader
 	 */
 	public static SBOLDocument read(File file) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
-		return read(file);
+		return read(file,RDF);
 	}
 
 	/**
