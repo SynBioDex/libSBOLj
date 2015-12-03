@@ -29,6 +29,7 @@ import java.util.List;
  * are by convention assumed 5' to 3', therefore the <code>+</code> strand is
  * 5' to 3' and the <code>-</code> strand is 3' to 5'.
  */
+@Deprecated
 public interface SequenceAnnotation extends SBOLObject {
     List<SequenceAnnotation> getPrecedes();
     void addPrecede(SequenceAnnotation precede);

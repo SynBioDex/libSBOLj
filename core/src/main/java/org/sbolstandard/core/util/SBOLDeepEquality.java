@@ -30,6 +30,7 @@ import org.sbolstandard.core.SequenceAnnotation;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public class SBOLDeepEquality {
 	/**
      * Returns <tt>true</tt> if the two specified objects are <i>deeply

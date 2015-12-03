@@ -7,6 +7,7 @@ import java.util.Properties;
 /**
  * @author Evren Sirin
  */
+@Deprecated
 public class SBOLVersion {
 	private static final SBOLVersion INSTANCE = new SBOLVersion();
 

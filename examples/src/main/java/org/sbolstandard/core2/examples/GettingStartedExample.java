@@ -1,15 +1,26 @@
 package org.sbolstandard.core2.examples;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
+
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.RestrictionType;
 import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLReader;
+import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceOntology;
+
+import uk.ac.ncl.intbio.core.io.CoreIoException;
+
 
 /**
  * This simple example is used by the "Getting Started" document for libSBOLj 2.0. 
@@ -17,7 +28,7 @@ import org.sbolstandard.core2.SequenceOntology;
  *
  */
 public class GettingStartedExample {
-	public static void main( String[] args ) throws Exception {
+	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException {
 		String prURI="http://partsregistry.org"; 
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -103,6 +114,9 @@ public class GettingStartedExample {
 		// Adding the sequence below causes an exception because it cannot be found
 		//pIKELeftCassette.addSequence(URI.create("http://partsregistry.org/seq/partseq_154"));
 		
+		//Creating Annotations and Generic TopLevel Object
+		//TetR_promoter.createAnnotation(qName, literal);
+		
 		// Creating and editing Child Objects
 		// For pIKELeftCassette, create sequence constraint that says BBa_R0040 precedes BBa_C0012.
 		// Note that with CreateDefaults that components get created automatically.
@@ -133,6 +147,31 @@ public class GettingStartedExample {
 				);	
 		TetR_promoter_copy.addSequence(seq);
 		
-		SBOLWriter.write(document,(System.out));
+//		SBOLWriter.write(document,(System.out));
+//		SBOLWriter.write(document, "GettingStartedExample.rdf");
+//		SBOLWriter.write(document, (System.out), "TURTLE");
+//		SBOLWriter.write(document, "GettingStartedExample.ttl", "TURTLE");
+//		SBOLWriter.write(document, (System.out), "JSON");
+//		SBOLWriter.write(document, "GettingStartedExample.json", "JSON");		
+		writeThenRead(document);//SBOLDocument newDocument = writeThenRead(document);
+//		System.out.println(document.toString());
+//		System.out.println(newDocument.toString());
+//		System.out.println(newDocument.equals(document));
+	}
+	
+	public static SBOLDocument writeThenRead(SBOLDocument doc)
+			throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
+	{
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		SBOLWriter.write(doc, out);
+		return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
+
+		// Generated exceptions
+//		SBOLWriter.write(doc, out, "TURTLE");
+//		return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()), "TURTLE");
+		
+		// Generated exceptions		
+//		SBOLWriter.write(doc, out, "JSON");
+//		return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()), "JSON");
 	}
 }

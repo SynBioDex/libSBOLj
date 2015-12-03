@@ -5,6 +5,7 @@ package org.sbolstandard.core;
  *
  * @author Matthew Pocock
  */
+@Deprecated
 public interface DisplayIdResolver<E extends SBOLNamedObject> extends Resolver<E, String> {
     /**
      * Resolve the displayId, or return null if this resolver doesn't know anything about it.

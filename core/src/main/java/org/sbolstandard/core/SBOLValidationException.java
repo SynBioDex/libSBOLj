@@ -25,6 +25,7 @@ import java.util.List;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public class SBOLValidationException extends RuntimeException {
 	private final List<SBOLObject> objects;
 

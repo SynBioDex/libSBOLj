@@ -22,6 +22,7 @@
 @XmlSchema(
         namespace = "http://sbol.org/v1#",
         xmlns = { @XmlNs(prefix = "rdf", namespaceURI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#")})
+@Deprecated
 package org.sbolstandard.core;
 
 import javax.xml.bind.annotation.XmlNs;
