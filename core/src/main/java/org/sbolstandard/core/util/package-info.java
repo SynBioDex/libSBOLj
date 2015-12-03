@@ -18,5 +18,6 @@
  */
 // an annotation to make sure the class file is created for this source file so ant won't compile this file every time
 @javax.annotation.Generated(value={})  
+@Deprecated
 package org.sbolstandard.core.util;
 

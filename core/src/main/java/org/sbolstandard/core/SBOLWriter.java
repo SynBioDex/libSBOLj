@@ -24,6 +24,7 @@ import java.io.OutputStream;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public interface SBOLWriter {
 	/**
 	 * Writes the contents of the given SBOL document to the given output stream.

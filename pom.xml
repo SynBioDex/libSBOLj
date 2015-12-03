@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.sbolstandard</groupId>
-    <artifactId>libSBOLj</artifactId>
-    <version>2.0</version>
+    <artifactId>libSBOLj-parent</artifactId>
+    <version>2.0.0</version>
     <packaging>pom</packaging>
-    <name>libSBOLj</name>
+    <name>libSBOLj-parent</name>
     <description>Implementation of the SBOL 2.0 data standard.</description>
     <url>https://github.com/SynBioDex/libSBOLj</url>
 
@@ -57,9 +57,8 @@
     </properties>
 
     <modules>
-        
-        <module>core2</module>
-        
+         <module>core</module>
+         <module>core2</module>
     </modules>
 
     <build>
@@ -175,3 +174,4 @@
 		</profile>
 	</profiles>	
 </project>
+

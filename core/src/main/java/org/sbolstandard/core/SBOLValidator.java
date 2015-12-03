@@ -21,6 +21,7 @@ package org.sbolstandard.core;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public interface SBOLValidator {
 	/**
 	 * Validates the contents of the document and throws a {@link SBOLValidationException} if validation fails. The 
