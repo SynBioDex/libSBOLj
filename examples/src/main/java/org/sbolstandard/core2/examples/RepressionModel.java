@@ -297,9 +297,9 @@ public class RepressionModel {
 		Template_Module.createMapsTo("EYFP_gene_map", RefinementType.USELOCAL, "EYFP_gene", "target_gene");
 		
 		try {
-			SBOLWriter.write(doc, "/Users/myers/Downloads/crispr.rdf");
+			SBOLWriter.write(doc, System.out);
 		}
-		catch (XMLStreamException | FactoryConfigurationError | CoreIoException | IOException e) {
+		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
