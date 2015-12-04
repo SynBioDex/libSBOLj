@@ -10,13 +10,6 @@
     <description>Implementation of the SBOL 2.0 data standard.</description>
     <url>https://github.com/SynBioDex/libSBOLj</url>
 
-    <!-- This lets us publish to sonatype -->
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
-
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
@@ -38,16 +31,10 @@
 
     <developers>
         <developer>
-            <id>cjmyers</id> <!-- please use your github ID -->
-            <name>Chris Myers</name> <!-- your real name -->
-            <email>myers@ece.utah.edu</email> <!-- email address for spam relating to this project -->
-            <organization>University of Utah</organization> <!-- optional -->
+            <id>SynBioDex</id> <!-- please use your github ID -->
+            <name>SynBioDex</name> <!-- your real name -->
+            <organization>Synthetic Biology Data Exchange Group</organization> <!-- optional -->
             <organizationUrl>http://sbolstandard.org</organizationUrl> <!-- optional -->
-            <roles> <!-- Optional, but add something here if you want -->
-                <role>developer</role> <!-- I write code -->
-                <role>committer</role> <!-- I commit code into the project -->
-            </roles>
-            <timezone>-7</timezone>
         </developer>
     </developers>
 
@@ -62,7 +49,6 @@
     </modules>
 
     <build>
-        <pluginManagement>
             <plugins>
                 <plugin>
                     <!-- settings for javac. -->
@@ -103,7 +89,6 @@
 				</plugin>
                 <!-- todo: add any other plugins needed here -->
             </plugins>
-        </pluginManagement>
 
         <resources>
             <resource>
@@ -138,13 +123,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- Places to look for jars -->
-    <repositories>
-        <repository>
-            <id>EclipseLink</id>
-            <url>http://www.eclipse.org/downloads/download.php?r=1&amp;nf=1&amp;file=/rt/eclipselink/maven.repo</url>
-        </repository>
-    </repositories>
+
     
     <distributionManagement>
 		<snapshotRepository>
@@ -177,4 +156,8 @@
 		</profile>
 	</profiles>	
 </project>
+
+
+
+
 
