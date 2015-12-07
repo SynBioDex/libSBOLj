@@ -15,7 +15,7 @@ public class OntologyTest {
 	SequenceOntology sequenceOntology = new SequenceOntology();
 	String SO_child1_id = "SO:1001260";
 	String SO_parent1_id = "SO:0000243"; 
-	String SO_parent2_id = "SBO:0000009";
+	String SO_parent2_id = "SO:1001268";
 	String SO_parent3_id = "SO:0000001";
 	String SO_child1_name = "internal_Shine_Dalgarno_sequence";
 	String SO_parent1_name = "internal_ribosome_entry_site";
