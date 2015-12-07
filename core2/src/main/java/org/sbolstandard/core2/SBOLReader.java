@@ -45,8 +45,8 @@ import uk.ac.ncl.intbio.core.io.json.StringifyQName;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 /**
- * @author Zhen Zhang
  * @author Tramy Nguyen
+ * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Matthew Pocock
  * @author Goksel Misirli
@@ -54,10 +54,6 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
  * @version 2.0-beta
  */
 
-/**
- * @author zhangz
- *
- */
 public class SBOLReader
 {
 

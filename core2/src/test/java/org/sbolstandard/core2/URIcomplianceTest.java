@@ -10,9 +10,7 @@ import static org.junit.Assert.assertTrue;
 import static org.sbolstandard.core2.URIcompliance.extractPersistentId;
 import static org.sbolstandard.core2.URIcompliance.extractURIprefix;
 import static org.sbolstandard.core2.URIcompliance.extractVersion;
-import static org.sbolstandard.core2.URIcompliance.isChildURIcompliant;
 import static org.sbolstandard.core2.URIcompliance.isDisplayIdCompliant;
-import static org.sbolstandard.core2.URIcompliance.isURIcompliant;
 
 import java.net.URI;
 

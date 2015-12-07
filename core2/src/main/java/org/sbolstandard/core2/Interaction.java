@@ -19,10 +19,6 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
-/**
- * @author zhangz
- *
- */
 public class Interaction extends Identified {
 
 	private Set<URI> types;

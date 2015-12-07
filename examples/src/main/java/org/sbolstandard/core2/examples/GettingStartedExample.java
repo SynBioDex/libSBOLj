@@ -7,10 +7,12 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import javax.xml.namespace.QName;
 import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
 import org.sbolstandard.core2.ComponentDefinition;
+import org.sbolstandard.core2.GenericTopLevel;
 import org.sbolstandard.core2.RestrictionType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLReader;
@@ -29,12 +31,18 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
  */
 public class GettingStartedExample {
 	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException {
-		String prURI="http://partsregistry.org"; 
+		String prURI = "http://partsregistry.org";
+		String prPrefix = "pr";
+		String myersLabURI = "http://www.async.ece.utah.edu";
+		String myersLabPrefix = "myersLab";		
+		
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(true);
 		document.setComplete(true);
 		document.setCreateDefaults(true);
+		document.addNamespace(URI.create(prURI) , prPrefix);
+		document.addNamespace(URI.create(myersLabURI) , myersLabPrefix);
 		
 		// Creating a Top-level SBOL Data Object
 		HashSet<URI> types = new HashSet<URI>(Arrays.asList(
@@ -114,8 +122,22 @@ public class GettingStartedExample {
 		// Adding the sequence below causes an exception because it cannot be found
 		//pIKELeftCassette.addSequence(URI.create("http://partsregistry.org/seq/partseq_154"));
 		
-		//Creating Annotations and Generic TopLevel Object
-		//TetR_promoter.createAnnotation(qName, literal);
+		// Creating Annotations 
+		TetR_promoter.createAnnotation(new QName(prURI, "experience", prPrefix),
+				URI.create("http://parts.igem.org/Part:BBa_R0040"));
+				
+		// Creating Generic TopLevel Object
+		GenericTopLevel datasheet=document.createGenericTopLevel(
+				"datasheet",
+				"1.0",
+				new QName(myersLabURI, "datasheet", myersLabPrefix)
+				);
+		datasheet.setName("Datasheet for Custom Parameters");		
+		datasheet.createAnnotation(new QName(myersLabURI, "characterizationData", myersLabPrefix), 
+				URI.create(myersLabURI + "/measurement/Part:BBa_R0040"));				
+		datasheet.createAnnotation(new QName(myersLabURI, "transcriptionRate", myersLabPrefix), "0.75");
+		TetR_promoter.createAnnotation(new QName(myersLabURI, "datasheet", myersLabPrefix), datasheet.getIdentity());
+		
 		
 		// Creating and editing Child Objects
 		// For pIKELeftCassette, create sequence constraint that says BBa_R0040 precedes BBa_C0012.
@@ -147,16 +169,8 @@ public class GettingStartedExample {
 				);	
 		TetR_promoter_copy.addSequence(seq);
 		
-//		SBOLWriter.write(document,(System.out));
-//		SBOLWriter.write(document, "GettingStartedExample.rdf");
-//		SBOLWriter.write(document, (System.out), "TURTLE");
-//		SBOLWriter.write(document, "GettingStartedExample.ttl", "TURTLE");
-//		SBOLWriter.write(document, (System.out), "JSON");
-//		SBOLWriter.write(document, "GettingStartedExample.json", "JSON");		
-		writeThenRead(document);//SBOLDocument newDocument = writeThenRead(document);
-//		System.out.println(document.toString());
-//		System.out.println(newDocument.toString());
-//		System.out.println(newDocument.equals(document));
+		//SBOLWriter.write(document, "GettingStartedExample.rdf");
+		writeThenRead(document);
 	}
 	
 	public static SBOLDocument writeThenRead(SBOLDocument doc)
