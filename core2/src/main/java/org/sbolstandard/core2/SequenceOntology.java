@@ -1,8 +1,19 @@
 package org.sbolstandard.core2;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 //import java.util.HashMap;
 //import java.util.Map;
+
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.oboparser.obo.OBOOntology;
+import org.oboparser.obo.OBOParser;
+import org.oboparser.obo.OBOStanza;
 
 /**
  * @author Zhen Zhang
@@ -92,6 +103,18 @@ public class SequenceOntology {
 
 	}
 	 */
+	protected OBOOntology sequenceOntology = null;
+	
+	SequenceOntology() {
+		OBOParser oboParser = new OBOParser();
+		File f = new File("src/resources/ontologies/SequenceOntology/so-xp.obo");
+		try {
+			oboParser.parse(f);
+			sequenceOntology = oboParser.getOntology();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	// TODO: need method to convert from 1.1 SO term to 2.0
 	static URI convertSeqOntologyV1(String term)
@@ -106,17 +129,129 @@ public class SequenceOntology {
 		}
 		return URI.create(convertedSO);
 	}
-
+	
+		/**
+	 * Returns the extracted ID of the given stanza's URI. 
+	 * 
+	 * @param stanzaURI
+	 * @return the extracted ID of the given stanza's URI.
+	 * @throws IllegalArgumentException if the given stanzaURI does not begin with "http://identifiers.org/so/".
+	 */
+	public final String getId(URI stanzaURI) {
+		String stanzaURIstr = stanzaURI.toString().trim();
+		if (!stanzaURIstr.contains(URI_PREFIX)) {
+			throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+		}
+		int beginIndex = stanzaURIstr.lastIndexOf("/") + 1;
+		return stanzaURIstr.substring(beginIndex, stanzaURIstr.length());
+	}
+	
 	/**
-	 * Creates a new URI from the Sequence Ontology namespace with the given local name. For example, the function call
-	 * <code>term("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
-	 * @param localName
+	 * Returns the ID field of the stanza whose name matches the given name. If multiple matches are found, only the first matching
+	 * one is returned.
+	 *  
+	 * @param stanzaName
+	 * @return the ID the matching stanza, or {@code null} if no match is found. 
+	 */
+	public final String getId(String stanzaName) {
+		//return sequenceOntology.getStanza(stanzaName).getName();
+		List<String> IdList = new ArrayList<String>();	
+		for (OBOStanza stanza : sequenceOntology.getStanzas()) {
+			if (stanzaName.trim().equals(stanza.getName().trim())) {
+				IdList.add(stanza.getId());
+			}
+		}
+		if (IdList.isEmpty()) {
+			return null;
+		}
+		return IdList.get(0);
+	}
+	
+	
+	/**
+	 * Returns the name field of the stanza that matches the ID for the given stanzaURI.
+	 * 
+	 * @param stanzaURI
+	 * @return the name field of the stanza that matches the ID in the given stanzaURI, or {@code null} if this no match is found.
+	 * @throws IllegalArgumentException if the given stanzaURI does not begin with "http://identifiers.org/so/".
+	 */
+	public final String getName(URI stanzaURI) {
+		String oboURIstr = stanzaURI.toString().trim();
+		if (!oboURIstr.contains(URI_PREFIX)) {
+			throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+		}
+		int beginIndex = oboURIstr.lastIndexOf("/") + 1;
+		String id = oboURIstr.substring(beginIndex, oboURIstr.length());
+		OBOStanza oboStanza = sequenceOntology.getStanza(id);
+		return oboStanza.getName();
+	}
+	
+	/**
+	 * Returns the name field of the stanza that matches the ID in the given stanzaURI.
+	 * 
+	 * @param stanzaId
+	 * @return the name field of the stanza that matches the ID in the given stanzaURI,
+				or {@code null} if this no match is found.
+	 */
+	public final String getName(String stanzaId) {
+		return sequenceOntology.getStanza(stanzaId).getName();
+	}
+	
+	/**
+	 * Returns the URI, i.e. the Sequence Ontology namespace URL followed by an ID of an sequence ontology term, 
+	 * of the stanza whose name matches the given name. If multiple matches are found, only the first matching
+	 * one is returned. 
+	 * 
+	 * @param stanzaName
+	 * @return the URI of the given Sequence Ontology name, or {@code null} if no match is found.
+	 */
+	public final URI getURIbyName(String stanzaName) {
+		String stanzaId = getId(stanzaName);
+		if (stanzaId == null) {
+			return null;
+		}
+		return getURIbyId(stanzaId);
+	}
+	
+	/** 
+	 * Creates a new URI from the Sequence Ontology namespace with the given ID. For example, the function call
+	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
+	 * @param stanzaId
 	 * @return the created URI
 	 */
-	public static final URI type(String localName) {
-		return URI.create(URI_PREFIX+localName);
+	public final URI getURIbyId(String stanzaId) {
+		//return type(stanzaId.trim());
+		return URI.create(URI_PREFIX+stanzaId);
 	}
 
+	/**
+	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
+	 * @param Id1
+	 * @param Id2
+	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
+	 */
+	public boolean isDescendantOf(String Id1, String Id2) {
+		OBOStanza stanza1 = sequenceOntology.getStanza(Id1);
+		OBOStanza stanza2 = sequenceOntology.getStanza(Id2);
+		if (stanza1 == null) {
+			throw new IllegalArgumentException("Illegal ID: " + Id1 + ". No match was found.");
+		}
+		if (stanza2 == null) {
+			throw new IllegalArgumentException("Illegal ID: " + Id2 + ". No match was found.");
+		}
+		return sequenceOntology.isDescendantOf(stanza1, stanza2);
+	}
+
+	/**
+	 * Creates a new URI from the Sequence Ontology namespace with the given ID. For example, the function call
+	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
+	 * @param id
+	 * @return the created URI
+	 */
+	public static final URI type(String id) {
+		return URI.create(URI_PREFIX+id);
+	}
+		
 	/**
 	 * A regulatory_region composed of the TSS(s) and binding sites for TF_complexes of the basal transcription
 	 * machinery (<a href="http://identifiers.org/so/SO:0000167">SO:0000167</a>).
