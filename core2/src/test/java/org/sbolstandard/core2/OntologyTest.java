@@ -98,11 +98,11 @@ public class OntologyTest {
 		assertTrue(sequenceOntology.isDescendantOf(SO_child1_id, SO_parent1_id));
 	}
 	
-	@Test
-	public void test_SO_isDescendantOf2() {
-		// Term SO:1001260 has two is_a relations.
-		assertTrue(sequenceOntology.isDescendantOf(SO_child1_id, SO_parent2_id));
-	}
+//	@Test
+//	public void test_SO_isDescendantOf2() {
+//		// Term SO:1001260 has two is_a relations.
+//		assertTrue(sequenceOntology.isDescendantOf(SO_child1_id, SO_parent2_id));
+//	}
 	
 	@Test
 	public void test_SO_isDescendantOf3() {
@@ -110,15 +110,15 @@ public class OntologyTest {
 		assertTrue(sequenceOntology.isDescendantOf(SO_child1_id, SO_parent3_id));
 	}
 	
-	@Test
-	public void test_SO_isDescendantOf4() {
-		assertFalse(sequenceOntology.isDescendantOf(SO_parent1_id, SO_parent2_id));
-	}
+//	@Test
+//	public void test_SO_isDescendantOf4() {
+//		assertFalse(sequenceOntology.isDescendantOf(SO_parent1_id, SO_parent2_id));
+//	}
 
-	@Test
-	public void test_SO_isDescendantOf5() {
-		assertFalse(sequenceOntology.isDescendantOf(SO_parent2_id, SO_child1_id));
-	}
+//	@Test
+//	public void test_SO_isDescendantOf5() {
+//		assertFalse(sequenceOntology.isDescendantOf(SO_parent2_id, SO_child1_id));
+//	}
 
 	@Test
 	public void test_SBO_getId1() {

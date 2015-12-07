@@ -19,7 +19,8 @@ import org.junit.runners.Suite.SuiteClasses;
 			SBOLReaderTest.class,
 			SBOLWriterTest.class,
 			URIcomplianceTest.class,
-			SBOLDocumentTest.class
+			SBOLDocumentTest.class,
+			OntologyTest.class
 		}
 		)
 
