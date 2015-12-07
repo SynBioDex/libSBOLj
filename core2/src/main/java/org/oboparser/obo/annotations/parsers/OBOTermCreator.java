@@ -48,7 +48,7 @@ public class OBOTermCreator {
 	 * 
 	 * @param ontology
 	 * @param termStanza
-	 * @return
+	 * @return term
 	 * @throws CannotCompileException
 	 */
 	public Class<?> createTerm(OBOOntology ontology, OBOTerm termStanza) throws CannotCompileException {
@@ -159,7 +159,7 @@ public class OBOTermCreator {
 	 * 
 	 * @param camelCased The argument string -- <em>should</em> be in camel case (via a call to unmangle) but
 	 * not required.
-	 * @return
+	 * @return acronym
 	 */
 	public String acronym(String camelCased) { 
 		StringBuilder sb = new StringBuilder();
@@ -290,7 +290,7 @@ public class OBOTermCreator {
 	 * @param is_a
 	 * @param relTypes
 	 * @param relTypedefs
-	 * @return
+	 * @return term
 	 * @throws CannotCompileException
 	 */
 	public Class createTerm(

@@ -59,7 +59,7 @@ public class JavaWriter {
 	 * in one of the two ways.  
 	 * 
 	 * @param ann
-	 * @return
+	 * @return rendered annotation
 	 */
 	public String renderAnnotation(Object ann) { 
 		if(ann instanceof Class) { 
