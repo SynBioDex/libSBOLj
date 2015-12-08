@@ -34,7 +34,14 @@ default URI prefix. If we want to allow all top-level identity URIs to
 include their types, then we can call \lstinline+document.setTypesInURIs(true)+.
 The \lstinline+document.setComplete(true)+ statement sets the ``complete'' flag
 to \lstinline+true+ for the given \lstinline+document+. It means that
-any URIs that cannot be dereferenced to a valid object in the current \lstinline+SBOLDocument+ object cause an exception to be thrown.  Finally, the \lstinline+document.setCreateDefaults(true)+ statement sets the ``createDefaults'' flag to \lstinline+true+ for the given \lstinline+document+.  It means that when an object that must reference a \lstinline+ComponentInstance+ object cannot find the component, but it can find a \lstinline+ComponentDefinition+ object with the same \lstinline+displayId+ that it creates a default \lstinline+ComponentInstance+ object with this \lstinline+displayId+ and references it.
+any URIs that cannot be dereferenced to a valid object in the current
+\lstinline+SBOLDocument+ object cause an exception to be thrown.
+Finally, the \lstinline+document.setCreateDefaults(true)+ statement
+sets the ``createDefaults'' flag to \lstinline+true+ for the given
+\lstinline+document+.  It means that when an object that must
+reference a \lstinline+ComponentInstance+ object cannot find the
+component, but it can find a \lstinline+ComponentDefinition+ object
+with the same \lstinline+displayId+, it creates a default \lstinline+ComponentInstance+ object with this \lstinline+displayId+ and references it.
 
 \subsection*{Creating SBOL Data Objects}
 The next step is to create \lstinline+TopLevel+ objects.  All create methods take as parameters an optional URI prefix \lstinline+String+, a display id \lstinline+String+, and an optional version \lstinline+String+.  Each create method also has parameters for each required element of a \lstinline+TopLevel+ object.  For a \lstinline+ComponentDefinition+, the only required element is a set of type URIs.  The code below creates \lstinline+ComponentDefinition+ objects for a promoter repressed by TetR, a coding sequence for the LacI repressor protein, and a cassette that includes them both.  The \lstinline+types+ property creates a set of URIs to specify the biochemical or physical entity for each \lstinline+ComponentDefinition+, which, in this case, is a double-stranded DNA. The first URI \lstinline+ComponentDefinition.DNA+ is a BioPAX ontology term defined as a constant in the \lstinline+ComponentDefinition+ class. The second URI is a \emph{Chemical Entities of Biological Interest} (ChEBI) term specified by the given URI.  Since only the display id is provided to the create functions below, the default URI prefix is used and no version is set.
@@ -281,7 +288,7 @@ The library can make copies of \lstinline+TopLevel+ objects using the \lstinline
 The library supports reading and writing data encoded in RDF/XML
 format. We can produce a serialization output by
 calling various write methods in the \lstinline+SBOLWriter+
-class. These methods write to either a output stream in the form of
+class. These methods write to either an output stream in the form of
 Java OutputStream object or a file, some
 of which are demonstrated below. The first method call produces an output
 stream and the second stores the output to file
@@ -302,7 +309,7 @@ Reading of a file or an input stream in the form of Java InputStream
 object is supported by similar read methods in the \lstinline+SBOLReader+
 class. The default input format for any of these read methods is also
 RDF/XML. The method below first writes the \lstinline+SBOLDocument+
-``\lstinline+doc+'' to a Java \lstinline+ByteArrayOutputStream+ first,
+``\lstinline+doc+'' to a Java \lstinline+ByteArrayOutputStream+,
 and then reads it back to a new \lstinline+SBOLDocument+ object.
 
 \begin{minipage}{0.95\textwidth} 
@@ -318,7 +325,10 @@ and then reads it back to a new \lstinline+SBOLDocument+ object.
 \end{minipage}
 
 The RDF serialization for the SBOLDocument object created in this
-tutorial is shown below.
+tutorial is shown below. Note that we only show the beginning of the
+actual sequences for \lstinline+seq_K137046+ and
+\lstinline+partseq_153+ in the serialization output below. Actual
+serialization includes the complete sequences.
 
 \begin{minipage}{0.95\textwidth}
 \lstsetsbol
@@ -403,7 +413,7 @@ tutorial is shown below.
   <sbol:Sequence rdf:about="http://partsregistry.org/seq/seq_K137046">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/seq/seq_K137046"/>
     <sbol:displayId>seq_K137046</sbol:displayId>
-    <sbol:elements>gtgctcagtatctctatcactgatagggatgtcaatctctatcactgatagggactctagtatataaacgcagaaaggcccacccgaaggtgagccagtgtgactctagtagagagcgttcaccgacaaacaacagataaaacgaaaggc</sbol:elements>
+    <sbol:elements>gtgctcagtatctctatcactgatagggatgtcaatctctatcactgata ...</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://partsregistry.org/seq/partseq_187">
@@ -415,7 +425,7 @@ tutorial is shown below.
   <sbol:Sequence rdf:about="http://partsregistry.org/seq/partseq_153">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/seq/partseq_153"/>
     <sbol:displayId>partseq_153</sbol:displayId>
-    <sbol:elements>atggtgaatgtgaaaccagtaacgttatacgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtggtgaaccaggccagccacgtttctgcgaaaacgcgggaaaaagtggaagcggcgatggcggagctgaattacattcccaaccgcgtggcacaacaactggcgggcaaacagtcgttgctgattggcgttgccacctccagtctggccctgcacgcgccgtcgcaaattgtcgcggcgattaaatctcgcgccgatcaactgggtgccagcgtggtggtgtcgatggtagaacgaagcggcgtcgaagcctgtaaagcggcggtgcacaatcttctcgcgcaacgcgtcagtgggctgatcattaactatccgctggatgaccaggatgccattgctgtggaagctgcctgcactaatgttccggcgttatttcttgatgtctctgaccagacacccatcaacagtattattttctcccatgaagacggtacgcgactgggcgtggagcatctggtcgcattgggtcaccagcaaatcgcgctgttagcgggcccattaagttctgtctcggcgcgtctgcgtctggctggctggcataaatatctcactcgcaatcaaattcagccgatagcggaacgggaaggcgactggagtgccatgtccggttttcaacaaaccatgcaaatgctgaatgagggcatcgttcccactgcgatgctggttgccaacgatcagatggcgctgggcgcaatgcgcgccattaccgagtccgggctgcgcgttggtgcggatatctcggtagtgggatacgacgataccgaagacagctcatgttatatcccgccgttaaccaccatcaaacaggattttcgcctgctggggcaaaccagcgtggaccgcttgctgcaactctctcagggccaggcggtgaagggcaatcagctgttgcccgtctcactggtgaaaagaaaaaccaccctggcgcccaatacgcaaaccgcctctccccgcgcgttggccgattcattaatgcagctggcacgacaggtttcccgactggaaagcgggcaggctgcaaacgacgaaaactacgctttagtagcttaataa</sbol:elements>
+    <sbol:elements>atggtgaatgtgaaaccagtaacgttatacgatgtcgcagagtatgccgg ...</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
   <myersLab:datasheet rdf:about="http://partsregistry.org/gen/datasheet/1.0">
