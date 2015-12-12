@@ -130,17 +130,17 @@ public class SequenceOntology {
 		return URI.create(convertedSO);
 	}
 	
-		/**
+	/**
 	 * Returns the extracted ID of the given stanza's URI. 
 	 * 
 	 * @param stanzaURI
 	 * @return the extracted ID of the given stanza's URI.
-	 * @throws IllegalArgumentException if the given stanzaURI does not begin with "http://identifiers.org/so/".
+	 * @throws IllegalArgumentException if the given stanzaURI does not begin with SO URI prefix "http://identifiers.org/so/".
 	 */
 	public final String getId(URI stanzaURI) {
 		String stanzaURIstr = stanzaURI.toString().trim();
-		if (!stanzaURIstr.contains(URI_PREFIX)) {
-			throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+		if (!stanzaURIstr.startsWith(URI_PREFIX)) {
+			throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
 		}
 		int beginIndex = stanzaURIstr.lastIndexOf("/") + 1;
 		return stanzaURIstr.substring(beginIndex, stanzaURIstr.length());
@@ -151,10 +151,10 @@ public class SequenceOntology {
 	 * one is returned.
 	 *  
 	 * @param stanzaName
-	 * @return the ID the matching stanza, or {@code null} if no match is found. 
+	 * @return the ID the matching stanza, or {@code null} if no match is found.
+	 * @throws IllegalArgumentException if the stanzaName does not exist.
 	 */
 	public final String getId(String stanzaName) {
-		//return sequenceOntology.getStanza(stanzaName).getName();
 		List<String> IdList = new ArrayList<String>();	
 		for (OBOStanza stanza : sequenceOntology.getStanzas()) {
 			if (stanzaName.trim().equals(stanza.getName().trim())) {
@@ -162,7 +162,7 @@ public class SequenceOntology {
 			}
 		}
 		if (IdList.isEmpty()) {
-			return null;
+			throw new IllegalArgumentException("Illegal name " + stanzaName + ". It does not exit.");
 		}
 		return IdList.get(0);
 	}
@@ -172,17 +172,21 @@ public class SequenceOntology {
 	 * Returns the name field of the stanza that matches the ID for the given stanzaURI.
 	 * 
 	 * @param stanzaURI
-	 * @return the name field of the stanza that matches the ID in the given stanzaURI, or {@code null} if this no match is found.
+	 * @return the name field of the stanza that matches the ID in the given stanzaURI.
 	 * @throws IllegalArgumentException if the given stanzaURI does not begin with "http://identifiers.org/so/".
+	 * @throws IllegalArgumentException if the ID in the given stanzaURI does not exist. 
 	 */
 	public final String getName(URI stanzaURI) {
 		String oboURIstr = stanzaURI.toString().trim();
-		if (!oboURIstr.contains(URI_PREFIX)) {
+		if (!oboURIstr.startsWith(URI_PREFIX)) {
 			throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
 		}
 		int beginIndex = oboURIstr.lastIndexOf("/") + 1;
 		String id = oboURIstr.substring(beginIndex, oboURIstr.length());
 		OBOStanza oboStanza = sequenceOntology.getStanza(id);
+		if (oboStanza == null) {
+			throw new IllegalArgumentException("ID " + id + " does not exist.");
+		}
 		return oboStanza.getName();
 	}
 	
@@ -192,9 +196,14 @@ public class SequenceOntology {
 	 * @param stanzaId
 	 * @return the name field of the stanza that matches the ID in the given stanzaURI,
 				or {@code null} if this no match is found.
+	 * @throws IllegalArgumentException if the ID in the given stanzaURI does not exist.				
 	 */
 	public final String getName(String stanzaId) {
-		return sequenceOntology.getStanza(stanzaId).getName();
+		OBOStanza oboStanza = sequenceOntology.getStanza(stanzaId);
+		if (oboStanza == null) {
+			throw new IllegalArgumentException("Illegal ID " + stanzaId + " does not exist.");
+		}
+		return oboStanza.getName();
 	}
 	
 	/**
@@ -203,14 +212,11 @@ public class SequenceOntology {
 	 * one is returned. 
 	 * 
 	 * @param stanzaName
-	 * @return the URI of the given Sequence Ontology name, or {@code null} if no match is found.
+	 * @return the URI of the given SO name.
+	 * @throws IllegalArgumentException if the ID in the given stanzaURI does not exist.
 	 */
 	public final URI getURIbyName(String stanzaName) {
-		String stanzaId = getId(stanzaName);
-		if (stanzaId == null) {
-			return null;
-		}
-		return getURIbyId(stanzaId);
+		return getURIbyId(getId(stanzaName));
 	}
 	
 	/** 
@@ -218,9 +224,13 @@ public class SequenceOntology {
 	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
 	 * @param stanzaId
 	 * @return the created URI
+	 * @throws IllegalArgumentException if the ID in the given stanzaURI does not exist.
 	 */
 	public final URI getURIbyId(String stanzaId) {
-		//return type(stanzaId.trim());
+		OBOStanza oboStanza = sequenceOntology.getStanza(stanzaId.trim());
+		if (oboStanza == null) {
+			throw new IllegalArgumentException("ID " + stanzaId + " does not exist.");
+		}
 		return URI.create(URI_PREFIX+stanzaId);
 	}
 
