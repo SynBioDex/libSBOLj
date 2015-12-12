@@ -198,6 +198,18 @@ public class SystemsBiologyOntology {
 	 * @param Id2
 	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
 	 */
+	public final boolean isDescendantOf(URI childURI, URI parentURI) {
+		String childId = getId(childURI);
+		String parentId = getId(parentURI);
+		return isDescendantOf(childId,parentId);
+	}
+	
+	/**
+	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
+	 * @param Id1
+	 * @param Id2
+	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
+	 */
 	public final boolean isDescendantOf(String Id1, String Id2) {
 		OBOStanza stanza1 = systemsBiologyOntology.getStanza(Id1);
 		OBOStanza stanza2 = systemsBiologyOntology.getStanza(Id2);
@@ -221,6 +233,12 @@ public class SystemsBiologyOntology {
 	}
 
 	// Modeling frameworks
+	/**
+	 * Set of assumptions that underlay a mathematical description
+	 * (<a href="http://identifiers.org/biomodels.sbo/SBO:0000004">SBO:0000004</a>).
+	 */
+	public static final URI MODELING_FRAMEWORK 		 	 = type("SBO:0000004");
+	
 	/**
 	 * Modelling approach where the quantities of participants are considered continuous,
 	 * and represented by real values (<a href="http://identifiers.org/biomodels.sbo/SBO:0000062">SBO:0000062</a>).
@@ -286,6 +304,13 @@ public class SystemsBiologyOntology {
 	public static final URI BOOLEAN_LOGICAL_FRAMEWORK 		 = type("SBO:0000547");
 
 	// Interaction types
+	/**
+	 * Representation of an entity that manifests, unfolds or develops through time, such as a discrete event, 
+	 * or a mutual or reciprocal action or influence that happens between participating physical entities, 
+	 * and/or other occurring entities (<a href="http://identifiers.org/biomodels.sbo/SBO:0000231">SBO:0000231</a>). 
+	 */
+	public static final URI OCCURRING_ENTITY_REPRESENTATION		   = type("SBO:0000231");
+	
 	/**
 	 * The potential action that a biological entity has on other entities (<a href="http://identifiers.org/biomodels.sbo/SBO:0000412">SBO:0000412</a>). Example are
 	 * enzymatic activity, binding activity etc.
@@ -817,6 +842,12 @@ public class SystemsBiologyOntology {
 	public static final URI TRANS 								   = type("SBO:0000415");
 
 	// Participant roles
+	/**
+	 * The function of a physical or conceptual entity, that is its role, in the execution of an event or process
+	 * (<a href="http://identifiers.org/biomodels.sbo/SBO:0000003">SBO:0000003</a>). 
+	 */
+	public static final URI PARTICIPANT_ROLE 		 = type("SBO:0000003");
+
 	/**
 	 * Logical or physical subset of the event space that contains pools, that is sets of participants
 	 * considered identical when it comes to the event they are involved into (<a href="http://identifiers.org/biomodels.sbo/SBO:0000289">SBO:0000289</a>). A compartment can have any
