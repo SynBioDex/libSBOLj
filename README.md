@@ -37,7 +37,7 @@ If validation is successful, the program will print the contents of the SBOL doc
 java -jar libSBOLj-<version>-withDependencies.jar <inputFile> -o <outputFile>
 ```
 
-If validation fails with an error, there will be a message printed about the validation error.  In addition to checking all required validation rules, it will also check if the URIs are compliant and whether the SBOL document is complete (i.e., all referenced objects are contained within the file).  These validation checks can be turned off with the -n and -i flags, respectively.
+If validation fails with an error, there will be a message printed about the validation error.  In addition to checking all required validation rules, it will also check if the URIs are compliant and whether the SBOL document is complete (i.e., all referenced objects are contained within the file).  These validation checks can be turned off with the -n and -i flags, respectively.  The -b flag turns on best practice check to validate that the ontology terms used follow the recommended usage described in the specification.
 
 If the input file is an SBOL 1.1 file, then it will convert the file into an SBOL 2.0 file.  This conversion should be provided a default URI prefix.  It can also be provided a default version, if desired.  Finally, the -t flag will insert the type of top level objects into the URI during conversion, if desired.
 
