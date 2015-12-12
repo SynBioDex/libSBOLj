@@ -1,5 +1,9 @@
 package org.sbolstandard.core2;
 
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Zhen Zhang
  * @author Tramy Nguyen
@@ -15,7 +19,20 @@ public class SBOLValidate {
 	/**
 	 * the current SBOL version
 	 */
-	public static final String SBOLVersion = "2.0";
+	private static final String SBOLVersion = "2.0";
+	private static List<String> errors = null;
+	
+	public static void clearErrors() {
+		errors = new ArrayList<String>();
+	}
+	
+	public static List<String> getErrors() {
+		return errors;
+	}
+	
+	public static int getNumErrors() {
+		return errors.size();
+	}
 	
 	private static void usage() {		
 		System.err.println("libSBOLj version " + SBOLVersion);
@@ -90,6 +107,105 @@ public class SBOLValidate {
 		}
 	}
 	
+	public static void validateOntologyUsage(SBOLDocument sbolDocument) {
+		SequenceOntology so = new SequenceOntology();
+		SystemsBiologyOntology sbo = new SystemsBiologyOntology();
+		for (Sequence sequence : sbolDocument.getSequences()) {
+			if (!sequence.getEncoding().equals(Sequence.IUPAC_DNA) &&
+				!sequence.getEncoding().equals(Sequence.IUPAC_RNA) &&
+				!sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN) &&
+				!sequence.getEncoding().equals(Sequence.SMILES)) {
+				errors.add("Sequence " + sequence.getIdentity() + " has unrecoginized encoding (see Table 1): " + sequence.getEncoding());
+			}
+		}
+		for (ComponentDefinition compDef : sbolDocument.getComponentDefinitions()) {
+			int numBioPAXtypes = 0;
+			for (URI type : compDef.getTypes()) {
+				if (type.equals(ComponentDefinition.DNA) ||
+					type.equals(ComponentDefinition.RNA) ||
+					type.equals(ComponentDefinition.PROTEIN) ||
+					type.equals(ComponentDefinition.COMPLEX) ||
+					type.equals(ComponentDefinition.SMALL_MOLECULE)) {
+					numBioPAXtypes++;
+				}
+			}
+			if (numBioPAXtypes == 0) {
+				errors.add("ComponentDefinition " + compDef.getIdentity() + " does not have a recognized BioPAX type (see Table 2).");
+			} else if (numBioPAXtypes > 1){
+				errors.add("ComponentDefinition " + compDef.getIdentity() + " has conflicting BioPAX types (see Table 2).");
+			}
+			if (compDef.getTypes().contains(ComponentDefinition.DNA)) {
+				boolean foundSO = false;
+				for (URI role : compDef.getRoles()) {
+					try { 
+						so.getName(role);
+						foundSO = true;
+						break;
+					} catch (Exception e){
+					}
+				}
+				if (!foundSO) {
+					errors.add("DNA ComponentDefinition " + compDef.getIdentity() + " does not have a recognized SO role.");
+				}
+			}
+		}
+		for (Model model : sbolDocument.getModels()) {
+			if (!model.getLanguage().equals(Model.SBML) &&
+				!model.getLanguage().equals(Model.CELLML) &&
+				!model.getLanguage().equals(Model.BIOPAX)) {
+				errors.add("Model " + model.getIdentity() + " has unrecoginized language (see Table 8): " + model.getLanguage());
+			}
+			try {
+				if (!sbo.isDescendantOf(model.getFramework(), SystemsBiologyOntology.MODELING_FRAMEWORK)) {
+					errors.add("Model " + model.getIdentity() + " does not have a recoginized SBO modeling framework: " + model.getFramework());
+				}
+			}
+			catch (Exception e) {
+				errors.add("Model " + model.getIdentity() + " does not have a recoginized SBO modeling framework: " + model.getFramework());
+			}
+		}
+		for (ModuleDefinition modDef : sbolDocument.getModuleDefinitions()) {
+			for (Interaction interaction : modDef.getInteractions()) {
+				int numSBOtype = 0;
+				for (URI type : interaction.getTypes()) {
+					try {
+						if (sbo.isDescendantOf(type, SystemsBiologyOntology.OCCURRING_ENTITY_REPRESENTATION)) {
+							numSBOtype++;
+						}
+					}
+					catch (Exception e) {
+					}
+				}
+				if (numSBOtype == 0) {
+					errors.add("Interaction " + interaction.getIdentity() + 
+							" has no type from occurring entity branch of the SBO.");
+				} else if (numSBOtype > 1) {
+					errors.add("Interaction " + interaction.getIdentity() + 
+							" has more than one type from occurring entity branch of the SBO.");
+				}
+				for (Participation participation : interaction.getParticipations()) {
+					int numSBOrole = 0;
+					for (URI role : participation.getRoles()) {
+						try {
+							if (sbo.isDescendantOf(role, SystemsBiologyOntology.PARTICIPANT_ROLE)) {
+								numSBOrole++;
+							}
+						}
+						catch (Exception e) {
+						}
+					}
+					if (numSBOrole == 0) {
+						errors.add("Participation " + participation.getIdentity() + 
+								" has no role from participant role branch of the SBO.");
+					} else if (numSBOrole > 1) {
+						errors.add("Participation " + participation.getIdentity() + 
+								" has more than one role from participant role branch of the SBO.");
+					}
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Command line method for reading an input file and producing an output file. 
 	 * <p>
@@ -120,12 +236,16 @@ public class SBOLValidate {
 		boolean complete = true;
 		boolean compliant = true;
 		boolean typesInURI = false;
+		boolean bestPractice = false;
+		clearErrors();
 		int i = 0;
 		while (i < args.length) {
 			if (args[i].equals("-i")) {
 				complete = false;
 			} else if (args[i].equals("-t")) {
 				typesInURI = true;
+			} else if (args[i].equals("-b")) {
+				bestPractice = true;
 			} else if (args[i].equals("-n")) {
 				compliant = false;
 			} else if (args[i].equals("-o")) {
@@ -164,18 +284,26 @@ public class SBOLValidate {
 	        doc.setTypesInURIs(typesInURI);
 	        if (compliant) validateCompliance(doc);
 	        if (complete) validateCompleteness(doc);
-	        System.out.println("Validation successful, no errors.");
-	        if (outputFile.equals("")) {
-	        	SBOLWriter.write(doc, (System.out));
+	        if (bestPractice) validateOntologyUsage(doc);
+	        if (getNumErrors()==0) {
+	        	//System.out.println("Validation successful, no errors.");
+	        	if (outputFile.equals("")) {
+	        		SBOLWriter.write(doc, (System.out));
+	        	} else {
+	        		SBOLWriter.write(doc, outputFile);
+	        	}
 	        } else {
-	        	SBOLWriter.write(doc, outputFile);
+	        	for (String error : getErrors()) {
+	        		System.err.println(error);
+	        	}
+	        	System.err.println("Validation failed.\n");
 	        }
 		}
 		catch (Exception e) {
-        	System.err.println("Validation failed.\n" + e.getMessage());
+        	System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 		catch (Throwable e) {
-        	System.err.println("Validation failed.\n" + e.getMessage());
+        	System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 	}
 

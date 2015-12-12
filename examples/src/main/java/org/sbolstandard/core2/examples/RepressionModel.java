@@ -135,10 +135,10 @@ public class RepressionModel {
 		doc.createSequence("CRP_b_seq", version, CRP_b_seq_elements, Sequence.IUPAC_DNA);
 		
 		// Create ComponentDefinition for a Constitutive Promoter
-		doc.createComponentDefinition("pConst", version, ComponentDefinition.DNA);
+		doc.createComponentDefinition("pConst", version, ComponentDefinition.DNA).addRole(SequenceOntology.PROMOTER);
 		
 		// Create ComponentDefinition for cas9m_BFP coding sequence
-		doc.createComponentDefinition("cas9m_BFP_cds", version, ComponentDefinition.DNA);
+		doc.createComponentDefinition("cas9m_BFP_cds", version, ComponentDefinition.DNA).addRole(SequenceOntology.CDS);
 		
 		// Create ComponentDefinition for cas9m_BFP gene
 		ComponentDefinition cas9m_BFP_gene = doc.createComponentDefinition("cas9m_BFP_gene", version, ComponentDefinition.DNA);
