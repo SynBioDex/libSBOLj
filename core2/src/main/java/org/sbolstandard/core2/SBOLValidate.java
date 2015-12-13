@@ -58,30 +58,76 @@ public class SBOLValidate {
 	 */
 	public static void validateCompliance(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
-			if (!URIcompliance.isTopLevelURIcompliant(collection) || !collection.checkDescendantsURIcompliance()) 
-				throw new SBOLValidationException("Collection contains non-compliant URI",collection);
+			if (!URIcompliance.isTopLevelURIcompliant(collection) || !collection.checkDescendantsURIcompliance()) {
+				errors.add("Collection " + collection.getIdentity() + " is not URI compliant.");
+			}
 		}
 		for (Sequence sequence : sbolDocument.getSequences()) {
 			if (!URIcompliance.isTopLevelURIcompliant(sequence) || !sequence.checkDescendantsURIcompliance()) {
-				throw new SBOLValidationException("Sequence contains non-compliant URI",sequence);
+				errors.add("Sequence " + sequence.getIdentity() + " is not URI compliant.");
 			}
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			if (!URIcompliance.isTopLevelURIcompliant(componentDefinition) || !componentDefinition.checkDescendantsURIcompliance()) {
-				throw new SBOLValidationException("Component definition contains non-compliant URI",componentDefinition);
+				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + " is not URI compliant.");
 			}
 		}
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
 			if (!URIcompliance.isTopLevelURIcompliant(moduleDefinition) || !moduleDefinition.checkDescendantsURIcompliance()) 	
-				throw new SBOLValidationException("Module definition contains non-compliant URI",moduleDefinition);
+				errors.add("ModuleDefinition " + moduleDefinition.getIdentity() + " is not URI compliant.");
 		}
 		for (Model model : sbolDocument.getModels()) {
 			if (!URIcompliance.isTopLevelURIcompliant(model) || !model.checkDescendantsURIcompliance()) 
-				throw new SBOLValidationException("Model contains non-compliant URI",model);
+				errors.add("Model " + model.getIdentity() + " is not URI compliant.");
 		}
 		for (GenericTopLevel genericTopLevel : sbolDocument.getGenericTopLevels()) {
 			if (!URIcompliance.isTopLevelURIcompliant(genericTopLevel) || !genericTopLevel.checkDescendantsURIcompliance()) 
-				throw new SBOLValidationException("Generic top level contains non-compliant URI",genericTopLevel);
+				errors.add("GenericTopLevel " + genericTopLevel.getIdentity() + " is not URI compliant.");
+		}
+	}
+	
+	protected static void validateCollectionCompleteness(SBOLDocument sbolDocument,Collection collection) {
+		for (URI member : collection.getMemberURIs()) {
+			if (sbolDocument.getTopLevel(member)==null) {
+				errors.add("Collection " + collection.getIdentity() + " member " + member + " not found in document.");
+			}
+		}
+	}
+
+
+	protected static void validateComponentDefinitionCompleteness(SBOLDocument sbolDocument,ComponentDefinition componentDefinition) {
+		for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
+			if (sbolDocument.getSequence(sequenceURI)==null) {
+				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + " sequence " + 
+						sequenceURI + " not found in document.");
+			}
+		}
+		for (Component component : componentDefinition.getComponents()) {
+			if (component.getDefinition()==null) {
+				errors.add("Component " + component.getIdentity() + " definition " + 
+						component.getDefinitionURI() + " not found in document.");
+			}
+		}
+	}
+
+	protected static void validateModuleDefinitionCompleteness(SBOLDocument sbolDocument,ModuleDefinition moduleDefinition) {
+		for (URI modelURI : moduleDefinition.getModelURIs()) {
+			if (sbolDocument.getModel(modelURI) == null) {
+				errors.add("ModuleDefinition " + moduleDefinition.getIdentity() + " model " + 
+						modelURI + " not found in document.");
+			}
+		}
+		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
+			if (functionalComponent.getDefinition() == null) {
+				errors.add("FunctionalComponent " + functionalComponent.getIdentity() + " definition " + 
+						functionalComponent.getDefinitionURI() + " not found in document.");
+			}
+		}
+		for (Module module : moduleDefinition.getModules()) {
+			if (module.getDefinition() == null) {
+				errors.add("Module " + module.getIdentity() + " definition " + 
+						module.getDefinitionURI() + " not found in document.");
+			}
 		}
 	}
 
@@ -94,16 +140,13 @@ public class SBOLValidate {
 	 */
 	public static void validateCompleteness(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
-			if (!collection.isComplete()) 
-				throw new SBOLValidationException("Collection is not complete",collection);
+			validateCollectionCompleteness(sbolDocument,collection);
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
-			if (!componentDefinition.isComplete()) 
-				throw new SBOLValidationException("Component definition is not complete",componentDefinition);
+			validateComponentDefinitionCompleteness(sbolDocument,componentDefinition);
 		}
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
-			if (!moduleDefinition.isComplete()) 	
-				throw new SBOLValidationException("Module definition is not complete",moduleDefinition);
+			validateModuleDefinitionCompleteness(sbolDocument,moduleDefinition);
 		}
 	}
 	
@@ -146,6 +189,14 @@ public class SBOLValidate {
 				}
 				if (!foundSO) {
 					errors.add("DNA ComponentDefinition " + compDef.getIdentity() + " does not have a recognized SO role.");
+				}
+			}
+			for (SequenceConstraint sc : compDef.getSequenceConstraints()) {
+				try {
+					sc.getRestriction();
+				}
+				catch (Exception e) {
+					errors.add("SequenceConstraint " + sc.getIdentity() + " does not have a recognized restriction type (Table 7): " + sc.getRestrictionURI());
 				}
 			}
 		}
@@ -237,7 +288,6 @@ public class SBOLValidate {
 		boolean compliant = true;
 		boolean typesInURI = false;
 		boolean bestPractice = false;
-		clearErrors();
 		int i = 0;
 		while (i < args.length) {
 			if (args[i].equals("-i")) {
@@ -282,6 +332,7 @@ public class SBOLValidate {
 			SBOLReader.setVersion(version);
 	        SBOLDocument doc = SBOLReader.read(fileName);
 	        doc.setTypesInURIs(typesInURI);
+			clearErrors();
 	        if (compliant) validateCompliance(doc);
 	        if (complete) validateCompleteness(doc);
 	        if (bestPractice) validateOntologyUsage(doc);

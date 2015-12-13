@@ -606,9 +606,8 @@ public abstract class SBOLAbstractTests {
 		lacInverterSubModule.createMapsTo(
 				"LacI_mapping",
 				RefinementType.USEREMOTE,
-				laciInverterModuleDef.getFunctionalComponent("TF").getIdentity(),
-				toggleSwitchModuleDef_LacI.getIdentity());
-
+				toggleSwitchModuleDef_LacI.getIdentity(),
+				laciInverterModuleDef.getFunctionalComponent("TF").getIdentity());
 
 		Module tetRInverterSubModule=toggleSwitchModuleDef.createModule(
 				"tetr_inverter",
@@ -617,8 +616,8 @@ public abstract class SBOLAbstractTests {
 		tetRInverterSubModule.createMapsTo(
 				"TetR_mapping",
 				RefinementType.USEREMOTE,
-				tetRInverterModuleDef.getFunctionalComponent("TF").getIdentity(),
-				toggleSwitchModuleDef_TetR.getIdentity());
+				toggleSwitchModuleDef_TetR.getIdentity(),
+				tetRInverterModuleDef.getFunctionalComponent("TF").getIdentity());
 
 		Model model=document.createModel(
 				"toogleswicth",
@@ -659,6 +658,7 @@ public abstract class SBOLAbstractTests {
 
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(true);
+		document.setCreateDefaults(true);
 		ComponentDefinition promoter = document.createComponentDefinition(
 				"BBa_K174004",
 				"",
@@ -689,7 +689,7 @@ public abstract class SBOLAbstractTests {
 
 		promoter.createSequenceConstraint(
 				"r1",
-				RestrictionType.PRECEDES, constPromoter.getIdentity(),operator.getIdentity() );
+				RestrictionType.PRECEDES, constPromoter.getDisplayId(),operator.getDisplayId() );
 
 		//promoter.setSequence(seq.getIdentity());
 

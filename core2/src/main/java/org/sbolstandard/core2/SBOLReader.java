@@ -398,9 +398,9 @@ public class SBOLReader
 
 		readTopLevelDocs(SBOLDoc, document);
 		scanner.close();
-		try {
-			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLValidationException e) {
+		SBOLValidate.clearErrors();
+		SBOLValidate.validateCompliance(SBOLDoc);
+		if (SBOLValidate.getNumErrors()>0) {
 			SBOLDoc.setCompliant(false);
 		}
 	}
@@ -437,9 +437,9 @@ public class SBOLReader
 		SBOLDoc.addNamespaceBinding(NamespaceBinding(Sbol2Terms.prov.getNamespaceURI(),
 				Sbol2Terms.prov.getPrefix()));
 		readTopLevelDocsV1(SBOLDoc, document);
-		try {
-			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLValidationException e) {
+		SBOLValidate.clearErrors();
+		SBOLValidate.validateCompliance(SBOLDoc);
+		if (SBOLValidate.getNumErrors()>0) {
 			SBOLDoc.setCompliant(false);
 		}
 		return SBOLDoc;
@@ -801,6 +801,8 @@ public class SBOLReader
 			c.addSequence(seq_identity);
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
+		if (!components.isEmpty())
+			c.setComponents(components);
 		if (!sequenceAnnotations.isEmpty()) {
 			for (SequenceAnnotation sa : sequenceAnnotations) {
 				if (!dropObjectsWithDuplicateURIs || c.getSequenceAnnotation(sa.getIdentity())==null) {
@@ -808,8 +810,6 @@ public class SBOLReader
 				}
 			}
 		}
-		if (!components.isEmpty())
-			c.setComponents(components);
 		if (!sequenceConstraints.isEmpty())
 			c.setSequenceConstraints(sequenceConstraints);
 

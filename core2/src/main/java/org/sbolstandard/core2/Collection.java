@@ -221,14 +221,6 @@ public class Collection extends TopLevel{
 	protected boolean checkDescendantsURIcompliance() {
 		return isTopLevelURIformCompliant(this.getIdentity());
 	}
-	
-	protected boolean isComplete() {
-		if (sbolDocument==null) return false;
-		for (URI member : members) {
-			if (sbolDocument.getTopLevel(member)==null) return false;
-		}
-		return true;
-	}
 
 	@Override
 	public String toString() {

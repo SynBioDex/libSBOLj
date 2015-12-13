@@ -238,6 +238,9 @@ public class Interaction extends Identified {
 	 * Adds the specified instance to the list of participations. 
 	 */
 	void addParticipation(Participation participation) {
+		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participation.getParticipantURI())==null) {
+			throw new IllegalArgumentException("Functional component '" + participation.getParticipantURI() + "' does not exist.");
+		}
         addChildSafely(participation, participations, "participation");
 		participation.setSBOLDocument(this.sbolDocument);
         participation.setModuleDefinition(moduleDefinition);

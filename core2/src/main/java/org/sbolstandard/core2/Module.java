@@ -214,23 +214,23 @@ public class Module extends Identified {
 	 * @param mapsTo
 	 */
 	void addMapsTo(MapsTo mapsTo) {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
+		mapsTo.setSBOLDocument(this.sbolDocument);
+        mapsTo.setModuleDefinition(moduleDefinition);
+        mapsTo.setModule(this);
+		if (sbolDocument != null) {
+			if (mapsTo.getLocal()==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
 			}
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI())==null) {
+			if (mapsTo.getRemote()==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
 			}
-			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
+			if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
 				throw new IllegalArgumentException("Functional Component '" + mapsTo.getRemoteURI() + "' is private.");
 			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
-		mapsTo.setSBOLDocument(this.sbolDocument);
-        mapsTo.setModuleDefinition(moduleDefinition);
-        mapsTo.setModule(this);
 	}
 	
 	/**

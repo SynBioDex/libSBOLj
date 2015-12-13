@@ -268,6 +268,11 @@ public class ModuleDefinition extends TopLevel {
 	 * @param module
 	 */
 	void addModule(Module module) {
+		for (MapsTo mapsTo : module.getMapsTos()) {
+			if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
+				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
+			}
+		}
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		module.setSBOLDocument(this.sbolDocument);
 		module.setModuleDefinition(this);
@@ -444,6 +449,11 @@ public class ModuleDefinition extends TopLevel {
 	 * Adds the given Interaction instance to the list of Interaction instances.
 	 */
 	void addInteraction(Interaction interaction) {
+		for (Participation participation : interaction.getParticipations()) {
+			if (this.getFunctionalComponent(participation.getParticipantURI())==null) {
+				throw new IllegalArgumentException("Functional component '" + participation.getParticipantURI() + "' does not exist.");
+			}
+		}
 		addChildSafely(interaction, interactions, "interaction", functionalComponents, modules);
 		interaction.setSBOLDocument(this.sbolDocument);
 		interaction.setModuleDefinition(this);
@@ -1183,24 +1193,6 @@ public class ModuleDefinition extends TopLevel {
 		// All descendants of this ComponentDefinition object have compliant
 		// URIs.
 		return allDescendantsCompliant;
-	}
-
-	protected boolean isComplete() {
-		if (sbolDocument == null)
-			return false;
-		for (URI modelURI : models) {
-			if (sbolDocument.getModel(modelURI) == null)
-				return false;
-		}
-		for (FunctionalComponent functionalComponent : getFunctionalComponents()) {
-			if (functionalComponent.getDefinition() == null)
-				return false;
-		}
-		for (Module module : getModules()) {
-			if (module.getDefinition() == null)
-				return false;
-		}
-		return true;
 	}
 
 	public ModuleDefinition flatten(String prefix,String displayId,String version) {

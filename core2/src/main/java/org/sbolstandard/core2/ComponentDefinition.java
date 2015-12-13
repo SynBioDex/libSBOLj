@@ -777,10 +777,13 @@ public class ComponentDefinition extends TopLevel {
 	 * Adds the specified instance to the list of sequenceAnnotations.
 	 */
 	void addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
-		addChildSafely(sequenceAnnotation, sequenceAnnotations, "sequenceAnnotation",
-				components, sequenceConstraints);
 		sequenceAnnotation.setSBOLDocument(this.sbolDocument);
 		sequenceAnnotation.setComponentDefinition(this);
+		if (sequenceAnnotation.isSetComponent() && sequenceAnnotation.getComponent()==null) {
+			throw new IllegalArgumentException("Component '" + sequenceAnnotation.getComponentURI() + "' does not exist.");
+		}
+		addChildSafely(sequenceAnnotation, sequenceAnnotations, "sequenceAnnotation",
+				components, sequenceConstraints);
 	}
 
 	/**
@@ -1225,15 +1228,11 @@ public class ComponentDefinition extends TopLevel {
 	void addSequenceConstraint(SequenceConstraint sequenceConstraint) {
 		sequenceConstraint.setSBOLDocument(this.sbolDocument);
 		sequenceConstraint.setComponentDefinition(this);
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sequenceConstraint.getSubject()==null) {
-				throw new IllegalArgumentException("Component '" + sequenceConstraint.getSubjectURI() + "' does not exist.");
-			}
+		if (sequenceConstraint.getSubject()==null) {
+			throw new IllegalArgumentException("Component '" + sequenceConstraint.getSubjectURI() + "' does not exist.");
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sequenceConstraint.getObject()==null) {
-				throw new IllegalArgumentException("Component '" + sequenceConstraint.getObjectURI() + "' does not exist.");
-			}
+		if (sequenceConstraint.getObject()==null) {
+			throw new IllegalArgumentException("Component '" + sequenceConstraint.getObjectURI() + "' does not exist.");
 		}
 		addChildSafely(sequenceConstraint, sequenceConstraints, "sequenceConstraint",
 				components, sequenceAnnotations);
@@ -1396,17 +1395,6 @@ public class ComponentDefinition extends TopLevel {
 		}
 		// All descendants of this ComponentDefinition object have compliant URIs.
 		return allDescendantsCompliant;
-	}
-
-	protected boolean isComplete() {
-		if (sbolDocument==null) return false;
-		for (URI sequenceURI : sequences) {
-			if (sbolDocument.getSequence(sequenceURI)==null) return false;
-		}
-		for (Component component : getComponents()) {
-			if (component.getDefinition()==null) return false;
-		}
-		return true;
 	}
 
 	/**
