@@ -534,12 +534,13 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition lacI    = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_C0012"),"lacI", ComponentDefinition.DNA, SequenceOntology.CDS, "lacI coding sequence");
 		ComponentDefinition placI   = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_R0010"), "pLacI", ComponentDefinition.DNA, SequenceOntology.PROMOTER, "pLacI promoter");
 		ComponentDefinition ptetR   = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_R0040"),"pTetR", ComponentDefinition.DNA, SequenceOntology.PROMOTER, "pTet promoter");
-		ComponentDefinition rbslacI = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61101"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS1"); //TODO: RIBOSOME_ENTRY_SITE is RBS?
+		ComponentDefinition rbslacI = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61101"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS1"); 
 		ComponentDefinition rbstetR = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61120"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS2");
 		ComponentDefinition rbsgfp  = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61130"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS2");
 
 		setDefaultNameSpace(document, SBOLTestUtils.uniprot.getNamespaceURI());
-		ComponentDefinition GFP  = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.uniprot.withLocalPart("P42212"), "GFP",ComponentDefinition.PROTEIN, SystemsBiologyOntology.PRODUCT, "GFP protein");
+		//ComponentDefinition GFP  = 
+		SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.uniprot.withLocalPart("P42212"), "GFP",ComponentDefinition.PROTEIN, SystemsBiologyOntology.PRODUCT, "GFP protein");
 		ComponentDefinition TetR = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.uniprot.withLocalPart("Q6QR72"), "TetR",ComponentDefinition.PROTEIN, SystemsBiologyOntology.INHIBITOR, "TetR protein");
 		ComponentDefinition LacI = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.uniprot.withLocalPart("P03023"),"LacI", ComponentDefinition.PROTEIN, SystemsBiologyOntology.INHIBITOR, "LacI protein");
 
@@ -575,7 +576,7 @@ public abstract class SBOLAbstractTests {
 		 */
 		setDefaultNameSpace(document, SBOLTestUtils.example.getNamespaceURI());
 		ModuleDefinition laciInverterModuleDef=document.createModuleDefinition("laci_inverter");
-		laciInverterModuleDef.addRole(SBOLTestUtils.Terms.moduleRoles.inverter); //TODO: where to add inverter in core2 package so this line of code could be called from?
+		laciInverterModuleDef.addRole(SBOLTestUtils.Terms.moduleRoles.inverter); 
 
 
 		ModuleDefinition tetRInverterModuleDef=document.createModuleDefinition("tetr_inverter");
@@ -760,14 +761,16 @@ public abstract class SBOLAbstractTests {
 		document.setTypesInURIs(true);
 
 		ModuleDefinition module=document.createModuleDefinition("GFP_expression");
-		FunctionalComponent  cds=module.createFunctionalComponent(
+		//FunctionalComponent  cds=
+		module.createFunctionalComponent(
 				"Constitutive_GFP",
 				AccessType.PUBLIC,
 				URI.create("http://sbolstandard.org/example/GFP_generator"),
 				DirectionType.IN);
 
 
-		FunctionalComponent  protein =module.createFunctionalComponent(
+		//FunctionalComponent  protein =
+		module.createFunctionalComponent(
 				"GFP_protein",
 				AccessType.PUBLIC,
 				URI.create("http://sbolstandard.org/example/GFP"),
@@ -1377,12 +1380,14 @@ public abstract class SBOLAbstractTests {
 
 		Set<URI> interactionType = new HashSet<URI>();
 		interactionType.add(SystemsBiologyOntology.NON_COVALENT_BINDING);
-		Interaction someInteraction = someModDef.createInteraction("someInteraction", interactionType);
+		//Interaction someInteraction = 
+		someModDef.createInteraction("someInteraction", interactionType);
 		//		someModDef.createFunctionalComponent("someFunctionalComponent", AccessType.PUBLIC, "componentDef", VERSION_1_0, DirectionType.INOUT); //TODO replace componentDef
 		//		someInteraction.createParticipation("someParticipation", "someFunctionalComponent");
 
-		Module someModule = someModDef.createModule("someModule", "someModuleDef", VERSION_1_0);
-		String someMapsTo_id = "someMapsTo";
+		//Module someModule = 
+		someModDef.createModule("someModule", "someModuleDef", VERSION_1_0);
+		//String someMapsTo_id = "someMapsTo";
 		//		MapsTo someMapsTo = someModule.createMapsTo(someMapsTo_id, RefinementType.USELOCAL, "someModule", someMapsTo_id +"_remote");
 
 		String seq_id = "someSeq";
@@ -1400,7 +1405,8 @@ public abstract class SBOLAbstractTests {
 
 		SequenceAnnotation someSequenceAnnotation = someCompDef.createSequenceAnnotation("someSequenceAnnotation", "cut", 1, 10);
 		someSequenceAnnotation.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
-		SequenceAnnotation someSequenceAnnotation2 = someCompDef.createSequenceAnnotation("someSequenceAnnotation2", "cut", 1, OrientationType.INLINE);
+		//SequenceAnnotation someSequenceAnnotation2 = 
+		someCompDef.createSequenceAnnotation("someSequenceAnnotation2", "cut", 1, OrientationType.INLINE);
 
 		//		someSequenceAnnotation.setLocation(); //TODO range, multiRange, cut - how to access?
 
@@ -1708,7 +1714,8 @@ public abstract class SBOLAbstractTests {
 		role.add(SequenceOntology.PROMOTER);
 		ComponentDefinition pLac = document.createComponentDefinition("pLac", VERSION_1_0, type);
 		pLac.setRoles(role);
-		//		pLac.setSequence("pLacSeq", VERSION_1_0); //TODO unable to call createSequence for this.
+		document.createSequence("pLacSeq", VERSION_1_0, "pLacSequenceElements", Sequence.IUPAC_DNA);
+		pLac.addSequence("pLacSeq", VERSION_1_0); 
 
 		runTest("test/data/singleCompDef_withSeq.rdf", document, "rdf");
 	}

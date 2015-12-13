@@ -162,9 +162,9 @@ public class Module extends Identified {
 				moduleDefinition.getFunctionalComponent(localURI)==null) {
 			moduleDefinition.createFunctionalComponent(localId,AccessType.PUBLIC,localId,"",DirectionType.INOUT);
 		}
-		URI remote = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(), 
+		URI remoteURI = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(), 
 				remoteId, getDefinition().getVersion());
-		return createMapsTo(displayId,refinement,localURI,remote);
+		return createMapsTo(displayId,refinement,localURI,remoteURI);
 	}
 	
 	/**
