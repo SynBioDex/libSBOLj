@@ -127,6 +127,11 @@ public class SequenceOntology {
 			convertedSO = convertedSO.replace(v1SO, v2SO);
 			return URI.create(convertedSO);
 		}
+		else if (term.startsWith("SO:")) {
+			convertedSO = convertedSO.replace("SO:", v2SO);
+		} else if (term.startsWith("so:")) {
+			convertedSO = convertedSO.replace("so:", v2SO);
+		}  
 		return URI.create(convertedSO);
 	}
 	

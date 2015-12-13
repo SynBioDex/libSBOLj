@@ -4,7 +4,7 @@
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/LacIIn"/>
     <sbol:displayId>LacIIn</sbol:displayId>
     <sbol:version>1.0</sbol:version>
-    <sbol:type rdf:resource="http://some.ontology.org/Protein"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#Protein"/>
     <sbol:component>
       <sbol:Component rdf:about="http://www.async.ece.utah.edu/LacIIn/funcComp/1.0">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/LacIIn/funcComp"/>

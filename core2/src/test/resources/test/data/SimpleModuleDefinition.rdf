@@ -25,7 +25,7 @@
       <sbol:Interaction rdf:about="http://sbolstandard.org/example/md/GFP_expression/express_GFP">
         <sbol:persistentIdentity rdf:resource="http://sbolstandard.org/example/md/GFP_expression/express_GFP"/>
         <sbol:displayId>express_GFP</sbol:displayId>
-        <sbol:type rdf:resource="Transcription"/>
+        <sbol:type rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000183"/>
       </sbol:Interaction>
     </sbol:interaction>
   </sbol:ModuleDefinition>

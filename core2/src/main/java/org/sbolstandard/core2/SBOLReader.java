@@ -851,7 +851,7 @@ public class SBOLReader
 		String description = null;
 		URI identity 	   = topLevel.getIdentity();
 		URI persistentIdentity = topLevel.getIdentity();
-		URI encoding 	   = Sbol2Terms.SequenceURI.DnaSequenceV1;
+		URI encoding 	   = Sequence.IUPAC_DNA;
 		List<Annotation> annotations = new ArrayList<>();
 
 		if (URIPrefix != null)
@@ -2719,6 +2719,9 @@ public class SBOLReader
 			else if (namedProperty.getName().equals(Sbol2Terms.Sequence.encoding))
 			{
 				encoding = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				if (encoding.toString().equals("http://dx.doi.org/10.1021/bi00822a023")) {
+					encoding = Sequence.IUPAC_DNA;
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{

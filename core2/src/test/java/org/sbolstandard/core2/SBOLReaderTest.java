@@ -28,7 +28,6 @@ public class SBOLReaderTest extends SBOLAbstractTests
 				actual = SBOLReader.read(resourceAsStream,SBOLReader.TURTLE);
 			else
 				actual = SBOLReader.read(resourceAsStream);
-
 			assertTrue(actual.equals(expected));
 		}
 		catch (SBOLValidationException e)

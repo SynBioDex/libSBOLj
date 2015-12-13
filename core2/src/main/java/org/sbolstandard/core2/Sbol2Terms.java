@@ -261,10 +261,10 @@ class Sbol2Terms
 	}
 
 
-	static final class SequenceURI {
-		static final URI encoding 	  = URI.create(sbol2.getNamespaceURI() + "encoding");
-		static final URI DnaSequenceV1 = URI.create("http://dx.doi.org/10.1021/bi00822a023");
-	}
+//	static final class SequenceURI {
+//		static final URI encoding 	  = URI.create(sbol2.getNamespaceURI() + "encoding");
+//		static final URI DnaSequenceV1 = URI.create("http://dx.doi.org/10.1021/bi00822a023");
+//	}
 
 //	static final class DnaComponentV1URI {
 //		static final URI roles = URI.create("http://purl.obolibrary.org/obo/SO_0000804");
