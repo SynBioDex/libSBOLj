@@ -226,6 +226,11 @@ public class FunctionalComponent extends ComponentInstance {
 			if (getDefinition().getComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
 				throw new IllegalArgumentException("Component '" + mapsTo.getRemoteURI() + "' is private.");
 			}
+			if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
+				if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
+					throw new IllegalArgumentException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+				}
+			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
 		mapsTo.setSBOLDocument(this.sbolDocument);

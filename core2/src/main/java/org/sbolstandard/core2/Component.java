@@ -160,6 +160,9 @@ public class Component extends ComponentInstance{
 	 * Adds the specified instance to the list of references. 
 	 */
 	void addMapsTo(MapsTo mapsTo) {
+		mapsTo.setSBOLDocument(this.sbolDocument);
+        mapsTo.setComponentDefinition(componentDefinition);
+        mapsTo.setComponentInstance(this);
 		if (sbolDocument != null) {
 			if (componentDefinition.getComponent(mapsTo.getLocalURI())==null) {
 				throw new IllegalArgumentException("Component '" + mapsTo.getLocalURI() + "' does not exist.");
@@ -172,11 +175,13 @@ public class Component extends ComponentInstance{
 			if (getDefinition().getComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
 				throw new IllegalArgumentException("Component '" + mapsTo.getRemoteURI() + "' is private.");
 			}
+			if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
+				if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
+					throw new IllegalArgumentException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+				}
+			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
-		mapsTo.setSBOLDocument(this.sbolDocument);
-        mapsTo.setComponentDefinition(componentDefinition);
-        mapsTo.setComponentInstance(this);
 	}
 
 	/**

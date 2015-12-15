@@ -227,6 +227,11 @@ public class Module extends Identified {
 			if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
 				throw new IllegalArgumentException("Functional Component '" + mapsTo.getRemoteURI() + "' is private.");
 			}
+			if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
+				if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
+					throw new IllegalArgumentException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+				}
+			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
 	}
