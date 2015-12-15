@@ -88,6 +88,39 @@ public class ComponentDefinition extends TopLevel {
 		this.sequenceConstraints = new HashMap<>();
 		setTypes(types);
 	}
+	
+	/**
+	 * Creates a ComponentDefinition instance with the given arguments.
+	 * <p>
+	 * If the given {@code prefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the given {@code prefix}, {@code displayId}, and {@code version} are not
+	 * {@code null} and valid.
+	 * <p>
+	 * A ComponentDefinition instance is created with a compliant URI. This URI is composed from
+	 * the given {@code prefix}, the given {@code displayId}, and {@code version}.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 *
+	 * @param prefix
+	 * @param displayId
+	 * @param version
+	 * @param types
+	 * @throws IllegalArgumentException if the defaultURIprefix is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 */
+	public ComponentDefinition(String prefix,String displayId,String version, Set<URI> types) {
+		this(URIcompliance.createCompliantURI(prefix, displayId, version),types);
+		prefix = URIcompliance.checkURIprefix(prefix);
+		validateIdVersion(displayId, version);
+		setDisplayId(displayId);
+		setPersistentIdentity(createCompliantURI(prefix, displayId, ""));
+		setVersion(version);
+	}
 
 	private ComponentDefinition(ComponentDefinition componentDefinition) {
 		super(componentDefinition);
@@ -779,6 +812,9 @@ public class ComponentDefinition extends TopLevel {
 		sequenceAnnotation.setComponentDefinition(this);
 		if (sequenceAnnotation.isSetComponent() && sequenceAnnotation.getComponent()==null) {
 			throw new IllegalArgumentException("Component '" + sequenceAnnotation.getComponentURI() + "' does not exist.");
+		}
+		for (Location location : sequenceAnnotation.getLocations()) {
+			location.setSBOLDocument(sbolDocument);
 		}
 		addChildSafely(sequenceAnnotation, sequenceAnnotations, "sequenceAnnotation",
 				components, sequenceConstraints);

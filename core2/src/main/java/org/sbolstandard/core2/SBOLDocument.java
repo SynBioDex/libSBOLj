@@ -193,7 +193,7 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition createModuleDefinition(String URIprefix,String displayId, String version) {
 		checkReadOnly();
-		URIprefix = checkURIprefix(URIprefix);
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		validateIdVersion(displayId, version);
 		ModuleDefinition md = createModuleDefinition(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, version, typesInURIs));
 		md.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, "", typesInURIs));
@@ -213,29 +213,25 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Appends the specified {@code ModuleDefinition} object to the end of the list of module definitions.
+	 * Appends the specified {@code moduleDefinition} object to the end of the list of module definitions.
+	 * 
+	 * @param moduleDefinition
+	 * @throws IllegalArgumentException if the created ModuleDefinition instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created ModuleDefinition instance's identity URI
+	 * exists in this SBOLDocument object's list of ModuleDefinition instances.
 	 */
-	void addModuleDefinition(ModuleDefinition newModuleDefinition) {
-		addTopLevel(newModuleDefinition, moduleDefinitions, "moduleDefinition",
+	public void addModuleDefinition(ModuleDefinition moduleDefinition) {
+		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition",
 				collections, componentDefinitions, genericTopLevels, models, sequences);
-		for (FunctionalComponent functionalComponent : newModuleDefinition.getFunctionalComponents()) {
+		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			functionalComponent.setSBOLDocument(this);
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
 				mapsTo.setSBOLDocument(this);
 			}
 		}
-		for (Module module : newModuleDefinition.getModules()) {
-			module.setSBOLDocument(this);
-			for (MapsTo mapsTo : module.getMapsTos()) {
-				mapsTo.setSBOLDocument(this);
-			}
-		}
-		for (Interaction interaction : newModuleDefinition.getInteractions()) {
-			interaction.setSBOLDocument(this);
-			for (Participation participation : interaction.getParticipations()) {
-				participation.setSBOLDocument(this);
-			}
-		}
+		moduleDefinition.setModules(moduleDefinition.getModules());
+		moduleDefinition.setInteractions(moduleDefinition.getInteractions());
 	}
 
 	/**
@@ -462,7 +458,7 @@ public class SBOLDocument {
 	 */
 	public Collection createCollection(String URIprefix, String displayId, String version) {
 		checkReadOnly();
-		URIprefix = checkURIprefix(URIprefix);
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		validateIdVersion(displayId, version);
 		Collection c = createCollection(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, version, typesInURIs));
 		c.setDisplayId(displayId);
@@ -472,9 +468,15 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Appends the specified {@code newCollection} object to the end of the list of collections.
+	 * Appends the specified {@code collection} object to the end of the list of collections.
+	 * 
+	 * @param collection
+	 * @throws IllegalArgumentException if the created Collection instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Collection instance's identity URI
+	 * exists in this SBOLDocument object's list of Collection instances.
 	 */
-	void addCollection(Collection collection) {
+	public void addCollection(Collection collection) {
 		addTopLevel(collection, collections, "collection",
 				componentDefinitions, genericTopLevels, models, moduleDefinitions, sequences);
 	}
@@ -687,7 +689,7 @@ public class SBOLDocument {
 	 */
 	public Model createModel(String URIprefix, String displayId, String version, URI source, URI language, URI framework) {
 		checkReadOnly();
-		URIprefix = checkURIprefix(URIprefix);
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		validateIdVersion(displayId, version);
 		Model model = createModel(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, version, typesInURIs),
 				source, language, framework);
@@ -711,10 +713,16 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Appends the specified <code>model</code> to the end of the list of models.
+	 * Appends the specified {@code model} object to the end of the list of models.
+	 * 
+	 * @param model
+	 * @throws IllegalArgumentException if the created Model instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Model instance's identity URI
+	 * exists in this SBOLDocument object's list of Model instances.
 	 */
-	void addModel(Model newModel) {
-		addTopLevel(newModel, models, "model",
+	public void addModel(Model model) {
+		addTopLevel(model, models, "model",
 				collections, componentDefinitions, genericTopLevels, moduleDefinitions, sequences);
 	}
 
@@ -1029,7 +1037,7 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, Set<URI> types) {
 		checkReadOnly();
-		URIprefix = checkURIprefix(URIprefix);
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		validateIdVersion(displayId, version);
 		ComponentDefinition cd = createComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
 				displayId, version, typesInURIs), types);
@@ -1076,7 +1084,7 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, URI type) {
 		checkReadOnly();
-		URIprefix = checkURIprefix(URIprefix);
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		validateIdVersion(displayId, version);
 		HashSet<URI> types = new HashSet<URI>();
 		types.add(type);
@@ -1089,26 +1097,25 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Appends the specified element to the end of the list of component definitions.
+	 * Appends the specified {@code componentDefinition} object to the end of the list of component definitions.
+	 * 
+	 * @param componentDefinition
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created ComponentDefinition instance's identity URI
+	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
 	 */
-	void addComponentDefinition(ComponentDefinition newComponentDefinition) {
-		addTopLevel(newComponentDefinition, componentDefinitions, "componentDefinition",
+	public void addComponentDefinition(ComponentDefinition componentDefinition) {
+		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition",
 				collections, genericTopLevels, models, moduleDefinitions, sequences);
-		for (Component component : newComponentDefinition.getComponents()) {
+		for (Component component : componentDefinition.getComponents()) {
 			component.setSBOLDocument(this);
 			for (MapsTo mapsTo : component.getMapsTos()) {
 				mapsTo.setSBOLDocument(this);
 			}
 		}
-		for (SequenceAnnotation sequenceAnnotation : newComponentDefinition.getSequenceAnnotations()) {
-			sequenceAnnotation.setSBOLDocument(this);
-			for (Location location : sequenceAnnotation.getLocations()) {
-				location.setSBOLDocument(this);
-			}
-		}
-		for (SequenceConstraint sequenceConstraint : newComponentDefinition.getSequenceConstraints()) {
-			sequenceConstraint.setSBOLDocument(this);
-		}
+		componentDefinition.setSequenceAnnotations(componentDefinition.getSequenceAnnotations());
+		componentDefinition.setSequenceConstraints(componentDefinition.getSequenceConstraints());
 	}
 
 	/**
@@ -1354,7 +1361,7 @@ public class SBOLDocument {
 	 */
 	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) {
 		checkReadOnly();
-		URIprefix = checkURIprefix(URIprefix);
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		validateIdVersion(displayId, version);
 		Sequence s = createSequence(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, version, typesInURIs),
 				elements, encoding);
@@ -1655,9 +1662,9 @@ public class SBOLDocument {
 		}
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
-			URIprefix = checkURIprefix(URIprefix);
+			URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		} else {
-			URIprefix = checkURIprefix(URIprefix);
+			URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		}
 		if (displayId == null) {
 			displayId = topLevel.getDisplayId();
@@ -1702,10 +1709,16 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Appends the specified <code>sequence</code> to the end of the list of sequences.
+	 * Appends the specified {@code sequence} object to the end of the list of sequencess.
+	 * 
+	 * @param sequence
+	 * @throws IllegalArgumentException if the created Sequence instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created Sequence instance's identity URI
+	 * exists in this SBOLDocument object's list of Sequence instances.
 	 */
-	void addSequence(Sequence newSequence) {
-		addTopLevel(newSequence, sequences, "sequence",
+	public void addSequence(Sequence sequence) {
+		addTopLevel(sequence, sequences, "sequence",
 				collections, componentDefinitions, genericTopLevels, models, moduleDefinitions);
 	}
 
@@ -1922,7 +1935,7 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) {
 		checkReadOnly();
-		URIprefix = checkURIprefix(URIprefix);
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		validateIdVersion(displayId, version);
 		GenericTopLevel g = createGenericTopLevel(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
 		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
@@ -1947,10 +1960,16 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Appends the specified {@code TopLevel} object to the end of the list of topLevels.
+	 * Appends the specified {@code genericTopLevel} object to the end of the list of generic top levels.
+	 * 
+	 * @param genericTopLevel
+	 * @throws IllegalArgumentException if the created GenericTopLevel instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws IllegalArgumentException if the created GenericTopLevel instance's identity URI
+	 * exists in this SBOLDocument object's list of GeneticTopLevel instances.
 	 */
-	void addGenericTopLevel(GenericTopLevel newGenericTopLevel) {
-		addTopLevel(newGenericTopLevel, genericTopLevels, "genericTopLevel",
+	public void addGenericTopLevel(GenericTopLevel genericTopLevel) {
+		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel",
 				collections, componentDefinitions, models, moduleDefinitions, sequences);
 	}
 
@@ -2378,29 +2397,6 @@ public class SBOLDocument {
 			instancesMap.put(topLevel.getPersistentIdentity(),instancesMap.get(latestVersion));
 		}
 		return changed;
-	}
-
-	/**
-	 * Check the given {@code URIprefix} to make sure it is not {@code null} and is compliant,
-	 * and if URIprefix does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of the given {@code URIprefix}.
-	 *
-	 * @param URIprefix
-	 * @return URIprefix
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
-	 */
-	String checkURIprefix(String URIprefix) {
-		if (URIprefix==null) {
-			throw new IllegalArgumentException("URI prefix must not be null");
-		}
-		if (!URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
-			URIprefix += "/";
-		}
-		if (!isURIprefixCompliant(URIprefix)) {
-			throw new IllegalArgumentException("URI prefix '"+URIprefix+"' is invalid");
-		}
-		return URIprefix;
 	}
 
 	/**
