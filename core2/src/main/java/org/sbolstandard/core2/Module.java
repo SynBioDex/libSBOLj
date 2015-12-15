@@ -2,12 +2,10 @@ package org.sbolstandard.core2;
 
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
-import static org.sbolstandard.core2.URIcompliance.extractPersistentId;
 
 import java.net.URI;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -300,8 +298,7 @@ public class Module extends Identified {
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setMapsTos(
-			List<MapsTo> mappings) {
+	void setMapsTos(Set<MapsTo> mappings) {
 		clearMapsTos();		
 		for (MapsTo mapping : mappings) {
 			addMapsTo(mapping);

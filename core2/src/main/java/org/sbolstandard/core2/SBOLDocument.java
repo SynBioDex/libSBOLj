@@ -327,7 +327,7 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list <code>modules</code>, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setModuleDefinitions(List<ModuleDefinition> moduleDefinitions) {
+	void setModuleDefinitions(Set<ModuleDefinition> moduleDefinitions) {
 		clearModuleDefinitions();
 		for (ModuleDefinition module : moduleDefinitions) {
 			addModuleDefinition(module);
@@ -556,7 +556,7 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list <code>collections</code>, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setCollections(List<Collection> collections) {
+	void setCollections(Set<Collection> collections) {
 		clearCollections();
 		for (Collection collection : collections) {
 			addCollection(collection);
@@ -806,7 +806,7 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list <code>models</code>, then appends all of the elements in the specified model to the end of this list.
 	 */
-	void setModels(List<Model> models) {
+	void setModels(Set<Model> models) {
 		clearModels();
 		for (Model model : models) {
 			addModel(model);
@@ -1211,7 +1211,7 @@ public class SBOLDocument {
 	/**
 	 * @param componentDefinitions
 	 */
-	void setComponentDefinitions(List<ComponentDefinition> componentDefinitions) {
+	void setComponentDefinitions(Set<ComponentDefinition> componentDefinitions) {
 		checkReadOnly();
 		clearComponentDefinitions();
 		for (ComponentDefinition componentDefinition : componentDefinitions) {
@@ -1797,7 +1797,7 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list <code>structures</code>, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setSequences(List<Sequence> sequences) {
+	void setSequences(Set<Sequence> sequences) {
 		clearSequences();
 		for (Sequence sequence : sequences) {
 			addSequence(sequence);
@@ -2031,7 +2031,7 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list <code>topLevels</code>, then appends all of the elements in the specified topLevels to the end of this list.
 	 */
-	void setGenericTopLevels(List<GenericTopLevel> topLevels) {
+	void setGenericTopLevels(Set<GenericTopLevel> topLevels) {
 		clearGenericTopLevels();
 		for (GenericTopLevel topLevel : topLevels) {
 			addGenericTopLevel(topLevel);

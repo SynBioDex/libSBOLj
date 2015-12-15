@@ -5,7 +5,6 @@ import static org.sbolstandard.core2.URIcompliance.*;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -268,14 +267,16 @@ public class ModuleDefinition extends TopLevel {
 	 * @param module
 	 */
 	void addModule(Module module) {
-		for (MapsTo mapsTo : module.getMapsTos()) {
-			if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
-				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
-			}
-		}
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		module.setSBOLDocument(this.sbolDocument);
 		module.setModuleDefinition(this);
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (module.getDefinition() == null) {
+				throw new IllegalArgumentException("ModuleDefinition '" + module.getDefinitionURI().toString()
+						+ "' does not exist.");
+			}
+		}
+		module.setMapsTos(module.getMapsTos());
 	}
 
 	/**
@@ -361,7 +362,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 *             
 	 */
-	void setModules(List<Module> modules) {
+	void setModules(Set<Module> modules) {
 		clearModules();
 		if (modules == null)
 			return;
@@ -449,14 +450,10 @@ public class ModuleDefinition extends TopLevel {
 	 * Adds the given Interaction instance to the list of Interaction instances.
 	 */
 	void addInteraction(Interaction interaction) {
-		for (Participation participation : interaction.getParticipations()) {
-			if (this.getFunctionalComponent(participation.getParticipantURI())==null) {
-				throw new IllegalArgumentException("Functional component '" + participation.getParticipantURI() + "' does not exist.");
-			}
-		}
 		addChildSafely(interaction, interactions, "interaction", functionalComponents, modules);
 		interaction.setSBOLDocument(this.sbolDocument);
 		interaction.setModuleDefinition(this);
+		interaction.setParticipations(interaction.getParticipations());
 	}
 
 	/**
@@ -534,8 +531,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Clears the existing list of interaction instances, then appends all of
 	 * the elements in the given collection to the end of this list.
 	 */
-	void setInteractions(
-	List<Interaction> interactions) {
+	void setInteractions(Set<Interaction> interactions) {
 		clearInteractions();
 		if (interactions == null)
 			return;
@@ -673,6 +669,13 @@ public class ModuleDefinition extends TopLevel {
 				interactions, modules);
 		functionalComponent.setSBOLDocument(this.sbolDocument);
 		functionalComponent.setModuleDefinition(this);
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (functionalComponent.getDefinition()== null) {
+				throw new IllegalArgumentException("ComponentDefinition '" + functionalComponent.getDefinitionURI()
+						+ "' does not exist.");
+			}
+		}
+		functionalComponent.setMapsTos(functionalComponent.getMapsTos());
 	}
 
 	/**
@@ -793,8 +796,7 @@ public class ModuleDefinition extends TopLevel {
 	 * Clears the existing list of FunctionalComponent instances, then appends
 	 * all of the elements in the given collection to the end of this list.
 	 */
-	void setFunctionalComponents(
-	List<FunctionalComponent> components) {
+	void setFunctionalComponents(Set<FunctionalComponent> components) {
 		clearFunctionalComponents();
 		if (components == null)
 			return;

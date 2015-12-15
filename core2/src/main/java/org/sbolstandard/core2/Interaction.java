@@ -1,10 +1,8 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.sbolstandard.core2.URIcompliance.*;
@@ -46,7 +44,7 @@ public class Interaction extends Identified {
 			type.add(URI.create(typeElement.toString()));
 		}
 		this.setTypes(type);
-		List<Participation> participations = new ArrayList<>();
+		Set<Participation> participations = new HashSet<>();
 		for (Participation participation : interaction.getParticipations()) {
 			participations.add(participation.deepCopy());
 		}
@@ -323,8 +321,7 @@ public class Interaction extends Identified {
 	/**
 	 * Clears the existing list of participation instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setParticipations(
-			List<Participation> participations) {
+	void setParticipations(Set<Participation> participations) {
 		clearParticipations();	
 		for (Participation participation : participations) {
 			addParticipation(participation);

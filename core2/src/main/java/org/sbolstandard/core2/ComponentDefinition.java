@@ -2,10 +2,8 @@ package org.sbolstandard.core2;
 import static org.sbolstandard.core2.URIcompliance.*;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -507,7 +505,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @param locations
 	 * @return a SequenceAnnotation instance
 	 */
-	SequenceAnnotation createSequenceAnnotation(URI identity, List<Location> locations) {
+	SequenceAnnotation createSequenceAnnotation(URI identity, Set<Location> locations) {
 		SequenceAnnotation sequenceAnnotation = new SequenceAnnotation(identity, locations);
 		addSequenceAnnotation(sequenceAnnotation);
 		return sequenceAnnotation;
@@ -538,7 +536,7 @@ public class ComponentDefinition extends TopLevel {
 //			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
 //					"'is not compliant in parent `" + this.getIdentity() +
 //					"' for " + URIprefix + " " + displayId + " " + version);
-		List<Location> locations = new ArrayList<>();
+		Set<Location> locations = new HashSet<>();
 		locations.add(location);
 		SequenceAnnotation sa = createSequenceAnnotation(newSequenceAnnotationURI, locations);
 		sa.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
@@ -864,8 +862,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * @param sequenceAnnotations
 	 */
-	void setSequenceAnnotations(
-			List<SequenceAnnotation> sequenceAnnotations) {
+	void setSequenceAnnotations(Set<SequenceAnnotation> sequenceAnnotations) {
 		clearSequenceAnnotations();
 		for (SequenceAnnotation sequenceAnnotation : sequenceAnnotations) {
 			addSequenceAnnotation(sequenceAnnotation);
@@ -1004,6 +1001,12 @@ public class ComponentDefinition extends TopLevel {
 				sequenceAnnotations, sequenceConstraints);
 		component.setSBOLDocument(this.sbolDocument);
 		component.setComponentDefinition(this);
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (component.getDefinition()==null) {
+				throw new IllegalArgumentException("ComponentDefinition '" + component.getDefinitionURI() + "' does not exist.");
+			}
+		}
+		component.setMapsTos(component.getMapsTos());
 	}
 	
 	/**
@@ -1124,7 +1127,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * @param components
 	 */
-	void setComponents(List<Component> components) {
+	void setComponents(Set<Component> components) {
 		clearComponents();
 		for (Component component : components) {
 			addComponent(component);
@@ -1315,8 +1318,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of structuralConstraint instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setSequenceConstraints(
-			List<SequenceConstraint> sequenceConstraints) {
+	void setSequenceConstraints(Set<SequenceConstraint> sequenceConstraints) {
 		clearSequenceConstraints();
 		for (SequenceConstraint sequenceConstraint : sequenceConstraints) {
 			addSequenceConstraint(sequenceConstraint);

@@ -128,6 +128,16 @@ public class SBOLValidate {
 				errors.add("Module " + module.getIdentity() + " definition " + 
 						module.getDefinitionURI() + " not found in document.");
 			}
+			for (MapsTo mapsTo : module.getMapsTos()) {
+				if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
+					errors.add("MapsTo '" + mapsTo.getIdentity() + "' has a private remote Functional Component '" + mapsTo.getRemoteURI());
+				}
+				if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
+					if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
+						errors.add("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+					}
+				}
+			}
 		}
 	}
 
