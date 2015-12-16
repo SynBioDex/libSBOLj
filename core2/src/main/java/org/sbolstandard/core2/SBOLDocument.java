@@ -221,7 +221,7 @@ public class SBOLDocument {
 	 * @throws IllegalArgumentException if the created ModuleDefinition instance's identity URI
 	 * exists in this SBOLDocument object's list of ModuleDefinition instances.
 	 */
-	public void addModuleDefinition(ModuleDefinition moduleDefinition) {
+	void addModuleDefinition(ModuleDefinition moduleDefinition) {
 		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition",
 				collections, componentDefinitions, genericTopLevels, models, sequences);
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
@@ -476,7 +476,7 @@ public class SBOLDocument {
 	 * @throws IllegalArgumentException if the created Collection instance's identity URI
 	 * exists in this SBOLDocument object's list of Collection instances.
 	 */
-	public void addCollection(Collection collection) {
+	void addCollection(Collection collection) {
 		addTopLevel(collection, collections, "collection",
 				componentDefinitions, genericTopLevels, models, moduleDefinitions, sequences);
 	}
@@ -721,7 +721,7 @@ public class SBOLDocument {
 	 * @throws IllegalArgumentException if the created Model instance's identity URI
 	 * exists in this SBOLDocument object's list of Model instances.
 	 */
-	public void addModel(Model model) {
+	void addModel(Model model) {
 		addTopLevel(model, models, "model",
 				collections, componentDefinitions, genericTopLevels, moduleDefinitions, sequences);
 	}
@@ -1105,7 +1105,7 @@ public class SBOLDocument {
 	 * @throws IllegalArgumentException if the created ComponentDefinition instance's identity URI
 	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
 	 */
-	public void addComponentDefinition(ComponentDefinition componentDefinition) {
+	void addComponentDefinition(ComponentDefinition componentDefinition) {
 		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition",
 				collections, genericTopLevels, models, moduleDefinitions, sequences);
 		for (Component component : componentDefinition.getComponents()) {
@@ -1717,7 +1717,7 @@ public class SBOLDocument {
 	 * @throws IllegalArgumentException if the created Sequence instance's identity URI
 	 * exists in this SBOLDocument object's list of Sequence instances.
 	 */
-	public void addSequence(Sequence sequence) {
+	void addSequence(Sequence sequence) {
 		addTopLevel(sequence, sequences, "sequence",
 				collections, componentDefinitions, genericTopLevels, models, moduleDefinitions);
 	}
@@ -1968,7 +1968,7 @@ public class SBOLDocument {
 	 * @throws IllegalArgumentException if the created GenericTopLevel instance's identity URI
 	 * exists in this SBOLDocument object's list of GeneticTopLevel instances.
 	 */
-	public void addGenericTopLevel(GenericTopLevel genericTopLevel) {
+	void addGenericTopLevel(GenericTopLevel genericTopLevel) {
 		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel",
 				collections, componentDefinitions, models, moduleDefinitions, sequences);
 	}
