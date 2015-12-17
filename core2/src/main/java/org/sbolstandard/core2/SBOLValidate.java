@@ -338,6 +338,9 @@ public class SBOLValidate {
 			if (!URIPrefix.equals("")) {
 				SBOLReader.setURIPrefix(URIPrefix);
 			}
+			if (!compliant) {
+				SBOLReader.setCompliant(false);
+			}
 			SBOLReader.setTypesInURI(typesInURI);
 			SBOLReader.setVersion(version);
 	        SBOLDocument doc = SBOLReader.read(fileName);

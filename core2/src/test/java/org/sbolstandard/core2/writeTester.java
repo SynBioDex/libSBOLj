@@ -31,8 +31,10 @@ public class writeTester {
 	{
 		get_myParts(SBOL2Doc_test);
 		SBOLDocument doc = new SBOLDocument();
-		ModuleDefinition md = (SBOL2Doc_test.getModuleDefinition("Toggle", "1.0")).flatten("http://foo.com","GC","");
-		doc.createCopy(md);
+		doc.createCollection("http://foo.org", "myPart", "");
+		doc.createCollection("http://foo.org/myPart", "myPart2", "");
+		//ModuleDefinition md = (SBOL2Doc_test.getModuleDefinition("Toggle", "1.0")).flatten("http://foo.com","GC","");
+		//doc.createCopy(md);
 		writeRdfOutputStream(doc);
 	}
 
@@ -40,7 +42,7 @@ public class writeTester {
 	{
 		try {
 			SBOLWriter.write(SBOL2Doc_test,(System.out));
-			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test);
+			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test,true);
 			SBOLWriter.write(SBOL2Doc_test,System.out);
 		} catch (XMLStreamException e) {
 			e.printStackTrace();

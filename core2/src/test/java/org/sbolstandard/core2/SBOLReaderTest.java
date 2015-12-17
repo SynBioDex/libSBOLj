@@ -7,14 +7,15 @@ import java.io.InputStream;
 public class SBOLReaderTest extends SBOLAbstractTests
 {
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType) throws Exception
+	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
 			resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/" + fileName);
 
 		assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
-
+		SBOLReader.setCompliant(compliant);
+		
 		try
 		{
 			SBOLDocument actual;

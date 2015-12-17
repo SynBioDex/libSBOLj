@@ -53,6 +53,7 @@ public class SBOLDocument {
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
 	private HashMap<String, NamespaceBinding> nameSpaces;
+	private Set<String> prefixes;
 	private String defaultURIprefix;
 	private boolean complete = false;
 	private boolean compliant = true;
@@ -76,6 +77,7 @@ public class SBOLDocument {
 		nameSpaces.put(Sbol1Terms.rdf.getPrefix(), Sbol1Terms.rdf);
 		nameSpaces.put(Sbol2Terms.dc.getPrefix(), Sbol2Terms.dc);
 		nameSpaces.put(Sbol2Terms.prov.getPrefix(), Sbol2Terms.prov);
+		prefixes = new HashSet<>();
 	}
 
 	/**
@@ -230,8 +232,21 @@ public class SBOLDocument {
 				mapsTo.setSBOLDocument(this);
 			}
 		}
-		moduleDefinition.setModules(moduleDefinition.getModules());
-		moduleDefinition.setInteractions(moduleDefinition.getInteractions());
+		for (Module module : moduleDefinition.getModules()) {
+			module.setSBOLDocument(this);
+			module.setModuleDefinition(moduleDefinition);
+			for (MapsTo mapsTo : module.getMapsTos()) {
+				mapsTo.setSBOLDocument(this);
+			}			
+		}
+		for (Interaction interaction : moduleDefinition.getInteractions()) {
+			interaction.setSBOLDocument(this);
+			interaction.setModuleDefinition(moduleDefinition);
+			for (Participation participation : interaction.getParticipations()) {
+				participation.setSBOLDocument(this);
+				participation.setModuleDefinition(moduleDefinition);
+			}
+		}
 	}
 
 	/**
@@ -1114,8 +1129,17 @@ public class SBOLDocument {
 				mapsTo.setSBOLDocument(this);
 			}
 		}
-		componentDefinition.setSequenceAnnotations(componentDefinition.getSequenceAnnotations());
-		componentDefinition.setSequenceConstraints(componentDefinition.getSequenceConstraints());
+		for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
+			sa.setSBOLDocument(this);
+			sa.setComponentDefinition(componentDefinition);
+			for (Location location : sa.getLocations()) {
+				location.setSBOLDocument(this);
+			}
+		}
+		for (SequenceConstraint sc : componentDefinition.getSequenceConstraints()) {
+			sc.setSBOLDocument(this);
+			sc.setComponentDefinition(componentDefinition);
+		}
 	}
 
 	/**
@@ -2326,8 +2350,9 @@ public class SBOLDocument {
 
 	@SafeVarargs
 	private final <TL extends TopLevel> void addTopLevel(TL newTopLevel, Map<URI, TL> instancesMap, String typeName, Map<URI, ? extends Identified> ... maps) {
-		if (newTopLevel.checkDescendantsURIcompliance()) {
+		if (compliant && newTopLevel.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newTopLevel.getIdentity()));
+			String prefix = extractURIprefix(persistentId);
 			if (keyExistsInAnyMap(persistentId, maps))
 				throw new IllegalArgumentException(
 						"Instance for identity `" + newTopLevel.identity +
@@ -2336,7 +2361,19 @@ public class SBOLDocument {
 				throw new IllegalArgumentException(
 						"Instance for identity `" + newTopLevel.identity +
 						"' and persistent identity `" + persistentId + "' already exists for a " + typeName);
-
+			if (keyExistsInAnyMap(URI.create(prefix), maps))
+				throw new IllegalArgumentException(
+						"URI prefix for identity `" + newTopLevel.identity +
+						"' mathches identity of an existing top level object.");
+			if (instancesMap.containsKey(URI.create(prefix)))
+				throw new IllegalArgumentException(
+						"URI prefix for identity `" + newTopLevel.identity +
+						"' mathches identity of an existing top level object.");
+			if (prefixes.contains(persistentId)) {
+				throw new IllegalArgumentException("Presistent identity `" + persistentId.toString() +
+						"' matches URI prefix in document.");
+			}
+			prefixes.add(prefix);
 			instancesMap.put(newTopLevel.getIdentity(), newTopLevel);
 			Identified latest = instancesMap.get(persistentId);
 			if (latest == null) {
@@ -2350,7 +2387,7 @@ public class SBOLDocument {
 				}
 			}
 		}
-		else { // Only check if sequence's URI exists in all maps.
+		else { // Only check if URI exists in all maps.
 			if (keyExistsInAnyMap(newTopLevel.getIdentity()))
 				throw new IllegalArgumentException(
 						"Instance for identity `" + newTopLevel.identity + "' exists for a non-" + typeName);

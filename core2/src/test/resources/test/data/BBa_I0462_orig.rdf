@@ -1,12 +1,5 @@
 <?xml version="1.0" ?>
 <rdf:RDF xmlns:prov="http://www.w3.org/ns/prov#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/">
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/Part:BBa_C0062">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/Part:BBa_C0062"/>
-    <sbol:displayId>BBa_C0062</sbol:displayId>
-    <dcterms:title>luxR</dcterms:title>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://partsregistry.org/Part:BBa_I0462">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/Part:BBa_I0462"/>
     <sbol:displayId>BBa_I0462</sbol:displayId>
@@ -87,6 +80,13 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequence rdf:resource="http://sbols.org/seq#d23749adb3a7e0e2f09168cb7267a6113b238973"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/Part:BBa_C0062">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/Part:BBa_C0062"/>
+    <sbol:displayId>BBa_C0062</sbol:displayId>
+    <dcterms:title>luxR</dcterms:title>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://partsregistry.org/Part:BBa_B0034">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/Part:BBa_B0034"/>

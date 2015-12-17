@@ -93,6 +93,25 @@ public class SBOLReader
 	private static String version = "";
 	private static boolean typesInURI = false;
 	private static boolean dropObjectsWithDuplicateURIs = false;
+	private static boolean compliant = true;
+
+	/**
+	 * Check if document is to be read as being compliant.
+	 *
+	 * @return if document is to be read as being compliant
+	 */
+	public static boolean isCompliant() {
+		return compliant;
+	}
+	
+	/**
+	 * Set if document is to be read as compliant.
+	 *
+	 * @param compliant
+	 */
+	public static void setCompliant(boolean compliant) {
+		SBOLReader.compliant = compliant;
+	}
 
 	/**
 	 * Set the specified authority as the prefix to all member's identity
@@ -347,6 +366,7 @@ public class SBOLReader
 	public static SBOLDocument read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
+		SBOLDoc.setCompliant(compliant);
 		read(SBOLDoc,in,RDF);
 		return SBOLDoc;
 	}
@@ -364,6 +384,7 @@ public class SBOLReader
 	static SBOLDocument read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
+		SBOLDoc.setCompliant(compliant);
 		read(SBOLDoc,in,fileType);
 		return SBOLDoc;
 	}
@@ -371,6 +392,7 @@ public class SBOLReader
 
 	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
+		compliant = SBOLDoc.isCompliant();
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
 

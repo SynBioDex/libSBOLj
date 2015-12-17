@@ -94,7 +94,7 @@ public abstract class SBOLAbstractTests {
 //		document.removeComponentDefinition(CD);
 //		document.removeModuleDefinition(MD);
 //		document.removeModel(Mod);
-//		runTest("test/data/test_Methods.rdf", document, "rdf");
+//		runTest("test/data/test_Methods.rdf", document, "rdf", true);
 //	}
 
 
@@ -116,7 +116,7 @@ public abstract class SBOLAbstractTests {
 		Model M1 = document.createModel(M1_ID, M1_Version, M1_URISource, Model.SBML, 
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 		document.removeModel(M1);
-		runTest("test/data/test_Model_remove.rdf", document, "rdf");
+		runTest("test/data/test_Model_remove.rdf", document, "rdf", true);
 	}
 	
 	@Test
@@ -135,7 +135,7 @@ public abstract class SBOLAbstractTests {
 		URI SeqEncoding = URI.create("www.example.com");
 		Sequence Seq = document.createSequence(SeqID, SeqVersion, SeqElements, SeqEncoding);
 		document.removeSequence(Seq);
-		runTest("test/data/test_Sequence_remove.rdf", document, "rdf");
+		runTest("test/data/test_Sequence_remove.rdf", document, "rdf", true);
 	}
 	
 	@Test
@@ -152,7 +152,7 @@ public abstract class SBOLAbstractTests {
 		String Col1_Version = "1.0";
 		Collection Col1 = document.createCollection(Col1_ID, Col1_Version);
 		document.removeCollection(Col1);
-		runTest("test/data/test_Collection_remove.rdf", document, "rdf");
+		runTest("test/data/test_Collection_remove.rdf", document, "rdf", true);
 	}
 	
 	@Test
@@ -169,7 +169,7 @@ public abstract class SBOLAbstractTests {
 		String MD_Version = "1.0";
 		ModuleDefinition MD = document.createModuleDefinition(MD_ID, MD_Version);
 		document.removeModuleDefinition(MD);
-		runTest("test/data/test_ModuleDefinition_remove.rdf", document, "rdf");
+		runTest("test/data/test_ModuleDefinition_remove.rdf", document, "rdf", true);
 	}
 	
 	@Test
@@ -188,7 +188,7 @@ public abstract class SBOLAbstractTests {
 		CD_Types.add(URI.create("www.example.com"));
 		ComponentDefinition CD = document.createComponentDefinition(CD_ID, CD_Version, CD_Types);
 		document.removeComponentDefinition(CD);
-		runTest("test/data/test_ComponentDefinition_remove.rdf", document, "rdf");
+		runTest("test/data/test_ComponentDefinition_remove.rdf", document, "rdf", true);
 	}
 	
 	@Test
@@ -206,7 +206,7 @@ public abstract class SBOLAbstractTests {
 		String GTL_Qname = "name";
 		GenericTopLevel GTL = document.createGenericTopLevel(GTL_ID, GTL_Version, QName.valueOf(GTL_Qname));
 		document.removeGenericTopLevel(GTL);
-		runTest("test/data/test_GenericTopLevel_remove.rdf", document, "rdf");
+		runTest("test/data/test_GenericTopLevel_remove.rdf", document, "rdf", true);
 	}
 	
 	
@@ -250,7 +250,7 @@ public abstract class SBOLAbstractTests {
 				new ArrayList<Annotation>(Arrays.asList(sigmaFactor,regulation)));
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("test/data/AnnotationOutput.rdf", document, "rdf");
+		runTest("test/data/AnnotationOutput.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -269,7 +269,7 @@ public abstract class SBOLAbstractTests {
 		col.addMember(URI.create("http://partsregistry.org/Part:BBa_J23118"));
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("test/data/CollectionOutput.rdf", document, "rdf");
+		runTest("test/data/CollectionOutput.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -418,7 +418,7 @@ public abstract class SBOLAbstractTests {
 		anno5.setComponent(comPluxR.getIdentity());
 
 		//			SBOLWriter.write(document,(System.out));
-		runTest("test/data/ComponentDefinitionOutput.rdf", document, "rdf");
+		runTest("test/data/ComponentDefinitionOutput.rdf", document, "rdf", true);
 	}
 
 
@@ -455,7 +455,7 @@ public abstract class SBOLAbstractTests {
 		promoter.createSequenceAnnotation("cutat12", "cut", 12, OrientationType.INLINE);
 
 		//			SBOLWriter.write(document,(System.out));
-		runTest("test/data/CutExample.rdf", document, "rdf");
+		runTest("test/data/CutExample.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -497,7 +497,7 @@ public abstract class SBOLAbstractTests {
 		promoter.createAnnotation(new QName(myAppURI, "datasheet", myAppPrefix), topLevel.getIdentity());
 		promoter.setWasDerivedFrom(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));
 
-		runTest("test/data/GenericTopLevelOutput.rdf", document, "rdf");
+		runTest("test/data/GenericTopLevelOutput.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -519,7 +519,7 @@ public abstract class SBOLAbstractTests {
 
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("test/data/ModelOutput.rdf", document, "rdf");
+		runTest("test/data/ModelOutput.rdf", document, "rdf", true);
 	}
 
 
@@ -631,7 +631,7 @@ public abstract class SBOLAbstractTests {
 		toggleSwitchModuleDef.addModel(model.getIdentity());
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("test/data/ModuleDefinitionOutput.rdf", document, "rdf");
+		runTest("test/data/ModuleDefinitionOutput.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -639,7 +639,7 @@ public abstract class SBOLAbstractTests {
 	{
 		SBOLDocument document = new SBOLDocument();
 		//		SBOLWriter.write(document,(System.out));
-		runTest("test/data/SBOLDocumentOutput.rdf", document, "rdf");
+		runTest("test/data/SBOLDocumentOutput.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -694,7 +694,7 @@ public abstract class SBOLAbstractTests {
 		//promoter.setSequence(seq.getIdentity());
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("test/data/SequenceConstraintOutput.rdf", document, "rdf");
+		runTest("test/data/SequenceConstraintOutput.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -713,7 +713,7 @@ public abstract class SBOLAbstractTests {
 				);
 		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		//		SBOLWriter.write(document,(System.out));
-		runTest("test/data/SequenceOutput.rdf", document, "rdf");
+		runTest("test/data/SequenceOutput.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -749,7 +749,7 @@ public abstract class SBOLAbstractTests {
 		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		promoter.addSequence(seq.getIdentity());
 		//		SBOLWriter.write(document,(System.out));
-		runTest("test/data/SimpleComponentDefinitionExample.rdf", document, "rdf");
+		runTest("test/data/SimpleComponentDefinitionExample.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -779,7 +779,7 @@ public abstract class SBOLAbstractTests {
 		module.createInteraction("express_GFP", new HashSet<URI>(Arrays.asList(SystemsBiologyOntology.TRANSCRIPTION)));
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("test/data/SimpleModuleDefinition.rdf", document, "rdf");
+		runTest("test/data/SimpleModuleDefinition.rdf", document, "rdf", true);
 	}
 
 	private static void setDefaultNameSpace(SBOLDocument document, String uri)
@@ -799,9 +799,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "rdf", false);
-			runTest("test/data/BBa_I0462.rdf", actual, "rdf");
+			runTest("test/data/BBa_I0462.rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileName, null, "rdf", false);
-			runTest("test/data/BBa_I0462_orig.rdf", actual, "rdf");
+			runTest("test/data/BBa_I0462_orig.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -816,8 +816,8 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
-			runTest("test/data/igem1.rdf", actual, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf", false);
+			runTest("test/data/igem1.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -832,8 +832,8 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
-			runTest("test/data/igem2.rdf", actual, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf", false);
+			runTest("test/data/igem2.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -848,8 +848,8 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
-			runTest("test/data/igem3.rdf", actual, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf", false);
+			runTest("test/data/igem3.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -864,8 +864,8 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf");
-			runTest("test/data/toggle.rdf", actual, "rdf");
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf", false);
+			runTest("test/data/toggle.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -881,9 +881,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "rdf", true);
-			runTest("test/data/BBa_T9002.rdf", actual, "rdf");
+			runTest("test/data/BBa_T9002.rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileName, null, "rdf", true);
-			runTest("test/data/BBa_T9002_orig.rdf", actual, "rdf");
+			runTest("test/data/BBa_T9002_orig.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -899,9 +899,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "rdf", false);
-			runTest("test/data/labhost_All.rdf", actual, "rdf");
+			runTest("test/data/labhost_All.rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileName, null, "rdf", false);
-			runTest("test/data/labhost_All_orig.rdf", actual, "rdf");
+			runTest("test/data/labhost_All_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -918,9 +918,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -937,9 +937,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -956,9 +956,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -975,9 +975,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -994,9 +994,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1013,9 +1013,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1032,9 +1032,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1051,9 +1051,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1070,9 +1070,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1089,9 +1089,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1108,9 +1108,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1127,9 +1127,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1148,9 +1148,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1168,7 +1168,7 @@ public abstract class SBOLAbstractTests {
 	//		try
 	//		{
 	//			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-	//			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+	//			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 	//		}
 	//		catch (SBOLValidationException e)
 	//		{
@@ -1185,9 +1185,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1204,9 +1204,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1223,9 +1223,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1242,9 +1242,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1261,9 +1261,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1280,9 +1280,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", true);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", true);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1299,9 +1299,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", true);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", true);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1318,9 +1318,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", true);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", true);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1337,9 +1337,9 @@ public abstract class SBOLAbstractTests {
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("test/data/" + filename + ".rdf", actual, "rdf");
+			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf");
+			runTest("test/data/" + filename + "_orig.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1417,7 +1417,7 @@ public abstract class SBOLAbstractTests {
 		someGenericTopLevel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
 
-		runTest("test/data/memberAnnotations.rdf", document, "rdf");
+		runTest("test/data/memberAnnotations.rdf", document, "rdf", true);
 	}
 
 
@@ -1441,7 +1441,7 @@ public abstract class SBOLAbstractTests {
 
 		document.clearCollections();
 		document.createCollection("myParts", VERSION_1_0);
-		runTest("test/data/CreateAndRemoveCollections.rdf", document, "rdf");
+		runTest("test/data/CreateAndRemoveCollections.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1466,7 +1466,7 @@ public abstract class SBOLAbstractTests {
 
 		document.clearComponentDefinitions();
 		document.createComponentDefinition("someCompDef", VERSION_1_0, types);
-		runTest("test/data/CreateAndRemoveComponentDefinition.rdf", document, "rdf");
+		runTest("test/data/CreateAndRemoveComponentDefinition.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1490,7 +1490,7 @@ public abstract class SBOLAbstractTests {
 		document.clearModuleDefinitions();
 		document.createModuleDefinition("someModDef", VERSION_1_0);
 
-		runTest("test/data/CreateAndRemoveModuleDefinition.rdf", document, "rdf");
+		runTest("test/data/CreateAndRemoveModuleDefinition.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1514,7 +1514,7 @@ public abstract class SBOLAbstractTests {
 		document.clearGenericTopLevels();
 		document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
 
-		runTest("test/data/CreateAndRemoveGenericTopLevel.rdf", document, "rdf");
+		runTest("test/data/CreateAndRemoveGenericTopLevel.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1538,7 +1538,7 @@ public abstract class SBOLAbstractTests {
 
 		document.clearSequences();
 		document.createSequence("someSequence", VERSION_1_0, "someSeq_element", Sequence.IUPAC_DNA);
-		runTest("test/data/CreateAndRemoveModel.rdf", document, "rdf");
+		runTest("test/data/CreateAndRemoveModel.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1552,7 +1552,7 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
 		document.createCollection("myParts", VERSION_1_0);
-		runTest("test/data/singleCollection.rdf", document, "rdf");
+		runTest("test/data/singleCollection.rdf", document, "rdf", true);
 	}
 
 
@@ -1570,7 +1570,7 @@ public abstract class SBOLAbstractTests {
 		document.createCollection("myPart2", VERSION_1_0);
 		document.createCollection("myPart3", VERSION_1_0);
 
-		runTest("test/data/multipleCollections_no_Members.rdf", document, "rdf");
+		runTest("test/data/multipleCollections_no_Members.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1584,7 +1584,7 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
 		document.createGenericTopLevel("GenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
-		runTest("test/data/singleGenericTopLevel.rdf", document, "rdf");
+		runTest("test/data/singleGenericTopLevel.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1601,7 +1601,7 @@ public abstract class SBOLAbstractTests {
 		document.createGenericTopLevel("GenericTopLevel2", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction2", "grn"));
 		document.createGenericTopLevel("GenericTopLevel3", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction3", "grn"));
 
-		runTest("test/data/multipleGenericTopLevel.rdf", document, "rdf");
+		runTest("test/data/multipleGenericTopLevel.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1618,7 +1618,7 @@ public abstract class SBOLAbstractTests {
 		document.createModel( id, VERSION_1_0, URI.create(id + "_source"), Model.SBML, 
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 
-		runTest("test/data/singleModel.rdf", document, "rdf");
+		runTest("test/data/singleModel.rdf", document, "rdf", true);
 	}
 
 
@@ -1635,7 +1635,7 @@ public abstract class SBOLAbstractTests {
 		String id = "pLacSeq";
 		document.createSequence(id, VERSION_1_0, id + "_elements", Sequence.IUPAC_DNA);
 
-		runTest("test/data/singleSequence.rdf", document, "rdf");
+		runTest("test/data/singleSequence.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1656,7 +1656,7 @@ public abstract class SBOLAbstractTests {
 		document.createSequence(id2, VERSION_1_0, id2 + "_elements", Sequence.IUPAC_DNA);
 		document.createSequence(id3, VERSION_1_0, id3 + "_elements", Sequence.IUPAC_DNA);
 
-		runTest("test/data/multipleSequences.rdf", document, "rdf");
+		runTest("test/data/multipleSequences.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1674,7 +1674,7 @@ public abstract class SBOLAbstractTests {
 		LacI_Inv.setRoles(roles);
 		//		LacI_Inv.addRole(URI.create("Inverter"));
 
-		runTest("test/data/singleModuleDefinition.rdf", document, "rdf");
+		runTest("test/data/singleModuleDefinition.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1695,7 +1695,7 @@ public abstract class SBOLAbstractTests {
 		pLac.setRoles(role);
 		//		pLac.addRole(URI.create("Promoter"));
 
-		runTest("test/data/singleComponentDefinition.rdf", document, "rdf");
+		runTest("test/data/singleComponentDefinition.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1717,7 +1717,7 @@ public abstract class SBOLAbstractTests {
 		document.createSequence("pLacSeq", VERSION_1_0, "pLacSequenceElements", Sequence.IUPAC_DNA);
 		pLac.addSequence("pLacSeq", VERSION_1_0); 
 
-		runTest("test/data/singleCompDef_withSeq.rdf", document, "rdf");
+		runTest("test/data/singleCompDef_withSeq.rdf", document, "rdf", true);
 	}
 
 	@Test
@@ -1738,7 +1738,7 @@ public abstract class SBOLAbstractTests {
 		LacIIn.createComponent("funcComp", AccessType.PUBLIC, compDef_id, VERSION_1_0);
 
 
-		runTest("test/data/singleFunctionalComponent.rdf", document, "rdf");
+		runTest("test/data/singleFunctionalComponent.rdf", document, "rdf", true);
 	}
 
 	//	|------------------------------------TOGGLE SWITCH------------------------------------|
@@ -2009,7 +2009,7 @@ public abstract class SBOLAbstractTests {
 	//	}
 
 
-	public abstract void runTest(final String fileName, final SBOLDocument expected, String fileType)
+	public abstract void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant)
 			throws Exception;
 
 }
