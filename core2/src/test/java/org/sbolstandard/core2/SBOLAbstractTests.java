@@ -1377,6 +1377,7 @@ public abstract class SBOLAbstractTests {
 
 		ModuleDefinition someModDef = document.createModuleDefinition("someModuleDef", VERSION_1_0);
 		someModDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		document.createModuleDefinition("someModuleDefSub", VERSION_1_0);
 
 		Set<URI> interactionType = new HashSet<URI>();
 		interactionType.add(SystemsBiologyOntology.NON_COVALENT_BINDING);
@@ -1386,12 +1387,12 @@ public abstract class SBOLAbstractTests {
 		//		someInteraction.createParticipation("someParticipation", "someFunctionalComponent");
 
 		//Module someModule = 
-		someModDef.createModule("someModule", "someModuleDef", VERSION_1_0);
+		someModDef.createModule("someModule", "someModuleDefSub", VERSION_1_0);
 		//String someMapsTo_id = "someMapsTo";
 		//		MapsTo someMapsTo = someModule.createMapsTo(someMapsTo_id, RefinementType.USELOCAL, "someModule", someMapsTo_id +"_remote");
 
 		String seq_id = "someSeq";
-		Sequence someSeq = document.createSequence(seq_id, VERSION_1_0, seq_id + "_element", Sequence.IUPAC_DNA);
+		Sequence someSeq = document.createSequence(seq_id, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 		someSeq.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
 		Set<URI> types = new HashSet<URI>();
@@ -1399,8 +1400,9 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition someCompDef = document.createComponentDefinition("someCompDef", VERSION_1_0, types);
 		someCompDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 		someCompDef.addRole(SequenceOntology.PROMOTER);
+		document.createComponentDefinition("someCompDefCDS", VERSION_1_0, types);
 		
-		Component someComponent = someCompDef.createComponent("someComponent", AccessType.PUBLIC, "someCompDef", VERSION_1_0);
+		Component someComponent = someCompDef.createComponent("someComponent", AccessType.PUBLIC, "someCompDefCDS", VERSION_1_0);
 		someComponent.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
 		SequenceAnnotation someSequenceAnnotation = someCompDef.createSequenceAnnotation("someSequenceAnnotation", "cut", 1, 10);
@@ -1527,7 +1529,7 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
-		Sequence s = document.createSequence("someSequence", VERSION_1_0, "someSeq_element", Sequence.IUPAC_DNA);
+		Sequence s = document.createSequence("someSequence", VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 		document.removeSequence(s);
 
 
@@ -1537,7 +1539,7 @@ public abstract class SBOLAbstractTests {
 		}
 
 		document.clearSequences();
-		document.createSequence("someSequence", VERSION_1_0, "someSeq_element", Sequence.IUPAC_DNA);
+		document.createSequence("someSequence", VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 		runTest("test/data/CreateAndRemoveModel.rdf", document, "rdf", true);
 	}
 
@@ -1633,7 +1635,7 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
 		String id = "pLacSeq";
-		document.createSequence(id, VERSION_1_0, id + "_elements", Sequence.IUPAC_DNA);
+		document.createSequence(id, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 
 		runTest("test/data/singleSequence.rdf", document, "rdf", true);
 	}
@@ -1652,9 +1654,9 @@ public abstract class SBOLAbstractTests {
 		String id2 = "tetRSeq";
 		String id3 = "pLactetRSeq";
 
-		document.createSequence(id, VERSION_1_0, id + "_elements", Sequence.IUPAC_DNA);
-		document.createSequence(id2, VERSION_1_0, id2 + "_elements", Sequence.IUPAC_DNA);
-		document.createSequence(id3, VERSION_1_0, id3 + "_elements", Sequence.IUPAC_DNA);
+		document.createSequence(id, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
+		document.createSequence(id2, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
+		document.createSequence(id3, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 
 		runTest("test/data/multipleSequences.rdf", document, "rdf", true);
 	}
@@ -1714,7 +1716,7 @@ public abstract class SBOLAbstractTests {
 		role.add(SequenceOntology.PROMOTER);
 		ComponentDefinition pLac = document.createComponentDefinition("pLac", VERSION_1_0, type);
 		pLac.setRoles(role);
-		document.createSequence("pLacSeq", VERSION_1_0, "pLacSequenceElements", Sequence.IUPAC_DNA);
+		document.createSequence("pLacSeq", VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 		pLac.addSequence("pLacSeq", VERSION_1_0); 
 
 		runTest("test/data/singleCompDef_withSeq.rdf", document, "rdf", true);
@@ -1734,7 +1736,8 @@ public abstract class SBOLAbstractTests {
 		type.add(ComponentDefinition.PROTEIN);
 		//Set<URI> role = SBOLTestUtils.getSetPropertyURI("Transcriptionfactor");
 		ComponentDefinition LacIIn = document.createComponentDefinition("LacIIn", VERSION_1_0, type);
-		String compDef_id = LacIIn.getDisplayId();
+		ComponentDefinition LacIInCDS = document.createComponentDefinition("LacIInCDS", VERSION_1_0, type);
+		String compDef_id = LacIInCDS.getDisplayId();
 		LacIIn.createComponent("funcComp", AccessType.PUBLIC, compDef_id, VERSION_1_0);
 
 

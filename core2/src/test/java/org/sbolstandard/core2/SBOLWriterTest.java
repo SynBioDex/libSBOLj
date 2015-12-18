@@ -9,15 +9,13 @@ public class SBOLWriterTest extends SBOLAbstractTests {
 	@Override
 	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception {
 		assumeNotNull(expected);
-		//SBOLValidate.validateCompliance(expected);
-		//SBOLValidate.validateCompleteness(expected);
-//		SBOLValidate.clearErrors();
-//		SBOLValidate.validateOntologyUsage(expected);
-//		if (SBOLValidate.getNumErrors()>0) {
-//			for (String error : SBOLValidate.getErrors()) 
-//				System.err.println(error);
-//			assertTrue(false);
-//		}
+		SBOLValidate.validateSBOL(expected, false, false, false);
+		if (SBOLValidate.getNumErrors()>0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.err.println(error);
+			}
+			assertTrue(false);
+		}
 		SBOLDocument actual = SBOLTestUtils.writeAndRead(expected,compliant);
 		assertTrue(actual.equals(expected));
 	}

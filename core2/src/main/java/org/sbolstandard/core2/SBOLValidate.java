@@ -2,7 +2,12 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Zhen Zhang
@@ -56,7 +61,7 @@ public class SBOLValidate {
 	 * @throws SBOLValidationException if any top-level objects or any of their children or grandchildren 
 	 * in the given {@code sbolDocument} contain a non-compliant URI.
 	 */
-	public static void validateCompliance(SBOLDocument sbolDocument) {
+	static void validateCompliance(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
 			if (!URIcompliance.isTopLevelURIcompliant(collection) || !collection.checkDescendantsURIcompliance()) {
 				errors.add("Collection " + collection.getIdentity() + " is not URI compliant.");
@@ -86,7 +91,7 @@ public class SBOLValidate {
 		}
 	}
 	
-	protected static void validateCollectionCompleteness(SBOLDocument sbolDocument,Collection collection) {
+	protected static void checkCollectionCompleteness(SBOLDocument sbolDocument,Collection collection) {
 		for (URI member : collection.getMemberURIs()) {
 			if (sbolDocument.getTopLevel(member)==null) {
 				errors.add("Collection " + collection.getIdentity() + " member " + member + " not found in document.");
@@ -94,8 +99,7 @@ public class SBOLValidate {
 		}
 	}
 
-
-	protected static void validateComponentDefinitionCompleteness(SBOLDocument sbolDocument,ComponentDefinition componentDefinition) {
+	protected static void checkComponentDefinitionCompleteness(SBOLDocument sbolDocument,ComponentDefinition componentDefinition) {
 		for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
 			if (sbolDocument.getSequence(sequenceURI)==null) {
 				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + " sequence " + 
@@ -110,7 +114,7 @@ public class SBOLValidate {
 		}
 	}
 
-	protected static void validateModuleDefinitionCompleteness(SBOLDocument sbolDocument,ModuleDefinition moduleDefinition) {
+	protected static void checkModuleDefinitionCompleteness(SBOLDocument sbolDocument,ModuleDefinition moduleDefinition) {
 		for (URI modelURI : moduleDefinition.getModelURIs()) {
 			if (sbolDocument.getModel(modelURI) == null) {
 				errors.add("ModuleDefinition " + moduleDefinition.getIdentity() + " model " + 
@@ -121,7 +125,7 @@ public class SBOLValidate {
 			if (functionalComponent.getDefinition() == null) {
 				errors.add("FunctionalComponent " + functionalComponent.getIdentity() + " definition " + 
 						functionalComponent.getDefinitionURI() + " not found in document.");
-			}
+			} 
 		}
 		for (Module module : moduleDefinition.getModules()) {
 			if (module.getDefinition() == null) {
@@ -129,6 +133,11 @@ public class SBOLValidate {
 						module.getDefinitionURI() + " not found in document.");
 			}
 			for (MapsTo mapsTo : module.getMapsTos()) {
+				if (mapsTo.getRemote()==null) {
+					errors.add("MapsTo " + mapsTo.getIdentity() + " remote functional component " + 
+							mapsTo.getRemoteURI() + " not found in module definition " + module.getDefinitionURI());
+					continue;
+				}
 				if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
 					errors.add("MapsTo '" + mapsTo.getIdentity() + "' has a private remote Functional Component '" + mapsTo.getRemoteURI());
 				}
@@ -145,22 +154,119 @@ public class SBOLValidate {
 	 * Validate if all URI references to SBOL objects are in the same given {@code sbolDocument}.
 	 * 
 	 * @param sbolDocument
-	 * @throws SBOLValidationException if any reference made by Collection, ComponentDefinition,
-	 * or ModuleDefinition is not in the given {@code sbolDocument}
 	 */
-	public static void validateCompleteness(SBOLDocument sbolDocument) {
+	static void validateCompleteness(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
-			validateCollectionCompleteness(sbolDocument,collection);
+			checkCollectionCompleteness(sbolDocument,collection);
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
-			validateComponentDefinitionCompleteness(sbolDocument,componentDefinition);
+			checkComponentDefinitionCompleteness(sbolDocument,componentDefinition);
 		}
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
-			validateModuleDefinitionCompleteness(sbolDocument,moduleDefinition);
+			checkModuleDefinitionCompleteness(sbolDocument,moduleDefinition);
 		}
 	}
 	
-	public static void validateOntologyUsage(SBOLDocument sbolDocument) {
+	protected static boolean componentDefinitionCycle(SBOLDocument sbolDocument, 
+			ComponentDefinition componentDefinition, Set<URI> visited) {
+		visited.add(componentDefinition.getIdentity());
+		for (Component component : componentDefinition.getComponents()) {
+			ComponentDefinition cd = component.getDefinition();
+			if (cd==null) continue;
+			if (visited.contains(cd.getIdentity())) return true;
+			if (componentDefinitionCycle(sbolDocument,cd,visited)) return true;
+		}
+		visited.remove(componentDefinition.getIdentity());
+		return false;
+	}
+	
+	protected static boolean moduleDefinitionCycle(SBOLDocument sbolDocument, 
+			ModuleDefinition moduleDefinition, Set<URI> visited) {
+		visited.add(moduleDefinition.getIdentity());
+		for (Module module : moduleDefinition.getModules()) {
+			ModuleDefinition md = module.getDefinition();
+			if (md==null) continue;
+			if (visited.contains(md.getIdentity())) return true;
+			if (moduleDefinitionCycle(sbolDocument,md,visited)) return true;
+		}
+		visited.remove(moduleDefinition.getIdentity());
+		return false;
+	}
+	
+	protected static boolean checkWasDerivedFromCycle(SBOLDocument sbolDocument, 
+			TopLevel topLevel, Set<URI> visited) {
+		visited.add(topLevel.getIdentity());
+		if (topLevel.isSetWasDerivedFrom()) {
+			TopLevel tl = sbolDocument.getTopLevel(topLevel.getWasDerivedFrom());
+			if (tl!=null) {
+				if (visited.contains(tl.getIdentity())) return true;
+				if (checkWasDerivedFromCycle(sbolDocument,tl,visited)) return true;
+			}
+		}
+		visited.remove(topLevel.getIdentity());
+		return false;
+	}
+	
+	static void validateWasDerivedFromVersion(SBOLDocument sbolDocument) {
+		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
+			if (topLevel.isSetWasDerivedFrom()) {
+				TopLevel tl = sbolDocument.getTopLevel(topLevel.getWasDerivedFrom());
+				if ((tl!=null) &&
+						(tl.isSetPersistentIdentity() && topLevel.isSetPersistentIdentity()) &&
+						(tl.getPersistentIdentity().equals(topLevel.getPersistentIdentity())) &&
+						(tl.isSetVersion() && topLevel.isSetVersion()) &&
+						(Version.isFirstVersionNewer(tl.getVersion(), topLevel.getVersion()))) {
+					errors.add(topLevel.getIdentity() + " is derived from " + tl.getIdentity() + " but has older version.");
+				}
+			}
+		}
+	}
+
+	/**
+	 * Validate if there are circular references in given {@code sbolDocument}.
+	 * 
+	 * @param sbolDocument
+	 */
+	static void validateCircularReferences(SBOLDocument sbolDocument) {
+		for (Collection collection : sbolDocument.getCollections()) {
+			if (checkWasDerivedFromCycle(sbolDocument,collection,new HashSet<URI>())) {
+				errors.add("Cycle found in Collection '" + collection.getIdentity() + "' was derived from link.");
+			}
+		}
+		for (Sequence sequence : sbolDocument.getSequences()) {
+			if (checkWasDerivedFromCycle(sbolDocument,sequence,new HashSet<URI>())) {
+				errors.add("Cycle found in Sequence '" + sequence.getIdentity() + "' was derived from link.");
+			}
+		}
+		for (Model model : sbolDocument.getModels()) {
+			if (checkWasDerivedFromCycle(sbolDocument,model,new HashSet<URI>())) {
+				errors.add("Cycle found in Model '" + model.getIdentity() + "' was derived from link.");
+			}
+		}
+		for (GenericTopLevel genericTopLevel : sbolDocument.getGenericTopLevels()) {
+			if (checkWasDerivedFromCycle(sbolDocument,genericTopLevel,new HashSet<URI>())) {
+				errors.add("Cycle found in Model '" + genericTopLevel.getIdentity() + "' was derived from link.");
+			}
+		}
+		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
+			if (checkWasDerivedFromCycle(sbolDocument,componentDefinition,new HashSet<URI>())) {
+				errors.add("Cycle found in ComponentDefinition '" + componentDefinition.getIdentity() + "' was derived from link.");
+			}
+			if (componentDefinitionCycle(sbolDocument,componentDefinition,new HashSet<URI>())) {
+				errors.add("Cycle found in ComponentDefinition '" + componentDefinition.getIdentity() + "'");
+			}
+		}
+		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
+			if (checkWasDerivedFromCycle(sbolDocument,moduleDefinition,new HashSet<URI>())) {
+				errors.add("Cycle found in ModuleDefinition '" + moduleDefinition.getIdentity() + "' was derived from link.");
+			}
+			if (moduleDefinitionCycle(sbolDocument,moduleDefinition,new HashSet<URI>())) {
+				errors.add("Cycle found in ModuleDefinition '" + moduleDefinition.getIdentity() + "'");
+			}
+		}
+	}
+	
+	static void validateOntologyUsage(SBOLDocument sbolDocument) {
 		SequenceOntology so = new SequenceOntology();
 		SystemsBiologyOntology sbo = new SystemsBiologyOntology();
 		for (Sequence sequence : sbolDocument.getSequences()) {
@@ -267,6 +373,97 @@ public class SBOLValidate {
 		}
 	}
 	
+	private static final String IUPAC_DNA_PATTERN = "([ACGTURYSWKMBDHVN\\-\\.]*)";	
+	private static final String IUPAC_PROTEIN_PATTERN = "([ABCDEFGHIKLMNPQRSTVWXYZ]*)";
+
+	static boolean checkSequenceEncoding(Sequence sequence) {
+		if (sequence.getEncoding().equals(Sequence.IUPAC_DNA) ||
+				(sequence.getEncoding().equals(Sequence.IUPAC_RNA))) {
+			Pattern r = Pattern.compile(IUPAC_DNA_PATTERN);
+			Matcher m = r.matcher(sequence.getElements().toUpperCase());
+			return m.matches();			
+		} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
+			Pattern r = Pattern.compile(IUPAC_PROTEIN_PATTERN);
+			Matcher m = r.matcher(sequence.getElements().toUpperCase());
+			return m.matches();				
+		} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
+			
+		}
+		return true;
+	}
+	
+	static void validateSequenceEncodings(SBOLDocument sbolDocument) {
+		for (Sequence sequence : sbolDocument.getSequences()) {
+			if (!checkSequenceEncoding(sequence)) {
+				errors.add("Sequence '" + sequence.getIdentity() + "' that uses encoding " + sequence.getEncoding() + 
+						" does not have a valid sequence.");
+			}
+		}
+	}
+	
+	static void validateURIuniqueness(SBOLDocument sbolDocument) {
+		HashMap<URI, Identified> elements = new HashMap<>();
+		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
+			if (elements.get(topLevel.getIdentity())!=null) {
+				Identified identified = elements.get(topLevel.getIdentity());
+				if (!topLevel.equals(identified)) {
+					errors.add("Multiple elements with identity " + topLevel.getIdentity());
+				}
+ 			}
+			elements.put(topLevel.getIdentity(),topLevel);
+			if (topLevel instanceof ComponentDefinition) {
+				for (Component c : ((ComponentDefinition) topLevel).getComponents()) {
+					if (elements.get(c.getIdentity())!=null) {
+						Identified identified = elements.get(c.getIdentity());
+						if (!c.equals(identified)) {
+							errors.add("Multiple elements with identity " + c.getIdentity());
+						}
+		 			}
+					elements.put(c.getIdentity(),c);
+				}
+				for (SequenceAnnotation sa : ((ComponentDefinition) topLevel).getSequenceAnnotations()) {
+					if (elements.get(sa.getIdentity())!=null) {
+						Identified identified = elements.get(sa.getIdentity());
+						if (!sa.equals(identified)) {
+							errors.add("Multiple elements with identity " + sa.getIdentity());
+						}
+		 			}					
+					elements.put(sa.getIdentity(),sa);
+				}
+				for (SequenceConstraint sc : ((ComponentDefinition) topLevel).getSequenceConstraints()) {
+					if (elements.get(sc.getIdentity())!=null) {
+						Identified identified = elements.get(sc.getIdentity());
+						if (!sc.equals(identified)) {
+							errors.add("Multiple elements with identity " + sc.getIdentity());
+						}
+		 			}					
+					elements.put(sc.getIdentity(),sc);
+				}
+			}
+		}
+	}
+	
+	/* 
+	 * Validate SBOL document.  Errors either throw exceptions or, if not fatal, add to the list of errors
+	 * that can be accessed using the getErrors() method.
+	 * 
+	 * @param sbolDocument
+	 * @param complete
+	 * @param compliant
+	 * @param bestPractice
+	 */
+	public static void validateSBOL(SBOLDocument sbolDocument, boolean complete, boolean compliant, 
+			boolean bestPractice) {
+		clearErrors();
+		validateSequenceEncodings(sbolDocument);
+		validateWasDerivedFromVersion(sbolDocument);
+		validateCircularReferences(sbolDocument);
+		validateURIuniqueness(sbolDocument);
+        if (compliant) validateCompliance(sbolDocument);
+        if (complete) validateCompleteness(sbolDocument);
+        if (bestPractice) validateOntologyUsage(sbolDocument);
+	}
+	
 	/**
 	 * Command line method for reading an input file and producing an output file. 
 	 * <p>
@@ -345,10 +542,7 @@ public class SBOLValidate {
 			SBOLReader.setVersion(version);
 	        SBOLDocument doc = SBOLReader.read(fileName);
 	        doc.setTypesInURIs(typesInURI);
-			clearErrors();
-	        if (compliant) validateCompliance(doc);
-	        if (complete) validateCompleteness(doc);
-	        if (bestPractice) validateOntologyUsage(doc);
+	        validateSBOL(doc, complete, compliant, bestPractice);
 	        if (getNumErrors()==0) {
 	        	//System.out.println("Validation successful, no errors.");
 	        	if (outputFile.equals("")) {
@@ -364,9 +558,11 @@ public class SBOLValidate {
 	        }
 		}
 		catch (Exception e) {
+			e.printStackTrace();
         	System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 		catch (Throwable e) {
+			e.printStackTrace();
         	System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 	}

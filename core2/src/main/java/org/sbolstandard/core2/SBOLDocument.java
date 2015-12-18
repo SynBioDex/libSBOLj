@@ -2115,6 +2115,34 @@ public class SBOLDocument {
 		}
 		return null;
 	}
+	
+	/**
+	 * Returns a set of all TopLevel objects.
+	 *
+	 * @return set of all TopLevel objects.
+	 */	
+	public Set<TopLevel> getTopLevels() {
+		Set<TopLevel> topLevels = new HashSet<>();
+		for (Collection topLevel : collections.values()) {
+			topLevels.add(topLevel);
+		}
+		for (Sequence topLevel : sequences.values()) {
+			topLevels.add(topLevel);
+		}
+		for (Model topLevel : models.values()) {
+			topLevels.add(topLevel);
+		}
+		for (GenericTopLevel topLevel : genericTopLevels.values()) {
+			topLevels.add(topLevel);
+		}
+		for (ComponentDefinition topLevel : componentDefinitions.values()) {
+			topLevels.add(topLevel);
+		}
+		for (ModuleDefinition topLevel : moduleDefinitions.values()) {
+			topLevels.add(topLevel);
+		}
+		return topLevels;		
+	}
 
 	/**
 	 * Creates a set of TopLevels with derived from the same object
@@ -2395,6 +2423,19 @@ public class SBOLDocument {
 				throw new IllegalArgumentException(
 						"Instance for identity `" + newTopLevel.identity + "' exists for a " + typeName);
 			instancesMap.put(newTopLevel.getIdentity(), newTopLevel);
+			if (newTopLevel.isSetPersistentIdentity()) {
+				Identified latest = instancesMap.get(newTopLevel.getPersistentIdentity());
+				if (latest == null) {
+					instancesMap.put(newTopLevel.getPersistentIdentity(), newTopLevel);
+				}
+				else {
+					if (isFirstVersionNewer(
+							extractVersion(newTopLevel.getIdentity()),
+							extractVersion(latest.getIdentity()))){
+						instancesMap.put(newTopLevel.getPersistentIdentity(), newTopLevel);
+					}
+				}				
+			}
 		}
 		newTopLevel.setSBOLDocument(this);
 	}

@@ -51,6 +51,10 @@ public class Sequence extends TopLevel{
 		super(identity);
 		setElements(elements);
 		setEncoding(encoding);
+		if (!SBOLValidate.checkSequenceEncoding(this)) {
+			throw new SBOLValidationException("Sequence '" + this.getIdentity() + "' that uses encoding " + this.getEncoding() + 
+					" does not have a valid sequence.");
+		}
 	}
 	
 	/**
@@ -77,6 +81,7 @@ public class Sequence extends TopLevel{
 	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
 	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
 	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the sequence {@code elements} invalid for specified {@code encoding}.
 	 */
 	public Sequence(String prefix,String displayId,String version, String elements, URI encoding) {
 		this(URIcompliance.createCompliantURI(prefix, displayId, version), elements, encoding);

@@ -12,7 +12,7 @@
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pLacSeq"/>
     <sbol:displayId>pLacSeq</sbol:displayId>
     <sbol:version>1.0</sbol:version>
-    <sbol:elements>pLacSequenceElements</sbol:elements>
+    <sbol:elements>ACGTURYSWKMBDHVN-.</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
 </rdf:RDF>
