@@ -299,7 +299,6 @@ public class ModuleDefinition extends TopLevel {
 	 * @param module
 	 */
 	void addModule(Module module) {
-		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		module.setSBOLDocument(this.sbolDocument);
 		module.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -308,7 +307,17 @@ public class ModuleDefinition extends TopLevel {
 						+ "' does not exist.");
 			}
 		}
-		module.setMapsTos(module.getMapsTos());
+		Set<URI> visited = new HashSet<>();
+		visited.add(this.getIdentity());
+		if (SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited)) {
+			throw new SBOLValidationException("Cycle created by Module '" + module.getIdentity() + "'");
+		}
+		addChildSafely(module, modules, "module", functionalComponents, interactions);
+		for (MapsTo mapsTo : module.getMapsTos()) {
+			mapsTo.setSBOLDocument(sbolDocument);
+			mapsTo.setModuleDefinition(this);
+			mapsTo.setModule(module);
+		}
 	}
 
 	/**
@@ -485,7 +494,10 @@ public class ModuleDefinition extends TopLevel {
 		addChildSafely(interaction, interactions, "interaction", functionalComponents, modules);
 		interaction.setSBOLDocument(this.sbolDocument);
 		interaction.setModuleDefinition(this);
-		interaction.setParticipations(interaction.getParticipations());
+		for (Participation participation : interaction.getParticipations()) {
+			participation.setSBOLDocument(sbolDocument);
+			participation.setModuleDefinition(this);
+		}
 	}
 
 	/**
@@ -697,8 +709,6 @@ public class ModuleDefinition extends TopLevel {
 	 * Adds the given instance to the list of components.
 	 */
 	void addFunctionalComponent(FunctionalComponent functionalComponent) {
-		addChildSafely(functionalComponent, functionalComponents, "functionalComponent",
-				interactions, modules);
 		functionalComponent.setSBOLDocument(this.sbolDocument);
 		functionalComponent.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -707,7 +717,13 @@ public class ModuleDefinition extends TopLevel {
 						+ "' does not exist.");
 			}
 		}
-		functionalComponent.setMapsTos(functionalComponent.getMapsTos());
+		addChildSafely(functionalComponent, functionalComponents, "functionalComponent",
+				interactions, modules);
+		for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+			mapsTo.setSBOLDocument(sbolDocument);
+			mapsTo.setModuleDefinition(this);
+			mapsTo.setComponentInstance(functionalComponent);
+		}
 	}
 
 	/**

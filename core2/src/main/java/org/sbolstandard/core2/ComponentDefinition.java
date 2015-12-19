@@ -1033,8 +1033,6 @@ public class ComponentDefinition extends TopLevel {
 	 * Adds the specified instance to the list of components.
 	 */
 	void addComponent(Component component) {
-		addChildSafely(component, components, "component",
-				sequenceAnnotations, sequenceConstraints);
 		component.setSBOLDocument(this.sbolDocument);
 		component.setComponentDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -1042,7 +1040,18 @@ public class ComponentDefinition extends TopLevel {
 				throw new IllegalArgumentException("ComponentDefinition '" + component.getDefinitionURI() + "' does not exist.");
 			}
 		}
-		component.setMapsTos(component.getMapsTos());
+		Set<URI> visited = new HashSet<>();
+		visited.add(this.getIdentity());
+		if (SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited)) {
+			throw new SBOLValidationException("Cycle created by Component '" + component.getIdentity() + "'");
+		}
+		addChildSafely(component, components, "component",
+				sequenceAnnotations, sequenceConstraints);
+		for (MapsTo mapsTo : component.getMapsTos()) {
+			mapsTo.setSBOLDocument(sbolDocument);
+			mapsTo.setComponentDefinition(this);
+			mapsTo.setComponentInstance(component);
+		}
 	}
 	
 	/**

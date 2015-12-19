@@ -169,6 +169,7 @@ public class SBOLValidate {
 	
 	protected static boolean checkComponentDefinitionCycle(SBOLDocument sbolDocument, 
 			ComponentDefinition componentDefinition, Set<URI> visited) {
+		if (componentDefinition==null) return false;
 		visited.add(componentDefinition.getIdentity());
 		for (Component component : componentDefinition.getComponents()) {
 			ComponentDefinition cd = component.getDefinition();
@@ -182,6 +183,7 @@ public class SBOLValidate {
 	
 	protected static boolean checkModuleDefinitionCycle(SBOLDocument sbolDocument, 
 			ModuleDefinition moduleDefinition, Set<URI> visited) {
+		if (moduleDefinition==null) return false;
 		visited.add(moduleDefinition.getIdentity());
 		for (Module module : moduleDefinition.getModules()) {
 			ModuleDefinition md = module.getDefinition();
