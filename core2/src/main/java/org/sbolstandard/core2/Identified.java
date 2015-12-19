@@ -233,9 +233,17 @@ public abstract class Identified {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */	
 	public void setWasDerivedFrom(URI wasDerivedFrom) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		if (sbolDocument!=null) {
+			sbolDocument.checkReadOnly();
+			if (!SBOLValidate.checkWasDerivedFromVersion(sbolDocument, this, wasDerivedFrom)) {
+				throw new SBOLValidationException(getIdentity() + " is derived from " + wasDerivedFrom + 
+						" but has older version.");
+			}
+			if (SBOLValidate.checkWasDerivedFromCycle(sbolDocument, this, wasDerivedFrom, new HashSet<URI>())) {
+				throw new SBOLValidationException("Cycle found in '" + getIdentity() + "' was derived from link.");
+			}
+		}
 		this.wasDerivedFrom = wasDerivedFrom;
-
 	}
 
 	/**

@@ -167,56 +167,67 @@ public class SBOLValidate {
 		}
 	}
 	
-	protected static boolean componentDefinitionCycle(SBOLDocument sbolDocument, 
+	protected static boolean checkComponentDefinitionCycle(SBOLDocument sbolDocument, 
 			ComponentDefinition componentDefinition, Set<URI> visited) {
 		visited.add(componentDefinition.getIdentity());
 		for (Component component : componentDefinition.getComponents()) {
 			ComponentDefinition cd = component.getDefinition();
 			if (cd==null) continue;
 			if (visited.contains(cd.getIdentity())) return true;
-			if (componentDefinitionCycle(sbolDocument,cd,visited)) return true;
+			if (checkComponentDefinitionCycle(sbolDocument,cd,visited)) return true;
 		}
 		visited.remove(componentDefinition.getIdentity());
 		return false;
 	}
 	
-	protected static boolean moduleDefinitionCycle(SBOLDocument sbolDocument, 
+	protected static boolean checkModuleDefinitionCycle(SBOLDocument sbolDocument, 
 			ModuleDefinition moduleDefinition, Set<URI> visited) {
 		visited.add(moduleDefinition.getIdentity());
 		for (Module module : moduleDefinition.getModules()) {
 			ModuleDefinition md = module.getDefinition();
 			if (md==null) continue;
 			if (visited.contains(md.getIdentity())) return true;
-			if (moduleDefinitionCycle(sbolDocument,md,visited)) return true;
+			if (checkModuleDefinitionCycle(sbolDocument,md,visited)) return true;
 		}
 		visited.remove(moduleDefinition.getIdentity());
 		return false;
 	}
 	
 	protected static boolean checkWasDerivedFromCycle(SBOLDocument sbolDocument, 
-			TopLevel topLevel, Set<URI> visited) {
-		visited.add(topLevel.getIdentity());
-		if (topLevel.isSetWasDerivedFrom()) {
-			TopLevel tl = sbolDocument.getTopLevel(topLevel.getWasDerivedFrom());
-			if (tl!=null) {
-				if (visited.contains(tl.getIdentity())) return true;
-				if (checkWasDerivedFromCycle(sbolDocument,tl,visited)) return true;
+			Identified identified, URI wasDerivedFrom, Set<URI> visited) {
+		visited.add(identified.getIdentity());
+		TopLevel tl = sbolDocument.getTopLevel(wasDerivedFrom);
+		if (tl!=null) {
+			if (visited.contains(tl.getIdentity())) return true;
+			if (tl.isSetWasDerivedFrom()) {
+				if (checkWasDerivedFromCycle(sbolDocument,tl,tl.getWasDerivedFrom(),visited)) return true;
+			} else {
+				return false;
 			}
 		}
-		visited.remove(topLevel.getIdentity());
+		visited.remove(identified.getIdentity());
 		return false;
+	}
+	
+	protected static boolean checkWasDerivedFromVersion(SBOLDocument sbolDocument, Identified identified, 
+			URI wasDerivedFrom) {
+		Identified derivedFrom = sbolDocument.getTopLevel(wasDerivedFrom);
+		if ((derivedFrom!=null) &&
+				(derivedFrom.isSetPersistentIdentity() && identified.isSetPersistentIdentity()) &&
+				(derivedFrom.getPersistentIdentity().equals(identified.getPersistentIdentity())) &&
+				(derivedFrom.isSetVersion() && identified.isSetVersion()) &&
+				(Version.isFirstVersionNewer(derivedFrom.getVersion(), identified.getVersion()))) {
+			return false;
+		}
+		return true;
 	}
 	
 	static void validateWasDerivedFromVersion(SBOLDocument sbolDocument) {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (topLevel.isSetWasDerivedFrom()) {
-				TopLevel tl = sbolDocument.getTopLevel(topLevel.getWasDerivedFrom());
-				if ((tl!=null) &&
-						(tl.isSetPersistentIdentity() && topLevel.isSetPersistentIdentity()) &&
-						(tl.getPersistentIdentity().equals(topLevel.getPersistentIdentity())) &&
-						(tl.isSetVersion() && topLevel.isSetVersion()) &&
-						(Version.isFirstVersionNewer(tl.getVersion(), topLevel.getVersion()))) {
-					errors.add(topLevel.getIdentity() + " is derived from " + tl.getIdentity() + " but has older version.");
+				if (!checkWasDerivedFromVersion(sbolDocument,topLevel,topLevel.getWasDerivedFrom())) {
+					errors.add(topLevel.getIdentity() + " is derived from " + topLevel.getWasDerivedFrom() + 
+							" but has older version.");
 				}
 			}
 		}
@@ -228,39 +239,20 @@ public class SBOLValidate {
 	 * @param sbolDocument
 	 */
 	static void validateCircularReferences(SBOLDocument sbolDocument) {
-		for (Collection collection : sbolDocument.getCollections()) {
-			if (checkWasDerivedFromCycle(sbolDocument,collection,new HashSet<URI>())) {
-				errors.add("Cycle found in Collection '" + collection.getIdentity() + "' was derived from link.");
-			}
-		}
-		for (Sequence sequence : sbolDocument.getSequences()) {
-			if (checkWasDerivedFromCycle(sbolDocument,sequence,new HashSet<URI>())) {
-				errors.add("Cycle found in Sequence '" + sequence.getIdentity() + "' was derived from link.");
-			}
-		}
-		for (Model model : sbolDocument.getModels()) {
-			if (checkWasDerivedFromCycle(sbolDocument,model,new HashSet<URI>())) {
-				errors.add("Cycle found in Model '" + model.getIdentity() + "' was derived from link.");
-			}
-		}
-		for (GenericTopLevel genericTopLevel : sbolDocument.getGenericTopLevels()) {
-			if (checkWasDerivedFromCycle(sbolDocument,genericTopLevel,new HashSet<URI>())) {
-				errors.add("Cycle found in Model '" + genericTopLevel.getIdentity() + "' was derived from link.");
+		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
+			if (topLevel.isSetWasDerivedFrom()) {
+				if (checkWasDerivedFromCycle(sbolDocument,topLevel,topLevel.getWasDerivedFrom(), new HashSet<URI>())) {
+					errors.add("Cycle found in '" + topLevel.getIdentity() + "' was derived from link.");
+				}
 			}
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
-			if (checkWasDerivedFromCycle(sbolDocument,componentDefinition,new HashSet<URI>())) {
-				errors.add("Cycle found in ComponentDefinition '" + componentDefinition.getIdentity() + "' was derived from link.");
-			}
-			if (componentDefinitionCycle(sbolDocument,componentDefinition,new HashSet<URI>())) {
+			if (checkComponentDefinitionCycle(sbolDocument,componentDefinition,new HashSet<URI>())) {
 				errors.add("Cycle found in ComponentDefinition '" + componentDefinition.getIdentity() + "'");
 			}
 		}
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
-			if (checkWasDerivedFromCycle(sbolDocument,moduleDefinition,new HashSet<URI>())) {
-				errors.add("Cycle found in ModuleDefinition '" + moduleDefinition.getIdentity() + "' was derived from link.");
-			}
-			if (moduleDefinitionCycle(sbolDocument,moduleDefinition,new HashSet<URI>())) {
+			if (checkModuleDefinitionCycle(sbolDocument,moduleDefinition,new HashSet<URI>())) {
 				errors.add("Cycle found in ModuleDefinition '" + moduleDefinition.getIdentity() + "'");
 			}
 		}
@@ -420,6 +412,15 @@ public class SBOLValidate {
 						}
 		 			}
 					elements.put(c.getIdentity(),c);
+					for (MapsTo m : c.getMapsTos()) {
+						if (elements.get(m.getIdentity())!=null) {
+							Identified identified = elements.get(m.getIdentity());
+							if (!m.equals(identified)) {
+								errors.add("Multiple elements with identity " + m.getIdentity());
+							}
+			 			}
+						elements.put(m.getIdentity(),m);
+					}
 				}
 				for (SequenceAnnotation sa : ((ComponentDefinition) topLevel).getSequenceAnnotations()) {
 					if (elements.get(sa.getIdentity())!=null) {
@@ -429,6 +430,15 @@ public class SBOLValidate {
 						}
 		 			}					
 					elements.put(sa.getIdentity(),sa);
+					for (Location l : sa.getLocations()) {
+						if (elements.get(l.getIdentity())!=null) {
+							Identified identified = elements.get(l.getIdentity());
+							if (!l.equals(identified)) {
+								errors.add("Multiple elements with identity " + l.getIdentity());
+							}
+			 			}
+						elements.put(l.getIdentity(),l);
+					}
 				}
 				for (SequenceConstraint sc : ((ComponentDefinition) topLevel).getSequenceConstraints()) {
 					if (elements.get(sc.getIdentity())!=null) {
@@ -438,6 +448,62 @@ public class SBOLValidate {
 						}
 		 			}					
 					elements.put(sc.getIdentity(),sc);
+				}
+			}
+			if (topLevel instanceof ModuleDefinition) {
+				for (FunctionalComponent c : ((ModuleDefinition) topLevel).getFunctionalComponents()) {
+					if (elements.get(c.getIdentity())!=null) {
+						Identified identified = elements.get(c.getIdentity());
+						if (!c.equals(identified)) {
+							errors.add("Multiple elements with identity " + c.getIdentity());
+						}
+		 			}
+					elements.put(c.getIdentity(),c);
+					for (MapsTo m : c.getMapsTos()) {
+						if (elements.get(m.getIdentity())!=null) {
+							Identified identified = elements.get(m.getIdentity());
+							if (!m.equals(identified)) {
+								errors.add("Multiple elements with identity " + m.getIdentity());
+							}
+			 			}
+						elements.put(m.getIdentity(),m);
+					}
+				}
+				for (Module mod : ((ModuleDefinition) topLevel).getModules()) {
+					if (elements.get(mod.getIdentity())!=null) {
+						Identified identified = elements.get(mod.getIdentity());
+						if (!mod.equals(identified)) {
+							errors.add("Multiple elements with identity " + mod.getIdentity());
+						}
+		 			}
+					elements.put(mod.getIdentity(),mod);
+					for (MapsTo m : mod.getMapsTos()) {
+						if (elements.get(m.getIdentity())!=null) {
+							Identified identified = elements.get(m.getIdentity());
+							if (!m.equals(identified)) {
+								errors.add("Multiple elements with identity " + m.getIdentity());
+							}
+			 			}
+						elements.put(m.getIdentity(),m);
+					}
+				}
+				for (Interaction i : ((ModuleDefinition) topLevel).getInteractions()) {
+					if (elements.get(i.getIdentity())!=null) {
+						Identified identified = elements.get(i.getIdentity());
+						if (!i.equals(identified)) {
+							errors.add("Multiple elements with identity " + i.getIdentity());
+						}
+		 			}					
+					elements.put(i.getIdentity(),i);
+					for (Participation p : i.getParticipations()) {
+						if (elements.get(p.getIdentity())!=null) {
+							Identified identified = elements.get(p.getIdentity());
+							if (!p.equals(identified)) {
+								errors.add("Multiple elements with identity " + p.getIdentity());
+							}
+			 			}
+						elements.put(p.getIdentity(),p);
+					}
 				}
 			}
 		}
