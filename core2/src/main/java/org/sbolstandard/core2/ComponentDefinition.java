@@ -2,10 +2,8 @@ package org.sbolstandard.core2;
 import static org.sbolstandard.core2.URIcompliance.*;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -89,6 +87,39 @@ public class ComponentDefinition extends TopLevel {
 		this.sequenceAnnotations = new HashMap<>();
 		this.sequenceConstraints = new HashMap<>();
 		setTypes(types);
+	}
+	
+	/**
+	 * Creates a ComponentDefinition instance with the given arguments.
+	 * <p>
+	 * If the given {@code prefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the given {@code prefix}, {@code displayId}, and {@code version} are not
+	 * {@code null} and valid.
+	 * <p>
+	 * A ComponentDefinition instance is created with a compliant URI. This URI is composed from
+	 * the given {@code prefix}, the given {@code displayId}, and {@code version}.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 *
+	 * @param prefix
+	 * @param displayId
+	 * @param version
+	 * @param types
+	 * @throws IllegalArgumentException if the defaultURIprefix is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
+	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 */
+	public ComponentDefinition(String prefix,String displayId,String version, Set<URI> types) {
+		this(URIcompliance.createCompliantURI(prefix, displayId, version),types);
+		prefix = URIcompliance.checkURIprefix(prefix);
+		validateIdVersion(displayId, version);
+		setDisplayId(displayId);
+		setPersistentIdentity(createCompliantURI(prefix, displayId, ""));
+		setVersion(version);
 	}
 
 	private ComponentDefinition(ComponentDefinition componentDefinition) {
@@ -507,7 +538,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @param locations
 	 * @return a SequenceAnnotation instance
 	 */
-	SequenceAnnotation createSequenceAnnotation(URI identity, List<Location> locations) {
+	SequenceAnnotation createSequenceAnnotation(URI identity, Set<Location> locations) {
 		SequenceAnnotation sequenceAnnotation = new SequenceAnnotation(identity, locations);
 		addSequenceAnnotation(sequenceAnnotation);
 		return sequenceAnnotation;
@@ -538,7 +569,7 @@ public class ComponentDefinition extends TopLevel {
 //			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
 //					"'is not compliant in parent `" + this.getIdentity() +
 //					"' for " + URIprefix + " " + displayId + " " + version);
-		List<Location> locations = new ArrayList<>();
+		Set<Location> locations = new HashSet<>();
 		locations.add(location);
 		SequenceAnnotation sa = createSequenceAnnotation(newSequenceAnnotationURI, locations);
 		sa.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
@@ -777,10 +808,16 @@ public class ComponentDefinition extends TopLevel {
 	 * Adds the specified instance to the list of sequenceAnnotations.
 	 */
 	void addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
-		addChildSafely(sequenceAnnotation, sequenceAnnotations, "sequenceAnnotation",
-				components, sequenceConstraints);
 		sequenceAnnotation.setSBOLDocument(this.sbolDocument);
 		sequenceAnnotation.setComponentDefinition(this);
+		if (sequenceAnnotation.isSetComponent() && sequenceAnnotation.getComponent()==null) {
+			throw new IllegalArgumentException("Component '" + sequenceAnnotation.getComponentURI() + "' does not exist.");
+		}
+		for (Location location : sequenceAnnotation.getLocations()) {
+			location.setSBOLDocument(sbolDocument);
+		}
+		addChildSafely(sequenceAnnotation, sequenceAnnotations, "sequenceAnnotation",
+				components, sequenceConstraints);
 	}
 
 	/**
@@ -861,8 +898,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * @param sequenceAnnotations
 	 */
-	void setSequenceAnnotations(
-			List<SequenceAnnotation> sequenceAnnotations) {
+	void setSequenceAnnotations(Set<SequenceAnnotation> sequenceAnnotations) {
 		clearSequenceAnnotations();
 		for (SequenceAnnotation sequenceAnnotation : sequenceAnnotations) {
 			addSequenceAnnotation(sequenceAnnotation);
@@ -997,10 +1033,25 @@ public class ComponentDefinition extends TopLevel {
 	 * Adds the specified instance to the list of components.
 	 */
 	void addComponent(Component component) {
-		addChildSafely(component, components, "component",
-				sequenceAnnotations, sequenceConstraints);
 		component.setSBOLDocument(this.sbolDocument);
 		component.setComponentDefinition(this);
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (component.getDefinition()==null) {
+				throw new IllegalArgumentException("ComponentDefinition '" + component.getDefinitionURI() + "' does not exist.");
+			}
+		}
+		Set<URI> visited = new HashSet<>();
+		visited.add(this.getIdentity());
+		if (SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited)) {
+			throw new SBOLValidationException("Cycle created by Component '" + component.getIdentity() + "'");
+		}
+		addChildSafely(component, components, "component",
+				sequenceAnnotations, sequenceConstraints);
+		for (MapsTo mapsTo : component.getMapsTos()) {
+			mapsTo.setSBOLDocument(sbolDocument);
+			mapsTo.setComponentDefinition(this);
+			mapsTo.setComponentInstance(component);
+		}
 	}
 	
 	/**
@@ -1121,7 +1172,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * @param components
 	 */
-	void setComponents(List<Component> components) {
+	void setComponents(Set<Component> components) {
 		clearComponents();
 		for (Component component : components) {
 			addComponent(component);
@@ -1225,15 +1276,11 @@ public class ComponentDefinition extends TopLevel {
 	void addSequenceConstraint(SequenceConstraint sequenceConstraint) {
 		sequenceConstraint.setSBOLDocument(this.sbolDocument);
 		sequenceConstraint.setComponentDefinition(this);
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sequenceConstraint.getSubject()==null) {
-				throw new IllegalArgumentException("Component '" + sequenceConstraint.getSubjectURI() + "' does not exist.");
-			}
+		if (sequenceConstraint.getSubject()==null) {
+			throw new IllegalArgumentException("Component '" + sequenceConstraint.getSubjectURI() + "' does not exist.");
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sequenceConstraint.getObject()==null) {
-				throw new IllegalArgumentException("Component '" + sequenceConstraint.getObjectURI() + "' does not exist.");
-			}
+		if (sequenceConstraint.getObject()==null) {
+			throw new IllegalArgumentException("Component '" + sequenceConstraint.getObjectURI() + "' does not exist.");
 		}
 		addChildSafely(sequenceConstraint, sequenceConstraints, "sequenceConstraint",
 				components, sequenceAnnotations);
@@ -1316,8 +1363,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of structuralConstraint instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setSequenceConstraints(
-			List<SequenceConstraint> sequenceConstraints) {
+	void setSequenceConstraints(Set<SequenceConstraint> sequenceConstraints) {
 		clearSequenceConstraints();
 		for (SequenceConstraint sequenceConstraint : sequenceConstraints) {
 			addSequenceConstraint(sequenceConstraint);
@@ -1396,17 +1442,6 @@ public class ComponentDefinition extends TopLevel {
 		}
 		// All descendants of this ComponentDefinition object have compliant URIs.
 		return allDescendantsCompliant;
-	}
-
-	protected boolean isComplete() {
-		if (sbolDocument==null) return false;
-		for (URI sequenceURI : sequences) {
-			if (sbolDocument.getSequence(sequenceURI)==null) return false;
-		}
-		for (Component component : getComponents()) {
-			if (component.getDefinition()==null) return false;
-		}
-		return true;
 	}
 
 	/**

@@ -804,8 +804,8 @@
 	<sbol2:persistentIdentity rdf:resource="http://sbolstandard.org/example/toggle_switch/laci_inverter/LacI_mapping"/>
 	<sbol2:displayId>LacI_mapping</sbol2:displayId>
 	<sbol2:refinement rdf:resource="http://sbols.org/v2#useRemote"/>
-	<sbol2:remote rdf:resource="http://sbolstandard.org/example/toggle_switch/LacI"/>
-	<sbol2:local rdf:resource="http://sbolstandard.org/example/laci_inverter/TF"/>
+	<sbol2:local rdf:resource="http://sbolstandard.org/example/toggle_switch/LacI"/>
+	<sbol2:remote rdf:resource="http://sbolstandard.org/example/laci_inverter/TF"/>
 </rdf:Description>
 
 <rdf:Description rdf:about="http://sbolstandard.org/example/toggle_switch/tetr_inverter/TetR_mapping">
@@ -813,8 +813,8 @@
 	<sbol2:persistentIdentity rdf:resource="http://sbolstandard.org/example/toggle_switch/tetr_inverter/TetR_mapping"/>
 	<sbol2:displayId>TetR_mapping</sbol2:displayId>
 	<sbol2:refinement rdf:resource="http://sbols.org/v2#useRemote"/>
-	<sbol2:remote rdf:resource="http://sbolstandard.org/example/toggle_switch/TetR"/>
-	<sbol2:local rdf:resource="http://sbolstandard.org/example/tetr_inverter/TF"/>
+	<sbol2:local rdf:resource="http://sbolstandard.org/example/toggle_switch/TetR"/>
+	<sbol2:remote rdf:resource="http://sbolstandard.org/example/tetr_inverter/TF"/>
 </rdf:Description>
 
 </rdf:RDF>

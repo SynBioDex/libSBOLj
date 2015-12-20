@@ -30,17 +30,19 @@ public class writeTester {
 	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		get_myParts(SBOL2Doc_test);
-		SBOLDocument doc = new SBOLDocument();
-		ModuleDefinition md = (SBOL2Doc_test.getModuleDefinition("Toggle", "1.0")).flatten("http://foo.com","GC","");
-		doc.createCopy(md);
-		writeRdfOutputStream(doc);
+		//SBOLDocument doc = new SBOLDocument();
+		//doc.createCollection("http://foo.org", "myPart", "");
+		//doc.createCollection("http://foo.org/myPart", "myPart2", "");
+		//ModuleDefinition md = (SBOL2Doc_test.getModuleDefinition("Toggle", "1.0")).flatten("http://foo.com","GC","");
+		//doc.createCopy(md);
+		//writeRdfOutputStream(doc);
 	}
 
 	public static void writeRdfOutputStream(SBOLDocument SBOL2Doc_test)
 	{
 		try {
 			SBOLWriter.write(SBOL2Doc_test,(System.out));
-			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test);
+			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test,true);
 			SBOLWriter.write(SBOL2Doc_test,System.out);
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
@@ -101,21 +103,21 @@ public class writeTester {
 	private static Sequence get_pLacSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("pLacSeq",version,"pLacSeq_element"),
+				getData("pLacSeq",version,"AGCT"),
 				Sequence.IUPAC_DNA);
 	}
 
 	private static Sequence get_tetRSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("tetRSeq",version,"tetRSeq_element"),
+				getData("tetRSeq",version,"AGCT"),
 				Sequence.IUPAC_DNA);
 	}
 
 	private static Sequence get_pLactetRSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("pLactetRSeq",version,"pLactetRSeq_element"),
+				getData("pLactetRSeq",version,"AGCT"),
 				Sequence.IUPAC_DNA);
 	}
 
@@ -265,21 +267,21 @@ public class writeTester {
 	private static Sequence get_ptetSeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("ptetSeq",version,"ptetSeq_element"),
+				getData("ptetSeq",version,"AGCT"),
 				Sequence.IUPAC_DNA);
 	}
 
 	private static Sequence get_lacISeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("lacISeq",version,"lacISeq_element"),
+				getData("lacISeq",version,"AGCT"),
 				Sequence.IUPAC_DNA);
 	}
 
 	private static Sequence get_ptetlacISeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("ptetlacISeq",version,"ptetlacISeq_element"),
+				getData("ptetlacISeq",version,"AGCT"),
 				Sequence.IUPAC_DNA);
 	}
 

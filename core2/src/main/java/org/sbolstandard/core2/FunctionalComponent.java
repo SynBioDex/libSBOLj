@@ -1,10 +1,8 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.sbolstandard.core2.URIcompliance.*;
@@ -37,11 +35,11 @@ public class FunctionalComponent extends ComponentInstance {
 		this.setDirection(functionalComponent.getDirection());
 		this.mapsTos = new HashMap<>();
 		if (!functionalComponent.getMapsTos().isEmpty()) {
-			List<MapsTo> mapsTos = new ArrayList<>();
+			Set<MapsTo> mapsTos = new HashSet<>();
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
 				mapsTos.add(mapsTo.deepCopy());
 			}
-			this.setMapsTo(mapsTos);
+			this.setMapsTos(mapsTos);
 		}
 	}
 
@@ -228,6 +226,11 @@ public class FunctionalComponent extends ComponentInstance {
 			if (getDefinition().getComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
 				throw new IllegalArgumentException("Component '" + mapsTo.getRemoteURI() + "' is private.");
 			}
+			if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
+				if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
+					throw new IllegalArgumentException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+				}
+			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
 		mapsTo.setSBOLDocument(this.sbolDocument);
@@ -304,7 +307,7 @@ public class FunctionalComponent extends ComponentInstance {
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setMapsTo(List<MapsTo> mapsTos) {
+	void setMapsTos(Set<MapsTo> mapsTos) {
 		clearMapsTos();		
 		for (MapsTo reference : mapsTos) {
 			addMapsTo(reference);

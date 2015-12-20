@@ -83,13 +83,14 @@ public class SBOLTestUtils {
 
 	}
 
-	public static SBOLDocument convertRDFTripleStore(String fileName, String fileType)
+	public static SBOLDocument convertRDFTripleStore(String fileName, String fileType, boolean compliant)
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
 			resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/" + fileName);
 
 		assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
+		SBOLReader.setCompliant(false);
 		SBOLDocument actual = null;
 		try {
 			if(fileType.equals("rdf"))
@@ -228,11 +229,12 @@ public class SBOLTestUtils {
 	}
 
 
-	public static SBOLDocument writeAndRead(SBOLDocument doc)
+	public static SBOLDocument writeAndRead(SBOLDocument doc, boolean compliant)
 			throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		SBOLWriter.write(doc, out);
+		SBOLReader.setCompliant(compliant);
 		return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 	}
 

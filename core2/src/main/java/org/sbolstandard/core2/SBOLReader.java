@@ -93,6 +93,25 @@ public class SBOLReader
 	private static String version = "";
 	private static boolean typesInURI = false;
 	private static boolean dropObjectsWithDuplicateURIs = false;
+	private static boolean compliant = true;
+
+	/**
+	 * Check if document is to be read as being compliant.
+	 *
+	 * @return if document is to be read as being compliant
+	 */
+	public static boolean isCompliant() {
+		return compliant;
+	}
+	
+	/**
+	 * Set if document is to be read as compliant.
+	 *
+	 * @param compliant
+	 */
+	public static void setCompliant(boolean compliant) {
+		SBOLReader.compliant = compliant;
+	}
 
 	/**
 	 * Set the specified authority as the prefix to all member's identity
@@ -347,6 +366,7 @@ public class SBOLReader
 	public static SBOLDocument read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
+		SBOLDoc.setCompliant(compliant);
 		read(SBOLDoc,in,RDF);
 		return SBOLDoc;
 	}
@@ -364,6 +384,7 @@ public class SBOLReader
 	static SBOLDocument read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
+		SBOLDoc.setCompliant(compliant);
 		read(SBOLDoc,in,fileType);
 		return SBOLDoc;
 	}
@@ -371,6 +392,7 @@ public class SBOLReader
 
 	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
 	{
+		compliant = SBOLDoc.isCompliant();
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
 
@@ -398,9 +420,9 @@ public class SBOLReader
 
 		readTopLevelDocs(SBOLDoc, document);
 		scanner.close();
-		try {
-			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLValidationException e) {
+		SBOLValidate.clearErrors();
+		SBOLValidate.validateCompliance(SBOLDoc);
+		if (SBOLValidate.getNumErrors()>0) {
 			SBOLDoc.setCompliant(false);
 		}
 	}
@@ -437,9 +459,9 @@ public class SBOLReader
 		SBOLDoc.addNamespaceBinding(NamespaceBinding(Sbol2Terms.prov.getNamespaceURI(),
 				Sbol2Terms.prov.getPrefix()));
 		readTopLevelDocsV1(SBOLDoc, document);
-		try {
-			SBOLValidate.validateCompliance(SBOLDoc);
-		} catch (SBOLValidationException e) {
+		SBOLValidate.clearErrors();
+		SBOLValidate.validateCompliance(SBOLDoc);
+		if (SBOLValidate.getNumErrors()>0) {
 			SBOLDoc.setCompliant(false);
 		}
 		return SBOLDoc;
@@ -668,8 +690,8 @@ public class SBOLReader
 
 		List<Annotation> annotations 				 = new ArrayList<>();
 		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<>();
-		List<Component> components 					 = new ArrayList<>();
-		List<SequenceConstraint> sequenceConstraints = new ArrayList<>();
+		Set<Component> components 					 = new HashSet<>();
+		Set<SequenceConstraint> sequenceConstraints = new HashSet<>();
 		List<SBOLPair> precedePairs 				 = new ArrayList<>();
 		Map<URI, URI> componentDefMap 				 = new HashMap<>();
 
@@ -801,6 +823,8 @@ public class SBOLReader
 			c.addSequence(seq_identity);
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
+		if (!components.isEmpty())
+			c.setComponents(components);
 		if (!sequenceAnnotations.isEmpty()) {
 			for (SequenceAnnotation sa : sequenceAnnotations) {
 				if (!dropObjectsWithDuplicateURIs || c.getSequenceAnnotation(sa.getIdentity())==null) {
@@ -808,8 +832,6 @@ public class SBOLReader
 				}
 			}
 		}
-		if (!components.isEmpty())
-			c.setComponents(components);
 		if (!sequenceConstraints.isEmpty())
 			c.setSequenceConstraints(sequenceConstraints);
 
@@ -1152,7 +1174,7 @@ public class SBOLReader
 			}
 		}
 
-		List<Location> locations = new ArrayList<>();
+		Set<Location> locations = new HashSet<>();
 		locations.add(location);
 		SequenceAnnotation s = new SequenceAnnotation(identity, locations);
 		if(!persIdentity.equals("")) {
@@ -1183,10 +1205,10 @@ public class SBOLReader
 		Set<URI> roles 	  	   = new HashSet<>();
 		Set<URI> structures	   = new HashSet<>();
 
-		List<Component> components 					 = new ArrayList<>();
+		Set<Component> components 					 = new HashSet<>();
 		List<Annotation> annotations 				 = new ArrayList<>();
-		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<>();
-		List<SequenceConstraint> sequenceConstraints = new ArrayList<>();
+		Set<SequenceAnnotation> sequenceAnnotations = new HashSet<>();
+		Set<SequenceConstraint> sequenceConstraints = new HashSet<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
@@ -1408,7 +1430,7 @@ public class SBOLReader
 		URI componentURI 	   = null;
 		String version   	   = null;
 		URI wasDerivedFrom 	   = null;
-		List<Location> locations = new ArrayList<>();
+		Set<Location> locations = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		if (!sequenceAnnotation.getType().equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation)) {
@@ -1759,7 +1781,7 @@ public class SBOLReader
 		URI wasDerivedFrom 	   = null;
 
 		List<Annotation> annotations = new ArrayList<>();
-		List<MapsTo> mapsTo 		 = new ArrayList<>();
+		Set<MapsTo> mapsTo 		 = new HashSet<>();
 
 		if (!component.getType().equals(Sbol2Terms.Component.Component))
 		{
@@ -1834,7 +1856,7 @@ public class SBOLReader
 		if (access != null)
 			c.setAccess(access);
 		if (!mapsTo.isEmpty())
-			c.setMapsTo(mapsTo);
+			c.setMapsTos(mapsTo);
 		if (subComponentURI != null)
 			c.setDefinition(subComponentURI);
 		if (name != null)
@@ -2096,9 +2118,9 @@ public class SBOLReader
 		Set<URI> roles 		   = new HashSet<>();
 		Set<URI> models 	   = new HashSet<>();
 
-		List<FunctionalComponent> functionalComponents = new ArrayList<>();
-		List<Interaction> interactions 				   = new ArrayList<>();
-		List<Module> subModules 					   = new ArrayList<>();
+		Set<FunctionalComponent> functionalComponents = new HashSet<>();
+		Set<Interaction> interactions 				   = new HashSet<>();
+		Set<Module> subModules 					   = new HashSet<>();
 		List<Annotation> annotations 				   = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
@@ -2239,7 +2261,7 @@ public class SBOLReader
 		String version 		   = null;
 		URI definitionURI 	   = null;
 		URI wasDerivedFrom 	   = null;
-		List<MapsTo> mappings 		 = new ArrayList<>();
+		Set<MapsTo> mappings 		 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		if (!module.getType().equals(Sbol2Terms.Module.Module))
@@ -2421,7 +2443,7 @@ public class SBOLReader
 		URI wasDerivedFrom	   = null;
 
 		Set<URI> type 		   			   = new HashSet<>();
-		List<Participation> participations = new ArrayList<>();
+		Set<Participation> participations = new HashSet<>();
 		List<Annotation> annotations 	   = new ArrayList<>();
 
 		if (!interaction.getType().equals(Sbol2Terms.Interaction.Interaction)) {
@@ -2587,7 +2609,7 @@ public class SBOLReader
 		URI wasDerivedFrom 		   = null;
 
 		List<Annotation> annotations = new ArrayList<>();
-		List<MapsTo> mappings 		 = new ArrayList<>();
+		Set<MapsTo> mappings 		 = new HashSet<>();
 
 
 		if (!functionalComponent.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent))
@@ -2674,7 +2696,7 @@ public class SBOLReader
 		if (displayId != null)
 			fc.setDisplayId(displayId);
 		if (!mappings.isEmpty())
-			fc.setMapsTo(mappings);
+			fc.setMapsTos(mappings);
 		if (name != null)
 			fc.setName(name);
 		if (description != null)
