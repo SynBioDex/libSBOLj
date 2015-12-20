@@ -169,7 +169,7 @@ public class GettingStartedExample {
 				);	
 		TetR_promoter_copy.addSequence(seq);
 		
-		//SBOLWriter.write(document, "GettingStartedExample.rdf");
+		SBOLWriter.write(document, "GettingStartedExample.rdf");
 		writeThenRead(document);
 	}
 	
