@@ -1,8 +1,9 @@
 package org.sbolstandard.core2;
 
-import java.net.URI;
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
+import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
 
-import static org.sbolstandard.core2.URIcompliance.*;
+import java.net.URI;
 
 import javax.xml.namespace.QName;
 
@@ -19,7 +20,7 @@ import javax.xml.namespace.QName;
 public class GenericTopLevel extends TopLevel{
 
 	private QName rdfType;
-	
+
 	GenericTopLevel(URI identity, QName rdfType) {
 		super(identity);
 		this.rdfType = rdfType;
@@ -28,7 +29,7 @@ public class GenericTopLevel extends TopLevel{
 			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 		}
 	}
-	
+
 	private GenericTopLevel(GenericTopLevel genericTopLevel) {
 		super(genericTopLevel);
 		this.setRDFType(genericTopLevel.getRDFType());
@@ -36,7 +37,7 @@ public class GenericTopLevel extends TopLevel{
 
 	/**
 	 * Returns the RDF type property of this GenericTopLevel object.
-	 * 
+	 *
 	 * @return the RDF type property of this GenericTopLevel object.
 	 */
 	public QName getRDFType() {
@@ -50,7 +51,7 @@ public class GenericTopLevel extends TopLevel{
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param rdfType
+	 * @param rdfType the RDF type property of this object
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code rdfType} argument is {@code null}
 	 */
@@ -91,27 +92,27 @@ public class GenericTopLevel extends TopLevel{
 	protected GenericTopLevel deepCopy() {
 		return new GenericTopLevel(this);
 	}
-	
-//	/**
-//	 * @param newDisplayId
-//	 * @return
-//	 */
-//	public GenericTopLevel copy(String newDisplayId) {
-//		GenericTopLevel cloned = (GenericTopLevel) this.deepCopy();		
-//		cloned.updateCompliantURI(newDisplayId);
-//		return cloned;
-//	}
-//	
-//	/**
-//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0". 
-//	 * @param newVersion
-//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
-//	 */
-//	public GenericTopLevel newVersion(String newVersion) {
-//		GenericTopLevel cloned = (GenericTopLevel) super.newVersion(newVersion);		
-//		cloned.updateVersion(newVersion);
-//		return cloned;
-//	}
+
+	//	/**
+	//	 * @param newDisplayId
+	//	 * @return
+	//	 */
+	//	public GenericTopLevel copy(String newDisplayId) {
+	//		GenericTopLevel cloned = (GenericTopLevel) this.deepCopy();
+	//		cloned.updateCompliantURI(newDisplayId);
+	//		return cloned;
+	//	}
+	//
+	//	/**
+	//	 * Get a deep copy of the object first, and set its major version to the specified value, and minor version to "0".
+	//	 * @param newVersion
+	//	 * @return the copied {@link ComponentDefinition} instance with the specified major version.
+	//	 */
+	//	public GenericTopLevel newVersion(String newVersion) {
+	//		GenericTopLevel cloned = (GenericTopLevel) super.newVersion(newVersion);
+	//		cloned.updateVersion(newVersion);
+	//		return cloned;
+	//	}
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
@@ -122,7 +123,7 @@ public class GenericTopLevel extends TopLevel{
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
 		cloned.setVersion(version);
-		URI newIdentity = createCompliantURI(URIprefix,displayId,version);	
+		URI newIdentity = createCompliantURI(URIprefix,displayId,version);
 		if (!this.getIdentity().equals(newIdentity)) {
 			cloned.setWasDerivedFrom(this.getIdentity());
 		} else {

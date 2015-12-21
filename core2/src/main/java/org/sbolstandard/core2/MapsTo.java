@@ -1,8 +1,8 @@
 package org.sbolstandard.core2;
 
-import java.net.URI;
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 
-import static org.sbolstandard.core2.URIcompliance.*;
+import java.net.URI;
 
 /**
  * @author Zhen Zhang
@@ -15,7 +15,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
  */
 
 public class MapsTo extends Identified{
-	
+
 	private RefinementType refinement;
 	private URI local; // URI of a local component instantiation.
 	private URI remote; // URI of a remote component instantiation
@@ -24,12 +24,12 @@ public class MapsTo extends Identified{
 	private ComponentDefinition componentDefinition = null;
 	private ComponentInstance componentInstance = null;
 
-	MapsTo(URI identity, RefinementType refinement, 
+	MapsTo(URI identity, RefinementType refinement,
 			URI local, URI remote) {
 		super(identity);
 		setRefinement(refinement);
 		setLocal(local);
-		setRemote(remote);		
+		setRemote(remote);
 	}
 
 	private MapsTo(MapsTo mapsTo) {
@@ -41,7 +41,7 @@ public class MapsTo extends Identified{
 
 	/**
 	 * Returns the refinement property of this MapsTo object.
-	 * 
+	 *
 	 * @return the refinement property of this MapsTo object.
 	 */
 	public RefinementType getRefinement() {
@@ -49,13 +49,13 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Sets the refinement property of this MapsTo object to the given one. 
+	 * Sets the refinement property of this MapsTo object to the given one.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param refinement
+	 *
+	 * @param refinement The refinement type of the MapsTo object
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void setRefinement(RefinementType refinement) {
@@ -65,20 +65,20 @@ public class MapsTo extends Identified{
 
 	/**
 	 * Returns the local FunctionalComponent URI that this object refers to.
-	 * 
+	 *
 	 * @return the local FunctionalComponent URI that this object refers to
 	 */
 	public URI getLocalURI() {
 		return local;
 	}
-	
+
 	/**
 	 * Returns the local ComponentInstance instance that this object refers to.
-	 * 
+	 *
 	 * @return the local ComponentInstance instance that this object refers to
 	 * if this MapsTo object's reference ModuleDefinition instance is not {@code null},
-	 * or if this MapsTo object's parent ComponentInstance instance is not {@code null}; 
-	 * or {@code null} otherwise.    
+	 * or if this MapsTo object's parent ComponentInstance instance is not {@code null};
+	 * or {@code null} otherwise.
 	 */
 	public ComponentInstance getLocal() {
 		if (moduleDefinition!=null) {
@@ -88,7 +88,7 @@ public class MapsTo extends Identified{
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Get the component definition for the local element of this mapsTo.
 	 * @return the component definition for the local element of this mapsTo.
@@ -104,15 +104,15 @@ public class MapsTo extends Identified{
 
 	/**
 	 * Sets the local property of this MapsTo object to the given one.
- 	 * <p>
+	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param local
+	 *
+	 * @param local refers to the second “higher level” ComponentInstance.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code local} argument is {@code null}
-	 * @throws IllegalArgumentException if the given {@code local} argument is not found in 
+	 * @throws IllegalArgumentException if the given {@code local} argument is not found in
 	 * this MapsTo object's reference ModuleDefinition instance's list of functional components.
 	 */
 	public void setLocal(URI local) {
@@ -134,23 +134,23 @@ public class MapsTo extends Identified{
 
 	/**
 	 * Returns the remote FunctionalComponent URI that this object refers to.
-	 * 
+	 *
 	 * @return the remote FunctionalComponent URI that this object refers to
 	 */
 
 	public URI getRemoteURI() {
 		return remote;
 	}
- 
+
 	/**
 	 * Returns the remote ComponentInstance instance that this object refers to.
-	 * 
+	 *
 	 * @return the remote ComponentInstance instance that this object refers to,
 	 * if this MapsTo object's parent Module instance is not {@code null} and its
-	 * reference ModuleDefinition instance is not {@code null}, 
-	 * or if this MapsTo object's parent ComponentInstance instance is not {@code null} 
+	 * reference ModuleDefinition instance is not {@code null},
+	 * or if this MapsTo object's parent ComponentInstance instance is not {@code null}
 	 * and its reference ComponentDefinition instance is not {@code null};
-	 * or {@code null} otherwise.    
+	 * or {@code null} otherwise.
 	 */
 	public ComponentInstance getRemote() {
 		if (module!=null) {
@@ -162,7 +162,7 @@ public class MapsTo extends Identified{
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Get the component definition for the remote element of this mapsTo.
 	 * @return the component definition for the remote element of this mapsTo.
@@ -177,18 +177,18 @@ public class MapsTo extends Identified{
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Sets the remote property of this MapsTo object to the given one.
- 	 * <p>
+	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param remote
+	 *
+	 * @param remote refers to the first “lower level” ComponentInstance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code remote} argument is {@code null}
-	 * @throws IllegalArgumentException if the given {@code remote} argument is not found in 
+	 * @throws IllegalArgumentException if the given {@code remote} argument is not found in
 	 * the list of functional components that are owned by the ModuleDefinition instance that
 	 * this MapsTo object's parent Module instance refers to.
 	 * @throws IllegalArgumentException if the given {@code remote} argument refers to a FunctionalComponent

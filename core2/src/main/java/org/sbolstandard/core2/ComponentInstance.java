@@ -13,24 +13,24 @@ import java.net.URI;
  */
 
 public abstract class ComponentInstance extends Identified {
-	
+
 	private AccessType access;
 	protected URI definition;
 	ComponentInstance(URI identity, AccessType access, URI definition) {
 		super(identity);
 		setAccess(access);
-		setDefinition(definition);		
+		setDefinition(definition);
 	}
-	
+
 	protected ComponentInstance(ComponentInstance component) {
 		super(component);
 		setAccess(component.getAccess());
-		setDefinition(component.getDefinitionURI());	
+		setDefinition(component.getDefinitionURI());
 	}
 
 	/**
 	 * Returns the access property of this object.
-	 * 
+	 *
 	 * @return the access property of this object
 	 */
 	public AccessType getAccess() {
@@ -43,8 +43,8 @@ public abstract class ComponentInstance extends Identified {
 	 * If this object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param access
+	 *
+	 * @param access Sets the specified object with the given AccessType
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code access} argument is {@code null}
 	 */
@@ -55,22 +55,22 @@ public abstract class ComponentInstance extends Identified {
 		}
 		this.access = access;
 	}
-	
+
 	/**
 	 * Returns the reference ComponentDefinition URI.
-	 * 
+	 *
 	 * @return the reference ComponentDefinition URI
-	 */	
+	 */
 	public URI getDefinitionURI() {
 		return definition;
 	}
-	
+
 	/**
 	 * Returns the ComponentDefinition instance referenced by this object.
-	 * 
+	 *
 	 * @return {@code null} if the associated SBOLDocument instance is {@code null},
 	 * the ComponentDefinition instance referenced by this object otherwise.
-	 */	
+	 */
 	public ComponentDefinition getDefinition() {
 		if (sbolDocument==null) return null;
 		return sbolDocument.getComponentDefinition(definition);
@@ -82,13 +82,13 @@ public abstract class ComponentInstance extends Identified {
 	 * If this object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param definition
+	 *
+	 * @param definition Set the object with the definition that refers to the ComponentDefinition of the ComponentInstance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code definition} argument is {@code null}
-	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies 
+	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies
 	 * 		all URIs and the given definition URI is not found in them.
-	 *             
+	 *
 	 */
 	public void setDefinition(URI definition) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -103,6 +103,7 @@ public abstract class ComponentInstance extends Identified {
 		this.definition = definition;
 	}
 
+	@Override
 	protected abstract ComponentInstance deepCopy();
 
 	@Override

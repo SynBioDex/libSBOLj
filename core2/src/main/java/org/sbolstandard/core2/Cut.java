@@ -13,13 +13,13 @@ import java.net.URI;
  */
 
 public class Cut extends Location{
-	
+
 	private int at;
 	Cut(URI identity, int at) {
 		super(identity);
 		setAt(at);
 	}
-	
+
 	private Cut(Cut cut) {
 		super(cut);
 		this.setAt(cut.getAt());
@@ -27,7 +27,7 @@ public class Cut extends Location{
 
 	/**
 	 * Returns the {@code at} property of this Cut object.
-	 * 
+	 *
 	 * @return the {@code at} property of this Cut object
 	 */
 	public int getAt() {
@@ -41,8 +41,8 @@ public class Cut extends Location{
 	 * then the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param at 
+	 *
+	 * @param at The discrete position that that corresponds to the index of a character in the elements String of a Sequence.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code at} value is less than 0
 	 */
@@ -53,7 +53,7 @@ public class Cut extends Location{
 		}
 		this.at = at;
 	}
-	
+
 	@Override
 	protected Cut deepCopy() {
 		return new Cut(this);

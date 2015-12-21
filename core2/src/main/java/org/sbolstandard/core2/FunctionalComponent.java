@@ -1,13 +1,14 @@
 package org.sbolstandard.core2;
 
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
+import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
  * @author Zhen Zhang
@@ -31,7 +32,7 @@ public class FunctionalComponent extends ComponentInstance {
 		this.mapsTos = new HashMap<>();
 		setDirection(direction);
 	}
-	
+
 	private FunctionalComponent(FunctionalComponent functionalComponent) {
 		super(functionalComponent);
 		this.setDirection(functionalComponent.getDirection());
@@ -47,7 +48,7 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Returns the direction property of this FunctionalComponent object.
-	 * 
+	 *
 	 * @return the direction property of this FunctionalComponent object
 	 */
 	public DirectionType getDirection() {
@@ -61,11 +62,11 @@ public class FunctionalComponent extends ComponentInstance {
 	 * then the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param direction
+	 *
+	 * @param direction The direction for the FunctionalComponent
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the given {@code direction} is {@code null}
-	 * 
+	 *
 	 */
 	public void setDirection(DirectionType direction) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -108,12 +109,12 @@ public class FunctionalComponent extends ComponentInstance {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
 			this.setWasDerivedFrom(this.getIdentity());
 		}
-		this.setIdentity(createCompliantURI(URIprefix,displayId,version));		
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
 		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		this.setDisplayId(displayId);
 		this.setVersion(version);
 		for (MapsTo mapsTo : this.getMapsTos()) {
-			mapsTo.updateCompliantURI(this.getPersistentIdentity().toString(), 
+			mapsTo.updateCompliantURI(this.getPersistentIdentity().toString(),
 					mapsTo.getDisplayId(), version);
 			this.removeChildSafely(mapsTo, this.mapsTos);
 			this.addMapsTo(mapsTo);
@@ -123,7 +124,7 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
-	 * Calls the MapsTo constructor to create a new instance using the specified parameters, 
+	 * Calls the MapsTo constructor to create a new instance using the specified parameters,
 	 * then adds to the list of MapsTo instances owned by this component.
 	 *
 	 * @return the created MapsTo instance.
@@ -135,7 +136,7 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
-	 * Creates a child MapsTo instance for this object with the given arguments, 
+	 * Creates a child MapsTo instance for this object with the given arguments,
 	 * and then adds to this object's list of MapsTo instances.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance, then
@@ -144,13 +145,13 @@ public class FunctionalComponent extends ComponentInstance {
 	 * is allowed to be edited.
 	 * <p>
 	 * This method creates a compliant MapsTo URI with the default
-	 * URI prefix for this SBOLDocument instance, and the given {@code displayId} 
+	 * URI prefix for this SBOLDocument instance, and the given {@code displayId}
 	 * and this object's version.
-	 * 
-	 * @param displayId
-	 * @param refinement
-	 * @param local
-	 * @param remote
+	 *
+	 * @param displayId The displayId identifier for this SequenceAnnotation
+	 * @param refinement Specify the relationship between its local and remote ComponentInstance objects using one of the REQUIRED refinement URIs.
+	 * @param local refer to the ComponentInstance contained by the “higher level” ComponentDefinition or ModuleDefinition
+	 * @param remote refer to the ComponentInstance contained by the “lower level” ComponentDefinition or ModuleDefinition
 	 * @return a MapsTo instance
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
@@ -166,7 +167,7 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
-	 * Adds the specified instance to the list of references. 
+	 * Adds the specified instance to the list of references.
 	 */
 	void addMapsTo(MapsTo mapsTo) {
 		if (sbolDocument != null) {
@@ -184,8 +185,8 @@ public class FunctionalComponent extends ComponentInstance {
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
 		mapsTo.setSBOLDocument(this.sbolDocument);
-        mapsTo.setModuleDefinition(moduleDefinition);
-        mapsTo.setComponentInstance(this);
+		mapsTo.setModuleDefinition(moduleDefinition);
+		mapsTo.setComponentInstance(this);
 	}
 
 	/**
@@ -195,8 +196,8 @@ public class FunctionalComponent extends ComponentInstance {
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 *	
-	 * @param mapsTo
+	 *
+	 * @param mapsTo The mapsTo object to be removed
 	 * @return {@code true} if the matching MapsTo instance is removed successfully,
 	 *         {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
@@ -209,8 +210,8 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Returns the MapsTo instance owned by this object that matches the given display ID.
-	 * 
-	 * @param displayId
+	 *
+	 * @param displayId The displayId identifier for this SequenceAnnotation
 	 * @return the MapsTo instance owned by this object that matches the given display ID
 	 */
 	public MapsTo getMapsTo(String displayId) {
@@ -219,8 +220,8 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Returns the MapsTo instance owned by this object that matches the given URI.
-	 * 
-	 * @param mapsToURI
+	 *
+	 * @param mapsToURI The URI reference for the MapsTo object
 	 * @return the MapsTo instance owned by this object that matches the given URI
 	 */
 	public MapsTo getMapsTo(URI mapsToURI) {
@@ -229,7 +230,7 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Returns the set of MapsTo instances owned by this object.
-	 * 
+	 *
 	 * @return the set of MapsTo instances owned by this object.
 	 */
 	public Set<MapsTo> getMapsTos() {
@@ -243,7 +244,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * If this object belongs to an SBOLDocument instance,
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
+	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearMapsTos() {
@@ -258,7 +259,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
 	void setMapsTo(List<MapsTo> mapsTos) {
-		clearMapsTos();		
+		clearMapsTos();
 		for (MapsTo reference : mapsTos) {
 			addMapsTo(reference);
 		}

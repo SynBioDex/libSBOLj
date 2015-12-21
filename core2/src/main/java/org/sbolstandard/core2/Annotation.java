@@ -31,13 +31,13 @@ import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 
 public class Annotation {
 
-	private NamedProperty<QName> value; 
+	private NamedProperty<QName> value;
 
 	/**
 	 * Constructs an Annotation instance using the given {@code qName} and the {@code literal} string.
-	 *  
-	 * @param qName
-	 * @param literal
+	 *
+	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name.
+	 * @param literal - used to denote an object that is of type String
 	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, String literal) {
@@ -47,12 +47,12 @@ public class Annotation {
 		}
 		value = NamedProperty(qName,literal);
 	}
-	
+
 	/**
 	 * Constructs an Annotation instance using the given {@code qName} and the {@code literal} integer.
-	 *  
-	 * @param qName
-	 * @param literal
+	 *
+	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
+	 * @param literal Used to denote an object that is of type Integer
 	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, int literal) {
@@ -65,9 +65,9 @@ public class Annotation {
 
 	/**
 	 * Constructs an Annotation instance using the given {@code qName} and the {@code double} type {@code literal}.
-	 *  
-	 * @param qName
-	 * @param literal
+	 *
+	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name.
+	 * @param literal - used to denote an object that is of type Double
 	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, double literal) {
@@ -76,20 +76,19 @@ public class Annotation {
 
 	/**
 	 * Constructs an Annotation instance using the given {@code qName} and the {@code boolean} type {@code literal}.
-	 *  
-	 * @param qName
-	 * @param literal
-	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
+	 *
+	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name
+	 * @param literal - used to denote an object that is of type Boolean
 	 */
 	public Annotation(QName qName, boolean literal) {
 		value = NamedProperty(qName,literal);
 	}
-	
+
 	/**
 	 * Constructs an Annotation instance using the given {@code qName} and the URI type {@code literal}.
-	 *  
-	 * @param qName
-	 * @param literal
+	 *
+	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name
+	 * @param literal - used to denote an object that is of type URI
 	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, URI literal) {
@@ -101,14 +100,13 @@ public class Annotation {
 	}
 
 	/**
-	 * Constructs a nested Annotation instance using the given {@code qName}, {@code nestedQName}, 
+	 * Constructs a nested Annotation instance using the given {@code qName}, {@code nestedQName},
 	 * {@code nestedURI}, and a list of {@code annotations} to include.
 	 *
-	 * @param qName
-	 * @param nestedQName
-	 * @param nestedURI
-	 * @param annotations
-	 * @throws SBOLValidationException
+	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name
+	 * @param nestedQName A part of NestedAnnotations composed of a namespace, an OPTIONAL prefix, and a local name
+	 * @param nestedURI is a part of NestedAnnotations used to denote an object that is of type URI
+	 * @param annotations A property of NestedAnnotations that contains zero or more Annotation objects that store data in the form of name/value property pairs.
 	 */
 	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
 		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
@@ -132,7 +130,7 @@ public class Annotation {
 				value.getName().getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			if (value.getName().equals(Sbol2Terms.Identified.timeStamp)) {
 				System.out.println("Warning: sbol:timeStamp is deprecated");
-			} else { 
+			} else {
 				throw new SBOLValidationException(value.getName().getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
 			}
 		}
@@ -145,16 +143,16 @@ public class Annotation {
 
 	/**
 	 * Returns the name of the {@code value} property.
-	 * 
+	 *
 	 * @return the name of the {@code value} property
 	 */
 	public QName getQName() {
 		return value.getName();
 	}
-	
+
 	/**
 	 * Checks if the annotation is a boolean {@code value} property.
-	 * 
+	 *
 	 * @return true if the annotation is a boolean {@code value} property.
 	 */
 	public boolean isBooleanValue() {
@@ -163,11 +161,11 @@ public class Annotation {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns a Boolean representation of the {@code value} property.
-	 * 
-	 * @return a Boolean representation of the {@code value} property if its 
+	 *
+	 * @return a Boolean representation of the {@code value} property if its
 	 * value is of Boolean type, or {@code null} otherwise.
 	 */
 	public Boolean getBooleanValue() {
@@ -176,10 +174,10 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Checks if the annotation is a double {@code value} property.
-	 * 
+	 *
 	 * @return true if the annotation is a double {@code value} property.
 	 */
 	public boolean isDoubleValue() {
@@ -188,11 +186,11 @@ public class Annotation {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns a Double representation of the {@code value} property.
-	 * 
-	 * @return a Double representation of the {@code value} property if its 
+	 *
+	 * @return a Double representation of the {@code value} property if its
 	 * value is of Double type, or {@code null} otherwise.
 	 */
 	public Double getDoubleValue() {
@@ -201,10 +199,10 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Checks if the annotation is a integer {@code value} property.
-	 * 
+	 *
 	 * @return true if the annotation is a integer {@code value} property.
 	 */
 	public boolean isIntegerValue() {
@@ -213,11 +211,11 @@ public class Annotation {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns a Integer representation of the {@code value} property.
-	 * 
-	 * @return a Integer representation of the {@code value} property if its 
+	 *
+	 * @return a Integer representation of the {@code value} property if its
 	 * value is of Integer type, or {@code null} otherwise.
 	 */
 	public Integer getIntegerValue() {
@@ -226,10 +224,10 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Checks if the annotation is a string {@code value} property.
-	 * 
+	 *
 	 * @return true if the annotation is a string {@code value} property.
 	 */
 	public boolean isStringValue() {
@@ -238,11 +236,11 @@ public class Annotation {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns a string representation of the {@code value} property.
-	 * 
-	 * @return a string representation of the {@code value} property if its 
+	 *
+	 * @return a string representation of the {@code value} property if its
 	 * value is of String type, or {@code null} otherwise.
 	 */
 	public String getStringValue() {
@@ -254,7 +252,7 @@ public class Annotation {
 
 	/**
 	 * Returns a URI representation of the {@code value} property.
-	 * 
+	 *
 	 * @return a URI representation of the {@code value} property if its
 	 * the value is of a URI type, or {@code null} otherwise.
 	 */
@@ -267,7 +265,7 @@ public class Annotation {
 
 	/**
 	 * Returns the type of the nested {@code value} property.
-	 *  
+	 *
 	 * @return the nested QName of the {@code value} property if its value is
 	 * of a nested list of Annotations, or {@code null} otherwise.
 	 */
@@ -280,7 +278,7 @@ public class Annotation {
 
 	/**
 	 * Returns the identity URI of the nested {@code value} property.
-	 *  
+	 *
 	 * @return the identity URI of the nested QName {@code value} property if its value is
 	 * of a nested list of Annotations, or {@code null} otherwise.
 	 */
@@ -293,7 +291,7 @@ public class Annotation {
 
 	/**
 	 * Checks if the annotation is a nested {@code value} property.
-	 * 
+	 *
 	 * @return true if the annotation is a nested {@code value} property.
 	 */
 	public boolean isNestedAnnotations() {
@@ -302,10 +300,10 @@ public class Annotation {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns the list of Annotations of the nested {@code value} property.
-	 * 
+	 *
 	 * @return the list of Annotations of the nested {@code value} property if its value is
 	 * of a nested list of Annotations, or {@code null} otherwise.
 	 */
@@ -322,7 +320,7 @@ public class Annotation {
 
 	/**
 	 * Returns the value of this Annotation object.
-	 * 
+	 *
 	 * @return the value of this Annotation object.
 	 */
 	NamedProperty<QName> getValue() {
@@ -362,7 +360,7 @@ public class Annotation {
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
@@ -379,34 +377,34 @@ public class Annotation {
 			if (other.value != null)
 				return false;
 		} else if (!value.equals(other.value)) {
- 			if (!this.getQName().equals(other.getQName())) {
+			if (!this.getQName().equals(other.getQName())) {
 				return false;
-			} else if ((this.getValue().getValue() instanceof StringLiteral<?>) && 
+			} else if ((this.getValue().getValue() instanceof StringLiteral<?>) &&
 					(other.getValue().getValue() instanceof StringLiteral<?>)) {
 				if (!this.getStringValue().equals(other.getStringValue())) {
 					return false;
-				} 
-			} else if ((this.getValue().getValue() instanceof BooleanLiteral<?>) && 
+				}
+			} else if ((this.getValue().getValue() instanceof BooleanLiteral<?>) &&
 					(other.getValue().getValue() instanceof BooleanLiteral<?>)) {
 				if (!this.getBooleanValue().equals(other.getBooleanValue())) {
 					return false;
-				} 
-			} else if ((this.getValue().getValue() instanceof DoubleLiteral<?>) && 
+				}
+			} else if ((this.getValue().getValue() instanceof DoubleLiteral<?>) &&
 					(other.getValue().getValue() instanceof DoubleLiteral<?>)) {
 				if (!this.getDoubleValue().equals(other.getDoubleValue())) {
 					return false;
-				} 
-			} else if ((this.getValue().getValue() instanceof IntegerLiteral<?>) && 
+				}
+			} else if ((this.getValue().getValue() instanceof IntegerLiteral<?>) &&
 					(other.getValue().getValue() instanceof IntegerLiteral<?>)) {
 				if (!this.getIntegerValue().equals(other.getIntegerValue())) {
 					return false;
-				} 
-			} else if ((this.getValue().getValue() instanceof UriLiteral<?>) && 
+				}
+			} else if ((this.getValue().getValue() instanceof UriLiteral<?>) &&
 					(other.getValue().getValue() instanceof UriLiteral<?>)) {
 				if (!this.getURIValue().equals(other.getURIValue())) {
 					return false;
-				} 
-			} else if ((this.getValue().getValue() instanceof NestedDocument<?>) && 
+				}
+			} else if ((this.getValue().getValue() instanceof NestedDocument<?>) &&
 					(other.getValue().getValue() instanceof NestedDocument<?>)) {
 				if (!this.getNestedQName().equals(other.getNestedQName())) {
 					return false;
@@ -428,11 +426,11 @@ public class Annotation {
 					}
 					if (foundIt==false) break;
 				}
-					
+
 			} else {
 				return false;
 			}
- 			return true;
+			return true;
 		}
 		return true;
 	}

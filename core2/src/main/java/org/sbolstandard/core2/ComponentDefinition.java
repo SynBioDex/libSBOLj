@@ -1,5 +1,7 @@
 package org.sbolstandard.core2;
-import static org.sbolstandard.core2.URIcompliance.*;
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
+import static org.sbolstandard.core2.URIcompliance.isChildURIcompliant;
+import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -109,16 +111,16 @@ public class ComponentDefinition extends TopLevel {
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param typeURI
-	 * @return @return {@code true} if this set did not already contain the given Sequence instance URI.
+	 *
+	 * @param typeURI The URI to be added to the ComponentDefinition
+	 * @return {@code true} if this set did not already contain the given Sequence instance URI.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public boolean addType(URI typeURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (typeURI.equals(DNA)||typeURI.equals(RNA)||typeURI.equals(PROTEIN)||typeURI.equals(SMALL_MOLECULE)) {
 			if (this.containsType(DNA)||this.containsType(RNA)||this.containsType(PROTEIN)||this.containsType(SMALL_MOLECULE)) {
-				throw new IllegalArgumentException("Component definition " + this.getIdentity() + 
+				throw new IllegalArgumentException("Component definition " + this.getIdentity() +
 						" must have only one type from Table 2 in the specification.");
 			}
 		}
@@ -131,8 +133,8 @@ public class ComponentDefinition extends TopLevel {
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param typeURI
+	 *
+	 * @param typeURI Removes the specified URI type of this object
 	 * @return {@code true} if the matching type reference is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
@@ -149,10 +151,10 @@ public class ComponentDefinition extends TopLevel {
 	 * set of the role references to this ComponentDefinition object.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param types
+	 * @param types One or more URI that identifies the terms from the appropriate ontologies for this object
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if {@code types} is {@code null} or its size is 0
 	 */
@@ -169,7 +171,7 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Returns the set of type URIs owned by this ComponentDefinition object.
-	 * 
+	 *
 	 * @return the set of type URIs owned by this ComponentDefinition object.
 	 */
 	public Set<URI> getTypes() {
@@ -181,8 +183,8 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Checks if the given type URI is included in this ComponentDefinition
 	 * object's set of reference type URIs.
-	 * 
-	 * @param typeURI
+	 *
+	 * @param typeURI Checks if the given URI type contains in this object
 	 * @return {@code true} if this set contains the given URI.
 	 */
 	public boolean containsType(URI typeURI) {
@@ -204,7 +206,7 @@ public class ComponentDefinition extends TopLevel {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param roleURI
+	 * @param roleURI Adds the URI role to this object
 	 * @return {@code true} if this set did not already contain the specified role.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
@@ -212,15 +214,15 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return roles.add(roleURI);
 	}
-	
+
 	/**
 	 * Removes the specified role reference from the set of role references.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param roleURI
+	 *
+	 * @param roleURI Removes the specified URI role from this object
 	 * @return {@code true} if the matching role reference is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
@@ -237,7 +239,7 @@ public class ComponentDefinition extends TopLevel {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param roles
+	 * @param roles Set the specified roles to the given object
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void setRoles(Set<URI> roles) {
@@ -251,7 +253,7 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Returns the set of role URIs owned by this ComponentDefinition object.
-	 * 
+	 *
 	 * @return the set of role URIs owned by this ComponentDefinition object.
 	 */
 	public Set<URI> getRoles() {
@@ -263,8 +265,8 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Checks if the given role URI is included in this ComponentDefinition
 	 * object's set of reference role URIs.
-	 * 
-	 * @param roleURI
+	 *
+	 * @param roleURI The URI for this ComponentDefinition
 	 * @return {@code true} if this set contains the given URI.
 	 */
 	public boolean containsRole(URI roleURI) {
@@ -278,14 +280,14 @@ public class ComponentDefinition extends TopLevel {
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance,
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
+	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearRoles() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		roles.clear();
 	}
-	
+
 	/**
 	 * Adds the URI of the given Sequence instance to this ComponentDefinition object's
 	 * set of reference Sequence URIs.
@@ -300,8 +302,8 @@ public class ComponentDefinition extends TopLevel {
 	 * is not found in them, then an {@link IllegalArgumentException} is thrown.
 	 * <p>
 	 * This method calls {@link #addSequence(URI)} with this Sequence URI.
-	 * 
-	 * @param sequence
+	 *
+	 * @param sequence The sequence to be referenced by this ComponentDefinition.
 	 * @return {@code true} if this set did not already contain the given Sequence instance URI.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies all URIs
@@ -320,8 +322,8 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Adds the given Sequence URI to this ComponentDefinition object's
 	 * set of reference Sequence URIs.
-	 * 
-	 * @param sequenceURI
+	 *
+	 * @param sequenceURI The URI sequence added to this ComponentDefinition
 	 * @return {@code true} if this set did not already contain the given Sequence instance URI.
 	 */
 	public boolean addSequence(URI sequenceURI) {
@@ -333,7 +335,7 @@ public class ComponentDefinition extends TopLevel {
 		}
 		return sequences.add(sequenceURI);
 	}
-	
+
 	/**
 	 * Adds the URI of the given Sequence instance to this ComponentDefinition object's
 	 * set of reference Sequence URIs.
@@ -345,9 +347,9 @@ public class ComponentDefinition extends TopLevel {
 	 * This method creates a compliant Sequence URI with the default
 	 * URI prefix for this SBOLDocument instance, and the given {@code sequence} and {@code version}.
 	 * It then calls {@link #addSequence(URI)} with this Sequence URI.
-	 * 
-	 * @param sequenceId
-	 * @param version
+	 *
+	 * @param sequenceId The sequenceId set to this Sequence
+	 * @param version The version of this sequence
 	 * @return {@code true} if this set did not already contain the given Sequence instance URI.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
@@ -357,19 +359,19 @@ public class ComponentDefinition extends TopLevel {
 				TopLevel.SEQUENCE, sequenceId, version, sbolDocument.isTypesInURIs());
 		return addSequence(sequenceURI);
 	}
-	
+
 	/**
 	 * Returns the set of Sequence URIs referenced by this ComponentDefinition's object.
-	 * 
+	 *
 	 * @return the set of Sequence URIs referenced by this ComponentDefinition's object.
 	 */
 	public Set<URI> getSequenceURIs() {
 		return sequences;
 	}
-	
+
 	/**
 	 * Returns the set of Sequence instances referenced by this ComponentDefinition object.
-	 * 
+	 *
 	 * @return the set of Sequence instances referenced by this ComponentDefinition object
 	 */
 	public Set<Sequence> getSequences() {
@@ -392,8 +394,8 @@ public class ComponentDefinition extends TopLevel {
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param sequences
+	 *
+	 * @param sequences The set of sequences to be added to this ComponentDefinition
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void setSequences(Set<URI> sequences) {
@@ -404,7 +406,7 @@ public class ComponentDefinition extends TopLevel {
 			addSequence(sequence);
 		}
 	}
-	
+
 	/**
 	 * Removes the given Sequence reference from the set of Sequence references.
 	 * <p>
@@ -412,25 +414,25 @@ public class ComponentDefinition extends TopLevel {
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param sequenceURI
+	 *
+	 * @param sequenceURI Removes the given Sequence reference from the set of Sequence references.
 	 * @return {@code true} if the matching Sequence reference is removed successfully,
-	 *         {@code false} otherwise.      
+	 *         {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public boolean removeSequence(URI sequenceURI) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return sequences.remove(sequenceURI);
 	}
-	
+
 	/**
 	 * Removes all entries of this ComponentDefinition object's set of reference
 	 * Sequence URIs. The set will be empty after this call returns.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. 
+	 * then the SBOLDcouement instance is checked for compliance first.
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
-	 * 
+	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearSequences() {
@@ -445,32 +447,32 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Checks if the given Sequence URI is included in this ComponentDefinition
 	 * object's set of reference Sequence URIs.
-	 * 
-	 * @param sequenceURI
+	 *
+	 * @param sequenceURI The sequence URI
 	 * @return {@code true} if this set contains the given URI.
 	 */
 	public boolean containsSequence(URI sequenceURI) {
 		return sequences.contains(sequenceURI);
 	}
 
-//	/**
-//	 * Test if any {@link SequenceAnnotation} instance exists.
-//	 * @return <code>true</code> if at least one such instance exists.
-//	 */
-//	public boolean isSetSequenceAnnotations() {
-//		if (sequenceAnnotations.isEmpty())
-//			return false;
-//		else
-//			return true;					
-//	}
+	//	/**
+	//	 * Test if any {@link SequenceAnnotation} instance exists.
+	//	 * @return <code>true</code> if at least one such instance exists.
+	//	 */
+	//	public boolean isSetSequenceAnnotations() {
+	//		if (sequenceAnnotations.isEmpty())
+	//			return false;
+	//		else
+	//			return true;
+	//	}
 
 	/**
 	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
-	 * object with the given arguments, and then adds to this ComponentDefinition's 
+	 * object with the given arguments, and then adds to this ComponentDefinition's
 	 * list of SequenceAnnotation instances.
-	 *  
-	 * @param identity
-	 * @param locations
+	 *
+	 * @param identity The identity of this SequenceAnnotation
+	 * @param locations The location for this SequenceAnnotation
 	 * @return a SequenceAnnotation instance
 	 */
 	SequenceAnnotation createSequenceAnnotation(URI identity, List<Location> locations) {
@@ -487,12 +489,12 @@ public class ComponentDefinition extends TopLevel {
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param displayId
-	 * @param location
+	 *
+	 * @param displayId The displayId identifier for this SequenceAnnotation
+	 * @param location The location for this SequenceAnnotation
 	 * @return a SequenceAnnotation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant 
+	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant
 	 * in this ComponentDefinition object's URI.
 	 */
 	SequenceAnnotation createSequenceAnnotation(String displayId, Location location) {
@@ -500,10 +502,10 @@ public class ComponentDefinition extends TopLevel {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newSequenceAnnotationURI = createCompliantURI(URIprefix, displayId, version);
-//		if (!isChildURIcompliant(this.getIdentity(), newSequenceAnnotationURI))
-//			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
-//					"'is not compliant in parent `" + this.getIdentity() +
-//					"' for " + URIprefix + " " + displayId + " " + version);
+		//		if (!isChildURIcompliant(this.getIdentity(), newSequenceAnnotationURI))
+		//			throw new IllegalArgumentException("Child uri `" + newSequenceAnnotationURI +
+		//					"'is not compliant in parent `" + this.getIdentity() +
+		//					"' for " + URIprefix + " " + displayId + " " + version);
 		List<Location> locations = new ArrayList<>();
 		locations.add(location);
 		SequenceAnnotation sa = createSequenceAnnotation(newSequenceAnnotationURI, locations);
@@ -515,18 +517,18 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
-	 * object with the given arguments, and then adds to this ComponentDefinition's 
-	 * list of SequenceAnnotation instances. 
+	 * object with the given arguments, and then adds to this ComponentDefinition's
+	 * list of SequenceAnnotation instances.
 	 * <p>
-	 * This method calls {@link #createSequenceAnnotation(String, String, OrientationType)} with 
-	 * a {@code null} OrientationType. 
+	 * This method calls {@link #createSequenceAnnotation(String, String, OrientationType)} with
+	 * a {@code null} OrientationType.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 *  
-	 * @param displayId
-	 * @param locationId
+	 *
+	 * @param displayId The displayId identifier for this SequenceAnnotation
+	 * @param locationId The locationId for this SequenceAnnotation
 	 * @return a SequenceAnnotation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI.
@@ -538,28 +540,28 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
-	 * object with the given arguments, and then adds to this ComponentDefinition's 
-	 * list of SequenceAnnotation instances. 
+	 * object with the given arguments, and then adds to this ComponentDefinition's
+	 * list of SequenceAnnotation instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * This method first creates a GenericLocal instance with a compliant URI. This URI is composed
-	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation 
+	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation
 	 * instance {@code displayId}, the given {@code locationId}, and this
-	 * ComponentDefinition object's version. 
+	 * ComponentDefinition object's version.
 	 * <p>
 	 * I then creates a SequenceAnnotation instance with a compliant URI. This URI is composed of
 	 * this ComponentDefinition object's persistent identity, the given SequenceAnnotation {@code displayId},
-	 * and this ComponentDefinition object's version. 
-	 * 
-	 * @param displayId
-	 * @param locationId
-	 * @param orientation
+	 * and this ComponentDefinition object's version.
+	 *
+	 * @param displayId The displayId identifier for this SequenceAnnotation
+	 * @param locationId The locationId for this SequenceAnnotation
+	 * @param orientation The orientation for this SequenceAnnotation
 	 * @return a SequenceAnnotation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-     * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI. 
+	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI.
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId,String locationId,OrientationType orientation) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -574,20 +576,20 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
- 	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
-	 * object with the given arguments, and then adds to this ComponentDefinition's 
-	 * list of SequenceAnnotation instances. 
+	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
+	 * object with the given arguments, and then adds to this ComponentDefinition's
+	 * list of SequenceAnnotation instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
-	 * This method calls {@link #createSequenceAnnotation(String,String,int,OrientationType)} with 
-	 * a {@code null} OrientationType. 
-	 * 
-	 * @param displayId
-	 * @param locationId
-	 * @param at
+	 * This method calls {@link #createSequenceAnnotation(String,String,int,OrientationType)} with
+	 * a {@code null} OrientationType.
+	 *
+	 * @param displayId The displayId identifier for this SequenceAnnotation
+	 * @param locationId The locationId for this SequenceAnnotation
+	 * @param at The location start position for this SequenceAnnotation
 	 * @return a SequenceAnnotation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI.
@@ -598,30 +600,30 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
-  	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
-	 * object with the given arguments, and then adds to this ComponentDefinition's 
-	 * list of SequenceAnnotation instances. 
+	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
+	 * object with the given arguments, and then adds to this ComponentDefinition's
+	 * list of SequenceAnnotation instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * This method first creates a GenericLocal instance with a compliant URI. This URI is composed
-	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation 
+	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation
 	 * instance {@code displayId}, the given {@code locationId}, and this
-	 * ComponentDefinition object's version. 
+	 * ComponentDefinition object's version.
 	 * <p>
 	 * I then creates a SequenceAnnotation instance with a compliant URI. This URI is composed of
 	 * this ComponentDefinition object's persistent identity, the given SequenceAnnotation {@code displayId},
-	 * and this ComponentDefinition object's version. 
-	 *  
-	 * @param displayId
-	 * @param locationId
-	 * @param at
-	 * @param orientation
+	 * and this ComponentDefinition object's version.
+	 *
+	 * @param displayId The displayId identifier for this SequenceAnnotation
+	 * @param locationId The locationId for this SequenceAnnotation
+	 * @param at The location start position for this SequenceAnnotation
+	 * @param orientation Indicate how the region specified by the SequenceAnnotation and any associated double stranded Component is oriented on the elements of a Sequence from their parent ComponentDefinition
 	 * @return a SequenceAnnotation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant 
+	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant
 	 * in this ComponentDefinition object's URI.
 	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId,String locationId,int at,OrientationType orientation) {
@@ -635,94 +637,94 @@ public class ComponentDefinition extends TopLevel {
 		location.setVersion(this.getVersion());
 		return createSequenceAnnotation(displayId, location);
 	}
-	
+
 	/**
-  	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
-	 * object with the given arguments, and then adds to this ComponentDefinition's 
-	 * list of SequenceAnnotation instances. 
+	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
+	 * object with the given arguments, and then adds to this ComponentDefinition's
+	 * list of SequenceAnnotation instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
-	 * This method calls {@link #createSequenceAnnotation(String, String, int, int, OrientationType)} with 
+	 * This method calls {@link #createSequenceAnnotation(String, String, int, int, OrientationType)} with
 	 * a {@code null} OrientationType.
-	 *  
-	 * @param displayId
-	 * @param locationId
-	 * @param start
-	 * @param end
+	 *
+	 * @param displayId The displayId identifier for this SequenceAnnotation
+	 * @param locationId The locationId for this SequenceAnnotation
+	 * @param start The location start position that correspond to indices of the elements of its DNA Sequence for this SequenceAnnotation
+	 * @param end The location end position that correspond to indices of the elements of its DNA Sequence for this SequenceAnnotation
 	 * @return a SequenceAnnotation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant 
+	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant
 	 * in this ComponentDefinition object's URI.
-	 */	
+	 */
 	public SequenceAnnotation createSequenceAnnotation(String displayId, String locationId, int start, int end) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return createSequenceAnnotation(displayId,locationId,start,end,null);
 	}
-	
+
+	//	/**
+	//	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
+	//	 * object with the given arguments, and then adds to this ComponentDefinition's
+	//	 * list of SequenceAnnotation instances.
+	//	 * <p>
+	//	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	//	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	//	 * is allowed to be edited.
+	//	 * <p>
+	//	 * This method first creates a Range Location instance with a compliant URI. This URI is composed
+	//	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation
+	//	 * instance {@code displayId}, the given {@code locationId}, and this
+	//	 * ComponentDefinition object's version.
+	//	 * <p>
+	//	 * I then creates a SequenceAnnotation instance with a compliant URI. This URI is composed of
+	//	 * this ComponentDefinition object's persistent identity, the given SequenceAnnotation {@code displayId},
+	//	 * and this ComponentDefinition object's version.
+	//	 *
+	//	 * @param displayId The displayId identifier for this SequenceAnnotationz
+	//	 * @param start The location start position that correspond to indices of the elements of its DNA Sequence for this SequenceAnnotation
+	//	 * @param end The location end position that correspond to indices of the elements of its DNA Sequence for this SequenceAnnotation
+	//	 * @param orientation Indicate how the region specified by the SequenceAnnotation and any associated double stranded Component is oriented on the elements of a Sequence from their parent ComponentDefinition
+	//	 * @param componentDefinitionId
+	//	 * @return a SequenceAnnotation instance
+	//	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	//	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI.
+	//	 */
+	//	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end,OrientationType orientation,
+	//			String componentDefinitionId) {
+	//		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	//		SequenceAnnotation sequenceAnnotation = createSequenceAnnotation(displayId,"range",start,end,orientation);
+	//		if (this.getComponent(componentDefinitionId)==null) {
+	//			createComponent(componentDefinitionId,AccessType.PUBLIC,componentDefinitionId,"");
+	//		}
+	//		sequenceAnnotation.setComponent(componentDefinitionId);
+	//		return sequenceAnnotation;
+	//	}
+
 	/**
 	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
-	 * object with the given arguments, and then adds to this ComponentDefinition's 
-	 * list of SequenceAnnotation instances. 
+	 * object with the given arguments, and then adds to this ComponentDefinition's
+	 * list of SequenceAnnotation instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * This method first creates a Range Location instance with a compliant URI. This URI is composed
-	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation 
+	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation
 	 * instance {@code displayId}, the given {@code locationId}, and this
-	 * ComponentDefinition object's version. 
+	 * ComponentDefinition object's version.
 	 * <p>
 	 * I then creates a SequenceAnnotation instance with a compliant URI. This URI is composed of
 	 * this ComponentDefinition object's persistent identity, the given SequenceAnnotation {@code displayId},
-	 * and this ComponentDefinition object's version. 
-	 * 
-	 * @param displayId
-	 * @param start
-	 * @param end
-	 * @param orientation
-	 * @param componentDefinitionId
-	 * @return a SequenceAnnotation instance
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI.
-	 */
-//	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end,OrientationType orientation,
-//			String componentDefinitionId) {
-//		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-//		SequenceAnnotation sequenceAnnotation = createSequenceAnnotation(displayId,"range",start,end,orientation);
-//		if (this.getComponent(componentDefinitionId)==null) {
-//			createComponent(componentDefinitionId,AccessType.PUBLIC,componentDefinitionId,"");
-//		}
-//		sequenceAnnotation.setComponent(componentDefinitionId);
-//		return sequenceAnnotation;
-//	}
-	
-	/**
-	 * Creates a child SequenceAnnotation instance for this ComponentDefinition
-	 * object with the given arguments, and then adds to this ComponentDefinition's 
-	 * list of SequenceAnnotation instances. 
-	 * <p>
-	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * This method first creates a Range Location instance with a compliant URI. This URI is composed
-	 * of this ComponentDefinition object's persistent identity, the given SequenceAnnotation 
-	 * instance {@code displayId}, the given {@code locationId}, and this
-	 * ComponentDefinition object's version. 
-	 * <p>
-	 * I then creates a SequenceAnnotation instance with a compliant URI. This URI is composed of
-	 * this ComponentDefinition object's persistent identity, the given SequenceAnnotation {@code displayId},
-	 * and this ComponentDefinition object's version. 
-	 * 
-	 * @param displayId
-	 * @param locationId
-	 * @param start
-	 * @param end
-	 * @param orientation
+	 * and this ComponentDefinition object's version.
+	 *
+	 * @param displayId The displayId identifier for this SequenceAnnotationz
+	 * @param locationId The locationId for this SequenceAnnotation
+	 * @param start The location start position that correspond to indices of the elements of its DNA Sequence for this SequenceAnnotation
+	 * @param end The location end position that correspond to indices of the elements of its DNA Sequence for this SequenceAnnotation
+	 * @param orientation Indicate how the region specified by the SequenceAnnotation and any associated double stranded Component is oriented on the elements of a Sequence from their parent ComponentDefinition
 	 * @return a SequenceAnnotation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the created SequenceAnnotation URI is not compliant in this ComponentDefinition object's URI.
@@ -756,8 +758,8 @@ public class ComponentDefinition extends TopLevel {
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param sequenceAnnotation
+	 *
+	 * @param sequenceAnnotation The sequenceAnnotation to be removed
 	 * @return {@code true} if the matching SequenceAnnotation instance is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
@@ -768,8 +770,8 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Returns the instance matching the given displayId from the list of SequenceAnnotation instances.
-	 * 
-	 * @param displayId
+	 *
+	 * @param displayId The displayId identifier for this SequenceAnnotationz
 	 * @return the matching SequenceAnnotation instance if present, or {@code null} otherwise.
 	 */
 	public SequenceAnnotation getSequenceAnnotation(String displayId) {
@@ -780,8 +782,8 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Returns the instance matching the given SequenceAnnotation URI from the
 	 * list of SequenceAnnotation instances.
-	 * 
-	 * @param sequenceAnnotationURI
+	 *
+	 * @param sequenceAnnotationURI The URI reference of the SequenceAnnotation
 	 * @return the matching SequenceAnnotation instance if present, or
 	 *         {@code null} otherwise.
 	 */
@@ -792,10 +794,10 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Returns the set of SequenceAnnotation instances owned by this
 	 * ComponentDefinition object.
-	 * 
+	 *
 	 * @return the set of SequenceAnnotation instances owned by this
 	 *         ComponentDefinition object.
-	 */   
+	 */
 	public Set<SequenceAnnotation> getSequenceAnnotations() {
 		//		return (List<SequenceAnnotation>) structuralAnnotations.values();
 		Set<SequenceAnnotation> sequenceAnnotations = new HashSet<>();
@@ -813,7 +815,7 @@ public class ComponentDefinition extends TopLevel {
 	 * <p>
 	 * This method calls {@link #removeSequenceAnnotation(SequenceAnnotation)} to iteratively remove
 	 * each SequenceAnnotation instance owned by this ComponentDefinition object.
-	 * 
+	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearSequenceAnnotations() {
@@ -851,9 +853,9 @@ public class ComponentDefinition extends TopLevel {
 	 * Creates a child Component instance for this ComponentDefinition
 	 * object with the given arguments, and then adds to this ComponentDefinition's list of Component
 	 * instances.
-	 * 
-	 * @param identity
-	 * @param access
+	 *
+	 * @param identity The identity of this Component
+	 * @param access The AccessType of this Component
 	 * @param componentDefinitionURI
 	 * @return a Component instance
 	 */
@@ -862,7 +864,7 @@ public class ComponentDefinition extends TopLevel {
 		addComponent(component);
 		return component;
 	}
-	
+
 	/**
 	 * Creates a child Component instance for this ComponentDefinition
 	 * object with the given arguments, and then adds to this ComponentDefinition's list of Component
@@ -876,22 +878,22 @@ public class ComponentDefinition extends TopLevel {
 	 * URI prefix for this SBOLDocument instance, and the given {@code displayId} and {@code version}.
 	 * It then calls {@link #createComponent(String, AccessType, URI)}
 	 * with this component definition URI.
-	 *  
-	 * @param displayId
-	 * @param access
-	 * @param componentDefinitionId
-	 * @param version
+	 *
+	 * @param displayId The displayId identifier for this Component
+	 * @param access The AccessType for this Component
+	 * @param componentDefinitionId The componentDefintionId for this Component
+	 * @param version The version for this Component
 	 * @return a Component instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public Component createComponent(String displayId, AccessType access, 
+	public Component createComponent(String displayId, AccessType access,
 			String componentDefinitionId, String version) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentDefinitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
 				TopLevel.COMPONENT_DEFINITION, componentDefinitionId, version, sbolDocument.isTypesInURIs());
 		return createComponent(displayId,access,componentDefinitionURI);
 	}
-	
+
 	/**
 	 * Creates a child Component instance for this ComponentDefinition
 	 * object with the given arguments, and then adds to this ComponentDefinition's list of Component
@@ -902,18 +904,18 @@ public class ComponentDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 * <p>
 	 * If the SBOLDocument instance already completely specifies all URIs and
-	 * the given {@code componentDefinitionURI} is not found in them, then 
+	 * the given {@code componentDefinitionURI} is not found in them, then
 	 * an {@link IllegalArgumentException} is thrown.
 	 * <p>
 	 * This method creates a compliant Component URI with the default
 	 * URI prefix for this SBOLDocument instance, the given {@code displayId}, and this ComponentDefinition
 	 * object's version. It then calls {@link #createComponent(URI, AccessType, URI)}
 	 * with this component definition URI.
-	 * 
-	 * @param displayId
-	 * @param access
-	 * @param componentDefinitionURI
- 	 * @return a Component instance
+	 *
+	 * @param displayId The displayId identifier for this Component
+	 * @param access The AccessType for this Component
+	 * @param componentDefinitionURI The componentDefintion URI for this Component
+	 * @return a Component instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely
 	 *         specifies all URIs and the given {@code componentDefinitionURI} is not found in them.
@@ -944,20 +946,20 @@ public class ComponentDefinition extends TopLevel {
 		component.setSBOLDocument(this.sbolDocument);
 		component.setComponentDefinition(this);
 	}
-	
+
 	/**
 	 * Removes the given Component instance from the list of
 	 * Component instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. 
+	 * the SBOLDcouement instance is checked for compliance first.
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * <p>
 	 * Before removing the given Component instance, this method
-	 * checks if it is referenced by any children and grandchildren 
+	 * checks if it is referenced by any children and grandchildren
 	 * instances of this ComponentDefinition object.
-	 *	
-	 * @param component
+	 *
+	 * @param component The component to be removed
 	 * @return {@code true} if the matching Component instance is removed successfully,
 	 *         {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
@@ -1007,7 +1009,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Returns the instance matching the given displayId from the list of Component instances.
 	 *
-	 * @param displayId
+	 * @param displayId The displayId identifier for this Component
 	 * @return the matching Component instance if present, or {@code null} otherwise.
 	 */
 	public Component getComponent(String displayId) {
@@ -1017,8 +1019,8 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Returns the instance matching the given {@code componentURI} from the
 	 * list of Component instances.
-	 * 
-	 * @param componentURI
+	 *
+	 * @param componentURI The reference URI of the Component to be removed
 	 * @return the matching Component instance if present, or
 	 *         {@code null} otherwise.
 	 */
@@ -1029,10 +1031,10 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Returns the set of Component instances owned by this
 	 * ComponentDefinition object.
-	 * 
+	 *
 	 * @return the set of Component instances owned by this
 	 *         ComponentDefinition object.
-	 */         
+	 */
 	public Set<Component> getComponents() {
 		Set<Component> components = new HashSet<>();
 		components.addAll(this.components.values());
@@ -1049,7 +1051,7 @@ public class ComponentDefinition extends TopLevel {
 	 * <p>
 	 * This method calls {@link #removeComponent(Component component)} to iteratively remove
 	 * each Component instance owned by this ComponentDefinition object.
-	 * 
+	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearComponents() {
@@ -1059,7 +1061,7 @@ public class ComponentDefinition extends TopLevel {
 			removeComponent((Component)component);
 		}
 	}
-	
+
 	/**
 	 * @param components
 	 */
@@ -1094,23 +1096,23 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Creates a child SequenceConstraint instance for this ComponentDefinition
-	 * object with the given arguments, and then adds to this ComponentDefinition's 
-	 * list of SequenceConstraint instances. 
+	 * object with the given arguments, and then adds to this ComponentDefinition's
+	 * list of SequenceConstraint instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
-	 * This method creates one compliant URI for subject and object respectively, 
-	 * using this ComponentDefinition object's persistent ID and version, and the given {@code subject} 
+	 * This method creates one compliant URI for subject and object respectively,
+	 * using this ComponentDefinition object's persistent ID and version, and the given {@code subject}
 	 * and {@code object} arguments. These URIs are referenced by the created SequenceConstraint instance.
 	 * This method calls {@link #createSequenceConstraint(String, RestrictionType, URI, URI)} to create
-	 * the SequenceConstraint instance. 
-	 * 
-	 * @param displayId
-	 * @param restriction
-	 * @param subjectId
-	 * @param objectId
+	 * the SequenceConstraint instance.
+	 *
+	 * @param displayId The displayId identifier for this Component
+	 * @param restriction Indicate the type of structural restriction on the relative, sequence-based positions or orientations of the subject and object Component objects
+	 * @param subjectId The subjectId that refers to a Component contained by the same parent ComponentDefinition that contains the SequenceConstraint
+	 * @param objectId The objectId refers to a Component contained by the same parent ComponentDefinition that contains the SequenceConstraint
 	 * @return a SequenceConstraint instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
@@ -1119,34 +1121,34 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI subjectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),
 				subjectId, this.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && 
+		if (sbolDocument!=null && sbolDocument.isCreateDefaults() &&
 				this.getComponent(subjectURI)==null) {
 			this.createComponent(subjectId,AccessType.PUBLIC,subjectId,"");
 		}
 		URI objectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),
 				objectId, this.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && 
+		if (sbolDocument!=null && sbolDocument.isCreateDefaults() &&
 				this.getComponent(objectURI)==null) {
 			this.createComponent(objectId,AccessType.PUBLIC,objectId,"");
 		}
 		return createSequenceConstraint(displayId,restriction,subjectURI,objectURI);
 	}
 
-		
+
 	/**
 	 * Creates a child SequenceConstraint instance for this ComponentDefinition
-	 * object with the given arguments, and then adds to this ComponentDefinition's 
-	 * list of SequenceConstraint instances. 
+	 * object with the given arguments, and then adds to this ComponentDefinition's
+	 * list of SequenceConstraint instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param displayId
-	 * @param restriction
-	 * @param subject
-	 * @param object
-	 * @return a SequenceConstraint instance 
+	 *
+	 * @param displayId The displayId identifier for this Component
+	 * @param restriction Indicate the type of structural restriction on the relative, sequence-based positions or orientations of the subject and object Component objects
+	 * @param subject The subject that refers to a Component contained by the same parent ComponentDefinition that contains the SequenceConstraint
+	 * @param object The object refers to a Component contained by the same parent ComponentDefinition that contains the SequenceConstraint
+	 * @return a SequenceConstraint instance
 	 */
 	public SequenceConstraint createSequenceConstraint(String displayId,
 			RestrictionType restriction, URI subject, URI object) {
@@ -1188,8 +1190,8 @@ public class ComponentDefinition extends TopLevel {
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param sequenceConstraint
+	 *
+	 * @param sequenceConstraint The sequence constraint to be removed
 	 * @return {@code true} if the matching SequenceConstraint instance is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
@@ -1200,8 +1202,8 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Returns the instance matching the given displayId from the list of SequenceConstraint instances.
-	 * 
-	 * @param displayId
+	 *
+	 * @param displayId The displayId identifier for this Component
 	 * @return the matching SequenceConstraint instance if present, or {@code null} otherwise.
 	 */
 	public SequenceConstraint getSequenceConstraint(String displayId) {
@@ -1212,8 +1214,8 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Returns the instance matching the given SequenceConstraint URI from the
 	 * list of SequenceConstraint instances.
-	 * 
-	 * @param sequenceConstraintURI
+	 *
+	 * @param sequenceConstraintURI The referenced URI of the SequenceConstraint
 	 * @return the matching SequenceConstraint instance if present, or
 	 *         {@code null} otherwise.
 	 */
@@ -1224,7 +1226,7 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Returns the set of SequenceConstraint instances owned by this
 	 * ComponentDefinition object.
-	 * 
+	 *
 	 * @return the set of SequenceConstraint instances owned by this
 	 *         ComponentDefinition object.
 	 */
@@ -1239,12 +1241,12 @@ public class ComponentDefinition extends TopLevel {
 	 * The list will be empty after this call returns.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. 
+	 * then the SBOLDcouement instance is checked for compliance first.
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
- 	 * <p>
+	 * <p>
 	 * This method calls {@link #removeSequenceConstraint(SequenceConstraint)} to iteratively remove
 	 * each SequenceConstraint instance owned by this ComponentDefinition object.
-	 * 
+	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearSequenceConstraints() {

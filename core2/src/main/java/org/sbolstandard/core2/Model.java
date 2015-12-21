@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
-import static org.sbolstandard.core2.URIcompliance.*;
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
+import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
 
 import java.net.URI;
 
@@ -55,7 +56,7 @@ public class Model extends TopLevel {
 
 	/**
 	 * Returns the URI of the source property of this Model object.
-	 * 
+	 *
 	 * @return the URI of the source property of this Model object
 	 */
 	public URI getSource() {
@@ -63,14 +64,14 @@ public class Model extends TopLevel {
 	}
 
 	/**
-	 * Sets the {@code source} property to the given argument.  
+	 * Sets the {@code source} property to the given argument.
 	 * <p>
 	 * If this Model object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param source
+	 *
+	 * @param source a URI reference to the source file for a model.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code source} argument is {@code null}
 	 */
@@ -84,7 +85,7 @@ public class Model extends TopLevel {
 
 	/**
 	 * Returns the URI of the language property of this Model object.
-	 * 
+	 *
 	 * @return the URI of the language property of this Model object
 	 */
 	public URI getLanguage() {
@@ -92,14 +93,14 @@ public class Model extends TopLevel {
 	}
 
 	/**
-	 * Sets the {@code language} property to the given argument.  
+	 * Sets the {@code language} property to the given argument.
 	 * <p>
 	 * If this Model object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param language
+	 *
+	 * @param language a URI that specifies the language in which the model is implemented.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code language} argument is {@code null}
 	 */
@@ -113,22 +114,22 @@ public class Model extends TopLevel {
 
 	/**
 	 * Returns the URI of the framework property of this Model object.
-	 * 
+	 *
 	 * @return the URI of the framework property of this Model object
 	 */
 	public URI getFramework() {
 		return framework;
 	}
-	
+
 	/**
-	 * Sets the {@code framework} property to the given argument.  
+	 * Sets the {@code framework} property to the given argument.
 	 * <p>
 	 * If this Model object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param framework
+	 *
+	 * @param framework a URI that specifies the framework in which the model is implemented.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code framework} argument is {@code null}
 	 */

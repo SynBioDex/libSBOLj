@@ -1,8 +1,6 @@
 package org.sbolstandard.core2;
 
 import java.io.InputStream;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class readTester {
 	public static String filenameRdf 	= "writeTesterString_v1.3.rdf";
@@ -26,10 +24,11 @@ public class readTester {
 	public static String filenameV1_15 	= "SimpleComponentDefinitionExample.rdf";
 	public static String filenameV1_16 	= "namespace.rdf";
 
+
 	public static String path = "test/data/";
 
 	public static void main(String[] args) {
-				
+
 		try {
 			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_12);
 			if (file == null)
@@ -40,21 +39,21 @@ public class readTester {
 			//SBOLReader.setVersion("1.0");
 			//SBOLReader.setTypesInURI(true);
 			SBOLDocument document1 = SBOLReader.read(file);
-//			file = readTester.class.getResourceAsStream(path +filenameV1_14);
-//			if (file == null)
-//				file = readTester.class.getResourceAsStream("/" + path + filenameV1_14);
-//			document1.read(file);
-//			SBOLDocument document2 = new SBOLDocument();
-//			for (ComponentDefinition cd : document1.getComponentDefinitions()) {
-//				ComponentDefinition cd2 = (ComponentDefinition) document2.createCopy(cd);
-//				if (!cd.equals(cd2)) 
-//					System.out.println(cd.getIdentity() + " " + cd.equals(cd2));
-//			}
-//			for (Sequence s : document1.getSequences()) {
-//				Sequence s2 = (Sequence) document2.createCopy(s);
-//				if (!s.equals(s2))
-//					System.out.println(s.getIdentity() + " " + s.equals(s2));
-//			}
+			//			file = readTester.class.getResourceAsStream(path +filenameV1_14);
+			//			if (file == null)
+			//				file = readTester.class.getResourceAsStream("/" + path + filenameV1_14);
+			//			document1.read(file);
+			//			SBOLDocument document2 = new SBOLDocument();
+			//			for (ComponentDefinition cd : document1.getComponentDefinitions()) {
+			//				ComponentDefinition cd2 = (ComponentDefinition) document2.createCopy(cd);
+			//				if (!cd.equals(cd2))
+			//					System.out.println(cd.getIdentity() + " " + cd.equals(cd2));
+			//			}
+			//			for (Sequence s : document1.getSequences()) {
+			//				Sequence s2 = (Sequence) document2.createCopy(s);
+			//				if (!s.equals(s2))
+			//					System.out.println(s.getIdentity() + " " + s.equals(s2));
+			//			}
 			//document1.setDefaultURIprefix("http://www.some.org");
 			//document1.createCollection("abc", "1.0");
 			//document1 = SBOLTestUtils.writeAndRead(document1);
@@ -65,7 +64,7 @@ public class readTester {
 
 			SBOLWriter.write(document1,(System.out));
 			//SBOLWriter.writeRDF(SBOLTestUtils.writeAndRead(document1),(System.out));
-			
+
 			//			SBOLWriter.writeJson(document2,(System.out));
 			//			SBOLWriter.writeTurtle(document3,(System.out));
 

@@ -1,13 +1,14 @@
 package org.sbolstandard.core2;
 
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
+import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
+
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
  * @author Zhen Zhang
@@ -28,7 +29,7 @@ public class Component extends ComponentInstance{
 		super(identity, access, componentDefinition);
 		this.mapsTos = new HashMap<>();
 	}
-	
+
 	protected Component(Component component) {
 		super(component);
 		this.mapsTos = new HashMap<>();
@@ -43,7 +44,7 @@ public class Component extends ComponentInstance{
 
 	@Override
 	protected Component deepCopy() {
-		return new Component(this); 
+		return new Component(this);
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class Component extends ComponentInstance{
 		this.setDisplayId(displayId);
 		this.setVersion(version);
 		for (MapsTo mapsTo : this.getMapsTos()) {
-			mapsTo.updateCompliantURI(this.getPersistentIdentity().toString(), 
+			mapsTo.updateCompliantURI(this.getPersistentIdentity().toString(),
 					mapsTo.getDisplayId(), version);
 			this.removeChildSafely(mapsTo, this.mapsTos);
 			this.addMapsTo(mapsTo);
@@ -69,7 +70,7 @@ public class Component extends ComponentInstance{
 	}
 
 	/**
-	 * Calls the MapsTo constructor to create a new instance using the specified parameters, 
+	 * Calls the MapsTo constructor to create a new instance using the specified parameters,
 	 * then adds to the list of MapsTo instances owned by this component.
 	 *
 	 * @return the created MapsTo instance.
@@ -81,7 +82,7 @@ public class Component extends ComponentInstance{
 	}
 
 	/**
-	 * Creates a child MapsTo instance for this object with the given arguments, 
+	 * Creates a child MapsTo instance for this object with the given arguments,
 	 * and then adds to this object's list of MapsTo instances.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance, then
@@ -90,14 +91,14 @@ public class Component extends ComponentInstance{
 	 * is allowed to be edited.
 	 * <p>
 	 * This method creates a compliant MapsTo URI with the default
-	 * URI prefix for this SBOLDocument instance, and the given {@code displayId} 
+	 * URI prefix for this SBOLDocument instance, and the given {@code displayId}
 	 * and this object's version.
-	 * 
-	 * @param displayId
-	 * @param refinement
-	 * @param local
-	 * @param remote
-	 * @return a MapsTo instance
+	 *
+	 * @param displayId ntermediate between name and identity that is machine-readable, but more human-readable than the full URI of an identity
+	 * @param refinement Specify the relationship between the local and remote ComponentInstance objects.
+	 * @param local refers to the second "higher level" ComponentInstance
+	 * @param remote refers to the first "lower level" ComponentInstance
+	 * @return a MapsTo instance that specifies the identity relationship of two ComponentInstance
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -112,7 +113,7 @@ public class Component extends ComponentInstance{
 	}
 
 	/**
-	 * Adds the specified instance to the list of references. 
+	 * Adds the specified instance to the list of references.
 	 */
 	void addMapsTo(MapsTo mapsTo) {
 		if (sbolDocument != null) {
@@ -130,8 +131,8 @@ public class Component extends ComponentInstance{
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
 		mapsTo.setSBOLDocument(this.sbolDocument);
-        mapsTo.setComponentDefinition(componentDefinition);
-        mapsTo.setComponentInstance(this);
+		mapsTo.setComponentDefinition(componentDefinition);
+		mapsTo.setComponentInstance(this);
 	}
 
 	/**
@@ -141,8 +142,8 @@ public class Component extends ComponentInstance{
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 *	
-	 * @param mapsTo
+	 *
+	 * @param mapsTo Removes the specified MapsTo instance from the list of MapsTo instances.
 	 * @return {@code true} if the matching MapsTo instance is removed successfully,
 	 *         {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
@@ -155,8 +156,8 @@ public class Component extends ComponentInstance{
 
 	/**
 	 * Returns the MapsTo instance owned by this object that matches the given display ID.
-	 * 
-	 * @param displayId
+	 *
+	 * @param displayId - the displayId of the MapsTo object to be retrieved
 	 * @return the MapsTo instance owned by this object that matches the given display ID
 	 */
 	public MapsTo getMapsTo(String displayId) {
@@ -165,8 +166,8 @@ public class Component extends ComponentInstance{
 
 	/**
 	 * Returns the MapsTo instance owned by this object that matches the given URI.
-	 * 
-	 * @param mapsToURI
+	 *
+	 * @param mapsToURI The URI of the MapsTo object to be retrieved
 	 * @return the MapsTo instance owned by this object that matches the given URI
 	 */
 	public MapsTo getMapsTo(URI mapsToURI) {
@@ -175,7 +176,7 @@ public class Component extends ComponentInstance{
 
 	/**
 	 * Returns the set of MapsTo instances owned by this object.
-	 * 
+	 *
 	 * @return the set of MapsTo instances owned by this object.
 	 */
 	public Set<MapsTo> getMapsTos() {
@@ -189,7 +190,7 @@ public class Component extends ComponentInstance{
 	 * If this object belongs to an SBOLDocument instance,
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
+	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public void clearMapsTos() {
@@ -204,7 +205,7 @@ public class Component extends ComponentInstance{
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
 	void setMapsTo(List<MapsTo> mapsTos) {
-		clearMapsTos();		
+		clearMapsTos();
 		for (MapsTo reference : mapsTos) {
 			addMapsTo(reference);
 		}

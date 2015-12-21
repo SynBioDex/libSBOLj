@@ -1,6 +1,6 @@
 package org.sbolstandard.core2;
 
-import static org.sbolstandard.core2.URIcompliance.*;
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 
 import java.net.URI;
 
@@ -19,14 +19,15 @@ public abstract class Location extends Identified{
 	protected OrientationType orientation;
 
 	Location(URI identity) {
-		super(identity);		
+		super(identity);
 	}
-	
+
 	protected Location(Location location) {
 		super(location);
 		this.setOrientation(location.getOrientation());
 	}
-	
+
+	@Override
 	protected abstract Location deepCopy();
 
 	/**
@@ -51,8 +52,8 @@ public abstract class Location extends Identified{
 	 * If this object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param orientation
+	 *
+	 * @param orientation Indicate how the region specified by the SequenceAnnotation and any associated double stranded Component is oriented on the elements of a Sequence from their parent ComponentDefinition.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void setOrientation(OrientationType orientation) {
@@ -66,14 +67,14 @@ public abstract class Location extends Identified{
 	 * If this object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
+	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public void unsetOrientation() {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		orientation = null;
 	}
-	
+
 	/**
 	 * Assume this Range object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link SequenceAnnotation#updateCompliantURI(String, String, String)}.
