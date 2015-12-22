@@ -23,6 +23,7 @@ package org.sbolstandard.core;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public interface SBOLVisitable {
 	/**
 	 * Calls the appropriate visit function from the {@link SBOLVisitor} class.

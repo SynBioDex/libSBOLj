@@ -4,10 +4,8 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,11 +36,11 @@ public class FunctionalComponent extends ComponentInstance {
 		this.setDirection(functionalComponent.getDirection());
 		this.mapsTos = new HashMap<>();
 		if (!functionalComponent.getMapsTos().isEmpty()) {
-			List<MapsTo> mapsTos = new ArrayList<>();
+			Set<MapsTo> mapsTos = new HashSet<>();
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
 				mapsTos.add(mapsTo.deepCopy());
 			}
-			this.setMapsTo(mapsTos);
+			this.setMapsTos(mapsTos);
 		}
 	}
 
@@ -136,6 +134,53 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
+	 * Creates a child MapsTo instance for this Module
+	 * object with the given arguments, and then adds to this Module's list of MapsTo
+	 * instances.
+	 * <p>
+	 * If this Module object belongs to an SBOLDocument instance, then
+	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * This method creates a compliant local and a compliant remote URIs.
+	 * They are created with this Module object's persistent ID,
+	 * the given {@code localId} or {@code remoteId}, and this Module object's version.
+	 * It then calls {@link #createMapsTo(String, RefinementType, URI, URI)} to create
+	 * a MapsTo instance.
+	 *
+	 * @param displayId
+	 * @param refinement
+	 * @param localId
+	 * @param remoteId
+	 * @return a MapsTo instance
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * specifies all URIs and the given {@code local} argument is not found in the list
+	 * of functional components that are owned by the ModuleDefinition instance that
+	 * this Module object refers to.
+	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * specifies all URIs and the given {@code remote} argument is not found in
+	 * the list of functional components that are owned by the ModuleDefinition instance that
+	 * this Module object refers to.
+	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * specifies all URIs and the given {@code remote} URI refers to a FunctionalComponent
+	 * with {@code private} access type that is owned by the ModuleDefinition instance that
+	 * this Module object refers to.
+	 */
+	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) {
+		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
+				localId, moduleDefinition.getVersion());
+		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
+				moduleDefinition.getFunctionalComponent(localURI)==null) {
+			moduleDefinition.createFunctionalComponent(localId,AccessType.PUBLIC,localId,"",DirectionType.INOUT);
+		}
+		URI remoteURI = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(),
+				remoteId, getDefinition().getVersion());
+		return createMapsTo(displayId,refinement,localURI,remoteURI);
+	}
+
+	/**
 	 * Creates a child MapsTo instance for this object with the given arguments,
 	 * and then adds to this object's list of MapsTo instances.
 	 * <p>
@@ -181,6 +226,11 @@ public class FunctionalComponent extends ComponentInstance {
 			}
 			if (getDefinition().getComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
 				throw new IllegalArgumentException("Component '" + mapsTo.getRemoteURI() + "' is private.");
+			}
+			if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
+				if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
+					throw new IllegalArgumentException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+				}
 			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
@@ -258,7 +308,7 @@ public class FunctionalComponent extends ComponentInstance {
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setMapsTo(List<MapsTo> mapsTos) {
+	void setMapsTos(Set<MapsTo> mapsTos) {
 		clearMapsTos();
 		for (MapsTo reference : mapsTos) {
 			addMapsTo(reference);

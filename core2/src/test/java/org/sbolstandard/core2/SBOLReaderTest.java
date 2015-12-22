@@ -4,19 +4,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 
-import org.sbolstandard.core.SBOLValidationException;
-
 public class SBOLReaderTest extends SBOLAbstractTests
 {
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType) throws Exception
+	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
 			resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/" + fileName);
 
 		assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
-
+		SBOLReader.setCompliant(compliant);
+		
 		try
 		{
 			SBOLDocument actual;
@@ -30,7 +29,6 @@ public class SBOLReaderTest extends SBOLAbstractTests
 				actual = SBOLReader.read(resourceAsStream,SBOLReader.TURTLE);
 			else
 				actual = SBOLReader.read(resourceAsStream);
-
 			assertTrue(actual.equals(expected));
 		}
 		catch (SBOLValidationException e)

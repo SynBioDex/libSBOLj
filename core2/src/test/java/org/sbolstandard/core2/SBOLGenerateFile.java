@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.io.File;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -12,7 +13,7 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
 public class SBOLGenerateFile extends SBOLAbstractTests {
 
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType) throws Exception
+	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception
 	{
 		String PATH = "src/test/resources/";
 		if(fileType.equals("rdf"))

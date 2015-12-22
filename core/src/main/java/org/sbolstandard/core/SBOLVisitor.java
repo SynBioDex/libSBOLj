@@ -23,6 +23,7 @@ package org.sbolstandard.core;
  * @see SBOLVisitable
  * @author Evren Sirin
  */
+@Deprecated
 public interface SBOLVisitor<T extends Throwable> {
 	void visit(SBOLDocument doc) throws T;
 

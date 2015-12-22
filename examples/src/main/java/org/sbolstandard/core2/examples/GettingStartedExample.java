@@ -1,15 +1,28 @@
 package org.sbolstandard.core2.examples;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import javax.xml.namespace.QName;
+import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
+
 import org.sbolstandard.core2.ComponentDefinition;
+import org.sbolstandard.core2.GenericTopLevel;
 import org.sbolstandard.core2.RestrictionType;
 import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLReader;
+import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceOntology;
+
+import uk.ac.ncl.intbio.core.io.CoreIoException;
+
 
 /**
  * This simple example is used by the "Getting Started" document for libSBOLj 2.0. 
@@ -17,13 +30,19 @@ import org.sbolstandard.core2.SequenceOntology;
  *
  */
 public class GettingStartedExample {
-	public static void main( String[] args ) throws Exception {
-		String prURI="http://partsregistry.org"; 
+	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException {
+		String prURI = "http://partsregistry.org";
+		String prPrefix = "pr";
+		String myersLabURI = "http://www.async.ece.utah.edu";
+		String myersLabPrefix = "myersLab";		
+		
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(true);
 		document.setComplete(true);
 		document.setCreateDefaults(true);
+		document.addNamespace(URI.create(prURI) , prPrefix);
+		document.addNamespace(URI.create(myersLabURI) , myersLabPrefix);
 		
 		// Creating a Top-level SBOL Data Object
 		HashSet<URI> types = new HashSet<URI>(Arrays.asList(
@@ -103,6 +122,23 @@ public class GettingStartedExample {
 		// Adding the sequence below causes an exception because it cannot be found
 		//pIKELeftCassette.addSequence(URI.create("http://partsregistry.org/seq/partseq_154"));
 		
+		// Creating Annotations 
+		TetR_promoter.createAnnotation(new QName(prURI, "experience", prPrefix),
+				URI.create("http://parts.igem.org/Part:BBa_R0040"));
+				
+		// Creating Generic TopLevel Object
+		GenericTopLevel datasheet=document.createGenericTopLevel(
+				"datasheet",
+				"1.0",
+				new QName(myersLabURI, "datasheet", myersLabPrefix)
+				);
+		datasheet.setName("Datasheet for Custom Parameters");		
+		datasheet.createAnnotation(new QName(myersLabURI, "characterizationData", myersLabPrefix), 
+				URI.create(myersLabURI + "/measurement/Part:BBa_R0040"));				
+		datasheet.createAnnotation(new QName(myersLabURI, "transcriptionRate", myersLabPrefix), "0.75");
+		TetR_promoter.createAnnotation(new QName(myersLabURI, "datasheet", myersLabPrefix), datasheet.getIdentity());
+		
+		
 		// Creating and editing Child Objects
 		// For pIKELeftCassette, create sequence constraint that says BBa_R0040 precedes BBa_C0012.
 		// Note that with CreateDefaults that components get created automatically.
@@ -133,6 +169,23 @@ public class GettingStartedExample {
 				);	
 		TetR_promoter_copy.addSequence(seq);
 		
-		SBOLWriter.write(document,(System.out));
+		SBOLWriter.write(document, "GettingStartedExample.rdf");
+		writeThenRead(document);
+	}
+	
+	public static SBOLDocument writeThenRead(SBOLDocument doc)
+			throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
+	{
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		SBOLWriter.write(doc, out);
+		return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
+
+		// Generated exceptions
+//		SBOLWriter.write(doc, out, "TURTLE");
+//		return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()), "TURTLE");
+		
+		// Generated exceptions		
+//		SBOLWriter.write(doc, out, "JSON");
+//		return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()), "JSON");
 	}
 }

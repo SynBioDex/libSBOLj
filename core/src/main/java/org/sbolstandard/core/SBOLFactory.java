@@ -34,6 +34,7 @@ import org.sbolstandard.core.impl.SequenceAnnotationImpl;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public class SBOLFactory {
 	// This class only provides static fields, cannot be instantiated
 	private SBOLFactory() {		

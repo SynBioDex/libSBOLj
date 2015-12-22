@@ -1,3 +1,4 @@
+
 package org.sbolstandard.core2;
 
 import java.net.URI;
@@ -44,7 +45,7 @@ public abstract class ComponentInstance extends Identified {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param access Sets the specified object with the given AccessType
+	 * @param access
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code access} argument is {@code null}
 	 */
@@ -83,7 +84,7 @@ public abstract class ComponentInstance extends Identified {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param definition Set the object with the definition that refers to the ComponentDefinition of the ComponentInstance
+	 * @param definition
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws IllegalArgumentException if the given {@code definition} argument is {@code null}
 	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies

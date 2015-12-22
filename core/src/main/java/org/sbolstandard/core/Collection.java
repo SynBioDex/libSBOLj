@@ -28,7 +28,7 @@ package org.sbolstandard.core;
  * could contain all the DNA components used in a specific project, lab, or any
  * custom grouping specified by the user.
  */
-
+@Deprecated
 public interface Collection extends SBOLNamedObject, SBOLRootObject {
 
     /**

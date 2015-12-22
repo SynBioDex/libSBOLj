@@ -3,19 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.sbolstandard</groupId>
-    <artifactId>libSBOLj</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <artifactId>libSBOLj-parent</artifactId>
+    <version>2.0.0</version>
     <packaging>pom</packaging>
-    <name>libSBOLj</name>
-    <description>Implementation of the SBOL 1.1 data standard.</description>
+    <name>libSBOLj-parent</name>
+    <description>Implementation of the SBOL 2.0 data standard.</description>
     <url>https://github.com/SynBioDex/libSBOLj</url>
-
-    <!-- This lets us publish to sonatype -->
-    <parent>
-        <groupId>org.sonatype.oss</groupId>
-        <artifactId>oss-parent</artifactId>
-        <version>7</version>
-    </parent>
 
     <licenses>
         <license>
@@ -38,16 +31,10 @@
 
     <developers>
         <developer>
-            <id>drdozer</id> <!-- please use your github ID -->
-            <name>Matthew Pocock</name> <!-- your real name -->
-            <email>turingatemyhamster@gmail.com</email> <!-- email address for spam relating to this project -->
-            <organization>Turing ate my Hamster LTD</organization> <!-- optional -->
-            <organizationUrl>http://turingatemyhamter.co.uk</organizationUrl> <!-- optional -->
-            <roles> <!-- Optional, but add something here if you want -->
-                <role>developer</role> <!-- I write code -->
-                <role>committer</role> <!-- I commit code into the project -->
-            </roles>
-            <timezone>0</timezone>
+            <id>SynBioDex</id> <!-- please use your github ID -->
+            <name>SynBioDex</name> <!-- your real name -->
+            <organization>Synthetic Biology Data Exchange Group</organization> <!-- optional -->
+            <organizationUrl>http://sbolstandard.org</organizationUrl> <!-- optional -->
         </developer>
     </developers>
 
@@ -57,18 +44,17 @@
     </properties>
 
     <modules>
-        <module>core</module>
-        <module>examples</module>
-        <module>core2</module>
+         <module>core</module>
+         <module>core2</module>
     </modules>
 
     <build>
-        <pluginManagement>
             <plugins>
                 <plugin>
                     <!-- settings for javac. -->
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
+		    <version>3.1</version>
                     <configuration>
                         <source>1.7</source>
                         <target>1.7</target>
@@ -79,6 +65,7 @@
                     <!-- Build an executable JAR -->
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
+		    <version>2.4</version>
                     <configuration>
                         <archive>
                             <manifest>
@@ -89,10 +76,19 @@
                         </archive>
                     </configuration>
                 </plugin>
-
+				<plugin>
+				    <groupId>org.sonatype.plugins</groupId>
+				    <artifactId>nexus-staging-maven-plugin</artifactId>
+				    <version>1.6.2</version>
+				    <extensions>true</extensions>
+				    <configuration>
+				        <serverId>ossrh</serverId>
+				        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+				        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+				    </configuration>
+				</plugin>
                 <!-- todo: add any other plugins needed here -->
             </plugins>
-        </pluginManagement>
 
         <resources>
             <resource>
@@ -127,11 +123,41 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- Places to look for jars -->
-    <repositories>
-        <repository>
-            <id>EclipseLink</id>
-            <url>http://www.eclipse.org/downloads/download.php?r=1&amp;nf=1&amp;file=/rt/eclipselink/maven.repo</url>
-        </repository>
-    </repositories>
+
+    
+    <distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+	<profiles>
+		<profile>
+			<id>release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>	
 </project>
+
+
+
+
+

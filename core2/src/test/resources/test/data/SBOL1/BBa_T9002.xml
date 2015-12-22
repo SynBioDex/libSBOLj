@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:s="http://sbols.org/v1#" xmlns:so="http://purl.obolibrary.org/obo/" xmlns:map="http://convert.sbols.org/xml/" xmlns:pr="http://partsregistry.org/" xmlns:prt="http://purl.obolibrary.org/obo/" xmlns:prp="http://partsregistry.org/part/" xmlns:pra="http://partsregistry.org/anot/" xmlns:prs="http://partsregistry.org/seq/" xmlns:prf="http://partsregistry.org/feat/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
  <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_T9002">
+  <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000804"/>
   <rdf:type rdf:resource="http://purl.obolibrary.org/obo/signalling"/>
   <s:displayId>BBa_T9002</s:displayId>
   <s:name>T9002</s:name>
@@ -148,6 +149,7 @@
     <s:precedes rdf:resource="http://partsregistry.org/anot/an_5591_5339_2"/>
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_F2620">
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000804"/>
       <rdf:type rdf:resource="http://purl.obolibrary.org/obo/signalling"/>
       <s:displayId>BBa_F2620</s:displayId>
       <s:description>3OC&lt;sub&gt;6&lt;/sub&gt;HSL -&gt; PoPS Receiver</s:description>
@@ -159,6 +161,7 @@
    <s:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_5339_2">
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_E0240">
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000804"/>
       <rdf:type rdf:resource="http://purl.obolibrary.org/obo/reporter"/>
       <s:displayId>BBa_E0240</s:displayId>
       <s:name>GFP report</s:name>
@@ -172,6 +175,7 @@
     <s:precedes rdf:resource="http://partsregistry.org/anot/an_5591_5339_2"/>
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_F2620">
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000804"/>
       <rdf:type rdf:resource="http://purl.obolibrary.org/obo/signalling"/>
       <s:displayId>BBa_F2620</s:displayId>
       <s:description>3OC&lt;sub&gt;6&lt;/sub&gt;HSL -&gt; PoPS Receiver</s:description>
@@ -183,6 +187,7 @@
    <s:SequenceAnnotation rdf:about="http://partsregistry.org/anot/an_5591_5339_2">
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_E0240">
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000804"/>
       <rdf:type rdf:resource="http://purl.obolibrary.org/obo/reporter"/>
       <s:displayId>BBa_E0240</s:displayId>
       <s:name>GFP report</s:name>
@@ -196,6 +201,7 @@
     <s:precedes rdf:resource="http://partsregistry.org/anot/an_5591_5339_2"/>
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/part/RFC_10">
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000804"/>
       <rdf:type rdf:resource="http://purl.obolibrary.org/obo/scar"/>
       <s:displayId>RFC_10</s:displayId>
       <s:name>[10]</s:name>
@@ -344,6 +350,7 @@
     <s:strand>+</s:strand>
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/feat/f_1565186">
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000804"/>
       <rdf:type rdf:resource="http://purl.obolibrary.org/obo/biobrick"/>
       <s:displayId>f_1565186</s:displayId>
       <s:name>prefix</s:name>
@@ -388,6 +395,7 @@
     <s:strand>+</s:strand>
     <s:subComponent>
      <s:DnaComponent rdf:about="http://partsregistry.org/feat/f_1565191">
+      <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000804"/>
       <rdf:type rdf:resource="http://purl.obolibrary.org/obo/barcode"/>
       <s:displayId>f_1565191</s:displayId>
       <s:name>barcode</s:name>

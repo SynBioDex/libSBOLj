@@ -371,4 +371,27 @@ final class URIcompliance {
 
 		return false;
 	}
+
+	/**
+	 * Check the given {@code URIprefix} to make sure it is not {@code null} and is compliant,
+	 * and if URIprefix does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of the given {@code URIprefix}.
+	 *
+	 * @param URIprefix
+	 * @return URIprefix
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
+	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 */
+	static String checkURIprefix(String URIprefix) {
+		if (URIprefix==null) {
+			throw new IllegalArgumentException("URI prefix must not be null");
+		}
+		if (!URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
+			URIprefix += "/";
+		}
+		if (!isURIprefixCompliant(URIprefix)) {
+			throw new IllegalArgumentException("URI prefix '"+URIprefix+"' is invalid");
+		}
+		return URIprefix;
+	}
 }

@@ -31,6 +31,7 @@ import org.sbolstandard.core.SequenceAnnotation;
  * 
  * @author Evren Sirin
  */
+@Deprecated
 public class SBOLBaseVisitor<T extends Throwable> implements SBOLVisitor<T> {
 	/**
 	 * {@inheritDoc}

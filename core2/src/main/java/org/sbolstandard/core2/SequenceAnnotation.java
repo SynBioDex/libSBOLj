@@ -6,7 +6,6 @@ import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -25,7 +24,7 @@ public class SequenceAnnotation extends Identified {
 	private URI component;
 	private ComponentDefinition componentDefinition = null;
 	
-	SequenceAnnotation(URI identity, List<Location> locations) {
+	SequenceAnnotation(URI identity, Set<Location> locations) {
 		super(identity);
 		this.locations = new HashMap<>();
 		this.setLocations(locations);		
@@ -225,8 +224,7 @@ public class SequenceAnnotation extends Identified {
 	/**
 	 * Clears the existing list of location instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setLocations(
-			List<Location> locations) {
+	void setLocations(Set<Location> locations) {
 		clearLocations();	
 		if (locations==null) return;
 		for (Location location : locations) {

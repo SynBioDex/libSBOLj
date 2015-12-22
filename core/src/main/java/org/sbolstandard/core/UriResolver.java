@@ -7,6 +7,7 @@ import java.net.URI;
  *
  * @author Matthew Pocock
  */
+@Deprecated
 public interface UriResolver<E extends SBOLObject> extends Resolver<E, URI> {
     /**
      * Resolve the uri, or return null if this resolver doesn't know anyting about it.

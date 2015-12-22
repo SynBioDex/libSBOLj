@@ -6,7 +6,6 @@ import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -161,9 +160,9 @@ public class Module extends Identified {
 				moduleDefinition.getFunctionalComponent(localURI)==null) {
 			moduleDefinition.createFunctionalComponent(localId,AccessType.PUBLIC,localId,"",DirectionType.INOUT);
 		}
-		URI remote = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(),
+		URI remoteURI = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(),
 				remoteId, getDefinition().getVersion());
-		return createMapsTo(displayId,refinement,localURI,remote);
+		return createMapsTo(displayId,refinement,localURI,remoteURI);
 	}
 
 	/**
@@ -213,23 +212,28 @@ public class Module extends Identified {
 	 * @param mapsTo
 	 */
 	void addMapsTo(MapsTo mapsTo) {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
+		mapsTo.setSBOLDocument(this.sbolDocument);
+		mapsTo.setModuleDefinition(moduleDefinition);
+		mapsTo.setModule(this);
+		if (sbolDocument != null) {
+			if (mapsTo.getLocal()==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
 			}
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI())==null) {
+			if (mapsTo.getRemote()==null) {
 				throw new IllegalArgumentException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
 			}
-			if (getDefinition().getFunctionalComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
+			if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
 				throw new IllegalArgumentException("Functional Component '" + mapsTo.getRemoteURI() + "' is private.");
+			}
+			if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
+				if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
+					throw new IllegalArgumentException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+				}
 			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
-		mapsTo.setSBOLDocument(this.sbolDocument);
-		mapsTo.setModuleDefinition(moduleDefinition);
-		mapsTo.setModule(this);
 	}
 
 	/**
@@ -299,8 +303,7 @@ public class Module extends Identified {
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 */
-	void setMapsTos(
-			List<MapsTo> mappings) {
+	void setMapsTos(Set<MapsTo> mappings) {
 		clearMapsTos();
 		for (MapsTo mapping : mappings) {
 			addMapsTo(mapping);

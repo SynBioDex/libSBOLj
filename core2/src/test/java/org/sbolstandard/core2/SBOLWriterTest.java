@@ -7,10 +7,16 @@ import org.junit.Assume;
 public class SBOLWriterTest extends SBOLAbstractTests {
 
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType) throws Exception {
+	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception {
 		assumeNotNull(expected);
-		SBOLDocument actual = SBOLTestUtils.writeAndRead(expected);
-		//SBOLValidate.validateCompliance(actual);
+		SBOLValidate.validateSBOL(expected, false, false, false);
+		if (SBOLValidate.getNumErrors()>0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.err.println(error);
+			}
+			assertTrue(false);
+		}
+		SBOLDocument actual = SBOLTestUtils.writeAndRead(expected,compliant);
 		assertTrue(actual.equals(expected));
 	}
 
