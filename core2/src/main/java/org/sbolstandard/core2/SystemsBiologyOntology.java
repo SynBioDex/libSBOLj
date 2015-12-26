@@ -204,8 +204,8 @@ public class SystemsBiologyOntology {
 
 	/**
 	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
-	 * @param Id1
-	 * @param Id2
+	 * @param childURI
+	 * @param parentURI
 	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
 	 */
 	public final boolean isDescendantOf(URI childURI, URI parentURI) {
