@@ -60,6 +60,8 @@ public class SBOLReader
 	public static final String RDF = "RDF";
 	public static final String JSON = "JSON";
 	public static final String TURTLE = "TURTLE";
+	public static final String SBOLVERSION1 = "v1";
+	public static final String SBOLVERSION2 = "v2";
 
 	static class SBOLPair
 	{
@@ -187,7 +189,7 @@ public class SBOLReader
 		if (!foundSBOL1 && !foundSBOL2) {
 			throw new SBOLValidationException("No SBOL namespace found.");
 		}
-		else if (foundSBOL1 && !foundSBOL2) return "v1";
+		else if (foundSBOL1 && !foundSBOL2) return SBOLVERSION1;
 		else if (foundSBOL2 && !foundSBOL1) {
 			if (!foundRDF) {
 				throw new SBOLValidationException("No RDF namespace found.");
@@ -198,7 +200,7 @@ public class SBOLReader
 			if (!foundProv) {
 				throw new SBOLValidationException("No provenance namespace found.");
 			}
-			return "v2";
+			return SBOLVERSION2;
 		}
 		else {
 			throw new SBOLValidationException("A SBOL document cannot have SBOL namespaces with different versions.");
@@ -404,7 +406,7 @@ public class SBOLReader
 		} else {
 			document = readRDF(new StringReader(inputStreamString));
 		}
-		if (getSBOLVersion(document).equals("v1"))
+		if (getSBOLVersion(document).equals(SBOLVERSION1))
 		{
 			scanner.close();
 			readV1(SBOLDoc,document);
