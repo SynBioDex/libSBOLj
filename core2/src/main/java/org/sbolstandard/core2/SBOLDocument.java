@@ -2380,7 +2380,6 @@ public class SBOLDocument {
 	private final <TL extends TopLevel> void addTopLevel(TL newTopLevel, Map<URI, TL> instancesMap, String typeName, Map<URI, ? extends Identified> ... maps) {
 		if (compliant && newTopLevel.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newTopLevel.getIdentity()));
-			String prefix = extractURIprefix(persistentId);
 			if (keyExistsInAnyMap(persistentId, maps))
 				throw new IllegalArgumentException(
 						"Instance for identity `" + newTopLevel.identity +
@@ -2389,19 +2388,27 @@ public class SBOLDocument {
 				throw new IllegalArgumentException(
 						"Instance for identity `" + newTopLevel.identity +
 						"' and persistent identity `" + persistentId + "' already exists for a " + typeName);
-			if (keyExistsInAnyMap(URI.create(prefix), maps))
-				throw new IllegalArgumentException(
-						"URI prefix for identity `" + newTopLevel.identity +
-						"' mathches identity of an existing top level object.");
-			if (instancesMap.containsKey(URI.create(prefix)))
-				throw new IllegalArgumentException(
-						"URI prefix for identity `" + newTopLevel.identity +
-						"' mathches identity of an existing top level object.");
-			if (prefixes.contains(persistentId)) {
+			String prefix = extractURIprefix(persistentId);
+			while (prefix!=null) {
+				if (keyExistsInAnyMap(URI.create(prefix), maps))
+					throw new IllegalArgumentException(
+							"URI prefix for identity `" + newTopLevel.identity +
+							"' mathches identity of an existing top level object.");
+				if (instancesMap.containsKey(URI.create(prefix)))
+					throw new IllegalArgumentException(
+							"URI prefix for identity `" + newTopLevel.identity +
+							"' mathches identity of an existing top level object.");
+				prefix = extractURIprefix(URI.create(prefix));
+			}
+			if (prefixes.contains(persistentId.toString())) {
 				throw new IllegalArgumentException("Presistent identity `" + persistentId.toString() +
 						"' matches URI prefix in document.");
 			}
-			prefixes.add(prefix);
+			prefix = extractURIprefix(persistentId);
+			while (prefix!=null) {
+				prefixes.add(prefix);
+				prefix = extractURIprefix(URI.create(prefix));
+			}
 			instancesMap.put(newTopLevel.getIdentity(), newTopLevel);
 			Identified latest = instancesMap.get(persistentId);
 			if (latest == null) {

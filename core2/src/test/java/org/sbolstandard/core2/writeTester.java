@@ -29,6 +29,9 @@ public class writeTester {
 
 	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
+		SBOLDocument doc = new SBOLDocument();
+		doc.createCollection("http://test3/test2/test1", "test0", "");
+		doc.createCollection("http://test3", "test2", "");
 		get_myParts(SBOL2Doc_test);
 		//SBOLDocument doc = new SBOLDocument();
 		//doc.createCollection("http://foo.org", "myPart", "");
