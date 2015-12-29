@@ -608,6 +608,9 @@ public class SBOLValidate {
 			}
 			SBOLReader.setTypesInURI(typesInURI);
 			SBOLReader.setVersion(version);
+			if (SBOLReader.getSBOLVersion(fileName).equals(SBOLReader.SBOLVERSION1)) {
+				System.err.println("Converting SBOL Version 1 to SBOL Version 2");
+			}
 	        SBOLDocument doc = SBOLReader.read(fileName);
 	        doc.setTypesInURIs(typesInURI);
 	        validateSBOL(doc, complete, compliant, bestPractice);
