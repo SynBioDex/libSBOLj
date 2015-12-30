@@ -367,6 +367,40 @@ public class SBOLValidate {
 		}
 	}
 	
+	static void validateSequenceAnnotations(SBOLDocument sbolDocument) {
+		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
+			for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
+				Object[] locations = sequenceAnnotation.getLocations().toArray();
+				for (int i = 0; i < locations.length-1; i++) {
+					for (int j = i + 1; j < locations.length; j++) {
+						Location location1 = (Location) locations[i]; 
+						Location location2 = (Location) locations[j]; 
+						if (location1.getIdentity().equals(location2.getIdentity())) continue;
+						if (location1 instanceof Range && location2 instanceof Range) {
+							if (((((Range)location1).getStart() > ((Range)location2).getStart()) &&
+									(((Range)location1).getStart() < ((Range)location2).getEnd()))
+									||
+								((((Range)location2).getStart() > ((Range)location1).getStart()) &&
+									(((Range)location2).getStart() < ((Range)location1).getEnd()))) {
+								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+							}
+						} else if (location1 instanceof Range && location2 instanceof Cut) {
+							if ((((Range)location1).getEnd() > ((Cut)location2).getAt()) &&
+									(((Cut)location2).getAt() > ((Range)location1).getStart())) {
+								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+							}
+						} else if (location2 instanceof Range && location1 instanceof Cut) {
+							if ((((Range)location2).getEnd() > ((Cut)location1).getAt()) &&
+									(((Cut)location1).getAt() > ((Range)location2).getStart())) {
+								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+							}
+						} 
+					}
+				}
+			}
+		}
+	}
+	
 	private static final String IUPAC_DNA_PATTERN = "([ACGTURYSWKMBDHVN\\-\\.]*)";	
 	private static final String IUPAC_PROTEIN_PATTERN = "([ABCDEFGHIKLMNPQRSTVWXYZ]*)";
 
@@ -529,7 +563,10 @@ public class SBOLValidate {
 		validateURIuniqueness(sbolDocument);
         if (compliant) validateCompliance(sbolDocument);
         if (complete) validateCompleteness(sbolDocument);
-        if (bestPractice) validateOntologyUsage(sbolDocument);
+        if (bestPractice) {
+        	validateOntologyUsage(sbolDocument);
+        	validateSequenceAnnotations(sbolDocument);
+        }
 	}
 	
 	/**
