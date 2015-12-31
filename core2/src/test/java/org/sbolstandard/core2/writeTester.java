@@ -31,8 +31,8 @@ public class writeTester {
 	{
 		get_myParts(sbolDocument);
 		ComponentDefinition cd = sbolDocument.getComponentDefinition("ptetlacI", "1.0");
-		SequenceAnnotation sa = cd.getSequenceAnnotation("c2_structAnnotate");
-		sa.addCut("cut2", 12);
+		//Sequence sequence = sbolDocument.createSequence("newSeq2", "AGCTA", Sequence.IUPAC_DNA);
+		//cd.addSequence(sequence);
 		SBOLValidate.validateSBOL(sbolDocument, true, true, true);
 		if (SBOLValidate.getNumErrors() > 0) {
 			for (String error : SBOLValidate.getErrors()) {
@@ -290,7 +290,7 @@ public class writeTester {
 	private static Sequence get_ptetlacISeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("ptetlacISeq",version,"AGCT"),
+				getData("ptetlacISeq",version,"AGCTAGCTAGCTAGCTAGCTAGCT"),
 				Sequence.IUPAC_DNA);
 	}
 
@@ -331,7 +331,7 @@ public class writeTester {
 	{
 		return createSequenceAnnotationData(cd,getData("c2_structAnnotate"),"lacICDS",11,20,"c2_structAnnotate_range");
 	}
-
+	
 	private static ComponentDefinition get_ptetlacI (SBOLDocument SBOL2Doc_test)
 	{
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,

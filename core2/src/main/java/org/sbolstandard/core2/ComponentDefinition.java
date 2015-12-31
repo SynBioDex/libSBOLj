@@ -814,8 +814,15 @@ public class ComponentDefinition extends TopLevel {
 	void addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
 		sequenceAnnotation.setSBOLDocument(this.sbolDocument);
 		sequenceAnnotation.setComponentDefinition(this);
-		if (sequenceAnnotation.isSetComponent() && sequenceAnnotation.getComponent()==null) {
-			throw new IllegalArgumentException("Component '" + sequenceAnnotation.getComponentURI() + "' does not exist.");
+		if (sequenceAnnotation.isSetComponent()) {
+			if (sequenceAnnotation.getComponent()==null) {
+				throw new IllegalArgumentException("Component '" + sequenceAnnotation.getComponentURI() + "' does not exist.");
+			}
+			for (SequenceAnnotation sa : this.getSequenceAnnotations()) {
+				if (sa.isSetComponent() && sa.getComponentURI().equals(sequenceAnnotation.getComponentURI())) {
+					throw new SBOLValidationException("Multiple sequence annotations cannot refer to the same component.");
+				}
+			}
 		}
 		for (Location location : sequenceAnnotation.getLocations()) {
 			location.setSBOLDocument(sbolDocument);
