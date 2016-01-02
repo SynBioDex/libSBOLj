@@ -379,9 +379,9 @@ public class SBOLValidate {
 			for (Sequence sequence : componentDefinition.getSequences()) {
 				if (sequence.getEncoding().equals(Sequence.IUPAC_DNA) ||
 					sequence.getEncoding().equals(Sequence.IUPAC_RNA)) {
-					if (foundProtein) {
+					if (foundProtein || foundSmiles) {
 						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-								" has multiple sequences with conflicting IUPAC encodings.");
+								" has multiple sequences with conflicting encodings.");
 					} 
 					if (foundNucleic) {
 						if (nucleicLength != sequence.getElements().length()) {
@@ -396,7 +396,7 @@ public class SBOLValidate {
 						for (Location location : sa.getLocations()) {
 							if (location instanceof Range) {
 								Range range = (Range)location;
-								if (range.getStart() < 0 || range.getEnd() > nucleicLength) {
+								if (range.getStart() <= 0 || range.getEnd() > nucleicLength) {
 									errors.add("SequenceAnnotation " + sa.getIdentity() + " has location outside of Sequence " 
 											+ sequence.getIdentity() + " scope.");
 								}
@@ -410,9 +410,9 @@ public class SBOLValidate {
 						}
 					}
 				} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
-					if (foundNucleic) {
+					if (foundNucleic || foundSmiles) {
 						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-								" has multiple sequences with conflicting IUPAC encodings.");
+								" has multiple sequences with conflicting encodings.");
 					} 					
 					if (foundProtein) {
 						if (proteinLength != sequence.getElements().length()) {
@@ -424,6 +424,10 @@ public class SBOLValidate {
 						proteinLength = sequence.getElements().length();
 					}
 				} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
+					if (foundNucleic || foundProtein) {
+						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+								" has multiple sequences with conflicting encodings.");
+					} 	
 					if (foundSmiles) {
 						if (smilesLength != sequence.getElements().length()) {
 							errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
@@ -473,21 +477,25 @@ public class SBOLValidate {
 						Location location2 = (Location) locations[j]; 
 						if (location1.getIdentity().equals(location2.getIdentity())) continue;
 						if (location1 instanceof Range && location2 instanceof Range) {
-							if (((((Range)location1).getStart() > ((Range)location2).getStart()) &&
-									(((Range)location1).getStart() < ((Range)location2).getEnd()))
+							if (((((Range)location1).getStart() >= ((Range)location2).getStart()) &&
+									(((Range)location1).getStart() <= ((Range)location2).getEnd()))
 									||
-								((((Range)location2).getStart() > ((Range)location1).getStart()) &&
-									(((Range)location2).getStart() < ((Range)location1).getEnd()))) {
+								((((Range)location2).getStart() >= ((Range)location1).getStart()) &&
+									(((Range)location2).getStart() <= ((Range)location1).getEnd()))) {
 								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
 							}
 						} else if (location1 instanceof Range && location2 instanceof Cut) {
 							if ((((Range)location1).getEnd() > ((Cut)location2).getAt()) &&
-									(((Cut)location2).getAt() > ((Range)location1).getStart())) {
+									(((Cut)location2).getAt() >= ((Range)location1).getStart())) {
 								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
 							}
 						} else if (location2 instanceof Range && location1 instanceof Cut) {
 							if ((((Range)location2).getEnd() > ((Cut)location1).getAt()) &&
-									(((Cut)location1).getAt() > ((Range)location2).getStart())) {
+									(((Cut)location1).getAt() >= ((Range)location2).getStart())) {
+								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+							}
+						} else if (location2 instanceof Cut && location1 instanceof Cut) {
+							if (((Cut)location2).getAt() == ((Cut)location1).getAt()) {
 								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
 							}
 						} 
