@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import uk.co.turingatemyhamster.opensmiles.OpenSmilesParser;
+
 /**
  * @author Zhen Zhang
  * @author Tramy Nguyen
@@ -506,20 +508,21 @@ public class SBOLValidate {
 	}
 	
 	private static final String IUPAC_DNA_PATTERN = "([ACGTURYSWKMBDHVN\\-\\.]*)";	
+	private static final Pattern iupacDNAparser = Pattern.compile(IUPAC_DNA_PATTERN);
 	private static final String IUPAC_PROTEIN_PATTERN = "([ABCDEFGHIKLMNPQRSTVWXYZ]*)";
+	private static final Pattern iupacProteinParser = Pattern.compile(IUPAC_PROTEIN_PATTERN);
+	private static OpenSmilesParser openSmilesParser = new OpenSmilesParser();
 
 	static boolean checkSequenceEncoding(Sequence sequence) {
 		if (sequence.getEncoding().equals(Sequence.IUPAC_DNA) ||
 				(sequence.getEncoding().equals(Sequence.IUPAC_RNA))) {
-			Pattern r = Pattern.compile(IUPAC_DNA_PATTERN);
-			Matcher m = r.matcher(sequence.getElements().toUpperCase());
+			Matcher m = iupacDNAparser.matcher(sequence.getElements().toUpperCase());
 			return m.matches();			
 		} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
-			Pattern r = Pattern.compile(IUPAC_PROTEIN_PATTERN);
-			Matcher m = r.matcher(sequence.getElements().toUpperCase());
+			Matcher m = iupacProteinParser.matcher(sequence.getElements().toUpperCase());
 			return m.matches();				
 		} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
-			
+			return openSmilesParser.check(sequence.getElements());
 		}
 		return true;
 	}

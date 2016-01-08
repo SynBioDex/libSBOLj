@@ -57,6 +57,11 @@
 			<artifactId>javassist</artifactId>
 			<version>3.12.1.GA</version>
 		</dependency>
+		<dependency>
+			<groupId>uk.co.turingatemyhamster</groupId>
+			<artifactId>opensmiles_2.11</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 	
 	  	<repositories>

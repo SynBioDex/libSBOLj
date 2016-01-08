@@ -49,12 +49,8 @@ public class Sequence extends TopLevel{
 
 	Sequence(URI identity, String elements, URI encoding) {
 		super(identity);
-		setElements(elements);
 		setEncoding(encoding);
-		if (!SBOLValidate.checkSequenceEncoding(this)) {
-			throw new SBOLValidationException("Sequence '" + this.getIdentity() + "' that uses encoding " + this.getEncoding() + 
-					" does not have a valid sequence.");
-		}
+		setElements(elements);
 	}
 	
 	/**
@@ -95,8 +91,8 @@ public class Sequence extends TopLevel{
 	private Sequence(Sequence sequence) {
 		//super(sequence.getIdentity());
 		super(sequence);
-		this.setElements(sequence.getElements());
 		this.setEncoding(sequence.getEncoding());
+		this.setElements(sequence.getElements());
 	}
 
 	//	public Sequence(String authority, String Id, String elements, URI encoding) {
@@ -132,6 +128,10 @@ public class Sequence extends TopLevel{
 			throw new IllegalArgumentException("Sequence is required to have elements.");
 		}
 		this.elements = elements;
+		if (!SBOLValidate.checkSequenceEncoding(this)) {
+			throw new SBOLValidationException("Sequence '" + this.getIdentity() + "' that uses encoding " + this.getEncoding() + 
+					" does not have a valid sequence.");
+		}
 	}
 	
 	/**
