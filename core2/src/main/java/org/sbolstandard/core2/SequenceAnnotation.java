@@ -391,6 +391,7 @@ public class SequenceAnnotation extends Identified {
 				throw new IllegalArgumentException("Component '" + componentURI + "' does not exist.");
 			}
 			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
+				if (sa.getIdentity().equals(this.getIdentity())) continue;
 				if (sa.isSetComponent() && sa.getComponentURI().equals(componentURI)) {
 					throw new SBOLValidationException("Multiple sequence annotations cannot refer to the same component.");
 				}
