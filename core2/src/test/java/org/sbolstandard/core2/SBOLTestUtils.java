@@ -65,6 +65,11 @@ public class SBOLTestUtils {
 		SBOLDocument actual = null;
 		SBOLReader.setURIPrefix(URIprefix);
 		SBOLReader.setDropObjectsWithDuplicateURIs(dropDuplicates);
+		if (URIprefix==null) {
+			SBOLReader.setCompliant(false);
+		} else {
+			SBOLReader.setCompliant(true);
+		}
 
 		try {
 			if(fileType.equals("rdf"))

@@ -53,6 +53,9 @@ public class SequenceAnnotation extends Identified {
 	public void addGenericLocation(String displayId) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		GenericLocation genericLocation = new GenericLocation(identity);
+		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		genericLocation.setDisplayId(displayId);
+		genericLocation.setVersion(this.getVersion());
 		addLocation(genericLocation);
 	}
 	
@@ -71,6 +74,9 @@ public class SequenceAnnotation extends Identified {
 	public void addGenericLocation(String displayId,OrientationType orientation) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		GenericLocation genericLocation = new GenericLocation(identity);
+		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		genericLocation.setDisplayId(displayId);
+		genericLocation.setVersion(this.getVersion());
 		genericLocation.setOrientation(orientation);
 		addLocation(genericLocation);
 	}
@@ -88,6 +94,9 @@ public class SequenceAnnotation extends Identified {
 	public void addCut(String displayId,int at) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Cut cut = new Cut(identity,at);
+		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		cut.setDisplayId(displayId);
+		cut.setVersion(this.getVersion());
 		addLocation(cut);
 	}
 	
@@ -106,6 +115,9 @@ public class SequenceAnnotation extends Identified {
 	public void addCut(String displayId,int at,OrientationType orientation) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Cut cut = new Cut(identity,at);
+		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		cut.setDisplayId(displayId);
+		cut.setVersion(this.getVersion());
 		cut.setOrientation(orientation);
 		addLocation(cut);
 	}
@@ -124,6 +136,9 @@ public class SequenceAnnotation extends Identified {
 	public void addRange(String displayId,int start,int end) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Range range = new Range(identity,start,end);
+		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		range.setDisplayId(displayId);
+		range.setVersion(this.getVersion());
 		addLocation(range);
 	}
 	
@@ -143,6 +158,9 @@ public class SequenceAnnotation extends Identified {
 	public void addRange(String displayId,int start,int end,OrientationType orientation) {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Range range = new Range(identity,start,end);
+		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		range.setDisplayId(displayId);
+		range.setVersion(this.getVersion());
 		range.setOrientation(orientation);
 		addLocation(range);
 	}
@@ -371,6 +389,12 @@ public class SequenceAnnotation extends Identified {
 		if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(componentURI)==null) {
 				throw new IllegalArgumentException("Component '" + componentURI + "' does not exist.");
+			}
+			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
+				if (sa.getIdentity().equals(this.getIdentity())) continue;
+				if (sa.isSetComponent() && sa.getComponentURI().equals(componentURI)) {
+					throw new SBOLValidationException("Multiple sequence annotations cannot refer to the same component.");
+				}
 			}
 		}
 		this.component = componentURI;

@@ -1400,8 +1400,9 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition someCompDef = document.createComponentDefinition("someCompDef", VERSION_1_0, types);
 		someCompDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 		someCompDef.addRole(SequenceOntology.PROMOTER);
-		document.createComponentDefinition("someCompDefCDS", VERSION_1_0, types);
-		
+		ComponentDefinition someCompDefCDS = document.createComponentDefinition("someCompDefCDS", VERSION_1_0, types);
+		someCompDefCDS.addRole(SequenceOntology.CDS)
+		;
 		Component someComponent = someCompDef.createComponent("someComponent", AccessType.PUBLIC, "someCompDefCDS", VERSION_1_0);
 		someComponent.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 

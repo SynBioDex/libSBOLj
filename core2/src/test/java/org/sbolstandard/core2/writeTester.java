@@ -18,7 +18,7 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 public class writeTester {
 
-	private static SBOLDocument SBOL2Doc_test = new SBOLDocument();
+	private static SBOLDocument sbolDocument = new SBOLDocument();
 	
 	private static String version = "1.0";
 
@@ -29,13 +29,22 @@ public class writeTester {
 
 	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
-		get_myParts(SBOL2Doc_test);
+		get_myParts(sbolDocument);
+		ComponentDefinition cd = sbolDocument.getComponentDefinition("ptetlacI", "1.0");
+		//Sequence sequence = sbolDocument.createSequence("newSeq2", "AGCTA", Sequence.IUPAC_DNA);
+		//cd.addSequence(sequence);
+		SBOLValidate.validateSBOL(sbolDocument, true, true, true);
+		if (SBOLValidate.getNumErrors() > 0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.out.println(error);
+			}
+		}
 		//SBOLDocument doc = new SBOLDocument();
 		//doc.createCollection("http://foo.org", "myPart", "");
 		//doc.createCollection("http://foo.org/myPart", "myPart2", "");
 		//ModuleDefinition md = (SBOL2Doc_test.getModuleDefinition("Toggle", "1.0")).flatten("http://foo.com","GC","");
 		//doc.createCopy(md);
-		//writeRdfOutputStream(doc);
+		//writeRdfOutputStream(sbolDocument);
 	}
 
 	public static void writeRdfOutputStream(SBOLDocument SBOL2Doc_test)
@@ -281,7 +290,7 @@ public class writeTester {
 	private static Sequence get_ptetlacISeq (SBOLDocument SBOL2Doc_test)
 	{
 		return createSequenceData(SBOL2Doc_test,
-				getData("ptetlacISeq",version,"AGCT"),
+				getData("ptetlacISeq",version,"AGCTAGCTAGCTAGCTAGCTAGCT"),
 				Sequence.IUPAC_DNA);
 	}
 
@@ -322,7 +331,7 @@ public class writeTester {
 	{
 		return createSequenceAnnotationData(cd,getData("c2_structAnnotate"),"lacICDS",11,20,"c2_structAnnotate_range");
 	}
-
+	
 	private static ComponentDefinition get_ptetlacI (SBOLDocument SBOL2Doc_test)
 	{
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,

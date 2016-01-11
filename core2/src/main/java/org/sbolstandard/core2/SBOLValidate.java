@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import uk.co.turingatemyhamster.opensmiles.OpenSmilesParser;
+
 /**
  * @author Zhen Zhang
  * @author Tramy Nguyen
@@ -367,21 +369,160 @@ public class SBOLValidate {
 		}
 	}
 	
+	static void validateComponentDefinitionSequences(SBOLDocument sbolDocument) {
+		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
+			if (componentDefinition.getSequences().size() < 1) continue;
+			boolean foundNucleic = false;
+			boolean foundProtein = false;
+			boolean foundSmiles = false;
+			int nucleicLength = -1;
+			int proteinLength = -1;
+			int smilesLength = -1;
+			for (Sequence sequence : componentDefinition.getSequences()) {
+				if (sequence.getEncoding().equals(Sequence.IUPAC_DNA) ||
+					sequence.getEncoding().equals(Sequence.IUPAC_RNA)) {
+					if (foundProtein || foundSmiles) {
+						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+								" has multiple sequences with conflicting encodings.");
+					} 
+					if (foundNucleic) {
+						if (nucleicLength != sequence.getElements().length()) {
+							errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+									" has multiple sequences with IUPAC DNA/RNA encodings of different lengths.");
+						}
+					} else {
+						foundNucleic = true;
+						nucleicLength = sequence.getElements().length();
+					}
+					for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
+						for (Location location : sa.getLocations()) {
+							if (location instanceof Range) {
+								Range range = (Range)location;
+								if (range.getStart() <= 0 || range.getEnd() > nucleicLength) {
+									errors.add("SequenceAnnotation " + sa.getIdentity() + " has location outside of Sequence " 
+											+ sequence.getIdentity() + " scope.");
+								}
+							} else if (location instanceof Cut) {
+								Cut cut = (Cut)location;
+								if (cut.getAt() < 0 || cut.getAt() > nucleicLength) {
+									errors.add("SequenceAnnotation " + sa.getIdentity() + " has location outside of Sequence " 
+											+ sequence.getIdentity() + " scope.");
+								}								
+							}
+						}
+					}
+				} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
+					if (foundNucleic || foundSmiles) {
+						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+								" has multiple sequences with conflicting encodings.");
+					} 					
+					if (foundProtein) {
+						if (proteinLength != sequence.getElements().length()) {
+							errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+									" has multiple sequences with IUPAC Protein encodings of different lengths.");
+						}
+					} else {
+						foundProtein = true;
+						proteinLength = sequence.getElements().length();
+					}
+				} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
+					if (foundNucleic || foundProtein) {
+						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+								" has multiple sequences with conflicting encodings.");
+					} 	
+					if (foundSmiles) {
+						if (smilesLength != sequence.getElements().length()) {
+							errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+									" has multiple sequences with SMILES encodings of different lengths.");
+						}
+					} else {
+						foundSmiles = true;
+						smilesLength = sequence.getElements().length();
+					}
+				}
+			}
+			if (componentDefinition.getTypes().contains(ComponentDefinition.DNA) && !foundNucleic) {
+				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+						" is DNA type but no IUPAC DNA encoded sequence found.");
+			} else if (componentDefinition.getTypes().contains(ComponentDefinition.RNA) && !foundNucleic) {
+				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+						" is RNA type but no IUPAC RNA encoded sequence found.");				
+			} else if (componentDefinition.getTypes().contains(ComponentDefinition.PROTEIN) && !foundProtein) {
+				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+						" is protein type but no IUPAC Protein encoded sequence found.");				
+			} else if (componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && !foundSmiles) {
+				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+						" is small molecule type but no SMILES encoded sequence found.");				
+			}
+			if ((!componentDefinition.getTypes().contains(ComponentDefinition.DNA) &&
+					!componentDefinition.getTypes().contains(ComponentDefinition.RNA))
+					&& foundNucleic) {
+				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+						" has IUPAC DNA/RNA encoded sequence but is not DNA/RNA type.");
+			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.PROTEIN) && foundProtein) {
+				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+						" has IUPAC Protein encoded sequence but is not protein type.");			
+			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && foundSmiles) {
+				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+						" has SMILES encoded sequence but is not small molecule type.");			
+			}
+		}
+	}
+	
+	static void validateSequenceAnnotations(SBOLDocument sbolDocument) {
+		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
+			for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
+				Object[] locations = sequenceAnnotation.getLocations().toArray();
+				for (int i = 0; i < locations.length-1; i++) {
+					for (int j = i + 1; j < locations.length; j++) {
+						Location location1 = (Location) locations[i]; 
+						Location location2 = (Location) locations[j]; 
+						if (location1.getIdentity().equals(location2.getIdentity())) continue;
+						if (location1 instanceof Range && location2 instanceof Range) {
+							if (((((Range)location1).getStart() >= ((Range)location2).getStart()) &&
+									(((Range)location1).getStart() <= ((Range)location2).getEnd()))
+									||
+								((((Range)location2).getStart() >= ((Range)location1).getStart()) &&
+									(((Range)location2).getStart() <= ((Range)location1).getEnd()))) {
+								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+							}
+						} else if (location1 instanceof Range && location2 instanceof Cut) {
+							if ((((Range)location1).getEnd() > ((Cut)location2).getAt()) &&
+									(((Cut)location2).getAt() >= ((Range)location1).getStart())) {
+								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+							}
+						} else if (location2 instanceof Range && location1 instanceof Cut) {
+							if ((((Range)location2).getEnd() > ((Cut)location1).getAt()) &&
+									(((Cut)location1).getAt() >= ((Range)location2).getStart())) {
+								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+							}
+						} else if (location2 instanceof Cut && location1 instanceof Cut) {
+							if (((Cut)location2).getAt() == ((Cut)location1).getAt()) {
+								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+							}
+						} 
+					}
+				}
+			}
+		}
+	}
+	
 	private static final String IUPAC_DNA_PATTERN = "([ACGTURYSWKMBDHVN\\-\\.]*)";	
+	private static final Pattern iupacDNAparser = Pattern.compile(IUPAC_DNA_PATTERN);
 	private static final String IUPAC_PROTEIN_PATTERN = "([ABCDEFGHIKLMNPQRSTVWXYZ]*)";
+	private static final Pattern iupacProteinParser = Pattern.compile(IUPAC_PROTEIN_PATTERN);
+	private static OpenSmilesParser openSmilesParser = new OpenSmilesParser();
 
 	static boolean checkSequenceEncoding(Sequence sequence) {
 		if (sequence.getEncoding().equals(Sequence.IUPAC_DNA) ||
 				(sequence.getEncoding().equals(Sequence.IUPAC_RNA))) {
-			Pattern r = Pattern.compile(IUPAC_DNA_PATTERN);
-			Matcher m = r.matcher(sequence.getElements().toUpperCase());
+			Matcher m = iupacDNAparser.matcher(sequence.getElements().toUpperCase());
 			return m.matches();			
 		} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
-			Pattern r = Pattern.compile(IUPAC_PROTEIN_PATTERN);
-			Matcher m = r.matcher(sequence.getElements().toUpperCase());
+			Matcher m = iupacProteinParser.matcher(sequence.getElements().toUpperCase());
 			return m.matches();				
 		} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
-			
+			return openSmilesParser.check(sequence.getElements());
 		}
 		return true;
 	}
@@ -529,7 +670,11 @@ public class SBOLValidate {
 		validateURIuniqueness(sbolDocument);
         if (compliant) validateCompliance(sbolDocument);
         if (complete) validateCompleteness(sbolDocument);
-        if (bestPractice) validateOntologyUsage(sbolDocument);
+        if (bestPractice) {
+        	validateOntologyUsage(sbolDocument);
+        	validateSequenceAnnotations(sbolDocument);
+        	validateComponentDefinitionSequences(sbolDocument);
+        }
 	}
 	
 	/**
