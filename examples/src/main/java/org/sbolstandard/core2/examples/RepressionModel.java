@@ -165,8 +165,8 @@ public class RepressionModel {
 		// Create ComponentDefinition for gRNA_b gene
 		ComponentDefinition gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", version, ComponentDefinition.DNA);
 		gRNA_b_gene.addRole(SequenceOntology.PROMOTER);
-		cas9m_BFP_gene.createSequenceConstraint("gRNA_b_gene_constraint1", RestrictionType.PRECEDES, "CRa_U6", "gRNA_b_nc");
-		cas9m_BFP_gene.createSequenceConstraint("gRNA_b_gene_constraint2", RestrictionType.PRECEDES, "gRNA_b_nc","gRNA_b_terminator");
+		gRNA_b_gene.createSequenceConstraint("gRNA_b_gene_constraint1", RestrictionType.PRECEDES, "CRa_U6", "gRNA_b_nc");
+		gRNA_b_gene.createSequenceConstraint("gRNA_b_gene_constraint2", RestrictionType.PRECEDES, "gRNA_b_nc","gRNA_b_terminator");
 
 		// Create ComponentDefinition for gRNA_b RNA
 		doc.createComponentDefinition("gRNA_b", version, ComponentDefinition.RNA);
