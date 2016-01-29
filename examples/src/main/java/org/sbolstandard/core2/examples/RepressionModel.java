@@ -1,6 +1,5 @@
 package org.sbolstandard.core2.examples;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 
 import javax.xml.stream.FactoryConfigurationError;
@@ -15,6 +14,7 @@ import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.RestrictionType;
 import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceOntology;
@@ -32,7 +32,7 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 public class RepressionModel {
 
-	public static void main(String[] args) throws URISyntaxException {
+	public static void main(String[] args) throws URISyntaxException, SBOLValidationException {
 		
 		SBOLDocument doc = new SBOLDocument();
 

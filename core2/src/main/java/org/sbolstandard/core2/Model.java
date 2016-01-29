@@ -41,7 +41,7 @@ public class Model extends TopLevel {
 	 */
 	public static final URI BIOPAX = URI.create("http://identifiers.org/edam/format_3156");
 
-	Model(URI identity,URI source, URI language, URI framework) {
+	Model(URI identity,URI source, URI language, URI framework) throws SBOLValidationException {
 		super(identity);
 		setSource(source);
 		setLanguage(language);
@@ -68,13 +68,13 @@ public class Model extends TopLevel {
 	 * @param source
 	 * @param language
 	 * @param framework
-	 * @throws IllegalArgumentException if the defaultURIprefix is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
-	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
-	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
-	public Model(String prefix,String displayId,String version,URI source, URI language, URI framework) {
+	public Model(String prefix,String displayId,String version,URI source, URI language, URI framework) throws SBOLValidationException {
 		this(URIcompliance.createCompliantURI(prefix, displayId, version), source, language, framework);
 		prefix = URIcompliance.checkURIprefix(prefix);
 		validateIdVersion(displayId, version);
@@ -83,7 +83,7 @@ public class Model extends TopLevel {
 		setVersion(version);
 	}
 
-	private Model(Model model) {
+	private Model(Model model) throws SBOLValidationException {
 		super(model);
 		this.setSource(model.getSource());
 		this.setLanguage(model.getLanguage());
@@ -109,12 +109,12 @@ public class Model extends TopLevel {
 	 *
 	 * @param source a URI reference to the source file for a model.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code source} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code source} argument is {@code null}
 	 */
-	public void setSource(URI source) {
+	public void setSource(URI source) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (source==null) {
-			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a source location.");
+			throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a source location.");
 		}
 		this.source = source;
 	}
@@ -138,12 +138,12 @@ public class Model extends TopLevel {
 	 *
 	 * @param language a URI that specifies the language in which the model is implemented.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code language} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code language} argument is {@code null}
 	 */
-	public void setLanguage(URI language) {
+	public void setLanguage(URI language) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (language==null) {
-			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a language.");
+			throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a language.");
 		}
 		this.language = language;
 	}
@@ -167,12 +167,12 @@ public class Model extends TopLevel {
 	 *
 	 * @param framework a URI that specifies the framework in which the model is implemented.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code framework} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code framework} argument is {@code null}
 	 */
-	public void setFramework(URI framework) {
+	public void setFramework(URI framework) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (framework==null) {
-			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a framework.");
+			throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a framework.");
 		}
 		this.framework = framework;
 	}
@@ -215,7 +215,7 @@ public class Model extends TopLevel {
 	}
 
 	@Override
-	protected Model deepCopy() {
+	protected Model deepCopy() throws SBOLValidationException {
 		return new Model(this);
 	}
 
@@ -223,7 +223,7 @@ public class Model extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	Model copy(String URIprefix, String displayId, String version) {
+	Model copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		Model cloned = this.deepCopy();
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);

@@ -24,13 +24,13 @@ public class Module extends Identified {
 	private URI definition;
 	private ModuleDefinition moduleDefinition = null;
 
-	Module(URI identity, URI moduleDefinition) {
+	Module(URI identity, URI moduleDefinition) throws SBOLValidationException {
 		super(identity);
 		this.mapsTos = new HashMap<>();
 		setDefinition(moduleDefinition);
 	}
 
-	private Module(Module module) {
+	private Module(Module module) throws SBOLValidationException {
 		super(module);
 		this.mapsTos = new HashMap<>();
 		this.setDefinition(module.getDefinitionURI());
@@ -74,19 +74,19 @@ public class Module extends Identified {
 	 *
 	 * @param definitionURI The definition URI for this Module.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the given {@code definitionURI} is {@code null}
-	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the given {@code definitionURI} is {@code null}
+	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code definitionURI} argument is not found in
 	 * its list of ModuleDefinition instances.
 	 */
-	public void setDefinition(URI definitionURI) {
+	public void setDefinition(URI definitionURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (definitionURI==null) {
-			throw new IllegalArgumentException("Module "+this.getIdentity()+" must have a definition.");
+			throw new SBOLValidationException("Module "+this.getIdentity()+" must have a definition.");
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModuleDefinition(definitionURI)==null) {
-				throw new IllegalArgumentException("Module definition '" + definition + "' does not exist.");
+				throw new SBOLValidationException("Module definition '" + definition + "' does not exist.");
 			}
 		}
 		this.definition = definitionURI;
@@ -110,9 +110,10 @@ public class Module extends Identified {
 	 * @param local The reference URI local object for this MapsTo object
 	 * @param remote The reference URI remote object for this MapsTo object
 	 * @return new MapsTo object
+	 * @throws SBOLValidationException 
 	 */
 	MapsTo createMapsTo(URI identity, RefinementType refinement,
-			URI local, URI remote) {
+			URI local, URI remote) throws SBOLValidationException {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
 		addMapsTo(mapping);
 		return mapping;
@@ -139,20 +140,20 @@ public class Module extends Identified {
 	 * @param remoteId The first “lower level” ComponentInstance for this MapsTo object
 	 * @return a MapsTo instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code local} argument is not found in the list
 	 * of functional components that are owned by the ModuleDefinition instance that
 	 * this Module object refers to.
-	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code remote} argument is not found in
 	 * the list of functional components that are owned by the ModuleDefinition instance that
 	 * this Module object refers to.
-	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code remote} URI refers to a FunctionalComponent
 	 * with {@code private} access type that is owned by the ModuleDefinition instance that
 	 * this Module object refers to.
 	 */
-	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) {
+	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
 				localId, moduleDefinition.getVersion());
@@ -183,20 +184,20 @@ public class Module extends Identified {
 	 * @param remote The first “lower level” ComponentInstance for this MapsTo object
 	 * @return a MapsTo instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code local} argument is not found in the list
 	 * of functional components that are owned by the ModuleDefinition instance that
 	 * this Module object refers to.
-	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code remote} argument is not found in
 	 * the list of functional components that are owned by the ModuleDefinition instance that
 	 * this Module object refers to.
-	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code remote} URI refers to a FunctionalComponent
 	 * with {@code private} access type that is owned by the ModuleDefinition instance that
 	 * this Module object refers to.
 	 */
-	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
+	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
@@ -210,26 +211,27 @@ public class Module extends Identified {
 
 	/**
 	 * @param mapsTo
+	 * @throws SBOLValidationException 
 	 */
-	void addMapsTo(MapsTo mapsTo) {
+	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		mapsTo.setSBOLDocument(this.sbolDocument);
 		mapsTo.setModuleDefinition(moduleDefinition);
 		mapsTo.setModule(this);
 		if (sbolDocument != null) {
 			if (mapsTo.getLocal()==null) {
-				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
+				throw new SBOLValidationException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
 			}
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (mapsTo.getRemote()==null) {
-				throw new IllegalArgumentException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
+				throw new SBOLValidationException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
 			}
 			if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
-				throw new IllegalArgumentException("Functional Component '" + mapsTo.getRemoteURI() + "' is private.");
+				throw new SBOLValidationException("Functional Component '" + mapsTo.getRemoteURI() + "' is private.");
 			}
 			if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
 				if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
-					throw new IllegalArgumentException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+					throw new SBOLValidationException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
 				}
 			}
 		}
@@ -248,7 +250,7 @@ public class Module extends Identified {
 	 * @return {@code true} if the matching MapsTo instance is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public boolean removeMapsTo(MapsTo mapsTo) {
+	public boolean removeMapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(mapsTo,mapsTos);
 	}
@@ -260,7 +262,12 @@ public class Module extends Identified {
 	 * @return the matching MapsTo instance
 	 */
 	public MapsTo getMapsTo(String displayId) {
-		return mapsTos.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+		try {
+			return mapsTos.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+		}
+		catch (SBOLValidationException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -292,7 +299,7 @@ public class Module extends Identified {
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearMapsTos() {
+	public void clearMapsTos() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = mapsTos.values().toArray();
 		for (Object mapsTo : valueSetArray) {
@@ -302,8 +309,9 @@ public class Module extends Identified {
 
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
+	 * @throws SBOLValidationException 
 	 */
-	void setMapsTos(Set<MapsTo> mappings) {
+	void setMapsTos(Set<MapsTo> mappings) throws SBOLValidationException {
 		clearMapsTos();
 		for (MapsTo mapping : mappings) {
 			addMapsTo(mapping);
@@ -345,15 +353,16 @@ public class Module extends Identified {
 
 
 	@Override
-	protected Module deepCopy() {
+	protected Module deepCopy() throws SBOLValidationException {
 		return new Module(this);
 	}
 
 	/**
 	 * Assume this Module object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ModuleDefinition#copy(String, String, String)}.
+	 * @throws SBOLValidationException 
 	 */
-	void updateCompliantURI(String URIprefix, String displayId, String version) {
+	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
 			this.setWasDerivedFrom(this.getIdentity());
 		}

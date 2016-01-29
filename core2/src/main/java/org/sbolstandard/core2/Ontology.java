@@ -18,12 +18,17 @@ public abstract class Ontology {
 	 * 
 	 * @param stanzaURI
 	 * @return the extracted ID of the given stanza's URI.
-	 * @throws IllegalArgumentException if the given stanzaURI does not begin with "http://identifiers.org/so/".
+	 * @throws SBOLValidationException if the given stanzaURI does not begin with "http://identifiers.org/so/".
 	 */
 	public final String getId(URI stanzaURI) {
 		String stanzaURIstr = stanzaURI.toString().trim();
 		if (!stanzaURIstr.contains(URI_PREFIX)) {
-			throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+			try {
+				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+			}
+			catch (SBOLValidationException e) {
+				return null;
+			}
 		}
 		int beginIndex = stanzaURIstr.lastIndexOf("/") + 1;
 		int endIndex = stanzaURIstr.length() -1 ;
@@ -57,12 +62,17 @@ public abstract class Ontology {
 	 * 
 	 * @param stanzaURI
 	 * @return the name field of the stanza that matches the ID in the given stanzaURI, or {@code null} if this no match is found.
-	 * @throws IllegalArgumentException if the given stanzaURI does not begin with "http://identifiers.org/so/".
+	 * @throws SBOLValidationException if the given stanzaURI does not begin with "http://identifiers.org/so/".
 	 */
 	public final String getName(URI stanzaURI) {
 		String oboURIstr = stanzaURI.toString().trim();
 		if (!oboURIstr.contains(URI_PREFIX)) {
-			throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+			try {
+				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+			}
+			catch (SBOLValidationException e) {
+				return null;
+			}
 		}
 		int beginIndex = oboURIstr.lastIndexOf("/") + 1;
 		int endIndex = oboURIstr.length() -1 ;
@@ -129,10 +139,20 @@ public abstract class Ontology {
 		OBOStanza stanza1 = sequenceOntology.getStanza(Id1);
 		OBOStanza stanza2 = sequenceOntology.getStanza(Id2);
 		if (stanza1 == null) {
-			throw new IllegalArgumentException("Illegal ID: " + Id1 + ". No match was found.");
+			try {
+				throw new SBOLValidationException("Illegal ID: " + Id1 + ". No match was found.");
+			}
+			catch (SBOLValidationException e) {
+				return false;
+			}
 		}
 		if (stanza2 == null) {
-			throw new IllegalArgumentException("Illegal ID: " + Id2 + ". No match was found.");
+			try {
+				throw new SBOLValidationException("Illegal ID: " + Id2 + ". No match was found.");
+			}
+			catch (SBOLValidationException e) {
+				return false;
+			}
 		}
 		return sequenceOntology.isDescendantOf(stanza1, stanza2);
 	}

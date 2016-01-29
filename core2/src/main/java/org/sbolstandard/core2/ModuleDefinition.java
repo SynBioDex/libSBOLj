@@ -29,7 +29,7 @@ public class ModuleDefinition extends TopLevel {
 	private HashMap<URI, FunctionalComponent>	functionalComponents;
 	private Set<URI>							models;
 
-	ModuleDefinition(URI identity) {
+	ModuleDefinition(URI identity) throws SBOLValidationException {
 		super(identity);
 		this.roles = new HashSet<>();
 		this.modules = new HashMap<>();
@@ -55,13 +55,13 @@ public class ModuleDefinition extends TopLevel {
 	 * @param prefix
 	 * @param displayId
 	 * @param version
-	 * @throws IllegalArgumentException if the defaultURIprefix is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
-	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
-	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
-	public ModuleDefinition(String prefix,String displayId,String version) {
+	public ModuleDefinition(String prefix,String displayId,String version) throws SBOLValidationException {
 		this(URIcompliance.createCompliantURI(prefix, displayId, version));
 		prefix = URIcompliance.checkURIprefix(prefix);
 		validateIdVersion(displayId, version);
@@ -70,7 +70,7 @@ public class ModuleDefinition extends TopLevel {
 		setVersion(version);
 	}
 
-	private ModuleDefinition(ModuleDefinition moduleDefinition) {
+	private ModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
 		super(moduleDefinition);
 		this.roles = new HashSet<>();
 		this.modules = new HashMap<>();
@@ -103,7 +103,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return {@code true} if this set did not already contain the specified role.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public boolean addRole(URI roleURI) {
+	public boolean addRole(URI roleURI) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		return roles.add(roleURI);
@@ -120,7 +120,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return {@code true} if the matching role reference is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public boolean removeRole(URI roleURI) {
+	public boolean removeRole(URI roleURI) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		return roles.remove(roleURI);
@@ -137,7 +137,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param roles The set of URI roles to be added to this ModuleDefinition
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void setRoles(Set<URI> roles) {
+	public void setRoles(Set<URI> roles) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		clearRoles();
@@ -180,7 +180,7 @@ public class ModuleDefinition extends TopLevel {
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearRoles() {
+	public void clearRoles() throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		roles.clear();
@@ -195,8 +195,9 @@ public class ModuleDefinition extends TopLevel {
 	 * @param identity
 	 * @param moduleDefinitionURI
 	 * @return a Module instance
+	 * @throws SBOLValidationException 
 	 */
-	Module createModule(URI identity, URI moduleDefinitionURI) {
+	Module createModule(URI identity, URI moduleDefinitionURI) throws SBOLValidationException {
 		Module module = new Module(identity, moduleDefinitionURI);
 		addModule(module);
 		return module;
@@ -222,7 +223,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return a Module instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public Module createModule(String displayId, String moduleDefinitionId, String version) {
+	public Module createModule(String displayId, String moduleDefinitionId, String version) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		URI module = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
@@ -249,7 +250,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return a Module instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public Module createModule(String displayId, String moduleDefinitionId) {
+	public Module createModule(String displayId, String moduleDefinitionId) throws SBOLValidationException {
 		return createModule(displayId, moduleDefinitionId, "");
 	}
 
@@ -263,7 +264,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <p>
 	 * If the SBOLDocument instance already completely specifies all URIs and
 	 * the given {@code moduleDefinitionURI} is not found in them, then an
-	 * {@link IllegalArgumentException} is thrown.
+	 * {@link SBOLValidationException} is thrown.
 	 * <p>
 	 * This method creates a compliant Module URI with the default URI prefix
 	 * for this SBOLDocument instance, the given {@code displayId}, and this
@@ -273,15 +274,15 @@ public class ModuleDefinition extends TopLevel {
 	 * @param moduleDefinitionURI The moduleDefinition URI reference for this object
 	 * @return a Module instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies all URIs and the given {@code definitionURI}
+	 * @throws SBOLValidationException if the associated SBOLDocument instance already completely specifies all URIs and the given {@code definitionURI}
                is not found in them.
 	 */
-	public Module createModule(String displayId, URI moduleDefinitionURI) {
+	public Module createModule(String displayId, URI moduleDefinitionURI) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModuleDefinition(moduleDefinitionURI) == null) {
-				throw new IllegalArgumentException("Module definition '" + moduleDefinitionURI
+				throw new SBOLValidationException("Module definition '" + moduleDefinitionURI
 						+ "' does not exist.");
 			}
 		}
@@ -300,13 +301,14 @@ public class ModuleDefinition extends TopLevel {
 	 * Module instances, and then associates it with the SBOLDocument instance that also contains
 	 * this ModuleDefinition object.
 	 * @param module
+	 * @throws SBOLValidationException 
 	 */
-	void addModule(Module module) {
+	void addModule(Module module) throws SBOLValidationException {
 		module.setSBOLDocument(this.sbolDocument);
 		module.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (module.getDefinition() == null) {
-				throw new IllegalArgumentException("ModuleDefinition '" + module.getDefinitionURI().toString()
+				throw new SBOLValidationException("ModuleDefinition '" + module.getDefinitionURI().toString()
 						+ "' does not exist.");
 			}
 		}
@@ -335,7 +337,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 *
 	 */
-	public boolean removeModule(Module module) {
+	public boolean removeModule(Module module) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		return removeChildSafely(module, modules);
@@ -349,8 +351,13 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching Module instance if present, or {@code null} otherwise.
 	 */
 	public Module getModule(String displayId) {
-		return modules.get(createCompliantURI(this.getPersistentIdentity().toString(), displayId,
-				this.getVersion()));
+		try {
+			return modules.get(createCompliantURI(this.getPersistentIdentity().toString(), displayId,
+					this.getVersion()));
+		}
+		catch (SBOLValidationException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -384,7 +391,7 @@ public class ModuleDefinition extends TopLevel {
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearModules() {
+	public void clearModules() throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		Object[] valueSetArray = modules.values().toArray();
@@ -406,7 +413,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 *
 	 */
-	void setModules(Set<Module> modules) {
+	void setModules(Set<Module> modules) throws SBOLValidationException {
 		clearModules();
 		if (modules == null)
 			return;
@@ -421,8 +428,9 @@ public class ModuleDefinition extends TopLevel {
 	 * ModuleDefinition object.
 	 *
 	 * @return the created Interaction instance.
+	 * @throws SBOLValidationException 
 	 */
-	Interaction createInteraction(URI identity, Set<URI> type) {
+	Interaction createInteraction(URI identity, Set<URI> type) throws SBOLValidationException {
 		Interaction interaction = new Interaction(identity, type);
 		addInteraction(interaction);
 		return interaction;
@@ -445,7 +453,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the created Interaction instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public Interaction createInteraction(String displayId, Set<URI> types) {
+	public Interaction createInteraction(String displayId, Set<URI> types) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -475,7 +483,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the created Interaction instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public Interaction createInteraction(String displayId, URI type) {
+	public Interaction createInteraction(String displayId, URI type) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -492,8 +500,9 @@ public class ModuleDefinition extends TopLevel {
 
 	/**
 	 * Adds the given Interaction instance to the list of Interaction instances.
+	 * @throws SBOLValidationException 
 	 */
-	void addInteraction(Interaction interaction) {
+	void addInteraction(Interaction interaction) throws SBOLValidationException {
 		addChildSafely(interaction, interactions, "interaction", functionalComponents, modules);
 		interaction.setSBOLDocument(this.sbolDocument);
 		interaction.setModuleDefinition(this);
@@ -515,7 +524,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return {@code true} if the matching Interaction instance is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public boolean removeInteraction(Interaction interaction) {
+	public boolean removeInteraction(Interaction interaction) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		return removeChildSafely(interaction, interactions);
@@ -529,8 +538,13 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, {@code null} otherwise.
 	 */
 	public Interaction getInteraction(String displayId) {
-		return interactions.get(createCompliantURI(this.getPersistentIdentity().toString(),
-				displayId, this.getVersion()));
+		try {
+			return interactions.get(createCompliantURI(this.getPersistentIdentity().toString(),
+					displayId, this.getVersion()));
+		}
+		catch (SBOLValidationException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -565,9 +579,8 @@ public class ModuleDefinition extends TopLevel {
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearInteractions() {
-		if (sbolDocument != null)
-			sbolDocument.checkReadOnly();
+	public void clearInteractions() throws SBOLValidationException {
+		if (sbolDocument != null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = interactions.values().toArray();
 		for (Object interaction : valueSetArray) {
 			removeInteraction((Interaction) interaction);
@@ -577,8 +590,9 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of interaction instances, then appends all of
 	 * the elements in the given collection to the end of this list.
+	 * @throws SBOLValidationException 
 	 */
-	void setInteractions(Set<Interaction> interactions) {
+	void setInteractions(Set<Interaction> interactions) throws SBOLValidationException {
 		clearInteractions();
 		if (interactions == null)
 			return;
@@ -593,10 +607,11 @@ public class ModuleDefinition extends TopLevel {
 	 * @param definitionURI
 	 * @param direction
 	 * @return a FunctionalComponent instance.
+	 * @throws SBOLValidationException 
 	 */
 
 	FunctionalComponent createFunctionalComponent(URI identity, AccessType access,
-			URI definitionURI, DirectionType direction) {
+			URI definitionURI, DirectionType direction) throws SBOLValidationException {
 		FunctionalComponent functionalComponent =
 				new FunctionalComponent(identity, access, definitionURI, direction);
 		addFunctionalComponent(functionalComponent);
@@ -627,7 +642,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
-			String definitionId, String version, DirectionType direction) {
+			String definitionId, String version, DirectionType direction) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		URI definitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
@@ -658,7 +673,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
-			String definitionId, DirectionType direction) {
+			String definitionId, DirectionType direction) throws SBOLValidationException {
 		return createFunctionalComponent(displayId, access, definitionId, "", direction);
 	}
 
@@ -672,7 +687,7 @@ public class ModuleDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 * <p>
 	 * If the SBOLDocument instance already completely specifies all URIs and
-	 * the given {@code fcURI} is not found in them, then an {@link IllegalArgumentException} is thrown.
+	 * the given {@code fcURI} is not found in them, then an {@link SBOLValidationException} is thrown.
 	 * <p>
 	 * This method creates a compliant FunctionalComponent URI with the default
 	 * URI prefix for this SBOLDocument instance, the given {@code displayId}, and this
@@ -684,16 +699,16 @@ public class ModuleDefinition extends TopLevel {
 	 * @param direction
 	 * @return a FunctionalComponent instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the associated SBOLDocument instance already completely
 	           specifies all URIs and the given {@code definitionURI} is not found in them.
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
-			URI componentDefinitionURI, DirectionType direction) {
+			URI componentDefinitionURI, DirectionType direction) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(componentDefinitionURI) == null) {
-				throw new IllegalArgumentException("Component definition '" + componentDefinitionURI
+				throw new SBOLValidationException("Component definition '" + componentDefinitionURI
 						+ "' does not exist.");
 			}
 		}
@@ -710,13 +725,14 @@ public class ModuleDefinition extends TopLevel {
 
 	/**
 	 * Adds the given instance to the list of components.
+	 * @throws SBOLValidationException 
 	 */
-	void addFunctionalComponent(FunctionalComponent functionalComponent) {
+	void addFunctionalComponent(FunctionalComponent functionalComponent) throws SBOLValidationException {
 		functionalComponent.setSBOLDocument(this.sbolDocument);
 		functionalComponent.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (functionalComponent.getDefinition()== null) {
-				throw new IllegalArgumentException("ComponentDefinition '" + functionalComponent.getDefinitionURI()
+				throw new SBOLValidationException("ComponentDefinition '" + functionalComponent.getDefinitionURI()
 						+ "' does not exist.");
 			}
 		}
@@ -746,7 +762,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException the given FunctionalComponent instance is referenced.
 	 */
-	public boolean removeFunctionalComponent(FunctionalComponent functionalComponent) {
+	public boolean removeFunctionalComponent(FunctionalComponent functionalComponent) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		for (Interaction i : interactions.values()) {
@@ -797,8 +813,13 @@ public class ModuleDefinition extends TopLevel {
 	 * @return the matching instance if present, or {@code null} otherwise.
 	 */
 	public FunctionalComponent getFunctionalComponent(String displayId) {
-		return functionalComponents.get(createCompliantURI(this.getPersistentIdentity().toString(),
-				displayId, this.getVersion()));
+		try {
+			return functionalComponents.get(createCompliantURI(this.getPersistentIdentity().toString(),
+					displayId, this.getVersion()));
+		}
+		catch (SBOLValidationException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -834,7 +855,7 @@ public class ModuleDefinition extends TopLevel {
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearFunctionalComponents() {
+	public void clearFunctionalComponents() throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		Object[] valueSetArray = functionalComponents.values().toArray();
@@ -846,8 +867,9 @@ public class ModuleDefinition extends TopLevel {
 	/**
 	 * Clears the existing list of FunctionalComponent instances, then appends
 	 * all of the elements in the given collection to the end of this list.
+	 * @throws SBOLValidationException 
 	 */
-	void setFunctionalComponents(Set<FunctionalComponent> components) {
+	void setFunctionalComponents(Set<FunctionalComponent> components) throws SBOLValidationException {
 		clearFunctionalComponents();
 		if (components == null)
 			return;
@@ -867,7 +889,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <p>
 	 * If the SBOLDocument instance already completely specifies all its
 	 * reference URIs and the given model's URI
-	 * is not found in them, then an {@link IllegalArgumentException} is thrown.
+	 * is not found in them, then an {@link SBOLValidationException} is thrown.
 	 * <p>
 	 * This method calls {@link #addModel(URI)} with this component definition URI.
 	 *
@@ -875,15 +897,15 @@ public class ModuleDefinition extends TopLevel {
 	 * @return {@code true} if this set did not already contain the given Model
 	 *         instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies all URIs
+	 * @throws SBOLValidationException if the associated SBOLDocument instance already completely specifies all URIs
 	 *             and the given Model instance's URI is not found in them.
 	 */
-	public boolean addModel(Model model) {
+	public boolean addModel(Model model) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModel(model.getIdentity()) == null) {
-				throw new IllegalArgumentException("Model '" + model.getIdentity()
+				throw new SBOLValidationException("Model '" + model.getIdentity()
 						+ "' does not exist.");
 			}
 		}
@@ -909,7 +931,7 @@ public class ModuleDefinition extends TopLevel {
 	 *         instance URI.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public boolean addModel(String modelId, String version) {
+	public boolean addModel(String modelId, String version) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		URI modelURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
@@ -935,7 +957,7 @@ public class ModuleDefinition extends TopLevel {
 	 *         instance URI.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public boolean addModel(String modelId) {
+	public boolean addModel(String modelId) throws SBOLValidationException {
 		return addModel(modelId,"");
 	}
 
@@ -950,22 +972,22 @@ public class ModuleDefinition extends TopLevel {
 	 * <p>
 	 * If the SBOLDocument instance already completely specifies all its
 	 * reference URIs and the given {@code modelURI} is not found in them, then
-	 * an {@link IllegalArgumentException} is thrown.
+	 * an {@link SBOLValidationException} is thrown.
 	 *
 	 * @param modelURI
 	 * @return {@code true} if this set did not already contain the given Model
 	 *         instance URI.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the associated SBOLDocument instance already completely
 	 *             specifies all URIs and the given {@code modelURI} is not found in them.
 
 	 */
-	public boolean addModel(URI modelURI) {
+	public boolean addModel(URI modelURI) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModel(modelURI) == null) {
-				throw new IllegalArgumentException("Model '" + modelURI + "' does not exist.");
+				throw new SBOLValidationException("Model '" + modelURI + "' does not exist.");
 			}
 		}
 		return models.add(modelURI);
@@ -984,7 +1006,7 @@ public class ModuleDefinition extends TopLevel {
 	 *         {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public boolean removeModel(URI modelURI) {
+	public boolean removeModel(URI modelURI) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		return models.remove(modelURI);
@@ -1002,7 +1024,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param models
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void setModels(Set<URI> models) {
+	public void setModels(Set<URI> models) throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		clearModels();
@@ -1059,7 +1081,7 @@ public class ModuleDefinition extends TopLevel {
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearModels() {
+	public void clearModels() throws SBOLValidationException {
 		if (sbolDocument != null)
 			sbolDocument.checkReadOnly();
 		models.clear();
@@ -1116,7 +1138,7 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	@Override
-	protected ModuleDefinition deepCopy() {
+	protected ModuleDefinition deepCopy() throws SBOLValidationException {
 		return new ModuleDefinition(this);
 	}
 
@@ -1129,7 +1151,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 
 	@Override
-	ModuleDefinition copy(String URIprefix, String displayId, String version) {
+	ModuleDefinition copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		ModuleDefinition cloned = this.deepCopy();
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		cloned.setDisplayId(displayId);
@@ -1249,11 +1271,11 @@ public class ModuleDefinition extends TopLevel {
 		return allDescendantsCompliant;
 	}
 
-	public ModuleDefinition flatten(String prefix,String displayId,String version) {
+	public ModuleDefinition flatten(String prefix,String displayId,String version) throws SBOLValidationException {
 		return flattenRecurse().copy(prefix, displayId, version);
 	}
 
-	private ModuleDefinition flattenRecurse() {
+	private ModuleDefinition flattenRecurse() throws SBOLValidationException {
 		ModuleDefinition flatModuleDefinition = this.deepCopy();
 		for (Module module : this.getModules()) {
 			ModuleDefinition flatModule = module.getDefinition().flattenRecurse();

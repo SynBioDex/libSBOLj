@@ -782,7 +782,7 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/SimpleModuleDefinition.rdf", document, "rdf", true);
 	}
 
-	private static void setDefaultNameSpace(SBOLDocument document, String uri)
+	private static void setDefaultNameSpace(SBOLDocument document, String uri) throws SBOLValidationException
 	{
 		if (uri.endsWith("/"))
 		{
