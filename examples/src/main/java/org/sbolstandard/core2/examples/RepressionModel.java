@@ -1,13 +1,21 @@
 package org.sbolstandard.core2.examples;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashSet;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
 import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.DirectionType;
+import org.sbolstandard.core2.GenericTopLevel;
 import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.ModuleDefinition;
@@ -15,6 +23,7 @@ import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.RestrictionType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
+import org.sbolstandard.core2.SBOLReader;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceOntology;
@@ -165,8 +174,8 @@ public class RepressionModel {
 		// Create ComponentDefinition for gRNA_b gene
 		ComponentDefinition gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", version, ComponentDefinition.DNA);
 		gRNA_b_gene.addRole(SequenceOntology.PROMOTER);
-		cas9m_BFP_gene.createSequenceConstraint("gRNA_b_gene_constraint1", RestrictionType.PRECEDES, "CRa_U6", "gRNA_b_nc");
-		cas9m_BFP_gene.createSequenceConstraint("gRNA_b_gene_constraint2", RestrictionType.PRECEDES, "gRNA_b_nc","gRNA_b_terminator");
+		gRNA_b_gene.createSequenceConstraint("gRNA_b_gene_constraint1", RestrictionType.PRECEDES, "CRa_U6", "gRNA_b_nc");
+		gRNA_b_gene.createSequenceConstraint("gRNA_b_gene_constraint2", RestrictionType.PRECEDES, "gRNA_b_nc","gRNA_b_terminator");
 
 		// Create ComponentDefinition for gRNA_b RNA
 		doc.createComponentDefinition("gRNA_b", version, ComponentDefinition.RNA);
@@ -300,9 +309,102 @@ public class RepressionModel {
 			SBOLWriter.write(doc, System.out);
 		}
 		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// END of Repression Model construction. Code below uses trivial manipulations to show other major methods in the library.
+		
+		ComponentDefinition cas9_generic1 = doc.getComponentDefinition("cas9_generic", version);
+		ComponentDefinition cas9_generic2 = doc.getComponentDefinition("cas9_generic", null);
+		if (cas9_generic1.equals(cas9_generic2)) {
+			System.out.println("Two Cas9 generic protein objects are equal.");
+		}
+		gRNA_b_gene.getSequenceConstraint("gRNA_b_gene_constraint1");
+		
+		CRISPR_Template.setName("C~R*I!S@P#R-based Repression Template");
+		if (CRISPR_Template.isSetName()) {
+			CRISPR_Template.unsetName();
+			CRISPR_Template.setName("CRISPR-based Repression Template");
+		}
+		CRISPR_Template.setDescription(
+				"Authors: S. Kiani, J. Beal, M. Ebrahimkhani, J. Huh, R. Hall, Z. Xie, Y. Li, and R. Weiss" + 
+				"Titel: Crispr transcriptional repression devices and layered circuits in mammalian cells" + 
+				"Journal: Nature Methods, vol. 11, no. 7, pp. 723–726, 2014.");
+		
+		URI gRNA_b_gene_role2 = URI.create("http://identifiers.org/so/SO:0000613"); 
+		gRNA_b_gene.addRole(gRNA_b_gene_role2);
+		if (gRNA_b_gene.containsRole(gRNA_b_gene_role2)) {
+			gRNA_b_gene.removeRole(gRNA_b_gene_role2);
+		}
+		gRNA_b_gene.clearRoles();
+		if (!gRNA_b_gene.getRoles().isEmpty()) {
+			System.out.println("gRNA_b_gene set is not empty.");
+		}
+		gRNA_b_gene.setRoles(new HashSet<URI>(
+				Arrays.asList(
+				SequenceOntology.PROMOTER))
+				);
+		CRP_b.clearSequences();
+		CRP_b.addSequence("CRP_b_seq");
+//		CRP_b.addSequence(
+//				  URI.create("http://partsregistry.org/seq/partseq_154")
+//				  );
+		String prURI = "http://partsregistry.org"; 
+		String prPrefix = "pr";
+		doc.addNamespace(URI.create(prURI) , prPrefix);
+		ComponentDefinition pConst = doc.getComponentDefinition("pConst", version);
+		pConst.createAnnotation(new QName(prURI, "experience", prPrefix),
+				URI.create("http://parts.igem.org/Part:BBa_J23119:Experience"));		
+		String myersLabURI = "http://www.async.ece.utah.edu";
+		String myersLabPrefix = "myersLab";	
+		GenericTopLevel datasheet=doc.createGenericTopLevel(
+				"datasheet",
+				"1.1",
+				new QName(myersLabURI, "datasheet", myersLabPrefix));
+		datasheet.setName("Datasheet for Custom Parameters");		
+		datasheet.createAnnotation(
+				new QName(myersLabURI, "characterizationData", myersLabPrefix), 
+				URI.create(myersLabURI + "/measurement/BBa_J23119"));				
+		datasheet.createAnnotation(
+				new QName(myersLabURI, "transcriptionRate", myersLabPrefix), 
+				0.75);
+		pConst.createAnnotation(
+				new QName(myersLabURI, "datasheet", myersLabPrefix), 
+				datasheet.getIdentity());
+
+		ComponentDefinition pConst_alt = (ComponentDefinition) doc.createCopy(pConst, "pConst_alt");
+		pConst_alt.createAnnotation(
+				new QName(prURI, "", prPrefix),
+				URI.create("http://parts.igem.org/Part:BBa_J23100"));
+		Sequence pConst_alt_seq = doc.createSequence("pConst_alt_seq", 
+											version, 
+											"ttgacggctagctcagtcctaggtacagtgctagc",
+											Sequence.IUPAC_DNA); 
+		pConst_alt.addSequence(pConst_alt_seq);
+		
+		try {
+			SBOLWriter.write(doc,(System.out));
+		} catch (XMLStreamException | FactoryConfigurationError
+				| CoreIoException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			SBOLWriter.write(doc, "RepressionModel.rdf");
+		} catch (XMLStreamException | FactoryConfigurationError
+				| CoreIoException | IOException e) {
+			e.printStackTrace();
+		}
+				
 	}
+	
+	public static SBOLDocument writeThenRead(SBOLDocument doc)
+	               throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
+	  {
+	    ByteArrayOutputStream out = new ByteArrayOutputStream();
+	    SBOLWriter.write(doc, out);
+	    return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
+	  }
+
 
 }
