@@ -4,7 +4,6 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
@@ -114,7 +113,7 @@ public class SBOLTestUtils {
 
 	}
 	
-	public static void setDefaultNameSpace(SBOLDocument document, String uri)
+	public static void setDefaultNameSpace(SBOLDocument document, String uri) throws SBOLValidationException
 	{
 		if (uri.endsWith("/"))
 		{
@@ -152,7 +151,7 @@ public class SBOLTestUtils {
 		participation2.addRole(SystemsBiologyOntology.INHIBITOR);
 	}
 
-	public static ComponentDefinition createComponenDefinition(SBOLDocument document,QName identifier,String name, URI type, URI role,String description)
+	public static ComponentDefinition createComponenDefinition(SBOLDocument document,QName identifier,String name, URI type, URI role,String description) throws SBOLValidationException
 	{
 		ComponentDefinition componentDef = document.createComponentDefinition(
 				identifier.getLocalPart(),
@@ -163,7 +162,7 @@ public class SBOLTestUtils {
 		return componentDef;
 	}
 
-	public static Sequence addPRSequence(SBOLDocument document, ComponentDefinition componentDef, String elements)
+	public static Sequence addPRSequence(SBOLDocument document, ComponentDefinition componentDef, String elements) throws SBOLValidationException
 	{
 		return addSequence(document, componentDef, componentDef.getDisplayId(), Terms.sequenceTypes.nucleotides, elements);
 	}
@@ -221,7 +220,7 @@ public class SBOLTestUtils {
 	}
 	}
 
-	public static Sequence addSequence(SBOLDocument document, ComponentDefinition componentDef, String displayId, URI sequenceType, String elements)
+	public static Sequence addSequence(SBOLDocument document, ComponentDefinition componentDef, String displayId, URI sequenceType, String elements) throws SBOLValidationException
 	{
 		Sequence sequence=document.createSequence(displayId,elements,sequenceType);
 		componentDef.addSequence(sequence.getIdentity());
@@ -235,7 +234,7 @@ public class SBOLTestUtils {
 
 
 	public static SBOLDocument writeAndRead(SBOLDocument doc, boolean compliant)
-			throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
+			throws XMLStreamException, FactoryConfigurationError, CoreIoException, SBOLValidationException
 	{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		SBOLWriter.write(doc, out);

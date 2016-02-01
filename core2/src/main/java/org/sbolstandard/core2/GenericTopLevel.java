@@ -22,7 +22,7 @@ public class GenericTopLevel extends TopLevel{
 
 	private QName rdfType;
 
-	GenericTopLevel(URI identity, QName rdfType) {
+	GenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		super(identity);
 		this.rdfType = rdfType;
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
@@ -50,13 +50,13 @@ public class GenericTopLevel extends TopLevel{
 	 * @param displayId
 	 * @param version
 	 * @param rdfType
-	 * @throws IllegalArgumentException if the defaultURIprefix is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
-	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
-	 * @throws IllegalArgumentException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
-	public GenericTopLevel(String prefix,String displayId,String version, QName rdfType) {
+	public GenericTopLevel(String prefix,String displayId,String version, QName rdfType) throws SBOLValidationException {
 		this(URIcompliance.createCompliantURI(prefix, displayId, version), rdfType);
 		prefix = URIcompliance.checkURIprefix(prefix);
 		validateIdVersion(displayId, version);
@@ -65,7 +65,7 @@ public class GenericTopLevel extends TopLevel{
 		setVersion(version);
 	}
 
-	private GenericTopLevel(GenericTopLevel genericTopLevel) {
+	private GenericTopLevel(GenericTopLevel genericTopLevel) throws SBOLValidationException {
 		super(genericTopLevel);
 		this.setRDFType(genericTopLevel.getRDFType());
 	}
@@ -88,12 +88,12 @@ public class GenericTopLevel extends TopLevel{
 	 *
 	 * @param rdfType the RDF type property of this object
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code rdfType} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code rdfType} argument is {@code null}
 	 */
-	public void setRDFType(QName rdfType) {
+	public void setRDFType(QName rdfType) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (rdfType == null) {
-			throw new IllegalArgumentException("RDF type is a required field.");
+			throw new SBOLValidationException("RDF type is a required field.");
 		}
 		this.rdfType = rdfType;
 	}
@@ -124,7 +124,7 @@ public class GenericTopLevel extends TopLevel{
 	}
 
 	@Override
-	protected GenericTopLevel deepCopy() {
+	protected GenericTopLevel deepCopy() throws SBOLValidationException {
 		return new GenericTopLevel(this);
 	}
 
@@ -153,7 +153,7 @@ public class GenericTopLevel extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	GenericTopLevel copy(String URIprefix, String displayId, String version) {
+	GenericTopLevel copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		GenericTopLevel cloned = this.deepCopy();
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);

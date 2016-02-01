@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
  * @version 2.0-beta
  */
 
-public class SBOLValidationException extends RuntimeException {
+public class SBOLValidationException extends Exception {
 	/**
 	 * 
 	 */

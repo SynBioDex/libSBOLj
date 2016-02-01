@@ -40,7 +40,7 @@ public class Annotation {
 	 * @param literal - used to denote an object that is of type String
 	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
-	public Annotation(QName qName, String literal) {
+	public Annotation(QName qName, String literal) throws SBOLValidationException {
 		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
@@ -55,7 +55,7 @@ public class Annotation {
 	 * @param literal Used to denote an object that is of type Integer
 	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
-	public Annotation(QName qName, int literal) {
+	public Annotation(QName qName, int literal) throws SBOLValidationException {
 		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
@@ -91,7 +91,7 @@ public class Annotation {
 	 * @param literal - used to denote an object that is of type URI
 	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
-	public Annotation(QName qName, URI literal) {
+	public Annotation(QName qName, URI literal) throws SBOLValidationException {
 		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
@@ -107,8 +107,9 @@ public class Annotation {
 	 * @param nestedQName A part of NestedAnnotations composed of a namespace, an OPTIONAL prefix, and a local name
 	 * @param nestedURI is a part of NestedAnnotations used to denote an object that is of type URI
 	 * @param annotations A property of NestedAnnotations that contains zero or more Annotation objects that store data in the form of name/value property pairs.
+	 * @throws SBOLValidationException 
 	 */
-	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
+	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) throws SBOLValidationException {
 		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
@@ -125,7 +126,7 @@ public class Annotation {
 		value = NamedProperty(qName, NestedDocument(nestedQName, nestedURI, NamedProperties(list)));
 	}
 
-	Annotation(NamedProperty<QName> value) {
+	Annotation(NamedProperty<QName> value) throws SBOLValidationException {
 		if (value.getName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				value.getName().getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			if (value.getName().equals(Sbol2Terms.Identified.timeStamp)) {
@@ -311,7 +312,13 @@ public class Annotation {
 		if (value.getValue() instanceof NestedDocument<?>) {
 			List<Annotation> annotations = new ArrayList<>();
 			for (NamedProperty<QName> namedProperty : ((NestedDocument<QName>) value.getValue()).getProperties()) {
-				annotations.add(new Annotation(namedProperty));
+				try {
+					annotations.add(new Annotation(namedProperty));
+				}
+				catch (SBOLValidationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			return annotations;
 		}

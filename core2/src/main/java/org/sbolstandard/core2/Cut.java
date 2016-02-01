@@ -15,12 +15,13 @@ import java.net.URI;
 public class Cut extends Location{
 
 	private int at;
-	Cut(URI identity, int at) {
+	
+	Cut(URI identity, int at) throws SBOLValidationException {
 		super(identity);
 		setAt(at);
 	}
 
-	private Cut(Cut cut) {
+	private Cut(Cut cut) throws SBOLValidationException {
 		super(cut);
 		this.setAt(cut.getAt());
 	}
@@ -44,18 +45,18 @@ public class Cut extends Location{
 	 *
 	 * @param at The discrete position that that corresponds to the index of a character in the elements String of a Sequence.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the given {@code at} value is less than 0
+	 * @throws SBOLValidationException if the given {@code at} value is less than 0
 	 */
-	public void setAt(int at) {
+	public void setAt(int at) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (at<0) {
-			throw new IllegalArgumentException("Cut "+this.getIdentity()+" must have a value greater than or equal to zero.");
+			throw new SBOLValidationException("Cut "+this.getIdentity()+" must have a value greater than or equal to zero.");
 		}
 		this.at = at;
 	}
 
 	@Override
-	protected Cut deepCopy() {
+	protected Cut deepCopy() throws SBOLValidationException {
 		return new Cut(this);
 	}
 

@@ -7,16 +7,16 @@ import java.util.regex.Pattern;
 
 final class URIcompliance {
 	
-	static void validateIdVersion(String displayId, String version) {
+	static void validateIdVersion(String displayId, String version) throws SBOLValidationException {
 		if (displayId!=null && !isDisplayIdCompliant(displayId)) {
-			throw new IllegalArgumentException("Display id `" + displayId + "' is not valid.");
+			throw new SBOLValidationException("Display id `" + displayId + "' is not valid.");
 		}
 		if (version!=null && !isVersionCompliant(version)) {
-			throw new IllegalArgumentException("Version `" + version + "' is not valid.");
+			throw new SBOLValidationException("Version `" + version + "' is not valid.");
 		}
 	}
 
-	static URI createCompliantURI(String prefix, String displayId, String version) {
+	static URI createCompliantURI(String prefix, String displayId, String version) throws SBOLValidationException {
 		validateIdVersion(displayId, version);
 		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
 			prefix += "/";
@@ -27,7 +27,7 @@ final class URIcompliance {
 		return URI.create(prefix + displayId + '/' + version);
 	}
 	
-	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) {
+	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) throws SBOLValidationException {
 		validateIdVersion(displayId, version);
 		if (!useType) return createCompliantURI(prefix,displayId,version);
 		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
@@ -52,7 +52,7 @@ final class URIcompliance {
 			return m.group(1);
 		}
 		else {
-			return null;//throw new IllegalArgumentException(objURI + " does not include a valid persistentIdentity.");
+			return null;//throw new SBOLValidationException(objURI + " does not include a valid persistentIdentity.");
 		}
 
 	}
@@ -300,9 +300,9 @@ final class URIcompliance {
 		return m.matches();
 	}
 
-	static boolean isVersionCompliant(String newVersion) {
+	static boolean isVersionCompliant(String newVersion) throws SBOLValidationException {
 		if (newVersion==null) {
-			throw new IllegalArgumentException("Version must not be null");
+			throw new SBOLValidationException("Version must not be null");
 		}
 		if (newVersion.equals("")) return true;
 		Pattern r = Pattern.compile(versionPattern);
@@ -379,18 +379,18 @@ final class URIcompliance {
 	 *
 	 * @param URIprefix
 	 * @return URIprefix
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
 	 */
-	static String checkURIprefix(String URIprefix) {
+	static String checkURIprefix(String URIprefix) throws SBOLValidationException {
 		if (URIprefix==null) {
-			throw new IllegalArgumentException("URI prefix must not be null");
+			throw new SBOLValidationException("URI prefix must not be null");
 		}
 		if (!URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
 			URIprefix += "/";
 		}
 		if (!isURIprefixCompliant(URIprefix)) {
-			throw new IllegalArgumentException("URI prefix '"+URIprefix+"' is invalid");
+			throw new SBOLValidationException("URI prefix '"+URIprefix+"' is invalid");
 		}
 		return URIprefix;
 	}
