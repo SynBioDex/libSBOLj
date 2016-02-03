@@ -171,7 +171,7 @@ public class SBOLReader
 		SBOLReader.dropObjectsWithDuplicateURIs = dropObjectsWithDuplicateURIs;
 	}
 
-	private static String getSBOLVersion(DocumentRoot<QName> document)
+	private static String getSBOLVersion(DocumentRoot<QName> document) throws SBOLValidationException
 	{
 		boolean foundRDF = false;
 		boolean foundDC = false;
@@ -216,8 +216,9 @@ public class SBOLReader
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
+	 * @throws SBOLValidationException 
 	 */
-	public static String getSBOLVersion(String fileName) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
+	public static String getSBOLVersion(String fileName) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException
 	{
 		return getSBOLVersion(fileName,RDF);
 	}
@@ -231,8 +232,9 @@ public class SBOLReader
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
+	 * @throws SBOLValidationException 
 	 */
-	static String getSBOLVersion(String fileName, String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
+	static String getSBOLVersion(String fileName, String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException
 	{
 		FileInputStream stream     = new FileInputStream(new File(fileName));
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -275,8 +277,9 @@ public class SBOLReader
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
+	 * @throws SBOLValidationException 
 	 */
-	public static String getSBOLVersion(File file) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
+	public static String getSBOLVersion(File file) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException
 	{
 		return getSBOLVersion(file,RDF);
 	}
@@ -290,8 +293,9 @@ public class SBOLReader
 	 * @throws XMLStreamException
 	 * @throws CoreIoException
 	 * @throws FileNotFoundException
+	 * @throws SBOLValidationException 
 	 */
-	public static SBOLDocument read(File file) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError
+	public static SBOLDocument read(File file) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
 	{
 		return read(file,RDF);
 	}
@@ -305,8 +309,9 @@ public class SBOLReader
 	 * @throws XMLStreamException
 	 * @throws CoreIoException
 	 * @throws FileNotFoundException
+	 * @throws SBOLValidationException 
 	 */
-	static SBOLDocument read(File file,String fileType) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError
+	static SBOLDocument read(File file,String fileType) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -322,8 +327,9 @@ public class SBOLReader
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
+	 * @throws SBOLValidationException 
 	 */
-	static String getSBOLVersion(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException
+	static String getSBOLVersion(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -339,8 +345,9 @@ public class SBOLReader
 	 * @throws CoreIoException
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
+	 * @throws SBOLValidationException 
 	 */
-	static String getSBOLVersion(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
+	static String getSBOLVersion(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
@@ -364,8 +371,9 @@ public class SBOLReader
 	 * @throws CoreIoException
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
+	 * @throws SBOLValidationException 
 	 */
-	public static SBOLDocument read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError
+	public static SBOLDocument read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		SBOLDoc.setCompliant(compliant);
@@ -382,8 +390,9 @@ public class SBOLReader
 	 * @throws CoreIoException
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
+	 * @throws SBOLValidationException 
 	 */
-	static SBOLDocument read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
+	static SBOLDocument read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		SBOLDoc.setCompliant(compliant);
@@ -392,7 +401,7 @@ public class SBOLReader
 	}
 
 
-	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError
+	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
 	{
 		compliant = SBOLDoc.isCompliant();
 		Scanner scanner = new Scanner(in, "UTF-8");
@@ -437,13 +446,14 @@ public class SBOLReader
 	 * @throws CoreIoException
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
+	 * @throws SBOLValidationException 
 	 */
-	public static String getSBOLVersion(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError
+	public static String getSBOLVersion(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
 	{
 		return getSBOLVersion(in,RDF);
 	}
 
-	private static SBOLDocument readV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document)
+	private static SBOLDocument readV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException
 	{
 		for (NamespaceBinding n : document.getNamespaceBindings())
 		{
@@ -491,7 +501,7 @@ public class SBOLReader
 		return turtleIo.createIoReader(reader).read();
 	}
 
-	private static void readTopLevelDocsV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document)
+	private static void readTopLevelDocsV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException
 	{
 		for (TopLevelDocument<QName> topLevel : document.getTopLevelDocuments())
 		{
@@ -508,7 +518,7 @@ public class SBOLReader
 		}
 	}
 
-	private static void readTopLevelDocs(SBOLDocument SBOLDoc, DocumentRoot<QName> document)
+	private static void readTopLevelDocs(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException
 	{
 		Map<URI, NestedDocument<QName>> nested = new HashMap<URI, NestedDocument<QName>>();
 		List<TopLevelDocument<QName>> topLevels = new ArrayList<TopLevelDocument<QName>>();
@@ -680,7 +690,7 @@ public class SBOLReader
 	}
 
 	private static ComponentDefinition parseDnaComponentV1(
-			SBOLDocument SBOLDoc, IdentifiableDocument<QName> componentDef)
+			SBOLDocument SBOLDoc, IdentifiableDocument<QName> componentDef) throws SBOLValidationException
 	{
 		String displayId   = null;
 		String name 	   = null;
@@ -867,7 +877,7 @@ public class SBOLReader
 		return c;
 	}
 
-	private static Sequence parseDnaSequenceV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
+	private static Sequence parseDnaSequenceV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String elements    = null;
 		String displayId   = null;
@@ -996,7 +1006,7 @@ public class SBOLReader
 		return displayId;
 	}
 
-	private static Collection parseCollectionV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel)
+	private static Collection parseCollectionV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel) throws SBOLValidationException
 	{
 		URI identity 	   = topLevel.getIdentity();
 		URI persistentIdentity = null;
@@ -1076,7 +1086,7 @@ public class SBOLReader
 
 	private static SequenceAnnotation parseSequenceAnnotationV1(
 			SBOLDocument SBOLDoc, NestedDocument<QName> sequenceAnnotation,
-			List<SBOLPair> precedePairs, String parentURI, int sa_num)
+			List<SBOLPair> precedePairs, String parentURI, int sa_num) throws SBOLValidationException
 	{
 		Integer start 	 = null;
 		Integer end 	 = null;
@@ -1094,7 +1104,7 @@ public class SBOLReader
 
 		if (!sequenceAnnotation.getType().equals(Sbol1Terms.SequenceAnnotations.SequenceAnnotation))
 		{
-			throw new IllegalArgumentException("QName has to be" + Sbol1Terms.SequenceAnnotations.SequenceAnnotation.toString());
+			throw new SBOLValidationException("QName has to be" + Sbol1Terms.SequenceAnnotations.SequenceAnnotation.toString());
 		}
 
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
@@ -1195,7 +1205,7 @@ public class SBOLReader
 	}
 
 	private static ComponentDefinition parseComponentDefinitions(
-			SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested)
+			SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
@@ -1338,7 +1348,7 @@ public class SBOLReader
 		return c;
 	}
 
-	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraint)
+	private static SequenceConstraint parseSequenceConstraint(NestedDocument<QName> sequenceConstraint) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(sequenceConstraint.getIdentity());
 		String name 	 	   = null;
@@ -1422,7 +1432,7 @@ public class SBOLReader
 		return s;
 	}
 
-	private static SequenceAnnotation parseSequenceAnnotation(NestedDocument<QName> sequenceAnnotation, Map<URI, NestedDocument<QName>> nested)
+	private static SequenceAnnotation parseSequenceAnnotation(NestedDocument<QName> sequenceAnnotation, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(sequenceAnnotation.getIdentity());
 		String name 	 	   = null;
@@ -1506,7 +1516,7 @@ public class SBOLReader
 		return s;
 	}
 
-	private static Location parseLocation(NestedDocument<QName> location)
+	private static Location parseLocation(NestedDocument<QName> location) throws SBOLValidationException
 	{
 		Location l 					 = null;
 		if (location.getType().equals(Sbol2Terms.Range.Range))
@@ -1529,7 +1539,7 @@ public class SBOLReader
 
 	}
 
-	private static GenericLocation parseGenericLocation(NestedDocument<QName> typeGenLoc)
+	private static GenericLocation parseGenericLocation(NestedDocument<QName> typeGenLoc) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(typeGenLoc.getIdentity());
 		String name 	 	   = null;
@@ -1542,7 +1552,7 @@ public class SBOLReader
 
 		if (!typeGenLoc.getType().equals(Sbol2Terms.GenericLocation.GenericLocation))
 		{
-			throw new IllegalArgumentException("QName has to be" + Sbol2Terms.GenericLocation.GenericLocation.toString());
+			throw new SBOLValidationException("QName has to be" + Sbol2Terms.GenericLocation.GenericLocation.toString());
 		}
 
 		for (NamedProperty<QName> namedProperty : typeGenLoc.getProperties())
@@ -1602,7 +1612,7 @@ public class SBOLReader
 		return gl;
 	}
 
-	private static Cut parseCut(NestedDocument<QName> typeCut)
+	private static Cut parseCut(NestedDocument<QName> typeCut) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(typeCut.getIdentity());
 		String name 	 	   = null;
@@ -1616,7 +1626,7 @@ public class SBOLReader
 
 		if (!typeCut.getType().equals(Sbol2Terms.Cut.Cut))
 		{
-			throw new IllegalArgumentException("QName has to be" + Sbol2Terms.Cut.Cut.toString());
+			throw new SBOLValidationException("QName has to be" + Sbol2Terms.Cut.Cut.toString());
 		}
 
 		for (NamedProperty<QName> namedProperty : typeCut.getProperties())
@@ -1686,7 +1696,7 @@ public class SBOLReader
 		return c;
 	}
 
-	private static Location parseRange(NestedDocument<QName> typeRange)
+	private static Location parseRange(NestedDocument<QName> typeRange) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(typeRange.getIdentity());
 		String name 	 	   = null;
@@ -1701,7 +1711,7 @@ public class SBOLReader
 
 		if (!typeRange.getType().equals(Sbol2Terms.Range.Range))
 		{
-			throw new IllegalArgumentException("QName has to be" + Sbol2Terms.Range.Range.toString());
+			throw new SBOLValidationException("QName has to be" + Sbol2Terms.Range.Range.toString());
 		}
 
 		for (NamedProperty<QName> namedProperty : typeRange.getProperties())
@@ -1771,7 +1781,7 @@ public class SBOLReader
 		return r;
 	}
 
-	private static Component parseComponent(NestedDocument<QName> component, Map<URI, NestedDocument<QName>> nested)
+	private static Component parseComponent(NestedDocument<QName> component, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(component.getIdentity());
 		String name 	 	   = null;
@@ -1787,7 +1797,7 @@ public class SBOLReader
 
 		if (!component.getType().equals(Sbol2Terms.Component.Component))
 		{
-			throw new IllegalArgumentException("QName has to be " + Sbol2Terms.Component.Component.toString());
+			throw new SBOLValidationException("QName has to be " + Sbol2Terms.Component.Component.toString());
 		}
 
 		if (!component.getType().equals(Sbol2Terms.Component.Component)) {
@@ -1874,7 +1884,7 @@ public class SBOLReader
 	}
 
 	private static GenericTopLevel parseGenericTopLevel(SBOLDocument SBOLDoc,
-			TopLevelDocument<QName> topLevel)
+			TopLevelDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
@@ -1945,7 +1955,7 @@ public class SBOLReader
 		return t;
 	}
 
-	private static Model parseModels(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+	private static Model parseModels(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
@@ -2031,7 +2041,7 @@ public class SBOLReader
 		return m;
 	}
 
-	private static Collection parseCollections(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+	private static Collection parseCollections(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
@@ -2109,7 +2119,7 @@ public class SBOLReader
 	}
 
 	private static ModuleDefinition parseModuleDefinition(SBOLDocument SBOLDoc,
-			TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested)
+			TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
@@ -2254,7 +2264,7 @@ public class SBOLReader
 		return moduleDefinition;
 	}
 
-	private static Module parseModule(NestedDocument<QName> module, Map<URI, NestedDocument<QName>> nested)
+	private static Module parseModule(NestedDocument<QName> module, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(module.getIdentity());
 		String name 	 	   = null;
@@ -2268,7 +2278,7 @@ public class SBOLReader
 
 		if (!module.getType().equals(Sbol2Terms.Module.Module))
 		{
-			throw new IllegalArgumentException("QName has to be " + Sbol2Terms.Module.Module.toString());
+			throw new SBOLValidationException("QName has to be " + Sbol2Terms.Module.Module.toString());
 		}
 
 		if (!module.getType().equals(Sbol2Terms.Module.Module)) {
@@ -2351,7 +2361,7 @@ public class SBOLReader
 		return submodule;
 	}
 
-	private static MapsTo parseMapsTo(NestedDocument<QName> mapsTo)
+	private static MapsTo parseMapsTo(NestedDocument<QName> mapsTo) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(mapsTo.getIdentity());
 		String name 	 	   = null;
@@ -2435,7 +2445,7 @@ public class SBOLReader
 		return map;
 	}
 
-	private static Interaction parseInteraction(NestedDocument<QName> interaction, Map<URI, NestedDocument<QName>> nested)
+	private static Interaction parseInteraction(NestedDocument<QName> interaction, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(interaction.getIdentity());
 		String name 	 	   = null;
@@ -2517,7 +2527,7 @@ public class SBOLReader
 		return i;
 	}
 
-	private static Participation parseParticipation(NestedDocument<QName> participation)
+	private static Participation parseParticipation(NestedDocument<QName> participation) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(participation.getIdentity());
 		String name 	 	   = null;
@@ -2531,7 +2541,7 @@ public class SBOLReader
 
 		if (!participation.getType().equals(Sbol2Terms.Participation.Participation))
 		{
-			throw new IllegalArgumentException("QName has to be " + Sbol2Terms.Participation.Participation.toString());
+			throw new SBOLValidationException("QName has to be " + Sbol2Terms.Participation.Participation.toString());
 		}
 
 		if (!participation.getType().equals(Sbol2Terms.Participation.Participation)) {
@@ -2598,7 +2608,7 @@ public class SBOLReader
 		return p;
 	}
 
-	private static FunctionalComponent parseFunctionalComponent(NestedDocument<QName> functionalComponent, Map<URI, NestedDocument<QName>> nested)
+	private static FunctionalComponent parseFunctionalComponent(NestedDocument<QName> functionalComponent, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(functionalComponent.getIdentity());
 		String name 	 	   = null;
@@ -2616,7 +2626,7 @@ public class SBOLReader
 
 		if (!functionalComponent.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent))
 		{
-			throw new IllegalArgumentException("QName has to be " + Sbol2Terms.FunctionalComponent.FunctionalComponent.toString());
+			throw new SBOLValidationException("QName has to be " + Sbol2Terms.FunctionalComponent.FunctionalComponent.toString());
 		}
 
 		if (!functionalComponent.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent)) {
@@ -2710,7 +2720,7 @@ public class SBOLReader
 		return fc;
 	}
 
-	private static Sequence parseSequences(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel)
+	private static Sequence parseSequences(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String displayId 	   = null; //URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;

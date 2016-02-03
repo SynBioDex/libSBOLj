@@ -30,7 +30,7 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
  *
  */
 public class GettingStartedExample {
-	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException {
+	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException, SBOLValidationException {
 		String prURI = "http://partsregistry.org";
 		String prPrefix = "pr";
 		String myersLabURI = "http://www.async.ece.utah.edu";

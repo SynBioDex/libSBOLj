@@ -22,21 +22,21 @@ public class SequenceConstraint extends Identified {
 	private URI object;
 	private ComponentDefinition componentDefinition = null;
 	
-	SequenceConstraint(URI identity, URI restriction, URI subject, URI object) {
+	SequenceConstraint(URI identity, URI restriction, URI subject, URI object) throws SBOLValidationException {
 		super(identity);
 		setRestriction(restriction);
 		setSubject(subject);
 		setObject(object);
 	}
 	
-	SequenceConstraint(URI identity, RestrictionType restriction, URI subject, URI object) {
+	SequenceConstraint(URI identity, RestrictionType restriction, URI subject, URI object) throws SBOLValidationException {
 		super(identity);
 		setRestriction(restriction);
 		setSubject(subject);
 		setObject(object);
 	}
 	
-	private SequenceConstraint(SequenceConstraint sequenceConstraint) {
+	private SequenceConstraint(SequenceConstraint sequenceConstraint) throws SBOLValidationException {
 		super(sequenceConstraint);
 		this.setRestriction(sequenceConstraint.getRestrictionURI());
 		this.setSubject(sequenceConstraint.getSubjectURI());
@@ -49,7 +49,12 @@ public class SequenceConstraint extends Identified {
 	 * @return the restriction property of this SequenceConstraint object
 	 */
 	public RestrictionType getRestriction() {
-		return RestrictionType.convertToRestrictionType(restriction);
+		try {
+			return RestrictionType.convertToRestrictionType(restriction);
+		}
+		catch (SBOLValidationException e) {
+			return null;
+		}
 	}
 	
 	
@@ -74,7 +79,7 @@ public class SequenceConstraint extends Identified {
  	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
 	 * @throws NullPointerException if the given {@code restriction} is {@code null}.
 	 */
-	public void setRestriction(RestrictionType restriction) {
+	public void setRestriction(RestrictionType restriction) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (restriction==null) {
 			throw new NullPointerException("Not a valid restriction type.");
@@ -93,7 +98,7 @@ public class SequenceConstraint extends Identified {
  	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
 	 * @throws NullPointerException if the given {@code restriction} is {@code null}.
 	 */
-	public void setRestriction(URI restrictionURI) {
+	public void setRestriction(URI restrictionURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (restrictionURI==null) {
 			throw new NullPointerException("Not a valid restriction type.");
@@ -144,24 +149,24 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * @param subjectURI
  	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the associated ComponentDefinition subject
+	 * @throws SBOLValidationException if the associated ComponentDefinition subject
 	 * is not {@code null}, and the given {@code subjectURI} does not exist in 
 	 * its associated ComponentDefinition subject's
 	 * list of Component instances.
-	 * @throws IllegalArgumentException if the given {@code subjectURI} is {@code null}.
+	 * @throws SBOLValidationException if the given {@code subjectURI} is {@code null}.
 	 */
-	public void setSubject(URI subjectURI) {
+	public void setSubject(URI subjectURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(subjectURI)==null) {
-				throw new IllegalArgumentException("Component '" + subjectURI + "' does not exist.");
+				throw new SBOLValidationException("Component '" + subjectURI + "' does not exist.");
 			}
 		}
 		if (subjectURI==null) {
-			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have a subject.");
+			throw new SBOLValidationException("Sequence constraint '" + this.getIdentity() + "' must have a subject.");
 		}
 		if (subjectURI==object) {
-			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have different subject and object.");
+			throw new SBOLValidationException("Sequence constraint '" + this.getIdentity() + "' must have different subject and object.");
 		}
 		this.subject = subjectURI;
 	}
@@ -208,24 +213,24 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * @param objectURI
  	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the associated ComponentDefinition object
+	 * @throws SBOLValidationException if the associated ComponentDefinition object
 	 * is not {@code null}, and the given {@code objectURI} does not exist in 
 	 * its associated ComponentDefinition object's
 	 * list of Component instances.
-	 * @throws IllegalArgumentException if the given {@code objectURI} is {@code null}.
+	 * @throws SBOLValidationException if the given {@code objectURI} is {@code null}.
 	 */
-	public void setObject(URI objectURI) {
+	public void setObject(URI objectURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(objectURI)==null) {
-				throw new IllegalArgumentException("Component '" + objectURI + "' does not exist.");
+				throw new SBOLValidationException("Component '" + objectURI + "' does not exist.");
 			}
 		}
 		if (objectURI==null) {
-			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have an object.");
+			throw new SBOLValidationException("Sequence constraint '" + this.getIdentity() + "' must have an object.");
 		}
 		if (objectURI==subject) {
-			throw new IllegalArgumentException("Sequence constraint '" + this.getIdentity() + "' must have different subject and object.");
+			throw new SBOLValidationException("Sequence constraint '" + this.getIdentity() + "' must have different subject and object.");
 		}
 		this.object = objectURI;
 	}
@@ -266,15 +271,16 @@ public class SequenceConstraint extends Identified {
 
 
 	@Override
-	protected SequenceConstraint deepCopy() {		
+	protected SequenceConstraint deepCopy() throws SBOLValidationException {		
 		return new SequenceConstraint(this);
 	}
 
 	/**
 	 * Assume this SequenceConstraint object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
+	 * @throws SBOLValidationException 
 	 */
-	void updateCompliantURI(String URIprefix, String displayId, String version) {
+	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
 			this.setWasDerivedFrom(this.getIdentity());
 		}

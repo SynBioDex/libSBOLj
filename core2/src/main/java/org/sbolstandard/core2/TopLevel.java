@@ -39,15 +39,15 @@ public abstract class TopLevel extends Identified {
 	 */
 	public static final String GENERIC_TOP_LEVEL = "gen";
 		
-	TopLevel(URI identity) {
+	TopLevel(URI identity) throws SBOLValidationException {
 		super(identity);
 	}
 
-	protected TopLevel(TopLevel toplevel) {
+	protected TopLevel(TopLevel toplevel) throws SBOLValidationException {
 		super(toplevel);
 	}
 	
-	protected abstract Identified deepCopy();
+	protected abstract Identified deepCopy() throws SBOLValidationException;
 	
 	/**
 	 * Make a copy of a top-level object whose URI and its descendants' URIs (children, grandchildren, etc) are all compliant. 
@@ -56,7 +56,7 @@ public abstract class TopLevel extends Identified {
 	 * and {@code version} fields for each updated object.
 	 * @return the copied top-level object if this object and all of its descendants have compliant URIs, and {@code null} otherwise.
 	 */
-	abstract Identified copy(String URIprefix, String displayId, String version);
+	abstract Identified copy(String URIprefix, String displayId, String version) throws SBOLValidationException;
 	
 	/**
 	 * Check if this top-level object's and all of its descendants' URIs are all compliant. 
