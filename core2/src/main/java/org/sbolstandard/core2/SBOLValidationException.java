@@ -33,28 +33,16 @@ public class SBOLValidationException extends Exception {
 
 	private static String ruleBegin = "^\\s*\\[(\\w+)\\]\\s*$";
 	private static String ruleId = "^\\s*id:\\s(sbol-\\d+)\\s*$";
-	private static String ruleCondition = "^\\s*condition:\\s(\\w+\\s\\w+)\\s*$";
+	private static String ruleCondition = "^\\s*condition:\\s(\\w+\\s*\\w*)\\s*$";
 	private static String ruleDescriptionBegin = "^\\s*description:\\s([\\w\\s]+)\\s*$";
-	private static String ruleDescriptionBody = "^\\b(?!reference)\\b(?!:)(.+)$";
+	private static String ruleDescriptionBody = "^(?!reference:)(.+)$";//"^\\b(?!reference)\\b(?!:)(.+)$";
+	// (?!...) is negative lookahead.
 	//	Word boundary \b is equivalent to (?<=\w)(?!\w)|(?=\w)(?<!\w).It means that a position that's preceded by a word 
 	//	character and not followed by one, or a position that's followed by a word character and not 
 	//	preceded by one.
 	private static String ruleReference = "^\\breference\\b:\\s(.+)";
-	private SBOLValidationRule currentRule;
+	private static SBOLValidationRule currentRule;
 	private static Map<String, SBOLValidationRule> validationRules;
-	
-
-	SBOLValidationException() throws IOException {
-		currentRule = null;
-		objects = null;
-		if (validationRules == null) {
-			validationRules = new LinkedHashMap<String, SBOLValidationRule>();
-			File f = new File("src/resources/validation/rules.txt");
-			parse(f);
-		}
-		//printAllRules();
-	}
-
 
 	/**
 	 * Creates a new exception instance with the given message and objects causing the problem.
@@ -73,7 +61,6 @@ public class SBOLValidationException extends Exception {
 	 */
 	SBOLValidationException(String message, java.util.Collection<? extends Identified> objects) {
 		super(formatMessage(message, objects));
-		// TODO: Need to print ID and description from the rule text.
 		this.objects = Collections.unmodifiableList(new ArrayList<>(objects));
 	}
 
@@ -113,25 +100,61 @@ public class SBOLValidationException extends Exception {
 
 	private static String formatMessage(String message, java.util.Collection<? extends Identified> objects) {
 		final StringBuilder sb = new StringBuilder(message);
-		if (!objects.isEmpty()) {
-			sb.append(": ");
-			boolean first = true;
-			for (Identified obj : objects) {
-				if (first) {
-					first = false;
-				}
-				else {
-					sb.append(", ");
-				}
-				if (obj.getIdentity() != null) {
-					sb.append(obj.getIdentity());
+		if (message.startsWith("sbol-")) {
+			if (validationRules == null) {
+				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
+				File f = new File("src/resources/validation/rules.txt");
+				try {
+					parse(f);
+					String key = message.trim();
+					SBOLValidationRule rule = validationRules.get(key);
+					if (rule == null) {
+						throw new RuntimeException("Rule ID does not exist.");
+					}
+					sb.append(": " + rule.getDescription() + "\n");
+					if (!objects.isEmpty()) {
+						sb.append(": ");
+						boolean first = true;
+						for (Identified obj : objects) {
+							if (first) {
+								first = false;
+							}
+							else {
+								sb.append(", ");
+							}
+							if (obj.getIdentity() != null) {
+								sb.append(obj.getIdentity());
+							}
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
 			}
+		}
+		else {
+			//final StringBuilder sb = new StringBuilder(message);
+			if (!objects.isEmpty()) {
+				sb.append(": ");
+				boolean first = true;
+				for (Identified obj : objects) {
+					if (first) {
+						first = false;
+					}
+					else {
+						sb.append(", ");
+					}
+					if (obj.getIdentity() != null) {
+						sb.append(obj.getIdentity());
+					}
+				}
+			}
+			//return sb.toString();
 		}
 		return sb.toString();
 	}
 
-	private void parse(File f) throws IOException {
+	private static void parse(File f) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		String line;
 		String ruleDescription = "";
