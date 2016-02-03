@@ -774,11 +774,11 @@ public class SBOLValidate {
 	        }
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
         	System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 		catch (Throwable e) {
-			e.printStackTrace();
+			//e.printStackTrace();
         	System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 	}
