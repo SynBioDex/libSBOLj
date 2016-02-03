@@ -760,10 +760,10 @@ public class SBOLValidate {
 	        doc.setTypesInURIs(typesInURI);
 	        validateSBOL(doc, complete, compliant, bestPractice);
 	        if (getNumErrors()==0) {
-	        	//System.out.println("Validation successful, no errors.");
 	        	if (outputFile.equals("")) {
 	        		SBOLWriter.write(doc, (System.out));
 	        	} else {
+	        		System.out.println("Validation successful, no errors.");
 	        		SBOLWriter.write(doc, outputFile);
 	        	}
 	        } else {
