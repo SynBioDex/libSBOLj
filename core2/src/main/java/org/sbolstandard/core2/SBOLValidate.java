@@ -800,11 +800,13 @@ public class SBOLValidate {
 	        }
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			// TODO: add debug flag
+			//e.printStackTrace();
         	System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 		catch (Throwable e) {
-			e.printStackTrace();
+			// TODO: add debug flag
+			//e.printStackTrace();
         	System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 	}
