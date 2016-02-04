@@ -14,7 +14,7 @@ import java.net.URI;
  * @version 2.0-beta
  */
 
-public abstract class Location extends Identified{
+public abstract class Location extends Identified implements Comparable {
 
 	protected OrientationType orientation;
 

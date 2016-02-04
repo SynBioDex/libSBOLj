@@ -4,8 +4,11 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,7 +21,7 @@ import java.util.Set;
  * @version 2.0-beta
  */
 
-public class SequenceAnnotation extends Identified {
+public class SequenceAnnotation extends Identified implements Comparable {
 
 	private HashMap<URI, Location> locations;
 	private URI component;
@@ -512,5 +515,23 @@ public class SequenceAnnotation extends Identified {
 		return "SequenceAnnotation [locations=" + locations + ", component=" + component
 				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
 				+ ", description=" + description + "]";
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public int compareTo(Object o) {
+		List<Location> sortedLocations1 = new ArrayList<Location>();
+		sortedLocations1.addAll(this.getLocations());
+		Collections.sort(sortedLocations1);
+		Range range1 = (Range)sortedLocations1.get(0);
+		List<Location> sortedLocations2 = new ArrayList<Location>();
+		sortedLocations2.addAll(((SequenceAnnotation)o).getLocations());
+		Collections.sort(sortedLocations2);
+		Range range2 = (Range)sortedLocations2.get(0);
+		int result = range1.getStart()-range2.getStart();
+		if (result==0) {
+			result = range2.getEnd()-range1.getEnd();
+		}
+		return result;
 	}
 }

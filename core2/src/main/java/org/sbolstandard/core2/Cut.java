@@ -89,4 +89,10 @@ public class Cut extends Location{
 				+ ", displayId=" + displayId + ", name=" + name + ", description=" + description
 				+ "]";
 	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

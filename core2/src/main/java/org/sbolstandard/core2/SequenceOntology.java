@@ -257,6 +257,7 @@ public class SequenceOntology {
 	 * @throws SBOLValidationException if the ID in the given stanzaURI does not exist.
 	 */
 	public final URI getURIbyId(String stanzaId) {
+		if (stanzaId==null) return null;
 		OBOStanza oboStanza = sequenceOntology.getStanza(stanzaId.trim());
 		if (oboStanza == null) {
 			try {

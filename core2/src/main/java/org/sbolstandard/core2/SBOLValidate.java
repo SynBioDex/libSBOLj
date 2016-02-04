@@ -41,21 +41,6 @@ public class SBOLValidate {
 		return errors.size();
 	}
 	
-	private static void usage() {		
-		System.err.println("libSBOLj version " + SBOLVersion);
-		System.err.println("Description: Validates the contents of an SBOL document,\n" 
-				+ "converting from SBOL 1.1 to SBOL " + SBOLVersion + ", if necessary,\n" 
-				+ "and printing the document contents if validation succeeds");
-		System.err.println();
-		System.err.println("Usage:");
-		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -p <URIprefix> -v <version>]");
-		System.err.println();
-		System.err.println("-t  uses types in URIs");
-		System.err.println("-i  incomplete SBOL document");
-		System.err.println("-n  non-compliant SBOL document");
-		System.exit(1);
-	}
-	
 	/**
 	 * Validate SBOL objects are compliant in the given {@code sbolDocument}.
 	 * 
@@ -677,6 +662,24 @@ public class SBOLValidate {
         }
 	}
 	
+	private static void usage() {	
+		// TODO: update
+		System.err.println("libSBOLj version " + SBOLVersion);
+		System.err.println("Description: Validates the contents of an SBOL document,\n" 
+				+ "converting from SBOL 1.1 to SBOL " + SBOLVersion + ", if necessary,\n" 
+				+ "and printing the document contents if validation succeeds");
+		System.err.println();
+		System.err.println("Usage:");
+		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -p <URIprefix> -v <version>]");
+		System.err.println();
+		System.err.println("-t  uses types in URIs");
+		System.err.println("-i  incomplete SBOL document");
+		System.err.println("-n  non-compliant SBOL document");
+		System.err.println("-b  perform best practice checking");
+		System.err.println("-g <componentDefinitionURI> convert selected ComponentDefinition to GenBank");
+		System.exit(1);
+	}
+	
 	/**
 	 * Command line method for reading an input file and producing an output file. 
 	 * <p>
@@ -689,25 +692,31 @@ public class SBOLValidate {
 	 * <p>
 	 * "-i" turns off completeness checking,
 	 * <p>
+	 * "-b" turns on best practice checking,
+	 * <p>
 	 * "-n" indicates a non-compliant SBOL document,
+	 * <p>
+	 * "-g" specifies a selected component definition to convert to GenBank
 	 * <p>
 	 * "-o" specifies an output filename,
 	 * <p>
 	 * "-p" specifies the default URI prefix of the output file, and 
 	 * <p>
-	 * "-v" returns the version of the libSBOLj. 
+	 * "-v" specifies version to use for converted objects. 
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		String fileName = "";
 		String outputFile = "";
+		String componentDefinitionStr = "";
 		String URIPrefix = "";
 		String version = "";
 		boolean complete = true;
 		boolean compliant = true;
 		boolean typesInURI = false;
 		boolean bestPractice = false;
+		boolean genBank = false;
 		int i = 0;
 		while (i < args.length) {
 			if (args[i].equals("-i")) {
@@ -718,6 +727,13 @@ public class SBOLValidate {
 				bestPractice = true;
 			} else if (args[i].equals("-n")) {
 				compliant = false;
+			} else if (args[i].equals("-g")) {
+				genBank = true;
+				if (i+1 >= args.length) {
+					usage();
+				}
+				componentDefinitionStr = args[i+1];
+				i++;
 			} else if (args[i].equals("-o")) {
 				if (i+1 >= args.length) {
 					usage();
@@ -760,11 +776,21 @@ public class SBOLValidate {
 	        doc.setTypesInURIs(typesInURI);
 	        validateSBOL(doc, complete, compliant, bestPractice);
 	        if (getNumErrors()==0) {
-	        	//System.out.println("Validation successful, no errors.");
 	        	if (outputFile.equals("")) {
-	        		SBOLWriter.write(doc, (System.out));
+	        		if (genBank) {
+	        			ComponentDefinition componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
+	        			GenBank.write(componentDefinition, (System.out));
+	        		} else {
+	        			SBOLWriter.write(doc, (System.out));
+	        		}
 	        	} else {
-	        		SBOLWriter.write(doc, outputFile);
+	        		System.out.println("Validation successful, no errors.");
+	        		if (genBank) {
+	        			ComponentDefinition componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
+	        			GenBank.write(componentDefinition, outputFile);
+	        		} else {
+	        			SBOLWriter.write(doc, outputFile);
+	        		}
 	        	}
 	        } else {
 	        	for (String error : getErrors()) {

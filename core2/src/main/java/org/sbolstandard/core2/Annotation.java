@@ -150,6 +150,15 @@ public class Annotation {
 	public QName getQName() {
 		return value.getName();
 	}
+	
+	/**
+	 * Sets the Boolean representation of the {@code value} property.
+	 * @param literal
+	 */
+	public void setBooleanValue(boolean literal) {
+		QName qName = value.getName();
+		value = NamedProperty(qName,literal);
+	}
 
 	/**
 	 * Checks if the annotation is a boolean {@code value} property.
@@ -174,6 +183,15 @@ public class Annotation {
 			return ((BooleanLiteral<QName>) value.getValue()).getValue();
 		}
 		return null;
+	}
+	
+	/**
+	 * Sets the double representation of the {@code value} property.
+	 * @param literal
+	 */
+	public void setDoubleValue(double literal) {
+		QName qName = value.getName();
+		value = NamedProperty(qName,literal);
 	}
 
 	/**
@@ -200,6 +218,15 @@ public class Annotation {
 		}
 		return null;
 	}
+	
+	/**
+	 * Sets the integer representation of the {@code value} property.
+	 * @param literal
+	 */
+	public void setIntegerValue(int literal) {
+		QName qName = value.getName();
+		value = NamedProperty(qName,literal);
+	}
 
 	/**
 	 * Checks if the annotation is a integer {@code value} property.
@@ -225,6 +252,15 @@ public class Annotation {
 		}
 		return null;
 	}
+	
+	/**
+	 * Sets the string representation of the {@code value} property.
+	 * @param literal
+	 */
+	public void setStringValue(String literal) {
+		QName qName = value.getName();
+		value = NamedProperty(qName,literal);
+	}
 
 	/**
 	 * Checks if the annotation is a string {@code value} property.
@@ -237,7 +273,7 @@ public class Annotation {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns a string representation of the {@code value} property.
 	 *
@@ -250,7 +286,16 @@ public class Annotation {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * Sets the string representation of the {@code value} property.
+	 * @param literal
+	 */
+	public void setURIValue(String literal) {
+		QName qName = value.getName();
+		value = NamedProperty(qName,literal);
+	}
+	
 	/**
 	 * Returns a URI representation of the {@code value} property.
 	 *
@@ -262,6 +307,18 @@ public class Annotation {
 			return ((UriLiteral<QName>) value.getValue()).getValue();
 		}
 		return null;
+	}
+	
+	public void setNestedAnnotations(List<Annotation> annotations) {
+		List<NamedProperty<QName>> list = new ArrayList<>();
+		for(Annotation a : annotations)
+		{
+			list.add(a.getValue());
+		}
+		QName qName = value.getName();
+		QName nestedQName = getNestedQName();
+		URI nestedURI = getNestedIdentity();
+		value = NamedProperty(qName, NestedDocument(nestedQName, nestedURI, NamedProperties(list)));
 	}
 
 	/**
@@ -423,6 +480,7 @@ public class Annotation {
 					return false;
 				}
 				// TODO: this may have an order dependence, also need to be sure it is in the other list, duplicates?
+				boolean equal = true;
 				for (Annotation annotation1 : this.getAnnotations()) {
 					boolean foundIt = false;
 					for (Annotation annotation2 : other.getAnnotations()) {
@@ -431,9 +489,12 @@ public class Annotation {
 							break;
 						}
 					}
-					if (foundIt==false) break;
+					if (foundIt==false) {
+						equal = false;
+						break;
+					}
 				}
-
+				return equal;
 			} else {
 				return false;
 			}

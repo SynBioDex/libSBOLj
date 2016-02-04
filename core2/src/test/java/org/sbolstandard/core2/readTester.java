@@ -30,12 +30,12 @@ public class readTester {
 	public static void main(String[] args) {
 
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_12);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_9);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_12);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_9);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
-			//SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			//SBOLReader.setVersion("1.0");
 			//SBOLReader.setTypesInURI(true);
 			SBOLDocument document1 = SBOLReader.read(file);
@@ -62,7 +62,40 @@ public class readTester {
 			//			SBOLDocument document2 = SBOLReader.readJson(filenameJson);
 			//			SBOLDocument document3 = SBOLReader.readTurtle(filenameTurtle);
 
-			SBOLWriter.write(document1,(System.out));
+			//SBOLDocument doc = SBOLReader.read("/Users/myers/downloads/test.xml");
+			//doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+			//ComponentDefinition cd = doc.getComponentDefinition("pTAK_Toggle_10","");
+			//GenBank.write(cd, (System.out));
+			
+			GenBank.setURIPrefix("http://www.async.ece.utah.edu");
+			SBOLDocument doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence1.gb"/*pTACK_Toggle_Switch_9*/);
+			doc.write("/Users/myers/downloads/GenBankEx/sequence1.xml");
+			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence1.xml");
+			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+			ComponentDefinition cd = doc.getComponentDefinition("U49845"/*"pTAK_Toggle_Switch_9"*/,"");
+			GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence1out.gb");		
+			
+			doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence2.gb");
+			doc.write("/Users/myers/downloads/GenBankEx/sequence2.xml");
+			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence2.xml");
+			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+			cd = doc.getComponentDefinition("AF165912","");
+			GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence2out.gb");	
+			
+			doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence3.gb");
+			doc.write("/Users/myers/downloads/GenBankEx/sequence3.xml");
+			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence3.xml");
+			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+			cd = doc.getComponentDefinition("AF090832","");
+			GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence3out.gb");	
+			
+			doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence4.gb");
+			doc.write("/Users/myers/downloads/GenBankEx/sequence4.xml");
+			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence4.xml");
+			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+			cd = doc.getComponentDefinition("L00727","");
+			GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence4out.gb");	
+			//SBOLWriter.write(document1,(System.out));
 			//SBOLWriter.writeRDF(SBOLTestUtils.writeAndRead(document1),(System.out));
 
 			//			SBOLWriter.writeJson(document2,(System.out));

@@ -435,6 +435,20 @@ public abstract class Identified {
 		annotations.addAll(this.annotations);
 		return annotations;
 	}
+	
+	/**
+	 * Returns the Annotation for a given QName.
+	 *
+	 * @return the Annotation for a given QName.
+	 */
+	public Annotation getAnnotation(QName qName) {
+		for (Annotation annotation : annotations) {
+			if (annotation.getQName().equals(qName)) {
+				return annotation;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Removes all entries of this object's list of Annotation

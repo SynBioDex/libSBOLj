@@ -12,7 +12,7 @@ import java.net.URI;
  * @version 2.0-beta
  */
 
-public class Range extends Location{
+public class Range extends Location implements Comparable {
 	
 	private int start = 0;
 	private int end = 0;
@@ -133,5 +133,9 @@ public class Range extends Location{
 				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
 				+ ", description=" + description + "]";
 	}
-
+	
+	@Override
+	public int compareTo(Object o) {
+		return this.start - ((Range)o).getStart();
+    }
 }
