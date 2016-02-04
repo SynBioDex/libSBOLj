@@ -908,7 +908,7 @@ public class GenBank {
 	/**
 	 * Set the specified authority as the prefix to all member's identity
 	 *
-	 *  @param URIprefix
+	 *  @param uRIPrefix
 	 */
 	public static void setURIPrefix(String uRIPrefix) {
 		URIPrefix = uRIPrefix;

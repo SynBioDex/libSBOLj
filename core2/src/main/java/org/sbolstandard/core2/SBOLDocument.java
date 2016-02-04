@@ -293,9 +293,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching ModuleDefinition instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public ModuleDefinition getModuleDefinition(String displayId,String version) {
 		try {
@@ -534,9 +531,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching Collection instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public Collection getCollection(String displayId,String version) {
 		try { 
@@ -797,9 +791,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching Model instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public Model getModel(String displayId,String version) {
 		try {
@@ -1218,9 +1209,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching ComponentDefinition instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public ComponentDefinition getComponentDefinition(String displayId,String version) {
 		try {
@@ -1816,9 +1804,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching Sequence instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public Sequence getSequence(String displayId,String version) {
 		try {
@@ -2063,9 +2048,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching GenericTopLevel instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public GenericTopLevel getGenericTopLevel(String displayId, String version) {
 		try {
