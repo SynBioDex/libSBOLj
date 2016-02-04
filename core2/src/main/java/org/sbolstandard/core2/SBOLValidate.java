@@ -674,9 +674,10 @@ public class SBOLValidate {
 		System.err.println();
 		System.err.println("-t  uses types in URIs");
 		System.err.println("-i  incomplete SBOL document");
+		System.err.println("-g <componentDefinitionURI> convert selected ComponentDefinition to GenBank");
 		System.err.println("-n  non-compliant SBOL document");
 		System.err.println("-b  perform best practice checking");
-		System.err.println("-g <componentDefinitionURI> convert selected ComponentDefinition to GenBank");
+		System.err.println("-t  uses types in URIs");
 		System.exit(1);
 	}
 	
@@ -700,9 +701,13 @@ public class SBOLValidate {
 	 * <p>
 	 * "-o" specifies an output filename,
 	 * <p>
-	 * "-p" specifies the default URI prefix of the output file, and 
+	 * "-p" specifies the default URI prefix of the output file,
 	 * <p>
-	 * "-v" specifies version to use for converted objects. 
+	 * "-v" specifies version to use for converted objects, 
+	 * <p>
+	 * "-f" fail on first error, and
+	 * <p>
+	 * "-d" show detailed error trace.
 	 * 
 	 * @param args
 	 */
@@ -717,6 +722,8 @@ public class SBOLValidate {
 		boolean typesInURI = false;
 		boolean bestPractice = false;
 		boolean genBank = false;
+		boolean keepGoing = true;
+		boolean showDetail = false;
 		int i = 0;
 		while (i < args.length) {
 			if (args[i].equals("-i")) {
@@ -769,13 +776,14 @@ public class SBOLValidate {
 			}
 			SBOLReader.setTypesInURI(typesInURI);
 			SBOLReader.setVersion(version);
+			SBOLReader.setKeepGoing(keepGoing);
 			if (SBOLReader.getSBOLVersion(fileName).equals(SBOLReader.SBOLVERSION1)) {
 				System.err.println("Converting SBOL Version 1 to SBOL Version 2");
 			}
 	        SBOLDocument doc = SBOLReader.read(fileName);
 	        doc.setTypesInURIs(typesInURI);
 	        validateSBOL(doc, complete, compliant, bestPractice);
-	        if (getNumErrors()==0) {
+	        if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
 	        	if (outputFile.equals("")) {
 	        		if (genBank) {
 	        			ComponentDefinition componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
@@ -793,6 +801,9 @@ public class SBOLValidate {
 	        		}
 	        	}
 	        } else {
+	        	for (String error : SBOLReader.getErrors()) {
+	        		System.err.println(error);
+	        	}
 	        	for (String error : getErrors()) {
 	        		System.err.println(error);
 	        	}

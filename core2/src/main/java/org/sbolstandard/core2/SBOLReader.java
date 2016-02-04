@@ -62,6 +62,28 @@ public class SBOLReader
 	public static final String TURTLE = "TURTLE";
 	public static final String SBOLVERSION1 = "v1";
 	public static final String SBOLVERSION2 = "v2";
+	public static boolean keepGoing = false;
+	private static List<String> errors = null;
+
+	public static boolean isKeepGoing() {
+		return keepGoing;
+	}
+
+	public static void setKeepGoing(boolean keepGoing) {
+		SBOLReader.keepGoing = keepGoing;
+	}
+	
+	public static void clearErrors() {
+		errors = new ArrayList<String>();
+	}
+	
+	public static List<String> getErrors() {
+		return errors;
+	}
+	
+	public static int getNumErrors() {
+		return errors.size();
+	}
 
 	static class SBOLPair
 	{
@@ -673,19 +695,28 @@ public class SBOLReader
 			}
 		}
 
+		clearErrors();
 		for (TopLevelDocument<QName> topLevel : topLevels) {
-			if (topLevel.getType().equals(Sbol2Terms.Collection.Collection))
-				parseCollections(SBOLDoc, topLevel);
-			else if (topLevel.getType().equals(Sbol2Terms.ModuleDefinition.ModuleDefinition))
-				parseModuleDefinition(SBOLDoc, topLevel, nested);
-			else if (topLevel.getType().equals(Sbol2Terms.Model.Model))
-				parseModels(SBOLDoc, topLevel);
-			else if (topLevel.getType().equals(Sbol2Terms.Sequence.Sequence))
-				parseSequences(SBOLDoc, topLevel);
-			else if (topLevel.getType().equals(Sbol2Terms.ComponentDefinition.ComponentDefinition))
-				parseComponentDefinitions(SBOLDoc, topLevel, nested);
-			else
-				parseGenericTopLevel(SBOLDoc, topLevel);
+			try {
+				if (topLevel.getType().equals(Sbol2Terms.Collection.Collection))
+					parseCollections(SBOLDoc, topLevel);
+				else if (topLevel.getType().equals(Sbol2Terms.ModuleDefinition.ModuleDefinition))
+					parseModuleDefinition(SBOLDoc, topLevel, nested);
+				else if (topLevel.getType().equals(Sbol2Terms.Model.Model))
+					parseModels(SBOLDoc, topLevel);
+				else if (topLevel.getType().equals(Sbol2Terms.Sequence.Sequence))
+					parseSequences(SBOLDoc, topLevel);
+				else if (topLevel.getType().equals(Sbol2Terms.ComponentDefinition.ComponentDefinition))
+					parseComponentDefinitions(SBOLDoc, topLevel, nested);
+				else
+					parseGenericTopLevel(SBOLDoc, topLevel);
+			} catch (SBOLValidationException e) {
+				if (keepGoing) {
+					errors.add(e.getMessage());
+				} else {
+					throw new SBOLValidationException(e);
+				}
+			}
 		}
 	}
 
