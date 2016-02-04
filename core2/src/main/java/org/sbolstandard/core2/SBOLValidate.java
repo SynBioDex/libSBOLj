@@ -672,12 +672,14 @@ public class SBOLValidate {
 		System.err.println("Usage:");
 		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -p <URIprefix> -v <version>]");
 		System.err.println();
+		System.err.println("-g  convert GenBank file");
+		System.err.println("-c <componentDefinitionURI> specifies top-level ComponentDefinition");
 		System.err.println("-t  uses types in URIs");
 		System.err.println("-i  incomplete SBOL document");
-		System.err.println("-g <componentDefinitionURI> convert selected ComponentDefinition to GenBank");
 		System.err.println("-n  non-compliant SBOL document");
 		System.err.println("-b  perform best practice checking");
-		System.err.println("-t  uses types in URIs");
+		System.err.println("-f  fail on first error");
+		System.err.println("-d  provide detailed error trace");
 		System.exit(1);
 	}
 	
@@ -697,7 +699,9 @@ public class SBOLValidate {
 	 * <p>
 	 * "-n" indicates a non-compliant SBOL document,
 	 * <p>
-	 * "-g" specifies a selected component definition to convert to GenBank
+	 * "-g" indicates conversion of GenBank file,
+	 * <p>
+	 * "-c" specifies a selected top-level component definition
 	 * <p>
 	 * "-o" specifies an output filename,
 	 * <p>
@@ -721,9 +725,10 @@ public class SBOLValidate {
 		boolean compliant = true;
 		boolean typesInURI = false;
 		boolean bestPractice = false;
-		boolean genBank = false;
 		boolean keepGoing = true;
 		boolean showDetail = false;
+		boolean genBankIn = false;
+		boolean genBankOut = false;
 		int i = 0;
 		while (i < args.length) {
 			if (args[i].equals("-i")) {
@@ -735,7 +740,13 @@ public class SBOLValidate {
 			} else if (args[i].equals("-n")) {
 				compliant = false;
 			} else if (args[i].equals("-g")) {
-				genBank = true;
+				genBankIn = true;
+			} else if (args[i].equals("-f")) {
+				keepGoing = false;
+			} else if (args[i].equals("-d")) {
+				showDetail = true;
+			} else if (args[i].equals("-c")) {
+				genBankOut = true;
 				if (i+1 >= args.length) {
 					usage();
 				}
@@ -768,24 +779,35 @@ public class SBOLValidate {
 		}
 		if (fileName.equals("")) usage();
 		try {
-			if (!URIPrefix.equals("")) {
-				SBOLReader.setURIPrefix(URIPrefix);
-			}
-			if (!compliant) {
-				SBOLReader.setCompliant(false);
-			}
-			SBOLReader.setTypesInURI(typesInURI);
-			SBOLReader.setVersion(version);
-			SBOLReader.setKeepGoing(keepGoing);
-			if (SBOLReader.getSBOLVersion(fileName).equals(SBOLReader.SBOLVERSION1)) {
-				System.err.println("Converting SBOL Version 1 to SBOL Version 2");
-			}
-	        SBOLDocument doc = SBOLReader.read(fileName);
-	        doc.setTypesInURIs(typesInURI);
+			SBOLDocument doc = null;
+			if (genBankIn) {
+				if (!URIPrefix.equals("")) {
+					GenBank.setURIPrefix(URIPrefix);
+				}
+				//GenBank.setTypesInURI(typesInURI);
+				//GenBank.setVersion(version);
+				doc = GenBank.read(fileName);
+		        //doc.setTypesInURIs(typesInURI);
+			} else {
+				if (!URIPrefix.equals("")) {
+					SBOLReader.setURIPrefix(URIPrefix);
+				}
+				if (!compliant) {
+					SBOLReader.setCompliant(false);
+				}
+				SBOLReader.setTypesInURI(typesInURI);
+				SBOLReader.setVersion(version);
+				SBOLReader.setKeepGoing(keepGoing);
+				if (SBOLReader.getSBOLVersion(fileName).equals(SBOLReader.SBOLVERSION1)) {
+					System.err.println("Converting SBOL Version 1 to SBOL Version 2");
+				}
+				doc = SBOLReader.read(fileName);
+		        doc.setTypesInURIs(typesInURI);
+			} 
 	        validateSBOL(doc, complete, compliant, bestPractice);
 	        if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
 	        	if (outputFile.equals("")) {
-	        		if (genBank) {
+	        		if (genBankOut) {
 	        			ComponentDefinition componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
 	        			GenBank.write(componentDefinition, (System.out));
 	        		} else {
@@ -793,7 +815,7 @@ public class SBOLValidate {
 	        		}
 	        	} else {
 	        		System.out.println("Validation successful, no errors.");
-	        		if (genBank) {
+	        		if (genBankOut) {
 	        			ComponentDefinition componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
 	        			GenBank.write(componentDefinition, outputFile);
 	        		} else {
@@ -811,13 +833,15 @@ public class SBOLValidate {
 	        }
 		}
 		catch (Exception e) {
-			// TODO: add debug flag
-			//e.printStackTrace();
+			if (showDetail) {
+				e.printStackTrace();
+			}
         	System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 		catch (Throwable e) {
-			// TODO: add debug flag
-			//e.printStackTrace();
+			if (showDetail) {
+				e.printStackTrace();
+			}
         	System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 	}
