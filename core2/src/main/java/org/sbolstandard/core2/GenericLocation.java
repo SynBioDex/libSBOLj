@@ -55,8 +55,16 @@ public class GenericLocation extends Location{
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
+	public int compareTo(Location locaction) {
+		if (locaction instanceof Range) {
+			int result = -((Range)locaction).getStart();
+			if (result==0) {
+				result = ((Range)locaction).getEnd();
+			}
+			return result;
+		} else if (locaction instanceof Cut) {
+			return -((Cut)locaction).getAt();
+		} 
 		return 0;
 	}
 }

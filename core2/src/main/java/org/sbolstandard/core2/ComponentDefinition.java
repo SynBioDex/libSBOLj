@@ -6,8 +6,11 @@ import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
 import static org.sbolstandard.core2.URIcompliance.validateIdVersion;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -892,6 +895,20 @@ public class ComponentDefinition extends TopLevel {
 		sequenceAnnotations.addAll(this.sequenceAnnotations.values());
 		return sequenceAnnotations;
 	}
+	
+	/**
+	 * Returns a sorted list of SequenceAnnotation instances owned by this
+	 * ComponentDefinition object.
+	 *
+	 * @return a sorted list of SequenceAnnotation instances owned by this
+	 *         ComponentDefinition object.
+	 */
+	public List<SequenceAnnotation> getSortedSequenceAnnotations() {
+		List<SequenceAnnotation> sortedSAs = new ArrayList<SequenceAnnotation>();
+		sortedSAs.addAll(this.getSequenceAnnotations());
+		Collections.sort(sortedSAs);
+		return sortedSAs;
+	}
 
 	/**
 	 * Removes all entries of this ComponentDefinition object's list of SequenceAnnotation objects.
@@ -1596,8 +1613,8 @@ public class ComponentDefinition extends TopLevel {
 	@Override
 	public String toString() {
 		return "ComponentDefinition [types=" + types + ", roles=" + roles + ", sequences="
-				+ sequences + ", components=" + components + ", sequenceAnnotations="
-				+ sequenceAnnotations + ", sequenceConstraints=" + sequenceConstraints
+				+ this.getSequences() + ", components=" + this.getComponents() + ", sequenceAnnotations="
+				+ this.getSequenceAnnotations() + ", sequenceConstraints=" + this.getSequenceConstraints()
 				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
 				+ ", description=" + description + "]";
 	}

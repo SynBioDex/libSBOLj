@@ -139,7 +139,6 @@ public class SequenceOntology {
 	 * 
 	 * @param stanzaURI
 	 * @return the extracted ID of the given stanza's URI.
-	 * @throws SBOLValidationException if the given stanzaURI does not begin with SO URI prefix "http://identifiers.org/so/".
 	 */
 	public final String getId(URI stanzaURI) {
 		String stanzaURIstr = stanzaURI.toString().trim();
@@ -161,7 +160,6 @@ public class SequenceOntology {
 	 *  
 	 * @param stanzaName
 	 * @return the ID the matching stanza, or {@code null} if no match is found.
-	 * @throws SBOLValidationException if the stanzaName does not exist.
 	 */
 	public final String getId(String stanzaName) {
 		List<String> IdList = new ArrayList<String>();	
@@ -187,8 +185,6 @@ public class SequenceOntology {
 	 * 
 	 * @param stanzaURI
 	 * @return the name field of the stanza that matches the ID in the given stanzaURI.
-	 * @throws SBOLValidationException if the given stanzaURI does not begin with "http://identifiers.org/so/".
-	 * @throws SBOLValidationException if the ID in the given stanzaURI does not exist. 
 	 */
 	public final String getName(URI stanzaURI) {
 		String oboURIstr = stanzaURI.toString().trim();
@@ -220,7 +216,6 @@ public class SequenceOntology {
 	 * @param stanzaId
 	 * @return the name field of the stanza that matches the ID in the given stanzaURI,
 				or {@code null} if this no match is found.
-	 * @throws SBOLValidationException if the ID in the given stanzaURI does not exist.				
 	 */
 	public final String getName(String stanzaId) {
 		OBOStanza oboStanza = sequenceOntology.getStanza(stanzaId);
@@ -242,7 +237,6 @@ public class SequenceOntology {
 	 * 
 	 * @param stanzaName
 	 * @return the URI of the given SO name.
-	 * @throws SBOLValidationException if the ID in the given stanzaURI does not exist.
 	 */
 	public final URI getURIbyName(String stanzaName) {
 		return getURIbyId(getId(stanzaName));
@@ -253,7 +247,6 @@ public class SequenceOntology {
 	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
 	 * @param stanzaId
 	 * @return the created URI
-	 * @throws SBOLValidationException if the ID in the given stanzaURI does not exist.
 	 */
 	public final URI getURIbyId(String stanzaId) {
 		if (stanzaId==null) return null;

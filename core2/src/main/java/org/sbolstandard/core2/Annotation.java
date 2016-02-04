@@ -68,7 +68,6 @@ public class Annotation {
 	 *
 	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name.
 	 * @param literal - used to denote an object that is of type Double
-	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
 	public Annotation(QName qName, double literal) {
 		value = NamedProperty(qName, literal);

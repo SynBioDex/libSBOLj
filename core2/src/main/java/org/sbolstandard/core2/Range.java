@@ -12,7 +12,7 @@ import java.net.URI;
  * @version 2.0-beta
  */
 
-public class Range extends Location implements Comparable {
+public class Range extends Location {
 	
 	private int start = 0;
 	private int end = 0;
@@ -135,7 +135,20 @@ public class Range extends Location implements Comparable {
 	}
 	
 	@Override
-	public int compareTo(Object o) {
-		return this.start - ((Range)o).getStart();
+	public int compareTo(Location location) {
+		if (location instanceof Range) {
+			int result = this.start - ((Range)location).getStart();
+			if (result==0) {
+				result = ((Range)location).getEnd() - this.end;
+			}
+			return result;
+		} else if (location instanceof Cut) {
+			int result = this.start - ((Cut)location).getAt();
+			if (result==0) {
+				result = ((Cut)location).getAt() - this.end;
+			}
+			return result;
+		} 
+		return this.start;
     }
 }

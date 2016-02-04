@@ -18,7 +18,6 @@ public abstract class Ontology {
 	 * 
 	 * @param stanzaURI
 	 * @return the extracted ID of the given stanza's URI.
-	 * @throws SBOLValidationException if the given stanzaURI does not begin with "http://identifiers.org/so/".
 	 */
 	public final String getId(URI stanzaURI) {
 		String stanzaURIstr = stanzaURI.toString().trim();
@@ -62,7 +61,6 @@ public abstract class Ontology {
 	 * 
 	 * @param stanzaURI
 	 * @return the name field of the stanza that matches the ID in the given stanzaURI, or {@code null} if this no match is found.
-	 * @throws SBOLValidationException if the given stanzaURI does not begin with "http://identifiers.org/so/".
 	 */
 	public final String getName(URI stanzaURI) {
 		String oboURIstr = stanzaURI.toString().trim();

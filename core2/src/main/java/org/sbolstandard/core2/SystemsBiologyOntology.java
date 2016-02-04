@@ -106,7 +106,6 @@ public class SystemsBiologyOntology {
 	 * 
 	 * @param stanzaURI
 	 * @return the extracted ID of the given stanza's URI.
-	 * @throws SBOLValidationException if the given stanzaURI does not begin with the SBO URI prefix "http://identifiers.org/biomodels.sbo/".
 	 */
 	public final String getId(URI stanzaURI) {
 		String stanzaURIstr = stanzaURI.toString().trim();
@@ -128,7 +127,6 @@ public class SystemsBiologyOntology {
 	 *  
 	 * @param stanzaName
 	 * @return the ID the matching stanza, or {@code null} if no match is found.
-	 * @throws SBOLValidationException if the stanzaName does not exist. 
 	 */
 	public final String getId(String stanzaName) {
 		//return sequenceOntology.getStanza(stanzaName).getName();
@@ -155,8 +153,6 @@ public class SystemsBiologyOntology {
 	 * 
 	 * @param stanzaURI
 	 * @return the name field of the stanza that matches the ID in the given stanzaURI.
-	 * @throws SBOLValidationException if the given stanzaURI does not begin with "http://identifiers.org/so/".
-	 * @throws SBOLValidationException if the ID in the given stanzaURI does not exist.
 	 */
 	public final String getName(URI stanzaURI) {
 		String oboURIstr = stanzaURI.toString().trim();
@@ -218,7 +214,6 @@ public class SystemsBiologyOntology {
 	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
 	 * @param stanzaId
 	 * @return the created URI
-	 * @throws SBOLValidationException if the ID in the given stanzaURI does not exist.
 	 */
 	public final URI getURIbyId(String stanzaId) {
 		OBOStanza oboStanza = systemsBiologyOntology.getStanza(stanzaId.trim());
