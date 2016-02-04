@@ -14,7 +14,7 @@ import java.net.URI;
  * @version 2.0-beta
  */
 
-public abstract class Location extends Identified implements Comparable {
+public abstract class Location extends Identified implements Comparable<Location> {
 
 	protected OrientationType orientation;
 
@@ -94,5 +94,10 @@ public abstract class Location extends Identified implements Comparable {
 	public String toString() {
 		return "Location [orientation=" + orientation + ", identity=" + identity + ", displayId="
 				+ displayId + ", name=" + name + ", description=" + description + "]";
+	}
+
+	public int compareTo(Location loc) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

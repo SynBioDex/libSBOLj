@@ -459,9 +459,10 @@ public class GenBank {
 		}		
 	}
 	
-	@SuppressWarnings("unchecked")
 	private static void writeFeature(Writer w,SequenceAnnotation sa,String role) throws IOException, SBOLValidationException {
-		if (sa.getLocations().size()==1) {
+		if (sa.getLocations().size()==0) {
+			throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" has no locations.");
+		} else if (sa.getLocations().size()==1) {
 			Location loc = sa.getLocations().iterator().next();
 			if (loc instanceof Range) {
 				Range range = (Range)loc;
@@ -483,10 +484,7 @@ public class GenBank {
 		} else {
 			String rangeStr = "     " + role + " " + "join(";
 			boolean first = true;
-			List<Location> sortedLocations = new ArrayList<Location>();
-			sortedLocations.addAll(sa.getLocations());
-			Collections.sort(sortedLocations);
-			for (Location loc : sortedLocations) {
+			for (Location loc : sa.getSortedLocations()) {
 				if (loc instanceof Range) {
 					Range range = (Range)loc;
 					// TODO: can joins include complement?
@@ -497,7 +495,7 @@ public class GenBank {
 					Cut cut = (Cut)loc;
 					rangeStr += cut.getAt() + "^" + cut.getAt()+1;
 				} else {
-					throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" is not range, only ranges supported for GenBank output");
+					throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
 				}
 			}
 			rangeStr += ")";
@@ -524,12 +522,8 @@ public class GenBank {
 		}		
 	}
 	
-	@SuppressWarnings("unchecked")
 	private static void recurseComponentDefinition(ComponentDefinition componentDefinition, Writer w) throws IOException, SBOLValidationException {
-		List<SequenceAnnotation> sortedSAs = new ArrayList<SequenceAnnotation>();
-		sortedSAs.addAll(componentDefinition.getSequenceAnnotations());
-		Collections.sort(sortedSAs);
-		for (SequenceAnnotation sa : sortedSAs) {
+		for (SequenceAnnotation sa : componentDefinition.getSortedSequenceAnnotations()) {
 			String role = "misc_feature   ";
 			Component comp = sa.getComponent();
 			if (comp != null) {
