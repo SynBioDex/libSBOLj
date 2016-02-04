@@ -4,7 +4,15 @@
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pLac"/>
     <sbol:displayId>pLac</sbol:displayId>
     <sbol:version>1.0</sbol:version>
-    <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
-    <sbol:role rdf:resource="http://some.ontology.org/Promoter"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/pLacSeq/1.0"/>
   </sbol:ComponentDefinition>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLacSeq/1.0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pLacSeq"/>
+    <sbol:displayId>pLacSeq</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <sbol:elements>ACGTURYSWKMBDHVN-.</sbol:elements>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+  </sbol:Sequence>
 </rdf:RDF>

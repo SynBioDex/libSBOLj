@@ -59,8 +59,9 @@ public enum RefinementType {
 	/**
 	 * Convert the specified URI to its corresponding RefinementType instance. 
 	 * @return the corresponding RefinementType instance
+	 * @throws SBOLValidationException 
 	 */
-	static RefinementType convertToRefinementType(URI refinement) {
+	static RefinementType convertToRefinementType(URI refinement) throws SBOLValidationException {
 		if (refinement.equals(merge)) {
 			return RefinementType.MERGE;
 		} 
@@ -74,7 +75,7 @@ public enum RefinementType {
 			return RefinementType.VERIFYIDENTICAL;
 		}
 		else {
-			throw new IllegalArgumentException("Unknown refinement URI `" + refinement + "'");
+			throw new SBOLValidationException("Unknown refinement URI `" + refinement + "'");
 		}
 	}
 

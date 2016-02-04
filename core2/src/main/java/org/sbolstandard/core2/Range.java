@@ -12,18 +12,18 @@ import java.net.URI;
  * @version 2.0-beta
  */
 
-public class Range extends Location{
+public class Range extends Location implements Comparable {
 	
 	private int start = 0;
 	private int end = 0;
 	
-	Range(URI identity, int start, int end) {
+	Range(URI identity, int start, int end) throws SBOLValidationException {
 		super(identity);
 		setEnd(end);
 		setStart(start);
 	}
 	
-	private Range(Range range) {
+	private Range(Range range) throws SBOLValidationException {
 		super(range);
 		this.setEnd(range.getEnd());
 		this.setStart(range.getStart());
@@ -38,17 +38,17 @@ public class Range extends Location{
 	 *
 	 * @param value
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code value} is less or equal to 0.
-	 * @throws IllegalArgumentException if the given {@code value} is greater than 
+	 * @throws SBOLValidationException if the given {@code value} is less or equal to 0.
+	 * @throws SBOLValidationException if the given {@code value} is greater than 
 	 * the {@code end} value of this Range object.
 	 */ 
-	public void setStart(int value) {
+	public void setStart(int value) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (value<=0) {
-			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have a start greater than zero.");
+			throw new SBOLValidationException("Range "+this.getIdentity()+" must have a start greater than zero.");
 		}
 		if (value > end) {
-			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have a start before the end.");
+			throw new SBOLValidationException("Range "+this.getIdentity()+" must have a start before the end.");
 		}
 		start = value;		
 	}
@@ -80,24 +80,24 @@ public class Range extends Location{
 	 *
 	 * @param value
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code value} is less or equal to 0.
-	 * @throws IllegalArgumentException if the given {@code value} is less than 
+	 * @throws SBOLValidationException if the given {@code value} is less or equal to 0.
+	 * @throws SBOLValidationException if the given {@code value} is less than 
 	 * the {@code start} value of this Range object.
 	 */ 
-	public void setEnd(int value) {
+	public void setEnd(int value) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (value<=0) {
-			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have an end greater than zero.");
+			throw new SBOLValidationException("Range "+this.getIdentity()+" must have an end greater than zero.");
 		}
 		if (value < start) {
-			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have a start before the end.");
+			throw new SBOLValidationException("Range "+this.getIdentity()+" must have a start before the end.");
 		}
 		end = value;
 	}
 	
 	
 	@Override
-	protected Location deepCopy() {
+	protected Location deepCopy() throws SBOLValidationException {
 		return new Range(this);
 	}
 
@@ -133,5 +133,9 @@ public class Range extends Location{
 				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
 				+ ", description=" + description + "]";
 	}
-
+	
+	@Override
+	public int compareTo(Object o) {
+		return this.start - ((Range)o).getStart();
+    }
 }

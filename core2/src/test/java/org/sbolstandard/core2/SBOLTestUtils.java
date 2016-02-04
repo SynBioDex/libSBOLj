@@ -4,7 +4,6 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
@@ -65,6 +64,11 @@ public class SBOLTestUtils {
 		SBOLDocument actual = null;
 		SBOLReader.setURIPrefix(URIprefix);
 		SBOLReader.setDropObjectsWithDuplicateURIs(dropDuplicates);
+		if (URIprefix==null) {
+			SBOLReader.setCompliant(false);
+		} else {
+			SBOLReader.setCompliant(true);
+		}
 
 		try {
 			if(fileType.equals("rdf"))
@@ -83,13 +87,14 @@ public class SBOLTestUtils {
 
 	}
 
-	public static SBOLDocument convertRDFTripleStore(String fileName, String fileType)
+	public static SBOLDocument convertRDFTripleStore(String fileName, String fileType, boolean compliant)
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
 			resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/" + fileName);
 
 		assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
+		SBOLReader.setCompliant(false);
 		SBOLDocument actual = null;
 		try {
 			if(fileType.equals("rdf"))
@@ -108,7 +113,7 @@ public class SBOLTestUtils {
 
 	}
 	
-	public static void setDefaultNameSpace(SBOLDocument document, String uri)
+	public static void setDefaultNameSpace(SBOLDocument document, String uri) throws SBOLValidationException
 	{
 		if (uri.endsWith("/"))
 		{
@@ -146,7 +151,7 @@ public class SBOLTestUtils {
 		participation2.addRole(SystemsBiologyOntology.INHIBITOR);
 	}
 
-	public static ComponentDefinition createComponenDefinition(SBOLDocument document,QName identifier,String name, URI type, URI role,String description)
+	public static ComponentDefinition createComponenDefinition(SBOLDocument document,QName identifier,String name, URI type, URI role,String description) throws SBOLValidationException
 	{
 		ComponentDefinition componentDef = document.createComponentDefinition(
 				identifier.getLocalPart(),
@@ -157,7 +162,7 @@ public class SBOLTestUtils {
 		return componentDef;
 	}
 
-	public static Sequence addPRSequence(SBOLDocument document, ComponentDefinition componentDef, String elements)
+	public static Sequence addPRSequence(SBOLDocument document, ComponentDefinition componentDef, String elements) throws SBOLValidationException
 	{
 		return addSequence(document, componentDef, componentDef.getDisplayId(), Terms.sequenceTypes.nucleotides, elements);
 	}
@@ -215,7 +220,7 @@ public class SBOLTestUtils {
 	}
 	}
 
-	public static Sequence addSequence(SBOLDocument document, ComponentDefinition componentDef, String displayId, URI sequenceType, String elements)
+	public static Sequence addSequence(SBOLDocument document, ComponentDefinition componentDef, String displayId, URI sequenceType, String elements) throws SBOLValidationException
 	{
 		Sequence sequence=document.createSequence(displayId,elements,sequenceType);
 		componentDef.addSequence(sequence.getIdentity());
@@ -228,11 +233,12 @@ public class SBOLTestUtils {
 	}
 
 
-	public static SBOLDocument writeAndRead(SBOLDocument doc)
-			throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
+	public static SBOLDocument writeAndRead(SBOLDocument doc, boolean compliant)
+			throws XMLStreamException, FactoryConfigurationError, CoreIoException, SBOLValidationException
 	{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		SBOLWriter.write(doc, out);
+		SBOLReader.setCompliant(compliant);
 		return SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 	}
 

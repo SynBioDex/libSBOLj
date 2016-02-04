@@ -4,6 +4,8 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,19 +21,19 @@ import java.util.Set;
  * @version 2.0-beta
  */
 
-public class SequenceAnnotation extends Identified {
+public class SequenceAnnotation extends Identified implements Comparable {
 
 	private HashMap<URI, Location> locations;
 	private URI component;
 	private ComponentDefinition componentDefinition = null;
 	
-	SequenceAnnotation(URI identity, List<Location> locations) {
+	SequenceAnnotation(URI identity, Set<Location> locations) throws SBOLValidationException {
 		super(identity);
 		this.locations = new HashMap<>();
 		this.setLocations(locations);		
 	}
 	
-	private SequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
+	private SequenceAnnotation(SequenceAnnotation sequenceAnnotation) throws SBOLValidationException {
 		super(sequenceAnnotation);
 		this.locations = new HashMap<>();
 		for (Location location : sequenceAnnotation.getLocations()) {
@@ -50,10 +52,14 @@ public class SequenceAnnotation extends Identified {
 	 * SequenceAnnotation object, the given {@code displayId} of the GenericLocation instance. 
 	 *  
 	 * @param displayId
+	 * @throws SBOLValidationException 
 	 */
-	public void addGenericLocation(String displayId) {
+	public void addGenericLocation(String displayId) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		GenericLocation genericLocation = new GenericLocation(identity);
+		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		genericLocation.setDisplayId(displayId);
+		genericLocation.setVersion(this.getVersion());
 		addLocation(genericLocation);
 	}
 	
@@ -68,10 +74,14 @@ public class SequenceAnnotation extends Identified {
 	 *  
 	 * @param displayId
 	 * @param orientation
+	 * @throws SBOLValidationException 
  	 */
-	public void addGenericLocation(String displayId,OrientationType orientation) {
+	public void addGenericLocation(String displayId,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		GenericLocation genericLocation = new GenericLocation(identity);
+		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		genericLocation.setDisplayId(displayId);
+		genericLocation.setVersion(this.getVersion());
 		genericLocation.setOrientation(orientation);
 		addLocation(genericLocation);
 	}
@@ -85,10 +95,14 @@ public class SequenceAnnotation extends Identified {
 	 *  
 	 * @param displayId
 	 * @param at
+	 * @throws SBOLValidationException 
 	 */
-	public void addCut(String displayId,int at) {
+	public void addCut(String displayId,int at) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Cut cut = new Cut(identity,at);
+		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		cut.setDisplayId(displayId);
+		cut.setVersion(this.getVersion());
 		addLocation(cut);
 	}
 	
@@ -103,10 +117,14 @@ public class SequenceAnnotation extends Identified {
 	 * @param displayId
 	 * @param at
 	 * @param orientation
+	 * @throws SBOLValidationException 
 	 */
-	public void addCut(String displayId,int at,OrientationType orientation) {
+	public void addCut(String displayId,int at,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Cut cut = new Cut(identity,at);
+		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		cut.setDisplayId(displayId);
+		cut.setVersion(this.getVersion());
 		cut.setOrientation(orientation);
 		addLocation(cut);
 	}
@@ -121,10 +139,14 @@ public class SequenceAnnotation extends Identified {
 	 * @param displayId
 	 * @param start
 	 * @param end
+	 * @throws SBOLValidationException 
 	 */
-	public void addRange(String displayId,int start,int end) {
+	public void addRange(String displayId,int start,int end) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Range range = new Range(identity,start,end);
+		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		range.setDisplayId(displayId);
+		range.setVersion(this.getVersion());
 		addLocation(range);
 	}
 	
@@ -140,15 +162,19 @@ public class SequenceAnnotation extends Identified {
 	 * @param start
 	 * @param end
 	 * @param orientation
+	 * @throws SBOLValidationException 
 	 */
-	public void addRange(String displayId,int start,int end,OrientationType orientation) {
+	public void addRange(String displayId,int start,int end,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Range range = new Range(identity,start,end);
+		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
+		range.setDisplayId(displayId);
+		range.setVersion(this.getVersion());
 		range.setOrientation(orientation);
 		addLocation(range);
 	}
 	
-	void addLocation(Location location) {
+	void addLocation(Location location) throws SBOLValidationException {
 		addChildSafely(location, locations, "location");
 		location.setSBOLDocument(this.sbolDocument);
 	}
@@ -165,10 +191,10 @@ public class SequenceAnnotation extends Identified {
 	 * @return {@code true} if the matching Location instance is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */	
-	public boolean removeLocation(Location location) {
+	public boolean removeLocation(Location location) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (locations.size()==1 && locations.containsValue(location)) {
-			throw new IllegalArgumentException("Sequence annotation " + this.getIdentity() + " must have at least one location.");
+			throw new SBOLValidationException("Sequence annotation " + this.getIdentity() + " must have at least one location.");
 		}
 		return removeChildSafely(location,locations);
 	}
@@ -181,7 +207,12 @@ public class SequenceAnnotation extends Identified {
 	 * @return the matching Location instance
 	 */
 	public Location getLocation(String displayId) {
-		return locations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+		try {
+			return locations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+		}
+		catch (SBOLValidationException e) {
+			return null;
+		}
 	}
 	
 	/**
@@ -214,7 +245,7 @@ public class SequenceAnnotation extends Identified {
 	 * 
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant  
 	 */
-	void clearLocations() {
+	void clearLocations() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = locations.values().toArray();
 		for (Object location : valueSetArray) {
@@ -224,9 +255,9 @@ public class SequenceAnnotation extends Identified {
 		
 	/**
 	 * Clears the existing list of location instances, then appends all of the elements in the specified collection to the end of this list.
+	 * @throws SBOLValidationException 
 	 */
-	void setLocations(
-			List<Location> locations) {
+	void setLocations(Set<Location> locations) throws SBOLValidationException {
 		clearLocations();	
 		if (locations==null) return;
 		for (Location location : locations) {
@@ -279,7 +310,7 @@ public class SequenceAnnotation extends Identified {
 			} catch (Exception e) {
 				Set<Range> ranges = ((MultiRange)location).getRanges();
 				if (ranges.size()!=2) {
-					throw new IllegalArgumentException("Sequence annotation " + this.getIdentity() + 
+					throw new SBOLValidationException("Sequence annotation " + this.getIdentity() + 
 							" is required to have a location.");
 				}
 				for (Range otherRange : ranges) {
@@ -340,11 +371,11 @@ public class SequenceAnnotation extends Identified {
 	 * 
 	 * @param displayId
  	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the associated ComponentDefinition object is not {@code null},
+	 * @throws SBOLValidationException if the associated ComponentDefinition object is not {@code null},
 	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
 	 * list of Component instances.
 	 */
-	public void setComponent(String displayId) {
+	public void setComponent(String displayId) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
 				displayId, componentDefinition.getVersion());
@@ -364,15 +395,21 @@ public class SequenceAnnotation extends Identified {
 	 * 
 	 * @param componentURI
  	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the associated ComponentDefinition object is not {@code null},
+	 * @throws SBOLValidationException if the associated ComponentDefinition object is not {@code null},
 	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
 	 * list of Component instances.
 	 */
-	public void setComponent(URI componentURI) {
+	public void setComponent(URI componentURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(componentURI)==null) {
-				throw new IllegalArgumentException("Component '" + componentURI + "' does not exist.");
+				throw new SBOLValidationException("Component '" + componentURI + "' does not exist.");
+			}
+			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
+				if (sa.getIdentity().equals(this.getIdentity())) continue;
+				if (sa.isSetComponent() && sa.getComponentURI().equals(componentURI)) {
+					throw new SBOLValidationException("Multiple sequence annotations cannot refer to the same component.");
+				}
 			}
 		}
 		this.component = componentURI;
@@ -387,7 +424,7 @@ public class SequenceAnnotation extends Identified {
 	 * 
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void unsetComponent() {
+	public void unsetComponent() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		component = null;
 	}
@@ -424,7 +461,7 @@ public class SequenceAnnotation extends Identified {
 	}
 
 	@Override
-	protected SequenceAnnotation deepCopy() {
+	protected SequenceAnnotation deepCopy() throws SBOLValidationException {
 		return new SequenceAnnotation(this);
 	}
 
@@ -434,8 +471,9 @@ public class SequenceAnnotation extends Identified {
 	 * @param URIprefix
 	 * @param parentDisplayId
 	 * @param version
+	 * @throws SBOLValidationException 
 	 */
-	void updateCompliantURI(String URIprefix, String displayId, String version) {
+	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
 			this.setWasDerivedFrom(this.getIdentity());
 		}
@@ -477,5 +515,23 @@ public class SequenceAnnotation extends Identified {
 		return "SequenceAnnotation [locations=" + locations + ", component=" + component
 				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
 				+ ", description=" + description + "]";
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public int compareTo(Object o) {
+		List<Location> sortedLocations1 = new ArrayList<Location>();
+		sortedLocations1.addAll(this.getLocations());
+		Collections.sort(sortedLocations1);
+		Range range1 = (Range)sortedLocations1.get(0);
+		List<Location> sortedLocations2 = new ArrayList<Location>();
+		sortedLocations2.addAll(((SequenceAnnotation)o).getLocations());
+		Collections.sort(sortedLocations2);
+		Range range2 = (Range)sortedLocations2.get(0);
+		int result = range1.getStart()-range2.getStart();
+		if (result==0) {
+			result = range2.getEnd()-range1.getEnd();
+		}
+		return result;
 	}
 }

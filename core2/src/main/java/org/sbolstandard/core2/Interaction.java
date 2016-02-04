@@ -1,13 +1,13 @@
+
 package org.sbolstandard.core2;
 
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
+import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
+
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
  * @author Zhen Zhang
@@ -19,29 +19,26 @@ import static org.sbolstandard.core2.URIcompliance.*;
  * @version 2.0-beta
  */
 
-/**
- * @author zhangz
- *
- */
 public class Interaction extends Identified {
 
 	private Set<URI> types;
 	private HashMap<URI, Participation> participations;
 	private ModuleDefinition moduleDefinition = null;
-	
+
 	/**
-	 * 
-	 * @param identity an identity for the interaction	 
+	 *
+	 * @param identity an identity for the interaction
 	 * @param type a type for the interaction
+	 * @throws SBOLValidationException 
 	 */
-	Interaction(URI identity, Set<URI> type) {
+	Interaction(URI identity, Set<URI> type) throws SBOLValidationException {
 		super(identity);
 		this.types = new HashSet<>();
 		this.participations = new HashMap<>();
 		setTypes(type);
 	}
-	
-	Interaction(Interaction interaction) {
+
+	Interaction(Interaction interaction) throws SBOLValidationException {
 		super(interaction);
 		this.types = new HashSet<>();
 		this.participations = new HashMap<>();
@@ -50,7 +47,7 @@ public class Interaction extends Identified {
 			type.add(URI.create(typeElement.toString()));
 		}
 		this.setTypes(type);
-		List<Participation> participations = new ArrayList<>();
+		Set<Participation> participations = new HashSet<>();
 		for (Participation participation : interaction.getParticipations()) {
 			participations.add(participation.deepCopy());
 		}
@@ -63,37 +60,37 @@ public class Interaction extends Identified {
 	 * If this Interaction object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
+	 *
 	 * @param typeURI
 	 * @return {@code true} if this set did not already contain the specified role.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public boolean addType(URI typeURI) {
+	public boolean addType(URI typeURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return types.add(typeURI);
 	}
-	
+
 	/**
 	 * Removes the given type reference from the set of type references.
 	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
+	 *
 	 * @param typeURI
 	 * @return {@code true} if the matching type reference is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if this Interaction object has only one element matching the given 
+	 * @throws SBOLValidationException if this Interaction object has only one element matching the given
 	 * {@code typeURI} before removal.
 	 */
-	public boolean removeType(URI typeURI) {
+	public boolean removeType(URI typeURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types.size()==1 && types.contains(typeURI)) {
-			throw new IllegalArgumentException("Interaction " + this.getIdentity() + " must have at least one type.");
+			throw new SBOLValidationException("Interaction " + this.getIdentity() + " must have at least one type.");
 		}
 		return types.remove(typeURI);
 	}
-	
+
 	/**
 	 * Clears the existing set of type references first, then adds the given
 	 * set of the type references to this Interaction object.
@@ -104,66 +101,67 @@ public class Interaction extends Identified {
 	 *
 	 * @param types
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code types} argument is either {@code null} or empty
+	 * @throws SBOLValidationException if the given {@code types} argument is either {@code null} or empty
 	 */
-	public void setTypes(Set<URI> types) {
+	public void setTypes(Set<URI> types) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types==null || types.size()==0) {
-			throw new IllegalArgumentException("Interaction " + this.getIdentity() + " must have at least one type.");
+			throw new SBOLValidationException("Interaction " + this.getIdentity() + " must have at least one type.");
 		}
 		clearTypes();
 		for (URI type : types) {
 			addType(type);
 		}
 	}
-	
+
 	/**
 	 * Returns the set of type URIs owned by this Interaction object.
-	 * 
+	 *
 	 * @return the set of type URIs owned by this Interaction object.
 	 */
 	public Set<URI> getTypes() {
 		return types;
 	}
-	
+
 	/**
 	 * Checks if the given type URI is included in this Interaction
 	 * object's set of reference type URIs.
-	 * 
+	 *
 	 * @param typeURI
 	 * @return {@code true} if this set contains the given URI, {@code false} otherwise.
 	 */
 	public boolean containsType(URI typeURI) {
 		return types.contains(typeURI);
 	}
-	
+
 	/**
-	 * Removes all entries of the list of <code>type</code> instances owned by this instance. 
+	 * Removes all entries of the list of <code>type</code> instances owned by this instance.
 	 * The list will be empty after this call returns.
 	 */
 	void clearTypes() {
 		types.clear();
 	}
-	
-//	/**
-//	 * Test if the optional field variable <code>participations</code> is set.
-//	 * @return <code>true</code> if the field variable is not an empty list
-//	 */
-//	public boolean isSetParticipations() {
-//		return !(participations == null || participations.isEmpty());
-//	}
-	
+
+	//	/**
+	//	 * Test if the optional field variable <code>participations</code> is set.
+	//	 * @return <code>true</code> if the field variable is not an empty list
+	//	 */
+	//	public boolean isSetParticipations() {
+	//		return !(participations == null || participations.isEmpty());
+	//	}
+
 	/**
-	 * Calls the Participation constructor to create a new instance using the specified parameters, 
+	 * Calls the Participation constructor to create a new instance using the specified parameters,
 	 * then adds to the list of Participation instances owned by this instance.
 	 * @return the  created Participation instance.
+	 * @throws SBOLValidationException 
 	 */
-	Participation createParticipation(URI identity, URI participant) {
+	Participation createParticipation(URI identity, URI participant) throws SBOLValidationException {
 		Participation participation = new Participation(identity, participant);
 		addParticipation(participation);
 		return participation;
 	}
-	
+
 	/**
 	 * Creates a child Participation instance for this Interaction
 	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
@@ -176,15 +174,15 @@ public class Interaction extends Identified {
 	 * persistent identity URI, the given {@code paricipantId}, and this Interaction object's version.
 	 * It then calls {@link #createParticipation(String, URI)}
 	 * with this component definition URI.
-	 * 
+	 *
 	 * @param displayId
 	 * @param participantId
 	 * @return a Participation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public Participation createParticipation(String displayId, String participantId) {
+	public Participation createParticipation(String displayId, String participantId) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		URI participantURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(), 
+		URI participantURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
 				participantId, moduleDefinition.getVersion());
 		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
 				moduleDefinition.getFunctionalComponent(participantURI)==null) {
@@ -204,22 +202,22 @@ public class Interaction extends Identified {
 	 * <p>
 	 * This method creates a compliant Participation URI with this Interaction object's
 	 * persistent identity URI, the given {@code displayId}, and this Interaction object's version.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param displayId
 	 * @param participant
 	 * @return a Participation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the FunctionalComponent URI referenced by the Participation 
+	 * @throws SBOLValidationException if the FunctionalComponent URI referenced by the Participation
 	 * instance, i.e. {@code participant}, does not belong to the list of FunctionalComponent instances owned by
 	 * this Interaction's parent ModuleDefinition instance.
 	 * @throws IllegalStateException if this Interaction instance has non-standard compliant identity
 	 */
-	public Participation createParticipation(String displayId, URI participant) {
+	public Participation createParticipation(String displayId, URI participant) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (moduleDefinition != null) {
 			if (moduleDefinition.getFunctionalComponent(participant)==null) {
-				throw new IllegalArgumentException("Functional component '" + participant + "' does not exist.");
+				throw new SBOLValidationException("Functional component '" + participant + "' does not exist.");
 			}
 		}
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();
@@ -230,21 +228,25 @@ public class Interaction extends Identified {
 							this.getIdentity());
 		}
 		//validateIdVersion(displayId, version);
-        Participation p = createParticipation(
+		Participation p = createParticipation(
 				createCompliantURI(parentPersistentIdStr, displayId, version), participant);
 		p.setPersistentIdentity(createCompliantURI(parentPersistentIdStr, displayId, ""));
 		p.setDisplayId(displayId);
 		p.setVersion(version);
 		return p;
 	}
-	
+
 	/**
-	 * Adds the specified instance to the list of participations. 
+	 * Adds the specified instance to the list of participations.
+	 * @throws SBOLValidationException 
 	 */
-	void addParticipation(Participation participation) {
-        addChildSafely(participation, participations, "participation");
+	void addParticipation(Participation participation) throws SBOLValidationException {
+		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participation.getParticipantURI())==null) {
+			throw new SBOLValidationException("Functional component '" + participation.getParticipantURI() + "' does not exist.");
+		}
+		addChildSafely(participation, participations, "participation");
 		participation.setSBOLDocument(this.sbolDocument);
-        participation.setModuleDefinition(moduleDefinition);
+		participation.setModuleDefinition(moduleDefinition);
 	}
 
 	/**
@@ -254,32 +256,37 @@ public class Interaction extends Identified {
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 *	
+	 *
 	 * @param participation
 	 * @return {@code true} if the matching Participation instance is removed successfully,
 	 *         {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public boolean removeParticipation(Participation participation) {
+	public boolean removeParticipation(Participation participation) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(participation,participations);
 	}
 
 	/**
-	 * Returns the Participation instance matching the given {@code displayId} from 
+	 * Returns the Participation instance matching the given {@code displayId} from
 	 * this Interaction object's list of Participation instances.
-	 * 
+	 *
 	 * @param displayId
 	 * @return the matching instance if present, or {@code null} otherwise.
 	 */
 	public Participation getParticipation(String displayId) {
-		return participations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+		try {
+			return participations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+		}
+		catch (SBOLValidationException e) {
+			return null;
+		}
 	}
-	
+
 	/**
 	 * Returns the Participation instance matching the given {@code participationURI} from this
 	 * Interaction object's list of Participation instances.
-	 * 
+	 *
 	 * @param participationURI
 	 * @return the matching Participation instance if present, or
 	 *         {@code null} otherwise.
@@ -287,11 +294,11 @@ public class Interaction extends Identified {
 	public Participation getParticipation(URI participationURI) {
 		return participations.get(participationURI);
 	}
-	
+
 	/**
 	 * Returns the set of Participation instances owned by this
 	 * Interaction object.
-	 * 
+	 *
 	 * @return the set of the set of Participation instances owned by this
 	 * Interaction object.
 	 */
@@ -309,10 +316,10 @@ public class Interaction extends Identified {
 	 * <p>
 	 * This method calls {@link #removeParticipation(Participation)} to iteratively remove
 	 * each Participation instance owned by this object.
-	 * 
+	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearParticipations() {
+	public void clearParticipations() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = participations.values().toArray();
 		for (Object participation : valueSetArray) {
@@ -320,13 +327,13 @@ public class Interaction extends Identified {
 		}
 
 	}
-		
+
 	/**
 	 * Clears the existing list of participation instances, then appends all of the elements in the specified collection to the end of this list.
+	 * @throws SBOLValidationException 
 	 */
-	void setParticipations(
-			List<Participation> participations) {
-		clearParticipations();	
+	void setParticipations(Set<Participation> participations) throws SBOLValidationException {
+		clearParticipations();
 		for (Participation participation : participations) {
 			addParticipation(participation);
 		}
@@ -366,26 +373,27 @@ public class Interaction extends Identified {
 	}
 
 	@Override
-	protected Interaction deepCopy() {
+	protected Interaction deepCopy() throws SBOLValidationException {
 		return new Interaction(this);
 	}
-	
+
 	/**
 	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
+	 * @throws SBOLValidationException 
 	 */
-	void updateCompliantURI(String URIprefix, String displayId, String version) {
+	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
 			this.setWasDerivedFrom(this.getIdentity());
 		}
-		this.setIdentity(createCompliantURI(URIprefix,displayId,version));		
+		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
 		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		this.setDisplayId(displayId);
 		this.setVersion(version);
 		int count = 0;
 		for (Participation participation : this.getParticipations()) {
 			if (!participation.isSetDisplayId()) participation.setDisplayId("participation"+ ++count);
-			participation.updateCompliantURI(this.getPersistentIdentity().toString(), 
+			participation.updateCompliantURI(this.getPersistentIdentity().toString(),
 					participation.getDisplayId(), version);
 			this.removeChildSafely(participation, this.participations);
 			this.addParticipation(participation);
@@ -396,7 +404,7 @@ public class Interaction extends Identified {
 
 	/**
 	 * Returns this Interaction object's parent ModuleDefinition instance.
-	 * 
+	 *
 	 * @return this Interaction object's parent ModuleDefinition instance
 	 */
 	ModuleDefinition getModuleDefinition() {
@@ -416,5 +424,5 @@ public class Interaction extends Identified {
 				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
 				+ description + "]";
 	}
-	
+
 }

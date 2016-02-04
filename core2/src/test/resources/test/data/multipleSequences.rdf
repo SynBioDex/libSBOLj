@@ -4,21 +4,21 @@
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pLacSeq"/>
     <sbol:displayId>pLacSeq</sbol:displayId>
     <sbol:version>1.0</sbol:version>
-    <sbol:elements>pLacSeq_elements</sbol:elements>
-    <sbol:encoding rdf:resource="pLacSeq_encoding"/>
+    <sbol:elements>ACGTURYSWKMBDHVN-.</sbol:elements>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/tetRSeq/1.0">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/tetRSeq"/>
     <sbol:displayId>tetRSeq</sbol:displayId>
     <sbol:version>1.0</sbol:version>
-    <sbol:elements>tetRSeq_elements</sbol:elements>
-    <sbol:encoding rdf:resource="tetRSeq_encoding"/>
+    <sbol:elements>ACGTURYSWKMBDHVN-.</sbol:elements>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/pLactetRSeq/1.0">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pLactetRSeq"/>
     <sbol:displayId>pLactetRSeq</sbol:displayId>
     <sbol:version>1.0</sbol:version>
-    <sbol:elements>pLactetRSeq_elements</sbol:elements>
-    <sbol:encoding rdf:resource="pLactetRSeq_encoding"/>
+    <sbol:elements>ACGTURYSWKMBDHVN-.</sbol:elements>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
 </rdf:RDF>

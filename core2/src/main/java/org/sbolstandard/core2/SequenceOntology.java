@@ -1,8 +1,16 @@
 package org.sbolstandard.core2;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 //import java.util.HashMap;
 //import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.oboparser.obo.OBOOntology;
+import org.oboparser.obo.OBOParser;
+import org.oboparser.obo.OBOStanza;
 
 /**
  * @author Zhen Zhang
@@ -92,6 +100,20 @@ public class SequenceOntology {
 
 	}
 	 */
+	protected OBOOntology sequenceOntology = null;
+	
+	SequenceOntology() {
+		OBOParser oboParser = new OBOParser();
+		//File f = new File("src/main/resources/ontologies/SequenceOntology/so-xp.obo");
+		InputStreamReader f = new InputStreamReader(getClass().
+				getResourceAsStream("/ontologies/SequenceOntology/so-xp.obo"));
+		try {
+			oboParser.parse(f);
+			sequenceOntology = oboParser.getOntology();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	// TODO: need method to convert from 1.1 SO term to 2.0
 	static URI convertSeqOntologyV1(String term)
@@ -104,19 +126,187 @@ public class SequenceOntology {
 			convertedSO = convertedSO.replace(v1SO, v2SO);
 			return URI.create(convertedSO);
 		}
+		else if (term.startsWith("SO:")) {
+			convertedSO = convertedSO.replace("SO:", v2SO);
+		} else if (term.startsWith("so:")) {
+			convertedSO = convertedSO.replace("so:", v2SO);
+		}  
 		return URI.create(convertedSO);
+	}
+	
+	/**
+	 * Returns the extracted ID of the given stanza's URI. 
+	 * 
+	 * @param stanzaURI
+	 * @return the extracted ID of the given stanza's URI.
+	 * @throws SBOLValidationException if the given stanzaURI does not begin with SO URI prefix "http://identifiers.org/so/".
+	 */
+	public final String getId(URI stanzaURI) {
+		String stanzaURIstr = stanzaURI.toString().trim();
+		if (!stanzaURIstr.startsWith(URI_PREFIX)) {
+			try {
+				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
+			}
+			catch (SBOLValidationException e) {
+				return null;
+			}
+		}
+		int beginIndex = stanzaURIstr.lastIndexOf("/") + 1;
+		return stanzaURIstr.substring(beginIndex, stanzaURIstr.length());
+	}
+	
+	/**
+	 * Returns the ID field of the stanza whose name matches the given name. If multiple matches are found, only the first matching
+	 * one is returned.
+	 *  
+	 * @param stanzaName
+	 * @return the ID the matching stanza, or {@code null} if no match is found.
+	 * @throws SBOLValidationException if the stanzaName does not exist.
+	 */
+	public final String getId(String stanzaName) {
+		List<String> IdList = new ArrayList<String>();	
+		for (OBOStanza stanza : sequenceOntology.getStanzas()) {
+			if (stanzaName.trim().equals(stanza.getName().trim())) {
+				IdList.add(stanza.getId());
+			}
+		}
+		if (IdList.isEmpty()) {
+			try {
+				throw new SBOLValidationException("Illegal name " + stanzaName + ". It does not exit.");
+			}
+			catch (SBOLValidationException e) {
+				return null;
+			}
+		}
+		return IdList.get(0);
+	}
+	
+	
+	/**
+	 * Returns the name field of the stanza that matches the ID for the given stanzaURI.
+	 * 
+	 * @param stanzaURI
+	 * @return the name field of the stanza that matches the ID in the given stanzaURI.
+	 * @throws SBOLValidationException if the given stanzaURI does not begin with "http://identifiers.org/so/".
+	 * @throws SBOLValidationException if the ID in the given stanzaURI does not exist. 
+	 */
+	public final String getName(URI stanzaURI) {
+		String oboURIstr = stanzaURI.toString().trim();
+		if (!oboURIstr.startsWith(URI_PREFIX)) {
+			try {
+				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+			}
+			catch (SBOLValidationException e) {
+				return null;
+			}
+		}
+		int beginIndex = oboURIstr.lastIndexOf("/") + 1;
+		String id = oboURIstr.substring(beginIndex, oboURIstr.length());
+		OBOStanza oboStanza = sequenceOntology.getStanza(id);
+		if (oboStanza == null) {
+			try {
+				throw new SBOLValidationException("ID " + id + " does not exist.");
+			}
+			catch (SBOLValidationException e) {
+				return null;
+			}
+		}
+		return oboStanza.getName();
+	}
+	
+	/**
+	 * Returns the name field of the stanza that matches the ID in the given stanzaURI.
+	 * 
+	 * @param stanzaId
+	 * @return the name field of the stanza that matches the ID in the given stanzaURI,
+				or {@code null} if this no match is found.
+	 * @throws SBOLValidationException if the ID in the given stanzaURI does not exist.				
+	 */
+	public final String getName(String stanzaId) {
+		OBOStanza oboStanza = sequenceOntology.getStanza(stanzaId);
+		if (oboStanza == null) {
+			try {
+				throw new SBOLValidationException("Illegal ID " + stanzaId + " does not exist.");
+			}
+			catch (SBOLValidationException e) {
+				return null;
+			}
+		}
+		return oboStanza.getName();
+	}
+	
+	/**
+	 * Returns the URI, i.e. the Sequence Ontology namespace URL followed by an ID of an sequence ontology term, 
+	 * of the stanza whose name matches the given name. If multiple matches are found, only the first matching
+	 * one is returned. 
+	 * 
+	 * @param stanzaName
+	 * @return the URI of the given SO name.
+	 * @throws SBOLValidationException if the ID in the given stanzaURI does not exist.
+	 */
+	public final URI getURIbyName(String stanzaName) {
+		return getURIbyId(getId(stanzaName));
+	}
+	
+	/** 
+	 * Creates a new URI from the Sequence Ontology namespace with the given ID. For example, the function call
+	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
+	 * @param stanzaId
+	 * @return the created URI
+	 * @throws SBOLValidationException if the ID in the given stanzaURI does not exist.
+	 */
+	public final URI getURIbyId(String stanzaId) {
+		if (stanzaId==null) return null;
+		OBOStanza oboStanza = sequenceOntology.getStanza(stanzaId.trim());
+		if (oboStanza == null) {
+			try {
+				throw new SBOLValidationException("ID " + stanzaId + " does not exist.");
+			}
+			catch (SBOLValidationException e) {
+				return null;
+			}
+		}
+		return URI.create(URI_PREFIX+stanzaId);
 	}
 
 	/**
-	 * Creates a new URI from the Sequence Ontology namespace with the given local name. For example, the function call
-	 * <code>term("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
-	 * @param localName
-	 * @return the created URI
+	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
+	 * @param Id1
+	 * @param Id2
+	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
 	 */
-	public static final URI type(String localName) {
-		return URI.create(URI_PREFIX+localName);
+	public boolean isDescendantOf(String Id1, String Id2) {
+		OBOStanza stanza1 = sequenceOntology.getStanza(Id1);
+		OBOStanza stanza2 = sequenceOntology.getStanza(Id2);
+		if (stanza1 == null) {
+			try {
+				throw new SBOLValidationException("Illegal ID: " + Id1 + ". No match was found.");
+			}
+			catch (SBOLValidationException e) {
+				return false;
+			}
+		}
+		if (stanza2 == null) {
+			try {
+				throw new SBOLValidationException("Illegal ID: " + Id2 + ". No match was found.");
+			}
+			catch (SBOLValidationException e) {
+				return false;
+			}
+		}
+		return sequenceOntology.isDescendantOf(stanza1, stanza2);
 	}
 
+	/**
+	 * Creates a new URI from the Sequence Ontology namespace with the given ID. For example, the function call
+	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
+	 * @param id
+	 * @return the created URI
+	 */
+	public static final URI type(String id) {
+		return URI.create(URI_PREFIX+id);
+	}
+		
 	/**
 	 * A regulatory_region composed of the TSS(s) and binding sites for TF_complexes of the basal transcription
 	 * machinery (<a href="http://identifiers.org/so/SO:0000167">SO:0000167</a>).

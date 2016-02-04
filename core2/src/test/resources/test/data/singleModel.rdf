@@ -5,7 +5,7 @@
     <sbol:displayId>ToggleModel</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:source rdf:resource="ToggleModel_source"/>
-    <sbol:language rdf:resource="ToggleModel_language"/>
-    <sbol:framework rdf:resource="ToggleModel_framework"/>
+    <sbol:language rdf:resource="http://identifiers.org/edam/format_2585"/>
+    <sbol:framework rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000062"/>
   </sbol:Model>
 </rdf:RDF>

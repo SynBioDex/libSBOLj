@@ -37,12 +37,23 @@ If validation is successful, the program will print the contents of the SBOL doc
 java -jar libSBOLj-<version>-withDependencies.jar <inputFile> -o <outputFile>
 ```
 
-If validation fails with an error, there will be a message printed about the validation error.  In addition to checking all required validation rules, it will also check if the URIs are compliant and whether the SBOL document is complete (i.e., all referenced objects are contained within the file).  These validation checks can be turned off with the -n and -i flags, respectively.
+If validation fails with an error, there will be a message printed about the validation error.  In addition to checking all required validation rules, it will also check if the URIs are compliant and whether the SBOL document is complete (i.e., all referenced objects are contained within the file).  These validation checks can be turned off with the -n and -i flags, respectively.  It is also possible to turn-on best practices checking using the -b flag.
 
 If the input file is an SBOL 1.1 file, then it will convert the file into an SBOL 2.0 file.  This conversion should be provided a default URI prefix.  It can also be provided a default version, if desired.  Finally, the -t flag will insert the type of top level objects into the URI during conversion, if desired.
 
 ```
 java -jar libSBOLj-<version>-withDependencies.jar <inFile> -o <outFile> -p <URIprefix> -v <version>
+```
+
+The command line interface can also convert GenBank files into SBOL 2.0 files using the command below:
+
+```
+java -jar libSBOLj-<version>-withDependencies.jar -g <inFile> -o <outFile> -p <URIprefix> -v <version>
+```
+
+Finally, it can convert a specifed top-level ComponentDefinition within an SBOL 2.0 file into a GenBank file using the following command: 
+```
+java -jar libSBOLj-<version>-withDependencies.jar <inFile> -c <ComponentDefinitionURI> -o <outFile>
 ```
 
 ## Using the latest libSBOLj SNAPSHOT

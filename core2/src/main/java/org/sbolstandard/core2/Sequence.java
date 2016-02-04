@@ -47,17 +47,52 @@ public class Sequence extends TopLevel{
 	 */
 	public static final URI SMILES = URI.create("http://www.opensmiles.org/opensmiles.html");
 
-	Sequence(URI identity, String elements, URI encoding) {
+	Sequence(URI identity, String elements, URI encoding) throws SBOLValidationException {
 		super(identity);
-		setElements(elements);
 		setEncoding(encoding);
+		setElements(elements);
+	}
+	
+	/**
+	 * Creates a Sequence instance with the given arguments.
+	 * <p>
+	 * If the given {@code prefix} does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * This method requires the given {@code prefix}, {@code displayId}, and {@code version} are not
+	 * {@code null} and valid.
+	 * <p>
+	 * A Sequence instance is created with a compliant URI. This URI is composed from
+	 * the given {@code prefix}, the given {@code displayId}, and {@code version}.
+	 * The display ID, persistent identity, and version fields of this instance
+	 * are then set accordingly.
+	 *
+	 * @param prefix
+	 * @param displayId
+	 * @param version
+	 * @param elements
+	 * @param encoding
+	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the sequence {@code elements} invalid for specified {@code encoding}.
+	 */
+	public Sequence(String prefix,String displayId,String version, String elements, URI encoding) throws SBOLValidationException {
+		this(URIcompliance.createCompliantURI(prefix, displayId, version), elements, encoding);
+		prefix = URIcompliance.checkURIprefix(prefix);
+		validateIdVersion(displayId, version);
+		setDisplayId(displayId);
+		setPersistentIdentity(createCompliantURI(prefix, displayId, ""));
+		setVersion(version);
 	}
 
-	private Sequence(Sequence sequence) {
+	private Sequence(Sequence sequence) throws SBOLValidationException {
 		//super(sequence.getIdentity());
 		super(sequence);
-		this.setElements(sequence.getElements());
 		this.setEncoding(sequence.getEncoding());
+		this.setElements(sequence.getElements());
 	}
 
 	//	public Sequence(String authority, String Id, String elements, URI encoding) {
@@ -85,14 +120,18 @@ public class Sequence extends TopLevel{
 	 * 
 	 * @param elements
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code elements} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code elements} argument is {@code null}
 	 */
-	public void setElements(String elements) {
+	public void setElements(String elements) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (elements == null) {
-			throw new IllegalArgumentException("Sequence is required to have elements.");
+			throw new SBOLValidationException("Sequence is required to have elements.");
 		}
 		this.elements = elements;
+		if (!SBOLValidate.checkSequenceEncoding(this)) {
+			throw new SBOLValidationException("Sequence '" + this.getIdentity() + "' that uses encoding " + this.getEncoding() + 
+					" does not have a valid sequence.");
+		}
 	}
 	
 	/**
@@ -114,12 +153,12 @@ public class Sequence extends TopLevel{
 	 * 
 	 * @param encoding
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code encoding} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code encoding} argument is {@code null}
 	 */
-	public void setEncoding(URI encoding) {
+	public void setEncoding(URI encoding) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (encoding == null) {
-			throw new IllegalArgumentException("Sequence is required to have an encoding.");
+			throw new SBOLValidationException("Sequence is required to have an encoding.");
 		}
 		this.encoding = encoding;
 	}
@@ -156,7 +195,7 @@ public class Sequence extends TopLevel{
 	}
 
 	@Override
-	protected Sequence deepCopy() {
+	protected Sequence deepCopy() throws SBOLValidationException {
 		return new Sequence(this);
 	}
 
@@ -164,7 +203,7 @@ public class Sequence extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	protected Sequence copy(String URIprefix, String displayId, String version) {
+	protected Sequence copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		Sequence cloned = this.deepCopy();
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);

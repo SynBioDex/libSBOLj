@@ -19,7 +19,7 @@
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someSequence"/>
     <sbol:displayId>someSequence</sbol:displayId>
     <sbol:version>1.0</sbol:version>
-    <sbol:elements>someSeq_element</sbol:elements>
-    <sbol:encoding rdf:resource="someSeq_encoding"/>
+    <sbol:elements>ACGTURYSWKMBDHVN-.</sbol:elements>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
 </rdf:RDF>

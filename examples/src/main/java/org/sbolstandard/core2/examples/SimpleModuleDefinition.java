@@ -13,6 +13,7 @@ import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.Participation;
 import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLWriter;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
@@ -53,7 +54,7 @@ public class SimpleModuleDefinition {
 		SBOLWriter.write(document,(System.out));	
     }
 	
-	private static void setDefaultNameSpace(SBOLDocument document, String uri)
+	private static void setDefaultNameSpace(SBOLDocument document, String uri) throws SBOLValidationException
 	{
 		if (uri.endsWith("/"))
 		{
