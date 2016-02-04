@@ -1,13 +1,10 @@
 package org.sbolstandard.core2;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 //import java.util.HashMap;
 //import java.util.Map;
-
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,7 +104,9 @@ public class SequenceOntology {
 	
 	SequenceOntology() {
 		OBOParser oboParser = new OBOParser();
-		File f = new File("src/resources/ontologies/SequenceOntology/so-xp.obo");
+		//File f = new File("src/main/resources/ontologies/SequenceOntology/so-xp.obo");
+		InputStreamReader f = new InputStreamReader(getClass().
+				getResourceAsStream("/ontologies/SequenceOntology/so-xp.obo"));
 		try {
 			oboParser.parse(f);
 			sequenceOntology = oboParser.getOntology();
