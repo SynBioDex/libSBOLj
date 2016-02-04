@@ -823,6 +823,7 @@ public class GenBank {
 				annotations.add(annotation);
 			} else if (strLine.startsWith("FEATURE")) {
 				topCD = doc.createComponentDefinition(id, version, type);
+				topCD.addRole(SequenceOntology.ENGINEERED_REGION);
 				if (!description.equals("")) {
 					topCD.setDescription(description);
 				}
