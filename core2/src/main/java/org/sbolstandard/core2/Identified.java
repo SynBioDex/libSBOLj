@@ -402,7 +402,8 @@ public abstract class Identified {
 	 */
 	void addAnnotation(Annotation annotation) throws SBOLValidationException {
 		if (annotations.contains(annotation)) {
-			throw new SBOLValidationException("Annotation already exists.");
+			//throw new SBOLValidationException("Annotation already exists.");
+			throw new SBOLValidationException("sbol-10214");
 		}
 		annotations.add(annotation);
 	}
@@ -580,14 +581,22 @@ public abstract class Identified {
 	protected final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {
 		if (isChildURIformCompliant(this.getIdentity(), child.getIdentity())) {
 			URI persistentId = URI.create(extractPersistentId(child.getIdentity()));
-			if(keyExistsInAnyMap(persistentId, maps))
+			if(keyExistsInAnyMap(persistentId, maps)) {
+//				throw new SBOLValidationException(
+//						"Instance for identity `" + child.identity +
+//						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
 				throw new SBOLValidationException(
-						"Instance for identity `" + child.identity +
-						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
-			if(siblingsMap.containsKey(child.getIdentity()))
+						"sbol-10202", child
+						);
+			}
+			if(siblingsMap.containsKey(child.getIdentity())) {
+//				throw new SBOLValidationException(
+//						"Instance for identity `" + child.identity +
+//						"' and persistent identity `" + persistentId + "' exists for a " + typeName);
 				throw new SBOLValidationException(
-						"Instance for identity `" + child.identity +
-						"' and persistent identity `" + persistentId + "' exists for a " + typeName);
+						"sbol-10202", child
+						);
+			}
 			siblingsMap.put(child.getIdentity(), child);
 			I latest = siblingsMap.get(persistentId);
 			if (latest == null) {
@@ -602,12 +611,18 @@ public abstract class Identified {
 		}
 		else { // Only check if URI exists in all maps.
 			if(keyExistsInAnyMap(child.getIdentity(), maps))
+//				throw new SBOLValidationException(
+//						"Instance for identity `" + child.identity +
+//						"' exists for a non-" + typeName);
 				throw new SBOLValidationException(
-						"Instance for identity `" + child.identity +
-						"' exists for a non-" + typeName);
+						"sbol-10202", child
+						);
 			if(siblingsMap.containsKey(child.getIdentity()))
+//				throw new SBOLValidationException(
+//						"Instance for identity `" + child.identity + "' exists for a " + typeName);
 				throw new SBOLValidationException(
-						"Instance for identity `" + child.identity + "' exists for a " + typeName);
+						"sbol-10202", child
+						);
 			siblingsMap.put(child.getIdentity(), child);
 		}
 

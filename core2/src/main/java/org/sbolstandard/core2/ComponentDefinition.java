@@ -363,7 +363,8 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getSequence(sequence.getIdentity())==null) {
-				throw new SBOLValidationException("Sequence '" + sequence.getIdentity() + "' does not exist.");
+				//throw new SBOLValidationException("Sequence '" + sequence.getIdentity() + "' does not exist.");
+				throw new SBOLValidationException("sbol-10513", sequence);
 			}
 		}
 		return this.addSequence(sequence.getIdentity());
@@ -381,7 +382,9 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getSequence(sequenceURI)==null) {
-				throw new SBOLValidationException("Sequence '" + sequenceURI + "' does not exist.");
+				//throw new SBOLValidationException("Sequence '" + sequenceURI + "' does not exist.");
+				throw new SBOLValidationException("sbol-10513", this);
+				// TODO: (Validation) Return sequenceURI here?
 			}
 		}
 		return sequences.add(sequenceURI);
@@ -822,11 +825,14 @@ public class ComponentDefinition extends TopLevel {
 		sequenceAnnotation.setComponentDefinition(this);
 		if (sequenceAnnotation.isSetComponent()) {
 			if (sequenceAnnotation.getComponent()==null) {
-				throw new SBOLValidationException("Component '" + sequenceAnnotation.getComponentURI() + "' does not exist.");
+				//throw new SBOLValidationException("Component '" + sequenceAnnotation.getComponentURI() + "' does not exist.");
+				throw new SBOLValidationException("sbol-10521", sequenceAnnotation);
+				// TODO: (Validation) right rule?
 			}
 			for (SequenceAnnotation sa : this.getSequenceAnnotations()) {
 				if (sa.isSetComponent() && sa.getComponentURI().equals(sequenceAnnotation.getComponentURI())) {
-					throw new SBOLValidationException("Multiple sequence annotations cannot refer to the same component.");
+					//throw new SBOLValidationException("Multiple sequence annotations cannot refer to the same component.");
+					throw new SBOLValidationException("sbol-10522", sa);
 				}
 			}
 		}
@@ -1077,12 +1083,14 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (component.getDefinition()==null) {
 				throw new SBOLValidationException("ComponentDefinition '" + component.getDefinitionURI() + "' does not exist.");
+				// TODO: (Validation) which rule?				
 			}
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
 		if (SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited)) {
-			throw new SBOLValidationException("Cycle created by Component '" + component.getIdentity() + "'");
+			//throw new SBOLValidationException("Cycle created by Component '" + component.getIdentity() + "'");
+			throw new SBOLValidationException("sbol-10605", component);
 		}
 		addChildSafely(component, components, "component",
 				sequenceAnnotations, sequenceConstraints);
@@ -1326,6 +1334,7 @@ public class ComponentDefinition extends TopLevel {
 		sequenceConstraint.setComponentDefinition(this);
 		if (sequenceConstraint.getSubject()==null) {
 			throw new SBOLValidationException("Component '" + sequenceConstraint.getSubjectURI() + "' does not exist.");
+			//throw new SBOLValidationException("sbol-")
 		}
 		if (sequenceConstraint.getObject()==null) {
 			throw new SBOLValidationException("Component '" + sequenceConstraint.getObjectURI() + "' does not exist.");

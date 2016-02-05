@@ -47,6 +47,7 @@ public abstract class TopLevel extends Identified {
 		super(toplevel);
 	}
 	
+	@Override
 	protected abstract Identified deepCopy() throws SBOLValidationException;
 	
 	/**

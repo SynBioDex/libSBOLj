@@ -104,17 +104,20 @@ class ComparableVersion
             this.value = new BigInteger( str );
         }
 
-        public int getType()
+        @Override
+		public int getType()
         {
             return INTEGER_ITEM;
         }
 
-        public boolean isNull()
+        @Override
+		public boolean isNull()
         {
             return BIG_INTEGER_ZERO.equals( value );
         }
 
-        public int compareTo( Item item )
+        @Override
+		public int compareTo( Item item )
         {
             if ( item == null )
             {
@@ -137,7 +140,8 @@ class ComparableVersion
             }
         }
 
-        public String toString()
+        @Override
+		public String toString()
         {
             return value.toString();
         }
@@ -190,12 +194,14 @@ class ComparableVersion
             this.value = ALIASES.getProperty( value , value );
         }
 
-        public int getType()
+        @Override
+		public int getType()
         {
             return STRING_ITEM;
         }
 
-        public boolean isNull()
+        @Override
+		public boolean isNull()
         {
             return ( comparableQualifier( value ).compareTo( RELEASE_VERSION_INDEX ) == 0 );
         }
@@ -220,7 +226,8 @@ class ComparableVersion
             return i == -1 ? ( _QUALIFIERS.size() + "-" + qualifier ) : String.valueOf( i );
         }
 
-        public int compareTo( Item item )
+        @Override
+		public int compareTo( Item item )
         {
             if ( item == null )
             {
@@ -243,7 +250,8 @@ class ComparableVersion
             }
         }
 
-        public String toString()
+        @Override
+		public String toString()
         {
             return value;
         }
@@ -258,12 +266,14 @@ class ComparableVersion
         extends ArrayList<Item>
         implements Item
     {
-        public int getType()
+        @Override
+		public int getType()
         {
             return LIST_ITEM;
         }
 
-        public boolean isNull()
+        @Override
+		public boolean isNull()
         {
             return ( size() == 0 );
         }
@@ -284,7 +294,8 @@ class ComparableVersion
             }
         }
 
-        public int compareTo( Item item )
+        @Override
+		public int compareTo( Item item )
         {
             if ( item == null )
             {
@@ -329,7 +340,8 @@ class ComparableVersion
             }
         }
 
-        public String toString()
+        @Override
+		public String toString()
         {
             StringBuilder buffer = new StringBuilder( "(" );
             for ( Iterator<Item> iter = iterator(); iter.hasNext(); )
@@ -450,22 +462,26 @@ class ComparableVersion
         return isDigit ? new IntegerItem( buf ) : new StringItem( buf, false );
     }
 
-    public int compareTo( ComparableVersion o )
+    @Override
+	public int compareTo( ComparableVersion o )
     {
         return items.compareTo( o.items );
     }
 
-    public String toString()
+    @Override
+	public String toString()
     {
         return value;
     }
 
-    public boolean equals( Object o )
+    @Override
+	public boolean equals( Object o )
     {
         return ( o instanceof ComparableVersion ) && canonical.equals( ( (ComparableVersion) o ).canonical );
     }
 
-    public int hashCode()
+    @Override
+	public int hashCode()
     {
         return canonical.hashCode();
     }

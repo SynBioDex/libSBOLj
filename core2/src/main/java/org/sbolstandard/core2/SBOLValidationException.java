@@ -1,9 +1,8 @@
 package org.sbolstandard.core2;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -83,9 +82,26 @@ public class SBOLValidationException extends Exception {
 	 */	
 	SBOLValidationException(Throwable cause) {
 		super(cause);
-
 		this.objects = Collections.emptyList();
 	}
+
+//	/**
+//	 * @param message
+//	 * @param annotations
+//	 */
+//	SBOLValidationException(String message, Annotation ... annotations) {
+//		this(message, Arrays.asList(annotations));
+//	}
+//
+//	/**
+//	 * @param message
+//	 * @param annotationist
+//	 */
+//	public SBOLValidationException(String message, List<Annotation> annotations) {
+//		super(formatMessage(message, annotations));
+//		this.objects = null;//Collections.unmodifiableList(new ArrayList<>(objects));
+//	}
+
 
 	/**
 	 * Returns the list of objects relevant for the validation exception. This list may be empty if the exact object
@@ -103,9 +119,10 @@ public class SBOLValidationException extends Exception {
 		if (message.startsWith("sbol-")) {
 			if (validationRules == null) {
 				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
-				File f = new File("src/resources/validation/rules.txt");
+				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
+						getResourceAsStream("/validation/rules.txt"));
 				try {
-					parse(f);
+					parse(new BufferedReader(f));
 					String key = message.trim();
 					SBOLValidationRule rule = validationRules.get(key);
 					if (rule == null) {
@@ -153,9 +170,75 @@ public class SBOLValidationException extends Exception {
 		}
 		return sb.toString();
 	}
-
-	private static void parse(File f) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(f));
+	
+//	/**
+//	 * @param message
+//	 * @param annotations
+//	 * @return
+//	 */
+//	private static String formatMessage(String message, List<Annotation> annotations) {
+//				final StringBuilder sb = new StringBuilder(message);
+//		if (message.startsWith("sbol-")) {
+//			if (validationRules == null) {
+//				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
+//				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
+//						getResourceAsStream("/validation/rules.txt"));
+//				try {
+//					parse(new BufferedReader(f));
+//					String key = message.trim();
+//					SBOLValidationRule rule = validationRules.get(key);
+//					if (rule == null) {
+//						throw new RuntimeException("Rule ID does not exist.");
+//					}
+//					sb.append(": " + rule.getDescription() + "\n");
+//					if (!annotations.isEmpty()) {
+//						sb.append(": ");
+//						boolean first = true;
+//						for (Annotation obj : annotations) {
+//							if (first) {
+//								first = false;
+//							}
+//							else {
+//								sb.append(", ");
+//							}
+//							if (obj != null) {
+//								sb.append(obj.toString());
+//							}
+//						}
+//					}
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		else {
+//			//final StringBuilder sb = new StringBuilder(message);
+//			if (!annotations.isEmpty()) {
+//				sb.append(": ");
+//				boolean first = true;
+//				for (Annotation obj : annotations) {
+//					if (first) {
+//						first = false;
+//					}
+//					else {
+//						sb.append(", ");
+//					}
+//					if (obj != null) {
+//						sb.append(obj.toString());
+//					}
+//				}
+//			}
+//			//return sb.toString();
+//		}
+//		return sb.toString();
+//	}
+	
+		
+	/**
+	 * @param br
+	 * @throws IOException
+	 */
+	private static void parse(BufferedReader br) throws IOException {		
 		String line;
 		String ruleDescription = "";
 		while((line = br.readLine())!= null) {

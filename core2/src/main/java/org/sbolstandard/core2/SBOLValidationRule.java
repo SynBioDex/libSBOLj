@@ -47,6 +47,7 @@ public class SBOLValidationRule {
 		this.description = description;
 	}
 	
+	@Override
 	public String toString() {
 		return "model class: " + ruleClass + "\n" 
 			+  "id: " + this.id + "\n"

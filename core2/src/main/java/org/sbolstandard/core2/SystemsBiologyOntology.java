@@ -90,14 +90,15 @@ public class SystemsBiologyOntology {
 	
 	SystemsBiologyOntology() {
 		OBOParser oboParser = new OBOParser();
-		//File f = new File("src/main/resources/ontologies/SystemsBiologyOntology/sbo_full.obo");
-		InputStreamReader f = new InputStreamReader(getClass().
-				getResourceAsStream("/ontologies/SystemsBiologyOntology/sbo_full.obo"));
-		try {
-			oboParser.parse(f);
-			systemsBiologyOntology = oboParser.getOntology();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (systemsBiologyOntology == null) {
+			InputStreamReader f = new InputStreamReader(getClass().
+					getResourceAsStream("/ontologies/SystemsBiologyOntology/sbo_full.obo"));
+			try {
+				oboParser.parse(f);
+				systemsBiologyOntology = oboParser.getOntology();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

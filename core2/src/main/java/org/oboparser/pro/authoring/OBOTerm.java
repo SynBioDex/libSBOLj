@@ -1,6 +1,5 @@
 package org.oboparser.pro.authoring;
 
-import java.util.*;
 import java.io.*;
 
 public interface OBOTerm {

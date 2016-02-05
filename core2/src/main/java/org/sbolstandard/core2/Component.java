@@ -170,19 +170,23 @@ public class Component extends ComponentInstance{
 		mapsTo.setComponentInstance(this);
 		if (sbolDocument != null) {
 			if (componentDefinition.getComponent(mapsTo.getLocalURI())==null) {
-				throw new SBOLValidationException("Component '" + mapsTo.getLocalURI() + "' does not exist.");
+				//throw new SBOLValidationException("Component '" + mapsTo.getLocalURI() + "' does not exist.");
+				throw new SBOLValidationException("sbol-10803", mapsTo);
 			}
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (getDefinition().getComponent(mapsTo.getRemoteURI())==null) {
-				throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' does not exist.");
+				//throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' does not exist.");
+				throw new SBOLValidationException("sbol-10808", mapsTo);
 			}
 			if (getDefinition().getComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
-				throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' is private.");
+				//throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' is private.");
+				throw new SBOLValidationException("sbol-10807", mapsTo);
 			}
 			if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
 				if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
-					throw new SBOLValidationException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+					//throw new SBOLValidationException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+					throw new SBOLValidationException("sbol-10811", mapsTo);
 				}
 			}
 		}

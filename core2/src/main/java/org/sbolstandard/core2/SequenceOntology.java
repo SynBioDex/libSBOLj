@@ -100,18 +100,19 @@ public class SequenceOntology {
 
 	}
 	 */
-	protected OBOOntology sequenceOntology = null;
+	private static OBOOntology sequenceOntology = null;
 	
 	SequenceOntology() {
 		OBOParser oboParser = new OBOParser();
-		//File f = new File("src/main/resources/ontologies/SequenceOntology/so-xp.obo");
-		InputStreamReader f = new InputStreamReader(getClass().
-				getResourceAsStream("/ontologies/SequenceOntology/so-xp.obo"));
-		try {
-			oboParser.parse(f);
-			sequenceOntology = oboParser.getOntology();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (sequenceOntology == null) {
+			InputStreamReader f = new InputStreamReader(getClass().
+					getResourceAsStream("/ontologies/SequenceOntology/so-xp.obo"));
+			try {
+				oboParser.parse(f);
+				sequenceOntology = oboParser.getOntology();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

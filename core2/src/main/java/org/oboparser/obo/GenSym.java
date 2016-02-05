@@ -16,7 +16,7 @@ public class GenSym {
 	
 	public GenSym(String pref) { 
 		prefix = pref; 
-		id = (long)0;
+		id = 0;
 		setDigits(9);
 	}
 	

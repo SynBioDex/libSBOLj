@@ -308,14 +308,16 @@ public class ModuleDefinition extends TopLevel {
 		module.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (module.getDefinition() == null) {
-				throw new SBOLValidationException("ModuleDefinition '" + module.getDefinitionURI().toString()
-						+ "' does not exist.");
+//				throw new SBOLValidationException("ModuleDefinition '" + module.getDefinitionURI().toString()
+//						+ "' does not exist.");
+				throw new SBOLValidationException("sbol-11604", module);
 			}
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
 		if (SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited)) {
-			throw new SBOLValidationException("Cycle created by Module '" + module.getIdentity() + "'");
+			//throw new SBOLValidationException("Cycle created by Module '" + module.getIdentity() + "'");
+			throw new SBOLValidationException("");
 		}
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		for (MapsTo mapsTo : module.getMapsTos()) {
@@ -734,6 +736,7 @@ public class ModuleDefinition extends TopLevel {
 			if (functionalComponent.getDefinition()== null) {
 				throw new SBOLValidationException("ComponentDefinition '" + functionalComponent.getDefinitionURI()
 						+ "' does not exist.");
+				// TODO: (Validation) which rule?
 			}
 		}
 		addChildSafely(functionalComponent, functionalComponents, "functionalComponent",
@@ -905,8 +908,10 @@ public class ModuleDefinition extends TopLevel {
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModel(model.getIdentity()) == null) {
-				throw new SBOLValidationException("Model '" + model.getIdentity()
-						+ "' does not exist.");
+//				throw new SBOLValidationException("Model '" + model.getIdentity()
+//						+ "' does not exist.");
+				throw new SBOLValidationException("sbol-11607", model);
+				// TODO: (Validation) complete flag
 			}
 		}
 		return this.addModel(model.getIdentity());
@@ -987,7 +992,9 @@ public class ModuleDefinition extends TopLevel {
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModel(modelURI) == null) {
-				throw new SBOLValidationException("Model '" + modelURI + "' does not exist.");
+				//throw new SBOLValidationException("Model '" + modelURI + "' does not exist.");
+				throw new SBOLValidationException("sbol-11607", this);
+				// TODO: (Validation) complete flag
 			}
 		}
 		return models.add(modelURI);
