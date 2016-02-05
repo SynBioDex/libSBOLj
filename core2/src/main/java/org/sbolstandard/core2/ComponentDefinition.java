@@ -1412,11 +1412,12 @@ public class ComponentDefinition extends TopLevel {
 		sequenceConstraint.setSBOLDocument(this.sbolDocument);
 		sequenceConstraint.setComponentDefinition(this);
 		if (sequenceConstraint.getSubject()==null) {
-			throw new SBOLValidationException("Component '" + sequenceConstraint.getSubjectURI() + "' does not exist.");
-			//throw new SBOLValidationException("sbol-")
+			//throw new SBOLValidationException("Component '" + sequenceConstraint.getSubjectURI() + "' does not exist.");
+			throw new SBOLValidationException("sbol-11402", sequenceConstraint);
 		}
 		if (sequenceConstraint.getObject()==null) {
-			throw new SBOLValidationException("Component '" + sequenceConstraint.getObjectURI() + "' does not exist.");
+			//throw new SBOLValidationException("Component '" + sequenceConstraint.getObjectURI() + "' does not exist.");
+			throw new SBOLValidationException("sbol-11404", sequenceConstraint);
 		}
 		addChildSafely(sequenceConstraint, sequenceConstraints, "sequenceConstraint",
 				components, sequenceAnnotations);

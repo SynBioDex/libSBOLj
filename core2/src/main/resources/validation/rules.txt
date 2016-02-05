@@ -1,8 +1,7 @@
 [SBOLDocument]
 id: sbol-10101
 condition: strong required
-description: An SBOL document MUST declare the
-use of the following XML namespace: “http://sbols.org/v2#”.
+description: An SBOL document MUST declare the use of the following XML namespace: “http://sbols.org/v2#”.
 reference: Section 10 on page 54
 
 [SBOLDocument]

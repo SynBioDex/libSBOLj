@@ -211,7 +211,7 @@ public class SBOLReader
 		if (!foundSBOL1 && !foundSBOL2) {
 			//throw new SBOLValidationException("No SBOL namespace found.");
 			throw new SBOLValidationException("sbol-10101");
-			
+			// TODO: (Validation) pass SBOLDocument object to SBOLValidationException?		
 		}
 		else if (foundSBOL1 && !foundSBOL2) return SBOLVERSION1;
 		else if (foundSBOL2 && !foundSBOL1) {
