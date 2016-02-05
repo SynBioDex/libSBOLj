@@ -902,6 +902,85 @@ public class ComponentDefinition extends TopLevel {
 		return sequenceAnnotations;
 	}
 	
+	private void getSuccessorComponents(HashMap<Component,Set<Component>> successorMap,
+			Component component, Set<Component> visited) throws SBOLValidationException {
+		if (visited.contains(component)) {
+			throw new SBOLValidationException("Cycle in sequence constraints");
+		}
+		visited.add(component);
+		for (SequenceConstraint sc : this.getSequenceConstraints()) {
+			if (sc.getSubject().equals(component)) {
+				successorMap.get(component).add(sc.getObject());
+				getSuccessorComponents(successorMap,sc.getObject(),visited);
+				successorMap.get(component).addAll(successorMap.get(sc.getObject()));
+			}
+		}
+		visited.remove(component);
+	}
+
+	/**
+	 * Returns a sorted list of Component instances owned by this
+	 * ComponentDefinition object.
+	 *
+	 * @return a sorted list of Component instances owned by this
+	 *         ComponentDefinition object.
+	 * @throws SBOLValidationException 
+	 */
+	public List<Component> getSortedComponents() throws SBOLValidationException {
+		List<Component> sortedComponents = new ArrayList<Component>();
+		List<SequenceAnnotation> sortedSAs = new ArrayList<SequenceAnnotation>();
+		sortedSAs.addAll(this.getSequenceAnnotations());
+		Collections.sort(sortedSAs);
+		HashMap<Component,Set<Component>> successorMap = new HashMap<Component,Set<Component>>();
+		for (Component component : this.getComponents()) {
+			successorMap.put(component, new HashSet<Component>());
+		}
+		for (int i = 0; i < sortedSAs.size(); i++) {
+			SequenceAnnotation source = sortedSAs.get(i);
+			if (source.getLocations().iterator().next()==null ||
+					source.getLocations().iterator().next() instanceof GenericLocation) continue;
+			if (source.isSetComponent()) {
+				Component sourceComponent = source.getComponent();
+				for (int j = i + 1; j < sortedSAs.size(); j++) {
+					SequenceAnnotation target = sortedSAs.get(j);
+					if (target.getLocations().iterator().next()==null ||
+							target.getLocations().iterator().next() instanceof GenericLocation) continue;
+					if (target.isSetComponent()) {
+						Component targetComponent = target.getComponent();
+						successorMap.get(sourceComponent).add(targetComponent);
+					}
+				}
+			}
+		}
+		for (Component component : this.getComponents()) {
+			getSuccessorComponents(successorMap,component,new HashSet<Component>());
+		}
+		while (true) {
+			boolean change = false;
+			for (Component component1 : this.getComponents()) {
+				if (sortedComponents.contains(component1)) continue;
+				boolean add = true;
+				for (Component component2 : this.getComponents()) {
+					if (component1 == component2) continue;
+					if (sortedComponents.contains(component2)) continue;
+					if (successorMap.get(component2).contains(component1)) {
+						add = false;
+						break;
+					}
+				}
+				if (add) {
+					sortedComponents.add(component1);
+					change = true;
+					break;
+				}
+			}
+			if (!change) {
+				break;
+			}
+		}
+		return sortedComponents;
+	}
+	
 	/**
 	 * Returns a sorted list of SequenceAnnotation instances owned by this
 	 * ComponentDefinition object.

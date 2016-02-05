@@ -44,7 +44,8 @@ public class ValidationTest {
 	}
 
 	@Test
-	public void test() {
+	public void test() throws Throwable {
+		SBOLReader.read("/test/validation/sbol-10101");
 		//fail("Not yet implemented");
 	}
 
