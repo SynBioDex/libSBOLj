@@ -12,7 +12,9 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 
@@ -59,22 +61,52 @@ public class ValidationTest {
 			SBOLReader.read(file);
 		}
 		catch (CoreIoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (XMLStreamException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (FactoryConfigurationError e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		catch (SBOLValidationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} //"/test/data/Validation/sbol-10101.rdf");
 		//fail("Not yet implemented");
 	}
+	
+	@Test
+	public void test10101() throws CoreIoException, XMLStreamException, FactoryConfigurationError {
+		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
+		if(file == null)
+			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
+		try {
+			SBOLReader.read(file);
+		} catch (SBOLValidationException e) {			
+			e.printStackTrace();
+		}
+	}
+	
+	
+//	@Test (expected=SBOLValidationException.class)	
+//	public void test10101_alt1() throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException{
+//		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
+//		if(file == null)
+//			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
+//		SBOLReader.read(file);
+//	}
+//	
+//	@Rule
+//	public ExpectedException thrown = ExpectedException.none();
+//	@Test	
+//	public void test10101_alt2() throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException{
+//		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
+//		if(file == null)
+//			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
+//		thrown.expect(SBOLValidationException.class);
+//		thrown.expectMessage("sbol-10102");
+//		SBOLReader.read(file);		
+//		//thrown.reportMissingExceptionWithMessage("Should throw %s");
+//	}
 
 }
