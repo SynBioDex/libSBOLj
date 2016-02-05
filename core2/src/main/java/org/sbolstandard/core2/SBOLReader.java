@@ -209,7 +209,9 @@ public class SBOLReader
 			if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))	foundSBOL2 = true;
 		}
 		if (!foundSBOL1 && !foundSBOL2) {
-			throw new SBOLValidationException("No SBOL namespace found.");
+			//throw new SBOLValidationException("No SBOL namespace found.");
+			throw new SBOLValidationException("sbol-10101");
+			
 		}
 		else if (foundSBOL1 && !foundSBOL2) return SBOLVERSION1;
 		else if (foundSBOL2 && !foundSBOL1) {

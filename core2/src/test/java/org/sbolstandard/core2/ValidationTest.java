@@ -3,6 +3,8 @@
  */
 package org.sbolstandard.core2;
 
+import java.io.InputStream;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -45,7 +47,10 @@ public class ValidationTest {
 
 	@Test
 	public void test() throws Throwable {
-		SBOLReader.read("/test/validation/sbol-10101");
+		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
+		if(file == null)
+			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
+		SBOLReader.read(file); //"/test/data/Validation/sbol-10101.rdf");
 		//fail("Not yet implemented");
 	}
 
