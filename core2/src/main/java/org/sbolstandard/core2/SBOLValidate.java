@@ -823,11 +823,15 @@ public class SBOLValidate {
 	        		}
 	        	}
 	        } else {
-	        	for (String error : SBOLReader.getErrors()) {
-	        		System.err.println(error);
+	        	if (getNumErrors()!=0) {
+	        		for (String error : getErrors()) {
+	        			System.err.println(error);
+	        		}
 	        	}
-	        	for (String error : getErrors()) {
-	        		System.err.println(error);
+	        	if (SBOLReader.getNumErrors()!=0) {
+	        		for (String error : SBOLReader.getErrors()) {
+	        			System.err.println(error);
+	        		}
 	        	}
 	        	System.err.println("Validation failed.\n");
 	        }

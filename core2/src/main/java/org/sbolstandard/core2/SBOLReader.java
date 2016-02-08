@@ -63,7 +63,7 @@ public class SBOLReader
 	public static final String SBOLVERSION1 = "v1";
 	public static final String SBOLVERSION2 = "v2";
 	public static boolean keepGoing = false;
-	private static List<String> errors = null;
+	private static List<String> errors = new ArrayList<String>();
 
 	public static boolean isKeepGoing() {
 		return keepGoing;
