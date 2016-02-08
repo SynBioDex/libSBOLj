@@ -912,7 +912,7 @@ public class ModuleDefinition extends TopLevel {
 			if (sbolDocument.getModel(model.getIdentity()) == null) {
 //				throw new SBOLValidationException("Model '" + model.getIdentity()
 //						+ "' does not exist.");
-				throw new SBOLValidationException("sbol-11607", model);
+				throw new SBOLValidationException("sbol-11608", model);
 				// TODO: (Validation) complete flag
 			}
 		}

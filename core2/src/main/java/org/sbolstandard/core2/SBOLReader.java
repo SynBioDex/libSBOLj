@@ -1837,10 +1837,11 @@ public class SBOLReader
 		if (!component.getType().equals(Sbol2Terms.Component.Component))
 		{
 			throw new SBOLValidationException("QName has to be " + Sbol2Terms.Component.Component.toString());
+			// TODO: (Validation) which rule?
 		}
-
 		if (!component.getType().equals(Sbol2Terms.Component.Component)) {
 			throw new SBOLValidationException(component.getType() + " is not a valid component.");
+			// TODO: (Validation) which rule? 
 		}
 		for (NamedProperty<QName> namedProperty : component.getProperties())
 		{
@@ -2153,6 +2154,7 @@ public class SBOLReader
 			if (!c.equals(oldC)) {
 				//throw new SBOLValidationException("Multiple non-identical Collection with identity "+topLevel.getIdentity());
 				throw new SBOLValidationException("sbol-10202");
+				// TODO: (Validation) print topLevel?
 			}
 		}
 		return c;

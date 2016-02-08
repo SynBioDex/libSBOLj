@@ -827,8 +827,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sequenceAnnotation.isSetComponent()) {
 			if (sequenceAnnotation.getComponent()==null) {
 				//throw new SBOLValidationException("Component '" + sequenceAnnotation.getComponentURI() + "' does not exist.");
-				throw new SBOLValidationException("sbol-10521", sequenceAnnotation);
-				// TODO: (Validation) right rule?
+				throw new SBOLValidationException("sbol-10905", sequenceAnnotation);
 			}
 			for (SequenceAnnotation sa : this.getSequenceAnnotations()) {
 				if (sa.isSetComponent() && sa.getComponentURI().equals(sequenceAnnotation.getComponentURI())) {
