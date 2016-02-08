@@ -153,7 +153,7 @@ id: sbol-10217
 condition: recommended
 description: The persistentIdentity property of a compliant Identified
 object that is not also a 
-TopLevelobject is REQUIRED and MUST contain a URI that begins with the
+TopLevel object is REQUIRED and MUST contain a URI that begins with the
 persistentIdentity of the compliant object’s parent and is immediately followed by a
 delimiter (’/’, ’#’, or ’:’) and the displayId of the compliant
 object.

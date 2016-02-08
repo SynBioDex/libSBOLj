@@ -113,6 +113,7 @@ public class SystemsBiologyOntology {
 		if (!stanzaURIstr.startsWith(URI_PREFIX)) {
 			try {
 				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
+				// TODO: (Validation) which rule?
 			}
 			catch (SBOLValidationException e) {
 				return null;
@@ -140,6 +141,7 @@ public class SystemsBiologyOntology {
 		if (IdList.isEmpty()) {
 			try {
 				throw new SBOLValidationException("Illegal name " + stanzaName + ". It does not exit.");
+				// TODO: (Validation) which rule?
 			}
 			catch (SBOLValidationException e) {
 				return null;
@@ -160,6 +162,7 @@ public class SystemsBiologyOntology {
 		if (!oboURIstr.startsWith(URI_PREFIX)) {
 			try {
 				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+				// TODO: (Validation) which rule?
 			}
 			catch (SBOLValidationException e) {
 				return null;
@@ -171,6 +174,7 @@ public class SystemsBiologyOntology {
 		if (oboStanza == null) {
 			try {
 				throw new SBOLValidationException("ID " + id + " does not exist.");
+				// TODO: (Validation) which rule?
 			}
 			catch (SBOLValidationException e) {
 				return null;			}
@@ -190,6 +194,7 @@ public class SystemsBiologyOntology {
 		if (oboStanza == null) {
 			try {
 				throw new SBOLValidationException("Illegal ID " + stanzaId + " does not exist.");
+				// TODO: (Validation) which rule?
 			}
 			catch (SBOLValidationException e) {
 				return null;
@@ -221,6 +226,7 @@ public class SystemsBiologyOntology {
 		if (oboStanza == null) {
 			try {
 				throw new SBOLValidationException("ID " + stanzaId + " does not exist.");
+				// TODO: (Validation) which rule?
 			}
 			catch (SBOLValidationException e) {
 				return null;
@@ -253,6 +259,7 @@ public class SystemsBiologyOntology {
 		if (stanza1 == null) {
 			try {
 				throw new SBOLValidationException("Illegal ID: " + Id1 + ". No match was found.");
+				// TODO: (Validation) which rule?
 			}
 			catch (SBOLValidationException e) {
 				return false;
@@ -261,6 +268,7 @@ public class SystemsBiologyOntology {
 		if (stanza2 == null) {
 			try {
 				throw new SBOLValidationException("Illegal ID: " + Id2 + ". No match was found.");
+				// TODO: (Validation) which rule?
 			}
 			catch (SBOLValidationException e) {
 				return false;

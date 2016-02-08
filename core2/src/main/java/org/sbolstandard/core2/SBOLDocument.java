@@ -1700,6 +1700,7 @@ public class SBOLDocument {
 		checkReadOnly();
 		if (!URIcompliance.isTopLevelURIcompliant(topLevel)) {
 			throw new SBOLValidationException("Cannot copy a non-compliant SBOL object");
+			// TODO: (Validation) which rule?
 		}
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
@@ -1746,6 +1747,7 @@ public class SBOLDocument {
 		}
 		else {
 			throw new SBOLValidationException("Unable to copy " + topLevel.getIdentity());
+			// TODO: (Validation) which rule?
 		}
 	}
 
@@ -1997,7 +1999,9 @@ public class SBOLDocument {
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
-			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			//throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException("sbol-12302");
+			// TODO: (Validation) print rdfType?
 		}
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
 		addGenericTopLevel(newGenericTopLevel);
@@ -2407,28 +2411,35 @@ public class SBOLDocument {
 		if (compliant && newTopLevel.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newTopLevel.getIdentity()));
 			if (keyExistsInAnyMap(persistentId, maps))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity +
-						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
+//				throw new SBOLValidationException(	 
+//						"Instance for identity `" + newTopLevel.identity +
+//						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
+				// TODO: (Validation) right rule?
 			if (instancesMap.containsKey(newTopLevel.getIdentity()))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity +
-						"' and persistent identity `" + persistentId + "' already exists for a " + typeName);
+//				throw new SBOLValidationException(
+//						"Instance for identity `" + newTopLevel.identity +
+//						"' and persistent identity `" + persistentId + "' already exists for a " + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
+				// TODO: (Validation) right rule?
 			String prefix = extractURIprefix(persistentId);
 			while (prefix!=null) {
 				if (keyExistsInAnyMap(URI.create(prefix), maps))
-					throw new SBOLValidationException(
-							"URI prefix for identity `" + newTopLevel.identity +
-							"' mathches identity of an existing top level object.");
+//					throw new SBOLValidationException(
+//							"URI prefix for identity `" + newTopLevel.identity +
+//							"' mathches identity of an existing top level object.");
+					throw new SBOLValidationException("sbol-10202", newTopLevel);
 				if (instancesMap.containsKey(URI.create(prefix)))
-					throw new SBOLValidationException(
-							"URI prefix for identity `" + newTopLevel.identity +
-							"' mathches identity of an existing top level object.");
+//					throw new SBOLValidationException(
+//							"URI prefix for identity `" + newTopLevel.identity +
+//							"' mathches identity of an existing top level object.");
+					throw new SBOLValidationException("sbol-10202", newTopLevel);
 				prefix = extractURIprefix(URI.create(prefix));
 			}
 			if (prefixes.contains(persistentId.toString())) {
-				throw new SBOLValidationException("Presistent identity `" + persistentId.toString() +
+				throw new SBOLValidationException("Persistent identity `" + persistentId.toString() +
 						"' matches URI prefix in document.");
+				// TODO: (Validation) which rule?
 			}
 			prefix = extractURIprefix(persistentId);
 			while (prefix!=null) {
@@ -2450,11 +2461,13 @@ public class SBOLDocument {
 		}
 		else { // Only check if URI exists in all maps.
 			if (keyExistsInAnyMap(newTopLevel.getIdentity()))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity + "' exists for a non-" + typeName);
+//				throw new SBOLValidationException(
+//						"Instance for identity `" + newTopLevel.identity + "' exists for a non-" + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
 			if (instancesMap.containsKey(newTopLevel.getIdentity()))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity + "' exists for a " + typeName);
+//				throw new SBOLValidationException(
+//						"Instance for identity `" + newTopLevel.identity + "' exists for a " + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
 			instancesMap.put(newTopLevel.getIdentity(), newTopLevel);
 			if (newTopLevel.isSetPersistentIdentity()) {
 				Identified latest = instancesMap.get(newTopLevel.getPersistentIdentity());
@@ -2615,6 +2628,7 @@ public class SBOLDocument {
 	void checkReadOnly() throws SBOLValidationException {
 		if (!compliant) {
 			throw new SBOLValidationException("Cannot modify a non-compliant SBOL document");
+			// TODO: (Validation) which rule?
 		}
 	}
 

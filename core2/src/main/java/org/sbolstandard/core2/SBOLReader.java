@@ -216,18 +216,22 @@ public class SBOLReader
 		else if (foundSBOL1 && !foundSBOL2) return SBOLVERSION1;
 		else if (foundSBOL2 && !foundSBOL1) {
 			if (!foundRDF) {
-				throw new SBOLValidationException("No RDF namespace found.");
+				//throw new SBOLValidationException("No RDF namespace found.");
+				throw new SBOLValidationException("sbol-10102");
 			}
 			if (!foundDC) {
-				throw new SBOLValidationException("No dublin core namespace found.");
+				//throw new SBOLValidationException("No dublin core namespace found.");
+				throw new SBOLValidationException("sbol-10103");
 			}
 			if (!foundProv) {
-				throw new SBOLValidationException("No provenance namespace found.");
+				//throw new SBOLValidationException("No provenance namespace found.");
+				throw new SBOLValidationException("sbol-10104");
 			}
 			return SBOLVERSION2;
 		}
 		else {
 			throw new SBOLValidationException("A SBOL document cannot have SBOL namespaces with different versions.");
+			// TODO: (Validation) which rule?
 		}
 	}
 
@@ -1111,7 +1115,9 @@ public class SBOLReader
 			SBOLDoc.addCollection(c);
 		} else {
 			if (!c.equals(oldC)) {
-				throw new SBOLValidationException("Multiple non-identical Collection with identity "+ topLevel.getIdentity());
+				//throw new SBOLValidationException("Multiple non-identical Collection with identity "+ topLevel.getIdentity());
+				throw new SBOLValidationException("sbol-10202");
+				// TODO: (Validation) print topLevel?
 			}
 		}
 		return c;
@@ -2145,7 +2151,8 @@ public class SBOLReader
 			SBOLDoc.addCollection(c);
 		} else {
 			if (!c.equals(oldC)) {
-				throw new SBOLValidationException("Multiple non-identical Collection with identity "+topLevel.getIdentity());
+				//throw new SBOLValidationException("Multiple non-identical Collection with identity "+topLevel.getIdentity());
+				throw new SBOLValidationException("sbol-10202");
 			}
 		}
 		return c;

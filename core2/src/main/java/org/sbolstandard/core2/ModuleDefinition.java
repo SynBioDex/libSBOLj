@@ -284,6 +284,7 @@ public class ModuleDefinition extends TopLevel {
 			if (sbolDocument.getModuleDefinition(moduleDefinitionURI) == null) {
 				throw new SBOLValidationException("Module definition '" + moduleDefinitionURI
 						+ "' does not exist.");
+				// TODO: (Validation) which rule?
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -317,7 +318,7 @@ public class ModuleDefinition extends TopLevel {
 		visited.add(this.getIdentity());
 		if (SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited)) {
 			//throw new SBOLValidationException("Cycle created by Module '" + module.getIdentity() + "'");
-			throw new SBOLValidationException("");
+			throw new SBOLValidationException("sbol-11705", module);
 		}
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		for (MapsTo mapsTo : module.getMapsTos()) {
@@ -712,6 +713,7 @@ public class ModuleDefinition extends TopLevel {
 			if (sbolDocument.getComponentDefinition(componentDefinitionURI) == null) {
 				throw new SBOLValidationException("Component definition '" + componentDefinitionURI
 						+ "' does not exist.");
+				// TODO: (Validation) which rule?
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -1298,8 +1300,9 @@ public class ModuleDefinition extends TopLevel {
 							topFc.setDefinition(fc.getDefinitionURI());
 						} else if (mapsTo.getRefinement()==RefinementType.VERIFYIDENTICAL) {
 							if (!topFc.getDefinitionURI().equals(fc.getDefinitionURI())) {
-								throw new SBOLValidationException("Component definitions in mapsTo '" + mapsTo.getIdentity()
-										+ "' are not identical.");
+//								throw new SBOLValidationException("Component definitions in mapsTo '" + mapsTo.getIdentity()
+//										+ "' are not identical.");
+								throw new SBOLValidationException("sbol-10811", mapsTo);
 							}
 						} else if (mapsTo.getRefinement()==RefinementType.MERGE) {
 							// TODO: merge?

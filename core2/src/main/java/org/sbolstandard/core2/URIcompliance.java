@@ -302,7 +302,9 @@ final class URIcompliance {
 
 	static boolean isVersionCompliant(String newVersion) throws SBOLValidationException {
 		if (newVersion==null) {
-			throw new SBOLValidationException("Version must not be null");
+			// throw new SBOLValidationException("Version must not be null");
+			throw new SBOLValidationException("sbol-10206");
+			// TODO: (Validation) print newVersion?
 		}
 		if (newVersion.equals("")) return true;
 		Pattern r = Pattern.compile(versionPattern);
@@ -385,12 +387,14 @@ final class URIcompliance {
 	static String checkURIprefix(String URIprefix) throws SBOLValidationException {
 		if (URIprefix==null) {
 			throw new SBOLValidationException("URI prefix must not be null");
+			// TODO: (Validation) which rule? 
 		}
 		if (!URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
 			URIprefix += "/";
 		}
 		if (!isURIprefixCompliant(URIprefix)) {
 			throw new SBOLValidationException("URI prefix '"+URIprefix+"' is invalid");
+			// TODO: (Validation) which rule?
 		}
 		return URIprefix;
 	}

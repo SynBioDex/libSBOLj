@@ -28,6 +28,7 @@ public class GenericTopLevel extends TopLevel{
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			// TODO: (Validation) which rule?
 		}
 	}
 

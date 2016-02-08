@@ -217,7 +217,9 @@ public class Interaction extends Identified {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (moduleDefinition != null) {
 			if (moduleDefinition.getFunctionalComponent(participant)==null) {
-				throw new SBOLValidationException("Functional component '" + participant + "' does not exist.");
+				//throw new SBOLValidationException("Functional component '" + participant + "' does not exist.");
+				throw new SBOLValidationException("sbol-12003");
+				// TODO: (Validation) print participant URI?
 			}
 		}
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();

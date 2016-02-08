@@ -170,8 +170,9 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (typeURI.equals(DNA)||typeURI.equals(RNA)||typeURI.equals(PROTEIN)||typeURI.equals(SMALL_MOLECULE)) {
 			if (this.containsType(DNA)||this.containsType(RNA)||this.containsType(PROTEIN)||this.containsType(SMALL_MOLECULE)) {
-				throw new SBOLValidationException("Component definition " + this.getIdentity() +
-						" must have only one type from Table 2 in the specification.");
+//				throw new SBOLValidationException("Component definition " + this.getIdentity() +
+//						" must have only one type from Table 2 in the specification.");
+				throw new SBOLValidationException("sbol-10503", this);
 			}
 		}
 		return types.add(typeURI);
@@ -905,7 +906,8 @@ public class ComponentDefinition extends TopLevel {
 	private void getSuccessorComponents(HashMap<Component,Set<Component>> successorMap,
 			Component component, Set<Component> visited) throws SBOLValidationException {
 		if (visited.contains(component)) {
-			throw new SBOLValidationException("Cycle in sequence constraints");
+			//throw new SBOLValidationException("Cycle in sequence constraints");
+			throw new SBOLValidationException("sbol-10605", component);
 		}
 		visited.add(component);
 		for (SequenceConstraint sc : this.getSequenceConstraints()) {
@@ -1140,6 +1142,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(componentDefinitionURI)==null) {
 				throw new SBOLValidationException("Component definition '" + componentDefinitionURI + "' does not exist.");
+				// TODO: (Validation) which rule?
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();

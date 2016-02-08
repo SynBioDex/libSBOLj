@@ -44,6 +44,7 @@ public class Annotation {
 		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
+			// TODO: (Validation) which rule?
 		}
 		value = NamedProperty(qName,literal);
 	}
@@ -59,6 +60,7 @@ public class Annotation {
 		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
+			// TODO: (Validation) which rule?
 		}
 		value = NamedProperty(qName,literal);
 	}
@@ -94,6 +96,7 @@ public class Annotation {
 		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
+			// TODO: (Validation) which rule?
 		}
 		value = NamedProperty(qName,literal);
 	}
@@ -112,10 +115,12 @@ public class Annotation {
 		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
+			// TODO: (Validation) which rule?
 		}
 		if (nestedQName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				nestedQName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(nestedQName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
+			// TODO: (Validation) which rule?
 		}
 		List<NamedProperty<QName>> list = new ArrayList<>();
 		for(Annotation a : annotations)
@@ -132,6 +137,7 @@ public class Annotation {
 				System.out.println("Warning: sbol:timeStamp is deprecated");
 			} else {
 				throw new SBOLValidationException(value.getName().getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
+				// TODO: (Validation) which rule?
 			}
 		}
 		this.value = value;

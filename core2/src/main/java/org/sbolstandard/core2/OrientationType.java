@@ -54,7 +54,9 @@ public enum OrientationType {
 			return OrientationType.REVERSECOMPLEMENT;
 		}
 		else {
-			throw new SBOLValidationException("Unknown orientation URI `" + orientation + "'");
+			//throw new SBOLValidationException("Unknown orientation URI `" + orientation + "'");
+			throw new SBOLValidationException("sbol-11002");
+			// TODO: (Validation) print orientation? 
 		}
 	}
 
