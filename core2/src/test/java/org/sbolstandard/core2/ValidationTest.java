@@ -3,6 +3,8 @@
  */
 package org.sbolstandard.core2;
 
+import static org.junit.Assert.fail;
+
 import java.io.InputStream;
 
 import javax.xml.stream.FactoryConfigurationError;
@@ -59,6 +61,7 @@ public class ValidationTest {
 			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
 		try {
 			SBOLReader.read(file);
+			fail();
 		}
 		catch (CoreIoException e) {
 			e.printStackTrace();
