@@ -6,8 +6,9 @@
     <sbol:version>1.0</sbol:version>
     <sbol:functionalComponent>
       <sbol:FunctionalComponent rdf:about="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/cas9m_BFP_gene/1.0">
-        <sbol:persistentIdentity rdf:resource="http://uri_is_not_compliant_sbols.org/CRISPR_Example/CRPb_characterization_Circuit/cas9m_BFP_gene"/>
+        <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/cas9m_BFP_gene"/>
         <sbol:displayId>cas9m_BFP_gene</sbol:displayId>
+        <sbol:name>1234</sbol:name>
         <sbol:version>1.0</sbol:version>
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/cas9m_BFP_gene/1.0"/>
         <sbol:access rdf:resource="http://sbols.org/v2#private"/>

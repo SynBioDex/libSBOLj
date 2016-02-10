@@ -47,6 +47,7 @@ public class SBOLVersion {
 		return versionString;
 	}
 
+	@Override
 	public String toString() {
 		return "Version: " + getVersionString();
 	}

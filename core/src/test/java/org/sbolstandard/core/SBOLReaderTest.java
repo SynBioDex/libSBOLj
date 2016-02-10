@@ -1,9 +1,7 @@
 package org.sbolstandard.core;
 
-import static org.junit.Assert.assertTrue;
 import static org.sbolstandard.core.SBOLTestUtils.createDocument;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -11,6 +9,7 @@ import org.sbolstandard.core.util.SBOLDeepEquality;
 
 @SuppressWarnings("unused")
 public class SBOLReaderTest extends SBOLAbstractTests {
+	@Override
 	public void runTest(final String fileName, final SBOLRootObject... contents) throws Exception {
 		// new SBOLPrettyWriter().write(expected, System.out);
 
