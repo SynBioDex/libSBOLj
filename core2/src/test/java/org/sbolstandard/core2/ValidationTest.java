@@ -84,9 +84,11 @@ public class ValidationTest {
 		if(file == null)
 			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
 		try {
-			SBOLReader.read(file);
-		} catch (SBOLValidationException e) {			
-			e.printStackTrace();
+			SBOLDocument doc = SBOLReader.read(file);
+			SBOLValidate.validateSBOL(doc, true, true, true);
+		} catch (SBOLValidationException e) {	
+			System.out.println(e.getMessage());
+			//e.printStackTrace();
 		}
 	}
 	
