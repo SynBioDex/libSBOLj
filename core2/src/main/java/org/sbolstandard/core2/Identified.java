@@ -102,7 +102,8 @@ public abstract class Identified {
 	 */
 	final void setIdentity(URI identity) throws SBOLValidationException {
 		if (identity == null) {
-			throw new SBOLValidationException("Identity is a required field.");
+			// throw new SBOLValidationException("Identity is a required field.");
+			throw new SBOLValidationException("sbol-10201", this);
 		}
 		this.identity = identity;
 	}
@@ -206,8 +207,9 @@ public abstract class Identified {
 	 */
 	void setDisplayId(String displayId) throws SBOLValidationException {
 		if (!URIcompliance.isDisplayIdCompliant(displayId)) {
-			throw new SBOLValidationException(
-					"Display id " + displayId + " is invalid for `" + identity + "'.");
+//			throw new SBOLValidationException(
+//					"Display id " + displayId + " is invalid for `" + identity + "'.");
+			throw new SBOLValidationException("sbol-10204");
 		}
 		this.displayId = displayId;
 	}

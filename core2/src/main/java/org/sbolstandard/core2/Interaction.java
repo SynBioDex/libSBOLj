@@ -86,7 +86,8 @@ public class Interaction extends Identified {
 	public boolean removeType(URI typeURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types.size()==1 && types.contains(typeURI)) {
-			throw new SBOLValidationException("Interaction " + this.getIdentity() + " must have at least one type.");
+			//throw new SBOLValidationException("Interaction " + this.getIdentity() + " must have at least one type.");
+			throw new SBOLValidationException("sbol-11902", this);
 		}
 		return types.remove(typeURI);
 	}

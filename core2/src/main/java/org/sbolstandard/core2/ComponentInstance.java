@@ -52,7 +52,8 @@ public abstract class ComponentInstance extends Identified {
 	public void setAccess(AccessType access) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (access==null) {
-			throw new SBOLValidationException("Not a valid access type.");
+			//throw new SBOLValidationException("Not a valid access type.");
+			throw new SBOLValidationException("sbol-10607", this);
 		}
 		this.access = access;
 	}
@@ -94,11 +95,15 @@ public abstract class ComponentInstance extends Identified {
 	public void setDefinition(URI definition) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (definition==null) {
-			throw new SBOLValidationException("Component "+this.getIdentity()+" must have a definition.");
+			// throw new SBOLValidationException("Component "+this.getIdentity()+" must have a definition.");
+			throw new SBOLValidationException("sbol-10602");
+			// TODO: (Validation) print URI for definition
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(definition)==null) {
-				throw new SBOLValidationException("Component definition '" + definition + "' does not exist.");
+				//throw new SBOLValidationException("Component definition '" + definition + "' does not exist.");
+				throw new SBOLValidationException("sbol-10604");
+				// TODO: (Validation) print URI for definition
 			}
 		}
 		this.definition = definition;

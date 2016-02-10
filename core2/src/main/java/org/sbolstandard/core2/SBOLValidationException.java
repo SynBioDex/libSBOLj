@@ -116,41 +116,40 @@ public class SBOLValidationException extends Exception {
 
 	private static String formatMessage(String message, java.util.Collection<? extends Identified> objects) {
 		final StringBuilder sb = new StringBuilder(message);
-//		if (message.startsWith("sbol-")) {
-//			if (validationRules == null) {
-//				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
-//				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
-//						getResourceAsStream("/validation/rules.txt"));
-//				try {
-//					parse(new BufferedReader(f));
-//					String key = message.trim();
-//					SBOLValidationRule rule = validationRules.get(key);
-//					if (rule == null) {
-//						throw new RuntimeException("Rule ID does not exist.");
-//					}
-//					sb.append(": " + rule.getDescription() + "\n");
-//					if (!objects.isEmpty()) {
-//						sb.append(": ");
-//						boolean first = true;
-//						for (Identified obj : objects) {
-//							if (first) {
-//								first = false;
-//							}
-//							else {
-//								sb.append(", ");
-//							}
-//							if (obj.getIdentity() != null) {
-//								sb.append(obj.getIdentity());
-//							}
-//						}
-//					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//		else {
-		
+		if (message.startsWith("sbol-")) {
+			if (validationRules == null) {
+				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
+				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
+						getResourceAsStream("/validation/rules.txt"));
+				try {
+					parse(new BufferedReader(f));
+					String key = message.trim();
+					SBOLValidationRule rule = validationRules.get(key);
+					if (rule == null) {
+						throw new RuntimeException("Rule ID does not exist.");
+					}
+					sb.append(": " + rule.getDescription() + "\n");
+					if (!objects.isEmpty()) {
+						sb.append(": ");
+						boolean first = true;
+						for (Identified obj : objects) {
+							if (first) {
+								first = false;
+							}
+							else {
+								sb.append(", ");
+							}
+							if (obj.getIdentity() != null) {
+								sb.append(obj.getIdentity());
+							}
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		else {		
 			//final StringBuilder sb = new StringBuilder(message);
 			if (!objects.isEmpty()) {
 				sb.append(": ");
@@ -167,9 +166,8 @@ public class SBOLValidationException extends Exception {
 					}
 				}
 			}
-			//return sb.toString();
-			
-//		}
+			//return sb.toString();		
+		}
 		return sb.toString();
 	}
 	
