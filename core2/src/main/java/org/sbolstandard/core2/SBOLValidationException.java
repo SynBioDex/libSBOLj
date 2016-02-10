@@ -283,7 +283,7 @@ public class SBOLValidationException extends Exception {
 			}
 			else if (line.matches(ruleReference)) {
 				currentRule.setDescription(ruleDescription);
-				System.out.println("here: " + ruleDescription);
+				//System.out.println("here: " + ruleDescription);
 				Matcher mRuleReference = Pattern.compile(ruleReference).matcher(line);
 				if (mRuleReference != null && mRuleReference.matches()) { // need to call matches method in order to call the group method.
 					//System.out.println("currentRule.ruleReference: " + mRuleReference.group(1));
