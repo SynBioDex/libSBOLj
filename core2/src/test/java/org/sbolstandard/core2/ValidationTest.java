@@ -79,16 +79,21 @@ public class ValidationTest {
 	}
 	
 	@Test
-	public void test10101() throws CoreIoException, XMLStreamException, FactoryConfigurationError {
+	public void test10101() throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException {
+		// TODO: generalize this test to perform on all files in directory in a loop
 		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
 		if(file == null)
 			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
-		try {
-			SBOLDocument doc = SBOLReader.read(file);
-			SBOLValidate.validateSBOL(doc, true, true, true);
-		} catch (SBOLValidationException e) {	
-			System.out.println(e.getMessage());
-			//e.printStackTrace();
+		SBOLReader.setKeepGoing(true);
+		SBOLDocument doc = SBOLReader.read(file);
+		SBOLValidate.validateSBOL(doc, true, true, true);
+		if (SBOLReader.getNumErrors() > 0) {
+			// TODO: check if error number matches file name
+			// SBOLReader.getErrors();
+		} else if (SBOLValidate.getNumErrors() > 0) {
+			// TODO: check if error number matches file name
+		} else {
+			// TODO: fail
 		}
 	}
 	
