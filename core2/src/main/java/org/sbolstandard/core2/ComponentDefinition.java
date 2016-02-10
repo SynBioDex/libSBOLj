@@ -192,7 +192,8 @@ public class ComponentDefinition extends TopLevel {
 	public boolean removeType(URI typeURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types.size()==1 && types.contains(typeURI)) {
-			throw new SBOLValidationException("Component definition " + this.getIdentity() + " must have at least one type.");
+			//throw new SBOLValidationException("Component definition " + this.getIdentity() + " must have at least one type.");
+			throw new SBOLValidationException("sbol-10502", this);
 		}
 		return types.remove(typeURI);
 	}
@@ -1206,23 +1207,30 @@ public class ComponentDefinition extends TopLevel {
 			if (sa.getComponentURI().equals(component.getIdentity())) {
 				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
 						" since it is in use.");
+				// TODO: (Validation) which rule?
 			}
 		}
 		for (SequenceConstraint sc : sequenceConstraints.values()) {
 			if (sc.getSubjectURI().equals(component.getIdentity())) {
-				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-						" since it is in use.");
+//				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
+//						" since it is in use.");
+				throw new SBOLValidationException("sbol-11402", component);
+				// TODO: (Validation) right rule?
 			}
 			if (sc.getObjectURI().equals(component.getIdentity())) {
-				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-						" since it is in use.");
+//				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
+//						" since it is in use.");
+				throw new SBOLValidationException("sbol-11404");
+				// TODO: (Validation) right rule?
 			}
 		}
 		for (Component c : components.values()) {
 			for (MapsTo mt : c.getMapsTos()) {
 				if (mt.getLocalURI().equals(component.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-							" since it is in use.");
+//					throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
+//							" since it is in use.");
+					throw new SBOLValidationException("sbol-10802", component);
+					// TODO: (Validation) right rule?
 				}
 			}
 		}
@@ -1231,8 +1239,10 @@ public class ComponentDefinition extends TopLevel {
 				for (Component c : cd.getComponents()) {
 					for (MapsTo mt : c.getMapsTos()) {
 						if (mt.getRemoteURI().equals(component.getIdentity())) {
-							throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-									" since it is in use.");
+//							throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
+//									" since it is in use.");
+							throw new SBOLValidationException("sbol-10805", component);
+							// TODO: (Validation) right rule?
 						}
 					}
 				}

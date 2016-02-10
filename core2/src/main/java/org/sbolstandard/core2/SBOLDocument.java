@@ -271,8 +271,11 @@ public class SBOLDocument {
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				for (Module m : md.getModules()) {
 					if (m.getDefinitionURI().equals(moduleDefinition.getIdentity())) {
-						throw new SBOLValidationException("Cannot remove " + moduleDefinition.getIdentity() +
-								" since it is in use.");
+//						throw new SBOLValidationException("Cannot remove " + moduleDefinition.getIdentity() +
+//								" since it is in use.");
+						throw new SBOLValidationException("sbol-11702");
+						// TODO: (Validation) right rule?
+						
 					}
 				}
 			}
@@ -770,8 +773,10 @@ public class SBOLDocument {
 		if (complete) {
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				if (md.containsModel(model.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + model.getIdentity() +
-							" since it is in use.");
+//					throw new SBOLValidationException("Cannot remove " + model.getIdentity() +
+//							" since it is in use.");
+					throw new SBOLValidationException("sbol-11608", model);
+					// TODO: (Validation) right rule?
 				}
 			}
 		}
@@ -1179,16 +1184,22 @@ public class SBOLDocument {
 			for (ComponentDefinition cd : componentDefinitions.values()) {
 				for (Component c : cd.getComponents()) {
 					if (c.getDefinitionURI().equals(componentDefinition.getIdentity())) {
-						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
-								" since it is in use.");
+//						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
+//								" since it is in use.");
+						throw new SBOLValidationException("sbol-10602", componentDefinition);
+						// TODO: (Validation) right rule?
 					}
 				}
 			}
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				for (FunctionalComponent c : md.getFunctionalComponents()) {
 					if (c.getDefinitionURI().equals(componentDefinition.getIdentity())) {
-						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
-								" since it is in use.");
+//						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
+//								" since it is in use.");
+						throw new SBOLValidationException("sbol-10602", componentDefinition);
+						// TODO: (Validation) right rule?
+
+						
 					}
 				}
 			}
@@ -1785,8 +1796,10 @@ public class SBOLDocument {
 		if (complete) {
 			for (ComponentDefinition cd : componentDefinitions.values()) {
 				if (cd.containsSequence(sequence.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + sequence.getIdentity() +
-							" since it is in use.");
+//					throw new SBOLValidationException("Cannot remove " + sequence.getIdentity() +
+//							" since it is in use.");
+					throw new SBOLValidationException("sbol-10513", sequence);
+					// TODO: (Validation) right rule?
 				}
 			}
 		}
@@ -2499,8 +2512,10 @@ public class SBOLDocument {
 		if (complete) {
 			for (Collection c : collections.values()) {
 				if (c.containsMember(topLevel.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + topLevel.getIdentity() +
-							" since it is in use.");
+//					throw new SBOLValidationException("Cannot remove " + topLevel.getIdentity() +
+//							" since it is in use.");
+					throw new SBOLValidationException("sbol-12103", topLevel);
+					// TODO: (Validation) right rule?
 				}
 			}
 		}
@@ -2540,6 +2555,7 @@ public class SBOLDocument {
 		else {
 			throw new SBOLValidationException(
 					"Unable to set default URI prefix to non-compliant value `" + defaultURIprefix + "'");
+			// TODO: (Validation) which rule?
 		}
 	}
 

@@ -125,12 +125,15 @@ public class Sequence extends TopLevel{
 	public void setElements(String elements) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (elements == null) {
-			throw new SBOLValidationException("Sequence is required to have elements.");
+			//throw new SBOLValidationException("Sequence is required to have elements.");
+			throw new SBOLValidationException("sbol-10402",this);
 		}
 		this.elements = elements;
 		if (!SBOLValidate.checkSequenceEncoding(this)) {
-			throw new SBOLValidationException("Sequence '" + this.getIdentity() + "' that uses encoding " + this.getEncoding() + 
-					" does not have a valid sequence.");
+//			throw new SBOLValidationException("Sequence '" + this.getIdentity() + "' that uses encoding " + this.getEncoding() + 
+//					" does not have a valid sequence.");
+			throw new SBOLValidationException("sbol-10406", this);
+			// TODO: (Validation) should this also be rule sbol-10405?
 		}
 	}
 	
@@ -158,7 +161,9 @@ public class Sequence extends TopLevel{
 	public void setEncoding(URI encoding) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (encoding == null) {
-			throw new SBOLValidationException("Sequence is required to have an encoding.");
+			// throw new SBOLValidationException("Sequence is required to have an encoding.");
+			throw new SBOLValidationException("sbol-10403");
+			// TODO: (Validation) print URI for encoding
 		}
 		this.encoding = encoding;
 	}
