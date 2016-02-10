@@ -54,29 +54,29 @@ public class ValidationTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public void test() {
-		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
-		if(file == null)
-			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
-		try {
-			SBOLReader.read(file);
-			//fail();
-		}
-		catch (CoreIoException e) {
-			e.printStackTrace();
-		}
-		catch (XMLStreamException e) {
-			e.printStackTrace();
-		}
-		catch (FactoryConfigurationError e) {
-			e.printStackTrace();
-		}
-		catch (SBOLValidationException e) {
-			e.printStackTrace();
-		} //"/test/data/Validation/sbol-10101.rdf");
-		//fail("Not yet implemented");
-	}
+//	@Test
+//	public void test() {
+//		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
+//		if(file == null)
+//			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
+//		try {
+//			SBOLReader.read(file);
+//			//fail();
+//		}
+//		catch (CoreIoException e) {
+//			e.printStackTrace();
+//		}
+//		catch (XMLStreamException e) {
+//			e.printStackTrace();
+//		}
+//		catch (FactoryConfigurationError e) {
+//			e.printStackTrace();
+//		}
+//		catch (SBOLValidationException e) {
+//			e.printStackTrace();
+//		} //"/test/data/Validation/sbol-10101.rdf");
+//		//fail("Not yet implemented");
+//	}
 	
 	@Test
 	public void test10101() throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException {

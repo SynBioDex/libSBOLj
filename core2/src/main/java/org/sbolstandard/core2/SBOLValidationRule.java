@@ -40,7 +40,7 @@ public class SBOLValidationRule {
 	}
 
 	public String getDescription() {
-		System.out.println("description: " + description);
+		//System.out.println("description: " + description);
 		return description;
 	}
 

@@ -121,8 +121,9 @@ public class SBOLValidationException extends Exception {
 				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
 				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
 						getResourceAsStream("/validation/rules.txt"));
-				try {
+				try {					
 					parse(new BufferedReader(f));
+					//printAllRules();
 					String key = message.trim();
 					SBOLValidationRule rule = validationRules.get(key);
 					if (rule == null) {
@@ -145,7 +146,7 @@ public class SBOLValidationException extends Exception {
 						}
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
 		}
@@ -268,22 +269,20 @@ public class SBOLValidationException extends Exception {
 			}
 			else if (line.matches(ruleDescriptionBegin)) {
 				Matcher mRuleDescription = Pattern.compile(ruleDescriptionBegin).matcher(line);
-				if (mRuleDescription != null && mRuleDescription.matches()) { // need to call matches method in order to call the group method.
+				if (mRuleDescription != null && mRuleDescription.matches()) { // need to call matches method in order to call the group method.					
+					ruleDescription = mRuleDescription.group(1);
 					//System.out.println("currentRule.ruleDescriptionBegin: " + mRuleDescription.group(1));
-					ruleDescription = ruleDescription.trim() + " " + mRuleDescription.group(1);
-					
 				}
 			}
 			else if (line.matches(ruleDescriptionBody)) { // WARNING: Do NOT move this if clause to other places.
 				Matcher mRuleDescriptionBody = Pattern.compile(ruleDescriptionBody).matcher(line);
 				if (mRuleDescriptionBody != null && mRuleDescriptionBody.matches()) { // need to call matches method in order to call the group method.
-					//System.out.println("currentRule.ruleDescriptionBody: " + mRuleDescriptionBody.group(1));
 					ruleDescription = ruleDescription.trim() + " " + mRuleDescriptionBody.group(1);
+					//System.out.println("currentRule.ruleDescriptionBody: " + mRuleDescriptionBody.group(1));
 				}
 			}
 			else if (line.matches(ruleReference)) {
 				currentRule.setDescription(ruleDescription);
-				//System.out.println("here: " + ruleDescription);
 				Matcher mRuleReference = Pattern.compile(ruleReference).matcher(line);
 				if (mRuleReference != null && mRuleReference.matches()) { // need to call matches method in order to call the group method.
 					//System.out.println("currentRule.ruleReference: " + mRuleReference.group(1));
@@ -296,7 +295,7 @@ public class SBOLValidationException extends Exception {
 		br.close();
 	}
 
-	private void printAllRules() {
+	private static void printAllRules() {
 		for (String key : validationRules.keySet()) {
 			System.out.println(validationRules.get(key));
 		}
