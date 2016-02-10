@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <rdf:RDF xmlns:prov="http://www.w3.org/ns/prov#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/">
   <sbol:ModuleDefinition rdf:about="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/1.0">
-    <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit"/>
+    <sbol:persistentIdentity rdf:resource="http://need_to_follow_valid_URI_rules_sbols.org/CRISPR_Example/CRPb_characterization_Circuit"/>
     <sbol:displayId>CRPb_characterization_Circuit</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:functionalComponent>
