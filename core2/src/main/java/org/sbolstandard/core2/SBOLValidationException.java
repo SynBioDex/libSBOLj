@@ -30,10 +30,10 @@ public class SBOLValidationException extends Exception {
 
 	private final List<Identified> objects;
 
-	private static String ruleBegin = "^\\s*\\[(\\w+)\\]\\s*$";
-	private static String ruleId = "^\\s*id:\\s(sbol-\\d+)\\s*$";
-	private static String ruleCondition = "^\\s*condition:\\s(\\w+\\s*\\w*)\\s*$";
-	private static String ruleDescriptionBegin = "^\\s*description:\\s([\\w\\s]+)\\s*$";
+	private static String ruleBegin = "^\\[(\\w+)\\]\\s*$";
+	private static String ruleId = "^id:\\s(sbol-\\d+)\\s*$";
+	private static String ruleCondition = "^condition:\\s(\\w+\\s*\\w*)\\s*$";
+	private static String ruleDescriptionBegin = "^description:\\s(.+)\\s*$";
 	private static String ruleDescriptionBody = "^(?!reference:)(.+)$";//"^\\b(?!reference)\\b(?!:)(.+)$";
 	// (?!...) is negative lookahead.
 	//	Word boundary \b is equivalent to (?<=\w)(?!\w)|(?=\w)(?<!\w).It means that a position that's preceded by a word 
@@ -270,18 +270,20 @@ public class SBOLValidationException extends Exception {
 				Matcher mRuleDescription = Pattern.compile(ruleDescriptionBegin).matcher(line);
 				if (mRuleDescription != null && mRuleDescription.matches()) { // need to call matches method in order to call the group method.
 					//System.out.println("currentRule.ruleDescriptionBegin: " + mRuleDescription.group(1));
-					ruleDescription = ruleDescription + mRuleDescription.group(1);
+					ruleDescription = ruleDescription.trim() + " " + mRuleDescription.group(1);
+					
 				}
 			}
 			else if (line.matches(ruleDescriptionBody)) { // WARNING: Do NOT move this if clause to other places.
 				Matcher mRuleDescriptionBody = Pattern.compile(ruleDescriptionBody).matcher(line);
 				if (mRuleDescriptionBody != null && mRuleDescriptionBody.matches()) { // need to call matches method in order to call the group method.
 					//System.out.println("currentRule.ruleDescriptionBody: " + mRuleDescriptionBody.group(1));
-					ruleDescription = ruleDescription + mRuleDescriptionBody.group(1);
+					ruleDescription = ruleDescription.trim() + " " + mRuleDescriptionBody.group(1);
 				}
 			}
 			else if (line.matches(ruleReference)) {
-				currentRule.setDescription(ruleDescription);				
+				currentRule.setDescription(ruleDescription);
+				System.out.println("here: " + ruleDescription);
 				Matcher mRuleReference = Pattern.compile(ruleReference).matcher(line);
 				if (mRuleReference != null && mRuleReference.matches()) { // need to call matches method in order to call the group method.
 					//System.out.println("currentRule.ruleReference: " + mRuleReference.group(1));
