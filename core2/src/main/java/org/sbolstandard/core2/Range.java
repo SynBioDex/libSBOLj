@@ -87,10 +87,12 @@ public class Range extends Location {
 	public void setEnd(int value) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (value<=0) {
-			throw new SBOLValidationException("Range "+this.getIdentity()+" must have an end greater than zero.");
+			// throw new SBOLValidationException("Range "+this.getIdentity()+" must have an end greater than zero.");
+			throw new SBOLValidationException("sbol-11103", this);
 		}
 		if (value < start) {
-			throw new SBOLValidationException("Range "+this.getIdentity()+" must have a start before the end.");
+			//throw new SBOLValidationException("Range "+this.getIdentity()+" must have a start before the end.");
+			throw new SBOLValidationException("sbol-11104", this);
 		}
 		end = value;
 	}

@@ -50,7 +50,8 @@ public class Cut extends Location{
 	public void setAt(int at) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (at<0) {
-			throw new SBOLValidationException("Cut "+this.getIdentity()+" must have a value greater than or equal to zero.");
+			//throw new SBOLValidationException("Cut "+this.getIdentity()+" must have a value greater than or equal to zero.");
+			throw new SBOLValidationException("sbol-11202", this);
 		}
 		this.at = at;
 	}

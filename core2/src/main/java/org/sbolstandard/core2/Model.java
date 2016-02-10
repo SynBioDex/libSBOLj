@@ -143,7 +143,9 @@ public class Model extends TopLevel {
 	public void setLanguage(URI language) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (language==null) {
-			throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a language.");
+			//throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a language.");
+			throw new SBOLValidationException("sbol-11504");
+			// TODO: (Validation) print URI for language
 		}
 		this.language = language;
 	}
@@ -172,7 +174,8 @@ public class Model extends TopLevel {
 	public void setFramework(URI framework) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (framework==null) {
-			throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a framework.");
+			//throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a framework.");
+			throw new SBOLValidationException("sbol-11508", this);
 		}
 		this.framework = framework;
 	}

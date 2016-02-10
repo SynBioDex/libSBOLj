@@ -587,6 +587,7 @@ public class GenBank {
 		doc.setCreateDefaults(true);
 		if (URIPrefix==null) {
 			throw new SBOLValidationException("No URI prefix has been provided.");
+			// TODO: (Validation) which rule?
 		}
 		doc.setDefaultURIprefix(URIPrefix);
 		read(doc,in);
@@ -758,6 +759,7 @@ public class GenBank {
 				version = strSplit[1].split("\\.")[1];
 				if (!id.equals(strSplit[1].split("\\.")[0])) {
 					throw new SBOLValidationException("Warning: id in version does not match id in accession");
+					// TODO: (Validation) which rule?
 				}
 				if (strSplit.length > 2) {
 					annotation = new Annotation(new QName(gbNamespace,"GInumber",gbPrefix),strSplit[2]);
