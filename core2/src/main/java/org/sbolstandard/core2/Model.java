@@ -114,7 +114,8 @@ public class Model extends TopLevel {
 	public void setSource(URI source) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (source==null) {
-			throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a source location.");
+			//throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a source location.");
+			throw new SBOLValidationException("sbol-11502", this);
 		}
 		this.source = source;
 	}

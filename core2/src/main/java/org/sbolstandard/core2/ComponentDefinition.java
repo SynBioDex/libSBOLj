@@ -213,7 +213,8 @@ public class ComponentDefinition extends TopLevel {
 	public void setTypes(Set<URI> types) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types==null || types.size()==0) {
-			throw new SBOLValidationException("Component definition " + this.getIdentity() + " must have at least one type.");
+			//throw new SBOLValidationException("Component definition " + this.getIdentity() + " must have at least one type.");
+			throw new SBOLValidationException("sbol-10502", this);
 		}
 		clearTypes();
 		for (URI type : types) {

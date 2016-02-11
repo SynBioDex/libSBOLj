@@ -89,6 +89,9 @@ public class ValidationTest {
 			SBOLDocument doc = SBOLReader.read(file);
 			SBOLValidate.validateSBOL(doc, true, true, true);
 			if (SBOLReader.getNumErrors() > 0) {
+				for (String error: SBOLReader.getErrors()) {
+					System.out.println(error);
+				}
 				// TODO: check if error number matches file name
 				// SBOLReader.getErrors();
 			} else if (SBOLValidate.getNumErrors() > 0) {

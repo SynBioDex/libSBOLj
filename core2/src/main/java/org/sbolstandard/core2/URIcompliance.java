@@ -9,10 +9,14 @@ final class URIcompliance {
 	
 	static void validateIdVersion(String displayId, String version) throws SBOLValidationException {
 		if (displayId!=null && !isDisplayIdCompliant(displayId)) {
-			throw new SBOLValidationException("Display id `" + displayId + "' is not valid.");
+			//throw new SBOLValidationException("Display id `" + displayId + "' is not valid.");
+			throw new SBOLValidationException("sbol-10204");
+			// TODO: (Validation) print String displayId
 		}
 		if (version!=null && !isVersionCompliant(version)) {
-			throw new SBOLValidationException("Version `" + version + "' is not valid.");
+			//throw new SBOLValidationException("Version `" + version + "' is not valid.");
+			throw new SBOLValidationException("sbol-10206");
+			// TODO: (Validation) print String version
 		}
 	}
 
@@ -302,9 +306,8 @@ final class URIcompliance {
 
 	static boolean isVersionCompliant(String newVersion) throws SBOLValidationException {
 		if (newVersion==null) {
-			// throw new SBOLValidationException("Version must not be null");
-			throw new SBOLValidationException("sbol-10206");
-			// TODO: (Validation) print newVersion?
+			throw new SBOLValidationException("Version must not be null");			
+			// TODO: (Validation) which rule?
 		}
 		if (newVersion.equals("")) return true;
 		Pattern r = Pattern.compile(versionPattern);

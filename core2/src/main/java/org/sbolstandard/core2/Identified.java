@@ -177,8 +177,10 @@ public abstract class Identified {
 			return;
 		}
 		if (!URIcompliance.isVersionCompliant(version)) {
-			throw new SBOLValidationException(
-					"Version " + version + " is invalid for `" + identity + "'.");
+//			throw new SBOLValidationException(
+//					"Version " + version + " is invalid for `" + identity + "'.");
+			throw new SBOLValidationException("sbol-10206");
+			// TODO: (Validation) print String version?
 		}
 		this.version = version;
 	}
@@ -245,11 +247,14 @@ public abstract class Identified {
 		if (sbolDocument!=null) {
 			sbolDocument.checkReadOnly();
 			if (!SBOLValidate.checkWasDerivedFromVersion(sbolDocument, this, wasDerivedFrom)) {
-				throw new SBOLValidationException(getIdentity() + " is derived from " + wasDerivedFrom + 
-						" but has older version.");
+//				throw new SBOLValidationException(getIdentity() + " is derived from " + wasDerivedFrom + 
+//						" but has older version.");
+				throw new SBOLValidationException("sbol-10211", this);
+				// TODO: (Validation) print URI for this object?
 			}
 			if (SBOLValidate.checkWasDerivedFromCycle(sbolDocument, this, wasDerivedFrom, new HashSet<URI>())) {
-				throw new SBOLValidationException("Cycle found in '" + getIdentity() + "' was derived from link.");
+				//throw new SBOLValidationException("Cycle found in '" + getIdentity() + "' was derived from link.");
+				throw new SBOLValidationException("sbol-10210", this);
 			}
 		}
 		this.wasDerivedFrom = wasDerivedFrom;
