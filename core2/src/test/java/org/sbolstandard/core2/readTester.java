@@ -72,6 +72,9 @@ public class readTester {
 			doc.write("/Users/myers/downloads/GenBankEx/sequence1.xml");
 			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence1.xml");
 			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
+				System.out.println(componentDefinition.getIdentity());
+			}
 			ComponentDefinition cd = doc.getComponentDefinition("U49845"/*"pTAK_Toggle_Switch_9"*/,"");
 			GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence1out.gb");		
 			
@@ -79,6 +82,9 @@ public class readTester {
 			doc.write("/Users/myers/downloads/GenBankEx/sequence2.xml");
 			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence2.xml");
 			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
+				System.out.println(componentDefinition.getIdentity());
+			}
 			cd = doc.getComponentDefinition("AF165912","");
 			GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence2out.gb");	
 			
@@ -86,6 +92,9 @@ public class readTester {
 			doc.write("/Users/myers/downloads/GenBankEx/sequence3.xml");
 			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence3.xml");
 			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
+				System.out.println(componentDefinition.getIdentity());
+			}
 			cd = doc.getComponentDefinition("AF090832","");
 			GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence3out.gb");	
 			
@@ -93,6 +102,9 @@ public class readTester {
 			doc.write("/Users/myers/downloads/GenBankEx/sequence4.xml");
 			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence4.xml");
 			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
+				System.out.println(componentDefinition.getIdentity());
+			}
 			cd = doc.getComponentDefinition("L00727","");
 			GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence4out.gb");	
 			//SBOLWriter.write(document1,(System.out));
