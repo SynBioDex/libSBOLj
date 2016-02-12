@@ -271,8 +271,11 @@ public class SBOLDocument {
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				for (Module m : md.getModules()) {
 					if (m.getDefinitionURI().equals(moduleDefinition.getIdentity())) {
-						throw new SBOLValidationException("Cannot remove " + moduleDefinition.getIdentity() +
-								" since it is in use.");
+//						throw new SBOLValidationException("Cannot remove " + moduleDefinition.getIdentity() +
+//								" since it is in use.");
+						throw new SBOLValidationException("sbol-11702");
+						// TODO: (Validation) right rule?
+						
 					}
 				}
 			}
@@ -293,9 +296,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching ModuleDefinition instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public ModuleDefinition getModuleDefinition(String displayId,String version) {
 		try {
@@ -534,9 +534,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching Collection instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public Collection getCollection(String displayId,String version) {
 		try { 
@@ -776,8 +773,10 @@ public class SBOLDocument {
 		if (complete) {
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				if (md.containsModel(model.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + model.getIdentity() +
-							" since it is in use.");
+//					throw new SBOLValidationException("Cannot remove " + model.getIdentity() +
+//							" since it is in use.");
+					throw new SBOLValidationException("sbol-11608", model);
+					// TODO: (Validation) right rule?
 				}
 			}
 		}
@@ -797,9 +796,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching Model instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public Model getModel(String displayId,String version) {
 		try {
@@ -1188,16 +1184,22 @@ public class SBOLDocument {
 			for (ComponentDefinition cd : componentDefinitions.values()) {
 				for (Component c : cd.getComponents()) {
 					if (c.getDefinitionURI().equals(componentDefinition.getIdentity())) {
-						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
-								" since it is in use.");
+//						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
+//								" since it is in use.");
+						throw new SBOLValidationException("sbol-10602", componentDefinition);
+						// TODO: (Validation) right rule?
 					}
 				}
 			}
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				for (FunctionalComponent c : md.getFunctionalComponents()) {
 					if (c.getDefinitionURI().equals(componentDefinition.getIdentity())) {
-						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
-								" since it is in use.");
+//						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
+//								" since it is in use.");
+						throw new SBOLValidationException("sbol-10602", componentDefinition);
+						// TODO: (Validation) right rule?
+
+						
 					}
 				}
 			}
@@ -1218,9 +1220,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching ComponentDefinition instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public ComponentDefinition getComponentDefinition(String displayId,String version) {
 		try {
@@ -1712,6 +1711,7 @@ public class SBOLDocument {
 		checkReadOnly();
 		if (!URIcompliance.isTopLevelURIcompliant(topLevel)) {
 			throw new SBOLValidationException("Cannot copy a non-compliant SBOL object");
+			// TODO: (Validation) which rule?
 		}
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
@@ -1758,6 +1758,7 @@ public class SBOLDocument {
 		}
 		else {
 			throw new SBOLValidationException("Unable to copy " + topLevel.getIdentity());
+			// TODO: (Validation) which rule?
 		}
 	}
 
@@ -1795,8 +1796,10 @@ public class SBOLDocument {
 		if (complete) {
 			for (ComponentDefinition cd : componentDefinitions.values()) {
 				if (cd.containsSequence(sequence.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + sequence.getIdentity() +
-							" since it is in use.");
+//					throw new SBOLValidationException("Cannot remove " + sequence.getIdentity() +
+//							" since it is in use.");
+					throw new SBOLValidationException("sbol-10513", sequence);
+					// TODO: (Validation) right rule?
 				}
 			}
 		}
@@ -1816,9 +1819,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching Sequence instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public Sequence getSequence(String displayId,String version) {
 		try {
@@ -2012,7 +2012,9 @@ public class SBOLDocument {
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
-			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			//throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			throw new SBOLValidationException("sbol-12302");
+			// TODO: (Validation) print rdfType?
 		}
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
 		addGenericTopLevel(newGenericTopLevel);
@@ -2063,9 +2065,6 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching GenericTopLevel instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public GenericTopLevel getGenericTopLevel(String displayId, String version) {
 		try {
@@ -2425,28 +2424,35 @@ public class SBOLDocument {
 		if (compliant && newTopLevel.checkDescendantsURIcompliance()) {
 			URI persistentId = URI.create(extractPersistentId(newTopLevel.getIdentity()));
 			if (keyExistsInAnyMap(persistentId, maps))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity +
-						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
+//				throw new SBOLValidationException(	 
+//						"Instance for identity `" + newTopLevel.identity +
+//						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
+				// TODO: (Validation) right rule?
 			if (instancesMap.containsKey(newTopLevel.getIdentity()))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity +
-						"' and persistent identity `" + persistentId + "' already exists for a " + typeName);
+//				throw new SBOLValidationException(
+//						"Instance for identity `" + newTopLevel.identity +
+//						"' and persistent identity `" + persistentId + "' already exists for a " + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
+				// TODO: (Validation) right rule?
 			String prefix = extractURIprefix(persistentId);
 			while (prefix!=null) {
 				if (keyExistsInAnyMap(URI.create(prefix), maps))
-					throw new SBOLValidationException(
-							"URI prefix for identity `" + newTopLevel.identity +
-							"' mathches identity of an existing top level object.");
+//					throw new SBOLValidationException(
+//							"URI prefix for identity `" + newTopLevel.identity +
+//							"' mathches identity of an existing top level object.");
+					throw new SBOLValidationException("sbol-10202", newTopLevel);
 				if (instancesMap.containsKey(URI.create(prefix)))
-					throw new SBOLValidationException(
-							"URI prefix for identity `" + newTopLevel.identity +
-							"' mathches identity of an existing top level object.");
+//					throw new SBOLValidationException(
+//							"URI prefix for identity `" + newTopLevel.identity +
+//							"' mathches identity of an existing top level object.");
+					throw new SBOLValidationException("sbol-10202", newTopLevel);
 				prefix = extractURIprefix(URI.create(prefix));
 			}
 			if (prefixes.contains(persistentId.toString())) {
-				throw new SBOLValidationException("Presistent identity `" + persistentId.toString() +
+				throw new SBOLValidationException("Persistent identity `" + persistentId.toString() +
 						"' matches URI prefix in document.");
+				// TODO: (Validation) which rule?
 			}
 			prefix = extractURIprefix(persistentId);
 			while (prefix!=null) {
@@ -2468,11 +2474,13 @@ public class SBOLDocument {
 		}
 		else { // Only check if URI exists in all maps.
 			if (keyExistsInAnyMap(newTopLevel.getIdentity()))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity + "' exists for a non-" + typeName);
+//				throw new SBOLValidationException(
+//						"Instance for identity `" + newTopLevel.identity + "' exists for a non-" + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
 			if (instancesMap.containsKey(newTopLevel.getIdentity()))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity + "' exists for a " + typeName);
+//				throw new SBOLValidationException(
+//						"Instance for identity `" + newTopLevel.identity + "' exists for a " + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
 			instancesMap.put(newTopLevel.getIdentity(), newTopLevel);
 			if (newTopLevel.isSetPersistentIdentity()) {
 				Identified latest = instancesMap.get(newTopLevel.getPersistentIdentity());
@@ -2504,8 +2512,10 @@ public class SBOLDocument {
 		if (complete) {
 			for (Collection c : collections.values()) {
 				if (c.containsMember(topLevel.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + topLevel.getIdentity() +
-							" since it is in use.");
+//					throw new SBOLValidationException("Cannot remove " + topLevel.getIdentity() +
+//							" since it is in use.");
+					throw new SBOLValidationException("sbol-12103", topLevel);
+					// TODO: (Validation) right rule?
 				}
 			}
 		}
@@ -2545,6 +2555,7 @@ public class SBOLDocument {
 		else {
 			throw new SBOLValidationException(
 					"Unable to set default URI prefix to non-compliant value `" + defaultURIprefix + "'");
+			// TODO: (Validation) which rule?
 		}
 	}
 
@@ -2633,6 +2644,7 @@ public class SBOLDocument {
 	void checkReadOnly() throws SBOLValidationException {
 		if (!compliant) {
 			throw new SBOLValidationException("Cannot modify a non-compliant SBOL document");
+			// TODO: (Validation) which rule?
 		}
 	}
 

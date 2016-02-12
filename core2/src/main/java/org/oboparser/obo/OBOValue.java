@@ -75,14 +75,17 @@ public class OBOValue {
 	public String getComment() { return comment; }
 	public String[] getModifiers() { return modifiers; }
 	
+	@Override
 	public int hashCode() { return rawString.hashCode(); }
 	
+	@Override
 	public boolean equals(Object o) { 
 		if(!(o instanceof OBOValue)) { return false; }
 		OBOValue v = (OBOValue)o;
 		return v.rawString.equals(rawString);
 	}
 	
+	@Override
 	public String toString() { return rawString; }
 	
  	private static String[] parseModifiers(String mod) { 

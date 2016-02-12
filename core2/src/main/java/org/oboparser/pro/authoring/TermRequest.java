@@ -71,10 +71,12 @@ public class TermRequest implements OBOTerm {
 	
 	public void setComment(String c) { comment = c; }
 	
+	@Override
 	public String toString() { 
 		return String.format("%s ! %s", id, name);
 	}
 
+	@Override
 	public void generateOBO(PrintStream ps) { 
 		if(generated || !id.startsWith(PREFIX)) { 
 			return;
@@ -122,10 +124,12 @@ public class TermRequest implements OBOTerm {
 		}
 	}
 
+	@Override
 	public void clearInOBO() {
 		generated = false;
 	}
 
+	@Override
 	public boolean inOBO() {
 		return generated;
 	}

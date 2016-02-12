@@ -70,7 +70,9 @@ public enum RestrictionType {
 			return RestrictionType.OPPOSITE_ORIENTATION_AS;
 		} 
 		else {
-			throw new SBOLValidationException("Not a valid restriction type.");
+			//throw new SBOLValidationException("Not a valid restriction type.");
+			throw new SBOLValidationException("sbol-11412");
+			// TODO: (Validation) print restriction?
 		}
 	}
 	
@@ -89,7 +91,9 @@ public enum RestrictionType {
 				return oppositeOrientationAs;
 			} 
 			else {
-				throw new SBOLValidationException("Not a valid restriction type.");
+				// throw new SBOLValidationException("Not a valid restriction type.");
+				throw new SBOLValidationException("sbol-11412");
+				// TODO: (Validation) print restriction?
 			}
 		}
 		else {

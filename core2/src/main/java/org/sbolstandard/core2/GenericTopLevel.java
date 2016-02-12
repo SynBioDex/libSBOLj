@@ -28,6 +28,7 @@ public class GenericTopLevel extends TopLevel{
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			// TODO: (Validation) which rule?
 		}
 	}
 
@@ -93,7 +94,8 @@ public class GenericTopLevel extends TopLevel{
 	public void setRDFType(QName rdfType) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (rdfType == null) {
-			throw new SBOLValidationException("RDF type is a required field.");
+			//throw new SBOLValidationException("RDF type is a required field.");
+			throw new SBOLValidationException("sbol-12302");
 		}
 		this.rdfType = rdfType;
 	}

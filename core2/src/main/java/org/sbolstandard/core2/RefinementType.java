@@ -75,7 +75,9 @@ public enum RefinementType {
 			return RefinementType.VERIFYIDENTICAL;
 		}
 		else {
-			throw new SBOLValidationException("Unknown refinement URI `" + refinement + "'");
+			//throw new SBOLValidationException("Unknown refinement URI `" + refinement + "'");
+			throw new SBOLValidationException("sbol-10810");
+			// TODO: (Validation) print refinement?
 		}
 	}
 

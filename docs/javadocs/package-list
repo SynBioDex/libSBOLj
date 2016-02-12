@@ -1,1 +1,6 @@
+org.oboparser.obo
+org.oboparser.obo.annotations
+org.oboparser.obo.annotations.parsers
+org.oboparser.pro
+org.oboparser.pro.authoring
 org.sbolstandard.core2

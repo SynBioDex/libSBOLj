@@ -2,8 +2,6 @@ package org.sbolstandard.core2;
 
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
-import java.net.URI;
-
 import javax.xml.namespace.QName;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;

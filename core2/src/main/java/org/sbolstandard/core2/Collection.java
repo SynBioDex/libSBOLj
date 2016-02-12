@@ -83,7 +83,8 @@ public class Collection extends TopLevel{
 		if (sbolDocument != null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getTopLevel(memberURI)==null) {
-				throw new SBOLValidationException("Top level '" + memberURI + "' does not exist.");
+				//throw new SBOLValidationException("Top level '" + memberURI + "' does not exist.");
+				throw new SBOLValidationException("sbol-12103", this);
 			}
 		}
 		return members.add(memberURI);

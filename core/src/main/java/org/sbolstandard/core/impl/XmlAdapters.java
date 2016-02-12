@@ -32,10 +32,12 @@ public class XmlAdapters {
 	}
 	
 	public static class IntegerAdapter extends XmlAdapter<String, Integer> {
+		@Override
 		public Integer unmarshal(String value) {
 			return (javax.xml.bind.DatatypeConverter.parseInt(value));
 		}
 
+		@Override
 		public String marshal(Integer value) {
 			if (value == null) {
 				return null;
@@ -45,10 +47,12 @@ public class XmlAdapters {
 	}
 
 	public static class URIAdapter extends XmlAdapter<String, URI> {
+		@Override
 		public URI unmarshal(String value) {
 			return URI.create(value);
 		}
 
+		@Override
 		public String marshal(URI value) {
 			if (value == null) {
 				return null;
@@ -58,6 +62,7 @@ public class XmlAdapters {
 	}
 
 	public static class StrandTypeAdapter extends XmlAdapter<String, StrandType> {
+		@Override
 		public StrandType unmarshal(String value) {
 			if (value.equals("+")) {
 				return StrandType.POSITIVE;
@@ -68,6 +73,7 @@ public class XmlAdapters {
 			throw new IllegalArgumentException("Invalid stardn value: " + value);
 		}
 
+		@Override
 		public String marshal(StrandType value) {
 			if (value == null) {
 				return null;

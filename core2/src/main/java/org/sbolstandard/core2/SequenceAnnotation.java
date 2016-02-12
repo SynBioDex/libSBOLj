@@ -21,7 +21,7 @@ import java.util.Set;
  * @version 2.0-beta
  */
 
-public class SequenceAnnotation extends Identified implements Comparable {
+public class SequenceAnnotation extends Identified implements Comparable<SequenceAnnotation> {
 
 	private HashMap<URI, Location> locations;
 	private URI component;
@@ -194,7 +194,8 @@ public class SequenceAnnotation extends Identified implements Comparable {
 	public boolean removeLocation(Location location) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (locations.size()==1 && locations.containsValue(location)) {
-			throw new SBOLValidationException("Sequence annotation " + this.getIdentity() + " must have at least one location.");
+			//throw new SBOLValidationException("Sequence annotation " + this.getIdentity() + " must have at least one location.");
+			throw new SBOLValidationException("sbol-10902", this);
 		}
 		return removeChildSafely(location,locations);
 	}
@@ -233,6 +234,19 @@ public class SequenceAnnotation extends Identified implements Comparable {
 	 */
 	public Set<Location> getLocations() {
 		return new HashSet<>(locations.values());
+	}
+	
+	/**
+	 * Returns a sorted list of Locations referenced by this SequenceAnnotation object.
+	 * 
+	 * @return a sorted list of Locations referenced by this SequenceAnnotation object.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Location> getSortedLocations() {
+		List<Location> sortedLocations = new ArrayList<Location>();
+		sortedLocations.addAll(this.getLocations());
+		Collections.sort(sortedLocations);
+		return sortedLocations;
 	}
 
 	/**
@@ -403,12 +417,16 @@ public class SequenceAnnotation extends Identified implements Comparable {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(componentURI)==null) {
-				throw new SBOLValidationException("Component '" + componentURI + "' does not exist.");
+				//throw new SBOLValidationException("Component '" + componentURI + "' does not exist.");
+				throw new SBOLValidationException("sbol-10905");
+				// TODO: (Validation) print componentURI
+				
 			}
 			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
 				if (sa.getIdentity().equals(this.getIdentity())) continue;
 				if (sa.isSetComponent() && sa.getComponentURI().equals(componentURI)) {
-					throw new SBOLValidationException("Multiple sequence annotations cannot refer to the same component.");
+					//throw new SBOLValidationException("Multiple sequence annotations cannot refer to the same component.");
+					throw new SBOLValidationException("sbol-10522", sa);
 				}
 			}
 		}
@@ -512,26 +530,18 @@ public class SequenceAnnotation extends Identified implements Comparable {
 
 	@Override
 	public String toString() {
-		return "SequenceAnnotation [locations=" + locations + ", component=" + component
+		return "SequenceAnnotation [locations=" + this.getLocations() + ", component=" + component
 				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
 				+ ", description=" + description + "]";
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public int compareTo(Object o) {
-		List<Location> sortedLocations1 = new ArrayList<Location>();
-		sortedLocations1.addAll(this.getLocations());
-		Collections.sort(sortedLocations1);
-		Range range1 = (Range)sortedLocations1.get(0);
-		List<Location> sortedLocations2 = new ArrayList<Location>();
-		sortedLocations2.addAll(((SequenceAnnotation)o).getLocations());
-		Collections.sort(sortedLocations2);
-		Range range2 = (Range)sortedLocations2.get(0);
-		int result = range1.getStart()-range2.getStart();
-		if (result==0) {
-			result = range2.getEnd()-range1.getEnd();
-		}
-		return result;
+	public int compareTo(SequenceAnnotation sa) {
+		List<Location> sortedLocations1 = this.getSortedLocations();
+		List<Location> sortedLocations2 = sa.getSortedLocations();
+		if (sortedLocations1.size()>0 && sortedLocations2.size()>0) {
+			return sortedLocations1.get(0).compareTo(sortedLocations2.get(0));
+		} 
+		return 0;
 	}
 }

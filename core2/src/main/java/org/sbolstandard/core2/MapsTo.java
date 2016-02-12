@@ -118,15 +118,19 @@ public class MapsTo extends Identified{
 	public void setLocal(URI local) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (local==null) {
-			throw new SBOLValidationException("MapsTo "+this.getIdentity()+" must specify a local component.");
+			//throw new SBOLValidationException("MapsTo "+this.getIdentity()+" must specify a local component.");
+			throw new SBOLValidationException("sbol-10802", this);
 		}
 		if (moduleDefinition!=null) {
 			if (moduleDefinition.getFunctionalComponent(local)==null) {
-				throw new SBOLValidationException("Functional Component '" + local + "' does not exist.");
+				// throw new SBOLValidationException("Functional Component '" + local + "' does not exist.");
+				throw new SBOLValidationException("sbol-10804");
+				// TODO: (Validation) print URI for local
 			}
 		} else if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(local)==null) {
-				throw new SBOLValidationException("Component '" + local + "' does not exist.");
+				// throw new SBOLValidationException("Component '" + local + "' does not exist.");
+				throw new SBOLValidationException("sbol-10803");
 			}
 		}
 		this.local = local;
@@ -198,24 +202,32 @@ public class MapsTo extends Identified{
 	public void setRemote(URI remote) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (remote==null) {
-			throw new SBOLValidationException("MapsTo "+this.getIdentity()+" must specify a remote component.");
+			// throw new SBOLValidationException("MapsTo "+this.getIdentity()+" must specify a remote component.");
+			throw new SBOLValidationException("sbol-10802", this);
 		}
 		if (module!=null) {
 			if (module.getDefinition()!=null) {
 				if (module.getDefinition().getFunctionalComponent(remote)==null) {
-					throw new SBOLValidationException("Functional Component '" + remote + "' does not exist.");
+					// throw new SBOLValidationException("Functional Component '" + remote + "' does not exist.");
+					throw new SBOLValidationException("sbol-10809");
+					// TODO: (Validation) print URI for remote
 				}
 				if (module.getDefinition().getFunctionalComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
-					throw new SBOLValidationException("Functional Component '" + remote + "' is private.");
+					// throw new SBOLValidationException("Functional Component '" + remote + "' is private.");
+					throw new SBOLValidationException("sbol-10807");
 				}
 			}
 		} else if (componentInstance!=null) {
 			if (componentInstance.getDefinition()!=null) {
 				if (componentInstance.getDefinition().getComponent(remote)==null) {
-					throw new SBOLValidationException("Component '" + remote + "' does not exist.");
+					//throw new SBOLValidationException("Component '" + remote + "' does not exist.");
+					throw new SBOLValidationException("sbol-10805");
+					// TODO: (Validation) print URI for remote
 				}
 				if (componentInstance.getDefinition().getComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
-					throw new SBOLValidationException("Component '" + remote + "' is private.");
+					//throw new SBOLValidationException("Component '" + remote + "' is private.");
+					throw new SBOLValidationException("sbol-10807");
+					// TODO: (Validation) print URI for remote
 				}
 			}
 		}

@@ -55,8 +55,7 @@ public class GenericLocation extends Location{
 	}
 
 	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int compareTo(Location locaction) {
+		return Integer.MAX_VALUE;
 	}
 }

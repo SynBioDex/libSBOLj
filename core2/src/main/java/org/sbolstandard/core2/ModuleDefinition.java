@@ -284,6 +284,7 @@ public class ModuleDefinition extends TopLevel {
 			if (sbolDocument.getModuleDefinition(moduleDefinitionURI) == null) {
 				throw new SBOLValidationException("Module definition '" + moduleDefinitionURI
 						+ "' does not exist.");
+				// TODO: (Validation) which rule?
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -308,14 +309,16 @@ public class ModuleDefinition extends TopLevel {
 		module.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (module.getDefinition() == null) {
-				throw new SBOLValidationException("ModuleDefinition '" + module.getDefinitionURI().toString()
-						+ "' does not exist.");
+//				throw new SBOLValidationException("ModuleDefinition '" + module.getDefinitionURI().toString()
+//						+ "' does not exist.");
+				throw new SBOLValidationException("sbol-11604", module);
 			}
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
 		if (SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited)) {
-			throw new SBOLValidationException("Cycle created by Module '" + module.getIdentity() + "'");
+			//throw new SBOLValidationException("Cycle created by Module '" + module.getIdentity() + "'");
+			throw new SBOLValidationException("sbol-11705", module);
 		}
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		for (MapsTo mapsTo : module.getMapsTos()) {
@@ -710,6 +713,7 @@ public class ModuleDefinition extends TopLevel {
 			if (sbolDocument.getComponentDefinition(componentDefinitionURI) == null) {
 				throw new SBOLValidationException("Component definition '" + componentDefinitionURI
 						+ "' does not exist.");
+				// TODO: (Validation) which rule?
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -734,6 +738,7 @@ public class ModuleDefinition extends TopLevel {
 			if (functionalComponent.getDefinition()== null) {
 				throw new SBOLValidationException("ComponentDefinition '" + functionalComponent.getDefinitionURI()
 						+ "' does not exist.");
+				// TODO: (Validation) which rule?
 			}
 		}
 		addChildSafely(functionalComponent, functionalComponents, "functionalComponent",
@@ -768,24 +773,30 @@ public class ModuleDefinition extends TopLevel {
 		for (Interaction i : interactions.values()) {
 			for (Participation p : i.getParticipations()) {
 				if (p.getParticipantURI().equals(functionalComponent.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
-							" since it is in use.");
+//					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
+//							" since it is in use.");
+					throw new SBOLValidationException("sbol-10602", functionalComponent);
+					// TODO: (Validation) right rule?
 				}
 			}
 		}
 		for (FunctionalComponent c : functionalComponents.values()) {
 			for (MapsTo mt : c.getMapsTos()) {
 				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
-							" since it is in use.");
+//					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
+//							" since it is in use.");
+					throw new SBOLValidationException("sbol-10802", functionalComponent);
+					// TODO: (Validation) right rule
 				}
 			}
 		}
 		for (Module m : modules.values()) {
 			for (MapsTo mt : m.getMapsTos()) {
 				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
-							" since it is in use.");
+//					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
+//							" since it is in use.");
+					throw new SBOLValidationException("sbol-10802", functionalComponent);
+					// TODO: (Validation) right rule
 				}
 			}
 		}
@@ -794,9 +805,11 @@ public class ModuleDefinition extends TopLevel {
 				for (Module m : md.getModules()) {
 					for (MapsTo mt : m.getMapsTos()) {
 						if (mt.getRemoteURI().equals(functionalComponent.getIdentity())) {
-							throw new SBOLValidationException("Cannot remove "
-									+ functionalComponent.getIdentity() +
-									" since it is in use.");
+//							throw new SBOLValidationException("Cannot remove "
+//									+ functionalComponent.getIdentity() +
+//									" since it is in use.");
+							throw new SBOLValidationException("sbol-10805", functionalComponent);
+							// TODO: (Validation) right rule?
 						}
 					}
 				}
@@ -905,8 +918,10 @@ public class ModuleDefinition extends TopLevel {
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModel(model.getIdentity()) == null) {
-				throw new SBOLValidationException("Model '" + model.getIdentity()
-						+ "' does not exist.");
+//				throw new SBOLValidationException("Model '" + model.getIdentity()
+//						+ "' does not exist.");
+				throw new SBOLValidationException("sbol-11608", model);
+				// TODO: (Validation) complete flag
 			}
 		}
 		return this.addModel(model.getIdentity());
@@ -987,7 +1002,9 @@ public class ModuleDefinition extends TopLevel {
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModel(modelURI) == null) {
-				throw new SBOLValidationException("Model '" + modelURI + "' does not exist.");
+				//throw new SBOLValidationException("Model '" + modelURI + "' does not exist.");
+				throw new SBOLValidationException("sbol-11607", this);
+				// TODO: (Validation) complete flag
 			}
 		}
 		return models.add(modelURI);
@@ -1291,8 +1308,9 @@ public class ModuleDefinition extends TopLevel {
 							topFc.setDefinition(fc.getDefinitionURI());
 						} else if (mapsTo.getRefinement()==RefinementType.VERIFYIDENTICAL) {
 							if (!topFc.getDefinitionURI().equals(fc.getDefinitionURI())) {
-								throw new SBOLValidationException("Component definitions in mapsTo '" + mapsTo.getIdentity()
-										+ "' are not identical.");
+//								throw new SBOLValidationException("Component definitions in mapsTo '" + mapsTo.getIdentity()
+//										+ "' are not identical.");
+								throw new SBOLValidationException("sbol-10811", mapsTo);
 							}
 						} else if (mapsTo.getRefinement()==RefinementType.MERGE) {
 							// TODO: merge?
@@ -1326,9 +1344,9 @@ public class ModuleDefinition extends TopLevel {
 
 	@Override
 	public String toString() {
-		return "ModuleDefinition [roles=" + roles + ", modules=" + modules + ", interactions="
-				+ interactions + ", functionalComponents=" + functionalComponents + ", models="
-				+ models + ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
+		return "ModuleDefinition [roles=" + this.getRoles() + ", modules=" + this.getModules() + ", interactions="
+				+ this.getInteractions() + ", functionalComponents=" + this.getFunctionalComponents() + ", models="
+				+ this.getModels() + ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
 				+ ", description=" + description + "]";
 	}
 }
