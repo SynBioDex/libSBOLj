@@ -434,7 +434,8 @@ public class SBOLReader
 		compliant = SBOLDoc.isCompliant();
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
-
+		clearErrors();
+		
 		DocumentRoot<QName> document = null;
 		if (fileType.equals(JSON)) {
 			document = readJSON(new StringReader(inputStreamString));
@@ -443,13 +444,22 @@ public class SBOLReader
 		} else {
 			document = readRDF(new StringReader(inputStreamString));
 		}
-		if (getSBOLVersion(document).equals(SBOLVERSION1))
-		{
-			scanner.close();
-			readV1(SBOLDoc,document);
-			return;
+		try {
+			if (getSBOLVersion(document).equals(SBOLVERSION1))
+			{
+				scanner.close();
+				readV1(SBOLDoc,document);
+				return;
+			}
+		} catch (SBOLValidationException e) {
+			if (keepGoing) {
+				errors.add(e.getMessage());
+				return;
+			} else {
+				throw new SBOLValidationException(e);
+			}
 		}
-
+		
 		for (NamespaceBinding n : document.getNamespaceBindings())
 
 		{
@@ -531,17 +541,26 @@ public class SBOLReader
 
 	private static void readTopLevelDocsV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException
 	{
+		clearErrors();
 		for (TopLevelDocument<QName> topLevel : document.getTopLevelDocuments())
 		{
-			if (topLevel.getType().equals(Sbol1Terms.DNAComponent.DNAComponent))
-				parseDnaComponentV1(SBOLDoc, topLevel);
-			else if (topLevel.getType().equals(Sbol1Terms.DNASequence.DNASequence))
-				parseDnaSequenceV1(SBOLDoc, topLevel);
-			else if (topLevel.getType().equals(Sbol1Terms.Collection.Collection))
-				parseCollectionV1(SBOLDoc, topLevel);
-			else
-			{
-				parseGenericTopLevel(SBOLDoc, topLevel);
+			try {
+				if (topLevel.getType().equals(Sbol1Terms.DNAComponent.DNAComponent))
+					parseDnaComponentV1(SBOLDoc, topLevel);
+				else if (topLevel.getType().equals(Sbol1Terms.DNASequence.DNASequence))
+					parseDnaSequenceV1(SBOLDoc, topLevel);
+				else if (topLevel.getType().equals(Sbol1Terms.Collection.Collection))
+					parseCollectionV1(SBOLDoc, topLevel);
+				else
+				{
+					parseGenericTopLevel(SBOLDoc, topLevel);
+				}
+			} catch (SBOLValidationException e) {
+				if (keepGoing) {
+					errors.add(e.getMessage());
+				} else {
+					throw new SBOLValidationException(e);
+				}
 			}
 		}
 	}
