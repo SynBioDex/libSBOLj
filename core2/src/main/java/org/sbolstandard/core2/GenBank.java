@@ -352,8 +352,7 @@ public class GenBank {
 		if (type == null) {
 //			throw new SBOLValidationException("ComponentDefintion " + componentDefinition.getIdentity() +
 //					" is not DNA or RNA type.");
-			throw new SBOLValidationException("sbol-10505");
-			// TODO: (Validation) right rule?
+			throw new SBOLValidationException("sbol-10505", componentDefinition);
 		}
 		Annotation annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"molecule",gbPrefix));
 		if (annotation!=null) {
@@ -483,7 +482,7 @@ public class GenBank {
 				}
 			} else {
 				throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
-				// TODO: (Validation) which rule?
+				// TODO: (Validation) missing rule: Location of a SequenceAnnotation object needs to be either a range or cut.				
 			}
 		} else {
 			String rangeStr = "     " + role + " " + "join(";
@@ -500,7 +499,7 @@ public class GenBank {
 					rangeStr += cut.getAt() + "^" + cut.getAt()+1;
 				} else {
 					throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
-					// TODO: (Validation) which rule?
+					// TODO: (Validation) missing rule: Location of a SequenceAnnotation object needs to be either a range or cut.
 				}
 			}
 			rangeStr += ")";
@@ -593,7 +592,7 @@ public class GenBank {
 		doc.setCreateDefaults(true);
 		if (URIPrefix==null) {
 			throw new SBOLValidationException("No URI prefix has been provided.");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: rule for URI prefix.
 		}
 		doc.setDefaultURIprefix(URIPrefix);
 		read(doc,in);
@@ -765,7 +764,7 @@ public class GenBank {
 				version = strSplit[1].split("\\.")[1];
 				if (!id.equals(strSplit[1].split("\\.")[0])) {
 					throw new SBOLValidationException("Warning: id in version does not match id in accession");
-					// TODO: (Validation) which rule?
+					// TODO: (Validation) missing rule: other.
 				}
 				if (strSplit.length > 2) {
 					annotation = new Annotation(new QName(gbNamespace,"GInumber",gbPrefix),strSplit[2]);

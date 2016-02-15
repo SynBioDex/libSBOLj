@@ -594,15 +594,15 @@ public abstract class Identified {
 //						"Instance for identity `" + child.identity +
 //						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
 				throw new SBOLValidationException("sbol-10202", child);
-				// TODO: (Validation) right rule?
+				// TODO: (Validation) print child.identity and persistentId
 			}
 			if(siblingsMap.containsKey(child.getIdentity())) {
 //				throw new SBOLValidationException(
 //						"Instance for identity `" + child.identity +
 //						"' and persistent identity `" + persistentId + "' exists for a " + typeName);
 				throw new SBOLValidationException(
-						"sbol-10202", child
-						);
+						"sbol-10202", child);
+				// TODO: (Validation) print child.identity and persistentId
 			}
 			siblingsMap.put(child.getIdentity(), child);
 			I latest = siblingsMap.get(persistentId);
@@ -621,15 +621,13 @@ public abstract class Identified {
 //				throw new SBOLValidationException(
 //						"Instance for identity `" + child.identity +
 //						"' exists for a non-" + typeName);
-				throw new SBOLValidationException(
-						"sbol-10202", child);
-			// TODO: (Validation) right rule?
+				throw new SBOLValidationException("sbol-10202", child);
+			// TODO: (Validation) print child.identity
 			if(siblingsMap.containsKey(child.getIdentity()))
 //				throw new SBOLValidationException(
 //						"Instance for identity `" + child.identity + "' exists for a " + typeName);
-				throw new SBOLValidationException(
-						"sbol-10202", child);
-			// TODO: (Validation) right rule?			
+				throw new SBOLValidationException("sbol-10202", child);
+			// TODO: (Validation) print child.identity
 			siblingsMap.put(child.getIdentity(), child);
 		}
 

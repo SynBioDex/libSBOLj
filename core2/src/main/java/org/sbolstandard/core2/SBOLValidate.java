@@ -236,9 +236,10 @@ public class SBOLValidate {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (topLevel.isSetWasDerivedFrom()) {
 				if (!checkWasDerivedFromVersion(sbolDocument,topLevel,topLevel.getWasDerivedFrom())) {
-					errors.add(topLevel.getIdentity() + " is derived from " + topLevel.getWasDerivedFrom() + 
-							" but has older version.");
-					// TODO: (Validation) which rule?
+//					errors.add(topLevel.getIdentity() + " is derived from " + topLevel.getWasDerivedFrom() + 
+//							" but has older version.");
+					errors.add(new SBOLValidationException("sbol-10211", topLevel).getExceptionMessage());
+					// TODO: (Validation) print topLevel.getWasDerivedFrom as well.
 				}
 			}
 		}
@@ -430,7 +431,7 @@ public class SBOLValidate {
 //									errors.add("SequenceAnnotation " + sa.getIdentity() + " has location outside of Sequence " 
 //											+ sequence.getIdentity() + " scope.");
 									errors.add(new SBOLValidationException("sbol-10523", sa, sequence).getExceptionMessage());
-									// TODO: (Validation) right rule?
+									// TODO: (Validation) print nucleicLength and range.getStart and range.getEnd
 								}
 							} else if (location instanceof Cut) {
 								Cut cut = (Cut)location;
@@ -438,7 +439,7 @@ public class SBOLValidate {
 //									errors.add("SequenceAnnotation " + sa.getIdentity() + " has location outside of Sequence " 
 //											+ sequence.getIdentity() + " scope.");
 									errors.add(new SBOLValidationException("sbol-10523", sa, sequence).getExceptionMessage());
-									// TODO: (Validation) right rule?
+									// TODO: (Validation) print nucleicLength and range.getAt
 								}								
 							}
 						}

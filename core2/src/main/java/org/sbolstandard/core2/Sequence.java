@@ -133,7 +133,7 @@ public class Sequence extends TopLevel{
 //			throw new SBOLValidationException("Sequence '" + this.getIdentity() + "' that uses encoding " + this.getEncoding() + 
 //					" does not have a valid sequence.");
 			throw new SBOLValidationException("sbol-10406", this);
-			// TODO: (Validation) should this also be rule sbol-10405?
+			// TODO: (Validation) print this.getEncoding too 
 		}
 	}
 	

@@ -24,7 +24,7 @@ public abstract class Ontology {
 		if (!stanzaURIstr.contains(URI_PREFIX)) {
 			try {
 				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
-				// TODO: (Validation) which rule?
+				// TODO: (Validation) missing rule: rule for URI prefix.
 			}
 			catch (SBOLValidationException e) {
 				return null;
@@ -68,7 +68,7 @@ public abstract class Ontology {
 		if (!oboURIstr.contains(URI_PREFIX)) {
 			try {
 				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
-				// TODO: (Validation) which rule?
+				// TODO: (Validation) missing rule: rule for URI prefix.
 			}
 			catch (SBOLValidationException e) {
 				return null;
@@ -141,7 +141,7 @@ public abstract class Ontology {
 		if (stanza1 == null) {
 			try {
 				throw new SBOLValidationException("Illegal ID: " + Id1 + ". No match was found.");
-				// TODO: (Validation) which rule?
+				// TODO: (Validation) missing rule: rules for ontologies.
 			}
 			catch (SBOLValidationException e) {
 				return false;
@@ -150,7 +150,7 @@ public abstract class Ontology {
 		if (stanza2 == null) {
 			try {
 				throw new SBOLValidationException("Illegal ID: " + Id2 + ". No match was found.");
-				// TODO: (Validation) which rule?
+				// TODO: (Validation) missing rule: rules for ontologies.
 			}
 			catch (SBOLValidationException e) {
 				return false;

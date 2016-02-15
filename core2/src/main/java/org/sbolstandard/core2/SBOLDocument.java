@@ -274,7 +274,7 @@ public class SBOLDocument {
 //						throw new SBOLValidationException("Cannot remove " + moduleDefinition.getIdentity() +
 //								" since it is in use.");
 						throw new SBOLValidationException("sbol-11702");
-						// TODO: (Validation) right rule?
+						// TODO: (Validation) uncertain rule: remove object in use.
 						
 					}
 				}
@@ -776,7 +776,7 @@ public class SBOLDocument {
 //					throw new SBOLValidationException("Cannot remove " + model.getIdentity() +
 //							" since it is in use.");
 					throw new SBOLValidationException("sbol-11608", model);
-					// TODO: (Validation) right rule?
+					// TODO: (Validation) uncertain rule: remove object in use.
 				}
 			}
 		}
@@ -1187,7 +1187,7 @@ public class SBOLDocument {
 //						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
 //								" since it is in use.");
 						throw new SBOLValidationException("sbol-10602", componentDefinition);
-						// TODO: (Validation) right rule?
+						// TODO: (Validation) uncertain rule: remove object in use.
 					}
 				}
 			}
@@ -1197,9 +1197,7 @@ public class SBOLDocument {
 //						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
 //								" since it is in use.");
 						throw new SBOLValidationException("sbol-10602", componentDefinition);
-						// TODO: (Validation) right rule?
-
-						
+						// TODO: (Validation) uncertain rule: remove object in use.
 					}
 				}
 			}
@@ -1723,7 +1721,7 @@ public class SBOLDocument {
 		checkReadOnly();
 		if (!URIcompliance.isTopLevelURIcompliant(topLevel)) {
 			throw new SBOLValidationException("Cannot copy a non-compliant SBOL object");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: Cannot copy a non-compliant SBOL object.
 		}
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
@@ -1770,7 +1768,7 @@ public class SBOLDocument {
 		}
 		else {
 			throw new SBOLValidationException("Unable to copy " + topLevel.getIdentity());
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: Unable to copy non-topLevel objects.
 		}
 	}
 
@@ -1811,7 +1809,7 @@ public class SBOLDocument {
 //					throw new SBOLValidationException("Cannot remove " + sequence.getIdentity() +
 //							" since it is in use.");
 					throw new SBOLValidationException("sbol-10513", sequence);
-					// TODO: (Validation) right rule?
+					// TODO: (Validation) uncertain rule: remove object in use.
 				}
 			}
 		}
@@ -2440,13 +2438,13 @@ public class SBOLDocument {
 //						"Instance for identity `" + newTopLevel.identity +
 //						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
 				throw new SBOLValidationException("sbol-10202", newTopLevel);
-				// TODO: (Validation) right rule?
+				// TODO: (Validation) print newTopLevel.identity and persistentId
 			if (instancesMap.containsKey(newTopLevel.getIdentity()))
 //				throw new SBOLValidationException(
 //						"Instance for identity `" + newTopLevel.identity +
 //						"' and persistent identity `" + persistentId + "' already exists for a " + typeName);
 				throw new SBOLValidationException("sbol-10202", newTopLevel);
-				// TODO: (Validation) right rule?
+				// TODO: (Validation) print newTopLevel.identity and persistentId
 			String prefix = extractURIprefix(persistentId);
 			while (prefix!=null) {
 				if (keyExistsInAnyMap(URI.create(prefix), maps))
@@ -2464,7 +2462,7 @@ public class SBOLDocument {
 			if (prefixes.contains(persistentId.toString())) {
 				throw new SBOLValidationException("Persistent identity `" + persistentId.toString() +
 						"' matches URI prefix in document.");
-				// TODO: (Validation) which rule?
+				// TODO: (Validation) missing rule: Persistent identity of a compliant object matches URI prefix in an SBOL document.
 			}
 			prefix = extractURIprefix(persistentId);
 			while (prefix!=null) {
@@ -2527,7 +2525,7 @@ public class SBOLDocument {
 //					throw new SBOLValidationException("Cannot remove " + topLevel.getIdentity() +
 //							" since it is in use.");
 					throw new SBOLValidationException("sbol-12103", topLevel);
-					// TODO: (Validation) right rule?
+					// TODO: (Validation) uncertain rule: remove object in use.
 				}
 			}
 		}
@@ -2567,7 +2565,7 @@ public class SBOLDocument {
 		else {
 			throw new SBOLValidationException(
 					"Unable to set default URI prefix to non-compliant value `" + defaultURIprefix + "'");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: Unable to set default URI prefix to non-compliant URI prefix.
 		}
 	}
 
@@ -2656,7 +2654,7 @@ public class SBOLDocument {
 	void checkReadOnly() throws SBOLValidationException {
 		if (!compliant) {
 			throw new SBOLValidationException("Cannot modify a non-compliant SBOL document");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: Cannot modify a non-compliant SBOL document
 		}
 	}
 
