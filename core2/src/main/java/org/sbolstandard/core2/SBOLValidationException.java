@@ -43,6 +43,8 @@ public class SBOLValidationException extends Exception {
 	private static SBOLValidationRule currentRule;
 	private static Map<String, SBOLValidationRule> validationRules;
 
+	private static String exceptionMessage;
+
 	/**
 	 * Creates a new exception instance with the given message and objects causing the problem.
 	 * @param message
@@ -59,7 +61,7 @@ public class SBOLValidationException extends Exception {
 	 * @param objects
 	 */
 	SBOLValidationException(String message, java.util.Collection<? extends Identified> objects) {
-		super(formatMessage(message, objects));
+		super(exceptionMessage = formatMessage(message, objects));
 		this.objects = Collections.unmodifiableList(new ArrayList<>(objects));
 	}
 
@@ -172,69 +174,6 @@ public class SBOLValidationException extends Exception {
 		return sb.toString();
 	}
 	
-//	/**
-//	 * @param message
-//	 * @param annotations
-//	 * @return
-//	 */
-//	private static String formatMessage(String message, List<Annotation> annotations) {
-//				final StringBuilder sb = new StringBuilder(message);
-//		if (message.startsWith("sbol-")) {
-//			if (validationRules == null) {
-//				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
-//				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
-//						getResourceAsStream("/validation/rules.txt"));
-//				try {
-//					parse(new BufferedReader(f));
-//					String key = message.trim();
-//					SBOLValidationRule rule = validationRules.get(key);
-//					if (rule == null) {
-//						throw new RuntimeException("Rule ID does not exist.");
-//					}
-//					sb.append(": " + rule.getDescription() + "\n");
-//					if (!annotations.isEmpty()) {
-//						sb.append(": ");
-//						boolean first = true;
-//						for (Annotation obj : annotations) {
-//							if (first) {
-//								first = false;
-//							}
-//							else {
-//								sb.append(", ");
-//							}
-//							if (obj != null) {
-//								sb.append(obj.toString());
-//							}
-//						}
-//					}
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		}
-//		else {
-//			//final StringBuilder sb = new StringBuilder(message);
-//			if (!annotations.isEmpty()) {
-//				sb.append(": ");
-//				boolean first = true;
-//				for (Annotation obj : annotations) {
-//					if (first) {
-//						first = false;
-//					}
-//					else {
-//						sb.append(", ");
-//					}
-//					if (obj != null) {
-//						sb.append(obj.toString());
-//					}
-//				}
-//			}
-//			//return sb.toString();
-//		}
-//		return sb.toString();
-//	}
-	
-		
 	/**
 	 * @param br
 	 * @throws IOException
@@ -294,12 +233,16 @@ public class SBOLValidationException extends Exception {
 		}
 		br.close();
 	}
-
-	private static void printAllRules() {
-		for (String key : validationRules.keySet()) {
-			System.out.println(validationRules.get(key));
-		}
+	
+	String getExceptionMessage() {
+		return exceptionMessage;
 	}
+
+//	private static void printAllRules() {
+//		for (String key : validationRules.keySet()) {
+//			System.out.println(validationRules.get(key));
+//		}
+//	}
 
 }
 

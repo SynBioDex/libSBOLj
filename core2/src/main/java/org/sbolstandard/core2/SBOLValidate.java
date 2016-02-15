@@ -52,29 +52,35 @@ public class SBOLValidate {
 		for (Collection collection : sbolDocument.getCollections()) {
 			if (!URIcompliance.isTopLevelURIcompliant(collection) || !collection.checkDescendantsURIcompliance()) {
 				errors.add("Collection " + collection.getIdentity() + " is not URI compliant.");
+				// TODO: (Validation) missing rule: compliant URI identity
 			}
 		}
 		for (Sequence sequence : sbolDocument.getSequences()) {
 			if (!URIcompliance.isTopLevelURIcompliant(sequence) || !sequence.checkDescendantsURIcompliance()) {
 				errors.add("Sequence " + sequence.getIdentity() + " is not URI compliant.");
+				// TODO: (Validation) missing rule: compliant URI identity
 			}
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			if (!URIcompliance.isTopLevelURIcompliant(componentDefinition) || !componentDefinition.checkDescendantsURIcompliance()) {
 				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + " is not URI compliant.");
+				// TODO: (Validation) missing rule: compliant URI identity
 			}
 		}
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
 			if (!URIcompliance.isTopLevelURIcompliant(moduleDefinition) || !moduleDefinition.checkDescendantsURIcompliance()) 	
 				errors.add("ModuleDefinition " + moduleDefinition.getIdentity() + " is not URI compliant.");
+				// TODO: (Validation) missing rule: compliant URI identity
 		}
 		for (Model model : sbolDocument.getModels()) {
 			if (!URIcompliance.isTopLevelURIcompliant(model) || !model.checkDescendantsURIcompliance()) 
 				errors.add("Model " + model.getIdentity() + " is not URI compliant.");
+				// TODO: (Validation) missing rule: compliant URI identity
 		}
 		for (GenericTopLevel genericTopLevel : sbolDocument.getGenericTopLevels()) {
 			if (!URIcompliance.isTopLevelURIcompliant(genericTopLevel) || !genericTopLevel.checkDescendantsURIcompliance()) 
 				errors.add("GenericTopLevel " + genericTopLevel.getIdentity() + " is not URI compliant.");
+				// TODO: (Validation) missing rule: compliant URI identity
 		}
 	}
 	
@@ -82,6 +88,7 @@ public class SBOLValidate {
 		for (URI member : collection.getMemberURIs()) {
 			if (sbolDocument.getTopLevel(member)==null) {
 				errors.add("Collection " + collection.getIdentity() + " member " + member + " not found in document.");
+				// TODO: (Validation) missing rule: compliant URI identity
 			}
 		}
 	}
@@ -89,14 +96,18 @@ public class SBOLValidate {
 	protected static void checkComponentDefinitionCompleteness(SBOLDocument sbolDocument,ComponentDefinition componentDefinition) {
 		for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
 			if (sbolDocument.getSequence(sequenceURI)==null) {
-				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + " sequence " + 
-						sequenceURI + " not found in document.");
+//				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + " sequence " + 
+//						sequenceURI + " not found in document.");
+				errors.add(new SBOLValidationException("sbol-10513", componentDefinition).getExceptionMessage());
+				// TODO: (Validation) print URI for sequenceURI
 			}
 		}
 		for (Component component : componentDefinition.getComponents()) {
 			if (component.getDefinition()==null) {
-				errors.add("Component " + component.getIdentity() + " definition " + 
-						component.getDefinitionURI() + " not found in document.");
+//				errors.add("Component " + component.getIdentity() + " definition " + 
+//						component.getDefinitionURI() + " not found in document.");
+				errors.add(new SBOLValidationException("sbol-10604", component).getExceptionMessage());
+				// TODO: (Validation) print URI for component.getDefinitionURI()
 			}
 		}
 	}
@@ -104,33 +115,43 @@ public class SBOLValidate {
 	protected static void checkModuleDefinitionCompleteness(SBOLDocument sbolDocument,ModuleDefinition moduleDefinition) {
 		for (URI modelURI : moduleDefinition.getModelURIs()) {
 			if (sbolDocument.getModel(modelURI) == null) {
-				errors.add("ModuleDefinition " + moduleDefinition.getIdentity() + " model " + 
-						modelURI + " not found in document.");
+//				errors.add("ModuleDefinition " + moduleDefinition.getIdentity() + " model " + 
+//						modelURI + " not found in document.");
+				errors.add(new SBOLValidationException("sbol-10608", moduleDefinition).getExceptionMessage());
+				// TODO: (Validation) print URI for modelURI
 			}
 		}
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			if (functionalComponent.getDefinition() == null) {
-				errors.add("FunctionalComponent " + functionalComponent.getIdentity() + " definition " + 
-						functionalComponent.getDefinitionURI() + " not found in document.");
+//				errors.add("FunctionalComponent " + functionalComponent.getIdentity() + " definition " + 
+//						functionalComponent.getDefinitionURI() + " not found in document.");
+				errors.add(new SBOLValidationException("sbol-10604", functionalComponent).getExceptionMessage());
+				// TODO: (Validation) print URI for functionalComponent.getDefinitionURI()
 			} 
 		}
 		for (Module module : moduleDefinition.getModules()) {
 			if (module.getDefinition() == null) {
-				errors.add("Module " + module.getIdentity() + " definition " + 
-						module.getDefinitionURI() + " not found in document.");
+//				errors.add("Module " + module.getIdentity() + " definition " + 
+//						module.getDefinitionURI() + " not found in document.");
+				errors.add(new SBOLValidationException("sbol-11703", module).getExceptionMessage());
+				// TODO: (Validation) print URI for module.getDefinitionURI()
 			}
 			for (MapsTo mapsTo : module.getMapsTos()) {
 				if (mapsTo.getRemote()==null) {
-					errors.add("MapsTo " + mapsTo.getIdentity() + " remote functional component " + 
-							mapsTo.getRemoteURI() + " not found in module definition " + module.getDefinitionURI());
+//					errors.add("MapsTo " + mapsTo.getIdentity() + " remote functional component " + 
+//							mapsTo.getRemoteURI() + " not found in module definition " + module.getDefinitionURI());
+					errors.add(new SBOLValidationException("sbol-10809", mapsTo).getExceptionMessage());
+					// TODO: (Validation) print URI for mapsTo.getRemoteURI and module.getDefinitionURI
 					continue;
 				}
 				if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
-					errors.add("MapsTo '" + mapsTo.getIdentity() + "' has a private remote Functional Component '" + mapsTo.getRemoteURI());
+					//errors.add("MapsTo '" + mapsTo.getIdentity() + "' has a private remote Functional Component '" + mapsTo.getRemoteURI());
+					errors.add(new SBOLValidationException("sbol-10807", mapsTo).getExceptionMessage());
 				}
 				if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
 					if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
-						errors.add("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+						//errors.add("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+						errors.add(new SBOLValidationException("sbol-10811").getExceptionMessage());
 					}
 				}
 			}
@@ -217,6 +238,7 @@ public class SBOLValidate {
 				if (!checkWasDerivedFromVersion(sbolDocument,topLevel,topLevel.getWasDerivedFrom())) {
 					errors.add(topLevel.getIdentity() + " is derived from " + topLevel.getWasDerivedFrom() + 
 							" but has older version.");
+					// TODO: (Validation) which rule?
 				}
 			}
 		}
@@ -232,17 +254,21 @@ public class SBOLValidate {
 			if (topLevel.isSetWasDerivedFrom()) {
 				if (checkWasDerivedFromCycle(sbolDocument,topLevel,topLevel.getWasDerivedFrom(), new HashSet<URI>())) {
 					errors.add("Cycle found in '" + topLevel.getIdentity() + "' was derived from link.");
+					// TODO: (Validation) which rule? Could be sbol-10209 or sbol-10210. 
+					
 				}
 			}
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			if (checkComponentDefinitionCycle(sbolDocument,componentDefinition,new HashSet<URI>())) {
 				errors.add("Cycle found in ComponentDefinition '" + componentDefinition.getIdentity() + "'");
+				//TODO: (Validation) which rule? Could be sbol-10603 or sbol-10605.
 			}
 		}
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
 			if (checkModuleDefinitionCycle(sbolDocument,moduleDefinition,new HashSet<URI>())) {
 				errors.add("Cycle found in ModuleDefinition '" + moduleDefinition.getIdentity() + "'");
+				//TODO: (Validation) which rule? Could be sbol-11704 or sbol-11705.
 			}
 		}
 	}
@@ -255,7 +281,9 @@ public class SBOLValidate {
 				!sequence.getEncoding().equals(Sequence.IUPAC_RNA) &&
 				!sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN) &&
 				!sequence.getEncoding().equals(Sequence.SMILES)) {
-				errors.add("Sequence " + sequence.getIdentity() + " has unrecoginized encoding (see Table 1): " + sequence.getEncoding());
+				//errors.add("Sequence " + sequence.getIdentity() + " has unrecoginized encoding (see Table 1): " + sequence.getEncoding());
+				errors.add(new SBOLValidationException("sbol-10406", sequence).getExceptionMessage());
+
 			}
 		}
 		for (ComponentDefinition compDef : sbolDocument.getComponentDefinitions()) {
@@ -270,9 +298,11 @@ public class SBOLValidate {
 				}
 			}
 			if (numBioPAXtypes == 0) {
-				errors.add("ComponentDefinition " + compDef.getIdentity() + " does not have a recognized BioPAX type (see Table 2).");
+				//errors.add("ComponentDefinition " + compDef.getIdentity() + " does not have a recognized BioPAX type (see Table 2).");
+				errors.add(new SBOLValidationException("sbol-10505", compDef).getExceptionMessage());
 			} else if (numBioPAXtypes > 1){
-				errors.add("ComponentDefinition " + compDef.getIdentity() + " has conflicting BioPAX types (see Table 2).");
+				//errors.add("ComponentDefinition " + compDef.getIdentity() + " has conflicting BioPAX types (see Table 2).");
+				errors.add(new SBOLValidationException("sbol-10503", compDef).getExceptionMessage());
 			}
 			if (compDef.getTypes().contains(ComponentDefinition.DNA)) {
 				boolean foundSO = false;
@@ -285,7 +315,8 @@ public class SBOLValidate {
 					}
 				}
 				if (!foundSO) {
-					errors.add("DNA ComponentDefinition " + compDef.getIdentity() + " does not have a recognized SO role.");
+					//errors.add("DNA ComponentDefinition " + compDef.getIdentity() + " does not have a recognized SO role.");
+					errors.add(new SBOLValidationException("sbol-10510", compDef).getExceptionMessage());
 				}
 			}
 			for (SequenceConstraint sc : compDef.getSequenceConstraints()) {
@@ -293,7 +324,8 @@ public class SBOLValidate {
 					sc.getRestriction();
 				}
 				catch (Exception e) {
-					errors.add("SequenceConstraint " + sc.getIdentity() + " does not have a recognized restriction type (Table 7): " + sc.getRestrictionURI());
+					//errors.add("SequenceConstraint " + sc.getIdentity() + " does not have a recognized restriction type (Table 7): " + sc.getRestrictionURI());
+					errors.add(new SBOLValidationException("sbol-11412", sc).getExceptionMessage());
 				}
 			}
 		}
@@ -301,15 +333,20 @@ public class SBOLValidate {
 			if (!model.getLanguage().equals(Model.SBML) &&
 				!model.getLanguage().equals(Model.CELLML) &&
 				!model.getLanguage().equals(Model.BIOPAX)) {
-				errors.add("Model " + model.getIdentity() + " has unrecoginized language (see Table 8): " + model.getLanguage());
+				//errors.add("Model " + model.getIdentity() + " has unrecoginized language (see Table 8): " + model.getLanguage());
+				errors.add(new SBOLValidationException("sbol-11506", model).getExceptionMessage());
 			}
 			try {
 				if (!sbo.isDescendantOf(model.getFramework(), SystemsBiologyOntology.MODELING_FRAMEWORK)) {
-					errors.add("Model " + model.getIdentity() + " does not have a recoginized SBO modeling framework: " + model.getFramework());
+					//errors.add("Model " + model.getIdentity() + " does not have a recoginized SBO modeling framework: " + model.getFramework());
+					errors.add(new SBOLValidationException("sbol-11511", model).getExceptionMessage());
+					// TODO: (Validation) print model.getFramework.
 				}
 			}
 			catch (Exception e) {
-				errors.add("Model " + model.getIdentity() + " does not have a recoginized SBO modeling framework: " + model.getFramework());
+				//errors.add("Model " + model.getIdentity() + " does not have a recoginized SBO modeling framework: " + model.getFramework());
+				errors.add(new SBOLValidationException("sbol-11510", model).getExceptionMessage());
+				// TODO: (Validation) print model.getFramework.
 			}
 		}
 		for (ModuleDefinition modDef : sbolDocument.getModuleDefinitions()) {
@@ -325,11 +362,13 @@ public class SBOLValidate {
 					}
 				}
 				if (numSBOtype == 0) {
-					errors.add("Interaction " + interaction.getIdentity() + 
-							" has no type from occurring entity branch of the SBO.");
+//					errors.add("Interaction " + interaction.getIdentity() + 
+//							" has no type from occurring entity branch of the SBO.");
+					errors.add(new SBOLValidationException("sbol-11905").getExceptionMessage());
 				} else if (numSBOtype > 1) {
-					errors.add("Interaction " + interaction.getIdentity() + 
-							" has more than one type from occurring entity branch of the SBO.");
+//					errors.add("Interaction " + interaction.getIdentity() + 
+//							" has more than one type from occurring entity branch of the SBO.");
+					errors.add(new SBOLValidationException("sbol-11904", interaction).getExceptionMessage());
 				}
 				for (Participation participation : interaction.getParticipations()) {
 					int numSBOrole = 0;
@@ -343,11 +382,13 @@ public class SBOLValidate {
 						}
 					}
 					if (numSBOrole == 0) {
-						errors.add("Participation " + participation.getIdentity() + 
-								" has no role from participant role branch of the SBO.");
+//						errors.add("Participation " + participation.getIdentity() + 
+//								" has no role from participant role branch of the SBO.");
+						errors.add(new SBOLValidationException("sbol-12007", participation).getExceptionMessage());
 					} else if (numSBOrole > 1) {
-						errors.add("Participation " + participation.getIdentity() + 
-								" has more than one role from participant role branch of the SBO.");
+//						errors.add("Participation " + participation.getIdentity() + 
+//								" has more than one role from participant role branch of the SBO.");
+						errors.add(new SBOLValidationException("sbol-12006", participation).getExceptionMessage());
 					}
 				}
 			}
@@ -367,13 +408,15 @@ public class SBOLValidate {
 				if (sequence.getEncoding().equals(Sequence.IUPAC_DNA) ||
 					sequence.getEncoding().equals(Sequence.IUPAC_RNA)) {
 					if (foundProtein || foundSmiles) {
-						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-								" has multiple sequences with conflicting encodings.");
+//						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//								" has multiple sequences with conflicting encodings.");
+						errors.add(new SBOLValidationException("sbol-10515", componentDefinition).getExceptionMessage()); 
 					} 
 					if (foundNucleic) {
 						if (nucleicLength != sequence.getElements().length()) {
-							errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-									" has multiple sequences with IUPAC DNA/RNA encodings of different lengths.");
+//							errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//									" has multiple sequences with IUPAC DNA/RNA encodings of different lengths.");
+							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getExceptionMessage());
 						}
 					} else {
 						foundNucleic = true;
@@ -384,27 +427,33 @@ public class SBOLValidate {
 							if (location instanceof Range) {
 								Range range = (Range)location;
 								if (range.getStart() <= 0 || range.getEnd() > nucleicLength) {
-									errors.add("SequenceAnnotation " + sa.getIdentity() + " has location outside of Sequence " 
-											+ sequence.getIdentity() + " scope.");
+//									errors.add("SequenceAnnotation " + sa.getIdentity() + " has location outside of Sequence " 
+//											+ sequence.getIdentity() + " scope.");
+									errors.add(new SBOLValidationException("sbol-10523", sa, sequence).getExceptionMessage());
+									// TODO: (Validation) right rule?
 								}
 							} else if (location instanceof Cut) {
 								Cut cut = (Cut)location;
 								if (cut.getAt() < 0 || cut.getAt() > nucleicLength) {
-									errors.add("SequenceAnnotation " + sa.getIdentity() + " has location outside of Sequence " 
-											+ sequence.getIdentity() + " scope.");
+//									errors.add("SequenceAnnotation " + sa.getIdentity() + " has location outside of Sequence " 
+//											+ sequence.getIdentity() + " scope.");
+									errors.add(new SBOLValidationException("sbol-10523", sa, sequence).getExceptionMessage());
+									// TODO: (Validation) right rule?
 								}								
 							}
 						}
 					}
 				} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
 					if (foundNucleic || foundSmiles) {
-						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-								" has multiple sequences with conflicting encodings.");
+//						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//								" has multiple sequences with conflicting encodings.");
+						errors.add(new SBOLValidationException("sbol-10515", componentDefinition).getExceptionMessage());
 					} 					
 					if (foundProtein) {
 						if (proteinLength != sequence.getElements().length()) {
-							errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-									" has multiple sequences with IUPAC Protein encodings of different lengths.");
+//							errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//									" has multiple sequences with IUPAC Protein encodings of different lengths.");
+							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getExceptionMessage());
 						}
 					} else {
 						foundProtein = true;
@@ -412,13 +461,15 @@ public class SBOLValidate {
 					}
 				} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
 					if (foundNucleic || foundProtein) {
-						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-								" has multiple sequences with conflicting encodings.");
+//						errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//								" has multiple sequences with conflicting encodings.");
+						errors.add(new SBOLValidationException("sbol-10515", componentDefinition).getExceptionMessage());
 					} 	
 					if (foundSmiles) {
 						if (smilesLength != sequence.getElements().length()) {
-							errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-									" has multiple sequences with SMILES encodings of different lengths.");
+//							errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//									" has multiple sequences with SMILES encodings of different lengths.");
+							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getExceptionMessage());
 						}
 					} else {
 						foundSmiles = true;
@@ -427,29 +478,38 @@ public class SBOLValidate {
 				}
 			}
 			if (componentDefinition.getTypes().contains(ComponentDefinition.DNA) && !foundNucleic) {
-				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-						" is DNA type but no IUPAC DNA encoded sequence found.");
+//				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//						" is DNA type but no IUPAC DNA encoded sequence found.");
+				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getExceptionMessage());
 			} else if (componentDefinition.getTypes().contains(ComponentDefinition.RNA) && !foundNucleic) {
-				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-						" is RNA type but no IUPAC RNA encoded sequence found.");				
+//				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//						" is RNA type but no IUPAC RNA encoded sequence found.");
+				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getExceptionMessage());
 			} else if (componentDefinition.getTypes().contains(ComponentDefinition.PROTEIN) && !foundProtein) {
-				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-						" is protein type but no IUPAC Protein encoded sequence found.");				
+//				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//						" is protein type but no IUPAC Protein encoded sequence found.");
+				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getExceptionMessage());
 			} else if (componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && !foundSmiles) {
-				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-						" is small molecule type but no SMILES encoded sequence found.");				
+//				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//						" is small molecule type but no SMILES encoded sequence found.");				
+				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getExceptionMessage());
+				// TODO: (Validation) print precise encoding type from Table 1.
 			}
 			if ((!componentDefinition.getTypes().contains(ComponentDefinition.DNA) &&
 					!componentDefinition.getTypes().contains(ComponentDefinition.RNA))
 					&& foundNucleic) {
-				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-						" has IUPAC DNA/RNA encoded sequence but is not DNA/RNA type.");
+//				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//						" has IUPAC DNA/RNA encoded sequence but is not DNA/RNA type.");
+				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
 			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.PROTEIN) && foundProtein) {
-				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-						" has IUPAC Protein encoded sequence but is not protein type.");			
+//				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//						" has IUPAC Protein encoded sequence but is not protein type.");
+				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
 			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && foundSmiles) {
-				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
-						" has SMILES encoded sequence but is not small molecule type.");			
+//				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + 
+//						" has SMILES encoded sequence but is not small molecule type.");
+				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
+				// TODO: (Validation) print the problematic sequence.
 			}
 		}
 	}
@@ -469,21 +529,25 @@ public class SBOLValidate {
 									||
 								((((Range)location2).getStart() >= ((Range)location1).getStart()) &&
 									(((Range)location2).getStart() <= ((Range)location1).getEnd()))) {
-								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+								//errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
 							}
 						} else if (location1 instanceof Range && location2 instanceof Cut) {
 							if ((((Range)location1).getEnd() > ((Cut)location2).getAt()) &&
 									(((Cut)location2).getAt() >= ((Range)location1).getStart())) {
-								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+								//errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
 							}
 						} else if (location2 instanceof Range && location1 instanceof Cut) {
 							if ((((Range)location2).getEnd() > ((Cut)location1).getAt()) &&
 									(((Cut)location1).getAt() >= ((Range)location2).getStart())) {
-								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+								//errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
 							}
 						} else if (location2 instanceof Cut && location1 instanceof Cut) {
 							if (((Cut)location2).getAt() == ((Cut)location1).getAt()) {
-								errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+								//errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
+								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
 							}
 						} 
 					}
@@ -515,8 +579,10 @@ public class SBOLValidate {
 	static void validateSequenceEncodings(SBOLDocument sbolDocument) {
 		for (Sequence sequence : sbolDocument.getSequences()) {
 			if (!checkSequenceEncoding(sequence)) {
-				errors.add("Sequence '" + sequence.getIdentity() + "' that uses encoding " + sequence.getEncoding() + 
-						" does not have a valid sequence.");
+//				errors.add("Sequence '" + sequence.getIdentity() + "' that uses encoding " + sequence.getEncoding() + 
+//						" does not have a valid sequence.");
+				errors.add(new SBOLValidationException("sbol-10406", sequence).getExceptionMessage());
+				// TODO: (Validation) print sequence.getEncoding()
 			}
 		}
 	}
@@ -527,7 +593,8 @@ public class SBOLValidate {
 			if (elements.get(topLevel.getIdentity())!=null) {
 				Identified identified = elements.get(topLevel.getIdentity());
 				if (!topLevel.equals(identified)) {
-					errors.add("Multiple elements with identity " + topLevel.getIdentity());
+					//errors.add("Multiple elements with identity " + topLevel.getIdentity());
+					errors.add(new SBOLValidationException("sbol-10202", topLevel).getExceptionMessage());
 				}
  			}
 			elements.put(topLevel.getIdentity(),topLevel);
@@ -536,7 +603,8 @@ public class SBOLValidate {
 					if (elements.get(c.getIdentity())!=null) {
 						Identified identified = elements.get(c.getIdentity());
 						if (!c.equals(identified)) {
-							errors.add("Multiple elements with identity " + c.getIdentity());
+							//errors.add("Multiple elements with identity " + c.getIdentity());
+							errors.add(new SBOLValidationException("sbol-10202", c).getExceptionMessage());
 						}
 		 			}
 					elements.put(c.getIdentity(),c);
@@ -544,7 +612,8 @@ public class SBOLValidate {
 						if (elements.get(m.getIdentity())!=null) {
 							Identified identified = elements.get(m.getIdentity());
 							if (!m.equals(identified)) {
-								errors.add("Multiple elements with identity " + m.getIdentity());
+								//errors.add("Multiple elements with identity " + m.getIdentity());
+								errors.add(new SBOLValidationException("sbol-10202", m).getExceptionMessage());
 							}
 			 			}
 						elements.put(m.getIdentity(),m);
@@ -554,7 +623,8 @@ public class SBOLValidate {
 					if (elements.get(sa.getIdentity())!=null) {
 						Identified identified = elements.get(sa.getIdentity());
 						if (!sa.equals(identified)) {
-							errors.add("Multiple elements with identity " + sa.getIdentity());
+							//errors.add("Multiple elements with identity " + sa.getIdentity());
+							errors.add(new SBOLValidationException("sbol-10202", sa).getExceptionMessage());
 						}
 		 			}					
 					elements.put(sa.getIdentity(),sa);
@@ -562,7 +632,8 @@ public class SBOLValidate {
 						if (elements.get(l.getIdentity())!=null) {
 							Identified identified = elements.get(l.getIdentity());
 							if (!l.equals(identified)) {
-								errors.add("Multiple elements with identity " + l.getIdentity());
+								//errors.add("Multiple elements with identity " + l.getIdentity());
+								errors.add(new SBOLValidationException("sbol-10202", l).getExceptionMessage());
 							}
 			 			}
 						elements.put(l.getIdentity(),l);
@@ -572,7 +643,8 @@ public class SBOLValidate {
 					if (elements.get(sc.getIdentity())!=null) {
 						Identified identified = elements.get(sc.getIdentity());
 						if (!sc.equals(identified)) {
-							errors.add("Multiple elements with identity " + sc.getIdentity());
+							//errors.add("Multiple elements with identity " + sc.getIdentity());
+							errors.add(new SBOLValidationException("sbol-10202", sc).getExceptionMessage());
 						}
 		 			}					
 					elements.put(sc.getIdentity(),sc);
@@ -583,7 +655,8 @@ public class SBOLValidate {
 					if (elements.get(c.getIdentity())!=null) {
 						Identified identified = elements.get(c.getIdentity());
 						if (!c.equals(identified)) {
-							errors.add("Multiple elements with identity " + c.getIdentity());
+							//errors.add("Multiple elements with identity " + c.getIdentity());
+							errors.add(new SBOLValidationException("sbol-10202", c).getExceptionMessage());
 						}
 		 			}
 					elements.put(c.getIdentity(),c);
@@ -591,7 +664,8 @@ public class SBOLValidate {
 						if (elements.get(m.getIdentity())!=null) {
 							Identified identified = elements.get(m.getIdentity());
 							if (!m.equals(identified)) {
-								errors.add("Multiple elements with identity " + m.getIdentity());
+								//errors.add("Multiple elements with identity " + m.getIdentity());
+								errors.add(new SBOLValidationException("sbol-10202", m).getExceptionMessage());
 							}
 			 			}
 						elements.put(m.getIdentity(),m);
@@ -601,7 +675,8 @@ public class SBOLValidate {
 					if (elements.get(mod.getIdentity())!=null) {
 						Identified identified = elements.get(mod.getIdentity());
 						if (!mod.equals(identified)) {
-							errors.add("Multiple elements with identity " + mod.getIdentity());
+							//errors.add("Multiple elements with identity " + mod.getIdentity());
+							errors.add(new SBOLValidationException("sbol-10202", mod).getExceptionMessage());
 						}
 		 			}
 					elements.put(mod.getIdentity(),mod);
@@ -609,7 +684,8 @@ public class SBOLValidate {
 						if (elements.get(m.getIdentity())!=null) {
 							Identified identified = elements.get(m.getIdentity());
 							if (!m.equals(identified)) {
-								errors.add("Multiple elements with identity " + m.getIdentity());
+								//errors.add("Multiple elements with identity " + m.getIdentity());
+								errors.add(new SBOLValidationException("sbol-10202", m).getExceptionMessage());
 							}
 			 			}
 						elements.put(m.getIdentity(),m);
@@ -619,7 +695,8 @@ public class SBOLValidate {
 					if (elements.get(i.getIdentity())!=null) {
 						Identified identified = elements.get(i.getIdentity());
 						if (!i.equals(identified)) {
-							errors.add("Multiple elements with identity " + i.getIdentity());
+							//errors.add("Multiple elements with identity " + i.getIdentity());
+							errors.add(new SBOLValidationException("sbol-10202", i).getExceptionMessage());
 						}
 		 			}					
 					elements.put(i.getIdentity(),i);
@@ -627,7 +704,8 @@ public class SBOLValidate {
 						if (elements.get(p.getIdentity())!=null) {
 							Identified identified = elements.get(p.getIdentity());
 							if (!p.equals(identified)) {
-								errors.add("Multiple elements with identity " + p.getIdentity());
+								//errors.add("Multiple elements with identity " + p.getIdentity());
+								errors.add(new SBOLValidationException("sbol-10202", p).getExceptionMessage());
 							}
 			 			}
 						elements.put(p.getIdentity(),p);

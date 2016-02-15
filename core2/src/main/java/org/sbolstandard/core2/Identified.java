@@ -253,8 +253,9 @@ public abstract class Identified {
 				// TODO: (Validation) print URI for this object?
 			}
 			if (SBOLValidate.checkWasDerivedFromCycle(sbolDocument, this, wasDerivedFrom, new HashSet<URI>())) {
-				//throw new SBOLValidationException("Cycle found in '" + getIdentity() + "' was derived from link.");
-				throw new SBOLValidationException("sbol-10210", this);
+				throw new SBOLValidationException("Cycle found in '" + getIdentity() + "' was derived from link.");
+				// throw new SBOLValidationException("sbol-10210", this);
+				// TODO: (Validation) which rule? Could be sbol-10209 or sbol-10210. 
 			}
 		}
 		this.wasDerivedFrom = wasDerivedFrom;

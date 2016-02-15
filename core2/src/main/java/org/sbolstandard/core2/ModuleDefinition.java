@@ -311,7 +311,7 @@ public class ModuleDefinition extends TopLevel {
 			if (module.getDefinition() == null) {
 //				throw new SBOLValidationException("ModuleDefinition '" + module.getDefinitionURI().toString()
 //						+ "' does not exist.");
-				throw new SBOLValidationException("sbol-11604", module);
+				throw new SBOLValidationException("sbol-11703", module);
 			}
 		}
 		Set<URI> visited = new HashSet<>();
