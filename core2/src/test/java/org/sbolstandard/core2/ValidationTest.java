@@ -3,8 +3,6 @@
  */
 package org.sbolstandard.core2;
 
-import static org.junit.Assert.fail;
-
 import java.io.InputStream;
 
 import javax.xml.stream.FactoryConfigurationError;
@@ -14,9 +12,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 
@@ -26,32 +22,20 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
  */
 public class ValidationTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
+	public static void tearDownAfterClass() {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 	}
 
 //	@Test
@@ -79,7 +63,7 @@ public class ValidationTest {
 //	}
 	
 	@Test
-	public void test10101() throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException {
+	public void test10101() throws CoreIoException, XMLStreamException, FactoryConfigurationError {
 		// TODO: generalize this test to perform on all files in directory in a loop
 		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
 		if(file == null)
@@ -95,6 +79,9 @@ public class ValidationTest {
 				// TODO: check if error number matches file name
 				// SBOLReader.getErrors();
 			} else if (SBOLValidate.getNumErrors() > 0) {
+				for (String error: SBOLValidate.getErrors()) {
+					System.out.println(error);
+				}
 				// TODO: check if error number matches file name
 			} else {
 				// TODO: fail

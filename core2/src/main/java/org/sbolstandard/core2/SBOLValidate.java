@@ -750,8 +750,9 @@ public class SBOLValidate {
 		System.err.println("Usage:");
 		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -p <URIprefix> -v <version>]");
 		System.err.println();
-		System.err.println("-g  convert GenBank file");
-		System.err.println("-c <componentDefinitionURI> specifies top-level ComponentDefinition");
+		System.err.println("-g  convert GenBank file to SBOL 2.0");
+		System.err.println("-r  export root ComponentDefinition as a GenBank file");
+		System.err.println("-c  <componentDefinitionURI> specifies top-level ComponentDefinition");
 		System.err.println("-t  uses types in URIs");
 		System.err.println("-i  incomplete SBOL document");
 		System.err.println("-n  non-compliant SBOL document");
@@ -778,6 +779,8 @@ public class SBOLValidate {
 	 * "-n" indicates a non-compliant SBOL document,
 	 * <p>
 	 * "-g" indicates conversion of GenBank file,
+	 * <p>
+	 * "-r" indicates conversion of root component definition to a GenBank file,
 	 * <p>
 	 * "-c" specifies a selected top-level component definition
 	 * <p>
@@ -823,6 +826,8 @@ public class SBOLValidate {
 				keepGoing = false;
 			} else if (args[i].equals("-d")) {
 				showDetail = true;
+			} else if (args[i].equals("-r")) {
+				genBankOut = true;
 			} else if (args[i].equals("-c")) {
 				genBankOut = true;
 				if (i+1 >= args.length) {
@@ -884,19 +889,33 @@ public class SBOLValidate {
 			} 
 	        validateSBOL(doc, complete, compliant, bestPractice);
 	        if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
-	        	if (outputFile.equals("")) {
-	        		if (genBankOut) {
-	        			ComponentDefinition componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
+		        if (genBankOut) {
+		        	ComponentDefinition componentDefinition = null;
+		        	if (componentDefinitionStr.equals("")) {
+		        		Set<ComponentDefinition> rootDefinitions = doc.getRootComponentDefinitions();
+		        		if (rootDefinitions.size()==0) {
+		        			System.err.println("GenBank output failed: no root ComponentDefinition found.");
+		        			return;
+		        		} else if (rootDefinitions.size()==1){
+		        			componentDefinition = doc.getComponentDefinition(rootDefinitions.iterator().next().getIdentity());
+		        		} else {
+		        			System.err.println("GenBank output failed: multiple root ComponentDefinitions, please specify one.");
+		        			return;
+		        		}
+		        	} else {
+		        		componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
+		        	}
+		        	if (outputFile.equals("")) {
 	        			GenBank.write(componentDefinition, (System.out));
 	        		} else {
-	        			SBOLWriter.write(doc, (System.out));
-	        		}
-	        	} else {
-	        		System.out.println("Validation successful, no errors.");
-	        		if (genBankOut) {
-	        			ComponentDefinition componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
+		        		System.out.println("Validation successful, no errors.");
 	        			GenBank.write(componentDefinition, outputFile);
+		        	}
+		        } else {
+		        	if (outputFile.equals("")) {
+	        			SBOLWriter.write(doc, (System.out));
 	        		} else {
+	        			System.out.println("Validation successful, no errors.");
 	        			SBOLWriter.write(doc, outputFile);
 	        		}
 	        	}

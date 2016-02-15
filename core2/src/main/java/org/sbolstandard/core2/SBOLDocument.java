@@ -1247,9 +1247,21 @@ public class SBOLDocument {
 	 * @return the set of {@code ComponentDefinition} instances owned by this SBOLDocument object.
 	 */
 	public Set<ComponentDefinition> getComponentDefinitions() {
-		//		return (List<Component>) components.values();
 		Set<ComponentDefinition> components = new HashSet<>();
 		components.addAll(this.componentDefinitions.values());
+		return components;
+	}
+	
+	public Set<ComponentDefinition> getRootComponentDefinitions() {
+		Set<ComponentDefinition> components = getComponentDefinitions();
+		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
+			for (Component component : componentDefinition.getComponents()) {
+				ComponentDefinition childDefinition = component.getDefinition();
+				if (childDefinition != null && components.contains(childDefinition)) {
+					components.remove(childDefinition);
+				}
+			}
+		}
 		return components;
 	}
 
