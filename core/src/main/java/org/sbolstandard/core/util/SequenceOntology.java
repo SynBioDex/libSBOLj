@@ -20,7 +20,7 @@ import java.net.URI;
 /**
  * The Sequence Ontology is used in SBOL to specify the types of DnaComponents. This class provides constants for some
  * of these types which are commonly used in synthetic biology designs. Additional Sequence Ontology types can be found
- * at the website (<a href="http://www.sequenceontology.org/">http://www.sequenceontology.org/<a>). URIs for additional
+ * at the website (<a href="http://www.sequenceontology.org/">http://www.sequenceontology.org/</a>). URIs for additional
  * types can be created with the {@link #type(String)} function by providing only the local name of the type.
  * 
  * @author Evren Sirin
@@ -32,7 +32,7 @@ public class SequenceOntology {
 
 	/**
 	 * Creates a new URI from the Sequence Ontology namespace with the given local name. For example, the function call
-	 * <value>term("SO_0000001")</value> will return the URI <value>http://purl.obolibrary.org/obo/SO_0000001</value>
+	 * term("SO_0000001") will return the URI http://purl.obolibrary.org/obo/SO_0000001
 	 */
 	public static final URI type(String localName) {
 		return NAMESPACE.resolve(localName);
@@ -86,8 +86,8 @@ public class SequenceOntology {
 	public static final URI ORIGIN_OF_REPLICATION = type("SO_0000296");
 
 	/**
-	 * Non-covalent primer binding site for initiation of replication, transcription, or reverse transcription (<a
-	 * href="http://purl.obolibrary.org/obo/SO_0005850">SO_0005850<a/>)
+	 * Non-covalent primer binding site for initiation of replication, transcription, or reverse transcription (
+	 * <a href="http://purl.obolibrary.org/obo/SO_0005850">SO_0005850<a/>)
 	 */
 	public static final URI PRIMER_BINDING_SITE = type("SO_0005850");
 

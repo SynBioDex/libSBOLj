@@ -63,7 +63,7 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * Text which is written for users to read and interpret. 
      * It should describe what the component is used for and/or what it does.
      * Suggestion: it should provide information that cannot yet be represented in
-     * the rest of the DNA components computable fields. Do not include <> tags
+     * the rest of the DNA components computable fields. Do not include tags
      * such as HTML or XML inside as that may break the RDF. Don't include {}
      * tags as that may break the Json.
      * @param description human readable text describing the component
