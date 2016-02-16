@@ -87,7 +87,7 @@ public class SequenceOntology {
 
 	/**
 	 * Non-covalent primer binding site for initiation of replication, transcription, or reverse transcription (
-	 * <a href="http://purl.obolibrary.org/obo/SO_0005850">SO_0005850<a/>)
+	 * <a href="http://purl.obolibrary.org/obo/SO_0005850">SO_0005850</a>)
 	 */
 	public static final URI PRIMER_BINDING_SITE = type("SO_0005850");
 
