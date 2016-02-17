@@ -70,14 +70,19 @@ public class ValidationTest {
 		// TODO: generalize this test to perform on all files in directory in a loop
 		File file_base = new File("test/data/Validation/");
 		InputStream file;
-		SBOLDocument doc;
+		SBOLDocument doc = null;
 		for (File f : file_base.listFiles()){
 			//InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
 			file = ValidationTest.class.getResourceAsStream(f.getAbsolutePath());
 			if(file == null)
 				file = ValidationTest.class.getResourceAsStream(f.getAbsolutePath());//"/" + "test/data/Validation/" + "sbol-10101.rdf");
 			SBOLReader.setKeepGoing(true);
-			doc = SBOLReader.read(file);
+			try {
+				doc = SBOLReader.read(file);
+			} catch (SBOLValidationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			SBOLValidate.validateSBOL(doc, true, true, true);
 
 		
@@ -104,8 +109,9 @@ public class ValidationTest {
 			}
 		} else {
 			// TODO: fail
-				//fail();
+			//fail();
 		}
+	}
 	}
 	
 	
