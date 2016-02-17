@@ -125,30 +125,30 @@ public class SBOLValidationException extends Exception {
 						getResourceAsStream("/validation/rules.txt"));
 				try {					
 					parse(new BufferedReader(f));
-					//printAllRules();
-					String key = message.trim();
-					SBOLValidationRule rule = validationRules.get(key);
-					if (rule == null) {
-						throw new RuntimeException("Rule ID does not exist.");
-					}
-					sb.append(": " + rule.getDescription() + "\n");
-					if (!objects.isEmpty()) {
-						sb.append(": ");
-						boolean first = true;
-						for (Identified obj : objects) {
-							if (first) {
-								first = false;
-							}
-							else {
-								sb.append(", ");
-							}
-							if (obj.getIdentity() != null) {
-								sb.append(obj.getIdentity());
-							}
-						}
-					}
 				} catch (IOException e) {
-					//e.printStackTrace();
+					e.printStackTrace();
+				}
+			}
+			//printAllRules();
+			String key = message.trim();
+			SBOLValidationRule rule = validationRules.get(key);
+			if (rule == null) {
+				throw new RuntimeException("Rule ID does not exist.");
+			}
+			sb.append(": " + rule.getDescription() + "\n");
+			if (!objects.isEmpty()) {
+				sb.append(": ");
+				boolean first = true;
+				for (Identified obj : objects) {
+					if (first) {
+						first = false;
+					}
+					else {
+						sb.append(", ");
+					}
+					if (obj.getIdentity() != null) {
+						sb.append(obj.getIdentity());
+					}
 				}
 			}
 		}
