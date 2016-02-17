@@ -162,7 +162,7 @@ public class SystemsBiologyOntology {
 		if (!oboURIstr.startsWith(URI_PREFIX)) {
 			try {
 				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
-				// TODO: (Validation) missing rule: rule for URI prefix.
+				// TODO: (Validation) missing rule: rules for ontologies.
 			}
 			catch (SBOLValidationException e) {
 				return null;

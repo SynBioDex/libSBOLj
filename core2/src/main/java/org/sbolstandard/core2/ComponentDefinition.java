@@ -386,8 +386,8 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getSequence(sequenceURI)==null) {
 				//throw new SBOLValidationException("Sequence '" + sequenceURI + "' does not exist.");
-				throw new SBOLValidationException("sbol-10513", this);
-				// TODO: (Validation) print sequenceURI
+				throw new SBOLValidationException("sbol-10513");
+				// TODO: (Validation) print URI for sequenceURI
 			}
 		}
 		return sequences.add(sequenceURI);

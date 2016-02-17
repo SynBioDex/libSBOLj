@@ -146,7 +146,7 @@ public class SequenceOntology {
 		if (!stanzaURIstr.startsWith(URI_PREFIX)) {
 			try {
 				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
-				// TODO: (Validation) missing rule: rule for URI prefix.
+				// TODO: (Validation) missing rule: rules for ontologies.
 			}
 			catch (SBOLValidationException e) {
 				return null;
@@ -194,7 +194,7 @@ public class SequenceOntology {
 		if (!oboURIstr.startsWith(URI_PREFIX)) {
 			try {
 				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
-				// TODO: (Validation) missing rule: rule for URI prefix.
+				// TODO: (Validation) missing rule: rules for ontologies.
 			}
 			catch (SBOLValidationException e) {
 				return null;
