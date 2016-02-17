@@ -754,6 +754,7 @@ public class SBOLValidate {
 		System.err.println("-g  convert GenBank file to SBOL 2.0");
 		System.err.println("-r  export root ComponentDefinition as a GenBank file");
 		System.err.println("-c  <componentDefinitionURI> specifies top-level ComponentDefinition");
+		System.err.println("-e  <compareFile> specifies file to check if equal to");
 		System.err.println("-t  uses types in URIs");
 		System.err.println("-i  incomplete SBOL document");
 		System.err.println("-n  non-compliant SBOL document");
@@ -761,6 +762,93 @@ public class SBOLValidate {
 		System.err.println("-f  fail on first error");
 		System.err.println("-d  provide detailed error trace");
 		System.exit(1);
+	}
+	
+	public static void compareDocuments(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
+		for (GenericTopLevel genericTopLevel1 : doc1.getGenericTopLevels()) {
+			GenericTopLevel genericTopLevel2 = doc2.getGenericTopLevel(genericTopLevel1.getIdentity());
+			if (genericTopLevel2==null) {
+				System.err.println("collection " + genericTopLevel1.getIdentity() + " not found in " + file2);
+			} else if (!genericTopLevel1.equals(genericTopLevel2)) {
+				System.err.println("collection " + genericTopLevel1.getIdentity() + " differ.");
+			}
+		}
+		for (GenericTopLevel genericTopLevel2 : doc2.getGenericTopLevels()) {
+			GenericTopLevel genericTopLevel1 = doc1.getGenericTopLevel(genericTopLevel2.getIdentity());
+			if (genericTopLevel1==null) {
+				System.err.println("collection " + genericTopLevel2.getIdentity() + " not found in " + file1);
+			} 
+		}
+		for (Collection collection1 : doc1.getCollections()) {
+			Collection collection2 = doc2.getCollection(collection1.getIdentity());
+			if (collection2==null) {
+				System.err.println("collection " + collection1.getIdentity() + " not found in " + file2);
+			} else if (!collection1.equals(collection2)) {
+				System.err.println("collection " + collection1.getIdentity() + " differ.");
+			}
+		}
+		for (Collection collection2 : doc2.getCollections()) {
+			Collection collection1 = doc1.getCollection(collection2.getIdentity());
+			if (collection1==null) {
+				System.err.println("collection " + collection2.getIdentity() + " not found in " + file1);
+			} 
+		}
+		for (Sequence sequence1 : doc1.getSequences()) {
+			Sequence sequence2 = doc2.getSequence(sequence1.getIdentity());
+			if (sequence2==null) {
+				System.err.println("Sequence " + sequence1.getIdentity() + " not found in " + file2);
+			} else if (!sequence1.equals(sequence2)) {
+				System.err.println("Sequence " + sequence1.getIdentity() + " differ.");
+			}
+		}
+		for (Sequence sequence2 : doc2.getSequences()) {
+			Sequence sequence1 = doc1.getSequence(sequence2.getIdentity());
+			if (sequence1==null) {
+				System.err.println("Sequence " + sequence2.getIdentity() + " not found in " + file1);
+			} 
+		}
+		for (ComponentDefinition componentDefinition1 : doc1.getComponentDefinitions()) {
+			ComponentDefinition componentDefinition2 = doc2.getComponentDefinition(componentDefinition1.getIdentity());
+			if (componentDefinition2==null) {
+				System.err.println("ComponentDefinition " + componentDefinition1.getIdentity() + " not found in " + file2);
+			} else if (!componentDefinition1.equals(componentDefinition2)) {
+				System.err.println("ComponentDefinition " + componentDefinition1.getIdentity() + " differ.");
+			}
+		}
+		for (ComponentDefinition componentDefinition2 : doc2.getComponentDefinitions()) {
+			ComponentDefinition componentDefinition1 = doc1.getComponentDefinition(componentDefinition2.getIdentity());
+			if (componentDefinition1==null) {
+				System.err.println("ComponentDefinition " + componentDefinition2.getIdentity() + " not found in " + file1);
+			} 
+		}
+		for (ModuleDefinition moduleDefinition1 : doc1.getModuleDefinitions()) {
+			ModuleDefinition moduleDefinition2 = doc2.getModuleDefinition(moduleDefinition1.getIdentity());
+			if (moduleDefinition2==null) {
+				System.err.println("ModuleDefinition " + moduleDefinition1.getIdentity() + " not found in " + file2);
+			} else if (!moduleDefinition1.equals(moduleDefinition2)) {
+				System.err.println("ModuleDefinition " + moduleDefinition1.getIdentity() + " differ.");
+			}
+		}
+		for (ModuleDefinition moduleDefinition2 : doc2.getModuleDefinitions()) {
+			ModuleDefinition moduleDefinition1 = doc1.getModuleDefinition(moduleDefinition2.getIdentity());
+			if (moduleDefinition1==null) {
+				System.err.println("ModuleDefinition " + moduleDefinition2.getIdentity() + " not found in " + file1);
+			} 
+		}
+		for (Model model1 : doc1.getModels()) {
+			Model model2 = doc2.getModel(model1.getIdentity());
+			if (model2==null) {
+				System.err.println("Model " + model1.getIdentity() + " not found in " + file2);
+			} else if (!model1.equals(model2)) {
+				System.err.println("Model " + model1.getIdentity() + " differ.");
+			}
+		}
+		for (Model model2 : doc2.getModels()) {
+			Model model1 = doc1.getModel(model2.getIdentity());
+			if (model1==null) {
+				System.err.println("Model " + model2.getIdentity() + " not found in " + file1);
+			} 
+		}
 	}
 	
 	/**
@@ -785,6 +873,8 @@ public class SBOLValidate {
 	 * <p>
 	 * "-c" specifies a selected top-level component definition
 	 * <p>
+	 * "-e" specifies a file to compare if equal to
+	 * <p>
 	 * "-o" specifies an output filename,
 	 * <p>
 	 * "-p" specifies the default URI prefix of the output file,
@@ -800,6 +890,7 @@ public class SBOLValidate {
 	public static void main(String[] args) {
 		String fileName = "";
 		String outputFile = "";
+		String compareFile = "";
 		String componentDefinitionStr = "";
 		String URIPrefix = "";
 		String version = "";
@@ -841,6 +932,12 @@ public class SBOLValidate {
 					usage();
 				}
 				outputFile = args[i+1];
+				i++;
+			} else if (args[i].equals("-e")) {
+				if (i+1 >= args.length) {
+					usage();
+				}
+				compareFile = args[i+1];
 				i++;
 			} else if (args[i].equals("-p")) {
 				if (i+1 >= args.length) {
@@ -888,6 +985,10 @@ public class SBOLValidate {
 				doc = SBOLReader.read(fileName);
 		        doc.setTypesInURIs(typesInURI);
 			} 
+			if (!compareFile.equals("")) {
+				SBOLDocument doc2 = SBOLReader.read(compareFile);
+				compareDocuments(fileName, doc, compareFile, doc2);
+			}
 	        validateSBOL(doc, complete, compliant, bestPractice);
 	        if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
 		        if (genBankOut) {
