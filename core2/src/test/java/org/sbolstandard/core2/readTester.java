@@ -66,6 +66,10 @@ public class readTester {
 			//doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
 			//ComponentDefinition cd = doc.getComponentDefinition("pTAK_Toggle_10","");
 			//GenBank.write(cd, (System.out));
+			SBOLFactory.createSequence("http://www.abc.com", "foo", "1.0", "AGCT", Sequence.IUPAC_DNA);
+			SBOLFactory.setSBOLDocument(new SBOLDocument());
+			SBOLFactory.createSequence("http://www.abc.com", "foo2", "1.0", "AGCT", Sequence.IUPAC_DNA);
+			SBOLFactory.write((System.out));
 			
 			GenBank.setURIPrefix("http://www.async.ece.utah.edu");
 			SBOLDocument doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence1.gb"/*pTACK_Toggle_Switch_9*/);

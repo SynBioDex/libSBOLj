@@ -1,41 +1,31 @@
 package org.sbolstandard.core2;
 
-import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static org.sbolstandard.core2.URIcompliance.extractPersistentId;
-import static org.sbolstandard.core2.URIcompliance.extractURIprefix;
-import static org.sbolstandard.core2.URIcompliance.extractVersion;
-import static org.sbolstandard.core2.URIcompliance.isURIprefixCompliant;
-import static org.sbolstandard.core2.URIcompliance.keyExistsInAnyMap;
-import static org.sbolstandard.core2.URIcompliance.validateIdVersion;
-import static org.sbolstandard.core2.Version.isFirstVersionNewer;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
 
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 public final class SBOLFactory {
 	
 	private static SBOLDocument document = new SBOLDocument();
+
+	/**
+	 * This sets the internal SBOLDocument used by the factory.
+	 * @param sbolDocument
+	 */
+	public static void setSBOLDocument(SBOLDocument sbolDocument) {
+		document = sbolDocument;
+	}
 	
 	/**
 	 * Creates a ModuleDefinition instance with this SBOLDocument object's {@code defaultURIprefix},
