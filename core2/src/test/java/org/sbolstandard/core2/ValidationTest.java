@@ -5,6 +5,7 @@ package org.sbolstandard.core2;
 
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.InputStream;
 
 import javax.xml.stream.FactoryConfigurationError;
@@ -81,17 +82,29 @@ public class ValidationTest {
 	@Test
 	public void test10101() throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException {
 		// TODO: generalize this test to perform on all files in directory in a loop
-		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
-		if(file == null)
-			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
-		SBOLReader.setKeepGoing(true);
-		SBOLDocument doc = SBOLReader.read(file);
-		SBOLValidate.validateSBOL(doc, true, true, true);
+		File file_base = new File("test/data/Validation/");
+		InputStream file;
+		SBOLDocument doc;
+		for (File f : file_base.listFiles()){
+			//InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
+			file = ValidationTest.class.getResourceAsStream(f.getAbsolutePath());
+			if(file == null)
+				file = ValidationTest.class.getResourceAsStream(f.getAbsolutePath());//"/" + "test/data/Validation/" + "sbol-10101.rdf");
+			SBOLReader.setKeepGoing(true);
+			doc = SBOLReader.read(file);
+			SBOLValidate.validateSBOL(doc, true, true, true);
+
+		}
 		if (SBOLReader.getNumErrors() > 0) {
 			// TODO: check if error number matches file name
-			// SBOLReader.getErrors();
+			for(String i : SBOLReader.getErrors())
+			{
+				i.split(":");
+			}
+			
 		} else if (SBOLValidate.getNumErrors() > 0) {
 			// TODO: check if error number matches file name
+			
 		} else {
 			// TODO: fail
 		}
