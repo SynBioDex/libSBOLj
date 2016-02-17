@@ -65,7 +65,7 @@ public class ValidationTest {
 //		//fail("Not yet implemented");
 //	}
 	
-	@Test
+	/*@Test
 	public void test10101() throws CoreIoException, XMLStreamException, FactoryConfigurationError {
 		// TODO: generalize this test to perform on all files in directory in a loop
 		File file_base = new File("test/data/Validation/");
@@ -112,7 +112,7 @@ public class ValidationTest {
 			//fail();
 		}
 	}
-	}
+} */
 	
 	
 //	@Test (expected=SBOLValidationException.class)	
