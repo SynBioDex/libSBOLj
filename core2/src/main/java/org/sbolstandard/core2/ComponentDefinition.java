@@ -213,7 +213,8 @@ public class ComponentDefinition extends TopLevel {
 	public void setTypes(Set<URI> types) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types==null || types.size()==0) {
-			throw new SBOLValidationException("Component definition " + this.getIdentity() + " must have at least one type.");
+			//throw new SBOLValidationException("Component definition " + this.getIdentity() + " must have at least one type.");
+			throw new SBOLValidationException("sbol-10502", this);
 		}
 		clearTypes();
 		for (URI type : types) {
@@ -386,7 +387,7 @@ public class ComponentDefinition extends TopLevel {
 			if (sbolDocument.getSequence(sequenceURI)==null) {
 				//throw new SBOLValidationException("Sequence '" + sequenceURI + "' does not exist.");
 				throw new SBOLValidationException("sbol-10513", this);
-				// TODO: (Validation) Return sequenceURI here?
+				// TODO: (Validation) print sequenceURI
 			}
 		}
 		return sequences.add(sequenceURI);
@@ -1142,7 +1143,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(componentDefinitionURI)==null) {
 				throw new SBOLValidationException("Component definition '" + componentDefinitionURI + "' does not exist.");
-				// TODO: (Validation) which rule?
+				// TODO: (Validation) missing rule: Top-level object not found in a complete SBOL document.
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -1165,14 +1166,14 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (component.getDefinition()==null) {
 				throw new SBOLValidationException("ComponentDefinition '" + component.getDefinitionURI() + "' does not exist.");
-				// TODO: (Validation) which rule?				
+				// TODO: (Validation) missing rule: Top-level object not found in a complete SBOL document				
 			}
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
 		if (SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited)) {
-			//throw new SBOLValidationException("Cycle created by Component '" + component.getIdentity() + "'");
-			throw new SBOLValidationException("sbol-10605", component);
+			throw new SBOLValidationException("Cycle created by Component '" + component.getIdentity() + "'");
+			// TODO: (Validation) which rule? Could be sbol-10603 or sbol-10605.
 		}
 		addChildSafely(component, components, "component",
 				sequenceAnnotations, sequenceConstraints);
@@ -1207,7 +1208,7 @@ public class ComponentDefinition extends TopLevel {
 			if (sa.getComponentURI().equals(component.getIdentity())) {
 				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
 						" since it is in use.");
-				// TODO: (Validation) which rule?
+				// TODO: (Validation) uncertain rule: remove object in use. 
 			}
 		}
 		for (SequenceConstraint sc : sequenceConstraints.values()) {
@@ -1215,13 +1216,13 @@ public class ComponentDefinition extends TopLevel {
 //				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
 //						" since it is in use.");
 				throw new SBOLValidationException("sbol-11402", component);
-				// TODO: (Validation) right rule?
+				// TODO: (Validation) uncertain rule: remove object in use.
 			}
 			if (sc.getObjectURI().equals(component.getIdentity())) {
 //				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
 //						" since it is in use.");
-				throw new SBOLValidationException("sbol-11404");
-				// TODO: (Validation) right rule?
+				throw new SBOLValidationException("sbol-11404", component);
+				// TODO: (Validation) uncertain rule: remove object in use.
 			}
 		}
 		for (Component c : components.values()) {
@@ -1230,7 +1231,7 @@ public class ComponentDefinition extends TopLevel {
 //					throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
 //							" since it is in use.");
 					throw new SBOLValidationException("sbol-10802", component);
-					// TODO: (Validation) right rule?
+					// TODO: (Validation) uncertain rule: remove object in use. 
 				}
 			}
 		}
@@ -1242,7 +1243,7 @@ public class ComponentDefinition extends TopLevel {
 //							throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
 //									" since it is in use.");
 							throw new SBOLValidationException("sbol-10805", component);
-							// TODO: (Validation) right rule?
+							// TODO: (Validation) uncertain rule: remove object in use.
 						}
 					}
 				}

@@ -211,7 +211,7 @@ public class SBOLReader
 		if (!foundSBOL1 && !foundSBOL2) {
 			//throw new SBOLValidationException("No SBOL namespace found.");
 			throw new SBOLValidationException("sbol-10101");
-			// TODO: (Validation) pass SBOLDocument object to SBOLValidationException?		
+			// TODO: (Validation) missing rule: rule allowing also SBOL 1.1 namespace.
 		}
 		else if (foundSBOL1 && !foundSBOL2) return SBOLVERSION1;
 		else if (foundSBOL2 && !foundSBOL1) {
@@ -231,7 +231,7 @@ public class SBOLReader
 		}
 		else {
 			throw new SBOLValidationException("A SBOL document cannot have SBOL namespaces with different versions.");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: rule requiring at least one of an SBOL namespace, not necessarily SBOL 2.0. 
 		}
 	}
 
@@ -434,7 +434,8 @@ public class SBOLReader
 		compliant = SBOLDoc.isCompliant();
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
-
+		clearErrors();
+		
 		DocumentRoot<QName> document = null;
 		if (fileType.equals(JSON)) {
 			document = readJSON(new StringReader(inputStreamString));
@@ -443,13 +444,22 @@ public class SBOLReader
 		} else {
 			document = readRDF(new StringReader(inputStreamString));
 		}
-		if (getSBOLVersion(document).equals(SBOLVERSION1))
-		{
-			scanner.close();
-			readV1(SBOLDoc,document);
-			return;
+		try {
+			if (getSBOLVersion(document).equals(SBOLVERSION1))
+			{
+				scanner.close();
+				readV1(SBOLDoc,document);
+				return;
+			}
+		} catch (SBOLValidationException e) {
+			if (keepGoing) {
+				errors.add(e.getMessage());
+				return;
+			} else {
+				throw new SBOLValidationException(e);
+			}
 		}
-
+		
 		for (NamespaceBinding n : document.getNamespaceBindings())
 
 		{
@@ -531,17 +541,26 @@ public class SBOLReader
 
 	private static void readTopLevelDocsV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException
 	{
+		clearErrors();
 		for (TopLevelDocument<QName> topLevel : document.getTopLevelDocuments())
 		{
-			if (topLevel.getType().equals(Sbol1Terms.DNAComponent.DNAComponent))
-				parseDnaComponentV1(SBOLDoc, topLevel);
-			else if (topLevel.getType().equals(Sbol1Terms.DNASequence.DNASequence))
-				parseDnaSequenceV1(SBOLDoc, topLevel);
-			else if (topLevel.getType().equals(Sbol1Terms.Collection.Collection))
-				parseCollectionV1(SBOLDoc, topLevel);
-			else
-			{
-				parseGenericTopLevel(SBOLDoc, topLevel);
+			try {
+				if (topLevel.getType().equals(Sbol1Terms.DNAComponent.DNAComponent))
+					parseDnaComponentV1(SBOLDoc, topLevel);
+				else if (topLevel.getType().equals(Sbol1Terms.DNASequence.DNASequence))
+					parseDnaSequenceV1(SBOLDoc, topLevel);
+				else if (topLevel.getType().equals(Sbol1Terms.Collection.Collection))
+					parseCollectionV1(SBOLDoc, topLevel);
+				else
+				{
+					parseGenericTopLevel(SBOLDoc, topLevel);
+				}
+			} catch (SBOLValidationException e) {
+				if (keepGoing) {
+					errors.add(e.getMessage());
+				} else {
+					throw new SBOLValidationException(e);
+				}
 			}
 		}
 	}
@@ -910,7 +929,7 @@ public class SBOLReader
 			if (!c.equals(oldC)) {
 				//throw new SBOLValidationException("Multiple non-identical ComponentDefinitions with identity "+identity);
 				throw new SBOLValidationException("sbol-10202");
-				// TODO (Validation) right rule?
+				// TODO: (Validation) print URI for identity
 			}
 		}
 		return c;
@@ -1004,7 +1023,7 @@ public class SBOLReader
 			if (!sequence.equals(oldS)) {
 				//throw new SBOLValidationException("Multiple non-identical Sequences with identity "+identity);
 				throw new SBOLValidationException("sbol-10202");
-				// TODO (Validation) right rule?
+				// TODO: (Validation) print URI for identity
 			}
 		}
 		return sequence;
@@ -1148,7 +1167,7 @@ public class SBOLReader
 		if (!sequenceAnnotation.getType().equals(Sbol1Terms.SequenceAnnotations.SequenceAnnotation))
 		{
 			throw new SBOLValidationException("QName has to be" + Sbol1Terms.SequenceAnnotations.SequenceAnnotation.toString());
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 1 terms.
 		}
 
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
@@ -1409,7 +1428,7 @@ public class SBOLReader
 
 		if (!sequenceConstraint.getType().equals(Sbol2Terms.SequenceConstraint.SequenceConstraint)) {
 			throw new SBOLValidationException(sequenceConstraint.getType() + " is not a valid sequence constraint.");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types.
 		}
 		for (NamedProperty<QName> namedProperty : sequenceConstraint.getProperties())
 		{
@@ -1494,7 +1513,7 @@ public class SBOLReader
 
 		if (!sequenceAnnotation.getType().equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation)) {
 			throw new SBOLValidationException(sequenceAnnotation.getType() + " is not a valid sequence annotation.");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
@@ -1582,7 +1601,7 @@ public class SBOLReader
 		else
 		{
 			throw new SBOLValidationException(location.getType() + " is not a valid location type.");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 		return l;
 
@@ -1602,7 +1621,7 @@ public class SBOLReader
 		if (!typeGenLoc.getType().equals(Sbol2Terms.GenericLocation.GenericLocation))
 		{
 			throw new SBOLValidationException("QName has to be" + Sbol2Terms.GenericLocation.GenericLocation.toString());
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 
 		for (NamedProperty<QName> namedProperty : typeGenLoc.getProperties())
@@ -1677,7 +1696,7 @@ public class SBOLReader
 		if (!typeCut.getType().equals(Sbol2Terms.Cut.Cut))
 		{
 			throw new SBOLValidationException("QName has to be" + Sbol2Terms.Cut.Cut.toString());
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 
 		for (NamedProperty<QName> namedProperty : typeCut.getProperties())
@@ -1763,7 +1782,7 @@ public class SBOLReader
 		if (!typeRange.getType().equals(Sbol2Terms.Range.Range))
 		{
 			throw new SBOLValidationException("QName has to be" + Sbol2Terms.Range.Range.toString());
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 
 		for (NamedProperty<QName> namedProperty : typeRange.getProperties())
@@ -1850,11 +1869,11 @@ public class SBOLReader
 		if (!component.getType().equals(Sbol2Terms.Component.Component))
 		{
 			throw new SBOLValidationException("QName has to be " + Sbol2Terms.Component.Component.toString());
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 		if (!component.getType().equals(Sbol2Terms.Component.Component)) {
 			throw new SBOLValidationException(component.getType() + " is not a valid component.");
-			// TODO: (Validation) which rule? 
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 		for (NamedProperty<QName> namedProperty : component.getProperties())
 		{
@@ -2004,7 +2023,7 @@ public class SBOLReader
 			if (!t.equals(oldG)) {
 				//throw new SBOLValidationException("Multiple non-identical GenericTopLevel with identity "+topLevel.getIdentity());
 				throw new SBOLValidationException("sbol-10202");
-				// TODO: (Validation) right rule?
+				// TODO: (Validation) print TopLevelDocument<QName> topLevel
 			}
 		}
 		return t;
@@ -2092,7 +2111,7 @@ public class SBOLReader
 			if (!m.equals(oldM)) {
 				// throw new SBOLValidationException("Multiple non-identical ComponentDefinitions with identity "+ topLevel.getIdentity());
 				throw new SBOLValidationException("sbol-10202");
-				// TODO: (Validation) right rule?
+				// TODO: (Validation) print TopLevelDocument<QName> topLevel
 			}
 		}
 		return m;
@@ -2319,7 +2338,7 @@ public class SBOLReader
 			if (!moduleDefinition.equals(oldM)) {
 				//throw new SBOLValidationException("Multiple non-identical ModuleDefinition with identity "+topLevel.getIdentity());
 				throw new SBOLValidationException("sbol-10202");
-				// TODO: (Validation) right rule?
+				// TODO: (Validation) print TopLevelDocument<QName> topLevel
 			}
 		}
 		return moduleDefinition;
@@ -2340,12 +2359,12 @@ public class SBOLReader
 		if (!module.getType().equals(Sbol2Terms.Module.Module))
 		{
 			throw new SBOLValidationException("QName has to be " + Sbol2Terms.Module.Module.toString());
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 
 		if (!module.getType().equals(Sbol2Terms.Module.Module)) {
 			throw new SBOLValidationException(module.getType() + " is not a valid module.");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 		for (NamedProperty<QName> namedProperty : module.getProperties())
 		{
@@ -2440,7 +2459,7 @@ public class SBOLReader
 
 		if (!mapsTo.getType().equals(Sbol2Terms.MapsTo.MapsTo)) {
 			throw new SBOLValidationException(mapsTo.getType() + " is not a valid mapsTo.");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types.
 		}
 		for (NamedProperty<QName> m : mapsTo.getProperties())
 		{
@@ -2524,7 +2543,7 @@ public class SBOLReader
 
 		if (!interaction.getType().equals(Sbol2Terms.Interaction.Interaction)) {
 			throw new SBOLValidationException(interaction.getType() + " is not a valid interaction.");
-			// TODO: (Validtion) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types.
 		}
 		for (NamedProperty<QName> i : interaction.getProperties())
 		{
@@ -2607,12 +2626,12 @@ public class SBOLReader
 		if (!participation.getType().equals(Sbol2Terms.Participation.Participation))
 		{
 			throw new SBOLValidationException("QName has to be " + Sbol2Terms.Participation.Participation.toString());
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 
 		if (!participation.getType().equals(Sbol2Terms.Participation.Participation)) {
 			throw new SBOLValidationException(participation.getType() + " is not a valid participation.");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 		for (NamedProperty<QName> p : participation.getProperties())
 		{
@@ -2694,12 +2713,12 @@ public class SBOLReader
 		if (!functionalComponent.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent))
 		{
 			throw new SBOLValidationException("QName has to be " + Sbol2Terms.FunctionalComponent.FunctionalComponent.toString());
-			// TODO: (Validation) which rule? 
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 
 		if (!functionalComponent.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent)) {
 			throw new SBOLValidationException(functionalComponent.getType() + " is not a valid functional component.");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: QName for SBOL 2 types
 		}
 		for (NamedProperty<QName> f : functionalComponent.getProperties())
 		{
@@ -2868,7 +2887,7 @@ public class SBOLReader
 			if (!sequence.equals(oldS)) {
 				//throw new SBOLValidationException("Multiple non-identical Sequence with identity "+topLevel.getIdentity());
 				throw new SBOLValidationException("sbol-10202");
-				// TODO: (Validation) right rule?
+				// TODO: (Validation) print TopLevelDocument<QName> topLevel
 			}
 		}
 		return sequence;

@@ -100,8 +100,9 @@ public class GenBank {
 			}
 		}
 		if (seq == null) {
-			throw new SBOLValidationException("ComponentDefintion " + componentDefinition.getIdentity() +
-					" does not have an IUPAC sequence.");
+//			throw new SBOLValidationException("ComponentDefintion " + componentDefinition.getIdentity() +
+//					" does not have an IUPAC sequence.");
+			throw new SBOLValidationException("sbol-10406", componentDefinition);
 		}
 		int size = seq.getElements().length();
 		writeHeader(w,componentDefinition,size);
@@ -349,8 +350,9 @@ public class GenBank {
 			}
 		}
 		if (type == null) {
-			throw new SBOLValidationException("ComponentDefintion " + componentDefinition.getIdentity() +
-					" is not DNA or RNA type.");
+//			throw new SBOLValidationException("ComponentDefintion " + componentDefinition.getIdentity() +
+//					" is not DNA or RNA type.");
+			throw new SBOLValidationException("sbol-10505", componentDefinition);
 		}
 		Annotation annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"molecule",gbPrefix));
 		if (annotation!=null) {
@@ -460,7 +462,8 @@ public class GenBank {
 	
 	private static void writeFeature(Writer w,SequenceAnnotation sa,String role) throws IOException, SBOLValidationException {
 		if (sa.getLocations().size()==0) {
-			throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" has no locations.");
+			//throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" has no locations.");
+			throw new SBOLValidationException("sbol-10902", sa);
 		} else if (sa.getLocations().size()==1) {
 			Location loc = sa.getLocations().iterator().next();
 			if (loc instanceof Range) {
@@ -479,6 +482,7 @@ public class GenBank {
 				}
 			} else {
 				throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
+				// TODO: (Validation) missing rule: Location of a SequenceAnnotation object needs to be either a range or cut.				
 			}
 		} else {
 			String rangeStr = "     " + role + " " + "join(";
@@ -495,6 +499,7 @@ public class GenBank {
 					rangeStr += cut.getAt() + "^" + cut.getAt()+1;
 				} else {
 					throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
+					// TODO: (Validation) missing rule: Location of a SequenceAnnotation object needs to be either a range or cut.
 				}
 			}
 			rangeStr += ")";
@@ -587,7 +592,7 @@ public class GenBank {
 		doc.setCreateDefaults(true);
 		if (URIPrefix==null) {
 			throw new SBOLValidationException("No URI prefix has been provided.");
-			// TODO: (Validation) which rule?
+			// TODO: (Validation) missing rule: rule for URI prefix.
 		}
 		doc.setDefaultURIprefix(URIPrefix);
 		read(doc,in);
@@ -759,7 +764,7 @@ public class GenBank {
 				version = strSplit[1].split("\\.")[1];
 				if (!id.equals(strSplit[1].split("\\.")[0])) {
 					throw new SBOLValidationException("Warning: id in version does not match id in accession");
-					// TODO: (Validation) which rule?
+					// TODO: (Validation) missing rule: other.
 				}
 				if (strSplit.length > 2) {
 					annotation = new Annotation(new QName(gbNamespace,"GInumber",gbPrefix),strSplit[2]);

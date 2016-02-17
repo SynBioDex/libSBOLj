@@ -225,7 +225,9 @@ public class MapsTo extends Identified{
 					// TODO: (Validation) print URI for remote
 				}
 				if (componentInstance.getDefinition().getComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
-					throw new SBOLValidationException("Component '" + remote + "' is private.");
+					//throw new SBOLValidationException("Component '" + remote + "' is private.");
+					throw new SBOLValidationException("sbol-10807");
+					// TODO: (Validation) print URI for remote
 				}
 			}
 		}

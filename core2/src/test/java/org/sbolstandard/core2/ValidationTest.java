@@ -15,9 +15,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 
@@ -27,60 +25,48 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
  */
 public class ValidationTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	public static void setUpBeforeClass() {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
+	public static void tearDownAfterClass() {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 	}
 
-	@Test
-	public void test() {
-		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
-		if(file == null)
-			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
-		try {
-			SBOLReader.read(file);
-			//fail();
-		}
-		catch (CoreIoException e) {
-			e.printStackTrace();
-		}
-		catch (XMLStreamException e) {
-			e.printStackTrace();
-		}
-		catch (FactoryConfigurationError e) {
-			e.printStackTrace();
-		}
-		catch (SBOLValidationException e) {
-			e.printStackTrace();
-		} //"/test/data/Validation/sbol-10101.rdf");
-		//fail("Not yet implemented");
-	}
+//	@Test
+//	public void test() {
+//		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
+//		if(file == null)
+//			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
+//		try {
+//			SBOLReader.read(file);
+//			//fail();
+//		}
+//		catch (CoreIoException e) {
+//			e.printStackTrace();
+//		}
+//		catch (XMLStreamException e) {
+//			e.printStackTrace();
+//		}
+//		catch (FactoryConfigurationError e) {
+//			e.printStackTrace();
+//		}
+//		catch (SBOLValidationException e) {
+//			e.printStackTrace();
+//		} //"/test/data/Validation/sbol-10101.rdf");
+//		//fail("Not yet implemented");
+//	}
 	
 	@Test
-	public void test10101() throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException {
+	public void test10101() throws CoreIoException, XMLStreamException, FactoryConfigurationError {
 		// TODO: generalize this test to perform on all files in directory in a loop
 		File file_base = new File("test/data/Validation/");
 		InputStream file;
@@ -94,19 +80,31 @@ public class ValidationTest {
 			doc = SBOLReader.read(file);
 			SBOLValidate.validateSBOL(doc, true, true, true);
 
-		}
+		
 		if (SBOLReader.getNumErrors() > 0) {
 			// TODO: check if error number matches file name
-			for(String i : SBOLReader.getErrors())
+			for(String error : SBOLReader.getErrors())
 			{
-				i.split(":");
+				if(!error.split(":")[0].equals(f.getName()))
+				{
+					fail();
+					
+				}
 			}
 			
 		} else if (SBOLValidate.getNumErrors() > 0) {
 			// TODO: check if error number matches file name
-			
+			for(String error : SBOLValidate.getErrors())
+			{
+				if(!error.split(":")[0].equals(f.getName()))
+				{
+					fail();
+				
+				}
+			}
 		} else {
 			// TODO: fail
+				//fail();
 		}
 	}
 	

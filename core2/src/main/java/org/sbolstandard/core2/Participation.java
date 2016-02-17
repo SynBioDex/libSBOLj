@@ -87,7 +87,6 @@ public class Participation extends Identified {
 		if (participant == null) {
 			//throw new SBOLValidationException("Participation is required to have a participant.");
 			throw new SBOLValidationException("sbol-12002");
-			// TODO: (Validation) Need to check that participant URI points to a FunctionalComponent, not other types of objects.
 		}
 		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participant)==null) {
 			//throw new SBOLValidationException("Functional component '" + participant + "' does not exist.");

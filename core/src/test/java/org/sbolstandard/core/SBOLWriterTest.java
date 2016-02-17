@@ -8,6 +8,7 @@ import org.junit.Assume;
 import org.sbolstandard.core.util.SBOLDeepEquality;
 
 public class SBOLWriterTest extends SBOLAbstractTests {
+	@Override
 	public void runTest(final String fileName, final SBOLRootObject... contents) throws Exception {
         assumeNotNull(contents);
 		SBOLDocument expected = createDocument(contents);
