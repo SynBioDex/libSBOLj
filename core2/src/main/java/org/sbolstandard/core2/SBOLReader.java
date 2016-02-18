@@ -231,7 +231,7 @@ public class SBOLReader
 		}
 		else {
 			throw new SBOLValidationException("A SBOL document cannot have SBOL namespaces with different versions.");
-			// TODO: (Validation) missing rule: rule requiring at least one of an SBOL namespace, not necessarily SBOL 2.0. 
+			// TODO: (Validation) missing rule: rule requiring at least one of SBOL namespaces, not necessarily SBOL 2.0. 
 		}
 	}
 

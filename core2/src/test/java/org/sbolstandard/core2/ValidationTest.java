@@ -3,7 +3,12 @@
  */
 package org.sbolstandard.core2;
 
+import static org.junit.Assert.fail;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
@@ -63,33 +68,65 @@ public class ValidationTest {
 //	}
 	
 	@Test
-	public void test10101() throws CoreIoException, XMLStreamException, FactoryConfigurationError {
+	public void testValidation() throws CoreIoException, XMLStreamException, FactoryConfigurationError {
 		// TODO: generalize this test to perform on all files in directory in a loop
-		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
-		if(file == null)
-			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
-		SBOLReader.setKeepGoing(true);
+		File file_base = null ;
 		try {
-			SBOLDocument doc = SBOLReader.read(file);
+			file_base = new File(ValidationTest.class.getResource("/test/data/Validation/").toURI());
+		}
+		catch (URISyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		File file;
+		SBOLDocument doc = null;
+		for (File f : file_base.listFiles()){
+			//InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
+			file = new File(f.getAbsolutePath());
+			System.out.println(f.getName().replace(".rdf", ""));
+			SBOLReader.setKeepGoing(true);
+			try {
+				doc = SBOLReader.read(file);
+			} catch (SBOLValidationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			SBOLValidate.validateSBOL(doc, true, true, true);
+
+
 			if (SBOLReader.getNumErrors() > 0) {
-				for (String error: SBOLReader.getErrors()) {
-					System.out.println(error);
-				}
 				// TODO: check if error number matches file name
-				// SBOLReader.getErrors();
+				for(String error : SBOLReader.getErrors())
+				{
+					System.out.println("READ ERROR: " + error);
+					if(!error.split(":")[0].equals((f.getName()).replace(".rdf", "")))
+					{
+						//fail();
+
+					}
+				}
+
 			} else if (SBOLValidate.getNumErrors() > 0) {
-				for (String error: SBOLValidate.getErrors()) {
-					System.out.println(error);
-				}
 				// TODO: check if error number matches file name
+				for(String error : SBOLValidate.getErrors())
+				{
+					System.out.println("VALIDATE ERROR: " + error);
+					if(!error.split(":")[0].equals(f.getName().replace(".rdf", "")))
+					{
+						//fail();
+
+					}
+				}
 			} else {
 				// TODO: fail
+				//fail();
 			}
-		} catch (SBOLValidationException e) {
-			e.printStackTrace();
 		}
-	}
+} 
 	
 	
 //	@Test (expected=SBOLValidationException.class)	
