@@ -23,8 +23,8 @@ public final class SBOLFactory {
 	 * This sets the internal SBOLDocument used by the factory.
 	 * @param sbolDocument
 	 */
-	public static void setSBOLDocument(SBOLDocument sbolDocument) {
-		document = sbolDocument;
+	public static void clear() {
+		document = new SBOLDocument();
 	}
 	
 	/**

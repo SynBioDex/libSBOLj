@@ -120,7 +120,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the given {@code displayId} is invalid
 	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
-	public ComponentDefinition(String prefix,String displayId,String version, Set<URI> types) throws SBOLValidationException {
+	ComponentDefinition(String prefix,String displayId,String version, Set<URI> types) throws SBOLValidationException {
 		this(URIcompliance.createCompliantURI(prefix, displayId, version),types);
 		prefix = URIcompliance.checkURIprefix(prefix);
 		validateIdVersion(displayId, version);

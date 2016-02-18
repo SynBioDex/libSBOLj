@@ -57,7 +57,7 @@ public class GenericTopLevel extends TopLevel{
 	 * @throws SBOLValidationException if the given {@code displayId} is invalid
 	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
-	public GenericTopLevel(String prefix,String displayId,String version, QName rdfType) throws SBOLValidationException {
+	GenericTopLevel(String prefix,String displayId,String version, QName rdfType) throws SBOLValidationException {
 		this(URIcompliance.createCompliantURI(prefix, displayId, version), rdfType);
 		prefix = URIcompliance.checkURIprefix(prefix);
 		validateIdVersion(displayId, version);

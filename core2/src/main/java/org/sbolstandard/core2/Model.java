@@ -74,7 +74,7 @@ public class Model extends TopLevel {
 	 * @throws SBOLValidationException if the given {@code displayId} is invalid
 	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
-	public Model(String prefix,String displayId,String version,URI source, URI language, URI framework) throws SBOLValidationException {
+	Model(String prefix,String displayId,String version,URI source, URI language, URI framework) throws SBOLValidationException {
 		this(URIcompliance.createCompliantURI(prefix, displayId, version), source, language, framework);
 		prefix = URIcompliance.checkURIprefix(prefix);
 		validateIdVersion(displayId, version);

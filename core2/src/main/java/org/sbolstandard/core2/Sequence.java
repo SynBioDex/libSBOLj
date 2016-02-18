@@ -79,7 +79,7 @@ public class Sequence extends TopLevel{
 	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 * @throws SBOLValidationException if the sequence {@code elements} invalid for specified {@code encoding}.
 	 */
-	public Sequence(String prefix,String displayId,String version, String elements, URI encoding) throws SBOLValidationException {
+	Sequence(String prefix,String displayId,String version, String elements, URI encoding) throws SBOLValidationException {
 		this(URIcompliance.createCompliantURI(prefix, displayId, version), elements, encoding);
 		prefix = URIcompliance.checkURIprefix(prefix);
 		validateIdVersion(displayId, version);

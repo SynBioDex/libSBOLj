@@ -50,7 +50,7 @@ public class Collection extends TopLevel{
 	 * @throws SBOLValidationException if the given {@code displayId} is invalid
 	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
-	public Collection(String prefix,String displayId,String version) throws SBOLValidationException {
+	Collection(String prefix,String displayId,String version) throws SBOLValidationException {
 		this(URIcompliance.createCompliantURI(prefix, displayId, version));
 		prefix = URIcompliance.checkURIprefix(prefix);
 		validateIdVersion(displayId, version);
