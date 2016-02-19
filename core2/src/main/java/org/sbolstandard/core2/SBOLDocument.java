@@ -1637,6 +1637,51 @@ public class SBOLDocument {
 	}
 
 	/**
+	 * Renames the given TopLevel instance with this SBOLDocument object's {@code defaultURIprefix}
+	 * the given arguments, and an empty version string, and then adds it to the
+	 * corresponding top-level list owned by this SBOLDocument object.
+	 * <p>
+	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
+	 * validity checks and create a copy top-level instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
+	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * If either the given {@code displayId} or {@code version}, then the corresponding field
+	 * is extracted from the given {@code topLevel} instance. Both extracted fields are required
+	 * to be valid and not {@code null}.
+	 * <p>
+	 * A top-level instance with a compliant URI using the given arguments,
+	 * and then its display ID, persistent identity, and version fields are set. This
+	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object.
+	 *
+	 * @param topLevel
+	 * @param displayId
+	 * @return the created top-level instance
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws SBOLValidationException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
+	 */
+	public TopLevel rename(TopLevel topLevel, String displayId) throws SBOLValidationException {
+		TopLevel renamedTopLevel = createCopy(topLevel,defaultURIprefix,displayId,"");
+		removeTopLevel(topLevel);
+		return renamedTopLevel;
+	}
+	
+	/**
 	 * Creates a copy of the given TopLevel instance with this SBOLDocument object's {@code defaultURIprefix}
 	 * and the given arguments, and then adds it to the
 	 * corresponding top-level list owned by this SBOLDocument object.
@@ -1678,6 +1723,52 @@ public class SBOLDocument {
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String displayId, String version) throws SBOLValidationException {
 		return createCopy(topLevel,defaultURIprefix,displayId,version);
+	}
+	
+	/**
+	 * Renames the given TopLevel instance with this SBOLDocument object's {@code defaultURIprefix}
+	 * and the given arguments, and then adds it to the
+	 * corresponding top-level list owned by this SBOLDocument object.
+	 * <p>
+	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
+	 * validity checks and create a copy top-level instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
+	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * If either the given {@code displayId} or {@code version}, then the corresponding field
+	 * is extracted from the given {@code topLevel} instance. Both extracted fields are required
+	 * to be valid and not {@code null}.
+	 * <p>
+	 * A top-level instance with a compliant URI using the given arguments,
+	 * and then its display ID, persistent identity, and version fields are set. This
+	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object.
+	 *
+	 * @param topLevel
+	 * @param displayId
+	 * @param version
+	 * @return the created top-level instance
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws SBOLValidationException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
+	 */
+	public TopLevel rename(TopLevel topLevel, String displayId, String version) throws SBOLValidationException {
+		TopLevel renamedTopLevel = createCopy(topLevel,defaultURIprefix,displayId,version);
+		removeTopLevel(topLevel);
+		return renamedTopLevel;
 	}
 
 	/**
@@ -1772,6 +1863,49 @@ public class SBOLDocument {
 		}
 	}
 
+	/**
+	 * Creates a copy of the given TopLevel instance with the given arguments, and then adds it to
+	 * the corresponding top-level list owned by this SBOLDocument object.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the given {@code URIprefix} is {@code null}, then it is extracted from the given
+	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * If either the given {@code displayId} or {@code version}, then the corresponding field
+	 * is extracted from the given {@code topLevel} instance. Both extracted fields are required
+	 * to be valid and not {@code null}.
+	 * <p>
+	 * A top-level instance with a compliant URI is created using the given arguments,
+	 * and then its display ID, persistent identity, and version fields are set. This
+	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object.
+	 *
+	 * @param topLevel
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @return the created top-level instance
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws SBOLValidationException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
+	 */
+	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
+		TopLevel renamedTopLevel = createCopy(topLevel,URIprefix,displayId,version);
+		removeTopLevel(topLevel);
+		return renamedTopLevel;
+	}
+	
 	/**
 	 * Appends the specified {@code sequence} object to the end of the list of sequencess.
 	 * 
@@ -2546,6 +2680,15 @@ public class SBOLDocument {
 			instancesMap.put(topLevel.getPersistentIdentity(),instancesMap.get(latestVersion));
 		}
 		return changed;
+	}
+	
+	private void removeTopLevel(TopLevel topLevel) throws SBOLValidationException {
+		if (topLevel instanceof GenericTopLevel) removeGenericTopLevel((GenericTopLevel) topLevel);
+		else if (topLevel instanceof Collection) removeCollection((Collection) topLevel);
+		else if (topLevel instanceof Sequence) removeSequence((Sequence) topLevel);
+		else if (topLevel instanceof ComponentDefinition) removeComponentDefinition((ComponentDefinition) topLevel);
+		else if (topLevel instanceof Model) removeModel((Model) topLevel);
+		else if (topLevel instanceof ModuleDefinition) removeModuleDefinition((ModuleDefinition) topLevel);
 	}
 
 	/**
