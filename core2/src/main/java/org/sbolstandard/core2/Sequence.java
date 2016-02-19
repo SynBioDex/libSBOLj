@@ -52,41 +52,6 @@ public class Sequence extends TopLevel{
 		setEncoding(encoding);
 		setElements(elements);
 	}
-	
-	/**
-	 * Creates a Sequence instance with the given arguments.
-	 * <p>
-	 * If the given {@code prefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the given {@code prefix}, {@code displayId}, and {@code version} are not
-	 * {@code null} and valid.
-	 * <p>
-	 * A Sequence instance is created with a compliant URI. This URI is composed from
-	 * the given {@code prefix}, the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param prefix
-	 * @param displayId
-	 * @param version
-	 * @param elements
-	 * @param encoding
-	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the sequence {@code elements} invalid for specified {@code encoding}.
-	 */
-	Sequence(String prefix,String displayId,String version, String elements, URI encoding) throws SBOLValidationException {
-		this(URIcompliance.createCompliantURI(prefix, displayId, version), elements, encoding);
-		prefix = URIcompliance.checkURIprefix(prefix);
-		validateIdVersion(displayId, version);
-		setDisplayId(displayId);
-		setPersistentIdentity(createCompliantURI(prefix, displayId, ""));
-		setVersion(version);
-	}
 
 	private Sequence(Sequence sequence) throws SBOLValidationException {
 		//super(sequence.getIdentity());
