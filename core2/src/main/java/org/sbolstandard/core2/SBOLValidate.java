@@ -62,8 +62,8 @@ public class SBOLValidate {
 	protected static void checkCollectionCompleteness(SBOLDocument sbolDocument,Collection collection) {
 		for (URI member : collection.getMemberURIs()) {
 			if (sbolDocument.getTopLevel(member)==null) {
-				errors.add("Collection " + collection.getIdentity() + " member " + member + " not found in document.");
-				// TODO: (Validation) missing rule: compliant URI identity
+				SBOLValidationException e = new SBOLValidationException("sbol-12103", collection);
+				errors.add(e.getMessage());
 			}
 		}
 	}
