@@ -1185,26 +1185,24 @@ public class ModuleDefinition extends TopLevel {
 	 */
 
 	@Override
-	protected boolean checkDescendantsURIcompliance() {
-		// codereview: spaghetti
-		if (!isTopLevelURIformCompliant(this.getIdentity())) return false;
-		boolean allDescendantsCompliant = true;
+	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+		isTopLevelURIformCompliant(this.getIdentity());
 		if (!this.getModules().isEmpty()) {
 			for (Module module : this.getModules()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, module);
-				if (!allDescendantsCompliant) { // Current sequence constraint
-					// has non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, module);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),module);
 				}
 				if (!module.getMapsTos().isEmpty()) {
 					// Check compliance of Module's children
 					for (MapsTo mapsTo : module.getMapsTos()) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(module, mapsTo);
-						if (!allDescendantsCompliant) { // Current mapsTo has
-							// non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(module, mapsTo);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),mapsTo);
 						}
 					}
 				}
@@ -1212,20 +1210,20 @@ public class ModuleDefinition extends TopLevel {
 		}
 		if (!this.getFunctionalComponents().isEmpty()) {
 			for (FunctionalComponent functionalComponent : this.getFunctionalComponents()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, functionalComponent);
-				if (!allDescendantsCompliant) { // Current component has
-					// non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, functionalComponent);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),functionalComponent);
 				}
 				if (!functionalComponent.getMapsTos().isEmpty()) {
 					// Check compliance of Component's children
 					for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(functionalComponent, mapsTo);
-						if (!allDescendantsCompliant) { // Current mapsTo has
-							// non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(functionalComponent, mapsTo);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),mapsTo);
 						}
 					}
 				}
@@ -1233,25 +1231,22 @@ public class ModuleDefinition extends TopLevel {
 		}
 		if (!this.getInteractions().isEmpty()) {
 			for (Interaction interaction : this.getInteractions()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, interaction);
-				if (!allDescendantsCompliant) { // Current interaction has
-					// non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, interaction);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),interaction);
 				}
 				for (Participation participation : interaction.getParticipations()) {
-					allDescendantsCompliant = allDescendantsCompliant
-							&& isChildURIcompliant(interaction, participation);
-					if (!allDescendantsCompliant) { // Current participation has
-						// non-compliant URI.
-						return allDescendantsCompliant;
+					try {
+						isChildURIcompliant(interaction, participation);
+					}
+					catch (SBOLValidationException e) {
+						throw new SBOLValidationException(e.getRule(),participation);
 					}
 				}
 			}
 		}
-		// All descendants of this ComponentDefinition object have compliant
-		// URIs.
-		return allDescendantsCompliant;
 	}
 
 	public ModuleDefinition flatten(String prefix,String displayId,String version) throws SBOLValidationException {

@@ -1116,17 +1116,9 @@ public class SBOLDocument {
 	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
 	 */
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, URI type) throws SBOLValidationException {
-		checkReadOnly();
-		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		HashSet<URI> types = new HashSet<URI>();
 		types.add(type);
-		ComponentDefinition cd = createComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
-				displayId, version, typesInURIs), types);
-		cd.setDisplayId(displayId);
-		cd.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION, displayId,"", typesInURIs));
-		cd.setVersion(version);
-		return cd;
+		return createComponentDefinition(URIprefix,displayId,version,types);
 	}
 
 	/**
@@ -1810,10 +1802,8 @@ public class SBOLDocument {
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
 		checkReadOnly();
-		if (!URIcompliance.isTopLevelURIcompliant(topLevel)) {
-			throw new SBOLValidationException("Cannot copy a non-compliant SBOL object");
-			// TODO: (Validation) missing rule: Cannot copy a non-compliant SBOL object.
-		}
+		// TODO: is this check needed, it prevents copying of non-compliant objects even if making compliant
+		topLevel.isURIcompliant();
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
 			URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -2565,7 +2555,13 @@ public class SBOLDocument {
 
 	@SafeVarargs
 	private final <TL extends TopLevel> void addTopLevel(TL newTopLevel, Map<URI, TL> instancesMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {
-		if (compliant && newTopLevel.checkDescendantsURIcompliance()) {
+		boolean childrenCompliant = true;
+		try {
+			newTopLevel.checkDescendantsURIcompliance();
+		} catch (SBOLValidationException e) {
+			childrenCompliant = false;
+		}
+		if (compliant && childrenCompliant) {
 			URI persistentId = URI.create(extractPersistentId(newTopLevel.getIdentity()));
 			if (keyExistsInAnyMap(persistentId, maps))
 //				throw new SBOLValidationException(	 

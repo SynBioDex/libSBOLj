@@ -49,38 +49,13 @@ public class SBOLValidate {
 	 * in the given {@code sbolDocument} contain a non-compliant URI.
 	 */
 	static void validateCompliance(SBOLDocument sbolDocument) {
-		for (Collection collection : sbolDocument.getCollections()) {
-			if (!URIcompliance.isTopLevelURIcompliant(collection) || !collection.checkDescendantsURIcompliance()) {
-				errors.add("Collection " + collection.getIdentity() + " is not URI compliant.");
-				// TODO: (Validation) missing rule: compliant URI identity
+		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
+			try {
+				topLevel.isURIcompliant();
 			}
-		}
-		for (Sequence sequence : sbolDocument.getSequences()) {
-			if (!URIcompliance.isTopLevelURIcompliant(sequence) || !sequence.checkDescendantsURIcompliance()) {
-				errors.add("Sequence " + sequence.getIdentity() + " is not URI compliant.");
-				// TODO: (Validation) missing rule: compliant URI identity
+			catch (SBOLValidationException e) {
+				errors.add(e.getMessage());
 			}
-		}
-		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
-			if (!URIcompliance.isTopLevelURIcompliant(componentDefinition) || !componentDefinition.checkDescendantsURIcompliance()) {
-				errors.add("ComponentDefinition " + componentDefinition.getIdentity() + " is not URI compliant.");
-				// TODO: (Validation) missing rule: compliant URI identity
-			}
-		}
-		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
-			if (!URIcompliance.isTopLevelURIcompliant(moduleDefinition) || !moduleDefinition.checkDescendantsURIcompliance()) 	
-				errors.add("ModuleDefinition " + moduleDefinition.getIdentity() + " is not URI compliant.");
-				// TODO: (Validation) missing rule: compliant URI identity
-		}
-		for (Model model : sbolDocument.getModels()) {
-			if (!URIcompliance.isTopLevelURIcompliant(model) || !model.checkDescendantsURIcompliance()) 
-				errors.add("Model " + model.getIdentity() + " is not URI compliant.");
-				// TODO: (Validation) missing rule: compliant URI identity
-		}
-		for (GenericTopLevel genericTopLevel : sbolDocument.getGenericTopLevels()) {
-			if (!URIcompliance.isTopLevelURIcompliant(genericTopLevel) || !genericTopLevel.checkDescendantsURIcompliance()) 
-				errors.add("GenericTopLevel " + genericTopLevel.getIdentity() + " is not URI compliant.");
-				// TODO: (Validation) missing rule: compliant URI identity
 		}
 	}
 	
@@ -582,7 +557,7 @@ public class SBOLValidate {
 			if (!checkSequenceEncoding(sequence)) {
 //				errors.add("Sequence '" + sequence.getIdentity() + "' that uses encoding " + sequence.getEncoding() + 
 //						" does not have a valid sequence.");
-				errors.add(new SBOLValidationException("sbol-10406", sequence).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10405", sequence).getExceptionMessage());
 				// TODO: (Validation) print sequence.getEncoding()
 			}
 		}

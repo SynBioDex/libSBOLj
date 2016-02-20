@@ -1497,34 +1497,34 @@ public class ComponentDefinition extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateCompliantURI(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	protected boolean checkDescendantsURIcompliance() {
-		// codereview: this method is spagetti.
-		if (!isTopLevelURIformCompliant(this.getIdentity())) return false;
-		boolean allDescendantsCompliant = true;
+	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+		isTopLevelURIformCompliant(this.getIdentity());
 		if (!this.getSequenceConstraints().isEmpty()) {
 			for (SequenceConstraint sequenceConstraint : this.getSequenceConstraints()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, sequenceConstraint);
-				// SequenceConstraint does not have any child classes. No need to check further.
-				if (!allDescendantsCompliant) { // Current sequence constraint has non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, sequenceConstraint);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),sequenceConstraint);
 				}
 			}
 		}
 		if (!this.getComponents().isEmpty()) {
 			for (Component component : this.getComponents()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, component);
-				if (!allDescendantsCompliant) { // Current component has non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, component);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),component);
 				}
 				if (!component.getMapsTos().isEmpty()) {
 					// Check compliance of Component's children
 					for (MapsTo mapsTo : component.getMapsTos()) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(component, mapsTo);
-						if (!allDescendantsCompliant) { // Current mapsTo has non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(component, mapsTo);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),mapsTo);
 						}
 					}
 				}
@@ -1532,39 +1532,41 @@ public class ComponentDefinition extends TopLevel {
 		}
 		if (!this.getSequenceAnnotations().isEmpty()) {
 			for (SequenceAnnotation sequenceAnnotation : this.getSequenceAnnotations()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, sequenceAnnotation);
-				if (!allDescendantsCompliant) { // Current sequence annotation has non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, sequenceAnnotation);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),sequenceAnnotation);
 				}
 				Set<Location> locations = sequenceAnnotation.getLocations();
 				for (Location location : locations) {
 					if (location instanceof Range) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(sequenceAnnotation, location);
-						if (!allDescendantsCompliant) { // Current range has non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(sequenceAnnotation, location);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),location);
 						}
 					}
 					if (location instanceof Cut) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(sequenceAnnotation, location);
-						if (!allDescendantsCompliant) { // Current cut has non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(sequenceAnnotation, location);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),location);
 						}
 					}
 					if (location instanceof GenericLocation) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(sequenceAnnotation, location);
-						if (!allDescendantsCompliant) { // Current generic location has non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(sequenceAnnotation, location);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),location);
 						}
 					}
 				}
 			}
 		}
-		// All descendants of this ComponentDefinition object have compliant URIs.
-		return allDescendantsCompliant;
 	}
 
 	/**

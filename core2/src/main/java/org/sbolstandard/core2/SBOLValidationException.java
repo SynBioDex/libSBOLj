@@ -237,6 +237,15 @@ public class SBOLValidationException extends Exception {
 	String getExceptionMessage() {
 		return exceptionMessage;
 	}
+	
+	/*
+	 * Return the validation rule number of the exception
+	 * @return the validation rule number of the exception
+	 */
+	public String getRule() {
+		if (!getMessage().startsWith("sbol-")) return "";
+		return getMessage().split(":")[0];
+	}
 
 //	private static void printAllRules() {
 //		for (String key : validationRules.keySet()) {

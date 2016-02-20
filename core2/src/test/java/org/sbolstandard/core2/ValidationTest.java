@@ -102,7 +102,7 @@ public class ValidationTest {
 				// TODO: check if error number matches file name
 				for(String error : SBOLReader.getErrors())
 				{
-					System.out.println("READ ERROR: " + error);
+					System.out.println(error);
 					if(!error.split(":")[0].equals((f.getName()).replace(".rdf", "")))
 					{
 						//fail();
@@ -114,7 +114,7 @@ public class ValidationTest {
 				// TODO: check if error number matches file name
 				for(String error : SBOLValidate.getErrors())
 				{
-					System.out.println("VALIDATE ERROR: " + error);
+					System.out.println(error);
 					if(!error.split(":")[0].equals(f.getName().replace(".rdf", "")))
 					{
 						//fail();

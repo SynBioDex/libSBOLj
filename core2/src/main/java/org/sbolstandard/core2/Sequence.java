@@ -97,7 +97,7 @@ public class Sequence extends TopLevel{
 		if (!SBOLValidate.checkSequenceEncoding(this)) {
 //			throw new SBOLValidationException("Sequence '" + this.getIdentity() + "' that uses encoding " + this.getEncoding() + 
 //					" does not have a valid sequence.");
-			throw new SBOLValidationException("sbol-10406", this);
+			throw new SBOLValidationException("sbol-10405", this);
 			// TODO: (Validation) print this.getEncoding too 
 		}
 	}
@@ -192,8 +192,8 @@ public class Sequence extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected boolean checkDescendantsURIcompliance() {
-		return isTopLevelURIformCompliant(this.getIdentity());
+	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	@Override

@@ -109,21 +109,28 @@ final class URIcompliance {
 			return null;
 	}
 
-	static final boolean isURIcompliant(Identified identified) {
-		if (!identified.isSetDisplayId()) return false;
-		if (!identified.isSetPersistentIdentity()) return false;
+	static final void isURIcompliant(Identified identified) throws SBOLValidationException {
+		if (!identified.isSetDisplayId()) {
+			throw new SBOLValidationException("sbol-10215");
+		}
+		if (!identified.isSetPersistentIdentity()) {
+			throw new SBOLValidationException("sbol-10216");
+		}
 		if (!identified.getPersistentIdentity().toString().endsWith("/"+identified.getDisplayId()) &&
 			!identified.getPersistentIdentity().toString().endsWith("#"+identified.getDisplayId()) &&
-			!identified.getPersistentIdentity().toString().endsWith(":"+identified.getDisplayId())) return false;
+			!identified.getPersistentIdentity().toString().endsWith(":"+identified.getDisplayId())) {
+			throw new SBOLValidationException("sbol-10216");
+		}
 		if (!identified.isSetVersion()) {
-			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString())) return false;
+			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString())) {
+				throw new SBOLValidationException("sbol-10218");
+			}
 		} else {
 			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString()+"/"
 					+identified.getVersion())) {
-				return false;
+				throw new SBOLValidationException("sbol-10218");
 			}
 		}
-		return true;
 	}
 	
 	// TODO: this method is only checking URIs and not other fields.  It also is only allowing / delimiter.
@@ -141,24 +148,20 @@ final class URIcompliance {
 		}
 	}
 
-	static final boolean isChildURIcompliant(Identified parent, Identified child) {
-		//URI parentURI = parent.getIdentity();
-		//URI childURI = child.getIdentity();
-		//String parentPersistentId = extractPersistentId(parentURI);
-		//if (parentPersistentId==null) return false;
-		//String childDisplayId = extractDisplayId(childURI);
-		//if (childDisplayId==null) return false;
-		//String parentVersion = extractVersion(parentURI);
-		if (!isURIcompliant(child)) return false;
+	static final void isChildURIcompliant(Identified parent, Identified child) throws SBOLValidationException {
+		isURIcompliant(child);
 		if (!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+"/"+child.getDisplayId()) &&
 				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+"#"+child.getDisplayId()) &&
-				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+":"+child.getDisplayId())) return false;
-		if (parent.isSetVersion()) {
-			if (!child.isSetVersion()||!child.getVersion().equals(parent.getVersion())) return false;
-		} else if (child.isSetVersion()) {
-			return false;
+				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+":"+child.getDisplayId())) {
+			throw new SBOLValidationException("sbol-10217");
 		}
-		return true;
+		if (parent.isSetVersion()) {
+			if (!child.isSetVersion()||!child.getVersion().equals(parent.getVersion())) {
+				throw new SBOLValidationException("sbol-10219");
+			}
+		} else if (child.isSetVersion()) {
+			throw new SBOLValidationException("sbol-10219");
+		}
 	}
 	
 	/**
@@ -167,25 +170,17 @@ final class URIcompliance {
 	 * the level of the given object. 
 	 * @param objURI
 	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise.
+	 * @throws SBOLValidationException 
 	 */
-	static final boolean isTopLevelURIformCompliant(URI topLevelURI) {
+	static final void isTopLevelURIformCompliant(URI topLevelURI) throws SBOLValidationException {
 		Pattern r;
 		String URIstr = topLevelURI.toString();		
 		r = Pattern.compile(toplevelURIpattern);
 		Matcher m = r.matcher(URIstr);
-		return (m.matches());
-	}
-	
-	/**
-	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
-	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
-	 * the level of the given object. 
-	 * @param objURI
-	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise.
-	 */
-	static final boolean isTopLevelURIcompliant(TopLevel topLevel) {
-		if (!isTopLevelURIformCompliant(topLevel.getIdentity())) return false;
-		return isURIcompliant(topLevel);
+		if (!m.matches()) {
+			// TODO: (Validation) missing rule
+			throw new SBOLValidationException("URI is not well-formed");
+		}
 	}
 	
 //	static final boolean isURIcompliantTemp(URI objURI, String URIprefix, String version, String ... displayIds) {
