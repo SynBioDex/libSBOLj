@@ -145,10 +145,9 @@ public class SequenceOntology {
 		String stanzaURIstr = stanzaURI.toString().trim();
 		if (!stanzaURIstr.startsWith(URI_PREFIX)) {
 			try {
-				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -172,10 +171,9 @@ public class SequenceOntology {
 		}
 		if (IdList.isEmpty()) {
 			try {
-				throw new SBOLValidationException("Illegal name " + stanzaName + ". It does not exit.");
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("Illegal name " + stanzaName + ". It does not exist.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -193,10 +191,9 @@ public class SequenceOntology {
 		String oboURIstr = stanzaURI.toString().trim();
 		if (!oboURIstr.startsWith(URI_PREFIX)) {
 			try {
-				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -205,10 +202,9 @@ public class SequenceOntology {
 		OBOStanza oboStanza = sequenceOntology.getStanza(id);
 		if (oboStanza == null) {
 			try {
-				throw new SBOLValidationException("ID " + id + " does not exist.");
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("ID " + id + " does not exist.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -226,10 +222,9 @@ public class SequenceOntology {
 		OBOStanza oboStanza = sequenceOntology.getStanza(stanzaId);
 		if (oboStanza == null) {
 			try {
-				throw new SBOLValidationException("Illegal ID " + stanzaId + " does not exist.");
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("Illegal ID " + stanzaId + " does not exist.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -259,10 +254,9 @@ public class SequenceOntology {
 		OBOStanza oboStanza = sequenceOntology.getStanza(stanzaId.trim());
 		if (oboStanza == null) {
 			try {
-				throw new SBOLValidationException("ID " + stanzaId + " does not exist.");
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("ID " + stanzaId + " does not exist.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -280,19 +274,17 @@ public class SequenceOntology {
 		OBOStanza stanza2 = sequenceOntology.getStanza(Id2);
 		if (stanza1 == null) {
 			try {
-				throw new SBOLValidationException("Illegal ID: " + Id1 + ". No match was found.");
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("Illegal ID: " + Id1 + ". No match was found.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return false;
 			}
 		}
 		if (stanza2 == null) {
 			try {
-				throw new SBOLValidationException("Illegal ID: " + Id2 + ". No match was found.");
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("Illegal ID: " + Id2 + ". No match was found.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return false;
 			}
 		}

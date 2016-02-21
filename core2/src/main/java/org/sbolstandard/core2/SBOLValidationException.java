@@ -3,6 +3,7 @@ package org.sbolstandard.core2;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,6 +53,16 @@ public class SBOLValidationException extends Exception {
 	 */
 	SBOLValidationException(String message, Identified ... objects) {
 		this(message, Arrays.asList(objects));
+	}
+
+	/**
+	 * Creates a new exception instance with the given message and objects causing the problem.
+	 * @param message
+	 * @param objects
+	 */
+	SBOLValidationException(String message, URI identity) {
+		super(exceptionMessage = formatMessage(message, identity));
+		this.objects = null;
 	}
 
 	/**
@@ -114,6 +125,34 @@ public class SBOLValidationException extends Exception {
 	 */
 	java.util.Collection<Identified> getObjects() {
 		return objects;
+	}
+	
+	private static String formatMessage(String message, URI identity) {
+		final StringBuilder sb = new StringBuilder(message);
+		if (message.startsWith("sbol-")) {
+			if (validationRules == null) {
+				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
+				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
+						getResourceAsStream("/validation/rules.txt"));
+				try {					
+					parse(new BufferedReader(f));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			//printAllRules();
+			String key = message.trim();
+			SBOLValidationRule rule = validationRules.get(key);
+			if (rule == null) {
+				throw new RuntimeException("Rule ID does not exist.");
+			}
+			sb.append(": " + rule.getDescription() + "\n");
+			sb.append(": " + identity.toString());
+		}
+		else {		
+			sb.append(": " + identity.toString());
+		}
+		return sb.toString();
 	}
 
 	private static String formatMessage(String message, java.util.Collection<? extends Identified> objects) {

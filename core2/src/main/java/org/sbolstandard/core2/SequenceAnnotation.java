@@ -417,16 +417,13 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(componentURI)==null) {
-				//throw new SBOLValidationException("Component '" + componentURI + "' does not exist.");
-				throw new SBOLValidationException("sbol-10905");
-				// TODO: (Validation) print componentURI
+				throw new SBOLValidationException("sbol-10905",this);
 				
 			}
 			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
 				if (sa.getIdentity().equals(this.getIdentity())) continue;
 				if (sa.isSetComponent() && sa.getComponentURI().equals(componentURI)) {
-					//throw new SBOLValidationException("Multiple sequence annotations cannot refer to the same component.");
-					throw new SBOLValidationException("sbol-10522", sa);
+					throw new SBOLValidationException("sbol-10522", this);
 				}
 			}
 		}

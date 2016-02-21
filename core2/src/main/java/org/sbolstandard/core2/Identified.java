@@ -176,11 +176,8 @@ public abstract class Identified {
 			this.version=null;
 			return;
 		}
-		if (!URIcompliance.isVersionCompliant(version)) {
-//			throw new SBOLValidationException(
-//					"Version " + version + " is invalid for `" + identity + "'.");
-			throw new SBOLValidationException("sbol-10206");
-			// TODO: (Validation) print String version?
+		if (!URIcompliance.isVersionValid(version)) {
+			throw new SBOLValidationException("sbol-10206",this);
 		}
 		this.version = version;
 	}
@@ -208,7 +205,7 @@ public abstract class Identified {
 	 * @throws SBOLValidationException 
 	 */
 	void setDisplayId(String displayId) throws SBOLValidationException {
-		if (!URIcompliance.isDisplayIdCompliant(displayId)) {
+		if (!URIcompliance.isDisplayIdValid(displayId)) {
 //			throw new SBOLValidationException(
 //					"Display id " + displayId + " is invalid for `" + identity + "'.");
 			throw new SBOLValidationException("sbol-10204");
@@ -247,10 +244,7 @@ public abstract class Identified {
 		if (sbolDocument!=null) {
 			sbolDocument.checkReadOnly();
 			if (!SBOLValidate.checkWasDerivedFromVersion(sbolDocument, this, wasDerivedFrom)) {
-//				throw new SBOLValidationException(getIdentity() + " is derived from " + wasDerivedFrom + 
-//						" but has older version.");
 				throw new SBOLValidationException("sbol-10211", this);
-				// TODO: (Validation) print URI for this object?
 			}
 			if (SBOLValidate.checkWasDerivedFromCycle(sbolDocument, this, wasDerivedFrom, new HashSet<URI>())) {
 				throw new SBOLValidationException("Cycle found in '" + getIdentity() + "' was derived from link.");
@@ -590,19 +584,10 @@ public abstract class Identified {
 		if (isChildURIformCompliant(this.getIdentity(), child.getIdentity())) {
 			URI persistentId = URI.create(extractPersistentId(child.getIdentity()));
 			if(keyExistsInAnyMap(persistentId, maps)) {
-//				throw new SBOLValidationException(
-//						"Instance for identity `" + child.identity +
-//						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
 				throw new SBOLValidationException("sbol-10202", child);
-				// TODO: (Validation) print child.identity and persistentId
 			}
 			if(siblingsMap.containsKey(child.getIdentity())) {
-//				throw new SBOLValidationException(
-//						"Instance for identity `" + child.identity +
-//						"' and persistent identity `" + persistentId + "' exists for a " + typeName);
-				throw new SBOLValidationException(
-						"sbol-10202", child);
-				// TODO: (Validation) print child.identity and persistentId
+				throw new SBOLValidationException("sbol-10202", child);
 			}
 			siblingsMap.put(child.getIdentity(), child);
 			I latest = siblingsMap.get(persistentId);
@@ -618,16 +603,9 @@ public abstract class Identified {
 		}
 		else { // Only check if URI exists in all maps.
 			if(keyExistsInAnyMap(child.getIdentity(), maps))
-//				throw new SBOLValidationException(
-//						"Instance for identity `" + child.identity +
-//						"' exists for a non-" + typeName);
 				throw new SBOLValidationException("sbol-10202", child);
-			// TODO: (Validation) print child.identity
 			if(siblingsMap.containsKey(child.getIdentity()))
-//				throw new SBOLValidationException(
-//						"Instance for identity `" + child.identity + "' exists for a " + typeName);
 				throw new SBOLValidationException("sbol-10202", child);
-			// TODO: (Validation) print child.identity
 			siblingsMap.put(child.getIdentity(), child);
 		}
 

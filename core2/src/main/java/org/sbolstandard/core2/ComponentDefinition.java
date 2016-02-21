@@ -352,9 +352,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getSequence(sequenceURI)==null) {
-				//throw new SBOLValidationException("Sequence '" + sequenceURI + "' does not exist.");
-				throw new SBOLValidationException("sbol-10513");
-				// TODO: (Validation) print URI for sequenceURI
+				throw new SBOLValidationException("sbol-10513",this);
 			}
 		}
 		return sequences.add(sequenceURI);
@@ -1173,32 +1171,21 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		for (SequenceAnnotation sa : sequenceAnnotations.values()) {
 			if (sa.getComponentURI().equals(component.getIdentity())) {
-				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-						" since it is in use.");
-				// TODO: (Validation) uncertain rule: remove object in use. 
+				throw new SBOLValidationException("sbol-10905",sa);
 			}
 		}
 		for (SequenceConstraint sc : sequenceConstraints.values()) {
 			if (sc.getSubjectURI().equals(component.getIdentity())) {
-//				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-//						" since it is in use.");
-				throw new SBOLValidationException("sbol-11402", component);
-				// TODO: (Validation) uncertain rule: remove object in use.
+				throw new SBOLValidationException("sbol-11402", sc);
 			}
 			if (sc.getObjectURI().equals(component.getIdentity())) {
-//				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-//						" since it is in use.");
-				throw new SBOLValidationException("sbol-11404", component);
-				// TODO: (Validation) uncertain rule: remove object in use.
+				throw new SBOLValidationException("sbol-11404", sc);
 			}
 		}
 		for (Component c : components.values()) {
 			for (MapsTo mt : c.getMapsTos()) {
 				if (mt.getLocalURI().equals(component.getIdentity())) {
-//					throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-//							" since it is in use.");
-					throw new SBOLValidationException("sbol-10802", component);
-					// TODO: (Validation) uncertain rule: remove object in use. 
+					throw new SBOLValidationException("sbol-10804", mt);
 				}
 			}
 		}
@@ -1207,10 +1194,7 @@ public class ComponentDefinition extends TopLevel {
 				for (Component c : cd.getComponents()) {
 					for (MapsTo mt : c.getMapsTos()) {
 						if (mt.getRemoteURI().equals(component.getIdentity())) {
-//							throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-//									" since it is in use.");
-							throw new SBOLValidationException("sbol-10805", component);
-							// TODO: (Validation) uncertain rule: remove object in use.
+							throw new SBOLValidationException("sbol-10806", mt);
 						}
 					}
 				}

@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 import static org.sbolstandard.core2.URIcompliance.extractPersistentId;
 import static org.sbolstandard.core2.URIcompliance.extractURIprefix;
 import static org.sbolstandard.core2.URIcompliance.extractVersion;
-import static org.sbolstandard.core2.URIcompliance.isDisplayIdCompliant;
+import static org.sbolstandard.core2.URIcompliance.isDisplayIdValid;
 
 import java.net.URI;
 
@@ -755,17 +755,17 @@ public class URIcomplianceTest {
 
 	@Test
 	public void testIsDisplayIdCompliant1() {
-		assertFalse(isDisplayIdCompliant("1/0"));
+		assertFalse(isDisplayIdValid("1/0"));
 	}
 
 	@Test
 	public void testIsDisplayIdCompliant2() {
-		assertFalse(isDisplayIdCompliant("+asYnc513+"));
+		assertFalse(isDisplayIdValid("+asYnc513+"));
 	}
 
 	@Test
 	public void testIsDisplayIdCompliant3() {
-		assertTrue(isDisplayIdCompliant("_l2I3DDv"));
+		assertTrue(isDisplayIdValid("_l2I3DDv"));
 	}
 
 //	@Test

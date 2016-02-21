@@ -62,17 +62,20 @@ public enum RestrictionType {
 	 * @throws SBOLValidationException 
 	 */
 	static RestrictionType convertToRestrictionType(URI restriction) throws SBOLValidationException {
-		if (restriction.equals(precedes)) {
-			return RestrictionType.PRECEDES;
-		} else if (restriction.equals(sameOrientationAs)) {
-			return RestrictionType.SAME_ORIENTATION_AS;
-		} else if (restriction.equals(oppositeOrientationAs)) {
-			return RestrictionType.OPPOSITE_ORIENTATION_AS;
-		} 
-		else {
-			//throw new SBOLValidationException("Not a valid restriction type.");
+		if (restriction!=null) {
+			if (restriction.equals(precedes)) {
+				return RestrictionType.PRECEDES;
+			} else if (restriction.equals(sameOrientationAs)) {
+				return RestrictionType.SAME_ORIENTATION_AS;
+			} else if (restriction.equals(oppositeOrientationAs)) {
+				return RestrictionType.OPPOSITE_ORIENTATION_AS;
+			} 
+			else {
+				// TODO: (Validation) Cannot check since any URI is allowd.
+				throw new SBOLValidationException("sbol-11412");
+			}
+		} else {
 			throw new SBOLValidationException("sbol-11412");
-			// TODO: (Validation) print restriction?
 		}
 	}
 	
@@ -91,13 +94,11 @@ public enum RestrictionType {
 				return oppositeOrientationAs;
 			} 
 			else {
-				// throw new SBOLValidationException("Not a valid restriction type.");
 				throw new SBOLValidationException("sbol-11412");
-				// TODO: (Validation) print restriction?
 			}
 		}
 		else {
-			return null;
+			throw new SBOLValidationException("sbol-11412");
 		}
 	}
 	

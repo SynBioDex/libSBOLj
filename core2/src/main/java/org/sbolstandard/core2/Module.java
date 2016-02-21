@@ -82,15 +82,11 @@ public class Module extends Identified {
 	public void setDefinition(URI definitionURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (definitionURI==null) {
-			//throw new SBOLValidationException("Module "+this.getIdentity()+" must have a definition.");
-			throw new SBOLValidationException("sbol-11702");
-			// TODO: (Validation) print URI for definitionURI
+			throw new SBOLValidationException("sbol-11702",this);
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModuleDefinition(definitionURI)==null) {
-				//throw new SBOLValidationException("Module definition '" + definition + "' does not exist.");
-				throw new SBOLValidationException("sbol-11703");
-				// TODO: (Validation) print URI for definitionURI
+				throw new SBOLValidationException("sbol-11703",this);
 			}
 		}
 		this.definition = definitionURI;

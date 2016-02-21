@@ -95,15 +95,11 @@ public abstract class ComponentInstance extends Identified {
 	public void setDefinition(URI definition) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (definition==null) {
-			// throw new SBOLValidationException("Component "+this.getIdentity()+" must have a definition.");
-			throw new SBOLValidationException("sbol-10602");
-			// TODO: (Validation) print URI for definition
+			throw new SBOLValidationException("sbol-10602",this);
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(definition)==null) {
-				//throw new SBOLValidationException("Component definition '" + definition + "' does not exist.");
-				throw new SBOLValidationException("sbol-10604");
-				// TODO: (Validation) print URI for definition
+				throw new SBOLValidationException("sbol-10604",this);
 			}
 		}
 		this.definition = definition;

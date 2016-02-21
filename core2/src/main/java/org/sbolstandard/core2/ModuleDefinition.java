@@ -741,30 +741,21 @@ public class ModuleDefinition extends TopLevel {
 		for (Interaction i : interactions.values()) {
 			for (Participation p : i.getParticipations()) {
 				if (p.getParticipantURI().equals(functionalComponent.getIdentity())) {
-//					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
-//							" since it is in use.");
-					throw new SBOLValidationException("sbol-10602", functionalComponent);
-					// TODO: (Validation) uncertain rule: remove object in use. 
+					throw new SBOLValidationException("sbol-12003", p);
 				}
 			}
 		}
 		for (FunctionalComponent c : functionalComponents.values()) {
 			for (MapsTo mt : c.getMapsTos()) {
 				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
-//					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
-//							" since it is in use.");
-					throw new SBOLValidationException("sbol-10802", functionalComponent);
-					// TODO: (Validation) uncertain rule: remove object in use. 
+					throw new SBOLValidationException("sbol-10804", mt);
 				}
 			}
 		}
 		for (Module m : modules.values()) {
 			for (MapsTo mt : m.getMapsTos()) {
 				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
-//					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
-//							" since it is in use.");
-					throw new SBOLValidationException("sbol-10802", functionalComponent);
-					// TODO: (Validation) uncertain rule: remove object in use.
+					throw new SBOLValidationException("sbol-10804", mt);
 				}
 			}
 		}
@@ -773,11 +764,7 @@ public class ModuleDefinition extends TopLevel {
 				for (Module m : md.getModules()) {
 					for (MapsTo mt : m.getMapsTos()) {
 						if (mt.getRemoteURI().equals(functionalComponent.getIdentity())) {
-//							throw new SBOLValidationException("Cannot remove "
-//									+ functionalComponent.getIdentity() +
-//									" since it is in use.");
-							throw new SBOLValidationException("sbol-10805", functionalComponent);
-							// TODO: (Validation) uncertain rule: remove object in use.
+							throw new SBOLValidationException("sbol-10806", functionalComponent);
 						}
 					}
 				}

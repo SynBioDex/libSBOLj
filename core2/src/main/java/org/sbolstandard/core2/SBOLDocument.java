@@ -271,11 +271,7 @@ public class SBOLDocument {
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				for (Module m : md.getModules()) {
 					if (m.getDefinitionURI().equals(moduleDefinition.getIdentity())) {
-//						throw new SBOLValidationException("Cannot remove " + moduleDefinition.getIdentity() +
-//								" since it is in use.");
-						throw new SBOLValidationException("sbol-11702");
-						// TODO: (Validation) uncertain rule: remove object in use.
-						
+						throw new SBOLValidationException("sbol-11703");
 					}
 				}
 			}
@@ -773,10 +769,7 @@ public class SBOLDocument {
 		if (complete) {
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				if (md.containsModel(model.getIdentity())) {
-//					throw new SBOLValidationException("Cannot remove " + model.getIdentity() +
-//							" since it is in use.");
-					throw new SBOLValidationException("sbol-11608", model);
-					// TODO: (Validation) uncertain rule: remove object in use.
+					throw new SBOLValidationException("sbol-11608", md);
 				}
 			}
 		}
@@ -1176,20 +1169,14 @@ public class SBOLDocument {
 			for (ComponentDefinition cd : componentDefinitions.values()) {
 				for (Component c : cd.getComponents()) {
 					if (c.getDefinitionURI().equals(componentDefinition.getIdentity())) {
-//						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
-//								" since it is in use.");
-						throw new SBOLValidationException("sbol-10602", componentDefinition);
-						// TODO: (Validation) uncertain rule: remove object in use.
+						throw new SBOLValidationException("sbol-10604", c);
 					}
 				}
 			}
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				for (FunctionalComponent c : md.getFunctionalComponents()) {
 					if (c.getDefinitionURI().equals(componentDefinition.getIdentity())) {
-//						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
-//								" since it is in use.");
-						throw new SBOLValidationException("sbol-10602", componentDefinition);
-						// TODO: (Validation) uncertain rule: remove object in use.
+						throw new SBOLValidationException("sbol-10604", c);
 					}
 				}
 			}
@@ -1930,10 +1917,7 @@ public class SBOLDocument {
 		if (complete) {
 			for (ComponentDefinition cd : componentDefinitions.values()) {
 				if (cd.containsSequence(sequence.getIdentity())) {
-//					throw new SBOLValidationException("Cannot remove " + sequence.getIdentity() +
-//							" since it is in use.");
-					throw new SBOLValidationException("sbol-10513", sequence);
-					// TODO: (Validation) uncertain rule: remove object in use.
+					throw new SBOLValidationException("sbol-10513", cd);
 				}
 			}
 		}
@@ -2564,28 +2548,14 @@ public class SBOLDocument {
 		if (compliant && childrenCompliant) {
 			URI persistentId = URI.create(extractPersistentId(newTopLevel.getIdentity()));
 			if (keyExistsInAnyMap(persistentId, maps))
-//				throw new SBOLValidationException(	 
-//						"Instance for identity `" + newTopLevel.identity +
-//						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
 				throw new SBOLValidationException("sbol-10202", newTopLevel);
-				// TODO: (Validation) print newTopLevel.identity and persistentId
 			if (instancesMap.containsKey(newTopLevel.getIdentity()))
-//				throw new SBOLValidationException(
-//						"Instance for identity `" + newTopLevel.identity +
-//						"' and persistent identity `" + persistentId + "' already exists for a " + typeName);
 				throw new SBOLValidationException("sbol-10202", newTopLevel);
-				// TODO: (Validation) print newTopLevel.identity and persistentId
 			String prefix = extractURIprefix(persistentId);
 			while (prefix!=null) {
 				if (keyExistsInAnyMap(URI.create(prefix), maps))
-//					throw new SBOLValidationException(
-//							"URI prefix for identity `" + newTopLevel.identity +
-//							"' mathches identity of an existing top level object.");
 					throw new SBOLValidationException("sbol-10202", newTopLevel);
 				if (instancesMap.containsKey(URI.create(prefix)))
-//					throw new SBOLValidationException(
-//							"URI prefix for identity `" + newTopLevel.identity +
-//							"' mathches identity of an existing top level object.");
 					throw new SBOLValidationException("sbol-10202", newTopLevel);
 				prefix = extractURIprefix(URI.create(prefix));
 			}
@@ -2614,12 +2584,8 @@ public class SBOLDocument {
 		}
 		else { // Only check if URI exists in all maps.
 			if (keyExistsInAnyMap(newTopLevel.getIdentity()))
-//				throw new SBOLValidationException(
-//						"Instance for identity `" + newTopLevel.identity + "' exists for a non-" + typeName);
 				throw new SBOLValidationException("sbol-10202", newTopLevel);
 			if (instancesMap.containsKey(newTopLevel.getIdentity()))
-//				throw new SBOLValidationException(
-//						"Instance for identity `" + newTopLevel.identity + "' exists for a " + typeName);
 				throw new SBOLValidationException("sbol-10202", newTopLevel);
 			instancesMap.put(newTopLevel.getIdentity(), newTopLevel);
 			if (newTopLevel.isSetPersistentIdentity()) {
@@ -2652,10 +2618,7 @@ public class SBOLDocument {
 		if (complete) {
 			for (Collection c : collections.values()) {
 				if (c.containsMember(topLevel.getIdentity())) {
-//					throw new SBOLValidationException("Cannot remove " + topLevel.getIdentity() +
-//							" since it is in use.");
-					throw new SBOLValidationException("sbol-12103", topLevel);
-					// TODO: (Validation) uncertain rule: remove object in use.
+					throw new SBOLValidationException("sbol-12103", c);
 				}
 			}
 		}

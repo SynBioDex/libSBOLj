@@ -69,7 +69,7 @@ public class FunctionalComponent extends ComponentInstance {
 	public void setDirection(DirectionType direction) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (direction==null) {
-			throw new NullPointerException("Not a valid direction type.");
+			throw new SBOLValidationException("sbol-11802",this);
 		}
 		this.direction = direction;
 	}

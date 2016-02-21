@@ -39,14 +39,10 @@ public enum AccessType {
 				return AccessType.PRIVATE;
 			}
 			else {
-				//throw new SBOLValidationException("Unknown access URI `" + access + "'");
 				throw new SBOLValidationException("sbol-10607");
-				// TODO: (Validation) print access URI?
 			}
 		} else {
-			//throw new SBOLValidationException("access URI cannot be null");
 			throw new SBOLValidationException("sbol-10607");
-			// TODO: (Validation) print access URI?
 		}
 	}
 	

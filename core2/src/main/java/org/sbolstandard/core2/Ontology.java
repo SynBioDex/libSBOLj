@@ -23,10 +23,9 @@ public abstract class Ontology {
 		String stanzaURIstr = stanzaURI.toString().trim();
 		if (!stanzaURIstr.contains(URI_PREFIX)) {
 			try {
-				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -67,10 +66,9 @@ public abstract class Ontology {
 		String oboURIstr = stanzaURI.toString().trim();
 		if (!oboURIstr.contains(URI_PREFIX)) {
 			try {
-				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -140,19 +138,17 @@ public abstract class Ontology {
 		OBOStanza stanza2 = sequenceOntology.getStanza(Id2);
 		if (stanza1 == null) {
 			try {
-				throw new SBOLValidationException("Illegal ID: " + Id1 + ". No match was found.");
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("Illegal ID: " + Id1 + ". No match was found.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return false;
 			}
 		}
 		if (stanza2 == null) {
 			try {
-				throw new SBOLValidationException("Illegal ID: " + Id2 + ". No match was found.");
-				// TODO: (Validation) missing rule: rules for ontologies.
+				throw new IllegalArgumentException("Illegal ID: " + Id2 + ". No match was found.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return false;
 			}
 		}

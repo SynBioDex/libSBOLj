@@ -47,16 +47,18 @@ public enum OrientationType {
 	 * @throws SBOLValidationException 
 	 */
 	static OrientationType convertToOrientationType(URI orientation) throws SBOLValidationException {
-		if (orientation.equals(inline)) {
-			return OrientationType.INLINE;
-		} 
-		else if (orientation.equals(reverseComplement)) {
-			return OrientationType.REVERSECOMPLEMENT;
-		}
-		else {
-			//throw new SBOLValidationException("Unknown orientation URI `" + orientation + "'");
+		if (orientation != null) {
+			if (orientation.equals(inline)) {
+				return OrientationType.INLINE;
+			} 
+			else if (orientation.equals(reverseComplement)) {
+				return OrientationType.REVERSECOMPLEMENT;
+			}
+			else {
+				throw new SBOLValidationException("sbol-11002");
+			}
+		} else {
 			throw new SBOLValidationException("sbol-11002");
-			// TODO: (Validation) print orientation? 
 		}
 	}
 

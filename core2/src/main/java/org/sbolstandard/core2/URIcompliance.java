@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 final class URIcompliance {
 	
 	static void validateIdVersion(String displayId, String version) throws SBOLValidationException {
-		if (displayId!=null && !isDisplayIdCompliant(displayId)) {
+		if (displayId!=null && !isDisplayIdValid(displayId)) {
 			//throw new SBOLValidationException("Display id `" + displayId + "' is not valid.");
 			throw new SBOLValidationException("sbol-10204");
 			// TODO: (Validation) print String displayId
 		}
-		if (version!=null && !isVersionCompliant(version)) {
+		if (version!=null && !isVersionValid(version)) {
 			//throw new SBOLValidationException("Version `" + version + "' is not valid.");
 			throw new SBOLValidationException("sbol-10206");
 			// TODO: (Validation) print String version
@@ -293,16 +293,16 @@ final class URIcompliance {
 //		}
 //	}
 
-	static boolean isDisplayIdCompliant(String newDisplayId) {
+	static boolean isDisplayIdValid(String newDisplayId) {
 		Pattern r = Pattern.compile(displayIDpattern);
 		Matcher m = r.matcher(newDisplayId);
 		return m.matches();
 	}
 
-	static boolean isVersionCompliant(String newVersion) throws SBOLValidationException {
+	static boolean isVersionValid(String newVersion) throws SBOLValidationException {
 		if (newVersion==null) {
 			throw new SBOLValidationException("Version must not be null");			
-			// TODO: (Validation) uncertain rule: remove object in use.
+			// TODO: (Validation) uncertain rule: ???
 		}
 		if (newVersion.equals("")) return true;
 		Pattern r = Pattern.compile(versionPattern);

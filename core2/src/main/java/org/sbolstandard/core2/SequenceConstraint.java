@@ -77,14 +77,17 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * @param restriction
  	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
-	 * @throws NullPointerException if the given {@code restriction} is {@code null}.
 	 */
 	public void setRestriction(RestrictionType restriction) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (restriction==null) {
-			throw new NullPointerException("Not a valid restriction type.");
+			throw new SBOLValidationException("sbol-11408",this);
 		}
-		this.restriction = RestrictionType.convertToURI(restriction);
+		try {
+			this.restriction = RestrictionType.convertToURI(restriction);
+		} catch (SBOLValidationException e) {
+			throw new SBOLValidationException("sbol-11412",this);
+		}
 	}
 	
 	/**
@@ -96,12 +99,11 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * @param restrictionURI
  	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
-	 * @throws NullPointerException if the given {@code restriction} is {@code null}.
 	 */
 	public void setRestriction(URI restrictionURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (restrictionURI==null) {
-			throw new NullPointerException("Not a valid restriction type.");
+			throw new SBOLValidationException("sbol-11408",this);
 		}
 		this.restriction = restrictionURI;
 	}
@@ -159,17 +161,13 @@ public class SequenceConstraint extends Identified {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(subjectURI)==null) {
-				//throw new SBOLValidationException("Component '" + subjectURI + "' does not exist.");
-				throw new SBOLValidationException("sbol-11403");
-				// TODO: (Validation) print URI for objectURI
+				throw new SBOLValidationException("sbol-11403",this);
 			}
 		}
 		if (subjectURI==null) {
-			//throw new SBOLValidationException("Sequence constraint '" + this.getIdentity() + "' must have a subject.");
 			throw new SBOLValidationException("sbol-11402", this);
 		}
 		if (subjectURI==object) {
-			//throw new SBOLValidationException("Sequence constraint '" + this.getIdentity() + "' must have different subject and object.");
 			throw new SBOLValidationException("sbol-11406", this);
 		}
 		this.subject = subjectURI;
@@ -227,17 +225,13 @@ public class SequenceConstraint extends Identified {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(objectURI)==null) {
-				// throw new SBOLValidationException("Component '" + objectURI + "' does not exist.");
-				throw new SBOLValidationException("sbol-11405");
-				// TODO: (Validation) print URI for objectURI
+				throw new SBOLValidationException("sbol-11405",this);
 			}
 		}
 		if (objectURI==null) {
-			//throw new SBOLValidationException("Sequence constraint '" + this.getIdentity() + "' must have an object.");
 			throw new SBOLValidationException("sbol-11404", this);
 		}
 		if (objectURI==subject) {
-			// throw new SBOLValidationException("Sequence constraint '" + this.getIdentity() + "' must have different subject and object.");
 			throw new SBOLValidationException("sbol-11402", this);
 		}
 		this.object = objectURI;
