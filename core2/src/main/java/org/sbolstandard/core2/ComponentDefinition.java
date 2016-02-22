@@ -1134,10 +1134,7 @@ public class ComponentDefinition extends TopLevel {
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
-		if (SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited)) {
-			throw new SBOLValidationException("Cycle created by Component '" + component.getIdentity() + "'");
-			// TODO: (Validation) which rule? Could be sbol-10603 or sbol-10605.
-		}
+		SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited);
 		addChildSafely(component, components, "component",
 				sequenceAnnotations, sequenceConstraints);
 		for (MapsTo mapsTo : component.getMapsTos()) {

@@ -130,48 +130,66 @@ public class SBOLValidate {
 		}
 	}
 	
-	protected static boolean checkComponentDefinitionCycle(SBOLDocument sbolDocument, 
-			ComponentDefinition componentDefinition, Set<URI> visited) {
-		if (componentDefinition==null) return false;
+	protected static void checkComponentDefinitionCycle(SBOLDocument sbolDocument, 
+			ComponentDefinition componentDefinition, Set<URI> visited) throws SBOLValidationException {
+		if (componentDefinition==null) return;
 		visited.add(componentDefinition.getIdentity());
 		for (Component component : componentDefinition.getComponents()) {
 			ComponentDefinition cd = component.getDefinition();
 			if (cd==null) continue;
-			if (visited.contains(cd.getIdentity())) return true;
-			if (checkComponentDefinitionCycle(sbolDocument,cd,visited)) return true;
+			if (visited.contains(cd.getIdentity())) {
+				throw new SBOLValidationException("sbol-10603",component);
+			}
+			try {
+				checkComponentDefinitionCycle(sbolDocument,cd,visited);
+			} catch (SBOLValidationException e) {
+				throw new SBOLValidationException("sbol-10605",component);
+			}
 		}
 		visited.remove(componentDefinition.getIdentity());
-		return false;
+		return;
 	}
 	
-	protected static boolean checkModuleDefinitionCycle(SBOLDocument sbolDocument, 
-			ModuleDefinition moduleDefinition, Set<URI> visited) {
-		if (moduleDefinition==null) return false;
+	protected static void checkModuleDefinitionCycle(SBOLDocument sbolDocument, 
+			ModuleDefinition moduleDefinition, Set<URI> visited) throws SBOLValidationException {
+		if (moduleDefinition==null) return;
 		visited.add(moduleDefinition.getIdentity());
 		for (Module module : moduleDefinition.getModules()) {
 			ModuleDefinition md = module.getDefinition();
 			if (md==null) continue;
-			if (visited.contains(md.getIdentity())) return true;
-			if (checkModuleDefinitionCycle(sbolDocument,md,visited)) return true;
+			if (visited.contains(md.getIdentity())) {
+				throw new SBOLValidationException("sbol-11704",module);
+			}
+			try {
+				checkModuleDefinitionCycle(sbolDocument,md,visited);
+			} catch (SBOLValidationException e) {
+				throw new SBOLValidationException("sbol-11705",module);
+			}
 		}
 		visited.remove(moduleDefinition.getIdentity());
-		return false;
+		return;
 	}
 	
-	protected static boolean checkWasDerivedFromCycle(SBOLDocument sbolDocument, 
-			Identified identified, URI wasDerivedFrom, Set<URI> visited) {
+	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument, 
+			Identified identified, URI wasDerivedFrom, Set<URI> visited) throws SBOLValidationException {
 		visited.add(identified.getIdentity());
 		TopLevel tl = sbolDocument.getTopLevel(wasDerivedFrom);
 		if (tl!=null) {
-			if (visited.contains(tl.getIdentity())) return true;
+			if (visited.contains(tl.getIdentity())) {
+				throw new SBOLValidationException("sbol-10209",identified);
+			}
 			if (tl.isSetWasDerivedFrom()) {
-				if (checkWasDerivedFromCycle(sbolDocument,tl,tl.getWasDerivedFrom(),visited)) return true;
+				try {
+					checkWasDerivedFromCycle(sbolDocument,tl,tl.getWasDerivedFrom(),visited);
+				} catch (SBOLValidationException e) {
+					throw new SBOLValidationException("sbol-10210",identified);
+				}
 			} else {
-				return false;
+				return;
 			}
 		}
 		visited.remove(identified.getIdentity());
-		return false;
+		return;
 	}
 	
 	protected static boolean checkWasDerivedFromVersion(SBOLDocument sbolDocument, Identified identified, 
@@ -205,23 +223,25 @@ public class SBOLValidate {
 	static void validateCircularReferences(SBOLDocument sbolDocument) {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (topLevel.isSetWasDerivedFrom()) {
-				if (checkWasDerivedFromCycle(sbolDocument,topLevel,topLevel.getWasDerivedFrom(), new HashSet<URI>())) {
-					errors.add("Cycle found in '" + topLevel.getIdentity() + "' was derived from link.");
-					// TODO: (Validation) which rule? Could be sbol-10209 or sbol-10210. 
-					
+				try {
+					checkWasDerivedFromCycle(sbolDocument,topLevel,topLevel.getWasDerivedFrom(), new HashSet<URI>());
+				} catch (SBOLValidationException e) {
+					errors.add(e.getMessage());
 				}
 			}
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
-			if (checkComponentDefinitionCycle(sbolDocument,componentDefinition,new HashSet<URI>())) {
-				errors.add("Cycle found in ComponentDefinition '" + componentDefinition.getIdentity() + "'");
-				//TODO: (Validation) which rule? Could be sbol-10603 or sbol-10605.
+			try {
+				checkComponentDefinitionCycle(sbolDocument,componentDefinition,new HashSet<URI>());
+			} catch (SBOLValidationException e) {
+				errors.add(e.getMessage());
 			}
 		}
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
-			if (checkModuleDefinitionCycle(sbolDocument,moduleDefinition,new HashSet<URI>())) {
-				errors.add("Cycle found in ModuleDefinition '" + moduleDefinition.getIdentity() + "'");
-				//TODO: (Validation) which rule? Could be sbol-11704 or sbol-11705.
+			try {
+				checkModuleDefinitionCycle(sbolDocument,moduleDefinition,new HashSet<URI>());
+			} catch (SBOLValidationException e) {
+				errors.add(e.getMessage());
 			}
 		}
 	}

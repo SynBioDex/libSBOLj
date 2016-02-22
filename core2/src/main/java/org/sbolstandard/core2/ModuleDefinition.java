@@ -275,17 +275,12 @@ public class ModuleDefinition extends TopLevel {
 		module.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (module.getDefinition() == null) {
-//				throw new SBOLValidationException("ModuleDefinition '" + module.getDefinitionURI().toString()
-//						+ "' does not exist.");
 				throw new SBOLValidationException("sbol-11703", module);
 			}
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
-		if (SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited)) {
-			//throw new SBOLValidationException("Cycle created by Module '" + module.getIdentity() + "'");
-			throw new SBOLValidationException("sbol-11705", module);
-		}
+		SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited);
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		for (MapsTo mapsTo : module.getMapsTos()) {
 			mapsTo.setSBOLDocument(sbolDocument);
