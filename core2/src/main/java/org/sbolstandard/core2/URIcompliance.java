@@ -299,14 +299,10 @@ final class URIcompliance {
 		return m.matches();
 	}
 
-	static boolean isVersionValid(String newVersion) throws SBOLValidationException {
-		if (newVersion==null) {
-			throw new SBOLValidationException("Version must not be null");			
-			// TODO: (Validation) uncertain rule: ???
-		}
-		if (newVersion.equals("")) return true;
+	static boolean isVersionValid(String version) {
+		if (version.equals("")) return true;
 		Pattern r = Pattern.compile(versionPattern);
-		Matcher m = r.matcher(newVersion);
+		Matcher m = r.matcher(version);
 		return m.matches();
 	}
 

@@ -1835,8 +1835,7 @@ public class SBOLDocument {
 			return newGenericTopLevel;
 		}
 		else {
-			throw new SBOLValidationException("Unable to copy " + topLevel.getIdentity());
-			// TODO: (Validation) missing rule: Unable to copy non-topLevel objects.
+			throw new IllegalArgumentException("Unable to copy " + topLevel.getIdentity());
 		}
 	}
 
@@ -2560,9 +2559,8 @@ public class SBOLDocument {
 				prefix = extractURIprefix(URI.create(prefix));
 			}
 			if (prefixes.contains(persistentId.toString())) {
-				throw new SBOLValidationException("Persistent identity `" + persistentId.toString() +
+				throw new IllegalArgumentException("Persistent identity `" + persistentId.toString() +
 						"' matches URI prefix in document.");
-				// TODO: (Validation) missing rule: Persistent identity of a compliant object matches URI prefix in an SBOL document.
 			}
 			prefix = extractURIprefix(persistentId);
 			while (prefix!=null) {
@@ -2654,10 +2652,10 @@ public class SBOLDocument {
 	 * Sets the default URI prefix to the given {@code defaultURIprefix}.
 	 *
 	 * @param defaultURIprefix
-	 * @throws SBOLValidationException 
+	 * @throws IllegalArgumentException 
 	 */
 
-	public void setDefaultURIprefix(String defaultURIprefix) throws SBOLValidationException {
+	public void setDefaultURIprefix(String defaultURIprefix) throws IllegalArgumentException {
 		if (!defaultURIprefix.endsWith("/") && !defaultURIprefix.endsWith(":") && !defaultURIprefix.endsWith("#")) {
 			defaultURIprefix += "/";
 		}
@@ -2665,9 +2663,8 @@ public class SBOLDocument {
 			this.defaultURIprefix = defaultURIprefix;
 		}
 		else {
-			throw new SBOLValidationException(
+			throw new IllegalArgumentException(
 					"Unable to set default URI prefix to non-compliant value `" + defaultURIprefix + "'");
-			// TODO: (Validation) missing rule: Unable to set default URI prefix to non-compliant URI prefix.
 		}
 	}
 
@@ -2925,7 +2922,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws IOException
 	 */
-	public void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		SBOLWriter.write(this, out);
 	}
@@ -2940,7 +2937,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws IOException
 	 */
-	void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		SBOLWriter.write(this, out, fileType);
 	}
