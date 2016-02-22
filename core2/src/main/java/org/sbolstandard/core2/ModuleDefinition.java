@@ -250,9 +250,7 @@ public class ModuleDefinition extends TopLevel {
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModuleDefinition(moduleDefinitionURI) == null) {
-				throw new SBOLValidationException("Module definition '" + moduleDefinitionURI
-						+ "' does not exist.");
-				// TODO: (Validation) missing rule: Top-level object not found in a complete SBOL document. 
+				throw new SBOLValidationException("sbol-11703",this);
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -679,9 +677,7 @@ public class ModuleDefinition extends TopLevel {
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(componentDefinitionURI) == null) {
-				throw new SBOLValidationException("Component definition '" + componentDefinitionURI
-						+ "' does not exist.");
-				// TODO: (Validation) missing rule: Top-level object not found in a complete SBOL document.
+				throw new SBOLValidationException("sbol-10604",this);
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();

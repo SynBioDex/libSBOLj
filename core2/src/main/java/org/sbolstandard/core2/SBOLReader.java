@@ -1435,8 +1435,7 @@ public class SBOLReader
 		List<Annotation> annotations = new ArrayList<>();
 
 		if (!sequenceConstraint.getType().equals(Sbol2Terms.SequenceConstraint.SequenceConstraint)) {
-			throw new SBOLValidationException(sequenceConstraint.getType() + " is not a valid sequence constraint.");
-			// TODO: (Validation) missing rule: QName for SBOL 2 types.
+			throw new SBOLValidationException("sbol-10524",sequenceConstraint.getIdentity());
 		}
 		for (NamedProperty<QName> namedProperty : sequenceConstraint.getProperties())
 		{
@@ -1520,8 +1519,7 @@ public class SBOLReader
 		List<Annotation> annotations = new ArrayList<>();
 
 		if (!sequenceAnnotation.getType().equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation)) {
-			throw new SBOLValidationException(sequenceAnnotation.getType() + " is not a valid sequence annotation.");
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
+			throw new SBOLValidationException("sbol-10521",sequenceAnnotation.getIdentity());
 		}
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
 		{
@@ -1608,8 +1606,7 @@ public class SBOLReader
 		}
 		else
 		{
-			throw new SBOLValidationException(location.getType() + " is not a valid location type.");
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
+			throw new SBOLValidationException("sbol-10902",location.getIdentity());
 		}
 		return l;
 
@@ -1625,12 +1622,6 @@ public class SBOLReader
 		String version        	     = null;
 		URI wasDerivedFrom 			 = null;
 		List<Annotation> annotations = new ArrayList<>();
-
-		if (!typeGenLoc.getType().equals(Sbol2Terms.GenericLocation.GenericLocation))
-		{
-			throw new SBOLValidationException("QName has to be" + Sbol2Terms.GenericLocation.GenericLocation.toString());
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
-		}
 
 		for (NamedProperty<QName> namedProperty : typeGenLoc.getProperties())
 		{
@@ -1704,12 +1695,6 @@ public class SBOLReader
 		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
 		List<Annotation> annotations = new ArrayList<>();
-
-		if (!typeCut.getType().equals(Sbol2Terms.Cut.Cut))
-		{
-			throw new SBOLValidationException("QName has to be" + Sbol2Terms.Cut.Cut.toString());
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
-		}
 
 		for (NamedProperty<QName> namedProperty : typeCut.getProperties())
 		{
@@ -1794,12 +1779,6 @@ public class SBOLReader
 		String version 		   = null;
 		URI wasDerivedFrom     = null;
 		List<Annotation> annotations = new ArrayList<>();
-
-		if (!typeRange.getType().equals(Sbol2Terms.Range.Range))
-		{
-			throw new SBOLValidationException("QName has to be" + Sbol2Terms.Range.Range.toString());
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
-		}
 
 		for (NamedProperty<QName> namedProperty : typeRange.getProperties())
 		{
@@ -1888,12 +1867,7 @@ public class SBOLReader
 
 		if (!component.getType().equals(Sbol2Terms.Component.Component))
 		{
-			throw new SBOLValidationException("QName has to be " + Sbol2Terms.Component.Component.toString());
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
-		}
-		if (!component.getType().equals(Sbol2Terms.Component.Component)) {
-			throw new SBOLValidationException(component.getType() + " is not a valid component.");
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
+			throw new SBOLValidationException("sbol-10519",component.getIdentity());
 		}
 		for (NamedProperty<QName> namedProperty : component.getProperties())
 		{
@@ -1926,11 +1900,11 @@ public class SBOLReader
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapsTo))
 			{
 				if (namedProperty.getValue() instanceof NestedDocument) {
-					mapsTo.add(parseMapsTo(((NestedDocument<QName>) namedProperty.getValue())));
+					mapsTo.add(parseMapsTo(((NestedDocument<QName>) namedProperty.getValue()),false));
 				}
 				else {
 					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
-					mapsTo.add(parseMapsTo(nested.get(uri)));
+					mapsTo.add(parseMapsTo(nested.get(uri),false));
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentInstance.hasComponentDefinition))
@@ -2375,13 +2349,7 @@ public class SBOLReader
 
 		if (!module.getType().equals(Sbol2Terms.Module.Module))
 		{
-			throw new SBOLValidationException("QName has to be " + Sbol2Terms.Module.Module.toString());
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
-		}
-
-		if (!module.getType().equals(Sbol2Terms.Module.Module)) {
-			throw new SBOLValidationException(module.getType() + " is not a valid module.");
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
+			throw new SBOLValidationException("sbol-11604",module.getIdentity());
 		}
 		for (NamedProperty<QName> namedProperty : module.getProperties())
 		{
@@ -2400,22 +2368,22 @@ public class SBOLReader
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapsTo))
 			{
 				if (namedProperty.getValue() instanceof NestedDocument) {
-					mappings.add(parseMapsTo(((NestedDocument<QName>) namedProperty.getValue())));
+					mappings.add(parseMapsTo(((NestedDocument<QName>) namedProperty.getValue()),true));
 				}
 				else {
 					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
-					mappings.add(parseMapsTo(nested.get(uri)));
+					mappings.add(parseMapsTo(nested.get(uri),true));
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapping))
 			{
 				System.out.println("Warning: tag should be sbol:mapTo, not sbol:mapping.");
 				if (namedProperty.getValue() instanceof NestedDocument) {
-					mappings.add(parseMapsTo(((NestedDocument<QName>) namedProperty.getValue())));
+					mappings.add(parseMapsTo(((NestedDocument<QName>) namedProperty.getValue()),true));
 				}
 				else {
 					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
-					mappings.add(parseMapsTo(nested.get(uri)));
+					mappings.add(parseMapsTo(nested.get(uri),true));
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasDefinition))
@@ -2460,7 +2428,7 @@ public class SBOLReader
 		return submodule;
 	}
 
-	private static MapsTo parseMapsTo(NestedDocument<QName> mapsTo) throws SBOLValidationException
+	private static MapsTo parseMapsTo(NestedDocument<QName> mapsTo, boolean inModule) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(mapsTo.getIdentity());
 		String name 	 	   = null;
@@ -2475,8 +2443,11 @@ public class SBOLReader
 		List<Annotation> annotations = new ArrayList<>();
 
 		if (!mapsTo.getType().equals(Sbol2Terms.MapsTo.MapsTo)) {
-			throw new SBOLValidationException(mapsTo.getType() + " is not a valid mapsTo.");
-			// TODO: (Validation) missing rule: QName for SBOL 2 types.
+			if (inModule) {
+				throw new SBOLValidationException("sbol-11706",mapsTo.getIdentity()); 
+			} else {
+				throw new SBOLValidationException("sbol-10606",mapsTo.getIdentity()); 
+			}
 		}
 		for (NamedProperty<QName> m : mapsTo.getProperties())
 		{
@@ -2563,8 +2534,7 @@ public class SBOLReader
 		List<Annotation> annotations 	   = new ArrayList<>();
 
 		if (!interaction.getType().equals(Sbol2Terms.Interaction.Interaction)) {
-			throw new SBOLValidationException(interaction.getType() + " is not a valid interaction.");
-			// TODO: (Validation) missing rule: QName for SBOL 2 types.
+			throw new SBOLValidationException("sbol-11605",interaction.getIdentity());
 		}
 		for (NamedProperty<QName> i : interaction.getProperties())
 		{
@@ -2646,13 +2616,7 @@ public class SBOLReader
 
 		if (!participation.getType().equals(Sbol2Terms.Participation.Participation))
 		{
-			throw new SBOLValidationException("QName has to be " + Sbol2Terms.Participation.Participation.toString());
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
-		}
-
-		if (!participation.getType().equals(Sbol2Terms.Participation.Participation)) {
-			throw new SBOLValidationException(participation.getType() + " is not a valid participation.");
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
+			throw new SBOLValidationException("sbol-11906",participation.getIdentity());
 		}
 		for (NamedProperty<QName> p : participation.getProperties())
 		{
@@ -2733,13 +2697,7 @@ public class SBOLReader
 
 		if (!functionalComponent.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent))
 		{
-			throw new SBOLValidationException("QName has to be " + Sbol2Terms.FunctionalComponent.FunctionalComponent.toString());
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
-		}
-
-		if (!functionalComponent.getType().equals(Sbol2Terms.FunctionalComponent.FunctionalComponent)) {
-			throw new SBOLValidationException(functionalComponent.getType() + " is not a valid functional component.");
-			// TODO: (Validation) missing rule: QName for SBOL 2 types
+			throw new SBOLValidationException("sbol-11606",functionalComponent.getIdentity());
 		}
 		for (NamedProperty<QName> f : functionalComponent.getProperties())
 		{
@@ -2787,11 +2745,11 @@ public class SBOLReader
 			else if (f.getName().equals(Sbol2Terms.ComponentInstance.hasMapsTo))
 			{
 				if (f.getValue() instanceof NestedDocument) {
-					mappings.add(parseMapsTo(((NestedDocument<QName>) f.getValue())));
+					mappings.add(parseMapsTo(((NestedDocument<QName>) f.getValue()),false));
 				}
 				else {
 					URI uri = (URI) ((Literal<QName>)f.getValue()).getValue();
-					mappings.add(parseMapsTo(nested.get(uri)));
+					mappings.add(parseMapsTo(nested.get(uri),false));
 				}
 			}
 			else if (f.getName().equals(Sbol2Terms.ComponentInstance.hasComponentDefinition))

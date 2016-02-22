@@ -1107,8 +1107,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(componentDefinitionURI)==null) {
-				throw new SBOLValidationException("Component definition '" + componentDefinitionURI + "' does not exist.");
-				// TODO: (Validation) missing rule: Top-level object not found in a complete SBOL document.
+				throw new SBOLValidationException("sbol-10604",this);
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -1130,8 +1129,7 @@ public class ComponentDefinition extends TopLevel {
 		component.setComponentDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (component.getDefinition()==null) {
-				throw new SBOLValidationException("ComponentDefinition '" + component.getDefinitionURI() + "' does not exist.");
-				// TODO: (Validation) missing rule: Top-level object not found in a complete SBOL document				
+				throw new SBOLValidationException("sbol-10604",component);
 			}
 		}
 		Set<URI> visited = new HashSet<>();
