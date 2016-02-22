@@ -2285,10 +2285,16 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
+				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
+					throw new SBOLValidationException("sbol-10213",topLevel.getIdentity());
+				}
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
 			{
+				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+					throw new SBOLValidationException("sbol-10208",topLevel.getIdentity());
+				}
 				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
 			else
