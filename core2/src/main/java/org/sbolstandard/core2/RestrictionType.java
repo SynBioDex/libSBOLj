@@ -71,7 +71,6 @@ public enum RestrictionType {
 				return RestrictionType.OPPOSITE_ORIENTATION_AS;
 			} 
 			else {
-				// TODO: (Validation) Cannot check since any URI is allowd.
 				throw new SBOLValidationException("sbol-11412");
 			}
 		} else {
