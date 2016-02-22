@@ -9,18 +9,17 @@ final class URIcompliance {
 	
 	static void validateIdVersion(String displayId, String version) throws SBOLValidationException {
 		if (displayId!=null && !isDisplayIdValid(displayId)) {
-			//throw new SBOLValidationException("Display id `" + displayId + "' is not valid.");
 			throw new SBOLValidationException("sbol-10204");
-			// TODO: (Validation) print String displayId
 		}
 		if (version!=null && !isVersionValid(version)) {
-			//throw new SBOLValidationException("Version `" + version + "' is not valid.");
 			throw new SBOLValidationException("sbol-10206");
-			// TODO: (Validation) print String version
 		}
 	}
 
 	static URI createCompliantURI(String prefix, String displayId, String version) throws SBOLValidationException {
+		if (prefix == null) {
+			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");
+		}
 		validateIdVersion(displayId, version);
 		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
 			prefix += "/";
@@ -32,6 +31,9 @@ final class URIcompliance {
 	}
 	
 	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) throws SBOLValidationException {
+		if (prefix == null) {
+			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");
+		}
 		validateIdVersion(displayId, version);
 		if (!useType) return createCompliantURI(prefix,displayId,version);
 		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {

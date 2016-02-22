@@ -196,7 +196,6 @@ public class SBOLDocument {
 	public ModuleDefinition createModuleDefinition(String URIprefix,String displayId, String version) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		ModuleDefinition md = createModuleDefinition(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, version, typesInURIs));
 		md.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, "", typesInURIs));
 		md.setDisplayId(displayId);
@@ -295,7 +294,6 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition getModuleDefinition(String displayId,String version) {
 		try {
-			validateIdentityData(displayId,version);
 			return moduleDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.MODULE_DEFINITION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -478,7 +476,6 @@ public class SBOLDocument {
 	public Collection createCollection(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		Collection c = createCollection(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, version, typesInURIs));
 		c.setDisplayId(displayId);
 		c.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, "", typesInURIs));
@@ -533,7 +530,6 @@ public class SBOLDocument {
 	 */
 	public Collection getCollection(String displayId,String version) {
 		try { 
-			validateIdentityData(displayId,version);
 			return collections.get(createCompliantURI(defaultURIprefix,TopLevel.COLLECTION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -712,7 +708,6 @@ public class SBOLDocument {
 	public Model createModel(String URIprefix, String displayId, String version, URI source, URI language, URI framework) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		Model model = createModel(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, version, typesInURIs),
 				source, language, framework);
 		model.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, "", typesInURIs));
@@ -792,7 +787,6 @@ public class SBOLDocument {
 	 */
 	public Model getModel(String displayId,String version) {
 		try {
-			validateIdentityData(displayId,version);
 			return models.get(createCompliantURI(defaultURIprefix,TopLevel.MODEL,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -1064,7 +1058,6 @@ public class SBOLDocument {
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, Set<URI> types) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		ComponentDefinition cd = createComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
 				displayId, version, typesInURIs), types);
 		cd.setDisplayId(displayId);
@@ -1200,7 +1193,6 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition getComponentDefinition(String displayId,String version) {
 		try {
-			validateIdentityData(displayId,version);
 			return componentDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.COMPONENT_DEFINITION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -1403,7 +1395,6 @@ public class SBOLDocument {
 	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		Sequence s = createSequence(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, version, typesInURIs),
 				elements, encoding);
 		s.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, "", typesInURIs));
@@ -1803,7 +1794,7 @@ public class SBOLDocument {
 		if (version == null) {
 			version = topLevel.getVersion();
 		}
-		validateIdVersion(displayId,version);
+		//validateIdVersion(displayId,version);
 		if (topLevel instanceof Collection) {
 			Collection newCollection = ((Collection) topLevel).copy(URIprefix, displayId, version);
 			addCollection(newCollection);
@@ -1939,7 +1930,6 @@ public class SBOLDocument {
 	 */
 	public Sequence getSequence(String displayId,String version) {
 		try {
-			validateIdentityData(displayId,version);
 			return sequences.get(createCompliantURI(defaultURIprefix,TopLevel.SEQUENCE,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -2112,7 +2102,6 @@ public class SBOLDocument {
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		GenericTopLevel g = createGenericTopLevel(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
 		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
 		g.setDisplayId(displayId);
@@ -2129,9 +2118,8 @@ public class SBOLDocument {
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
-			//throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
-			throw new SBOLValidationException("sbol-12302");
-			// TODO: (Validation) print rdfType?
+			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			// TODO: (Validation) actually should be new validation error, not to allow in SBOL namespace
 		}
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
 		addGenericTopLevel(newGenericTopLevel);
@@ -2185,7 +2173,6 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel getGenericTopLevel(String displayId, String version) {
 		try {
-			validateIdentityData(displayId,version);
 			return genericTopLevels.get(createCompliantURI(defaultURIprefix,TopLevel.GENERIC_TOP_LEVEL,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -2527,13 +2514,6 @@ public class SBOLDocument {
 		} else if (!sequences.equals(other.sequences))
 			return false;
 		return true;
-	}
-
-	private void validateIdentityData(String displayId, String version) throws SBOLValidationException {
-		validateIdVersion(displayId, version);
-		if (defaultURIprefix == null) {
-			throw new IllegalStateException("The defaultURIprefix is not set. Please set it to a non-null value");
-		}
 	}
 
 	@SafeVarargs

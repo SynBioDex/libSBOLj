@@ -206,9 +206,7 @@ public abstract class Identified {
 	 */
 	void setDisplayId(String displayId) throws SBOLValidationException {
 		if (!URIcompliance.isDisplayIdValid(displayId)) {
-//			throw new SBOLValidationException(
-//					"Display id " + displayId + " is invalid for `" + identity + "'.");
-			throw new SBOLValidationException("sbol-10204");
+			throw new SBOLValidationException("sbol-10204",this);
 		}
 		this.displayId = displayId;
 	}
