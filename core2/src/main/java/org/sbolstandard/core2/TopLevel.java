@@ -64,7 +64,6 @@ public abstract class TopLevel extends Identified {
 	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
 	 * the level of the given object. 
 	 * @param objURI
-	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise.
 	 * @throws SBOLValidationException 
 	 */
 	void isURIcompliant() throws SBOLValidationException {	
@@ -80,7 +79,6 @@ public abstract class TopLevel extends Identified {
 	
 	/**
 	 * Check if this top-level object's and all of its descendants' URIs are all compliant. 
-	 * @return {@code true} if they are all compliant, {@code false} otherwise.
 	 * @throws SBOLValidationException 
 	 */
 	protected abstract void checkDescendantsURIcompliance() throws SBOLValidationException;
