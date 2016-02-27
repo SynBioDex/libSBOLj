@@ -1,5 +1,6 @@
 package org.sbolstandard.core2;
 
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -905,7 +906,11 @@ public class SBOLValidate {
 			} 
 			if (!compareFile.equals("")) {
 				SBOLDocument doc2 = SBOLReader.read(compareFile);
-				compareDocuments(fileName, doc, compareFile, doc2);
+				File f = new File(fileName);
+				String fileNameStr = f.getName();
+				f = new File(compareFile);
+				String compareFileStr = f.getName();
+				compareDocuments(fileNameStr, doc, compareFileStr, doc2);
 			}
 	        validateSBOL(doc, complete, compliant, bestPractice);
 	        if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
