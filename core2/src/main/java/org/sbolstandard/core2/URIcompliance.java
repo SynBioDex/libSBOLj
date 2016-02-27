@@ -171,7 +171,6 @@ final class URIcompliance {
 	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
 	 * the level of the given object. 
 	 * @param objURI
-	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise.
 	 * @throws SBOLValidationException 
 	 */
 	static final void isTopLevelURIformCompliant(URI topLevelURI) throws SBOLValidationException {
