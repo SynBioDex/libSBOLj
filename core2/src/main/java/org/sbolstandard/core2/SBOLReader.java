@@ -3249,7 +3249,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Sequence.encoding))
 			{
-				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
+				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
 					throw new SBOLValidationException("sbol-10403", topLevel.getIdentity());
 				}				
 				encoding = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
