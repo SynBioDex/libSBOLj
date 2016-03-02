@@ -12,6 +12,16 @@
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target_gene"/>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:direction rdf:resource="http://sbols.org/v2#inout"/>
+         <sbol:mapsTo>
+          <sbol:Component rdf:about="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/CRISPR_Template/cas9m_BFP_map/1.0">
+            <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/CRISPR_Template/cas9m_BFP_map"/>
+            <sbol:displayId>cas9m_BFP_map</sbol:displayId>
+            <sbol:version>1.0</sbol:version>
+            <sbol:refinement rdf:resource="http://sbols.org/v2#useLocal"/>
+            <sbol:remote rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/cas9_generic/1.0"/>
+            <sbol:local rdf:resource="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/cas9m_BFP/1.0"/>
+          </sbol:Component>
+        </sbol:mapsTo>
       </sbol:FunctionalComponent>
     </sbol:functionalComponent>
     <sbol:functionalComponent>

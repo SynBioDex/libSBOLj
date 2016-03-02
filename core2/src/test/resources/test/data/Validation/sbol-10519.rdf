@@ -593,13 +593,13 @@
       </sbol:Component>
     </sbol:component>
     <sbol:component>
-      <sbol:Component rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_cds/1.0">
+      <sbol:SequenceConstraint rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_cds/1.0">
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_cds"/>
         <sbol:displayId>EYFP_cds</sbol:displayId>
         <sbol:version>1.0</sbol:version>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/EYFP_cds"/>
-      </sbol:Component>
+      </sbol:SequenceConstraint>
     </sbol:component>
     <sbol:sequenceConstraint>
       <sbol:SequenceConstraint rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_gene_constraint/1.0">

@@ -9,7 +9,7 @@
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene"/>
         <sbol:displayId>target_gene</sbol:displayId>
         <sbol:version>1.0</sbol:version>
-        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target"/>
+        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target_gene"/>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:direction rdf:resource="http://sbols.org/v2#inout"/>
       </sbol:FunctionalComponent>
@@ -19,7 +19,7 @@
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target"/>
         <sbol:displayId>target</sbol:displayId>
         <sbol:version>1.0</sbol:version>
-        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target_gene"/>
+        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target"/>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:direction rdf:resource="http://sbols.org/v2#inout"/>
       </sbol:FunctionalComponent>
@@ -602,14 +602,14 @@
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceConstraint>
-      <sbol:SequenceConstraint rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_gene_constraint/1.0">
+      <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_gene_constraint/1.0">
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_gene_constraint"/>
         <sbol:displayId>EYFP_gene_constraint</sbol:displayId>
         <sbol:version>1.0</sbol:version>
         <sbol:restriction rdf:resource="http://sbols.org/v2#precedes"/>
         <sbol:subject rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/CRP_b/1.0"/>
         <sbol:object rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_cds/1.0"/>
-      </sbol:SequenceConstraint>
+      </sbol:ComponentDefinition>
     </sbol:sequenceConstraint>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/target/1.0">

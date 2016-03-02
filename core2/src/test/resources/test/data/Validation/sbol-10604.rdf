@@ -9,7 +9,7 @@
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene"/>
         <sbol:displayId>target_gene</sbol:displayId>
         <sbol:version>1.0</sbol:version>
-        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target_gene"/>
+        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_production"/>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:direction rdf:resource="http://sbols.org/v2#inout"/>
       </sbol:FunctionalComponent>
