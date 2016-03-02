@@ -4,7 +4,7 @@
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/seq/BBa_J23119"/>
     <sbol:displayId>BBa_J23119</sbol:displayId>
     <prov:wasDerivedFrom rdf:resource="http://parts.igem.org/Part:BBa_J23119:Design"/>
-    <sbol:elements>ttgacaghctagctcagtcctaggtataatgctagc</sbol:elements>
+    <sbol:elements>ttgaasdfcaghctagctcagtcctaghtataatgctagc</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
 </rdf:RDF>

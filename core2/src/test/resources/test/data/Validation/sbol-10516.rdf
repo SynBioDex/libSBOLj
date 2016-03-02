@@ -552,7 +552,7 @@
     <sbol:displayId>EYFP_cds</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource=""/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/CRa_U6/1.0">
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRa_U6"/>
@@ -872,6 +872,7 @@
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/gRNA_b_terminator"/>
     <sbol:displayId>gRNA_b_terminator</sbol:displayId>
     <sbol:version>1.0</sbol:version>
+    <sbol:sequence rdf:resource="http://sbols.org/CRISPR_Example/mKate_seq/1.0"/>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
   </sbol:ComponentDefinition>
@@ -880,7 +881,7 @@
     <sbol:displayId>mKate_seq</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:elements>TCTAAGGGCGAAGAGCTGATTAAGGAGAACATGCACATGAAGCTGTACATGGAGGGCACCGTGAACAACCACCACTTCAAGTGCACATCCGAGGGCGAAGGCAAGCCCTACGAGGGCACCCAGACCATGAGAATCAAGGTGGTCGAGGGCGGCCCTCTCCCCTTCGCCTTCGACATCCTGGCTACCAGCTTCATGTACGGCAGCAAAACCTTCATCAACCACACCCAGGGCATCCCCGACTTCTTTAAGCAGTCCTTCCCTGAGGTAAGTGGTCCTACCTCATCAGGAACATGTGTTTTAGAGCTAGAAATAGCAAGTTAAAATAAGGCTAGTCCGTTATCAACTTGAAAAAGTGGCACCGAGTCGGTGCTACTAACTCTCGAGTCTTCTTTTTTTTTTTCACAGGGCTTCACATGGGAGAGAGTCACCACATACGAAGACGGGGGCGTGCTGACCGCTACCCAGGACACCAGCCTCCAGGACGGCTGCCTCATCTACAACGTCAAGATCAGAGGGGTGAACTTCCCATCCAACGGCCCTGTGATGCAGAAGAAAACACTCGGCTGGGAGGCCTCCACCGAGATGCTGTACCCCGCTGACGGCGGCCTGGAAGGCAGAAGCGACATGGCCCTGAAGCTCGTGGGCGGGGGCCACCTGATCTGCAACTTGAAGACCACATACAGATCCAAGAAACCCGCTAAGAACCTCAAGATGCCCGGCGTCTACTATGTGGACAGAAGACTGGAAAGAATCAAGGAGGCCGACAAAGAGACCTACGTCGAGCAGCACGAGGTGGCTGTGGCCAGATACTGCG</sbol:elements>
-    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+    <sbol:encoding rdf:resource="should_have_table_1_encoding"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://sbols.org/CRISPR_Example/CRP_b_seq/1.0">
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRP_b_seq"/>

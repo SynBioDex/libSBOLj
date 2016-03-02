@@ -501,7 +501,6 @@
             <sbol:version>1.0</sbol:version>
             <sbol:refinement rdf:resource="http://sbols.org/v2#useLocal"/>
             <sbol:remote rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/cas9_generic/1.0"/>
-            <sbol:local rdf:resource="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/cas9m_BFP/1.0"/>
           </sbol:MapsTo>
         </sbol:mapsTo>
         <sbol:mapsTo>
@@ -552,7 +551,7 @@
     <sbol:displayId>EYFP_cds</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource=""/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/CRa_U6/1.0">
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRa_U6"/>
