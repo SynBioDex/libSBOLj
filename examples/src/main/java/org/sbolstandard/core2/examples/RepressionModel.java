@@ -374,9 +374,9 @@ public class RepressionModel {
 				datasheet.getIdentity());
 
 		ComponentDefinition pConst_alt = (ComponentDefinition) doc.createCopy(pConst, "pConst_alt");
-		pConst_alt.createAnnotation(
-				new QName(prURI, "", prPrefix),
-				URI.create("http://parts.igem.org/Part:BBa_J23100"));
+//		pConst_alt.createAnnotation(
+//				new QName(prURI, "", prPrefix),
+//				URI.create("http://parts.igem.org/Part:BBa_J23100"));
 		Sequence pConst_alt_seq = doc.createSequence("pConst_alt_seq", 
 											version, 
 											"ttgacggctagctcagtcctaggtacagtgctagc",
