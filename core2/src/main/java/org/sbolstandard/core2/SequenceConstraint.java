@@ -81,7 +81,7 @@ public class SequenceConstraint extends Identified {
 	public void setRestriction(RestrictionType restriction) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (restriction==null) {
-			throw new SBOLValidationException("sbol-11408",this);
+			throw new SBOLValidationException("sbol-11407",this);
 		}
 		try {
 			this.restriction = RestrictionType.convertToURI(restriction);
@@ -103,7 +103,7 @@ public class SequenceConstraint extends Identified {
 	public void setRestriction(URI restrictionURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (restrictionURI==null) {
-			throw new SBOLValidationException("sbol-11408",this);
+			throw new SBOLValidationException("sbol-11407",this);
 		}
 		this.restriction = restrictionURI;
 	}

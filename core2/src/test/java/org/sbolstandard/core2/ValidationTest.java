@@ -3,12 +3,14 @@
  */
 package org.sbolstandard.core2;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLStreamException;
@@ -80,6 +82,7 @@ public class ValidationTest {
 		}
 		File file;
 		SBOLDocument doc = null;
+		HashSet<Integer> testedRules = new HashSet<Integer>(); 
 		for (File f : file_base.listFiles()){
 			//InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
 			file = new File(f.getAbsolutePath());
@@ -108,6 +111,10 @@ public class ValidationTest {
 						//fail();
 
 					}
+					else {
+						String ruleId = error.split(":")[0].replace(".rdf", "").replace("sbol-", "").trim();
+						testedRules.add(Integer.parseInt(ruleId));
+					}
 				}
 
 			} else if (SBOLValidate.getNumErrors() > 0) {
@@ -118,16 +125,92 @@ public class ValidationTest {
 					if(!error.split(":")[0].equals(f.getName().replace(".rdf", "")))
 					{
 						//fail();
-
 					}
+					else {
+						String ruleId = error.split(":")[0].replace(".rdf", "").replace("sbol-", "").trim();
+						testedRules.add(Integer.parseInt(ruleId));
+					}
+
 				}
 			} else {
 				// TODO: fail
 				//fail();
 			}
 		}
+		// Print out remaining rules that have not had a test yet.
+		//System.out.println(testedRules);
+		HashSet<Integer> green = new HashSet<Integer>(Arrays.asList(
+				10101, 
+				10202, 10203, 10204, 10206, 10208, 10209, 10210, 10211, 10212, 10213, 10215, 10216, 10217, 10218, 10219, 
+				10402, 10403, 10405, 10406, 
+				10502, 10503, 10505, 10507, 10510, 10511, 10512, 10513, 10516, 10518, 10519, 10521, 10522, 10523, 10524, 
+				10602, 10603, 10604, 10605, 10606, 10607, 
+				10802, 10803, 10804, 10805, 10806, 10807, 10808, 10809, 10810, 10811, 
+				10902, 10903, 10904, 10905,
+				11002, 11102, 11103, 11104, 
+				11202, 
+				11402, 11403, 11404, 11405, 11406, 11407, 11412, 
+				11502, 11504, 11506, 11508, 11510, 11511, 
+				11602, 11604, 11605, 11606,	11607, 11608, 
+				11703, 11704, 11705, 11706, 
+				11802, 
+				11902, 11906, 
+				12001, 12002, 12003, 12004, 12006, 12007, 
+				12102, 12103, 
+				12201, 
+				12302));
+		HashSet<Integer> yellow = new HashSet<Integer>(Arrays.asList(
+				10102, 10103, 10104, 10201, 10214, 10517, 10409, 10410, 10411, 11507, 11509,
+				12202, 12203, 12204, 12205));
+		HashSet<Integer> pink = new HashSet<Integer>(Arrays.asList(
+				10205, 10207, 10301, 10401, 10404, 10501, 10504, 10506, 10508, 10509, 10514, 
+				10515, 10520, 10601, 10701, 10801, 10901, 11001, 11101, 11201, 11301, 11401,
+				11408, 11501, 11503, 11505, 11601, 11603, 11701, 11801, 11901, 11903, 11904,
+				12001, 12005, 12101, 12301));
+		if (pink.retainAll(testedRules) == true && pink.size() == 0) {
+			System.out.println("No tests for pink rules were created.");
+		}
+		else {
+			System.out.println("Mismatch: tests below were created but are marked pink.");
+			System.out.println(sortIntegerHashSet(pink));
+		}
+		if (yellow.retainAll(testedRules) == true && yellow.size() == 0) {
+			System.out.println("No tests for yellow rules were created.");
+		}
+		else {
+			System.out.println("Mismatch: tests below were created but are marked yellow:");
+			System.out.println(sortIntegerHashSet(yellow));
+		}
+		//System.out.println("tested rules: ");
+		//System.out.println(sortIntegerHashSet(testedRules));
+		
+		HashSet<Integer> greenNotTested = (HashSet<Integer>) green.clone();
+		green.retainAll(testedRules); // Remove all elements from green that are not in testedRules
+		//System.out.println(sortIntegerHashSet(green));
+		greenNotTested.removeAll(green);
+		System.out.println();
+		System.out.println("Rules that are checked in the library but not tested: ");
+		System.out.println(sortIntegerHashSet(greenNotTested));
+		
+		
+		
+		
+//		greenNotTested.retainAll(green);
+//		ArrayList<Integer> sortedGreenNotTested = new ArrayList<Integer>(greenNotTested);
+//		Collections.sort(sortedGreenNotTested);
+//		System.out.println("Rules that need tests:");
+//		System.out.println(sortedGreenNotTested);
+		
+//		ArrayList<Integer> sortedTestRules = new ArrayList<Integer>(testedRules);	// 
+//		Collections.sort(sortedTestRules);
+//		System.out.println(sortedTestRules);
 } 
-	
+
+	public ArrayList<Integer> sortIntegerHashSet(HashSet<Integer> set) {
+		ArrayList<Integer> sorted= new ArrayList<Integer>(set);
+		Collections.sort(sorted);
+		return sorted;
+	}
 	
 //	@Test (expected=SBOLValidationException.class)	
 //	public void test10101_alt1() throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException{

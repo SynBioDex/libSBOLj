@@ -1837,9 +1837,6 @@ public class SBOLReader
 				//at 			= Integer.parseInt(temp);
 				try{
 					at = Integer.parseInt(temp);
-					if (at < 0) {
-						throw new SBOLValidationException("sbol-11202",typeCut.getIdentity());
-					}
 				}
 				catch (NumberFormatException e) {
 					throw new SBOLValidationException("sbol-11202",typeCut.getIdentity());
@@ -1924,9 +1921,6 @@ public class SBOLReader
 				//start = Integer.parseInt(temp);
 				try{
 					start = Integer.parseInt(temp);
-					if (start <= 0) {
-						throw new SBOLValidationException("sbol-11102",typeRange.getIdentity());
-					}
 				}
 				catch (NumberFormatException e) {
 					throw new SBOLValidationException("sbol-11102",typeRange.getIdentity());
@@ -1967,9 +1961,6 @@ public class SBOLReader
 				//end  = Integer.parseInt(temp);
 				try{
 					end = Integer.parseInt(temp);
-					if (end <= 0) {
-						throw new SBOLValidationException("sbol-11103",typeRange.getIdentity());
-					}
 				}
 				catch (NumberFormatException e) {
 					throw new SBOLValidationException("sbol-11103",typeRange.getIdentity());
