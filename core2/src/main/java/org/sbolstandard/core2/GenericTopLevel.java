@@ -61,7 +61,7 @@ public class GenericTopLevel extends TopLevel{
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (rdfType == null) {
 			//throw new SBOLValidationException("RDF type is a required field.");
-			throw new SBOLValidationException("sbol-12302");
+			throw new SBOLValidationException("sbol-12302", this);
 		}
 		this.rdfType = rdfType;
 	}

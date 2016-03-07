@@ -168,17 +168,21 @@ public class ValidationTest {
 				11408, 11501, 11503, 11505, 11601, 11603, 11701, 11801, 11901, 11903, 11904,
 				12001, 12005, 12101, 12301));
 		if (pink.retainAll(testedRules) == true && pink.size() == 0) {
+			System.out.println();
 			System.out.println("No tests for pink rules were created.");
 		}
 		else {
+			System.out.println();
 			System.out.println("Mismatch: tests below were created but are marked pink.");
 			System.out.println(sortIntegerHashSet(pink));
 		}
 		if (yellow.retainAll(testedRules) == true && yellow.size() == 0) {
+			System.out.println();
 			System.out.println("No tests for yellow rules were created.");
 		}
 		else {
-			System.out.println("Mismatch: tests below were created but are marked yellow:");
+			System.out.println();
+			System.out.println("Warning: tests below were created but are marked yellow:");
 			System.out.println(sortIntegerHashSet(yellow));
 		}
 		//System.out.println("tested rules: ");
