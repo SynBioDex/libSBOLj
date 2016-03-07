@@ -8,6 +8,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
@@ -471,6 +472,9 @@ public class ModuleDefinition extends TopLevel {
 		interaction.setSBOLDocument(this.sbolDocument);
 		interaction.setModuleDefinition(this);
 		for (Participation participation : interaction.getParticipations()) {
+			if (this.getFunctionalComponent(participation.getParticipantURI())==null) {
+				throw new SBOLValidationException("sbol-12003");
+			}
 			participation.setSBOLDocument(sbolDocument);
 			participation.setModuleDefinition(this);
 		}
