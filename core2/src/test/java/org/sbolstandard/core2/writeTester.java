@@ -24,11 +24,18 @@ public class writeTester {
 	/**
 	 * Top level types
 	 * @throws SBOLValidationException 
+	 * @throws CoreIoException 
+	 * @throws XMLStreamException 
 	 *
 	 */
 
-	public static void main( String[] args ) throws FactoryConfigurationError, SBOLValidationException
+	public static void main( String[] args ) throws FactoryConfigurationError, SBOLValidationException, XMLStreamException, CoreIoException
 	{
+		SBOLDocument document = new SBOLDocument();
+		document.createSequence("displayID", "ACGT", org.sbolstandard.core2.Sequence.IUPAC_DNA);
+		SBOLWriter.write(document, (System.out));
+
+
 		get_myParts(sbolDocument);
 		//ComponentDefinition cd = 
 		sbolDocument.getComponentDefinition("ptetlacI", "1.0");

@@ -167,7 +167,7 @@ public class SequenceConstraint extends Identified {
 		if (subjectURI==null) {
 			throw new SBOLValidationException("sbol-11402", this);
 		}
-		if (subjectURI==object) {
+		if (subjectURI.equals(object)) {
 			throw new SBOLValidationException("sbol-11406", this);
 		}
 		this.subject = subjectURI;

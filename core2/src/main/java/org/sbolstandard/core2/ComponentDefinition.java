@@ -1371,12 +1371,13 @@ public class ComponentDefinition extends TopLevel {
 		sequenceConstraint.setSBOLDocument(this.sbolDocument);
 		sequenceConstraint.setComponentDefinition(this);
 		if (sequenceConstraint.getSubject()==null) {
-			//throw new SBOLValidationException("Component '" + sequenceConstraint.getSubjectURI() + "' does not exist.");
-			throw new SBOLValidationException("sbol-11402", sequenceConstraint);
+				throw new SBOLValidationException("sbol-11402", sequenceConstraint);
 		}
 		if (sequenceConstraint.getObject()==null) {
-			//throw new SBOLValidationException("Component '" + sequenceConstraint.getObjectURI() + "' does not exist.");
 			throw new SBOLValidationException("sbol-11404", sequenceConstraint);
+				}
+		if (sequenceConstraint.getSubjectURI().equals(sequenceConstraint.getObjectURI())) {
+			throw new SBOLValidationException("sbol-11406", sequenceConstraint);
 		}
 		addChildSafely(sequenceConstraint, sequenceConstraints, "sequenceConstraint",
 				components, sequenceAnnotations);
