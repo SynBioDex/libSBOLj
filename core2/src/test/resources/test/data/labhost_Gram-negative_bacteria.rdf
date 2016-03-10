@@ -5,7 +5,9 @@
     <sbol:displayId>Gram_negative_bacteria</sbol:displayId>
     <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Collection:Gram-negative_bacteria"/>
     <dcterms:title>Collection of Gram-negative bacteria features</dcterms:title>
-    <dcterms:description>This is a collection of features that have been associated with Gram-negative bacteria plasmids downloaded from the SnapGene Resources repository (http://www.snapgene.com).</dcterms:description>
+    <dcterms:description>This is a collection of features that have been
+			associated with Gram-negative bacteria plasmids downloaded from the
+			SnapGene Resources repository (http://www.snapgene.com).</dcterms:description>
     <sbol:member rdf:resource="http://www.async.ece.utah.edu/TpR"/>
     <sbol:member rdf:resource="http://www.async.ece.utah.edu/KanR_002"/>
     <sbol:member rdf:resource="http://www.async.ece.utah.edu/MCS_079"/>
@@ -39,16 +41,6 @@
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000001"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_MCS_079_seq"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/araBAD_promoter_002">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/araBAD_promoter_002"/>
-    <sbol:displayId>araBAD_promoter_002</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:araBAD_promoter-002"/>
-    <dcterms:title>araBAD promoter-002</dcterms:title>
-    <dcterms:description>promoter of the L-arabinose operon of E. coli; the araC regulatory gene is transcribed in the opposite</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_araBAD_promoter_002_seq"/>
-  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/pBBR1_Rep">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pBBR1_Rep"/>
     <sbol:displayId>pBBR1_Rep</sbol:displayId>
@@ -57,16 +49,6 @@
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_pBBR1_Rep_seq"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/AmpR_015">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AmpR_015"/>
-    <sbol:displayId>AmpR_015</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:AmpR-015"/>
-    <dcterms:title>AmpR-015</dcterms:title>
-    <dcterms:description>confers resistance to ampicillin, carbenicillin, and related antibiotics</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_AmpR_015_seq"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/KanR_002">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/KanR_002"/>
@@ -113,7 +95,8 @@
     <sbol:displayId>araBAD_promoter_001</sbol:displayId>
     <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:araBAD_promoter-001"/>
     <dcterms:title>araBAD promoter-001</dcterms:title>
-    <dcterms:description>promoter of the L-arabinose operon of E. coli; the araC regulatory gene is transcribed in the opposite</dcterms:description>
+    <dcterms:description>promoter of the L-arabinose operon of E. coli; the araC
+					regulatory gene is transcribed in the opposite</dcterms:description>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_araBAD_promoter_001_seq"/>
@@ -126,6 +109,28 @@
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_araC_002_seq"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/araBAD_promoter_002">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/araBAD_promoter_002"/>
+    <sbol:displayId>araBAD_promoter_002</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:araBAD_promoter-002"/>
+    <dcterms:title>araBAD promoter-002</dcterms:title>
+    <dcterms:description>promoter of the L-arabinose operon of E. coli; the araC
+					regulatory gene is transcribed in the opposite</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_araBAD_promoter_002_seq"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/AmpR_015">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AmpR_015"/>
+    <sbol:displayId>AmpR_015</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:AmpR-015"/>
+    <dcterms:title>AmpR-015</dcterms:title>
+    <dcterms:description>confers resistance to ampicillin, carbenicillin, and
+					related antibiotics</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_AmpR_015_seq"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/TpR">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/TpR"/>
