@@ -219,6 +219,7 @@ public class SBOLReader
 				//throw new SBOLValidationException("No RDF namespace found.");
 				throw new SBOLValidationException("sbol-10102");
 			}
+			/* TODO: not sure this is needed anymore
 			if (!foundDC) {
 				//throw new SBOLValidationException("No dublin core namespace found.");
 				throw new SBOLValidationException("sbol-10103");
@@ -227,6 +228,7 @@ public class SBOLReader
 				//throw new SBOLValidationException("No provenance namespace found.");
 				throw new SBOLValidationException("sbol-10104");
 			}
+			*/
 			return SBOLVERSION2;
 		}
 		else {
@@ -437,14 +439,14 @@ public class SBOLReader
 		clearErrors();
 		
 		DocumentRoot<QName> document = null;
-		if (fileType.equals(JSON)) {
-			document = readJSON(new StringReader(inputStreamString));
-		} else if (fileType.equals(TURTLE)){
-			document = readTurtle(new StringReader(inputStreamString));
-		} else {
-			document = readRDF(new StringReader(inputStreamString));
-		}
 		try {
+			if (fileType.equals(JSON)) {
+				document = readJSON(new StringReader(inputStreamString));
+			} else if (fileType.equals(TURTLE)){
+				document = readTurtle(new StringReader(inputStreamString));
+			} else {
+				document = readRDF(new StringReader(inputStreamString));
+			}
 			if (getSBOLVersion(document).equals(SBOLVERSION1))
 			{
 				scanner.close();
@@ -526,11 +528,25 @@ public class SBOLReader
 		return StringifyQName.string2qname.mapDR(root);
 	}
 
-	private static DocumentRoot<QName> readRDF(Reader reader) throws CoreIoException, XMLStreamException, FactoryConfigurationError
+	private static DocumentRoot<QName> readRDF(Reader reader) throws XMLStreamException, FactoryConfigurationError, SBOLValidationException
 	{
 		XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader(reader);
 		RdfIo rdfIo 			  = new RdfIo();
-		return rdfIo.createIoReader(xmlReader).read();
+		try {
+			return rdfIo.createIoReader(xmlReader).read();
+		}
+		catch (CoreIoException e) {
+			if (e.getMessage().contains("ElementPrefixUnbound")) {
+				if (e.getMessage().contains("rdf")) {
+					throw new SBOLValidationException("sbol-10102");
+				} else if (e.getMessage().contains("title")||e.getMessage().contains("description")) {
+					throw new SBOLValidationException("sbol-10103");
+				} else if (e.getMessage().contains("wasDerivedFrom")) {
+					throw new SBOLValidationException("sbol-10104");
+				}
+			} 
+			throw new XMLStreamException(e.getMessage());
+		}
 	}
 
 	private static DocumentRoot<QName> readTurtle(Reader reader) throws CoreIoException

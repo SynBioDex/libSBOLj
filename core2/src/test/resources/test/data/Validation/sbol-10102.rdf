@@ -1,9 +1,8 @@
 <?xml version="1.0" ?>
-<rdf:RDF xmlns:prov="http://www.w3.org/ns/prov#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#">
+<rdf:RDF xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://should_be_purl.org/dc/terms/">
   <sbol:ModuleDefinition rdf:about="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/1.0">
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit"/>
     <sbol:displayId>CRPb_characterization_Circuit</sbol:displayId>
-    <dcterms:title>title</dcterms:title>
     <sbol:version>1.0</sbol:version>
     <sbol:functionalComponent>
       <sbol:FunctionalComponent rdf:about="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/cas9m_BFP_gene/1.0">

@@ -140,7 +140,7 @@ public class ValidationTest {
 		// Print out remaining rules that have not had a test yet.
 		//System.out.println(testedRules);
 		HashSet<Integer> green = new HashSet<Integer>(Arrays.asList(
-				10101, 
+				10101, 10102, 10103, 10104, 
 				10202, 10203, 10204, 10206, 10208, 10209, 10210, 10211, 10212, 10213, 10215, 10216, 10217, 10218, 10219, 
 				10402, 10403, 10405, 10406, 
 				10502, 10503, 10505, 10507, 10510, 10511, 10512, 10513, 10516, 10518, 10519, 10521, 10522, 10523, 10524, 
@@ -158,7 +158,7 @@ public class ValidationTest {
 				12001, 12002, 12003, 12004, 12006, 12007, 
 				12102, 12103));
 		HashSet<Integer> yellow = new HashSet<Integer>(Arrays.asList(
-				10102, 10103, 10104, 10201, 10214, 10517, 10409, 10410, 10411, 11507, 11509,
+				10201, 10214, 10517, 10409, 10410, 10411, 11507, 11509,
 				12201, 12202, 12203, 12204, 12205, 12206, 12302));
 		HashSet<Integer> pink = new HashSet<Integer>(Arrays.asList(
 				10205, 10207, 10301, 10401, 10404, 10501, 10504, 10506, 10508, 10509, 10514, 
