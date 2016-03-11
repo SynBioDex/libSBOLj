@@ -247,6 +247,35 @@ public class SBOLValidate {
 		}
 	}
 	
+	static void checkSequenceConstraints(ComponentDefinition componentDefinition) {
+		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
+			SequenceAnnotation saSubject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getSubject());
+			SequenceAnnotation saObject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getObject());
+			if (saSubject==null || saObject==null) return;
+			if (sequenceConstraint.getRestriction().equals(RestrictionType.PRECEDES)) {
+				if (saObject.compareTo(saSubject) < 0) {
+					errors.add(new SBOLValidationException("sbol-11409", sequenceConstraint).getExceptionMessage());
+				}
+			} else if (sequenceConstraint.getRestriction().equals(RestrictionType.SAME_ORIENTATION_AS)) {
+				for (Location locSubject : saSubject.getLocations()) {
+					for (Location locObject : saObject.getLocations()) {
+						if (!locSubject.getOrientation().equals(locObject.getOrientation())) {
+							errors.add(new SBOLValidationException("sbol-11410", sequenceConstraint).getExceptionMessage());
+						}
+					}
+				}
+			} else if (sequenceConstraint.getRestriction().equals(RestrictionType.OPPOSITE_ORIENTATION_AS)) {
+				for (Location locSubject : saSubject.getLocations()) {
+					for (Location locObject : saObject.getLocations()) {
+						if (locSubject.getOrientation().equals(locObject.getOrientation())) {
+							errors.add(new SBOLValidationException("sbol-11411", sequenceConstraint).getExceptionMessage());
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	static void validateOntologyUsage(SBOLDocument sbolDocument) {
 		SequenceOntology so = new SequenceOntology();
 		SystemsBiologyOntology sbo = new SystemsBiologyOntology();
@@ -446,6 +475,12 @@ public class SBOLValidate {
 			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && foundSmiles) {
 				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
 			}
+		}
+	}
+	
+	static void validateSequenceConstraints(SBOLDocument sbolDocument) {
+		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
+			checkSequenceConstraints(componentDefinition);
 		}
 	}
 	
@@ -651,6 +686,7 @@ public class SBOLValidate {
 		validateWasDerivedFromVersion(sbolDocument);
 		validateCircularReferences(sbolDocument);
 		validateURIuniqueness(sbolDocument);
+		validateSequenceConstraints(sbolDocument);
         if (compliant) validateCompliance(sbolDocument);
         if (complete) validateCompleteness(sbolDocument);
         if (bestPractice) {

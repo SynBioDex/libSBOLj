@@ -854,6 +854,21 @@ public class ComponentDefinition extends TopLevel {
 	public SequenceAnnotation getSequenceAnnotation(URI sequenceAnnotationURI) {
 		return sequenceAnnotations.get(sequenceAnnotationURI);
 	}
+	
+	/**
+	 * Returns the sequenceAnnotation for a given Component
+	 *
+	 * @param component
+	 * @return the matching SequenceAnnotation instance if present, or
+	 *         {@code null} otherwise.
+	 */
+	public SequenceAnnotation getSequenceAnnotation(Component component) {
+		for (SequenceAnnotation sequenceAnnotation : this.getSequenceAnnotations()) {
+			if (sequenceAnnotation.getComponent() != null &&
+				sequenceAnnotation.getComponent().equals(component)) return sequenceAnnotation;
+		}
+		return null;
+	}
 
 	/**
 	 * Returns the set of SequenceAnnotation instances owned by this

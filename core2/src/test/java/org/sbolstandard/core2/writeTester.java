@@ -31,9 +31,9 @@ public class writeTester {
 
 	public static void main( String[] args ) throws FactoryConfigurationError, SBOLValidationException, XMLStreamException, CoreIoException
 	{
-		SBOLDocument document = new SBOLDocument();
-		document.createSequence("displayID", "ACGT", org.sbolstandard.core2.Sequence.IUPAC_DNA);
-		SBOLWriter.write(document, (System.out));
+		//SBOLDocument document = new SBOLDocument();
+		//document.createSequence("displayID", "ACGT", org.sbolstandard.core2.Sequence.IUPAC_DNA);
+		//SBOLWriter.write(document, (System.out));
 
 
 		get_myParts(sbolDocument);
@@ -348,6 +348,7 @@ public class writeTester {
 		//get_L(cd);
 		get_t_structAnnotate(cd);
 		get_l_structAnnotate(cd);
+		//cd.createSequenceConstraint("consPL", RestrictionType.PRECEDES, "ptet", "lacICDS");
 		return cd;
 	}
 
