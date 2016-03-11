@@ -8,7 +8,6 @@
       <sbol:FunctionalComponent rdf:about="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene/1.0">
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene"/>
         <sbol:displayId>target_gene</sbol:displayId>
-        <prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target/1.0"/>
         <sbol:version>1.0</sbol:version>
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target_gene"/>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
@@ -19,7 +18,6 @@
       <sbol:FunctionalComponent rdf:about="http://sbols.org/CRISPR_Example/CRISPR_Template/target/1.0">
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target"/>
         <sbol:displayId>target</sbol:displayId>
-        <prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene/1.0"/>
         <sbol:version>1.0</sbol:version>
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target"/>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
@@ -895,6 +893,7 @@
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRa_U6_seq"/>
     <sbol:displayId>CRa_U6_seq</sbol:displayId>
     <sbol:version>1.0</sbol:version>
+    <prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/gRNA_b_seq/1.0"/>
     <sbol:elements>GGTTTACCGAGCTCTTATTGGTTTTCAAACTTCATTGACTGTGCCAAGGTCGGGCAGGAAGAGGGCCTATTTCCCATGATTCCTTCATATTTGCATATACGATACAAGGCTGTTAGAGAGATAATTAGAATTAATTTGACTGTAAACACAAAGATATTAGTACAAAATACGTGACGTAGAAAGTAATAATTTCTTGGGTAGTTTGCAGTTTTAAAATTATGTTTTAAAATGGACTATCATATGCTTACCGTAACTTGAAATATAGAACCGATCCTCCCATTGGTATATATTATAGAACCGATCCTCCCATTGGCTTGTGGAAAGGACGAAACACCGTACCTCATCAGGAACATGTGTTTAAGAGCTATGCTGGAAACAGCAGAAATAGCAAGTTTAAATAAGGCTAGTCCGTTATCAACTTGAAAAAGTGGCACCGAGTCGGTGCTTTTTTTGGTGCGTTTTTATGCTTGTAGTATTGTATAATGTTTTT</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
@@ -902,6 +901,7 @@
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/gRNA_b_seq"/>
     <sbol:displayId>gRNA_b_seq</sbol:displayId>
     <sbol:version>1.0</sbol:version>
+    <prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRa_U6_seq/1.0"/>
     <sbol:elements>AAGGTCGGGCAGGAAGAGGGCCTATTTCCCATGATTCCTTCATATTTGCATATACGATACAAGGCTGTTAGAGAGATAATTAGAATTAATTTGACTGTAAACACAAAGATATTAGTACAAAATACGTGACGTAGAAAGTAATAATTTCTTGGGTAGTTTGCAGTTTTAAAATTATGTTTTAAAATGGACTATCATATGCTTACCGTAACTTGAAAGTATTTCGATTTCTTGGCTTTATATATCTTGTGGAAAGGACGAAACACCGTACCTCATCAGGAACATGTGTTTAAGAGCTATGCTGGAAACAGCAGAAATAGCAAGTTTAAATAAGGCTAGTCCGTTATCAACTTGAAAAAGTGGCACCGAGTCGGTGCTTTTTTT</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>

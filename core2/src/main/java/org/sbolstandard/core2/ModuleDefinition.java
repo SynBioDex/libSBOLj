@@ -473,7 +473,7 @@ public class ModuleDefinition extends TopLevel {
 		interaction.setModuleDefinition(this);
 		for (Participation participation : interaction.getParticipations()) {
 			if (this.getFunctionalComponent(participation.getParticipantURI())==null) {
-				throw new SBOLValidationException("sbol-12003");
+				throw new SBOLValidationException("sbol-12003",participation);
 			}
 			participation.setSBOLDocument(sbolDocument);
 			participation.setModuleDefinition(this);

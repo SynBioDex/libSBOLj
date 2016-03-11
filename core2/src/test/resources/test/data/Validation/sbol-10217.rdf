@@ -5,8 +5,8 @@
     <sbol:displayId>CRPb_characterization_Circuit</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:functionalComponent>
-      <sbol:FunctionalComponent rdf:about="http://uri_is_not_compliant_sbols.org/CRISPR_Example/CRPb_characterization_Circuit/cas9m_BFP_gene/1.0">
-        <sbol:persistentIdentity rdf:resource="http://uri_is_not_compliant_sbols.org/CRISPR_Example/CRPb_characterization_Circuit/cas9m_BFP_gene"/>
+      <sbol:FunctionalComponent rdf:about="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit1/cas9m_BFP_gene/1.0">
+        <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit1/cas9m_BFP_gene"/>
         <sbol:displayId>cas9m_BFP_gene</sbol:displayId>
         <sbol:version>1.0</sbol:version>
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/cas9m_BFP_gene/1.0"/>
@@ -272,7 +272,7 @@
             <sbol:displayId>cas9m_BFP_gene</sbol:displayId>
             <sbol:version>1.0</sbol:version>
             <sbol:role rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000598"/>
-            <sbol:participant rdf:resource="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/cas9m_BFP_gene/1.0"/>
+            <sbol:participant rdf:resource="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit1/cas9m_BFP_gene/1.0"/>
           </sbol:Participation>
         </sbol:participation>
         <sbol:participation>
