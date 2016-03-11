@@ -543,8 +543,16 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10103");
 				} else if (e.getMessage().contains("wasDerivedFrom")) {
 					throw new SBOLValidationException("sbol-10104");
+				} else {
+					throw new SBOLValidationException("sbol-10214");
 				}
 			} 
+			throw new XMLStreamException(e.getMessage());
+		}
+		catch (ClassCastException e) {
+			if (e.getMessage().contains("IdentifiableDocument")) {
+				throw new SBOLValidationException("sbol-10201");
+			}
 			throw new XMLStreamException(e.getMessage());
 		}
 	}
