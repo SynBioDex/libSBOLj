@@ -590,7 +590,7 @@ public class GenBank {
 	{
 		SBOLDocument doc = new SBOLDocument();
 		doc.setCreateDefaults(true);
-		if (URIPrefix!=null) {
+		if (URIPrefix==null) {
 			throw new SBOLValidationException("No URI prefix has been provided.");
 			// TODO: (Validation) missing rule: rule for URI prefix.
 		}
