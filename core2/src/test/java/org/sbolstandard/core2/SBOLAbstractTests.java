@@ -1401,9 +1401,9 @@ public abstract class SBOLAbstractTests {
 		someCompDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 		someCompDef.addRole(SequenceOntology.PROMOTER);
 		ComponentDefinition someCompDefCDS = document.createComponentDefinition("someCompDefCDS", VERSION_1_0, types);
-		someCompDefCDS.addRole(SequenceOntology.CDS)
-		;
+		someCompDefCDS.addRole(SequenceOntology.CDS);
 		Component someComponent = someCompDef.createComponent("someComponent", AccessType.PUBLIC, "someCompDefCDS", VERSION_1_0);
+		someCompDef.createComponent("someOtherComponent", AccessType.PUBLIC, "someCompDefCDS", VERSION_1_0);
 		someComponent.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
 		SequenceAnnotation someSequenceAnnotation = someCompDef.createSequenceAnnotation("someSequenceAnnotation", "cut", 1, 10);
@@ -1413,7 +1413,7 @@ public abstract class SBOLAbstractTests {
 
 		//		someSequenceAnnotation.setLocation(); //TODO range, multiRange, cut - how to access?
 
-		SequenceConstraint someSequenceConstraint = someCompDef.createSequenceConstraint("someSequenceConstraint", RestrictionType.PRECEDES, "someComponent", "someComponent");
+		SequenceConstraint someSequenceConstraint = someCompDef.createSequenceConstraint("someSequenceConstraint", RestrictionType.PRECEDES, "someComponent", "someOtherComponent");
 		someSequenceConstraint.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
 		GenericTopLevel someGenericTopLevel = document.createGenericTopLevel("someGenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));

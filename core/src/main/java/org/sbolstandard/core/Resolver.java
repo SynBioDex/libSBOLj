@@ -2,9 +2,6 @@ package org.sbolstandard.core;
 
 /**
  * Generic resolution service.
- *
- * @type E   entity type that is resolved
- * @type ID  the identifier type.
  */
 @Deprecated
 public interface Resolver<E, ID> {

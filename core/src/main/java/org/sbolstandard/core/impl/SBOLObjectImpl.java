@@ -39,14 +39,16 @@ public abstract class SBOLObjectImpl extends SBOLVisitableImpl implements SBOLOb
     /**
      * {@inheritDoc}
      */
-    public URI getURI() {
+    @Override
+	public URI getURI() {
         return uri;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setURI(URI value) {
+    @Override
+	public void setURI(URI value) {
         this.uri = value;
     }
 }

@@ -196,7 +196,6 @@ public class SBOLDocument {
 	public ModuleDefinition createModuleDefinition(String URIprefix,String displayId, String version) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		ModuleDefinition md = createModuleDefinition(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, version, typesInURIs));
 		md.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, "", typesInURIs));
 		md.setDisplayId(displayId);
@@ -271,8 +270,7 @@ public class SBOLDocument {
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				for (Module m : md.getModules()) {
 					if (m.getDefinitionURI().equals(moduleDefinition.getIdentity())) {
-						throw new SBOLValidationException("Cannot remove " + moduleDefinition.getIdentity() +
-								" since it is in use.");
+						throw new SBOLValidationException("sbol-11703");
 					}
 				}
 			}
@@ -293,13 +291,9 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching ModuleDefinition instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public ModuleDefinition getModuleDefinition(String displayId,String version) {
 		try {
-			validateIdentityData(displayId,version);
 			return moduleDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.MODULE_DEFINITION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -482,7 +476,6 @@ public class SBOLDocument {
 	public Collection createCollection(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		Collection c = createCollection(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, version, typesInURIs));
 		c.setDisplayId(displayId);
 		c.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, "", typesInURIs));
@@ -534,13 +527,9 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching Collection instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public Collection getCollection(String displayId,String version) {
 		try { 
-			validateIdentityData(displayId,version);
 			return collections.get(createCompliantURI(defaultURIprefix,TopLevel.COLLECTION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -719,7 +708,6 @@ public class SBOLDocument {
 	public Model createModel(String URIprefix, String displayId, String version, URI source, URI language, URI framework) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		Model model = createModel(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, version, typesInURIs),
 				source, language, framework);
 		model.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, "", typesInURIs));
@@ -776,8 +764,7 @@ public class SBOLDocument {
 		if (complete) {
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				if (md.containsModel(model.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + model.getIdentity() +
-							" since it is in use.");
+					throw new SBOLValidationException("sbol-11608", md);
 				}
 			}
 		}
@@ -797,13 +784,9 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching Model instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public Model getModel(String displayId,String version) {
 		try {
-			validateIdentityData(displayId,version);
 			return models.get(createCompliantURI(defaultURIprefix,TopLevel.MODEL,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -1075,7 +1058,6 @@ public class SBOLDocument {
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, Set<URI> types) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		ComponentDefinition cd = createComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
 				displayId, version, typesInURIs), types);
 		cd.setDisplayId(displayId);
@@ -1120,17 +1102,9 @@ public class SBOLDocument {
 	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
 	 */
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, URI type) throws SBOLValidationException {
-		checkReadOnly();
-		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		HashSet<URI> types = new HashSet<URI>();
 		types.add(type);
-		ComponentDefinition cd = createComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
-				displayId, version, typesInURIs), types);
-		cd.setDisplayId(displayId);
-		cd.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION, displayId,"", typesInURIs));
-		cd.setVersion(version);
-		return cd;
+		return createComponentDefinition(URIprefix,displayId,version,types);
 	}
 
 	/**
@@ -1188,16 +1162,14 @@ public class SBOLDocument {
 			for (ComponentDefinition cd : componentDefinitions.values()) {
 				for (Component c : cd.getComponents()) {
 					if (c.getDefinitionURI().equals(componentDefinition.getIdentity())) {
-						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
-								" since it is in use.");
+						throw new SBOLValidationException("sbol-10604", c);
 					}
 				}
 			}
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				for (FunctionalComponent c : md.getFunctionalComponents()) {
 					if (c.getDefinitionURI().equals(componentDefinition.getIdentity())) {
-						throw new SBOLValidationException("Cannot remove " + componentDefinition.getIdentity() +
-								" since it is in use.");
+						throw new SBOLValidationException("sbol-10604", c);
 					}
 				}
 			}
@@ -1218,13 +1190,9 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching ComponentDefinition instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public ComponentDefinition getComponentDefinition(String displayId,String version) {
 		try {
-			validateIdentityData(displayId,version);
 			return componentDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.COMPONENT_DEFINITION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -1248,9 +1216,21 @@ public class SBOLDocument {
 	 * @return the set of {@code ComponentDefinition} instances owned by this SBOLDocument object.
 	 */
 	public Set<ComponentDefinition> getComponentDefinitions() {
-		//		return (List<Component>) components.values();
 		Set<ComponentDefinition> components = new HashSet<>();
 		components.addAll(this.componentDefinitions.values());
+		return components;
+	}
+	
+	public Set<ComponentDefinition> getRootComponentDefinitions() {
+		Set<ComponentDefinition> components = getComponentDefinitions();
+		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
+			for (Component component : componentDefinition.getComponents()) {
+				ComponentDefinition childDefinition = component.getDefinition();
+				if (childDefinition != null && components.contains(childDefinition)) {
+					components.remove(childDefinition);
+				}
+			}
+		}
 		return components;
 	}
 
@@ -1415,7 +1395,6 @@ public class SBOLDocument {
 	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		Sequence s = createSequence(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, version, typesInURIs),
 				elements, encoding);
 		s.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, "", typesInURIs));
@@ -1628,6 +1607,51 @@ public class SBOLDocument {
 	}
 
 	/**
+	 * Renames the given TopLevel instance with this SBOLDocument object's {@code defaultURIprefix}
+	 * the given arguments, and an empty version string, and then adds it to the
+	 * corresponding top-level list owned by this SBOLDocument object.
+	 * <p>
+	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
+	 * validity checks and create a copy top-level instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
+	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * If either the given {@code displayId} or {@code version}, then the corresponding field
+	 * is extracted from the given {@code topLevel} instance. Both extracted fields are required
+	 * to be valid and not {@code null}.
+	 * <p>
+	 * A top-level instance with a compliant URI using the given arguments,
+	 * and then its display ID, persistent identity, and version fields are set. This
+	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object.
+	 *
+	 * @param topLevel
+	 * @param displayId
+	 * @return the created top-level instance
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws SBOLValidationException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
+	 */
+	public TopLevel rename(TopLevel topLevel, String displayId) throws SBOLValidationException {
+		TopLevel renamedTopLevel = createCopy(topLevel,defaultURIprefix,displayId,"");
+		removeTopLevel(topLevel);
+		return renamedTopLevel;
+	}
+	
+	/**
 	 * Creates a copy of the given TopLevel instance with this SBOLDocument object's {@code defaultURIprefix}
 	 * and the given arguments, and then adds it to the
 	 * corresponding top-level list owned by this SBOLDocument object.
@@ -1670,6 +1694,52 @@ public class SBOLDocument {
 	public TopLevel createCopy(TopLevel topLevel, String displayId, String version) throws SBOLValidationException {
 		return createCopy(topLevel,defaultURIprefix,displayId,version);
 	}
+	
+	/**
+	 * Renames the given TopLevel instance with this SBOLDocument object's {@code defaultURIprefix}
+	 * and the given arguments, and then adds it to the
+	 * corresponding top-level list owned by this SBOLDocument object.
+	 * <p>
+	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
+	 * validity checks and create a copy top-level instance.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
+	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * If either the given {@code displayId} or {@code version}, then the corresponding field
+	 * is extracted from the given {@code topLevel} instance. Both extracted fields are required
+	 * to be valid and not {@code null}.
+	 * <p>
+	 * A top-level instance with a compliant URI using the given arguments,
+	 * and then its display ID, persistent identity, and version fields are set. This
+	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object.
+	 *
+	 * @param topLevel
+	 * @param displayId
+	 * @param version
+	 * @return the created top-level instance
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws SBOLValidationException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
+	 */
+	public TopLevel rename(TopLevel topLevel, String displayId, String version) throws SBOLValidationException {
+		TopLevel renamedTopLevel = createCopy(topLevel,defaultURIprefix,displayId,version);
+		removeTopLevel(topLevel);
+		return renamedTopLevel;
+	}
 
 	/**
 	 * Creates a copy of the given TopLevel instance with the given arguments, and then adds it to
@@ -1710,9 +1780,8 @@ public class SBOLDocument {
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
 		checkReadOnly();
-		if (!URIcompliance.isTopLevelURIcompliant(topLevel)) {
-			throw new SBOLValidationException("Cannot copy a non-compliant SBOL object");
-		}
+		// TODO: is this check needed, it prevents copying of non-compliant objects even if making compliant
+		topLevel.isURIcompliant();
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
 			URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -1725,7 +1794,7 @@ public class SBOLDocument {
 		if (version == null) {
 			version = topLevel.getVersion();
 		}
-		validateIdVersion(displayId,version);
+		//validateIdVersion(displayId,version);
 		if (topLevel instanceof Collection) {
 			Collection newCollection = ((Collection) topLevel).copy(URIprefix, displayId, version);
 			addCollection(newCollection);
@@ -1757,10 +1826,53 @@ public class SBOLDocument {
 			return newGenericTopLevel;
 		}
 		else {
-			throw new SBOLValidationException("Unable to copy " + topLevel.getIdentity());
+			throw new IllegalArgumentException("Unable to copy " + topLevel.getIdentity());
 		}
 	}
 
+	/**
+	 * Creates a copy of the given TopLevel instance with the given arguments, and then adds it to
+	 * the corresponding top-level list owned by this SBOLDocument object.
+	 * <p>
+	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * is allowed to be edited.
+	 * <p>
+	 * If the given {@code URIprefix} is {@code null}, then it is extracted from the given
+	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
+	 * "/" is appended to the end of it.
+	 * <p>
+	 * If either the given {@code displayId} or {@code version}, then the corresponding field
+	 * is extracted from the given {@code topLevel} instance. Both extracted fields are required
+	 * to be valid and not {@code null}.
+	 * <p>
+	 * A top-level instance with a compliant URI is created using the given arguments,
+	 * and then its display ID, persistent identity, and version fields are set. This
+	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object.
+	 *
+	 * @param topLevel
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @return the created top-level instance
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws SBOLValidationException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
+	 */
+	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
+		TopLevel renamedTopLevel = createCopy(topLevel,URIprefix,displayId,version);
+		removeTopLevel(topLevel);
+		return renamedTopLevel;
+	}
+	
 	/**
 	 * Appends the specified {@code sequence} object to the end of the list of sequencess.
 	 * 
@@ -1795,8 +1907,7 @@ public class SBOLDocument {
 		if (complete) {
 			for (ComponentDefinition cd : componentDefinitions.values()) {
 				if (cd.containsSequence(sequence.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + sequence.getIdentity() +
-							" since it is in use.");
+					throw new SBOLValidationException("sbol-10513", cd);
 				}
 			}
 		}
@@ -1816,13 +1927,9 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching Sequence instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public Sequence getSequence(String displayId,String version) {
 		try {
-			validateIdentityData(displayId,version);
 			return sequences.get(createCompliantURI(defaultURIprefix,TopLevel.SEQUENCE,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -1995,7 +2102,6 @@ public class SBOLDocument {
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) throws SBOLValidationException {
 		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		validateIdVersion(displayId, version);
 		GenericTopLevel g = createGenericTopLevel(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
 		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
 		g.setDisplayId(displayId);
@@ -2013,6 +2119,7 @@ public class SBOLDocument {
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			// TODO: (Validation) actually should be new validation error, not to allow in SBOL namespace
 		}
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
 		addGenericTopLevel(newGenericTopLevel);
@@ -2063,13 +2170,9 @@ public class SBOLDocument {
 	 * @param displayId
 	 * @param version
 	 * @return the matching GenericTopLevel instance if present, or {@code null} otherwise.
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
 	 */
 	public GenericTopLevel getGenericTopLevel(String displayId, String version) {
 		try {
-			validateIdentityData(displayId,version);
 			return genericTopLevels.get(createCompliantURI(defaultURIprefix,TopLevel.GENERIC_TOP_LEVEL,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
@@ -2413,39 +2516,30 @@ public class SBOLDocument {
 		return true;
 	}
 
-	private void validateIdentityData(String displayId, String version) throws SBOLValidationException {
-		validateIdVersion(displayId, version);
-		if (defaultURIprefix == null) {
-			throw new IllegalStateException("The defaultURIprefix is not set. Please set it to a non-null value");
-		}
-	}
-
 	@SafeVarargs
 	private final <TL extends TopLevel> void addTopLevel(TL newTopLevel, Map<URI, TL> instancesMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {
-		if (compliant && newTopLevel.checkDescendantsURIcompliance()) {
+		boolean childrenCompliant = true;
+		try {
+			newTopLevel.checkDescendantsURIcompliance();
+		} catch (SBOLValidationException e) {
+			childrenCompliant = false;
+		}
+		if (compliant && childrenCompliant) {
 			URI persistentId = URI.create(extractPersistentId(newTopLevel.getIdentity()));
 			if (keyExistsInAnyMap(persistentId, maps))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity +
-						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
 			if (instancesMap.containsKey(newTopLevel.getIdentity()))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity +
-						"' and persistent identity `" + persistentId + "' already exists for a " + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
 			String prefix = extractURIprefix(persistentId);
 			while (prefix!=null) {
 				if (keyExistsInAnyMap(URI.create(prefix), maps))
-					throw new SBOLValidationException(
-							"URI prefix for identity `" + newTopLevel.identity +
-							"' mathches identity of an existing top level object.");
+					throw new SBOLValidationException("sbol-10202", newTopLevel);
 				if (instancesMap.containsKey(URI.create(prefix)))
-					throw new SBOLValidationException(
-							"URI prefix for identity `" + newTopLevel.identity +
-							"' mathches identity of an existing top level object.");
+					throw new SBOLValidationException("sbol-10202", newTopLevel);
 				prefix = extractURIprefix(URI.create(prefix));
 			}
 			if (prefixes.contains(persistentId.toString())) {
-				throw new SBOLValidationException("Presistent identity `" + persistentId.toString() +
+				throw new IllegalArgumentException("Persistent identity `" + persistentId.toString() +
 						"' matches URI prefix in document.");
 			}
 			prefix = extractURIprefix(persistentId);
@@ -2468,11 +2562,9 @@ public class SBOLDocument {
 		}
 		else { // Only check if URI exists in all maps.
 			if (keyExistsInAnyMap(newTopLevel.getIdentity()))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity + "' exists for a non-" + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
 			if (instancesMap.containsKey(newTopLevel.getIdentity()))
-				throw new SBOLValidationException(
-						"Instance for identity `" + newTopLevel.identity + "' exists for a " + typeName);
+				throw new SBOLValidationException("sbol-10202", newTopLevel);
 			instancesMap.put(newTopLevel.getIdentity(), newTopLevel);
 			if (newTopLevel.isSetPersistentIdentity()) {
 				Identified latest = instancesMap.get(newTopLevel.getPersistentIdentity());
@@ -2504,8 +2596,7 @@ public class SBOLDocument {
 		if (complete) {
 			for (Collection c : collections.values()) {
 				if (c.containsMember(topLevel.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + topLevel.getIdentity() +
-							" since it is in use.");
+					throw new SBOLValidationException("sbol-12103", c);
 				}
 			}
 		}
@@ -2527,15 +2618,24 @@ public class SBOLDocument {
 		}
 		return changed;
 	}
+	
+	private void removeTopLevel(TopLevel topLevel) throws SBOLValidationException {
+		if (topLevel instanceof GenericTopLevel) removeGenericTopLevel((GenericTopLevel) topLevel);
+		else if (topLevel instanceof Collection) removeCollection((Collection) topLevel);
+		else if (topLevel instanceof Sequence) removeSequence((Sequence) topLevel);
+		else if (topLevel instanceof ComponentDefinition) removeComponentDefinition((ComponentDefinition) topLevel);
+		else if (topLevel instanceof Model) removeModel((Model) topLevel);
+		else if (topLevel instanceof ModuleDefinition) removeModuleDefinition((ModuleDefinition) topLevel);
+	}
 
 	/**
 	 * Sets the default URI prefix to the given {@code defaultURIprefix}.
 	 *
 	 * @param defaultURIprefix
-	 * @throws SBOLValidationException 
+	 * @throws IllegalArgumentException 
 	 */
 
-	public void setDefaultURIprefix(String defaultURIprefix) throws SBOLValidationException {
+	public void setDefaultURIprefix(String defaultURIprefix) throws IllegalArgumentException {
 		if (!defaultURIprefix.endsWith("/") && !defaultURIprefix.endsWith(":") && !defaultURIprefix.endsWith("#")) {
 			defaultURIprefix += "/";
 		}
@@ -2543,7 +2643,7 @@ public class SBOLDocument {
 			this.defaultURIprefix = defaultURIprefix;
 		}
 		else {
-			throw new SBOLValidationException(
+			throw new IllegalArgumentException(
 					"Unable to set default URI prefix to non-compliant value `" + defaultURIprefix + "'");
 		}
 	}
@@ -2633,6 +2733,7 @@ public class SBOLDocument {
 	void checkReadOnly() throws SBOLValidationException {
 		if (!compliant) {
 			throw new SBOLValidationException("Cannot modify a non-compliant SBOL document");
+			// TODO: (Validation) missing rule: Cannot modify a non-compliant SBOL document
 		}
 	}
 
@@ -2801,7 +2902,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws IOException
 	 */
-	public void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		SBOLWriter.write(this, out);
 	}
@@ -2816,7 +2917,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException
 	 * @throws IOException
 	 */
-	void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		SBOLWriter.write(this, out, fileType);
 	}

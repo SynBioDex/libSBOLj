@@ -8,6 +8,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
@@ -36,38 +37,6 @@ public class ModuleDefinition extends TopLevel {
 		this.interactions = new HashMap<>();
 		this.functionalComponents = new HashMap<>();
 		this.models = new HashSet<>();
-	}
-
-	/**
-	 * Creates a ModuleDefinition instance with the given arguments.
-	 * <p>
-	 * If the given {@code prefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the given {@code prefix}, {@code displayId}, and {@code version} are not
-	 * {@code null} and valid.
-	 * <p>
-	 * A ModuleDefinition instance is created with a compliant URI. This URI is composed from
-	 * the given {@code prefix}, the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param prefix
-	 * @param displayId
-	 * @param version
-	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 */
-	public ModuleDefinition(String prefix,String displayId,String version) throws SBOLValidationException {
-		this(URIcompliance.createCompliantURI(prefix, displayId, version));
-		prefix = URIcompliance.checkURIprefix(prefix);
-		validateIdVersion(displayId, version);
-		setDisplayId(displayId);
-		setPersistentIdentity(createCompliantURI(prefix, displayId, ""));
-		setVersion(version);
 	}
 
 	private ModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
@@ -282,8 +251,7 @@ public class ModuleDefinition extends TopLevel {
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModuleDefinition(moduleDefinitionURI) == null) {
-				throw new SBOLValidationException("Module definition '" + moduleDefinitionURI
-						+ "' does not exist.");
+				throw new SBOLValidationException("sbol-11703",this);
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -308,15 +276,12 @@ public class ModuleDefinition extends TopLevel {
 		module.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (module.getDefinition() == null) {
-				throw new SBOLValidationException("ModuleDefinition '" + module.getDefinitionURI().toString()
-						+ "' does not exist.");
+				throw new SBOLValidationException("sbol-11703", module);
 			}
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
-		if (SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited)) {
-			throw new SBOLValidationException("Cycle created by Module '" + module.getIdentity() + "'");
-		}
+		SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited);
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		for (MapsTo mapsTo : module.getMapsTos()) {
 			mapsTo.setSBOLDocument(sbolDocument);
@@ -507,6 +472,9 @@ public class ModuleDefinition extends TopLevel {
 		interaction.setSBOLDocument(this.sbolDocument);
 		interaction.setModuleDefinition(this);
 		for (Participation participation : interaction.getParticipations()) {
+			if (this.getFunctionalComponent(participation.getParticipantURI())==null) {
+				throw new SBOLValidationException("sbol-12003",participation);
+			}
 			participation.setSBOLDocument(sbolDocument);
 			participation.setModuleDefinition(this);
 		}
@@ -708,8 +676,7 @@ public class ModuleDefinition extends TopLevel {
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(componentDefinitionURI) == null) {
-				throw new SBOLValidationException("Component definition '" + componentDefinitionURI
-						+ "' does not exist.");
+				throw new SBOLValidationException("sbol-10604",this);
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -732,8 +699,9 @@ public class ModuleDefinition extends TopLevel {
 		functionalComponent.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (functionalComponent.getDefinition()== null) {
-				throw new SBOLValidationException("ComponentDefinition '" + functionalComponent.getDefinitionURI()
-						+ "' does not exist.");
+//				throw new SBOLValidationException("ComponentDefinition '" + functionalComponent.getDefinitionURI()
+//						+ "' does not exist.");
+				throw new SBOLValidationException("sbol-10604", functionalComponent);
 			}
 		}
 		addChildSafely(functionalComponent, functionalComponents, "functionalComponent",
@@ -768,24 +736,21 @@ public class ModuleDefinition extends TopLevel {
 		for (Interaction i : interactions.values()) {
 			for (Participation p : i.getParticipations()) {
 				if (p.getParticipantURI().equals(functionalComponent.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
-							" since it is in use.");
+					throw new SBOLValidationException("sbol-12003", p);
 				}
 			}
 		}
 		for (FunctionalComponent c : functionalComponents.values()) {
 			for (MapsTo mt : c.getMapsTos()) {
 				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
-							" since it is in use.");
+					throw new SBOLValidationException("sbol-10804", mt);
 				}
 			}
 		}
 		for (Module m : modules.values()) {
 			for (MapsTo mt : m.getMapsTos()) {
 				if (mt.getLocalURI().equals(functionalComponent.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + functionalComponent.getIdentity() +
-							" since it is in use.");
+					throw new SBOLValidationException("sbol-10804", mt);
 				}
 			}
 		}
@@ -794,9 +759,7 @@ public class ModuleDefinition extends TopLevel {
 				for (Module m : md.getModules()) {
 					for (MapsTo mt : m.getMapsTos()) {
 						if (mt.getRemoteURI().equals(functionalComponent.getIdentity())) {
-							throw new SBOLValidationException("Cannot remove "
-									+ functionalComponent.getIdentity() +
-									" since it is in use.");
+							throw new SBOLValidationException("sbol-10806", functionalComponent);
 						}
 					}
 				}
@@ -905,8 +868,9 @@ public class ModuleDefinition extends TopLevel {
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModel(model.getIdentity()) == null) {
-				throw new SBOLValidationException("Model '" + model.getIdentity()
-						+ "' does not exist.");
+//				throw new SBOLValidationException("Model '" + model.getIdentity()
+//						+ "' does not exist.");
+				throw new SBOLValidationException("sbol-11608", model);
 			}
 		}
 		return this.addModel(model.getIdentity());
@@ -987,7 +951,8 @@ public class ModuleDefinition extends TopLevel {
 			sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModel(modelURI) == null) {
-				throw new SBOLValidationException("Model '" + modelURI + "' does not exist.");
+				//throw new SBOLValidationException("Model '" + modelURI + "' does not exist.");
+				throw new SBOLValidationException("sbol-11608", this);
 			}
 		}
 		return models.add(modelURI);
@@ -1202,26 +1167,24 @@ public class ModuleDefinition extends TopLevel {
 	 */
 
 	@Override
-	protected boolean checkDescendantsURIcompliance() {
-		// codereview: spaghetti
-		if (!isTopLevelURIformCompliant(this.getIdentity())) return false;
-		boolean allDescendantsCompliant = true;
+	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+		isTopLevelURIformCompliant(this.getIdentity());
 		if (!this.getModules().isEmpty()) {
 			for (Module module : this.getModules()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, module);
-				if (!allDescendantsCompliant) { // Current sequence constraint
-					// has non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, module);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),module);
 				}
 				if (!module.getMapsTos().isEmpty()) {
 					// Check compliance of Module's children
 					for (MapsTo mapsTo : module.getMapsTos()) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(module, mapsTo);
-						if (!allDescendantsCompliant) { // Current mapsTo has
-							// non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(module, mapsTo);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),mapsTo);
 						}
 					}
 				}
@@ -1229,20 +1192,20 @@ public class ModuleDefinition extends TopLevel {
 		}
 		if (!this.getFunctionalComponents().isEmpty()) {
 			for (FunctionalComponent functionalComponent : this.getFunctionalComponents()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, functionalComponent);
-				if (!allDescendantsCompliant) { // Current component has
-					// non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, functionalComponent);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),functionalComponent);
 				}
 				if (!functionalComponent.getMapsTos().isEmpty()) {
 					// Check compliance of Component's children
 					for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(functionalComponent, mapsTo);
-						if (!allDescendantsCompliant) { // Current mapsTo has
-							// non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(functionalComponent, mapsTo);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),mapsTo);
 						}
 					}
 				}
@@ -1250,25 +1213,22 @@ public class ModuleDefinition extends TopLevel {
 		}
 		if (!this.getInteractions().isEmpty()) {
 			for (Interaction interaction : this.getInteractions()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, interaction);
-				if (!allDescendantsCompliant) { // Current interaction has
-					// non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, interaction);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),interaction);
 				}
 				for (Participation participation : interaction.getParticipations()) {
-					allDescendantsCompliant = allDescendantsCompliant
-							&& isChildURIcompliant(interaction, participation);
-					if (!allDescendantsCompliant) { // Current participation has
-						// non-compliant URI.
-						return allDescendantsCompliant;
+					try {
+						isChildURIcompliant(interaction, participation);
+					}
+					catch (SBOLValidationException e) {
+						throw new SBOLValidationException(e.getRule(),participation);
 					}
 				}
 			}
 		}
-		// All descendants of this ComponentDefinition object have compliant
-		// URIs.
-		return allDescendantsCompliant;
 	}
 
 	public ModuleDefinition flatten(String prefix,String displayId,String version) throws SBOLValidationException {
@@ -1291,8 +1251,9 @@ public class ModuleDefinition extends TopLevel {
 							topFc.setDefinition(fc.getDefinitionURI());
 						} else if (mapsTo.getRefinement()==RefinementType.VERIFYIDENTICAL) {
 							if (!topFc.getDefinitionURI().equals(fc.getDefinitionURI())) {
-								throw new SBOLValidationException("Component definitions in mapsTo '" + mapsTo.getIdentity()
-										+ "' are not identical.");
+//								throw new SBOLValidationException("Component definitions in mapsTo '" + mapsTo.getIdentity()
+//										+ "' are not identical.");
+								throw new SBOLValidationException("sbol-10811", mapsTo);
 							}
 						} else if (mapsTo.getRefinement()==RefinementType.MERGE) {
 							// TODO: merge?
@@ -1326,9 +1287,9 @@ public class ModuleDefinition extends TopLevel {
 
 	@Override
 	public String toString() {
-		return "ModuleDefinition [roles=" + roles + ", modules=" + modules + ", interactions="
-				+ interactions + ", functionalComponents=" + functionalComponents + ", models="
-				+ models + ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
+		return "ModuleDefinition [roles=" + this.getRoles() + ", modules=" + this.getModules() + ", interactions="
+				+ this.getInteractions() + ", functionalComponents=" + this.getFunctionalComponents() + ", models="
+				+ this.getModels() + ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
 				+ ", description=" + description + "]";
 	}
 }

@@ -15,5 +15,6 @@ public interface DisplayIdResolver<E extends SBOLNamedObject> extends Resolver<E
      * @param displayId
      * @return
      */
-    E resolve(String displayId);
+    @Override
+	E resolve(String displayId);
 }

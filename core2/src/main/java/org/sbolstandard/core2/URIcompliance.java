@@ -8,15 +8,18 @@ import java.util.regex.Pattern;
 final class URIcompliance {
 	
 	static void validateIdVersion(String displayId, String version) throws SBOLValidationException {
-		if (displayId!=null && !isDisplayIdCompliant(displayId)) {
-			throw new SBOLValidationException("Display id `" + displayId + "' is not valid.");
+		if (displayId!=null && !isDisplayIdValid(displayId)) {
+			throw new SBOLValidationException("sbol-10204");
 		}
-		if (version!=null && !isVersionCompliant(version)) {
-			throw new SBOLValidationException("Version `" + version + "' is not valid.");
+		if (version!=null && !isVersionValid(version)) {
+			throw new SBOLValidationException("sbol-10206");
 		}
 	}
 
 	static URI createCompliantURI(String prefix, String displayId, String version) throws SBOLValidationException {
+		if (prefix == null) {
+			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");
+		}
 		validateIdVersion(displayId, version);
 		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
 			prefix += "/";
@@ -28,6 +31,9 @@ final class URIcompliance {
 	}
 	
 	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) throws SBOLValidationException {
+		if (prefix == null) {
+			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");
+		}
 		validateIdVersion(displayId, version);
 		if (!useType) return createCompliantURI(prefix,displayId,version);
 		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
@@ -105,21 +111,28 @@ final class URIcompliance {
 			return null;
 	}
 
-	static final boolean isURIcompliant(Identified identified) {
-		if (!identified.isSetDisplayId()) return false;
-		if (!identified.isSetPersistentIdentity()) return false;
+	static final void isURIcompliant(Identified identified) throws SBOLValidationException {
+		if (!identified.isSetDisplayId()) {
+			throw new SBOLValidationException("sbol-10215");
+		}
+		if (!identified.isSetPersistentIdentity()) {
+			throw new SBOLValidationException("sbol-10216");
+		}
 		if (!identified.getPersistentIdentity().toString().endsWith("/"+identified.getDisplayId()) &&
 			!identified.getPersistentIdentity().toString().endsWith("#"+identified.getDisplayId()) &&
-			!identified.getPersistentIdentity().toString().endsWith(":"+identified.getDisplayId())) return false;
+			!identified.getPersistentIdentity().toString().endsWith(":"+identified.getDisplayId())) {
+			throw new SBOLValidationException("sbol-10216");
+		}
 		if (!identified.isSetVersion()) {
-			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString())) return false;
+			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString())) {
+				throw new SBOLValidationException("sbol-10218");
+			}
 		} else {
 			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString()+"/"
 					+identified.getVersion())) {
-				return false;
+				throw new SBOLValidationException("sbol-10218");
 			}
 		}
-		return true;
 	}
 	
 	// TODO: this method is only checking URIs and not other fields.  It also is only allowing / delimiter.
@@ -137,24 +150,20 @@ final class URIcompliance {
 		}
 	}
 
-	static final boolean isChildURIcompliant(Identified parent, Identified child) {
-		//URI parentURI = parent.getIdentity();
-		//URI childURI = child.getIdentity();
-		//String parentPersistentId = extractPersistentId(parentURI);
-		//if (parentPersistentId==null) return false;
-		//String childDisplayId = extractDisplayId(childURI);
-		//if (childDisplayId==null) return false;
-		//String parentVersion = extractVersion(parentURI);
-		if (!isURIcompliant(child)) return false;
+	static final void isChildURIcompliant(Identified parent, Identified child) throws SBOLValidationException {
+		isURIcompliant(child);
 		if (!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+"/"+child.getDisplayId()) &&
 				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+"#"+child.getDisplayId()) &&
-				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+":"+child.getDisplayId())) return false;
-		if (parent.isSetVersion()) {
-			if (!child.isSetVersion()||!child.getVersion().equals(parent.getVersion())) return false;
-		} else if (child.isSetVersion()) {
-			return false;
+				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+":"+child.getDisplayId())) {
+			throw new SBOLValidationException("sbol-10217");
 		}
-		return true;
+		if (parent.isSetVersion()) {
+			if (!child.isSetVersion()||!child.getVersion().equals(parent.getVersion())) {
+				throw new SBOLValidationException("sbol-10219");
+			}
+		} else if (child.isSetVersion()) {
+			throw new SBOLValidationException("sbol-10219");
+		}
 	}
 	
 	/**
@@ -162,26 +171,17 @@ final class URIcompliance {
 	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
 	 * the level of the given object. 
 	 * @param objURI
-	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise.
+	 * @throws SBOLValidationException 
 	 */
-	static final boolean isTopLevelURIformCompliant(URI topLevelURI) {
+	static final void isTopLevelURIformCompliant(URI topLevelURI) throws SBOLValidationException {
 		Pattern r;
 		String URIstr = topLevelURI.toString();		
 		r = Pattern.compile(toplevelURIpattern);
 		Matcher m = r.matcher(URIstr);
-		return (m.matches());
-	}
-	
-	/**
-	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
-	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
-	 * the level of the given object. 
-	 * @param objURI
-	 * @return <code>true</code> if the identity URI is compliant, <code>false</code> otherwise.
-	 */
-	static final boolean isTopLevelURIcompliant(TopLevel topLevel) {
-		if (!isTopLevelURIformCompliant(topLevel.getIdentity())) return false;
-		return isURIcompliant(topLevel);
+		if (!m.matches()) {
+			// TODO: (Validation) missing rule
+			throw new SBOLValidationException("URI is not well-formed");
+		}
 	}
 	
 //	static final boolean isURIcompliantTemp(URI objURI, String URIprefix, String version, String ... displayIds) {
@@ -294,19 +294,16 @@ final class URIcompliance {
 //		}
 //	}
 
-	static boolean isDisplayIdCompliant(String newDisplayId) {
+	static boolean isDisplayIdValid(String newDisplayId) {
 		Pattern r = Pattern.compile(displayIDpattern);
 		Matcher m = r.matcher(newDisplayId);
 		return m.matches();
 	}
 
-	static boolean isVersionCompliant(String newVersion) throws SBOLValidationException {
-		if (newVersion==null) {
-			throw new SBOLValidationException("Version must not be null");
-		}
-		if (newVersion.equals("")) return true;
+	static boolean isVersionValid(String version) {
+		if (version.equals("")) return true;
 		Pattern r = Pattern.compile(versionPattern);
-		Matcher m = r.matcher(newVersion);
+		Matcher m = r.matcher(version);
 		return m.matches();
 	}
 
@@ -385,12 +382,14 @@ final class URIcompliance {
 	static String checkURIprefix(String URIprefix) throws SBOLValidationException {
 		if (URIprefix==null) {
 			throw new SBOLValidationException("URI prefix must not be null");
+			// TODO: (Validation) missing rule: rule for URI prefix
 		}
 		if (!URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
 			URIprefix += "/";
 		}
 		if (!isURIprefixCompliant(URIprefix)) {
 			throw new SBOLValidationException("URI prefix '"+URIprefix+"' is invalid");
+			// TODO: (Validation) missing rule: rule for URI prefix
 		}
 		return URIprefix;
 	}

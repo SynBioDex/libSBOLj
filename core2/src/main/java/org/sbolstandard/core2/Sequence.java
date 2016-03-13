@@ -52,41 +52,6 @@ public class Sequence extends TopLevel{
 		setEncoding(encoding);
 		setElements(elements);
 	}
-	
-	/**
-	 * Creates a Sequence instance with the given arguments.
-	 * <p>
-	 * If the given {@code prefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the given {@code prefix}, {@code displayId}, and {@code version} are not
-	 * {@code null} and valid.
-	 * <p>
-	 * A Sequence instance is created with a compliant URI. This URI is composed from
-	 * the given {@code prefix}, the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param prefix
-	 * @param displayId
-	 * @param version
-	 * @param elements
-	 * @param encoding
-	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the sequence {@code elements} invalid for specified {@code encoding}.
-	 */
-	public Sequence(String prefix,String displayId,String version, String elements, URI encoding) throws SBOLValidationException {
-		this(URIcompliance.createCompliantURI(prefix, displayId, version), elements, encoding);
-		prefix = URIcompliance.checkURIprefix(prefix);
-		validateIdVersion(displayId, version);
-		setDisplayId(displayId);
-		setPersistentIdentity(createCompliantURI(prefix, displayId, ""));
-		setVersion(version);
-	}
 
 	private Sequence(Sequence sequence) throws SBOLValidationException {
 		//super(sequence.getIdentity());
@@ -125,12 +90,11 @@ public class Sequence extends TopLevel{
 	public void setElements(String elements) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (elements == null) {
-			throw new SBOLValidationException("Sequence is required to have elements.");
+			throw new SBOLValidationException("sbol-10402",this);
 		}
 		this.elements = elements;
 		if (!SBOLValidate.checkSequenceEncoding(this)) {
-			throw new SBOLValidationException("Sequence '" + this.getIdentity() + "' that uses encoding " + this.getEncoding() + 
-					" does not have a valid sequence.");
+			throw new SBOLValidationException("sbol-10405", this);
 		}
 	}
 	
@@ -158,7 +122,7 @@ public class Sequence extends TopLevel{
 	public void setEncoding(URI encoding) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (encoding == null) {
-			throw new SBOLValidationException("Sequence is required to have an encoding.");
+			throw new SBOLValidationException("sbol-10403",this);
 		}
 		this.encoding = encoding;
 	}
@@ -222,8 +186,8 @@ public class Sequence extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected boolean checkDescendantsURIcompliance() {
-		return isTopLevelURIformCompliant(this.getIdentity());
+	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	@Override

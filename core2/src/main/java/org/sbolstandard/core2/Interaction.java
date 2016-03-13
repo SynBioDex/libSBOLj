@@ -86,7 +86,8 @@ public class Interaction extends Identified {
 	public boolean removeType(URI typeURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types.size()==1 && types.contains(typeURI)) {
-			throw new SBOLValidationException("Interaction " + this.getIdentity() + " must have at least one type.");
+			//throw new SBOLValidationException("Interaction " + this.getIdentity() + " must have at least one type.");
+			throw new SBOLValidationException("sbol-11902", this);
 		}
 		return types.remove(typeURI);
 	}
@@ -106,7 +107,8 @@ public class Interaction extends Identified {
 	public void setTypes(Set<URI> types) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types==null || types.size()==0) {
-			throw new SBOLValidationException("Interaction " + this.getIdentity() + " must have at least one type.");
+			//throw new SBOLValidationException("Interaction " + this.getIdentity() + " must have at least one type.");
+			throw new SBOLValidationException("sbol-11902", this);
 		}
 		clearTypes();
 		for (URI type : types) {
@@ -215,16 +217,11 @@ public class Interaction extends Identified {
 	 */
 	public Participation createParticipation(String displayId, URI participant) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
-		if (moduleDefinition != null) {
-			if (moduleDefinition.getFunctionalComponent(participant)==null) {
-				throw new SBOLValidationException("Functional component '" + participant + "' does not exist.");
-			}
-		}
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		if(parentPersistentIdStr == null) {
 			throw new IllegalStateException(
-					"Can not create a child on a parent that has the non-standard compliant identity " +
+					"Cannot create a child on a parent that has the non-standard compliant identity " +
 							this.getIdentity());
 		}
 		//validateIdVersion(displayId, version);
@@ -242,7 +239,7 @@ public class Interaction extends Identified {
 	 */
 	void addParticipation(Participation participation) throws SBOLValidationException {
 		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participation.getParticipantURI())==null) {
-			throw new SBOLValidationException("Functional component '" + participation.getParticipantURI() + "' does not exist.");
+			throw new SBOLValidationException("sbol-12003", participation);
 		}
 		addChildSafely(participation, participations, "participation");
 		participation.setSBOLDocument(this.sbolDocument);

@@ -6,8 +6,11 @@ import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
 import static org.sbolstandard.core2.URIcompliance.validateIdVersion;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -93,39 +96,6 @@ public class ComponentDefinition extends TopLevel {
 		setTypes(types);
 	}
 
-	/**
-	 * Creates a ComponentDefinition instance with the given arguments.
-	 * <p>
-	 * If the given {@code prefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the given {@code prefix}, {@code displayId}, and {@code version} are not
-	 * {@code null} and valid.
-	 * <p>
-	 * A ComponentDefinition instance is created with a compliant URI. This URI is composed from
-	 * the given {@code prefix}, the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param prefix
-	 * @param displayId
-	 * @param version
-	 * @param types
-	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 */
-	public ComponentDefinition(String prefix,String displayId,String version, Set<URI> types) throws SBOLValidationException {
-		this(URIcompliance.createCompliantURI(prefix, displayId, version),types);
-		prefix = URIcompliance.checkURIprefix(prefix);
-		validateIdVersion(displayId, version);
-		setDisplayId(displayId);
-		setPersistentIdentity(createCompliantURI(prefix, displayId, ""));
-		setVersion(version);
-	}
-
 	private ComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
 		super(componentDefinition);
 		this.types = new HashSet<>();
@@ -167,8 +137,9 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (typeURI.equals(DNA)||typeURI.equals(RNA)||typeURI.equals(PROTEIN)||typeURI.equals(SMALL_MOLECULE)) {
 			if (this.containsType(DNA)||this.containsType(RNA)||this.containsType(PROTEIN)||this.containsType(SMALL_MOLECULE)) {
-				throw new SBOLValidationException("Component definition " + this.getIdentity() +
-						" must have only one type from Table 2 in the specification.");
+//				throw new SBOLValidationException("Component definition " + this.getIdentity() +
+//						" must have only one type from Table 2 in the specification.");
+				throw new SBOLValidationException("sbol-10503", this);
 			}
 		}
 		return types.add(typeURI);
@@ -188,7 +159,8 @@ public class ComponentDefinition extends TopLevel {
 	public boolean removeType(URI typeURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types.size()==1 && types.contains(typeURI)) {
-			throw new SBOLValidationException("Component definition " + this.getIdentity() + " must have at least one type.");
+			//throw new SBOLValidationException("Component definition " + this.getIdentity() + " must have at least one type.");
+			throw new SBOLValidationException("sbol-10502", this);
 		}
 		return types.remove(typeURI);
 	}
@@ -208,7 +180,8 @@ public class ComponentDefinition extends TopLevel {
 	public void setTypes(Set<URI> types) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types==null || types.size()==0) {
-			throw new SBOLValidationException("Component definition " + this.getIdentity() + " must have at least one type.");
+			//throw new SBOLValidationException("Component definition " + this.getIdentity() + " must have at least one type.");
+			throw new SBOLValidationException("sbol-10502", this);
 		}
 		clearTypes();
 		for (URI type : types) {
@@ -360,7 +333,8 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getSequence(sequence.getIdentity())==null) {
-				throw new SBOLValidationException("Sequence '" + sequence.getIdentity() + "' does not exist.");
+				//throw new SBOLValidationException("Sequence '" + sequence.getIdentity() + "' does not exist.");
+				throw new SBOLValidationException("sbol-10513", sequence);
 			}
 		}
 		return this.addSequence(sequence.getIdentity());
@@ -378,7 +352,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getSequence(sequenceURI)==null) {
-				throw new SBOLValidationException("Sequence '" + sequenceURI + "' does not exist.");
+				throw new SBOLValidationException("sbol-10513",this);
 			}
 		}
 		return sequences.add(sequenceURI);
@@ -819,11 +793,13 @@ public class ComponentDefinition extends TopLevel {
 		sequenceAnnotation.setComponentDefinition(this);
 		if (sequenceAnnotation.isSetComponent()) {
 			if (sequenceAnnotation.getComponent()==null) {
-				throw new SBOLValidationException("Component '" + sequenceAnnotation.getComponentURI() + "' does not exist.");
+				//throw new SBOLValidationException("Component '" + sequenceAnnotation.getComponentURI() + "' does not exist.");
+				throw new SBOLValidationException("sbol-10905", sequenceAnnotation);
 			}
 			for (SequenceAnnotation sa : this.getSequenceAnnotations()) {
 				if (sa.isSetComponent() && sa.getComponentURI().equals(sequenceAnnotation.getComponentURI())) {
-					throw new SBOLValidationException("Multiple sequence annotations cannot refer to the same component.");
+					//throw new SBOLValidationException("Multiple sequence annotations cannot refer to the same component.");
+					throw new SBOLValidationException("sbol-10522", sa);
 				}
 			}
 		}
@@ -878,6 +854,21 @@ public class ComponentDefinition extends TopLevel {
 	public SequenceAnnotation getSequenceAnnotation(URI sequenceAnnotationURI) {
 		return sequenceAnnotations.get(sequenceAnnotationURI);
 	}
+	
+	/**
+	 * Returns the sequenceAnnotation for a given Component
+	 *
+	 * @param component
+	 * @return the matching SequenceAnnotation instance if present, or
+	 *         {@code null} otherwise.
+	 */
+	public SequenceAnnotation getSequenceAnnotation(Component component) {
+		for (SequenceAnnotation sequenceAnnotation : this.getSequenceAnnotations()) {
+			if (sequenceAnnotation.getComponent() != null &&
+				sequenceAnnotation.getComponent().equals(component)) return sequenceAnnotation;
+		}
+		return null;
+	}
 
 	/**
 	 * Returns the set of SequenceAnnotation instances owned by this
@@ -891,6 +882,100 @@ public class ComponentDefinition extends TopLevel {
 		Set<SequenceAnnotation> sequenceAnnotations = new HashSet<>();
 		sequenceAnnotations.addAll(this.sequenceAnnotations.values());
 		return sequenceAnnotations;
+	}
+	
+	private void getSuccessorComponents(HashMap<Component,Set<Component>> successorMap,
+			Component component, Set<Component> visited) throws SBOLValidationException {
+		if (visited.contains(component)) {
+			//throw new SBOLValidationException("Cycle in sequence constraints");
+			throw new SBOLValidationException("sbol-10605", component);
+		}
+		visited.add(component);
+		for (SequenceConstraint sc : this.getSequenceConstraints()) {
+			if (sc.getSubject().equals(component)) {
+				successorMap.get(component).add(sc.getObject());
+				getSuccessorComponents(successorMap,sc.getObject(),visited);
+				successorMap.get(component).addAll(successorMap.get(sc.getObject()));
+			}
+		}
+		visited.remove(component);
+	}
+
+	/**
+	 * Returns a sorted list of Component instances owned by this
+	 * ComponentDefinition object.
+	 *
+	 * @return a sorted list of Component instances owned by this
+	 *         ComponentDefinition object.
+	 * @throws SBOLValidationException 
+	 */
+	public List<Component> getSortedComponents() throws SBOLValidationException {
+		List<Component> sortedComponents = new ArrayList<Component>();
+		List<SequenceAnnotation> sortedSAs = new ArrayList<SequenceAnnotation>();
+		sortedSAs.addAll(this.getSequenceAnnotations());
+		Collections.sort(sortedSAs);
+		HashMap<Component,Set<Component>> successorMap = new HashMap<Component,Set<Component>>();
+		for (Component component : this.getComponents()) {
+			successorMap.put(component, new HashSet<Component>());
+		}
+		for (int i = 0; i < sortedSAs.size(); i++) {
+			SequenceAnnotation source = sortedSAs.get(i);
+			if (source.getLocations().iterator().next()==null ||
+					source.getLocations().iterator().next() instanceof GenericLocation) continue;
+			if (source.isSetComponent()) {
+				Component sourceComponent = source.getComponent();
+				for (int j = i + 1; j < sortedSAs.size(); j++) {
+					SequenceAnnotation target = sortedSAs.get(j);
+					if (target.getLocations().iterator().next()==null ||
+							target.getLocations().iterator().next() instanceof GenericLocation) continue;
+					if (target.isSetComponent()) {
+						Component targetComponent = target.getComponent();
+						successorMap.get(sourceComponent).add(targetComponent);
+					}
+				}
+			}
+		}
+		for (Component component : this.getComponents()) {
+			getSuccessorComponents(successorMap,component,new HashSet<Component>());
+		}
+		while (true) {
+			boolean change = false;
+			for (Component component1 : this.getComponents()) {
+				if (sortedComponents.contains(component1)) continue;
+				boolean add = true;
+				for (Component component2 : this.getComponents()) {
+					if (component1 == component2) continue;
+					if (sortedComponents.contains(component2)) continue;
+					if (successorMap.get(component2).contains(component1)) {
+						add = false;
+						break;
+					}
+				}
+				if (add) {
+					sortedComponents.add(component1);
+					change = true;
+					break;
+				}
+			}
+			if (!change) {
+				break;
+			}
+		}
+		return sortedComponents;
+	}
+	
+	/**
+	 * Returns a sorted list of SequenceAnnotation instances owned by this
+	 * ComponentDefinition object.
+	 *
+	 * @return a sorted list of SequenceAnnotation instances owned by this
+	 *         ComponentDefinition object.
+	 */
+	public List<SequenceAnnotation> getSortedSequenceAnnotations() {
+		List<SequenceAnnotation> sortedSAs = new ArrayList<SequenceAnnotation>();
+		sortedSAs.addAll(this.getSequenceAnnotations());
+		Collections.sort(sortedSAs);
+		return sortedSAs;
 	}
 
 	/**
@@ -1037,7 +1122,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(componentDefinitionURI)==null) {
-				throw new SBOLValidationException("Component definition '" + componentDefinitionURI + "' does not exist.");
+				throw new SBOLValidationException("sbol-10604",this);
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -1059,14 +1144,12 @@ public class ComponentDefinition extends TopLevel {
 		component.setComponentDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (component.getDefinition()==null) {
-				throw new SBOLValidationException("ComponentDefinition '" + component.getDefinitionURI() + "' does not exist.");
+				throw new SBOLValidationException("sbol-10604",component);
 			}
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
-		if (SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited)) {
-			throw new SBOLValidationException("Cycle created by Component '" + component.getIdentity() + "'");
-		}
+		SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited);
 		addChildSafely(component, components, "component",
 				sequenceAnnotations, sequenceConstraints);
 		for (MapsTo mapsTo : component.getMapsTos()) {
@@ -1098,25 +1181,21 @@ public class ComponentDefinition extends TopLevel {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		for (SequenceAnnotation sa : sequenceAnnotations.values()) {
 			if (sa.getComponentURI().equals(component.getIdentity())) {
-				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-						" since it is in use.");
+				throw new SBOLValidationException("sbol-10905",sa);
 			}
 		}
 		for (SequenceConstraint sc : sequenceConstraints.values()) {
 			if (sc.getSubjectURI().equals(component.getIdentity())) {
-				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-						" since it is in use.");
+				throw new SBOLValidationException("sbol-11402", sc);
 			}
 			if (sc.getObjectURI().equals(component.getIdentity())) {
-				throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-						" since it is in use.");
+				throw new SBOLValidationException("sbol-11404", sc);
 			}
 		}
 		for (Component c : components.values()) {
 			for (MapsTo mt : c.getMapsTos()) {
 				if (mt.getLocalURI().equals(component.getIdentity())) {
-					throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-							" since it is in use.");
+					throw new SBOLValidationException("sbol-10804", mt);
 				}
 			}
 		}
@@ -1125,8 +1204,7 @@ public class ComponentDefinition extends TopLevel {
 				for (Component c : cd.getComponents()) {
 					for (MapsTo mt : c.getMapsTos()) {
 						if (mt.getRemoteURI().equals(component.getIdentity())) {
-							throw new SBOLValidationException("Cannot remove " + component.getIdentity() +
-									" since it is in use.");
+							throw new SBOLValidationException("sbol-10806", mt);
 						}
 					}
 				}
@@ -1308,10 +1386,13 @@ public class ComponentDefinition extends TopLevel {
 		sequenceConstraint.setSBOLDocument(this.sbolDocument);
 		sequenceConstraint.setComponentDefinition(this);
 		if (sequenceConstraint.getSubject()==null) {
-			throw new SBOLValidationException("Component '" + sequenceConstraint.getSubjectURI() + "' does not exist.");
+				throw new SBOLValidationException("sbol-11402", sequenceConstraint);
 		}
 		if (sequenceConstraint.getObject()==null) {
-			throw new SBOLValidationException("Component '" + sequenceConstraint.getObjectURI() + "' does not exist.");
+			throw new SBOLValidationException("sbol-11404", sequenceConstraint);
+				}
+		if (sequenceConstraint.getSubjectURI().equals(sequenceConstraint.getObjectURI())) {
+			throw new SBOLValidationException("sbol-11406", sequenceConstraint);
 		}
 		addChildSafely(sequenceConstraint, sequenceConstraints, "sequenceConstraint",
 				components, sequenceAnnotations);
@@ -1411,34 +1492,34 @@ public class ComponentDefinition extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateCompliantURI(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	protected boolean checkDescendantsURIcompliance() {
-		// codereview: this method is spagetti.
-		if (!isTopLevelURIformCompliant(this.getIdentity())) return false;
-		boolean allDescendantsCompliant = true;
+	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+		isTopLevelURIformCompliant(this.getIdentity());
 		if (!this.getSequenceConstraints().isEmpty()) {
 			for (SequenceConstraint sequenceConstraint : this.getSequenceConstraints()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, sequenceConstraint);
-				// SequenceConstraint does not have any child classes. No need to check further.
-				if (!allDescendantsCompliant) { // Current sequence constraint has non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, sequenceConstraint);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),sequenceConstraint);
 				}
 			}
 		}
 		if (!this.getComponents().isEmpty()) {
 			for (Component component : this.getComponents()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, component);
-				if (!allDescendantsCompliant) { // Current component has non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, component);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),component);
 				}
 				if (!component.getMapsTos().isEmpty()) {
 					// Check compliance of Component's children
 					for (MapsTo mapsTo : component.getMapsTos()) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(component, mapsTo);
-						if (!allDescendantsCompliant) { // Current mapsTo has non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(component, mapsTo);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),mapsTo);
 						}
 					}
 				}
@@ -1446,39 +1527,41 @@ public class ComponentDefinition extends TopLevel {
 		}
 		if (!this.getSequenceAnnotations().isEmpty()) {
 			for (SequenceAnnotation sequenceAnnotation : this.getSequenceAnnotations()) {
-				allDescendantsCompliant = allDescendantsCompliant
-						&& isChildURIcompliant(this, sequenceAnnotation);
-				if (!allDescendantsCompliant) { // Current sequence annotation has non-compliant URI.
-					return allDescendantsCompliant;
+				try {
+					isChildURIcompliant(this, sequenceAnnotation);
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(),sequenceAnnotation);
 				}
 				Set<Location> locations = sequenceAnnotation.getLocations();
 				for (Location location : locations) {
 					if (location instanceof Range) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(sequenceAnnotation, location);
-						if (!allDescendantsCompliant) { // Current range has non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(sequenceAnnotation, location);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),location);
 						}
 					}
 					if (location instanceof Cut) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(sequenceAnnotation, location);
-						if (!allDescendantsCompliant) { // Current cut has non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(sequenceAnnotation, location);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),location);
 						}
 					}
 					if (location instanceof GenericLocation) {
-						allDescendantsCompliant = allDescendantsCompliant
-								&& isChildURIcompliant(sequenceAnnotation, location);
-						if (!allDescendantsCompliant) { // Current generic location has non-compliant URI.
-							return allDescendantsCompliant;
+						try {
+							isChildURIcompliant(sequenceAnnotation, location);
+						}
+						catch (SBOLValidationException e) {
+							throw new SBOLValidationException(e.getRule(),location);
 						}
 					}
 				}
 			}
 		}
-		// All descendants of this ComponentDefinition object have compliant URIs.
-		return allDescendantsCompliant;
 	}
 
 	/**
@@ -1596,8 +1679,8 @@ public class ComponentDefinition extends TopLevel {
 	@Override
 	public String toString() {
 		return "ComponentDefinition [types=" + types + ", roles=" + roles + ", sequences="
-				+ sequences + ", components=" + components + ", sequenceAnnotations="
-				+ sequenceAnnotations + ", sequenceConstraints=" + sequenceConstraints
+				+ this.getSequences() + ", components=" + this.getComponents() + ", sequenceAnnotations="
+				+ this.getSequenceAnnotations() + ", sequenceConstraints=" + this.getSequenceConstraints()
 				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
 				+ ", description=" + description + "]";
 	}

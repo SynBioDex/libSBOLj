@@ -1,9 +1,9 @@
 package org.sbolstandard.core2;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,10 +31,10 @@ public class SBOLValidationException extends Exception {
 
 	private final List<Identified> objects;
 
-	private static String ruleBegin = "^\\s*\\[(\\w+)\\]\\s*$";
-	private static String ruleId = "^\\s*id:\\s(sbol-\\d+)\\s*$";
-	private static String ruleCondition = "^\\s*condition:\\s(\\w+\\s*\\w*)\\s*$";
-	private static String ruleDescriptionBegin = "^\\s*description:\\s([\\w\\s]+)\\s*$";
+	private static String ruleBegin = "^\\[(\\w+)\\]\\s*$";
+	private static String ruleId = "^id:\\s(sbol-\\d+)\\s*$";
+	private static String ruleCondition = "^condition:\\s(\\w+\\s*\\w*)\\s*$";
+	private static String ruleDescriptionBegin = "^description:\\s(.+)\\s*$";
 	private static String ruleDescriptionBody = "^(?!reference:)(.+)$";//"^\\b(?!reference)\\b(?!:)(.+)$";
 	// (?!...) is negative lookahead.
 	//	Word boundary \b is equivalent to (?<=\w)(?!\w)|(?=\w)(?<!\w).It means that a position that's preceded by a word 
@@ -43,6 +43,8 @@ public class SBOLValidationException extends Exception {
 	private static String ruleReference = "^\\breference\\b:\\s(.+)";
 	private static SBOLValidationRule currentRule;
 	private static Map<String, SBOLValidationRule> validationRules;
+
+	private static String exceptionMessage;
 
 	/**
 	 * Creates a new exception instance with the given message and objects causing the problem.
@@ -55,12 +57,22 @@ public class SBOLValidationException extends Exception {
 
 	/**
 	 * Creates a new exception instance with the given message and objects causing the problem.
+	 * @param message
+	 * @param objects
+	 */
+	SBOLValidationException(String message, URI identity) {
+		super(exceptionMessage = formatMessage(message, identity));
+		this.objects = null;
+	}
+
+	/**
+	 * Creates a new exception instance with the given message and objects causing the problem.
 	 * 
 	 * @param message
 	 * @param objects
 	 */
 	SBOLValidationException(String message, java.util.Collection<? extends Identified> objects) {
-		super(formatMessage(message, objects));
+		super(exceptionMessage = formatMessage(message, objects));
 		this.objects = Collections.unmodifiableList(new ArrayList<>(objects));
 	}
 
@@ -83,9 +95,26 @@ public class SBOLValidationException extends Exception {
 	 */	
 	SBOLValidationException(Throwable cause) {
 		super(cause);
-
 		this.objects = Collections.emptyList();
 	}
+
+//	/**
+//	 * @param message
+//	 * @param annotations
+//	 */
+//	SBOLValidationException(String message, Annotation ... annotations) {
+//		this(message, Arrays.asList(annotations));
+//	}
+//
+//	/**
+//	 * @param message
+//	 * @param annotationist
+//	 */
+//	public SBOLValidationException(String message, List<Annotation> annotations) {
+//		super(formatMessage(message, annotations));
+//		this.objects = null;//Collections.unmodifiableList(new ArrayList<>(objects));
+//	}
+
 
 	/**
 	 * Returns the list of objects relevant for the validation exception. This list may be empty if the exact object
@@ -97,42 +126,72 @@ public class SBOLValidationException extends Exception {
 	java.util.Collection<Identified> getObjects() {
 		return objects;
 	}
+	
+	private static String formatMessage(String message, URI identity) {
+		final StringBuilder sb = new StringBuilder(message);
+		if (message.startsWith("sbol-")) {
+			if (validationRules == null) {
+				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
+				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
+						getResourceAsStream("/validation/rules.txt"));
+				try {					
+					parse(new BufferedReader(f));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			//printAllRules();
+			String key = message.trim();
+			SBOLValidationRule rule = validationRules.get(key);
+			if (rule == null) {
+				throw new RuntimeException("Rule ID does not exist.");
+			}
+			sb.append(": " + rule.getDescription() + "\n");
+			sb.append(": " + identity.toString());
+		}
+		else {		
+			sb.append(": " + identity.toString());
+		}
+		return sb.toString();
+	}
 
 	private static String formatMessage(String message, java.util.Collection<? extends Identified> objects) {
 		final StringBuilder sb = new StringBuilder(message);
 		if (message.startsWith("sbol-")) {
 			if (validationRules == null) {
 				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
-				File f = new File("src/resources/validation/rules.txt");
-				try {
-					parse(f);
-					String key = message.trim();
-					SBOLValidationRule rule = validationRules.get(key);
-					if (rule == null) {
-						throw new RuntimeException("Rule ID does not exist.");
-					}
-					sb.append(": " + rule.getDescription() + "\n");
-					if (!objects.isEmpty()) {
-						sb.append(": ");
-						boolean first = true;
-						for (Identified obj : objects) {
-							if (first) {
-								first = false;
-							}
-							else {
-								sb.append(", ");
-							}
-							if (obj.getIdentity() != null) {
-								sb.append(obj.getIdentity());
-							}
-						}
-					}
+				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
+						getResourceAsStream("/validation/rules.txt"));
+				try {					
+					parse(new BufferedReader(f));
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
+			//printAllRules();
+			String key = message.trim();
+			SBOLValidationRule rule = validationRules.get(key);
+			if (rule == null) {
+				throw new RuntimeException("Rule ID does not exist.");
+			}
+			sb.append(": " + rule.getDescription() + "\n");
+			if (!objects.isEmpty()) {
+				sb.append(": ");
+				boolean first = true;
+				for (Identified obj : objects) {
+					if (first) {
+						first = false;
+					}
+					else {
+						sb.append(", ");
+					}
+					if (obj.getIdentity() != null) {
+						sb.append(obj.getIdentity());
+					}
+				}
+			}
 		}
-		else {
+		else {		
 			//final StringBuilder sb = new StringBuilder(message);
 			if (!objects.isEmpty()) {
 				sb.append(": ");
@@ -149,13 +208,16 @@ public class SBOLValidationException extends Exception {
 					}
 				}
 			}
-			//return sb.toString();
+			//return sb.toString();		
 		}
 		return sb.toString();
 	}
-
-	private static void parse(File f) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(f));
+	
+	/**
+	 * @param br
+	 * @throws IOException
+	 */
+	private static void parse(BufferedReader br) throws IOException {		
 		String line;
 		String ruleDescription = "";
 		while((line = br.readLine())!= null) {
@@ -185,20 +247,20 @@ public class SBOLValidationException extends Exception {
 			}
 			else if (line.matches(ruleDescriptionBegin)) {
 				Matcher mRuleDescription = Pattern.compile(ruleDescriptionBegin).matcher(line);
-				if (mRuleDescription != null && mRuleDescription.matches()) { // need to call matches method in order to call the group method.
+				if (mRuleDescription != null && mRuleDescription.matches()) { // need to call matches method in order to call the group method.					
+					ruleDescription = mRuleDescription.group(1);
 					//System.out.println("currentRule.ruleDescriptionBegin: " + mRuleDescription.group(1));
-					ruleDescription = ruleDescription + mRuleDescription.group(1);
 				}
 			}
 			else if (line.matches(ruleDescriptionBody)) { // WARNING: Do NOT move this if clause to other places.
 				Matcher mRuleDescriptionBody = Pattern.compile(ruleDescriptionBody).matcher(line);
 				if (mRuleDescriptionBody != null && mRuleDescriptionBody.matches()) { // need to call matches method in order to call the group method.
+					ruleDescription = ruleDescription.trim() + " " + mRuleDescriptionBody.group(1);
 					//System.out.println("currentRule.ruleDescriptionBody: " + mRuleDescriptionBody.group(1));
-					ruleDescription = ruleDescription + mRuleDescriptionBody.group(1);
 				}
 			}
 			else if (line.matches(ruleReference)) {
-				currentRule.setDescription(ruleDescription);				
+				currentRule.setDescription(ruleDescription);
 				Matcher mRuleReference = Pattern.compile(ruleReference).matcher(line);
 				if (mRuleReference != null && mRuleReference.matches()) { // need to call matches method in order to call the group method.
 					//System.out.println("currentRule.ruleReference: " + mRuleReference.group(1));
@@ -210,12 +272,25 @@ public class SBOLValidationException extends Exception {
 		}
 		br.close();
 	}
-
-	private void printAllRules() {
-		for (String key : validationRules.keySet()) {
-			System.out.println(validationRules.get(key));
-		}
+	
+	String getExceptionMessage() {
+		return exceptionMessage;
 	}
+	
+	/*
+	 * Return the validation rule number of the exception
+	 * @return the validation rule number of the exception
+	 */
+	public String getRule() {
+		if (!getMessage().startsWith("sbol-")) return "";
+		return getMessage().split(":")[0];
+	}
+
+//	private static void printAllRules() {
+//		for (String key : validationRules.keySet()) {
+//			System.out.println(validationRules.get(key));
+//		}
+//	}
 
 }
 

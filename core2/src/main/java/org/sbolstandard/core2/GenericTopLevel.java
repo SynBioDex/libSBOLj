@@ -28,41 +28,8 @@ public class GenericTopLevel extends TopLevel{
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
+			// TODO: (Validation) missing rule: QName is neither an SBOL 1 nor SBOL 2 namespace.
 		}
-	}
-
-
-	/**
-	 * Creates a GenericTopLevel instance with the given arguments.
-	 * <p>
-	 * If the given {@code prefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the given {@code prefix}, {@code displayId}, and {@code version} are not
-	 * {@code null} and valid.
-	 * <p>
-	 * A GenericTopLevel instance is created with a compliant URI. This URI is composed from
-	 * the given {@code prefix}, the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param prefix
-	 * @param displayId
-	 * @param version
-	 * @param rdfType
-	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 */
-	public GenericTopLevel(String prefix,String displayId,String version, QName rdfType) throws SBOLValidationException {
-		this(URIcompliance.createCompliantURI(prefix, displayId, version), rdfType);
-		prefix = URIcompliance.checkURIprefix(prefix);
-		validateIdVersion(displayId, version);
-		setDisplayId(displayId);
-		setPersistentIdentity(createCompliantURI(prefix, displayId, ""));
-		setVersion(version);
 	}
 
 	private GenericTopLevel(GenericTopLevel genericTopLevel) throws SBOLValidationException {
@@ -93,7 +60,8 @@ public class GenericTopLevel extends TopLevel{
 	public void setRDFType(QName rdfType) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (rdfType == null) {
-			throw new SBOLValidationException("RDF type is a required field.");
+			//throw new SBOLValidationException("RDF type is a required field.");
+			throw new SBOLValidationException("sbol-12302", this);
 		}
 		this.rdfType = rdfType;
 	}
@@ -172,8 +140,8 @@ public class GenericTopLevel extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected boolean checkDescendantsURIcompliance() {
-		return isTopLevelURIformCompliant(this.getIdentity());
+	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	@Override

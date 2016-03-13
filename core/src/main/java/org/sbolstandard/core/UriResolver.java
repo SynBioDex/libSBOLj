@@ -17,5 +17,6 @@ public interface UriResolver<E extends SBOLObject> extends Resolver<E, URI> {
      * @param uri
      * @return
      */
-    E resolve(URI uri);
+    @Override
+	E resolve(URI uri);
 }

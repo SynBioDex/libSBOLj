@@ -3,7 +3,6 @@ package org.oboparser.obo;
 import java.io.*;
 import java.lang.reflect.*;
 import java.util.*;
-import java.util.regex.*;
 
 public class OBOStanza {
 
@@ -17,6 +16,7 @@ public class OBOStanza {
 		id = null;
 	}
 	
+	@Override
 	public Object clone() {
 		return clone(OBOStanza.class);
 	}
@@ -104,6 +104,7 @@ public class OBOStanza {
 		return name.toFullString();
 	}
 
+	@Override
 	public String toString() { 
 		return id != null ? id : String.format("%s OBOStanza", type);
 	}

@@ -5,7 +5,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Set;
@@ -124,6 +123,7 @@ public class JavaWriter {
 	}
 	
 	private static class ClassNameComparator implements Comparator<Class> { 
+		@Override
 		public int compare(Class c1, Class c2) { 
 			return c1.getCanonicalName().compareTo(c2.getCanonicalName());
 		}

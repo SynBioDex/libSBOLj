@@ -85,10 +85,12 @@ public class Participation extends Identified {
 	public void setParticipant(URI participant) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (participant == null) {
-			throw new SBOLValidationException("Participation is required to have a participant.");
+			//throw new SBOLValidationException("Participation is required to have a participant.");
+			throw new SBOLValidationException("sbol-12002",this);
 		}
 		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participant)==null) {
-			throw new SBOLValidationException("Functional component '" + participant + "' does not exist.");
+			//throw new SBOLValidationException("Functional component '" + participant + "' does not exist.");
+			throw new SBOLValidationException("sbol-12003",this);
 		}
 		this.participant = participant;
 	}

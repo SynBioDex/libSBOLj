@@ -82,11 +82,11 @@ public class Module extends Identified {
 	public void setDefinition(URI definitionURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (definitionURI==null) {
-			throw new SBOLValidationException("Module "+this.getIdentity()+" must have a definition.");
+			throw new SBOLValidationException("sbol-11702",this);
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModuleDefinition(definitionURI)==null) {
-				throw new SBOLValidationException("Module definition '" + definition + "' does not exist.");
+				throw new SBOLValidationException("sbol-11703",this);
 			}
 		}
 		this.definition = definitionURI;
@@ -219,19 +219,23 @@ public class Module extends Identified {
 		mapsTo.setModule(this);
 		if (sbolDocument != null) {
 			if (mapsTo.getLocal()==null) {
-				throw new SBOLValidationException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
+				//throw new SBOLValidationException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
+				throw new SBOLValidationException("sbol-10804", mapsTo);
 			}
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (mapsTo.getRemote()==null) {
-				throw new SBOLValidationException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
+				//throw new SBOLValidationException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
+				throw new SBOLValidationException("sbol-10809", mapsTo);
 			}
 			if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
-				throw new SBOLValidationException("Functional Component '" + mapsTo.getRemoteURI() + "' is private.");
+				//throw new SBOLValidationException("Functional Component '" + mapsTo.getRemoteURI() + "' is private.");
+				throw new SBOLValidationException("sbol-10807", mapsTo);
 			}
 			if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
 				if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
-					throw new SBOLValidationException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+					//throw new SBOLValidationException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+					throw new SBOLValidationException("sbol-10811", mapsTo);
 				}
 			}
 		}

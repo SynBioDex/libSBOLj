@@ -47,6 +47,7 @@ public abstract class TopLevel extends Identified {
 		super(toplevel);
 	}
 	
+	@Override
 	protected abstract Identified deepCopy() throws SBOLValidationException;
 	
 	/**
@@ -57,11 +58,29 @@ public abstract class TopLevel extends Identified {
 	 * @return the copied top-level object if this object and all of its descendants have compliant URIs, and {@code null} otherwise.
 	 */
 	abstract Identified copy(String URIprefix, String displayId, String version) throws SBOLValidationException;
+
+	/**
+	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
+	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
+	 * the level of the given object. 
+	 * @param objURI
+	 * @throws SBOLValidationException 
+	 */
+	void isURIcompliant() throws SBOLValidationException {	
+		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+		try {
+			URIcompliance.isURIcompliant(this);
+		}
+		catch (SBOLValidationException e) {
+			throw new SBOLValidationException(e.getRule(),this);
+		}
+		this.checkDescendantsURIcompliance();
+	}
 	
 	/**
 	 * Check if this top-level object's and all of its descendants' URIs are all compliant. 
-	 * @return {@code true} if they are all compliant, {@code false} otherwise.
+	 * @throws SBOLValidationException 
 	 */
-	protected abstract boolean checkDescendantsURIcompliance();
+	protected abstract void checkDescendantsURIcompliance() throws SBOLValidationException;
 
 }

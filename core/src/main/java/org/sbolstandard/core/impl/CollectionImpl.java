@@ -54,6 +54,7 @@ public class CollectionImpl extends SBOLObjectImpl implements Collection {
     /**
      * {@inheritDoc}
      */
+	@Override
 	public String getDisplayId() {
 		return displayId;
 	}
@@ -61,6 +62,7 @@ public class CollectionImpl extends SBOLObjectImpl implements Collection {
     /**
      * {@inheritDoc}
      */
+	@Override
 	public void setDisplayId(String value) {
 		this.displayId = value;
 	}
@@ -68,6 +70,7 @@ public class CollectionImpl extends SBOLObjectImpl implements Collection {
     /**
      * {@inheritDoc}
      */
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -75,6 +78,7 @@ public class CollectionImpl extends SBOLObjectImpl implements Collection {
     /**
      * {@inheritDoc}
      */
+	@Override
 	public void setName(String value) {
 		this.name = value;
 	}
@@ -82,6 +86,7 @@ public class CollectionImpl extends SBOLObjectImpl implements Collection {
     /**
      * {@inheritDoc}
      */
+	@Override
 	public String getDescription() {
 		return description;
 	}
@@ -89,6 +94,7 @@ public class CollectionImpl extends SBOLObjectImpl implements Collection {
     /**
      * {@inheritDoc}
      */
+	@Override
 	public void setDescription(String value) {
 		this.description = value;
 	}
@@ -96,6 +102,7 @@ public class CollectionImpl extends SBOLObjectImpl implements Collection {
     /**
      * {@inheritDoc}
      */
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<DnaComponent> getComponents() {
 		return (List) wrappedComponents;

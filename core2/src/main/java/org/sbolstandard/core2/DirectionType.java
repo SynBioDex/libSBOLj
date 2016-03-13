@@ -66,10 +66,10 @@ public enum DirectionType {
 			} else if (direction.equals(out)) {
 				return DirectionType.OUT;
 			} else {
-				throw new SBOLValidationException("Unknown direction URI `" + direction + "'");
+				throw new SBOLValidationException("sbol-11802");
 			}
 		} else {
-			throw new SBOLValidationException("direction URI cannot be null");
+			throw new SBOLValidationException("sbol-11802");
 		}
 	}
 	

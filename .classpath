@@ -23,5 +23,4 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
-	<classpathentry kind="src" path="src/resources"/>
 </classpath>

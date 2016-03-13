@@ -38,5 +38,6 @@ public interface SBOLVisitable {
 	 * The default equals implementation which returns <code>true</code> only if the given object is <code>==</code> to
 	 * this object.
 	 */
+	@Override
 	boolean equals(Object obj);
 }

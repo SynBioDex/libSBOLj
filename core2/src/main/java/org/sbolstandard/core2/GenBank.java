@@ -15,7 +15,6 @@ import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -101,8 +100,9 @@ public class GenBank {
 			}
 		}
 		if (seq == null) {
-			throw new SBOLValidationException("ComponentDefintion " + componentDefinition.getIdentity() +
-					" does not have an IUPAC sequence.");
+//			throw new SBOLValidationException("ComponentDefintion " + componentDefinition.getIdentity() +
+//					" does not have an IUPAC sequence.");
+			throw new SBOLValidationException("sbol-10406", componentDefinition);
 		}
 		int size = seq.getElements().length();
 		writeHeader(w,componentDefinition,size);
@@ -350,8 +350,9 @@ public class GenBank {
 			}
 		}
 		if (type == null) {
-			throw new SBOLValidationException("ComponentDefintion " + componentDefinition.getIdentity() +
-					" is not DNA or RNA type.");
+//			throw new SBOLValidationException("ComponentDefintion " + componentDefinition.getIdentity() +
+//					" is not DNA or RNA type.");
+			throw new SBOLValidationException("sbol-10505", componentDefinition);
 		}
 		Annotation annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"molecule",gbPrefix));
 		if (annotation!=null) {
@@ -459,9 +460,11 @@ public class GenBank {
 		}		
 	}
 	
-	@SuppressWarnings("unchecked")
 	private static void writeFeature(Writer w,SequenceAnnotation sa,String role) throws IOException, SBOLValidationException {
-		if (sa.getLocations().size()==1) {
+		if (sa.getLocations().size()==0) {
+			//throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" has no locations.");
+			throw new SBOLValidationException("sbol-10902", sa);
+		} else if (sa.getLocations().size()==1) {
 			Location loc = sa.getLocations().iterator().next();
 			if (loc instanceof Range) {
 				Range range = (Range)loc;
@@ -479,14 +482,12 @@ public class GenBank {
 				}
 			} else {
 				throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
+				// TODO: (Validation) missing rule: Location of a SequenceAnnotation object needs to be either a range or cut.				
 			}
 		} else {
 			String rangeStr = "     " + role + " " + "join(";
 			boolean first = true;
-			List<Location> sortedLocations = new ArrayList<Location>();
-			sortedLocations.addAll(sa.getLocations());
-			Collections.sort(sortedLocations);
-			for (Location loc : sortedLocations) {
+			for (Location loc : sa.getSortedLocations()) {
 				if (loc instanceof Range) {
 					Range range = (Range)loc;
 					// TODO: can joins include complement?
@@ -497,7 +498,8 @@ public class GenBank {
 					Cut cut = (Cut)loc;
 					rangeStr += cut.getAt() + "^" + cut.getAt()+1;
 				} else {
-					throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" is not range, only ranges supported for GenBank output");
+					throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
+					// TODO: (Validation) missing rule: Location of a SequenceAnnotation object needs to be either a range or cut.
 				}
 			}
 			rangeStr += ")";
@@ -524,12 +526,8 @@ public class GenBank {
 		}		
 	}
 	
-	@SuppressWarnings("unchecked")
 	private static void recurseComponentDefinition(ComponentDefinition componentDefinition, Writer w) throws IOException, SBOLValidationException {
-		List<SequenceAnnotation> sortedSAs = new ArrayList<SequenceAnnotation>();
-		sortedSAs.addAll(componentDefinition.getSequenceAnnotations());
-		Collections.sort(sortedSAs);
-		for (SequenceAnnotation sa : sortedSAs) {
+		for (SequenceAnnotation sa : componentDefinition.getSortedSequenceAnnotations()) {
 			String role = "misc_feature   ";
 			Component comp = sa.getComponent();
 			if (comp != null) {
@@ -592,8 +590,9 @@ public class GenBank {
 	{
 		SBOLDocument doc = new SBOLDocument();
 		doc.setCreateDefaults(true);
-		if (URIPrefix==null) {
+		if (URIPrefix!=null) {
 			throw new SBOLValidationException("No URI prefix has been provided.");
+			// TODO: (Validation) missing rule: rule for URI prefix.
 		}
 		doc.setDefaultURIprefix(URIPrefix);
 		read(doc,in);
@@ -765,6 +764,7 @@ public class GenBank {
 				version = strSplit[1].split("\\.")[1];
 				if (!id.equals(strSplit[1].split("\\.")[0])) {
 					throw new SBOLValidationException("Warning: id in version does not match id in accession");
+					// TODO: (Validation) missing rule: other.
 				}
 				if (strSplit.length > 2) {
 					annotation = new Annotation(new QName(gbNamespace,"GInumber",gbPrefix),strSplit[2]);
@@ -823,6 +823,7 @@ public class GenBank {
 				annotations.add(annotation);
 			} else if (strLine.startsWith("FEATURE")) {
 				topCD = doc.createComponentDefinition(id, version, type);
+				topCD.addRole(SequenceOntology.ENGINEERED_REGION);
 				if (!description.equals("")) {
 					topCD.setDescription(description);
 				}
@@ -908,7 +909,7 @@ public class GenBank {
 	/**
 	 * Set the specified authority as the prefix to all member's identity
 	 *
-	 *  @param URIprefix
+	 *  @param uRIPrefix
 	 */
 	public static void setURIPrefix(String uRIPrefix) {
 		URIPrefix = uRIPrefix;
