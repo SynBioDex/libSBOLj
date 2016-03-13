@@ -9,6 +9,7 @@
         <sbol:persistentIdentity rdf:resource="http://uri_is_not_compliant_sbols.org/CRISPR_Example/CRPb_characterization_Circuit/cas9m_BFP_gene"/>
         <sbol:displayId>cas9m_BFP_gene</sbol:displayId>
         <sbol:version>1.0</sbol:version>
+        <prov:wasDerivedFrom>http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/1.0</prov:wasDerivedFrom>
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/cas9m_BFP_gene/1.0"/>
         <sbol:access rdf:resource="http://sbols.org/v2#private"/>
         <sbol:direction rdf:resource="http://sbols.org/v2#none"/>

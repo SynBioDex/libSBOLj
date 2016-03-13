@@ -4,11 +4,12 @@
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template"/>
     <sbol:displayId>CRISPR_Template</sbol:displayId>
     <sbol:version>1.0</sbol:version>
+    <prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target/1.0"/>
     <sbol:functionalComponent>
       <sbol:FunctionalComponent rdf:about="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene/1.0">
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene"/>
         <sbol:displayId>target_gene</sbol:displayId>
-        <prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target/1.0"/>
+        <prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene/1.0"/>
         <sbol:version>1.0</sbol:version>
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target_gene"/>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
@@ -19,7 +20,7 @@
       <sbol:FunctionalComponent rdf:about="http://sbols.org/CRISPR_Example/CRISPR_Template/target/1.0">
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target"/>
         <sbol:displayId>target</sbol:displayId>
-        <prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene/1.0"/>
+        <prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target/1.0"/>
         <sbol:version>1.0</sbol:version>
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target"/>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
