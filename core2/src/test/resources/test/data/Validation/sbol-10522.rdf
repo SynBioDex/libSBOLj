@@ -32,7 +32,6 @@ rdf:resource="http://partsregistry.org/cd/BBa_J23119/cutat12/cut2"/>
         </sbol:location>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
-    
     <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation
 rdf:about="http://partsregistry.org/cd/BBa_J23119/cutat10">
