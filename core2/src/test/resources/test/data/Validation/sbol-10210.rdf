@@ -4,6 +4,7 @@
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template"/>
     <sbol:displayId>CRISPR_Template</sbol:displayId>
     <sbol:version>1.0</sbol:version>
+    <prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target/1.0"/>
     <sbol:functionalComponent>
       <sbol:FunctionalComponent rdf:about="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene/1.0">
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene"/>

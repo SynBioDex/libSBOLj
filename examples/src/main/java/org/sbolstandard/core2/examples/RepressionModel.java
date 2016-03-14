@@ -306,9 +306,13 @@ public class RepressionModel {
 		Template_Module.createMapsTo("EYFP_gene_map", RefinementType.USELOCAL, "EYFP_gene", "target_gene");
 		
 		try {
-			SBOLWriter.write(doc, System.out);
+			SBOLWriter.write(doc, "/Users/myers/RepressionModel.rdf");
 		}
 		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
