@@ -3,7 +3,7 @@
   <sbol:ModuleDefinition rdf:about="http://sbols.org/CRISPR_Example/CRISPR_Template/1.0">
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template"/>
     <sbol:displayId>CRISPR_Template</sbol:displayId>
-    <dcterms:description>this_describes_something</dcterms:description>
+    <dcterms:description rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/1.0"/>
     <sbol:version>1.0</sbol:version>
     <sbol:functionalComponent>
       <sbol:FunctionalComponent rdf:about="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene/1.0">
