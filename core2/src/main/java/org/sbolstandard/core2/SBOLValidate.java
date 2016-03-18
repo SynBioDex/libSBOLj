@@ -210,7 +210,7 @@ public class SBOLValidate {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (topLevel.isSetWasDerivedFrom()) {
 				if (!checkWasDerivedFromVersion(sbolDocument,topLevel,topLevel.getWasDerivedFrom())) {
-					errors.add(new SBOLValidationException("sbol-10211", topLevel).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10207", topLevel).getExceptionMessage());
 				}
 			}
 		}
@@ -285,7 +285,7 @@ public class SBOLValidate {
 				!sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN) &&
 				!sequence.getEncoding().equals(Sequence.SMILES)) {
 				//errors.add("Sequence " + sequence.getIdentity() + " has unrecoginized encoding (see Table 1): " + sequence.getEncoding());
-				errors.add(new SBOLValidationException("sbol-10406", sequence).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10407", sequence).getExceptionMessage());
 
 			}
 		}
@@ -302,7 +302,7 @@ public class SBOLValidate {
 			}
 			if (numBioPAXtypes == 0) {
 				//errors.add("ComponentDefinition " + compDef.getIdentity() + " does not have a recognized BioPAX type (see Table 2).");
-				errors.add(new SBOLValidationException("sbol-10505", compDef).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10525", compDef).getExceptionMessage());
 			} else if (numBioPAXtypes > 1){
 				//errors.add("ComponentDefinition " + compDef.getIdentity() + " has conflicting BioPAX types (see Table 2).");
 				errors.add(new SBOLValidationException("sbol-10503", compDef).getExceptionMessage());
@@ -318,8 +318,9 @@ public class SBOLValidate {
 					}
 				}
 				if (!foundSO) {
+					// TODO: should check ONLY one?
 					//errors.add("DNA ComponentDefinition " + compDef.getIdentity() + " does not have a recognized SO role.");
-					errors.add(new SBOLValidationException("sbol-10510", compDef).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10527", compDef).getExceptionMessage());
 				}
 			}
 			for (SequenceConstraint sc : compDef.getSequenceConstraints()) {
@@ -333,10 +334,11 @@ public class SBOLValidate {
 			}
 		}
 		for (Model model : sbolDocument.getModels()) {
+			// TODO: should check EDAM ontology to be more precise
 			if (!model.getLanguage().equals(Model.SBML) &&
 				!model.getLanguage().equals(Model.CELLML) &&
 				!model.getLanguage().equals(Model.BIOPAX)) {
-				errors.add(new SBOLValidationException("sbol-11506", model).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11507", model).getExceptionMessage());
 			}
 			try {
 				if (!sbo.isDescendantOf(model.getFramework(), SystemsBiologyOntology.MODELING_FRAMEWORK)) {
@@ -344,7 +346,7 @@ public class SBOLValidate {
 				}
 			}
 			catch (Exception e) {
-				errors.add(new SBOLValidationException("sbol-11510", model).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11511", model).getExceptionMessage());
 			}
 		}
 		for (ModuleDefinition modDef : sbolDocument.getModuleDefinitions()) {
@@ -366,7 +368,7 @@ public class SBOLValidate {
 				} else if (numSBOtype > 1) {
 //					errors.add("Interaction " + interaction.getIdentity() + 
 //							" has more than one type from occurring entity branch of the SBO.");
-					errors.add(new SBOLValidationException("sbol-11904", interaction).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-11905", interaction).getExceptionMessage());
 				}
 				for (Participation participation : interaction.getParticipations()) {
 					int numSBOrole = 0;
@@ -386,7 +388,7 @@ public class SBOLValidate {
 					} else if (numSBOrole > 1) {
 //						errors.add("Participation " + participation.getIdentity() + 
 //								" has more than one role from participant role branch of the SBO.");
-						errors.add(new SBOLValidationException("sbol-12006", participation).getExceptionMessage());
+						errors.add(new SBOLValidationException("sbol-12007", participation).getExceptionMessage());
 					}
 				}
 			}
@@ -405,9 +407,6 @@ public class SBOLValidate {
 			for (Sequence sequence : componentDefinition.getSequences()) {
 				if (sequence.getEncoding().equals(Sequence.IUPAC_DNA) ||
 					sequence.getEncoding().equals(Sequence.IUPAC_RNA)) {
-					if (foundProtein || foundSmiles) {
-						errors.add(new SBOLValidationException("sbol-10515", componentDefinition).getExceptionMessage()); 
-					} 
 					if (foundNucleic) {
 						if (nucleicLength != sequence.getElements().length()) {
 							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getExceptionMessage());
@@ -432,9 +431,6 @@ public class SBOLValidate {
 						}
 					}
 				} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
-					if (foundNucleic || foundSmiles) {
-						errors.add(new SBOLValidationException("sbol-10515", componentDefinition).getExceptionMessage());
-					} 					
 					if (foundProtein) {
 						if (proteinLength != sequence.getElements().length()) {
 							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getExceptionMessage());
@@ -444,9 +440,6 @@ public class SBOLValidate {
 						proteinLength = sequence.getElements().length();
 					}
 				} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
-					if (foundNucleic || foundProtein) {
-						errors.add(new SBOLValidationException("sbol-10515", componentDefinition).getExceptionMessage());
-					} 	
 					if (foundSmiles) {
 						if (smilesLength != sequence.getElements().length()) {
 							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getExceptionMessage());

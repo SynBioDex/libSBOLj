@@ -172,11 +172,12 @@ public class SBOLValidationException extends Exception {
 			String key = message.trim();
 			SBOLValidationRule rule = validationRules.get(key);
 			if (rule == null) {
-				throw new RuntimeException("Rule ID does not exist.");
+				return message;
+				//throw new RuntimeException("Rule ID does not exist.");
 			}
-			sb.append(": " + rule.getDescription() + "\n");
+			sb.append(": " + rule.getDescription());
 			if (!objects.isEmpty()) {
-				sb.append(": ");
+				sb.append("\n: ");
 				boolean first = true;
 				for (Identified obj : objects) {
 					if (first) {

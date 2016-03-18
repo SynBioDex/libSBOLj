@@ -743,12 +743,16 @@ public class GenBank {
 				} 
 				annotation = new Annotation(new QName(gbNamespace,"molecule",gbPrefix),strSplit[4]);
 				annotations.add(annotation);
-				annotation = new Annotation(new QName(gbNamespace,"topology",gbPrefix),strSplit[5]);
-				annotations.add(annotation);
-				annotation = new Annotation(new QName(gbNamespace,"division",gbPrefix),strSplit[6]);
-				annotations.add(annotation);
-				annotation = new Annotation(new QName(gbNamespace,"date",gbPrefix),strSplit[7]);
-				annotations.add(annotation);
+				for (int i = 5; i < strSplit.length; i++) {
+					if (strSplit[i].startsWith("linear") || strSplit[i].startsWith("circular")) {
+						annotation = new Annotation(new QName(gbNamespace,"topology",gbPrefix),strSplit[i]);
+					} else if (strSplit[i].length()==3) {
+						annotation = new Annotation(new QName(gbNamespace,"division",gbPrefix),strSplit[i]);
+					} else {
+						annotation = new Annotation(new QName(gbNamespace,"date",gbPrefix),strSplit[i]);
+					}
+					annotations.add(annotation);
+				} 
 			} else if (strLine.startsWith("DEFINITION")) {
 				description = strLine.replaceFirst("DEFINITION  ", "");
 			} else if (strLine.startsWith("ACCESSION")) {
