@@ -140,15 +140,15 @@ public class SBOLTestUtils {
 				"LacI_pLacI",
 				new HashSet<URI>(Arrays.asList(SystemsBiologyOntology.TRANSCRIPTION))); //TODO: is transcription a transcriptionalRepression?
 
-		Participation participation=interaction.createParticipation(
+		interaction.createParticipation(
 				promoter.getDisplayId(),
-				laciInverterModuleDef_promoter.getIdentity());
-		participation.addRole(SystemsBiologyOntology.PROMOTER);
+				laciInverterModuleDef_promoter.getIdentity(),
+				SystemsBiologyOntology.PROMOTER);
 
-		Participation participation2=interaction.createParticipation(
+		interaction.createParticipation(
 				TF.getDisplayId(),
-				laciInverterModuleDef_TF.getIdentity());
-		participation2.addRole(SystemsBiologyOntology.INHIBITOR);
+				laciInverterModuleDef_TF.getIdentity(),
+				SystemsBiologyOntology.INHIBITOR);
 	}
 
 	public static ComponentDefinition createComponenDefinition(SBOLDocument document,QName identifier,String name, URI type, URI role,String description) throws SBOLValidationException

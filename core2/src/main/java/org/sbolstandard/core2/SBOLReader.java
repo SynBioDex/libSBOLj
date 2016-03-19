@@ -3022,9 +3022,7 @@ public class SBOLReader
 			}
 		}
 
-		Participation p = new Participation(participation.getIdentity(), participant);
-		if (!roles.isEmpty())
-			p.setRoles(roles);
+		Participation p = new Participation(participation.getIdentity(), participant, roles);
 		if (displayId != null)
 			p.setDisplayId(displayId);
 		if (name != null)

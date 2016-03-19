@@ -536,13 +536,13 @@ public class writeTester {
 		return collection;
 	}
 
-	private static Annotation createAnnotation(QName relation, String literal) throws SBOLValidationException
+	private static Annotation createAnnotation(QName relation, String literal) 
 	{
 		return new Annotation(NamedProperty(relation, literal));
 
 	}
 
-	private static Annotation createAnnotation(QName relation, URI value) throws SBOLValidationException
+	private static Annotation createAnnotation(QName relation, URI value) 
 	{
 		return new Annotation(NamedProperty(relation, value));
 
@@ -676,8 +676,7 @@ public class writeTester {
 			String displayId, Set<URI> roles, String fi) throws SBOLValidationException
 	{
 		if (i.getParticipation(displayId)==null) {
-			Participation p = i.createParticipation(displayId, fi);
-			p.setRoles(roles);
+			i.createParticipation(displayId, fi, roles);
 		}
 	}
 

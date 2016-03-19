@@ -230,6 +230,7 @@ public class SBOLValidate {
 					errors.add(e.getMessage());
 				}
 			}
+			// TODO: need to check cycles in children
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			try {

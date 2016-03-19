@@ -22,6 +22,7 @@ import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.RestrictionType;
 import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLValidate;
 import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLReader;
 import org.sbolstandard.core2.SBOLWriter;
@@ -71,19 +72,19 @@ public class RepressionModel {
 
 		// Complex Formation Interaction for Cas9m_BFP and gRNA 
 		Interaction Cas9Complex_Formation = CRISPR_Template.createInteraction("cas9_complex_formation", SystemsBiologyOntology.NON_COVALENT_BINDING);
-		Cas9Complex_Formation.createParticipation("cas9_generic", "cas9_generic").addRole(SystemsBiologyOntology.REACTANT);
-		Cas9Complex_Formation.createParticipation("gRNA_generic", "gRNA_generic").addRole(SystemsBiologyOntology.REACTANT);
-		Cas9Complex_Formation.createParticipation("cas9_gRNA_complex", "cas9_gRNA_complex").addRole(SystemsBiologyOntology.PRODUCT);
+		Cas9Complex_Formation.createParticipation("cas9_generic", "cas9_generic",SystemsBiologyOntology.REACTANT);
+		Cas9Complex_Formation.createParticipation("gRNA_generic", "gRNA_generic",SystemsBiologyOntology.REACTANT);
+		Cas9Complex_Formation.createParticipation("cas9_gRNA_complex", "cas9_gRNA_complex",SystemsBiologyOntology.PRODUCT);
 
 		// Production of target from target gene
 		Interaction EYFP_production = CRISPR_Template.createInteraction("target_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
-		EYFP_production.createParticipation("target_gene", "target_gene").addRole(SystemsBiologyOntology.PROMOTER);
-		EYFP_production.createParticipation("target", "target").addRole(SystemsBiologyOntology.PRODUCT);
+		EYFP_production.createParticipation("target_gene", "target_gene",SystemsBiologyOntology.PROMOTER);
+		EYFP_production.createParticipation("target", "target",SystemsBiologyOntology.PRODUCT);
 	
 		// Inhibition of target by cas9m_BFP_gRNA 
 		Interaction target_generic_gene_inhibition = CRISPR_Template.createInteraction("target_gene_inhibition", SystemsBiologyOntology.INHIBITION);
-		target_generic_gene_inhibition.createParticipation("cas9_gRNA_complex", "cas9_gRNA_complex").addRole(SystemsBiologyOntology.INHIBITOR);
-		target_generic_gene_inhibition.createParticipation("target_gene", "target_gene").addRole(SystemsBiologyOntology.PROMOTER);
+		target_generic_gene_inhibition.createParticipation("cas9_gRNA_complex", "cas9_gRNA_complex",SystemsBiologyOntology.INHIBITOR);
+		target_generic_gene_inhibition.createParticipation("target_gene", "target_gene",SystemsBiologyOntology.PROMOTER);
 		
 		// Create Sequence for CRa_U6 promoter
 		String CRa_U6_seq_elements = "GGTTTACCGAGCTCTTATTGGTTTTCAAACTTCATTGACTGTGCC" +
@@ -248,52 +249,52 @@ public class RepressionModel {
 
 		/* Production of mKate from the mKate gene */
 		Interaction mKate_production = CRPb_circuit.createInteraction("mKate_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
-		mKate_production.createParticipation("mKate", "mKate").addRole(SystemsBiologyOntology.PRODUCT);
-		mKate_production.createParticipation("mKate_gene", "mKate_gene").addRole(SystemsBiologyOntology.PROMOTER);
+		mKate_production.createParticipation("mKate", "mKate",SystemsBiologyOntology.PRODUCT);
+		mKate_production.createParticipation("mKate_gene", "mKate_gene",SystemsBiologyOntology.PROMOTER);
 
 		// Production of GAL4VP16 from the GAL4VP16 gene
 		Interaction GAL4VP16_production = CRPb_circuit.createInteraction("Gal4VP16_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
-		GAL4VP16_production.createParticipation("Gal4VP16_gene", "Gal4VP16_gene").addRole(SystemsBiologyOntology.PROMOTER);
-		GAL4VP16_production.createParticipation("Gal4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.PRODUCT);
+		GAL4VP16_production.createParticipation("Gal4VP16_gene", "Gal4VP16_gene",SystemsBiologyOntology.PROMOTER);
+		GAL4VP16_production.createParticipation("Gal4VP16", "Gal4VP16",SystemsBiologyOntology.PRODUCT);
 
 		// Production of cas9m_BFP from the cas9m_BFP gene
 		Interaction cas9m_BFP_production = CRPb_circuit.createInteraction("cas9m_BFP_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
-		cas9m_BFP_production.createParticipation("cas9m_BFP_gene", "cas9m_BFP_gene").addRole(SystemsBiologyOntology.PROMOTER);
-		cas9m_BFP_production.createParticipation("cas9m_BFP", "cas9m_BFP").addRole(SystemsBiologyOntology.PRODUCT);
+		cas9m_BFP_production.createParticipation("cas9m_BFP_gene", "cas9m_BFP_gene",SystemsBiologyOntology.PROMOTER);
+		cas9m_BFP_production.createParticipation("cas9m_BFP", "cas9m_BFP",SystemsBiologyOntology.PRODUCT);
 
 		// Production of gRNA_b from the gRNA_b gene
 		Interaction gRNA_b_production = CRPb_circuit.createInteraction("gRNA_b_production", SystemsBiologyOntology.GENETIC_PRODUCTION);
-		gRNA_b_production.createParticipation("gRNA_b_gene", "gRNA_b_gene").addRole(SystemsBiologyOntology.PROMOTER);
-		gRNA_b_production.createParticipation("gRNA_b", "gRNA_b").addRole(SystemsBiologyOntology.PRODUCT);
+		gRNA_b_production.createParticipation("gRNA_b_gene", "gRNA_b_gene",SystemsBiologyOntology.PROMOTER);
+		gRNA_b_production.createParticipation("gRNA_b", "gRNA_b",SystemsBiologyOntology.PRODUCT);
 		
 		// Activation of EYFP production by GAL4VP16
 		Interaction EYFP_Activation = CRPb_circuit.createInteraction("EYFP_Activation", SystemsBiologyOntology.STIMULATION);
-		EYFP_Activation.createParticipation("Gal4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.STIMULATOR);
-		EYFP_Activation.createParticipation("EYFP_gene", "EYFP_gene").addRole(SystemsBiologyOntology.PROMOTER);
+		EYFP_Activation.createParticipation("Gal4VP16", "Gal4VP16",SystemsBiologyOntology.STIMULATOR);
+		EYFP_Activation.createParticipation("EYFP_gene", "EYFP_gene",SystemsBiologyOntology.PROMOTER);
 		
 		// Degradation of mKate
 		Interaction mKate_deg = CRPb_circuit.createInteraction("mKate_deg", SystemsBiologyOntology.DEGRADATION);
-		mKate_deg.createParticipation("mKate", "mKate").addRole(SystemsBiologyOntology.REACTANT);
+		mKate_deg.createParticipation("mKate", "mKate",SystemsBiologyOntology.REACTANT);
 		
 		// Degradation of GAL4VP16
 		Interaction GAL4VP16_deg = CRPb_circuit.createInteraction("Gal4VP16_deg", SystemsBiologyOntology.DEGRADATION);
-		GAL4VP16_deg.createParticipation("Gal4VP16", "Gal4VP16").addRole(SystemsBiologyOntology.REACTANT);
+		GAL4VP16_deg.createParticipation("Gal4VP16", "Gal4VP16",SystemsBiologyOntology.REACTANT);
 		
 		// Degradation of cas9m_BFP
 		Interaction cas9m_BFP_deg = CRPb_circuit.createInteraction("cas9m_BFP_deg", SystemsBiologyOntology.DEGRADATION);
-		cas9m_BFP_deg.createParticipation("cas9m_BFP", "cas9m_BFP").addRole(SystemsBiologyOntology.REACTANT);
+		cas9m_BFP_deg.createParticipation("cas9m_BFP", "cas9m_BFP",SystemsBiologyOntology.REACTANT);
 		
 		// Degradation of gRNA_b
 		Interaction gRNA_b_deg = CRPb_circuit.createInteraction("gRNA_b_deg", SystemsBiologyOntology.DEGRADATION);
-		gRNA_b_deg.createParticipation("gRNA_b", "gRNA_b").addRole(SystemsBiologyOntology.REACTANT);
+		gRNA_b_deg.createParticipation("gRNA_b", "gRNA_b",SystemsBiologyOntology.REACTANT);
 		
 		// Degradation of EYFP
 		Interaction EYFP_deg = CRPb_circuit.createInteraction("EYFP_deg", SystemsBiologyOntology.DEGRADATION);
-		EYFP_deg.createParticipation("EYFP", "EYFP").addRole(SystemsBiologyOntology.REACTANT);
+		EYFP_deg.createParticipation("EYFP", "EYFP",SystemsBiologyOntology.REACTANT);
 		
 		// Degradation of cas9m_BFP_gRNA_b
 		Interaction cas9m_BFP_gRNA_b_deg = CRPb_circuit.createInteraction("cas9m_BFP_gRNA_b_deg", SystemsBiologyOntology.DEGRADATION);
-		cas9m_BFP_gRNA_b_deg.createParticipation("cas9m_BFP_gRNA_b", "cas9m_BFP_gRNA_b").addRole(SystemsBiologyOntology.REACTANT);
+		cas9m_BFP_gRNA_b_deg.createParticipation("cas9m_BFP_gRNA_b", "cas9m_BFP_gRNA_b",SystemsBiologyOntology.REACTANT);
 		
 		// Create Template Module
 		Module Template_Module = CRPb_circuit.createModule("CRISPR_Template", "CRISPR_Template", version);
@@ -386,6 +387,13 @@ public class RepressionModel {
 											"ttgacggctagctcagtcctaggtacagtgctagc",
 											Sequence.IUPAC_DNA); 
 		pConst_alt.addSequence(pConst_alt_seq);
+		SBOLValidate.validateSBOL(doc, true, true, true);
+		if (SBOLValidate.getNumErrors() > 0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.out.println(error);
+			}
+			return;
+		}
 		
 		try {
 			SBOLWriter.write(doc,(System.out));

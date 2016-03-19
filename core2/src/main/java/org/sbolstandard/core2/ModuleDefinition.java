@@ -391,12 +391,14 @@ public class ModuleDefinition extends TopLevel {
 	 * Calls the Interaction constructor to create a new instance using the
 	 * given parameters, then adds to the list of Interaction instances owned by this
 	 * ModuleDefinition object.
-	 *
+	 * 
+	 * @param identity
+	 * @param types
 	 * @return the created Interaction instance.
 	 * @throws SBOLValidationException 
 	 */
-	Interaction createInteraction(URI identity, Set<URI> type) throws SBOLValidationException {
-		Interaction interaction = new Interaction(identity, type);
+	Interaction createInteraction(URI identity, Set<URI> types) throws SBOLValidationException {
+		Interaction interaction = new Interaction(identity, types);
 		addInteraction(interaction);
 		return interaction;
 	}
@@ -419,8 +421,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public Interaction createInteraction(String displayId, Set<URI> types) throws SBOLValidationException {
-		if (sbolDocument != null)
-			sbolDocument.checkReadOnly();
+		if (sbolDocument != null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newInteractionURI = createCompliantURI(URIprefix, displayId, version);
