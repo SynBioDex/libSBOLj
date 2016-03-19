@@ -276,6 +276,35 @@ public class SBOLValidate {
 		}
 	}
 	
+	static void checkInteractionTypeParticipationRole(Interaction interaction,URI type,URI role) {
+		if (type.equals(SystemsBiologyOntology.INHIBITION)) {
+			if (!role.equals(SystemsBiologyOntology.INHIBITOR) && !role.equals(SystemsBiologyOntology.PROMOTER)) {
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+			}
+		} else if (type.equals(SystemsBiologyOntology.STIMULATION)) {
+			if (!role.equals(SystemsBiologyOntology.STIMULATOR) && !role.equals(SystemsBiologyOntology.PROMOTER)) {
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+			}
+		} else if (type.equals(SystemsBiologyOntology.NON_COVALENT_BINDING)) {
+			if (!role.equals(SystemsBiologyOntology.REACTANT) && !role.equals(SystemsBiologyOntology.PRODUCT)) {
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+			}
+		} else if (type.equals(SystemsBiologyOntology.DEGRADATION)) {
+			if (!role.equals(SystemsBiologyOntology.REACTANT)) {
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+			}
+		} else if (type.equals(SystemsBiologyOntology.BIOCHEMICAL_REACTION)) {
+			if (!role.equals(SystemsBiologyOntology.REACTANT) && !role.equals(SystemsBiologyOntology.PRODUCT) && 
+					!role.equals(SystemsBiologyOntology.MODIFIER)) {
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+			}
+		} else if (type.equals(SystemsBiologyOntology.GENETIC_PRODUCTION)) {
+			if (!role.equals(SystemsBiologyOntology.PROMOTER) && !role.equals(SystemsBiologyOntology.PRODUCT)) {
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+			}
+		}   
+	}
+	
 	static void validateOntologyUsage(SBOLDocument sbolDocument) {
 		SequenceOntology so = new SequenceOntology();
 		SystemsBiologyOntology sbo = new SystemsBiologyOntology();
@@ -301,25 +330,21 @@ public class SBOLValidate {
 				}
 			}
 			if (numBioPAXtypes == 0) {
-				//errors.add("ComponentDefinition " + compDef.getIdentity() + " does not have a recognized BioPAX type (see Table 2).");
 				errors.add(new SBOLValidationException("sbol-10525", compDef).getExceptionMessage());
 			} else if (numBioPAXtypes > 1){
-				//errors.add("ComponentDefinition " + compDef.getIdentity() + " has conflicting BioPAX types (see Table 2).");
 				errors.add(new SBOLValidationException("sbol-10503", compDef).getExceptionMessage());
 			}
 			if (compDef.getTypes().contains(ComponentDefinition.DNA)) {
-				boolean foundSO = false;
+				int numSO = 0;;
 				for (URI role : compDef.getRoles()) {
 					try { 
-						so.getName(role);
-						foundSO = true;
-						break;
+						if (so.isDescendantOf(role, SequenceOntology.SEQUENCE_FEATURE)) {
+							numSO++;	
+						}
 					} catch (Exception e){
 					}
 				}
-				if (!foundSO) {
-					// TODO: should check ONLY one?
-					//errors.add("DNA ComponentDefinition " + compDef.getIdentity() + " does not have a recognized SO role.");
+				if (numSO!=1) {
 					errors.add(new SBOLValidationException("sbol-10527", compDef).getExceptionMessage());
 				}
 			}
@@ -352,43 +377,37 @@ public class SBOLValidate {
 		for (ModuleDefinition modDef : sbolDocument.getModuleDefinitions()) {
 			for (Interaction interaction : modDef.getInteractions()) {
 				int numSBOtype = 0;
+				URI SBOtype = null;
 				for (URI type : interaction.getTypes()) {
 					try {
 						if (sbo.isDescendantOf(type, SystemsBiologyOntology.OCCURRING_ENTITY_REPRESENTATION)) {
 							numSBOtype++;
+							SBOtype = type;
 						}
 					}
 					catch (Exception e) {
 					}
 				}
-				if (numSBOtype == 0) {
-//					errors.add("Interaction " + interaction.getIdentity() + 
-//							" has no type from occurring entity branch of the SBO.");
+				if (numSBOtype != 1) {
 					errors.add(new SBOLValidationException("sbol-11905").getExceptionMessage());
-				} else if (numSBOtype > 1) {
-//					errors.add("Interaction " + interaction.getIdentity() + 
-//							" has more than one type from occurring entity branch of the SBO.");
-					errors.add(new SBOLValidationException("sbol-11905", interaction).getExceptionMessage());
-				}
+				} 
 				for (Participation participation : interaction.getParticipations()) {
 					int numSBOrole = 0;
+					URI SBOrole = null;
 					for (URI role : participation.getRoles()) {
 						try {
 							if (sbo.isDescendantOf(role, SystemsBiologyOntology.PARTICIPANT_ROLE)) {
 								numSBOrole++;
+								SBOrole = role;
 							}
 						}
 						catch (Exception e) {
 						}
 					}
-					if (numSBOrole == 0) {
-//						errors.add("Participation " + participation.getIdentity() + 
-//								" has no role from participant role branch of the SBO.");
+					if (numSBOrole != 1) {
 						errors.add(new SBOLValidationException("sbol-12007", participation).getExceptionMessage());
-					} else if (numSBOrole > 1) {
-//						errors.add("Participation " + participation.getIdentity() + 
-//								" has more than one role from participant role branch of the SBO.");
-						errors.add(new SBOLValidationException("sbol-12007", participation).getExceptionMessage());
+					} else {
+						checkInteractionTypeParticipationRole(interaction,SBOtype,SBOrole);
 					}
 				}
 			}
@@ -547,6 +566,8 @@ public class SBOLValidate {
 		}
 	}
 	
+	// TODO: does this check children are unique? 
+	// TODO: what about persistentIdentities?
 	static void validateURIuniqueness(SBOLDocument sbolDocument) {
 		HashMap<URI, Identified> elements = new HashMap<>();
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {

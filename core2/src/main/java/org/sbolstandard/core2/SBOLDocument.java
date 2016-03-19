@@ -2527,7 +2527,7 @@ public class SBOLDocument {
 		if (compliant && childrenCompliant) {
 			URI persistentId = URI.create(extractPersistentId(newTopLevel.getIdentity()));
 			if (keyExistsInAnyMap(persistentId, maps))
-				throw new SBOLValidationException("sbol-10202", newTopLevel);
+				throw new SBOLValidationException("sbol-10220", newTopLevel);
 			if (instancesMap.containsKey(newTopLevel.getIdentity()))
 				throw new SBOLValidationException("sbol-10202", newTopLevel);
 			String prefix = extractURIprefix(persistentId);
