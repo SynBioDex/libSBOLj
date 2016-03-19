@@ -81,6 +81,79 @@ public class SBOLValidate {
 			}
 		}
 	}
+	
+	protected static void checkComponentDefinitionMapsTos(ComponentDefinition componentDefinition,MapsTo mapsTo) throws SBOLValidationException {
+		for (Component component : componentDefinition.getComponents()) {
+			for (MapsTo mapsTo2 : component.getMapsTos()) {
+				if (mapsTo==mapsTo2) continue;
+				if (mapsTo.getLocalURI().equals(mapsTo2.getLocalURI()) &&
+					mapsTo.getRefinement().equals(RefinementType.USEREMOTE) &&
+					mapsTo2.getRefinement().equals(RefinementType.USEREMOTE)) {
+					throw new SBOLValidationException("sbol-11526",componentDefinition);
+				}
+			}
+		}
+	}
+	
+	protected static void checkModuleDefinitionMapsTos(ModuleDefinition moduleDefinition,MapsTo mapsTo) throws SBOLValidationException {
+		for (Module module : moduleDefinition.getModules()) {
+			for (MapsTo mapsTo2 : module.getMapsTos()) {
+				if (mapsTo==mapsTo2) continue;
+				if (mapsTo.getLocalURI().equals(mapsTo2.getLocalURI()) &&
+					mapsTo.getRefinement().equals(RefinementType.USEREMOTE) &&
+					mapsTo2.getRefinement().equals(RefinementType.USEREMOTE)) {
+					throw new SBOLValidationException("sbol-11609",moduleDefinition);
+				}
+			}
+		}
+		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
+			for (MapsTo mapsTo2 : functionalComponent.getMapsTos()) {
+				if (mapsTo==mapsTo2) continue;
+				if (mapsTo.getLocalURI().equals(mapsTo2.getLocalURI()) &&
+					mapsTo.getRefinement().equals(RefinementType.USEREMOTE) &&
+					mapsTo2.getRefinement().equals(RefinementType.USEREMOTE)) {
+					throw new SBOLValidationException("sbol-11609",moduleDefinition);
+				}
+			}
+		}
+	}
+	
+	static void validateMapsTos(SBOLDocument sbolDocument) {
+		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
+			for (Component component : componentDefinition.getComponents()) {
+				for (MapsTo mapsTo : component.getMapsTos()) {
+					try {
+						checkComponentDefinitionMapsTos(componentDefinition,mapsTo);
+					}
+					catch (SBOLValidationException e) {
+						errors.add(e.getMessage());
+					}
+				}
+			}
+		}
+		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
+			for (Module module : moduleDefinition.getModules()) {
+				for (MapsTo mapsTo : module.getMapsTos()) {
+					try {
+						checkModuleDefinitionMapsTos(moduleDefinition,mapsTo);
+					}
+					catch (SBOLValidationException e) {
+						errors.add(e.getMessage());
+					}
+				}
+			}
+			for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
+				for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+					try {
+						checkModuleDefinitionMapsTos(moduleDefinition,mapsTo);
+					}
+					catch (SBOLValidationException e) {
+						errors.add(e.getMessage());
+					}
+				}
+			}
+		}
+	}
 
 	protected static void checkModuleDefinitionCompleteness(SBOLDocument sbolDocument,ModuleDefinition moduleDefinition) {
 		for (URI modelURI : moduleDefinition.getModelURIs()) {
@@ -702,6 +775,7 @@ public class SBOLValidate {
 		validateCircularReferences(sbolDocument);
 		validateURIuniqueness(sbolDocument);
 		validateSequenceConstraints(sbolDocument);
+		validateMapsTos(sbolDocument);
         if (compliant) validateCompliance(sbolDocument);
         if (complete) validateCompleteness(sbolDocument);
         if (bestPractice) {

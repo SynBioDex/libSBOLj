@@ -190,6 +190,9 @@ public class Component extends ComponentInstance{
 				}
 			}
 		}
+		if (componentDefinition!=null) {
+			SBOLValidate.checkComponentDefinitionMapsTos(componentDefinition, mapsTo);
+		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
 	}
 

@@ -239,6 +239,9 @@ public class Module extends Identified {
 				}
 			}
 		}
+		if (moduleDefinition!=null) {
+			SBOLValidate.checkModuleDefinitionMapsTos(moduleDefinition, mapsTo);
+		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
 	}
 
