@@ -165,7 +165,7 @@ public class ValidationTest {
 		HashSet<Integer> blue = new HashSet<Integer>(Arrays.asList(
 				10202, 10210,
 				10405, 
-				10516,
+				10513, 10516,
 				10604, 10605, 
 				10807, 10808, 10809, 10811, 
 				11409, 11410, 11411, 
@@ -186,7 +186,7 @@ public class ValidationTest {
 		HashSet<Integer> yellow = new HashSet<Integer>(Arrays.asList(
 				10211, 10214, 
 				10404, 10406, 
-				10504, 10505, 10506, 10508, 10509, 10510, 10513, 10514, 10515, 
+				10504, 10505, 10506, 10508, 10509, 10510, 10514, 10515, 
 				11408,
 				11503, 11505, 11506, 11509, 11510, 
 				11603,
@@ -207,7 +207,7 @@ public class ValidationTest {
 		if (failedTests.size() > 0) {
 			System.out.println();
 			System.out.println("Warning: the following tests failed.");
-			System.out.println(sortIntegerHashSet(yellow));
+			System.out.println(sortIntegerHashSet(failedTests));
 		}
 		HashSet<Integer> removedTested = (HashSet<Integer>) removed.clone();
 		if (removedTested.retainAll(failedTests) == true && removedTested.size() == 0) {
@@ -230,7 +230,7 @@ public class ValidationTest {
 		else {
 			System.out.println();
 			System.out.println("Warning: tests below were created but are marked yellow triangle.");
-			System.out.println(sortIntegerHashSet(yellow));
+			System.out.println(sortIntegerHashSet(yellowTested));
 		}
 		if (yellow.retainAll(testedRules) == true && yellow.size() == 0) {
 		}

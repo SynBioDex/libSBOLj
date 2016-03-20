@@ -7,6 +7,7 @@
     <prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target/1.0"/>
     <sbol:functionalComponent>
       <sbol:FunctionalComponent rdf:about="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene/1.0">
+	<prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target"/>
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene"/>
         <sbol:displayId>target_gene</sbol:displayId>
         <sbol:version>1.0</sbol:version>
@@ -17,6 +18,7 @@
     </sbol:functionalComponent>
     <sbol:functionalComponent>
       <sbol:FunctionalComponent rdf:about="http://sbols.org/CRISPR_Example/CRISPR_Template/target/1.0">
+	<prov:wasDerivedFrom rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene"/>
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target"/>
         <sbol:displayId>target</sbol:displayId>
         <sbol:version>1.0</sbol:version>

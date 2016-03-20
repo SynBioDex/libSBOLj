@@ -244,28 +244,6 @@ public class SBOLValidate {
 		return;
 	}
 	
-	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument, 
-			Identified identified, URI wasDerivedFrom, Set<URI> visited) throws SBOLValidationException {
-		visited.add(identified.getIdentity());
-		TopLevel tl = sbolDocument.getTopLevel(wasDerivedFrom);
-		if (tl!=null) {
-			if (visited.contains(tl.getIdentity())) {
-				throw new SBOLValidationException("sbol-10209",identified);
-			}
-			if (tl.isSetWasDerivedFrom()) {
-				try {
-					checkWasDerivedFromCycle(sbolDocument,tl,tl.getWasDerivedFrom(),visited);
-				} catch (SBOLValidationException e) {
-					throw new SBOLValidationException("sbol-10210",identified);
-				}
-			} else {
-				return;
-			}
-		}
-		visited.remove(identified.getIdentity());
-		return;
-	}
-	
 	protected static boolean checkWasDerivedFromVersion(SBOLDocument sbolDocument, Identified identified, 
 			URI wasDerivedFrom) {
 		Identified derivedFrom = sbolDocument.getTopLevel(wasDerivedFrom);
@@ -288,6 +266,28 @@ public class SBOLValidate {
 			}
 		}
 	}
+	
+	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument, 
+			Identified identified, URI wasDerivedFrom, Set<URI> visited) throws SBOLValidationException {
+		visited.add(identified.getIdentity());
+		TopLevel tl = sbolDocument.getTopLevel(wasDerivedFrom);
+		if (tl!=null) {
+			if (visited.contains(tl.getIdentity())) {
+				throw new SBOLValidationException("sbol-10209",identified);
+			}
+			if (tl.isSetWasDerivedFrom()) {
+				try {
+					checkWasDerivedFromCycle(sbolDocument,tl,tl.getWasDerivedFrom(),visited);
+				} catch (SBOLValidationException e) {
+					throw new SBOLValidationException("sbol-10210",identified);
+				}
+			} else {
+				return;
+			}
+		}
+		visited.remove(identified.getIdentity());
+		return;
+	}
 
 	/**
 	 * Validate if there are circular references in given {@code sbolDocument}.
@@ -303,7 +303,7 @@ public class SBOLValidate {
 					errors.add(e.getMessage());
 				}
 			}
-			// TODO: need to check cycles in children
+			// TODO: need to check cycles in children?
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			try {
@@ -424,7 +424,7 @@ public class SBOLValidate {
 			}
 			for (SequenceConstraint sc : compDef.getSequenceConstraints()) {
 				try {
-					sc.getRestriction();
+					RestrictionType.convertToRestrictionType(sc.getRestrictionURI());
 				}
 				catch (Exception e) {
 					//errors.add("SequenceConstraint " + sc.getIdentity() + " does not have a recognized restriction type (Table 7): " + sc.getRestrictionURI());
@@ -552,6 +552,7 @@ public class SBOLValidate {
 			} else if (componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && !foundSmiles) {
 				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getExceptionMessage());
 			}
+			/* TODO: no rule for this currently
 			if ((!componentDefinition.getTypes().contains(ComponentDefinition.DNA) &&
 					!componentDefinition.getTypes().contains(ComponentDefinition.RNA))
 					&& foundNucleic) {
@@ -561,6 +562,7 @@ public class SBOLValidate {
 			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && foundSmiles) {
 				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
 			}
+			*/
 		}
 	}
 	

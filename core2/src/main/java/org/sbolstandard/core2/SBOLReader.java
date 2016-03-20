@@ -556,13 +556,19 @@ public class SBOLReader
 	{
 		Map<URI, NestedDocument<QName>> nested = new HashMap<URI, NestedDocument<QName>>();
 		List<TopLevelDocument<QName>> topLevels = new ArrayList<TopLevelDocument<QName>>();
+		clearErrors();
+
 		for (TopLevelDocument<QName> topLevel : document.getTopLevelDocuments()) {
 
-			if (topLevel.getType().equals(NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf")
-					.withLocalPart("Description"))) {
-				// TODO: if not properties of type/type, then throw 12302
-				for (PropertyValue<QName> value : topLevel.getPropertyValues(
-						NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart("type"))) {
+			if (topLevel.getType().equals(Sbol2Terms.Description.Description)) {
+				if (topLevel.getPropertyValues(Sbol2Terms.Description.type).isEmpty()) {
+					if (keepGoing) {
+						errors.add(new SBOLValidationException("sbol-12302",topLevel.getIdentity()).getExceptionMessage());
+					} else {
+						throw new SBOLValidationException("sbol-12302",topLevel.getIdentity());
+					}
+				}
+				for (PropertyValue<QName> value : topLevel.getPropertyValues(Sbol2Terms.Description.type)) {
 					Literal<QName> type = ((Literal<QName>) value);
 					if (type.getValue().toString()
 							.equals(Sbol2Terms.Component.Component.toString().replaceAll("\\{|\\}", ""))) {
@@ -709,7 +715,6 @@ public class SBOLReader
 			}
 		}
 
-		clearErrors();
 		for (TopLevelDocument<QName> topLevel : topLevels) {
 			try {
 				if (topLevel.getType().equals(Sbol2Terms.Collection.Collection))
@@ -2141,14 +2146,18 @@ public class SBOLReader
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
+		QName type 			   = topLevel.getType();
 
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			// type = topLevel.getType();
-			// TODO: if type field found and rdf:Description, then replace type with this.
-			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			if (namedProperty.getName().equals(Sbol2Terms.Description.type)) {
+				String typeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				type = new QName(URIcompliance.extractURIprefix(URI.create(typeStr))+"/",
+						URIcompliance.extractDisplayId(URI.create(typeStr)));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
 					throw new SBOLValidationException("sbol-10203", topLevel.getIdentity());
@@ -2197,7 +2206,7 @@ public class SBOLReader
 		}
 
 		//		GenericTopLevel t = SBOLDoc.createGenericTopLevel(topLevel.getIdentity(), topLevel.getType());
-		GenericTopLevel t = new GenericTopLevel(topLevel.getIdentity(), topLevel.getType());
+		GenericTopLevel t = new GenericTopLevel(topLevel.getIdentity(), type);
 		if (persistentIdentity != null)
 			t.setPersistentIdentity(persistentIdentity);
 		if (version != null)

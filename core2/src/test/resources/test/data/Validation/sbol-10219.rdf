@@ -587,7 +587,7 @@
       <sbol:Component rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/CRP_b/1.0">
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/CRP_b"/>
         <sbol:displayId>CRP_b</sbol:displayId>
-        <sbol:version>2.0</sbol:version>
+        <sbol:version>1.0</sbol:version>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/CRP_b"/>
       </sbol:Component>
@@ -602,10 +602,10 @@
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceConstraint>
-      <sbol:SequenceConstraint rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_gene_constraint/1.0">
+      <sbol:SequenceConstraint rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_gene_constraint/2.0">
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_gene_constraint"/>
         <sbol:displayId>EYFP_gene_constraint</sbol:displayId>
-        <sbol:version>1.0</sbol:version>
+        <sbol:version>2.0</sbol:version>
         <sbol:restriction rdf:resource="http://sbols.org/v2#precedes"/>
         <sbol:subject rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/CRP_b/1.0"/>
         <sbol:object rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_cds/1.0"/>
