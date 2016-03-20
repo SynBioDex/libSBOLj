@@ -890,6 +890,12 @@ public class GenBank {
 						String[] rangeSplit = range.split("\\.\\.");
 						int start = Integer.parseInt(rangeSplit[0]);
 						int end = Integer.parseInt(rangeSplit[1]);
+						// TOOD: is this correct?
+						if (start > end) {
+							int temp = start;
+							start = end;
+							end = temp;
+						}
 						SequenceAnnotation sa = 
 							topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
 						sa.setComponent("feature"+featureCnt);

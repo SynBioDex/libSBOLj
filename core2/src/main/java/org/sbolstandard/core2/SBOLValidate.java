@@ -640,8 +640,134 @@ public class SBOLValidate {
 		}
 	}
 	
-	// TODO: does this check children are unique? 
-	// TODO: what about persistentIdentities?
+	static void validatePersistentIdentityUniqueness(SBOLDocument sbolDocument) {
+		HashMap<URI, Identified> elements = new HashMap<>();
+		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
+			if (!topLevel.isSetPersistentIdentity()) continue;
+			if (elements.get(topLevel.getPersistentIdentity())!=null) {
+				Identified identified = elements.get(topLevel.getPersistentIdentity());
+				if (!topLevel.getClass().equals(identified.getClass())) {
+					errors.add(new SBOLValidationException("sbol-10220", topLevel).getExceptionMessage());
+				}
+ 			}
+			elements.put(topLevel.getPersistentIdentity(),topLevel);
+			if (topLevel instanceof ComponentDefinition) {
+				for (Component c : ((ComponentDefinition) topLevel).getComponents()) {
+					if (!c.isSetPersistentIdentity()) continue;
+					if (elements.get(c.getPersistentIdentity())!=null) {
+						Identified identified = elements.get(c.getPersistentIdentity());
+						if (!c.getClass().equals(identified.getClass())) {
+							errors.add(new SBOLValidationException("sbol-10220", c).getExceptionMessage());
+						}
+		 			}
+					elements.put(c.getPersistentIdentity(),c);
+					for (MapsTo m : c.getMapsTos()) {
+						if (!m.isSetPersistentIdentity()) continue;
+						if (elements.get(m.getPersistentIdentity())!=null) {
+							Identified identified = elements.get(m.getPersistentIdentity());
+							if (!m.getClass().equals(identified.getClass())) {
+								errors.add(new SBOLValidationException("sbol-10220", m).getExceptionMessage());
+							}
+			 			}
+						elements.put(m.getPersistentIdentity(),m);
+					}
+				}
+				for (SequenceAnnotation sa : ((ComponentDefinition) topLevel).getSequenceAnnotations()) {
+					if (!sa.isSetPersistentIdentity()) continue;
+					if (elements.get(sa.getPersistentIdentity())!=null) {
+						Identified identified = elements.get(sa.getPersistentIdentity());
+						if (!sa.getClass().equals(identified.getClass())) {
+							errors.add(new SBOLValidationException("sbol-10220", sa).getExceptionMessage());
+						}
+		 			}					
+					elements.put(sa.getPersistentIdentity(),sa);
+					for (Location l : sa.getLocations()) {
+						if (!l.isSetPersistentIdentity()) continue;
+						if (elements.get(l.getPersistentIdentity())!=null) {
+							Identified identified = elements.get(l.getPersistentIdentity());
+							if (!l.getClass().equals(identified.getClass())) {
+								errors.add(new SBOLValidationException("sbol-10220", l).getExceptionMessage());
+							}
+			 			}
+						elements.put(l.getPersistentIdentity(),l);
+					}
+				}
+				for (SequenceConstraint sc : ((ComponentDefinition) topLevel).getSequenceConstraints()) {
+					if (!sc.isSetPersistentIdentity()) continue;
+					if (elements.get(sc.getPersistentIdentity())!=null) {
+						Identified identified = elements.get(sc.getPersistentIdentity());
+						if (!sc.getClass().equals(identified.getClass())) {
+							errors.add(new SBOLValidationException("sbol-10220", sc).getExceptionMessage());
+						}
+		 			}					
+					elements.put(sc.getPersistentIdentity(),sc);
+				}
+			}
+			if (topLevel instanceof ModuleDefinition) {
+				for (FunctionalComponent c : ((ModuleDefinition) topLevel).getFunctionalComponents()) {
+					if (!c.isSetPersistentIdentity()) continue;
+					if (elements.get(c.getPersistentIdentity())!=null) {
+						Identified identified = elements.get(c.getPersistentIdentity());
+						if (!c.getClass().equals(identified.getClass())) {
+							errors.add(new SBOLValidationException("sbol-10220", c).getExceptionMessage());
+						}
+		 			}
+					elements.put(c.getPersistentIdentity(),c);
+					for (MapsTo m : c.getMapsTos()) {
+						if (!m.isSetPersistentIdentity()) continue;
+						if (elements.get(m.getPersistentIdentity())!=null) {
+							Identified identified = elements.get(m.getPersistentIdentity());
+							if (!m.getClass().equals(identified.getClass())) {
+								errors.add(new SBOLValidationException("sbol-10220", m).getExceptionMessage());
+							}
+			 			}
+						elements.put(m.getPersistentIdentity(),m);
+					}
+				}
+				for (Module mod : ((ModuleDefinition) topLevel).getModules()) {
+					if (!mod.isSetPersistentIdentity()) continue;
+					if (elements.get(mod.getPersistentIdentity())!=null) {
+						Identified identified = elements.get(mod.getPersistentIdentity());
+						if (!mod.getClass().equals(identified.getClass())) {
+							errors.add(new SBOLValidationException("sbol-10220", mod).getExceptionMessage());
+						}
+		 			}
+					elements.put(mod.getPersistentIdentity(),mod);
+					for (MapsTo m : mod.getMapsTos()) {
+						if (!m.isSetPersistentIdentity()) continue;
+						if (elements.get(m.getPersistentIdentity())!=null) {
+							Identified identified = elements.get(m.getPersistentIdentity());
+							if (!m.getClass().equals(identified.getClass())) {
+								errors.add(new SBOLValidationException("sbol-10220", m).getExceptionMessage());
+							}
+			 			}
+						elements.put(m.getPersistentIdentity(),m);
+					}
+				}
+				for (Interaction i : ((ModuleDefinition) topLevel).getInteractions()) {
+					if (!i.isSetPersistentIdentity()) continue;
+					if (elements.get(i.getPersistentIdentity())!=null) {
+						Identified identified = elements.get(i.getPersistentIdentity());
+						if (!i.getClass().equals(identified.getClass())) {
+							errors.add(new SBOLValidationException("sbol-10220", i).getExceptionMessage());
+						}
+		 			}					
+					elements.put(i.getPersistentIdentity(),i);
+					for (Participation p : i.getParticipations()) {
+						if (!p.isSetPersistentIdentity()) continue;
+						if (elements.get(p.getPersistentIdentity())!=null) {
+							Identified identified = elements.get(p.getPersistentIdentity());
+							if (!p.getClass().equals(identified.getClass())) {
+								errors.add(new SBOLValidationException("sbol-10220", p).getExceptionMessage());
+							}
+			 			}
+						elements.put(p.getPersistentIdentity(),p);
+					}
+				}
+			}
+		}
+	}
+
 	static void validateURIuniqueness(SBOLDocument sbolDocument) {
 		HashMap<URI, Identified> elements = new HashMap<>();
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
@@ -774,6 +900,7 @@ public class SBOLValidate {
 		validateWasDerivedFromVersion(sbolDocument);
 		validateCircularReferences(sbolDocument);
 		validateURIuniqueness(sbolDocument);
+		validatePersistentIdentityUniqueness(sbolDocument);
 		validateSequenceConstraints(sbolDocument);
 		validateMapsTos(sbolDocument);
         if (compliant) validateCompliance(sbolDocument);

@@ -48,22 +48,6 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://sbols.org/anot#3456789">
-        <sbol:persistentIdentity rdf:resource="http://sbols.org/anot#3456789"/>
-        <sbol:displayId>annotation3</sbol:displayId>
-        <sbol:location>
-          <sbol:Range rdf:about="http://sbols.org/anot#3456789/range">
-            <sbol:persistentIdentity rdf:resource="http://sbols.org/anot#3456789/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>808</sbol:start>
-            <sbol:end>936</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://partsregistry.org/Part:BBa_I0462/component2"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://sbols.org/anot#1234567">
         <sbol:persistentIdentity rdf:resource="http://sbols.org/anot#1234567"/>
         <sbol:displayId>annotation1</sbol:displayId>
@@ -77,6 +61,22 @@
           </sbol:Range>
         </sbol:location>
         <sbol:component rdf:resource="http://partsregistry.org/Part:BBa_I0462/component0"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://sbols.org/anot#3456789">
+        <sbol:persistentIdentity rdf:resource="http://sbols.org/anot#3456789"/>
+        <sbol:displayId>annotation3</sbol:displayId>
+        <sbol:location>
+          <sbol:Range rdf:about="http://sbols.org/anot#3456789/range">
+            <sbol:persistentIdentity rdf:resource="http://sbols.org/anot#3456789/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>808</sbol:start>
+            <sbol:end>936</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://partsregistry.org/Part:BBa_I0462/component2"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequence rdf:resource="http://sbols.org/seq#d23749adb3a7e0e2f09168cb7267a6113b238973"/>
