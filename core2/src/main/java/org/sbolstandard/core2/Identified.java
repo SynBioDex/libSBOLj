@@ -426,6 +426,8 @@ public abstract class Identified {
 				throw new SBOLValidationException("sbol-11501");
 			} else if (this instanceof ModuleDefinition) {
 				throw new SBOLValidationException("sbol-11601");
+			} else if (this instanceof Module) {
+				throw new SBOLValidationException("sbol-11701");
 			} else if (this instanceof FunctionalComponent) {
 				throw new SBOLValidationException("sbol-11801");
 			} else if (this instanceof Interaction) {
