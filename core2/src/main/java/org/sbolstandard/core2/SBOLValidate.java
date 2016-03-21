@@ -79,6 +79,20 @@ public class SBOLValidate {
 			if (component.getDefinition()==null) {
 				errors.add(new SBOLValidationException("sbol-10604", component).getExceptionMessage());
 			}
+			for (MapsTo mapsTo : component.getMapsTos()) {
+				if (mapsTo.getRemote()==null) {
+					errors.add(new SBOLValidationException("sbol-10808", mapsTo).getExceptionMessage());
+					continue;
+				}
+				if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
+					errors.add(new SBOLValidationException("sbol-10807", mapsTo).getExceptionMessage());
+				}
+				if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
+					if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
+						errors.add(new SBOLValidationException("sbol-10811").getExceptionMessage());
+					}
+				}
+			}
 		}
 	}
 	
@@ -158,13 +172,27 @@ public class SBOLValidate {
 	protected static void checkModuleDefinitionCompleteness(SBOLDocument sbolDocument,ModuleDefinition moduleDefinition) {
 		for (URI modelURI : moduleDefinition.getModelURIs()) {
 			if (sbolDocument.getModel(modelURI) == null) {
-				errors.add(new SBOLValidationException("sbol-10608", moduleDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11608", moduleDefinition).getExceptionMessage());
 			}
 		}
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			if (functionalComponent.getDefinition() == null) {
 				errors.add(new SBOLValidationException("sbol-10604", functionalComponent).getExceptionMessage());
 			} 
+			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+				if (mapsTo.getRemote()==null) {
+					errors.add(new SBOLValidationException("sbol-10808", mapsTo).getExceptionMessage());
+					continue;
+				}
+				if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
+					errors.add(new SBOLValidationException("sbol-10807", mapsTo).getExceptionMessage());
+				}
+				if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
+					if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
+						errors.add(new SBOLValidationException("sbol-10811").getExceptionMessage());
+					}
+				}
+			}
 		}
 		for (Module module : moduleDefinition.getModules()) {
 			if (module.getDefinition() == null) {

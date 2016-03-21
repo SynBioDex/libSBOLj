@@ -143,7 +143,7 @@ public class ValidationTest {
 				10101, 10105,
 				10201, 10203, 10204, 10206, 10208, 10209, 10212, 10213, 10220,
 				10401, 10402, 10403, 
-				10501, 10502, 10503, 10507, 10510, 10512, 10519, 10521, 10522, 10524, 10526,
+				10501, 10502, 10503, 10507, 10512, 10519, 10521, 10522, 10524, 10526,
 				10602, 10603, 10606, 10607, 
 				10701,
 				10801, 10802, 10803, 10804, 10805, 10810, 
@@ -176,7 +176,7 @@ public class ValidationTest {
 		HashSet<Integer> green = new HashSet<Integer>(Arrays.asList(
 				10207, 10215, 10216, 10217, 10218, 10219, 
 				10407,
-				10511, 10518, 10520, 10523, 10525, 10527,
+				10511, 10518, 10523, 10525, 10527,
 				10903, 
 				11412, 
 				11507, 11511, 
@@ -186,7 +186,7 @@ public class ValidationTest {
 		HashSet<Integer> yellow = new HashSet<Integer>(Arrays.asList(
 				10211, 10214, 
 				10404, 10406, 
-				10504, 10505, 10506, 10508, 10509, 10510, 10514, 10515, 
+				10504, 10505, 10506, 10508, 10509, 10510, 10514, 10515, 10520,  
 				11408,
 				11503, 11505, 11506, 11509, 11510, 
 				11603,
@@ -201,7 +201,6 @@ public class ValidationTest {
 				10517,
 				10601,
 				10806, 
-				11101,
 				12201, 12202
 				));
 		if (failedTests.size() > 0) {
@@ -246,26 +245,31 @@ public class ValidationTest {
 		red.retainAll(testedRules); 
 		//System.out.println(sortIntegerHashSet(green));
 		redNotTested.removeAll(red);
-		System.out.println();
-		System.out.println("Red checked rules not tested: ");
-		System.out.println(sortIntegerHashSet(redNotTested));
+		if (!redNotTested.isEmpty()) {
+			System.out.println();
+			System.out.println("Red checked rules not tested: ");
+			System.out.println(sortIntegerHashSet(redNotTested));
+		}
 		
 		HashSet<Integer> blueNotTested = (HashSet<Integer>) blue.clone();
 		blue.retainAll(testedRules); 
 		//System.out.println(sortIntegerHashSet(green));
 		blueNotTested.removeAll(blue);
-		System.out.println();
-		System.out.println("Blue partially checked rules not tested: ");
-		System.out.println(sortIntegerHashSet(blueNotTested));
-
+		if (!blueNotTested.isEmpty()) {
+			System.out.println();
+			System.out.println("Blue partially checked rules not tested: ");
+			System.out.println(sortIntegerHashSet(blueNotTested));
+		}
+		
 		HashSet<Integer> greenNotTested = (HashSet<Integer>) green.clone();
 		green.retainAll(testedRules); 
 		//System.out.println(sortIntegerHashSet(green));
 		greenNotTested.removeAll(green);
-		System.out.println();
-		System.out.println("Green best practice rules not tested: ");
-		System.out.println(sortIntegerHashSet(greenNotTested));
-		
+		if (!greenNotTested.isEmpty()) {
+			System.out.println();
+			System.out.println("Green best practice rules not tested: ");
+			System.out.println(sortIntegerHashSet(greenNotTested));
+		}
 		
 		
 		
