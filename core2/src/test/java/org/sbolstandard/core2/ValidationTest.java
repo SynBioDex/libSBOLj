@@ -3,6 +3,8 @@
  */
 package org.sbolstandard.core2;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
@@ -81,7 +83,7 @@ public class ValidationTest {
 		for (File f : file_base.listFiles()){
 			//InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
 			file = new File(f.getAbsolutePath());
-			System.out.println(f.getName().replace(".rdf", ""));
+			//System.out.println(f.getName().replace(".rdf", ""));
 			SBOLReader.setKeepGoing(true);
 			try {
 				doc = SBOLReader.read(file);
@@ -97,13 +99,12 @@ public class ValidationTest {
 
 
 			if (SBOLReader.getNumErrors() > 0) {
-				// TODO: check if error number matches file name
 				for(String error : SBOLReader.getErrors())
 				{
-					System.out.println(error);
+					//System.out.println(error);
 					if(!error.split(":")[0].equals((f.getName()).replace(".rdf", "")))
 					{
-						//fail();
+						fail();
 
 					}
 					else {
@@ -113,16 +114,14 @@ public class ValidationTest {
 				}
 
 			} else if (SBOLValidate.getNumErrors() > 0) {
-				// TODO: check if error number matches file name
 				for(String error : SBOLValidate.getErrors())
 				{
-					System.out.println(error);
+					//System.out.println(error);
 					if(!error.split(":")[0].equals(f.getName().replace(".rdf", "")))
 					{
 						String ruleId = f.getName().replace(".rdf", "").replace("sbol-", "").trim();
 						failedTests.add(Integer.parseInt(ruleId));
-						//TODO: fail
-						//fail();
+						fail();
 					}
 					else {
 						String ruleId = error.split(":")[0].replace(".rdf", "").replace("sbol-", "").trim();
@@ -133,8 +132,7 @@ public class ValidationTest {
 			} else {
 				String ruleId = f.getName().replace(".rdf", "").replace("sbol-", "").trim();
 				failedTests.add(Integer.parseInt(ruleId));
-				// TODO: fail
-				//fail();
+				fail();
 			}
 		}
 		// Print out remaining rules that have not had a test yet.
@@ -160,7 +158,6 @@ public class ValidationTest {
 				11901, 11902, 11906, 
 				12001, 12002, 12003, 12004, 
 				12101, 12102,
-				12204, 12205,
 				12301, 12302));
 		HashSet<Integer> blue = new HashSet<Integer>(Arrays.asList(
 				10202, 10210,
@@ -192,7 +189,7 @@ public class ValidationTest {
 				11603,
 				11903, 11904, 
 				12005, 12006, 
-				12203, 12206
+				12203, 12204, 12205, 12206
 				));
 		HashSet<Integer> removed = new HashSet<Integer>(Arrays.asList(
 				10102, 10103, 10104, 

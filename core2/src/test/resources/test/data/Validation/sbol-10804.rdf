@@ -359,7 +359,7 @@
             <sbol:version>1.0</sbol:version>
             <sbol:refinement rdf:resource="http://sbols.org/v2#useLocal"/>
             <sbol:remote rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/gRNA_generic/1.0"/>
-            <sbol:local rdf:resource="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/gRNA_b/1.0"/>
+            <sbol:local rdf:resource="http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/bad_gRNA_b/1.0"/>
           </sbol:MapsTo>
         </sbol:mapsTo>
         <sbol:mapsTo>
@@ -586,31 +586,21 @@
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
     <sbol:component>
-      <sbol:Component rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_cds/1.0">
-        <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_cds"/>
-        <sbol:displayId>EYFP_cds</sbol:displayId>
-        <sbol:version>1.0</sbol:version>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/EYFP_cds"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
       <sbol:Component rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/CRP_b/1.0">
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/CRP_b"/>
         <sbol:displayId>CRP_b</sbol:displayId>
         <sbol:version>1.0</sbol:version>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/CRP_b"/>
-        <sbol:mapsTo>
-          <sbol:MapsTo rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/CRP_b/CRP_b_map/1.0">
-            <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/CRP_b/CRP_b_map"/>
-            <sbol:displayId>CRP_b_map</sbol:displayId>
-            <sbol:version>1.0</sbol:version>
-            <sbol:refinement rdf:resource="http://sbols.org/v2#useLocal"/>
-            <sbol:remote rdf:resource="http://sbols.org/CRISPR_Example/CRP_b/missing/1.0"/>
-            <sbol:local rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_cds/1.0"/>
-          </sbol:MapsTo>
-        </sbol:mapsTo>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_cds/1.0">
+        <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/EYFP_cds"/>
+        <sbol:displayId>EYFP_cds</sbol:displayId>
+        <sbol:version>1.0</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/EYFP_cds"/>
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceConstraint>

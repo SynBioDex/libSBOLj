@@ -20,6 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
 			SBOLWriterTest.class,
 			URIcomplianceTest.class,
 			SBOLDocumentTest.class,
+			ValidationTest.class,
 			OntologyTest.class
 		}
 		)

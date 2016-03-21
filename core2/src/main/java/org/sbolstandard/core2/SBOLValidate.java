@@ -103,7 +103,7 @@ public class SBOLValidate {
 				if (mapsTo.getLocalURI().equals(mapsTo2.getLocalURI()) &&
 					mapsTo.getRefinement().equals(RefinementType.USEREMOTE) &&
 					mapsTo2.getRefinement().equals(RefinementType.USEREMOTE)) {
-					throw new SBOLValidationException("sbol-11526",componentDefinition);
+					throw new SBOLValidationException("sbol-10526",componentDefinition);
 				}
 			}
 		}
@@ -436,18 +436,22 @@ public class SBOLValidate {
 			} else if (numBioPAXtypes > 1){
 				errors.add(new SBOLValidationException("sbol-10503", compDef).getExceptionMessage());
 			}
-			if (compDef.getTypes().contains(ComponentDefinition.DNA)) {
-				int numSO = 0;;
-				for (URI role : compDef.getRoles()) {
-					try { 
-						if (so.isDescendantOf(role, SequenceOntology.SEQUENCE_FEATURE)) {
-							numSO++;	
-						}
-					} catch (Exception e){
+			int numSO = 0;;
+			for (URI role : compDef.getRoles()) {
+				try { 
+					if (so.isDescendantOf(role, SequenceOntology.SEQUENCE_FEATURE)) {
+						numSO++;	
 					}
+				} catch (Exception e){
 				}
+			}
+			if (compDef.getTypes().contains(ComponentDefinition.DNA)) {
 				if (numSO!=1) {
 					errors.add(new SBOLValidationException("sbol-10527", compDef).getExceptionMessage());
+				}
+			} else if (!compDef.getTypes().contains(ComponentDefinition.RNA)) {
+				if (numSO!=0) {
+					errors.add(new SBOLValidationException("sbol-10511", compDef).getExceptionMessage());
 				}
 			}
 			for (SequenceConstraint sc : compDef.getSequenceConstraints()) {

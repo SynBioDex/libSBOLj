@@ -284,6 +284,9 @@ public class ModuleDefinition extends TopLevel {
 		SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited);
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		for (MapsTo mapsTo : module.getMapsTos()) {
+			if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
+				throw new SBOLValidationException("sbol-10804", mapsTo);
+			}
 			mapsTo.setSBOLDocument(sbolDocument);
 			mapsTo.setModuleDefinition(this);
 			mapsTo.setModule(module);
@@ -700,17 +703,43 @@ public class ModuleDefinition extends TopLevel {
 		functionalComponent.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (functionalComponent.getDefinition()== null) {
-//				throw new SBOLValidationException("ComponentDefinition '" + functionalComponent.getDefinitionURI()
-//						+ "' does not exist.");
 				throw new SBOLValidationException("sbol-10604", functionalComponent);
 			}
 		}
 		addChildSafely(functionalComponent, functionalComponents, "functionalComponent",
 				interactions, modules);
 		for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+			if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
+				throw new SBOLValidationException("sbol-10804", mapsTo);
+			}
 			mapsTo.setSBOLDocument(sbolDocument);
 			mapsTo.setModuleDefinition(this);
 			mapsTo.setComponentInstance(functionalComponent);
+		}
+	}
+	
+	void addFunctionalComponentNoCheck(FunctionalComponent functionalComponent) throws SBOLValidationException {
+		functionalComponent.setSBOLDocument(this.sbolDocument);
+		functionalComponent.setModuleDefinition(this);
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (functionalComponent.getDefinition()== null) {
+				throw new SBOLValidationException("sbol-10604", functionalComponent);
+			}
+		}
+		addChildSafely(functionalComponent, functionalComponents, "functionalComponent",
+				interactions, modules);
+	}
+	
+	void checkMapsTosLocalURIs() throws SBOLValidationException {
+		for (FunctionalComponent functionalComponent : this.getFunctionalComponents()) {
+			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+				if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
+					throw new SBOLValidationException("sbol-10804", mapsTo);
+				}
+				mapsTo.setSBOLDocument(sbolDocument);
+				mapsTo.setModuleDefinition(this);
+				mapsTo.setComponentInstance(functionalComponent);
+			}
 		}
 	}
 
@@ -838,8 +867,9 @@ public class ModuleDefinition extends TopLevel {
 		if (components == null)
 			return;
 		for (FunctionalComponent component : components) {
-			addFunctionalComponent(component);
+			addFunctionalComponentNoCheck(component);
 		}
+		checkMapsTosLocalURIs();
 	}
 
 	/**
