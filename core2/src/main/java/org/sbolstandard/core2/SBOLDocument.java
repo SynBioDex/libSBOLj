@@ -2387,8 +2387,13 @@ public class SBOLDocument {
 	 * @return the matching instance if present, or {@code null} otherwise.
 	 */
 	public QName getNamespace(URI namespaceURI) {
-		if (nameSpaces.get(namespaceURI)==null) return null;
-		return new QName(namespaceURI.toString(), "", nameSpaces.get(namespaceURI).getPrefix());
+		//if (nameSpaces.get(namespaceURI)==null) return null;
+		for (NamespaceBinding namespaceBinding : nameSpaces.values()) {
+			if (namespaceBinding.getNamespaceURI().equals(namespaceURI.toString())) {
+				return new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix());
+			}
+		}
+		return null;
 	}
 
 	/**

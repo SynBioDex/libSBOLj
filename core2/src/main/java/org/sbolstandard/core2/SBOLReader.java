@@ -2154,8 +2154,10 @@ public class SBOLReader
 		{
 			if (namedProperty.getName().equals(Sbol2Terms.Description.type)) {
 				String typeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				type = new QName(URIcompliance.extractURIprefix(URI.create(typeStr))+"/",
-						URIcompliance.extractDisplayId(URI.create(typeStr)));
+				String nameSpace = URIcompliance.extractURIprefix(URI.create(typeStr))+"/";
+				String localPart = URIcompliance.extractDisplayId(URI.create(typeStr));
+				String prefix = SBOLDoc.getNamespace(URI.create(nameSpace)).getPrefix();
+				type = new QName(nameSpace,localPart,prefix);
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{

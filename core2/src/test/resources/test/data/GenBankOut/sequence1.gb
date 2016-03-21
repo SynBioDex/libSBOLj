@@ -34,6 +34,9 @@ FEATURES             Location/Qualifiers
                      /db_xref="GI:1293614"
                      /translation="SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEA
                      AEVLLRVDNIIRARPRTANRQHM"
+     mRNA            687..3158
+                     /gene="AXL2"
+                     /product="Axl2p"
      gene            687..3158
                      /gene="AXL2"
      CDS             687..3158
@@ -58,11 +61,9 @@ FEATURES             Location/Qualifiers
                      YGSQKTVDTEKLFDLEAPEKEKRTSRDVTMSSLDPWNSNISPSPVRKSVTPSPYNVTK
                      HRNRHLQNIQDSQSGKNGITPTTMSTSSSDDFVPVKDGENFCWVHSMEPDRRPSKKRL
                      VDFSNKSNVNVGQVKDIHGRIPEML"
-     mRNA            687..3158
-                     /gene="AXL2"
-                     /product="Axl2p"
-     gene            complement(3300..4037)
+     mRNA            complement(3300..4037)
                      /gene="REV7"
+                     /product="Rev7p"
      CDS             complement(3300..4037)
                      /gene="REV7"
                      /codon_start=1
@@ -74,9 +75,8 @@ FEATURES             Location/Qualifiers
                      KDDQIITETEVFDEFRSSLNSLIMHLEKLPKVNDDTITFEAVINAIELELGHKLDRNR
                      RVDSLEEKAEIERDSNWVKCQEDENLPDNNGFQPPKIKLTSLVGSDVGPLIIHQFSEK
                      LISGDDKILNGVYSQYEEGESIFGSLF"
-     mRNA            complement(3300..4037)
+     gene            complement(3300..4037)
                      /gene="REV7"
-                     /product="Rev7p"
 ORIGIN
         0 gatcctccat atacaacggt atctccacct caggtttaga tctcaacaac ggaaccattg
        60 ccgacatgag acagttaggt atcgtcgaga gttacaagct aaaacgagca gtagtcagct
