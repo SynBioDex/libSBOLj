@@ -1,8 +1,13 @@
 package org.sbolstandard.core2;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -136,6 +141,7 @@ public class SBOLValidationException extends Exception {
 						getResourceAsStream("/validation/rules.txt"));
 				try {					
 					parse(new BufferedReader(f));
+					writeRulesToXML("rules.xml");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -164,6 +170,7 @@ public class SBOLValidationException extends Exception {
 						getResourceAsStream("/validation/rules.txt"));
 				try {					
 					parse(new BufferedReader(f));
+					writeRulesToXML("rules.xml");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -213,6 +220,50 @@ public class SBOLValidationException extends Exception {
 		return sb.toString();
 	}
 	
+	private static void writeRulesToXML(String filename) throws IOException {
+		File outputFile;
+		FileWriter outputFW;
+		BufferedWriter outputBW = null;
+		try
+		{
+			outputFile = new File(filename);
+			System.out.println(outputFile.getAbsolutePath());
+			System.out.println(filename);
+			outputFW = new FileWriter(outputFile);
+			outputBW = new BufferedWriter(outputFW);//for OS to keep track of what you have written
+		}
+		catch(IOException e){
+					
+		}
+		String eol = System.getProperty("line.separator");
+		String rule = "";
+		rule = rule + "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + eol;
+		rule = rule + "<rules>" + eol;
+		try {
+			outputBW.write(rule);		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (String key : validationRules.keySet()) {
+			rule = rule + "<id>"+ key +"</id>" + eol;
+			rule = rule + "<category>" + validationRules.get(key).getRuleClass() +"</category>" + eol;
+			rule = rule + "<condition>" + validationRules.get(key).getCondition() +"</condition>" + eol;
+			rule = rule + "<description>" + validationRules.get(key).getDescription() +"</description>" + eol;
+			rule = rule + "<reference>" + validationRules.get(key).getReference() +"</reference>" + eol;
+			
+		}
+		rule = rule + "</rules>";
+		System.out.println(rule);
+		try {
+			outputBW.write(rule);		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		outputBW.close();
+	
+	
+	}
+
 	/**
 	 * @param br
 	 * @throws IOException
