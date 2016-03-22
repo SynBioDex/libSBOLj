@@ -151,7 +151,15 @@ final class URIcompliance {
 	}
 
 	static final void isChildURIcompliant(Identified parent, Identified child) throws SBOLValidationException {
-		isURIcompliant(child);
+		try {
+			isURIcompliant(child);
+		} catch (SBOLValidationException e) {
+			if (e.getMessage().contains("sbol-10216")) {
+				throw new SBOLValidationException("sbol-10217");
+			} else {
+				throw new SBOLValidationException(e.getMessage());
+			}
+		}
 		if (!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+"/"+child.getDisplayId()) &&
 				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+"#"+child.getDisplayId()) &&
 				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+":"+child.getDisplayId())) {

@@ -23,10 +23,11 @@ public class Participation extends Identified {
 	private URI participant;
 	private ModuleDefinition moduleDefinition = null;
 	
-	Participation(URI identity, URI participant) throws SBOLValidationException {
+	Participation(URI identity, URI participant, Set<URI> roles) throws SBOLValidationException {
 		super(identity);
-		roles = new HashSet<>();
+		this.roles = new HashSet<>();
 		setParticipant(participant);
+		setRoles(roles);
 	}
 	
 	private Participation(Participation participation) throws SBOLValidationException {
@@ -124,6 +125,9 @@ public class Participation extends Identified {
 	 */
 	public boolean removeRole(URI roleURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		if (roles.size()==1 && roles.contains(roleURI)) {
+			throw new SBOLValidationException("sbol-12004", this);
+		}
 		return roles.remove(roleURI);
 	}
 	
@@ -140,8 +144,10 @@ public class Participation extends Identified {
 	 */
 	public void setRoles(Set<URI> roles) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		if (roles==null || roles.size()==0) {
+			throw new SBOLValidationException("sbol-12004", this);
+		}
 		clearRoles();
-		if (roles==null) return;
 		for (URI role : roles) {
 			addRole(role);
 		}
@@ -177,7 +183,7 @@ public class Participation extends Identified {
 	 * 
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearRoles() throws SBOLValidationException {
+	void clearRoles() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		roles.clear();
 	}

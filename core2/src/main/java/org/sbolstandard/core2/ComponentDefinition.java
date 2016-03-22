@@ -3,7 +3,6 @@ package org.sbolstandard.core2;
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static org.sbolstandard.core2.URIcompliance.isChildURIcompliant;
 import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
-import static org.sbolstandard.core2.URIcompliance.validateIdVersion;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -1153,12 +1152,42 @@ public class ComponentDefinition extends TopLevel {
 		addChildSafely(component, components, "component",
 				sequenceAnnotations, sequenceConstraints);
 		for (MapsTo mapsTo : component.getMapsTos()) {
+			if (this.getComponent(mapsTo.getLocalURI())==null) {
+				throw new SBOLValidationException("sbol-10803", mapsTo);
+			}
 			mapsTo.setSBOLDocument(sbolDocument);
 			mapsTo.setComponentDefinition(this);
 			mapsTo.setComponentInstance(component);
 		}
 	}
 
+	void addComponentNoCheck(Component component) throws SBOLValidationException {
+		component.setSBOLDocument(this.sbolDocument);
+		component.setComponentDefinition(this);
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (component.getDefinition()==null) {
+				throw new SBOLValidationException("sbol-10604",component);
+			}
+		}
+		Set<URI> visited = new HashSet<>();
+		visited.add(this.getIdentity());
+		SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited);
+		addChildSafely(component, components, "component",
+				sequenceAnnotations, sequenceConstraints);
+	}
+	
+	void checkMapsTosLocalURIs() throws SBOLValidationException {
+		for (Component component : this.getComponents()) {
+			for (MapsTo mapsTo : component.getMapsTos()) {
+				if (this.getComponent(mapsTo.getLocalURI())==null) {
+					throw new SBOLValidationException("sbol-10803", mapsTo);
+				}
+				mapsTo.setSBOLDocument(sbolDocument);
+				mapsTo.setComponentDefinition(this);
+				mapsTo.setComponentInstance(component);
+			}
+		}
+	}
 	/**
 	 * Removes the given Component instance from the list of
 	 * Component instances.
@@ -1195,7 +1224,7 @@ public class ComponentDefinition extends TopLevel {
 		for (Component c : components.values()) {
 			for (MapsTo mt : c.getMapsTos()) {
 				if (mt.getLocalURI().equals(component.getIdentity())) {
-					throw new SBOLValidationException("sbol-10804", mt);
+					throw new SBOLValidationException("sbol-10803", mt);
 				}
 			}
 		}
@@ -1204,7 +1233,7 @@ public class ComponentDefinition extends TopLevel {
 				for (Component c : cd.getComponents()) {
 					for (MapsTo mt : c.getMapsTos()) {
 						if (mt.getRemoteURI().equals(component.getIdentity())) {
-							throw new SBOLValidationException("sbol-10806", mt);
+							throw new SBOLValidationException("sbol-10808", mt);
 						}
 					}
 				}
@@ -1281,8 +1310,9 @@ public class ComponentDefinition extends TopLevel {
 	void setComponents(Set<Component> components) throws SBOLValidationException {
 		clearComponents();
 		for (Component component : components) {
-			addComponent(component);
+			addComponentNoCheck(component);
 		}
+		checkMapsTosLocalURIs();
 	}
 
 	//	/**
@@ -1386,10 +1416,10 @@ public class ComponentDefinition extends TopLevel {
 		sequenceConstraint.setSBOLDocument(this.sbolDocument);
 		sequenceConstraint.setComponentDefinition(this);
 		if (sequenceConstraint.getSubject()==null) {
-				throw new SBOLValidationException("sbol-11402", sequenceConstraint);
+				throw new SBOLValidationException("sbol-11403", sequenceConstraint);
 		}
 		if (sequenceConstraint.getObject()==null) {
-			throw new SBOLValidationException("sbol-11404", sequenceConstraint);
+			throw new SBOLValidationException("sbol-11405", sequenceConstraint);
 				}
 		if (sequenceConstraint.getSubjectURI().equals(sequenceConstraint.getObjectURI())) {
 			throw new SBOLValidationException("sbol-11406", sequenceConstraint);

@@ -284,6 +284,9 @@ public class ModuleDefinition extends TopLevel {
 		SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited);
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		for (MapsTo mapsTo : module.getMapsTos()) {
+			if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
+				throw new SBOLValidationException("sbol-10804", mapsTo);
+			}
 			mapsTo.setSBOLDocument(sbolDocument);
 			mapsTo.setModuleDefinition(this);
 			mapsTo.setModule(module);
@@ -391,12 +394,14 @@ public class ModuleDefinition extends TopLevel {
 	 * Calls the Interaction constructor to create a new instance using the
 	 * given parameters, then adds to the list of Interaction instances owned by this
 	 * ModuleDefinition object.
-	 *
+	 * 
+	 * @param identity
+	 * @param types
 	 * @return the created Interaction instance.
 	 * @throws SBOLValidationException 
 	 */
-	Interaction createInteraction(URI identity, Set<URI> type) throws SBOLValidationException {
-		Interaction interaction = new Interaction(identity, type);
+	Interaction createInteraction(URI identity, Set<URI> types) throws SBOLValidationException {
+		Interaction interaction = new Interaction(identity, types);
 		addInteraction(interaction);
 		return interaction;
 	}
@@ -419,8 +424,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public Interaction createInteraction(String displayId, Set<URI> types) throws SBOLValidationException {
-		if (sbolDocument != null)
-			sbolDocument.checkReadOnly();
+		if (sbolDocument != null) sbolDocument.checkReadOnly();
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newInteractionURI = createCompliantURI(URIprefix, displayId, version);
@@ -699,17 +703,43 @@ public class ModuleDefinition extends TopLevel {
 		functionalComponent.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (functionalComponent.getDefinition()== null) {
-//				throw new SBOLValidationException("ComponentDefinition '" + functionalComponent.getDefinitionURI()
-//						+ "' does not exist.");
 				throw new SBOLValidationException("sbol-10604", functionalComponent);
 			}
 		}
 		addChildSafely(functionalComponent, functionalComponents, "functionalComponent",
 				interactions, modules);
 		for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+			if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
+				throw new SBOLValidationException("sbol-10804", mapsTo);
+			}
 			mapsTo.setSBOLDocument(sbolDocument);
 			mapsTo.setModuleDefinition(this);
 			mapsTo.setComponentInstance(functionalComponent);
+		}
+	}
+	
+	void addFunctionalComponentNoCheck(FunctionalComponent functionalComponent) throws SBOLValidationException {
+		functionalComponent.setSBOLDocument(this.sbolDocument);
+		functionalComponent.setModuleDefinition(this);
+		if (sbolDocument != null && sbolDocument.isComplete()) {
+			if (functionalComponent.getDefinition()== null) {
+				throw new SBOLValidationException("sbol-10604", functionalComponent);
+			}
+		}
+		addChildSafely(functionalComponent, functionalComponents, "functionalComponent",
+				interactions, modules);
+	}
+	
+	void checkMapsTosLocalURIs() throws SBOLValidationException {
+		for (FunctionalComponent functionalComponent : this.getFunctionalComponents()) {
+			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+				if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
+					throw new SBOLValidationException("sbol-10804", mapsTo);
+				}
+				mapsTo.setSBOLDocument(sbolDocument);
+				mapsTo.setModuleDefinition(this);
+				mapsTo.setComponentInstance(functionalComponent);
+			}
 		}
 	}
 
@@ -837,8 +867,9 @@ public class ModuleDefinition extends TopLevel {
 		if (components == null)
 			return;
 		for (FunctionalComponent component : components) {
-			addFunctionalComponent(component);
+			addFunctionalComponentNoCheck(component);
 		}
+		checkMapsTosLocalURIs();
 	}
 
 	/**

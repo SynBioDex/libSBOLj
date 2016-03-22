@@ -273,7 +273,9 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 */
 	void setLocations(Set<Location> locations) throws SBOLValidationException {
 		clearLocations();	
-		if (locations==null) return;
+		if (locations==null || locations.size()==0) {
+			throw new SBOLValidationException("sbol-10902", this);
+		}
 		for (Location location : locations) {
 			addLocation(location);
 		}

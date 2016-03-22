@@ -67,11 +67,9 @@
             <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/cas9_complex_formation/gRNA_generic"/>
             <sbol:displayId>gRNA_generic</sbol:displayId>
             <sbol:version>1.0</sbol:version>
-	    <!--
             <sbol:role
-	    rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000010"/>
-	    -->
-            <sbol:role rdf:resource="http://identifiers.org/biomodels.sbo/SBO:000001010110101010"/>
+		rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000010"/>
+	     <sbol:role rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000013"/>
             <sbol:participant rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/gRNA_generic/1.0"/>
           </sbol:Participation>
         </sbol:participation>

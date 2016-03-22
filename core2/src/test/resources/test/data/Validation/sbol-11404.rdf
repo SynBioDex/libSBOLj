@@ -608,7 +608,6 @@
         <sbol:version>1.0</sbol:version>
         <sbol:restriction rdf:resource="http://sbols.org/v2#precedes"/>
         <sbol:subject rdf:resource="http://sbols.org/CRISPR_Example/EYFP_gene/CRP_b/1.0"/>
-        <sbol:object rdf:resource="http://sbols.org/CRISPR_Example/target/1.0"/>
       </sbol:SequenceConstraint>
     </sbol:sequenceConstraint>
   </sbol:ComponentDefinition>

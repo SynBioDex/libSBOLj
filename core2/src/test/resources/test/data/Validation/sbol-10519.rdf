@@ -796,7 +796,6 @@
         <sbol:version>1.0</sbol:version>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/CRa_U6"/>
-        <sbol:object rdf:resource="http://sbols.org/CRISPR_Example/gRNA_b_gene/gRNA_b_gene_constraint2/1.0"/>
       </sbol:Component>
     </sbol:component>
     <sbol:component>

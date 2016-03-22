@@ -196,44 +196,26 @@ public class SBOLReader
 	private static String getSBOLVersion(DocumentRoot<QName> document) throws SBOLValidationException
 	{
 		boolean foundRDF = false;
-		boolean foundDC = false;
-		boolean foundProv = false;
 		boolean foundSBOL1 = false;
 		boolean foundSBOL2 = false;
 		for (NamespaceBinding n : document.getNamespaceBindings())
 		{
 			if (n.getNamespaceURI().equals(Sbol1Terms.rdf.getNamespaceURI())) foundRDF = true;
-			if (n.getNamespaceURI().equals(Sbol2Terms.prov.getNamespaceURI())) foundProv = true;
-			if (n.getNamespaceURI().equals(Sbol2Terms.dc.getNamespaceURI())) foundDC = true;
 			if (n.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI()))	foundSBOL1 = true;
 			if (n.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()))	foundSBOL2 = true;
 		}
-		if (!foundSBOL1 && !foundSBOL2) {
-			//throw new SBOLValidationException("No SBOL namespace found.");
-			throw new SBOLValidationException("sbol-10101");
-			// TODO: (Validation) missing rule: rule allowing also SBOL 1.1 namespace.
-		}
-		else if (foundSBOL1 && !foundSBOL2) return SBOLVERSION1;
-		else if (foundSBOL2 && !foundSBOL1) {
+		if (foundSBOL2) {
 			if (!foundRDF) {
-				//throw new SBOLValidationException("No RDF namespace found.");
 				throw new SBOLValidationException("sbol-10102");
 			}
-			/* TODO: not sure this is needed anymore
-			if (!foundDC) {
-				//throw new SBOLValidationException("No dublin core namespace found.");
-				throw new SBOLValidationException("sbol-10103");
-			}
-			if (!foundProv) {
-				//throw new SBOLValidationException("No provenance namespace found.");
-				throw new SBOLValidationException("sbol-10104");
-			}
-			*/
 			return SBOLVERSION2;
-		}
-		else {
-			throw new SBOLValidationException("A SBOL document cannot have SBOL namespaces with different versions.");
-			// TODO: (Validation) missing rule: rule requiring at least one of SBOL namespaces, not necessarily SBOL 2.0. 
+		} else if (foundSBOL1) {
+			if (!foundRDF) {
+				throw new SBOLValidationException("sbol-10102");
+			}
+			return SBOLVERSION1;
+		} else {
+			throw new SBOLValidationException("sbol-10101");
 		}
 	}
 
@@ -242,13 +224,10 @@ public class SBOLReader
 	 *
 	 * @param fileName
 	 * @return the SBOL version of the file.
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 * @throws SBOLValidationException 
 	 */
-	public static String getSBOLVersion(String fileName) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException
+	public static String getSBOLVersion(String fileName) throws FileNotFoundException, SBOLValidationException
 	{
 		return getSBOLVersion(fileName,RDF);
 	}
@@ -258,13 +237,10 @@ public class SBOLReader
 	 *
 	 * @param fileName
 	 * @return the SBOL version of the file.
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 * @throws SBOLValidationException 
 	 */
-	static String getSBOLVersion(String fileName, String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException
+	static String getSBOLVersion(String fileName, String fileType) throws FileNotFoundException, SBOLValidationException
 	{
 		FileInputStream stream     = new FileInputStream(new File(fileName));
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -278,9 +254,10 @@ public class SBOLReader
 	 *
 	 * @param fileName
 	 * @return the converted SBOLDocument
-	 * @throws Throwable
+	 * @throws SBOLValidationException
+	 * @throws FileNotFoundException 
 	 */
-	public static SBOLDocument read(String fileName) throws Throwable
+	public static SBOLDocument read(String fileName) throws SBOLValidationException, FileNotFoundException
 	{
 		return read(fileName,RDF);
 	}
@@ -291,9 +268,10 @@ public class SBOLReader
 	 * @param fileName
 	 * @param fileType
 	 * @return the converted SBOLDocument
-	 * @throws Throwable
+	 * @throws SBOLValidationException
+	 * @throws FileNotFoundException 
 	 */
-	static SBOLDocument read(String fileName,String fileType) throws Throwable
+	static SBOLDocument read(String fileName,String fileType) throws SBOLValidationException, FileNotFoundException
 	{
 		return read(new File(fileName),fileType);
 	}
@@ -303,13 +281,10 @@ public class SBOLReader
 	 *
 	 * @param file
 	 * @return the SBOL version of the file.
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 * @throws SBOLValidationException 
 	 */
-	public static String getSBOLVersion(File file) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException
+	public static String getSBOLVersion(File file) throws FileNotFoundException, SBOLValidationException
 	{
 		return getSBOLVersion(file,RDF);
 	}
@@ -319,13 +294,10 @@ public class SBOLReader
 	 *
 	 * @param file
 	 * @return the converted SBOLDocument instance
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
-	 * @throws CoreIoException
 	 * @throws FileNotFoundException
 	 * @throws SBOLValidationException 
 	 */
-	public static SBOLDocument read(File file) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
+	public static SBOLDocument read(File file) throws FileNotFoundException, SBOLValidationException
 	{
 		return read(file,RDF);
 	}
@@ -341,7 +313,7 @@ public class SBOLReader
 	 * @throws FileNotFoundException
 	 * @throws SBOLValidationException 
 	 */
-	static SBOLDocument read(File file,String fileType) throws FileNotFoundException, CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
+	static SBOLDocument read(File file,String fileType) throws FileNotFoundException, SBOLValidationException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -353,13 +325,10 @@ public class SBOLReader
 	 *
 	 * @param file
 	 * @return the SBOL version of the file.
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
 	 * @throws FileNotFoundException
 	 * @throws SBOLValidationException 
 	 */
-	static String getSBOLVersion(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException
+	static String getSBOLVersion(File file,String fileType) throws FileNotFoundException, SBOLValidationException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -372,12 +341,9 @@ public class SBOLReader
 	 * @param in
 	 * @param fileType
 	 * @return the SBOL version of the JSON file.
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
 	 * @throws SBOLValidationException 
 	 */
-	static String getSBOLVersion(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
+	static String getSBOLVersion(InputStream in,String fileType) throws SBOLValidationException
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
@@ -398,12 +364,9 @@ public class SBOLReader
 	 *
 	 * @param in
 	 * @return the converted SBOLDocument instance
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
 	 * @throws SBOLValidationException 
 	 */
-	public static SBOLDocument read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
+	public static SBOLDocument read(InputStream in) throws SBOLValidationException
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		SBOLDoc.setCompliant(compliant);
@@ -417,12 +380,9 @@ public class SBOLReader
 	 * @param in
 	 * @param fileType
 	 * @return the converted SBOLDocument instance
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
 	 * @throws SBOLValidationException 
 	 */
-	static SBOLDocument read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
+	static SBOLDocument read(InputStream in,String fileType) throws SBOLValidationException
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		SBOLDoc.setCompliant(compliant);
@@ -431,7 +391,7 @@ public class SBOLReader
 	}
 
 
-	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
+	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws SBOLValidationException
 	{
 		compliant = SBOLDoc.isCompliant();
 		Scanner scanner = new Scanner(in, "UTF-8");
@@ -483,12 +443,9 @@ public class SBOLReader
 	 *
 	 * @param in
 	 * @return the SBOL version of the file.
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
 	 * @throws SBOLValidationException 
 	 */
-	public static String getSBOLVersion(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException
+	public static String getSBOLVersion(InputStream in) throws SBOLValidationException
 	{
 		return getSBOLVersion(in,RDF);
 	}
@@ -519,48 +476,54 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	private static DocumentRoot<QName> readJSON(Reader stream) throws CoreIoException
+	private static DocumentRoot<QName> readJSON(Reader stream) throws SBOLValidationException
 	{
 		JsonReader reader 		  = Json.createReaderFactory(Collections.<String, Object> emptyMap()).createReader(stream);
 		JsonIo jsonIo 	  		  = new JsonIo();
 		IoReader<String> ioReader = jsonIo.createIoReader(reader.read());
-		DocumentRoot<String> root = ioReader.read();
+		DocumentRoot<String> root;
+		try {
+			root = ioReader.read();
+		}
+		catch (CoreIoException e) {
+			throw new SBOLValidationException("sbol-10105");
+		}
 		return StringifyQName.string2qname.mapDR(root);
 	}
 
-	private static DocumentRoot<QName> readRDF(Reader reader) throws XMLStreamException, FactoryConfigurationError, SBOLValidationException
+	private static DocumentRoot<QName> readRDF(Reader reader) throws SBOLValidationException
 	{
-		XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader(reader);
-		RdfIo rdfIo 			  = new RdfIo();
 		try {
+			XMLStreamReader xmlReader = XMLInputFactory.newInstance().createXMLStreamReader(reader);
+			RdfIo rdfIo 			  = new RdfIo();
 			return rdfIo.createIoReader(xmlReader).read();
 		}
+		catch (FactoryConfigurationError e) {
+			throw new SBOLValidationException("sbol-10105");
+		}
+		catch (XMLStreamException e) {
+			throw new SBOLValidationException("sbol-10105");
+		}
 		catch (CoreIoException e) {
-			if (e.getMessage().contains("ElementPrefixUnbound")) {
-				if (e.getMessage().contains("rdf")) {
-					throw new SBOLValidationException("sbol-10102");
-				} else if (e.getMessage().contains("title")||e.getMessage().contains("description")) {
-					throw new SBOLValidationException("sbol-10103");
-				} else if (e.getMessage().contains("wasDerivedFrom")) {
-					throw new SBOLValidationException("sbol-10104");
-				} else {
-					throw new SBOLValidationException("sbol-10214");
-				}
-			} 
-			throw new XMLStreamException(e.getMessage());
+			throw new SBOLValidationException("sbol-10105");
 		}
 		catch (ClassCastException e) {
 			if (e.getMessage().contains("IdentifiableDocument")) {
 				throw new SBOLValidationException("sbol-10201");
 			}
-			throw new XMLStreamException(e.getMessage());
+			throw new SBOLValidationException("sbol-10105");
 		}
 	}
 
-	private static DocumentRoot<QName> readTurtle(Reader reader) throws CoreIoException
+	private static DocumentRoot<QName> readTurtle(Reader reader) throws SBOLValidationException
 	{
 		TurtleIo turtleIo = new TurtleIo();
-		return turtleIo.createIoReader(reader).read();
+		try {
+			return turtleIo.createIoReader(reader).read();
+		}
+		catch (CoreIoException e) {
+			throw new SBOLValidationException("sbol-10105");
+		}
 	}
 
 	private static void readTopLevelDocsV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException
@@ -593,11 +556,19 @@ public class SBOLReader
 	{
 		Map<URI, NestedDocument<QName>> nested = new HashMap<URI, NestedDocument<QName>>();
 		List<TopLevelDocument<QName>> topLevels = new ArrayList<TopLevelDocument<QName>>();
+		clearErrors();
+
 		for (TopLevelDocument<QName> topLevel : document.getTopLevelDocuments()) {
-			if (topLevel.getType().equals(NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf")
-					.withLocalPart("Description"))) {
-				for (PropertyValue<QName> value : topLevel.getPropertyValues(
-						NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf").withLocalPart("type"))) {
+
+			if (topLevel.getType().equals(Sbol2Terms.Description.Description)) {
+				if (topLevel.getPropertyValues(Sbol2Terms.Description.type).isEmpty()) {
+					if (keepGoing) {
+						errors.add(new SBOLValidationException("sbol-12302",topLevel.getIdentity()).getExceptionMessage());
+					} else {
+						throw new SBOLValidationException("sbol-12302",topLevel.getIdentity());
+					}
+				}
+				for (PropertyValue<QName> value : topLevel.getPropertyValues(Sbol2Terms.Description.type)) {
 					Literal<QName> type = ((Literal<QName>) value);
 					if (type.getValue().toString()
 							.equals(Sbol2Terms.Component.Component.toString().replaceAll("\\{|\\}", ""))) {
@@ -744,7 +715,6 @@ public class SBOLReader
 			}
 		}
 
-		clearErrors();
 		for (TopLevelDocument<QName> topLevel : topLevels) {
 			try {
 				if (topLevel.getType().equals(Sbol2Terms.Collection.Collection))
@@ -1377,7 +1347,6 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.hasSubComponent))
 			{
-				System.out.println("Warning: tag should be sbol:component, not sbol:subComponent.");
 				if (namedProperty.getValue() instanceof NestedDocument) {
 					components.add(parseComponent(((NestedDocument<QName>) namedProperty.getValue()), nested));
 				}
@@ -2177,12 +2146,20 @@ public class SBOLReader
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
 		URI wasDerivedFrom 	   = null;
+		QName type 			   = topLevel.getType();
 
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
-			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			if (namedProperty.getName().equals(Sbol2Terms.Description.type)) {
+				String typeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				String nameSpace = URIcompliance.extractURIprefix(URI.create(typeStr))+"/";
+				String localPart = URIcompliance.extractDisplayId(URI.create(typeStr));
+				String prefix = SBOLDoc.getNamespace(URI.create(nameSpace)).getPrefix();
+				type = new QName(nameSpace,localPart,prefix);
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
 					throw new SBOLValidationException("sbol-10203", topLevel.getIdentity());
@@ -2231,7 +2208,7 @@ public class SBOLReader
 		}
 
 		//		GenericTopLevel t = SBOLDoc.createGenericTopLevel(topLevel.getIdentity(), topLevel.getType());
-		GenericTopLevel t = new GenericTopLevel(topLevel.getIdentity(), topLevel.getType());
+		GenericTopLevel t = new GenericTopLevel(topLevel.getIdentity(), type);
 		if (persistentIdentity != null)
 			t.setPersistentIdentity(persistentIdentity);
 		if (version != null)
@@ -3056,9 +3033,7 @@ public class SBOLReader
 			}
 		}
 
-		Participation p = new Participation(participation.getIdentity(), participant);
-		if (!roles.isEmpty())
-			p.setRoles(roles);
+		Participation p = new Participation(participation.getIdentity(), participant, roles);
 		if (displayId != null)
 			p.setDisplayId(displayId);
 		if (name != null)

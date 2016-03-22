@@ -17,6 +17,11 @@ public class SBOLWriterTest extends SBOLAbstractTests {
 			assertTrue(false);
 		}
 		SBOLDocument actual = SBOLTestUtils.writeAndRead(expected,compliant);
+		if (!actual.equals(expected)) {
+			System.out.println("Expected:"+expected.toString());
+			SBOLWriter.write(expected, (System.out));
+			System.out.println("Actual  :"+actual.toString());
+		}
 		assertTrue(actual.equals(expected));
 	}
 

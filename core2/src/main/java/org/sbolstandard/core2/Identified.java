@@ -399,7 +399,46 @@ public abstract class Identified {
 	void addAnnotation(Annotation annotation) throws SBOLValidationException {
 		if (annotations.contains(annotation)) {
 			//throw new SBOLValidationException("Annotation already exists.");
-			throw new SBOLValidationException("sbol-10214");
+			//throw new SBOLValidationException("sbol-10214");
+			// TODO: not sure this is even an error, can just skip add
+			return;
+		}
+		if (annotation.getQName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI())) {
+			if (this instanceof Sequence) {
+				throw new SBOLValidationException("sbol-10401");
+			} else if (this instanceof ComponentDefinition) {
+				throw new SBOLValidationException("sbol-10501");
+			} else if (this instanceof Component) {
+				throw new SBOLValidationException("sbol-10701");
+			} else if (this instanceof MapsTo) {
+				throw new SBOLValidationException("sbol-10801");
+			} else if (this instanceof SequenceAnnotation) {
+				throw new SBOLValidationException("sbol-10901");
+			} else if (this instanceof Range) {
+				throw new SBOLValidationException("sbol-11101");
+			} else if (this instanceof Cut) {
+				throw new SBOLValidationException("sbol-11201");
+			} else if (this instanceof GenericLocation) {
+				throw new SBOLValidationException("sbol-11301");
+			} else if (this instanceof SequenceConstraint) {
+				throw new SBOLValidationException("sbol-11401");
+			} else if (this instanceof Model) {
+				throw new SBOLValidationException("sbol-11501");
+			} else if (this instanceof ModuleDefinition) {
+				throw new SBOLValidationException("sbol-11601");
+			} else if (this instanceof Module) {
+				throw new SBOLValidationException("sbol-11701");
+			} else if (this instanceof FunctionalComponent) {
+				throw new SBOLValidationException("sbol-11801");
+			} else if (this instanceof Interaction) {
+				throw new SBOLValidationException("sbol-11901");
+			} else if (this instanceof Participation) {
+				throw new SBOLValidationException("sbol-12001");
+			} else if (this instanceof Collection) {
+				throw new SBOLValidationException("sbol-12101");
+			} else if (this instanceof GenericTopLevel) {
+				throw new SBOLValidationException("sbol-12301");
+			} 
 		}
 		annotations.add(annotation);
 	}

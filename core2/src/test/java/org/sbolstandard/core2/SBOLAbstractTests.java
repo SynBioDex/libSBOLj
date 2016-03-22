@@ -4,11 +4,14 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.QName;
 
+import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
 
 //import javax.sound.midi.Sequence;
 import javax.xml.namespace.QName;
@@ -782,7 +785,7 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/SimpleModuleDefinition.rdf", document, "rdf", true);
 	}
 
-	private static void setDefaultNameSpace(SBOLDocument document, String uri) throws SBOLValidationException
+	private static void setDefaultNameSpace(SBOLDocument document, String uri) 
 	{
 		if (uri.endsWith("/"))
 		{
@@ -808,6 +811,34 @@ public abstract class SBOLAbstractTests {
 			throw new AssertionError("Failed for " + fileName, e);
 		}
 	}
+	
+	@Test
+	public void test_GenBank_Files() throws Exception
+	{
+		File file_base = null ;
+		try {
+			file_base = new File(ValidationTest.class.getResource("/test/data/GenBank/").toURI());
+		}
+		catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		}
+		File file;
+		for (File f : file_base.listFiles()){
+			file = new File(f.getAbsolutePath());
+			try
+			{
+				GenBank.setURIPrefix("http://www.async.ece.utah.edu");
+				SBOLDocument actual = GenBank.read(file);
+				GenBank.write(actual.getRootComponentDefinitions().iterator().next(), 
+						"src/test/resources/test/data/GenBankOut/"+f.getName());
+				runTest("test/data/"+f.getName().replace(".gb", ".rdf"), actual, "rdf", true);
+			}
+			catch (SBOLValidationException e)
+			{
+				throw new AssertionError("Failed for " + f.getName(), e);
+			}
+		}
+	}
 
 	@Test
 	public void test_igem1_File() throws Exception
@@ -824,7 +855,7 @@ public abstract class SBOLAbstractTests {
 			throw new AssertionError("Failed for " + fileName, e);
 		}
 	}
-
+	
 	@Test
 	public void test_igem2_File() throws Exception
 	{

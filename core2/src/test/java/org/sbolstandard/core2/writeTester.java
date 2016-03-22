@@ -31,9 +31,18 @@ public class writeTester {
 
 	public static void main( String[] args ) throws FactoryConfigurationError, SBOLValidationException, XMLStreamException, CoreIoException
 	{
-		//SBOLDocument document = new SBOLDocument();
-		//document.createSequence("displayID", "ACGT", org.sbolstandard.core2.Sequence.IUPAC_DNA);
-		//SBOLWriter.write(document, (System.out));
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix("http://www.foo.org");
+		Sequence seq = document.createSequence("displayID", "ACGT", org.sbolstandard.core2.Sequence.IUPAC_DNA);
+		document.addNamespace(URI.create("http://myannotation.org/"), "annot");
+		Annotation an = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), "1.0");
+		Annotation an2 = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), "foo");
+		List<Annotation> annos = new ArrayList<Annotation>();
+		annos.add(an);
+		annos.add(an2);
+		seq.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), 
+				new QName("http://myannotation.org", "thisNested", "annot"), URI.create("http://foo"), annos);
+		SBOLWriter.write(document, (System.out));
 
 
 		get_myParts(sbolDocument);
@@ -527,13 +536,13 @@ public class writeTester {
 		return collection;
 	}
 
-	private static Annotation createAnnotation(QName relation, String literal) throws SBOLValidationException
+	private static Annotation createAnnotation(QName relation, String literal) 
 	{
 		return new Annotation(NamedProperty(relation, literal));
 
 	}
 
-	private static Annotation createAnnotation(QName relation, URI value) throws SBOLValidationException
+	private static Annotation createAnnotation(QName relation, URI value) 
 	{
 		return new Annotation(NamedProperty(relation, value));
 
@@ -667,8 +676,7 @@ public class writeTester {
 			String displayId, Set<URI> roles, String fi) throws SBOLValidationException
 	{
 		if (i.getParticipation(displayId)==null) {
-			Participation p = i.createParticipation(displayId, fi);
-			p.setRoles(roles);
+			i.createParticipation(displayId, fi, roles);
 		}
 	}
 

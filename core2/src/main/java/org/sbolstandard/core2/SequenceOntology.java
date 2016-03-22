@@ -290,6 +290,18 @@ public class SequenceOntology {
 		}
 		return sequenceOntology.isDescendantOf(stanza1, stanza2);
 	}
+	
+	/**
+	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
+	 * @param childURI
+	 * @param parentURI
+	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
+	 */
+	public final boolean isDescendantOf(URI childURI, URI parentURI) {
+		String childId = getId(childURI);
+		String parentId = getId(parentURI);
+		return isDescendantOf(childId,parentId);
+	}
 
 	/**
 	 * Creates a new URI from the Sequence Ontology namespace with the given ID. For example, the function call
@@ -383,5 +395,10 @@ public class SequenceOntology {
 	 * A region that is engineered (<a href="http://identifiers.org/so/SO:0000804">SO:0000804</a>).
 	 */
 	public static final URI ENGINEERED_REGION = type("SO:0000804");
+	
+	/**
+	 * Any extent of continuous biological sequence. (<a href="http://identifiers.org/so/SO:0000110">SO:0000110</a>).
+	 */
+	public static final URI SEQUENCE_FEATURE = type("SO:0000110");
 
 }

@@ -228,13 +228,13 @@ public class ModuleDefinitionOutput {
 		
 		Participation participation=interaction.createParticipation(
 				promoter.getDisplayId(), 
-				laciInverterModuleDef_promoter.getIdentity());
-		participation.addRole(toURI(Terms.participantRoles.promoter));
+				laciInverterModuleDef_promoter.getIdentity(),	
+				toURI(Terms.participantRoles.promoter));
 		
 		Participation participation2=interaction.createParticipation(
 				TF.getDisplayId(), 
-				laciInverterModuleDef_TF.getIdentity());		
-		participation2.addRole(toURI(Terms.participantRoles.inhibitor));
+				laciInverterModuleDef_TF.getIdentity(),
+				toURI(Terms.participantRoles.inhibitor));
 	}		
 	
 	private static ComponentDefinition createComponenDefinition(SBOLDocument document,QName identifier,String name, QName type, QName role,String description) throws SBOLValidationException

@@ -9,7 +9,7 @@
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target_gene"/>
         <sbol:displayId>target_gene</sbol:displayId>
         <sbol:version>1.0</sbol:version>
-        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target"/>
+        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target_gene"/>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:direction rdf:resource="http://sbols.org/v2#inout"/>
       </sbol:FunctionalComponent>
@@ -19,7 +19,7 @@
         <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/target"/>
         <sbol:displayId>target</sbol:displayId>
         <sbol:version>1.0</sbol:version>
-        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target_gene"/>
+        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/target"/>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:direction rdf:resource="http://sbols.org/v2#inout"/>
       </sbol:FunctionalComponent>
@@ -725,7 +725,7 @@
         <sbol:displayId>Gal4VP16_cds</sbol:displayId>
         <sbol:version>1.0</sbol:version>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/Gal4VP16_cds"/>
+        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/mKate_gene"/>
       </sbol:Component>
     </sbol:component>
     <sbol:component>
@@ -769,7 +769,7 @@
         <sbol:displayId>pConst</sbol:displayId>
         <sbol:version>1.0</sbol:version>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/mKate_cds"/>
+        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/Gal4VP16_gene"/>
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceConstraint>
