@@ -22,6 +22,17 @@ public class Model extends TopLevel {
 	private URI language;
 	private URI framework;
 
+	// TODO: move these out of Model
+	/**
+	 * A defined way or layout of representing and structuring data in a computer file, blob, 
+	 * string, message, or elsewhere. The main focus in EDAM lies on formats as means of 
+	 * structuring data exchanged between different tools or resources. The serialisation, 
+	 * compression, or encoding of concrete data formats/models is not in scope of EDAM. 
+	 * Format 'is format of' Data.
+	 * (<a href="http://identifiers.org/edam/format_1915">FORMAT</a>).
+	 */
+	public static final URI FORMAT = URI.create("http://identifiers.org/edam/format_1915");
+	
 	/**
 	 * Systems Biology Markup Language (SBML), the standard XML format for models of biological
 	 * processes such as for example metabolism, cell signaling, and gene regulation
