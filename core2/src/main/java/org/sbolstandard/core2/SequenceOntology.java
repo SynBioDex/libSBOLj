@@ -244,8 +244,7 @@ public class SequenceOntology {
 	}
 	
 	/** 
-	 * Creates a new URI from the Sequence Ontology namespace with the given ID. For example, the function call
-	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
+	 * Creates a new URI from the Sequence Ontology namespace with the given ID.
 	 * @param stanzaId
 	 * @return the created URI
 	 */
