@@ -227,8 +227,8 @@ public class SBOLValidationException extends Exception {
 		try
 		{
 			outputFile = new File(filename);
-			System.out.println(outputFile.getAbsolutePath());
-			System.out.println(filename);
+			//System.out.println(outputFile.getAbsolutePath());
+			//System.out.println(filename);
 			outputFW = new FileWriter(outputFile);
 			outputBW = new BufferedWriter(outputFW);//for OS to keep track of what you have written
 		}
