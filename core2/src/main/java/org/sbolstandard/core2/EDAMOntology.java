@@ -22,7 +22,7 @@ import org.oboparser.obo.OBOStanza;
  * @version 2.0-beta
  */
 
-public class EDAMontology {
+public class EDAMOntology {
 	private static final String URI_PREFIX = "http://edamontology.org";
 
 	/**
@@ -30,8 +30,10 @@ public class EDAMontology {
 	 */
 	public static final URI NAMESPACE = URI.create(URI_PREFIX);
 	private static OBOOntology EDAMontology = null;
+	
+	// TODO: add FORMAT, SBML, CELLML, BIOPAX constants
 
-	EDAMontology() {
+	EDAMOntology() {
 		OBOParser oboParser = new OBOParser();
 		if (EDAMontology == null) {
 			InputStreamReader f = new InputStreamReader(getClass().

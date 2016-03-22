@@ -410,6 +410,8 @@ public class SBOLValidate {
 	static void validateOntologyUsage(SBOLDocument sbolDocument) {
 		SequenceOntology so = new SequenceOntology();
 		SystemsBiologyOntology sbo = new SystemsBiologyOntology();
+		// TODO: this is crashing	
+		// EDAMOntology edam = new EDAMOntology();
 		for (Sequence sequence : sbolDocument.getSequences()) {
 			if (!sequence.getEncoding().equals(Sequence.IUPAC_DNA) &&
 				!sequence.getEncoding().equals(Sequence.IUPAC_RNA) &&
@@ -465,12 +467,22 @@ public class SBOLValidate {
 			}
 		}
 		for (Model model : sbolDocument.getModels()) {
-			// TODO: should check EDAM ontology to be more precise
+			// TODO: replace this with EDAM check
 			if (!model.getLanguage().equals(Model.SBML) &&
 				!model.getLanguage().equals(Model.CELLML) &&
 				!model.getLanguage().equals(Model.BIOPAX)) {
 				errors.add(new SBOLValidationException("sbol-11507", model).getExceptionMessage());
 			}
+			/*
+			try {
+				if (!edam.isDescendantOf(model.getLanguage(), Model.FORMAT)) {
+					errors.add(new SBOLValidationException("sbol-11507", model).getExceptionMessage());
+				}
+			}
+			catch (Exception e) {
+				errors.add(new SBOLValidationException("sbol-11507", model).getExceptionMessage());
+			}
+			*/
 			try {
 				if (!sbo.isDescendantOf(model.getFramework(), SystemsBiologyOntology.MODELING_FRAMEWORK)) {
 					errors.add(new SBOLValidationException("sbol-11511", model).getExceptionMessage());
