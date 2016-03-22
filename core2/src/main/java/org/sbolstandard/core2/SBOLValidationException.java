@@ -141,7 +141,7 @@ public class SBOLValidationException extends Exception {
 						getResourceAsStream("/validation/rules.txt"));
 				try {					
 					parse(new BufferedReader(f));
-					writeRulesToXML("rules.xml");
+					//writeRulesToXML("rules.xml");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -170,7 +170,7 @@ public class SBOLValidationException extends Exception {
 						getResourceAsStream("/validation/rules.txt"));
 				try {					
 					parse(new BufferedReader(f));
-					writeRulesToXML("rules.xml");
+					//writeRulesToXML("rules.xml");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
