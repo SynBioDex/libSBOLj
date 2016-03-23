@@ -116,7 +116,7 @@ public class ValidationTest {
 			} else if (SBOLValidate.getNumErrors() > 0) {
 				for(String error : SBOLValidate.getErrors())
 				{
-					//System.out.println(error);
+					System.out.println(error);
 					if(!error.split(":")[0].equals(f.getName().replace(".rdf", "")))
 					{
 						String ruleId = f.getName().replace(".rdf", "").replace("sbol-", "").trim();

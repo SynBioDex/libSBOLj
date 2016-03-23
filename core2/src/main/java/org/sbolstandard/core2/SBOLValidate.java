@@ -466,13 +466,8 @@ public class SBOLValidate {
 			}
 		}
 		for (Model model : sbolDocument.getModels()) {
-//			if (!model.getLanguage().equals(Model.SBML) &&
-//				!model.getLanguage().equals(Model.CELLML) &&
-//				!model.getLanguage().equals(Model.BIOPAX)) {
-//				errors.add(new SBOLValidationException("sbol-11507", model).getExceptionMessage());
-//			}
 			try {
-				if (!edam.isDescendantOf(model.getLanguage(), Model.FORMAT)) {
+				if (!edam.isDescendantOf(model.getLanguage(), EDAMOntology.FORMAT)) {
 					errors.add(new SBOLValidationException("sbol-11507", model).getExceptionMessage());
 				}
 			}

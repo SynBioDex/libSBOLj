@@ -23,10 +23,10 @@ import org.oboparser.obo.OBOStanza;
  */
 
 public class EDAMOntology {
-	private static final String URI_PREFIX = "http://edamontology.org";
+	private static final String URI_PREFIX = "http://identifiers.org/edam/";
 
 	/**
-	 * Namespace of the EDAM Ontology (<a href="http://edamontology.org">http://edamontology.org</a>).
+	 * Namespace of the EDAM Ontology (<a href="http://identifiers.org/edam/">http://identifiers.org/edam/</a>).
 	 */
 	public static final URI NAMESPACE = URI.create(URI_PREFIX);
 	private static OBOOntology EDAMOntology = null;
@@ -213,4 +213,45 @@ public class EDAMOntology {
 		String parentId = getId(parentURI);
 		return isDescendantOf(childId,parentId);
 	}
+	
+	/**
+	 * Creates a new URI from the EDAM Ontology namespace with the given local name. For example, the function call
+	 * <code>term("format_1915")</code> will return the URI <a>http://purl.obolibrary.org/edam/format_1915</a>
+	 * @param localName 
+	 * @return the created URI
+	 */
+	public static final URI type(String localName) {
+		return URI.create(URI_PREFIX+localName);
+	}
+	
+	/**
+	 * A defined way or layout of representing and structuring data in a computer file, blob, 
+	 * string, message, or elsewhere. The main focus in EDAM lies on formats as means of 
+	 * structuring data exchanged between different tools or resources. The serialisation, 
+	 * compression, or encoding of concrete data formats/models is not in scope of EDAM. 
+	 * Format 'is format of' Data.
+	 * (<a href="http://identifiers.org/edam/format_1915">FORMAT</a>).
+	 */
+	public static final URI FORMAT = type("format_1915");
+	//public static final URI FORMAT = URI.create("http://identifiers.org/edam/format_1915");
+	
+	/**
+	 * Systems Biology Markup Language (SBML), the standard XML format for models of biological
+	 * processes such as for example metabolism, cell signaling, and gene regulation
+	 * (<a href="http://identifiers.org/edam/format_2585">SBML</a>).
+	 */
+	public static final URI SBML = type("format_2585");
+	//public static final URI SBML = URI.create("http://identifiers.org/edam/format_2585");
+
+	/**
+	 * CellML, the format for mathematical models of biological and other networks
+	 * (<a href="http://identifiers.org/edam/format_3240">CELLML</a>).
+	 */
+	public static final URI CELLML = type("format_3240");
+
+	/**
+	 * BioPAX is an exchange format for pathway data, with its data model defined in OWL
+	 * (<a href="http://identifiers.org/edam/format_3156">BIOPAX</a>).
+	 */
+	public static final URI BIOPAX = type("format_3156");
 }

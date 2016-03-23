@@ -461,7 +461,7 @@ public class writeTester {
 		Model m = createModelData(SBOL2Doc_test,
 				getData("ToggleModel",version),
 				getPropertyURI("ToggleModel_source"), 
-				Model.SBML, 
+				EDAMOntology.SBML, 
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 		return m;
 	}

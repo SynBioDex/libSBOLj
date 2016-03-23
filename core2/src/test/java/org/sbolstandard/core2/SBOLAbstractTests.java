@@ -116,7 +116,7 @@ public abstract class SBOLAbstractTests {
 		String M1_Source = "www.example.com";
 		URI M1_URISource = URI.create(M1_Source);
 		
-		Model M1 = document.createModel(M1_ID, M1_Version, M1_URISource, Model.SBML, 
+		Model M1 = document.createModel(M1_ID, M1_Version, M1_URISource, EDAMOntology.SBML, 
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 		document.removeModel(M1);
 		runTest("test/data/test_Model_remove.rdf", document, "rdf", true);
@@ -625,7 +625,7 @@ public abstract class SBOLAbstractTests {
 		Model model=document.createModel(
 				"toogleswicth",
 				URI.create("http://virtualparts.org/part/pIKE_Toggle_1"),
-				Model.SBML,
+				EDAMOntology.SBML,
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 
 		//new HashSet<URI>(Arrays.asList(URI.create("http://sbols.org/v2#module_model")))
@@ -1403,7 +1403,7 @@ public abstract class SBOLAbstractTests {
 		Collection myParts = document.createCollection("myParts", VERSION_1_0);
 		myParts.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
-		Model someModel = document.createModel(id, VERSION_1_0, source, Model.SBML, SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
+		Model someModel = document.createModel(id, VERSION_1_0, source, EDAMOntology.SBML, SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 		someModel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
 		ModuleDefinition someModDef = document.createModuleDefinition("someModuleDef", VERSION_1_0);
@@ -1649,7 +1649,7 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
 		String id = "ToggleModel";
-		document.createModel( id, VERSION_1_0, URI.create(id + "_source"), Model.SBML, 
+		document.createModel( id, VERSION_1_0, URI.create(id + "_source"), EDAMOntology.SBML, 
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 
 		runTest("test/data/singleModel.rdf", document, "rdf", true);
