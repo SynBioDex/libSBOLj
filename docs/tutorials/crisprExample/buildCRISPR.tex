@@ -114,7 +114,7 @@ using the default URI prefix and provided displayId and version. The \emph{$\lan
 \subsubsection*{Specifying Interactions}
 We are now ready to specify the interactions in the repression template. The first one is the complex formation interaction for \lstinline+cas9_generic+ and \lstinline+gRNA_generic+. We first create an \sbol{Interaction} object \lstinline+Cas9Complex_Formation+ in \lstinline+CRISPR_Template+, with the displayId ``cas9\_complex\_formation'' and a non-covalent binding type (line 1 to 4). It is recommended that terms from the \emph{Systems Biology Ontology} (SBO)~\cite{Courtot2011} are used specify the types for interactions. Table 11 of the ~\href{http://sbolstandard.org/downloads/specification-data-model-2-0/}{Specification  (Data Model 2.0)} document provides a list of possible SBO terms for the types property and their corresponding URIs. 
 
-Next, we add three participants to this interaction object. Each participant is modeled as a \sbol{Participation} object and it refers to the corresponding \sbol{FunctionalComponent} object. For example, the \lstinline+participant_cas9_generic+ \sbol{Participation} object refers to the \lstinline+cas9_generic+ \sbol{FunctionalComponent} object. Note that such an object does not exist yet, but since there exists a \lstinline+cas9_generic+ \sbol{ComponentDefinition} object, and the ``createDefaults'' of this \sbol{SBOLDocuemnt} is set to \lstinline+true+, a \sbol{FunctionalComponent} with the same displayId ``cas9\_generic'' is automatically created and it connects the reference from the \lstinline+participant_cas9_generic+ \sbol{Participation} to the \lstinline+cas9_generic+ \sbol{ComponentDefinition}. After this \sbol{Participation} object is created, we call the \lstinline+addRole+ method to assign the \lstinline+REACTANT+ role to it. The remaining two participants are created in a similar fashion.
+Next, we create three participants to this interaction object. Each participant is modeled as a \sbol{Participation} object and it refers to the corresponding \sbol{FunctionalComponent} object. For example, the \lstinline+participant_cas9_generic+ \sbol{Participation} object refers to the \lstinline+cas9_generic+ \sbol{FunctionalComponent} object. Note that such an object does not exist yet, but since there exists a \lstinline+cas9_generic+ \sbol{ComponentDefinition} object, and the ``createDefaults'' of this \sbol{SBOLDocuemnt} is set to \lstinline+true+, a \sbol{FunctionalComponent} with the same displayId ``cas9\_generic'' is automatically created and it connects the reference from the \lstinline+participant_cas9_generic+ \sbol{Participation} to the \lstinline+cas9_generic+ \sbol{ComponentDefinition}. We also assign a \lstinline+REACTANT+ role to it. The remaining two participants are created in a similar fashion.
 
 \vspace{\abovedisplayskip}
 \begin{minipage}{0.95\textwidth}%{\linewidth} 
@@ -125,13 +125,19 @@ Interaction Cas9Complex_Formation = CRISPR_Template.createInteraction(
         );
 Cas9Complex_Formation.createParticipation(
         "participant_cas9_generic", 
-        "cas9_generic").addRole(SystemsBiologyOntology.REACTANT);
+        "cas9_generic",
+        SystemsBiologyOntology.REACTANT
+        );
 Cas9Complex_Formation.createParticipation(
         "participant_gRNA_generic", 
-        "gRNA_generic").addRole(SystemsBiologyOntology.REACTANT);
+        "gRNA_generic",
+        SystemsBiologyOntology.REACTANT
+        );
 Cas9Complex_Formation.createParticipation(
         "participant_cas9_gRNA_complex", 
-        "cas9_gRNA_complex").addRole(SystemsBiologyOntology.PRODUCT);
+        "cas9_gRNA_complex",
+        SystemsBiologyOntology.PRODUCT
+        );
 \end{lstlisting}
 \end{minipage}
 
@@ -147,10 +153,14 @@ Interaction EYFP_production = CRISPR_Template.createInteraction(
         );
 EYFP_production.createParticipation(
         "participant_target_gene", 
-        "target_gene").addRole(SystemsBiologyOntology.PROMOTER);
+        "target_gene",
+        SystemsBiologyOntology.PROMOTER
+        );
 EYFP_production.createParticipation(
         "participant_target", 
-        "target").addRole(SystemsBiologyOntology.PRODUCT);
+        "target",
+        SystemsBiologyOntology.PRODUCT
+        );
 	
 // Inhibition of target by cas9m_BFP_gRNA 
 Interaction target_generic_gene_inhibition = CRISPR_Template.createInteraction(
@@ -159,10 +169,14 @@ Interaction target_generic_gene_inhibition = CRISPR_Template.createInteraction(
         );
 target_generic_gene_inhibition.createParticipation(
         "participant_cas9_gRNA_complex", 
-        "cas9_gRNA_complex").addRole(SystemsBiologyOntology.INHIBITOR);
+        "cas9_gRNA_complex",
+        SystemsBiologyOntology.INHIBITOR
+        );
 target_generic_gene_inhibition.createParticipation(
         "participant_target_gene", 
-        "target_gene").addRole(SystemsBiologyOntology.PROMOTER);
+        "target_gene",
+        SystemsBiologyOntology.PROMOTER
+        );
 \end{lstlisting}
 \end{minipage}
 

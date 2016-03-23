@@ -11,6 +11,7 @@ import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.DirectionType;
+import org.sbolstandard.core2.EDAMOntology;
 import org.sbolstandard.core2.FunctionalComponent;
 import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.Model;
@@ -200,7 +201,7 @@ public class ModuleDefinitionOutput {
 		Model model=document.createModel(
 				"toogleswitch",
 				URI.create("http://virtualparts.org/part/pIKE_Toggle_1"), 
-				Model.SBML, 
+				EDAMOntology.SBML, 
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 								
 		toggleSwitchModuleDef.addModel(model.getIdentity());

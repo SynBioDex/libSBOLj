@@ -73,7 +73,6 @@ public class ValidationTest {
 			file_base = new File(ValidationTest.class.getResource("/test/data/Validation/").toURI());
 		}
 		catch (URISyntaxException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		File file;
@@ -88,11 +87,9 @@ public class ValidationTest {
 			try {
 				doc = SBOLReader.read(file);
 			} catch (SBOLValidationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			SBOLValidate.validateSBOL(doc, true, true, true);
