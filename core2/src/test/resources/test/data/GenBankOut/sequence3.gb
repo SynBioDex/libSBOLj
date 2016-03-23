@@ -33,9 +33,9 @@ FEATURES             Location/Qualifiers
                      /gene="Mlp84B"
                      /note="matches consensus at only 9 of 10 positions"
                      /bound_moiety="MEF2"
-     5'UTR           join(1001..1055,2868..2946)
-                     /gene="Mlp84B"
      mRNA            join(1001..1055,2868..4655)
+                     /gene="Mlp84B"
+     5'UTR           join(1001..1055,2868..2946)
                      /gene="Mlp84B"
      protein_bind    1007..1016
                      /gene="Mlp84B"
