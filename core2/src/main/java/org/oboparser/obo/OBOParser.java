@@ -91,7 +91,7 @@ public class OBOParser {
 			}
 			
 		} else if(line.length() > 0) { 
-			System.out.println(String.format("\t%s", line));
+			//System.out.println(String.format("\t%s", line));
 			if (!line.trim().startsWith("!")){ // A line starting with "!" is a comment.
 				int idx = line.indexOf(":");
 				String key = line.substring(0, idx).trim();
