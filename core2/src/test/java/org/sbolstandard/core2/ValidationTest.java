@@ -82,7 +82,7 @@ public class ValidationTest {
 		for (File f : file_base.listFiles()){
 			//InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
 			file = new File(f.getAbsolutePath());
-			System.out.println(f.getName().replace(".rdf", ""));
+			//System.out.println(f.getName().replace(".rdf", ""));
 			SBOLReader.setKeepGoing(true);
 			try {
 				doc = SBOLReader.read(file);
@@ -98,7 +98,7 @@ public class ValidationTest {
 			if (SBOLReader.getNumErrors() > 0) {
 				for(String error : SBOLReader.getErrors())
 				{
-					System.out.println(error);
+					//System.out.println(error);
 					if(!error.split(":")[0].equals((f.getName()).replace(".rdf", "")))
 					{
 						fail();
@@ -113,7 +113,7 @@ public class ValidationTest {
 			} else if (SBOLValidate.getNumErrors() > 0) {
 				for(String error : SBOLValidate.getErrors())
 				{
-					System.out.println(error);
+					//System.out.println(error);
 					if(!error.split(":")[0].equals(f.getName().replace(".rdf", "")))
 					{
 						String ruleId = f.getName().replace(".rdf", "").replace("sbol-", "").trim();
