@@ -91,12 +91,14 @@ public class OBOParser {
 			}
 			
 		} else if(line.length() > 0) { 
-			//System.out.println(String.format("\t%s", line));
-			int idx = line.indexOf(":");
-			String key = line.substring(0, idx).trim();
-			String valueString = line.substring(idx+1, line.length());
-			OBOValue value = new OBOValue(valueString);
-			currentStanza.addValue(key, value);
+			System.out.println(String.format("\t%s", line));
+			if (!line.trim().startsWith("!")){ // A line starting with "!" is a comment.
+				int idx = line.indexOf(":");
+				String key = line.substring(0, idx).trim();
+				String valueString = line.substring(idx+1, line.length());
+				OBOValue value = new OBOValue(valueString);
+				currentStanza.addValue(key, value);
+			}
 		}
 	}
 	

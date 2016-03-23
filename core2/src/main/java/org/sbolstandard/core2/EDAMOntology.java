@@ -29,18 +29,18 @@ public class EDAMOntology {
 	 * Namespace of the EDAM Ontology (<a href="http://edamontology.org">http://edamontology.org</a>).
 	 */
 	public static final URI NAMESPACE = URI.create(URI_PREFIX);
-	private static OBOOntology EDAMontology = null;
+	private static OBOOntology EDAMOntology = null;
 	
 	// TODO: add FORMAT, SBML, CELLML, BIOPAX constants
 
 	EDAMOntology() {
 		OBOParser oboParser = new OBOParser();
-		if (EDAMontology == null) {
+		if (EDAMOntology == null) {
 			InputStreamReader f = new InputStreamReader(getClass().
 					getResourceAsStream("/ontologies/EDAMontology/EDAM.obo"));
 			try {
 				oboParser.parse(f);
-				EDAMontology = oboParser.getOntology();
+				EDAMOntology = oboParser.getOntology();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -76,7 +76,7 @@ public class EDAMOntology {
 	 */
 	public final String getId(String stanzaName) {
 		List<String> IdList = new ArrayList<String>();	
-		for (OBOStanza stanza : EDAMontology.getStanzas()) {
+		for (OBOStanza stanza : EDAMOntology.getStanzas()) {
 			if (stanzaName.trim().equals(stanza.getName().trim())) {
 				IdList.add(stanza.getId());
 			}
@@ -111,7 +111,7 @@ public class EDAMOntology {
 		}
 		int beginIndex = oboURIstr.lastIndexOf("/") + 1;
 		String id = oboURIstr.substring(beginIndex, oboURIstr.length());
-		OBOStanza oboStanza = EDAMontology.getStanza(id);
+		OBOStanza oboStanza = EDAMOntology.getStanza(id);
 		if (oboStanza == null) {
 			try {
 				throw new IllegalArgumentException("ID " + id + " does not exist.");
@@ -131,7 +131,7 @@ public class EDAMOntology {
 					or {@code null} if this no match is found.
 	 */
 	public final String getName(String stanzaId) {
-		OBOStanza oboStanza = EDAMontology.getStanza(stanzaId);
+		OBOStanza oboStanza = EDAMOntology.getStanza(stanzaId);
 		if (oboStanza == null) {
 			try {
 				throw new IllegalArgumentException("Illegal ID " + stanzaId + " does not exist.");
@@ -162,7 +162,7 @@ public class EDAMOntology {
 	 */
 	public final URI getURIbyId(String stanzaId) {
 		if (stanzaId==null) return null;
-		OBOStanza oboStanza = EDAMontology.getStanza(stanzaId.trim());
+		OBOStanza oboStanza = EDAMOntology.getStanza(stanzaId.trim());
 		if (oboStanza == null) {
 			try {
 				throw new IllegalArgumentException("ID " + stanzaId + " does not exist.");
@@ -181,8 +181,8 @@ public class EDAMOntology {
 	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
 	 */
 	public boolean isDescendantOf(String Id1, String Id2) {
-		OBOStanza stanza1 = EDAMontology.getStanza(Id1);
-		OBOStanza stanza2 = EDAMontology.getStanza(Id2);
+		OBOStanza stanza1 = EDAMOntology.getStanza(Id1);
+		OBOStanza stanza2 = EDAMOntology.getStanza(Id2);
 		if (stanza1 == null) {
 			try {
 				throw new IllegalArgumentException("Illegal ID: " + Id1 + ". No match was found.");
@@ -199,7 +199,7 @@ public class EDAMOntology {
 				return false;
 			}
 		}
-		return EDAMontology.isDescendantOf(stanza1, stanza2);
+		return EDAMOntology.isDescendantOf(stanza1, stanza2);
 	}
 
 	/**
