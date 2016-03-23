@@ -37,7 +37,7 @@ public class EDAMOntology {
 		OBOParser oboParser = new OBOParser();
 		if (EDAMOntology == null) {
 			InputStreamReader f = new InputStreamReader(getClass().
-					getResourceAsStream("/ontologies/EDAMontology/EDAM.obo"));
+					getResourceAsStream("/ontologies/EDAMOntology/EDAM.obo"));
 			try {
 				oboParser.parse(f);
 				EDAMOntology = oboParser.getOntology();
