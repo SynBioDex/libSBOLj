@@ -101,6 +101,8 @@ public class ValidationTest {
 					//System.out.println(error);
 					if(!error.split(":")[0].equals((f.getName()).replace(".rdf", "")))
 					{
+						System.out.println(f.getName().replace(".rdf", ""));
+						System.out.println(error);
 						fail();
 
 					}
@@ -118,6 +120,8 @@ public class ValidationTest {
 					{
 						String ruleId = f.getName().replace(".rdf", "").replace("sbol-", "").trim();
 						failedTests.add(Integer.parseInt(ruleId));
+						System.out.println(f.getName().replace(".rdf", ""));
+						System.out.println(error);
 						fail();
 					}
 					else {
@@ -129,6 +133,7 @@ public class ValidationTest {
 			} else {
 				String ruleId = f.getName().replace(".rdf", "").replace("sbol-", "").trim();
 				failedTests.add(Integer.parseInt(ruleId));
+				System.out.println(f.getName().replace(".rdf", ""));
 				fail();
 			}
 		}
