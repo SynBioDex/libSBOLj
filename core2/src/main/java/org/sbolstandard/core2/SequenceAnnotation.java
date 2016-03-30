@@ -498,8 +498,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		this.setDisplayId(displayId);
 		this.setVersion(version);
-		String componentId = extractDisplayId(component);
-		this.setComponent(createCompliantURI(URIprefix,componentId,version));
+		if (component!=null) {
+			String componentId = extractDisplayId(component);
+			this.setComponent(createCompliantURI(URIprefix,componentId,version));
+		}
 		int count = 0;
 		for (Location location : this.getLocations()) {
 			if (!location.isSetDisplayId()) location.setDisplayId("location"+ ++count);
