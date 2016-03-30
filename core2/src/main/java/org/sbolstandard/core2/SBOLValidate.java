@@ -922,10 +922,9 @@ public class SBOLValidate {
 		}
 	}
 	
-	/* 
+	/**
 	 * Validate SBOL document.  Errors either throw exceptions or, if not fatal, add to the list of errors
 	 * that can be accessed using the getErrors() method.
-	 * 
 	 * @param sbolDocument
 	 * @param complete
 	 * @param compliant
