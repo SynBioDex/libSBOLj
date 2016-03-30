@@ -306,16 +306,15 @@ public class RepressionModel {
 		Template_Module.createMapsTo("EYFP_map", RefinementType.USELOCAL, "EYFP", "target");
 		Template_Module.createMapsTo("EYFP_gene_map", RefinementType.USELOCAL, "EYFP_gene", "target_gene");
 		
-		try {
-			SBOLWriter.write(doc, "/Users/myers/RepressionModel.rdf");
-		}
-		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			SBOLWriter.write(doc, "/Users/myers/RepressionModel.rdf");
+//		}
+//		catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
+//			e.printStackTrace();
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		
 		// END of Repression Model construction. Code below uses trivial manipulations to show other major methods in the library.
 		
