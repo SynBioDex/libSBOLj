@@ -1146,6 +1146,9 @@ public class ComponentDefinition extends TopLevel {
 				throw new SBOLValidationException("sbol-10604",component);
 			}
 		}
+		if (this.getIdentity().equals(component.getDefinitionURI())) {
+			throw new SBOLValidationException("sbol-10603",component);
+		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
 		SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited);
@@ -1168,6 +1171,9 @@ public class ComponentDefinition extends TopLevel {
 			if (component.getDefinition()==null) {
 				throw new SBOLValidationException("sbol-10604",component);
 			}
+		}
+		if (this.getIdentity().equals(component.getDefinitionURI())) {
+			throw new SBOLValidationException("sbol-10603",component);
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());

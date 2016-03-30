@@ -219,6 +219,9 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @throws SBOLValidationException 
 	 */
 	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
+		mapsTo.setSBOLDocument(this.sbolDocument);
+		mapsTo.setModuleDefinition(moduleDefinition);
+		mapsTo.setComponentInstance(this);
 		if (sbolDocument != null) {
 			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
 				//throw new SBOLValidationException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
@@ -242,9 +245,6 @@ public class FunctionalComponent extends ComponentInstance {
 			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
-		mapsTo.setSBOLDocument(this.sbolDocument);
-		mapsTo.setModuleDefinition(moduleDefinition);
-		mapsTo.setComponentInstance(this);
 	}
 
 	/**
