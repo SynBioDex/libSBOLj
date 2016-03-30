@@ -212,7 +212,7 @@ public class MapsTo extends Identified{
 		} else if (componentInstance!=null) {
 			if (componentInstance.getDefinition()!=null) {
 				if (componentInstance.getDefinition().getComponent(remote)==null) {
-					throw new SBOLValidationException("sbol-10809",this);
+					throw new SBOLValidationException("sbol-10808",this);
 				}
 				if (componentInstance.getDefinition().getComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
 					throw new SBOLValidationException("sbol-10807",this);

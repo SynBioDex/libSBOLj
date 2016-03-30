@@ -228,7 +228,7 @@ public class FunctionalComponent extends ComponentInstance {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (getDefinition().getComponent(mapsTo.getRemoteURI())==null) {
 				//throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' does not exist.");
-				throw new SBOLValidationException("sbol-10809", mapsTo);
+				throw new SBOLValidationException("sbol-10808", mapsTo);
 			}
 			if (getDefinition().getComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
 				//throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' is private.");
