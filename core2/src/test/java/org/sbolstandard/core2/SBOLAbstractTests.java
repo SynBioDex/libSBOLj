@@ -25,78 +25,125 @@ public abstract class SBOLAbstractTests {
 
 	String VERSION_1_0 = "1.0";
 	String URIprefix = "http://www.async.ece.utah.edu";
-	
-//	@Test
-//	public void test_methods() throws Exception
-//	{
-//		//this method tests all remove methods for all top level
-//		String prURI="http://partsregistry.org";
-//		String prPrefix="pr";
-//		SBOLDocument document = new SBOLDocument();
-//		document.setDefaultURIprefix(prURI);
-//		document.setTypesInURIs(true);
-//		document.addNamespace(URI.create(prURI), prPrefix);
-//		
-//		String prURI2="http://partsregistry.org";
-//		String prPrefix2 ="pr";
-//		SBOLDocument document2 = new SBOLDocument();
-//		document2.setDefaultURIprefix(prURI);
-//		document2.setTypesInURIs(true);
-//		document2.addNamespace(URI.create(prURI), prPrefix);
-//		
-//		String CD_ID = "ID";
-//		String CD_Version = "1.0";
-//		Set<URI> CD_Types = new HashSet<URI>();
-//		CD_Types.add(URI.create("www.example.com"));
-//		
-//		String SeqID = "ID2";
-//		String SeqVersion = "1.0";
-//		String SeqElements = "some_element";
-//		URI SeqEncoding = URI.create("www.example2.com");
-//		
-//		String ComponentID = "CID";
-//		String ComponentVersion = "1.0";
-//		
-//		String SeqAnnID = "Sequence_annotation_ID";
-//		String SeqAnnLocID = "locationID";
-//		
-//		String SC_ID = "SequenceConstraintID";
-//		String SC_SubID = "SubjectID";
-//		String SC_ObjID = "ObjectID";
-//		
-//		String ModuleDefID = "ModuleDefinitionID";
-//		String ModuleDefVersion = "1.0";
-//		
-//		String GTL_ID = "generictoplevelID";
-//		String GTL_Version = "1.0";
-//		
-//		String ModelID = "ModelDisplayID";
-//		String ModelVersion = "1.0";
-//		URI source = URI.create("www.examplesource.com");
-//		URI language = URI.create("www.examplelanguage.com");
-//		URI framework = URI.create("www.exampleframework.com");
-//		
-//		String CollectionID = "CollectionID";
-//		String CollectionVersion = "1.0";
-//		
-//		Sequence Seq = document.createSequence(SeqID, SeqVersion, SeqElements, SeqEncoding);	//create sequence
-//		ComponentDefinition CD = document.createComponentDefinition(CD_ID, CD_Version, CD_Types);	//create component definition
-//		CD.addSequence(Seq);
-//		CD.createComponent(ComponentID, AccessType.PRIVATE, CD_ID, ComponentVersion);
-//		CD.createSequenceAnnotation(SeqAnnID, SeqAnnLocID);
-//		CD.createSequenceConstraint(SC_ID, RestrictionType.OPPOSITE_ORIENTATION_AS, SC_SubID, SC_ObjID);
-//		ModuleDefinition MD = document.createModuleDefinition(ModuleDefID, ModuleDefVersion);
-////		GenericTopLevel GTL = document.createGenericTopLevel(GTL_ID, GTL_Version, QName.valueOf(GTL_Version));
-//		Model Mod = document.createModel(ModelID, ModelVersion, source, language, framework);
-////		Collection Col = document.createCollection(CollectionID, CollectionVersion);
-////		
-//		document.removeSequence(Seq);
-//		document.removeComponentDefinition(CD);
-//		document.removeModuleDefinition(MD);
-//		document.removeModel(Mod);
-//		runTest("test/data/test_Methods.rdf", document, "rdf", true);
-//	}
 
+	//	@Test
+	//	public void test_methods() throws Exception
+	//	{
+	//		//this method tests all remove methods for all top level
+	//		String prURI="http://partsregistry.org";
+	//		String prPrefix="pr";
+	//		SBOLDocument document = new SBOLDocument();
+	//		document.setDefaultURIprefix(prURI);
+	//		document.setTypesInURIs(true);
+	//		document.addNamespace(URI.create(prURI), prPrefix);
+	//
+	//		String prURI2="http://partsregistry.org";
+	//		String prPrefix2 ="pr";
+	//		SBOLDocument document2 = new SBOLDocument();
+	//		document2.setDefaultURIprefix(prURI);
+	//		document2.setTypesInURIs(true);
+	//		document2.addNamespace(URI.create(prURI), prPrefix);
+	//
+	//		String CD_ID = "ID";
+	//		String CD_Version = "1.0";
+	//		Set<URI> CD_Types = new HashSet<URI>();
+	//		CD_Types.add(URI.create("www.example.com"));
+	//
+	//		String SeqID = "ID2";
+	//		String SeqVersion = "1.0";
+	//		String SeqElements = "some_element";
+	//		URI SeqEncoding = URI.create("www.example2.com");
+	//
+	//		String ComponentID = "CID";
+	//		String ComponentVersion = "1.0";
+	//
+	//		String SeqAnnID = "Sequence_annotation_ID";
+	//		String SeqAnnLocID = "locationID";
+	//
+	//		String SC_ID = "SequenceConstraintID";
+	//		String SC_SubID = "SubjectID";
+	//		String SC_ObjID = "ObjectID";
+	//
+	//		String ModuleDefID = "ModuleDefinitionID";
+	//		String ModuleDefVersion = "1.0";
+	//
+	//		String GTL_ID = "generictoplevelID";
+	//		String GTL_Version = "1.0";
+	//
+	//		String ModelID = "ModelDisplayID";
+	//		String ModelVersion = "1.0";
+	//		URI source = URI.create("www.examplesource.com");
+	//		URI language = URI.create("www.examplelanguage.com");
+	//		URI framework = URI.create("www.exampleframework.com");
+	//
+	//		String CollectionID = "CollectionID";
+	//		String CollectionVersion = "1.0";
+	//
+	//		Sequence Seq = document.createSequence(SeqID, SeqVersion, SeqElements, SeqEncoding);	//create sequence
+	//		ComponentDefinition CD = document.createComponentDefinition(CD_ID, CD_Version, CD_Types);	//create component definition
+	//		CD.addSequence(Seq);
+	//		CD.createComponent(ComponentID, AccessType.PRIVATE, CD_ID, ComponentVersion);
+	//		CD.createSequenceAnnotation(SeqAnnID, SeqAnnLocID);
+	//		CD.createSequenceConstraint(SC_ID, RestrictionType.OPPOSITE_ORIENTATION_AS, SC_SubID, SC_ObjID);
+	//		ModuleDefinition MD = document.createModuleDefinition(ModuleDefID, ModuleDefVersion);
+	////		GenericTopLevel GTL = document.createGenericTopLevel(GTL_ID, GTL_Version, QName.valueOf(GTL_Version));
+	//		Model Mod = document.createModel(ModelID, ModelVersion, source, language, framework);
+	////		Collection Col = document.createCollection(CollectionID, CollectionVersion);
+	////
+	//		document.removeSequence(Seq);
+	//		document.removeComponentDefinition(CD);
+	//		document.removeModuleDefinition(MD);
+	//		document.removeModel(Mod);
+	//		runTest("test/data/test_Methods.rdf", document, "rdf", true);
+	//	}
+
+	@Test
+	public void test_readMultFile_setdefaultURIPrefix() throws Exception
+	{
+		String filePath = "test/data/";
+		String file1 = "pACPc_invF";
+		String file2 = "psicA_rfp";
+		String file3 = "pXCPi_sicA";
+		String fullPath = "/Users/tramynguyen/git/libSBOLj/core2/src/test/resources/test/data/";
+
+		//		InputStream in =
+		//				getClass().getResourceAsStream("test/data/" + file1 + ".rdf");
+		//		Reader fr = new InputStreamReader(in, "utf-8");
+
+		//		SBOLDocument sbolDoc = new SBOLDocument();
+		//		sbolDoc.setDefaultURIprefix(URIprefix + "/" + file1);
+		//		System.out.println("BEFORE READING sbolDoc - Default URIPrefix is: " + sbolDoc.getDefaultURIprefix());
+		//		System.out.println("Started reading " + file1);
+		//		//		sbolDoc.read(fullPath + file1 + ".rdf");
+		//		sbolDoc.read(in);
+		//		System.out.println("Done reading file " + file1);
+
+		//		System.out.println("Started reading " + file2);
+		//		sbolDoc.setDefaultURIprefix(URIprefix + "/" + file2);
+		//		sbolDoc.read(fullPath + file2 + ".rdf");
+		//		System.out.println("Done reading file " + file2);
+		//
+		//		System.out.println("Started reading " + file3);
+		//		sbolDoc.setDefaultURIprefix(URIprefix + "/" + file3);
+		//		sbolDoc.read(fullPath + file3 + ".rdf");
+		//		System.out.println("Done reading file " + file3);
+
+		//		sbolDoc.write(System.out);
+
+
+		try
+		{
+			SBOLReader.setURIPrefix(URIprefix+"/"+file1);
+			SBOLDocument newSbolDoc = SBOLReader.read(fullPath+file1+".rdf");
+			//			newSbolDoc.setDefaultURIprefix(URIprefix + "/" + file1);
+			newSbolDoc.write(System.out);
+		}
+		catch (Throwable e)
+		{
+			e.printStackTrace();
+		}
+		System.out.println("Done writing files");
+	}
 
 	@Test
 	public void test_Model_remove() throws Exception
@@ -112,13 +159,13 @@ public abstract class SBOLAbstractTests {
 		String M1_Version = "1.0";
 		String M1_Source = "www.example.com";
 		URI M1_URISource = URI.create(M1_Source);
-		
-		Model M1 = document.createModel(M1_ID, M1_Version, M1_URISource, Model.SBML, 
+
+		Model M1 = document.createModel(M1_ID, M1_Version, M1_URISource, Model.SBML,
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 		document.removeModel(M1);
 		runTest("test/data/test_Model_remove.rdf", document, "rdf", true);
 	}
-	
+
 	@Test
 	public void test_Sequence_remove() throws Exception
 	{
@@ -128,7 +175,7 @@ public abstract class SBOLAbstractTests {
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(true);
 		document.addNamespace(URI.create(prURI), prPrefix);
-		
+
 		String SeqID = "ID";
 		String SeqVersion = "1.0";
 		String SeqElements = "Element";
@@ -137,7 +184,7 @@ public abstract class SBOLAbstractTests {
 		document.removeSequence(Seq);
 		runTest("test/data/test_Sequence_remove.rdf", document, "rdf", true);
 	}
-	
+
 	@Test
 	public void test_Collection_remove() throws Exception
 	{
@@ -147,14 +194,14 @@ public abstract class SBOLAbstractTests {
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(true);
 		document.addNamespace(URI.create(prURI), prPrefix);
-		
+
 		String Col1_ID = "ID";
 		String Col1_Version = "1.0";
 		Collection Col1 = document.createCollection(Col1_ID, Col1_Version);
 		document.removeCollection(Col1);
 		runTest("test/data/test_Collection_remove.rdf", document, "rdf", true);
 	}
-	
+
 	@Test
 	public void test_ModuleDefinition_remove() throws Exception
 	{
@@ -164,14 +211,14 @@ public abstract class SBOLAbstractTests {
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(true);
 		document.addNamespace(URI.create(prURI), prPrefix);
-		
+
 		String MD_ID = "ID";
 		String MD_Version = "1.0";
 		ModuleDefinition MD = document.createModuleDefinition(MD_ID, MD_Version);
 		document.removeModuleDefinition(MD);
 		runTest("test/data/test_ModuleDefinition_remove.rdf", document, "rdf", true);
 	}
-	
+
 	@Test
 	public void test_ComponentDefinition_remove() throws Exception
 	{
@@ -181,7 +228,7 @@ public abstract class SBOLAbstractTests {
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(true);
 		document.addNamespace(URI.create(prURI), prPrefix);
-		
+
 		String CD_ID = "ID";
 		String CD_Version = "1.0";
 		Set<URI> CD_Types = new HashSet<URI>();
@@ -190,7 +237,7 @@ public abstract class SBOLAbstractTests {
 		document.removeComponentDefinition(CD);
 		runTest("test/data/test_ComponentDefinition_remove.rdf", document, "rdf", true);
 	}
-	
+
 	@Test
 	public void test_GenericTopLevel_remove() throws Exception
 	{
@@ -200,7 +247,7 @@ public abstract class SBOLAbstractTests {
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(true);
 		document.addNamespace(URI.create(prURI), prPrefix);
-		
+
 		String GTL_ID = "ID";
 		String GTL_Version = "1.0";
 		String GTL_Qname = "name";
@@ -208,8 +255,8 @@ public abstract class SBOLAbstractTests {
 		document.removeGenericTopLevel(GTL);
 		runTest("test/data/test_GenericTopLevel_remove.rdf", document, "rdf", true);
 	}
-	
-	
+
+
 	@Test
 	public void test_AnnotationOutput() throws Exception
 	{
@@ -534,12 +581,12 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition lacI    = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_C0012"),"lacI", ComponentDefinition.DNA, SequenceOntology.CDS, "lacI coding sequence");
 		ComponentDefinition placI   = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_R0010"), "pLacI", ComponentDefinition.DNA, SequenceOntology.PROMOTER, "pLacI promoter");
 		ComponentDefinition ptetR   = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_R0040"),"pTetR", ComponentDefinition.DNA, SequenceOntology.PROMOTER, "pTet promoter");
-		ComponentDefinition rbslacI = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61101"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS1"); 
+		ComponentDefinition rbslacI = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61101"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS1");
 		ComponentDefinition rbstetR = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61120"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS2");
 		ComponentDefinition rbsgfp  = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61130"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS2");
 
 		setDefaultNameSpace(document, SBOLTestUtils.uniprot.getNamespaceURI());
-		//ComponentDefinition GFP  = 
+		//ComponentDefinition GFP  =
 		SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.uniprot.withLocalPart("P42212"), "GFP",ComponentDefinition.PROTEIN, SystemsBiologyOntology.PRODUCT, "GFP protein");
 		ComponentDefinition TetR = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.uniprot.withLocalPart("Q6QR72"), "TetR",ComponentDefinition.PROTEIN, SystemsBiologyOntology.INHIBITOR, "TetR protein");
 		ComponentDefinition LacI = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.uniprot.withLocalPart("P03023"),"LacI", ComponentDefinition.PROTEIN, SystemsBiologyOntology.INHIBITOR, "LacI protein");
@@ -576,7 +623,7 @@ public abstract class SBOLAbstractTests {
 		 */
 		setDefaultNameSpace(document, SBOLTestUtils.example.getNamespaceURI());
 		ModuleDefinition laciInverterModuleDef=document.createModuleDefinition("laci_inverter");
-		laciInverterModuleDef.addRole(SBOLTestUtils.Terms.moduleRoles.inverter); 
+		laciInverterModuleDef.addRole(SBOLTestUtils.Terms.moduleRoles.inverter);
 
 
 		ModuleDefinition tetRInverterModuleDef=document.createModuleDefinition("tetr_inverter");
@@ -840,7 +887,7 @@ public abstract class SBOLAbstractTests {
 			throw new AssertionError("Failed for " + fileName, e);
 		}
 	}
-	
+
 	@Test
 	public void test_igem3_File() throws Exception
 	{
@@ -856,7 +903,7 @@ public abstract class SBOLAbstractTests {
 			throw new AssertionError("Failed for " + fileName, e);
 		}
 	}
-	
+
 	@Test
 	public void test_toggle_File() throws Exception
 	{
@@ -872,7 +919,7 @@ public abstract class SBOLAbstractTests {
 			throw new AssertionError("Failed for " + fileName, e);
 		}
 	}
-	
+
 	@Test
 	public void test_BBa_T9002_File() throws Exception
 	{
@@ -1348,13 +1395,13 @@ public abstract class SBOLAbstractTests {
 	}
 
 
-//	@Test
-//	public void test_JSONFile() throws Exception
-//	{
-//		SBOLDocument document = new SBOLDocument();
-//		runTest("test/data/emptyJSONFile.json", document, "json");
-//
-//	}
+	//	@Test
+	//	public void test_JSONFile() throws Exception
+	//	{
+	//		SBOLDocument document = new SBOLDocument();
+	//		runTest("test/data/emptyJSONFile.json", document, "json");
+	//
+	//	}
 
 	@Test
 	public void test_memberAnnotations() throws Exception
@@ -1381,12 +1428,12 @@ public abstract class SBOLAbstractTests {
 
 		Set<URI> interactionType = new HashSet<URI>();
 		interactionType.add(SystemsBiologyOntology.NON_COVALENT_BINDING);
-		//Interaction someInteraction = 
+		//Interaction someInteraction =
 		someModDef.createInteraction("someInteraction", interactionType);
 		//		someModDef.createFunctionalComponent("someFunctionalComponent", AccessType.PUBLIC, "componentDef", VERSION_1_0, DirectionType.INOUT); //TODO replace componentDef
 		//		someInteraction.createParticipation("someParticipation", "someFunctionalComponent");
 
-		//Module someModule = 
+		//Module someModule =
 		someModDef.createModule("someModule", "someModuleDefSub", VERSION_1_0);
 		//String someMapsTo_id = "someMapsTo";
 		//		MapsTo someMapsTo = someModule.createMapsTo(someMapsTo_id, RefinementType.USELOCAL, "someModule", someMapsTo_id +"_remote");
@@ -1408,7 +1455,7 @@ public abstract class SBOLAbstractTests {
 
 		SequenceAnnotation someSequenceAnnotation = someCompDef.createSequenceAnnotation("someSequenceAnnotation", "cut", 1, 10);
 		someSequenceAnnotation.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
-		//SequenceAnnotation someSequenceAnnotation2 = 
+		//SequenceAnnotation someSequenceAnnotation2 =
 		someCompDef.createSequenceAnnotation("someSequenceAnnotation2", "cut", 1, OrientationType.INLINE);
 
 		//		someSequenceAnnotation.setLocation(); //TODO range, multiRange, cut - how to access?
@@ -1618,7 +1665,7 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
 		String id = "ToggleModel";
-		document.createModel( id, VERSION_1_0, URI.create(id + "_source"), Model.SBML, 
+		document.createModel( id, VERSION_1_0, URI.create(id + "_source"), Model.SBML,
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 
 		runTest("test/data/singleModel.rdf", document, "rdf", true);
@@ -1718,7 +1765,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition pLac = document.createComponentDefinition("pLac", VERSION_1_0, type);
 		pLac.setRoles(role);
 		document.createSequence("pLacSeq", VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
-		pLac.addSequence("pLacSeq", VERSION_1_0); 
+		pLac.addSequence("pLacSeq", VERSION_1_0);
 
 		runTest("test/data/singleCompDef_withSeq.rdf", document, "rdf", true);
 	}
