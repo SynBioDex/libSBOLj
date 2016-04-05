@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rdf:RDF
 	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-	xmlns:sbol="http://sbols.org/v1#"
-	xmlns:sublime="http://clarkparsia.com/sublime#"
-	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+	xmlns:sbol="http://sbols.org/v1#">
 <sbol:DnaComponent rdf:about="urn:da0805ac-06ea-4de8-98dc-fc731d9c37a8">
 	<sbol:displayId>pIKERightCasette</sbol:displayId>
 	<sbol:name>pIKE Right Casette</sbol:name>

@@ -3,6 +3,7 @@ package org.sbolstandard.core2;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.DocumentRoot;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperties;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
+import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBindings;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NestedDocument;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.TopLevelDocument;
@@ -35,6 +36,7 @@ import javax.xml.stream.XMLStreamWriter;
 import uk.ac.intbio.core.io.turtle.TurtleIo;
 import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
+import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
 import uk.ac.ncl.intbio.core.io.CoreIoException;
@@ -161,6 +163,10 @@ public class SBOLWriter
 			writeTurtle(new OutputStreamWriter(out),
 					DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
 							TopLevelDocuments(getTopLevelDocument(doc))));
+		} else if (fileType.equals(SBOLReader.RDFV1)){
+			writeRDF(new OutputStreamWriter(out),
+					DocumentRoot( NamespaceBindings(getNamespaceBindingsV1()),
+							TopLevelDocuments(convertToV1Document(doc))));
 		} else {
 			writeRDF(new OutputStreamWriter(out),
 					DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
@@ -528,6 +534,188 @@ public class SBOLWriter
 			nestedDoc.add(NestedDocument(Sbol2Terms.MapsTo.MapsTo, m.getIdentity(), NamedProperties(list)));
 		}
 		return nestedDoc;
+	}
+	
+	private static NestedDocument<QName> getSequenceV1(Sequence sequence)
+	{
+		List<NamedProperty<QName>> list = new ArrayList<>();
+		list.add(NamedProperty(Sbol1Terms.DNASequence.nucleotides, sequence.getElements()));
+		return NestedDocument(Sbol1Terms.DNASequence.DNASequence, sequence.getIdentity(), NamedProperties(list));
+	}
+	
+	private static NestedDocument<QName> getSequenceAnnotationV1(SequenceAnnotation sequenceAnnotation, 
+			ComponentDefinition componentDefinition)
+	{
+		List<NamedProperty<QName>> list = new ArrayList<>();
+		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
+			if (sequenceConstraint.getRestriction().equals(RestrictionType.PRECEDES)) {
+				if (sequenceConstraint.getSubjectURI().equals(sequenceAnnotation.getComponentURI())) {
+					for (SequenceAnnotation annotation : componentDefinition.getSequenceAnnotations()) {
+						if (sequenceConstraint.getObjectURI().equals(annotation.getComponentURI())) {
+							list.add(NamedProperty(Sbol1Terms.SequenceAnnotations.precedes,annotation.getIdentity()));
+						}
+					}
+				}
+			}
+		}
+		for (Location location : sequenceAnnotation.getLocations()) {
+			if (location instanceof Range) {
+				Range range = (Range)location;
+				list.add(NamedProperty(Sbol1Terms.SequenceAnnotations.bioStart, range.getStart()));
+				list.add(NamedProperty(Sbol1Terms.SequenceAnnotations.bioEnd, range.getEnd()));
+				if (range.isSetOrientation()) {
+					if (range.getOrientation()==OrientationType.INLINE) {
+						list.add(NamedProperty(Sbol1Terms.SequenceAnnotations.strand, "+"));
+					} else if (range.getOrientation()==OrientationType.REVERSECOMPLEMENT) {
+						list.add(NamedProperty(Sbol1Terms.SequenceAnnotations.strand, "-"));
+					} 
+				} 
+			}  if (location instanceof GenericLocation) {
+				GenericLocation genericLocation = (GenericLocation)location;
+				if (genericLocation.isSetOrientation()) {
+					if (genericLocation.getOrientation()==OrientationType.INLINE) {
+						list.add(NamedProperty(Sbol1Terms.SequenceAnnotations.strand, "+"));
+					} else if (genericLocation.getOrientation()==OrientationType.REVERSECOMPLEMENT) {
+						list.add(NamedProperty(Sbol1Terms.SequenceAnnotations.strand, "-"));
+					} 
+				} 
+			}
+			// TODO: only output first range
+		}
+		if (sequenceAnnotation.isSetComponent()) {
+			list.add(NamedProperty(Sbol1Terms.SequenceAnnotations.subComponent, 
+					getSubComponent(sequenceAnnotation.getComponent().getDefinition())));
+		}
+		return NestedDocument(Sbol1Terms.SequenceAnnotations.SequenceAnnotation, 
+				sequenceAnnotation.getIdentity(), NamedProperties(list));
+	}
+	
+	private static NestedDocument<QName> getSubComponent(ComponentDefinition componentDefinition) {
+		// TODO: should check of CD is null and error out in this case
+		List<NamedProperty<QName>> list = new ArrayList<>();
+
+		if(componentDefinition.isSetDisplayId())
+			list.add(NamedProperty(Sbol1Terms.DNAComponent.displayId, componentDefinition.getDisplayId()));
+		if(componentDefinition.isSetName())
+			list.add(NamedProperty(Sbol1Terms.DNAComponent.name, componentDefinition.getName()));
+		if(componentDefinition.isSetDescription())
+			list.add(NamedProperty(Sbol1Terms.DNAComponent.description, componentDefinition.getDescription()));
+		// TODO: Dropping fields not supported by V1
+		for(Annotation annotation : componentDefinition.getAnnotations())
+		{
+			if (!annotation.getValue().getName().getPrefix().equals("sbol"))
+				list.add(annotation.getValue());
+		}
+		for (URI role : componentDefinition.getRoles())
+		{
+			// TODO: likely need to update role terms to use old namespace
+			URI purlRole = URI.create(role.toString().replace("http://identifiers.org/so/SO:", "http://purl.obolibrary.org/obo/SO_"));
+			list.add(NamedProperty(Sbol1Terms.DNAComponent.type, purlRole));
+		}
+		for (Sequence sequence : componentDefinition.getSequences()) {
+			if (sequence.getEncoding().equals(Sequence.IUPAC_DNA)) {
+				list.add(NamedProperty(Sbol1Terms.DNAComponent.dnaSequence, getSequenceV1(sequence)));
+				break;
+			}
+			// TODO: only output first IUPAC_DNA sequence, skip all others
+		}
+		//formatSequenceConstraints(c.getSequenceConstraints(),list);
+		for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
+			list.add(NamedProperty(Sbol1Terms.DNAComponent.annotations, getSequenceAnnotationV1(sequenceAnnotation,componentDefinition)));
+		}
+
+		return NestedDocument(Sbol1Terms.DNAComponent.DNAComponent, 
+				componentDefinition.getIdentity(), NamedProperties(list));		
+	}
+	
+	private static void formatDNAComponent(ComponentDefinition componentDefinition, List<TopLevelDocument<QName>> topLevelDoc) {
+		List<NamedProperty<QName>> list = new ArrayList<>();
+
+		if(componentDefinition.isSetDisplayId())
+			list.add(NamedProperty(Sbol1Terms.DNAComponent.displayId, componentDefinition.getDisplayId()));
+		if(componentDefinition.isSetName())
+			list.add(NamedProperty(Sbol1Terms.DNAComponent.name, componentDefinition.getName()));
+		if(componentDefinition.isSetDescription())
+			list.add(NamedProperty(Sbol1Terms.DNAComponent.description, componentDefinition.getDescription()));
+		// TODO: Dropping fields not supported by V1
+		for(Annotation annotation : componentDefinition.getAnnotations())
+		{
+			if (!annotation.getValue().getName().getPrefix().equals("sbol"))
+				list.add(annotation.getValue());
+		}
+		for (URI role : componentDefinition.getRoles())
+		{
+			// TODO: likely need to update role terms to use old namespace
+			URI purlRole = URI.create(role.toString().replace("http://identifiers.org/so/SO:", "http://purl.obolibrary.org/obo/SO_"));
+			list.add(NamedProperty(Sbol1Terms.DNAComponent.type, purlRole));
+		}
+		for (Sequence sequence : componentDefinition.getSequences()) {
+			if (sequence.getEncoding().equals(Sequence.IUPAC_DNA)) {
+				list.add(NamedProperty(Sbol1Terms.DNAComponent.dnaSequence, getSequenceV1(sequence)));
+				break;
+			}
+			// TODO: only output first IUPAC_DNA sequence, skip all others
+		}
+		//formatSequenceConstraints(c.getSequenceConstraints(),list);
+		for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
+			list.add(NamedProperty(Sbol1Terms.DNAComponent.annotations, getSequenceAnnotationV1(sequenceAnnotation,componentDefinition)));
+		}
+
+		topLevelDoc.add(TopLevelDocument(Sbol1Terms.DNAComponent.DNAComponent, 
+				componentDefinition.getIdentity(), NamedProperties(list)));
+	}
+	
+	
+	private static void formatCollectionV1(Collection collection, List<TopLevelDocument<QName>> topLevelDoc) {
+		List<NamedProperty<QName>> list = new ArrayList<>();
+
+		if(collection.isSetDisplayId())
+			list.add(NamedProperty(Sbol1Terms.Collection.displayId, collection.getDisplayId()));
+		if(collection.isSetName())
+			list.add(NamedProperty(Sbol1Terms.Collection.name, collection.getName()));
+		if(collection.isSetDescription())
+			list.add(NamedProperty(Sbol1Terms.Collection.description, collection.getDescription()));
+		// TODO: Dropping fields not supported by V1
+		for(Annotation annotation : collection.getAnnotations())
+		{
+			if (!annotation.getValue().getName().getPrefix().equals("sbol"))
+				list.add(annotation.getValue());
+		}
+		for (TopLevel topLevel : collection.getMembers()) {
+			if (topLevel instanceof ComponentDefinition) {
+				ComponentDefinition componentDefinition = (ComponentDefinition) topLevel;
+				list.add(NamedProperty(Sbol1Terms.Collection.component, getSubComponent(componentDefinition)));
+			}
+			// TODO: skipping all other members
+		}
+
+		topLevelDoc.add(TopLevelDocument(Sbol1Terms.Collection.Collection, 
+				collection.getIdentity(), NamedProperties(list)));
+	}
+	
+	private static List<NamespaceBinding> getNamespaceBindingsV1() {
+		List<NamespaceBinding> bindings = new ArrayList<>();
+		bindings.add(NamespaceBinding("http://sbols.org/v1#",""));
+		bindings.add(NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#","rdf"));
+		return bindings;
+	}
+
+	private static List<TopLevelDocument<QName>> convertToV1Document(SBOLDocument doc) {
+		List<TopLevelDocument<QName>> topLevelDoc = new ArrayList<>();
+		if (doc.getCollections().size()>0) {
+			// TODO: assuming if any collections all components within them
+			for (Collection collection : doc.getCollections()) {
+				formatCollectionV1(collection, topLevelDoc);
+			}
+		} else {
+			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
+				if (componentDefinition.getTypes().contains(ComponentDefinition.DNA)) {
+					formatDNAComponent(componentDefinition, topLevelDoc);
+				}
+				// TODO: Skipping not DNA CDs
+			}
+		}
+		return topLevelDoc;
 	}
 
 	private static List<TopLevelDocument<QName>> getTopLevelDocument(SBOLDocument doc) {

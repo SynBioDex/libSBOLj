@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.namespace.QName;
+
 import uk.co.turingatemyhamster.opensmiles.OpenSmilesParser;
 
 /**
@@ -973,34 +975,59 @@ public class SBOLValidate {
 	}
 	
 	public static void compareDocuments(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
+		/*if (!doc1.getNamespaces().equals(doc2.getNamespaces())) {
+			System.err.println("Namespaces do not match");
+			System.err.println(doc1.getNamespaces().toString());
+			System.err.println(doc2.getNamespaces().toString());
+		}*/
+		for (QName namespace : doc1.getNamespaces()) {
+			if (doc2.getNamespaces().contains(namespace)) continue;
+			System.err.println("Namesapce " + namespace.toString() + " not found in " + file2);
+		}
+		for (QName namespace : doc2.getNamespaces()) {
+			if (doc1.getNamespaces().contains(namespace)) continue;
+			System.err.println("Namesapce " + namespace.toString() + " not found in " + file1);
+		}
 		for (GenericTopLevel genericTopLevel1 : doc1.getGenericTopLevels()) {
 			GenericTopLevel genericTopLevel2 = doc2.getGenericTopLevel(genericTopLevel1.getIdentity());
 			if (genericTopLevel2==null) {
-				System.err.println("collection " + genericTopLevel1.getIdentity() + " not found in " + file2);
+				System.err.println("Collection " + genericTopLevel1.getIdentity() + " not found in " + file2);
 			} else if (!genericTopLevel1.equals(genericTopLevel2)) {
-				System.err.println("collection " + genericTopLevel1.getIdentity() + " differ.");
+				System.err.println("Collection " + genericTopLevel1.getIdentity() + " differ.");
 			}
 		}
 		for (GenericTopLevel genericTopLevel2 : doc2.getGenericTopLevels()) {
 			GenericTopLevel genericTopLevel1 = doc1.getGenericTopLevel(genericTopLevel2.getIdentity());
 			if (genericTopLevel1==null) {
-				System.err.println("collection " + genericTopLevel2.getIdentity() + " not found in " + file1);
+				System.err.println("Collection " + genericTopLevel2.getIdentity() + " not found in " + file1);
 			} 
 		}
+		/*
+		if (!doc1.getCollections().equals(doc2.getCollections())) {
+			System.err.println("Collections do not match");
+			System.out.println(doc1.getCollections().toString());
+			System.out.println(doc2.getCollections().toString());
+		}
+		*/
 		for (Collection collection1 : doc1.getCollections()) {
 			Collection collection2 = doc2.getCollection(collection1.getIdentity());
 			if (collection2==null) {
-				System.err.println("collection " + collection1.getIdentity() + " not found in " + file2);
+				System.err.println("Collection " + collection1.getIdentity() + " not found in " + file2);
 			} else if (!collection1.equals(collection2)) {
-				System.err.println("collection " + collection1.getIdentity() + " differ.");
+				System.err.println("Collection " + collection1.getIdentity() + " differ.");
 			}
 		}
 		for (Collection collection2 : doc2.getCollections()) {
 			Collection collection1 = doc1.getCollection(collection2.getIdentity());
 			if (collection1==null) {
-				System.err.println("collection " + collection2.getIdentity() + " not found in " + file1);
+				System.err.println("Collection " + collection2.getIdentity() + " not found in " + file1);
 			} 
 		}
+		/*
+		if (!doc1.getSequences().equals(doc2.getSequences())) {
+			System.err.println("Sequences do not match");
+		}
+		*/
 		for (Sequence sequence1 : doc1.getSequences()) {
 			Sequence sequence2 = doc2.getSequence(sequence1.getIdentity());
 			if (sequence2==null) {
@@ -1015,12 +1042,19 @@ public class SBOLValidate {
 				System.err.println("Sequence " + sequence2.getIdentity() + " not found in " + file1);
 			} 
 		}
+		/*
+		if (!doc1.getComponentDefinitions().equals(doc2.getComponentDefinitions())) {
+			System.err.println("ComponentDefinitions do not match");
+		}
+		*/
 		for (ComponentDefinition componentDefinition1 : doc1.getComponentDefinitions()) {
 			ComponentDefinition componentDefinition2 = doc2.getComponentDefinition(componentDefinition1.getIdentity());
 			if (componentDefinition2==null) {
 				System.err.println("ComponentDefinition " + componentDefinition1.getIdentity() + " not found in " + file2);
 			} else if (!componentDefinition1.equals(componentDefinition2)) {
 				System.err.println("ComponentDefinition " + componentDefinition1.getIdentity() + " differ.");
+				System.err.println(componentDefinition1.toString());
+				System.err.println(componentDefinition2.toString());
 			}
 		}
 		for (ComponentDefinition componentDefinition2 : doc2.getComponentDefinitions()) {

@@ -550,7 +550,7 @@ public abstract class Identified {
 		result = prime * result + ((identity == null) ? 0 : identity.hashCode());
 		result = prime * result	+ ((persistentIdentity == null) ? 0 : persistentIdentity.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
-		result = prime * result + ((wasDerivedFrom == null) ? 0 : wasDerivedFrom.hashCode());
+		//result = prime * result + ((wasDerivedFrom == null) ? 0 : wasDerivedFrom.hashCode());
 		result = prime * result + ((displayId == null) ? 0 : displayId.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:s="http://sbols.org/v1#" xmlns:so="http://purl.obolibrary.org/obo/" xmlns:map="http://convert.sbols.org/xml/" xmlns:pr="http://partsregistry.org/" xmlns:prt="http://purl.obolibrary.org/obo/" xmlns:prp="http://partsregistry.org/part/" xmlns:pra="http://partsregistry.org/anot/" xmlns:prs="http://partsregistry.org/seq/" xmlns:prf="http://partsregistry.org/feat/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:s="http://sbols.org/v1#">
  <s:DnaComponent rdf:about="http://partsregistry.org/part/BBa_T9002">
   <rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000804"/>
   <rdf:type rdf:resource="http://purl.obolibrary.org/obo/signalling"/>

@@ -58,6 +58,7 @@ public class SBOLReader
 {
 
 	public static final String RDF = "RDF";
+	public static final String RDFV1 = "RDFV1";
 	public static final String JSON = "JSON";
 	public static final String TURTLE = "TURTLE";
 	public static final String SBOLVERSION1 = "v1";
@@ -425,7 +426,9 @@ public class SBOLReader
 		for (NamespaceBinding n : document.getNamespaceBindings())
 
 		{
-			SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+			if (SBOLDoc.getNamespace(URI.create(n.getNamespaceURI()))==null) {
+				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+			}
 
 		}
 
@@ -461,8 +464,10 @@ public class SBOLReader
 			}
 			else
 			{
-				SBOLDoc.addNamespaceBinding(
-						NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+				if (SBOLDoc.getNamespace(URI.create(n.getNamespaceURI()))==null) {
+					SBOLDoc.addNamespaceBinding(
+							NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+				}
 			}
 		}
 		SBOLDoc.addNamespaceBinding(NamespaceBinding(Sbol2Terms.prov.getNamespaceURI(),
@@ -752,6 +757,7 @@ public class SBOLReader
 
 		List<Annotation> annotations 				 = new ArrayList<>();
 		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<>();
+		Set<String> instantiatedComponents	         = new HashSet<>();
 		Set<Component> components 					 = new HashSet<>();
 		Set<SequenceConstraint> sequenceConstraints = new HashSet<>();
 		List<SBOLPair> precedePairs 				 = new ArrayList<>();
@@ -804,21 +810,33 @@ public class SBOLReader
 				sequenceAnnotations.add(sa);
 
 				URI component_identity    = createCompliantURI(persIdentity,"component" + component_num,version);
+				URI component_persIdentity = createCompliantURI(persIdentity,"component" + component_num,"");
+				String component_displayId = "component"+component_num;
 				AccessType access 		  = AccessType.PUBLIC;
 				URI instantiatedComponent = sa.getComponentURI();
-				URI originalURI 		  = ((NestedDocument<QName>) namedProperty.getValue()).getIdentity();
-
-				componentDefMap.put(originalURI, component_identity);
-				sa.setComponent(component_identity);
+				ComponentDefinition instantiatedDef = SBOLDoc.getComponentDefinition(instantiatedComponent);
+				if (compliant && instantiatedDef != null && instantiatedDef.isSetDisplayId() &&
+						!instantiatedComponents.contains(instantiatedDef.getDisplayId())) {
+					component_identity = createCompliantURI(persIdentity, instantiatedDef.getDisplayId(),version);
+					component_persIdentity = createCompliantURI(persIdentity, instantiatedDef.getDisplayId(),"");
+					component_displayId = instantiatedDef.getDisplayId();
+					instantiatedComponents.add(instantiatedDef.getDisplayId());
+				} else {
+					//System.out.println("Repeated: " + instantiatedDef.getDisplayId());
+					component_num++;
+				}
 
 				Component component = new Component(component_identity, access, instantiatedComponent);
 				if (!persIdentity.equals("")) {
-					component.setPersistentIdentity(createCompliantURI(persIdentity,"component" + component_num,""));
-					component.setDisplayId("component"+component_num);
+					component.setPersistentIdentity(component_persIdentity);
+					component.setDisplayId(component_displayId);
 					component.setVersion(version);
 				}
-				component_num++;
 				components.add(component);
+
+				URI originalURI 		  = ((NestedDocument<QName>) namedProperty.getValue()).getIdentity();
+				componentDefMap.put(originalURI, component_identity);
+				sa.setComponent(component_identity);
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.dnaSequence))
 			{
@@ -857,11 +875,17 @@ public class SBOLReader
 				}
 			}
 
-			SequenceConstraint sc = new SequenceConstraint(sc_identity, restrictionURI, subject, object);
-			if (!persIdentity.equals("")) {
-				sc.setPersistentIdentity(createCompliantURI(persIdentity,"sequenceConstraint"+sc_number,version));
-				sc.setDisplayId("sequenceConstraint"+sc_number);
+			SequenceConstraint sc = null;
+			if (compliant && !persIdentity.equals("")) {
+				String subjectId = URIcompliance.extractDisplayId(subject);
+				String objectId = URIcompliance.extractDisplayId(object);
+				sc_identity = createCompliantURI(persIdentity,subjectId+"_cons_"+objectId,version);
+				sc = new SequenceConstraint(sc_identity, restrictionURI, subject, object);
+				sc.setPersistentIdentity(createCompliantURI(persIdentity,subjectId+"_cons_"+objectId,""));
+				sc.setDisplayId(subjectId+"_cons_"+objectId);
 				sc.setVersion(version);
+			} else {
+				sc = new SequenceConstraint(sc_identity, restrictionURI, subject, object);
 			}
 			sequenceConstraints.add(sc);
 		}
@@ -1200,7 +1224,15 @@ public class SBOLReader
 				annotations.add(new Annotation(namedProperty));
 			}
 		}
-
+		String componentDisplayId = URIcompliance.extractDisplayId(componentURI);
+		String displayId = "annotation" + sa_num;
+		if (compliant && componentDisplayId!=null) {
+			identity = createCompliantURI(parentURI,componentDisplayId+"_annotation",version);
+			persIdentity = createCompliantURI(parentURI,componentDisplayId+"_annotation","").toString();
+			displayId = componentDisplayId + "_annotation";
+			// TODO: need to make sure that it is first
+		} 
+		
 		Location location = null; // Note: Do not create a seqAnnotation if Location is empty
 
 		if (start != null && end != null) // create SequenceAnnotation & Component
@@ -1267,7 +1299,7 @@ public class SBOLReader
 		SequenceAnnotation s = new SequenceAnnotation(identity, locations);
 		if(!persIdentity.equals("")) {
 			s.setPersistentIdentity(URI.create(persIdentity));
-			s.setDisplayId("annotation" + sa_num);
+			s.setDisplayId(displayId);
 			s.setVersion(version);
 		}
 		if(identity != sequenceAnnotation.getIdentity())

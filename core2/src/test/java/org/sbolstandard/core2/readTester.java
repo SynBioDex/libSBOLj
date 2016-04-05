@@ -1,5 +1,7 @@
 package org.sbolstandard.core2;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 public class readTester {
@@ -20,9 +22,10 @@ public class readTester {
 	public static String filenameV1_11 	= "SBOL1/labhost_All.xml";
 	public static String filenameV1_12 	= "SBOL1/BBa_I0462.xml";
 	public static String filenameV1_13 	= "SBOL1/pACPc_invF.xml";
-	public static String filenameV1_14 	= "ComponentDefinitionOutput.rdf";
-	public static String filenameV1_15 	= "SimpleComponentDefinitionExample.rdf";
-	public static String filenameV1_16 	= "namespace.rdf";
+	public static String filenameV1_14 	= "SBOL1/precedesTest.xml";
+	public static String filenameV1_15 	= "ComponentDefinitionOutput.rdf";
+	public static String filenameV1_16 	= "SimpleComponentDefinitionExample.rdf";
+	public static String filenameV1_17 	= "namespace.rdf";
 
 
 	public static String path = "test/data/";
@@ -30,15 +33,22 @@ public class readTester {
 	public static void main(String[] args) {
 
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_9);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_14);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_9);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_14);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
 			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			//SBOLReader.setVersion("1.0");
 			//SBOLReader.setTypesInURI(true);
 			SBOLDocument document1 = SBOLReader.read(file);
+
+			//SBOLWriter.write(document1, (System.out), SBOLReader.RDFV1);
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			SBOLWriter.write(document1, out, SBOLReader.RDFV1);
+			SBOLDocument document2 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
+			SBOLWriter.write(document2, (System.out), SBOLReader.RDFV1);
+			
 			//			file = readTester.class.getResourceAsStream(path +filenameV1_14);
 			//			if (file == null)
 			//				file = readTester.class.getResourceAsStream("/" + path + filenameV1_14);
@@ -66,47 +76,47 @@ public class readTester {
 			//doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
 			//ComponentDefinition cd = doc.getComponentDefinition("pTAK_Toggle_10","");
 			//GenBank.write(cd, (System.out));
-			SBOLFactory.createSequence("http://www.abc.com", "foo", "1.0", "AGCT", Sequence.IUPAC_DNA);
-			//SBOLFactory.setSBOLDocument(new SBOLDocument());
-			SBOLFactory.createSequence("http://www.abc.com", "foo2", "1.0", "AGCT", Sequence.IUPAC_DNA);
-			SBOLFactory.write((System.out));
-			
-			GenBank.setURIPrefix("http://www.async.ece.utah.edu");
-			SBOLDocument doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence1.gb"/*pTACK_Toggle_Switch_9*/);
-			doc.write("/Users/myers/downloads/GenBankEx/sequence1.xml");
-			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence1.xml");
-			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
-			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
-				ComponentDefinition cd = doc.getComponentDefinition(componentDefinition.getIdentity());
-				GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence1out.gb");		
-			}
-			
-			doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence2.gb");
-			doc.write("/Users/myers/downloads/GenBankEx/sequence2.xml");
-			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence2.xml");
-			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
-			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
-				ComponentDefinition cd = doc.getComponentDefinition(componentDefinition.getIdentity());
-				GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence2out.gb");		
-			}
-			
-			doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence3.gb");
-			doc.write("/Users/myers/downloads/GenBankEx/sequence3.xml");
-			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence3.xml");
-			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
-			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
-				ComponentDefinition cd = doc.getComponentDefinition(componentDefinition.getIdentity());
-				GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence3out.gb");		
-			}
-			
-			doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence4.gb");
-			doc.write("/Users/myers/downloads/GenBankEx/sequence4.xml");
-			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence4.xml");
-			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
-			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
-				ComponentDefinition cd = doc.getComponentDefinition(componentDefinition.getIdentity());
-				GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence4out.gb");	
-			}
+//			SBOLFactory.createSequence("http://www.abc.com", "foo", "1.0", "AGCT", Sequence.IUPAC_DNA);
+//			//SBOLFactory.setSBOLDocument(new SBOLDocument());
+//			SBOLFactory.createSequence("http://www.abc.com", "foo2", "1.0", "AGCT", Sequence.IUPAC_DNA);
+//			SBOLFactory.write((System.out));
+//			
+//			GenBank.setURIPrefix("http://www.async.ece.utah.edu");
+//			SBOLDocument doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence1.gb"/*pTACK_Toggle_Switch_9*/);
+//			doc.write("/Users/myers/downloads/GenBankEx/sequence1.xml");
+//			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence1.xml");
+//			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+//			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
+//				ComponentDefinition cd = doc.getComponentDefinition(componentDefinition.getIdentity());
+//				GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence1out.gb");		
+//			}
+//			
+//			doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence2.gb");
+//			doc.write("/Users/myers/downloads/GenBankEx/sequence2.xml");
+//			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence2.xml");
+//			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+//			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
+//				ComponentDefinition cd = doc.getComponentDefinition(componentDefinition.getIdentity());
+//				GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence2out.gb");		
+//			}
+//			
+//			doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence3.gb");
+//			doc.write("/Users/myers/downloads/GenBankEx/sequence3.xml");
+//			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence3.xml");
+//			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+//			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
+//				ComponentDefinition cd = doc.getComponentDefinition(componentDefinition.getIdentity());
+//				GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence3out.gb");		
+//			}
+//			
+//			doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence4.gb");
+//			doc.write("/Users/myers/downloads/GenBankEx/sequence4.xml");
+//			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence4.xml");
+//			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+//			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
+//				ComponentDefinition cd = doc.getComponentDefinition(componentDefinition.getIdentity());
+//				GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence4out.gb");	
+//			}
 			//SBOLWriter.write(document1,(System.out));
 			//SBOLWriter.writeRDF(SBOLTestUtils.writeAndRead(document1),(System.out));
 
