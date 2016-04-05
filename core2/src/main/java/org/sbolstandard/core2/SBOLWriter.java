@@ -505,7 +505,7 @@ public class SBOLWriter
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.Cut.Cut, cut.getIdentity(), NamedProperties(property)));
 		}
-		else if(location instanceof GenericLocation)
+		else 
 		{
 			GenericLocation genericLocation = (GenericLocation) location;
 			if (genericLocation.isSetOrientation())
@@ -513,7 +513,6 @@ public class SBOLWriter
 			return NamedProperty(Sbol2Terms.Location.Location,
 					NestedDocument(Sbol2Terms.GenericLocation.GenericLocation, genericLocation.getIdentity(), NamedProperties(property)));
 		}
-		throw new SBOLValidationException("Invalid location class.");
 	}
 
 	private static List<NestedDocument<QName>> getMapsTo(Set<MapsTo> references)

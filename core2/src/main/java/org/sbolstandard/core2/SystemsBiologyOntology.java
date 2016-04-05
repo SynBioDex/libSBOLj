@@ -1,7 +1,7 @@
 package org.sbolstandard.core2;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 //import java.util.HashMap;
 //import java.util.Map;
@@ -90,12 +90,15 @@ public class SystemsBiologyOntology {
 	
 	SystemsBiologyOntology() {
 		OBOParser oboParser = new OBOParser();
-		File f = new File("src/resources/ontologies/SystemsBiologyOntology/sbo_full.obo");
-		try {
-			oboParser.parse(f);
-			systemsBiologyOntology = oboParser.getOntology();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (systemsBiologyOntology == null) {
+			InputStreamReader f = new InputStreamReader(getClass().
+					getResourceAsStream("/ontologies/SystemsBiologyOntology/sbo_full.obo"));
+			try {
+				oboParser.parse(f);
+				systemsBiologyOntology = oboParser.getOntology();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -104,12 +107,16 @@ public class SystemsBiologyOntology {
 	 * 
 	 * @param stanzaURI
 	 * @return the extracted ID of the given stanza's URI.
-	 * @throws IllegalArgumentException if the given stanzaURI does not begin with the SBO URI prefix "http://identifiers.org/biomodels.sbo/".
 	 */
 	public final String getId(URI stanzaURI) {
 		String stanzaURIstr = stanzaURI.toString().trim();
 		if (!stanzaURIstr.startsWith(URI_PREFIX)) {
-			throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
+			try {
+				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
+			}
+			catch (IllegalArgumentException e) {
+				return null;
+			}
 		}
 		int beginIndex = stanzaURIstr.lastIndexOf("/") + 1;
 		return stanzaURIstr.substring(beginIndex, stanzaURIstr.length());
@@ -121,7 +128,6 @@ public class SystemsBiologyOntology {
 	 *  
 	 * @param stanzaName
 	 * @return the ID the matching stanza, or {@code null} if no match is found.
-	 * @throws IllegalArgumentException if the stanzaName does not exist. 
 	 */
 	public final String getId(String stanzaName) {
 		//return sequenceOntology.getStanza(stanzaName).getName();
@@ -132,7 +138,12 @@ public class SystemsBiologyOntology {
 			}
 		}
 		if (IdList.isEmpty()) {
-			throw new IllegalArgumentException("Illegal name " + stanzaName + ". It does not exit.");
+			try {
+				throw new IllegalArgumentException("Illegal name " + stanzaName + ". It does not exit.");
+			}
+			catch (IllegalArgumentException e) {
+				return null;
+			}
 		}
 		return IdList.get(0);
 	}
@@ -143,19 +154,26 @@ public class SystemsBiologyOntology {
 	 * 
 	 * @param stanzaURI
 	 * @return the name field of the stanza that matches the ID in the given stanzaURI.
-	 * @throws IllegalArgumentException if the given stanzaURI does not begin with "http://identifiers.org/so/".
-	 * @throws IllegalArgumentException if the ID in the given stanzaURI does not exist.
 	 */
 	public final String getName(URI stanzaURI) {
 		String oboURIstr = stanzaURI.toString().trim();
 		if (!oboURIstr.startsWith(URI_PREFIX)) {
-			throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+			try {
+				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+			}
+			catch (IllegalArgumentException e) {
+				return null;
+			}
 		}
 		int beginIndex = oboURIstr.lastIndexOf("/") + 1;
 		String id = oboURIstr.substring(beginIndex, oboURIstr.length());
 		OBOStanza oboStanza = systemsBiologyOntology.getStanza(id);
 		if (oboStanza == null) {
-			throw new IllegalArgumentException("ID " + id + " does not exist.");
+			try {
+				throw new IllegalArgumentException("ID " + id + " does not exist.");
+			}
+			catch (IllegalArgumentException e) {
+				return null;			}
 		}
 		return oboStanza.getName();
 	}
@@ -170,7 +188,12 @@ public class SystemsBiologyOntology {
 	public final String getName(String stanzaId) {
 		OBOStanza oboStanza = systemsBiologyOntology.getStanza(stanzaId);
 		if (oboStanza == null) {
-			throw new IllegalArgumentException("Illegal ID " + stanzaId + " does not exist.");
+			try {
+				throw new IllegalArgumentException("Illegal ID " + stanzaId + " does not exist.");
+			}
+			catch (IllegalArgumentException e) {
+				return null;
+			}
 		}
 		return oboStanza.getName();
 	}
@@ -188,16 +211,19 @@ public class SystemsBiologyOntology {
 	}
 	
 	/** 
-	 * Creates a new URI from the Systems Biology Ontology namespace with the given ID. For example, the function call
-	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
+	 * Creates a new URI from the Systems Biology Ontology namespace with the given ID. 
 	 * @param stanzaId
 	 * @return the created URI
-	 * @throws IllegalArgumentException if the ID in the given stanzaURI does not exist.
 	 */
 	public final URI getURIbyId(String stanzaId) {
 		OBOStanza oboStanza = systemsBiologyOntology.getStanza(stanzaId.trim());
 		if (oboStanza == null) {
-			throw new IllegalArgumentException("ID " + stanzaId + " does not exist.");
+			try {
+				throw new IllegalArgumentException("ID " + stanzaId + " does not exist.");
+			}
+			catch (IllegalArgumentException e) {
+				return null;
+			}
 		}
 		return URI.create(URI_PREFIX+stanzaId);
 	}
@@ -224,10 +250,20 @@ public class SystemsBiologyOntology {
 		OBOStanza stanza1 = systemsBiologyOntology.getStanza(Id1);
 		OBOStanza stanza2 = systemsBiologyOntology.getStanza(Id2);
 		if (stanza1 == null) {
-			throw new IllegalArgumentException("Illegal ID: " + Id1 + ". No match was found.");
+			try {
+				throw new IllegalArgumentException("Illegal ID: " + Id1 + ". No match was found.");
+			}
+			catch (IllegalArgumentException e) {
+				return false;
+			}
 		}
 		if (stanza2 == null) {
-			throw new IllegalArgumentException("Illegal ID: " + Id2 + ". No match was found.");
+			try {
+				throw new IllegalArgumentException("Illegal ID: " + Id2 + ". No match was found.");
+			}
+			catch (IllegalArgumentException e) {
+				return false;
+			}
 		}
 		return systemsBiologyOntology.isDescendantOf(stanza1, stanza2);
 	}

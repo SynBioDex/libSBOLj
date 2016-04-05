@@ -6,6 +6,7 @@ public class OBOTypedef extends OBOStanza {
 		super("Typedef");
 	}
 
+	@Override
 	public Object clone() { 
 		return super.clone(OBOTypedef.class);
 	}

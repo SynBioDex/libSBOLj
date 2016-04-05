@@ -67,7 +67,8 @@ public interface Collection extends SBOLNamedObject, SBOLRootObject {
      * members of this Collection.
      * @return Human readable text describing the Collection
      */
-    String getDescription();
+    @Override
+	String getDescription();
 
     /**
      * Text with an informative statement about the reason for grouping the Collection members.
@@ -79,26 +80,30 @@ public interface Collection extends SBOLNamedObject, SBOLRootObject {
      *
      * @param description Human readable text describing the Collection
      */
-    void setDescription(String description);
+    @Override
+	void setDescription(String description);
 
     /**
      * Identifier to display to users.
      * @return a human readable identifier
      */
-    String getDisplayId();
+    @Override
+	String getDisplayId();
 
     /**
      * Identifier to display to users.
      * @param displayId a human readable identifier
      */
-    void setDisplayId(String displayId);
+    @Override
+	void setDisplayId(String displayId);
 
     /**
      * Recognizable human identifier, it is often ambiguous.(eg. Mike's Arabidopsis Project A;
      * Sleight, et al. (2010) J.Bioeng; BBF RFC 10 features; Bookmarked Parts).
      * @return its name, commonly used to refer to this Collection
      */
-    String getName();
+    @Override
+	String getName();
 
     /**
      * Common name of Collection should confer what is contained in the Collection.
@@ -106,5 +111,6 @@ public interface Collection extends SBOLNamedObject, SBOLRootObject {
      * Sleight, et al. (2010) J.Bioeng; BBF RFC 10 features; Bookmarked Parts).
      * @param name commonly used to refer to this Collection (eg. Project A)
      */
-    void setName(String name);
+    @Override
+	void setName(String name);
 }

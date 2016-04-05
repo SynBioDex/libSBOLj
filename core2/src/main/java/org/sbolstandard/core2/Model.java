@@ -1,9 +1,6 @@
 package org.sbolstandard.core2;
 
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
-import static org.sbolstandard.core2.URIcompliance.validateIdVersion;
-
 import java.net.URI;
 
 /**
@@ -22,68 +19,14 @@ public class Model extends TopLevel {
 	private URI language;
 	private URI framework;
 
-	/**
-	 * Systems Biology Markup Language (SBML), the standard XML format for models of biological
-	 * processes such as for example metabolism, cell signaling, and gene regulation
-	 * (<a href="http://identifiers.org/edam/format_2585">SBML</a>).
-	 */
-	public static final URI SBML = URI.create("http://identifiers.org/edam/format_2585");
-
-	/**
-	 * CellML, the format for mathematical models of biological and other networks
-	 * (<a href="http://identifiers.org/edam/format_3240">CELLML</a>).
-	 */
-	public static final URI CELLML = URI.create("http://identifiers.org/edam/format_3240");
-
-	/**
-	 * BioPAX is an exchange format for pathway data, with its data model defined in OWL
-	 * (<a href="http://identifiers.org/edam/format_3156">BIOPAX</a>).
-	 */
-	public static final URI BIOPAX = URI.create("http://identifiers.org/edam/format_3156");
-
-	Model(URI identity,URI source, URI language, URI framework) {
+	Model(URI identity,URI source, URI language, URI framework) throws SBOLValidationException {
 		super(identity);
 		setSource(source);
 		setLanguage(language);
 		setFramework(framework);
 	}
 
-	/**
-	 * Creates a Model instance with the given arguments.
-	 * <p>
-	 * If the given {@code prefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the given {@code prefix}, {@code displayId}, and {@code version} are not
-	 * {@code null} and valid.
-	 * <p>
-	 * A Model instance is created with a compliant URI. This URI is composed from
-	 * the given {@code prefix}, the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param prefix
-	 * @param displayId
-	 * @param version
-	 * @param source
-	 * @param language
-	 * @param framework
-	 * @throws IllegalArgumentException if the defaultURIprefix is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
-	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
-	 * @throws IllegalArgumentException if the given {@code version} is invalid
-	 */
-	public Model(String prefix,String displayId,String version,URI source, URI language, URI framework) {
-		this(URIcompliance.createCompliantURI(prefix, displayId, version), source, language, framework);
-		prefix = URIcompliance.checkURIprefix(prefix);
-		validateIdVersion(displayId, version);
-		setDisplayId(displayId);
-		setPersistentIdentity(createCompliantURI(prefix, displayId, ""));
-		setVersion(version);
-	}
-
-	private Model(Model model) {
+	private Model(Model model) throws SBOLValidationException {
 		super(model);
 		this.setSource(model.getSource());
 		this.setLanguage(model.getLanguage());
@@ -109,12 +52,13 @@ public class Model extends TopLevel {
 	 *
 	 * @param source a URI reference to the source file for a model.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code source} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code source} argument is {@code null}
 	 */
-	public void setSource(URI source) {
+	public void setSource(URI source) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (source==null) {
-			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a source location.");
+			//throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a source location.");
+			throw new SBOLValidationException("sbol-11502", this);
 		}
 		this.source = source;
 	}
@@ -138,12 +82,12 @@ public class Model extends TopLevel {
 	 *
 	 * @param language a URI that specifies the language in which the model is implemented.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code language} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code language} argument is {@code null}
 	 */
-	public void setLanguage(URI language) {
+	public void setLanguage(URI language) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (language==null) {
-			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a language.");
+			throw new SBOLValidationException("sbol-11504",this);
 		}
 		this.language = language;
 	}
@@ -167,12 +111,13 @@ public class Model extends TopLevel {
 	 *
 	 * @param framework a URI that specifies the framework in which the model is implemented.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code framework} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code framework} argument is {@code null}
 	 */
-	public void setFramework(URI framework) {
+	public void setFramework(URI framework) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (framework==null) {
-			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a framework.");
+			//throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a framework.");
+			throw new SBOLValidationException("sbol-11508", this);
 		}
 		this.framework = framework;
 	}
@@ -215,7 +160,7 @@ public class Model extends TopLevel {
 	}
 
 	@Override
-	protected Model deepCopy() {
+	protected Model deepCopy() throws SBOLValidationException {
 		return new Model(this);
 	}
 
@@ -223,7 +168,7 @@ public class Model extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	Model copy(String URIprefix, String displayId, String version) {
+	Model copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		Model cloned = this.deepCopy();
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
@@ -242,8 +187,8 @@ public class Model extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected boolean checkDescendantsURIcompliance() {
-		return isTopLevelURIformCompliant(this.getIdentity());
+	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	@Override

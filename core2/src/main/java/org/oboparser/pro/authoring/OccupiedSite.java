@@ -16,6 +16,7 @@ public class OccupiedSite extends PROSite {
 		part = null;
 	}
 	
+	@Override
 	public void generateOBO(PrintStream ps) { 
 		super.generateOBO(ps);
 		if(part != null) { part.generateOBO(ps); }

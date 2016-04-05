@@ -31,7 +31,7 @@ public enum AccessType {
 	 * Convert the specified URI to its corresponding AccessType instance.
 	 * @return the corresponding AccessType instance
 	 */
-	static AccessType convertToAccessType(URI access) {
+	static AccessType convertToAccessType(URI access) throws SBOLValidationException {
 		if (access!=null) {
 			if (access.equals(publicURI)) {
 				return AccessType.PUBLIC;
@@ -39,10 +39,10 @@ public enum AccessType {
 				return AccessType.PRIVATE;
 			}
 			else {
-				throw new IllegalArgumentException("Unknown access URI `" + access + "'");
+				throw new SBOLValidationException("sbol-10607");
 			}
 		} else {
-			throw new IllegalArgumentException("access URI cannot be null");
+			throw new SBOLValidationException("sbol-10607");
 		}
 	}
 	

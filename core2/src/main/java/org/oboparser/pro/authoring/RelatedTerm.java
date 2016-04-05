@@ -14,10 +14,12 @@ public class RelatedTerm implements OBOTerm {
 		generated = false;
 	}
 	
+	@Override
 	public String toString() { 
 		return String.format("%s %s", relation, term.toString());
 	}
 
+	@Override
 	public void generateOBO(PrintStream ps) {
 		if(generated) { return; }
 		generated = true;
@@ -25,10 +27,12 @@ public class RelatedTerm implements OBOTerm {
 		term.generateOBO(ps);
 	}
 
+	@Override
 	public void clearInOBO() {
 		generated = false;
 	}
 
+	@Override
 	public boolean inOBO() {
 		return generated;
 	}

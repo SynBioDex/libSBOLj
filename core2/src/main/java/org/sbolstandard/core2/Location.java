@@ -14,21 +14,21 @@ import java.net.URI;
  * @version 2.0-beta
  */
 
-public abstract class Location extends Identified{
+public abstract class Location extends Identified implements Comparable<Location> {
 
 	protected OrientationType orientation;
 
-	Location(URI identity) {
+	Location(URI identity) throws SBOLValidationException {
 		super(identity);
 	}
 
-	protected Location(Location location) {
+	protected Location(Location location) throws SBOLValidationException {
 		super(location);
 		this.setOrientation(location.getOrientation());
 	}
 
 	@Override
-	protected abstract Location deepCopy();
+	protected abstract Location deepCopy() throws SBOLValidationException;
 
 	/**
 	 * Test if the orientation property is set.
@@ -56,7 +56,7 @@ public abstract class Location extends Identified{
 	 * @param orientation Indicate how the region specified by the SequenceAnnotation and any associated double stranded Component is oriented on the elements of a Sequence from their parent ComponentDefinition.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void setOrientation(OrientationType orientation) {
+	public void setOrientation(OrientationType orientation) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.orientation = orientation;
 	}
@@ -70,7 +70,7 @@ public abstract class Location extends Identified{
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void unsetOrientation() {
+	public void unsetOrientation() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		orientation = null;
 	}
@@ -78,8 +78,9 @@ public abstract class Location extends Identified{
 	/**
 	 * Assume this Range object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link SequenceAnnotation#updateCompliantURI(String, String, String)}.
+	 * @throws SBOLValidationException 
 	 */
-	void updateCompliantURI(String URIprefix, String displayId, String version) {
+	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
 			this.setWasDerivedFrom(this.getIdentity());
 		}
@@ -93,5 +94,11 @@ public abstract class Location extends Identified{
 	public String toString() {
 		return "Location [orientation=" + orientation + ", identity=" + identity + ", displayId="
 				+ displayId + ", name=" + name + ", description=" + description + "]";
+	}
+
+	@Override
+	public int compareTo(Location loc) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

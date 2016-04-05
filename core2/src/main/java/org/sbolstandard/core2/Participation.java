@@ -23,13 +23,14 @@ public class Participation extends Identified {
 	private URI participant;
 	private ModuleDefinition moduleDefinition = null;
 	
-	Participation(URI identity, URI participant) {
+	Participation(URI identity, URI participant, Set<URI> roles) throws SBOLValidationException {
 		super(identity);
-		roles = new HashSet<>();
+		this.roles = new HashSet<>();
 		setParticipant(participant);
+		setRoles(roles);
 	}
 	
-	private Participation(Participation participation) {
+	private Participation(Participation participation) throws SBOLValidationException {
 		super(participation);
 		this.roles = new HashSet<>();
 		for (URI role : participation.getRoles()) {
@@ -78,17 +79,19 @@ public class Participation extends Identified {
 	 * 
 	 * @param participant
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code participant} argument is {@code null}
-	 * @throws IllegalArgumentException if the associated ModuleDefinition instance is not {@code null} and
+	 * @throws SBOLValidationException if the given {@code participant} argument is {@code null}
+	 * @throws SBOLValidationException if the associated ModuleDefinition instance is not {@code null} and
 	 * given {@code participant} URI is not found in its list of FunctionalComponent instances.
 	 */
-	public void setParticipant(URI participant) {
+	public void setParticipant(URI participant) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (participant == null) {
-			throw new IllegalArgumentException("Participation is required to have a participant.");
+			//throw new SBOLValidationException("Participation is required to have a participant.");
+			throw new SBOLValidationException("sbol-12002",this);
 		}
 		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participant)==null) {
-			throw new IllegalArgumentException("Functional component '" + participant + "' does not exist.");
+			//throw new SBOLValidationException("Functional component '" + participant + "' does not exist.");
+			throw new SBOLValidationException("sbol-12003",this);
 		}
 		this.participant = participant;
 	}
@@ -104,7 +107,7 @@ public class Participation extends Identified {
 	 * @return {@code true} if this set did not already contain the specified role.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public boolean addRole(URI roleURI) {
+	public boolean addRole(URI roleURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return roles.add(roleURI);
 	}
@@ -120,8 +123,11 @@ public class Participation extends Identified {
 	 * @return {@code true} if the matching role reference is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public boolean removeRole(URI roleURI) {
+	public boolean removeRole(URI roleURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		if (roles.size()==1 && roles.contains(roleURI)) {
+			throw new SBOLValidationException("sbol-12004", this);
+		}
 		return roles.remove(roleURI);
 	}
 	
@@ -136,10 +142,12 @@ public class Participation extends Identified {
 	 * @param roles
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void setRoles(Set<URI> roles) {
+	public void setRoles(Set<URI> roles) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+		if (roles==null || roles.size()==0) {
+			throw new SBOLValidationException("sbol-12004", this);
+		}
 		clearRoles();
-		if (roles==null) return;
 		for (URI role : roles) {
 			addRole(role);
 		}
@@ -175,21 +183,22 @@ public class Participation extends Identified {
 	 * 
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearRoles() {
+	void clearRoles() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		roles.clear();
 	}
 
 	@Override
-	protected Participation deepCopy() {
+	protected Participation deepCopy() throws SBOLValidationException {
 		return new Participation(this);
 	}
 
 	/**
 	 * Assume this Participation object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link Interaction#updateCompliantURI(String, String, String)}.
+	 * @throws SBOLValidationException 
 	 */
-	void updateCompliantURI(String URIprefix, String displayId, String version) {
+	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
 			this.setWasDerivedFrom(this.getIdentity());
 		}

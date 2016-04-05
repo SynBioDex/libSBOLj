@@ -11,6 +11,7 @@ import org.oboparser.obo.annotations.Term;
 
 public class JavaExporter extends OBOAnnotationParser implements Exporter {
 	
+	@Override
 	public String export(Class cls) {
 		StringWriter writer = new StringWriter();
 		PrintWriter pw = new PrintWriter(writer);
@@ -41,6 +42,7 @@ public class JavaExporter extends OBOAnnotationParser implements Exporter {
 			method = m;
 		}
 		
+		@Override
 		public String value() {
 			if(method.isAnnotationPresent(Relates.class)) { 
 				return method.getAnnotation(Relates.class).value();
@@ -49,6 +51,7 @@ public class JavaExporter extends OBOAnnotationParser implements Exporter {
 			}
 		}
 
+		@Override
 		public Class<? extends Annotation> annotationType() {
 			return Relates.class;
 		} 

@@ -39,15 +39,16 @@ public abstract class TopLevel extends Identified {
 	 */
 	public static final String GENERIC_TOP_LEVEL = "gen";
 		
-	TopLevel(URI identity) {
+	TopLevel(URI identity) throws SBOLValidationException {
 		super(identity);
 	}
 
-	protected TopLevel(TopLevel toplevel) {
+	protected TopLevel(TopLevel toplevel) throws SBOLValidationException {
 		super(toplevel);
 	}
 	
-	protected abstract Identified deepCopy();
+	@Override
+	protected abstract Identified deepCopy() throws SBOLValidationException;
 	
 	/**
 	 * Make a copy of a top-level object whose URI and its descendants' URIs (children, grandchildren, etc) are all compliant. 
@@ -56,12 +57,30 @@ public abstract class TopLevel extends Identified {
 	 * and {@code version} fields for each updated object.
 	 * @return the copied top-level object if this object and all of its descendants have compliant URIs, and {@code null} otherwise.
 	 */
-	abstract Identified copy(String URIprefix, String displayId, String version);
+	abstract Identified copy(String URIprefix, String displayId, String version) throws SBOLValidationException;
+
+	/**
+	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
+	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
+	 * the level of the given object. 
+	 * @param objURI
+	 * @throws SBOLValidationException 
+	 */
+	void isURIcompliant() throws SBOLValidationException {	
+		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+		try {
+			URIcompliance.isURIcompliant(this);
+		}
+		catch (SBOLValidationException e) {
+			throw new SBOLValidationException(e.getRule(),this);
+		}
+		this.checkDescendantsURIcompliance();
+	}
 	
 	/**
 	 * Check if this top-level object's and all of its descendants' URIs are all compliant. 
-	 * @return {@code true} if they are all compliant, {@code false} otherwise.
+	 * @throws SBOLValidationException 
 	 */
-	protected abstract boolean checkDescendantsURIcompliance();
+	protected abstract void checkDescendantsURIcompliance() throws SBOLValidationException;
 
 }

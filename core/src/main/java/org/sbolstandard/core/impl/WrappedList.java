@@ -83,6 +83,7 @@ public class WrappedList<T, W extends WrappedValue<T>> extends AbstractList<T> i
 		return true;
 	}
 
+	@Override
 	protected void removeRange(int fromIndex, int toIndex) {
 		base.subList(fromIndex, toIndex).clear();
 	}

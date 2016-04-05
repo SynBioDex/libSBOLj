@@ -40,15 +40,16 @@ public abstract class Identified {
 	protected String name;
 	protected String description;
 
-	Identified(URI identity) {
+	Identified(URI identity) throws SBOLValidationException {
 		setIdentity(identity);
 		this.annotations = new ArrayList<>();
 	}
 
 	/**
 	 * This copy constructor creates a new {@link Identified} class and copies all fields specified by the <code>identified</code> object.
+	 * @throws SBOLValidationException 
 	 */
-	protected Identified(Identified identified) {
+	protected Identified(Identified identified) throws SBOLValidationException {
 		this.setIdentity(identified.getIdentity());
 		this.annotations = new ArrayList<>();
 		if (identified.hasAnnotations()) {
@@ -97,11 +98,12 @@ public abstract class Identified {
 	/**
 	 * Sets field variable <code>identity</code> to the specified element.
 	 * @param identity URI for the specified element.
-	 * @throws IllegalArgumentException when identity URI is null.
+	 * @throws SBOLValidationException when identity URI is null.
 	 */
-	final void setIdentity(URI identity) {
+	final void setIdentity(URI identity) throws SBOLValidationException {
 		if (identity == null) {
-			throw new IllegalArgumentException("Identity is a required field.");
+			// throw new SBOLValidationException("Identity is a required field.");
+			throw new SBOLValidationException("sbol-10201", this);
 		}
 		this.identity = identity;
 	}
@@ -167,15 +169,15 @@ public abstract class Identified {
 
 	/**
 	 * Sets field variable <code>version</code> to the specified element.
+	 * @throws SBOLValidationException 
 	 */
-	void setVersion(String version) {
+	void setVersion(String version) throws SBOLValidationException {
 		if (version==null || version.equals("")) {
 			this.version=null;
 			return;
 		}
-		if (!URIcompliance.isVersionCompliant(version)) {
-			throw new IllegalArgumentException(
-					"Version " + version + " is invalid for `" + identity + "'.");
+		if (!URIcompliance.isVersionValid(version)) {
+			throw new SBOLValidationException("sbol-10206",this);
 		}
 		this.version = version;
 	}
@@ -200,11 +202,11 @@ public abstract class Identified {
 
 	/**
 	 * Set field variable <code>displayId</code> to the specified element.
+	 * @throws SBOLValidationException 
 	 */
-	void setDisplayId(String displayId) {
-		if (!URIcompliance.isDisplayIdCompliant(displayId)) {
-			throw new IllegalArgumentException(
-					"Display id " + displayId + " is invalid for `" + identity + "'.");
+	void setDisplayId(String displayId) throws SBOLValidationException {
+		if (!URIcompliance.isDisplayIdValid(displayId)) {
+			throw new SBOLValidationException("sbol-10204",this);
 		}
 		this.displayId = displayId;
 	}
@@ -236,16 +238,13 @@ public abstract class Identified {
 	 * @param wasDerivedFrom The URI for with an SBOL object with this property refers to another SBOL object or non-SBOL resource from which this object was derived
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void setWasDerivedFrom(URI wasDerivedFrom) {
+	public void setWasDerivedFrom(URI wasDerivedFrom) throws SBOLValidationException {
 		if (sbolDocument!=null) {
 			sbolDocument.checkReadOnly();
 			if (!SBOLValidate.checkWasDerivedFromVersion(sbolDocument, this, wasDerivedFrom)) {
-				throw new SBOLValidationException(getIdentity() + " is derived from " + wasDerivedFrom + 
-						" but has older version.");
+				throw new SBOLValidationException("sbol-10211", this);
 			}
-			if (SBOLValidate.checkWasDerivedFromCycle(sbolDocument, this, wasDerivedFrom, new HashSet<URI>())) {
-				throw new SBOLValidationException("Cycle found in '" + getIdentity() + "' was derived from link.");
-			}
+			SBOLValidate.checkWasDerivedFromCycle(sbolDocument, this, wasDerivedFrom, new HashSet<URI>());
 		}
 		this.wasDerivedFrom = wasDerivedFrom;
 	}
@@ -270,8 +269,9 @@ public abstract class Identified {
 	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name.
 	 * @param literal the literal string
 	 * @return the created Annotation instance.
+	 * @throws SBOLValidationException 
 	 */
-	public Annotation createAnnotation(QName qName, String literal) {
+	public Annotation createAnnotation(QName qName, String literal) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
@@ -289,8 +289,9 @@ public abstract class Identified {
 	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
 	 * @param literal literal the literal double
 	 * @return the created Annotation instance.
+	 * @throws SBOLValidationException 
 	 */
-	public Annotation createAnnotation(QName qName, double literal) {
+	public Annotation createAnnotation(QName qName, double literal) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
@@ -308,8 +309,9 @@ public abstract class Identified {
 	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
 	 * @param literal literal the literal int
 	 * @return the created Annotation instance.
+	 * @throws SBOLValidationException 
 	 */
-	public Annotation createAnnotation(QName qName, int literal) {
+	public Annotation createAnnotation(QName qName, int literal) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
@@ -329,7 +331,7 @@ public abstract class Identified {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @return the created Annotation instance.
 	 */
-	public Annotation createAnnotation(QName qName, boolean literal) {
+	public Annotation createAnnotation(QName qName, boolean literal) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
@@ -349,7 +351,7 @@ public abstract class Identified {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @return the created Annotation instance.
 	 */
-	public Annotation createAnnotation(QName qName, URI literal) {
+	public Annotation createAnnotation(QName qName, URI literal) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
@@ -360,8 +362,9 @@ public abstract class Identified {
 	 * Calls the Annotation constructor to create a new instance using the specified parameters,
 	 * then adds to the list of Annotation instances owned by this component.
 	 * @return the created Annotation instance.
+	 * @throws SBOLValidationException 
 	 */
-	Annotation createAnnotation(NamedProperty<QName> namedProperty) {
+	Annotation createAnnotation(NamedProperty<QName> namedProperty) throws SBOLValidationException {
 		Annotation annotation = new Annotation(namedProperty);
 		addAnnotation(annotation);
 		return annotation;
@@ -382,7 +385,7 @@ public abstract class Identified {
 	 * @return the created Annotation instance.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public Annotation createAnnotation(QName qName,QName nestedQName, URI nestedURI, List<Annotation> annotations) {
+	public Annotation createAnnotation(QName qName,QName nestedQName, URI nestedURI, List<Annotation> annotations) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName, nestedQName, nestedURI, annotations);
 		addAnnotation(annotation);
@@ -391,10 +394,51 @@ public abstract class Identified {
 
 	/**
 	 * Adds the specified instance to the list of structuralAnnotations.
+	 * @throws SBOLValidationException 
 	 */
-	void addAnnotation(Annotation annotation) {
+	void addAnnotation(Annotation annotation) throws SBOLValidationException {
 		if (annotations.contains(annotation)) {
-			throw new IllegalArgumentException("Annotation already exists.");
+			//throw new SBOLValidationException("Annotation already exists.");
+			//throw new SBOLValidationException("sbol-10214");
+			// TODO: not sure this is even an error, can just skip add
+			return;
+		}
+		if (annotation.getQName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI())) {
+			if (this instanceof Sequence) {
+				throw new SBOLValidationException("sbol-10401");
+			} else if (this instanceof ComponentDefinition) {
+				throw new SBOLValidationException("sbol-10501");
+			} else if (this instanceof Component) {
+				throw new SBOLValidationException("sbol-10701");
+			} else if (this instanceof MapsTo) {
+				throw new SBOLValidationException("sbol-10801");
+			} else if (this instanceof SequenceAnnotation) {
+				throw new SBOLValidationException("sbol-10901");
+			} else if (this instanceof Range) {
+				throw new SBOLValidationException("sbol-11101");
+			} else if (this instanceof Cut) {
+				throw new SBOLValidationException("sbol-11201");
+			} else if (this instanceof GenericLocation) {
+				throw new SBOLValidationException("sbol-11301");
+			} else if (this instanceof SequenceConstraint) {
+				throw new SBOLValidationException("sbol-11401");
+			} else if (this instanceof Model) {
+				throw new SBOLValidationException("sbol-11501");
+			} else if (this instanceof ModuleDefinition) {
+				throw new SBOLValidationException("sbol-11601");
+			} else if (this instanceof Module) {
+				throw new SBOLValidationException("sbol-11701");
+			} else if (this instanceof FunctionalComponent) {
+				throw new SBOLValidationException("sbol-11801");
+			} else if (this instanceof Interaction) {
+				throw new SBOLValidationException("sbol-11901");
+			} else if (this instanceof Participation) {
+				throw new SBOLValidationException("sbol-12001");
+			} else if (this instanceof Collection) {
+				throw new SBOLValidationException("sbol-12101");
+			} else if (this instanceof GenericTopLevel) {
+				throw new SBOLValidationException("sbol-12301");
+			} 
 		}
 		annotations.add(annotation);
 	}
@@ -412,7 +456,7 @@ public abstract class Identified {
 	 *         {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public boolean removeAnnotation(Annotation annotation) {
+	public boolean removeAnnotation(Annotation annotation) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return annotations.remove(annotation);
 	}
@@ -427,6 +471,20 @@ public abstract class Identified {
 		annotations.addAll(this.annotations);
 		return annotations;
 	}
+	
+	/**
+	 * Returns the Annotation for a given QName.
+	 *
+	 * @return the Annotation for a given QName.
+	 */
+	public Annotation getAnnotation(QName qName) {
+		for (Annotation annotation : annotations) {
+			if (annotation.getQName().equals(qName)) {
+				return annotation;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Removes all entries of this object's list of Annotation
@@ -438,15 +496,16 @@ public abstract class Identified {
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearAnnotations() {
+	public void clearAnnotations() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		annotations.clear();
 	}
 
 	/**
 	 * Clears the existing list of structuralAnnotation instances, then appends all of the elements in the specified collection to the end of this list.
+	 * @throws SBOLValidationException 
 	 */
-	void setAnnotations(List<Annotation> annotations) {
+	void setAnnotations(List<Annotation> annotations) throws SBOLValidationException {
 		clearAnnotations();
 		for (Annotation annotation : annotations) {
 			addAnnotation(annotation);
@@ -463,7 +522,7 @@ public abstract class Identified {
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void unsetWasDerivedFrom() {
+	public void unsetWasDerivedFrom() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		wasDerivedFrom = null;
 	}
@@ -480,7 +539,7 @@ public abstract class Identified {
 	 * Provide a deep copy of this instance.
 	 * @return An identical copy of the specified object
 	 */
-	protected abstract Identified deepCopy();
+	protected abstract Identified deepCopy() throws SBOLValidationException;
 
 
 	@Override
@@ -554,17 +613,15 @@ public abstract class Identified {
 	}
 
 	@SafeVarargs
-	protected final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) {
+	protected final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {
 		if (isChildURIformCompliant(this.getIdentity(), child.getIdentity())) {
 			URI persistentId = URI.create(extractPersistentId(child.getIdentity()));
-			if(keyExistsInAnyMap(persistentId, maps))
-				throw new IllegalArgumentException(
-						"Instance for identity `" + child.identity +
-						"' and persistent identity `" + persistentId + "' exists for a non-" + typeName);
-			if(siblingsMap.containsKey(child.getIdentity()))
-				throw new IllegalArgumentException(
-						"Instance for identity `" + child.identity +
-						"' and persistent identity `" + persistentId + "' exists for a " + typeName);
+			if(keyExistsInAnyMap(persistentId, maps)) {
+				throw new SBOLValidationException("sbol-10202", child);
+			}
+			if(siblingsMap.containsKey(child.getIdentity())) {
+				throw new SBOLValidationException("sbol-10202", child);
+			}
 			siblingsMap.put(child.getIdentity(), child);
 			I latest = siblingsMap.get(persistentId);
 			if (latest == null) {
@@ -579,12 +636,9 @@ public abstract class Identified {
 		}
 		else { // Only check if URI exists in all maps.
 			if(keyExistsInAnyMap(child.getIdentity(), maps))
-				throw new IllegalArgumentException(
-						"Instance for identity `" + child.identity +
-						"' exists for a non-" + typeName);
+				throw new SBOLValidationException("sbol-10202", child);
 			if(siblingsMap.containsKey(child.getIdentity()))
-				throw new IllegalArgumentException(
-						"Instance for identity `" + child.identity + "' exists for a " + typeName);
+				throw new SBOLValidationException("sbol-10202", child);
 			siblingsMap.put(child.getIdentity(), child);
 		}
 
@@ -625,7 +679,7 @@ public abstract class Identified {
 	 * @param name Property is intended to be displayed to a human when visualizing an Identified object.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void setName(String name) {
+	public void setName(String name) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.name = name;
 	}
@@ -640,7 +694,7 @@ public abstract class Identified {
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void unsetName() {
+	public void unsetName() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		name = null;
 	}
@@ -674,7 +728,7 @@ public abstract class Identified {
 	 * @param description Property is intended to contain a more thorough text description of an Identified object.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void setDescription(String description) {
+	public void setDescription(String description) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.description = description;
 	}
@@ -689,7 +743,7 @@ public abstract class Identified {
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void unsetDescription() {
+	public void unsetDescription() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		description = null;
 	}

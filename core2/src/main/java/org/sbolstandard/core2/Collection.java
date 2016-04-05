@@ -22,44 +22,12 @@ public class Collection extends TopLevel{
 
 	private Set<URI> members;
 
-	Collection(URI identity) {
+	Collection(URI identity) throws SBOLValidationException {
 		super(identity);
 		this.members = new HashSet<>();
 	}
 
-	/**
-	 * Creates a Collection instance with the given arguments.
-	 * <p>
-	 * If the given {@code prefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the given {@code prefix}, {@code displayId}, and {@code version} are not
-	 * {@code null} and valid.
-	 * <p>
-	 * A Collection instance is created with a compliant URI. This URI is composed from
-	 * the given {@code prefix}, the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param prefix
-	 * @param displayId
-	 * @param version
-	 * @throws IllegalArgumentException if the defaultURIprefix is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is {@code null}
-	 * @throws IllegalArgumentException if the given {@code URIprefix} is non-compliant
-	 * @throws IllegalArgumentException if the given {@code displayId} is invalid
-	 * @throws IllegalArgumentException if the given {@code version} is invalid
-	 */
-	public Collection(String prefix,String displayId,String version) {
-		this(URIcompliance.createCompliantURI(prefix, displayId, version));
-		prefix = URIcompliance.checkURIprefix(prefix);
-		validateIdVersion(displayId, version);
-		setDisplayId(displayId);
-		setPersistentIdentity(createCompliantURI(prefix, displayId, ""));
-		setVersion(version);
-	}
-
-	private Collection(Collection collection) {
+	private Collection(Collection collection) throws SBOLValidationException {
 		//super(collection.getIdentity());
 		super(collection);
 		this.members = new HashSet<>();
@@ -77,12 +45,14 @@ public class Collection extends TopLevel{
 	 * @param memberURI References to a TopLevel object
 	 * @return {@code true} if the matching member reference has been added successfully,
 	 *         {@code false} otherwise.
+	 * @throws SBOLValidationException 
 	 */
-	public boolean addMember(URI memberURI) {
+	public boolean addMember(URI memberURI) throws SBOLValidationException {
 		if (sbolDocument != null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getTopLevel(memberURI)==null) {
-				throw new IllegalArgumentException("Top level '" + memberURI + "' does not exist.");
+				//throw new SBOLValidationException("Top level '" + memberURI + "' does not exist.");
+				throw new SBOLValidationException("sbol-12103", this);
 			}
 		}
 		return members.add(memberURI);
@@ -99,8 +69,9 @@ public class Collection extends TopLevel{
 	 * @param memberURI the reference to a TopLevel object to be removed from the SBOL Document.
 	 * @return {@code true} if the matching member reference is removed successfully,
 	 *         {@code false} otherwise.
+	 * @throws SBOLValidationException 
 	 */
-	public boolean removeMember(URI memberURI) {
+	public boolean removeMember(URI memberURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return members.remove(memberURI);
 	}
@@ -115,8 +86,9 @@ public class Collection extends TopLevel{
 	 * is allowed to be edited.
 	 *
 	 * @param members A set of URI references to zero or more TopLevel objects within the SBOL Document.
+	 * @throws SBOLValidationException 
 	 */
-	public void setMembers(Set<URI> members) {
+	public void setMembers(Set<URI> members) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		clearMembers();
 		for (URI member : members) {
@@ -170,7 +142,7 @@ public class Collection extends TopLevel{
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearMembers() {
+	public void clearMembers() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		members.clear();
 	}
@@ -210,7 +182,7 @@ public class Collection extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#deepCopy()
 	 */
 	@Override
-	protected Collection deepCopy() {
+	protected Collection deepCopy() throws SBOLValidationException {
 		return new Collection(this);
 	}
 
@@ -218,7 +190,7 @@ public class Collection extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	Collection copy(String URIprefix, String displayId, String version) {
+	Collection copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		Collection cloned = this.deepCopy();
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
@@ -237,8 +209,8 @@ public class Collection extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected boolean checkDescendantsURIcompliance() {
-		return isTopLevelURIformCompliant(this.getIdentity());
+	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	@Override

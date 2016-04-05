@@ -17,13 +17,13 @@ public abstract class ComponentInstance extends Identified {
 
 	private AccessType access;
 	protected URI definition;
-	ComponentInstance(URI identity, AccessType access, URI definition) {
+	ComponentInstance(URI identity, AccessType access, URI definition) throws SBOLValidationException {
 		super(identity);
 		setAccess(access);
 		setDefinition(definition);
 	}
 
-	protected ComponentInstance(ComponentInstance component) {
+	protected ComponentInstance(ComponentInstance component) throws SBOLValidationException {
 		super(component);
 		setAccess(component.getAccess());
 		setDefinition(component.getDefinitionURI());
@@ -47,12 +47,13 @@ public abstract class ComponentInstance extends Identified {
 	 *
 	 * @param access
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code access} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code access} argument is {@code null}
 	 */
-	public void setAccess(AccessType access) {
+	public void setAccess(AccessType access) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (access==null) {
-			throw new IllegalArgumentException("Not a valid access type.");
+			//throw new SBOLValidationException("Not a valid access type.");
+			throw new SBOLValidationException("sbol-10607", this);
 		}
 		this.access = access;
 	}
@@ -86,26 +87,26 @@ public abstract class ComponentInstance extends Identified {
 	 *
 	 * @param definition
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code definition} argument is {@code null}
-	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies
+	 * @throws SBOLValidationException if the given {@code definition} argument is {@code null}
+	 * @throws SBOLValidationException if the associated SBOLDocument instance already completely specifies
 	 * 		all URIs and the given definition URI is not found in them.
 	 *
 	 */
-	public void setDefinition(URI definition) {
+	public void setDefinition(URI definition) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (definition==null) {
-			throw new IllegalArgumentException("Component "+this.getIdentity()+" must have a definition.");
+			throw new SBOLValidationException("sbol-10602",this);
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(definition)==null) {
-				throw new IllegalArgumentException("Component definition '" + definition + "' does not exist.");
+				throw new SBOLValidationException("sbol-10604",this);
 			}
 		}
 		this.definition = definition;
 	}
 
 	@Override
-	protected abstract ComponentInstance deepCopy();
+	protected abstract ComponentInstance deepCopy() throws SBOLValidationException;
 
 	@Override
 	public String toString() {

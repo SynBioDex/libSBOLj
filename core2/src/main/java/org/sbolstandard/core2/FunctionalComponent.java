@@ -25,13 +25,13 @@ public class FunctionalComponent extends ComponentInstance {
 	private ModuleDefinition moduleDefinition = null;
 
 	FunctionalComponent(URI identity, AccessType access, URI definitionURI,
-			DirectionType direction) {
+			DirectionType direction) throws SBOLValidationException {
 		super(identity, access, definitionURI);
 		this.mapsTos = new HashMap<>();
 		setDirection(direction);
 	}
 
-	private FunctionalComponent(FunctionalComponent functionalComponent) {
+	private FunctionalComponent(FunctionalComponent functionalComponent) throws SBOLValidationException {
 		super(functionalComponent);
 		this.setDirection(functionalComponent.getDirection());
 		this.mapsTos = new HashMap<>();
@@ -63,13 +63,13 @@ public class FunctionalComponent extends ComponentInstance {
 	 *
 	 * @param direction The direction for the FunctionalComponent
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the given {@code direction} is {@code null}
+	 * @throws SBOLValidationException if the given {@code direction} is {@code null}
 	 *
 	 */
-	public void setDirection(DirectionType direction) {
+	public void setDirection(DirectionType direction) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (direction==null) {
-			throw new NullPointerException("Not a valid direction type.");
+			throw new SBOLValidationException("sbol-11802",this);
 		}
 		this.direction = direction;
 	}
@@ -95,15 +95,16 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	@Override
-	protected FunctionalComponent deepCopy() {
+	protected FunctionalComponent deepCopy() throws SBOLValidationException {
 		return new FunctionalComponent(this);
 	}
 
 	/**
 	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
+	 * @throws SBOLValidationException 
 	 */
-	void updateCompliantURI(String URIprefix, String displayId, String version) {
+	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
 			this.setWasDerivedFrom(this.getIdentity());
 		}
@@ -126,8 +127,9 @@ public class FunctionalComponent extends ComponentInstance {
 	 * then adds to the list of MapsTo instances owned by this component.
 	 *
 	 * @return the created MapsTo instance.
+	 * @throws SBOLValidationException 
 	 */
-	MapsTo createMapsTo(URI identity, RefinementType refinement, URI local, URI remote) {
+	MapsTo createMapsTo(URI identity, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
 		addMapsTo(mapping);
 		return mapping;
@@ -154,20 +156,20 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @param remoteId
 	 * @return a MapsTo instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code local} argument is not found in the list
 	 * of functional components that are owned by the ModuleDefinition instance that
 	 * this Module object refers to.
-	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code remote} argument is not found in
 	 * the list of functional components that are owned by the ModuleDefinition instance that
 	 * this Module object refers to.
-	 * @throws IllegalArgumentException if the SBOLDocument instance already completely
+	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code remote} URI refers to a FunctionalComponent
 	 * with {@code private} access type that is owned by the ModuleDefinition instance that
 	 * this Module object refers to.
 	 */
-	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) {
+	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
 				localId, moduleDefinition.getVersion());
@@ -198,8 +200,9 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @param local refer to the ComponentInstance contained by the “higher level” ComponentDefinition or ModuleDefinition
 	 * @param remote refer to the ComponentInstance contained by the “lower level” ComponentDefinition or ModuleDefinition
 	 * @return a MapsTo instance
+	 * @throws SBOLValidationException 
 	 */
-	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) {
+	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
@@ -213,30 +216,35 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Adds the specified instance to the list of references.
+	 * @throws SBOLValidationException 
 	 */
-	void addMapsTo(MapsTo mapsTo) {
+	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
+		mapsTo.setSBOLDocument(this.sbolDocument);
+		mapsTo.setModuleDefinition(moduleDefinition);
+		mapsTo.setComponentInstance(this);
 		if (sbolDocument != null) {
 			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
-				throw new IllegalArgumentException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
+				//throw new SBOLValidationException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
+				throw new SBOLValidationException("sbol-10804", mapsTo);
 			}
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (getDefinition().getComponent(mapsTo.getRemoteURI())==null) {
-				throw new IllegalArgumentException("Component '" + mapsTo.getRemoteURI() + "' does not exist.");
+				//throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' does not exist.");
+				throw new SBOLValidationException("sbol-10808", mapsTo);
 			}
 			if (getDefinition().getComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
-				throw new IllegalArgumentException("Component '" + mapsTo.getRemoteURI() + "' is private.");
+				//throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' is private.");
+				throw new SBOLValidationException("sbol-10807", mapsTo);
 			}
 			if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
 				if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
-					throw new IllegalArgumentException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+					//throw new SBOLValidationException("MapsTo '" + mapsTo.getIdentity() + "' have non-identical local and remote Functional Component");
+					throw new SBOLValidationException("sbol-10811", mapsTo);
 				}
 			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
-		mapsTo.setSBOLDocument(this.sbolDocument);
-		mapsTo.setModuleDefinition(moduleDefinition);
-		mapsTo.setComponentInstance(this);
 	}
 
 	/**
@@ -253,7 +261,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 *
 	 */
-	public boolean removeMapsTo(MapsTo mapsTo) {
+	public boolean removeMapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		return removeChildSafely(mapsTo,mapsTos);
 	}
@@ -265,7 +273,12 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @return the MapsTo instance owned by this object that matches the given display ID
 	 */
 	public MapsTo getMapsTo(String displayId) {
-		return mapsTos.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+		try {
+			return mapsTos.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+		}
+		catch (SBOLValidationException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -297,7 +310,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearMapsTos() {
+	public void clearMapsTos() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = mapsTos.values().toArray();
 		for (Object mapsTo : valueSetArray) {
@@ -307,8 +320,9 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
+	 * @throws SBOLValidationException 
 	 */
-	void setMapsTos(Set<MapsTo> mapsTos) {
+	void setMapsTos(Set<MapsTo> mapsTos) throws SBOLValidationException {
 		clearMapsTos();
 		for (MapsTo reference : mapsTos) {
 			addMapsTo(reference);

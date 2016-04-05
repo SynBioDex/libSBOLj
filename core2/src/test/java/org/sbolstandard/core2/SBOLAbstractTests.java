@@ -4,7 +4,9 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.QName;
 
+import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -97,53 +99,6 @@ public abstract class SBOLAbstractTests {
 	//		runTest("test/data/test_Methods.rdf", document, "rdf", true);
 	//	}
 
-	@Test
-	public void test_readMultFile_setdefaultURIPrefix() throws Exception
-	{
-		String filePath = "test/data/";
-		String file1 = "pACPc_invF";
-		String file2 = "psicA_rfp";
-		String file3 = "pXCPi_sicA";
-		String fullPath = "/Users/tramynguyen/git/libSBOLj/core2/src/test/resources/test/data/";
-
-		//		InputStream in =
-		//				getClass().getResourceAsStream("test/data/" + file1 + ".rdf");
-		//		Reader fr = new InputStreamReader(in, "utf-8");
-
-		//		SBOLDocument sbolDoc = new SBOLDocument();
-		//		sbolDoc.setDefaultURIprefix(URIprefix + "/" + file1);
-		//		System.out.println("BEFORE READING sbolDoc - Default URIPrefix is: " + sbolDoc.getDefaultURIprefix());
-		//		System.out.println("Started reading " + file1);
-		//		//		sbolDoc.read(fullPath + file1 + ".rdf");
-		//		sbolDoc.read(in);
-		//		System.out.println("Done reading file " + file1);
-
-		//		System.out.println("Started reading " + file2);
-		//		sbolDoc.setDefaultURIprefix(URIprefix + "/" + file2);
-		//		sbolDoc.read(fullPath + file2 + ".rdf");
-		//		System.out.println("Done reading file " + file2);
-		//
-		//		System.out.println("Started reading " + file3);
-		//		sbolDoc.setDefaultURIprefix(URIprefix + "/" + file3);
-		//		sbolDoc.read(fullPath + file3 + ".rdf");
-		//		System.out.println("Done reading file " + file3);
-
-		//		sbolDoc.write(System.out);
-
-
-		try
-		{
-			SBOLReader.setURIPrefix(URIprefix+"/"+file1);
-			SBOLDocument newSbolDoc = SBOLReader.read(fullPath+file1+".rdf");
-			//			newSbolDoc.setDefaultURIprefix(URIprefix + "/" + file1);
-			newSbolDoc.write(System.out);
-		}
-		catch (Throwable e)
-		{
-			e.printStackTrace();
-		}
-		System.out.println("Done writing files");
-	}
 
 	@Test
 	public void test_Model_remove() throws Exception
@@ -160,7 +115,7 @@ public abstract class SBOLAbstractTests {
 		String M1_Source = "www.example.com";
 		URI M1_URISource = URI.create(M1_Source);
 
-		Model M1 = document.createModel(M1_ID, M1_Version, M1_URISource, Model.SBML,
+		Model M1 = document.createModel(M1_ID, M1_Version, M1_URISource, EDAMOntology.SBML,
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 		document.removeModel(M1);
 		runTest("test/data/test_Model_remove.rdf", document, "rdf", true);
@@ -669,7 +624,7 @@ public abstract class SBOLAbstractTests {
 		Model model=document.createModel(
 				"toogleswicth",
 				URI.create("http://virtualparts.org/part/pIKE_Toggle_1"),
-				Model.SBML,
+				EDAMOntology.SBML,
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 
 		//new HashSet<URI>(Arrays.asList(URI.create("http://sbols.org/v2#module_model")))
@@ -853,6 +808,34 @@ public abstract class SBOLAbstractTests {
 		catch (SBOLValidationException e)
 		{
 			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+
+	@Test
+	public void test_GenBank_Files() throws Exception
+	{
+		File file_base = null ;
+		try {
+			file_base = new File(ValidationTest.class.getResource("/test/data/GenBank/").toURI());
+		}
+		catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		}
+		File file;
+		for (File f : file_base.listFiles()){
+			file = new File(f.getAbsolutePath());
+			try
+			{
+				GenBank.setURIPrefix("http://www.async.ece.utah.edu");
+				SBOLDocument actual = GenBank.read(file);
+				GenBank.write(actual.getRootComponentDefinitions().iterator().next(),
+						"src/test/resources/test/data/GenBankOut/"+f.getName());
+				runTest("test/data/"+f.getName().replace(".gb", ".rdf"), actual, "rdf", true);
+			}
+			catch (SBOLValidationException e)
+			{
+				throw new AssertionError("Failed for " + f.getName(), e);
+			}
 		}
 	}
 
@@ -1419,7 +1402,7 @@ public abstract class SBOLAbstractTests {
 		Collection myParts = document.createCollection("myParts", VERSION_1_0);
 		myParts.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
-		Model someModel = document.createModel(id, VERSION_1_0, source, Model.SBML, SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
+		Model someModel = document.createModel(id, VERSION_1_0, source, EDAMOntology.SBML, SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 		someModel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
 		ModuleDefinition someModDef = document.createModuleDefinition("someModuleDef", VERSION_1_0);
@@ -1448,9 +1431,9 @@ public abstract class SBOLAbstractTests {
 		someCompDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 		someCompDef.addRole(SequenceOntology.PROMOTER);
 		ComponentDefinition someCompDefCDS = document.createComponentDefinition("someCompDefCDS", VERSION_1_0, types);
-		someCompDefCDS.addRole(SequenceOntology.CDS)
-		;
+		someCompDefCDS.addRole(SequenceOntology.CDS);
 		Component someComponent = someCompDef.createComponent("someComponent", AccessType.PUBLIC, "someCompDefCDS", VERSION_1_0);
+		someCompDef.createComponent("someOtherComponent", AccessType.PUBLIC, "someCompDefCDS", VERSION_1_0);
 		someComponent.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
 		SequenceAnnotation someSequenceAnnotation = someCompDef.createSequenceAnnotation("someSequenceAnnotation", "cut", 1, 10);
@@ -1460,7 +1443,7 @@ public abstract class SBOLAbstractTests {
 
 		//		someSequenceAnnotation.setLocation(); //TODO range, multiRange, cut - how to access?
 
-		SequenceConstraint someSequenceConstraint = someCompDef.createSequenceConstraint("someSequenceConstraint", RestrictionType.PRECEDES, "someComponent", "someComponent");
+		SequenceConstraint someSequenceConstraint = someCompDef.createSequenceConstraint("someSequenceConstraint", RestrictionType.PRECEDES, "someComponent", "someOtherComponent");
 		someSequenceConstraint.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
 		GenericTopLevel someGenericTopLevel = document.createGenericTopLevel("someGenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
@@ -1665,7 +1648,7 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
 
 		String id = "ToggleModel";
-		document.createModel( id, VERSION_1_0, URI.create(id + "_source"), Model.SBML,
+		document.createModel( id, VERSION_1_0, URI.create(id + "_source"), EDAMOntology.SBML,
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 
 		runTest("test/data/singleModel.rdf", document, "rdf", true);

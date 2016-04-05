@@ -53,8 +53,9 @@ public enum DirectionType {
 	 * Convert the specified URI to its corresponding DirectionType instance.
 	 * @param direction
 	 * @return the corresponding DirectionType instance
+	 * @throws SBOLValidationException 
 	 */
-	static DirectionType convertToDirectionType(URI direction) {
+	static DirectionType convertToDirectionType(URI direction) throws SBOLValidationException {
 		if (direction != null) {
 			if (direction.equals(inout)) {
 				return DirectionType.INOUT;
@@ -65,10 +66,10 @@ public enum DirectionType {
 			} else if (direction.equals(out)) {
 				return DirectionType.OUT;
 			} else {
-				throw new IllegalArgumentException("Unknown direction URI `" + direction + "'");
+				throw new SBOLValidationException("sbol-11802");
 			}
 		} else {
-			throw new IllegalArgumentException("direction URI cannot be null");
+			throw new SBOLValidationException("sbol-11802");
 		}
 	}
 	

@@ -14,11 +14,11 @@ import java.net.URI;
 
 public class GenericLocation extends Location{
 	
-	GenericLocation(URI identity) {
+	GenericLocation(URI identity) throws SBOLValidationException {
 		super(identity);
 	}
 	
-	private GenericLocation(GenericLocation genericLocation) {
+	private GenericLocation(GenericLocation genericLocation) throws SBOLValidationException {
 		super(genericLocation);
 	}
 
@@ -43,7 +43,7 @@ public class GenericLocation extends Location{
 	}
 
 	@Override
-	protected GenericLocation deepCopy() {
+	protected GenericLocation deepCopy() throws SBOLValidationException {
 		return new GenericLocation(this);
 	}
 
@@ -52,5 +52,10 @@ public class GenericLocation extends Location{
 		return "GenericLocation [orientation=" + orientation + ", identity=" + identity
 				+ ", displayId=" + displayId + ", name=" + name + ", description=" + description
 				+ "]";
+	}
+
+	@Override
+	public int compareTo(Location locaction) {
+		return Integer.MAX_VALUE;
 	}
 }

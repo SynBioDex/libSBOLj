@@ -59,22 +59,27 @@ public enum RefinementType {
 	/**
 	 * Convert the specified URI to its corresponding RefinementType instance. 
 	 * @return the corresponding RefinementType instance
+	 * @throws SBOLValidationException 
 	 */
-	static RefinementType convertToRefinementType(URI refinement) {
-		if (refinement.equals(merge)) {
-			return RefinementType.MERGE;
-		} 
-		else if (refinement.equals(useLocal)) {
-			return RefinementType.USELOCAL;
-		}
-		else if (refinement.equals(useRemote)) {
-			return RefinementType.USEREMOTE;
-		}
-		else if (refinement.equals(verifyIdentical)) {
-			return RefinementType.VERIFYIDENTICAL;
-		}
-		else {
-			throw new IllegalArgumentException("Unknown refinement URI `" + refinement + "'");
+	static RefinementType convertToRefinementType(URI refinement) throws SBOLValidationException {
+		if (refinement != null) {
+			if (refinement.equals(merge)) {
+				return RefinementType.MERGE;
+			} 
+			else if (refinement.equals(useLocal)) {
+				return RefinementType.USELOCAL;
+			}
+			else if (refinement.equals(useRemote)) {
+				return RefinementType.USEREMOTE;
+			}
+			else if (refinement.equals(verifyIdentical)) {
+				return RefinementType.VERIFYIDENTICAL;
+			}
+			else {
+				throw new SBOLValidationException("sbol-10810");
+			}
+		} else {
+			throw new SBOLValidationException("sbol-10810");
 		}
 	}
 

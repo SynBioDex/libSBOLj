@@ -25,14 +25,14 @@ public class MapsTo extends Identified{
 	private ComponentInstance componentInstance = null;
 
 	MapsTo(URI identity, RefinementType refinement,
-			URI local, URI remote) {
+			URI local, URI remote) throws SBOLValidationException {
 		super(identity);
 		setRefinement(refinement);
 		setLocal(local);
 		setRemote(remote);
 	}
 
-	private MapsTo(MapsTo mapsTo) {
+	private MapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		super(mapsTo);
 		this.setRefinement(mapsTo.getRefinement());
 		this.setLocal(mapsTo.getLocalURI());
@@ -58,7 +58,7 @@ public class MapsTo extends Identified{
 	 * @param refinement The refinement type of the MapsTo object
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void setRefinement(RefinementType refinement) {
+	public void setRefinement(RefinementType refinement) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.refinement = refinement;
 	}
@@ -111,22 +111,22 @@ public class MapsTo extends Identified{
 	 *
 	 * @param local refers to the second “higher level” ComponentInstance.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the given {@code local} argument is {@code null}
-	 * @throws IllegalArgumentException if the given {@code local} argument is not found in
+	 * @throws SBOLValidationException if the given {@code local} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code local} argument is not found in
 	 * this MapsTo object's reference ModuleDefinition instance's list of functional components.
 	 */
-	public void setLocal(URI local) {
+	public void setLocal(URI local) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (local==null) {
-			throw new IllegalArgumentException("MapsTo "+this.getIdentity()+" must specify a local component.");
+			throw new SBOLValidationException("sbol-10802", this);
 		}
 		if (moduleDefinition!=null) {
 			if (moduleDefinition.getFunctionalComponent(local)==null) {
-				throw new IllegalArgumentException("Functional Component '" + local + "' does not exist.");
+				throw new SBOLValidationException("sbol-10804",this);
 			}
 		} else if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(local)==null) {
-				throw new IllegalArgumentException("Component '" + local + "' does not exist.");
+				throw new SBOLValidationException("sbol-10803",this);
 			}
 		}
 		this.local = local;
@@ -187,35 +187,35 @@ public class MapsTo extends Identified{
 	 *
 	 * @param remote refers to the first “lower level” ComponentInstance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws IllegalArgumentException if the given {@code remote} argument is {@code null}
-	 * @throws IllegalArgumentException if the given {@code remote} argument is not found in
+	 * @throws SBOLValidationException if the given {@code remote} argument is {@code null}
+	 * @throws SBOLValidationException if the given {@code remote} argument is not found in
 	 * the list of functional components that are owned by the ModuleDefinition instance that
 	 * this MapsTo object's parent Module instance refers to.
-	 * @throws IllegalArgumentException if the given {@code remote} argument refers to a FunctionalComponent
+	 * @throws SBOLValidationException if the given {@code remote} argument refers to a FunctionalComponent
 	 * with {@code private} access type that is owned by the ModuleDefinition instance that
 	 * this MapsTo object's parent Module instance refers to.
 	 */
-	public void setRemote(URI remote) {
+	public void setRemote(URI remote) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (remote==null) {
-			throw new IllegalArgumentException("MapsTo "+this.getIdentity()+" must specify a remote component.");
+			throw new SBOLValidationException("sbol-10805", this);
 		}
 		if (module!=null) {
 			if (module.getDefinition()!=null) {
 				if (module.getDefinition().getFunctionalComponent(remote)==null) {
-					throw new IllegalArgumentException("Functional Component '" + remote + "' does not exist.");
+					throw new SBOLValidationException("sbol-10809",this);
 				}
 				if (module.getDefinition().getFunctionalComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
-					throw new IllegalArgumentException("Functional Component '" + remote + "' is private.");
+					throw new SBOLValidationException("sbol-10807",this);
 				}
 			}
 		} else if (componentInstance!=null) {
 			if (componentInstance.getDefinition()!=null) {
 				if (componentInstance.getDefinition().getComponent(remote)==null) {
-					throw new IllegalArgumentException("Component '" + remote + "' does not exist.");
+					throw new SBOLValidationException("sbol-10808",this);
 				}
 				if (componentInstance.getDefinition().getComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
-					throw new IllegalArgumentException("Component '" + remote + "' is private.");
+					throw new SBOLValidationException("sbol-10807",this);
 				}
 			}
 		}
@@ -257,15 +257,16 @@ public class MapsTo extends Identified{
 	}
 
 	@Override
-	protected MapsTo deepCopy() {
+	protected MapsTo deepCopy() throws SBOLValidationException {
 		return new MapsTo(this);
 	}
 
 	/**
 	 * Assume this MapsTo object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link Component#updateCompliantURI(String, String, String)}.
+	 * @throws SBOLValidationException 
 	 */
-	void updateCompliantURI(String URIprefix, String displayId, String version) {
+	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
 			this.setWasDerivedFrom(this.getIdentity());
 		}

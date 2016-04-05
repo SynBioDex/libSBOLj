@@ -32,6 +32,7 @@ public class OBOOntology extends OBOStanza {
 		}
 	}
 	
+	@Override
 	public void print(PrintWriter w) { 
 		for(String id : stanzas.keySet()) { 
 			stanzas.get(id).print(w);

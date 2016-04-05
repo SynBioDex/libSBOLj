@@ -14,8 +14,10 @@ class NamedRelation implements OBORelation {
 	}
 	
 	public String getName() { return name; }
+	@Override
 	public String toString() { return name; }
 
+	@Override
 	public void generateOBO(PrintStream ps) {
 		ps.println(String.format("[Typedef]"));
 		ps.println(String.format("id: %s", name));

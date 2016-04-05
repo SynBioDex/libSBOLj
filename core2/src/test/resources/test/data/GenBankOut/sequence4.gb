@@ -1,0 +1,507 @@
+LOCUS       L00727                 11613 bp    DNA     linear   PRI 07-SEP-1995
+DEFINITION  Human myotonin protein kinase (Mt-PK) gene, complete cds.
+ACCESSION   L00727
+VERSION     L00727.1  GI:190415
+KEYWORDS    .
+SOURCE      Homo sapiens (human)
+  ORGANISM  Homo sapiens Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; 
+            Euteleostomi; Mammalia; Eutheria; Euarchontoglires; Primates; 
+            Haplorrhini; Catarrhini; Hominidae; Homo.
+REFERENCE   1  (bases 1 to 11613)
+  AUTHORS   Fu,Y.-H., Friedman,D.L., Richards,S., Pearlman,J.A., Gibbs,R.A., 
+            Pizzuti,A., Ashizawa,T., Perryman,M.B., Scarlato,G., Fenwick,R.G. 
+            Jr. and Caskey,C.T.
+  TITLE     Decreased expression of myotonin-protein kinase messenger RNA and 
+            protein in adult form of myotonic dystrophy
+  JOURNAL   Science 260 (5105), 235-238 (1993)
+   PUBMED   8469976
+REFERENCE   2  (sites)
+  AUTHORS   Fu,Y.-H., Pizzuti,A., Fenwick,R.G. Jr., King,J., Rajnarayan,S., 
+            Dunne,P.W., Dubel,J., Nasser,G.A., Ashizawa,T., de Jong,P., 
+            Wieringa,B., Korneluk,R., Perryman,M.B., Epstein,H.F. and 
+            Caskey,C.T.
+  TITLE     An unstable triplet repeat in a gene related to myotonic muscular 
+            dystrophy
+  JOURNAL   Science 255 (5049), 1256-1258 (1992)
+   PUBMED   1546326
+FEATURES             Location/Qualifiers
+     source          1..11613
+                     /organism="Homo sapiens"
+                     /mol_type="genomic DNA"
+                     /db_xref="taxon:9606"
+                     /chromosome="19"
+                     /map="19q13.2"
+                     /clone="cosmid MDY1"
+                     /tissue_lib="St. Louis"
+     gene            1310..11188
+                     /gene="Mt-PK"
+     mRNA            join(1310..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
+                     271..9368,9540..9586,9876..9965,10296..11188)
+                     /gene="Mt-PK"
+                     /note="alternatively spliced Form I mRNA; exons 
+                     werepositioned according to M87312; I and III are the 
+                     majorforms in most tissues except fetal and newborn muscle"
+                     "
+     mRNA            join(1310..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
+                     271..9368,10296..11188)
+                     /gene="Mt-PK"
+                     /product="alternatively spliced Form VIII mRNA"
+     mRNA            join(1310..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4040..4246,4322..4570,5901..5986,8184..8295,9008..9165,9
+                     271..9368,9540..9586,9876..9965,10296..11188)
+                     /gene="Mt-PK"
+                     /product="alternatively spliced Form VI mRNA"
+     mRNA            join(1310..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
+                     271..9368,9540..9586,10296..11188)
+                     /gene="Mt-PK"
+                     /product="alternatively spliced Form VII mRNA"
+     mRNA            join(1310..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4190..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
+                     271..9368,9540..9586,9876..9965,10296..11188)
+                     /gene="Mt-PK"
+                     /product="alternatively spliced Form V mRNA"
+     exon            1310..2135
+                     /gene="Mt-PK"
+                     /note="Form I,V,VI,VII,VIII mRNA"
+     exon            1310..1699
+                     /gene="Mt-PK"
+                     /note="Form II mRNA"
+     mRNA            join(1310..1699,2044..2135,2391..2474,2554..2649,3272..342
+                     0,3693..3786,4040..4246,4322..4585,5901..5986,8184..8295,9
+                     008..9165,9271..9368,9540..9586,9876..9965,10296..11188)
+                     /gene="Mt-PK"
+                     /product="alternatively spliced Form II mRNA"
+     exon            1310..1590
+                     /gene="Mt-PK"
+                     /note="Form III mRNA"
+     mRNA            join(1310..1590,2044..2135,2391..2474,2554..2649,3272..342
+                     0,3693..3786,4040..4246,4322..4585,5901..5986,8184..8295,9
+                     008..9165,9271..9368,9540..9586,9876..9965,10296..11188)
+                     /gene="Mt-PK"
+                     /product="alternatively spliced Form III mRNA"
+     exon            1310..1418
+                     /gene="Mt-PK"
+                     /note="Form IV mRNA"
+     mRNA            join(1310..1418,1532..1590,2044..2135,2391..2474,2554..264
+                     9,3272..3420,3693..3786,4040..4246,4322..4585,5901..5986,8
+                     184..8295,9008..9165,9271..9368,9540..9586,9876..9965,1029
+                     6..11188)
+                     /gene="Mt-PK"
+                     /note="alternatively spliced Form IV mRNA, the major 
+                     formin fetal and newborn muscle"
+     exon            1532..1590
+                     /gene="Mt-PK"
+                     /note="Form IV mRNA"
+     CDS             join(1854..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4190..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
+                     271..9368,9540..9586,9876..9965,10296..10448)
+                     /gene="Mt-PK"
+                     /note="The Form V mRNA product has a 50 residue 
+                     deletioncompared to Form I"
+                     /codon_start=1
+                     /product="myotonin-protein kinase, Form V"
+                     /protein_id="AAA75235.1"
+                     /db_xref="GI:976143"
+                     /translation="MGGHFWPPEPYTVFMWGSPWEADSPRVKLRGREKGRQTEGGAFP
+                     LVSSALSGDPRFFSPTTPPAEPIVVRLKEVRLQRDDFEILKVIGRGAFSEVAVVKMKQ
+                     TGQVYAMKIMNKWDMLKRGEVSCFREERDVLVNGDRRWITQLHFAFQDENYLYLVMEY
+                     YVGGDLLTLLSKFGERIPAEMARFYLAEIVMAIDSVHRLGYVHRDIKPDNILLDRCGH
+                     IRLADFGSCLKLRADGTTPFYADSTAETYGKIVHYKEHLSLPLVDEGVPEEARDFIQR
+                     LLCPPETRLGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTCNFDLVEDGL
+                     TAMVSGGGETLSDIREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEVEAEQLLEPH
+                     VQAPSLEPSVSPQDETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLTRQSLSREME
+                     AIRTDNQNFASQLREAEARNRDLEAHVRQLQERMELLQAEGATAVTGVPSPRATDPPS
+                     HLDGPPAVAVGQCPLVGPGPMHRRHLLLPARVPRPGLSEALSLLLFAVVLSRAAALGC
+                     IGLVAHAGQLTAVWRRPGAARAP"
+     CDS             join(1854..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
+                     271..9368,9540..9586,10296..10448)
+                     /gene="Mt-PK"
+                     /note="The Form VII mRNA product has a 30 residue 
+                     deletioncompared to Form I"
+                     /codon_start=1
+                     /product="myotonin-protein kinase, Form VII"
+                     /protein_id="AAA75238.1"
+                     /db_xref="GI:976146"
+                     /translation="MGGHFWPPEPYTVFMWGSPWEADSPRVKLRGREKGRQTEGGAFP
+                     LVSSALSGDPRFFSPTTPPAEPIVVRLKEVRLQRDDFEILKVIGRGAFSEVAVVKMKQ
+                     TGQVYAMKIMNKWDMLKRGEVSCFREERDVLVNGDRRWITQLHFAFQDENYLYLVMEY
+                     YVGGDLLTLLSKFGERIPAEMARFYLAEIVMAIDSVHRLGYVHRDIKPDNILLDRCGH
+                     IRLADFGSCLKLRADGTVRSLVAVGTPDYLSPEILQAVGGGPGTGSYGPECDWWALGV
+                     FAYEMFYGQTPFYADSTAETYGKIVHYKEHLSLPLVDEGVPEEARDFIQRLLCPPETR
+                     LGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTCNFDLVEDGLTAMVSGGG
+                     ETLSDIREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEVEAEQLLEPHVQAPSLEP
+                     SVSPQDETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLTRQSLSREMEAIRTDNQN
+                     FASQLREAEARNRDLEAHVRQLQERMELLQAEGATAVTGVPSPRATDPPSHVPRPGLS
+                     EALSLLLFAVVLSRAAALGCIGLVAHAGQLTAVWRRPGAARAP"
+     CDS             join(1854..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
+                     271..9368,9540..9586,9876..9965,10296..10448)
+                     /gene="Mt-PK"
+                     /note="Form I mRNA"
+                     /codon_start=1
+                     /product="myotonin-protein kinase, Form I"
+                     /protein_id="AAA75236.1"
+                     /db_xref="GI:976144"
+                     /translation="MGGHFWPPEPYTVFMWGSPWEADSPRVKLRGREKGRQTEGGAFP
+                     LVSSALSGDPRFFSPTTPPAEPIVVRLKEVRLQRDDFEILKVIGRGAFSEVAVVKMKQ
+                     TGQVYAMKIMNKWDMLKRGEVSCFREERDVLVNGDRRWITQLHFAFQDENYLYLVMEY
+                     YVGGDLLTLLSKFGERIPAEMARFYLAEIVMAIDSVHRLGYVHRDIKPDNILLDRCGH
+                     IRLADFGSCLKLRADGTVRSLVAVGTPDYLSPEILQAVGGGPGTGSYGPECDWWALGV
+                     FAYEMFYGQTPFYADSTAETYGKIVHYKEHLSLPLVDEGVPEEARDFIQRLLCPPETR
+                     LGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTCNFDLVEDGLTAMVSGGG
+                     ETLSDIREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEVEAEQLLEPHVQAPSLEP
+                     SVSPQDETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLTRQSLSREMEAIRTDNQN
+                     FASQLREAEARNRDLEAHVRQLQERMELLQAEGATAVTGVPSPRATDPPSHLDGPPAV
+                     AVGQCPLVGPGPMHRRHLLLPARVPRPGLSEALSLLLFAVVLSRAAALGCIGLVAHAG
+                     QLTAVWRRPGAARAP"
+     CDS             join(1854..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4040..4246,4322..4570,5901..5986,8184..8295,9008..9165,9
+                     271..9368,9540..9586,9876..9965,10296..10448)
+                     /gene="Mt-PK"
+                     /note="The Form VI mRNA product has a 5 residue 
+                     deletioncompared to Form I"
+                     /codon_start=1
+                     /product="myotonin-protein kinase, Form VI"
+                     /protein_id="AAA75239.1"
+                     /db_xref="GI:976147"
+                     /translation="MGGHFWPPEPYTVFMWGSPWEADSPRVKLRGREKGRQTEGGAFP
+                     LVSSALSGDPRFFSPTTPPAEPIVVRLKEVRLQRDDFEILKVIGRGAFSEVAVVKMKQ
+                     TGQVYAMKIMNKWDMLKRGEVSCFREERDVLVNGDRRWITQLHFAFQDENYLYLVMEY
+                     YVGGDLLTLLSKFGERIPAEMARFYLAEIVMAIDSVHRLGYVHRDIKPDNILLDRCGH
+                     IRLADFGSCLKLRADGTVRSLVAVGTPDYLSPEILQAVGGGPGTGSYGPECDWWALGV
+                     FAYEMFYGQTPFYADSTAETYGKIVHYKEHLSLPLVDEGVPEEARDFIQRLLCPPETR
+                     LGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTCNFDLVEDGLTAMETLSD
+                     IREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEVEAEQLLEPHVQAPSLEPSVSPQ
+                     DETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLTRQSLSREMEAIRTDNQNFASQL
+                     REAEARNRDLEAHVRQLQERMELLQAEGATAVTGVPSPRATDPPSHLDGPPAVAVGQC
+                     PLVGPGPMHRRHLLLPARVPRPGLSEALSLLLFAVVLSRAAALGCIGLVAHAGQLTAV
+                     WRRPGAARAP"
+     CDS             join(1854..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
+                     271..9368,10296..10303)
+                     /gene="Mt-PK"
+                     /note="The Form VIII mRNA product terminates 
+                     immediatelyafter the final splice acceptor and is missing 
+                     a predictedCOOH-transmembrane domain found in Form I"
+                     /codon_start=1
+                     /product="myotonin-protein kinase, Form VIII"
+                     /protein_id="AAA75237.1"
+                     /db_xref="GI:976145"
+                     /translation="MGGHFWPPEPYTVFMWGSPWEADSPRVKLRGREKGRQTEGGAFP
+                     LVSSALSGDPRFFSPTTPPAEPIVVRLKEVRLQRDDFEILKVIGRGAFSEVAVVKMKQ
+                     TGQVYAMKIMNKWDMLKRGEVSCFREERDVLVNGDRRWITQLHFAFQDENYLYLVMEY
+                     YVGGDLLTLLSKFGERIPAEMARFYLAEIVMAIDSVHRLGYVHRDIKPDNILLDRCGH
+                     IRLADFGSCLKLRADGTVRSLVAVGTPDYLSPEILQAVGGGPGTGSYGPECDWWALGV
+                     FAYEMFYGQTPFYADSTAETYGKIVHYKEHLSLPLVDEGVPEEARDFIQRLLCPPETR
+                     LGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTCNFDLVEDGLTAMVSGGG
+                     ETLSDIREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEVEAEQLLEPHVQAPSLEP
+                     SVSPQDETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLTRQSLSREMEAIRTDNQN
+                     FASQLREAEARNRDLEAHVRQLQERMELLQAEGATGP"
+     exon            2044..2135
+                     /gene="Mt-PK"
+                     /note="Form II,III,and IV mRNA"
+     exon            2391..2474
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VI,VII,VIII mRNA"
+     CDS             join(2406..2474,2554..2649,3272..3420,3693..3786,4040..424
+                     6,4322..4585,5901..5986,8184..8295,9008..9165,9271..9368,9
+                     540..9586,9876..9965,10296..10448)
+                     /gene="Mt-PK"
+                     /note="Form II,III,IV mRNA products each are missing 
+                     the99 residues from the N-terminus of Form I"
+                     /codon_start=1
+                     /product="myotonin-protein kinase, Form II,III,IV"
+                     /protein_id="AAA75240.1"
+                     /db_xref="GI:976148"
+                     /translation="MKQTGQVYAMKIMNKWDMLKRGEVSCFREERDVLVNGDRRWITQ
+                     LHFAFQDENYLYLVMEYYVGGDLLTLLSKFGERIPAEMARFYLAEIVMAIDSVHRLGY
+                     VHRDIKPDNILLDRCGHIRLADFGSCLKLRADGTVRSLVAVGTPDYLSPEILQAVGGG
+                     PGTGSYGPECDWWALGVFAYEMFYGQTPFYADSTAETYGKIVHYKEHLSLPLVDEGVP
+                     EEARDFIQRLLCPPETRLGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTC
+                     NFDLVEDGLTAMVSGGGETLSDIREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEV
+                     EAEQLLEPHVQAPSLEPSVSPQDETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLT
+                     RQSLSREMEAIRTDNQNFASQLREAEARNRDLEAHVRQLQERMELLQAEGATAVTGVP
+                     SPRATDPPSHLDGPPAVAVGQCPLVGPGPMHRRHLLLPARVPRPGLSEALSLLLFAVV
+                     LSRAAALGCIGLVAHAGQLTAVWRRPGAARAP"
+     exon            2554..2649
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VI,VII,VIII mRNA"
+     exon            3272..3420
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VI,VII,VIII mRNA"
+     exon            3693..3786
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VI,VII,VIII mRNA"
+     exon            4040..4246
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,VI,VII,VIII mRNA"
+     exon            4190..4246
+                     /gene="Mt-PK"
+                     /note="Form V mRNA"
+     exon            4322..4585
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VII,VIII mRNA"
+     exon            4322..4570
+                     /gene="Mt-PK"
+                     /note="Form VI mRNA"
+     repeat_region   5153..5434
+                     /rpt_family="Alu-J"
+                     /rpt_type=dispersed
+     repeat_region   5469..5772
+                     /rpt_family="Alu-Sc"
+                     /rpt_type=dispersed
+     exon            5901..5986
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VI,VII,VIII mRNA"
+     repeat_region   6363..6373
+                     /rpt_type=direct
+     repeat_region   6374..6674
+                     /rpt_family="Alu-Sb"
+                     /rpt_type=dispersed
+     repeat_region   6386..6980
+                     /rpt_family="Alu-Sp"
+                     /rpt_type=dispersed
+     repeat_region   6675..6685
+                     /rpt_type=direct
+     repeat_region   6981..6993
+                     /rpt_type=direct
+     repeat_region   6994..7274
+                     /rpt_family="Alu-J"
+                     /rpt_type=dispersed
+     repeat_region   7275..7286
+                     /rpt_type=direct
+     misc_feature    7715..8045
+                     /gene="Mt-PK"
+                     /note="similar to EST sequence in GenBank Accession 
+                     NumberH04589"
+     misc_feature    7878..7946
+                     /gene="Mt-PK"
+                     /note="sequence not found in GenBank Accesssion 
+                     NumberL08835"
+     exon            8184..8295
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VI,VII,VIII mRNA"
+     exon            9008..9165
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VI,VII,VIII mRNA"
+     exon            9271..9368
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VI,VII,VIII mRNA"
+     exon            9540..9586
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VI,VII mRNA"
+     misc_feature    9571..10953
+                     /gene="Mt-PK"
+                     /note="region previously sequenced; see GenBank 
+                     AccessionNumber M87313"
+     exon            9876..9965
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VI mRNA"
+     exon            10296..11188
+                     /gene="Mt-PK"
+                     /note="Form I,II,III,IV,V,VI,VII,VIII mRNA"
+     repeat_region   10677..10703
+                     /note="9 gct repeats in this region; expanded 
+                     variantsknown to be present in patients with myotonic 
+                     dystrophy"
+                     /rpt_unit_seq="gct"
+ORIGIN
+        0 ccatggcctc tctgcacccc gcctcagggt cagggtcagg gtcatgctgg gagctccctc
+       60 tcctaggacc ctccccccaa aagtgggctc tatggccctc tcccctggtt tcctgtggcc
+      120 tggggcaagc caggagggcc agcatggggc agctgccagg ggcgcagccg acaggcaggt
+      180 gttcggcgcc agcctctcca gctgccccaa caggtgccca ggcgctggga gggcggtgac
+      240 tcacgcgggc cctgtgggag aaccagcttt gcagacaggc gccaccagtg ccccctcctc
+      300 tgcgatccag gagggacaac tttgggttct tctgggtgtg tctccttctt ttgtaggttc
+      360 tgcacccacc cccaccccca gccccaaagt ctcggttcct atgagccgtg tgggtcagcc
+      420 accattcccg ccaccccggg tccctgcgtc ctttagttct cctggcccag ggcctccaac
+      480 cttccagctg tcccacaaaa ccccttcttg caagggcttt ccagggcctg gggccagggc
+      540 tggaaggagg atgcttccgc ttctgccagc tgccttgtct gcccacctcc tccccaagcc
+      600 caggactcgg gctcactggt cactggtttc tttcattccc agcaccctgc tcctctggcc
+      660 ctcatatgtc tggccctcag tgactggtgt ttggtttttg gcctgtgtgt aacaaactgt
+      720 gtgtgacact tgtttcctgt ttctccgcct tcccctgctt cctcttgtgt ccatctcttt
+      780 ctgacccagg cctggttcct ttccctcctc ctcccatttc acagatggga aggtggcggc
+      840 caagaagggc caggccattc agcctctgga aaaaccttct cccaacctcc cacagcccct
+      900 aatgactctc ctggcctccc tttagtagag gatgaagttg ggttggcagg gtaaactgag
+      960 accgggtggg gtaggggtct ggcgctcccg ggaggagcac tccttttgtg gcccgagctg
+     1020 catctcgcgg cccctcccct gcaaggcctg gggcggggga gggggccagg gttcctgctg
+     1080 ccttaaaagg gctcaatgtc ttggctctct cctccctccc ccgtcctcag ccctggctgg
+     1140 ttcgtccctg ctggcccact ctcccggaac cccccggaac ccctctcttt cctccagaac
+     1200 ccactgtctc ctctccttcc ctcccctccc atacccatcc ctctctccat cctgcctcca
+     1260 cttcttccac ccccgggagt ccaggcctcc ctgtccccac agtccctgag ccacaagcct
+     1320 ccaccccagc tggtccccca cccaggctgc ccagtttaac attcctagtc ataggacctt
+     1380 gacttctgag aggcctgatt gtcatctgta aataaggggt aggactaaag cactcctcct
+     1440 ggaggactga gagatgggct ggaccggagc acttgagtct gggatatgtg accatgctac
+     1500 ctttgtctcc ctgtcctgtt ccttccccca gccccaaatc cagggttttc caaagtgtgg
+     1560 ttcaagaacc acctgcatct gaatctagag gtactggata caaccccacg tctgggccgt
+     1620 tacccaggac attctacatg agaacgtggg ggtggggccc tggctgcacc tgaactgtca
+     1680 cctggagtca gggtggaagg tggaagaact gggtcttatt tccttctccc cttgttcttt
+     1740 agggtctgtc cttctgcaga ctccgttacc ccaccctaac catcctgcac acccttggag
+     1800 ccctctgggc caatgccctg tcccgcaaag ggcttctcag gcatctcacc tctatgggag
+     1860 ggcatttttg gcccccagaa ccttacacgg tgtttatgtg gggaagcccc tgggaagcag
+     1920 acagtcctag ggtgaagctg agaggcagag agaaggggag acagacagag ggtggggctt
+     1980 tcccccttgt ctccagtgcc ctttctggtg accctcggtt cttttccccc accacccccc
+     2040 cagcggagcc catcgtggtg aggcttaagg aggtccgact gcagagggac gacttcgaga
+     2100 ttctgaaggt gatcggacgc ggggcgttca gcgaggtaag ccgaaccggg cgggagcctg
+     2160 acttgactcg tggtgggcgg ggcatagggg ttggggcggg gccttagaaa ttgatgaatg
+     2220 accgagcctt agaacctagg gctgggctgg aggcggggct tgggaccaat gggcgtggtg
+     2280 tggcaggtgg ggcggggcca cggctgggtg cagaagcggg tggagttggg tctgggcgag
+     2340 cccttttgtt ttcccgccgt ctccactctg tctcactatc tcgacctcag gtagcggtag
+     2400 tgaagatgaa gcagacgggc caggtgtatg ccatgaagat catgaacaag tgggacatgc
+     2460 tgaagagggg cgaggtgagg ggctgggcgg acgtgggggg ctttgaggat ccgcgccccg
+     2520 tctccggctg cagctcctcc gggtgccctg caggtgtcgt gcttccgtga ggagagggac
+     2580 gtgttggtga atggggaccg gcggtggatc acgcagctgc acttcgcctt ccaggatgag
+     2640 aactacctgg tgagctccgg gccgggggga ctaggaagag ggacaagagc ccgtgctgtc
+     2700 actggacgag gaggtgggga gaggaagctc taggattggg ggtgctgccc ggaaacgtct
+     2760 gtgggaaagt ctgtgtgcgg taagagggtg tgtcaggtgg atgaggggcc ttccctatct
+     2820 gagacgggga tggtgtcctt cactgcccgt ttctggggtg atctggggga ctcttataaa
+     2880 gatgtctctg ttgcgggggg tctcttacct ggaatgggat aggtcttcag gaattctaac
+     2940 ggggccactg cctagggaag gagtgtctgg gacctattct ctgggtgttg ggtggcctct
+     3000 gggttctctt tcccagaaca tctcaggggg agtgaatctg cccagtgaca tcccaggaaa
+     3060 gtttttttgt ttgtgttttt ttttgagggg cgggggcggg ggccgcaggt ggtctctgat
+     3120 ttggcccggc agatctctat ggttatctct gggctggggc tgcaggtctc tgcccaagga
+     3180 tggggtgtct ctgggagggg ttgtcccagc catccgtgat ggatcagggc ctcaggggac
+     3240 taccaaccac ccatgacgaa ccccttctca gtacctggtc atggagtatt acgtgggcgg
+     3300 ggacctgctg acactgctga gcaagtttgg ggagcggatt ccggccgaga tggcgcgctt
+     3360 ctacctggcg gagattgtca tggccataga ctcggtgcac cggcttggct acgtgcacag
+     3420 gtgggcgcag catggccgag gggatagcaa gcttgttccc tggccgggtt cttggaaggt
+     3480 cagagcccag agaggccagg gcctggagag ggaccttctt ggttggggcc caccgggggg
+     3540 tgcctgggag taggggtcag aactgtagaa gccctacagg ggcggaaccc gaggaagtgg
+     3600 ggtcccaggt ggcactgccc ggaggggcgg agcctggtgg gaccacagaa gggaggttca
+     3660 tttatcccac ccttctcttt tcctccgtgc agggacatca aacccgacaa catcctgctg
+     3720 gaccgctgtg gccacatccg cctggccgac ttcggctctt gcctcaagct gcgggcagat
+     3780 ggaacggtga gccagtgccc tggccacaga gcaactgggg ctgctgatga gggatggaag
+     3840 gcacagagtg tgggagcggg actggatttg gaggggaaaa gaggtggtgt gacccaggct
+     3900 taagtgtgca tctgtgtggc ggagtattag accaggcaga gggaggggct aagcatttgg
+     3960 ggagtggttg gaaggagggc ccagagctgg tgggcccaga ggggtgggcc caagcctcgc
+     4020 tctgctcctt ttggtccagg tgcggtcgct ggtggctgtg ggcaccccag actacctgtc
+     4080 ccccgagatc ctgcaggctg tgggcggtgg gcctgggaca ggcagctacg ggcccgagtg
+     4140 tgactggtgg gcgctgggtg tattcgccta tgaaatgttc tatgggcaga cgcccttcta
+     4200 cgcggattcc acggcggaga cctatggcaa gatcgtccac tacaaggtga gcacggccgc
+     4260 agggagacct ggcctctccc ggtaggcgct cccagctatc gcctcctctc cctctgagca
+     4320 ggagcacctc tctctgccgc tggtggacga aggggtccct gaggaggctc gagacttcat
+     4380 tcagcggttg ctgtgtcccc cggagacacg gctgggccgg ggtggagcag gcgacttccg
+     4440 gacacatccc ttcttctttg gcctcgactg ggatggtctc cgggacagcg tgcccccctt
+     4500 tacaccggat ttcgaaggtg ccaccgacac atgcaacttc gacttggtgg aggacgggct
+     4560 cactgccatg gtgagcgggg gcggggtagg tacctgtggc ccctgctcgg ctgcgggaac
+     4620 ctccccatgc tccctccata aagttggagt aaggacagtg cctaccttct ggggtcctga
+     4680 atcactcatt ccccagagca cctgctctgt gcccatctac tactgaggac ccagcagtga
+     4740 cctagactta cagtccagtg ggggaacaca gagcagtctt cagacagtaa ggccccagag
+     4800 tgatcagggc tgagacaatg gagtgcaggg ggtgggggac tcctgactca gcaaggaagg
+     4860 tcctggaggg ctttctggag tggggagcta tctgagctga gacttggagg gatgagaagc
+     4920 aggagaggac tcctcctccc ttaggccgtc tctcttcacc gtgtaacaag ctgtcatggc
+     4980 atgcttgctc ggctctgggt gcccttttgc tgaacaatac tggggatcca gcacggacca
+     5040 gatgagctct ggtccctgcc ctcatccagt tgcagtctag agaattagag aattatggag
+     5100 agtgtggcag gtgccctgaa gggaagcaac aggatacaag aaaaaatgat ggggccaggc
+     5160 acggtgctca cgcctgtaac cccagcaatt tggcaggccg aagtgggtgg attgcttgag
+     5220 cccaggagtt cgagaccagc ctgggcaatg tggtgagacc cccgtctcta caaaaatgtt
+     5280 ttaaaaattg gttgggcgtg gtggcgcatg cctgtatact cagctactag ggtggccgac
+     5340 gtgggcttga gcccaggagg tcaaggctgc agtgagctgt gattgtgcca ctgcactcca
+     5400 gcctgggcaa cggagagaga ctctgtctca aaaataagat aaactgaaat taaaaaatag
+     5460 gctgggctgg ccgggcgtgg tggctcacgc ctgtaatctc agcactttgg gaggccgagg
+     5520 cgggtggatc acgaggtcag aagatggaga ccagcctggc cagcgtggcg aaaccccgtc
+     5580 tctaccaaaa atataaaaaa ttagccaggc gtggtagagg gcgcctgtaa tctcagctac
+     5640 tcaggacgct gaggcaggag aatcgcctga acctgggagg cggaggttgc agtgagctga
+     5700 gattgcacca ctgcactcca gcctgggtaa cagagcgaga ctccgtatca aagaaaaaga
+     5760 aaaaagaaaa aatgctggag gggccacttt agataagccc tgagttgggg ctggtttggg
+     5820 gggaacatgt aagccaagat caaaaagcag tgaggggccc gccctgacga ctgctgctca
+     5880 catctgtgtg tcttgcgcag gagacactgt cggacattcg ggaaggtgcg ccgctagggg
+     5940 tccacctgcc ttttgtgggc tactcctact cctgcatggc cctcaggtaa gcactgccct
+     6000 ggacggcctc caggggccac gaggctgctt gagcttcctg ggtcctgctc cttggcagcc
+     6060 aatggagttg caggatcagt cttggaacct tactgttttg ggcccaaaga ctcctaagag
+     6120 gccagagttg gaggacctta aattttcaga tctatgtact tcaaaatgtt agattgaatt
+     6180 ttaaaacctc agagtcacag actgggcttc ccagaatctt gtaaccatta acttttacgt
+     6240 ctgtagtaca cagagccaca ggacttcaga acttggaaaa tatgaagttt agacttttac
+     6300 aatcagttgt aaaagaatgc aaattctttg aatcagccat ataacaataa ggccatttaa
+     6360 aagtattaat ttaggcgggc cgcggtggct cacgcctgta atcctagcac tttgggaggc
+     6420 caaggcaggt ggatcatgag gtcaggagat cgagaccatc ctggctaaca cggtgaaacc
+     6480 ccgtctctac taaaaataca aaaaaattag ccgggcatgg tggcgggcgc ttgcggtccc
+     6540 agctacttgg gaggcgaggc aggagaatgg catgaacccg ggaggcggag cttgcagtga
+     6600 gccgagatca tgccactgca ctccagcctg ggcgacagag caagactccg tctcaaaaaa
+     6660 aaaaaaaaaa aaagtattta tttaggccgg gtgtggtggc tcacgcctgt aattccagtg
+     6720 ctttgggagg atgaggtggg tggatcacct gaggtcagga gttcgagacc agcctgacca
+     6780 acgtggagaa acctcatctc tactaaaaaa caaaattagc caggcatggt ggcatatacc
+     6840 tgtaatccca gctactcagg aggctgaggc aggagaatca gaacccagga gggggaggtt
+     6900 gtggttagct gagatcgtgc cattgcattc cagcctgggc aacaagagtg aaacttcatc
+     6960 tcaaaaaaaa aaaaaaaaaa gtactaattt acaggctggg catggtggct cacgcttgga
+     7020 atcccagcac tttgggaggc tgaagtggac ggattgcttc agcccaggag ttcaagacca
+     7080 gcctgagcaa cataatgaga ccctgtctct acaaaaaatt gaaaaaatcg tgccaggcat
+     7140 ggtggtctgt gcctgcagtc ctagctactc aggagtctga agtaggagaa tcacttgagc
+     7200 ctggagtttg aggcttcagt gagccatgat agattccagc ctaggcaaca aagtgagacc
+     7260 tggtctcaac aaaagtatta attacacaaa taatgcattg cttatcacaa gtaaattaga
+     7320 aaatacagat aaggaaaagg aagttgatat ctcgtgagct caccagatgg cagtggtccc
+     7380 tggctcacac gtgtactgac acatgtttaa atagtggaga acaggtgttt ttttggtttg
+     7440 tttttttccc cttcctcatg ctactttgtc taagagaaca gttggttttc tagtcagctt
+     7500 ttattactgg acaacattac acatactata ccttatcatt aatgaactcc agcttgattc
+     7560 tgaaccgctg cggggcctga acggtgggtc aggattgaac ccatcctcta ttagaaccca
+     7620 ggcgcatgtc caggatagct aggtcctgag ccgtgttccc acaggaggga ctgctgggtt
+     7680 ggaggggaca gccacttcat accccaggga ggagctgtcc ccttcccaca gctgagtggg
+     7740 gtgtgctgac ctcaagttgc catcttgggg tcccatgccc agtcttagga ccacatctgt
+     7800 ggaggtggcc agagccaagc agtctcccca tcaggtcggc ctccctgtcc tgaggccctg
+     7860 agaagagggg tctgcagcgg tcacatgtca agggaggaga tgagctgacc ctagaacatg
+     7920 ggggtctgga ccccaagtcc ctgcagaagg tttagaaaga gcagctccca ggggcccaag
+     7980 gccaggagag gggcagggct tttcctaagc agaggagggg ctattggcct acctgggact
+     8040 ctgttctctt cgctctgctg ctccccttcc tcaaatcagg aggtcttgga agcagctgcc
+     8100 cctacccaca ggccagaagt tctggttctc caccagataa tcagcattct gtctccctcc
+     8160 ccactccctc ctcctctccc cagggacagt gaggtcccag gccccacacc catggaagtg
+     8220 gaggccgagc agctgcttga gccacacgtg caagcgccca gcctggagcc ctcggtgtcc
+     8280 ccacaggatg aaacagtaag ttggtggagg ggagggggtc cgtcagggac aattgggaga
+     8340 gaaaaggtga gggcttcccg ggtggcgtgc actgtagagc cctctaggga cttcctgaac
+     8400 agaagcagac agaaaccacg gagagacgag gttacttcag acatgggacg gtctctgtag
+     8460 ttacagtggg gcattaagta agggtgtgtg tgttgctggg gatctgagaa gtcgatcttt
+     8520 gagctgagcg ctggtgaagg agaaacaagc catggaagga aaggtgccaa gtggtcaggc
+     8580 gagagcctcc agggcaaagg ccttgggcag gtgggaatcc tgatttgttc ctgaaaggta
+     8640 gtttggctga atcattcctg agaaggctgg agaggccagc aggaaacaaa acccagcaag
+     8700 gccttttgtc gtgagggcat tagggagctg gagggatttt gagcagcaga gggacatagg
+     8760 ttgtgttagt gtttgagcac cagccctctg gtccctgtgt agatttagag gaccagactc
+     8820 agggatgggg ctgagggagg tagggaaggg agggggcttg gatcattgca ggagctatgg
+     8880 ggattccaga aatgttgagg ggacggagga gtaggggata aacaaggatt cctagcctgg
+     8940 aaccagtgcc caagtcctga gtcttccagg agccacaggc agccttaagc ctggtcccca
+     9000 tacacaggct gaagtggcag ttccagcggc tgtccctgcg gcagaggctg aggccgaggt
+     9060 gacgctgcgg gagctccagg aagccctgga ggaggaggtg ctcacccggc agagcctgag
+     9120 ccgggagatg gaggccatcc gcacggacaa ccagaacttc gccaggtcgg gatcggggcc
+     9180 ggggccgggg ccgggatgcg ggccggtggc aacccttggc agcccctctc gtccggcccg
+     9240 gacggactca ccgtccttac ctccccacag tcaactacgc gaggcagagg ctcggaaccg
+     9300 ggacctagag gcacacgtcc ggcagttgca ggagcggatg gagttgctgc aggcagaggg
+     9360 agccacaggt gagtccctca tgtgtcccct tccccggagg accgggagga ggtgggccgt
+     9420 ctgctccgcg gggcgtgtat agacacctgg aggagggaag ggacccacgc tggggcacgc
+     9480 cgcgccaccg ccctccttcg cccctccacg cgccctatgc ctctttcttc tccttccagc
+     9540 tgtcacgggg gtccccagtc cccgggccac ggatccacct tcccatgtaa gacccctctc
+     9600 tttcccctgc ctcagacctg ctgcccattc tgcagatccc ctccctggct cctggtctcc
+     9660 ccgtccagat atagggctca ccctacgtct ttgcgacttt agagggcaga agccctttat
+     9720 tcagccccag atctccctcc gttcaggcct caccagattc cctccgggat ctccctagat
+     9780 aacctcccca acctcgattc cgctcgctgt ctctcgcccc accgctgagg gctgggctgg
+     9840 gctccgatcg ggtcacctgt cccttctctc tccagctaga tggccccccg gccgtggctg
+     9900 tgggccagtg cccgctggtg gggccaggcc ccatgcaccg ccgccacctg ctgctccctg
+     9960 ccagggtacg tccggctgcc cacgcccccc tccgccgtcg cgccccgcgc tccacccgcc
+    10020 ccgtgccacc cgcttagctg cgcatttgcg gggctgggcc cacggcagga gggcggatct
+    10080 tcgggcagcc aatcaacaca ggccgctagg aagcagccaa tgacgagttc ggacgggatt
+    10140 cgaggcgtgc gagtggacta acaacagctg taggctgttg gggcgggggc ggggcgcagg
+    10200 gaagagtgcg ggcccaccta tgggcgtagg cggggcgagt cccaggagcc aatcagaggc
+    10260 ccatgccggg tgttgacctc gccctctccc cgcaggtccc taggcctggc ctatcggagg
+    10320 cgctttccct gctcctgttc gccgttgttc tgtctcgtgc cgccgccctg ggctgcattg
+    10380 ggttggtggc ccacgccggc caactcaccg cagtctggcg ccgcccagga gccgcccgcg
+    10440 ctccctgaac cctagaactg tcttcgactc cggggccccg ttggaagact gagtgcccgg
+    10500 ggcacggcac agaagccgcg cccaccgcct gccagttcac aaccgctccg agcgtgggtc
+    10560 tccgcccagc tccagtcctg tgatccgggc ccgcccccta gcggccgggg agggaggggc
+    10620 cgggtccgcg gccggcgaac ggggctcgaa gggtccttgt agccgggaat gctgctgctg
+    10680 ctgctgctgc tgctgctgct gctgggggga tcacagacca tttctttctt tcggccaggc
+    10740 tgaggccctg acgtggatgg gcaaactgca ggcctgggaa ggcagcaagc cgggccgtcc
+    10800 gtgttccatc ctccacgcac ccccacctat cgttggttcg caaagtgcaa agctttcttg
+    10860 tgcatgacgc cctgctctgg ggagcgtctg gcgcgatctc tgcctgctta ctcgggaaat
+    10920 ttgcttttgc caaacccgct ttttcgggga tcccgcgccc ccctcctcac ttgcgctgct
+    10980 ctcggagccc cagccggctc cgcccgcttc ggcggtttgg atatttattg acctcgtcct
+    11040 ccgactcgct gacaggctac aggaccccca acaaccccaa tccacgtttt ggatgcactg
+    11100 agaccccgac attcctcggt atttattgtc tgtccccacc taggaccccc acccccgacc
+    11160 ctcgcgaata aaaggccctc catctgccca aagctctgga ctccacagtg tccgcggttt
+    11220 gcgttgtggg ccggagctcc gcagcgggcc aatccggagg cgtgtggagg cggccgaagg
+    11280 tctgggagga gctagcggga tgcgaagcgg ccgaatcagg gttgggggag gaaaagccac
+    11340 ggggcggggc tttggcgtcc ggccaatagg agggcgagcg ggccacccgg aggcaccgcc
+    11400 cccgcccagc tgtggcccag ctgtgccacc gagcgtcgag aagagggggc tgggctggca
+    11460 gcgcgcgcgg ccatcctcct tccactgcgc ctgcgcacgc cacgcgcatc cgctcctggg
+    11520 acgcaagctc gagaaaagtt gctgcaaact ttctagcccg ttccccgccc ctcctcccgg
+    11580 ccagacccgc cccccctgcg gagccgggaa ttc
+//

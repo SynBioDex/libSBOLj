@@ -11,9 +11,10 @@ import org.sbolstandard.core2.DirectionType;
 import org.sbolstandard.core2.FunctionalComponent;
 import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.ModuleDefinition;
-import org.sbolstandard.core2.Participation;
 import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLWriter;
+import org.sbolstandard.core2.SystemsBiologyOntology;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 
@@ -46,14 +47,14 @@ public class SimpleModuleDefinition {
 				DirectionType.OUT);
 		
 		Interaction interaction=module.createInteraction("express_GFP", new HashSet<URI>(Arrays.asList(URI.create("Transcription"))));
-		interaction.createParticipation("CDS", cds.getIdentity());
-		interaction.createParticipation("Protein", protein.getIdentity());
+		interaction.createParticipation("CDS", cds.getIdentity(),SystemsBiologyOntology.PROMOTER);
+		interaction.createParticipation("Protein", protein.getIdentity(),SystemsBiologyOntology.PRODUCT);
 		
 			
 		SBOLWriter.write(document,(System.out));	
     }
 	
-	private static void setDefaultNameSpace(SBOLDocument document, String uri)
+	private static void setDefaultNameSpace(SBOLDocument document, String uri) throws SBOLValidationException
 	{
 		if (uri.endsWith("/"))
 		{

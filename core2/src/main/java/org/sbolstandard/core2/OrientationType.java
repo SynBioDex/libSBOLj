@@ -44,16 +44,21 @@ public enum OrientationType {
 	/**
 	 * Convert the specified URI to its corresponding OrientationType instance. 
 	 * @return the corresponding OrientationType instance
+	 * @throws SBOLValidationException 
 	 */
-	static OrientationType convertToOrientationType(URI orientation) {
-		if (orientation.equals(inline)) {
-			return OrientationType.INLINE;
-		} 
-		else if (orientation.equals(reverseComplement)) {
-			return OrientationType.REVERSECOMPLEMENT;
-		}
-		else {
-			throw new IllegalArgumentException("Unknown orientation URI `" + orientation + "'");
+	static OrientationType convertToOrientationType(URI orientation) throws SBOLValidationException {
+		if (orientation != null) {
+			if (orientation.equals(inline)) {
+				return OrientationType.INLINE;
+			} 
+			else if (orientation.equals(reverseComplement)) {
+				return OrientationType.REVERSECOMPLEMENT;
+			}
+			else {
+				throw new SBOLValidationException("sbol-11002");
+			}
+		} else {
+			throw new SBOLValidationException("sbol-11002");
 		}
 	}
 

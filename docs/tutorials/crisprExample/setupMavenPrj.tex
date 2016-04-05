@@ -2,7 +2,7 @@
 project that uses {\tt libSBOLj} in Eclipse, and explain how we use SBOL
 2.0 to represent the function of a state-of-the-art design, namely a
 CRISPR-based repression module Kiani~\textit{et
-  al.}~\cite{kiani2014crispr}. 
+  al.}~\cite{kiani2014crispr} using the Java library. 
 
 \section*{Set up Maven plugins in Eclipse}
 In this section, we describe steps for installing Maven plugins in Eclipse. The Eclipse version used is Luna Service Release 2 (4.4.2). Here are the steps:
@@ -108,17 +108,6 @@ In the popup window shown below, fill in the information for the {\tt libSBOLj} 
 After this dependency is added, Maven automatically brings in the  {\tt libSBOLj-2.0.0.jar} and its dependencies from the Maven Central Repository, and places them under the {\bf Maven Dependencies} directory.
 \begin{center}
   \includegraphics[width=0.8\textwidth]{figures/addMavenDependency3}
-\end{center}
-
-\section*{Add the CRISPR repression model}
-Now we are ready to add the CRISPR model to our project. The model is listed as ``RepressionModel.java''  under the {\tt libSBOLj} examples directory. When the ``crispr'' project was created, two template Java class files ``App.java'' and ``AppTest.java'' were automatically created as shown below. 
-\begin{center}
-  \includegraphics[width=0.8\textwidth]{figures/addCrisprModel1}
-\end{center}
-
-We can modify ``App.java'' to include the CRISPR model. First, remove all lines in ``App.java'' except the first line, which contains its package information. Then copy the full contents of ``RepressionModel.java'' except its package information to ``App.java''. Lastly, rename ``App.java'' to ``RepressionModel.java''. This file should be ready to be executed immediately, and you should be able to see the RDF/XML output in the ``console'' view. A screenshot is shown below. The ``AppTest.java'' can be modified accordingly to serve as a test file for the CRISPR repression model. 
-\begin{center}
-  \includegraphics[width=\textwidth]{figures/addCrisprModel2}
 \end{center}
 
 
