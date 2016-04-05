@@ -42,13 +42,6 @@
     <sbol:language rdf:resource="http://identifiers.org/edam/format_2585"/>
     <sbol:framework rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000062"/>
   </sbol:Model>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/someCompDefCDS/1.0">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDefCDS"/>
-    <sbol:displayId>someCompDefCDS</sbol:displayId>
-    <sbol:version>1.0</sbol:version>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/someCompDef/1.0">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef"/>
     <sbol:displayId>someCompDef</sbol:displayId>
@@ -119,6 +112,13 @@
         <sbol:object rdf:resource="http://www.async.ece.utah.edu/someCompDef/someOtherComponent/1.0"/>
       </sbol:SequenceConstraint>
     </sbol:sequenceConstraint>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/someCompDefCDS/1.0">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDefCDS"/>
+    <sbol:displayId>someCompDefCDS</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
   </sbol:ComponentDefinition>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/someSeq/1.0">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someSeq"/>
