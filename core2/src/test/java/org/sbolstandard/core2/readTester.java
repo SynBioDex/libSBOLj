@@ -45,9 +45,9 @@ public class readTester {
 
 			//SBOLWriter.write(document1, (System.out), SBOLReader.RDFV1);
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			SBOLWriter.write(document1, out, SBOLReader.RDFV1);
+			SBOLWriter.writeV1(document1, out);
 			SBOLDocument document2 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
-			SBOLWriter.write(document2, (System.out), SBOLReader.RDFV1);
+			SBOLWriter.writeV1(document2, (System.out));
 			
 			//			file = readTester.class.getResourceAsStream(path +filenameV1_14);
 			//			if (file == null)

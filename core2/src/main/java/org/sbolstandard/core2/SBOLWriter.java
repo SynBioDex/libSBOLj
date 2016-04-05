@@ -77,6 +77,24 @@ public class SBOLWriter
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
+	 * in SBOL 1.1 RDF format.
+	 * @param doc
+	 * @param file
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 * @throws IOException
+	 */
+	public static void writeV1(SBOLDocument doc, File file) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException{
+		FileOutputStream stream = new FileOutputStream(file);
+		BufferedOutputStream buffer = new BufferedOutputStream(stream);
+		writeV1(doc, buffer);
+		stream.close();
+		buffer.close();
+	}
+	
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
 	 * in the specified fileType format.
 	 * @param doc
 	 * @param file
@@ -110,6 +128,22 @@ public class SBOLWriter
 				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
 						TopLevelDocuments(getTopLevelDocument(doc))));
 	}
+	
+
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
+	 * in SBOL 1.1 RDF format.
+	 * @param doc
+	 * @param out
+	 * @throws XMLStreamException
+	 * @throws FactoryConfigurationError
+	 * @throws CoreIoException
+	 */
+	public static void writeV1(SBOLDocument doc, OutputStream out)
+			throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	{
+		write(doc,out,SBOLReader.RDFV1);
+	}
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
@@ -126,6 +160,21 @@ public class SBOLWriter
 		write(doc, new File(filename));
 	}
 
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
+	 * file name in SBOL 1.1 RDF format
+	 * @param doc
+	 * @param filename
+	 * @throws IOException
+	 * @throws CoreIoException
+	 * @throws FactoryConfigurationError
+	 * @throws XMLStreamException
+	 */
+	public static void writeV1(SBOLDocument doc, String filename) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	{
+		writeV1(doc, new File(filename));
+	}
+	
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
 	 * filename in specified fileType format
