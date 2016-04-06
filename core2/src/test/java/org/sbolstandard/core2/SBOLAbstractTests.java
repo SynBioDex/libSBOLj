@@ -822,6 +822,10 @@ public abstract class SBOLAbstractTests {
 		}
 		File file;
 		for (File f : file_base.listFiles()){
+			
+			// ignore sub-directories for the time being
+			if(f.isDirectory()) { continue; }
+			
 			file = new File(f.getAbsolutePath());
 			try
 			{
@@ -837,8 +841,47 @@ public abstract class SBOLAbstractTests {
 			}
 		}
 	}
-
-
+//	@Test
+//	public void test_GenBank_Files() throws Exception
+//	{
+//		File file_base = null ;
+//		try {
+//			file_base = new File(ValidationTest.class.getResource("/test/data/GenBank/").toURI());
+//		}
+//		catch (URISyntaxException e1) {
+//			throw new AssertionError("Failed to read from directory test/data/GenBank", e1);
+//		}
+//
+//		for (File f : file_base.listFiles()){
+//			try {
+//				test_GenBank_File(f);
+//			} catch(Exception e) {
+//				throw new AssertionError("Failed for " + f.getName(), e);
+//			}
+//		}
+//	}
+//
+//	private void test_GenBank_File(File f) 
+//			throws IOException, SBOLValidationException {
+//		
+//		if(f.isDirectory()) { 
+//			for(File file : f.listFiles()) {
+//				this.test_GenBank_File(file);
+//			}
+//		} else {
+//			File file = new File(f.getAbsolutePath());
+//			GenBank.setURIPrefix("http://www.async.ece.utah.edu");
+//			SBOLDocument actual = GenBank.read(file);
+//			GenBank.write(actual.getRootComponentDefinitions().iterator().next(),
+//					"src/test/resources/test/data/GenBankOut/"+file.getName());
+//			try {
+//				runTest(file.getAbsolutePath().replace(".gb", ".rdf"), actual, "rdf", true);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				throw new AssertionError("Failed for " + file.getName(), e);
+//			}
+//		}
+//	}
 
 	@Test
 	public void test_igem1_File() throws Exception
