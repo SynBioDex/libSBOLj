@@ -962,6 +962,7 @@ public class SBOLValidate {
 		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -p <URIprefix> -v <version>]");
 		System.err.println();
 		System.err.println("-g  convert GenBank file to SBOL 2.0");
+		System.err.println("-l  <language> specfies language (SBOL1/SBOL2/GenBank) for output (default=SBOL2)");
 		System.err.println("-r  export root ComponentDefinition as a GenBank file");
 		System.err.println("-c  <componentDefinitionURI> specifies top-level ComponentDefinition");
 		System.err.println("-e  <compareFile> specifies file to check if equal to");
@@ -1126,8 +1127,6 @@ public class SBOLValidate {
 	 * "-f" fail on first error, and
 	 * <p>
 	 * "-d" show detailed error trace.
-	 * <p>
-	 * "-l" indicates the language for output (default=SBOL2, other options SBOL1, GenBank)
 	 * 
 	 * @param args
 	 */
@@ -1146,7 +1145,6 @@ public class SBOLValidate {
 		boolean showDetail = false;
 		boolean genBankIn = false;
 		boolean genBankOut = false;
-		boolean sbolV1out = false;
 		int i = 0;
 		while (i < args.length) {
 			if (args[i].equals("-i")) {
@@ -1171,19 +1169,6 @@ public class SBOLValidate {
 					usage();
 				}
 				componentDefinitionStr = args[i+1];
-				i++;
-			} else if (args[i].equals("-l")) {
-				if (i+1 >= args.length) {
-					usage();
-				}
-				if (args[i+1].equals("SBOL1")) {
-					sbolV1out = true;
-				} else if (args[i+1].equals("GenBank")) {
-					genBankOut = true;
-				} else if (args[i+1].equals("SBOL2")) {
-				} else {
-					usage();
-				}
 				i++;
 			} else if (args[i].equals("-o")) {
 				if (i+1 >= args.length) {
@@ -1275,13 +1260,6 @@ public class SBOLValidate {
 		        		System.out.println("Validation successful, no errors.");
 	        			GenBank.write(componentDefinition, outputFile);
 		        	}
-		        } if (sbolV1out) {
-		        	if (outputFile.equals("")) {
-	        			SBOLWriter.writeV1(doc, (System.out));
-	        		} else {
-	        			System.out.println("Validation successful, no errors.");
-	        			SBOLWriter.writeV1(doc, outputFile);
-	        		}
 		        } else {
 		        	if (outputFile.equals("")) {
 	        			SBOLWriter.write(doc, (System.out));
