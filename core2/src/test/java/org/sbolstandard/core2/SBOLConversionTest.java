@@ -38,11 +38,11 @@ public class SBOLConversionTest {
 				SBOLDocument actual = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 				if (!actual.equals(expected)) {
 					System.out.println(f.getName() + " FAILED");
-					SBOLValidate.compareDocuments("expected", expected, "actual", actual);
+					//SBOLValidate.compareDocuments("expected", expected, "actual", actual);
 					//break;
 					assert(false);
 				} else {
-					System.out.println(f.getName() + " PASSED");
+					//System.out.println(f.getName() + " PASSED");
 				}
 			}
 			catch (SBOLValidationException e)
