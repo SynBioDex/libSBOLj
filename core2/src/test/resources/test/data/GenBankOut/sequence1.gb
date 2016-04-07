@@ -34,9 +34,8 @@ FEATURES             Location/Qualifiers
                      /db_xref="GI:1293614"
                      /translation="SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEA
                      AEVLLRVDNIIRARPRTANRQHM"
-     mRNA            687..3158
+     gene            687..3158
                      /gene="AXL2"
-                     /product="Axl2p"
      CDS             687..3158
                      /gene="AXL2"
                      /note="plasma membrane glycoprotein"
@@ -59,13 +58,12 @@ FEATURES             Location/Qualifiers
                      YGSQKTVDTEKLFDLEAPEKEKRTSRDVTMSSLDPWNSNISPSPVRKSVTPSPYNVTK
                      HRNRHLQNIQDSQSGKNGITPTTMSTSSSDDFVPVKDGENFCWVHSMEPDRRPSKKRL
                      VDFSNKSNVNVGQVKDIHGRIPEML"
-     gene            687..3158
+     mRNA            687..3158
                      /gene="AXL2"
+                     /product="Axl2p"
      mRNA            complement(3300..4037)
                      /gene="REV7"
                      /product="Rev7p"
-     gene            complement(3300..4037)
-                     /gene="REV7"
      CDS             complement(3300..4037)
                      /gene="REV7"
                      /codon_start=1
@@ -77,6 +75,8 @@ FEATURES             Location/Qualifiers
                      KDDQIITETEVFDEFRSSLNSLIMHLEKLPKVNDDTITFEAVINAIELELGHKLDRNR
                      RVDSLEEKAEIERDSNWVKCQEDENLPDNNGFQPPKIKLTSLVGSDVGPLIIHQFSEK
                      LISGDDKILNGVYSQYEEGESIFGSLF"
+     gene            complement(3300..4037)
+                     /gene="REV7"
 ORIGIN
         0 gatcctccat atacaacggt atctccacct caggtttaga tctcaacaac ggaaccattg
        60 ccgacatgag acagttaggt atcgtcgaga gttacaagct aaaacgagca gtagtcagct
