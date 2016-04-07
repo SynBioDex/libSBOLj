@@ -25,8 +25,6 @@ FEATURES             Location/Qualifiers
                      /mol_type="genomic DNA"
                      /db_xref="taxon:4932"
                      /chromosome="IX"
-     mRNA            1..206
-                     /product="TCP1-beta"
      CDS             1..206
                      /codon_start=3
                      /product="TCP1-beta"
@@ -34,8 +32,13 @@ FEATURES             Location/Qualifiers
                      /db_xref="GI:1293614"
                      /translation="SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEA
                      AEVLLRVDNIIRARPRTANRQHM"
+     mRNA            1..206
+                     /product="TCP1-beta"
      gene            687..3158
                      /gene="AXL2"
+     mRNA            687..3158
+                     /gene="AXL2"
+                     /product="Axl2p"
      CDS             687..3158
                      /gene="AXL2"
                      /note="plasma membrane glycoprotein"
@@ -58,9 +61,6 @@ FEATURES             Location/Qualifiers
                      YGSQKTVDTEKLFDLEAPEKEKRTSRDVTMSSLDPWNSNISPSPVRKSVTPSPYNVTK
                      HRNRHLQNIQDSQSGKNGITPTTMSTSSSDDFVPVKDGENFCWVHSMEPDRRPSKKRL
                      VDFSNKSNVNVGQVKDIHGRIPEML"
-     mRNA            687..3158
-                     /gene="AXL2"
-                     /product="Axl2p"
      mRNA            complement(3300..4037)
                      /gene="REV7"
                      /product="Rev7p"
