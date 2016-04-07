@@ -25,8 +25,6 @@ FEATURES             Location/Qualifiers
                      /mol_type="genomic DNA"
                      /db_xref="taxon:4932"
                      /chromosome="IX"
-     mRNA            1..206
-                     /product="TCP1-beta"
      CDS             1..206
                      /codon_start=3
                      /product="TCP1-beta"
@@ -34,8 +32,8 @@ FEATURES             Location/Qualifiers
                      /db_xref="GI:1293614"
                      /translation="SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEA
                      AEVLLRVDNIIRARPRTANRQHM"
-     gene            687..3158
-                     /gene="AXL2"
+     mRNA            1..206
+                     /product="TCP1-beta"
      mRNA            687..3158
                      /gene="AXL2"
                      /product="Axl2p"
@@ -61,11 +59,8 @@ FEATURES             Location/Qualifiers
                      YGSQKTVDTEKLFDLEAPEKEKRTSRDVTMSSLDPWNSNISPSPVRKSVTPSPYNVTK
                      HRNRHLQNIQDSQSGKNGITPTTMSTSSSDDFVPVKDGENFCWVHSMEPDRRPSKKRL
                      VDFSNKSNVNVGQVKDIHGRIPEML"
-     gene            complement(3300..4037)
-                     /gene="REV7"
-     mRNA            complement(3300..4037)
-                     /gene="REV7"
-                     /product="Rev7p"
+     gene            687..3158
+                     /gene="AXL2"
      CDS             complement(3300..4037)
                      /gene="REV7"
                      /codon_start=1
@@ -77,6 +72,11 @@ FEATURES             Location/Qualifiers
                      KDDQIITETEVFDEFRSSLNSLIMHLEKLPKVNDDTITFEAVINAIELELGHKLDRNR
                      RVDSLEEKAEIERDSNWVKCQEDENLPDNNGFQPPKIKLTSLVGSDVGPLIIHQFSEK
                      LISGDDKILNGVYSQYEEGESIFGSLF"
+     gene            complement(3300..4037)
+                     /gene="REV7"
+     mRNA            complement(3300..4037)
+                     /gene="REV7"
+                     /product="Rev7p"
 ORIGIN
         0 gatcctccat atacaacggt atctccacct caggtttaga tctcaacaac ggaaccattg
        60 ccgacatgag acagttaggt atcgtcgaga gttacaagct aaaacgagca gtagtcagct
