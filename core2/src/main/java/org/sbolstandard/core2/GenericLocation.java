@@ -49,8 +49,12 @@ public class GenericLocation extends Location{
 
 	@Override
 	public String toString() {
-		return "GenericLocation [orientation=" + orientation + ", identity=" + identity
-				+ ", displayId=" + displayId + ", name=" + name + ", description=" + description
+		return "GenericLocation ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
 				+ "]";
 	}
 

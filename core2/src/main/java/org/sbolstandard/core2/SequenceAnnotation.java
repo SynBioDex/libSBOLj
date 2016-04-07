@@ -531,9 +531,14 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 
 	@Override
 	public String toString() {
-		return "SequenceAnnotation [locations=" + this.getLocations() + ", component=" + component
-				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "SequenceAnnotation ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", locations=" + this.getLocations() 
+				+ (this.isSetComponent()?", component=" + component:"")
+				+ "]";
 	}
 	
 	@Override

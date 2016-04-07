@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -586,7 +587,7 @@ public class GenBank {
 	 * @throws SBOLValidationException 
 	 * @throws IOException 
 	 */
-	public static SBOLDocument read(BufferedInputStream in) throws SBOLValidationException, IOException
+	public static SBOLDocument read(InputStream in) throws SBOLValidationException, IOException
 	{
 		SBOLDocument doc = new SBOLDocument();
 		doc.setCreateDefaults(true);
@@ -711,7 +712,7 @@ public class GenBank {
 		}
 	}
 	
-	private static void read(SBOLDocument doc,BufferedInputStream in) throws IOException, SBOLValidationException {
+	private static void read(SBOLDocument doc,InputStream in) throws IOException, SBOLValidationException {
 		so = new SequenceOntology();
 		nextLine = null;
 		featureMode = false;

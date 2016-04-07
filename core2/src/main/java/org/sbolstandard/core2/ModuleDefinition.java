@@ -1318,9 +1318,16 @@ public class ModuleDefinition extends TopLevel {
 
 	@Override
 	public String toString() {
-		return "ModuleDefinition [roles=" + this.getRoles() + ", modules=" + this.getModules() + ", interactions="
-				+ this.getInteractions() + ", functionalComponents=" + this.getFunctionalComponents() + ", models="
-				+ this.getModels() + ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "ModuleDefinition ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 				
+				+ (this.getRoles().size()>0?", roles=" + this.getRoles():"") 
+				+ (this.getFunctionalComponents().size()>0?", functionalComponents=" + this.getFunctionalComponents():"") 
+				+ (this.getModules().size()>0?", modules=" + this.getModules():"") 
+				+ (this.getInteractions().size()>0?", interactions=" + this.getInteractions():"") 
+				+ (this.getModels().size()>0?", models=" + this.getModelURIs():"") 
+				+ "]";
 	}
 }

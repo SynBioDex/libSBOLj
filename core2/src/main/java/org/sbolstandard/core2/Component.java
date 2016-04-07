@@ -289,8 +289,14 @@ public class Component extends ComponentInstance{
 
 	@Override
 	public String toString() {
-		return "Component [mapsTos=" + mapsTos + ", definition=" + definition + ", identity="
-				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
-				+ description + "]";
+		return "Component ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", access=" + this.getAccess()
+				+ ", definition=" + definition 
+				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
+				+ "]";
 	}
 }

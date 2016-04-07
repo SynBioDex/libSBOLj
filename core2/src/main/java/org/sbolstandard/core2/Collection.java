@@ -215,8 +215,13 @@ public class Collection extends TopLevel{
 
 	@Override
 	public String toString() {
-		return "Collection [members=" + members + ", identity=" + identity + ", displayId="
-				+ displayId + ", name=" + name + ", description=" + description + "]";
+		return "Collection ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ (members.size()>0?", members=" + members:"")  
+				+ "]";
 	}
 
 }

@@ -397,9 +397,14 @@ public class Module extends Identified {
 
 	@Override
 	public String toString() {
-		return "Module [mapsTos=" + mapsTos + ", definition=" + definition + ", identity="
-				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
-				+ description + "]";
+		return "Module ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", definition=" + definition 
+				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
+				+ "]";
 	}
 
 }

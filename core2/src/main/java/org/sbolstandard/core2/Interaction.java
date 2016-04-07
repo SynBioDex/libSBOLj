@@ -473,9 +473,14 @@ public class Interaction extends Identified {
 
 	@Override
 	public String toString() {
-		return "Interaction [types=" + types + ", participations=" + participations + ", identity="
-				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
-				+ description + "]";
+		return "Interaction ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", types=" + types 
+				+ (participations.size()>0?", participations=" + participations:"") 
+				+ "]";
 	}
 
 }
