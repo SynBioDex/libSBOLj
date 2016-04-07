@@ -190,24 +190,22 @@ public class GenbankTest {
 		}
 	}
 	
-	@Test
-	public void testGenomeGenbanks() {
-		try {
-			// for every file in the directory
-			for(String filename : fileList("./src/test/resources/test/data/GenBank/genomes")) {
-				Path file = Paths.get(filename);
-				
-				// ignore sub-directories for the time being
-				if(Files.isDirectory(file)) { continue; }
-				
-				// parse the file
-				GenBank.read(new BufferedInputStream(Files.newInputStream(file)));
-				System.gc();
-				
-			}
-		} catch(Exception e) {
-			assertTrue(false);	// no exception allowed
-		}
-	}
+//	@Test
+//	public void testGenomeGenbanks() {
+//		try {
+//			// for every file in the directory
+//			for(String filename : fileList("./src/test/resources/test/data/GenBank/genomes")) {
+//				Path file = Paths.get(filename);
+//				
+//				// ignore sub-directories for the time being
+//				if(Files.isDirectory(file)) { continue; }
+//				
+//				// parse the file
+//				GenBank.read(new BufferedInputStream(Files.newInputStream(file)));
+//			}
+//		} catch(Exception e) {
+//			assertTrue(false);	// no exception allowed
+//		}
+//	}
 	
 }
