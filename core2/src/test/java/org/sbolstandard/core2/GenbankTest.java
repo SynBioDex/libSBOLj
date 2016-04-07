@@ -202,6 +202,7 @@ public class GenbankTest {
 				
 				// parse the file
 				GenBank.read(new BufferedInputStream(Files.newInputStream(file)));
+				System.gc();
 				
 			}
 		} catch(Exception e) {

@@ -1,7 +1,5 @@
 package org.sbolstandard.core2;
 
-import static org.junit.Assert.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -49,6 +47,7 @@ public class SBOLConversionTest {
 			{
 				throw new AssertionError("Failed for " + f.getName(), e);
 			}
+			System.gc();
 		}
 	}
 	
