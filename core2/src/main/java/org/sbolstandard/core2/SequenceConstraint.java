@@ -312,8 +312,14 @@ public class SequenceConstraint extends Identified {
 
 	@Override
 	public String toString() {
-		return "SequenceConstraint [restriction=" + restriction + ", subject=" + subject
-				+ ", object=" + object + ", identity=" + identity + ", displayId=" + displayId
-				+ ", name=" + name + ", description=" + description + "]";
+		return "SequenceConstraint ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", restriction=" + restriction 
+				+ ", subject=" + subject
+				+ ", object=" + object 
+				+ "]";
 	}
 }

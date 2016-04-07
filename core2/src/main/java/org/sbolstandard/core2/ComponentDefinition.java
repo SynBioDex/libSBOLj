@@ -1716,11 +1716,18 @@ public class ComponentDefinition extends TopLevel {
 
 	@Override
 	public String toString() {
-		return "ComponentDefinition [types=" + types + ", roles=" + roles + ", sequences="
-				+ this.getSequences() + ", components=" + this.getComponents() + ", sequenceAnnotations="
-				+ this.getSequenceAnnotations() + ", sequenceConstraints=" + this.getSequenceConstraints()
-				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "ComponentDefinition ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", types=" + types 
+				+ (roles.size()>0?", roles=" + roles:"")  
+				+ (this.getSequenceURIs().size()>0?", sequences=" + this.getSequenceURIs():"") 
+				+ (this.getComponents().size()>0?", components=" + this.getComponents():"") 
+				+ (this.getSequenceAnnotations().size()>0?", sequenceAnnotations=" + this.getSequenceAnnotations():"")
+				+ (this.getSequenceConstraints().size()>0?", sequenceConstraints=" + this.getSequenceConstraints():"")
+				+ "]";
 	}
 
 }

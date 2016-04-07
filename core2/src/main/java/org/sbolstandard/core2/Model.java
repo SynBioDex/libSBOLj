@@ -193,9 +193,15 @@ public class Model extends TopLevel {
 
 	@Override
 	public String toString() {
-		return "Model [source=" + source + ", language=" + language + ", framework=" + framework
-				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "Model ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", source=" + source 
+				+ ", language=" + language 
+				+ ", framework=" + framework
+				+ "]";
 	}
 
 }

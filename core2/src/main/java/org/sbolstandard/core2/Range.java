@@ -133,9 +133,15 @@ public class Range extends Location {
 
 	@Override
 	public String toString() {
-		return "Range [start=" + start + ", end=" + end + ", orientation=" + orientation
-				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "Range ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", start=" + start 
+				+ ", end=" + end
+				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
+				+ "]";
 	}
 
 	@Override

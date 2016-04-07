@@ -317,9 +317,15 @@ public class MapsTo extends Identified{
 
 	@Override
 	public String toString() {
-		return "MapsTo [refinement=" + refinement + ", local=" + local + ", remote=" + remote
-				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "MapsTo ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", refinement=" + refinement 
+				+ ", local=" + local 
+				+ ", remote=" + remote
+				+ "]";
 	}
 
 }

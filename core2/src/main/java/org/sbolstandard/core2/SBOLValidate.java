@@ -962,6 +962,7 @@ public class SBOLValidate {
 		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -p <URIprefix> -v <version>]");
 		System.err.println();
 		System.err.println("-g  convert GenBank file to SBOL 2.0");
+		System.err.println("-l  <language> specfies language (SBOL1/SBOL2/GenBank) for output (default=SBOL2)");
 		System.err.println("-r  export root ComponentDefinition as a GenBank file");
 		System.err.println("-c  <componentDefinitionURI> specifies top-level ComponentDefinition");
 		System.err.println("-e  <compareFile> specifies file to check if equal to");

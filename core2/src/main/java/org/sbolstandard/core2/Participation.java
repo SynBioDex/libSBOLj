@@ -223,9 +223,14 @@ public class Participation extends Identified {
 
 	@Override
 	public String toString() {
-		return "Participation [roles=" + roles + ", participant=" + participant + ", identity="
-				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
-				+ description + "]";
+		return "Participation ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 				
+				+ ", roles=" + roles 
+				+ ", participant=" + participant 
+				+ "]";
 	}
 
 }

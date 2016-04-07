@@ -35,37 +35,29 @@ FEATURES             Location/Qualifiers
                      /tissue_lib="St. Louis"
      gene            1310..11188
                      /gene="Mt-PK"
-     mRNA            join(1310..2135,2391..2474,2554..2649,3272..3420,3693..378
-                     6,4190..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
-                     271..9368,9540..9586,9876..9965,10296..11188)
+     exon            1310..2135
                      /gene="Mt-PK"
-                     /product="alternatively spliced Form V mRNA"
+                     /note="Form I,V,VI,VII,VIII mRNA"
      mRNA            join(1310..2135,2391..2474,2554..2649,3272..3420,3693..378
                      6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
                      271..9368,9540..9586,10296..11188)
                      /gene="Mt-PK"
                      /product="alternatively spliced Form VII mRNA"
      mRNA            join(1310..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4040..4246,4322..4570,5901..5986,8184..8295,9008..9165,9
+                     271..9368,9540..9586,9876..9965,10296..11188)
+                     /gene="Mt-PK"
+                     /product="alternatively spliced Form VI mRNA"
+     mRNA            join(1310..2135,2391..2474,2554..2649,3272..3420,3693..378
                      6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
                      271..9368,10296..11188)
                      /gene="Mt-PK"
                      /product="alternatively spliced Form VIII mRNA"
      mRNA            join(1310..2135,2391..2474,2554..2649,3272..3420,3693..378
-                     6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
+                     6,4190..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
                      271..9368,9540..9586,9876..9965,10296..11188)
                      /gene="Mt-PK"
-                     /note="alternatively spliced Form I mRNA; exons 
-                     werepositioned according to M87312; I and III are the 
-                     majorforms in most tissues except fetal and newborn muscle"
-                     "
-     mRNA            join(1310..2135,2391..2474,2554..2649,3272..3420,3693..378
-                     6,4040..4246,4322..4570,5901..5986,8184..8295,9008..9165,9
-                     271..9368,9540..9586,9876..9965,10296..11188)
-                     /gene="Mt-PK"
-                     /product="alternatively spliced Form VI mRNA"
-     exon            1310..2135
-                     /gene="Mt-PK"
-                     /note="Form I,V,VI,VII,VIII mRNA"
+                     /product="alternatively spliced Form V mRNA"
      mRNA            join(1310..1699,2044..2135,2391..2474,2554..2649,3272..342
                      0,3693..3786,4040..4246,4322..4585,5901..5986,8184..8295,9
                      008..9165,9271..9368,9540..9586,9876..9965,10296..11188)
@@ -74,14 +66,14 @@ FEATURES             Location/Qualifiers
      exon            1310..1699
                      /gene="Mt-PK"
                      /note="Form II mRNA"
+     exon            1310..1590
+                     /gene="Mt-PK"
+                     /note="Form II mRNA"
      mRNA            join(1310..1590,2044..2135,2391..2474,2554..2649,3272..342
                      0,3693..3786,4040..4246,4322..4585,5901..5986,8184..8295,9
                      008..9165,9271..9368,9540..9586,9876..9965,10296..11188)
                      /gene="Mt-PK"
                      /product="alternatively spliced Form III mRNA"
-     exon            1310..1590
-                     /gene="Mt-PK"
-                     /note="Form III mRNA"
      mRNA            join(1310..1418,1532..1590,2044..2135,2391..2474,2554..264
                      9,3272..3420,3693..3786,4040..4246,4322..4585,5901..5986,8
                      184..8295,9008..9165,9271..9368,9540..9586,9876..9965,1029
@@ -95,6 +87,49 @@ FEATURES             Location/Qualifiers
      exon            1532..1590
                      /gene="Mt-PK"
                      /note="Form IV mRNA"
+     CDS             join(1854..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
+                     271..9368,10296..10303)
+                     /gene="Mt-PK"
+                     /note="The Form VIII mRNA product terminates 
+                     immediatelyafter the final splice acceptor and is missing 
+                     a predictedCOOH-transmembrane domain found in Form I"
+                     /codon_start=1
+                     /product="myotonin-protein kinase, Form VIII"
+                     /protein_id="AAA75237.1"
+                     /db_xref="GI:976145"
+                     /translation="MGGHFWPPEPYTVFMWGSPWEADSPRVKLRGREKGRQTEGGAFP
+                     LVSSALSGDPRFFSPTTPPAEPIVVRLKEVRLQRDDFEILKVIGRGAFSEVAVVKMKQ
+                     TGQVYAMKIMNKWDMLKRGEVSCFREERDVLVNGDRRWITQLHFAFQDENYLYLVMEY
+                     YVGGDLLTLLSKFGERIPAEMARFYLAEIVMAIDSVHRLGYVHRDIKPDNILLDRCGH
+                     IRLADFGSCLKLRADGTVRSLVAVGTPDYLSPEILQAVGGGPGTGSYGPECDWWALGV
+                     FAYEMFYGQTPFYADSTAETYGKIVHYKEHLSLPLVDEGVPEEARDFIQRLLCPPETR
+                     LGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTCNFDLVEDGLTAMVSGGG
+                     ETLSDIREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEVEAEQLLEPHVQAPSLEP
+                     SVSPQDETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLTRQSLSREMEAIRTDNQN
+                     FASQLREAEARNRDLEAHVRQLQERMELLQAEGATGP"
+     CDS             join(1854..2135,2391..2474,2554..2649,3272..3420,3693..378
+                     6,4040..4246,4322..4570,5901..5986,8184..8295,9008..9165,9
+                     271..9368,9540..9586,9876..9965,10296..10448)
+                     /gene="Mt-PK"
+                     /note="The Form VI mRNA product has a 5 residue 
+                     deletioncompared to Form I"
+                     /codon_start=1
+                     /product="myotonin-protein kinase, Form VI"
+                     /protein_id="AAA75239.1"
+                     /db_xref="GI:976147"
+                     /translation="MGGHFWPPEPYTVFMWGSPWEADSPRVKLRGREKGRQTEGGAFP
+                     LVSSALSGDPRFFSPTTPPAEPIVVRLKEVRLQRDDFEILKVIGRGAFSEVAVVKMKQ
+                     TGQVYAMKIMNKWDMLKRGEVSCFREERDVLVNGDRRWITQLHFAFQDENYLYLVMEY
+                     YVGGDLLTLLSKFGERIPAEMARFYLAEIVMAIDSVHRLGYVHRDIKPDNILLDRCGH
+                     IRLADFGSCLKLRADGTVRSLVAVGTPDYLSPEILQAVGGGPGTGSYGPECDWWALGV
+                     FAYEMFYGQTPFYADSTAETYGKIVHYKEHLSLPLVDEGVPEEARDFIQRLLCPPETR
+                     LGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTCNFDLVEDGLTAMETLSD
+                     IREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEVEAEQLLEPHVQAPSLEPSVSPQ
+                     DETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLTRQSLSREMEAIRTDNQNFASQL
+                     REAEARNRDLEAHVRQLQERMELLQAEGATAVTGVPSPRATDPPSHLDGPPAVAVGQC
+                     PLVGPGPMHRRHLLLPARVPRPGLSEALSLLLFAVVLSRAAALGCIGLVAHAGQLTAV
+                     WRRPGAARAP"
      CDS             join(1854..2135,2391..2474,2554..2649,3272..3420,3693..378
                      6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
                      271..9368,9540..9586,9876..9965,10296..10448)
@@ -138,69 +173,26 @@ FEATURES             Location/Qualifiers
                      HLDGPPAVAVGQCPLVGPGPMHRRHLLLPARVPRPGLSEALSLLLFAVVLSRAAALGC
                      IGLVAHAGQLTAVWRRPGAARAP"
      CDS             join(1854..2135,2391..2474,2554..2649,3272..3420,3693..378
-                     6,4040..4246,4322..4570,5901..5986,8184..8295,9008..9165,9
+                     6,4190..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
                      271..9368,9540..9586,9876..9965,10296..10448)
                      /gene="Mt-PK"
-                     /note="The Form VI mRNA product has a 5 residue 
+                     /note="The Form V mRNA product has a 50 residue 
                      deletioncompared to Form I"
                      /codon_start=1
-                     /product="myotonin-protein kinase, Form VI"
-                     /protein_id="AAA75239.1"
-                     /db_xref="GI:976147"
+                     /product="myotonin-protein kinase, Form V"
+                     /protein_id="AAA75235.1"
+                     /db_xref="GI:976143"
                      /translation="MGGHFWPPEPYTVFMWGSPWEADSPRVKLRGREKGRQTEGGAFP
                      LVSSALSGDPRFFSPTTPPAEPIVVRLKEVRLQRDDFEILKVIGRGAFSEVAVVKMKQ
                      TGQVYAMKIMNKWDMLKRGEVSCFREERDVLVNGDRRWITQLHFAFQDENYLYLVMEY
                      YVGGDLLTLLSKFGERIPAEMARFYLAEIVMAIDSVHRLGYVHRDIKPDNILLDRCGH
-                     IRLADFGSCLKLRADGTVRSLVAVGTPDYLSPEILQAVGGGPGTGSYGPECDWWALGV
-                     FAYEMFYGQTPFYADSTAETYGKIVHYKEHLSLPLVDEGVPEEARDFIQRLLCPPETR
-                     LGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTCNFDLVEDGLTAMETLSD
-                     IREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEVEAEQLLEPHVQAPSLEPSVSPQ
-                     DETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLTRQSLSREMEAIRTDNQNFASQL
-                     REAEARNRDLEAHVRQLQERMELLQAEGATAVTGVPSPRATDPPSHLDGPPAVAVGQC
-                     PLVGPGPMHRRHLLLPARVPRPGLSEALSLLLFAVVLSRAAALGCIGLVAHAGQLTAV
-                     WRRPGAARAP"
-     CDS             join(1854..2135,2391..2474,2554..2649,3272..3420,3693..378
-                     6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
-                     271..9368,9540..9586,10296..10448)
-                     /gene="Mt-PK"
-                     /note="The Form VII mRNA product has a 30 residue 
-                     deletioncompared to Form I"
-                     /codon_start=1
-                     /product="myotonin-protein kinase, Form VII"
-                     /protein_id="AAA75238.1"
-                     /db_xref="GI:976146"
-                     /translation="MGGHFWPPEPYTVFMWGSPWEADSPRVKLRGREKGRQTEGGAFP
-                     LVSSALSGDPRFFSPTTPPAEPIVVRLKEVRLQRDDFEILKVIGRGAFSEVAVVKMKQ
-                     TGQVYAMKIMNKWDMLKRGEVSCFREERDVLVNGDRRWITQLHFAFQDENYLYLVMEY
-                     YVGGDLLTLLSKFGERIPAEMARFYLAEIVMAIDSVHRLGYVHRDIKPDNILLDRCGH
-                     IRLADFGSCLKLRADGTVRSLVAVGTPDYLSPEILQAVGGGPGTGSYGPECDWWALGV
-                     FAYEMFYGQTPFYADSTAETYGKIVHYKEHLSLPLVDEGVPEEARDFIQRLLCPPETR
-                     LGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTCNFDLVEDGLTAMVSGGG
-                     ETLSDIREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEVEAEQLLEPHVQAPSLEP
-                     SVSPQDETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLTRQSLSREMEAIRTDNQN
-                     FASQLREAEARNRDLEAHVRQLQERMELLQAEGATAVTGVPSPRATDPPSHVPRPGLS
-                     EALSLLLFAVVLSRAAALGCIGLVAHAGQLTAVWRRPGAARAP"
-     CDS             join(1854..2135,2391..2474,2554..2649,3272..3420,3693..378
-                     6,4040..4246,4322..4585,5901..5986,8184..8295,9008..9165,9
-                     271..9368,10296..10303)
-                     /gene="Mt-PK"
-                     /note="The Form VIII mRNA product terminates 
-                     immediatelyafter the final splice acceptor and is missing 
-                     a predictedCOOH-transmembrane domain found in Form I"
-                     /codon_start=1
-                     /product="myotonin-protein kinase, Form VIII"
-                     /protein_id="AAA75237.1"
-                     /db_xref="GI:976145"
-                     /translation="MGGHFWPPEPYTVFMWGSPWEADSPRVKLRGREKGRQTEGGAFP
-                     LVSSALSGDPRFFSPTTPPAEPIVVRLKEVRLQRDDFEILKVIGRGAFSEVAVVKMKQ
-                     TGQVYAMKIMNKWDMLKRGEVSCFREERDVLVNGDRRWITQLHFAFQDENYLYLVMEY
-                     YVGGDLLTLLSKFGERIPAEMARFYLAEIVMAIDSVHRLGYVHRDIKPDNILLDRCGH
-                     IRLADFGSCLKLRADGTVRSLVAVGTPDYLSPEILQAVGGGPGTGSYGPECDWWALGV
-                     FAYEMFYGQTPFYADSTAETYGKIVHYKEHLSLPLVDEGVPEEARDFIQRLLCPPETR
-                     LGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTCNFDLVEDGLTAMVSGGG
-                     ETLSDIREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEVEAEQLLEPHVQAPSLEP
-                     SVSPQDETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLTRQSLSREMEAIRTDNQN
-                     FASQLREAEARNRDLEAHVRQLQERMELLQAEGATGP"
+                     IRLADFGSCLKLRADGTTPFYADSTAETYGKIVHYKEHLSLPLVDEGVPEEARDFIQR
+                     LLCPPETRLGRGGAGDFRTHPFFFGLDWDGLRDSVPPFTPDFEGATDTCNFDLVEDGL
+                     TAMVSGGGETLSDIREGAPLGVHLPFVGYSYSCMALRDSEVPGPTPMEVEAEQLLEPH
+                     VQAPSLEPSVSPQDETAEVAVPAAVPAAEAEAEVTLRELQEALEEEVLTRQSLSREME
+                     AIRTDNQNFASQLREAEARNRDLEAHVRQLQERMELLQAEGATAVTGVPSPRATDPPS
+                     HLDGPPAVAVGQCPLVGPGPMHRRHLLLPARVPRPGLSEALSLLLFAVVLSRAAALGC
+                     IGLVAHAGQLTAVWRRPGAARAP"
      exon            2044..2135
                      /gene="Mt-PK"
                      /note="Form II,III,and IV mRNA"
