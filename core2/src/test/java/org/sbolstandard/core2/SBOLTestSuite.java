@@ -23,7 +23,7 @@ import org.junit.runners.Suite.SuiteClasses;
 			SBOLDocumentTest.class,
 			ValidationTest.class,
 			OntologyTest.class,
-			GenbankTest.class
+			//GenbankTest.class
 		}
 		)
 
