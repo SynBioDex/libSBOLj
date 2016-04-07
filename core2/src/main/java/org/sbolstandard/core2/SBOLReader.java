@@ -73,15 +73,15 @@ public class SBOLReader
 	public static void setKeepGoing(boolean keepGoing) {
 		SBOLReader.keepGoing = keepGoing;
 	}
-	
+
 	public static void clearErrors() {
 		errors = new ArrayList<String>();
 	}
-	
+
 	public static List<String> getErrors() {
 		return errors;
 	}
-	
+
 	public static int getNumErrors() {
 		return errors.size();
 	}
@@ -128,11 +128,11 @@ public class SBOLReader
 	public static boolean isCompliant() {
 		return compliant;
 	}
-	
+
 	/**
 	 * Set if document is to be read as compliant.
 	 *
-	 * @param compliant
+	 * @param compliant A flag to indicate if document is to be read as compliant.
 	 */
 	public static void setCompliant(boolean compliant) {
 		SBOLReader.compliant = compliant;
@@ -141,7 +141,7 @@ public class SBOLReader
 	/**
 	 * Set the specified authority as the prefix to all member's identity
 	 *
-	 *  @param URIprefix
+	 *  @param URIprefix maps to a domain over which the user has control
 	 */
 	public static void setURIPrefix(String URIprefix)
 	{
@@ -159,7 +159,7 @@ public class SBOLReader
 	/**
 	 * Set the specified authority as the prefix to all member's identity
 	 *
-	 * @param version
+	 * @param version The given version for this object
 	 */
 	public static void setVersion(String version)
 	{
@@ -169,7 +169,7 @@ public class SBOLReader
 	/**
 	 * Set the specified authority as the prefix to all member's identity
 	 *
-	 * @param typesInURI
+	 * @param typesInURI A flag to determine if types are to be inserted into top-level URIs
 	 */
 	public static void setTypesInURI(boolean typesInURI)
 	{
@@ -188,7 +188,7 @@ public class SBOLReader
 	/**
 	 * Set if objects with duplicate URIs should be dropped.
 	 *
-	 * @param dropObjectsWithDuplicateURIs
+	 * @param dropObjectsWithDuplicateURIs A flag to indicate if objects with duplicate URIs should be dropped
 	 */
 	public static void setDropObjectsWithDuplicateURIs(boolean dropObjectsWithDuplicateURIs) {
 		SBOLReader.dropObjectsWithDuplicateURIs = dropObjectsWithDuplicateURIs;
@@ -223,10 +223,10 @@ public class SBOLReader
 	/**
 	 * Takes in a given RDF filename and returns the SBOL version of the file.
 	 *
-	 * @param fileName
+	 * @param fileName a given RDF filename
 	 * @return the SBOL version of the file.
-	 * @throws FileNotFoundException
-	 * @throws SBOLValidationException 
+	 * @throws FileNotFoundException if file not found
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static String getSBOLVersion(String fileName) throws FileNotFoundException, SBOLValidationException
 	{
@@ -238,8 +238,8 @@ public class SBOLReader
 	 *
 	 * @param fileName
 	 * @return the SBOL version of the file.
-	 * @throws FileNotFoundException
-	 * @throws SBOLValidationException 
+	 * @throws FileNotFoundException if file not found
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	static String getSBOLVersion(String fileName, String fileType) throws FileNotFoundException, SBOLValidationException
 	{
@@ -255,8 +255,8 @@ public class SBOLReader
 	 *
 	 * @param fileName
 	 * @return the converted SBOLDocument
-	 * @throws SBOLValidationException
-	 * @throws FileNotFoundException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws FileNotFoundException if file not found
 	 */
 	public static SBOLDocument read(String fileName) throws SBOLValidationException, FileNotFoundException
 	{
@@ -269,8 +269,8 @@ public class SBOLReader
 	 * @param fileName
 	 * @param fileType
 	 * @return the converted SBOLDocument
-	 * @throws SBOLValidationException
-	 * @throws FileNotFoundException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws FileNotFoundException if file not found
 	 */
 	static SBOLDocument read(String fileName,String fileType) throws SBOLValidationException, FileNotFoundException
 	{
@@ -282,8 +282,8 @@ public class SBOLReader
 	 *
 	 * @param file
 	 * @return the SBOL version of the file.
-	 * @throws FileNotFoundException
-	 * @throws SBOLValidationException 
+	 * @throws FileNotFoundException if file not found
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static String getSBOLVersion(File file) throws FileNotFoundException, SBOLValidationException
 	{
@@ -295,8 +295,8 @@ public class SBOLReader
 	 *
 	 * @param file
 	 * @return the converted SBOLDocument instance
-	 * @throws FileNotFoundException
-	 * @throws SBOLValidationException 
+	 * @throws FileNotFoundException if file not found
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static SBOLDocument read(File file) throws FileNotFoundException, SBOLValidationException
 	{
@@ -311,8 +311,8 @@ public class SBOLReader
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 * @throws CoreIoException
-	 * @throws FileNotFoundException
-	 * @throws SBOLValidationException 
+	 * @throws FileNotFoundException if file not found
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	static SBOLDocument read(File file,String fileType) throws FileNotFoundException, SBOLValidationException
 	{
@@ -326,8 +326,8 @@ public class SBOLReader
 	 *
 	 * @param file
 	 * @return the SBOL version of the file.
-	 * @throws FileNotFoundException
-	 * @throws SBOLValidationException 
+	 * @throws FileNotFoundException if file not found
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	static String getSBOLVersion(File file,String fileType) throws FileNotFoundException, SBOLValidationException
 	{
@@ -339,10 +339,10 @@ public class SBOLReader
 	/**
 	 * Takes in a given InputStream and fieType, and returns the SBOL version of the file.
 	 *
-	 * @param in
-	 * @param fileType
+	 * @param in a given InputStream
+	 * @param fileType a given file type
 	 * @return the SBOL version of the JSON file.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	static String getSBOLVersion(InputStream in,String fileType) throws SBOLValidationException
 	{
@@ -363,9 +363,9 @@ public class SBOLReader
 	/**
 	 * Takes in a given RDF InputStream and converts the file to an SBOLDocument.
 	 *
-	 * @param in
+	 * @param in a given RDF InputStream
 	 * @return the converted SBOLDocument instance
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static SBOLDocument read(InputStream in) throws SBOLValidationException
 	{
@@ -378,10 +378,10 @@ public class SBOLReader
 	/**
 	 * Takes in a given InputStream and fileType, and convert the file to an SBOLDocument.
 	 *
-	 * @param in
-	 * @param fileType
+	 * @param in a given InputStream
+	 * @param fileType a given file type
 	 * @return the converted SBOLDocument instance
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	static SBOLDocument read(InputStream in,String fileType) throws SBOLValidationException
 	{
@@ -398,7 +398,7 @@ public class SBOLReader
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
 		clearErrors();
-		
+
 		DocumentRoot<QName> document = null;
 		try {
 			if (fileType.equals(JSON)) {
@@ -422,7 +422,7 @@ public class SBOLReader
 				throw new SBOLValidationException(e);
 			}
 		}
-		
+
 		for (NamespaceBinding n : document.getNamespaceBindings())
 
 		{
@@ -444,9 +444,9 @@ public class SBOLReader
 	/**
 	 * Takes in a given RDF InputStream and returns the SBOL version of the file.
 	 *
-	 * @param in
+	 * @param in a given RDF InputStream
 	 * @return the SBOL version of the file.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static String getSBOLVersion(InputStream in) throws SBOLValidationException
 	{
@@ -979,7 +979,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", topLevel.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (URIPrefix != null)
 				{
@@ -990,14 +990,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", topLevel.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10213", topLevel.getIdentity());
-				}				
+				}
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else
@@ -1231,8 +1231,8 @@ public class SBOLReader
 			persIdentity = createCompliantURI(parentURI,componentDisplayId+"_annotation","").toString();
 			displayId = componentDisplayId + "_annotation";
 			// TODO: need to make sure that it is first
-		} 
-		
+		}
+
 		Location location = null; // Note: Do not create a seqAnnotation if Location is empty
 
 		if (start != null && end != null) // create SequenceAnnotation & Component
@@ -1350,14 +1350,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", topLevel.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.type))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
 					throw new SBOLValidationException("sbol-10502", topLevel.getIdentity());
-				}				
+				}
 				type.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Model.roles))
@@ -1391,7 +1391,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
 					throw new SBOLValidationException("sbol-10512", topLevel.getIdentity());
-				}				
+				}
 				structures.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 				//structure = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -1419,7 +1419,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", topLevel.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -1538,14 +1538,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", sequenceConstraint.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", sequenceConstraint.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -1622,7 +1622,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", sequenceAnnotation.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
@@ -1654,7 +1654,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", sequenceAnnotation.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -1745,14 +1745,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", typeGenLoc.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", typeGenLoc.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -1839,14 +1839,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", typeCut.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", typeCut.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -1962,14 +1962,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", typeRange.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", typeRange.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -1977,7 +1977,7 @@ public class SBOLReader
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10213",typeRange.getIdentity());
 				}
-				
+
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Range.end))
@@ -2042,7 +2042,7 @@ public class SBOLReader
 		return r;
 	}
 
-	private static Component parseComponent(NestedDocument<QName> component, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException 
+	private static Component parseComponent(NestedDocument<QName> component, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(component.getIdentity());
 		String name 	 	   = null;
@@ -2080,14 +2080,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", component.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
 					throw new SBOLValidationException("sbol-10607", component.getIdentity());
-				}				
+				}
 				String accessTypeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (accessTypeStr.startsWith("http://www.sbolstandard.org/")) {
 					System.out.println("Warning: namespace for access types should be http://sbols.org/v2#");
@@ -2121,7 +2121,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", component.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -2209,14 +2209,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", topLevel.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", topLevel.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -2301,7 +2301,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", topLevel.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Model.source))
@@ -2329,7 +2329,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", topLevel.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -2412,21 +2412,21 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", topLevel.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Collection.hasMembers))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
 					throw new SBOLValidationException("sbol-12102", topLevel.getIdentity());
-				}				
+				}
 				members.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", topLevel.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -2515,7 +2515,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", topLevel.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ModuleDefinition.roles))
@@ -2587,7 +2587,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", topLevel.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -2684,7 +2684,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", module.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapsTo))
@@ -2719,7 +2719,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", module.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
@@ -2778,9 +2778,9 @@ public class SBOLReader
 
 		if (!mapsTo.getType().equals(Sbol2Terms.MapsTo.MapsTo)) {
 			if (inModule) {
-				throw new SBOLValidationException("sbol-11706",mapsTo.getIdentity()); 
+				throw new SBOLValidationException("sbol-11706",mapsTo.getIdentity());
 			} else {
-				throw new SBOLValidationException("sbol-10606",mapsTo.getIdentity()); 
+				throw new SBOLValidationException("sbol-10606",mapsTo.getIdentity());
 			}
 		}
 		for (NamedProperty<QName> m : mapsTo.getProperties())
@@ -2796,14 +2796,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) m.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", mapsTo.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) m.getValue()).getValue().toString();
 			}
 			else if (m.getName().equals(Sbol2Terms.Identified.title))
 			{
 				if (!(((Literal<QName>) m.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", mapsTo.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) m.getValue()).getValue().toString();
 			}
 			else if (m.getName().equals(Sbol2Terms.Identified.description))
@@ -2917,14 +2917,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) i.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", interaction.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) i.getValue()).getValue().toString();
 			}
 			else if (i.getName().equals(Sbol2Terms.Interaction.type))
 			{
 				if (!(((Literal<QName>) i.getValue()).getValue() instanceof URI)) {
 					throw new SBOLValidationException("sbol-11902", interaction.getIdentity());
-				}				
+				}
 				type.add(URI.create(((Literal<QName>) i.getValue()).getValue().toString()));
 			}
 			else if (i.getName().equals(Sbol2Terms.Interaction.hasParticipations))
@@ -2941,7 +2941,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) i.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", interaction.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) i.getValue()).getValue().toString();
 			}
 			else if (i.getName().equals(Sbol2Terms.Identified.description))
@@ -3020,14 +3020,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) p.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", participation.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) p.getValue()).getValue().toString();
 			}
 			else if (p.getName().equals(Sbol2Terms.Identified.title))
 			{
 				if (!(((Literal<QName>) p.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", participation.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) p.getValue()).getValue().toString();
 			}
 			else if (p.getName().equals(Sbol2Terms.Identified.description))
@@ -3123,14 +3123,14 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) f.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", functionalComponent.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
 			else if (f.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
 				if (!(((Literal<QName>) f.getValue()).getValue() instanceof URI)) {
 					throw new SBOLValidationException("sbol-10607", functionalComponent.getIdentity());
-				}				
+				}
 				String accessTypeStr = ((Literal<QName>) f.getValue()).getValue().toString();
 				if (accessTypeStr.startsWith("http://www.sbolstandard.org/")) {
 					System.out.println("Warning: namespace for access types should be http://sbols.org/v2#");
@@ -3182,7 +3182,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) f.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", functionalComponent.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) f.getValue()).getValue().toString();
 			}
 			else if (f.getName().equals(Sbol2Terms.Identified.description))
@@ -3259,21 +3259,21 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10204", topLevel.getIdentity());
-				}				
+				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Sequence.elements))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10402", topLevel.getIdentity());
-				}				
+				}
 				elements = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Sequence.encoding))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
 					throw new SBOLValidationException("sbol-10403", topLevel.getIdentity());
-				}				
+				}
 				encoding = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 				if (encoding.toString().equals("http://dx.doi.org/10.1021/bi00822a023")) {
 					encoding = Sequence.IUPAC_DNA;
@@ -3283,7 +3283,7 @@ public class SBOLReader
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String)) {
 					throw new SBOLValidationException("sbol-10212", topLevel.getIdentity());
-				}				
+				}
 				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))

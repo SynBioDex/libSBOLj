@@ -28,8 +28,8 @@ public class Interaction extends Identified {
 	/**
 	 *
 	 * @param identity an identity for the interaction
-	 * @param types a type for the interaction
-	 * @throws SBOLValidationException 
+	 * @param types A set of type to be added to Interaction
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	Interaction(URI identity, Set<URI> types) throws SBOLValidationException {
 		super(identity);
@@ -58,10 +58,10 @@ public class Interaction extends Identified {
 	 * Adds the given type URI to this Interaction's set of reference type URIs.
 	 * <p>
 	 * If this Interaction object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param typeURI
+	 * @param typeURI the given type URI
 	 * @return {@code true} if this set did not already contain the specified role.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
@@ -74,10 +74,10 @@ public class Interaction extends Identified {
 	 * Removes the given type reference from the set of type references.
 	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param typeURI
+	 * @param typeURI the given type URI
 	 * @return {@code true} if the matching type reference is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if this Interaction object has only one element matching the given
@@ -96,10 +96,10 @@ public class Interaction extends Identified {
 	 * set of the type references to this Interaction object.
 	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param types
+	 * @param types the given set of types
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code types} argument is either {@code null} or empty
 	 */
@@ -127,7 +127,7 @@ public class Interaction extends Identified {
 	 * Checks if the given type URI is included in this Interaction
 	 * object's set of reference type URIs.
 	 *
-	 * @param typeURI
+	 * @param typeURI the given type URI
 	 * @return {@code true} if this set contains the given URI, {@code false} otherwise.
 	 */
 	public boolean containsType(URI typeURI) {
@@ -153,11 +153,11 @@ public class Interaction extends Identified {
 	/**
 	 * Calls the Participation constructor to create a new instance using the specified parameters,
 	 * then adds to the list of Participation instances owned by this instance.
-	 * @param identity
-	 * @param participant
-	 * @param roles
+	 * @param identity the identifier for this object
+	 * @param participant specify precisely one FunctionalComponent object that plays the designated 3 role in its parent Interaction object
+	 * @param roles describes the behavior of a Participation
 	 * @return the  created Participation instance.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	Participation createParticipation(URI identity, URI participant, Set<URI> roles) throws SBOLValidationException {
 		Participation participation = new Participation(identity, participant, roles);
@@ -170,17 +170,17 @@ public class Interaction extends Identified {
 	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * This method creates a compliant Participation URI with this Interaction object's
 	 * persistent identity URI, the given {@code paricipantId}, and this Interaction object's version.
-	 * It then calls {@link #createParticipation(String, URI)}
+	 * It then calls {@link #createParticipation(String, String, URI)}
 	 * with this component definition URI.
 	 *
-	 * @param displayId
-	 * @param participantId
-	 * @param role
+	 * @param displayId The displayId identifier for this
+	 * @param participantId specify precisely one FunctionalComponent object that plays the designated role in its parent Interaction object
+	 * @param role describes the behavior of a Participation
 	 * @return a Participation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
@@ -189,23 +189,41 @@ public class Interaction extends Identified {
 		roles.add(role);
 		return createParticipation(displayId,participantId,roles);
 	}
-	
+
+
+	//	/**
+	//	 * Creates a child Participation instance for this Interaction
+	//	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
+	//	 * <p>
+	//	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
+	//	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
+	//	 * is allowed to be edited.
+	//	 * <p>
+	//	 * This method creates a compliant Participation URI with this Interaction object's
+	//	 * persistent identity URI, the given {@code paricipantId}, and this Interaction object's version.
+	//	 *It then calls {@link #createParticipation(String, URI, Set<URI>)}
+	//	 * with this component definition URI.
+	//	 *
+	//	 * @param displayId The displayId identifier for this
+	//	 * @param participantId specify precisely one FunctionalComponent object that plays the designated role in its parent Interaction object
+	//	 * @param roles describes the behavior of a Participation
+	//	 * @return a Participation instance
+	//	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	//	 */
+
 	/**
 	 * Creates a child Participation instance for this Interaction
 	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * This method creates a compliant Participation URI with this Interaction object's
 	 * persistent identity URI, the given {@code paricipantId}, and this Interaction object's version.
-	 * It then calls {@link #createParticipation(String, URI)}
-	 * with this component definition URI.
-	 *
-	 * @param displayId
-	 * @param participantId
-	 * @param roles
+	 * @param displayId The displayId identifier for this
+	 * @param participantId specify precisely one FunctionalComponent object that plays the designated role in its parent Interaction object
+	 * @param roles describes the behavior of a Participation
 	 * @return a Participation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
@@ -220,22 +238,22 @@ public class Interaction extends Identified {
 		}
 		return createParticipation(displayId,participantURI,roles);
 	}
-	
+
 	/**
 	 * Creates a child Participation instance for this Interaction
 	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * This method creates a compliant Participation URI with this Interaction object's
 	 * persistent identity URI, the given {@code displayId}, and this Interaction object's version.
 	 *
 	 *
-	 * @param displayId
-	 * @param participant
-	 * @param role
+	 * @param displayId The displayId identifier for this
+	 * @param participant specify precisely one FunctionalComponent object that plays the designated role in its parent Interaction object
+	 * @param role describes the behavior of a Participation
 	 * @return a Participation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the FunctionalComponent URI referenced by the Participation
@@ -246,7 +264,7 @@ public class Interaction extends Identified {
 	public Participation createParticipation(String displayId, URI participant, URI role) throws SBOLValidationException {
 		HashSet<URI> roles = new HashSet<URI>();
 		roles.add(role);
-		return createParticipation(displayId,participant,roles);		
+		return createParticipation(displayId,participant,roles);
 	}
 
 	/**
@@ -254,16 +272,16 @@ public class Interaction extends Identified {
 	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
 	 * <p>
 	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * This method creates a compliant Participation URI with this Interaction object's
 	 * persistent identity URI, the given {@code displayId}, and this Interaction object's version.
 	 *
 	 *
-	 * @param displayId
-	 * @param participant
-	 * @param roles
+	 * @param displayId The displayId identifier for this
+	 * @param participant specify precisely one FunctionalComponent object that plays the designated 3 role in its parent Interaction object
+	 * @param roles describes the behavior of a Participation
 	 * @return a Participation instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the FunctionalComponent URI referenced by the Participation
@@ -291,7 +309,7 @@ public class Interaction extends Identified {
 
 	/**
 	 * Adds the specified instance to the list of participations.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	void addParticipation(Participation participation) throws SBOLValidationException {
 		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participation.getParticipantURI())==null) {
@@ -307,10 +325,10 @@ public class Interaction extends Identified {
 	 * Participation instances.
 	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param participation
+	 * @param participation specify a particular FunctionalComponent behaves in its parent Interaction
 	 * @return {@code true} if the matching Participation instance is removed successfully,
 	 *         {@code false} otherwise.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
@@ -324,7 +342,7 @@ public class Interaction extends Identified {
 	 * Returns the Participation instance matching the given {@code displayId} from
 	 * this Interaction object's list of Participation instances.
 	 *
-	 * @param displayId
+	 * @param displayId The displayId identifier for this
 	 * @return the matching instance if present, or {@code null} otherwise.
 	 */
 	public Participation getParticipation(String displayId) {
@@ -340,7 +358,7 @@ public class Interaction extends Identified {
 	 * Returns the Participation instance matching the given {@code participationURI} from this
 	 * Interaction object's list of Participation instances.
 	 *
-	 * @param participationURI
+	 * @param participationURI the URI of this object
 	 * @return the matching Participation instance if present, or
 	 *         {@code null} otherwise.
 	 */
@@ -364,7 +382,7 @@ public class Interaction extends Identified {
 	 * The list will be empty after this call returns.
 	 * <p>
 	 * If this Interaction object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * This method calls {@link #removeParticipation(Participation)} to iteratively remove
@@ -383,7 +401,7 @@ public class Interaction extends Identified {
 
 	/**
 	 * Clears the existing list of participation instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	void setParticipations(Set<Participation> participations) throws SBOLValidationException {
 		clearParticipations();
@@ -433,7 +451,7 @@ public class Interaction extends Identified {
 	/**
 	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {

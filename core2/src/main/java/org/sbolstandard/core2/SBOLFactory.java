@@ -16,17 +16,16 @@ import javax.xml.stream.XMLStreamException;
 import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 public final class SBOLFactory {
-	
+
 	private static SBOLDocument document = new SBOLDocument();
 
 	/**
 	 * This sets the internal SBOLDocument used by the factory.
-	 * @param sbolDocument
 	 */
 	public static void clear() {
 		document = new SBOLDocument();
 	}
-	
+
 	/**
 	 * Creates a ModuleDefinition instance with this SBOLDocument object's {@code defaultURIprefix},
 	 * the given arguments, and an empty version string, and then
@@ -35,7 +34,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createModuleDefinition(String, String, String)} to do the following
 	 * validity checks and create a ModuleDefinition instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
@@ -50,7 +49,7 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
+	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @return the created ModuleDefinition instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -73,7 +72,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createModuleDefinition(String, String, String)} to do the following
 	 * validity checks and create a ModuleDefinition instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -89,8 +88,8 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
-	 * @param version
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the created ModuleDefinition instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -110,7 +109,7 @@ public final class SBOLFactory {
 	 * Creates a ModuleDefinition instance with the given arguments, and then adds it to this SBOLDocument
 	 * object's list of ModuleDefinition instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -125,9 +124,9 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param URIprefix
-	 * @param displayId
-	 * @param version
+	 * @param URIprefix maps to a domain over which the user has control
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the created ModuleDefinition instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -147,10 +146,10 @@ public final class SBOLFactory {
 	/**
 	 * Removes the given {@code moduleDefinition} from this SBOLDocument object's list of ModuleDefinition instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param moduleDefinition
+	 * @param moduleDefinition the ModuleDefinition to be removed
 	 * @return {@code true} if the given {@code moduleDefinition} is successfully removed, {@code false} otherwise.
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
@@ -173,8 +172,8 @@ public final class SBOLFactory {
 	 * and {@code version}. This URI is used to look up the ModuleDefinition instance
 	 * in this SBOLDocument object.
 	 *
-	 * @param displayId
-	 * @param version
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the matching ModuleDefinition instance if present, or {@code null} otherwise.
 	 */
 	public static ModuleDefinition getModuleDefinition(String displayId,String version) {
@@ -185,7 +184,7 @@ public final class SBOLFactory {
 	 * Returns the ModuleDefinition instance matching the given {@code modelURI} from this
 	 * SBOLDocument object's list of ModuleDefinition instances.
 	 *
-	 * @param moduleURI
+	 * @param moduleURI the given module URI from this document
 	 * @return the matching ModuleDefinition instance if present, or {@code null} otherwise.
 	 */
 	public static ModuleDefinition getModuleDefinition(URI moduleURI) {
@@ -204,7 +203,7 @@ public final class SBOLFactory {
 	/**
 	 * Removes all entries in the list of ModuleDefinition instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static void clearModuleDefinitions() throws SBOLValidationException {
 		document.clearModuleDefinitions();
@@ -218,7 +217,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createCollection(String, String, String)} to do the following
 	 * validity checks and create a Collection instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -233,7 +232,7 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
+	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @return the created Collection instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
@@ -257,7 +256,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createCollection(String, String, String)} to do the following
 	 * validity checks and create a Collection instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -273,8 +272,8 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
-	 * @param version
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the created Collection instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
@@ -295,7 +294,7 @@ public final class SBOLFactory {
 	 * Creates a Collection instance with the given arguments, and then adds it to this SBOLDocument
 	 * object's list of Collection instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -311,9 +310,9 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param URIprefix
-	 * @param displayId
-	 * @param version
+	 * @param URIprefix maps to a domain over which the user has control
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the created Collection instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
@@ -333,10 +332,10 @@ public final class SBOLFactory {
 	/**
 	 * Removes the given {@code collection} from this SBOLDocument object's list of Collection instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param collection
+	 * @param collection the collection object to be removed
 	 * @return {@code true} if the given {@code collection} is successfully removed, {@code false} otherwise.
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
@@ -356,8 +355,8 @@ public final class SBOLFactory {
 	 * and {@code version}. This URI is used to look up the Collection instance
 	 * in this SBOLDocument object.
 	 *
-	 * @param displayId
-	 * @param version
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the matching Collection instance if present, or {@code null} otherwise.
 	 */
 	public static Collection getCollection(String displayId,String version) {
@@ -368,7 +367,7 @@ public final class SBOLFactory {
 	 * Returns the Collection instance matching the given {@code collectionURI} from this
 	 * SBOLDocument object's list of Collection instances.
 	 *
-	 * @param collectionURI
+	 * @param collectionURI the given collectionURI from this document
 	 * @return the matching Collection instance if present, or {@code null} otherwise.
 	 *
 	 */
@@ -388,7 +387,7 @@ public final class SBOLFactory {
 	/**
 	 * Removes all entries in the list of Collection instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static void clearCollections() throws SBOLValidationException {
 		document.clearCollections();
@@ -402,7 +401,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createModel(String, String, String, URI, URI, URI)} to do the following
 	 * validity checks and create a Model instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
@@ -417,10 +416,10 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
-	 * @param source
-	 * @param language
-	 * @param framework
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param source location of the actual content of the model
+	 * @param language the language in which the model is implemented
+	 * @param framework the framework in which the model is implemented
 	 * @return the created Model instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -443,7 +442,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createModel(String, String, String, URI, URI, URI)} to do the following
 	 * validity checks and create a Model instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -459,11 +458,11 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
-	 * @param version
-	 * @param source
-	 * @param language
-	 * @param framework
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
+	 * @param source location of the actual content of the model
+	 * @param language the language in which the model is implemented
+	 * @param framework the framework in which the model is implemented
 	 * @return the created Model instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -483,7 +482,7 @@ public final class SBOLFactory {
 	 * Creates a Model instance with the given arguments, and then adds it to this SBOLDocument
 	 * object's list of Model instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -498,12 +497,12 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param URIprefix
-	 * @param displayId
-	 * @param version
-	 * @param source
-	 * @param language
-	 * @param framework
+	 * @param URIprefix maps to a domain over which the user has control
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
+	 * @param source location of the actual content of the model
+	 * @param language the language in which the model is implemented
+	 * @param framework the framework in which the model is implemented
 	 * @return the created Model instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -523,10 +522,10 @@ public final class SBOLFactory {
 	/**
 	 * Removes the given {@code model} from this SBOLDocument object's list of Model instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param model
+	 * @param model The model to be removed from the SBOLDocument object
 	 * @return {@code true} if the given {@code model} is successfully removed, {@code false} otherwise.
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
@@ -549,8 +548,8 @@ public final class SBOLFactory {
 	 * and {@code version}. This URI is used to look up the Model instance
 	 * in this SBOLDocument object.
 	 *
-	 * @param displayId
-	 * @param version
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the matching Model instance if present, or {@code null} otherwise.
 	 */
 	public static Model getModel(String displayId,String version) {
@@ -561,7 +560,7 @@ public final class SBOLFactory {
 	 * Returns the Model instance matching the given {@code modelURI} from this
 	 * SBOLDocument object's list of Model instances.
 	 *
-	 * @param modelURI
+	 * @param modelURI the modelURI
 	 * @return the matching Model instance if present, or {@code null} otherwise.
 	 */
 	public static Model getModel(URI modelURI) {
@@ -580,7 +579,7 @@ public final class SBOLFactory {
 	/**
 	 * Removes all entries in the list of Model instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static void clearModels() throws SBOLValidationException {
 		document.clearModels();
@@ -594,7 +593,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createComponentDefinition(String, String, String, Set)} to do the following
 	 * validity checks and create a ComponentDefinition instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
@@ -609,8 +608,8 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
-	 * @param types
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param types specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -625,7 +624,7 @@ public final class SBOLFactory {
 	public static ComponentDefinition createComponentDefinition(String displayId, Set<URI> types) throws SBOLValidationException {
 		return document.createComponentDefinition(displayId, types);
 	}
-	
+
 
 	/**
 	 * Creates a ComponentDefinition instance with this SBOLDocument object's {@code defaultURIprefix},
@@ -635,7 +634,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createComponentDefinition(String, String, String, URI)} to do the following
 	 * validity checks and create a ComponentDefinition instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
@@ -650,8 +649,8 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
-	 * @param type
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param type specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -674,7 +673,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createComponentDefinition(String, String, String, Set)} to do the following
 	 * validity checks and create a ComponentDefinition instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -690,9 +689,9 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
-	 * @param version
-	 * @param types
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
+	 * @param types specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -707,7 +706,7 @@ public final class SBOLFactory {
 	public static ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) throws SBOLValidationException {
 		return document.createComponentDefinition(displayId, version, types);
 	}
-	
+
 	/**
 	 * Creates a ComponentDefinition instance with this SBOLDocument object's {@code defaultURIprefix}
 	 * and the given arguments, and then adds it to this SBOLDocument object's list of ComponentDefinition instances.
@@ -715,7 +714,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createComponentDefinition(String, String, String, URI)} to do the following
 	 * validity checks and create a ComponentDefinition instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -731,9 +730,9 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
-	 * @param version
-	 * @param type
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
+	 * @param type specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -753,7 +752,7 @@ public final class SBOLFactory {
 	 * Creates a ComponentDefinition instance with the given arguments, and then adds it to this SBOLDocument
 	 * object's list of ComponentDefinition instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -768,10 +767,10 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param URIprefix
-	 * @param displayId
-	 * @param version
-	 * @param types
+	 * @param URIprefix maps to a domain over which the user has control
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
+	 * @param types specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -792,7 +791,7 @@ public final class SBOLFactory {
 	 * Creates a ComponentDefinition instance with the given arguments, and then adds it to this SBOLDocument
 	 * object's list of ComponentDefinition instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -807,10 +806,10 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param URIprefix
-	 * @param displayId
-	 * @param version
-	 * @param type
+	 * @param URIprefix maps to a domain over which the user has control
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
+	 * @param type specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -830,10 +829,10 @@ public final class SBOLFactory {
 	/**
 	 * Removes the given {@code componentDefinition} from this SBOLDocument object's list of ComponentDefinition instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param componentDefinition
+	 * @param componentDefinition the ComponentDefinition to be removed from this SBOLDocument object
 	 * @return {@code true} if the given {@code componentDefinition} is successfully removed, {@code false} otherwise.
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
@@ -859,8 +858,8 @@ public final class SBOLFactory {
 	 * and {@code version}. This URI is used to look up the ComponentDefinition instance
 	 * in this SBOLDocument object.
 	 *
-	 * @param displayId
-	 * @param version
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the matching ComponentDefinition instance if present, or {@code null} otherwise.
 	 */
 	public static ComponentDefinition getComponentDefinition(String displayId,String version) {
@@ -871,7 +870,7 @@ public final class SBOLFactory {
 	 * Returns the ComponentDefinition instance matching the given {@code componentDefinitionURI} from this
 	 * SBOLDocument object's list of ComponentDefinition instances.
 	 *
-	 * @param componentDefinitionURI
+	 * @param componentDefinitionURI The ComponentDefinition URI
 	 * @return the matching ComponentDefinition instance if present, or {@code null} otherwise.
 	 */
 	public static ComponentDefinition getComponentDefinition(URI componentDefinitionURI) {
@@ -886,7 +885,7 @@ public final class SBOLFactory {
 	public static Set<ComponentDefinition> getComponentDefinitions() {
 		return document.getComponentDefinitions();
 	}
-	
+
 	public static Set<ComponentDefinition> getRootComponentDefinitions() {
 		return document.getRootComponentDefinitions();
 	}
@@ -894,7 +893,7 @@ public final class SBOLFactory {
 	/**
 	 * Removes all entries in the list of ComponentDefinition instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static void clearComponentDefinitions() throws SBOLValidationException {
 		document.clearComponentDefinitions();
@@ -908,7 +907,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createSequence(String, String, String, String, URI)} to do the following
 	 * validity checks and create a Sequence instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
@@ -923,9 +922,9 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
-	 * @param elements
-	 * @param encoding
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
+	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
 	 * @return the created Sequence instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -948,7 +947,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createSequence(String, String, String, String, URI)} to do the following
 	 * validity checks and create a Sequence instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -965,10 +964,10 @@ public final class SBOLFactory {
 	 * are then set accordingly.
 	 *
 	 *
-	 * @param displayId
-	 * @param version
-	 * @param elements
-	 * @param encoding
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
+	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
+	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
 	 * @return the created Sequence instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -988,7 +987,7 @@ public final class SBOLFactory {
 	 * Creates a Sequence instance with the given arguments, and then adds it to this SBOLDocument
 	 * object's list of Sequence instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -1003,11 +1002,11 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param URIprefix
-	 * @param displayId
-	 * @param version
-	 * @param elements
-	 * @param encoding
+	 * @param URIprefix maps to a domain over which the user has control
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
+	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
+	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
 	 * @return the created Sequence instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -1150,7 +1149,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
 	 * validity checks and create a copy top-level instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
@@ -1165,7 +1164,7 @@ public final class SBOLFactory {
 	 * and then its display ID, persistent identity, and version fields are set. This
 	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object.
 	 *
-	 * @param topLevel
+	 * @param topLevel The topLevel object to be copied from this SBOLDocument
 	 * @return the created top-level instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -1192,7 +1191,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
 	 * validity checks and create a copy top-level instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
@@ -1207,8 +1206,8 @@ public final class SBOLFactory {
 	 * and then its display ID, persistent identity, and version fields are set. This
 	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object.
 	 *
-	 * @param topLevel
-	 * @param displayId
+	 * @param topLevel The topLevel object to be copied from this SBOLDocument
+	 * @param displayId an intermediate between name and identity that is machine-readable
 	 * @return the created top-level instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -1235,7 +1234,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
 	 * validity checks and create a copy top-level instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
@@ -1250,9 +1249,9 @@ public final class SBOLFactory {
 	 * and then its display ID, persistent identity, and version fields are set. This
 	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object.
 	 *
-	 * @param topLevel
-	 * @param displayId
-	 * @param version
+	 * @param topLevel The topLevel object to be copied from this SBOLDocument
+	 * @param displayId an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the created top-level instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -1275,7 +1274,7 @@ public final class SBOLFactory {
 	 * Creates a copy of the given TopLevel instance with the given arguments, and then adds it to
 	 * the corresponding top-level list owned by this SBOLDocument object.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the given {@code URIprefix} is {@code null}, then it is extracted from the given
@@ -1290,10 +1289,10 @@ public final class SBOLFactory {
 	 * and then its display ID, persistent identity, and version fields are set. This
 	 * instance is then added to the corresponding top-level list owned by this SBOLDocument object.
 	 *
-	 * @param topLevel
-	 * @param URIprefix
-	 * @param displayId
-	 * @param version
+	 * @param topLevel The topLevel object to be copied from this SBOLDocument
+	 * @param URIprefix maps to a domain over which the user has control
+	 * @param displayId  an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the created top-level instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -1315,10 +1314,10 @@ public final class SBOLFactory {
 	/**
 	 * Removes the given {@code sequence} from this SBOLDocument object's list of Sequence instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param sequence
+	 * @param sequence The given sequence to be removed
 	 * @return {@code true} if the given {@code sequence} is successfully removed, {@code false} otherwise.
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
@@ -1341,8 +1340,8 @@ public final class SBOLFactory {
 	 * and {@code version}. This URI is used to look up the Sequence instance
 	 * in this SBOLDocument object.
 	 *
-	 * @param displayId
-	 * @param version
+	 * @param displayId an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the matching Sequence instance if present, or {@code null} otherwise.
 	 */
 	public static Sequence getSequence(String displayId,String version) {
@@ -1353,7 +1352,7 @@ public final class SBOLFactory {
 	 * Returns the Sequence instance matching the given {@code modelURI} from this
 	 * SBOLDocument object's list of Sequence instances.
 	 *
-	 * @param sequenceURI
+	 * @param sequenceURI takes the given SequenceURI to retrieve the sequence from this SBOLDocument object
 	 * @return the matching Sequence instance if present, or {@code null} otherwise.
 	 */
 	public static Sequence getSequence(URI sequenceURI) {
@@ -1372,7 +1371,7 @@ public final class SBOLFactory {
 	/**
 	 * Removes all entries in the list of Sequence instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static void clearSequences() throws SBOLValidationException {
 		document.clearSequences();
@@ -1386,7 +1385,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createGenericTopLevel(String, String, String, QName)} to do the following
 	 * validity checks and create a GenericTopLevel instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
@@ -1401,8 +1400,8 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
-	 * @param rdfType
+	 * @param displayId an intermediate between name and identity that is machine-readable
+	 * @param rdfType a given QName for this annotated GenericTopLevel object
 	 * @return the created GenericTopLevel instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -1425,7 +1424,7 @@ public final class SBOLFactory {
 	 * This method calls {@link #createGenericTopLevel(String, String, String, QName)} to do the following
 	 * validity checks and create a GenericTopLevel instance.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -1441,9 +1440,9 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param displayId
-	 * @param version
-	 * @param rdfType
+	 * @param displayId an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
+	 * @param rdfType a given QName for this annotated GenericTopLevel object
 	 * @return the created GenericTopLevel instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -1463,7 +1462,7 @@ public final class SBOLFactory {
 	 * Creates a GenericTopLevel instance with the given arguments, and then adds it to this SBOLDocument
 	 * object's list of GenericTopLevel instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
@@ -1478,10 +1477,10 @@ public final class SBOLFactory {
 	 * The display ID, persistent identity, and version fields of this instance
 	 * are then set accordingly.
 	 *
-	 * @param URIprefix
-	 * @param displayId
-	 * @param version
-	 * @param rdfType
+	 * @param URIprefix maps to a domain over which the user has control
+	 * @param displayId an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
+	 * @param rdfType a given QName for this annotated GenericTopLevel object
 	 * @return the created GenericTopLevel instance
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
@@ -1501,10 +1500,10 @@ public final class SBOLFactory {
 	/**
 	 * Removes the given {@code genericTopLevel} from this SBOLDocument object's list of GenericTopLevel instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param genericTopLevel
+	 * @param genericTopLevel Remove the given TopLevel object from this document
 	 * @return {@code true} if the given {@code genericTopLevel} is successfully removed, {@code false} otherwise.
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
@@ -1524,8 +1523,8 @@ public final class SBOLFactory {
 	 * and {@code version}. This URI is used to look up the GenericTopLevel instance
 	 * in this SBOLDocument object.
 	 *
-	 * @param displayId
-	 * @param version
+	 * @param displayId an intermediate between name and identity that is machine-readable
+	 * @param version The given version for this object
 	 * @return the matching GenericTopLevel instance if present, or {@code null} otherwise.
 	 */
 	public static GenericTopLevel getGenericTopLevel(String displayId, String version) {
@@ -1536,7 +1535,7 @@ public final class SBOLFactory {
 	 * Returns the GenericTopLevel instance matching the given {@code topLevelURI} from this
 	 * SBOLDocument object's list of GenericTopLevel instances.
 	 *
-	 * @param topLevelURI
+	 * @param topLevelURI The topLevel object to be retrieved from this SBOLDocument
 	 * @return the matching GenericTopLevel instance if present, or {@code null} otherwise.
 	 */
 	public static GenericTopLevel getGenericTopLevel(URI topLevelURI) {
@@ -1555,7 +1554,7 @@ public final class SBOLFactory {
 	/**
 	 * Removes all entries in the list of GenericTopLevel instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static void clearGenericTopLevels() throws SBOLValidationException {
 		document.clearGenericTopLevels();
@@ -1565,18 +1564,18 @@ public final class SBOLFactory {
 	 * Returns the top-level instance matching the given {@code topLevelURI} from this
 	 * SBOLDocument object's lists of top-level instances.
 	 *
-	 * @param topLevelURI
+	 * @param topLevelURI The topLevel object to be retrieved from this SBOLDocument
 	 * @return the matching top-level instance if present, or {@code null} otherwise.
 	 */
 	public static TopLevel getTopLevel(URI topLevelURI) {
 		return document.getTopLevel(topLevelURI);
 	}
-	
+
 	/**
 	 * Returns a set of all TopLevel objects.
 	 *
 	 * @return set of all TopLevel objects.
-	 */	
+	 */
 	public static Set<TopLevel> getTopLevels() {
 		return document.getTopLevels();
 	}
@@ -1584,7 +1583,7 @@ public final class SBOLFactory {
 	/**
 	 * Creates a set of TopLevels with derived from the same object
 	 * as specified by the wasDerivedFrom parameter.
-	 * @param wasDerivedFrom
+	 * @param wasDerivedFrom refers to another SBOL object or non-SBOL resource from which this object was derived.
 	 * @return Set of TopLevels with a matching wasDerivedFrom URI.
 	 */
 	public static Set<TopLevel> getByWasDerivedFrom(URI wasDerivedFrom) {
@@ -1612,7 +1611,7 @@ public final class SBOLFactory {
 
 	/**
 	 *  Removes all non-required namespaces from the SBOL document.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static void clearNamespaces() throws SBOLValidationException {
 		document.clearNamespaces();
@@ -1622,7 +1621,7 @@ public final class SBOLFactory {
 	 * Returns the {@link QName} instance matching the given {@code modelURI} from this
 	 * SBOLDocument object's list of namespace QName instances.
 	 *
-	 * @param namespaceURI
+	 * @param namespaceURI The Namespace {@link URI}
 	 * @return the matching instance if present, or {@code null} otherwise.
 	 */
 	public static QName getNamespace(URI namespaceURI) {
@@ -1641,10 +1640,10 @@ public final class SBOLFactory {
 	/**
 	 * Removes the given {@code namespaceURI} from this SBOLDocument object's list of ModuleDefinition instances.
 	 * <p>
-	 * This SBOLDcouement object is checked for compliance first. Only a compliant SBOLDocument instance
+	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param namespaceURI
+	 * @param namespaceURI The Namespace {@link URI}
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 * @throws IllegalStateException if the given {@code namespaceURI} belongs to one of the
 	 * following required namespace binding: {@link Sbol2Terms#sbol2}, {@link Sbol2Terms#dc},
@@ -1668,8 +1667,8 @@ public final class SBOLFactory {
 	/**
 	 * Sets the default URI prefix to the given {@code defaultURIprefix}.
 	 *
-	 * @param defaultURIprefix
-	 * @throws SBOLValidationException 
+	 * @param defaultURIprefix the given default URI prefix
+	 * @throws SBOLValidationException  if this SBOLDocument object is not compliant
 	 */
 
 	public static void setDefaultURIprefix(String defaultURIprefix) throws SBOLValidationException {
@@ -1700,7 +1699,7 @@ public final class SBOLFactory {
 	 * Sets the complete flag which when true indicates this SBOLDocument object is complete
 	 * and any URIs that cannot be dereferenced to a valid object cause an exception to be thrown.
 	 *
-	 * @param complete
+	 * @param complete A flag indicator which when true indicates this SBOLDocument object is complete
 	 */
 	public static void setComplete(boolean complete) {
 		document.setComplete(complete);
@@ -1728,7 +1727,7 @@ public final class SBOLFactory {
 	/**
 	 * Sets the flag to the given {@code typesInURIs} to determine if types are to be inserted into top-level URIs.
 	 *
-	 * @param typesInURIs
+	 * @param typesInURIs A flag to determine if types are to be inserted into top-level URIs
 	 */
 	public static void setTypesInURIs(boolean typesInURIs) {
 		document.setTypesInURIs(typesInURIs);
@@ -1748,7 +1747,7 @@ public final class SBOLFactory {
 	 * Sets the flag to the given {@code createDefaults} to determine if default component instances
 	 * should be created when not present.
 	 *
-	 * @param createDefaults
+	 * @param createDefaults A flag to determine if default component instances should be created when not present.
 	 */
 	public static void setCreateDefaults(boolean createDefaults) {
 		document.setCreateDefaults(createDefaults);
@@ -1757,12 +1756,12 @@ public final class SBOLFactory {
 	/**
 	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
 	 *
-	 * @param fileName
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
-	 * @throws FileNotFoundException
-	 * @throws SBOLValidationException 
+	 * @param fileName a given RDF fileName
+	 * @throws CoreIoException - TODO
+	 * @throws FactoryConfigurationError - TODO
+	 * @throws XMLStreamException invalid xml file
+	 * @throws FileNotFoundException if file not found
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static void read(String fileName) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
 		document.read(fileName);
@@ -1771,12 +1770,12 @@ public final class SBOLFactory {
 	/**
 	 * Takes in a given RDF File and add the data read to this SBOLDocument.
 	 *
-	 * @param file
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
-	 * @throws FileNotFoundException
-	 * @throws SBOLValidationException 
+	 * @param file a given RDF fileName
+	 * @throws CoreIoException - TODO
+	 * @throws FactoryConfigurationError - TODO
+	 * @throws XMLStreamException invalid xml file
+	 * @throws FileNotFoundException if file not found
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static void read(File file) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
 		document.read(file);
@@ -1785,24 +1784,25 @@ public final class SBOLFactory {
 	/**
 	 * Takes in a given RDF InputStream and add the data read to this SBOLDocument.
 	 *
-	 * @param in
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
-	 * @throws SBOLValidationException 
+	 * @param in a given RDF InputStream
+	 * @throws CoreIoException - TODO
+	 * @throws FactoryConfigurationError - TODO
+	 * @throws XMLStreamException - TODO
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public static void read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException {
 		document.read(in);
 	}
 
+
 	/**
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * file name in RDF format
-	 * @param filename
-	 * @throws IOException
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
+	 * @param filename the given output file in RDF format
+	 * @throws XMLStreamException invalid xml file
+	 * @throws FactoryConfigurationError - TODO
+	 * @throws CoreIoException - TODO
+	 * @throws IOException - TODO
 	 */
 	public static void write(String filename) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{
@@ -1812,11 +1812,11 @@ public final class SBOLFactory {
 	/**
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * file in RDF format
-	 * @param file
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
-	 * @throws IOException
+	 * @param file the given output file
+	 * @throws CoreIoException - TODO
+	 * @throws FactoryConfigurationError - TODO
+	 * @throws XMLStreamException invalid xml file
+	 * @throws IOException - TODO
 	 */
 	public static void write(File file) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{
@@ -1826,11 +1826,11 @@ public final class SBOLFactory {
 	/**
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * stream in RDF format
-	 * @param out
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
-	 * @throws IOException
+	 * @param out the given output stream
+	 * @throws CoreIoException - TODO
+	 * @throws FactoryConfigurationError - TODO
+	 * @throws XMLStreamException invalid xml file
+	 * @throws IOException - TODO
 	 */
 	public static void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
 	{

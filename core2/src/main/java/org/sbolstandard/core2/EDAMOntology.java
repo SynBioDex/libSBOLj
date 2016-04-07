@@ -30,7 +30,7 @@ public class EDAMOntology {
 	 */
 	public static final URI NAMESPACE = URI.create(URI_PREFIX);
 	private static OBOOntology EDAMOntology = null;
-	
+
 	// TODO: add FORMAT, SBML, CELLML, BIOPAX constants
 
 	EDAMOntology() {
@@ -48,9 +48,9 @@ public class EDAMOntology {
 	}
 
 	/**
-	 * Returns the extracted ID of the given stanza's URI. 
-	 * 
-	 * @param stanzaURI
+	 * Returns the extracted ID of the given stanza's URI.
+	 *
+	 * @param stanzaURI the given stanza's URI
 	 * @return the extracted ID of the given stanza's URI.
 	 */
 	public final String getId(URI stanzaURI) {
@@ -70,12 +70,12 @@ public class EDAMOntology {
 	/**
 	 * Returns the ID field of the stanza whose name matches the given name. If multiple matches are found, only the first matching
 	 * one is returned.
-	 *  
-	 * @param stanzaName
+	 *
+	 * @param stanzaName the given stanza's name
 	 * @return the ID the matching stanza, or {@code null} if no match is found.
 	 */
 	public final String getId(String stanzaName) {
-		List<String> IdList = new ArrayList<String>();	
+		List<String> IdList = new ArrayList<String>();
 		for (OBOStanza stanza : EDAMOntology.getStanzas()) {
 			if (stanzaName.trim().equals(stanza.getName().trim())) {
 				IdList.add(stanza.getId());
@@ -95,8 +95,8 @@ public class EDAMOntology {
 
 	/**
 	 * Returns the name field of the stanza that matches the ID for the given stanzaURI.
-	 * 
-	 * @param stanzaURI
+	 *
+	 * @param stanzaURI the given stanza's URI
 	 * @return the name field of the stanza that matches the ID in the given stanzaURI.
 	 */
 	public final String getName(URI stanzaURI) {
@@ -125,8 +125,8 @@ public class EDAMOntology {
 
 	/**
 	 * Returns the name field of the stanza that matches the ID in the given stanzaURI.
-	 * 
-	 * @param stanzaId
+	 *
+	 * @param stanzaId the given stanza's URI
 	 * @return the name field of the stanza that matches the ID in the given stanzaURI,
 					or {@code null} if this no match is found.
 	 */
@@ -144,20 +144,20 @@ public class EDAMOntology {
 	}
 
 	/**
-	 * Returns the URI, i.e. the EDAM Ontology namespace URL followed by an ID of an sequence ontology term, 
+	 * Returns the URI, i.e. the EDAM Ontology namespace URL followed by an ID of an sequence ontology term,
 	 * of the stanza whose name matches the given name. If multiple matches are found, only the first matching
-	 * one is returned. 
-	 * 
-	 * @param stanzaName
+	 * one is returned.
+	 *
+	 * @param stanzaName the given stanza's name
 	 * @return the URI of the given EDAM ontology name.
 	 */
 	public final URI getURIbyName(String stanzaName) {
 		return getURIbyId(getId(stanzaName));
 	}
 
-	/** 
-	 * Creates a new URI from the EDAM Ontology namespace with the given ID. 
-	 * @param stanzaId
+	/**
+	 * Creates a new URI from the EDAM Ontology namespace with the given ID.
+	 * @param stanzaId the given stanza's ID
 	 * @return the created URI
 	 */
 	public final URI getURIbyId(String stanzaId) {
@@ -175,9 +175,9 @@ public class EDAMOntology {
 	}
 
 	/**
-	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
-	 * @param Id1
-	 * @param Id2
+	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.
+	 * @param Id1 the given stanza's URI
+	 * @param Id2 the given stanza's URI
 	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
 	 */
 	public boolean isDescendantOf(String Id1, String Id2) {
@@ -203,9 +203,9 @@ public class EDAMOntology {
 	}
 
 	/**
-	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
-	 * @param childURI
-	 * @param parentURI
+	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.
+	 * @param childURI the given stanza's URI
+	 * @param parentURI the given stanza's URI
 	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
 	 */
 	public final boolean isDescendantOf(URI childURI, URI parentURI) {
@@ -213,28 +213,28 @@ public class EDAMOntology {
 		String parentId = getId(parentURI);
 		return isDescendantOf(childId,parentId);
 	}
-	
+
 	/**
 	 * Creates a new URI from the EDAM Ontology namespace with the given local name. For example, the function call
 	 * <code>term("format_1915")</code> will return the URI <a>http://purl.obolibrary.org/edam/format_1915</a>
-	 * @param localName 
+	 * @param localName the given local name
 	 * @return the created URI
 	 */
 	public static final URI type(String localName) {
 		return URI.create(URI_PREFIX+localName);
 	}
-	
+
 	/**
-	 * A defined way or layout of representing and structuring data in a computer file, blob, 
-	 * string, message, or elsewhere. The main focus in EDAM lies on formats as means of 
-	 * structuring data exchanged between different tools or resources. The serialisation, 
-	 * compression, or encoding of concrete data formats/models is not in scope of EDAM. 
+	 * A defined way or layout of representing and structuring data in a computer file, blob,
+	 * string, message, or elsewhere. The main focus in EDAM lies on formats as means of
+	 * structuring data exchanged between different tools or resources. The serialisation,
+	 * compression, or encoding of concrete data formats/models is not in scope of EDAM.
 	 * Format 'is format of' Data.
 	 * (<a href="http://identifiers.org/edam/format_1915">FORMAT</a>).
 	 */
 	public static final URI FORMAT = type("format_1915");
 	//public static final URI FORMAT = URI.create("http://identifiers.org/edam/format_1915");
-	
+
 	/**
 	 * Systems Biology Markup Language (SBML), the standard XML format for models of biological
 	 * processes such as for example metabolism, cell signaling, and gene regulation

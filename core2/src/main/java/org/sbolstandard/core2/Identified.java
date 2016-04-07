@@ -47,7 +47,8 @@ public abstract class Identified {
 
 	/**
 	 * This copy constructor creates a new {@link Identified} class and copies all fields specified by the <code>identified</code> object.
-	 * @throws SBOLValidationException 
+	 * @param identified The identified object that all SBOL objects are referred to within the SBOL document or locations on the World Wide Web
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	protected Identified(Identified identified) throws SBOLValidationException {
 		this.setIdentity(identified.getIdentity());
@@ -169,7 +170,7 @@ public abstract class Identified {
 
 	/**
 	 * Sets field variable <code>version</code> to the specified element.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	void setVersion(String version) throws SBOLValidationException {
 		if (version==null || version.equals("")) {
@@ -202,7 +203,7 @@ public abstract class Identified {
 
 	/**
 	 * Set field variable <code>displayId</code> to the specified element.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	void setDisplayId(String displayId) throws SBOLValidationException {
 		if (!URIcompliance.isDisplayIdValid(displayId)) {
@@ -231,7 +232,7 @@ public abstract class Identified {
 	 * Sets the {@code wasDerivedFrom} property of this object to the specified one.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
+	 * the SBOLDocument instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
@@ -263,13 +264,13 @@ public abstract class Identified {
 	 * then adds to this object's list of Annotation instances.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
 	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name.
 	 * @param literal the literal string
 	 * @return the created Annotation instance.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public Annotation createAnnotation(QName qName, String literal) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -283,13 +284,13 @@ public abstract class Identified {
 	 * then adds to this object's list of Annotation instances.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
 	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
 	 * @param literal literal the literal double
 	 * @return the created Annotation instance.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public Annotation createAnnotation(QName qName, double literal) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -303,13 +304,13 @@ public abstract class Identified {
 	 * then adds to this object's list of Annotation instances.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
 	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
 	 * @param literal literal the literal int
 	 * @return the created Annotation instance.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public Annotation createAnnotation(QName qName, int literal) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -323,7 +324,7 @@ public abstract class Identified {
 	 * then adds to this object's list of Annotation instances.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
 	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
@@ -343,7 +344,7 @@ public abstract class Identified {
 	 * then adds to this object's list of Annotation instances.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
 	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
@@ -362,7 +363,7 @@ public abstract class Identified {
 	 * Calls the Annotation constructor to create a new instance using the specified parameters,
 	 * then adds to the list of Annotation instances owned by this component.
 	 * @return the created Annotation instance.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	Annotation createAnnotation(NamedProperty<QName> namedProperty) throws SBOLValidationException {
 		Annotation annotation = new Annotation(namedProperty);
@@ -375,7 +376,7 @@ public abstract class Identified {
 	 * then adds to this object's list of Annotation instances.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
 	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
@@ -394,7 +395,7 @@ public abstract class Identified {
 
 	/**
 	 * Adds the specified instance to the list of structuralAnnotations.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	void addAnnotation(Annotation annotation) throws SBOLValidationException {
 		if (annotations.contains(annotation)) {
@@ -438,7 +439,7 @@ public abstract class Identified {
 				throw new SBOLValidationException("sbol-12101");
 			} else if (this instanceof GenericTopLevel) {
 				throw new SBOLValidationException("sbol-12301");
-			} 
+			}
 		}
 		annotations.add(annotation);
 	}
@@ -448,7 +449,7 @@ public abstract class Identified {
 	 * Annotation instances.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
 	 * @param annotation The annotation instance using the given {@code qName} and the {@code literal} to be removed
@@ -471,10 +472,10 @@ public abstract class Identified {
 		annotations.addAll(this.annotations);
 		return annotations;
 	}
-	
+
 	/**
 	 * Returns the Annotation for a given QName.
-	 *
+	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
 	 * @return the Annotation for a given QName.
 	 */
 	public Annotation getAnnotation(QName qName) {
@@ -491,7 +492,7 @@ public abstract class Identified {
 	 * objects. The set will be empty after this call returns.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
+	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
@@ -503,7 +504,7 @@ public abstract class Identified {
 
 	/**
 	 * Clears the existing list of structuralAnnotation instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	void setAnnotations(List<Annotation> annotations) throws SBOLValidationException {
 		clearAnnotations();
@@ -516,7 +517,7 @@ public abstract class Identified {
 	 * Sets the {@code wasDerivedFrom} property to {@code null}.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
+	 * the SBOLDocument instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
@@ -538,6 +539,7 @@ public abstract class Identified {
 	/**
 	 * Provide a deep copy of this instance.
 	 * @return An identical copy of the specified object
+	 * @throws SBOLValidationException violates validation rule
 	 */
 	protected abstract Identified deepCopy() throws SBOLValidationException;
 
@@ -672,7 +674,7 @@ public abstract class Identified {
 	 * Sets the name of this object to the specified one.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
+	 * the SBOLDocument instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
@@ -688,7 +690,7 @@ public abstract class Identified {
 	 * Sets the name of this object to {@code null}.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
+	 * the SBOLDocument instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
@@ -737,7 +739,7 @@ public abstract class Identified {
 	 * Sets the description property to {@code null}.
 	 * <p>
 	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
+	 * the SBOLDocument instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *

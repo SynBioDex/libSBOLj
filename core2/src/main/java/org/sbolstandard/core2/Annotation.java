@@ -106,7 +106,7 @@ public class Annotation {
 				value.getName().getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			if (value.getName().equals(Sbol2Terms.Identified.timeStamp)) {
 				System.out.println("Warning: sbol:timeStamp is deprecated");
-			} 
+			}
 		}
 		this.value = value;
 	}
@@ -123,10 +123,10 @@ public class Annotation {
 	public QName getQName() {
 		return value.getName();
 	}
-	
+
 	/**
 	 * Sets the Boolean representation of the {@code value} property.
-	 * @param literal
+	 * @param literal - The boolean representation of the property.
 	 */
 	public void setBooleanValue(boolean literal) {
 		QName qName = value.getName();
@@ -157,10 +157,10 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Sets the double representation of the {@code value} property.
-	 * @param literal
+	 * @param literal - The double representation of the property
 	 */
 	public void setDoubleValue(double literal) {
 		QName qName = value.getName();
@@ -191,10 +191,10 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Sets the integer representation of the {@code value} property.
-	 * @param literal
+	 * @param literal - The integer representation of the property
 	 */
 	public void setIntegerValue(int literal) {
 		QName qName = value.getName();
@@ -225,10 +225,10 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Sets the string representation of the {@code value} property.
-	 * @param literal
+	 * @param literal - The string representation of the property.
 	 */
 	public void setStringValue(String literal) {
 		QName qName = value.getName();
@@ -246,7 +246,7 @@ public class Annotation {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns a string representation of the {@code value} property.
 	 *
@@ -259,16 +259,16 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Sets the string representation of the {@code value} property.
-	 * @param literal
+	 * @param literal - The string representation of the property.
 	 */
 	public void setURIValue(String literal) {
 		QName qName = value.getName();
 		value = NamedProperty(qName,literal);
 	}
-	
+
 	/**
 	 * Returns a URI representation of the {@code value} property.
 	 *
@@ -281,7 +281,7 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	public void setNestedAnnotations(List<Annotation> annotations) {
 		List<NamedProperty<QName>> list = new ArrayList<>();
 		for(Annotation a : annotations)
