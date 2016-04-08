@@ -4,6 +4,7 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.QName;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
 
 //import javax.sound.midi.Sequence;
 import javax.xml.namespace.QName;
@@ -831,8 +833,8 @@ public abstract class SBOLAbstractTests {
 			{
 				GenBank.setURIPrefix("http://www.async.ece.utah.edu");
 				SBOLDocument actual = GenBank.read(file);
-				GenBank.write(actual.getRootComponentDefinitions().iterator().next(),
-						"src/test/resources/test/data/GenBankOut/"+f.getName());
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				GenBank.write(actual.getRootComponentDefinitions().iterator().next(), out);
 				runTest("test/data/"+f.getName().replace(".gb", ".rdf"), actual, "rdf", true);
 			}
 			catch (SBOLValidationException e)
