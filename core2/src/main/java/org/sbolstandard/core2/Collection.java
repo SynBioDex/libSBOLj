@@ -1,8 +1,6 @@
 package org.sbolstandard.core2;
 
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
-import static org.sbolstandard.core2.URIcompliance.validateIdVersion;
 
 import java.net.URI;
 import java.util.HashSet;
@@ -45,7 +43,7 @@ public class Collection extends TopLevel{
 	 * @param memberURI References to a TopLevel object
 	 * @return {@code true} if the matching member reference has been added successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException violates validation rule
 	 */
 	public boolean addMember(URI memberURI) throws SBOLValidationException {
 		if (sbolDocument != null) sbolDocument.checkReadOnly();
@@ -69,7 +67,7 @@ public class Collection extends TopLevel{
 	 * @param memberURI the reference to a TopLevel object to be removed from the SBOL Document.
 	 * @return {@code true} if the matching member reference is removed successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException violates validation rule
 	 */
 	public boolean removeMember(URI memberURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -86,7 +84,7 @@ public class Collection extends TopLevel{
 	 * is allowed to be edited.
 	 *
 	 * @param members A set of URI references to zero or more TopLevel objects within the SBOL Document.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException violates validation rule
 	 */
 	public void setMembers(Set<URI> members) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -215,8 +213,13 @@ public class Collection extends TopLevel{
 
 	@Override
 	public String toString() {
-		return "Collection [members=" + members + ", identity=" + identity + ", displayId="
-				+ displayId + ", name=" + name + ", description=" + description + "]";
+		return "Collection ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ (members.size()>0?", members=" + members:"")  
+				+ "]";
 	}
 
 }

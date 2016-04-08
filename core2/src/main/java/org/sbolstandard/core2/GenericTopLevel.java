@@ -146,8 +146,13 @@ public class GenericTopLevel extends TopLevel{
 
 	@Override
 	public String toString() {
-		return "GenericTopLevel [rdfType=" + rdfType + ", identity=" + identity + ", displayId="
-				+ displayId + ", name=" + name + ", description=" + description + "]";
+		return "GenericTopLevel ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", rdfType=" + rdfType 
+				+ "]";
 	}
 
 }

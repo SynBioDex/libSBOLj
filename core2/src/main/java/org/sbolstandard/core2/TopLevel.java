@@ -13,7 +13,7 @@ import java.net.URI;
  */
 
 public abstract class TopLevel extends Identified {
-	
+
 	/**
 	 * The abbreviation for the Collection type in URI
 	 */

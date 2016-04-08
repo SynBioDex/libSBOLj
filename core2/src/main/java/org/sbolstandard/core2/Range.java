@@ -13,16 +13,16 @@ import java.net.URI;
  */
 
 public class Range extends Location {
-	
+
 	private int start = 0;
 	private int end = 0;
-	
+
 	Range(URI identity, int start, int end) throws SBOLValidationException {
 		super(identity);
 		setEnd(end);
 		setStart(start);
 	}
-	
+
 	private Range(Range range) throws SBOLValidationException {
 		super(range);
 		this.setEnd(range.getEnd());
@@ -31,17 +31,17 @@ public class Range extends Location {
 
 	/**
 	 * Sets the start position of this Range object.
- 	 * <p>
+	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param value
+	 * @param value the start position of this Range
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code value} is less or equal to 0.
-	 * @throws SBOLValidationException if the given {@code value} is greater than 
+	 * @throws SBOLValidationException if the given {@code value} is greater than
 	 * the {@code end} value of this Range object.
-	 */ 
+	 */
 	public void setStart(int value) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (value<=0) {
@@ -52,21 +52,21 @@ public class Range extends Location {
 			//throw new SBOLValidationException("Range "+this.getIdentity()+" must have a start before the end.");
 			throw new SBOLValidationException("sbol-11104", this);
 		}
-		start = value;		
+		start = value;
 	}
-	
+
 	/**
 	 * Returns the start position of this Range object.
-	 * 
+	 *
 	 * @return the start position of this Range object.
 	 */
-	public int getStart() {		
+	public int getStart() {
 		return start;
 	}
 
 	/**
 	 * Returns the end position of this Range object.
-	 * 
+	 *
 	 * @return the end position of this Range object.
 	 */
 	public int getEnd() {
@@ -75,17 +75,17 @@ public class Range extends Location {
 
 	/**
 	 * Sets the end position of this Range object.
- 	 * <p>
+	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param value
+	 * @param value the start position of this Range
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code value} is less or equal to 0.
-	 * @throws SBOLValidationException if the given {@code value} is less than 
+	 * @throws SBOLValidationException if the given {@code value} is less than
 	 * the {@code start} value of this Range object.
-	 */ 
+	 */
 	public void setEnd(int value) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (value<=0) {
@@ -98,8 +98,8 @@ public class Range extends Location {
 		}
 		end = value;
 	}
-	
-	
+
+
 	@Override
 	protected Location deepCopy() throws SBOLValidationException {
 		return new Range(this);
@@ -133,11 +133,17 @@ public class Range extends Location {
 
 	@Override
 	public String toString() {
-		return "Range [start=" + start + ", end=" + end + ", orientation=" + orientation
-				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "Range ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", start=" + start 
+				+ ", end=" + end
+				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
+				+ "]";
 	}
-	
+
 	@Override
 	public int compareTo(Location location) {
 		if (location instanceof Range) {
@@ -152,7 +158,7 @@ public class Range extends Location {
 				result = ((Cut)location).getAt() - this.end;
 			}
 			return result;
-		} 
+		}
 		return this.start;
-    }
+	}
 }

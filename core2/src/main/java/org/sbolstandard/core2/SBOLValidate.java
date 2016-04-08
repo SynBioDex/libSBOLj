@@ -25,30 +25,30 @@ import uk.co.turingatemyhamster.opensmiles.OpenSmilesParser;
  */
 
 public class SBOLValidate {
-	
+
 	/**
 	 * the current SBOL version
 	 */
 	private static final String SBOLVersion = "2.0";
 	private static List<String> errors = null;
-	
+
 	public static void clearErrors() {
 		errors = new ArrayList<String>();
 	}
-	
+
 	public static List<String> getErrors() {
 		return errors;
 	}
-	
+
 	public static int getNumErrors() {
 		return errors.size();
 	}
-	
+
 	/**
 	 * Validate SBOL objects are compliant in the given {@code sbolDocument}.
-	 * 
-	 * @param sbolDocument
-	 * @throws SBOLValidationException if any top-level objects or any of their children or grandchildren 
+	 *
+	 * @param sbolDocument the SBOLDocument object to be validated
+	 * @throws SBOLValidationException if any top-level objects or any of their children or grandchildren
 	 * in the given {@code sbolDocument} contain a non-compliant URI.
 	 */
 	static void validateCompliance(SBOLDocument sbolDocument) {
@@ -61,7 +61,7 @@ public class SBOLValidate {
 			}
 		}
 	}
-	
+
 	protected static void checkCollectionCompleteness(SBOLDocument sbolDocument,Collection collection) {
 		for (URI member : collection.getMemberURIs()) {
 			if (sbolDocument.getTopLevel(member)==null) {
@@ -97,27 +97,27 @@ public class SBOLValidate {
 			}
 		}
 	}
-	
+
 	protected static void checkComponentDefinitionMapsTos(ComponentDefinition componentDefinition,MapsTo mapsTo) throws SBOLValidationException {
 		for (Component component : componentDefinition.getComponents()) {
 			for (MapsTo mapsTo2 : component.getMapsTos()) {
 				if (mapsTo==mapsTo2) continue;
 				if (mapsTo.getLocalURI().equals(mapsTo2.getLocalURI()) &&
-					mapsTo.getRefinement().equals(RefinementType.USEREMOTE) &&
-					mapsTo2.getRefinement().equals(RefinementType.USEREMOTE)) {
+						mapsTo.getRefinement().equals(RefinementType.USEREMOTE) &&
+						mapsTo2.getRefinement().equals(RefinementType.USEREMOTE)) {
 					throw new SBOLValidationException("sbol-10526",componentDefinition);
 				}
 			}
 		}
 	}
-	
+
 	protected static void checkModuleDefinitionMapsTos(ModuleDefinition moduleDefinition,MapsTo mapsTo) throws SBOLValidationException {
 		for (Module module : moduleDefinition.getModules()) {
 			for (MapsTo mapsTo2 : module.getMapsTos()) {
 				if (mapsTo==mapsTo2) continue;
 				if (mapsTo.getLocalURI().equals(mapsTo2.getLocalURI()) &&
-					mapsTo.getRefinement().equals(RefinementType.USEREMOTE) &&
-					mapsTo2.getRefinement().equals(RefinementType.USEREMOTE)) {
+						mapsTo.getRefinement().equals(RefinementType.USEREMOTE) &&
+						mapsTo2.getRefinement().equals(RefinementType.USEREMOTE)) {
 					throw new SBOLValidationException("sbol-11609",moduleDefinition);
 				}
 			}
@@ -126,14 +126,14 @@ public class SBOLValidate {
 			for (MapsTo mapsTo2 : functionalComponent.getMapsTos()) {
 				if (mapsTo==mapsTo2) continue;
 				if (mapsTo.getLocalURI().equals(mapsTo2.getLocalURI()) &&
-					mapsTo.getRefinement().equals(RefinementType.USEREMOTE) &&
-					mapsTo2.getRefinement().equals(RefinementType.USEREMOTE)) {
+						mapsTo.getRefinement().equals(RefinementType.USEREMOTE) &&
+						mapsTo2.getRefinement().equals(RefinementType.USEREMOTE)) {
 					throw new SBOLValidationException("sbol-11609",moduleDefinition);
 				}
 			}
 		}
 	}
-	
+
 	static void validateMapsTos(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			for (Component component : componentDefinition.getComponents()) {
@@ -180,7 +180,7 @@ public class SBOLValidate {
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			if (functionalComponent.getDefinition() == null) {
 				errors.add(new SBOLValidationException("sbol-10604", functionalComponent).getExceptionMessage());
-			} 
+			}
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
 				if (mapsTo.getRemote()==null) {
 					errors.add(new SBOLValidationException("sbol-10808", mapsTo).getExceptionMessage());
@@ -219,8 +219,8 @@ public class SBOLValidate {
 
 	/**
 	 * Validate if all URI references to SBOL objects are in the same given {@code sbolDocument}.
-	 * 
-	 * @param sbolDocument
+	 *
+	 * @param sbolDocument The SBOLDocument object to be validated for completeness
 	 */
 	static void validateCompleteness(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
@@ -233,8 +233,8 @@ public class SBOLValidate {
 			checkModuleDefinitionCompleteness(sbolDocument,moduleDefinition);
 		}
 	}
-	
-	protected static void checkComponentDefinitionCycle(SBOLDocument sbolDocument, 
+
+	protected static void checkComponentDefinitionCycle(SBOLDocument sbolDocument,
 			ComponentDefinition componentDefinition, Set<URI> visited) throws SBOLValidationException {
 		if (componentDefinition==null) return;
 		visited.add(componentDefinition.getIdentity());
@@ -253,8 +253,8 @@ public class SBOLValidate {
 		visited.remove(componentDefinition.getIdentity());
 		return;
 	}
-	
-	protected static void checkModuleDefinitionCycle(SBOLDocument sbolDocument, 
+
+	protected static void checkModuleDefinitionCycle(SBOLDocument sbolDocument,
 			ModuleDefinition moduleDefinition, Set<URI> visited) throws SBOLValidationException {
 		if (moduleDefinition==null) return;
 		visited.add(moduleDefinition.getIdentity());
@@ -273,8 +273,8 @@ public class SBOLValidate {
 		visited.remove(moduleDefinition.getIdentity());
 		return;
 	}
-	
-	protected static boolean checkWasDerivedFromVersion(SBOLDocument sbolDocument, Identified identified, 
+
+	protected static boolean checkWasDerivedFromVersion(SBOLDocument sbolDocument, Identified identified,
 			URI wasDerivedFrom) {
 		Identified derivedFrom = sbolDocument.getTopLevel(wasDerivedFrom);
 		if ((derivedFrom!=null) &&
@@ -286,7 +286,7 @@ public class SBOLValidate {
 		}
 		return true;
 	}
-	
+
 	static void validateWasDerivedFromVersion(SBOLDocument sbolDocument) {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (topLevel.isSetWasDerivedFrom()) {
@@ -296,8 +296,8 @@ public class SBOLValidate {
 			}
 		}
 	}
-	
-	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument, 
+
+	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument,
 			Identified identified, URI wasDerivedFrom, Set<URI> visited) throws SBOLValidationException {
 		visited.add(identified.getIdentity());
 		TopLevel tl = sbolDocument.getTopLevel(wasDerivedFrom);
@@ -321,8 +321,8 @@ public class SBOLValidate {
 
 	/**
 	 * Validate if there are circular references in given {@code sbolDocument}.
-	 * 
-	 * @param sbolDocument
+	 *
+	 * @param sbolDocument The SBOLDocument object to be validated for circular references
 	 */
 	static void validateCircularReferences(SBOLDocument sbolDocument) {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
@@ -350,7 +350,7 @@ public class SBOLValidate {
 			}
 		}
 	}
-	
+
 	static void checkSequenceConstraints(ComponentDefinition componentDefinition) {
 		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
 			SequenceAnnotation saSubject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getSubject());
@@ -379,7 +379,7 @@ public class SBOLValidate {
 			}
 		}
 	}
-	
+
 	static void checkInteractionTypeParticipationRole(Interaction interaction,URI type,URI role) {
 		if (type.equals(SystemsBiologyOntology.INHIBITION)) {
 			if (!role.equals(SystemsBiologyOntology.INHIBITOR) && !role.equals(SystemsBiologyOntology.PROMOTER)) {
@@ -398,7 +398,7 @@ public class SBOLValidate {
 				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
 			}
 		} else if (type.equals(SystemsBiologyOntology.BIOCHEMICAL_REACTION)) {
-			if (!role.equals(SystemsBiologyOntology.REACTANT) && !role.equals(SystemsBiologyOntology.PRODUCT) && 
+			if (!role.equals(SystemsBiologyOntology.REACTANT) && !role.equals(SystemsBiologyOntology.PRODUCT) &&
 					!role.equals(SystemsBiologyOntology.MODIFIER)) {
 				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
 			}
@@ -406,18 +406,18 @@ public class SBOLValidate {
 			if (!role.equals(SystemsBiologyOntology.PROMOTER) && !role.equals(SystemsBiologyOntology.PRODUCT)) {
 				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
 			}
-		}   
+		}
 	}
-	
+
 	static void validateOntologyUsage(SBOLDocument sbolDocument) {
 		SequenceOntology so = new SequenceOntology();
 		SystemsBiologyOntology sbo = new SystemsBiologyOntology();
 		EDAMOntology edam = new EDAMOntology();
 		for (Sequence sequence : sbolDocument.getSequences()) {
 			if (!sequence.getEncoding().equals(Sequence.IUPAC_DNA) &&
-				!sequence.getEncoding().equals(Sequence.IUPAC_RNA) &&
-				!sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN) &&
-				!sequence.getEncoding().equals(Sequence.SMILES)) {
+					!sequence.getEncoding().equals(Sequence.IUPAC_RNA) &&
+					!sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN) &&
+					!sequence.getEncoding().equals(Sequence.SMILES)) {
 				//errors.add("Sequence " + sequence.getIdentity() + " has unrecoginized encoding (see Table 1): " + sequence.getEncoding());
 				errors.add(new SBOLValidationException("sbol-10407", sequence).getExceptionMessage());
 
@@ -427,10 +427,10 @@ public class SBOLValidate {
 			int numBioPAXtypes = 0;
 			for (URI type : compDef.getTypes()) {
 				if (type.equals(ComponentDefinition.DNA) ||
-					type.equals(ComponentDefinition.RNA) ||
-					type.equals(ComponentDefinition.PROTEIN) ||
-					type.equals(ComponentDefinition.COMPLEX) ||
-					type.equals(ComponentDefinition.SMALL_MOLECULE)) {
+						type.equals(ComponentDefinition.RNA) ||
+						type.equals(ComponentDefinition.PROTEIN) ||
+						type.equals(ComponentDefinition.COMPLEX) ||
+						type.equals(ComponentDefinition.SMALL_MOLECULE)) {
 					numBioPAXtypes++;
 				}
 			}
@@ -441,9 +441,9 @@ public class SBOLValidate {
 			}
 			int numSO = 0;;
 			for (URI role : compDef.getRoles()) {
-				try { 
+				try {
 					if (so.isDescendantOf(role, SequenceOntology.SEQUENCE_FEATURE)) {
-						numSO++;	
+						numSO++;
 					}
 				} catch (Exception e){
 				}
@@ -476,7 +476,7 @@ public class SBOLValidate {
 			}
 			catch (Exception e) {
 				errors.add(new SBOLValidationException("sbol-11507", model).getExceptionMessage());
-			}			
+			}
 			try {
 				if (!sbo.isDescendantOf(model.getFramework(), SystemsBiologyOntology.MODELING_FRAMEWORK)) {
 					errors.add(new SBOLValidationException("sbol-11511", model).getExceptionMessage());
@@ -502,7 +502,7 @@ public class SBOLValidate {
 				}
 				if (numSBOtype != 1) {
 					errors.add(new SBOLValidationException("sbol-11905").getExceptionMessage());
-				} 
+				}
 				for (Participation participation : interaction.getParticipations()) {
 					int numSBOrole = 0;
 					URI SBOrole = null;
@@ -525,7 +525,7 @@ public class SBOLValidate {
 			}
 		}
 	}
-	
+
 	static void validateComponentDefinitionSequences(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			if (componentDefinition.getSequences().size() < 1) continue;
@@ -537,7 +537,7 @@ public class SBOLValidate {
 			int smilesLength = -1;
 			for (Sequence sequence : componentDefinition.getSequences()) {
 				if (sequence.getEncoding().equals(Sequence.IUPAC_DNA) ||
-					sequence.getEncoding().equals(Sequence.IUPAC_RNA)) {
+						sequence.getEncoding().equals(Sequence.IUPAC_RNA)) {
 					if (foundNucleic) {
 						if (nucleicLength != sequence.getElements().length()) {
 							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getExceptionMessage());
@@ -557,7 +557,7 @@ public class SBOLValidate {
 								Cut cut = (Cut)location;
 								if (cut.getAt() < 0 || cut.getAt() > nucleicLength) {
 									errors.add(new SBOLValidationException("sbol-10523", componentDefinition).getExceptionMessage());
-								}								
+								}
 							}
 						}
 					}
@@ -600,31 +600,31 @@ public class SBOLValidate {
 			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && foundSmiles) {
 				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
 			}
-			*/
+			 */
 		}
 	}
-	
+
 	static void validateSequenceConstraints(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			checkSequenceConstraints(componentDefinition);
 		}
 	}
-	
+
 	static void validateSequenceAnnotations(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
 				Object[] locations = sequenceAnnotation.getLocations().toArray();
 				for (int i = 0; i < locations.length-1; i++) {
 					for (int j = i + 1; j < locations.length; j++) {
-						Location location1 = (Location) locations[i]; 
-						Location location2 = (Location) locations[j]; 
+						Location location1 = (Location) locations[i];
+						Location location2 = (Location) locations[j];
 						if (location1.getIdentity().equals(location2.getIdentity())) continue;
 						if (location1 instanceof Range && location2 instanceof Range) {
 							if (((((Range)location1).getStart() >= ((Range)location2).getStart()) &&
 									(((Range)location1).getStart() <= ((Range)location2).getEnd()))
 									||
-								((((Range)location2).getStart() >= ((Range)location1).getStart()) &&
-									(((Range)location2).getStart() <= ((Range)location1).getEnd()))) {
+									((((Range)location2).getStart() >= ((Range)location1).getStart()) &&
+											(((Range)location2).getStart() <= ((Range)location1).getEnd()))) {
 								//errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
 								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
 							}
@@ -645,14 +645,14 @@ public class SBOLValidate {
 								//errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
 								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
 							}
-						} 
+						}
 					}
 				}
 			}
 		}
 	}
-	
-	private static final String IUPAC_DNA_PATTERN = "([ACGTURYSWKMBDHVN\\-\\.]*)";	
+
+	private static final String IUPAC_DNA_PATTERN = "([ACGTURYSWKMBDHVN\\-\\.]*)";
 	private static final Pattern iupacDNAparser = Pattern.compile(IUPAC_DNA_PATTERN);
 	private static final String IUPAC_PROTEIN_PATTERN = "([ABCDEFGHIKLMNPQRSTVWXYZ]*)";
 	private static final Pattern iupacProteinParser = Pattern.compile(IUPAC_PROTEIN_PATTERN);
@@ -662,16 +662,16 @@ public class SBOLValidate {
 		if (sequence.getEncoding().equals(Sequence.IUPAC_DNA) ||
 				(sequence.getEncoding().equals(Sequence.IUPAC_RNA))) {
 			Matcher m = iupacDNAparser.matcher(sequence.getElements().toUpperCase());
-			return m.matches();			
+			return m.matches();
 		} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
 			Matcher m = iupacProteinParser.matcher(sequence.getElements().toUpperCase());
-			return m.matches();				
+			return m.matches();
 		} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
 			return openSmilesParser.check(sequence.getElements());
 		}
 		return true;
 	}
-	
+
 	static void validateSequenceEncodings(SBOLDocument sbolDocument) {
 		for (Sequence sequence : sbolDocument.getSequences()) {
 			if (!checkSequenceEncoding(sequence)) {
@@ -679,7 +679,7 @@ public class SBOLValidate {
 			}
 		}
 	}
-	
+
 	static void validatePersistentIdentityUniqueness(SBOLDocument sbolDocument) {
 		HashMap<URI, Identified> elements = new HashMap<>();
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
@@ -689,7 +689,7 @@ public class SBOLValidate {
 				if (!topLevel.getClass().equals(identified.getClass())) {
 					errors.add(new SBOLValidationException("sbol-10220", topLevel).getExceptionMessage());
 				}
- 			}
+			}
 			elements.put(topLevel.getPersistentIdentity(),topLevel);
 			if (topLevel instanceof ComponentDefinition) {
 				for (Component c : ((ComponentDefinition) topLevel).getComponents()) {
@@ -699,7 +699,7 @@ public class SBOLValidate {
 						if (!c.getClass().equals(identified.getClass())) {
 							errors.add(new SBOLValidationException("sbol-10220", c).getExceptionMessage());
 						}
-		 			}
+					}
 					elements.put(c.getPersistentIdentity(),c);
 					for (MapsTo m : c.getMapsTos()) {
 						if (!m.isSetPersistentIdentity()) continue;
@@ -708,7 +708,7 @@ public class SBOLValidate {
 							if (!m.getClass().equals(identified.getClass())) {
 								errors.add(new SBOLValidationException("sbol-10220", m).getExceptionMessage());
 							}
-			 			}
+						}
 						elements.put(m.getPersistentIdentity(),m);
 					}
 				}
@@ -719,7 +719,7 @@ public class SBOLValidate {
 						if (!sa.getClass().equals(identified.getClass())) {
 							errors.add(new SBOLValidationException("sbol-10220", sa).getExceptionMessage());
 						}
-		 			}					
+					}
 					elements.put(sa.getPersistentIdentity(),sa);
 					for (Location l : sa.getLocations()) {
 						if (!l.isSetPersistentIdentity()) continue;
@@ -728,7 +728,7 @@ public class SBOLValidate {
 							if (!l.getClass().equals(identified.getClass())) {
 								errors.add(new SBOLValidationException("sbol-10220", l).getExceptionMessage());
 							}
-			 			}
+						}
 						elements.put(l.getPersistentIdentity(),l);
 					}
 				}
@@ -739,7 +739,7 @@ public class SBOLValidate {
 						if (!sc.getClass().equals(identified.getClass())) {
 							errors.add(new SBOLValidationException("sbol-10220", sc).getExceptionMessage());
 						}
-		 			}					
+					}
 					elements.put(sc.getPersistentIdentity(),sc);
 				}
 			}
@@ -751,7 +751,7 @@ public class SBOLValidate {
 						if (!c.getClass().equals(identified.getClass())) {
 							errors.add(new SBOLValidationException("sbol-10220", c).getExceptionMessage());
 						}
-		 			}
+					}
 					elements.put(c.getPersistentIdentity(),c);
 					for (MapsTo m : c.getMapsTos()) {
 						if (!m.isSetPersistentIdentity()) continue;
@@ -760,7 +760,7 @@ public class SBOLValidate {
 							if (!m.getClass().equals(identified.getClass())) {
 								errors.add(new SBOLValidationException("sbol-10220", m).getExceptionMessage());
 							}
-			 			}
+						}
 						elements.put(m.getPersistentIdentity(),m);
 					}
 				}
@@ -771,7 +771,7 @@ public class SBOLValidate {
 						if (!mod.getClass().equals(identified.getClass())) {
 							errors.add(new SBOLValidationException("sbol-10220", mod).getExceptionMessage());
 						}
-		 			}
+					}
 					elements.put(mod.getPersistentIdentity(),mod);
 					for (MapsTo m : mod.getMapsTos()) {
 						if (!m.isSetPersistentIdentity()) continue;
@@ -780,7 +780,7 @@ public class SBOLValidate {
 							if (!m.getClass().equals(identified.getClass())) {
 								errors.add(new SBOLValidationException("sbol-10220", m).getExceptionMessage());
 							}
-			 			}
+						}
 						elements.put(m.getPersistentIdentity(),m);
 					}
 				}
@@ -791,7 +791,7 @@ public class SBOLValidate {
 						if (!i.getClass().equals(identified.getClass())) {
 							errors.add(new SBOLValidationException("sbol-10220", i).getExceptionMessage());
 						}
-		 			}					
+					}
 					elements.put(i.getPersistentIdentity(),i);
 					for (Participation p : i.getParticipations()) {
 						if (!p.isSetPersistentIdentity()) continue;
@@ -800,7 +800,7 @@ public class SBOLValidate {
 							if (!p.getClass().equals(identified.getClass())) {
 								errors.add(new SBOLValidationException("sbol-10220", p).getExceptionMessage());
 							}
-			 			}
+						}
 						elements.put(p.getPersistentIdentity(),p);
 					}
 				}
@@ -816,7 +816,7 @@ public class SBOLValidate {
 				if (!topLevel.equals(identified)) {
 					errors.add(new SBOLValidationException("sbol-10202", topLevel).getExceptionMessage());
 				}
- 			}
+			}
 			elements.put(topLevel.getIdentity(),topLevel);
 			if (topLevel instanceof ComponentDefinition) {
 				for (Component c : ((ComponentDefinition) topLevel).getComponents()) {
@@ -825,7 +825,7 @@ public class SBOLValidate {
 						if (!c.equals(identified)) {
 							errors.add(new SBOLValidationException("sbol-10202", c).getExceptionMessage());
 						}
-		 			}
+					}
 					elements.put(c.getIdentity(),c);
 					for (MapsTo m : c.getMapsTos()) {
 						if (elements.get(m.getIdentity())!=null) {
@@ -833,7 +833,7 @@ public class SBOLValidate {
 							if (!m.equals(identified)) {
 								errors.add(new SBOLValidationException("sbol-10202", m).getExceptionMessage());
 							}
-			 			}
+						}
 						elements.put(m.getIdentity(),m);
 					}
 				}
@@ -843,7 +843,7 @@ public class SBOLValidate {
 						if (!sa.equals(identified)) {
 							errors.add(new SBOLValidationException("sbol-10202", sa).getExceptionMessage());
 						}
-		 			}					
+					}
 					elements.put(sa.getIdentity(),sa);
 					for (Location l : sa.getLocations()) {
 						if (elements.get(l.getIdentity())!=null) {
@@ -851,7 +851,7 @@ public class SBOLValidate {
 							if (!l.equals(identified)) {
 								errors.add(new SBOLValidationException("sbol-10202", l).getExceptionMessage());
 							}
-			 			}
+						}
 						elements.put(l.getIdentity(),l);
 					}
 				}
@@ -861,7 +861,7 @@ public class SBOLValidate {
 						if (!sc.equals(identified)) {
 							errors.add(new SBOLValidationException("sbol-10202", sc).getExceptionMessage());
 						}
-		 			}					
+					}
 					elements.put(sc.getIdentity(),sc);
 				}
 			}
@@ -872,7 +872,7 @@ public class SBOLValidate {
 						if (!c.equals(identified)) {
 							errors.add(new SBOLValidationException("sbol-10202", c).getExceptionMessage());
 						}
-		 			}
+					}
 					elements.put(c.getIdentity(),c);
 					for (MapsTo m : c.getMapsTos()) {
 						if (elements.get(m.getIdentity())!=null) {
@@ -880,7 +880,7 @@ public class SBOLValidate {
 							if (!m.equals(identified)) {
 								errors.add(new SBOLValidationException("sbol-10202", m).getExceptionMessage());
 							}
-			 			}
+						}
 						elements.put(m.getIdentity(),m);
 					}
 				}
@@ -890,7 +890,7 @@ public class SBOLValidate {
 						if (!mod.equals(identified)) {
 							errors.add(new SBOLValidationException("sbol-10202", mod).getExceptionMessage());
 						}
-		 			}
+					}
 					elements.put(mod.getIdentity(),mod);
 					for (MapsTo m : mod.getMapsTos()) {
 						if (elements.get(m.getIdentity())!=null) {
@@ -898,7 +898,7 @@ public class SBOLValidate {
 							if (!m.equals(identified)) {
 								errors.add(new SBOLValidationException("sbol-10202", m).getExceptionMessage());
 							}
-			 			}
+						}
 						elements.put(m.getIdentity(),m);
 					}
 				}
@@ -908,7 +908,7 @@ public class SBOLValidate {
 						if (!i.equals(identified)) {
 							errors.add(new SBOLValidationException("sbol-10202", i).getExceptionMessage());
 						}
-		 			}					
+					}
 					elements.put(i.getIdentity(),i);
 					for (Participation p : i.getParticipations()) {
 						if (elements.get(p.getIdentity())!=null) {
@@ -916,14 +916,14 @@ public class SBOLValidate {
 							if (!p.equals(identified)) {
 								errors.add(new SBOLValidationException("sbol-10202", p).getExceptionMessage());
 							}
-			 			}
+						}
 						elements.put(p.getIdentity(),p);
 					}
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Validate SBOL document.  Errors either throw exceptions or, if not fatal, add to the list of errors
 	 * that can be accessed using the getErrors() method.
@@ -932,7 +932,7 @@ public class SBOLValidate {
 	 * @param compliant
 	 * @param bestPractice
 	 */
-	public static void validateSBOL(SBOLDocument sbolDocument, boolean complete, boolean compliant, 
+	public static void validateSBOL(SBOLDocument sbolDocument, boolean complete, boolean compliant,
 			boolean bestPractice) {
 		clearErrors();
 		validateSequenceEncodings(sbolDocument);
@@ -942,26 +942,27 @@ public class SBOLValidate {
 		validatePersistentIdentityUniqueness(sbolDocument);
 		validateSequenceConstraints(sbolDocument);
 		validateMapsTos(sbolDocument);
-        if (compliant) validateCompliance(sbolDocument);
-        if (complete) validateCompleteness(sbolDocument);
-        if (bestPractice) {
-        	validateOntologyUsage(sbolDocument);
-        	validateSequenceAnnotations(sbolDocument);
-        	validateComponentDefinitionSequences(sbolDocument);
-        }
+		if (compliant) validateCompliance(sbolDocument);
+		if (complete) validateCompleteness(sbolDocument);
+		if (bestPractice) {
+			validateOntologyUsage(sbolDocument);
+			validateSequenceAnnotations(sbolDocument);
+			validateComponentDefinitionSequences(sbolDocument);
+		}
 	}
-	
-	private static void usage() {	
+
+	private static void usage() {
 		// TODO: update
 		System.err.println("libSBOLj version " + SBOLVersion);
-		System.err.println("Description: Validates the contents of an SBOL document,\n" 
-				+ "converting from SBOL 1.1 to SBOL " + SBOLVersion + ", if necessary,\n" 
+		System.err.println("Description: Validates the contents of an SBOL document,\n"
+				+ "converting from SBOL 1.1 to SBOL " + SBOLVersion + ", if necessary,\n"
 				+ "and printing the document contents if validation succeeds");
 		System.err.println();
 		System.err.println("Usage:");
 		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -p <URIprefix> -v <version>]");
 		System.err.println();
 		System.err.println("-g  convert GenBank file to SBOL 2.0");
+		System.err.println("-l  <language> specfies language (SBOL1/SBOL2/GenBank) for output (default=SBOL2)");
 		System.err.println("-r  export root ComponentDefinition as a GenBank file");
 		System.err.println("-c  <componentDefinitionURI> specifies top-level ComponentDefinition");
 		System.err.println("-e  <compareFile> specifies file to check if equal to");
@@ -973,7 +974,7 @@ public class SBOLValidate {
 		System.err.println("-d  provide detailed error trace");
 		System.exit(1);
 	}
-	
+
 	public static void compareDocuments(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
 		/*if (!doc1.getNamespaces().equals(doc2.getNamespaces())) {
 			System.err.println("Namespaces do not match");
@@ -1000,7 +1001,7 @@ public class SBOLValidate {
 			GenericTopLevel genericTopLevel1 = doc1.getGenericTopLevel(genericTopLevel2.getIdentity());
 			if (genericTopLevel1==null) {
 				System.err.println("Collection " + genericTopLevel2.getIdentity() + " not found in " + file1);
-			} 
+			}
 		}
 		/*
 		if (!doc1.getCollections().equals(doc2.getCollections())) {
@@ -1008,7 +1009,7 @@ public class SBOLValidate {
 			System.out.println(doc1.getCollections().toString());
 			System.out.println(doc2.getCollections().toString());
 		}
-		*/
+		 */
 		for (Collection collection1 : doc1.getCollections()) {
 			Collection collection2 = doc2.getCollection(collection1.getIdentity());
 			if (collection2==null) {
@@ -1021,13 +1022,13 @@ public class SBOLValidate {
 			Collection collection1 = doc1.getCollection(collection2.getIdentity());
 			if (collection1==null) {
 				System.err.println("Collection " + collection2.getIdentity() + " not found in " + file1);
-			} 
+			}
 		}
 		/*
 		if (!doc1.getSequences().equals(doc2.getSequences())) {
 			System.err.println("Sequences do not match");
 		}
-		*/
+		 */
 		for (Sequence sequence1 : doc1.getSequences()) {
 			Sequence sequence2 = doc2.getSequence(sequence1.getIdentity());
 			if (sequence2==null) {
@@ -1040,13 +1041,13 @@ public class SBOLValidate {
 			Sequence sequence1 = doc1.getSequence(sequence2.getIdentity());
 			if (sequence1==null) {
 				System.err.println("Sequence " + sequence2.getIdentity() + " not found in " + file1);
-			} 
+			}
 		}
 		/*
 		if (!doc1.getComponentDefinitions().equals(doc2.getComponentDefinitions())) {
 			System.err.println("ComponentDefinitions do not match");
 		}
-		*/
+		 */
 		for (ComponentDefinition componentDefinition1 : doc1.getComponentDefinitions()) {
 			ComponentDefinition componentDefinition2 = doc2.getComponentDefinition(componentDefinition1.getIdentity());
 			if (componentDefinition2==null) {
@@ -1061,7 +1062,7 @@ public class SBOLValidate {
 			ComponentDefinition componentDefinition1 = doc1.getComponentDefinition(componentDefinition2.getIdentity());
 			if (componentDefinition1==null) {
 				System.err.println("ComponentDefinition " + componentDefinition2.getIdentity() + " not found in " + file1);
-			} 
+			}
 		}
 		for (ModuleDefinition moduleDefinition1 : doc1.getModuleDefinitions()) {
 			ModuleDefinition moduleDefinition2 = doc2.getModuleDefinition(moduleDefinition1.getIdentity());
@@ -1075,7 +1076,7 @@ public class SBOLValidate {
 			ModuleDefinition moduleDefinition1 = doc1.getModuleDefinition(moduleDefinition2.getIdentity());
 			if (moduleDefinition1==null) {
 				System.err.println("ModuleDefinition " + moduleDefinition2.getIdentity() + " not found in " + file1);
-			} 
+			}
 		}
 		for (Model model1 : doc1.getModels()) {
 			Model model2 = doc2.getModel(model1.getIdentity());
@@ -1089,18 +1090,18 @@ public class SBOLValidate {
 			Model model1 = doc1.getModel(model2.getIdentity());
 			if (model1==null) {
 				System.err.println("Model " + model2.getIdentity() + " not found in " + file1);
-			} 
+			}
 		}
 	}
-	
+
 	/**
-	 * Command line method for reading an input file and producing an output file. 
+	 * Command line method for reading an input file and producing an output file.
 	 * <p>
 	 * By default, validations on compliance and completeness are performed, and types
 	 * for top-level objects are not used in URIs.
 	 * <p>
 	 * Options:
-	 * <p> 
+	 * <p>
 	 * "-t" uses types in URIs,
 	 * <p>
 	 * "-i" turns off completeness checking,
@@ -1121,13 +1122,13 @@ public class SBOLValidate {
 	 * <p>
 	 * "-p" specifies the default URI prefix of the output file,
 	 * <p>
-	 * "-v" specifies version to use for converted objects, 
+	 * "-v" specifies version to use for converted objects,
 	 * <p>
 	 * "-f" fail on first error, and
 	 * <p>
 	 * "-d" show detailed error trace.
-	 * 
-	 * @param args
+	 *
+	 * @param args arguments supplied at Command line
 	 */
 	public static void main(String[] args) {
 		String fileName = "";
@@ -1210,7 +1211,7 @@ public class SBOLValidate {
 				//GenBank.setTypesInURI(typesInURI);
 				//GenBank.setVersion(version);
 				doc = GenBank.read(fileName);
-		        //doc.setTypesInURIs(typesInURI);
+				//doc.setTypesInURIs(typesInURI);
 			} else {
 				if (!URIPrefix.equals("")) {
 					SBOLReader.setURIPrefix(URIPrefix);
@@ -1225,8 +1226,8 @@ public class SBOLValidate {
 					System.err.println("Converting SBOL Version 1 to SBOL Version 2");
 				}
 				doc = SBOLReader.read(fileName);
-		        doc.setTypesInURIs(typesInURI);
-			} 
+				doc.setTypesInURIs(typesInURI);
+			}
 			if (!compareFile.equals("")) {
 				SBOLDocument doc2 = SBOLReader.read(compareFile);
 				File f = new File(fileName);
@@ -1235,63 +1236,63 @@ public class SBOLValidate {
 				String compareFileStr = f.getName();
 				compareDocuments(fileNameStr, doc, compareFileStr, doc2);
 			}
-	        validateSBOL(doc, complete, compliant, bestPractice);
-	        if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
-		        if (genBankOut) {
-		        	ComponentDefinition componentDefinition = null;
-		        	if (componentDefinitionStr.equals("")) {
-		        		Set<ComponentDefinition> rootDefinitions = doc.getRootComponentDefinitions();
-		        		if (rootDefinitions.size()==0) {
-		        			System.err.println("GenBank output failed: no root ComponentDefinition found.");
-		        			return;
-		        		} else if (rootDefinitions.size()==1){
-		        			componentDefinition = doc.getComponentDefinition(rootDefinitions.iterator().next().getIdentity());
-		        		} else {
-		        			System.err.println("GenBank output failed: multiple root ComponentDefinitions, please specify one.");
-		        			return;
-		        		}
-		        	} else {
-		        		componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
-		        	}
-		        	if (outputFile.equals("")) {
-	        			GenBank.write(componentDefinition, (System.out));
-	        		} else {
-		        		System.out.println("Validation successful, no errors.");
-	        			GenBank.write(componentDefinition, outputFile);
-		        	}
-		        } else {
-		        	if (outputFile.equals("")) {
-	        			SBOLWriter.write(doc, (System.out));
-	        		} else {
-	        			System.out.println("Validation successful, no errors.");
-	        			SBOLWriter.write(doc, outputFile);
-	        		}
-	        	}
-	        } else {
-	        	if (getNumErrors()!=0) {
-	        		for (String error : getErrors()) {
-	        			System.err.println(error);
-	        		}
-	        	}
-	        	if (SBOLReader.getNumErrors()!=0) {
-	        		for (String error : SBOLReader.getErrors()) {
-	        			System.err.println(error);
-	        		}
-	        	}
-	        	System.err.println("Validation failed.\n");
-	        }
+			validateSBOL(doc, complete, compliant, bestPractice);
+			if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
+				if (genBankOut) {
+					ComponentDefinition componentDefinition = null;
+					if (componentDefinitionStr.equals("")) {
+						Set<ComponentDefinition> rootDefinitions = doc.getRootComponentDefinitions();
+						if (rootDefinitions.size()==0) {
+							System.err.println("GenBank output failed: no root ComponentDefinition found.");
+							return;
+						} else if (rootDefinitions.size()==1){
+							componentDefinition = doc.getComponentDefinition(rootDefinitions.iterator().next().getIdentity());
+						} else {
+							System.err.println("GenBank output failed: multiple root ComponentDefinitions, please specify one.");
+							return;
+						}
+					} else {
+						componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
+					}
+					if (outputFile.equals("")) {
+						GenBank.write(componentDefinition, (System.out));
+					} else {
+						System.out.println("Validation successful, no errors.");
+						GenBank.write(componentDefinition, outputFile);
+					}
+				} else {
+					if (outputFile.equals("")) {
+						SBOLWriter.write(doc, (System.out));
+					} else {
+						System.out.println("Validation successful, no errors.");
+						SBOLWriter.write(doc, outputFile);
+					}
+				}
+			} else {
+				if (getNumErrors()!=0) {
+					for (String error : getErrors()) {
+						System.err.println(error);
+					}
+				}
+				if (SBOLReader.getNumErrors()!=0) {
+					for (String error : SBOLReader.getErrors()) {
+						System.err.println(error);
+					}
+				}
+				System.err.println("Validation failed.\n");
+			}
 		}
 		catch (Exception e) {
 			if (showDetail) {
 				e.printStackTrace();
 			}
-        	System.err.println(e.getMessage()+"\nValidation failed.");
+			System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 		catch (Throwable e) {
 			if (showDetail) {
 				e.printStackTrace();
 			}
-        	System.err.println(e.getMessage()+"\nValidation failed.");
+			System.err.println(e.getMessage()+"\nValidation failed.");
 		}
 	}
 
