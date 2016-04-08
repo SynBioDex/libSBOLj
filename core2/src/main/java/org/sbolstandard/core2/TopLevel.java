@@ -38,7 +38,7 @@ public abstract class TopLevel extends Identified {
 	 * The abbreviation for the GenericTopLevel type in URI
 	 */
 	public static final String GENERIC_TOP_LEVEL = "gen";
-
+		
 	TopLevel(URI identity) throws SBOLValidationException {
 		super(identity);
 	}
@@ -46,12 +46,12 @@ public abstract class TopLevel extends Identified {
 	protected TopLevel(TopLevel toplevel) throws SBOLValidationException {
 		super(toplevel);
 	}
-
+	
 	@Override
 	protected abstract Identified deepCopy() throws SBOLValidationException;
-
+	
 	/**
-	 * Make a copy of a top-level object whose URI and its descendants' URIs (children, grandchildren, etc) are all compliant.
+	 * Make a copy of a top-level object whose URI and its descendants' URIs (children, grandchildren, etc) are all compliant. 
 	 * It first makes a deep copy of this object, then updates its own identity URI and all of its descendants' identity URIs
 	 * according to the given {@code URIprefix, displayId}, and {@code version}. This method also updates the {@code displayId}
 	 * and {@code version} fields for each updated object.
@@ -62,11 +62,11 @@ public abstract class TopLevel extends Identified {
 	/**
 	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
 	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
-	 * the level of the given object.
+	 * the level of the given object. 
 	 * @param objURI
-	 * @throws SBOLValidationException
+	 * @throws SBOLValidationException 
 	 */
-	void isURIcompliant() throws SBOLValidationException {
+	void isURIcompliant() throws SBOLValidationException {	
 		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 		try {
 			URIcompliance.isURIcompliant(this);
@@ -78,8 +78,19 @@ public abstract class TopLevel extends Identified {
 	}
 
 	/**
-	 * Check if this top-level object's and all of its descendants' URIs are all compliant.
-	 * @throws SBOLValidationException violates validation rule
+	 * The getDocument method returns the SBOLDocument that was used 
+	 * to instantiate this TopLevel object.
+	 * 
+	 * @return the SBOLDocument of the TopLevel's origin
+	 */
+	public SBOLDocument getDocument() {
+		return this.sbolDocument;
+	}
+
+	
+	/**
+	 * Check if this top-level object's and all of its descendants' URIs are all compliant. 
+	 * @throws SBOLValidationException 
 	 */
 	protected abstract void checkDescendantsURIcompliance() throws SBOLValidationException;
 
