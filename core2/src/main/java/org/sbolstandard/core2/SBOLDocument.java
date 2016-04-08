@@ -1041,7 +1041,6 @@ public class SBOLDocument {
 	 *
 	 * @param URIprefix maps to a domain over which the user has control
 	 * @param displayId an intermediate between name and identity that is machine-readable
-	 * @param types specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @param version The given version for this object
 	 * @param types specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
