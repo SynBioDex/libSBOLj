@@ -76,6 +76,17 @@ public abstract class TopLevel extends Identified {
 		}
 		this.checkDescendantsURIcompliance();
 	}
+
+	/**
+	 * The getDocument method returns the SBOLDocument that was used 
+	 * to instantiate this TopLevel object.
+	 * 
+	 * @return the SBOLDocument of the TopLevel's origin
+	 */
+	public SBOLDocument getDocument() {
+		return this.sbolDocument;
+	}
+
 	
 	/**
 	 * Check if this top-level object's and all of its descendants' URIs are all compliant. 
