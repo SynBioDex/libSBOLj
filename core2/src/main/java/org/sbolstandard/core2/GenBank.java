@@ -679,51 +679,9 @@ public class GenBank {
 		for (SequenceAnnotation sa : topCD.getSequenceAnnotations()) {
 			Range range = (Range)sa.getLocation("range");
 			if (range!=null) {
-				String subElements = elements.substring(range.getStart()-1,range.getEnd()-1).toLowerCase();
+				String subElements = elements.substring(range.getStart()-1,range.getEnd()).toLowerCase();
 				if (range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
-					String reverse = "";
-					for (int i = subElements.length()-1; i >= 0; i--) {
-						if (subElements.charAt(i)=='a') {
-							if (type.equals(ComponentDefinition.RNA)) {
-								reverse += 't';
-							} else {
-								reverse += 'u';
-							}
-						} else if ((subElements.charAt(i)=='t')||(subElements.charAt(i)=='u')) {
-							reverse += 'a';
-						} else if (subElements.charAt(i)=='g') {
-							reverse += 'c';
-						} else if (subElements.charAt(i)=='c') {
-							reverse += 'g';
-						} else if (subElements.charAt(i)=='r') {
-							reverse += 'y';
-						} else if (subElements.charAt(i)=='y') {
-							reverse += 'r';
-						} else if (subElements.charAt(i)=='s') {
-							reverse += 'w';
-						} else if (subElements.charAt(i)=='w') {
-							reverse += 's';
-						} else if (subElements.charAt(i)=='k') {
-							reverse += 'm';
-						} else if (subElements.charAt(i)=='m') {
-							reverse += 'k';
-						} else if (subElements.charAt(i)=='b') {
-							reverse += 'v';
-						} else if (subElements.charAt(i)=='v') {
-							reverse += 'b';
-						} else if (subElements.charAt(i)=='d') {
-							reverse += 'h';
-						} else if (subElements.charAt(i)=='h') {
-							reverse += 'd';
-						} else if (subElements.charAt(i)=='n') {
-							reverse += 'n';
-						} else if (subElements.charAt(i)=='.') {
-							reverse += '.';
-						} else if (subElements.charAt(i)=='-') {
-							reverse += '-';
-						}
-					}
-					subElements = reverse;
+					subElements = Sequence.reverseComplement(subElements,type);
 				}
 				ComponentDefinition subCompDef = sa.getComponent().getDefinition();
 				String compDefId = subCompDef.getDisplayId();

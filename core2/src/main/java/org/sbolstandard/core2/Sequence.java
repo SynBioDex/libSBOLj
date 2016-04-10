@@ -189,6 +189,57 @@ public class Sequence extends TopLevel{
 	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
 		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
+	
+	/**
+	 * Perform the reverse complement of a sequence encoded using IUPAC_DNA
+	 * @param elements - sequence to reverse complement 
+	 * @return the reverse complement of a sequence encoded using IUPAC_DNA
+	 */
+	public static String reverseComplement(String elements,URI type) {
+		String reverse = "";
+		for (int i = elements.length()-1; i >= 0; i--) {
+			if (elements.charAt(i)=='a') {
+				if (type.equals(ComponentDefinition.DNA)) {
+					reverse += 't';
+				} else {
+					reverse += 'u';
+				}
+			} else if ((elements.charAt(i)=='t')||(elements.charAt(i)=='u')) {
+				reverse += 'a';
+			} else if (elements.charAt(i)=='g') {
+				reverse += 'c';
+			} else if (elements.charAt(i)=='c') {
+				reverse += 'g';
+			} else if (elements.charAt(i)=='r') {
+				reverse += 'y';
+			} else if (elements.charAt(i)=='y') {
+				reverse += 'r';
+			} else if (elements.charAt(i)=='s') {
+				reverse += 'w';
+			} else if (elements.charAt(i)=='w') {
+				reverse += 's';
+			} else if (elements.charAt(i)=='k') {
+				reverse += 'm';
+			} else if (elements.charAt(i)=='m') {
+				reverse += 'k';
+			} else if (elements.charAt(i)=='b') {
+				reverse += 'v';
+			} else if (elements.charAt(i)=='v') {
+				reverse += 'b';
+			} else if (elements.charAt(i)=='d') {
+				reverse += 'h';
+			} else if (elements.charAt(i)=='h') {
+				reverse += 'd';
+			} else if (elements.charAt(i)=='n') {
+				reverse += 'n';
+			} else if (elements.charAt(i)=='.') {
+				reverse += '.';
+			} else if (elements.charAt(i)=='-') {
+				reverse += '-';
+			}
+		}
+		return reverse;
+	}
 
 	@Override
 	public String toString() {

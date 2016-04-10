@@ -418,7 +418,6 @@ public class SBOLValidate {
 					!sequence.getEncoding().equals(Sequence.IUPAC_RNA) &&
 					!sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN) &&
 					!sequence.getEncoding().equals(Sequence.SMILES)) {
-				//errors.add("Sequence " + sequence.getIdentity() + " has unrecoginized encoding (see Table 1): " + sequence.getEncoding());
 				errors.add(new SBOLValidationException("sbol-10407", sequence).getExceptionMessage());
 
 			}
@@ -463,7 +462,6 @@ public class SBOLValidate {
 					RestrictionType.convertToRestrictionType(sc.getRestrictionURI());
 				}
 				catch (Exception e) {
-					//errors.add("SequenceConstraint " + sc.getIdentity() + " does not have a recognized restriction type (Table 7): " + sc.getRestrictionURI());
 					errors.add(new SBOLValidationException("sbol-11412", sc).getExceptionMessage());
 				}
 			}
@@ -590,6 +588,17 @@ public class SBOLValidate {
 			} else if (componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && !foundSmiles) {
 				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getExceptionMessage());
 			}
+			if (foundNucleic) {
+				if (componentDefinition.getSequenceAnnotations().size()>0) {
+					String impliedElements = componentDefinition.getImpliedNucleicAcidSequence();
+					Sequence dnaSequence = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA);
+					if (!includesSequence(dnaSequence.getElements(),impliedElements)) {
+						//System.out.println("Sequence:"+dnaSequence.getElements());
+						//System.out.println("Implied: "+impliedElements);
+						errors.add(new SBOLValidationException("sbol-10520", componentDefinition).getExceptionMessage());
+					}
+				}
+			}
 			/* TODO: no rule for this currently
 			if ((!componentDefinition.getTypes().contains(ComponentDefinition.DNA) &&
 					!componentDefinition.getTypes().contains(ComponentDefinition.RNA))
@@ -602,6 +611,100 @@ public class SBOLValidate {
 			}
 			 */
 		}
+	}
+	
+	static boolean includesSequence(String specificSequence,String generalSequence) {
+		//if (specificSequence.length()!=generalSequence.length()) return false;
+		specificSequence = specificSequence.toLowerCase();
+		generalSequence = generalSequence.toLowerCase();
+		for (int i = 0; i < specificSequence.length(); i++) {
+			switch (generalSequence.charAt(i)) {
+			case 'a': 
+			case 'c': 
+			case 'g':
+			case 't':
+			case 'u':
+				if (specificSequence.charAt(i)!=generalSequence.charAt(i)) {
+					return false; 
+				}
+				break;
+			case '.':
+				if (specificSequence.charAt(i)!='.' && specificSequence.charAt(i)!='-') {
+					return false;
+				}
+				break;
+			case '-':
+				if (specificSequence.charAt(i)!='.' && specificSequence.charAt(i)!='-') {
+					return false;
+				}
+				break;
+			case 'r':
+				if (specificSequence.charAt(i)!='r' && specificSequence.charAt(i)!='a' &&
+					specificSequence.charAt(i)!='g') {
+					return false;
+				}
+				break;
+			case 'y':
+				if (specificSequence.charAt(i)!='y' && specificSequence.charAt(i)!='c' &&
+					specificSequence.charAt(i)!='t') {
+					return false;
+				}
+				break;
+			case 's':
+				if (specificSequence.charAt(i)!='s' && specificSequence.charAt(i)!='c' &&
+					specificSequence.charAt(i)!='g') {
+					return false;
+				}
+				break;
+			case 'w':
+				if (specificSequence.charAt(i)!='w' && specificSequence.charAt(i)!='a' &&
+					specificSequence.charAt(i)!='t') {
+					return false;
+				}
+				break;
+			case 'k':
+				if (specificSequence.charAt(i)!='k' && specificSequence.charAt(i)!='g' &&
+					specificSequence.charAt(i)!='t') {
+					return false;
+				}
+				break;
+			case 'm':
+				if (specificSequence.charAt(i)!='m' && specificSequence.charAt(i)!='a' &&
+					specificSequence.charAt(i)!='c') {
+					return false;
+				}
+				break;
+			case 'b':
+				if (specificSequence.charAt(i)!='k' && specificSequence.charAt(i)!='g' &&
+					specificSequence.charAt(i)!='t' && specificSequence.charAt(i)!='c') {
+					return false;
+				}
+				break;
+			case 'd':
+				if (specificSequence.charAt(i)!='d' && specificSequence.charAt(i)!='g' &&
+					specificSequence.charAt(i)!='t' && specificSequence.charAt(i)!='a') {
+					return false;
+				}
+				break;
+			case 'h':
+				if (specificSequence.charAt(i)!='h' && specificSequence.charAt(i)!='c' &&
+					specificSequence.charAt(i)!='t' && specificSequence.charAt(i)!='a') {
+					return false;
+				}
+				break;
+			case 'v':
+				if (specificSequence.charAt(i)!='v' && specificSequence.charAt(i)!='g' &&
+					specificSequence.charAt(i)!='c' && specificSequence.charAt(i)!='a') {
+					return false;
+				}
+				break;
+			case 'n':
+				break;
+			default:
+				return false;
+			}
+		}
+		return true;
 	}
 
 	static void validateSequenceConstraints(SBOLDocument sbolDocument) {
@@ -625,24 +728,20 @@ public class SBOLValidate {
 									||
 									((((Range)location2).getStart() >= ((Range)location1).getStart()) &&
 											(((Range)location2).getStart() <= ((Range)location1).getEnd()))) {
-								//errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
 								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
 							}
 						} else if (location1 instanceof Range && location2 instanceof Cut) {
 							if ((((Range)location1).getEnd() > ((Cut)location2).getAt()) &&
 									(((Cut)location2).getAt() >= ((Range)location1).getStart())) {
-								//errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
 								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
 							}
 						} else if (location2 instanceof Range && location1 instanceof Cut) {
 							if ((((Range)location2).getEnd() > ((Cut)location1).getAt()) &&
 									(((Cut)location1).getAt() >= ((Range)location2).getStart())) {
-								//errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
 								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
 							}
 						} else if (location2 instanceof Cut && location1 instanceof Cut) {
 							if (((Cut)location2).getAt() == ((Cut)location1).getAt()) {
-								//errors.add("Locations " + location1.getIdentity() + " and " + location2.getIdentity() + " overlap.");
 								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
 							}
 						}

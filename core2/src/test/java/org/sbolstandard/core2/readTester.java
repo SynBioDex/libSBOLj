@@ -33,21 +33,30 @@ public class readTester {
 	public static void main(String[] args) {
 
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_14);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_9);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_14);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_9);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
 			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			//SBOLReader.setVersion("1.0");
 			//SBOLReader.setTypesInURI(true);
 			SBOLDocument document1 = SBOLReader.read(file);
-
+			for (ComponentDefinition componentDefinition : document1.getComponentDefinitions()) {
+				if (componentDefinition.getComponents().size()==0) continue;
+				String original = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements();
+				String implied = componentDefinition.getImpliedNucleicAcidSequence();
+				if (!original.equals(implied)) {
+					System.out.println("Original:"+componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements());
+					System.out.println("Implied: "+componentDefinition.getImpliedNucleicAcidSequence());
+				}
+			}
+			
 			//SBOLWriter.write(document1, (System.out), SBOLReader.RDFV1);
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			SBOLWriter.writeV1(document1, out);
-			SBOLDocument document2 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
-			SBOLWriter.writeV1(document2, (System.out));
+			//ByteArrayOutputStream out = new ByteArrayOutputStream();
+			//SBOLWriter.writeV1(document1, out);
+			//SBOLDocument document2 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
+			//SBOLWriter.writeV1(document2, (System.out));
 			
 			//			file = readTester.class.getResourceAsStream(path +filenameV1_14);
 			//			if (file == null)

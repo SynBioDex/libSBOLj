@@ -427,6 +427,81 @@ public class ComponentDefinition extends TopLevel {
 		}
 		return resolved;
 	}
+	
+	/**
+	 * Returns the first Sequence instances with a given encoding
+	 * 
+	 * @param encoding - URI for a sequence encoding
+	 * @return the first Sequence instances with a given encoding
+	 */
+	public Sequence getSequenceByEncoding(URI encoding) {
+		if (sbolDocument==null) return null;
+		for (Sequence sequence : this.getSequences()) {
+			if (sequence.getEncoding().equals(encoding)) {
+				return sequence;
+			}
+		}
+		return null;
+	}	
+	
+	/**
+	 *  Return the elements of a nucleic acid sequence implied by the hierarchically included Components
+	 *  @return the elements of a nucleic sequence implied by the hierarchically included Components
+	 */
+	public String getImpliedNucleicAcidSequence() {
+		URI type = null;
+		if (this.getTypes().contains(ComponentDefinition.DNA)) {
+			type = ComponentDefinition.DNA;
+		} else if (this.getTypes().contains(ComponentDefinition.RNA)) {
+			type = ComponentDefinition.RNA;
+		} else {
+			return null;
+		}
+		String elements = "";
+		int length = 0;
+		if (this.getSequenceByEncoding(Sequence.IUPAC_DNA)!=null) {
+			length = this.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements().length();
+		}
+		for (SequenceAnnotation sequenceAnnotation : this.getSequenceAnnotations()) {
+			for (Location location : sequenceAnnotation.getLocations()) {
+				if (location instanceof Range) {
+					Range range = (Range)location;
+					if (range.getEnd()>length) {
+						length = range.getEnd();
+					}
+				}
+			}
+		}
+		for (int i = 0; i < length; i++) {
+			elements += "N";
+		}
+		char[] elementsArray = elements.toCharArray();
+		for (SequenceAnnotation sequenceAnnotation : this.getSequenceAnnotations()) {
+			String subElements = null;
+			if (!sequenceAnnotation.isSetComponent()) continue;
+			if (sequenceAnnotation.getComponent().getDefinition()!=null) {
+				ComponentDefinition compDef = sequenceAnnotation.getComponent().getDefinition();
+				if (compDef.getSequenceByEncoding(Sequence.IUPAC_DNA)!=null) {
+					subElements = compDef.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements();
+				} else {
+					subElements = compDef.getImpliedNucleicAcidSequence();
+				}
+			}
+			for (Location location : sequenceAnnotation.getLocations()) {
+				if (location instanceof Range) {
+					Range range = (Range)location;
+					if (range.isSetOrientation() && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
+						subElements = Sequence.reverseComplement(subElements, type);
+					}
+					for (int i = 0; i < subElements.length(); i++) {
+						elementsArray[(range.getStart()+i)-1] = subElements.charAt(i);
+					}
+				}
+			}
+		}
+		elements = String.valueOf(elementsArray);
+		return elements;
+	}
 
 	/**
 	 * Clears the existing set of Sequence references first, then adds the given
