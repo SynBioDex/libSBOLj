@@ -448,7 +448,7 @@ public class SBOLValidate {
 				}
 			}
 			// TODO: should add RNA
-			if (compDef.getTypes().contains(ComponentDefinition.DNA)/*||compDef.getTypes().contains(ComponentDefinition.RNA)*/) {
+			if (compDef.getTypes().contains(ComponentDefinition.DNA) || compDef.getTypes().contains(ComponentDefinition.RNA)) {
 				if (numSO!=1) {
 					errors.add(new SBOLValidationException("sbol-10527", compDef).getExceptionMessage());
 				}

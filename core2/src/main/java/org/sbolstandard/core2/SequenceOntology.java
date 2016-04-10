@@ -399,5 +399,11 @@ public class SequenceOntology {
 	 * Any extent of continuous biological sequence. (<a href="http://identifiers.org/so/SO:0000110">SO:0000110</a>).
 	 */
 	public static final URI SEQUENCE_FEATURE = type("SO:0000110");
+	
+	/**
+	 * A small RNA oligo, typically about 20 bases, that guides the cas nuclease to a target DNA sequence in the 
+	 * CRISPR/cas mutagenesis method. (<a href="http://identifiers.org/so/SO:0001998">SO:0001998</a>).
+	 */
+	public static final URI SGRNA = type("SO:0001998");
 
 }

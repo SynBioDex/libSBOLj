@@ -56,7 +56,7 @@ public class RepressionModel {
 		doc.createComponentDefinition("cas9_generic", version, ComponentDefinition.PROTEIN);
 		
 		// Create ComponentDefinition for gRNA_generic RNA
-		doc.createComponentDefinition("gRNA_generic",version, ComponentDefinition.RNA);
+		doc.createComponentDefinition("gRNA_generic",version, ComponentDefinition.RNA).addRole(SequenceOntology.SGRNA);
 
 		// Create ComponentDefinition for cas9_gRNA_complex
 		doc.createComponentDefinition("cas9_gRNA_complex",version, ComponentDefinition.COMPLEX);
@@ -179,7 +179,7 @@ public class RepressionModel {
 		gRNA_b_gene.createSequenceConstraint("gRNA_b_gene_constraint2", RestrictionType.PRECEDES, "gRNA_b_nc","gRNA_b_terminator");
 
 		// Create ComponentDefinition for gRNA_b RNA
-		doc.createComponentDefinition("gRNA_b", version, ComponentDefinition.RNA);
+		doc.createComponentDefinition("gRNA_b", version, ComponentDefinition.RNA).addRole(SequenceOntology.SGRNA);
 		  
 		// Create ComponentDefinition for cas9m_BFP gRNA_b complex 
 		doc.createComponentDefinition("cas9m_BFP_gRNA_b", version, ComponentDefinition.COMPLEX);
