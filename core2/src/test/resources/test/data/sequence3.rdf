@@ -1,12 +1,35 @@
 <?xml version="1.0" ?>
-<rdf:RDF xmlns:prov="http://www.w3.org/ns/prov#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#" xmlns:gb="http://www.ncbi.nlm.nih.gov" xmlns:dcterms="http://purl.org/dc/terms/">
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature8/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature8"/>
-    <sbol:displayId>feature8</sbol:displayId>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:gb="http://www.ncbi.nlm.nih.gov" xmlns:prov="http://www.w3.org/ns/prov#">
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature11/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature11"/>
+    <sbol:displayId>feature11</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature11_seq/1"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature5/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature5"/>
+    <sbol:displayId>feature5</sbol:displayId>
     <sbol:version>1</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature8_seq/1"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature5_seq/1"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature3/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature3"/>
+    <sbol:displayId>feature3</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000234"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature12/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature12"/>
+    <sbol:displayId>feature12</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000205"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature12_seq/1"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature9/1">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature9"/>
@@ -16,12 +39,13 @@
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature9_seq/1"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature4/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature4"/>
-    <sbol:displayId>feature4</sbol:displayId>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature0/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature0"/>
+    <sbol:displayId>feature0</sbol:displayId>
     <sbol:version>1</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000204"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000149"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature0_seq/1"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/AF090832/1">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832"/>
@@ -56,48 +80,12 @@
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000804"/>
     <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature1/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature1"/>
-        <sbol:displayId>feature1</sbol:displayId>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature3/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature3"/>
+        <sbol:displayId>feature3</sbol:displayId>
         <sbol:version>1</sbol:version>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature1"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature12/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature12"/>
-        <sbol:displayId>feature12</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature12"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature15/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature15"/>
-        <sbol:displayId>feature15</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature15"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature0/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature0"/>
-        <sbol:displayId>feature0</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature0"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature2/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature2"/>
-        <sbol:displayId>feature2</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature2"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature3"/>
       </sbol:Component>
     </sbol:component>
     <sbol:component>
@@ -110,24 +98,6 @@
       </sbol:Component>
     </sbol:component>
     <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature3/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature3"/>
-        <sbol:displayId>feature3</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature3"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature9/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature9"/>
-        <sbol:displayId>feature9</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature9"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
       <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature13/1">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature13"/>
         <sbol:displayId>feature13</sbol:displayId>
@@ -137,48 +107,21 @@
       </sbol:Component>
     </sbol:component>
     <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature14/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature14"/>
-        <sbol:displayId>feature14</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature14"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature8/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature8"/>
-        <sbol:displayId>feature8</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature8"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature7/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature7"/>
-        <sbol:displayId>feature7</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature7"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature6/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature6"/>
-        <sbol:displayId>feature6</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature6"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
       <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature10/1">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature10"/>
         <sbol:displayId>feature10</sbol:displayId>
         <sbol:version>1</sbol:version>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature10"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature12/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature12"/>
+        <sbol:displayId>feature12</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature12"/>
       </sbol:Component>
     </sbol:component>
     <sbol:component>
@@ -199,76 +142,104 @@
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature4"/>
       </sbol:Component>
     </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature6/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature6"/>
+        <sbol:displayId>feature6</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature6"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature7/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature7"/>
+        <sbol:displayId>feature7</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature7"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature8/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature8"/>
+        <sbol:displayId>feature8</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature8"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature9/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature9"/>
+        <sbol:displayId>feature9</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature9"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature0/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature0"/>
+        <sbol:displayId>feature0</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature0"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature14/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature14"/>
+        <sbol:displayId>feature14</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature14"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature2/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature2"/>
+        <sbol:displayId>feature2</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature2"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature1/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature1"/>
+        <sbol:displayId>feature1</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature1"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/AF090832/feature15/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/feature15"/>
+        <sbol:displayId>feature15</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://www.async.ece.utah.edu/feature15"/>
+      </sbol:Component>
+    </sbol:component>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation14/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation14"/>
-        <sbol:displayId>annotation14</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation1/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation1"/>
+        <sbol:displayId>annotation1</sbol:displayId>
         <sbol:version>1</sbol:version>
         <gb:gene>"Mlp84B"</gb:gene>
-        <gb:note>"matches consensus at only 9 of 10 positions"</gb:note>
-        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
         <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation14/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation14/range"/>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation1/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation1/range"/>
             <sbol:displayId>range</sbol:displayId>
             <sbol:version>1</sbol:version>
-            <sbol:start>4955</sbol:start>
-            <sbol:end>4964</sbol:end>
+            <sbol:start>166</sbol:start>
+            <sbol:end>5010</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature14/1"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation8/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation8"/>
-        <sbol:displayId>annotation8</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <gb:gene>"Mlp84B"</gb:gene>
-        <gb:experiment>"experimental evidence, no additional detailsrecorded"</gb:experiment>
-        <gb:note>"site D; shown to bind Drosophila MEF2 in an invitro gel shift assay"</gb:note>
-        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation8/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation8/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>1324</sbol:start>
-            <sbol:end>1333</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature8/1"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation3/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation3"/>
-        <sbol:displayId>annotation3</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <gb:gene>"Mlp84B"</gb:gene>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation3/range0/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation3/range0"/>
-            <sbol:displayId>range0</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>1001</sbol:start>
-            <sbol:end>1055</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation3/range1/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation3/range1"/>
-            <sbol:displayId>range1</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>2868</sbol:start>
-            <sbol:end>4655</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature3/1"/>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature1/1"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -293,27 +264,6 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation7/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation7"/>
-        <sbol:displayId>annotation7</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <gb:gene>"Mlp84B"</gb:gene>
-        <gb:note>"site C"</gb:note>
-        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation7/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation7/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>1321</sbol:start>
-            <sbol:end>1330</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature7/1"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation2/1">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation2"/>
         <sbol:displayId>annotation2</sbol:displayId>
@@ -332,6 +282,31 @@
           </sbol:Range>
         </sbol:location>
         <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature2/1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation11/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation11"/>
+        <sbol:displayId>annotation11</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <gb:gene>"Mlp84B"</gb:gene>
+        <gb:note>"MLP84B"</gb:note>
+        <gb:codon_start>1</gb:codon_start>
+        <gb:product>"muscle LIM protein at 84B"</gb:product>
+        <gb:protein_id>"AAC61591.1"</gb:protein_id>
+        <gb:db_xref>"GI:3659881"</gb:db_xref>
+        <gb:translation>"MPSFQPIEAPKCPRCGKSVYAAEERLAGGYVFHKNCFKCGMCNKSLDSTNCTEHERELYCKTCHGRKFGPKGYGFGTGAGTLSMDNGSQFLRENGDVPSVRNGARLEPRAIARAPEGEGCPRCGGYVYAAEQMLARGRSWHKECFKCGTCKKGLDSILCCEAPDKNIYCKGCYAKKFGPKGYGYGQGGGALQSDCYAHDDGAPQIRAAIDVDKIQARPGEGCPRCGGVVYAAEQKLSKGREWHKKCFNCKDCHKTLDSINASDGPDRDVYCRTCYGKKWGPHGYGFACGSGFLQTDGLTEDQISANRPFYNPDTTSIKARDGEGCPRCGGAVFAAEQQLSKGKVWHKKCYNCADCHRPLDSVLACDGPDGDIHCRACYGKLFGPKGFGYGHAPTLVSTSGESTIQFPDGRPLAGPKTSGGCPRCGFAVFAAEQMISKTRIWHKRCFYCSDCRKSLDSTNLNDGPDGDIYCRACYGRNFGPKGVGYGLGAGALTTF"</gb:translation>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation11/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation11/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>2947</sbol:start>
+            <sbol:end>4434</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature11/1"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -379,28 +354,178 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation11/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation11"/>
-        <sbol:displayId>annotation11</sbol:displayId>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation10/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation10"/>
+        <sbol:displayId>annotation10</sbol:displayId>
         <sbol:version>1</sbol:version>
         <gb:gene>"Mlp84B"</gb:gene>
-        <gb:note>"MLP84B"</gb:note>
-        <gb:codon_start>1</gb:codon_start>
-        <gb:product>"muscle LIM protein at 84B"</gb:product>
-        <gb:protein_id>"AAC61591.1"</gb:protein_id>
-        <gb:db_xref>"GI:3659881"</gb:db_xref>
-        <gb:translation>"MPSFQPIEAPKCPRCGKSVYAAEERLAGGYVFHKNCFKCGMCNKSLDSTNCTEHERELYCKTCHGRKFGPKGYGFGTGAGTLSMDNGSQFLRENGDVPSVRNGARLEPRAIARAPEGEGCPRCGGYVYAAEQMLARGRSWHKECFKCGTCKKGLDSILCCEAPDKNIYCKGCYAKKFGPKGYGYGQGGGALQSDCYAHDDGAPQIRAAIDVDKIQARPGEGCPRCGGVVYAAEQKLSKGREWHKKCFNCKDCHKTLDSINASDGPDRDVYCRTCYGKKWGPHGYGFACGSGFLQTDGLTEDQISANRPFYNPDTTSIKARDGEGCPRCGGAVFAAEQQLSKGKVWHKKCYNCADCHRPLDSVLACDGPDGDIHCRACYGKLFGPKGFGYGHAPTLVSTSGESTIQFPDGRPLAGPKTSGGCPRCGFAVFAAEQMISKTRIWHKRCFYCSDCRKSLDSTNLNDGPDGDIYCRACYGRNFGPKGVGYGLGAGALTTF"</gb:translation>
+        <gb:note>"matches consensus at only 9 of 10 positions"</gb:note>
+        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
         <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation11/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation11/range"/>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation10/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation10/range"/>
             <sbol:displayId>range</sbol:displayId>
             <sbol:version>1</sbol:version>
-            <sbol:start>2947</sbol:start>
-            <sbol:end>4434</sbol:end>
+            <sbol:start>2335</sbol:start>
+            <sbol:end>2344</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature11/1"/>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature10/1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation14/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation14"/>
+        <sbol:displayId>annotation14</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <gb:gene>"Mlp84B"</gb:gene>
+        <gb:note>"matches consensus at only 9 of 10 positions"</gb:note>
+        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation14/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation14/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>4955</sbol:start>
+            <sbol:end>4964</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature14/1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation8/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation8"/>
+        <sbol:displayId>annotation8</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <gb:gene>"Mlp84B"</gb:gene>
+        <gb:experiment>"experimental evidence, no additional detailsrecorded"</gb:experiment>
+        <gb:note>"site D; shown to bind Drosophila MEF2 in an invitro gel shift assay"</gb:note>
+        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation8/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation8/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>1324</sbol:start>
+            <sbol:end>1333</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature8/1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation7/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation7"/>
+        <sbol:displayId>annotation7</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <gb:gene>"Mlp84B"</gb:gene>
+        <gb:note>"site C"</gb:note>
+        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation7/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation7/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>1321</sbol:start>
+            <sbol:end>1330</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature7/1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation12/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation12"/>
+        <sbol:displayId>annotation12</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <gb:gene>"Mlp84B"</gb:gene>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation12/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation12/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>4435</sbol:start>
+            <sbol:end>4655</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature12/1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation5/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation5"/>
+        <sbol:displayId>annotation5</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <gb:gene>"Mlp84B"</gb:gene>
+        <gb:note>"site A"</gb:note>
+        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation5/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation5/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>1007</sbol:start>
+            <sbol:end>1016</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature5/1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation3/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation3"/>
+        <sbol:displayId>annotation3</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <gb:gene>"Mlp84B"</gb:gene>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation3/range0/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation3/range0"/>
+            <sbol:displayId>range0</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>1001</sbol:start>
+            <sbol:end>1055</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation3/range1/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation3/range1"/>
+            <sbol:displayId>range1</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>2868</sbol:start>
+            <sbol:end>4655</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature3/1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation13/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation13"/>
+        <sbol:displayId>annotation13</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <gb:gene>"Mlp84B"</gb:gene>
+        <gb:note>"matches consensus at only 9 of 10 positions"</gb:note>
+        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation13/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation13/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>4629</sbol:start>
+            <sbol:end>4638</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature13/1"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -453,108 +578,38 @@
         <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature4/1"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation1/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation1"/>
-        <sbol:displayId>annotation1</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <gb:gene>"Mlp84B"</gb:gene>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation1/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation1/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>166</sbol:start>
-            <sbol:end>5010</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature1/1"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation12/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation12"/>
-        <sbol:displayId>annotation12</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <gb:gene>"Mlp84B"</gb:gene>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation12/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation12/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>4435</sbol:start>
-            <sbol:end>4655</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature12/1"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation5/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation5"/>
-        <sbol:displayId>annotation5</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <gb:gene>"Mlp84B"</gb:gene>
-        <gb:note>"site A"</gb:note>
-        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation5/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation5/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>1007</sbol:start>
-            <sbol:end>1016</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature5/1"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation13/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation13"/>
-        <sbol:displayId>annotation13</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <gb:gene>"Mlp84B"</gb:gene>
-        <gb:note>"matches consensus at only 9 of 10 positions"</gb:note>
-        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation13/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation13/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>4629</sbol:start>
-            <sbol:end>4638</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature13/1"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF090832/annotation10/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation10"/>
-        <sbol:displayId>annotation10</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <gb:gene>"Mlp84B"</gb:gene>
-        <gb:note>"matches consensus at only 9 of 10 positions"</gb:note>
-        <gb:bound_moiety>"MEF2"</gb:bound_moiety>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF090832/annotation10/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF090832/annotation10/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>2335</sbol:start>
-            <sbol:end>2344</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/AF090832/feature10/1"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/AF090832_seq/1"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature6/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature6"/>
+    <sbol:displayId>feature6</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature6_seq/1"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature15/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature15"/>
+    <sbol:displayId>feature15</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature15_seq/1"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature2/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature2"/>
+    <sbol:displayId>feature2</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature2_seq/1"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature4/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature4"/>
+    <sbol:displayId>feature4</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000204"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature10/1">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature10"/>
@@ -564,13 +619,13 @@
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature10_seq/1"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature7/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature7"/>
-    <sbol:displayId>feature7</sbol:displayId>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature8/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature8"/>
+    <sbol:displayId>feature8</sbol:displayId>
     <sbol:version>1</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature7_seq/1"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature8_seq/1"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature14/1">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature14"/>
@@ -588,44 +643,13 @@
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature13_seq/1"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature3/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature3"/>
-    <sbol:displayId>feature3</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000234"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature15/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature15"/>
-    <sbol:displayId>feature15</sbol:displayId>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature7/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature7"/>
+    <sbol:displayId>feature7</sbol:displayId>
     <sbol:version>1</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature15_seq/1"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature11/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature11"/>
-    <sbol:displayId>feature11</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature11_seq/1"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature12/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature12"/>
-    <sbol:displayId>feature12</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000205"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature12_seq/1"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature5/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature5"/>
-    <sbol:displayId>feature5</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature5_seq/1"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature7_seq/1"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature1/1">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature1"/>
@@ -635,42 +659,11 @@
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000704"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature1_seq/1"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature6/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature6"/>
-    <sbol:displayId>feature6</sbol:displayId>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature14_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature14_seq"/>
+    <sbol:displayId>feature14_seq</sbol:displayId>
     <sbol:version>1</sbol:version>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature6_seq/1"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature2/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature2"/>
-    <sbol:displayId>feature2</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000410"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature2_seq/1"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/feature0/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature0"/>
-    <sbol:displayId>feature0</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000149"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/feature0_seq/1"/>
-  </sbol:ComponentDefinition>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature15_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature15_seq"/>
-    <sbol:displayId>feature15_seq</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:elements>ttatttataa</sbol:elements>
-    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
-  </sbol:Sequence>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature2_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature2_seq"/>
-    <sbol:displayId>feature2_seq</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:elements>ttaattatac</sbol:elements>
+    <sbol:elements>gtatatttag</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature0_seq/1">
@@ -680,32 +673,11 @@
     <sbol:elements>tgatcaaacctaaagagtgggacagagagtactactatattcgtttcactcgccaaaagttttgaacgcaggcgccttgccaatttttgtatcatacttataagtggaaatgcaattgcaaatgcatgttaaaaatgttttgagaaattctgccgaaggtgcgcgttaattatacaaaaggtgttgcccacccgttcttgtctttaagaaattccgtgtttttcaatgctaccccttgaacttcggaattttcgatcgatccattttttaaaatggtgtgtgtttcgatcgaaatactgtaataaatcaaatattaaattagtttgttataaatttgagaaacttactactactactttgatttcaaaactaaaataatcggtaaaatcataccattagaactaatatcaaaatgaaatcattcttagtaatgatattaagaggtattttctggccgagttggcccccgccatgtctggttctattttgccgatctgattgatgctcaatgatgtaccccatgccccattaatttccttttgaaccaaaaatgcatggcaaaatatcgaattttaattaaatgcaaatgcggcatgttaatttattgatgttgaagtgccaatgttccgaaaggcaggcaggcagtggctttgaacaagacagttgaaccatgttgttggtccaataaaataccaacatcatctttttcgccttgtcatgagcacgatcacctggaatattctgctataaaatgaccgtatatacaatttatgaaagcacatttttcttgtatactagcatattgtatatgtgagancagatattttgtgatttgttgggattcttgttcggatggctaatgtatttattgttggggctatatagtcatccctatcattttctctggcgacaaagttgccttcgtgccgtgtgcagacaaagactgaaagcgcttgacaaatttttcagcgcgatcagtcgaaaatcgttgttaatcgaagctaaactaaaattaaggatatttctcttgcgaacctttttattacgaacgaaaagtaaatatcagtttttgtcaatggaaaacgaaaaccaaaaccaaaaccaatcacgcataacccagtaaattccaatattttgtgttgtgcttgtctaaaaaatatcggttcaagctctgctacaaaccaaacgcgaagcgatgaaaatacagttttgtcaagcgatcgtttaaatttagaacttgtgcgtaatttggaccataatttgacccacaaatgagaggaggaatgtatggctccacacaggaagcatttttcccacacactattattaatagattccgttttttcgagtgtgaaaaaactttacggaaactgtctcactcaataaaatgagaactatttgcgaggagtttttttttcaatcgagttttattcaagtacaaatcgatcatcttttcatcagatcaaatcgaatagtcactatccttgaatagagaaaaattaaagatacagtccttactcgacgtaaaaaacacgtacattttgatgagttttataatcttattgcatgcaaaaagtattatatttagtcgggaatataaacaaactcccagatgcctgaggtttccaatgatatgcaacttttcgatcatctttgataatctcccactgggataaatgtgcatataatatacacaaaagttagcaaacatccaagaatgagatacggtcaagaaaaaacgagtgaaggatatggaataaaaaactttttcgaagaatcgaaaaagtttaaaaaccgcagatgcataccaatatgtttccatcccactctctggcgttatttgatgaaaactgaaataaaacgaaggaaaactgctccgtgttgccgcatcttaagtttctcaactcggtgtgctgagcaggaaaactcagtggcagcggcgaaaagtcgaccgcgttgccgtgccgtgtgcactcacaattatatagactagtttgctttgagcaatcttccagttcagtactcggcgcttccgtgtgtggttttagtgcgttgtaggttccgttctatcttggctataatacactcacacccaacggttggatatcgccagctcttaaccgatttttttgcacgcagcaaaagaccattgcaaagcacctgactaatccatcgcaaccgctagataaccagattaccggccagggacgatgctcatctgatggtggtgctttagctctgactcagttttagaacacccagatatgtacatatatatatctgccacagttattttttgtgtgtgcttttcccaaatctatctacctgtctgcgttatttttatacaacattttctgtatagatagatacacatttattgctcatgtttttctctgtgttctgtgatttgaaaaattcctcctttattttttgttgtcatgagaaagatgttattttctgatcattaacataggaatcttcaatatgaattacgtatacatacgtccggttgggtaattttctggcacgggcgatgacgtctcgactgacagataagaatcttgatagatgatctacataatgcaaattgaggagaaattcgcgactgtcaagttgaatttgtaatagttcattgtaaacttaagataaaacaagcgtcttaatcgtccaaataggttaacatgtagattagcttgaattaactagttgggcttagaataatttggaaaccatttaacatacaaaaatgacagatgcttacctcatcgctttcatcgccaccaaagcttccactctgctgcatttcccagcaggacttacgccacgatcccatcgactctatgtgttcttctattttgctatttcagataataaacttaataagtaaagtaattgtactcgcgtagatcattttgatagcgttaaaaaaaccgaaacacagacagaatgccttccttccaaccgattgaggcccccaagtgtccgcgctgcggcaagagtgtctacgctgccgaagagcgtctggctggcggctatgtattccacaagaactgcttcaagtgcggaatgtgcaacaaatccctggactccaccaactgcacagagcacgagcgcgagctctactgcaagacgtgccacggtcgcaagttcgggccgaaaggttacggcttcggcactggagctggcaccctctccatggacaacgggtcacagttcctgcgcgagaacggcgatgtgccgtccgtaaggaatggagcccgcctggaacccagggctattgctcgtgcccccgaaggtgagggctgtcctcgttgcggtggctatgtgtacgccgccgaacagatgttagcccgcggtcgcagctggcacaaggagtgcttcaagtgcggtacctgcaagaagggtctggactcgatcctgtgctgcgaggctccggacaagaacatctactgcaagggctgctatgccaagaagtttggacccaagggctatggttatggccagggcggtggtgctctccagtccgactgctatgctcacgacgacggagcaccgcaaatccgtgccgccattgatgtggacaagatccaggcccgtccgggtgagggttgcccacgttgcggcggtgtggtctacgcagcggagcagaagctttccaagggtcgggagtggcacaagaagtgcttcaactgcaaggattgccacaagactctggactcgatcaatgccagygatggtcccgatcgtgatgtgtactgccgcacctgctacggcaagaagtggggaccacatggctatggattcgcatgcggctctggtttcctgcagaccgatggcttgaccgaggatcagatcagcgccaacaggcccttctataacccggacaccacgtcaattaaggcccgtgacggcgaaggctgtccccggtgcggaggagccgtattcgccgccgagcaacagctgtccaagggcaaggtgtggcacaagaagtgctacaactgcgccgactgccaccggccattggactcggtcctggcctgcgatggacccgatggcgacatccactgccgcgcctgctacggcaagctcttcggccccaagggctttggttacggccacgcccccactctagtgtcaaccagtggcgagagcaccatccagttcccagatggccgtcctctggccggacccaagacttcgggcggctgcccgcgttgcggtttcgccgtgttcgccgccgagcagatgatcagcaagaccaggatctggcacaagaggtgcttctactgctcggattgccgcaaatcgctggactcgaccaacctgaacgatggacccgacggcgatatctactgccgagcctgctacggccgcaattttggacccaagggagtgggctacggtctgggcgcgggcgctttgacaacgttctaaacgagcctattttatgtatatccaatcgaaacccacatccatgtctgtgaaccgttccgatgcatctgtctaatgaccaatctgttttaactaactatccctgaaattagctaacttagtcttcgttttgcttccaacgatttttgatcaacgatgcactgaatgcaattcaattttctttaggttatgtgagattaagtttaatatgaaaacaagaaaaaaagaataaatgccaaaaacataaaacttacgactcaaagcgaaactaaccatcgaacacagactaacgaactaaacgacattgaccacatcgagaaaagcaaaactttctgcaggtgaaactgctgcgagccaaagtcgttattacttttttgtatcttaaactatttattttcgaagaccagccaagtatgtcttatgctccaaatcgaattacccaaaagcatactttgtgcaaatggaaaaattttatacacataaatatactcttacgacgaacaatgatgaaagatatgatgttgtatatttagctgatttagttcttacgatatacttatgaaatctgattatttataatgatgtttgaatggatttctcacccatctaatctcttgcattctgttttggggatgccagccatgggcagatatta</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature9_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature9_seq"/>
-    <sbol:displayId>feature9_seq</sbol:displayId>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature13_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature13_seq"/>
+    <sbol:displayId>feature13_seq</sbol:displayId>
     <sbol:version>1</sbol:version>
-    <sbol:elements>ttatatttag</sbol:elements>
-    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
-  </sbol:Sequence>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature10_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature10_seq"/>
-    <sbol:displayId>feature10_seq</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:elements>ttatttttat</sbol:elements>
-    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
-  </sbol:Sequence>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature11_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature11_seq"/>
-    <sbol:displayId>feature11_seq</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:elements>atgccttccttccaaccgattgaggcccccaagtgtccgcgctgcggcaagagtgtctacgctgccgaagagcgtctggctggcggctatgtattccacaagaactgcttcaagtgcggaatgtgcaacaaatccctggactccaccaactgcacagagcacgagcgcgagctctactgcaagacgtgccacggtcgcaagttcgggccgaaaggttacggcttcggcactggagctggcaccctctccatggacaacgggtcacagttcctgcgcgagaacggcgatgtgccgtccgtaaggaatggagcccgcctggaacccagggctattgctcgtgcccccgaaggtgagggctgtcctcgttgcggtggctatgtgtacgccgccgaacagatgttagcccgcggtcgcagctggcacaaggagtgcttcaagtgcggtacctgcaagaagggtctggactcgatcctgtgctgcgaggctccggacaagaacatctactgcaagggctgctatgccaagaagtttggacccaagggctatggttatggccagggcggtggtgctctccagtccgactgctatgctcacgacgacggagcaccgcaaatccgtgccgccattgatgtggacaagatccaggcccgtccgggtgagggttgcccacgttgcggcggtgtggtctacgcagcggagcagaagctttccaagggtcgggagtggcacaagaagtgcttcaactgcaaggattgccacaagactctggactcgatcaatgccagygatggtcccgatcgtgatgtgtactgccgcacctgctacggcaagaagtggggaccacatggctatggattcgcatgcggctctggtttcctgcagaccgatggcttgaccgaggatcagatcagcgccaacaggcccttctataacccggacaccacgtcaattaaggcccgtgacggcgaaggctgtccccggtgcggaggagccgtattcgccgccgagcaacagctgtccaagggcaaggtgtggcacaagaagtgctacaactgcgccgactgccaccggccattggactcggtcctggcctgcgatggacccgatggcgacatccactgccgcgcctgctacggcaagctcttcggccccaagggctttggttacggccacgcccccactctagtgtcaaccagtggcgagagcaccatccagttcccagatggccgtcctctggccggacccaagacttcgggcggctgcccgcgttgcggtttcgccgtgttcgccgccgagcagatgatcagcaagaccaggatctggcacaagaggtgcttctactgctcggattgccgcaaatcgctggactcgaccaacctgaacgatggacccgacggcgatatctactgccgagcctgctacggccgcaattttggacccaagggagtgggctacggtctgggcgcgggcgctttgacaacgttctaa</sbol:elements>
-    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
-  </sbol:Sequence>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature1_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature1_seq"/>
-    <sbol:displayId>feature1_seq</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:elements>ttaattatacaaaaggtgttgcccacccgttcttgtctttaagaaattccgtgtttttcaatgctaccccttgaacttcggaattttcgatcgatccattttttaaaatggtgtgtgtttcgatcgaaatactgtaataaatcaaatattaaattagtttgttataaatttgagaaacttactactactactttgatttcaaaactaaaataatcggtaaaatcataccattagaactaatatcaaaatgaaatcattcttagtaatgatattaagaggtattttctggccgagttggcccccgccatgtctggttctattttgccgatctgattgatgctcaatgatgtaccccatgccccattaatttccttttgaaccaaaaatgcatggcaaaatatcgaattttaattaaatgcaaatgcggcatgttaatttattgatgttgaagtgccaatgttccgaaaggcaggcaggcagtggctttgaacaagacagttgaaccatgttgttggtccaataaaataccaacatcatctttttcgccttgtcatgagcacgatcacctggaatattctgctataaaatgaccgtatatacaatttatgaaagcacatttttcttgtatactagcatattgtatatgtgagancagatattttgtgatttgttgggattcttgttcggatggctaatgtatttattgttggggctatatagtcatccctatcattttctctggcgacaaagttgccttcgtgccgtgtgcagacaaagactgaaagcgcttgacaaatttttcagcgcgatcagtcgaaaatcgttgttaatcgaagctaaactaaaattaaggatatttctcttgcgaacctttttattacgaacgaaaagtaaatatcagtttttgtcaatggaaaacgaaaaccaaaaccaaaaccaatcacgcataacccagtaaattccaatattttgtgttgtgcttgtctaaaaaatatcggttcaagctctgctacaaaccaaacgcgaagcgatgaaaatacagttttgtcaagcgatcgtttaaatttagaacttgtgcgtaatttggaccataatttgacccacaaatgagaggaggaatgtatggctccacacaggaagcatttttcccacacactattattaatagattccgttttttcgagtgtgaaaaaactttacggaaactgtctcactcaataaaatgagaactatttgcgaggagtttttttttcaatcgagttttattcaagtacaaatcgatcatcttttcatcagatcaaatcgaatagtcactatccttgaatagagaaaaattaaagatacagtccttactcgacgtaaaaaacacgtacattttgatgagttttataatcttattgcatgcaaaaagtattatatttagtcgggaatataaacaaactcccagatgcctgaggtttccaatgatatgcaacttttcgatcatctttgataatctcccactgggataaatgtgcatataatatacacaaaagttagcaaacatccaagaatgagatacggtcaagaaaaaacgagtgaaggatatggaataaaaaactttttcgaagaatcgaaaaagtttaaaaaccgcagatgcataccaatatgtttccatcccactctctggcgttatttgatgaaaactgaaataaaacgaaggaaaactgctccgtgttgccgcatcttaagtttctcaactcggtgtgctgagcaggaaaactcagtggcagcggcgaaaagtcgaccgcgttgccgtgccgtgtgcactcacaattatatagactagtttgctttgagcaatcttccagttcagtactcggcgcttccgtgtgtggttttagtgcgttgtaggttccgttctatcttggctataatacactcacacccaacggttggatatcgccagctcttaaccgatttttttgcacgcagcaaaagaccattgcaaagcacctgactaatccatcgcaaccgctagataaccagattaccggccagggacgatgctcatctgatggtggtgctttagctctgactcagttttagaacacccagatatgtacatatatatatctgccacagttattttttgtgtgtgcttttcccaaatctatctacctgtctgcgttatttttatacaacattttctgtatagatagatacacatttattgctcatgtttttctctgtgttctgtgatttgaaaaattcctcctttattttttgttgtcatgagaaagatgttattttctgatcattaacataggaatcttcaatatgaattacgtatacatacgtccggttgggtaattttctggcacgggcgatgacgtctcgactgacagataagaatcttgatagatgatctacataatgcaaattgaggagaaattcgcgactgtcaagttgaatttgtaatagttcattgtaaacttaagataaaacaagcgtcttaatcgtccaaataggttaacatgtagattagcttgaattaactagttgggcttagaataatttggaaaccatttaacatacaaaaatgacagatgcttacctcatcgctttcatcgccaccaaagcttccactctgctgcatttcccagcaggacttacgccacgatcccatcgactctatgtgttcttctattttgctatttcagataataaacttaataagtaaagtaattgtactcgcgtagatcattttgatagcgttaaaaaaaccgaaacacagacagaatgccttccttccaaccgattgaggcccccaagtgtccgcgctgcggcaagagtgtctacgctgccgaagagcgtctggctggcggctatgtattccacaagaactgcttcaagtgcggaatgtgcaacaaatccctggactccaccaactgcacagagcacgagcgcgagctctactgcaagacgtgccacggtcgcaagttcgggccgaaaggttacggcttcggcactggagctggcaccctctccatggacaacgggtcacagttcctgcgcgagaacggcgatgtgccgtccgtaaggaatggagcccgcctggaacccagggctattgctcgtgcccccgaaggtgagggctgtcctcgttgcggtggctatgtgtacgccgccgaacagatgttagcccgcggtcgcagctggcacaaggagtgcttcaagtgcggtacctgcaagaagggtctggactcgatcctgtgctgcgaggctccggacaagaacatctactgcaagggctgctatgccaagaagtttggacccaagggctatggttatggccagggcggtggtgctctccagtccgactgctatgctcacgacgacggagcaccgcaaatccgtgccgccattgatgtggacaagatccaggcccgtccgggtgagggttgcccacgttgcggcggtgtggtctacgcagcggagcagaagctttccaagggtcgggagtggcacaagaagtgcttcaactgcaaggattgccacaagactctggactcgatcaatgccagygatggtcccgatcgtgatgtgtactgccgcacctgctacggcaagaagtggggaccacatggctatggattcgcatgcggctctggtttcctgcagaccgatggcttgaccgaggatcagatcagcgccaacaggcccttctataacccggacaccacgtcaattaaggcccgtgacggcgaaggctgtccccggtgcggaggagccgtattcgccgccgagcaacagctgtccaagggcaaggtgtggcacaagaagtgctacaactgcgccgactgccaccggccattggactcggtcctggcctgcgatggacccgatggcgacatccactgccgcgcctgctacggcaagctcttcggccccaagggctttggttacggccacgcccccactctagtgtcaaccagtggcgagagcaccatccagttcccagatggccgtcctctggccggacccaagacttcgggcggctgcccgcgttgcggtttcgccgtgttcgccgccgagcagatgatcagcaagaccaggatctggcacaagaggtgcttctactgctcggattgccgcaaatcgctggactcgaccaacctgaacgatggacccgacggcgatatctactgccgagcctgctacggccgcaattttggacccaagggagtgggctacggtctgggcgcgggcgctttgacaacgttctaaacgagcctattttatgtatatccaatcgaaacccacatccatgtctgtgaaccgttccgatgcatctgtctaatgaccaatctgttttaactaactatccctgaaattagctaacttagtcttcgttttgcttccaacgatttttgatcaacgatgcactgaatgcaattcaattttctttaggttatgtgagattaagtttaatatgaaaacaagaaaaaaagaataaatgccaaaaacataaaacttacgactcaaagcgaaactaaccatcgaacacagactaacgaactaaacgacattgaccacatcgagaaaagcaaaactttctgcaggtgaaactgctgcgagccaaagtcgttattacttttttgtatcttaaactatttattttcgaagaccagccaagtatgtcttatgctccaaatcgaattacccaaaagcatactttgtgcaaatggaaaaattttatacacataaatatactcttacgacgaacaatgatgaaagatatgatgttgtatatttagctgatttagttcttacgatatacttatgaaatctgattatttataa</sbol:elements>
+    <sbol:elements>ttaagtttaa</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature12_seq/1">
@@ -715,32 +687,25 @@
     <sbol:elements>acgagcctattttatgtatatccaatcgaaacccacatccatgtctgtgaaccgttccgatgcatctgtctaatgaccaatctgttttaactaactatccctgaaattagctaacttagtcttcgttttgcttccaacgatttttgatcaacgatgcactgaatgcaattcaattttctttaggttatgtgagattaagtttaatatgaaaacaagaaaaa</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature14_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature14_seq"/>
-    <sbol:displayId>feature14_seq</sbol:displayId>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature9_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature9_seq"/>
+    <sbol:displayId>feature9_seq</sbol:displayId>
     <sbol:version>1</sbol:version>
-    <sbol:elements>gtatatttag</sbol:elements>
+    <sbol:elements>ttatatttag</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature7_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature7_seq"/>
-    <sbol:displayId>feature7_seq</sbol:displayId>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature2_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature2_seq"/>
+    <sbol:displayId>feature2_seq</sbol:displayId>
     <sbol:version>1</sbol:version>
-    <sbol:elements>ctattattaa</sbol:elements>
+    <sbol:elements>ttaattatac</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature8_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature8_seq"/>
-    <sbol:displayId>feature8_seq</sbol:displayId>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature10_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature10_seq"/>
+    <sbol:displayId>feature10_seq</sbol:displayId>
     <sbol:version>1</sbol:version>
-    <sbol:elements>ttattaatag</sbol:elements>
-    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
-  </sbol:Sequence>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature6_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature6_seq"/>
-    <sbol:displayId>feature6_seq</sbol:displayId>
-    <sbol:version>1</sbol:version>
-    <sbol:elements>ttaaatttag</sbol:elements>
+    <sbol:elements>ttatttttat</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature5_seq/1">
@@ -750,11 +715,32 @@
     <sbol:elements>ctaaaattaa</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
-  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature13_seq/1">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature13_seq"/>
-    <sbol:displayId>feature13_seq</sbol:displayId>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature15_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature15_seq"/>
+    <sbol:displayId>feature15_seq</sbol:displayId>
     <sbol:version>1</sbol:version>
-    <sbol:elements>ttaagtttaa</sbol:elements>
+    <sbol:elements>ttatttataa</sbol:elements>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature7_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature7_seq"/>
+    <sbol:displayId>feature7_seq</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:elements>ctattattaa</sbol:elements>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature6_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature6_seq"/>
+    <sbol:displayId>feature6_seq</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:elements>ttaaatttag</sbol:elements>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature1_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature1_seq"/>
+    <sbol:displayId>feature1_seq</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:elements>ttaattatacaaaaggtgttgcccacccgttcttgtctttaagaaattccgtgtttttcaatgctaccccttgaacttcggaattttcgatcgatccattttttaaaatggtgtgtgtttcgatcgaaatactgtaataaatcaaatattaaattagtttgttataaatttgagaaacttactactactactttgatttcaaaactaaaataatcggtaaaatcataccattagaactaatatcaaaatgaaatcattcttagtaatgatattaagaggtattttctggccgagttggcccccgccatgtctggttctattttgccgatctgattgatgctcaatgatgtaccccatgccccattaatttccttttgaaccaaaaatgcatggcaaaatatcgaattttaattaaatgcaaatgcggcatgttaatttattgatgttgaagtgccaatgttccgaaaggcaggcaggcagtggctttgaacaagacagttgaaccatgttgttggtccaataaaataccaacatcatctttttcgccttgtcatgagcacgatcacctggaatattctgctataaaatgaccgtatatacaatttatgaaagcacatttttcttgtatactagcatattgtatatgtgagancagatattttgtgatttgttgggattcttgttcggatggctaatgtatttattgttggggctatatagtcatccctatcattttctctggcgacaaagttgccttcgtgccgtgtgcagacaaagactgaaagcgcttgacaaatttttcagcgcgatcagtcgaaaatcgttgttaatcgaagctaaactaaaattaaggatatttctcttgcgaacctttttattacgaacgaaaagtaaatatcagtttttgtcaatggaaaacgaaaaccaaaaccaaaaccaatcacgcataacccagtaaattccaatattttgtgttgtgcttgtctaaaaaatatcggttcaagctctgctacaaaccaaacgcgaagcgatgaaaatacagttttgtcaagcgatcgtttaaatttagaacttgtgcgtaatttggaccataatttgacccacaaatgagaggaggaatgtatggctccacacaggaagcatttttcccacacactattattaatagattccgttttttcgagtgtgaaaaaactttacggaaactgtctcactcaataaaatgagaactatttgcgaggagtttttttttcaatcgagttttattcaagtacaaatcgatcatcttttcatcagatcaaatcgaatagtcactatccttgaatagagaaaaattaaagatacagtccttactcgacgtaaaaaacacgtacattttgatgagttttataatcttattgcatgcaaaaagtattatatttagtcgggaatataaacaaactcccagatgcctgaggtttccaatgatatgcaacttttcgatcatctttgataatctcccactgggataaatgtgcatataatatacacaaaagttagcaaacatccaagaatgagatacggtcaagaaaaaacgagtgaaggatatggaataaaaaactttttcgaagaatcgaaaaagtttaaaaaccgcagatgcataccaatatgtttccatcccactctctggcgttatttgatgaaaactgaaataaaacgaaggaaaactgctccgtgttgccgcatcttaagtttctcaactcggtgtgctgagcaggaaaactcagtggcagcggcgaaaagtcgaccgcgttgccgtgccgtgtgcactcacaattatatagactagtttgctttgagcaatcttccagttcagtactcggcgcttccgtgtgtggttttagtgcgttgtaggttccgttctatcttggctataatacactcacacccaacggttggatatcgccagctcttaaccgatttttttgcacgcagcaaaagaccattgcaaagcacctgactaatccatcgcaaccgctagataaccagattaccggccagggacgatgctcatctgatggtggtgctttagctctgactcagttttagaacacccagatatgtacatatatatatctgccacagttattttttgtgtgtgcttttcccaaatctatctacctgtctgcgttatttttatacaacattttctgtatagatagatacacatttattgctcatgtttttctctgtgttctgtgatttgaaaaattcctcctttattttttgttgtcatgagaaagatgttattttctgatcattaacataggaatcttcaatatgaattacgtatacatacgtccggttgggtaattttctggcacgggcgatgacgtctcgactgacagataagaatcttgatagatgatctacataatgcaaattgaggagaaattcgcgactgtcaagttgaatttgtaatagttcattgtaaacttaagataaaacaagcgtcttaatcgtccaaataggttaacatgtagattagcttgaattaactagttgggcttagaataatttggaaaccatttaacatacaaaaatgacagatgcttacctcatcgctttcatcgccaccaaagcttccactctgctgcatttcccagcaggacttacgccacgatcccatcgactctatgtgttcttctattttgctatttcagataataaacttaataagtaaagtaattgtactcgcgtagatcattttgatagcgttaaaaaaaccgaaacacagacagaatgccttccttccaaccgattgaggcccccaagtgtccgcgctgcggcaagagtgtctacgctgccgaagagcgtctggctggcggctatgtattccacaagaactgcttcaagtgcggaatgtgcaacaaatccctggactccaccaactgcacagagcacgagcgcgagctctactgcaagacgtgccacggtcgcaagttcgggccgaaaggttacggcttcggcactggagctggcaccctctccatggacaacgggtcacagttcctgcgcgagaacggcgatgtgccgtccgtaaggaatggagcccgcctggaacccagggctattgctcgtgcccccgaaggtgagggctgtcctcgttgcggtggctatgtgtacgccgccgaacagatgttagcccgcggtcgcagctggcacaaggagtgcttcaagtgcggtacctgcaagaagggtctggactcgatcctgtgctgcgaggctccggacaagaacatctactgcaagggctgctatgccaagaagtttggacccaagggctatggttatggccagggcggtggtgctctccagtccgactgctatgctcacgacgacggagcaccgcaaatccgtgccgccattgatgtggacaagatccaggcccgtccgggtgagggttgcccacgttgcggcggtgtggtctacgcagcggagcagaagctttccaagggtcgggagtggcacaagaagtgcttcaactgcaaggattgccacaagactctggactcgatcaatgccagygatggtcccgatcgtgatgtgtactgccgcacctgctacggcaagaagtggggaccacatggctatggattcgcatgcggctctggtttcctgcagaccgatggcttgaccgaggatcagatcagcgccaacaggcccttctataacccggacaccacgtcaattaaggcccgtgacggcgaaggctgtccccggtgcggaggagccgtattcgccgccgagcaacagctgtccaagggcaaggtgtggcacaagaagtgctacaactgcgccgactgccaccggccattggactcggtcctggcctgcgatggacccgatggcgacatccactgccgcgcctgctacggcaagctcttcggccccaagggctttggttacggccacgcccccactctagtgtcaaccagtggcgagagcaccatccagttcccagatggccgtcctctggccggacccaagacttcgggcggctgcccgcgttgcggtttcgccgtgttcgccgccgagcagatgatcagcaagaccaggatctggcacaagaggtgcttctactgctcggattgccgcaaatcgctggactcgaccaacctgaacgatggacccgacggcgatatctactgccgagcctgctacggccgcaattttggacccaagggagtgggctacggtctgggcgcgggcgctttgacaacgttctaaacgagcctattttatgtatatccaatcgaaacccacatccatgtctgtgaaccgttccgatgcatctgtctaatgaccaatctgttttaactaactatccctgaaattagctaacttagtcttcgttttgcttccaacgatttttgatcaacgatgcactgaatgcaattcaattttctttaggttatgtgagattaagtttaatatgaaaacaagaaaaaaagaataaatgccaaaaacataaaacttacgactcaaagcgaaactaaccatcgaacacagactaacgaactaaacgacattgaccacatcgagaaaagcaaaactttctgcaggtgaaactgctgcgagccaaagtcgttattacttttttgtatcttaaactatttattttcgaagaccagccaagtatgtcttatgctccaaatcgaattacccaaaagcatactttgtgcaaatggaaaaattttatacacataaatatactcttacgacgaacaatgatgaaagatatgatgttgtatatttagctgatttagttcttacgatatacttatgaaatctgattatttataa</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/AF090832_seq/1">
@@ -762,6 +748,20 @@
     <sbol:displayId>AF090832_seq</sbol:displayId>
     <sbol:version>1</sbol:version>
     <sbol:elements>tgatcaaacctaaagagtgggacagagagtactactatattcgtttcactcgccaaaagttttgaacgcaggcgccttgccaatttttgtatcatacttataagtggaaatgcaattgcaaatgcatgttaaaaatgttttgagaaattctgccgaaggtgcgcgttaattatacaaaaggtgttgcccacccgttcttgtctttaagaaattccgtgtttttcaatgctaccccttgaacttcggaattttcgatcgatccattttttaaaatggtgtgtgtttcgatcgaaatactgtaataaatcaaatattaaattagtttgttataaatttgagaaacttactactactactttgatttcaaaactaaaataatcggtaaaatcataccattagaactaatatcaaaatgaaatcattcttagtaatgatattaagaggtattttctggccgagttggcccccgccatgtctggttctattttgccgatctgattgatgctcaatgatgtaccccatgccccattaatttccttttgaaccaaaaatgcatggcaaaatatcgaattttaattaaatgcaaatgcggcatgttaatttattgatgttgaagtgccaatgttccgaaaggcaggcaggcagtggctttgaacaagacagttgaaccatgttgttggtccaataaaataccaacatcatctttttcgccttgtcatgagcacgatcacctggaatattctgctataaaatgaccgtatatacaatttatgaaagcacatttttcttgtatactagcatattgtatatgtgagancagatattttgtgatttgttgggattcttgttcggatggctaatgtatttattgttggggctatatagtcatccctatcattttctctggcgacaaagttgccttcgtgccgtgtgcagacaaagactgaaagcgcttgacaaatttttcagcgcgatcagtcgaaaatcgttgttaatcgaagctaaactaaaattaaggatatttctcttgcgaacctttttattacgaacgaaaagtaaatatcagtttttgtcaatggaaaacgaaaaccaaaaccaaaaccaatcacgcataacccagtaaattccaatattttgtgttgtgcttgtctaaaaaatatcggttcaagctctgctacaaaccaaacgcgaagcgatgaaaatacagttttgtcaagcgatcgtttaaatttagaacttgtgcgtaatttggaccataatttgacccacaaatgagaggaggaatgtatggctccacacaggaagcatttttcccacacactattattaatagattccgttttttcgagtgtgaaaaaactttacggaaactgtctcactcaataaaatgagaactatttgcgaggagtttttttttcaatcgagttttattcaagtacaaatcgatcatcttttcatcagatcaaatcgaatagtcactatccttgaatagagaaaaattaaagatacagtccttactcgacgtaaaaaacacgtacattttgatgagttttataatcttattgcatgcaaaaagtattatatttagtcgggaatataaacaaactcccagatgcctgaggtttccaatgatatgcaacttttcgatcatctttgataatctcccactgggataaatgtgcatataatatacacaaaagttagcaaacatccaagaatgagatacggtcaagaaaaaacgagtgaaggatatggaataaaaaactttttcgaagaatcgaaaaagtttaaaaaccgcagatgcataccaatatgtttccatcccactctctggcgttatttgatgaaaactgaaataaaacgaaggaaaactgctccgtgttgccgcatcttaagtttctcaactcggtgtgctgagcaggaaaactcagtggcagcggcgaaaagtcgaccgcgttgccgtgccgtgtgcactcacaattatatagactagtttgctttgagcaatcttccagttcagtactcggcgcttccgtgtgtggttttagtgcgttgtaggttccgttctatcttggctataatacactcacacccaacggttggatatcgccagctcttaaccgatttttttgcacgcagcaaaagaccattgcaaagcacctgactaatccatcgcaaccgctagataaccagattaccggccagggacgatgctcatctgatggtggtgctttagctctgactcagttttagaacacccagatatgtacatatatatatctgccacagttattttttgtgtgtgcttttcccaaatctatctacctgtctgcgttatttttatacaacattttctgtatagatagatacacatttattgctcatgtttttctctgtgttctgtgatttgaaaaattcctcctttattttttgttgtcatgagaaagatgttattttctgatcattaacataggaatcttcaatatgaattacgtatacatacgtccggttgggtaattttctggcacgggcgatgacgtctcgactgacagataagaatcttgatagatgatctacataatgcaaattgaggagaaattcgcgactgtcaagttgaatttgtaatagttcattgtaaacttaagataaaacaagcgtcttaatcgtccaaataggttaacatgtagattagcttgaattaactagttgggcttagaataatttggaaaccatttaacatacaaaaatgacagatgcttacctcatcgctttcatcgccaccaaagcttccactctgctgcatttcccagcaggacttacgccacgatcccatcgactctatgtgttcttctattttgctatttcagataataaacttaataagtaaagtaattgtactcgcgtagatcattttgatagcgttaaaaaaaccgaaacacagacagaatgccttccttccaaccgattgaggcccccaagtgtccgcgctgcggcaagagtgtctacgctgccgaagagcgtctggctggcggctatgtattccacaagaactgcttcaagtgcggaatgtgcaacaaatccctggactccaccaactgcacagagcacgagcgcgagctctactgcaagacgtgccacggtcgcaagttcgggccgaaaggttacggcttcggcactggagctggcaccctctccatggacaacgggtcacagttcctgcgcgagaacggcgatgtgccgtccgtaaggaatggagcccgcctggaacccagggctattgctcgtgcccccgaaggtgagggctgtcctcgttgcggtggctatgtgtacgccgccgaacagatgttagcccgcggtcgcagctggcacaaggagtgcttcaagtgcggtacctgcaagaagggtctggactcgatcctgtgctgcgaggctccggacaagaacatctactgcaagggctgctatgccaagaagtttggacccaagggctatggttatggccagggcggtggtgctctccagtccgactgctatgctcacgacgacggagcaccgcaaatccgtgccgccattgatgtggacaagatccaggcccgtccgggtgagggttgcccacgttgcggcggtgtggtctacgcagcggagcagaagctttccaagggtcgggagtggcacaagaagtgcttcaactgcaaggattgccacaagactctggactcgatcaatgccagygatggtcccgatcgtgatgtgtactgccgcacctgctacggcaagaagtggggaccacatggctatggattcgcatgcggctctggtttcctgcagaccgatggcttgaccgaggatcagatcagcgccaacaggcccttctataacccggacaccacgtcaattaaggcccgtgacggcgaaggctgtccccggtgcggaggagccgtattcgccgccgagcaacagctgtccaagggcaaggtgtggcacaagaagtgctacaactgcgccgactgccaccggccattggactcggtcctggcctgcgatggacccgatggcgacatccactgccgcgcctgctacggcaagctcttcggccccaagggctttggttacggccacgcccccactctagtgtcaaccagtggcgagagcaccatccagttcccagatggccgtcctctggccggacccaagacttcgggcggctgcccgcgttgcggtttcgccgtgttcgccgccgagcagatgatcagcaagaccaggatctggcacaagaggtgcttctactgctcggattgccgcaaatcgctggactcgaccaacctgaacgatggacccgacggcgatatctactgccgagcctgctacggccgcaattttggacccaagggagtgggctacggtctgggcgcgggcgctttgacaacgttctaaacgagcctattttatgtatatccaatcgaaacccacatccatgtctgtgaaccgttccgatgcatctgtctaatgaccaatctgttttaactaactatccctgaaattagctaacttagtcttcgttttgcttccaacgatttttgatcaacgatgcactgaatgcaattcaattttctttaggttatgtgagattaagtttaatatgaaaacaagaaaaaaagaataaatgccaaaaacataaaacttacgactcaaagcgaaactaaccatcgaacacagactaacgaactaaacgacattgaccacatcgagaaaagcaaaactttctgcaggtgaaactgctgcgagccaaagtcgttattacttttttgtatcttaaactatttattttcgaagaccagccaagtatgtcttatgctccaaatcgaattacccaaaagcatactttgtgcaaatggaaaaattttatacacataaatatactcttacgacgaacaatgatgaaagatatgatgttgtatatttagctgatttagttcttacgatatacttatgaaatctgattatttataatgatgtttgaatggatttctcacccatctaatctcttgcattctgttttggggatgccagccatgggcagatatta</sbol:elements>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature8_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature8_seq"/>
+    <sbol:displayId>feature8_seq</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:elements>ttattaatag</sbol:elements>
+    <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
+  </sbol:Sequence>
+  <sbol:Sequence rdf:about="http://www.async.ece.utah.edu/feature11_seq/1">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/feature11_seq"/>
+    <sbol:displayId>feature11_seq</sbol:displayId>
+    <sbol:version>1</sbol:version>
+    <sbol:elements>atgccttccttccaaccgattgaggcccccaagtgtccgcgctgcggcaagagtgtctacgctgccgaagagcgtctggctggcggctatgtattccacaagaactgcttcaagtgcggaatgtgcaacaaatccctggactccaccaactgcacagagcacgagcgcgagctctactgcaagacgtgccacggtcgcaagttcgggccgaaaggttacggcttcggcactggagctggcaccctctccatggacaacgggtcacagttcctgcgcgagaacggcgatgtgccgtccgtaaggaatggagcccgcctggaacccagggctattgctcgtgcccccgaaggtgagggctgtcctcgttgcggtggctatgtgtacgccgccgaacagatgttagcccgcggtcgcagctggcacaaggagtgcttcaagtgcggtacctgcaagaagggtctggactcgatcctgtgctgcgaggctccggacaagaacatctactgcaagggctgctatgccaagaagtttggacccaagggctatggttatggccagggcggtggtgctctccagtccgactgctatgctcacgacgacggagcaccgcaaatccgtgccgccattgatgtggacaagatccaggcccgtccgggtgagggttgcccacgttgcggcggtgtggtctacgcagcggagcagaagctttccaagggtcgggagtggcacaagaagtgcttcaactgcaaggattgccacaagactctggactcgatcaatgccagygatggtcccgatcgtgatgtgtactgccgcacctgctacggcaagaagtggggaccacatggctatggattcgcatgcggctctggtttcctgcagaccgatggcttgaccgaggatcagatcagcgccaacaggcccttctataacccggacaccacgtcaattaaggcccgtgacggcgaaggctgtccccggtgcggaggagccgtattcgccgccgagcaacagctgtccaagggcaaggtgtggcacaagaagtgctacaactgcgccgactgccaccggccattggactcggtcctggcctgcgatggacccgatggcgacatccactgccgcgcctgctacggcaagctcttcggccccaagggctttggttacggccacgcccccactctagtgtcaaccagtggcgagagcaccatccagttcccagatggccgtcctctggccggacccaagacttcgggcggctgcccgcgttgcggtttcgccgtgttcgccgccgagcagatgatcagcaagaccaggatctggcacaagaggtgcttctactgctcggattgccgcaaatcgctggactcgaccaacctgaacgatggacccgacggcgatatctactgccgagcctgctacggccgcaattttggacccaagggagtgggctacggtctgggcgcgggcgctttgacaacgttctaa</sbol:elements>
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
 </rdf:RDF>

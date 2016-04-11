@@ -26,6 +26,7 @@ public class readTester {
 	public static String filenameV1_15 	= "ComponentDefinitionOutput.rdf";
 	public static String filenameV1_16 	= "SimpleComponentDefinitionExample.rdf";
 	public static String filenameV1_17 	= "namespace.rdf";
+	public static String filenameV1_18 	= "SBOL1/SBOL1and2Test.xml";
 
 
 	public static String path = "test/data/";
@@ -33,26 +34,29 @@ public class readTester {
 	public static void main(String[] args) {
 
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_9);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_18);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_9);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_18);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
 			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			//SBOLReader.setVersion("1.0");
 			//SBOLReader.setTypesInURI(true);
 			SBOLDocument document1 = SBOLReader.read(file);
-			for (ComponentDefinition componentDefinition : document1.getComponentDefinitions()) {
-				if (componentDefinition.getComponents().size()==0) continue;
-				String original = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements();
-				String implied = componentDefinition.getImpliedNucleicAcidSequence();
-				if (!original.equals(implied)) {
-					System.out.println("Original:"+componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements());
-					System.out.println("Implied: "+componentDefinition.getImpliedNucleicAcidSequence());
-				}
-			}
+//			for (ComponentDefinition componentDefinition : document1.getComponentDefinitions()) {
+//				if (componentDefinition.getComponents().size()==0) continue;
+//				String original = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements();
+//				String implied = componentDefinition.getImpliedNucleicAcidSequence();
+//				if (!original.equals(implied)) {
+//					System.out.println("Original:"+componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements());
+//					System.out.println("Implied: "+componentDefinition.getImpliedNucleicAcidSequence());
+//				}
+//			}
 			
-			//SBOLWriter.write(document1, (System.out), SBOLReader.RDFV1);
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			SBOLWriter.write(document1, out);//, SBOLReader.RDFV1);
+			document1 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
+			SBOLWriter.write(document1,(System.out));
 			//ByteArrayOutputStream out = new ByteArrayOutputStream();
 			//SBOLWriter.writeV1(document1, out);
 			//SBOLDocument document2 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));

@@ -427,7 +427,11 @@ public class SBOLReader
 
 		{
 			if (SBOLDoc.getNamespace(URI.create(n.getNamespaceURI()))==null) {
-				SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+				if (n.getPrefix()==null) {
+					SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), ""));
+				} else {
+					SBOLDoc.addNamespaceBinding(NamespaceBinding(n.getNamespaceURI(), n.getPrefix()));
+				}
 			}
 
 		}

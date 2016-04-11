@@ -6,12 +6,14 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.QName;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
 
 
 //import javax.sound.midi.Sequence;
@@ -805,6 +807,29 @@ public abstract class SBOLAbstractTests {
 			runTest("test/data/BBa_I0462.rdf", actual, "rdf", true);
 			actual = SBOLTestUtils.convertSBOL1(fileName, null, "rdf", false);
 			runTest("test/data/BBa_I0462_orig.rdf", actual, "rdf", true);
+		}
+		catch (SBOLValidationException e)
+		{
+			throw new AssertionError("Failed for " + fileName, e);
+		}
+	}
+	
+	@Test
+	public void test_SBOL1andSBOL2Test_File() throws Exception
+	{
+		String fileName = "test/data/SBOL1and2Test.rdf";
+
+		try
+		{
+			InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
+			if (resourceAsStream == null)
+				resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/" + fileName);
+
+			assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
+			SBOLDocument actual = null;
+			SBOLReader.setURIPrefix(URIprefix);
+			actual = SBOLReader.read(resourceAsStream);
+			runTest("test/data/SBOL1and2Test.rdf", actual, "rdf", true);
 		}
 		catch (SBOLValidationException e)
 		{
