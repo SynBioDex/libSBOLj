@@ -1829,6 +1829,22 @@ public class SBOLDocument {
 			throw new IllegalArgumentException("Unable to copy " + topLevel.getIdentity());
 		}
 	}
+	
+	//TODO: need to finish this
+	public SBOLDocument createRecursiveCopy(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
+		SBOLDocument document = new SBOLDocument();
+		if (topLevel instanceof GenericTopLevel) {
+			GenericTopLevel genericTopLevel = (GenericTopLevel)createCopy(topLevel,URIprefix,displayId,version);
+			document.addGenericTopLevel(genericTopLevel);
+		} else if (topLevel instanceof Sequence) {
+			Sequence sequence = (Sequence)createCopy(topLevel,URIprefix,displayId,version);
+			document.addSequence(sequence);
+		} else if (topLevel instanceof Model) {
+			Model model = (Model)createCopy(topLevel,URIprefix,displayId,version);
+			document.addModel(model);
+		}
+		return document;
+	}
 
 	/**
 	 * Creates a copy of the given TopLevel instance with the given arguments, and then adds it to
