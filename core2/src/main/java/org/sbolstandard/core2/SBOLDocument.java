@@ -1829,21 +1829,68 @@ public class SBOLDocument {
 			throw new IllegalArgumentException("Unable to copy " + topLevel.getIdentity());
 		}
 	}
-	
-	//TODO: need to finish this
-	public SBOLDocument createRecursiveCopy(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
+
+	/**
+	 * Creates an identical copy of the given TopLevel instance and all its dependencies and returns them in 
+	 * a new SBOLDocument.
+	 *
+	 * @param topLevel The topLevel object to be recursively copied from this SBOLDocument
+	 * @return the created SBOLDocument with this top-level instance and all its dependencies
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws SBOLValidationException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
+	 */
+	public SBOLDocument createRecursiveCopy(TopLevel topLevel) throws SBOLValidationException {
 		SBOLDocument document = new SBOLDocument();
-		if (topLevel instanceof GenericTopLevel) {
-			GenericTopLevel genericTopLevel = (GenericTopLevel)createCopy(topLevel,URIprefix,displayId,version);
-			document.addGenericTopLevel(genericTopLevel);
-		} else if (topLevel instanceof Sequence) {
-			Sequence sequence = (Sequence)createCopy(topLevel,URIprefix,displayId,version);
-			document.addSequence(sequence);
-		} else if (topLevel instanceof Model) {
-			Model model = (Model)createCopy(topLevel,URIprefix,displayId,version);
-			document.addModel(model);
-		}
+		createRecursiveCopy(document,topLevel);
 		return document;
+	}
+	
+	private void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
+		if (document.getTopLevel(topLevel.getIdentity())!=null) return;
+		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model) {
+			document.createCopy(topLevel);
+		} else if (topLevel instanceof Collection) {
+			for (TopLevel member : ((Collection)topLevel).getMembers()) {
+				createRecursiveCopy(document,member);
+			}
+			document.createCopy(topLevel);
+		} else if (topLevel instanceof ComponentDefinition) {
+			for (Component component : ((ComponentDefinition)topLevel).getComponents()) {
+				if (component.getDefinition()!=null) {
+					createRecursiveCopy(document,component.getDefinition());
+				}
+			}
+			for (TopLevel sequence : ((ComponentDefinition)topLevel).getSequences()) {
+				createRecursiveCopy(document,sequence);
+			}
+			document.createCopy(topLevel);
+		} else if (topLevel instanceof ModuleDefinition) {
+			for (FunctionalComponent functionalComponent : ((ModuleDefinition)topLevel).getFunctionalComponents()) {
+				if (functionalComponent.getDefinition()!=null) {
+					createRecursiveCopy(document,functionalComponent.getDefinition());
+				}
+			}
+			for (Module module : ((ModuleDefinition)topLevel).getModules()) {
+				if (module.getDefinition()!=null) {
+					createRecursiveCopy(document,module.getDefinition());
+				}
+			}
+			for (Model model : ((ModuleDefinition)topLevel).getModels()) {
+				if (document.getModel(model.getIdentity())!=null) continue;
+				document.createCopy(model);
+			}
+			document.createCopy(topLevel);
+		}
 	}
 
 	/**

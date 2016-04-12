@@ -47,14 +47,14 @@ public class ModuleDefinition extends TopLevel {
 		for (URI role : moduleDefinition.getRoles()) {
 			this.addRole(role);
 		}
+		for (FunctionalComponent component : moduleDefinition.getFunctionalComponents()) {
+			this.addFunctionalComponent(component.deepCopy());
+		}
 		for (Module subModule : moduleDefinition.getModules()) {
 			this.addModule(subModule.deepCopy());
 		}
 		for (Interaction interaction : moduleDefinition.getInteractions()) {
 			this.addInteraction(interaction.deepCopy());
-		}
-		for (FunctionalComponent component : moduleDefinition.getFunctionalComponents()) {
-			this.addFunctionalComponent(component.deepCopy());
 		}
 		this.setModels(moduleDefinition.getModelURIs());
 	}

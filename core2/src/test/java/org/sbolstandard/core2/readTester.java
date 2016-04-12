@@ -3,6 +3,7 @@ package org.sbolstandard.core2;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.net.URI;
 
 public class readTester {
 	public static String filenameRdf 	= "writeTesterString_v1.3.rdf";
@@ -27,6 +28,7 @@ public class readTester {
 	public static String filenameV1_16 	= "SimpleComponentDefinitionExample.rdf";
 	public static String filenameV1_17 	= "namespace.rdf";
 	public static String filenameV1_18 	= "SBOL1/SBOL1and2Test.xml";
+	public static String filenameV1_19 	= "toggle.rdf";
 
 
 	public static String path = "test/data/";
@@ -34,12 +36,12 @@ public class readTester {
 	public static void main(String[] args) {
 
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_18);
+			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_19);
 			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_18);
+				file = readTester.class.getResourceAsStream("/" + path + filenameV1_19);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
-			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+			//SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			//SBOLReader.setVersion("1.0");
 			//SBOLReader.setTypesInURI(true);
 			SBOLDocument document1 = SBOLReader.read(file);
@@ -53,10 +55,12 @@ public class readTester {
 //				}
 //			}
 			
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			SBOLWriter.write(document1, out);//, SBOLReader.RDFV1);
-			document1 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
-			SBOLWriter.write(document1,(System.out));
+			SBOLDocument document2 = document1.createRecursiveCopy(
+					document1.getTopLevel(URI.create("http://sbolhub.org/col/james_test_sbol2_061015155208")));
+			//ByteArrayOutputStream out = new ByteArrayOutputStream();
+			//SBOLWriter.write(document1, out);//, SBOLReader.RDFV1);
+			//document1 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
+			SBOLWriter.write(document2,(System.out));
 			//ByteArrayOutputStream out = new ByteArrayOutputStream();
 			//SBOLWriter.writeV1(document1, out);
 			//SBOLDocument document2 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
