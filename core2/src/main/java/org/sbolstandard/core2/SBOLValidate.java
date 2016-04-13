@@ -1226,6 +1226,8 @@ public class SBOLValidate {
 	 * "-f" fail on first error, and
 	 * <p>
 	 * "-d" show detailed error trace.
+	 * <p>
+	 * "-l" indicates the language for output (default=SBOL2, other options SBOL1, GenBank)
 	 *
 	 * @param args arguments supplied at Command line
 	 */
@@ -1244,6 +1246,7 @@ public class SBOLValidate {
 		boolean showDetail = false;
 		boolean genBankIn = false;
 		boolean genBankOut = false;
+		boolean sbolV1out = false;
 		int i = 0;
 		while (i < args.length) {
 			if (args[i].equals("-i")) {
@@ -1268,6 +1271,19 @@ public class SBOLValidate {
 					usage();
 				}
 				componentDefinitionStr = args[i+1];
+				i++;
+			} else if (args[i].equals("-l")) {
+				if (i+1 >= args.length) {
+					usage();
+				}
+				if (args[i+1].equals("SBOL1")) {
+					sbolV1out = true;
+				} else if (args[i+1].equals("GenBank")) {
+					genBankOut = true;
+				} else if (args[i+1].equals("SBOL2")) {
+				} else {
+					usage();
+				}
 				i++;
 			} else if (args[i].equals("-o")) {
 				if (i+1 >= args.length) {
@@ -1358,6 +1374,13 @@ public class SBOLValidate {
 					} else {
 						System.out.println("Validation successful, no errors.");
 						GenBank.write(componentDefinition, outputFile);
+					}
+				} else if (sbolV1out) {
+					if (outputFile.equals("")) {
+						SBOLWriter.writeV1(doc, (System.out));
+					} else {
+						System.out.println("Validation successful, no errors.");
+						SBOLWriter.writeV1(doc, outputFile);
 					}
 				} else {
 					if (outputFile.equals("")) {
