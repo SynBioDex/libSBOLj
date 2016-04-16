@@ -19,7 +19,6 @@ public class SBOLWriterTest extends SBOLAbstractTests {
 		SBOLDocument actual = SBOLTestUtils.writeAndRead(expected,compliant);
 		if (!actual.equals(expected)) {
 			System.out.println("Expected:"+expected.toString());
-			SBOLWriter.write(expected, (System.out));
 			System.out.println("Actual  :"+actual.toString());
 		}
 		assertTrue(actual.equals(expected));

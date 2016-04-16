@@ -4,21 +4,21 @@
     <sbol:persistentIdentity rdf:resource="http://sbolstandard.org/example/md/GFP_expression"/>
     <sbol:displayId>GFP_expression</sbol:displayId>
     <sbol:functionalComponent>
-      <sbol:FunctionalComponent rdf:about="http://sbolstandard.org/example/md/GFP_expression/Constitutive_GFP">
-        <sbol:persistentIdentity rdf:resource="http://sbolstandard.org/example/md/GFP_expression/Constitutive_GFP"/>
-        <sbol:displayId>Constitutive_GFP</sbol:displayId>
-        <sbol:definition rdf:resource="http://sbolstandard.org/example/GFP_generator"/>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:direction rdf:resource="http://sbols.org/v2#in"/>
-      </sbol:FunctionalComponent>
-    </sbol:functionalComponent>
-    <sbol:functionalComponent>
       <sbol:FunctionalComponent rdf:about="http://sbolstandard.org/example/md/GFP_expression/GFP_protein">
         <sbol:persistentIdentity rdf:resource="http://sbolstandard.org/example/md/GFP_expression/GFP_protein"/>
         <sbol:displayId>GFP_protein</sbol:displayId>
         <sbol:definition rdf:resource="http://sbolstandard.org/example/GFP"/>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:direction rdf:resource="http://sbols.org/v2#out"/>
+      </sbol:FunctionalComponent>
+    </sbol:functionalComponent>
+    <sbol:functionalComponent>
+      <sbol:FunctionalComponent rdf:about="http://sbolstandard.org/example/md/GFP_expression/Constitutive_GFP">
+        <sbol:persistentIdentity rdf:resource="http://sbolstandard.org/example/md/GFP_expression/Constitutive_GFP"/>
+        <sbol:displayId>Constitutive_GFP</sbol:displayId>
+        <sbol:definition rdf:resource="http://sbolstandard.org/example/GFP_generator"/>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:direction rdf:resource="http://sbols.org/v2#in"/>
       </sbol:FunctionalComponent>
     </sbol:functionalComponent>
     <sbol:interaction>

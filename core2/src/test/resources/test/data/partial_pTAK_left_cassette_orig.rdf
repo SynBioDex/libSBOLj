@@ -1,5 +1,28 @@
 <?xml version="1.0" ?>
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#">
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_K121014">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_K121014"/>
+    <sbol:displayId>BBa_K121014</sbol:displayId>
+    <dcterms:description>promoter (lambda cI regulated)</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_12077"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_C0012">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_C0012"/>
+    <sbol:displayId>BBa_C0012</sbol:displayId>
+    <dcterms:title>lacI</dcterms:title>
+    <dcterms:description>lacI repressor from E. coli (+LVA)</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_153"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="urn:bcb44a78-ed3e-485b-b4a4-ec5cff683588">
+    <sbol:persistentIdentity rdf:resource="urn:bcb44a78-ed3e-485b-b4a4-ec5cff683588"/>
+    <sbol:displayId>Terminator</sbol:displayId>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
+  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="urn:6d179ea6-dcff-4da5-be76-4d343cb99e90">
     <sbol:persistentIdentity rdf:resource="urn:6d179ea6-dcff-4da5-be76-4d343cb99e90"/>
     <sbol:displayId>Repressor2</sbol:displayId>
@@ -57,29 +80,6 @@
       </sbol:SequenceConstraint>
     </sbol:sequenceConstraint>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_K121014">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_K121014"/>
-    <sbol:displayId>BBa_K121014</sbol:displayId>
-    <dcterms:description>promoter (lambda cI regulated)</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
-    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_12077"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_C0012">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_C0012"/>
-    <sbol:displayId>BBa_C0012</sbol:displayId>
-    <dcterms:title>lacI</dcterms:title>
-    <dcterms:description>lacI repressor from E. coli (+LVA)</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_153"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="urn:bcb44a78-ed3e-485b-b4a4-ec5cff683588">
-    <sbol:persistentIdentity rdf:resource="urn:bcb44a78-ed3e-485b-b4a4-ec5cff683588"/>
-    <sbol:displayId>Terminator</sbol:displayId>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
-  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="urn:d0f2ca7b-33d4-4106-8b7a-4bfe7efa1a16">
     <sbol:persistentIdentity rdf:resource="urn:d0f2ca7b-33d4-4106-8b7a-4bfe7efa1a16"/>
     <sbol:displayId>pTAKLeftCassete</sbol:displayId>
@@ -111,20 +111,6 @@
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa">
-        <sbol:persistentIdentity rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa"/>
-        <sbol:displayId>annotation3</sbol:displayId>
-        <sbol:location>
-          <sbol:GenericLocation rdf:about="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa/genericLocation">
-            <sbol:persistentIdentity rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:GenericLocation>
-        </sbol:location>
-        <sbol:component rdf:resource="urn:d0f2ca7b-33d4-4106-8b7a-4bfe7efa1a16/component2"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="urn:53de82c6-ecf9-4899-8e06-0179ab03a9a0">
         <sbol:persistentIdentity rdf:resource="urn:53de82c6-ecf9-4899-8e06-0179ab03a9a0"/>
         <sbol:displayId>annotation2</sbol:displayId>
@@ -136,6 +122,20 @@
           </sbol:GenericLocation>
         </sbol:location>
         <sbol:component rdf:resource="urn:d0f2ca7b-33d4-4106-8b7a-4bfe7efa1a16/component1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa">
+        <sbol:persistentIdentity rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa"/>
+        <sbol:displayId>annotation3</sbol:displayId>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa/genericLocation">
+            <sbol:persistentIdentity rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:GenericLocation>
+        </sbol:location>
+        <sbol:component rdf:resource="urn:d0f2ca7b-33d4-4106-8b7a-4bfe7efa1a16/component2"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>

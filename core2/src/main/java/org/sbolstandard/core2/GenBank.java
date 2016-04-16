@@ -947,8 +947,16 @@ public class GenBank {
 							sa.setComponent("feature"+featureCnt);
 
 						} else {
-
-							range = range.replace("<","").replace(">", "");
+							boolean startLessThan=false;
+							boolean endGreaterThan=false;
+							if (range.contains("<")) {
+								//startLessThan=true;
+								range = range.replace("<","");
+							}
+							if (range.contains(">")) {
+								//endGreaterThan=true;
+								range = range.replace(">", "");
+							}
 							// "The symbols < and > indicate that the end point of the range
 							//  is beyond the specified base number."
 							// TODO: need to handle these properly
@@ -967,6 +975,14 @@ public class GenBank {
 								SequenceAnnotation sa =
 										topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
 								sa.setComponent("feature"+featureCnt);
+								if (startLessThan) {
+									annotation = new Annotation(new QName(gbNamespace,"startLessThan",gbPrefix),true);
+									sa.addAnnotation(annotation);
+								}
+								if (endGreaterThan) {
+									annotation = new Annotation(new QName(gbNamespace,"endGreaterThan",gbPrefix),true);
+									sa.addAnnotation(annotation);
+								}
 							} catch(Exception e) {
 								System.out.println(lineCounter + " --> " + strLine);
 							}
