@@ -1369,6 +1369,10 @@ public class SBOLValidate {
 					} else {
 						componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
 					}
+					if (componentDefinition==null) {
+						System.err.println("ComponentDefinition " + componentDefinitionStr + " not found.");
+						return;
+					}
 					if (outputFile.equals("")) {
 						GenBank.write(componentDefinition, (System.out));
 					} else {

@@ -1221,6 +1221,10 @@ public class SBOLDocument {
 		return components;
 	}
 
+	/**
+	 * Returns the set of root ComponentDefinitions.
+	 * @return the set of root ComponentDefinitions.
+	 */
 	public Set<ComponentDefinition> getRootComponentDefinitions() {
 		Set<ComponentDefinition> components = getComponentDefinitions();
 		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {

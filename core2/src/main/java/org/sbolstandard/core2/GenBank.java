@@ -58,9 +58,9 @@ public class GenBank {
 	 * @param componentDefinition a given ComponentDefinition
 	 * @param filename the given output file name in GenBank format
 	 * @throws IOException input/output operation failed
-	 * @throws SBOLValidationException violated sbol validation rule
+	 * @throws SBOLConversionException violates conversion limitations
 	 */
-	public static void write(ComponentDefinition componentDefinition, String filename) throws IOException, SBOLValidationException
+	public static void write(ComponentDefinition componentDefinition, String filename) throws IOException, SBOLConversionException
 	{
 		write(componentDefinition, new File(filename));
 	}
@@ -71,9 +71,9 @@ public class GenBank {
 	 * @param componentDefinition a given ComponentDefinition
 	 * @param file the given output file name in GenBank format
 	 * @throws IOException input/output operation failed
-	 * @throws SBOLValidationException violated sbol validation rule
+	 * @throws SBOLConversionException violates conversion limitations
 	 */
-	public static void write(ComponentDefinition componentDefinition, File file) throws IOException, SBOLValidationException{
+	public static void write(ComponentDefinition componentDefinition, File file) throws IOException, SBOLConversionException{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
 		write(componentDefinition, buffer);
@@ -87,9 +87,9 @@ public class GenBank {
 	 * @param componentDefinition a given ComponentDefinition
 	 * @param out the given output file name in GenBank format
 	 * @throws IOException input/output operation failed
-	 * @throws SBOLValidationException violated sbol validation rule
+	 * @throws SBOLConversionException violates conversion limitations
 	 */
-	public static void write(ComponentDefinition componentDefinition, OutputStream out) throws IOException, SBOLValidationException {
+	public static void write(ComponentDefinition componentDefinition, OutputStream out) throws IOException, SBOLConversionException {
 		Writer w = new OutputStreamWriter(out, "UTF-8");
 		so = new SequenceOntology();
 		Sequence seq = null;
@@ -101,16 +101,15 @@ public class GenBank {
 			}
 		}
 		if (seq == null) {
-			//			throw new SBOLValidationException("ComponentDefintion " + componentDefinition.getIdentity() +
-			//					" does not have an IUPAC sequence.");
-			throw new SBOLValidationException("sbol-10406", componentDefinition);
+			throw new SBOLConversionException("ComponentDefintion " + componentDefinition.getIdentity() +
+								" does not have an IUPAC sequence.");
 		}
 		int size = seq.getElements().length();
 		writeHeader(w,componentDefinition,size);
 		writeReferences(w,componentDefinition);
 		writeComment(w,componentDefinition);
 		w.write("FEATURES             Location/Qualifiers\n");
-		recurseComponentDefinition(componentDefinition,w);
+		recurseComponentDefinition(componentDefinition,w,0,true,0);
 		w.write("ORIGIN\n");
 		writeSequence(w,seq,size);
 		w.write("//\n");
@@ -343,7 +342,13 @@ public class GenBank {
 		 */
 	}
 
-	private static void writeHeader(Writer w,ComponentDefinition componentDefinition,int size) throws SBOLValidationException, IOException {
+	private static void writeHeader(Writer w,ComponentDefinition componentDefinition,int size) throws SBOLConversionException, IOException {
+		String locus = componentDefinition.getDisplayId().substring(0, 
+				componentDefinition.getDisplayId().length()>15?15:componentDefinition.getDisplayId().length());
+		Annotation annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"locus",gbPrefix));
+		if (annotation!=null) {
+			locus = annotation.getStringValue();
+		}
 		String type = null;
 		for (URI typeURI : componentDefinition.getTypes()) {
 			if (typeURI.equals(ComponentDefinition.RNA)) {
@@ -354,11 +359,10 @@ public class GenBank {
 			}
 		}
 		if (type == null) {
-			//			throw new SBOLValidationException("ComponentDefintion " + componentDefinition.getIdentity() +
-			//					" is not DNA or RNA type.");
-			throw new SBOLValidationException("sbol-10505", componentDefinition);
+			throw new SBOLConversionException("ComponentDefintion " + componentDefinition.getIdentity() +
+							" is not DNA or RNA type.");
 		}
-		Annotation annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"molecule",gbPrefix));
+		annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"molecule",gbPrefix));
 		if (annotation!=null) {
 			type = annotation.getStringValue();
 		}
@@ -379,11 +383,10 @@ public class GenBank {
 		if (annotation!=null) {
 			date = annotation.getStringValue();
 		}
-		// TODO: assume LOCUS and ACCESSION are same
-		String locus = "LOCUS       " + String.format("%-16s", componentDefinition.getDisplayId()) + " " +
+		String locusLine = "LOCUS       " + String.format("%-16s", locus) + " " +
 				String.format("%11s", ""+size) + " bp " + "   " + String.format("%-6s", type) + "  " +
 				String.format("%-8s", linCirc) + " " + division + " " + date + "\n";
-		w.write(locus);
+		w.write(locusLine);
 		if (componentDefinition.isSetDescription()) {
 			writeGenBankLine(w,"DEFINITION  " + componentDefinition.getDescription(),80,12);
 		}
@@ -463,30 +466,48 @@ public class GenBank {
 			writeGenBankLine(w,"COMMENT     " + annotation.getStringValue(),80,12);
 		}
 	}
+	
+	private static String startStr(Range range,int offset) {
+		if (range.getAnnotation(new QName(gbNamespace,"startLessThan",gbPrefix))!=null) {
+			return "<"+(offset+range.getStart());
+		}
+		return ""+(offset+range.getStart());
+	}
+	
+	private static String endStr(Range range,int offset) {
+		if (range.getAnnotation(new QName(gbNamespace,"endGreaterThan",gbPrefix))!=null) {
+			return ">"+(offset+range.getEnd());
+		}
+		return ""+(offset+range.getEnd());
+	}
 
-	private static void writeFeature(Writer w,SequenceAnnotation sa,String role) throws IOException, SBOLValidationException {
+	private static void writeFeature(Writer w,SequenceAnnotation sa,String role,int offset,boolean inline) 
+			throws IOException, SBOLConversionException {
 		if (sa.getLocations().size()==0) {
-			//throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" has no locations.");
-			throw new SBOLValidationException("sbol-10902", sa);
+			throw new SBOLConversionException("SequenceAnnotation "+sa.getIdentity()+" has no locations.");
 		} else if (sa.getLocations().size()==1) {
 			Location loc = sa.getLocations().iterator().next();
 			if (loc instanceof Range) {
 				Range range = (Range)loc;
-				if (range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
-					w.write("     " + role + " " + "complement(" + range.getStart() + ".." + range.getEnd()+")\n");
+				if ((inline && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))||
+						(!inline && !range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))) {
+					w.write("     " + role + " " + "complement(" + startStr(range,offset) + ".." + 
+							endStr(range,offset)+")\n");
 				} else {
-					w.write("     " + role + " " + range.getStart() + ".." + range.getEnd()+"\n");
+					w.write("     " + role + " " + startStr(range,offset) + ".." + 
+							endStr(range,offset)+"\n");
 				}
 			} else if (loc instanceof Cut) {
 				Cut cut = (Cut)loc;
-				if (cut.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
-					w.write("     " + role + " " + "complement(" + cut.getAt() + "^" + cut.getAt()+1+")\n");
+				if ((cut.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))||
+						(!inline && !cut.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))) {
+					w.write("     " + role + " " + "complement(" + 
+							(offset+cut.getAt()) + "^" + (offset+cut.getAt()+1)+")\n");
 				} else {
-					w.write("     " + role + " " + cut.getAt() + "^" + cut.getAt()+1+"\n");
+					w.write("     " + role + " " + (offset+cut.getAt()) + "^" + (offset+cut.getAt()+1)+"\n");
 				}
 			} else {
-				throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
-				// TODO: (Validation) missing rule: Location of a SequenceAnnotation object needs to be either a range or cut.
+				throw new SBOLConversionException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
 			}
 		} else {
 			String rangeStr = "     " + role + " " + "join(";
@@ -497,13 +518,12 @@ public class GenBank {
 					// TODO: can joins include complement?
 					if (!first) rangeStr += ",";
 					else first = false;
-					rangeStr += range.getStart() + ".." + range.getEnd();
+					rangeStr += startStr(range,offset) + ".." + endStr(range,offset);
 				} else if (loc instanceof Cut) {
 					Cut cut = (Cut)loc;
-					rangeStr += cut.getAt() + "^" + cut.getAt()+1;
+					rangeStr += (offset+cut.getAt()) + "^" + (offset+cut.getAt()+1);
 				} else {
-					throw new SBOLValidationException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
-					// TODO: (Validation) missing rule: Location of a SequenceAnnotation object needs to be either a range or cut.
+					throw new SBOLConversionException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
 				}
 			}
 			rangeStr += ")";
@@ -529,8 +549,59 @@ public class GenBank {
 			w.write("\n");
 		}
 	}
+	
+	private static int getFeatureStart(SequenceAnnotation sa) {
+		int featureStart = Integer.MAX_VALUE;
+		for (Location location : sa.getLocations()) {
+			if (location instanceof Range) {
+				Range range = (Range)location;
+				if (range.getStart() < featureStart) {
+					featureStart = range.getStart();
+				} 
+			} else if (location instanceof Cut) {
+				Cut cut = (Cut)location;
+				if (cut.getAt() < featureStart) {
+					featureStart = cut.getAt();
+				}
+			}
+		}
+		if (featureStart==Integer.MAX_VALUE) return 1;
+		return featureStart;
+	}
+	
+	
+	private static int getFeatureEnd(SequenceAnnotation sa) {
+		int featureEnd = 0;
+		for (Location location : sa.getLocations()) {
+			if (location instanceof Range) {
+				Range range = (Range)location;
+				if (range.getEnd() > featureEnd) {
+					featureEnd = range.getEnd();
+				} 
+			} else if (location instanceof Cut) {
+				Cut cut = (Cut)location;
+				if (cut.getAt() < featureEnd) {
+					featureEnd = cut.getAt();
+				}
+			}
+		}
+		//if (featureEnd==Integer.MAX_VALUE) return 1;
+		return featureEnd;
+	}
+	
+	// TODO: assumes any complement then entirely complemented, need to fix
+	private static boolean isInlineFeature(SequenceAnnotation sa) {
+		boolean inlineFeature = true;
+		for (Location location : sa.getLocations()) {
+			if (location.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
+				inlineFeature = false;
+			}
+		}
+		return inlineFeature;		
+	}
 
-	private static void recurseComponentDefinition(ComponentDefinition componentDefinition, Writer w) throws IOException, SBOLValidationException {
+	private static void recurseComponentDefinition(ComponentDefinition componentDefinition, Writer w, int offset,
+			boolean inline, int featureEnd) throws IOException, SBOLConversionException {
 		for (SequenceAnnotation sa : componentDefinition.getSortedSequenceAnnotations()) {
 			String role = "misc_feature   ";
 			Component comp = sa.getComponent();
@@ -544,11 +615,21 @@ public class GenBank {
 							break;
 						}
 					}
-					recurseComponentDefinition(compDef,w);
+					int newFeatureEnd = featureEnd;
+					if (!isInlineFeature(sa)) {
+						newFeatureEnd = getFeatureEnd(sa);
+					}
+					recurseComponentDefinition(compDef, w, offset + getFeatureStart(sa)-1,
+							!(inline^isInlineFeature(sa)),newFeatureEnd);
 				}
 			}
-			// TODO: need to work out ranges correctly for multi-level
-			writeFeature(w,sa,role);
+			// TODO: need to test for more complicated complements
+			if (!inline) {
+				writeFeature(w,sa,role,(featureEnd - (getFeatureEnd(sa)+getFeatureStart(sa)-1) - offset),inline);
+				
+			} else {
+				writeFeature(w,sa,role,offset,inline);
+			}
 		}
 	}
 
@@ -559,10 +640,11 @@ public class GenBank {
 	 *
 	 * @param fileName the given GenBank filename
 	 * @return the converted SBOLDocument
-	 * @throws SBOLValidationException violated sbol validation rule
+	 * @throws SBOLConversionException violates conversion limitations
+	 * @throws SBOLValidationException violates sbol validation rule
 	 * @throws IOException input/output operation failed
 	 */
-	public static SBOLDocument read(String fileName) throws SBOLValidationException, IOException
+	public static SBOLDocument read(String fileName) throws SBOLConversionException, IOException, SBOLValidationException
 	{
 		return read(new File(fileName));
 	}
@@ -572,10 +654,11 @@ public class GenBank {
 	 *
 	 * @param file the given GenBank filename
 	 * @return the converted SBOLDocument instance
-	 * @throws SBOLValidationException violated sbol validation rule
+	 * @throws SBOLConversionException violates conversion limitations
+	 * @throws SBOLValidationException violates sbol validation rule
 	 * @throws IOException input/output operation failed
 	 */
-	public static SBOLDocument read(File file) throws SBOLValidationException, IOException
+	public static SBOLDocument read(File file) throws SBOLConversionException, IOException, SBOLValidationException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -587,16 +670,16 @@ public class GenBank {
 	 *
 	 * @param in the given GenBank filename
 	 * @return the converted SBOLDocument instance
-	 * @throws SBOLValidationException violated sbol validation rule
+	 * @throws SBOLConversionException violates conversion limitations
+	 * @throws SBOLValidationException violates sbol validation rule
 	 * @throws IOException input/output operation failed
 	 */
-	public static SBOLDocument read(InputStream in) throws SBOLValidationException, IOException
+	public static SBOLDocument read(InputStream in) throws SBOLConversionException, IOException, SBOLValidationException
 	{
 		SBOLDocument doc = new SBOLDocument();
 		doc.setCreateDefaults(true);
 		if (URIPrefix==null) {
-			throw new SBOLValidationException("No URI prefix has been provided.");
-			// TODO: (Validation) missing rule: rule for URI prefix.
+			throw new SBOLConversionException("No URI prefix has been provided.");
 		}
 		doc.setDefaultURIprefix(URIPrefix);
 		read(doc,in);
@@ -692,7 +775,7 @@ public class GenBank {
 	}
 
 
-	private static void read(SBOLDocument doc,InputStream in) throws IOException, SBOLValidationException {
+	private static void read(SBOLDocument doc,InputStream in) throws IOException, SBOLConversionException, SBOLValidationException {
 		so = new SequenceOntology();
 
 		// reset the global static variables needed for parsing
@@ -727,6 +810,8 @@ public class GenBank {
 
 				// ID of the sequence
 				id = strSplit[1];
+				annotation = new Annotation(new QName(gbNamespace, "locus", gbPrefix), strSplit[1]);
+				annotations.add(annotation);
 
 				// type of sequence
 				if (strSplit[4].toUpperCase().contains("RNA")) {
@@ -759,17 +844,12 @@ public class GenBank {
 			} else if (strLine.startsWith("ACCESSION")) {
 				String[] strSplit = strLine.split("\\s+");
 				String accession = strSplit[1];
-				// TODO: should use locus or accession id?
-				//				if (!accession.equals(id)) {
-				//					System.out.println("Warning: accession not equal to locus, using accession");
-				//				}
 				id = accession;
 			} else if (strLine.startsWith("VERSION")) {
 				String[] strSplit = strLine.split("\\s+");
 				version = strSplit[1].split("\\.")[1];
 				if (!id.equals(strSplit[1].split("\\.")[0])) {
-					throw new SBOLValidationException("Warning: id in version does not match id in accession");
-					// TODO: (Validation) missing rule: other.
+					throw new SBOLConversionException("Warning: id in version does not match id in accession");
 				}
 				if (strSplit.length > 2) {
 					annotation = new Annotation(new QName(gbNamespace,"GInumber",gbPrefix),strSplit[2]);
@@ -926,7 +1006,16 @@ public class GenBank {
 							SequenceAnnotation sa =  null;
 							for (String r : ranges) {
 								// TODO: complements within join
-								r = r.replace("<","").replace(">", ""); // TODO: need to handle these properly
+								boolean startLessThan=false;
+								boolean endGreaterThan=false;
+								if (r.contains("<")) {
+									startLessThan=true;
+									r = r.replace("<","");
+								}
+								if (r.contains(">")) {
+									endGreaterThan=true;
+									r = r.replace(">", "");
+								}
 								String[] rangeSplit = r.split("\\.\\.");
 								int start = Integer.parseInt(rangeSplit[0]);
 								int end = Integer.parseInt(rangeSplit[1]);
@@ -935,7 +1024,15 @@ public class GenBank {
 											start,end,orientation);
 									sa.setComponent("feature"+featureCnt);
 								} else if (sa != null) {
-									sa.addRange("range"+rangeCnt, start, end, orientation);
+									Range newRange = sa.addRange("range"+rangeCnt, start, end, orientation);
+									if (startLessThan) {
+										annotation = new Annotation(new QName(gbNamespace,"startLessThan",gbPrefix),"true");
+										newRange.addAnnotation(annotation);
+									}
+									if (endGreaterThan) {
+										annotation = new Annotation(new QName(gbNamespace,"endGreaterThan",gbPrefix),"true");
+										newRange.addAnnotation(annotation);
+									}
 								}
 								rangeCnt++;
 							}
@@ -945,27 +1042,22 @@ public class GenBank {
 							SequenceAnnotation sa =
 									topCD.createSequenceAnnotation("annotation"+featureCnt,"cut",at,orientation);
 							sa.setComponent("feature"+featureCnt);
-
 						} else {
 							boolean startLessThan=false;
 							boolean endGreaterThan=false;
 							if (range.contains("<")) {
-								//startLessThan=true;
+								startLessThan=true;
 								range = range.replace("<","");
 							}
 							if (range.contains(">")) {
-								//endGreaterThan=true;
+								endGreaterThan=true;
 								range = range.replace(">", "");
 							}
-							// "The symbols < and > indicate that the end point of the range
-							//  is beyond the specified base number."
-							// TODO: need to handle these properly
-
 							String[] rangeSplit = range.split("\\.\\.");
 							try {
 								int start = Integer.parseInt(rangeSplit[0]);
 								int end = Integer.parseInt(rangeSplit[1]);
-								// TOOD: check if the construct is circular or not
+								// TODO: check if the construct is circular or not
 								if (start > end) {
 									int temp = start;
 									start = end;
@@ -976,12 +1068,14 @@ public class GenBank {
 										topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
 								sa.setComponent("feature"+featureCnt);
 								if (startLessThan) {
-									annotation = new Annotation(new QName(gbNamespace,"startLessThan",gbPrefix),true);
-									sa.addAnnotation(annotation);
+									Range newRange = (Range)sa.getLocation("range");
+									annotation = new Annotation(new QName(gbNamespace,"startLessThan",gbPrefix),"true");
+									newRange.addAnnotation(annotation);
 								}
 								if (endGreaterThan) {
-									annotation = new Annotation(new QName(gbNamespace,"endGreaterThan",gbPrefix),true);
-									sa.addAnnotation(annotation);
+									Range newRange = (Range)sa.getLocation("range");
+									annotation = new Annotation(new QName(gbNamespace,"endGreaterThan",gbPrefix),"true");
+									newRange.addAnnotation(annotation);
 								}
 							} catch(Exception e) {
 								System.out.println(lineCounter + " --> " + strLine);

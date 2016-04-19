@@ -52,15 +52,17 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * SequenceAnnotation object, the given {@code displayId} of the GenericLocation instance. 
 	 *  
 	 * @param displayId
+	 * @return the generic location created
 	 * @throws SBOLValidationException 
 	 */
-	public void addGenericLocation(String displayId) throws SBOLValidationException {
+	public GenericLocation addGenericLocation(String displayId) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		GenericLocation genericLocation = new GenericLocation(identity);
 		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
 		genericLocation.setDisplayId(displayId);
 		genericLocation.setVersion(this.getVersion());
 		addLocation(genericLocation);
+		return genericLocation;
 	}
 	
 	/**
@@ -74,9 +76,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 *  
 	 * @param displayId
 	 * @param orientation
+	 * @return the generic location created
 	 * @throws SBOLValidationException 
  	 */
-	public void addGenericLocation(String displayId,OrientationType orientation) throws SBOLValidationException {
+	public GenericLocation addGenericLocation(String displayId,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		GenericLocation genericLocation = new GenericLocation(identity);
 		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
@@ -84,6 +87,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		genericLocation.setVersion(this.getVersion());
 		genericLocation.setOrientation(orientation);
 		addLocation(genericLocation);
+		return genericLocation;
 	}
 	
 	/**
@@ -95,15 +99,17 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 *  
 	 * @param displayId
 	 * @param at
+	 * @return the cut created
 	 * @throws SBOLValidationException 
 	 */
-	public void addCut(String displayId,int at) throws SBOLValidationException {
+	public Cut addCut(String displayId,int at) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Cut cut = new Cut(identity,at);
 		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
 		cut.setDisplayId(displayId);
 		cut.setVersion(this.getVersion());
 		addLocation(cut);
+		return cut;
 	}
 	
 	/**
@@ -117,9 +123,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @param displayId
 	 * @param at
 	 * @param orientation
+	 * @return the cut created
 	 * @throws SBOLValidationException 
 	 */
-	public void addCut(String displayId,int at,OrientationType orientation) throws SBOLValidationException {
+	public Cut addCut(String displayId,int at,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Cut cut = new Cut(identity,at);
 		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
@@ -127,6 +134,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		cut.setVersion(this.getVersion());
 		cut.setOrientation(orientation);
 		addLocation(cut);
+		return cut;
 	}
 
 	/**
@@ -139,15 +147,17 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @param displayId
 	 * @param start
 	 * @param end
+	 * @return the range created
 	 * @throws SBOLValidationException 
 	 */
-	public void addRange(String displayId,int start,int end) throws SBOLValidationException {
+	public Range addRange(String displayId,int start,int end) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Range range = new Range(identity,start,end);
 		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
 		range.setDisplayId(displayId);
 		range.setVersion(this.getVersion());
 		addLocation(range);
+		return range;
 	}
 	
 	/**
@@ -162,9 +172,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @param start
 	 * @param end
 	 * @param orientation
+	 * @return the range created
 	 * @throws SBOLValidationException 
 	 */
-	public void addRange(String displayId,int start,int end,OrientationType orientation) throws SBOLValidationException {
+	public Range addRange(String displayId,int start,int end,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Range range = new Range(identity,start,end);
 		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
@@ -172,6 +183,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		range.setVersion(this.getVersion());
 		range.setOrientation(orientation);
 		addLocation(range);
+		return range;
 	}
 	
 	void addLocation(Location location) throws SBOLValidationException {
@@ -241,7 +253,6 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * 
 	 * @return a sorted list of Locations referenced by this SequenceAnnotation object.
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Location> getSortedLocations() {
 		List<Location> sortedLocations = new ArrayList<Location>();
 		sortedLocations.addAll(this.getLocations());

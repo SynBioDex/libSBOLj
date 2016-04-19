@@ -18,6 +18,15 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
 public final class SBOLFactory {
 
 	private static SBOLDocument document = new SBOLDocument();
+	
+	// TODO: is this really needed?
+	/**
+	 * This sets the internal SBOLDocument used by the factory.
+	 * @param sbolDocument - the document to be used internally by the factory
+	 */
+	public static void setSBOLDocument(SBOLDocument sbolDocument) {
+		document = sbolDocument;
+	}
 
 	/**
 	 * This clears the internal SBOLDocument used by the factory.
@@ -885,7 +894,11 @@ public final class SBOLFactory {
 	public static Set<ComponentDefinition> getComponentDefinitions() {
 		return document.getComponentDefinitions();
 	}
-
+	
+	/**
+	 * Returns the set of root ComponentDefinitions.
+	 * @return the set of root ComponentDefinitions.
+	 */
 	public static Set<ComponentDefinition> getRootComponentDefinitions() {
 		return document.getRootComponentDefinitions();
 	}
@@ -1309,6 +1322,29 @@ public final class SBOLFactory {
 	 */
 	public static TopLevel createCopy(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
 		return document.createCopy(topLevel, URIprefix, displayId, version);
+	}
+	
+	/**
+	 * Creates an identical copy of the given TopLevel instance and all its dependencies and returns them in 
+	 * a new SBOLDocument.
+	 *
+	 * @param topLevel The topLevel object to be recursively copied from this SBOLDocument
+	 * @return the created SBOLDocument with this top-level instance and all its dependencies
+	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
+	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the given {@code displayId} is invalid
+	 * @throws SBOLValidationException if the given {@code version} is invalid
+	 * @throws SBOLValidationException if the created top-level instance's persistent
+	 * identity exists in this SBOLDocument object's other lists of top-level instances.
+	 * @throws SBOLValidationException if the created top-level instance's identity URI
+	 * already exists.
+	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
+	 * of a top-level object
+	 */
+	public SBOLDocument createRecursiveCopy(TopLevel topLevel) throws SBOLValidationException {
+		return document.createRecursiveCopy(topLevel);
 	}
 
 	/**

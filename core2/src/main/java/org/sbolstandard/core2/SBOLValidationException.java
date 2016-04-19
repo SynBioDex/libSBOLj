@@ -218,7 +218,7 @@ public class SBOLValidationException extends Exception {
 		return sb.toString();
 	}
 	
-	private static void writeRulesToXML(String filename) throws IOException {
+	private static void writeRulesToXML(String filename) {
 		File outputFile;
 		FileWriter outputFW;
 		BufferedWriter outputBW = null;
@@ -254,10 +254,10 @@ public class SBOLValidationException extends Exception {
 		System.out.println(rule);
 		try {
 			outputBW.write(rule);		
+			outputBW.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		outputBW.close();
 	
 	
 	}
