@@ -20,7 +20,7 @@ public final class SBOLFactory {
 	private static SBOLDocument document = new SBOLDocument();
 
 	/**
-	 * This sets the internal SBOLDocument used by the factory.
+	 * This clears the internal SBOLDocument used by the factory.
 	 */
 	public static void clear() {
 		document = new SBOLDocument();
@@ -1671,7 +1671,7 @@ public final class SBOLFactory {
 	 * @throws SBOLValidationException  if this SBOLDocument object is not compliant
 	 */
 
-	public static void setDefaultURIprefix(String defaultURIprefix) throws SBOLValidationException {
+	public static void setDefaultURIprefix(String defaultURIprefix) {
 		document.setDefaultURIprefix(defaultURIprefix);
 	}
 
@@ -1757,13 +1757,11 @@ public final class SBOLFactory {
 	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
 	 *
 	 * @param fileName a given RDF fileName
-	 * @throws CoreIoException - TODO
 	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public static void read(String fileName) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	public static void read(String fileName) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
 		document.read(fileName);
 	}
 
@@ -1771,13 +1769,11 @@ public final class SBOLFactory {
 	 * Takes in a given RDF File and add the data read to this SBOLDocument.
 	 *
 	 * @param file a given RDF fileName
-	 * @throws CoreIoException - TODO
 	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public static void read(File file) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	public static void read(File file) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
 		document.read(file);
 	}
 
@@ -1785,12 +1781,10 @@ public final class SBOLFactory {
 	 * Takes in a given RDF InputStream and add the data read to this SBOLDocument.
 	 *
 	 * @param in a given RDF InputStream
-	 * @throws CoreIoException - TODO
 	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException - TODO
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public static void read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException {
+	public static void read(InputStream in) throws FactoryConfigurationError, SBOLValidationException {
 		document.read(in);
 	}
 
@@ -1832,7 +1826,7 @@ public final class SBOLFactory {
 	 * @throws XMLStreamException invalid xml file
 	 * @throws IOException - TODO
 	 */
-	public static void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public static void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{
 		document.write(out);
 	}
