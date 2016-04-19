@@ -62,12 +62,10 @@ public class SBOLWriter
 	 * in RDF format.
 	 * @param doc
 	 * @param file
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
 	 * @throws IOException
+	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	public static void write(SBOLDocument doc, File file) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException{
+	public static void write(SBOLDocument doc, File file) throws IOException, SBOLConversionException {
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
 		write(doc, buffer);
@@ -80,12 +78,10 @@ public class SBOLWriter
 	 * in SBOL 1.1 RDF format.
 	 * @param doc
 	 * @param file
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
 	 * @throws IOException
+	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	public static void writeV1(SBOLDocument doc, File file) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException{
+	public static void writeV1(SBOLDocument doc, File file) throws IOException, SBOLConversionException{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
 		writeV1(doc, buffer);
@@ -99,12 +95,11 @@ public class SBOLWriter
 	 * @param doc
 	 * @param file
 	 * @param fileType
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
 	 * @throws IOException
+	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	static void write(SBOLDocument doc, File file, String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException{
+	static void write(SBOLDocument doc, File file, String fileType) throws IOException, SBOLConversionException
+	{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
 		write(doc, buffer, fileType);
@@ -117,16 +112,24 @@ public class SBOLWriter
 	 * in RDF format.
 	 * @param doc
 	 * @param out
-	 * @throws XMLStreamException
-	 * @throws FactoryConfigurationError
-	 * @throws CoreIoException
+	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	public static void write(SBOLDocument doc, OutputStream out)
-			throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	public static void write(SBOLDocument doc, OutputStream out) throws SBOLConversionException
 	{
-		writeRDF(new OutputStreamWriter(out),
-				DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
-						TopLevelDocuments(getTopLevelDocument(doc))));
+		try {
+			writeRDF(new OutputStreamWriter(out),
+					DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
+							TopLevelDocuments(getTopLevelDocument(doc))));
+		}
+		catch (XMLStreamException e) {
+			throw new SBOLConversionException(e.getMessage());
+		}
+		catch (FactoryConfigurationError e) {
+			throw new SBOLConversionException(e.getMessage());
+		}
+		catch (CoreIoException e) {
+			throw new SBOLConversionException(e.getMessage());
+		}
 	}
 	
 
@@ -135,12 +138,9 @@ public class SBOLWriter
 	 * in SBOL 1.1 RDF format.
 	 * @param doc
 	 * @param out
-	 * @throws XMLStreamException
-	 * @throws FactoryConfigurationError
-	 * @throws CoreIoException
+	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	public static void writeV1(SBOLDocument doc, OutputStream out)
-			throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	public static void writeV1(SBOLDocument doc, OutputStream out) throws SBOLConversionException
 	{
 		write(doc,out,SBOLReader.RDFV1);
 	}
@@ -151,11 +151,9 @@ public class SBOLWriter
 	 * @param doc
 	 * @param filename
 	 * @throws IOException
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
+	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	public static void write(SBOLDocument doc, String filename) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public static void write(SBOLDocument doc, String filename) throws IOException, SBOLConversionException
 	{
 		write(doc, new File(filename));
 	}
@@ -166,11 +164,9 @@ public class SBOLWriter
 	 * @param doc
 	 * @param filename
 	 * @throws IOException
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
+	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	public static void writeV1(SBOLDocument doc, String filename) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public static void writeV1(SBOLDocument doc, String filename) throws IOException, SBOLConversionException
 	{
 		writeV1(doc, new File(filename));
 	}
@@ -182,11 +178,9 @@ public class SBOLWriter
 	 * @param filename
 	 * @param fileType
 	 * @throws IOException
-	 * @throws CoreIoException
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
+	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	static void write(SBOLDocument doc, String filename, String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	static void write(SBOLDocument doc, String filename, String fileType) throws IOException, SBOLConversionException
 	{
 		write(doc, new File(filename), fileType);
 	}
@@ -197,29 +191,58 @@ public class SBOLWriter
 	 * @param doc
 	 * @param out
 	 * @param fileType
-	 * @throws XMLStreamException
-	 * @throws FactoryConfigurationError
-	 * @throws CoreIoException
+	 * @throws SBOLConversionException - problem found during serialization
 	 */
-	static void write(SBOLDocument doc, OutputStream out, String fileType)
-			throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	static void write(SBOLDocument doc, OutputStream out, String fileType) throws SBOLConversionException
 	{
 		if (fileType.equals(SBOLReader.JSON)) {
-			writeJSON(new OutputStreamWriter(out),
-					DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
-							TopLevelDocuments(getTopLevelDocument(doc))));
+			try {
+				writeJSON(new OutputStreamWriter(out),
+						DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
+								TopLevelDocuments(getTopLevelDocument(doc))));
+			}
+			catch (CoreIoException e) {
+				throw new SBOLConversionException(e.getMessage());
+			}
 		} else if (fileType.equals(SBOLReader.TURTLE)){
-			writeTurtle(new OutputStreamWriter(out),
-					DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
-							TopLevelDocuments(getTopLevelDocument(doc))));
+			try {
+				writeTurtle(new OutputStreamWriter(out),
+						DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
+								TopLevelDocuments(getTopLevelDocument(doc))));
+			}
+			catch (CoreIoException e) {
+				throw new SBOLConversionException(e.getMessage());
+			}
 		} else if (fileType.equals(SBOLReader.RDFV1)){
-			writeRDF(new OutputStreamWriter(out),
-					DocumentRoot( NamespaceBindings(getNamespaceBindingsV1()),
-							TopLevelDocuments(convertToV1Document(doc))));
+			try {
+				writeRDF(new OutputStreamWriter(out),
+						DocumentRoot( NamespaceBindings(getNamespaceBindingsV1()),
+								TopLevelDocuments(convertToV1Document(doc))));
+			}
+			catch (XMLStreamException e) {
+				throw new SBOLConversionException(e.getMessage());
+			}
+			catch (FactoryConfigurationError e) {
+				throw new SBOLConversionException(e.getMessage());
+			}
+			catch (CoreIoException e) {
+				throw new SBOLConversionException(e.getMessage());
+			}
 		} else {
-			writeRDF(new OutputStreamWriter(out),
-					DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
-							TopLevelDocuments(getTopLevelDocument(doc))));
+			try {
+				writeRDF(new OutputStreamWriter(out),
+						DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
+								TopLevelDocuments(getTopLevelDocument(doc))));
+			}
+			catch (XMLStreamException e) {
+				throw new SBOLConversionException(e.getMessage());
+			}
+			catch (FactoryConfigurationError e) {
+				throw new SBOLConversionException(e.getMessage());
+			}
+			catch (CoreIoException e) {
+				throw new SBOLConversionException(e.getMessage());
+			}
 		}
 	}
 

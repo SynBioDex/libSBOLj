@@ -27,11 +27,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
-import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 /**
  * @author Zhen Zhang
@@ -2814,11 +2811,10 @@ public class SBOLDocument {
 	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
 	 *
 	 * @param fileName a given RDF fileName
-	 * @throws FactoryConfigurationError - TODO
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public void read(String fileName) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	public void read(String fileName) throws FileNotFoundException, SBOLValidationException {
 		read(new File(fileName));
 	}
 
@@ -2827,11 +2823,10 @@ public class SBOLDocument {
 	 *
 	 * @param fileName a given fileName and fileType
 	 * @param fileType specify what file type is this file
-	 * @throws FactoryConfigurationError - TODO
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	void read(String fileName,String fileType) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	void read(String fileName,String fileType) throws FileNotFoundException, SBOLValidationException {
 		read(new File(fileName),fileType);
 	}
 
@@ -2839,11 +2834,10 @@ public class SBOLDocument {
 	 * Takes in a given RDF File and add the data read to this SBOLDocument.
 	 *
 	 * @param file a given RDF File
-	 * @throws FactoryConfigurationError - TODO
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public void read(File file) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	public void read(File file) throws FileNotFoundException, SBOLValidationException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
 		SBOLReader.read(this, buffer, SBOLReader.RDF);
@@ -2854,11 +2848,10 @@ public class SBOLDocument {
 	 *
 	 * @param file a given file
 	 * @param fileType specify what file type is this file
-	 * @throws FactoryConfigurationError - TODO
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	void read(File file,String fileType) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	void read(File file,String fileType) throws FileNotFoundException, SBOLValidationException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
 		SBOLReader.read(this, buffer, fileType);
@@ -2868,10 +2861,9 @@ public class SBOLDocument {
 	 * Takes in a given RDF InputStream and add the data read to this SBOLDocument.
 	 *
 	 * @param in a given RDF InputStream
-	 * @throws FactoryConfigurationError - TODO
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public void read(InputStream in) throws FactoryConfigurationError, SBOLValidationException {
+	public void read(InputStream in) throws SBOLValidationException {
 		SBOLReader.read(this, in, SBOLReader.RDF);
 	}
 
@@ -2880,10 +2872,9 @@ public class SBOLDocument {
 	 *
 	 * @param in a given RDF InputStream
 	 * @param fileType the fileType that this file is in
-	 * @throws FactoryConfigurationError - TODO
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	void read(InputStream in,String fileType) throws FactoryConfigurationError, SBOLValidationException {
+	void read(InputStream in,String fileType) throws SBOLValidationException {
 		SBOLReader.read(this, in, fileType);
 	}
 
@@ -2892,11 +2883,9 @@ public class SBOLDocument {
 	 * file name in RDF format
 	 * @param filename the given output file name
 	 * @throws IOException - TODO
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
+	 * @throws SBOLConversionException 
 	 */
-	public void write(String filename) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public void write(String filename) throws IOException, SBOLConversionException
 	{
 		SBOLWriter.write(this, new File(filename));
 	}
@@ -2907,11 +2896,9 @@ public class SBOLDocument {
 	 * @param filename the given output file name
 	 * @param fileType the file type to be written out to
 	 * @throws IOException - TODO
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
+	 * @throws SBOLConversionException 
 	 */
-	void write(String filename,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(String filename,String fileType) throws IOException, SBOLConversionException
 	{
 		SBOLWriter.write(this, new File(filename), fileType);
 	}
@@ -2920,12 +2907,10 @@ public class SBOLDocument {
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * file in RDF format
 	 * @param file the given output file in RDF format
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws IOException - TODO
+	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	public void write(File file) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public void write(File file) throws IOException, SBOLConversionException
 	{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -2939,12 +2924,10 @@ public class SBOLDocument {
 	 * file in fileType format
 	 * @param file the given output file
 	 * @param fileType the file type of the given output file
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws IOException - TODO
+	 * @throws SBOLConversionException - problem found during serialization  
 	 */
-	void write(File file,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(File file,String fileType) throws IOException, SBOLConversionException
 	{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -2957,11 +2940,9 @@ public class SBOLDocument {
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * stream in RDF format
 	 * @param out the given output stream
-	 * @throws XMLStreamException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws CoreIoException - TODO
+	 * @throws SBOLConversionException - problem found during serialization  
 	 */
-	public void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	public void write(OutputStream out) throws SBOLConversionException
 	{
 		SBOLWriter.write(this, out);
 	}
@@ -2971,12 +2952,9 @@ public class SBOLDocument {
 	 * stream in fileType format
 	 * @param out the given output stream
 	 * @param fileType specify what file type for the the given output stream
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
-	 * @throws IOException - TODO
+	 * @throws SBOLConversionException - problem found during serialization   
 	 */
-	void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	void write(OutputStream out,String fileType) throws SBOLConversionException 
 	{
 		SBOLWriter.write(this, out, fileType);
 	}

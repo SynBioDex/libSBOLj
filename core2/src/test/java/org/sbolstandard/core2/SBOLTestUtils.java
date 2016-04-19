@@ -12,11 +12,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
-import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 /**
  * Construction of TopLevel objects along with any of its' sub-parts.
@@ -234,7 +231,7 @@ public class SBOLTestUtils {
 
 
 	public static SBOLDocument writeAndRead(SBOLDocument doc, boolean compliant)
-			throws XMLStreamException, FactoryConfigurationError, CoreIoException, SBOLValidationException
+			throws SBOLValidationException, SBOLConversionException
 	{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		SBOLWriter.write(doc, out);

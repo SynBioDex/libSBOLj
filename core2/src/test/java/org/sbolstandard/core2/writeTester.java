@@ -10,10 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-
-import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 public class writeTester {
 
@@ -24,12 +20,13 @@ public class writeTester {
 	/**
 	 * Top level types
 	 * @throws SBOLValidationException 
+	 * @throws SBOLConversionException 
 	 * @throws CoreIoException 
 	 * @throws XMLStreamException 
 	 *
 	 */
 
-	public static void main( String[] args ) throws FactoryConfigurationError, SBOLValidationException, XMLStreamException, CoreIoException
+	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix("http://www.foo.org");
@@ -71,14 +68,9 @@ public class writeTester {
 			SBOLWriter.write(SBOL2Doc_test,(System.out));
 			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test,true);
 			SBOLWriter.write(SBOL2Doc_test,System.out);
-		} catch (XMLStreamException e) {
+		} catch (SBOLConversionException e) {
 			e.printStackTrace();
-		} catch (FactoryConfigurationError e) {
-			e.printStackTrace();
-		} catch (CoreIoException e) {
-			e.printStackTrace();
-		}
-		catch (SBOLValidationException e) {
+		} catch (SBOLValidationException e) {
 			e.printStackTrace();
 		}
 	}
