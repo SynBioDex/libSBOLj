@@ -2810,13 +2810,12 @@ public class SBOLDocument {
 	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
 	 *
 	 * @param fileName a given RDF fileName
-	 * @throws CoreIoException - TODO
 	 * @throws FactoryConfigurationError - TODO
 	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public void read(String fileName) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	public void read(String fileName) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
 		read(new File(fileName));
 	}
 
@@ -2825,13 +2824,12 @@ public class SBOLDocument {
 	 *
 	 * @param fileName a given fileName and fileType
 	 * @param fileType specify what file type is this file
-	 * @throws CoreIoException - TODO
 	 * @throws FactoryConfigurationError - TODO
 	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	void read(String fileName,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	void read(String fileName,String fileType) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
 		read(new File(fileName),fileType);
 	}
 
@@ -2839,13 +2837,12 @@ public class SBOLDocument {
 	 * Takes in a given RDF File and add the data read to this SBOLDocument.
 	 *
 	 * @param file a given RDF File
-	 * @throws CoreIoException - TODO
 	 * @throws FactoryConfigurationError - TODO
 	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public void read(File file) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	public void read(File file) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
 		SBOLReader.read(this, buffer, SBOLReader.RDF);
@@ -2862,7 +2859,7 @@ public class SBOLDocument {
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	void read(File file,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	void read(File file,String fileType) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
 		SBOLReader.read(this, buffer, fileType);
@@ -2877,7 +2874,7 @@ public class SBOLDocument {
 	 * @throws XMLStreamException invalid xml file
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public void read(InputStream in) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException {
+	public void read(InputStream in) throws FactoryConfigurationError, SBOLValidationException {
 		SBOLReader.read(this, in, SBOLReader.RDF);
 	}
 
@@ -2886,12 +2883,11 @@ public class SBOLDocument {
 	 *
 	 * @param in a given RDF InputStream
 	 * @param fileType the fileType that this file is in
-	 * @throws CoreIoException - TODO
 	 * @throws FactoryConfigurationError - TODO
 	 * @throws XMLStreamException invalid xml file
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	void read(InputStream in,String fileType) throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException {
+	void read(InputStream in,String fileType) throws FactoryConfigurationError, SBOLValidationException {
 		SBOLReader.read(this, in, fileType);
 	}
 
