@@ -1704,7 +1704,6 @@ public final class SBOLFactory {
 	 * Sets the default URI prefix to the given {@code defaultURIprefix}.
 	 *
 	 * @param defaultURIprefix the given default URI prefix
-	 * @throws SBOLValidationException  if this SBOLDocument object is not compliant
 	 */
 
 	public static void setDefaultURIprefix(String defaultURIprefix) {
@@ -1860,7 +1859,6 @@ public final class SBOLFactory {
 	 * @throws CoreIoException - TODO
 	 * @throws FactoryConfigurationError - TODO
 	 * @throws XMLStreamException invalid xml file
-	 * @throws IOException - TODO
 	 */
 	public static void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException
 	{

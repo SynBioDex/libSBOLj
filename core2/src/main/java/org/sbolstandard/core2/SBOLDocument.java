@@ -2815,7 +2815,6 @@ public class SBOLDocument {
 	 *
 	 * @param fileName a given RDF fileName
 	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
@@ -2829,7 +2828,6 @@ public class SBOLDocument {
 	 * @param fileName a given fileName and fileType
 	 * @param fileType specify what file type is this file
 	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
@@ -2842,7 +2840,6 @@ public class SBOLDocument {
 	 *
 	 * @param file a given RDF File
 	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
@@ -2857,9 +2854,7 @@ public class SBOLDocument {
 	 *
 	 * @param file a given file
 	 * @param fileType specify what file type is this file
-	 * @throws CoreIoException - TODO
 	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
@@ -2873,9 +2868,7 @@ public class SBOLDocument {
 	 * Takes in a given RDF InputStream and add the data read to this SBOLDocument.
 	 *
 	 * @param in a given RDF InputStream
-	 * @throws CoreIoException - TODO
 	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	public void read(InputStream in) throws FactoryConfigurationError, SBOLValidationException {
@@ -2888,7 +2881,6 @@ public class SBOLDocument {
 	 * @param in a given RDF InputStream
 	 * @param fileType the fileType that this file is in
 	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
 	void read(InputStream in,String fileType) throws FactoryConfigurationError, SBOLValidationException {
