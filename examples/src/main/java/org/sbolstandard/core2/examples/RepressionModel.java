@@ -21,6 +21,7 @@ import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.RestrictionType;
+import org.sbolstandard.core2.SBOLConversionException;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidate;
 import org.sbolstandard.core2.SBOLValidationException;
@@ -396,22 +397,22 @@ public class RepressionModel {
 		
 		try {
 			SBOLWriter.write(doc,(System.out));
-		} catch (XMLStreamException | FactoryConfigurationError
-				| CoreIoException e) {
+		} catch (FactoryConfigurationError
+				| SBOLConversionException e) {
 			e.printStackTrace();
 		}
 		
 		try {
 			SBOLWriter.write(doc, "RepressionModel.rdf");
-		} catch (XMLStreamException | FactoryConfigurationError
-				| CoreIoException | IOException e) {
+		} catch (FactoryConfigurationError
+				| IOException | SBOLConversionException e) {
 			e.printStackTrace();
 		}
 				
 	}
 	
 	public static SBOLDocument writeThenRead(SBOLDocument doc)
-	               throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
+	               throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException, SBOLConversionException
 	  {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
 	    SBOLWriter.write(doc, out);
