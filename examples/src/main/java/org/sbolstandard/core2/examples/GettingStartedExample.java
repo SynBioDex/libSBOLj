@@ -8,20 +8,17 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.xml.namespace.QName;
-import javax.xml.parsers.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
 
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.GenericTopLevel;
 import org.sbolstandard.core2.RestrictionType;
+import org.sbolstandard.core2.SBOLConversionException;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLReader;
 import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceOntology;
-
-import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 
 /**
@@ -30,7 +27,7 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
  *
  */
 public class GettingStartedExample {
-	public static void main( String[] args ) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException, SBOLValidationException {
+	public static void main( String[] args ) throws IOException, SBOLValidationException, SBOLConversionException {
 		String prURI = "http://partsregistry.org";
 		String prPrefix = "pr";
 		String myersLabURI = "http://www.async.ece.utah.edu";
@@ -174,7 +171,7 @@ public class GettingStartedExample {
 	}
 	
 	public static SBOLDocument writeThenRead(SBOLDocument doc)
-			throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
+			throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		SBOLWriter.write(doc, out);
