@@ -21,6 +21,11 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+/**
+ * This class provides methods for converting GenBank files to and from SBOL 2.0 files.
+ * @author Chris Myers
+ *
+ */
 public class GenBank {
 
 	private static SequenceOntology so = null;

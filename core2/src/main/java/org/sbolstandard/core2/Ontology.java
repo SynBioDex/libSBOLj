@@ -7,6 +7,12 @@ import java.util.List;
 import org.oboparser.obo.OBOOntology;
 import org.oboparser.obo.OBOStanza;
 
+/**
+ * This class provides methods to 
+ * 
+ * @author Zhen Zhang
+ *
+ */
 public abstract class Ontology {
 
 	protected OBOOntology sequenceOntology = null;

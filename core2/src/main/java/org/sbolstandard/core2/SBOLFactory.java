@@ -11,6 +11,15 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
 public final class SBOLFactory {
 
 	private static SBOLDocument document = new SBOLDocument();
@@ -18,7 +27,7 @@ public final class SBOLFactory {
 	// TODO: is this really needed?
 	/**
 	 * This sets the internal SBOLDocument used by the factory.
-	 * @param sbolDocument - the document to be used internally by the factory
+	 * @param sbolDocument The document used internally by the factory
 	 */
 	public static void setSBOLDocument(SBOLDocument sbolDocument) {
 		document = sbolDocument;
@@ -1821,8 +1830,8 @@ public final class SBOLFactory {
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * file name in RDF format
 	 * @param filename the given output file in RDF format
-	 * @throws IOException 
-	 * @throws SBOLConversionException - problem found during serialization   
+	 * @throws IOException if access to the file to be written failed
+	 * @throws SBOLConversionException if the conversion between SBOL and GenBank failed
 	 */
 	public static void write(String filename) throws IOException, SBOLConversionException 
 	{
@@ -1833,7 +1842,7 @@ public final class SBOLFactory {
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * file in RDF format
 	 * @param file the given output file
-	 * @throws IOException - TODO
+	 * @throws IOException - 
 	 * @throws SBOLConversionException - problem found during serialization   
 	 */
 	public static void write(File file) throws IOException, SBOLConversionException
