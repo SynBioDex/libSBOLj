@@ -175,15 +175,12 @@ the create method on its immediate parent, which adds the child object after its
 
 \subsection*{Copying Objects}
 The library can make copies of \sbol{TopLevel} objects using the \lstinline+createCopy+ methods.  There are several variations of this method. The \lstinline+createCopy(TopLevel)+ method makes an identical copy of its given \sbol{TopLevel} object. Note that this will cause an exception if it is copied into the same \sbol{SBOLDocument}, since it will not have a unique identity. Therefore, this method is meant to be used only when one wants to copy an object from one SBOL document to another. The \lstinline+createCopy(TopLevel, String)+ takes a \sbol{TopLevel} object to be copied and a new display ID, and it returns an identical copy with the display ID, and its own and its descendant's URI identities updated accordingly. There is a copy method that also takes a version field, and it returns a copy with the version, and its own and its descendant's URI identities updated accordingly.  Finally, a new URI prefix can also be provided, once again resulting in updated identities. The example below makes a copy of the
-\lstinline+pConst+ promoter by calling \lstinline+createCopy+ with a new display ID, \lstinline+pConst_alt+. The identity URI for \lstinline+pConst_alt+ is changed to include the new display ID, and this change also percolates through the identity URIs for any of its descendent objects.  This example gives the new copy a sequence and a new annotation, but it keeps all other properties the same. 
+\lstinline+pConst+ promoter by calling \lstinline+createCopy+ with a new display ID, \lstinline+pConst_alt+. The identity URI for \lstinline+pConst_alt+ is changed to include the new display ID, and this change also percolates through the identity URIs for any of its descendent objects.  This example gives the new copy a sequence, but it keeps all other properties the same. 
 
 \vspace{\abovedisplayskip}
 \begin{minipage}{0.95\textwidth} 
 \begin{lstlisting}
 ComponentDefinition pConst_alt = (ComponentDefinition) doc.createCopy(pConst, "pConst_alt");
-pConst_alt.createAnnotation(
-        new QName(prURI, "", prPrefix),
-        URI.create("http://parts.igem.org/Part:BBa_J23100"));
 Sequence pConst_alt_seq = doc.createSequence(
         "pConst_alt_seq", 
         version, 

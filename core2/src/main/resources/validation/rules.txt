@@ -1,8 +1,7 @@
 [SBOLDocument]
 id: sbol-10101
 condition: strong required
-description: An SBOL document MUST declare the
-use of the following XML namespace: “http://sbols.org/v2#”.
+description: An SBOL document MUST declare the use of the following XML namespace: “http://sbols.org/v2#”.
 reference: Section 10 on page 54
 
 [SBOLDocument]
@@ -28,6 +27,12 @@ description: If an SBOL document includes any wasDerivedFrom
 properties, then it MUST declare the use of the following XML
 namespace: “http://www.w3.org/ns/prov#”.
 reference: Section 10 on page 54
+
+[SBOLDocument]
+id: sbol-10105
+condition: strong required
+description: An SBOL document MUST be serialized as a well-formed RDF/XML file.
+reference: https://www.w3.org/TR/rdf-syntax-grammar/
 
 [Identified]
 id: sbol-10201
@@ -154,7 +159,7 @@ id: sbol-10217
 condition: recommended
 description: The persistentIdentity property of a compliant Identified
 object that is not also a 
-TopLevelobject is REQUIRED and MUST contain a URI that begins with the
+TopLevel object is REQUIRED and MUST contain a URI that begins with the
 persistentIdentity of the compliant object’s parent and is immediately followed by a
 delimiter (’/’, ’#’, or ’:’) and the displayId of the compliant
 object.

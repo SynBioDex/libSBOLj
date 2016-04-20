@@ -87,7 +87,6 @@
 	<sbol2:member rdf:resource="http://parts.igem.org/Part:BBa_I732924#feature2296546"/>
 	<sbol2:member rdf:resource="http://parts.igem.org/Part:BBa_I732917#feature2253351"/>
 	<sbol2:member rdf:resource="http://parts.igem.org/Part:BBa_I732924#feature2296535"/>
-	<sbol2:member rdf:resource="http://parts.igem.org/Part:BBa_I732924#sequence"/>
 	<sbol2:member rdf:resource="http://parts.igem.org/Part:BBa_I732917#feature2253353"/>
 	<sbol2:member rdf:resource="http://parts.igem.org/Part:BBa_I732924#feature2296564"/>
 	<sbol2:member rdf:resource="http://parts.igem.org/Part:BBa_I732006#feature1936905"/>
@@ -1009,14 +1008,6 @@ Xba1 (3379-3384bp)</igem:source>
 	<sbol2:role rdf:resource="http://identifiers.org/so/SO:0000330"/>
 </rdf:Description>
 
-<rdf:Description rdf:about="http://parts.igem.org/Part:BBa_I732924#sequence">
-	<rdf:type rdf:resource="http://sbols.org/v2#Sequence"/>
-	<sbol2:persistentIdentity rdf:resource="http://parts.igem.org/Part:BBa_I732924#sequence"/>
-	<sbol2:displayId>sequence</sbol2:displayId>
-	<sbol2:elements></sbol2:elements>
-	<sbol2:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
-</rdf:Description>
-
 <rdf:Description rdf:about="http://parts.igem.org/Part:BBa_I732917#feature2253353">
 	<rdf:type rdf:resource="http://sbols.org/v2#ComponentDefinition"/>
 	<sbol2:persistentIdentity rdf:resource="http://parts.igem.org/Part:BBa_I732917#feature2253353"/>
@@ -1494,7 +1485,6 @@ Xba1 (3379-3384bp)</igem:source>
 	<sbol2:sequenceAnnotation rdf:resource="http://parts.igem.org/Part:BBa_I732924#annotation2296539"/>
 	<sbol2:sequenceAnnotation rdf:resource="http://parts.igem.org/Part:BBa_I732924#annotation2296533"/>
 	<sbol2:sequenceAnnotation rdf:resource="http://parts.igem.org/Part:BBa_I732924#annotation2296562"/>
-	<sbol2:sequence rdf:resource="http://parts.igem.org/Part:BBa_I732924#sequence"/>
 	<igem:status>Available</igem:status>
 	<igem:nickname>CGv2A</igem:nickname>
 </rdf:Description>
@@ -3096,7 +3086,7 @@ Xba1 (3379-3384bp)</igem:source>
 	<sbol2:persistentIdentity rdf:resource="http://parts.igem.org/Part:BBa_I765000#range1956037"/>
 	<sbol2:displayId>range1956037</sbol2:displayId>
 	<sbol2:start>1</sbol2:start>
-	<sbol2:end>1045</sbol2:end>
+	<sbol2:end>1044</sbol2:end>
 </rdf:Description>
 
 <rdf:Description rdf:about="http://parts.igem.org/Part:BBa_I732006#range1936905">

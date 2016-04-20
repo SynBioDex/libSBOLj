@@ -112,9 +112,9 @@ public class SystemsBiologyOntology {
 		String stanzaURIstr = stanzaURI.toString().trim();
 		if (!stanzaURIstr.startsWith(URI_PREFIX)) {
 			try {
-				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
+				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -139,9 +139,9 @@ public class SystemsBiologyOntology {
 		}
 		if (IdList.isEmpty()) {
 			try {
-				throw new SBOLValidationException("Illegal name " + stanzaName + ". It does not exit.");
+				throw new IllegalArgumentException("Illegal name " + stanzaName + ". It does not exit.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -159,9 +159,9 @@ public class SystemsBiologyOntology {
 		String oboURIstr = stanzaURI.toString().trim();
 		if (!oboURIstr.startsWith(URI_PREFIX)) {
 			try {
-				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -170,9 +170,9 @@ public class SystemsBiologyOntology {
 		OBOStanza oboStanza = systemsBiologyOntology.getStanza(id);
 		if (oboStanza == null) {
 			try {
-				throw new SBOLValidationException("ID " + id + " does not exist.");
+				throw new IllegalArgumentException("ID " + id + " does not exist.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;			}
 		}
 		return oboStanza.getName();
@@ -189,9 +189,9 @@ public class SystemsBiologyOntology {
 		OBOStanza oboStanza = systemsBiologyOntology.getStanza(stanzaId);
 		if (oboStanza == null) {
 			try {
-				throw new SBOLValidationException("Illegal ID " + stanzaId + " does not exist.");
+				throw new IllegalArgumentException("Illegal ID " + stanzaId + " does not exist.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -211,8 +211,7 @@ public class SystemsBiologyOntology {
 	}
 	
 	/** 
-	 * Creates a new URI from the Systems Biology Ontology namespace with the given ID. For example, the function call
-	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
+	 * Creates a new URI from the Systems Biology Ontology namespace with the given ID. 
 	 * @param stanzaId
 	 * @return the created URI
 	 */
@@ -220,9 +219,9 @@ public class SystemsBiologyOntology {
 		OBOStanza oboStanza = systemsBiologyOntology.getStanza(stanzaId.trim());
 		if (oboStanza == null) {
 			try {
-				throw new SBOLValidationException("ID " + stanzaId + " does not exist.");
+				throw new IllegalArgumentException("ID " + stanzaId + " does not exist.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -252,17 +251,17 @@ public class SystemsBiologyOntology {
 		OBOStanza stanza2 = systemsBiologyOntology.getStanza(Id2);
 		if (stanza1 == null) {
 			try {
-				throw new SBOLValidationException("Illegal ID: " + Id1 + ". No match was found.");
+				throw new IllegalArgumentException("Illegal ID: " + Id1 + ". No match was found.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return false;
 			}
 		}
 		if (stanza2 == null) {
 			try {
-				throw new SBOLValidationException("Illegal ID: " + Id2 + ". No match was found.");
+				throw new IllegalArgumentException("Illegal ID: " + Id2 + ". No match was found.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return false;
 			}
 		}

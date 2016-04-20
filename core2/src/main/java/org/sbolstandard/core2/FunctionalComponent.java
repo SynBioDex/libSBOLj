@@ -69,7 +69,7 @@ public class FunctionalComponent extends ComponentInstance {
 	public void setDirection(DirectionType direction) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (direction==null) {
-			throw new NullPointerException("Not a valid direction type.");
+			throw new SBOLValidationException("sbol-11802",this);
 		}
 		this.direction = direction;
 	}
@@ -102,7 +102,7 @@ public class FunctionalComponent extends ComponentInstance {
 	/**
 	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
@@ -127,7 +127,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * then adds to the list of MapsTo instances owned by this component.
 	 *
 	 * @return the created MapsTo instance.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 	MapsTo createMapsTo(URI identity, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
@@ -150,10 +150,10 @@ public class FunctionalComponent extends ComponentInstance {
 	 * It then calls {@link #createMapsTo(String, RefinementType, URI, URI)} to create
 	 * a MapsTo instance.
 	 *
-	 * @param displayId
-	 * @param refinement
-	 * @param localId
-	 * @param remoteId
+	 * @param displayId The displayId identifier for this object
+	 * @param refinement Specify the relationship between its local and remote ComponentInstance objects using one of the REQUIRED refinement URIs.
+	 * @param localId refer to the ComponentInstance contained by the “higher level” ComponentDefinition or ModuleDefinition
+	 * @param remoteId refer to the ComponentInstance contained by the “lower level” ComponentDefinition or ModuleDefinition
 	 * @return a MapsTo instance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the SBOLDocument instance already completely
@@ -195,12 +195,12 @@ public class FunctionalComponent extends ComponentInstance {
 	 * URI prefix for this SBOLDocument instance, and the given {@code displayId}
 	 * and this object's version.
 	 *
-	 * @param displayId The displayId identifier for this SequenceAnnotation
+	 * @param displayId The displayId identifier for this object
 	 * @param refinement Specify the relationship between its local and remote ComponentInstance objects using one of the REQUIRED refinement URIs.
 	 * @param local refer to the ComponentInstance contained by the “higher level” ComponentDefinition or ModuleDefinition
 	 * @param remote refer to the ComponentInstance contained by the “lower level” ComponentDefinition or ModuleDefinition
 	 * @return a MapsTo instance
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -216,9 +216,12 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Adds the specified instance to the list of references.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
+		mapsTo.setSBOLDocument(this.sbolDocument);
+		mapsTo.setModuleDefinition(moduleDefinition);
+		mapsTo.setComponentInstance(this);
 		if (sbolDocument != null) {
 			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
 				//throw new SBOLValidationException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
@@ -228,7 +231,7 @@ public class FunctionalComponent extends ComponentInstance {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (getDefinition().getComponent(mapsTo.getRemoteURI())==null) {
 				//throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' does not exist.");
-				throw new SBOLValidationException("sbol-10809", mapsTo);
+				throw new SBOLValidationException("sbol-10808", mapsTo);
 			}
 			if (getDefinition().getComponent(mapsTo.getRemoteURI()).getAccess().equals(AccessType.PRIVATE)) {
 				//throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' is private.");
@@ -242,9 +245,6 @@ public class FunctionalComponent extends ComponentInstance {
 			}
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
-		mapsTo.setSBOLDocument(this.sbolDocument);
-		mapsTo.setModuleDefinition(moduleDefinition);
-		mapsTo.setComponentInstance(this);
 	}
 
 	/**
@@ -269,7 +269,7 @@ public class FunctionalComponent extends ComponentInstance {
 	/**
 	 * Returns the MapsTo instance owned by this object that matches the given display ID.
 	 *
-	 * @param displayId The displayId identifier for this SequenceAnnotation
+	 * @param displayId The displayId identifier for this object
 	 * @return the MapsTo instance owned by this object that matches the given display ID
 	 */
 	public MapsTo getMapsTo(String displayId) {
@@ -320,7 +320,7 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 	void setMapsTos(Set<MapsTo> mapsTos) throws SBOLValidationException {
 		clearMapsTos();
@@ -339,8 +339,15 @@ public class FunctionalComponent extends ComponentInstance {
 
 	@Override
 	public String toString() {
-		return "FunctionalComponent [direction=" + direction + ", mapsTos=" + mapsTos
-				+ ", definition=" + definition + ", identity=" + identity + ", displayId="
-				+ displayId + ", name=" + name + ", description=" + description + "]";
+		return "FunctionalComponent ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", access=" + this.getAccess()
+				+ ", direction=" + direction 
+				+ ", definition=" + definition 
+				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
+				+ "]";
 	}
 }

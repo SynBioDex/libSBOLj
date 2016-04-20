@@ -5,11 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-
-import uk.ac.ncl.intbio.core.io.CoreIoException;
-
 public class SBOLGenerateFile extends SBOLAbstractTests {
 
 	@Override
@@ -35,7 +30,7 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 	//		}
 	//	}
 
-	public static void writeRdfFile(SBOLDocument document, String fileName) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public static void writeRdfFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
 			SBOLWriter.write(document, new File(fileName));
@@ -44,7 +39,7 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 		}
 	}
 
-	public static void writeJsonFile(SBOLDocument document, String fileName) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public static void writeJsonFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
 			SBOLWriter.write(document, new File(fileName), SBOLReader.JSON);
@@ -53,7 +48,7 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 		}
 	}
 
-	public static void writeTurtleFile(SBOLDocument document, String fileName) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public static void writeTurtleFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
 			SBOLWriter.write(document, new File(fileName), SBOLReader.TURTLE);

@@ -145,9 +145,9 @@ public class SequenceOntology {
 		String stanzaURIstr = stanzaURI.toString().trim();
 		if (!stanzaURIstr.startsWith(URI_PREFIX)) {
 			try {
-				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
+				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -171,9 +171,9 @@ public class SequenceOntology {
 		}
 		if (IdList.isEmpty()) {
 			try {
-				throw new SBOLValidationException("Illegal name " + stanzaName + ". It does not exit.");
+				throw new IllegalArgumentException("Illegal name " + stanzaName + ". It does not exist.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -191,9 +191,9 @@ public class SequenceOntology {
 		String oboURIstr = stanzaURI.toString().trim();
 		if (!oboURIstr.startsWith(URI_PREFIX)) {
 			try {
-				throw new SBOLValidationException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -202,9 +202,9 @@ public class SequenceOntology {
 		OBOStanza oboStanza = sequenceOntology.getStanza(id);
 		if (oboStanza == null) {
 			try {
-				throw new SBOLValidationException("ID " + id + " does not exist.");
+				throw new IllegalArgumentException("ID " + id + " does not exist.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -222,9 +222,9 @@ public class SequenceOntology {
 		OBOStanza oboStanza = sequenceOntology.getStanza(stanzaId);
 		if (oboStanza == null) {
 			try {
-				throw new SBOLValidationException("Illegal ID " + stanzaId + " does not exist.");
+				throw new IllegalArgumentException("Illegal ID " + stanzaId + " does not exist.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -244,8 +244,7 @@ public class SequenceOntology {
 	}
 	
 	/** 
-	 * Creates a new URI from the Sequence Ontology namespace with the given ID. For example, the function call
-	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
+	 * Creates a new URI from the Sequence Ontology namespace with the given ID.
 	 * @param stanzaId
 	 * @return the created URI
 	 */
@@ -254,9 +253,9 @@ public class SequenceOntology {
 		OBOStanza oboStanza = sequenceOntology.getStanza(stanzaId.trim());
 		if (oboStanza == null) {
 			try {
-				throw new SBOLValidationException("ID " + stanzaId + " does not exist.");
+				throw new IllegalArgumentException("ID " + stanzaId + " does not exist.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
@@ -274,21 +273,33 @@ public class SequenceOntology {
 		OBOStanza stanza2 = sequenceOntology.getStanza(Id2);
 		if (stanza1 == null) {
 			try {
-				throw new SBOLValidationException("Illegal ID: " + Id1 + ". No match was found.");
+				throw new IllegalArgumentException("Illegal ID: " + Id1 + ". No match was found.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return false;
 			}
 		}
 		if (stanza2 == null) {
 			try {
-				throw new SBOLValidationException("Illegal ID: " + Id2 + ". No match was found.");
+				throw new IllegalArgumentException("Illegal ID: " + Id2 + ". No match was found.");
 			}
-			catch (SBOLValidationException e) {
+			catch (IllegalArgumentException e) {
 				return false;
 			}
 		}
 		return sequenceOntology.isDescendantOf(stanza1, stanza2);
+	}
+	
+	/**
+	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
+	 * @param childURI
+	 * @param parentURI
+	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
+	 */
+	public final boolean isDescendantOf(URI childURI, URI parentURI) {
+		String childId = getId(childURI);
+		String parentId = getId(parentURI);
+		return isDescendantOf(childId,parentId);
 	}
 
 	/**
@@ -383,5 +394,16 @@ public class SequenceOntology {
 	 * A region that is engineered (<a href="http://identifiers.org/so/SO:0000804">SO:0000804</a>).
 	 */
 	public static final URI ENGINEERED_REGION = type("SO:0000804");
+	
+	/**
+	 * Any extent of continuous biological sequence. (<a href="http://identifiers.org/so/SO:0000110">SO:0000110</a>).
+	 */
+	public static final URI SEQUENCE_FEATURE = type("SO:0000110");
+	
+	/**
+	 * A small RNA oligo, typically about 20 bases, that guides the cas nuclease to a target DNA sequence in the 
+	 * CRISPR/cas mutagenesis method. (<a href="http://identifiers.org/so/SO:0001998">SO:0001998</a>).
+	 */
+	public static final URI SGRNA = type("SO:0001998");
 
 }

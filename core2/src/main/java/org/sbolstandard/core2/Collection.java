@@ -1,8 +1,6 @@
 package org.sbolstandard.core2;
 
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
-import static org.sbolstandard.core2.URIcompliance.validateIdVersion;
 
 import java.net.URI;
 import java.util.HashSet;
@@ -27,38 +25,6 @@ public class Collection extends TopLevel{
 		this.members = new HashSet<>();
 	}
 
-	/**
-	 * Creates a Collection instance with the given arguments.
-	 * <p>
-	 * If the given {@code prefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the given {@code prefix}, {@code displayId}, and {@code version} are not
-	 * {@code null} and valid.
-	 * <p>
-	 * A Collection instance is created with a compliant URI. This URI is composed from
-	 * the given {@code prefix}, the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param prefix
-	 * @param displayId
-	 * @param version
-	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 */
-	public Collection(String prefix,String displayId,String version) throws SBOLValidationException {
-		this(URIcompliance.createCompliantURI(prefix, displayId, version));
-		prefix = URIcompliance.checkURIprefix(prefix);
-		validateIdVersion(displayId, version);
-		setDisplayId(displayId);
-		setPersistentIdentity(createCompliantURI(prefix, displayId, ""));
-		setVersion(version);
-	}
-
 	private Collection(Collection collection) throws SBOLValidationException {
 		//super(collection.getIdentity());
 		super(collection);
@@ -77,7 +43,7 @@ public class Collection extends TopLevel{
 	 * @param memberURI References to a TopLevel object
 	 * @return {@code true} if the matching member reference has been added successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException violates validation rule
 	 */
 	public boolean addMember(URI memberURI) throws SBOLValidationException {
 		if (sbolDocument != null) sbolDocument.checkReadOnly();
@@ -101,7 +67,7 @@ public class Collection extends TopLevel{
 	 * @param memberURI the reference to a TopLevel object to be removed from the SBOL Document.
 	 * @return {@code true} if the matching member reference is removed successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException violates validation rule
 	 */
 	public boolean removeMember(URI memberURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -118,7 +84,7 @@ public class Collection extends TopLevel{
 	 * is allowed to be edited.
 	 *
 	 * @param members A set of URI references to zero or more TopLevel objects within the SBOL Document.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException violates validation rule
 	 */
 	public void setMembers(Set<URI> members) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -241,14 +207,19 @@ public class Collection extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected boolean checkDescendantsURIcompliance() {
-		return isTopLevelURIformCompliant(this.getIdentity());
+	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	@Override
 	public String toString() {
-		return "Collection [members=" + members + ", identity=" + identity + ", displayId="
-				+ displayId + ", name=" + name + ", description=" + description + "]";
+		return "Collection ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ (members.size()>0?", members=" + members:"")  
+				+ "]";
 	}
 
 }

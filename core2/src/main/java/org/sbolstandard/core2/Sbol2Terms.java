@@ -15,10 +15,15 @@ class Sbol2Terms
 	/**
 	 * The namespace binding for SBOL2.0
 	 */
+	public static final NamespaceBinding rdf = NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf");
 	public static final NamespaceBinding sbol2 = NamespaceBinding("http://sbols.org/v2#", "sbol");
 	public static final NamespaceBinding dc = NamespaceBinding("http://purl.org/dc/terms/", "dcterms");
 	public static final NamespaceBinding prov = NamespaceBinding("http://www.w3.org/ns/prov#", "prov");
 
+	static final class Description {
+		static final QName Description = rdf.withLocalPart("Description");
+		static final QName type = rdf.withLocalPart("type");
+	}
 
 	/**
 	 * A group of qualified terms for Annotation related SBOL objects
@@ -104,7 +109,7 @@ class Sbol2Terms
 	 */
 	static final class Identified {
 		static final QName Identified 	   	 = sbol2.withLocalPart("Identified");
-		static final QName identity   	   	 = sbol2.withLocalPart("identity");
+		//static final QName identity   	   	 = sbol2.withLocalPart("identity");
 		static final QName persistentIdentity = sbol2.withLocalPart("persistentIdentity");
 		static final QName version   	 = sbol2.withLocalPart("version");
 		static final QName timeStamp   	     = sbol2.withLocalPart("timeStamp");

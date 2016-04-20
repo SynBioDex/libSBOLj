@@ -47,6 +47,14 @@ public class SBOLValidationRule {
 		this.description = description;
 	}
 	
+	public void setReference(String ref) {
+		this.reference = ref;
+	}
+
+	public String getReference() {
+		return reference;
+	}
+	
 	@Override
 	public String toString() {
 		return "model class: " + ruleClass + "\n" 
@@ -74,10 +82,6 @@ public class SBOLValidationRule {
 		}
 	}
 
-	public void setReference(String ref) {
-		this.reference = ref;
-	}
-
 	public void setField(String field, String strBuff) {
 		if (field.equals("id")) {
 			//currentRule.setId(strBuff);
@@ -92,5 +96,6 @@ public class SBOLValidationRule {
 			//currentRule.setReference(strBuff);
 		}
 	}
+	
 	
 }

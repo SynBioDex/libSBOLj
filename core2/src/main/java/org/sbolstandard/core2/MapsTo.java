@@ -118,15 +118,15 @@ public class MapsTo extends Identified{
 	public void setLocal(URI local) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (local==null) {
-			throw new SBOLValidationException("MapsTo "+this.getIdentity()+" must specify a local component.");
+			throw new SBOLValidationException("sbol-10802", this);
 		}
 		if (moduleDefinition!=null) {
 			if (moduleDefinition.getFunctionalComponent(local)==null) {
-				throw new SBOLValidationException("Functional Component '" + local + "' does not exist.");
+				throw new SBOLValidationException("sbol-10804",this);
 			}
 		} else if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(local)==null) {
-				throw new SBOLValidationException("Component '" + local + "' does not exist.");
+				throw new SBOLValidationException("sbol-10803",this);
 			}
 		}
 		this.local = local;
@@ -198,24 +198,24 @@ public class MapsTo extends Identified{
 	public void setRemote(URI remote) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (remote==null) {
-			throw new SBOLValidationException("MapsTo "+this.getIdentity()+" must specify a remote component.");
+			throw new SBOLValidationException("sbol-10805", this);
 		}
 		if (module!=null) {
 			if (module.getDefinition()!=null) {
 				if (module.getDefinition().getFunctionalComponent(remote)==null) {
-					throw new SBOLValidationException("Functional Component '" + remote + "' does not exist.");
+					throw new SBOLValidationException("sbol-10809",this);
 				}
 				if (module.getDefinition().getFunctionalComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
-					throw new SBOLValidationException("Functional Component '" + remote + "' is private.");
+					throw new SBOLValidationException("sbol-10807",this);
 				}
 			}
 		} else if (componentInstance!=null) {
 			if (componentInstance.getDefinition()!=null) {
 				if (componentInstance.getDefinition().getComponent(remote)==null) {
-					throw new SBOLValidationException("Component '" + remote + "' does not exist.");
+					throw new SBOLValidationException("sbol-10808",this);
 				}
 				if (componentInstance.getDefinition().getComponent(remote).getAccess().equals(AccessType.PRIVATE)) {
-					throw new SBOLValidationException("Component '" + remote + "' is private.");
+					throw new SBOLValidationException("sbol-10807",this);
 				}
 			}
 		}
@@ -317,9 +317,15 @@ public class MapsTo extends Identified{
 
 	@Override
 	public String toString() {
-		return "MapsTo [refinement=" + refinement + ", local=" + local + ", remote=" + remote
-				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "MapsTo ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", refinement=" + refinement 
+				+ ", local=" + local 
+				+ ", remote=" + remote
+				+ "]";
 	}
 
 }

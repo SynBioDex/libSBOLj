@@ -50,7 +50,8 @@ public class Cut extends Location{
 	public void setAt(int at) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (at<0) {
-			throw new SBOLValidationException("Cut "+this.getIdentity()+" must have a value greater than or equal to zero.");
+			//throw new SBOLValidationException("Cut "+this.getIdentity()+" must have a value greater than or equal to zero.");
+			throw new SBOLValidationException("sbol-11202", this);
 		}
 		this.at = at;
 	}
@@ -85,8 +86,13 @@ public class Cut extends Location{
 
 	@Override
 	public String toString() {
-		return "Cut [at=" + at + ", orientation=" + orientation + ", identity=" + identity
-				+ ", displayId=" + displayId + ", name=" + name + ", description=" + description
+		return "Cut ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", at=" + at 
+				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
 				+ "]";
 	}
 

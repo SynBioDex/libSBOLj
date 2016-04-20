@@ -82,11 +82,11 @@ public class Module extends Identified {
 	public void setDefinition(URI definitionURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (definitionURI==null) {
-			throw new SBOLValidationException("Module "+this.getIdentity()+" must have a definition.");
+			throw new SBOLValidationException("sbol-11702",this);
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getModuleDefinition(definitionURI)==null) {
-				throw new SBOLValidationException("Module definition '" + definition + "' does not exist.");
+				throw new SBOLValidationException("sbol-11703",this);
 			}
 		}
 		this.definition = definitionURI;
@@ -110,7 +110,7 @@ public class Module extends Identified {
 	 * @param local The reference URI local object for this MapsTo object
 	 * @param remote The reference URI remote object for this MapsTo object
 	 * @return new MapsTo object
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 	MapsTo createMapsTo(URI identity, RefinementType refinement,
 			URI local, URI remote) throws SBOLValidationException {
@@ -211,7 +211,7 @@ public class Module extends Identified {
 
 	/**
 	 * @param mapsTo
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		mapsTo.setSBOLDocument(this.sbolDocument);
@@ -238,6 +238,9 @@ public class Module extends Identified {
 					throw new SBOLValidationException("sbol-10811", mapsTo);
 				}
 			}
+		}
+		if (moduleDefinition!=null) {
+			SBOLValidate.checkModuleDefinitionMapsTos(moduleDefinition, mapsTo);
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
 	}
@@ -277,8 +280,8 @@ public class Module extends Identified {
 	/**
 	 * Returns the MapsTo instance owned by this Module object that matches the given {@code displayId}
 	 *
-	 * @param referenceURI
-	 * @return the matching MapsTo instnace URI
+	 * @param referenceURI The MapsTo URI object
+	 * @return the matching MapsTo instance URI
 	 */
 	public MapsTo getMapsTo(URI referenceURI) {
 		return mapsTos.get(referenceURI);
@@ -313,7 +316,7 @@ public class Module extends Identified {
 
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 	void setMapsTos(Set<MapsTo> mappings) throws SBOLValidationException {
 		clearMapsTos();
@@ -364,7 +367,7 @@ public class Module extends Identified {
 	/**
 	 * Assume this Module object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ModuleDefinition#copy(String, String, String)}.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
@@ -394,9 +397,14 @@ public class Module extends Identified {
 
 	@Override
 	public String toString() {
-		return "Module [mapsTos=" + mapsTos + ", definition=" + definition + ", identity="
-				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
-				+ description + "]";
+		return "Module ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", definition=" + definition 
+				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
+				+ "]";
 	}
 
 }

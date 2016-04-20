@@ -10,10 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-
-import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 public class writeTester {
 
@@ -24,11 +20,28 @@ public class writeTester {
 	/**
 	 * Top level types
 	 * @throws SBOLValidationException 
+	 * @throws SBOLConversionException 
+	 * @throws CoreIoException 
+	 * @throws XMLStreamException 
 	 *
 	 */
 
-	public static void main( String[] args ) throws FactoryConfigurationError, SBOLValidationException
+	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException
 	{
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix("http://www.foo.org");
+		Sequence seq = document.createSequence("displayID", "ACGT", org.sbolstandard.core2.Sequence.IUPAC_DNA);
+		document.addNamespace(URI.create("http://myannotation.org/"), "annot");
+		Annotation an = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), "1.0");
+		Annotation an2 = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), "foo");
+		List<Annotation> annos = new ArrayList<Annotation>();
+		annos.add(an);
+		annos.add(an2);
+		seq.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), 
+				new QName("http://myannotation.org", "thisNested", "annot"), URI.create("http://foo"), annos);
+		//SBOLWriter.write(document, (System.out));
+
+
 		get_myParts(sbolDocument);
 		//ComponentDefinition cd = 
 		sbolDocument.getComponentDefinition("ptetlacI", "1.0");
@@ -40,6 +53,7 @@ public class writeTester {
 				System.out.println(error);
 			}
 		}
+		SBOLWriter.write(sbolDocument, (System.out), SBOLReader.RDFV1);
 		//SBOLDocument doc = new SBOLDocument();
 		//doc.createCollection("http://foo.org", "myPart", "");
 		//doc.createCollection("http://foo.org/myPart", "myPart2", "");
@@ -54,14 +68,9 @@ public class writeTester {
 			SBOLWriter.write(SBOL2Doc_test,(System.out));
 			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test,true);
 			SBOLWriter.write(SBOL2Doc_test,System.out);
-		} catch (XMLStreamException e) {
+		} catch (SBOLConversionException e) {
 			e.printStackTrace();
-		} catch (FactoryConfigurationError e) {
-			e.printStackTrace();
-		} catch (CoreIoException e) {
-			e.printStackTrace();
-		}
-		catch (SBOLValidationException e) {
+		} catch (SBOLValidationException e) {
 			e.printStackTrace();
 		}
 	}
@@ -341,6 +350,7 @@ public class writeTester {
 		//get_L(cd);
 		get_t_structAnnotate(cd);
 		get_l_structAnnotate(cd);
+		//cd.createSequenceConstraint("consPL", RestrictionType.PRECEDES, "ptet", "lacICDS");
 		return cd;
 	}
 
@@ -444,7 +454,7 @@ public class writeTester {
 		Model m = createModelData(SBOL2Doc_test,
 				getData("ToggleModel",version),
 				getPropertyURI("ToggleModel_source"), 
-				Model.SBML, 
+				EDAMOntology.SBML, 
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 		return m;
 	}
@@ -519,13 +529,13 @@ public class writeTester {
 		return collection;
 	}
 
-	private static Annotation createAnnotation(QName relation, String literal) throws SBOLValidationException
+	private static Annotation createAnnotation(QName relation, String literal) 
 	{
 		return new Annotation(NamedProperty(relation, literal));
 
 	}
 
-	private static Annotation createAnnotation(QName relation, URI value) throws SBOLValidationException
+	private static Annotation createAnnotation(QName relation, URI value) 
 	{
 		return new Annotation(NamedProperty(relation, value));
 
@@ -659,8 +669,7 @@ public class writeTester {
 			String displayId, Set<URI> roles, String fi) throws SBOLValidationException
 	{
 		if (i.getParticipation(displayId)==null) {
-			Participation p = i.createParticipation(displayId, fi);
-			p.setRoles(roles);
+			i.createParticipation(displayId, fi, roles);
 		}
 	}
 

@@ -45,14 +45,15 @@ public abstract class ComponentInstance extends Identified {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param access
+	 * @param access Sets the access property of this object to the given one.
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code access} argument is {@code null}
 	 */
 	public void setAccess(AccessType access) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (access==null) {
-			throw new SBOLValidationException("Not a valid access type.");
+			//throw new SBOLValidationException("Not a valid access type.");
+			throw new SBOLValidationException("sbol-10607", this);
 		}
 		this.access = access;
 	}
@@ -84,7 +85,7 @@ public abstract class ComponentInstance extends Identified {
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param definition
+	 * @param definition Sets the definition property of this object to the given one
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code definition} argument is {@code null}
 	 * @throws SBOLValidationException if the associated SBOLDocument instance already completely specifies
@@ -94,11 +95,11 @@ public abstract class ComponentInstance extends Identified {
 	public void setDefinition(URI definition) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (definition==null) {
-			throw new SBOLValidationException("Component "+this.getIdentity()+" must have a definition.");
+			throw new SBOLValidationException("sbol-10602",this);
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(definition)==null) {
-				throw new SBOLValidationException("Component definition '" + definition + "' does not exist.");
+				throw new SBOLValidationException("sbol-10604",this);
 			}
 		}
 		this.definition = definition;

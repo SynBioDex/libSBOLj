@@ -48,7 +48,7 @@ public class Component extends ComponentInstance{
 	/**
 	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
@@ -73,7 +73,7 @@ public class Component extends ComponentInstance{
 	 * then adds to the list of MapsTo instances owned by this component.
 	 *
 	 * @return the created MapsTo instance.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 	MapsTo createMapsTo(URI identity, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
@@ -96,11 +96,11 @@ public class Component extends ComponentInstance{
 	 * It then calls {@link #createMapsTo(String, RefinementType, URI, URI)} to create
 	 * a MapsTo instance.
 	 *
-	 * @param displayId
-	 * @param refinement
-	 * @param localId
-	 * @param remoteId
-	 * @return a MapsTo instance
+	 * @param displayId Intermediate between name and identity that is machine-readable, but more human-readable than the full URI of an identity
+	 * @param refinement Specify the relationship between the local and remote ComponentInstance objects.
+	 * @param localId refers to the second "higher level" ComponentInstance
+	 * @param remoteId refers to the first "lower level" ComponentInstance
+	 * @return a MapsTo instance that specifies the identity relationship of two ComponentInstance
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code local} argument is not found in the list
@@ -141,12 +141,15 @@ public class Component extends ComponentInstance{
 	 * URI prefix for this SBOLDocument instance, and the given {@code displayId}
 	 * and this object's version.
 	 *
-	 * @param displayId ntermediate between name and identity that is machine-readable, but more human-readable than the full URI of an identity
+	 * @param displayId Intermediate between name and identity that is machine-readable, but more human-readable than the full URI of an identity
 	 * @param refinement Specify the relationship between the local and remote ComponentInstance objects.
 	 * @param local refers to the second "higher level" ComponentInstance
 	 * @param remote refers to the first "lower level" ComponentInstance
 	 * @return a MapsTo instance that specifies the identity relationship of two ComponentInstance
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the SBOLDocument instance already completely
+	 * specifies all URIs and the given {@code remote} URI refers to a FunctionalComponent
+	 * with {@code private} access type that is owned by the ModuleDefinition instance that
+	 * this Module object refers to.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -162,7 +165,7 @@ public class Component extends ComponentInstance{
 
 	/**
 	 * Adds the specified instance to the list of references.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		mapsTo.setSBOLDocument(this.sbolDocument);
@@ -189,6 +192,9 @@ public class Component extends ComponentInstance{
 					throw new SBOLValidationException("sbol-10811", mapsTo);
 				}
 			}
+		}
+		if (componentDefinition!=null) {
+			SBOLValidate.checkComponentDefinitionMapsTos(componentDefinition, mapsTo);
 		}
 		addChildSafely(mapsTo, mapsTos, "mapsTo");
 	}
@@ -266,7 +272,7 @@ public class Component extends ComponentInstance{
 
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException
 	 */
 
 	void setMapsTos(Set<MapsTo> mapsTos) throws SBOLValidationException {
@@ -286,8 +292,14 @@ public class Component extends ComponentInstance{
 
 	@Override
 	public String toString() {
-		return "Component [mapsTos=" + mapsTos + ", definition=" + definition + ", identity="
-				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
-				+ description + "]";
+		return "Component ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", access=" + this.getAccess()
+				+ ", definition=" + definition 
+				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
+				+ "]";
 	}
 }

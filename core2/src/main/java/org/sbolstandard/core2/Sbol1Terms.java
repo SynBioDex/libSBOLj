@@ -15,7 +15,7 @@ class Sbol1Terms
 	/**
 	 * The namespacebinding for SBOL1.0
 	 */
-	static final NamespaceBinding sbol1 = NamespaceBinding("http://sbols.org/v1#", "sbol");
+	static final NamespaceBinding sbol1 = NamespaceBinding("http://sbols.org/v1#", "");
 	static final NamespaceBinding rdf = NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf");
 
 	/**

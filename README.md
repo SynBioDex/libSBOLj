@@ -51,9 +51,15 @@ The command line interface can also convert GenBank files into SBOL 2.0 files us
 java -jar libSBOLj-<version>-withDependencies.jar -g <inFile> -o <outFile> -p <URIprefix> -v <version>
 ```
 
-Finally, it can convert a specifed top-level ComponentDefinition within an SBOL 2.0 file into a GenBank file using the following command: 
+It can convert a specifed top-level ComponentDefinition within an SBOL 2.0 file into a GenBank file using the following command: 
 ```
 java -jar libSBOLj-<version>-withDependencies.jar <inFile> -c <ComponentDefinitionURI> -o <outFile>
+```
+Note that if no top-level ComponentDefinition is specified, that it will attempt to find a root ComponentDefinition.  If it finds a single root, it will convert that, otherwise it will give an error message.
+
+Finally, it can be used to compare the equality of the contents of two SBOL files using the command below:
+```
+java -jar libSBOLj-<version>-withDependencies.jar <firstSBOLFile> -e <secondSBOLFile>
 ```
 
 ## Using the latest libSBOLj SNAPSHOT

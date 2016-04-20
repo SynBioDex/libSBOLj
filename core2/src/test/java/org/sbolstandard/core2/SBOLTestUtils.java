@@ -12,11 +12,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
-import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 /**
  * Construction of TopLevel objects along with any of its' sub-parts.
@@ -140,15 +137,15 @@ public class SBOLTestUtils {
 				"LacI_pLacI",
 				new HashSet<URI>(Arrays.asList(SystemsBiologyOntology.TRANSCRIPTION))); //TODO: is transcription a transcriptionalRepression?
 
-		Participation participation=interaction.createParticipation(
+		interaction.createParticipation(
 				promoter.getDisplayId(),
-				laciInverterModuleDef_promoter.getIdentity());
-		participation.addRole(SystemsBiologyOntology.PROMOTER);
+				laciInverterModuleDef_promoter.getIdentity(),
+				SystemsBiologyOntology.PROMOTER);
 
-		Participation participation2=interaction.createParticipation(
+		interaction.createParticipation(
 				TF.getDisplayId(),
-				laciInverterModuleDef_TF.getIdentity());
-		participation2.addRole(SystemsBiologyOntology.INHIBITOR);
+				laciInverterModuleDef_TF.getIdentity(),
+				SystemsBiologyOntology.INHIBITOR);
 	}
 
 	public static ComponentDefinition createComponenDefinition(SBOLDocument document,QName identifier,String name, URI type, URI role,String description) throws SBOLValidationException
@@ -234,7 +231,7 @@ public class SBOLTestUtils {
 
 
 	public static SBOLDocument writeAndRead(SBOLDocument doc, boolean compliant)
-			throws XMLStreamException, FactoryConfigurationError, CoreIoException, SBOLValidationException
+			throws SBOLValidationException, SBOLConversionException
 	{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		SBOLWriter.write(doc, out);
