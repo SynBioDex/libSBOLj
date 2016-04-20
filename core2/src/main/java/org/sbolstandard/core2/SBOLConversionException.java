@@ -7,12 +7,12 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * @author Chris Myers
  * @author Zhen Zhang
  * @author Tramy Nguyen
  * @author Nicholas Roehner
  * @author Matthew Pocock
  * @author Goksel Misirli
- * @author Chris Myers
  * @version 2.0-beta
  */
 
