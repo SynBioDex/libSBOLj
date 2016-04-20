@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
 
 import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.ComponentDefinition;
@@ -21,6 +19,7 @@ import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.RestrictionType;
+import org.sbolstandard.core2.SBOLConversionException;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidate;
 import org.sbolstandard.core2.SBOLValidationException;
@@ -29,8 +28,6 @@ import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceOntology;
 import org.sbolstandard.core2.SystemsBiologyOntology;
-
-import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 /*
  * CRISPR_Repression Model Example
@@ -42,7 +39,7 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 public class RepressionModel {
 
-	public static void main(String[] args) throws URISyntaxException, SBOLValidationException {
+	public static void main(String[] args) throws URISyntaxException, SBOLValidationException, SBOLConversionException, IOException {
 		
 		SBOLDocument doc = new SBOLDocument();
 
@@ -394,24 +391,13 @@ public class RepressionModel {
 			return;
 		}
 		
-		try {
-			SBOLWriter.write(doc,(System.out));
-		} catch (XMLStreamException | FactoryConfigurationError
-				| CoreIoException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			SBOLWriter.write(doc, "RepressionModel.rdf");
-		} catch (XMLStreamException | FactoryConfigurationError
-				| CoreIoException | IOException e) {
-			e.printStackTrace();
-		}
+		SBOLWriter.write(doc,(System.out));
+		SBOLWriter.write(doc, "RepressionModel.rdf");
 				
 	}
 	
 	public static SBOLDocument writeThenRead(SBOLDocument doc)
-	               throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
+	               throws SBOLValidationException, IOException, SBOLConversionException
 	  {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
 	    SBOLWriter.write(doc, out);

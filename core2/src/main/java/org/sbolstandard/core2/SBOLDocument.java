@@ -27,11 +27,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
-import uk.ac.ncl.intbio.core.io.CoreIoException;
 
 /**
  * @author Zhen Zhang
@@ -104,15 +101,7 @@ public class SBOLDocument {
 	 *
 	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @return the created ModuleDefinition instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created ModuleDefinition instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created ModuleDefinition instance's identity URI
-	 * exists in this SBOLDocument object's list of ModuleDefinition instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId) throws SBOLValidationException {
 		return createModuleDefinition(defaultURIprefix,displayId,"");
@@ -144,15 +133,7 @@ public class SBOLDocument {
 	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @param version The given version for this object
 	 * @return the created ModuleDefinition instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created ModuleDefinition instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created ModuleDefinition instance's identity URI
-	 * exists in this SBOLDocument object's list of ModuleDefinition instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId, String version) throws SBOLValidationException {
 		return createModuleDefinition(defaultURIprefix,displayId,version);
@@ -181,16 +162,7 @@ public class SBOLDocument {
 	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @param version The given version for this object
 	 * @return the created ModuleDefinition instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created ModuleDefinition instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created ModuleDefinition instance's identity URI
-	 * exists in this SBOLDocument object's list of ModuleDefinition instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public ModuleDefinition createModuleDefinition(String URIprefix,String displayId, String version) throws SBOLValidationException {
 		checkReadOnly();
@@ -217,10 +189,7 @@ public class SBOLDocument {
 	 * Appends the specified {@code moduleDefinition} object to the end of the list of module definitions.
 	 *
 	 * @param moduleDefinition the ModuleDefinition to be added
-	 * @throws SBOLValidationException if the created ModuleDefinition instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created ModuleDefinition instance's identity URI
-	 * exists in this SBOLDocument object's list of ModuleDefinition instances.
+	 * @throws SBOLValidationException if an SBOL valiation rule is violated.
 	 */
 	void addModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
 		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition",
@@ -256,12 +225,7 @@ public class SBOLDocument {
 	 *
 	 * @param moduleDefinition The moduleDefinition to be removed
 	 * @return {@code true} if the given {@code moduleDefinition} is successfully removed, {@code false} otherwise.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and one of its ModuleDefinition instances has a Module instance that refers to the given
-	 * {@code moduleDefinition} (see {@link Module#getDefinitionURI()}).
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and the given {@code moduleDefinition} is referenced by any of its Collection instances as a member.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public boolean removeModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
 		checkReadOnly();
@@ -324,7 +288,7 @@ public class SBOLDocument {
 	/**
 	 * Removes all entries in the list of ModuleDefinition instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public void clearModuleDefinitions() throws SBOLValidationException {
 		checkReadOnly();
@@ -336,7 +300,7 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list <code>modules</code>, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException 
 	 */
 	void setModuleDefinitions(Set<ModuleDefinition> moduleDefinitions) throws SBOLValidationException {
 		clearModuleDefinitions();
@@ -348,7 +312,7 @@ public class SBOLDocument {
 	/**
 	 * Create a new {@link Collection} object.
 	 * @return {@link Collection} object.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException 
 	 */
 	Collection createCollection(URI identity) throws SBOLValidationException {
 		Collection newCollection = new Collection(identity);
@@ -381,16 +345,7 @@ public class SBOLDocument {
 	 *
 	 * @param displayId an intermediate between name and identity that is machine-readable
 	 * @return the created Collection instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created Collection instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Collection instance's identity URI
-	 * exists in this SBOLDocument object's list of Collection instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public Collection createCollection(String displayId) throws SBOLValidationException {
 		return createCollection(defaultURIprefix,displayId,"");
@@ -422,16 +377,7 @@ public class SBOLDocument {
 	 * @param displayId an intermediate between name and identity that is machine-readable
 	 * @param version the version for this object
 	 * @return the created Collection instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created Collection instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Collection instance's identity URI
-	 * exists in this SBOLDocument object's list of Collection instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public Collection createCollection(String displayId, String version) throws SBOLValidationException {
 		return createCollection(defaultURIprefix,displayId,version);
@@ -461,16 +407,7 @@ public class SBOLDocument {
 	 * @param displayId an intermediate between name and identity that is machine-readable
 	 * @param version the version for this object
 	 * @return the created Collection instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the defaultURIprefix is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created Collection instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Collection instance's identity URI
-	 * exists in this SBOLDocument object's list of Collection instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public Collection createCollection(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		checkReadOnly();
@@ -486,10 +423,7 @@ public class SBOLDocument {
 	 * Appends the specified {@code collection} object to the end of the list of collections.
 	 *
 	 * @param collection the collection object to be added
-	 * @throws SBOLValidationException if the created Collection instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Collection instance's identity URI
-	 * exists in this SBOLDocument object's list of Collection instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	void addCollection(Collection collection) throws SBOLValidationException {
 		addTopLevel(collection, collections, "collection",
@@ -504,9 +438,7 @@ public class SBOLDocument {
 	 *
 	 * @param collection the given collection object to be removed
 	 * @return {@code true} if the given {@code collection} is successfully removed, {@code false} otherwise.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and the given {@code collection} is referenced by any of its Collection instances as a member.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public boolean removeCollection(Collection collection) throws SBOLValidationException {
 		checkReadOnly();
@@ -561,7 +493,7 @@ public class SBOLDocument {
 	/**
 	 * Removes all entries in the list of Collection instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public void clearCollections() throws SBOLValidationException {
 		checkReadOnly();
@@ -573,7 +505,7 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list <code>collections</code>, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	void setCollections(Set<Collection> collections) throws SBOLValidationException {
 		clearCollections();
@@ -610,15 +542,7 @@ public class SBOLDocument {
 	 * @param language the language in which the model is implemented
 	 * @param framework the framework in which the model is implemented
 	 * @return the created Model instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created Model instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Model instance's identity URI
-	 * exists in this SBOLDocument object's list of Model instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public Model createModel(String displayId, URI source, URI language, URI framework) throws SBOLValidationException {
 		return createModel(defaultURIprefix,displayId,"",source,language,framework);
@@ -653,15 +577,7 @@ public class SBOLDocument {
 	 * @param language the language in which the model is implemented
 	 * @param framework the framework in which the model is implemented
 	 * @return the created Model instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created Model instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Model instance's identity URI
-	 * exists in this SBOLDocument object's list of Model instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public Model createModel(String displayId, String version, URI source, URI language, URI framework) throws SBOLValidationException {
 		return createModel(defaultURIprefix,displayId,version,source,language,framework);
@@ -693,16 +609,7 @@ public class SBOLDocument {
 	 * @param language the language in which the model is implemented
 	 * @param framework the framework in which the model is implemented
 	 * @return the created Model instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created Model instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Model instance's identity URI
-	 * exists in this SBOLDocument object's list of Model instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public Model createModel(String URIprefix, String displayId, String version, URI source, URI language, URI framework) throws SBOLValidationException {
 		checkReadOnly();
@@ -722,7 +629,7 @@ public class SBOLDocument {
 	 * @param language the language in which the model is implemented
 	 * @param framework the framework in which the model is implemented
 	 * @return the new model
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	Model createModel(URI identity, URI source, URI language, URI framework) throws SBOLValidationException {
 		Model newModel = new Model(identity, source, language, framework);
@@ -734,10 +641,7 @@ public class SBOLDocument {
 	 * Appends the specified {@code model} object to the end of the list of models.
 	 *
 	 * @param model The model to be added to the document
-	 * @throws SBOLValidationException if the created Model instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Model instance's identity URI
-	 * exists in this SBOLDocument object's list of Model instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.   
 	 */
 	void addModel(Model model) throws SBOLValidationException {
 		addTopLevel(model, models, "model",
@@ -752,12 +656,7 @@ public class SBOLDocument {
 	 *
 	 * @param model the given model to be removed
 	 * @return {@code true} if the given {@code model} is successfully removed, {@code false} otherwise.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and one of its ModuleDefinition instances refers to the given {@code model}
-	 * (see {@link ModuleDefinition#containsModel(URI)}).
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and the given {@code model} is referenced by any of its Collection instances as a member.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public boolean removeModel(Model model) throws SBOLValidationException {
 		checkReadOnly();
@@ -819,7 +718,7 @@ public class SBOLDocument {
 	/**
 	 * Removes all entries in the list of Model instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public void clearModels() throws SBOLValidationException {
 		checkReadOnly();
@@ -831,7 +730,7 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list <code>models</code>, then appends all of the elements in the specified model to the end of this list.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	void setModels(Set<Model> models) throws SBOLValidationException {
 		clearModels();
@@ -844,7 +743,7 @@ public class SBOLDocument {
 	 * @param identity The unique identifier for this object
 	 * @param types specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the new component definition
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	ComponentDefinition createComponentDefinition(URI identity, Set<URI> types) throws SBOLValidationException {
 		//ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types, roles);
@@ -879,15 +778,7 @@ public class SBOLDocument {
 	 * @param displayId an intermediate between name and identity that is machine-readable
 	 * @param types specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's identity URI
-	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, Set<URI> types) throws SBOLValidationException {
 		return createComponentDefinition(defaultURIprefix,displayId,"",types);
@@ -920,15 +811,7 @@ public class SBOLDocument {
 	 * @param displayId an intermediate between name and identity that is machine-readable
 	 * @param type specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's identity URI
-	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, URI type) throws SBOLValidationException {
 		HashSet<URI> types = new HashSet<URI>();
@@ -963,15 +846,7 @@ public class SBOLDocument {
 	 * @param version The given version for this object
 	 * @param types specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's identity URI
-	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, Set<URI> types) throws SBOLValidationException {
 		return createComponentDefinition(defaultURIprefix,displayId,version,types);
@@ -1004,15 +879,7 @@ public class SBOLDocument {
 	 * @param version The given version for this object
 	 * @param type specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's identity URI
-	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public ComponentDefinition createComponentDefinition(String displayId, String version, URI type) throws SBOLValidationException {
 		HashSet<URI> types = new HashSet<URI>();
@@ -1044,16 +911,7 @@ public class SBOLDocument {
 	 * @param version The given version for this object
 	 * @param types specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's identity URI
-	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, Set<URI> types) throws SBOLValidationException {
 		checkReadOnly();
@@ -1090,16 +948,7 @@ public class SBOLDocument {
 	 * @param version The given version for this object
 	 * @param type specifies the category of biochemical or physical entity using appropriate ontologies
 	 * @return the created ComponentDefinition instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's identity URI
-	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, URI type) throws SBOLValidationException {
 		HashSet<URI> types = new HashSet<URI>();
@@ -1111,10 +960,7 @@ public class SBOLDocument {
 	 * Appends the specified {@code componentDefinition} object to the end of the list of component definitions.
 	 *
 	 * @param componentDefinition The ComponentDefinition to be added
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created ComponentDefinition instance's identity URI
-	 * exists in this SBOLDocument object's list of ComponentDefinition instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	void addComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
 		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition",
@@ -1146,15 +992,7 @@ public class SBOLDocument {
 	 *
 	 * @param componentDefinition The ComponentDefinition to be removed
 	 * @return {@code true} if the given {@code componentDefinition} is successfully removed, {@code false} otherwise.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and the given {@code componentDefinition} is referenced by any of its ComponentDefinition instances.
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and one of its ModuleDefinition instances owns a FunctionalComponent instance that
-	 * refers to the given {@code componentDefinition} as its {@code definition}
-	 * (see {@link FunctionalComponent#getDefinitionURI()}).
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and the given {@code componentDefinition} is referenced by any of its Collection instances as a member.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public boolean removeComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
 		checkReadOnly();
@@ -1241,7 +1079,7 @@ public class SBOLDocument {
 	/**
 	 * Removes all entries in the list of ComponentDefinition instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public void clearComponentDefinitions() throws SBOLValidationException {
 		Object[] valueSetArray = componentDefinitions.values().toArray();
@@ -1252,7 +1090,7 @@ public class SBOLDocument {
 
 	/**
 	 * @param componentDefinitions The given set of ComponentDefinitions to be added
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	void setComponentDefinitions(Set<ComponentDefinition> componentDefinitions) throws SBOLValidationException {
 		checkReadOnly();
@@ -1268,7 +1106,7 @@ public class SBOLDocument {
 	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
 	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
 	 * @return the created Sequence instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	Sequence createSequence(URI identity, String elements, URI encoding) throws SBOLValidationException {
 		Sequence newSequence = new Sequence(identity, elements, encoding);
@@ -1303,15 +1141,7 @@ public class SBOLDocument {
 	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
 	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
 	 * @return the created Sequence instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created Sequence instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Sequence instance's identity URI
-	 * exists in this SBOLDocument object's list of Sequence instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public Sequence createSequence(String displayId, String elements, URI encoding) throws SBOLValidationException {
 		return createSequence(defaultURIprefix,displayId,"",elements,encoding);
@@ -1346,15 +1176,7 @@ public class SBOLDocument {
 	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
 	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
 	 * @return the created Sequence instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created Sequence instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Sequence instance's identity URI
-	 * exists in this SBOLDocument object's list of Sequence instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) throws SBOLValidationException {
 		return createSequence(defaultURIprefix,displayId,version,elements,encoding);
@@ -1385,16 +1207,7 @@ public class SBOLDocument {
 	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
 	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
 	 * @return the created Sequence instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created Sequence instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Sequence instance's identity URI
-	 * exists in this SBOLDocument object's list of Sequence instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) throws SBOLValidationException {
 		checkReadOnly();
@@ -1550,18 +1363,7 @@ public class SBOLDocument {
 	 *
 	 * @param topLevel The topLevel object to be copied from this SBOLDocument
 	 * @return the created top-level instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created top-level instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created top-level instance's identity URI
-	 * already exists.
-	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
-	 * of a top-level object
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public TopLevel createCopy(TopLevel topLevel) throws SBOLValidationException {
 		return createCopy(topLevel,null,null,null);
@@ -1593,18 +1395,7 @@ public class SBOLDocument {
 	 * @param topLevel The topLevel object to be copied from this SBOLDocument
 	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @return the created top-level instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created top-level instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created top-level instance's identity URI
-	 * already exists.
-	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
-	 * of a top-level object
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String displayId) throws SBOLValidationException {
 		return createCopy(topLevel,defaultURIprefix,displayId,"");
@@ -1636,18 +1427,7 @@ public class SBOLDocument {
 	 * @param topLevel The topLevel object to be renamed from this SBOLDocument
 	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @return the created top-level instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created top-level instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created top-level instance's identity URI
-	 * already exists.
-	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
-	 * of a top-level object
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public TopLevel rename(TopLevel topLevel, String displayId) throws SBOLValidationException {
 		TopLevel renamedTopLevel = createCopy(topLevel,defaultURIprefix,displayId,"");
@@ -1682,18 +1462,7 @@ public class SBOLDocument {
 	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @param version The given version for this object
 	 * @return the created top-level instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created top-level instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created top-level instance's identity URI
-	 * already exists.
-	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
-	 * of a top-level object
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String displayId, String version) throws SBOLValidationException {
 		return createCopy(topLevel,defaultURIprefix,displayId,version);
@@ -1726,18 +1495,7 @@ public class SBOLDocument {
 	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @param version The given version for this object
 	 * @return the created top-level instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created top-level instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created top-level instance's identity URI
-	 * already exists.
-	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
-	 * of a top-level object
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public TopLevel rename(TopLevel topLevel, String displayId, String version) throws SBOLValidationException {
 		TopLevel renamedTopLevel = createCopy(topLevel,defaultURIprefix,displayId,version);
@@ -1769,18 +1527,7 @@ public class SBOLDocument {
 	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @param version The given version for this object
 	 * @return the created top-level instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created top-level instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created top-level instance's identity URI
-	 * already exists.
-	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
-	 * of a top-level object
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
 		checkReadOnly();
@@ -1840,18 +1587,7 @@ public class SBOLDocument {
 	 *
 	 * @param topLevel The topLevel object to be recursively copied from this SBOLDocument
 	 * @return the created SBOLDocument with this top-level instance and all its dependencies
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created top-level instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created top-level instance's identity URI
-	 * already exists.
-	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
-	 * of a top-level object
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public SBOLDocument createRecursiveCopy(TopLevel topLevel) throws SBOLValidationException {
 		SBOLDocument document = new SBOLDocument();
@@ -1921,18 +1657,7 @@ public class SBOLDocument {
 	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @param version The given version for this object
 	 * @return the created top-level instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created top-level instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created top-level instance's identity URI
-	 * already exists.
-	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
-	 * of a top-level object
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
 		TopLevel renamedTopLevel = createCopy(topLevel,URIprefix,displayId,version);
@@ -1944,10 +1669,7 @@ public class SBOLDocument {
 	 * Appends the specified {@code sequence} object to the end of the list of sequencess.
 	 *
 	 * @param sequence The given sequence to be added
-	 * @throws SBOLValidationException if the created Sequence instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created Sequence instance's identity URI
-	 * exists in this SBOLDocument object's list of Sequence instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	void addSequence(Sequence sequence) throws SBOLValidationException {
 		addTopLevel(sequence, sequences, "sequence",
@@ -1962,12 +1684,7 @@ public class SBOLDocument {
 	 *
 	 * @param sequence The given sequence to be removed
 	 * @return {@code true} if the given {@code sequence} is successfully removed, {@code false} otherwise.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and one of its ComponentDefinition instances refers to the given {@code sequence}
-	 * (see {@link ComponentDefinition#containsSequence(URI)}).
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and the given {@code sequence} is referenced by any of its Collection instances as a member.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public boolean removeSequence(Sequence sequence) throws SBOLValidationException {
 		checkReadOnly();
@@ -2029,7 +1746,7 @@ public class SBOLDocument {
 	/**
 	 * Removes all entries in the list of Sequence instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public void clearSequences() throws SBOLValidationException {
 		checkReadOnly();
@@ -2041,7 +1758,7 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list <code>structures</code>, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	void setSequences(Set<Sequence> sequences) throws SBOLValidationException {
 		clearSequences();
@@ -2076,15 +1793,7 @@ public class SBOLDocument {
 	 * @param displayId  an intermediate between name and identity that is machine-readable
 	 * @param rdfType a given QName for this annotated GenericTopLevel object
 	 * @return the created GenericTopLevel instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created GenericTopLevel instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created GenericTopLevel instance's identity URI
-	 * exists in this SBOLDocument object's list of GenericTopLevel instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.   
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, QName rdfType) throws SBOLValidationException {
 		return createGenericTopLevel(defaultURIprefix,displayId,"",rdfType);
@@ -2117,15 +1826,7 @@ public class SBOLDocument {
 	 * @param version The given version for this object
 	 * @param rdfType a given QName for this annotated GenericTopLevel object
 	 * @return the created GenericTopLevel instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created GenericTopLevel instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created GenericTopLevel instance's identity URI
-	 * exists in this SBOLDocument object's list of GenericTopLevel instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) throws SBOLValidationException {
 		return createGenericTopLevel(defaultURIprefix,displayId,version,rdfType);
@@ -2155,16 +1856,7 @@ public class SBOLDocument {
 	 * @param version The given version for this object
 	 * @param rdfType a given QName for this annotated GenericTopLevel object
 	 * @return the created GenericTopLevel instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if the {@code defaultURIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
-	 * @throws SBOLValidationException if the given {@code displayId} is invalid
-	 * @throws SBOLValidationException if the given {@code version} is invalid
-	 * @throws SBOLValidationException if the created GenericTopLevel instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created GenericTopLevel instance's identity URI
-	 * exists in this SBOLDocument object's list of GenericTopLevel instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) throws SBOLValidationException {
 		checkReadOnly();
@@ -2180,7 +1872,7 @@ public class SBOLDocument {
 	 * @param identity a given identifier for this object
 	 * @param rdfType a given QName for this annotated GenericTopLevel object
 	 * @return the new generic top level
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
@@ -2197,10 +1889,7 @@ public class SBOLDocument {
 	 * Appends the specified {@code genericTopLevel} object to the end of the list of generic top levels.
 	 *
 	 * @param genericTopLevel Adds the given TopLevel object to this document
-	 * @throws SBOLValidationException if the created GenericTopLevel instance's persistent
-	 * identity exists in this SBOLDocument object's other lists of top-level instances.
-	 * @throws SBOLValidationException if the created GenericTopLevel instance's identity URI
-	 * exists in this SBOLDocument object's list of GeneticTopLevel instances.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	void addGenericTopLevel(GenericTopLevel genericTopLevel) throws SBOLValidationException {
 		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel",
@@ -2215,9 +1904,7 @@ public class SBOLDocument {
 	 *
 	 * @param genericTopLevel The given GenericTopLevel object to be removed from this document
 	 * @return {@code true} if the given {@code genericTopLevel} is successfully removed, {@code false} otherwise.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and the given {@code genericTopLevel} is referenced by any of its Collection instances as a member.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
 	public boolean removeGenericTopLevel(GenericTopLevel genericTopLevel) throws SBOLValidationException {
 		checkReadOnly();
@@ -2272,7 +1959,7 @@ public class SBOLDocument {
 	/**
 	 * Removes all entries in the list of GenericTopLevel instances
 	 * owned by this SBOLDocument object. The list will be empty after this call returns.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public void clearGenericTopLevels() throws SBOLValidationException {
 		checkReadOnly();
@@ -2284,7 +1971,7 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list <code>topLevels</code>, then appends all of the elements in the specified topLevels to the end of this list.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	void setGenericTopLevels(Set<GenericTopLevel> topLevels) throws SBOLValidationException {
 		clearGenericTopLevels();
@@ -2435,7 +2122,7 @@ public class SBOLDocument {
 
 	/**
 	 *  Removes all non-required namespaces from the SBOL document.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public void clearNamespaces() throws SBOLValidationException {
 		checkReadOnly();
@@ -2493,10 +2180,7 @@ public class SBOLDocument {
 	 * is allowed to be edited.
 	 *
 	 * @param namespaceURI the namespaceURI to be removed from this SBOLDocument
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws IllegalStateException if the given {@code namespaceURI} belongs to one of the
-	 * following required namespace binding: {@link Sbol2Terms#sbol2}, {@link Sbol2Terms#dc},
-	 * {@link Sbol2Terms#prov}, or {@link Sbol1Terms#rdf}.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	public void removeNamespace(URI namespaceURI) throws SBOLValidationException {
 		checkReadOnly();
@@ -2508,7 +2192,7 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list of <code>namespaces</code>, then appends all of the namespaces to the end of this list.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	void setNameSpaceBindings(List<NamespaceBinding> namespaceBinding) throws SBOLValidationException {
 		clearNamespaces();
@@ -2661,8 +2345,7 @@ public class SBOLDocument {
 	 * @param topLevel The topLevel object to be removed from this SBOLDocument
 	 * @param instancesMap map of toplevel instances
 	 * @return {@code true} if the given {@code topLevel} is successfully removed, {@code false} otherwise.
-	 * @throws SBOLValidationException if this SBOLDocument object is complete ({@link SBOLDocument#isComplete()}),
-	 * and the given {@code topLevel} is referenced by one of its Collection instances as a member.
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
 	private final <TL extends TopLevel> boolean removeTopLevel(TopLevel topLevel, Map<URI, TL> instancesMap) throws SBOLValidationException {
 		if (complete) {
@@ -2814,12 +2497,10 @@ public class SBOLDocument {
 	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
 	 *
 	 * @param fileName a given RDF fileName
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
-	public void read(String fileName) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	public void read(String fileName) throws FileNotFoundException, SBOLValidationException {
 		read(new File(fileName));
 	}
 
@@ -2828,12 +2509,10 @@ public class SBOLDocument {
 	 *
 	 * @param fileName a given fileName and fileType
 	 * @param fileType specify what file type is this file
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
-	void read(String fileName,String fileType) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	void read(String fileName,String fileType) throws FileNotFoundException, SBOLValidationException {
 		read(new File(fileName),fileType);
 	}
 
@@ -2841,12 +2520,10 @@ public class SBOLDocument {
 	 * Takes in a given RDF File and add the data read to this SBOLDocument.
 	 *
 	 * @param file a given RDF File
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
 	 */
-	public void read(File file) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	public void read(File file) throws FileNotFoundException, SBOLValidationException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
 		SBOLReader.read(this, buffer, SBOLReader.RDF);
@@ -2857,13 +2534,10 @@ public class SBOLDocument {
 	 *
 	 * @param file a given file
 	 * @param fileType specify what file type is this file
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
 	 */
-	void read(File file,String fileType) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	void read(File file,String fileType) throws FileNotFoundException, SBOLValidationException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
 		SBOLReader.read(this, buffer, fileType);
@@ -2873,12 +2547,9 @@ public class SBOLDocument {
 	 * Takes in a given RDF InputStream and add the data read to this SBOLDocument.
 	 *
 	 * @param in a given RDF InputStream
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
-	public void read(InputStream in) throws FactoryConfigurationError, SBOLValidationException {
+	public void read(InputStream in) throws SBOLValidationException {
 		SBOLReader.read(this, in, SBOLReader.RDF);
 	}
 
@@ -2887,11 +2558,9 @@ public class SBOLDocument {
 	 *
 	 * @param in a given RDF InputStream
 	 * @param fileType the fileType that this file is in
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException 
 	 */
-	void read(InputStream in,String fileType) throws FactoryConfigurationError, SBOLValidationException {
+	void read(InputStream in,String fileType) throws SBOLValidationException {
 		SBOLReader.read(this, in, fileType);
 	}
 
@@ -2900,11 +2569,9 @@ public class SBOLDocument {
 	 * file name in RDF format
 	 * @param filename the given output file name
 	 * @throws IOException - TODO
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
+	 * @throws SBOLConversionException if an SBOL validation rule is violated.
 	 */
-	public void write(String filename) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public void write(String filename) throws IOException, SBOLConversionException
 	{
 		SBOLWriter.write(this, new File(filename));
 	}
@@ -2914,12 +2581,10 @@ public class SBOLDocument {
 	 * file name in fileType format
 	 * @param filename the given output file name
 	 * @param fileType the file type to be written out to
-	 * @throws IOException - TODO
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
+	 * @throws IOException
+	 * @throws SBOLConversionException
 	 */
-	void write(String filename,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(String filename,String fileType) throws IOException, SBOLConversionException
 	{
 		SBOLWriter.write(this, new File(filename), fileType);
 	}
@@ -2928,12 +2593,10 @@ public class SBOLDocument {
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * file in RDF format
 	 * @param file the given output file in RDF format
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws IOException - TODO
+	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	public void write(File file) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public void write(File file) throws IOException, SBOLConversionException
 	{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -2947,12 +2610,10 @@ public class SBOLDocument {
 	 * file in fileType format
 	 * @param file the given output file
 	 * @param fileType the file type of the given output file
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
 	 * @throws IOException - TODO
+	 * @throws SBOLConversionException - problem found during serialization  
 	 */
-	void write(File file,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	void write(File file,String fileType) throws IOException, SBOLConversionException
 	{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -2965,11 +2626,9 @@ public class SBOLDocument {
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * stream in RDF format
 	 * @param out the given output stream
-	 * @throws XMLStreamException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws CoreIoException - TODO
+	 * @throws SBOLConversionException - problem found during serialization  
 	 */
-	public void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	public void write(OutputStream out) throws SBOLConversionException
 	{
 		SBOLWriter.write(this, out);
 	}
@@ -2979,12 +2638,9 @@ public class SBOLDocument {
 	 * stream in fileType format
 	 * @param out the given output stream
 	 * @param fileType specify what file type for the the given output stream
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
-	 * @throws IOException - TODO
+	 * @throws SBOLConversionException - problem found during serialization   
 	 */
-	void write(OutputStream out,String fileType) throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	void write(OutputStream out,String fileType) throws SBOLConversionException 
 	{
 		SBOLWriter.write(this, out, fileType);
 	}

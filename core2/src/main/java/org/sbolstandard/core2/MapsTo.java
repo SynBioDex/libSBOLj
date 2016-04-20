@@ -16,7 +16,7 @@ import java.net.URI;
 
 public class MapsTo extends Identified{
 
-	private RefinementType refinement;
+	private RefinementType refinement; 
 	private URI local; // URI of a local component instantiation.
 	private URI remote; // URI of a remote component instantiation
 	private ModuleDefinition moduleDefinition = null;

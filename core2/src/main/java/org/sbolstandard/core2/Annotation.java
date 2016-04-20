@@ -282,6 +282,11 @@ public class Annotation {
 		return null;
 	}
 
+	/**
+	 * Sets the {@code value} property to the specified list of annotations.
+	 * 
+	 * @param annotations The list of annotations
+	 */
 	public void setNestedAnnotations(List<Annotation> annotations) {
 		List<NamedProperty<QName>> list = new ArrayList<>();
 		for(Annotation a : annotations)

@@ -10,11 +10,16 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
 
-import uk.ac.ncl.intbio.core.io.CoreIoException;
-
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
 public final class SBOLFactory {
 
 	private static SBOLDocument document = new SBOLDocument();
@@ -22,7 +27,7 @@ public final class SBOLFactory {
 	// TODO: is this really needed?
 	/**
 	 * This sets the internal SBOLDocument used by the factory.
-	 * @param sbolDocument - the document to be used internally by the factory
+	 * @param sbolDocument The document used internally by the factory
 	 */
 	public static void setSBOLDocument(SBOLDocument sbolDocument) {
 		document = sbolDocument;
@@ -1343,7 +1348,7 @@ public final class SBOLFactory {
 	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
 	 * of a top-level object
 	 */
-	public SBOLDocument createRecursiveCopy(TopLevel topLevel) throws SBOLValidationException {
+	public static SBOLDocument createRecursiveCopy(TopLevel topLevel) throws SBOLValidationException {
 		return document.createRecursiveCopy(topLevel);
 	}
 
@@ -1704,7 +1709,6 @@ public final class SBOLFactory {
 	 * Sets the default URI prefix to the given {@code defaultURIprefix}.
 	 *
 	 * @param defaultURIprefix the given default URI prefix
-	 * @throws SBOLValidationException  if this SBOLDocument object is not compliant
 	 */
 
 	public static void setDefaultURIprefix(String defaultURIprefix) {
@@ -1793,11 +1797,10 @@ public final class SBOLFactory {
 	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
 	 *
 	 * @param fileName a given RDF fileName
-	 * @throws FactoryConfigurationError - TODO
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public static void read(String fileName) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	public static void read(String fileName) throws FileNotFoundException, SBOLValidationException {
 		document.read(fileName);
 	}
 
@@ -1805,11 +1808,10 @@ public final class SBOLFactory {
 	 * Takes in a given RDF File and add the data read to this SBOLDocument.
 	 *
 	 * @param file a given RDF fileName
-	 * @throws FactoryConfigurationError - TODO
 	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public static void read(File file) throws FactoryConfigurationError, FileNotFoundException, SBOLValidationException {
+	public static void read(File file) throws FileNotFoundException, SBOLValidationException {
 		document.read(file);
 	}
 
@@ -1817,10 +1819,9 @@ public final class SBOLFactory {
 	 * Takes in a given RDF InputStream and add the data read to this SBOLDocument.
 	 *
 	 * @param in a given RDF InputStream
-	 * @throws FactoryConfigurationError - TODO
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
 	 */
-	public static void read(InputStream in) throws FactoryConfigurationError, SBOLValidationException {
+	public static void read(InputStream in) throws SBOLValidationException {
 		document.read(in);
 	}
 
@@ -1829,12 +1830,10 @@ public final class SBOLFactory {
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * file name in RDF format
 	 * @param filename the given output file in RDF format
-	 * @throws XMLStreamException invalid xml file
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws CoreIoException - TODO
-	 * @throws IOException - TODO
+	 * @throws IOException if access to the file to be written failed
+	 * @throws SBOLConversionException if the conversion between SBOL and GenBank failed
 	 */
-	public static void write(String filename) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public static void write(String filename) throws IOException, SBOLConversionException 
 	{
 		document.write(filename);
 	}
@@ -1843,12 +1842,10 @@ public final class SBOLFactory {
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * file in RDF format
 	 * @param file the given output file
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
-	 * @throws IOException - TODO
+	 * @throws IOException - 
+	 * @throws SBOLConversionException - problem found during serialization   
 	 */
-	public static void write(File file) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	public static void write(File file) throws IOException, SBOLConversionException
 	{
 		document.write(file);
 	}
@@ -1857,12 +1854,9 @@ public final class SBOLFactory {
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
 	 * stream in RDF format
 	 * @param out the given output stream
-	 * @throws CoreIoException - TODO
-	 * @throws FactoryConfigurationError - TODO
-	 * @throws XMLStreamException invalid xml file
-	 * @throws IOException - TODO
+	 * @throws SBOLConversionException - problem found during serialization   
 	 */
-	public static void write(OutputStream out) throws XMLStreamException, FactoryConfigurationError, CoreIoException
+	public static void write(OutputStream out) throws SBOLConversionException 
 	{
 		document.write(out);
 	}
