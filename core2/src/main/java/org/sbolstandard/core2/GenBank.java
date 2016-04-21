@@ -71,7 +71,7 @@ public class GenBank {
 	}
 
 	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given file
+	 * Serializes a given ComponentDefinition and outputs the data from the serialization to the given file
 	 * in GenBank format.
 	 * @param componentDefinition a given ComponentDefinition
 	 * @param file the given output file name in GenBank format
@@ -87,7 +87,7 @@ public class GenBank {
 	}
 
 	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
+	 * Serializes a given ComponentDefinition and outputs the data from the serialization to the given output stream
 	 * in GenBank format.
 	 * @param componentDefinition a given ComponentDefinition
 	 * @param out the given output file name in GenBank format
