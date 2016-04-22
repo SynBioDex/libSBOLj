@@ -161,7 +161,7 @@ public class FASTA {
 	}
 	
 	private static void read(SBOLDocument doc,InputStream in,String URIprefix,String displayId,String version,URI encoding)
-			throws IOException, SBOLValidationException {
+	{
 
 		// reset the global static variables needed for parsing
 		nextLine = null;
@@ -235,7 +235,7 @@ public class FASTA {
 	 * @throws SBOLValidationException
 	 */
 	public static SBOLDocument read(InputStream in,String URIprefix,String displayId,String version,URI encoding) 
-			throws IOException, SBOLValidationException {
+	{
 		
 		/*
 		 * EO: it's unclear how we map the FASTA description to SBOL displayID/description? 
@@ -282,7 +282,7 @@ public class FASTA {
 	 * @throws IOException input/output operation failed
 	 */
 	public static SBOLDocument read(File file,String URIprefix,String displayId,String version,URI encoding) 
-			throws IOException, SBOLValidationException
+			throws IOException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -301,12 +301,12 @@ public class FASTA {
 	 * @throws IOException input/output operation failed
 	 */
 	public static SBOLDocument read(String fileName,String URIprefix,String displayId,String version,URI encoding) 
-			throws IOException, SBOLValidationException
+			throws IOException
 	{
 		return read(new File(fileName),URIprefix,displayId,version,encoding);
 	}
 
-	public static void main(String[] args) throws SBOLConversionException, IOException, SBOLValidationException {
+	public static void main(String[] args) throws SBOLConversionException, IOException {
 		SBOLDocument doc = read("/Users/myers/Downloads/sample.fasta","http://dummy.org","dummy","",Sequence.IUPAC_DNA);
 		//doc.write(System.out);
 		write(doc, System.out);
