@@ -55,18 +55,18 @@
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation"/>
-        <sbol:displayId>Repressor2_annotation</sbol:displayId>
-        <prov:wasDerivedFrom rdf:resource="urn:53de82c6-ecf9-4899-8e06-0179ab03a9a0"/>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation"/>
+        <sbol:displayId>Terminator_annotation</sbol:displayId>
+        <prov:wasDerivedFrom rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa"/>
         <sbol:location>
-          <sbol:GenericLocation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation/genericLocation">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation/genericLocation"/>
+          <sbol:GenericLocation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation/genericLocation">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation/genericLocation"/>
             <sbol:displayId>genericLocation</sbol:displayId>
             <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:GenericLocation>
         </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2"/>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -87,18 +87,18 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation"/>
-        <sbol:displayId>Terminator_annotation</sbol:displayId>
-        <prov:wasDerivedFrom rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa"/>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation"/>
+        <sbol:displayId>Repressor2_annotation</sbol:displayId>
+        <prov:wasDerivedFrom rdf:resource="urn:53de82c6-ecf9-4899-8e06-0179ab03a9a0"/>
         <sbol:location>
-          <sbol:GenericLocation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation/genericLocation">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation/genericLocation"/>
+          <sbol:GenericLocation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation/genericLocation">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation/genericLocation"/>
             <sbol:displayId>genericLocation</sbol:displayId>
             <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:GenericLocation>
         </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator"/>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceConstraint>

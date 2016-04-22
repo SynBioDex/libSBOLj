@@ -167,66 +167,108 @@ public class FASTA {
 		nextLine = null;
 		//lineCounter = 0;
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine;
 		StringBuilder sbSequence = new StringBuilder();
 		String elements = null;
 		String description = "";
 		int count = 0;
 		boolean sequenceMode = false;
-		while ((strLine = readFASTALine(br)) != null)   {
-			strLine = strLine.trim();
-
-			if (strLine.startsWith(">")) {
-				if (sequenceMode) {
-					sequenceMode = false;
-					Sequence sequence = doc.createSequence(URIprefix,displayId+count,version,sbSequence.toString(),encoding);
-					sequence.setDescription(description);
-					description = "";
-					sbSequence = new StringBuilder();
-					count++;
-				}
-				description += strLine.replaceFirst(">", "").trim();
-			} else if (strLine.startsWith(";")) {
-				if (sequenceMode) {
-					sequenceMode = false;
-					Sequence sequence = doc.createSequence(URIprefix,displayId+count,version,sbSequence.toString(),encoding);
-					sequence.setDescription(description);
-					description = "";
-					sbSequence = new StringBuilder();
-					count++;
-				}
-				description += strLine.replaceFirst(";", "").trim();
-			} else {
-				sequenceMode = true;
-				if(elements == null) { elements = new String(""); }
-				String[] strSplit = strLine.split(" ");
-				for (int i = 0; i < strSplit.length; i++) {
-					sbSequence.append(strSplit[i]);
+		
+		// using Java 7's try-with-resources statement
+		try (
+				BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			) {
+			
+			while ((strLine = readFASTALine(br)) != null)   {
+				strLine = strLine.trim();
+	
+				if (strLine.startsWith(">")) {
+					if (sequenceMode) {
+						sequenceMode = false;
+						Sequence sequence = doc.createSequence(URIprefix,displayId+count,version,sbSequence.toString(),encoding);
+						sequence.setDescription(description);
+						description = "";
+						sbSequence = new StringBuilder();
+						count++;
+					}
+					description += strLine.replaceFirst(">", "").trim();
+				} else if (strLine.startsWith(";")) {
+					if (sequenceMode) {
+						sequenceMode = false;
+						Sequence sequence = doc.createSequence(URIprefix,displayId+count,version,sbSequence.toString(),encoding);
+						sequence.setDescription(description);
+						description = "";
+						sbSequence = new StringBuilder();
+						count++;
+					}
+					description += strLine.replaceFirst(";", "").trim();
+				} else {
+					sequenceMode = true;
+					if(elements == null) { elements = new String(""); }
+					String[] strSplit = strLine.split(" ");
+					for (int i = 0; i < strSplit.length; i++) {
+						sbSequence.append(strSplit[i]);
+					}
 				}
 			}
+			if (count!=0) displayId += count;
+			Sequence sequence = doc.createSequence(URIprefix,displayId,version,sbSequence.toString(),encoding);
+			sequence.setDescription(description);
+		} catch(Exception e) {
+			
 		}
-		if (count!=0) displayId += count;
-		Sequence sequence = doc.createSequence(URIprefix,displayId,version,sbSequence.toString(),encoding);
-		sequence.setDescription(description);
-		br.close();
 	}
 	
 	/**
-	 * Takes in a given FASTA InputStream and converts the file to an SBOLDocument.
-	 *
-	 * @param in the given FASTA filename
-	 * @return the converted SBOLDocument instance
-	 * @throws SBOLConversionException violates conversion limitations
-	 * @throws SBOLValidationException violates sbol validation rule
-	 * @throws IOException input/output operation failed
+	 * The read method imports all sequences (represented in FASTA format), stores 
+	 * them in an SBOLDocument object, and returns the SBOLDocument object.
+	 * 
+	 * @param in  ... the input stream that contains the sequences in FASTA format
+	 * @param URIprefix ... the URI prefix of the sequences
+	 * @param displayId
+	 * @param version ... the version of the sequences
+	 * @param encoding ... the encoding of the sequences (i.e. DNA, RNA, or Protein)
+	 * 
+	 * @return an SBOLDocument object that contains the imported FASTA sequences as SBOL Sequence objects
+	 * 
+	 * @throws IOException
+	 * @throws SBOLValidationException
 	 */
 	public static SBOLDocument read(InputStream in,String URIprefix,String displayId,String version,URI encoding) 
-			throws IOException, SBOLValidationException
-	{
+			throws IOException, SBOLValidationException {
+		
+		/*
+		 * EO: it's unclear how we map the FASTA description to SBOL displayID/description? 
+		 * Shouldn't we just use the FASTA description as both displayID and description?
+		 */
+		
 		SBOLDocument doc = new SBOLDocument();
 		doc.setCreateDefaults(true);
+		
+		/*---------------
+		 * Update: 
+		 * When using the doc.getSequence method later, then the following exception 
+		 * was thrown: "The defaultURIprefix is not set. Please set it to a non-null value"
+		 *
+		 * Hence, we set the URIprefix of the document as provided by the user
+		 *---------------*/
+
+		// check that the caller provided a valid URIprefix
+		if(null == URIprefix) {
+			throw new IllegalArgumentException("Invalid URIprefix! Cannot be null.");
+		} else if(URIprefix.isEmpty()) {
+			throw new IllegalArgumentException("Invalid URIprefix! Cannot be empty.");
+		}
+		// TODO: add more URIprefix validations (e.g. well-formed HTTP)???
+		
+		// if the URIprefix is valid, than we set it in the document 
+		doc.setDefaultURIprefix(URIprefix);
+		
+		// parse the stream's content
 		read(doc,in,URIprefix,displayId,version,encoding);
+		
+		// lastly, return the SBOLDocument object that contains 
+		// all sequences represented as SBOL objects
 		return doc;
 	}
 	

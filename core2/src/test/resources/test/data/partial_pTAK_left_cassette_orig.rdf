@@ -133,20 +133,6 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa">
-        <sbol:persistentIdentity rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa"/>
-        <sbol:displayId>annotation3</sbol:displayId>
-        <sbol:location>
-          <sbol:GenericLocation rdf:about="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa/genericLocation">
-            <sbol:persistentIdentity rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:GenericLocation>
-        </sbol:location>
-        <sbol:component rdf:resource="urn:d0f2ca7b-33d4-4106-8b7a-4bfe7efa1a16/component2"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="urn:53de82c6-ecf9-4899-8e06-0179ab03a9a0">
         <sbol:persistentIdentity rdf:resource="urn:53de82c6-ecf9-4899-8e06-0179ab03a9a0"/>
         <sbol:displayId>annotation2</sbol:displayId>
@@ -158,6 +144,20 @@
           </sbol:GenericLocation>
         </sbol:location>
         <sbol:component rdf:resource="urn:d0f2ca7b-33d4-4106-8b7a-4bfe7efa1a16/component1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa">
+        <sbol:persistentIdentity rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa"/>
+        <sbol:displayId>annotation3</sbol:displayId>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa/genericLocation">
+            <sbol:persistentIdentity rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:GenericLocation>
+        </sbol:location>
+        <sbol:component rdf:resource="urn:d0f2ca7b-33d4-4106-8b7a-4bfe7efa1a16/component2"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceConstraint>
