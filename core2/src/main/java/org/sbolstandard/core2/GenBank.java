@@ -542,7 +542,7 @@ public class GenBank {
 
 	private static void writeSequence(Writer w,Sequence sequence,int size) throws IOException {
 		for (int i = 0; i < size; i+=60) {
-			String padded = String.format("%9s", "" + i);
+			String padded = String.format("%9s", "" + (i+1));
 			w.write(padded);
 			for (int j = i; j < size && j < i + 60; j+=10) {
 				if (j+10 < size) {
