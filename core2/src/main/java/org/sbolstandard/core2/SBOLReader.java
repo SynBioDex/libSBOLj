@@ -57,31 +57,82 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 public class SBOLReader
 {
 
+	/**
+	 * Constant representing RDF file format
+	 */
 	public static final String RDF = "RDF";
+	
+	/**
+	 * Constant representing the format of an SBOL version 1.1 output file as being RDF format
+	 */
 	public static final String RDFV1 = "RDFV1";
+	
+	/**
+	 * Constant representing JSON file format
+	 */
 	public static final String JSON = "JSON";
+	
+	/**
+	 * Constant representing TURTLE file format
+	 */
 	public static final String TURTLE = "TURTLE";
+	
+	/**
+	 * Constant representing SBOL version 1.1
+	 */
 	public static final String SBOLVERSION1 = "v1";
+	
+	/**
+	 * Constant representing SBOL version 2.0
+	 */
 	public static final String SBOLVERSION2 = "v2";
+	
+		
+	/**
+	 * A {@code true} value of the {@code keepGoing} flag tells the SBOL reader
+	 * to continue reading an SBOL input file, after it encounters an SBOL validation exception;
+	 * a {@code false} value forces the reader to stop reading after it encounters
+	 * an SBOL validation exception.
+	 */
 	public static boolean keepGoing = false;
 	private static List<String> errors = new ArrayList<String>();
 
+	/**
+	 * Returns the value of the {@code keepGoing} flag.
+	 * @return the value of the {@code keepGoing} flag
+	 */
 	public static boolean isKeepGoing() {
 		return keepGoing;
 	}
 
+	/**
+	 * Sets the value of the {@code keepGoing} flag to the specified Boolean value.
+	 * @param keepGoing The specified Boolean value
+	 */
 	public static void setKeepGoing(boolean keepGoing) {
 		SBOLReader.keepGoing = keepGoing;
 	}
 
+	/**
+	 * Sets the error list that is used to store SBOL validation exceptions 
+	 * during reading to empty. 
+	 */
 	public static void clearErrors() {
 		errors = new ArrayList<String>();
 	}
 
+	/**
+	 * Returns the error list that is used to store SBOL validation exceptions.
+	 * @return the error list that is used to store SBOL validation exceptions
+	 */
 	public static List<String> getErrors() {
 		return errors;
 	}
 
+	/**
+	 * Returns the number of errors in the error list. 
+	 * @return the number of errors in the error list
+	 */
 	public static int getNumErrors() {
 		return errors.size();
 	}
@@ -226,7 +277,7 @@ public class SBOLReader
 	 * @param fileName a given RDF filename
 	 * @return the SBOL version of the file.
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public static String getSBOLVersion(String fileName) throws FileNotFoundException, SBOLValidationException
 	{
@@ -239,7 +290,7 @@ public class SBOLReader
 	 * @param fileName
 	 * @return the SBOL version of the file.
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	static String getSBOLVersion(String fileName, String fileType) throws FileNotFoundException, SBOLValidationException
 	{
@@ -253,9 +304,9 @@ public class SBOLReader
 	 * <p>
 	 * This method calls {@link #read(File)}.
 	 *
-	 * @param fileName
+	 * @param fileName the name of the given RDF file
 	 * @return the converted SBOLDocument
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 * @throws FileNotFoundException if file not found
 	 */
 	public static SBOLDocument read(String fileName) throws SBOLValidationException, FileNotFoundException
@@ -266,10 +317,10 @@ public class SBOLReader
 	/**
 	 * Takes in the given filename and fileType, and converts the file to an SBOLDocument.
 	 *
-	 * @param fileName
-	 * @param fileType
+	 * @param fileName the name of the given file
+	 * @param fileType the file type of the given file 
 	 * @return the converted SBOLDocument
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 * @throws FileNotFoundException if file not found
 	 */
 	static SBOLDocument read(String fileName,String fileType) throws SBOLValidationException, FileNotFoundException
@@ -280,10 +331,10 @@ public class SBOLReader
 	/**
 	 * Takes in a given RDF File and returns the SBOL version of the file.
 	 *
-	 * @param file
+	 * @param file the given RDF file
 	 * @return the SBOL version of the file.
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public static String getSBOLVersion(File file) throws FileNotFoundException, SBOLValidationException
 	{
@@ -291,12 +342,12 @@ public class SBOLReader
 	}
 
 	/**
-	 * Takes in the given RDF file and converts the file to an SBOLDocument.
+	 * Parses the given RDF file and stores its contents in an SBOLDocument object.
 	 *
-	 * @param file
-	 * @return the converted SBOLDocument instance
+	 * @param file the given RDF file
+	 * @return an SBOLDocument object that stores the RDF file information
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public static SBOLDocument read(File file) throws FileNotFoundException, SBOLValidationException
 	{
@@ -312,7 +363,7 @@ public class SBOLReader
 	 * @throws XMLStreamException
 	 * @throws CoreIoException
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	static SBOLDocument read(File file,String fileType) throws FileNotFoundException, SBOLValidationException
 	{
@@ -327,7 +378,7 @@ public class SBOLReader
 	 * @param file
 	 * @return the SBOL version of the file.
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	static String getSBOLVersion(File file,String fileType) throws FileNotFoundException, SBOLValidationException
 	{
@@ -342,7 +393,7 @@ public class SBOLReader
 	 * @param in a given InputStream
 	 * @param fileType a given file type
 	 * @return the SBOL version of the JSON file.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	static String getSBOLVersion(InputStream in,String fileType) throws SBOLValidationException
 	{
@@ -365,7 +416,7 @@ public class SBOLReader
 	 *
 	 * @param in a given RDF InputStream
 	 * @return the converted SBOLDocument instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public static SBOLDocument read(InputStream in) throws SBOLValidationException
 	{
@@ -381,7 +432,7 @@ public class SBOLReader
 	 * @param in a given InputStream
 	 * @param fileType a given file type
 	 * @return the converted SBOLDocument instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	static SBOLDocument read(InputStream in,String fileType) throws SBOLValidationException
 	{
@@ -450,7 +501,7 @@ public class SBOLReader
 	 *
 	 * @param in a given RDF InputStream
 	 * @return the SBOL version of the file.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public static String getSBOLVersion(InputStream in) throws SBOLValidationException
 	{

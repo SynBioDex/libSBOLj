@@ -9,6 +9,7 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
@@ -272,4 +273,65 @@ public class SBOLTestUtils {
 		return URI.create("http://some.ontology.org/" + append);
 	}
 
+	/*------------------------
+	 * UTILS FOR SEQUENCES
+	 *------------------------*/
+	public static final String NEWLINE = System.lineSeparator();
+	public static final String[] sigmaDNA = new String[]{
+			"A","C","G","T"};
+	public static final String[] sigmaRNA = new String[]{
+			"A","C","G","U"};
+	public static final String[] sigmaAminoAcids = new String[]{
+			"F","L","I","M","V","S","P","T","A","Y","H","N","K","D","E","C","R","W","G","Q","*"};
+	private static Random rand;
+
+	/**
+	 * The generateRandomSequence generates a random sequence of a 
+	 * give length N from a given alphabet sigma
+	 * @param N  ... the length of the desired random sequence
+	 * @param sigma ... the alphabet from that the sequence letters should be chosen
+	 * 
+	 * @return a random sequence as String
+	 */
+	public String generateRandomSequence(int N, String[] sigma) {
+		StringBuilder seq = new StringBuilder();
+		for(int i=0; i<N; i++) {
+			seq.append(
+				getRandomLetter(sigma));
+		}
+		return seq.toString();
+	}
+
+	/**
+	 * The getRandomLetter returns a randomly chosen letter 
+	 * from a given alphabet sigma
+	 * 
+	 * @param sigma ... the alphabet
+	 * 
+	 * @return a randomly chosen letter from the alphabet
+	 */
+	public String getRandomLetter(String[] sigma) {
+		if(null == rand) {
+			rand = new Random();
+		}
+		int randomIdx = this.getRandomNumber(0, sigma.length - 1);
+		return sigma[randomIdx];
+	}
+
+	/**
+	 * The getRandomNumber returns a random number in the range [min..max] 
+	 * (both inclusive). If the min > max, then the method returns -1.
+	 * 
+	 * @param min ... the minimum number
+	 * @param max ... the maximum number
+	 * 
+	 * @return a random number in the range [min..max]
+	 */
+	public int getRandomNumber(int min, int max) {
+		if(min <= max) {
+			// pick a random number from min to max
+			return new Random().nextInt((max - min) + 1) + min;
+		}
+		return -1;
+	}
 }

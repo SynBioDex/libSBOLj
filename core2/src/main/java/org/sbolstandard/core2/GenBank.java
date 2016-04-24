@@ -71,7 +71,7 @@ public class GenBank {
 	}
 
 	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given file
+	 * Serializes a given ComponentDefinition and outputs the data from the serialization to the given file
 	 * in GenBank format.
 	 * @param componentDefinition a given ComponentDefinition
 	 * @param file the given output file name in GenBank format
@@ -87,7 +87,7 @@ public class GenBank {
 	}
 
 	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
+	 * Serializes a given ComponentDefinition and outputs the data from the serialization to the given output stream
 	 * in GenBank format.
 	 * @param componentDefinition a given ComponentDefinition
 	 * @param out the given output file name in GenBank format
@@ -146,7 +146,7 @@ public class GenBank {
 		if (soTerm.equals("SO:0000298")) {return String.format("%-15s", "misc_recomb");}
 		if (soTerm.equals("SO:0000233")) {return String.format("%-15s", "misc_RNA");}
 		// TODO: CHECK THIS ONE
-		//if (soTerm.equals("SO:0005836")) {return String.format("%-15s", "misc_signal");}
+		//if (soTerm.equals("SO:0001411")) {return String.format("%-15s", "misc_signal");}
 		if (soTerm.equals("SO:0005836")) {return String.format("%-15s", "regulatory");}
 		if (soTerm.equals("SO:0000002")) {return String.format("%-15s", "misc_structure");}
 		if (soTerm.equals("SO:0000305")) {return String.format("%-15s", "modified_base");}
@@ -247,7 +247,8 @@ public class GenBank {
 		if (genBankTerm.equals("misc_RNA")) {
 			return so.getURIbyId("SO:0000233");}
 		if (genBankTerm.equals("misc_signal")) {
-			return so.getURIbyId("SO:0005836");}
+			// TODO: check this one
+			return so.getURIbyId("SO:0001411");}
 		if (genBankTerm.equals("misc_structure")) {
 			return so.getURIbyId("SO:0000002");}
 		if (genBankTerm.equals("modified_base")) {
@@ -330,7 +331,6 @@ public class GenBank {
 			return so.getURIbyId("SO:0000555");}
 		if (genBankTerm.equals("5'UTR")) {
 			return so.getURIbyId("SO:0000204");}
-		// TODO: check this one
 		if (genBankTerm.equals("regulatory")) {
 			return so.getURIbyId("SO:0005836");}
 		if (genBankTerm.equals("snoRNA")) {
@@ -542,7 +542,7 @@ public class GenBank {
 
 	private static void writeSequence(Writer w,Sequence sequence,int size) throws IOException {
 		for (int i = 0; i < size; i+=60) {
-			String padded = String.format("%9s", "" + i);
+			String padded = String.format("%9s", "" + (i+1));
 			w.write(padded);
 			for (int j = i; j < size && j < i + 60; j+=10) {
 				if (j+10 < size) {

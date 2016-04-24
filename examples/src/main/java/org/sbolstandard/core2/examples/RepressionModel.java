@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -21,9 +20,9 @@ import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.RestrictionType;
 import org.sbolstandard.core2.SBOLConversionException;
 import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLReader;
 import org.sbolstandard.core2.SBOLValidate;
 import org.sbolstandard.core2.SBOLValidationException;
-import org.sbolstandard.core2.SBOLReader;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceOntology;
@@ -39,7 +38,7 @@ import org.sbolstandard.core2.SystemsBiologyOntology;
 
 public class RepressionModel {
 
-	public static void main(String[] args) throws URISyntaxException, SBOLValidationException, SBOLConversionException, IOException {
+	public static void main(String[] args) throws SBOLValidationException, SBOLConversionException, IOException {
 		
 		SBOLDocument doc = new SBOLDocument();
 

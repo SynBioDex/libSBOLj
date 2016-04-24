@@ -1348,7 +1348,7 @@ public final class SBOLFactory {
 	 * @throws SBOLValidationException if the given {@code topLevel} instance is not an instance
 	 * of a top-level object
 	 */
-	public SBOLDocument createRecursiveCopy(TopLevel topLevel) throws SBOLValidationException {
+	public static SBOLDocument createRecursiveCopy(TopLevel topLevel) throws SBOLValidationException {
 		return document.createRecursiveCopy(topLevel);
 	}
 

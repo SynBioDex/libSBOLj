@@ -256,6 +256,8 @@ public class SBOLValidationException extends Exception {
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
+//	
+//	
 //	}
 
 	/**

@@ -32,14 +32,25 @@ public class SBOLValidate {
 	private static final String SBOLVersion = "2.0";
 	private static List<String> errors = null;
 
+	/**
+	 * Empties the error list used to store SBOL validation exceptions.
+	 */
 	public static void clearErrors() {
 		errors = new ArrayList<String>();
 	}
 
+	/**
+	 * Returns the error list used to store SBOL validation exceptions.
+	 * @return the error list used to store SBOL validation exceptions
+	 */
 	public static List<String> getErrors() {
 		return errors;
 	}
 
+	/**
+	 * Returns the number of errors in the error list.
+	 * @return the number of errors in the error list
+	 */
 	public static int getNumErrors() {
 		return errors.size();
 	}
@@ -1024,12 +1035,20 @@ public class SBOLValidate {
 	}
 
 	/**
-	 * Validate SBOL document.  Errors either throw exceptions or, if not fatal, add to the list of errors
-	 * that can be accessed using the getErrors() method.
-	 * @param sbolDocument
-	 * @param complete
-	 * @param compliant
-	 * @param bestPractice
+	 * Validates the given SBOL document. Errors encountered either throw exceptions or, if not fatal, add to the list of errors
+	 * that can be accessed using the {@link #getErrors()} method. Interpretations of the values for the following parameters are: 
+	 * <li> complete: A {@code true} value means all references in the given SBOLDocument object can dereference to objects 
+	 * in the same document; {@code false} otherwise.
+	 * 
+	 * <li>the second item
+	 * <li>the third item
+	 * </ul><p>
+	 * 
+	 * 
+	 * @param sbolDocument the given {@code SBOLDocument} object
+	 * @param complete the given {@code complete} flag 
+	 * @param compliant the given {@code compliant} flag
+	 * @param bestPractice the given {@code bestPractice} flag
 	 */
 	public static void validateSBOL(SBOLDocument sbolDocument, boolean complete, boolean compliant,
 			boolean bestPractice) {
@@ -1074,6 +1093,13 @@ public class SBOLValidate {
 		System.exit(1);
 	}
 
+	/**
+	 * Compare the given two SBOLDocument objects and outputs the "standard" error output stream (System.err).  
+	 * @param file1 the file name associated with {@code doc1}
+	 * @param doc1 the first SBOLDocument object
+	 * @param file2 the file name associated with {@code doc2}
+	 * @param doc2 the second SBOLDocument object
+	 */
 	public static void compareDocuments(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
 		/*if (!doc1.getNamespaces().equals(doc2.getNamespaces())) {
 			System.err.println("Namespaces do not match");
