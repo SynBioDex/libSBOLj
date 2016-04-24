@@ -29,8 +29,33 @@ import javax.xml.namespace.QName;
 public class GenBank {
 
 	private static SequenceOntology so = null;
-	private static String gbPrefix = "gb";
-	private static String gbNamespace = "http://www.ncbi.nlm.nih.gov";
+
+	private static final String GBPREFIX = "gb";
+	private static final String GBNAMESPACE = "http://www.ncbi.nlm.nih.gov";
+	private static final String LOCUS = "locus";
+	private static final String MOLECULE = "molecule";
+	private static final String TOPOLOGY = "topology";
+	private static final String DIVISION = "division";
+	private static final String DATE = "date";
+	private static final String GINUMBER = "GInumber";
+	private static final String KEYWORDS = "keywords";
+	private static final String SOURCE = "source";
+	private static final String ORGANISM = "organism";
+	private static final String REFERENCE = "reference";
+	private static final String LABEL = "label";
+	private static final String AUTHORS = "authors";
+	private static final String TITLE = "title";
+	private static final String JOURNAL = "journal";
+	private static final String MEDLINE = "medline";
+	private static final String PUBMED = "pubmed";
+	private static final String COMMENT = "comment";
+	private static final String STARTLESSTHAN = "startLessThan";
+	private static final String ENDGREATERTHAN = "endGreaterThan";
+	private static final String SINGLEBASERANGE = "singleBaseRange";
+	private static final String MULTIRANGETYPE = "multiRangeType";
+	private static final String NESTEDREFERENCE = "Reference";
+	private static final String BASECOUNT = "baseCount";
+	
 	private static String URIPrefix = null;
 
 	private static void writeGenBankLine(Writer w, String line, int margin, int indent) throws IOException {
@@ -145,8 +170,7 @@ public class GenBank {
 		if (soTerm.equals("SO:0001645")) {return String.format("%-15s", "misc_marker");}
 		if (soTerm.equals("SO:0000298")) {return String.format("%-15s", "misc_recomb");}
 		if (soTerm.equals("SO:0000233")) {return String.format("%-15s", "misc_RNA");}
-		// TODO: CHECK THIS ONE
-		//if (soTerm.equals("SO:0001411")) {return String.format("%-15s", "misc_signal");}
+		if (soTerm.equals("SO:0001411")) {return String.format("%-15s", "misc_signal");}
 		if (soTerm.equals("SO:0005836")) {return String.format("%-15s", "regulatory");}
 		if (soTerm.equals("SO:0000002")) {return String.format("%-15s", "misc_structure");}
 		if (soTerm.equals("SO:0000305")) {return String.format("%-15s", "modified_base");}
@@ -247,7 +271,6 @@ public class GenBank {
 		if (genBankTerm.equals("misc_RNA")) {
 			return so.getURIbyId("SO:0000233");}
 		if (genBankTerm.equals("misc_signal")) {
-			// TODO: check this one
 			return so.getURIbyId("SO:0001411");}
 		if (genBankTerm.equals("misc_structure")) {
 			return so.getURIbyId("SO:0000002");}
@@ -350,7 +373,7 @@ public class GenBank {
 	private static void writeHeader(Writer w,ComponentDefinition componentDefinition,int size) throws SBOLConversionException, IOException {
 		String locus = componentDefinition.getDisplayId().substring(0, 
 				componentDefinition.getDisplayId().length()>15?15:componentDefinition.getDisplayId().length());
-		Annotation annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"locus",gbPrefix));
+		Annotation annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,LOCUS,GBPREFIX));
 		if (annotation!=null) {
 			locus = annotation.getStringValue();
 		}
@@ -367,24 +390,24 @@ public class GenBank {
 			throw new SBOLConversionException("ComponentDefintion " + componentDefinition.getIdentity() +
 							" is not DNA or RNA type.");
 		}
-		annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"molecule",gbPrefix));
+		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,MOLECULE,GBPREFIX));
 		if (annotation!=null) {
 			type = annotation.getStringValue();
 		}
 		String linCirc = "linear";
-		annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"topology",gbPrefix));
+		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,TOPOLOGY,GBPREFIX));
 		if (annotation!=null) {
 			linCirc = annotation.getStringValue();
 		}
 		String division = "UNK";
-		annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"division",gbPrefix));
+		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,DIVISION,GBPREFIX));
 		if (annotation!=null) {
 			division = annotation.getStringValue();
 		}
 		DateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
 		Date dateobj = new Date();
 		String date = df.format(dateobj);
-		annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"date",gbPrefix));
+		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,DATE,GBPREFIX));
 		if (annotation!=null) {
 			date = annotation.getStringValue();
 		}
@@ -398,22 +421,22 @@ public class GenBank {
 		w.write("ACCESSION   " + componentDefinition.getDisplayId() + "\n");
 		if (componentDefinition.isSetVersion()) {
 			String giNumber = "";
-			annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"GInumber",gbPrefix));
+			annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,GINUMBER,GBPREFIX));
 			if (annotation!=null) {
 				giNumber = annotation.getStringValue();
 			}
 			w.write("VERSION     " + componentDefinition.getDisplayId() + "." +
 					componentDefinition.getVersion() + "  " + giNumber + "\n");
 		}
-		annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"keywords",gbPrefix));
+		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,KEYWORDS,GBPREFIX));
 		if (annotation!=null) {
 			w.write("KEYWORDS    " + annotation.getStringValue() + "\n");
 		}
-		annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"source",gbPrefix));
+		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,SOURCE,GBPREFIX));
 		if (annotation!=null) {
 			w.write("SOURCE      " + annotation.getStringValue() + "\n");
 		}
-		annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"organism",gbPrefix));
+		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,ORGANISM,GBPREFIX));
 		if (annotation!=null) {
 			writeGenBankLine(w,"  ORGANISM  " + annotation.getStringValue(),80,12);
 		}
@@ -421,7 +444,7 @@ public class GenBank {
 
 	private static void writeReferences(Writer w,ComponentDefinition componentDefinition) throws IOException {
 		for (Annotation a : componentDefinition.getAnnotations()) {
-			if (a.getQName().equals(new QName(gbNamespace,"reference",gbPrefix))) {
+			if (a.getQName().equals(new QName(GBNAMESPACE,REFERENCE,GBPREFIX))) {
 				String label = null;
 				String authors = null;
 				String title = null;
@@ -429,17 +452,17 @@ public class GenBank {
 				String medline = null;
 				String pubmed = null;
 				for (Annotation ref : a.getAnnotations()) {
-					if (ref.getQName().equals(new QName(gbNamespace,"label",gbPrefix))) {
+					if (ref.getQName().equals(new QName(GBNAMESPACE,LABEL,GBPREFIX))) {
 						label = ref.getStringValue();
-					} else if (ref.getQName().equals(new QName(gbNamespace,"authors",gbPrefix))) {
+					} else if (ref.getQName().equals(new QName(GBNAMESPACE,AUTHORS,GBPREFIX))) {
 						authors = ref.getStringValue();
-					} else if (ref.getQName().equals(new QName(gbNamespace,"title",gbPrefix))) {
+					} else if (ref.getQName().equals(new QName(GBNAMESPACE,TITLE,GBPREFIX))) {
 						title = ref.getStringValue();
-					} else if (ref.getQName().equals(new QName(gbNamespace,"journal",gbPrefix))) {
+					} else if (ref.getQName().equals(new QName(GBNAMESPACE,JOURNAL,GBPREFIX))) {
 						journal = ref.getStringValue();
-					} else if (ref.getQName().equals(new QName(gbNamespace,"medline",gbPrefix))) {
+					} else if (ref.getQName().equals(new QName(GBNAMESPACE,MEDLINE,GBPREFIX))) {
 						medline = ref.getStringValue();
-					} else if (ref.getQName().equals(new QName(gbNamespace,"pubmed",gbPrefix))) {
+					} else if (ref.getQName().equals(new QName(GBNAMESPACE,PUBMED,GBPREFIX))) {
 						pubmed = ref.getStringValue();
 					}
 				}
@@ -466,24 +489,72 @@ public class GenBank {
 	}
 
 	private static void writeComment(Writer w,ComponentDefinition componentDefinition) throws IOException {
-		Annotation annotation = componentDefinition.getAnnotation(new QName(gbNamespace,"comment",gbPrefix));
+		Annotation annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,COMMENT,GBPREFIX));
 		if (annotation!=null) {
 			writeGenBankLine(w,"COMMENT     " + annotation.getStringValue(),80,12);
 		}
 	}
-	
-	private static String startStr(Range range,int offset) {
-		if (range.getAnnotation(new QName(gbNamespace,"startLessThan",gbPrefix))!=null) {
-			return "<"+(offset+range.getStart());
+//	
+//	private static String startStr(Range range,int offset) {
+//		if (range.getAnnotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX))!=null) {
+//			return "<"+(offset+range.getStart());
+//		}
+//		return ""+(offset+range.getStart());
+//	}
+//	
+//	private static String rangeType(Range range) {
+//		if (range.getAnnotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX))!=null) {
+//			return ".";
+//		}
+//		return "..";
+//	}
+//	
+//	private static String endStr(Range range,int offset) {
+//		if (range.getAnnotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX))!=null) {
+//			return ">"+(offset+range.getEnd());
+//		}
+//		return ""+(offset+range.getEnd());
+//	}
+//	
+	private static String locationStr(Location location,int offset,boolean complement) throws SBOLConversionException {
+		int start; 
+		int end;
+		String locationStr = "";
+		boolean isCut = false;
+		if (location instanceof Range) {
+			Range range = (Range)location;
+			start = offset+range.getStart();
+			end = offset+range.getEnd();
+		} else if (location instanceof Cut) {
+			Cut cut = (Cut)location;
+			start = offset+cut.getAt();
+			end = offset+cut.getAt()+1;
+			isCut = true;
+		} else {
+			throw new SBOLConversionException("Location "+location.getIdentity()+" is not range or cut.");
 		}
-		return ""+(offset+range.getStart());
-	}
-	
-	private static String endStr(Range range,int offset) {
-		if (range.getAnnotation(new QName(gbNamespace,"endGreaterThan",gbPrefix))!=null) {
-			return ">"+(offset+range.getEnd());
+		if (complement) {
+			locationStr += "complement(";
 		}
-		return ""+(offset+range.getEnd());
+		if (location.getAnnotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX))!=null) {
+			locationStr += "<";
+		}
+		locationStr += start;
+		if (isCut) {
+			locationStr += "^";
+		} else if (location.getAnnotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX))!=null) {
+			locationStr += ".";
+		} else {
+			locationStr += "..";
+		}
+		if (location.getAnnotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX))!=null) {
+			locationStr += ">";
+		}
+		locationStr += end;
+		if (complement) {
+			locationStr += ")";
+		}
+		return locationStr;
 	}
 
 	private static void writeFeature(Writer w,SequenceAnnotation sa,String role,int offset,boolean inline) 
@@ -492,49 +563,29 @@ public class GenBank {
 			throw new SBOLConversionException("SequenceAnnotation "+sa.getIdentity()+" has no locations.");
 		} else if (sa.getLocations().size()==1) {
 			Location loc = sa.getLocations().iterator().next();
-			if (loc instanceof Range) {
-				Range range = (Range)loc;
-				if ((inline && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))||
-						(!inline && !range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))) {
-					w.write("     " + role + " " + "complement(" + startStr(range,offset) + ".." + 
-							endStr(range,offset)+")\n");
-				} else {
-					w.write("     " + role + " " + startStr(range,offset) + ".." + 
-							endStr(range,offset)+"\n");
-				}
-			} else if (loc instanceof Cut) {
-				Cut cut = (Cut)loc;
-				if ((cut.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))||
-						(!inline && !cut.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))) {
-					w.write("     " + role + " " + "complement(" + 
-							(offset+cut.getAt()) + "^" + (offset+cut.getAt()+1)+")\n");
-				} else {
-					w.write("     " + role + " " + (offset+cut.getAt()) + "^" + (offset+cut.getAt()+1)+"\n");
-				}
-			} else {
-				throw new SBOLConversionException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
-			}
+			w.write("     " + role + " " + locationStr(loc,offset,
+					((inline && loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))||
+					(!inline && !loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))))+"\n");
 		} else {
-			String rangeStr = "     " + role + " " + "join(";
+			String multiType = "join";
+			Annotation annotation = sa.getAnnotation(new QName(GBNAMESPACE,MULTIRANGETYPE,GBPREFIX));
+			if (annotation!=null) {
+				multiType = annotation.getStringValue();
+			}
+			String rangeStr = "     " + role + " " + multiType + "(";
 			boolean first = true;
 			for (Location loc : sa.getSortedLocations()) {
-				if (loc instanceof Range) {
-					Range range = (Range)loc;
-					// TODO: can joins include complement?
-					if (!first) rangeStr += ",";
-					else first = false;
-					rangeStr += startStr(range,offset) + ".." + endStr(range,offset);
-				} else if (loc instanceof Cut) {
-					Cut cut = (Cut)loc;
-					rangeStr += (offset+cut.getAt()) + "^" + (offset+cut.getAt()+1);
-				} else {
-					throw new SBOLConversionException("SequenceAnnotation "+sa.getIdentity()+" is not range or cut.");
-				}
+				if (!first) rangeStr += ",";
+				else first = false;
+				rangeStr += locationStr(loc,offset,
+						((inline && loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))||
+						(!inline && !loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))));
 			}
 			rangeStr += ")";
 			writeGenBankLine(w,rangeStr,80,21);
 		}
 		for (Annotation a : sa.getAnnotations()) {
+			if (a.getQName().getLocalPart().equals("multiRangeType")) continue;
 			writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
 					a.getStringValue(),80,21);
 		}
@@ -628,7 +679,6 @@ public class GenBank {
 							!(inline^isInlineFeature(sa)),newFeatureEnd);
 				}
 			}
-			// TODO: need to test for more complicated complements
 			if (!inline) {
 				writeFeature(w,sa,role,(featureEnd - (getFeatureEnd(sa)+getFeatureStart(sa)-1) - offset),inline);
 				
@@ -789,7 +839,7 @@ public class GenBank {
 		originMode = false;
 		lineCounter = 0;
 
-		doc.addNamespace(URI.create(gbNamespace), gbPrefix);
+		doc.addNamespace(URI.create(GBNAMESPACE), GBPREFIX);
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine;
 		String id = "";
@@ -815,7 +865,7 @@ public class GenBank {
 
 				// ID of the sequence
 				id = strSplit[1];
-				annotation = new Annotation(new QName(gbNamespace, "locus", gbPrefix), strSplit[1]);
+				annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), strSplit[1]);
 				annotations.add(annotation);
 
 				// type of sequence
@@ -823,21 +873,21 @@ public class GenBank {
 					type = ComponentDefinition.RNA;
 
 				}
-				annotation = new Annotation(new QName(gbNamespace, "molecule", gbPrefix), strSplit[4]);
+				annotation = new Annotation(new QName(GBNAMESPACE, MOLECULE, GBPREFIX), strSplit[4]);
 				annotations.add(annotation);
 
 				for (int i = 5; i < strSplit.length; i++) {
 
 					// linear vs. circular construct
 					if (strSplit[i].startsWith("linear") || strSplit[i].startsWith("circular")) {
-						annotation = new Annotation(new QName(gbNamespace, "topology", gbPrefix), strSplit[i]);
+						annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
 
 					} else if (strSplit[i].length()==3) {
-						annotation = new Annotation(new QName(gbNamespace, "division", gbPrefix), strSplit[i]);
+						annotation = new Annotation(new QName(GBNAMESPACE, DIVISION, GBPREFIX), strSplit[i]);
 
 						// date
 					} else {
-						annotation = new Annotation(new QName(gbNamespace, "date", gbPrefix), strSplit[i]);
+						annotation = new Annotation(new QName(GBNAMESPACE, DATE, GBPREFIX), strSplit[i]);
 					}
 
 					annotations.add(annotation);
@@ -857,64 +907,64 @@ public class GenBank {
 					throw new SBOLConversionException("Warning: id in version does not match id in accession");
 				}
 				if (strSplit.length > 2) {
-					annotation = new Annotation(new QName(gbNamespace,"GInumber",gbPrefix),strSplit[2]);
+					annotation = new Annotation(new QName(GBNAMESPACE,GINUMBER,GBPREFIX),strSplit[2]);
 					annotations.add(annotation);
 				}
 			} else if (strLine.startsWith("KEYWORDS")) {
 				String annotationStr = strLine.replace("KEYWORDS", "").trim();
-				annotation = new Annotation(new QName(gbNamespace,"keywords",gbPrefix), annotationStr);
+				annotation = new Annotation(new QName(GBNAMESPACE,KEYWORDS,GBPREFIX), annotationStr);
 				annotations.add(annotation);
 			} else if (strLine.startsWith("SOURCE")) {
 				String annotationStr = strLine.replace("SOURCE", "").trim();
-				annotation = new Annotation(new QName(gbNamespace,"source",gbPrefix), annotationStr);
+				annotation = new Annotation(new QName(GBNAMESPACE,SOURCE,GBPREFIX), annotationStr);
 				annotations.add(annotation);
 			} else if (strLine.startsWith("ORGANISM")) {
 				String annotationStr = strLine.replace("ORGANISM", "").trim();
-				annotation = new Annotation(new QName(gbNamespace,"organism",gbPrefix), annotationStr);
+				annotation = new Annotation(new QName(GBNAMESPACE,ORGANISM,GBPREFIX), annotationStr);
 				annotations.add(annotation);
 			} else if (strLine.startsWith("REFERENCE")) {
 				String annotationStr = strLine.replace("REFERENCE", "").trim();
 				nestedAnnotations = new ArrayList<Annotation>();
-				Annotation labelAnnotation = new Annotation(new QName(gbNamespace,"label",gbPrefix), annotationStr);
+				Annotation labelAnnotation = new Annotation(new QName(GBNAMESPACE,LABEL,GBPREFIX), annotationStr);
 				nestedAnnotations.add(labelAnnotation);
 				URI nestedURI = URI.create(URIPrefix+"/"+id+"/reference"+refCnt);
 				refCnt++;
-				annotation = new Annotation(new QName(gbNamespace,"reference",gbPrefix),
-						new QName(gbNamespace,"Reference",gbPrefix),nestedURI,nestedAnnotations);
+				annotation = new Annotation(new QName(GBNAMESPACE,REFERENCE,GBPREFIX),
+						new QName(GBNAMESPACE,NESTEDREFERENCE,GBPREFIX),nestedURI,nestedAnnotations);
 				annotations.add(annotation);
 			} else if (strLine.startsWith("AUTHORS")) {
 				String annotationStr = strLine.replace("AUTHORS", "").trim();
-				Annotation nestedAnnotation = new Annotation(new QName(gbNamespace,"authors",gbPrefix), annotationStr);
+				Annotation nestedAnnotation = new Annotation(new QName(GBNAMESPACE,AUTHORS,GBPREFIX), annotationStr);
 				nestedAnnotations.add(nestedAnnotation);
 				annotation.setNestedAnnotations(nestedAnnotations);
 			} else if (strLine.startsWith("TITLE")) {
 				String annotationStr = strLine.replace("TITLE", "").trim();
-				Annotation nestedAnnotation = new Annotation(new QName(gbNamespace,"title",gbPrefix), annotationStr);
+				Annotation nestedAnnotation = new Annotation(new QName(GBNAMESPACE,TITLE,GBPREFIX), annotationStr);
 				nestedAnnotations.add(nestedAnnotation);
 				annotation.setNestedAnnotations(nestedAnnotations);
 			} else if (strLine.startsWith("JOURNAL")) {
 				String annotationStr = strLine.replace("JOURNAL", "").trim();
-				Annotation nestedAnnotation = new Annotation(new QName(gbNamespace,"journal",gbPrefix), annotationStr);
+				Annotation nestedAnnotation = new Annotation(new QName(GBNAMESPACE,JOURNAL,GBPREFIX), annotationStr);
 				nestedAnnotations.add(nestedAnnotation);
 				annotation.setNestedAnnotations(nestedAnnotations);
 			} else if (strLine.startsWith("MEDLINE")) {
 				String annotationStr = strLine.replace("MEDLINE", "").trim();
-				Annotation nestedAnnotation = new Annotation(new QName(gbNamespace,"medline",gbPrefix), annotationStr);
+				Annotation nestedAnnotation = new Annotation(new QName(GBNAMESPACE,MEDLINE,GBPREFIX), annotationStr);
 				nestedAnnotations.add(nestedAnnotation);
 				annotation.setNestedAnnotations(nestedAnnotations);
 			} else if (strLine.startsWith("PUBMED")) {
 				String annotationStr = strLine.replace("PUBMED", "").trim();
-				Annotation nestedAnnotation = new Annotation(new QName(gbNamespace,"pubmed",gbPrefix), annotationStr);
+				Annotation nestedAnnotation = new Annotation(new QName(GBNAMESPACE,PUBMED,GBPREFIX), annotationStr);
 				nestedAnnotations.add(nestedAnnotation);
 				annotation.setNestedAnnotations(nestedAnnotations);
 			} else if (strLine.startsWith("COMMENT")) {
 				String annotationStr = strLine.replace("COMMENT", "").trim();
-				annotation = new Annotation(new QName(gbNamespace,"comment",gbPrefix), annotationStr);
+				annotation = new Annotation(new QName(GBNAMESPACE,COMMENT,GBPREFIX), annotationStr);
 				annotations.add(annotation);
 
 			} else if (strLine.startsWith("BASE COUNT")) {
 				String annotationStr = strLine.replace("BASE COUNT", "").trim();
-				annotation = new Annotation(new QName(gbNamespace,"base count",gbPrefix), annotationStr);
+				annotation = new Annotation(new QName(GBNAMESPACE,BASECOUNT,GBPREFIX), annotationStr);
 				annotations.add(annotation);
 
 				// sequence features
@@ -980,7 +1030,7 @@ public class GenBank {
 						// a Genbank feature label is mapped to an SBOL SequenceAnnotation
 						SequenceAnnotation sa = topCD.getSequenceAnnotation("annotation" + (featureCnt - 1));
 						if(null != sa) {
-							annotation = new Annotation(new QName(gbNamespace,tag,gbPrefix),value);
+							annotation = new Annotation(new QName(GBNAMESPACE,tag,GBPREFIX),value);
 							sa.addAnnotation(annotation);
 						}
 
@@ -998,19 +1048,29 @@ public class GenBank {
 						feature.addRole(role);
 
 						String range = strSplit[1];
+						// TODO: this is complementing the entire feature
 						OrientationType orientation = OrientationType.INLINE;
 						if (range.startsWith("complement")) {
 							orientation = OrientationType.REVERSECOMPLEMENT;
 							range = range.replace("complement(", "").replace(")","");
 						}
 
-						if (range.startsWith("join")) {
+						if (range.startsWith("join")||range.startsWith("order")) {
+							String multiType = "join";
+							if (range.startsWith("order")) {
+								multiType = "order";
+							}
 							range = range.replace("join(", "").replace(")","");
+							range = range.replace("order(", "").replace(")","");
 							String[] ranges = range.split(",");
 							int rangeCnt = 0;
 							SequenceAnnotation sa =  null;
 							for (String r : ranges) {
-								// TODO: complements within join
+								orientation = OrientationType.INLINE;
+								if (r.startsWith("complement")) {
+									orientation = OrientationType.REVERSECOMPLEMENT;
+									r = r.replace("complement(", "").replace(")","");
+								}
 								boolean startLessThan=false;
 								boolean endGreaterThan=false;
 								if (r.contains("<")) {
@@ -1021,21 +1081,34 @@ public class GenBank {
 									endGreaterThan=true;
 									r = r.replace(">", "");
 								}
-								String[] rangeSplit = r.split("\\.\\.");
+								boolean singleBaseRange = false;
+								String[] rangeSplit = null;
+								if (range.contains(".") && !range.contains("..")) {
+									rangeSplit = r.split("\\.");
+									singleBaseRange = true;
+								} else {
+									rangeSplit = r.split("\\.\\.");
+								}
 								int start = Integer.parseInt(rangeSplit[0]);
 								int end = Integer.parseInt(rangeSplit[1]);
 								if (rangeCnt==0) {
 									sa = topCD.createSequenceAnnotation("annotation"+featureCnt,"range"+rangeCnt,
 											start,end,orientation);
 									sa.setComponent("feature"+featureCnt);
+									annotation = new Annotation(new QName(GBNAMESPACE,MULTIRANGETYPE,GBPREFIX),multiType);
+									sa.addAnnotation(annotation);
 								} else if (sa != null) {
 									Range newRange = sa.addRange("range"+rangeCnt, start, end, orientation);
 									if (startLessThan) {
-										annotation = new Annotation(new QName(gbNamespace,"startLessThan",gbPrefix),"true");
+										annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 									if (endGreaterThan) {
-										annotation = new Annotation(new QName(gbNamespace,"endGreaterThan",gbPrefix),"true");
+										annotation = new Annotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX),"true");
+										newRange.addAnnotation(annotation);
+									}
+									if (singleBaseRange) {
+										annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 								}
@@ -1058,7 +1131,14 @@ public class GenBank {
 								endGreaterThan=true;
 								range = range.replace(">", "");
 							}
-							String[] rangeSplit = range.split("\\.\\.");
+							boolean singleBaseRange = false;
+							String[] rangeSplit = null;
+							if (range.contains(".") && !range.contains("..")) {
+								rangeSplit = range.split("\\.");
+								singleBaseRange = true;
+							} else {
+								rangeSplit = range.split("\\.\\.");
+							}
 							try {
 								int start = Integer.parseInt(rangeSplit[0]);
 								int end = Integer.parseInt(rangeSplit[1]);
@@ -1072,17 +1152,21 @@ public class GenBank {
 								SequenceAnnotation sa =
 										topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
 								sa.setComponent("feature"+featureCnt);
+								Range newRange = (Range)sa.getLocation("range");
 								if (startLessThan) {
-									Range newRange = (Range)sa.getLocation("range");
-									annotation = new Annotation(new QName(gbNamespace,"startLessThan",gbPrefix),"true");
+									annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");
 									newRange.addAnnotation(annotation);
 								}
 								if (endGreaterThan) {
-									Range newRange = (Range)sa.getLocation("range");
-									annotation = new Annotation(new QName(gbNamespace,"endGreaterThan",gbPrefix),"true");
+									annotation = new Annotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX),"true");
+									newRange.addAnnotation(annotation);
+								}
+								if (singleBaseRange) {
+									annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
 									newRange.addAnnotation(annotation);
 								}
 							} catch(Exception e) {
+								//e.printStackTrace();
 								System.out.println(lineCounter + " --> " + strLine);
 							}
 						}
@@ -1104,6 +1188,9 @@ public class GenBank {
 					}
 				}
 			}
+		}
+		if (topCD==null) {
+			throw new SBOLConversionException("Invalid GenBank file.");
 		}
 
 		Sequence sequence = doc.createSequence(id+"_seq", version, sbSequence.toString(), Sequence.IUPAC_DNA);

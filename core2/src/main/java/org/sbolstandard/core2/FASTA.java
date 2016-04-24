@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -134,7 +135,11 @@ public class FASTA {
 				!sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
 			throw new SBOLConversionException("Sequence encoding is not in IUPAC DNA, RNA, or Protein formats.");
 		}
-		w.write("> " + sequence.getDisplayId() + " : " + sequence.getDescription() + "\n");
+		if (sequence.isSetDescription()) {
+			w.write("> " + sequence.getDisplayId() + " : " + sequence.getDescription() + "\n");
+		} else {
+			w.write("> " + sequence.getDisplayId() + "\n");
+		}
 		writeFASTALine(w,sequence.getElements(),lineWidth);
 	}
 
@@ -160,6 +165,23 @@ public class FASTA {
 		}
 	}
 	
+	static boolean isFastaFile(String fileName) throws FileNotFoundException {
+		String strLine;
+
+		File file = new File(fileName);
+		FileInputStream stream     = new FileInputStream(file);
+		BufferedInputStream buffer = new BufferedInputStream(stream);
+		// using Java 7's try-with-resources statement
+		try (
+				BufferedReader br = new BufferedReader(new InputStreamReader(buffer));
+			) {
+			strLine = readFASTALine(br);
+			if (strLine!=null && (strLine.startsWith(">")||strLine.startsWith(";"))) return true;
+		} catch(Exception e) {
+		}
+		return false;
+	}
+	
 	private static void read(SBOLDocument doc,InputStream in,String URIprefix,String displayId,String version,URI encoding)
 	{
 
@@ -173,6 +195,7 @@ public class FASTA {
 		String description = "";
 		int count = 0;
 		boolean sequenceMode = false;
+		String seqDisplayId;
 		
 		// using Java 7's try-with-resources statement
 		try (
@@ -185,7 +208,12 @@ public class FASTA {
 				if (strLine.startsWith(">")) {
 					if (sequenceMode) {
 						sequenceMode = false;
-						Sequence sequence = doc.createSequence(URIprefix,displayId+count,version,sbSequence.toString(),encoding);
+						if (displayId==null) {
+							seqDisplayId = URIcompliance.fixDisplayId(description);
+						} else {
+							seqDisplayId = displayId+count;
+						}
+						Sequence sequence = doc.createSequence(URIprefix,seqDisplayId,version,sbSequence.toString(),encoding);
 						sequence.setDescription(description);
 						description = "";
 						sbSequence = new StringBuilder();
@@ -195,7 +223,12 @@ public class FASTA {
 				} else if (strLine.startsWith(";")) {
 					if (sequenceMode) {
 						sequenceMode = false;
-						Sequence sequence = doc.createSequence(URIprefix,displayId+count,version,sbSequence.toString(),encoding);
+						if (displayId==null) {
+							seqDisplayId = URIcompliance.fixDisplayId(description);
+						} else {
+							seqDisplayId = displayId+count;
+						}
+						Sequence sequence = doc.createSequence(URIprefix,seqDisplayId,version,sbSequence.toString(),encoding);
 						sequence.setDescription(description);
 						description = "";
 						sbSequence = new StringBuilder();
@@ -211,8 +244,13 @@ public class FASTA {
 					}
 				}
 			}
-			if (count!=0) displayId += count;
-			Sequence sequence = doc.createSequence(URIprefix,displayId,version,sbSequence.toString(),encoding);
+			if (displayId==null) {
+				seqDisplayId = URIcompliance.fixDisplayId(description);
+			} else {
+				seqDisplayId = displayId;
+				if (count!=0) seqDisplayId = displayId + count;
+			}
+			Sequence sequence = doc.createSequence(URIprefix,seqDisplayId,version,sbSequence.toString(),encoding);
 			sequence.setDescription(description);
 		} catch(Exception e) {
 			
