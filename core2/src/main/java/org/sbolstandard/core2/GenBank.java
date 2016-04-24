@@ -1048,8 +1048,8 @@ public class GenBank {
 						feature.addRole(role);
 
 						String range = strSplit[1];
-						OrientationType orientation = OrientationType.INLINE;
 						// TODO: this is complementing the entire feature
+						OrientationType orientation = OrientationType.INLINE;
 						if (range.startsWith("complement")) {
 							orientation = OrientationType.REVERSECOMPLEMENT;
 							range = range.replace("complement(", "").replace(")","");
@@ -1066,6 +1066,7 @@ public class GenBank {
 							int rangeCnt = 0;
 							SequenceAnnotation sa =  null;
 							for (String r : ranges) {
+								orientation = OrientationType.INLINE;
 								if (r.startsWith("complement")) {
 									orientation = OrientationType.REVERSECOMPLEMENT;
 									r = r.replace("complement(", "").replace(")","");
