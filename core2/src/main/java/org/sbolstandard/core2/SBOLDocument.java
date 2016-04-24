@@ -13,7 +13,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -2497,10 +2496,11 @@ public class SBOLDocument {
 	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
 	 *
 	 * @param fileName a given RDF fileName
-	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	public void read(String fileName) throws FileNotFoundException, SBOLValidationException {
+	public void read(String fileName) throws SBOLValidationException, IOException, SBOLConversionException {
 		read(new File(fileName));
 	}
 
@@ -2509,10 +2509,11 @@ public class SBOLDocument {
 	 *
 	 * @param fileName a given fileName and fileType
 	 * @param fileType specify what file type is this file
-	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	void read(String fileName,String fileType) throws FileNotFoundException, SBOLValidationException {
+	void read(String fileName,String fileType) throws SBOLValidationException, IOException, SBOLConversionException {
 		read(new File(fileName),fileType);
 	}
 
@@ -2520,13 +2521,14 @@ public class SBOLDocument {
 	 * Takes in a given RDF File and add the data read to this SBOLDocument.
 	 *
 	 * @param file a given RDF File
-	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if an SBOL validation rule is violated.  
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	public void read(File file) throws FileNotFoundException, SBOLValidationException {
+	public void read(File file) throws SBOLValidationException, IOException, SBOLConversionException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
-		SBOLReader.read(this, buffer, SBOLReader.RDF);
+		this.read(buffer, SBOLReader.RDF);
 	}
 
 	/**
@@ -2534,13 +2536,14 @@ public class SBOLDocument {
 	 *
 	 * @param file a given file
 	 * @param fileType specify what file type is this file
-	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if an SBOL validation rule is violated. 
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	void read(File file,String fileType) throws FileNotFoundException, SBOLValidationException {
+	void read(File file,String fileType) throws SBOLValidationException, IOException, SBOLConversionException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
-		SBOLReader.read(this, buffer, fileType);
+		this.read(buffer, fileType);
 	}
 
 	/**
@@ -2548,9 +2551,11 @@ public class SBOLDocument {
 	 *
 	 * @param in a given RDF InputStream
 	 * @throws SBOLValidationException if an SBOL validation rule is violated.
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	public void read(InputStream in) throws SBOLValidationException {
-		SBOLReader.read(this, in, SBOLReader.RDF);
+	public void read(InputStream in) throws SBOLValidationException, IOException, SBOLConversionException {
+		this.read(in, SBOLReader.RDF);
 	}
 
 	/**
@@ -2559,9 +2564,18 @@ public class SBOLDocument {
 	 * @param in a given RDF InputStream
 	 * @param fileType the fileType that this file is in
 	 * @throws SBOLValidationException 
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	void read(InputStream in,String fileType) throws SBOLValidationException {
-		SBOLReader.read(this, in, fileType);
+	void read(InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException {
+		if (FASTA.isFastaFile(in)) {
+			FASTA.read(this, in, defaultURIprefix, null, "", Sequence.IUPAC_DNA);
+		} else if (GenBank.isGenBankFile(in)) {
+			GenBank.setURIPrefix(defaultURIprefix);
+			GenBank.read(this, in);
+		} else {
+			SBOLReader.read(this, in, fileType);
+		}
 	}
 
 	/**

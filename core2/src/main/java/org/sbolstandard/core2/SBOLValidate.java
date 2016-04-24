@@ -1180,7 +1180,6 @@ public class SBOLValidate {
 		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -e <compareFile>]");
 		System.err.println();
 		System.err.println("Options:");
-		System.err.println("\t-g  convert GenBank/FASTA file to SBOL 2.0");
 		System.err.println("\t-l  <language> specfies language (SBOL1/SBOL2/GenBank/FASTA) for output (default=SBOL2)");
 		System.err.println("\t-s  <topLevelURI> select only this object and those it references");
 		System.err.println("\t-p  <URIprefix> used for converted objects");
@@ -1206,8 +1205,6 @@ public class SBOLValidate {
 	 * "-o" specifies an output filename
 	 * <p>
 	 * "-e" specifies a file to compare if equal to
-	 * <p>
-	 * "-g" convert GenBank file to SBOL 2.0
 	 * <p>
 	 * "-l" indicates the language for output (default=SBOL2, other options SBOL1, GenBank, FASTA)
 	 * <p>
@@ -1244,7 +1241,6 @@ public class SBOLValidate {
 		boolean bestPractice = false;
 		boolean keepGoing = true;
 		boolean showDetail = false;
-		boolean genBankIn = false;
 		boolean genBankOut = false;
 		boolean fastaOut = false;
 		boolean sbolV1out = false;
@@ -1258,8 +1254,6 @@ public class SBOLValidate {
 				bestPractice = true;
 			} else if (args[i].equals("-n")) {
 				compliant = false;
-			} else if (args[i].equals("-g")) {
-				genBankIn = true;
 			} else if (args[i].equals("-f")) {
 				keepGoing = false;
 			} else if (args[i].equals("-d")) {
@@ -1328,18 +1322,16 @@ public class SBOLValidate {
 		if (fileName.equals("")) usage();
 		try {
 			SBOLDocument doc = null;
-			if (genBankIn) {
+			if (FASTA.isFastaFile(fileName)) {
+				doc = FASTA.read(fileName, URIPrefix, null, version, Sequence.IUPAC_DNA);
+			} else if (GenBank.isGenBankFile(fileName)){
 				if (!URIPrefix.equals("")) {
 					GenBank.setURIPrefix(URIPrefix);
 				}
 				//GenBank.setTypesInURI(typesInURI);
 				//GenBank.setVersion(version);
-				if (FASTA.isFastaFile(fileName)) {
-					doc = FASTA.read(fileName, URIPrefix, null, version, Sequence.IUPAC_DNA);
-				} else {
-					doc = GenBank.read(fileName);
-				}
 				//doc.setTypesInURIs(typesInURI);
+				doc = GenBank.read(fileName);
 			} else {
 				if (!URIPrefix.equals("")) {
 					SBOLReader.setURIPrefix(URIPrefix);

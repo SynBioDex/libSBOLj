@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,6 +58,30 @@ public class GenBank {
 	private static final String BASECOUNT = "baseCount";
 	
 	private static String URIPrefix = null;
+	
+	static boolean isGenBankFile(String fileName) throws FileNotFoundException {
+		return isGenBankFile(new File(fileName));
+	}
+	
+	static boolean isGenBankFile(File file) throws FileNotFoundException {
+		FileInputStream stream     = new FileInputStream(file);
+		BufferedInputStream buffer = new BufferedInputStream(stream);
+		return isGenBankFile(buffer);
+	}
+	
+	static boolean isGenBankFile(InputStream in) {
+		String strLine;
+		
+		// using Java 7's try-with-resources statement
+		try (
+				BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			) {
+			strLine = readGenBankLine(br);
+			if (strLine!=null && strLine.startsWith("LOCUS")) return true;
+		} catch(Exception e) {
+		}
+		return false;
+	}
 
 	private static void writeGenBankLine(Writer w, String line, int margin, int indent) throws IOException {
 		if (line.length() < margin) {
@@ -830,7 +855,7 @@ public class GenBank {
 	}
 
 
-	private static void read(SBOLDocument doc,InputStream in) throws IOException, SBOLConversionException, SBOLValidationException {
+	static void read(SBOLDocument doc,InputStream in) throws IOException, SBOLConversionException, SBOLValidationException {
 		so = new SequenceOntology();
 
 		// reset the global static variables needed for parsing
