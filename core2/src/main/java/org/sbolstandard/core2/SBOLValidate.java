@@ -30,6 +30,7 @@ public class SBOLValidate {
 	 * the current SBOL version
 	 */
 	private static final String SBOLVersion = "2.0";
+	private static final String libSBOLj_Version = "2.1";
 	private static List<String> errors = null;
 
 	public static void clearErrors() {
@@ -1050,30 +1051,6 @@ public class SBOLValidate {
 		}
 	}
 
-	private static void usage() {
-		// TODO: update
-		System.err.println("libSBOLj version " + SBOLVersion);
-		System.err.println("Description: Validates the contents of an SBOL document,\n"
-				+ "converting from SBOL 1.1 to SBOL " + SBOLVersion + ", if necessary,\n"
-				+ "and printing the document contents if validation succeeds");
-		System.err.println();
-		System.err.println("Usage:");
-		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -p <URIprefix> -v <version>]");
-		System.err.println();
-		System.err.println("-g  convert GenBank file to SBOL 2.0");
-		System.err.println("-l  <language> specfies language (SBOL1/SBOL2/GenBank) for output (default=SBOL2)");
-		System.err.println("-r  export root ComponentDefinition as a GenBank file");
-		System.err.println("-c  <componentDefinitionURI> specifies top-level ComponentDefinition");
-		System.err.println("-e  <compareFile> specifies file to check if equal to");
-		System.err.println("-t  uses types in URIs");
-		System.err.println("-i  incomplete SBOL document");
-		System.err.println("-n  non-compliant SBOL document");
-		System.err.println("-b  perform best practice checking");
-		System.err.println("-f  fail on first error");
-		System.err.println("-d  provide detailed error trace");
-		System.exit(1);
-	}
-
 	public static void compareDocuments(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
 		/*if (!doc1.getNamespaces().equals(doc2.getNamespaces())) {
 			System.err.println("Namespaces do not match");
@@ -1192,6 +1169,31 @@ public class SBOLValidate {
 			}
 		}
 	}
+	
+
+	private static void usage() {
+		System.err.println("libSBOLj version " + libSBOLj_Version);
+		System.err.println("Description: validates the contents of an SBOL " + SBOLVersion + " document, can compare two documents,\n"
+				+ "and can convert to/from SBOL 1.1, GenBank, and FASTA formats.");
+		System.err.println();
+		System.err.println("Usage:");
+		System.err.println("\tjava --jar libSBOLj.jar [options] <inputFile> [-o <outputFile> -e <compareFile>]");
+		System.err.println();
+		System.err.println("Options:");
+		System.err.println("\t-g  convert GenBank/FASTA file to SBOL 2.0");
+		System.err.println("\t-l  <language> specfies language (SBOL1/SBOL2/GenBank/FASTA) for output (default=SBOL2)");
+		System.err.println("\t-s  <topLevelURI> select only this object and those it references");
+		System.err.println("\t-p  <URIprefix> used for converted objects");
+		System.err.println("\t-v  <version> used for converted objects");
+		System.err.println("\t-t  uses types in URIs");
+		System.err.println("\t-n  allow non-compliant URIs");
+		System.err.println("\t-i  allow SBOL document to be incomplete");
+		System.err.println("\t-b  check best practices");
+		System.err.println("\t-f  fail on first error");
+		System.err.println("\t-d  display detailed error trace");
+		System.exit(1);
+	}
+
 
 	/**
 	 * Command line method for reading an input file and producing an output file.
@@ -1201,41 +1203,39 @@ public class SBOLValidate {
 	 * <p>
 	 * Options:
 	 * <p>
-	 * "-t" uses types in URIs,
-	 * <p>
-	 * "-i" turns off completeness checking,
-	 * <p>
-	 * "-b" turns on best practice checking,
-	 * <p>
-	 * "-n" indicates a non-compliant SBOL document,
-	 * <p>
-	 * "-g" indicates conversion of GenBank file,
-	 * <p>
-	 * "-r" indicates conversion of root component definition to a GenBank file,
-	 * <p>
-	 * "-c" specifies a selected top-level component definition
+	 * "-o" specifies an output filename
 	 * <p>
 	 * "-e" specifies a file to compare if equal to
 	 * <p>
-	 * "-o" specifies an output filename,
+	 * "-g" convert GenBank file to SBOL 2.0
 	 * <p>
-	 * "-p" specifies the default URI prefix of the output file,
+	 * "-l" indicates the language for output (default=SBOL2, other options SBOL1, GenBank, FASTA)
 	 * <p>
-	 * "-v" specifies version to use for converted objects,
+	 * "-s" select only this topLevel object and those it references
 	 * <p>
-	 * "-f" fail on first error, and
+	 * "-p" specifies the default URI prefix for converted objects
 	 * <p>
-	 * "-d" show detailed error trace.
+	 * "-v" specifies version to use for converted objects
 	 * <p>
-	 * "-l" indicates the language for output (default=SBOL2, other options SBOL1, GenBank)
+	 * "-t" uses types in URIs
+	 * <p>
+	 * "-n" allow non-compliant URIs
+	 * <p>
+	 * "-i" allow SBOL document to be incomplete
+	 * <p>
+	 * "-b" check best practices
+	 * <p>
+	 * "-f" fail on first error
+	 * <p>
+	 * "-d" display detailed error trace
 	 *
-	 * @param args arguments supplied at Command line
+	 * @param args arguments supplied at command line
 	 */
 	public static void main(String[] args) {
 		String fileName = "";
 		String outputFile = "";
 		String compareFile = "";
-		String componentDefinitionStr = "";
+		String topLevelURIStr = "";
 		String URIPrefix = "";
 		String version = "";
 		boolean complete = true;
@@ -1246,6 +1246,7 @@ public class SBOLValidate {
 		boolean showDetail = false;
 		boolean genBankIn = false;
 		boolean genBankOut = false;
+		boolean fastaOut = false;
 		boolean sbolV1out = false;
 		int i = 0;
 		while (i < args.length) {
@@ -1263,14 +1264,20 @@ public class SBOLValidate {
 				keepGoing = false;
 			} else if (args[i].equals("-d")) {
 				showDetail = true;
-			} else if (args[i].equals("-r")) {
+			} else if (args[i].equals("-r")) { // TODO: -r is deprecated
 				genBankOut = true;
-			} else if (args[i].equals("-c")) {
+			} else if (args[i].equals("-c"))  { 	//TODO: -c is deprecated
 				genBankOut = true;
 				if (i+1 >= args.length) {
 					usage();
 				}
-				componentDefinitionStr = args[i+1];
+				topLevelURIStr = args[i+1];
+				i++;
+			} else if (args[i].equals("-s")) { 	
+				if (i+1 >= args.length) {
+					usage();
+				}
+				topLevelURIStr = args[i+1];
 				i++;
 			} else if (args[i].equals("-l")) {
 				if (i+1 >= args.length) {
@@ -1280,6 +1287,8 @@ public class SBOLValidate {
 					sbolV1out = true;
 				} else if (args[i+1].equals("GenBank")) {
 					genBankOut = true;
+				} else if (args[i+1].equals("FASTA")) {
+					fastaOut = true;
 				} else if (args[i+1].equals("SBOL2")) {
 				} else {
 					usage();
@@ -1325,7 +1334,11 @@ public class SBOLValidate {
 				}
 				//GenBank.setTypesInURI(typesInURI);
 				//GenBank.setVersion(version);
-				doc = GenBank.read(fileName);
+				if (FASTA.isFastaFile(fileName)) {
+					doc = FASTA.read(fileName, URIPrefix, null, version, Sequence.IUPAC_DNA);
+				} else {
+					doc = GenBank.read(fileName);
+				}
 				//doc.setTypesInURIs(typesInURI);
 			} else {
 				if (!URIPrefix.equals("")) {
@@ -1353,24 +1366,24 @@ public class SBOLValidate {
 			}
 			validateSBOL(doc, complete, compliant, bestPractice);
 			if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
+				if (!topLevelURIStr.equals("")) {
+					TopLevel topLevel = doc.getTopLevel(URI.create(topLevelURIStr));
+					if (topLevel==null) {
+						System.err.println("TopLevel " + topLevelURIStr + " not found.");
+						return;
+					}
+					doc = doc.createRecursiveCopy(topLevel);
+				}
 				if (genBankOut) {
 					ComponentDefinition componentDefinition = null;
-					if (componentDefinitionStr.equals("")) {
-						Set<ComponentDefinition> rootDefinitions = doc.getRootComponentDefinitions();
-						if (rootDefinitions.size()==0) {
-							System.err.println("GenBank output failed: no root ComponentDefinition found.");
-							return;
-						} else if (rootDefinitions.size()==1){
-							componentDefinition = doc.getComponentDefinition(rootDefinitions.iterator().next().getIdentity());
-						} else {
-							System.err.println("GenBank output failed: multiple root ComponentDefinitions, please specify one.");
-							return;
-						}
+					Set<ComponentDefinition> rootDefinitions = doc.getRootComponentDefinitions();
+					if (rootDefinitions.size()==0) {
+						System.err.println("GenBank output failed: no root ComponentDefinition found.");
+						return;
+					} else if (rootDefinitions.size()==1){
+						componentDefinition = doc.getComponentDefinition(rootDefinitions.iterator().next().getIdentity());
 					} else {
-						componentDefinition = doc.getComponentDefinition(URI.create(componentDefinitionStr));
-					}
-					if (componentDefinition==null) {
-						System.err.println("ComponentDefinition " + componentDefinitionStr + " not found.");
+						System.err.println("GenBank output failed: multiple root ComponentDefinitions, please specify one.");
 						return;
 					}
 					if (outputFile.equals("")) {
@@ -1385,6 +1398,13 @@ public class SBOLValidate {
 					} else {
 						System.out.println("Validation successful, no errors.");
 						SBOLWriter.writeV1(doc, outputFile);
+					}
+				} else if (fastaOut) {
+					if (outputFile.equals("")) {
+						FASTA.write(doc, (System.out));
+					} else {
+						System.out.println("Validation successful, no errors.");
+						FASTA.write(doc, outputFile);
 					}
 				} else {
 					if (outputFile.equals("")) {

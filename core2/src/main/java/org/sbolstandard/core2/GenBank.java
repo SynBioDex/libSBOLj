@@ -1189,6 +1189,9 @@ public class GenBank {
 				}
 			}
 		}
+		if (topCD==null) {
+			throw new SBOLConversionException("Invalid GenBank file.");
+		}
 
 		Sequence sequence = doc.createSequence(id+"_seq", version, sbSequence.toString(), Sequence.IUPAC_DNA);
 		topCD.addSequence(sequence);

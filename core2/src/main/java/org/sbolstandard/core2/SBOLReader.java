@@ -785,7 +785,7 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				displayId = fixDisplayId(displayId);
+				displayId = URIcompliance.fixDisplayId(displayId);
 				if (URIPrefix != null )
 				{
 					persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
@@ -1056,15 +1056,6 @@ public class SBOLReader
 		return sequence;
 	}
 
-	private static String fixDisplayId(String displayId) {
-		displayId = displayId.replaceAll("[^a-zA-Z0-9_]", "_");
-		displayId = displayId.replace(" ", "_");
-		if (Character.isDigit(displayId.charAt(0))) {
-			displayId = "_" + displayId;
-		}
-		return displayId;
-	}
-
 	private static String findDisplayId(String topLevelIdentity) {
 		String displayId = null;
 
@@ -1089,7 +1080,7 @@ public class SBOLReader
 		} else {
 			displayId = topLevelIdentity.toString();
 		}
-		displayId = fixDisplayId(displayId);
+		displayId = URIcompliance.fixDisplayId(displayId);
 		return displayId;
 	}
 
@@ -1115,7 +1106,7 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol1Terms.Collection.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				displayId = fixDisplayId(displayId);
+				displayId = URIcompliance.fixDisplayId(displayId);
 				if (URIPrefix != null)
 				{
 					identity = createCompliantURI(URIPrefix,TopLevel.COLLECTION,displayId,version,typesInURI);
