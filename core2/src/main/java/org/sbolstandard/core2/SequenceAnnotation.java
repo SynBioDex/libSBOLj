@@ -53,7 +53,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 *  
 	 * @param displayId
 	 * @return the generic location created
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public GenericLocation addGenericLocation(String displayId) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -77,7 +77,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @param displayId
 	 * @param orientation
 	 * @return the generic location created
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
  	 */
 	public GenericLocation addGenericLocation(String displayId,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -100,7 +100,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @param displayId
 	 * @param at
 	 * @return the cut created
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public Cut addCut(String displayId,int at) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -124,7 +124,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @param at
 	 * @param orientation
 	 * @return the cut created
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public Cut addCut(String displayId,int at,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -148,7 +148,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @param start
 	 * @param end
 	 * @return the range created
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public Range addRange(String displayId,int start,int end) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -173,7 +173,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @param end
 	 * @param orientation
 	 * @return the range created
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public Range addRange(String displayId,int start,int end,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -201,7 +201,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * 
 	 * @param location
 	 * @return {@code true} if the matching Location instance is removed successfully, {@code false} otherwise.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */	
 	public boolean removeLocation(Location location) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -268,7 +268,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * then the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant  
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	void clearLocations() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -280,7 +280,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		
 	/**
 	 * Clears the existing list of location instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	void setLocations(Set<Location> locations) throws SBOLValidationException {
 		clearLocations();	
@@ -397,10 +397,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * It then calls {@link #setComponent(URI)} to set the reference.
 	 * 
 	 * @param displayId
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws SBOLValidationException if the associated ComponentDefinition object is not {@code null},
-	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
-	 * list of Component instances.
+ 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void setComponent(String displayId) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -421,10 +418,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * is allowed to be edited.
 	 * 
 	 * @param componentURI
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws SBOLValidationException if the associated ComponentDefinition object is not {@code null},
-	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
-	 * list of Component instances.
+ 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void setComponent(URI componentURI) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -450,7 +444,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void unsetComponent() throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -499,7 +493,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @param URIprefix
 	 * @param parentDisplayId
 	 * @param version
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {

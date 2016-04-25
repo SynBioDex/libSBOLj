@@ -67,25 +67,24 @@ public class Sequence extends TopLevel{
 	//	}
 
 	/**
-	 * Returns the {@code elements} property of this Sequence object.
+	 * Returns the elements property of this Sequence object.
 	 * 
-	 * @return the {@code elements} property of this Sequence object.
+	 * @return the elements property of this Sequence object.
 	 */
 	public String getElements() {
 		return elements;
 	}
 	
 	/**
-	 * Sets the {@code elements} property to the given argument.  
+	 * Sets the elements property to the given argument.  
 	 * <p>
 	 * If this Sequence object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @param elements
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws SBOLValidationException if the given {@code elements} argument is {@code null}
+	 * @param elements the given elements property
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void setElements(String elements) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -99,25 +98,24 @@ public class Sequence extends TopLevel{
 	}
 	
 	/**
-	 * Returns the {@code encoding} property of this Sequence object.
+	 * Returns the encoding property of this Sequence object.
 	 * 
-	 * @return the {@code encoding} property of this Sequence object.
+	 * @return the encoding property of this Sequence object.
 	 */
 	public URI getEncoding() {
 		return encoding;
 	}
 
 	/**
-	 * Sets the {@code encoding} property to the given argument.  
+	 * Sets the encoding property to the given argument.  
 	 * <p>
 	 * If this Sequence object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @param encoding
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws SBOLValidationException if the given {@code encoding} argument is {@code null}
+	 * @param encoding the given encoding property
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public void setEncoding(URI encoding) throws SBOLValidationException {
 		if (sbolDocument!=null) sbolDocument.checkReadOnly();
@@ -192,7 +190,8 @@ public class Sequence extends TopLevel{
 	
 	/**
 	 * Perform the reverse complement of a sequence encoded using IUPAC_DNA
-	 * @param elements - sequence to reverse complement 
+	 * @param elements sequence to reverse complement 
+	 * @param type DNA or RNA type
 	 * @return the reverse complement of a sequence encoded using IUPAC_DNA
 	 */
 	public static String reverseComplement(String elements,URI type) {
