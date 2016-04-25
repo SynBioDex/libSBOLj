@@ -455,7 +455,7 @@ public class URIcomplianceTest {
 
 
 	/**
-	 * Test <code>null<\code> for top-level URI not compliant in extractPersistentId.
+	 * Test null for top-level URI not compliant in extractPersistentId.
 	 */
 	@Test
 	public void testExtractPersistentId1() {
@@ -477,7 +477,7 @@ public class URIcomplianceTest {
 	}
 
 	/**
-	 * Test <code>null<\code> for child URI not compliant in extractPersistentId.
+	 * Test null for child URI not compliant in extractPersistentId.
 	 */
 	@Test
 	public void testExtractPersistentId3() {
@@ -498,7 +498,7 @@ public class URIcomplianceTest {
 	}
 
 	/**
-	 * Test <code>null<\code> for grand child URI not compliant in extractPersistentId.
+	 * Test null for grand child URI not compliant in extractPersistentId.
 	 */
 	@Test
 	public void testExtractPersistentId5() {
@@ -519,7 +519,7 @@ public class URIcomplianceTest {
 	}
 
 	/**
-	 * Test <code>null<\code> for great grand child URI not compliant in extractPersistentId.
+	 * Test null for great grand child URI not compliant in extractPersistentId.
 	 */
 	@Test
 	public void testExtractPersistentId7() {
@@ -540,7 +540,7 @@ public class URIcomplianceTest {
 	}
 
 	/**
-	 * Test <code>null<\code> for grand child URI not compliant in extractPersistentId.
+	 * Test null for grand child URI not compliant in extractPersistentId.
 	 */
 	@Test
 	public void testExtractURIprefix1() {
@@ -653,7 +653,7 @@ public class URIcomplianceTest {
 	//	}
 
 	/**
-	 * Test <code>null<\code> for extractVersion for the compliant top-level URI.
+	 * Test null for extractVersion for the compliant top-level URI.
 	 */
 	@Test
 	public void testExtractVersion1() {
@@ -663,7 +663,7 @@ public class URIcomplianceTest {
 	}
 
 	/**
-	 * Test <code>null<\code> for extractVersion for the compliant child URI.
+	 * Test null for extractVersion for the compliant child URI.
 	 */
 	@Test
 	public void testExtractVersion2() {
@@ -673,7 +673,7 @@ public class URIcomplianceTest {
 	}
 
 	/**
-	 * Test <code>null<\code> for extractVersion for the compliant grand child URI.
+	 * Test null for extractVersion for the compliant grand child URI.
 	 */
 	@Test
 	public void testExtractVersion3() {
@@ -684,7 +684,7 @@ public class URIcomplianceTest {
 	}
 
 	/**
-	 * Test <code>null<\code> for extractVersion for the compliant great grand child URI.
+	 * Test null for extractVersion for the compliant great grand child URI.
 	 */
 	@Test
 	public void testExtractVersion4() {

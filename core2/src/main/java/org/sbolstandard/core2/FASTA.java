@@ -330,8 +330,6 @@ public class FASTA {
 	
 	/**
 	 * Takes in the given FASTA filename and converts the file to an SBOLDocument.
-	 * <p>
-	 * This method calls {@link #read(File)}.
 	 *
 	 * @param fileName the given FASTA filename
 	 * @param URIprefix the URI prefix used for generated Sequence objects
