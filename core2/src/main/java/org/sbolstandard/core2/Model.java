@@ -18,26 +18,6 @@ public class Model extends TopLevel {
 	private URI source;
 	private URI language;
 	private URI framework;
-	
-	/**
-	 * Systems Biology Markup Language (SBML), the standard XML format for models of biological
-	 * processes such as for example metabolism, cell signaling, and gene regulation
-	 * (<a href="http://identifiers.org/edam/format_2585">SBML</a>).
-	 */
-	public static final URI SBML = URI.create("http://identifiers.org/edam/format_2585");
-
-	/**
-	 * CellML, the format for mathematical models of biological and other networks
-	 * (<a href="http://identifiers.org/edam/format_3240">CELLML</a>).
-	 */
-	public static final URI CELLML = URI.create("http://identifiers.org/edam/format_3240");
-
-	/**
-	 * BioPAX is an exchange format for pathway data, with its data model defined in OWL
-	 * (<a href="http://identifiers.org/edam/format_3156">BIOPAX</a>).
-	 */
-	public static final URI BIOPAX = URI.create("http://identifiers.org/edam/format_3156");
-
 
 	Model(URI identity,URI source, URI language, URI framework) throws SBOLValidationException {
 		super(identity);

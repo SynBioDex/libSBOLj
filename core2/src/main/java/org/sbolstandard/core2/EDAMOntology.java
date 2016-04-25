@@ -31,8 +31,6 @@ public class EDAMOntology {
 	public static final URI NAMESPACE = URI.create(URI_PREFIX);
 	private static OBOOntology EDAMOntology = null;
 
-	// TODO: add FORMAT, SBML, CELLML, BIOPAX constants
-
 	EDAMOntology() {
 		OBOParser oboParser = new OBOParser();
 		if (EDAMOntology == null) {
