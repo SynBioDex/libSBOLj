@@ -193,6 +193,7 @@ public class Sequence extends TopLevel{
 	/**
 	 * Perform the reverse complement of a sequence encoded using IUPAC_DNA
 	 * @param elements - sequence to reverse complement 
+	 * @param type - indicates if ComponentDefinition type is DNA or RNA
 	 * @return the reverse complement of a sequence encoded using IUPAC_DNA
 	 */
 	public static String reverseComplement(String elements,URI type) {

@@ -15,6 +15,11 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URI;
 
+/**
+ * Methods to convert FASTA to/from SBOL Sequences
+ * @author Chris Myers
+ *
+ */
 public class FASTA {
 
 	// "look-ahead" line
@@ -116,7 +121,7 @@ public class FASTA {
 	
 	/**
 	 * Serializes all Sequence in an SBOLDocument to the given output stream in FASTA format.
-	 * @param sequence a given Sequence
+	 * @param document a given SBOLDocument
 	 * @param out the output stream to serialize into
 	 * @throws IOException input/output operation failed
 	 * @throws SBOLConversionException violates conversion limitations
@@ -306,6 +311,10 @@ public class FASTA {
 	 * Takes in the given FASTA file and converts the file to an SBOLDocument.
 	 *
 	 * @param file the given FASTA filename
+	 * @param URIprefix the URI prefix used for generated Sequence objects
+	 * @param displayId the base displayId to use for generated Sequence objects (null will use description as id)
+	 * @param version the verison used for generated Sequence objects
+	 * @param encoding the encoding assumed for generated Sequence objects
 	 * @return the converted SBOLDocument instance
 	 * @throws SBOLConversionException violates conversion limitations
 	 * @throws SBOLValidationException violates sbol validation rule
@@ -325,6 +334,10 @@ public class FASTA {
 	 * This method calls {@link #read(File)}.
 	 *
 	 * @param fileName the given FASTA filename
+	 * @param URIprefix the URI prefix used for generated Sequence objects
+	 * @param displayId the base displayId to use for generated Sequence objects (null will use description as id)
+	 * @param version the verison used for generated Sequence objects
+	 * @param encoding the encoding assumed for generated Sequence objects
 	 * @return the converted SBOLDocument
 	 * @throws SBOLConversionException violates conversion limitations
 	 * @throws SBOLValidationException violates sbol validation rule
@@ -336,10 +349,10 @@ public class FASTA {
 		return read(new File(fileName),URIprefix,displayId,version,encoding);
 	}
 
-	public static void main(String[] args) throws SBOLConversionException, IOException, SBOLValidationException {
-		SBOLDocument doc = read("/Users/myers/Downloads/sample.fasta","http://dummy.org","dummy","",Sequence.IUPAC_DNA);
-		//doc.write(System.out);
-		write(doc, System.out);
-	}
+//	public static void main(String[] args) throws SBOLConversionException, IOException, SBOLValidationException {
+//		SBOLDocument doc = read("/Users/myers/Downloads/sample.fasta","http://dummy.org","dummy","",Sequence.IUPAC_DNA);
+//		//doc.write(System.out);
+//		write(doc, System.out);
+//	}
 
 }
