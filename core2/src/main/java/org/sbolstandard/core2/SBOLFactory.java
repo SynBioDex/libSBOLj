@@ -1797,10 +1797,11 @@ public final class SBOLFactory {
 	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
 	 *
 	 * @param fileName a given RDF fileName
-	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	public static void read(String fileName) throws FileNotFoundException, SBOLValidationException {
+	public static void read(String fileName) throws SBOLValidationException, IOException, SBOLConversionException {
 		document.read(fileName);
 	}
 
@@ -1808,10 +1809,11 @@ public final class SBOLFactory {
 	 * Takes in a given RDF File and add the data read to this SBOLDocument.
 	 *
 	 * @param file a given RDF fileName
-	 * @throws FileNotFoundException if file not found
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	public static void read(File file) throws FileNotFoundException, SBOLValidationException {
+	public static void read(File file) throws SBOLValidationException, IOException, SBOLConversionException {
 		document.read(file);
 	}
 
@@ -1820,8 +1822,10 @@ public final class SBOLFactory {
 	 *
 	 * @param in a given RDF InputStream
 	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	public static void read(InputStream in) throws SBOLValidationException {
+	public static void read(InputStream in) throws SBOLValidationException, IOException, SBOLConversionException {
 		document.read(in);
 	}
 

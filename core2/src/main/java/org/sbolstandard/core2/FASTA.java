@@ -166,14 +166,21 @@ public class FASTA {
 	}
 	
 	static boolean isFastaFile(String fileName) throws FileNotFoundException {
-		String strLine;
-
-		File file = new File(fileName);
+		return isFastaFile(new File(fileName));
+	}
+	
+	static boolean isFastaFile(File file) throws FileNotFoundException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
+		return isFastaFile(buffer);
+	}
+	
+	static boolean isFastaFile(InputStream in) {
+		String strLine;
+
 		// using Java 7's try-with-resources statement
 		try (
-				BufferedReader br = new BufferedReader(new InputStreamReader(buffer));
+				BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			) {
 			strLine = readFASTALine(br);
 			if (strLine!=null && (strLine.startsWith(">")||strLine.startsWith(";"))) return true;
@@ -182,7 +189,7 @@ public class FASTA {
 		return false;
 	}
 	
-	private static void read(SBOLDocument doc,InputStream in,String URIprefix,String displayId,String version,URI encoding)
+	static void read(SBOLDocument doc,InputStream in,String URIprefix,String displayId,String version,URI encoding) throws SBOLValidationException, IOException
 	{
 
 		// reset the global static variables needed for parsing
@@ -197,64 +204,58 @@ public class FASTA {
 		boolean sequenceMode = false;
 		String seqDisplayId;
 		
-		// using Java 7's try-with-resources statement
-		try (
-				BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			) {
-			
-			while ((strLine = readFASTALine(br)) != null)   {
-				strLine = strLine.trim();
-	
-				if (strLine.startsWith(">")) {
-					if (sequenceMode) {
-						sequenceMode = false;
-						if (displayId==null) {
-							seqDisplayId = URIcompliance.fixDisplayId(description);
-						} else {
-							seqDisplayId = displayId+count;
-						}
-						Sequence sequence = doc.createSequence(URIprefix,seqDisplayId,version,sbSequence.toString(),encoding);
-						sequence.setDescription(description);
-						description = "";
-						sbSequence = new StringBuilder();
-						count++;
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+
+		while ((strLine = readFASTALine(br)) != null)   {
+			strLine = strLine.trim();
+
+			if (strLine.startsWith(">")) {
+				if (sequenceMode) {
+					sequenceMode = false;
+					if (displayId==null) {
+						seqDisplayId = URIcompliance.fixDisplayId(description);
+					} else {
+						seqDisplayId = displayId+count;
 					}
-					description += strLine.replaceFirst(">", "").trim();
-				} else if (strLine.startsWith(";")) {
-					if (sequenceMode) {
-						sequenceMode = false;
-						if (displayId==null) {
-							seqDisplayId = URIcompliance.fixDisplayId(description);
-						} else {
-							seqDisplayId = displayId+count;
-						}
-						Sequence sequence = doc.createSequence(URIprefix,seqDisplayId,version,sbSequence.toString(),encoding);
-						sequence.setDescription(description);
-						description = "";
-						sbSequence = new StringBuilder();
-						count++;
+					Sequence sequence = doc.createSequence(URIprefix,seqDisplayId,version,sbSequence.toString(),encoding);
+					sequence.setDescription(description);
+					description = "";
+					sbSequence = new StringBuilder();
+					count++;
+				}
+				description += strLine.replaceFirst(">", "").trim();
+			} else if (strLine.startsWith(";")) {
+				if (sequenceMode) {
+					sequenceMode = false;
+					if (displayId==null) {
+						seqDisplayId = URIcompliance.fixDisplayId(description);
+					} else {
+						seqDisplayId = displayId+count;
 					}
-					description += strLine.replaceFirst(";", "").trim();
-				} else {
-					sequenceMode = true;
-					if(elements == null) { elements = new String(""); }
-					String[] strSplit = strLine.split(" ");
-					for (int i = 0; i < strSplit.length; i++) {
-						sbSequence.append(strSplit[i]);
-					}
+					Sequence sequence = doc.createSequence(URIprefix,seqDisplayId,version,sbSequence.toString(),encoding);
+					sequence.setDescription(description);
+					description = "";
+					sbSequence = new StringBuilder();
+					count++;
+				}
+				description += strLine.replaceFirst(";", "").trim();
+			} else {
+				sequenceMode = true;
+				if(elements == null) { elements = new String(""); }
+				String[] strSplit = strLine.split(" ");
+				for (int i = 0; i < strSplit.length; i++) {
+					sbSequence.append(strSplit[i]);
 				}
 			}
-			if (displayId==null) {
-				seqDisplayId = URIcompliance.fixDisplayId(description);
-			} else {
-				seqDisplayId = displayId;
-				if (count!=0) seqDisplayId = displayId + count;
-			}
-			Sequence sequence = doc.createSequence(URIprefix,seqDisplayId,version,sbSequence.toString(),encoding);
-			sequence.setDescription(description);
-		} catch(Exception e) {
-			
 		}
+		if (displayId==null) {
+			seqDisplayId = URIcompliance.fixDisplayId(description);
+		} else {
+			seqDisplayId = displayId;
+			if (count!=0) seqDisplayId = displayId + count;
+		}
+		Sequence sequence = doc.createSequence(URIprefix,seqDisplayId,version,sbSequence.toString(),encoding);
+		sequence.setDescription(description);
 	}
 	
 	/**
@@ -262,17 +263,18 @@ public class FASTA {
 	 * them in an SBOLDocument object, and returns the SBOLDocument object.
 	 * 
 	 * @param in  ... the input stream that contains the sequences in FASTA format
-	 * @param URIprefix ... the URI prefix of the sequences
+	 * @param URIPrefix ... the URI prefix of the sequences
 	 * @param displayId
 	 * @param version ... the version of the sequences
 	 * @param encoding ... the encoding of the sequences (i.e. DNA, RNA, or Protein)
 	 * 
 	 * @return an SBOLDocument object that contains the imported FASTA sequences as SBOL Sequence objects
+	 * @throws SBOLConversionException 
 	 * 
 	 * @throws IOException
 	 * @throws SBOLValidationException
 	 */
-	public static SBOLDocument read(InputStream in,String URIprefix,String displayId,String version,URI encoding) 
+	public static SBOLDocument read(InputStream in,String URIPrefix,String displayId,String version,URI encoding) throws SBOLConversionException, SBOLValidationException, IOException 
 	{
 		
 		/*
@@ -282,28 +284,18 @@ public class FASTA {
 		
 		SBOLDocument doc = new SBOLDocument();
 		doc.setCreateDefaults(true);
-		
-		/*---------------
-		 * Update: 
-		 * When using the doc.getSequence method later, then the following exception 
-		 * was thrown: "The defaultURIprefix is not set. Please set it to a non-null value"
-		 *
-		 * Hence, we set the URIprefix of the document as provided by the user
-		 *---------------*/
 
 		// check that the caller provided a valid URIprefix
-		if(null == URIprefix) {
-			throw new IllegalArgumentException("Invalid URIprefix! Cannot be null.");
-		} else if(URIprefix.isEmpty()) {
-			throw new IllegalArgumentException("Invalid URIprefix! Cannot be empty.");
+		if (URIPrefix==null) {
+			throw new SBOLConversionException("No URI prefix has been provided.");
 		}
 		// TODO: add more URIprefix validations (e.g. well-formed HTTP)???
 		
 		// if the URIprefix is valid, than we set it in the document 
-		doc.setDefaultURIprefix(URIprefix);
+		doc.setDefaultURIprefix(URIPrefix);
 		
 		// parse the stream's content
-		read(doc,in,URIprefix,displayId,version,encoding);
+		read(doc,in,URIPrefix,displayId,version,encoding);
 		
 		// lastly, return the SBOLDocument object that contains 
 		// all sequences represented as SBOL objects
@@ -320,7 +312,7 @@ public class FASTA {
 	 * @throws IOException input/output operation failed
 	 */
 	public static SBOLDocument read(File file,String URIprefix,String displayId,String version,URI encoding) 
-			throws IOException
+			throws IOException, SBOLConversionException, SBOLValidationException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -339,12 +331,12 @@ public class FASTA {
 	 * @throws IOException input/output operation failed
 	 */
 	public static SBOLDocument read(String fileName,String URIprefix,String displayId,String version,URI encoding) 
-			throws IOException
+			throws IOException, SBOLConversionException, SBOLValidationException
 	{
 		return read(new File(fileName),URIprefix,displayId,version,encoding);
 	}
 
-	public static void main(String[] args) throws SBOLConversionException, IOException {
+	public static void main(String[] args) throws SBOLConversionException, IOException, SBOLValidationException {
 		SBOLDocument doc = read("/Users/myers/Downloads/sample.fasta","http://dummy.org","dummy","",Sequence.IUPAC_DNA);
 		//doc.write(System.out);
 		write(doc, System.out);
