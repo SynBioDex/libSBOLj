@@ -14,6 +14,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Signals that an SBOL validation rule violation has occurred. 
+ * 
  * @author Zhen Zhang
  * @author Tramy Nguyen
  * @author Nicholas Roehner
