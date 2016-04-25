@@ -1396,9 +1396,8 @@ public final class SBOLFactory {
 
 	/**
 	 *  Removes all non-required namespaces from the SBOL document.
-	 * @throws SBOLValidationException {@link SBOLValidationException} 
 	 */
-	public static void clearNamespaces() throws SBOLValidationException {
+	public static void clearNamespaces() {
 		document.clearNamespaces();
 	}
 
@@ -1429,9 +1428,8 @@ public final class SBOLFactory {
 	 * is allowed to be edited.
 	 *
 	 * @param namespaceURI The Namespace {@link URI}
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
-	public static void removeNamespace(URI namespaceURI) throws SBOLValidationException {
+	public static void removeNamespace(URI namespaceURI) {
 		document.removeNamespace(namespaceURI);
 	}
 
