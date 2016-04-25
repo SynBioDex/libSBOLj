@@ -56,10 +56,8 @@ public class MapsTo extends Identified{
 	 * is allowed to be edited.
 	 *
 	 * @param refinement The refinement type of the MapsTo object
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void setRefinement(RefinementType refinement) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void setRefinement(RefinementType refinement) {
 		this.refinement = refinement;
 	}
 
@@ -110,13 +108,11 @@ public class MapsTo extends Identified{
 	 * is allowed to be edited.
 	 *
 	 * @param local refers to the second “higher level” ComponentInstance.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the given {@code local} argument is {@code null}
 	 * @throws SBOLValidationException if the given {@code local} argument is not found in
 	 * this MapsTo object's reference ModuleDefinition instance's list of functional components.
 	 */
 	public void setLocal(URI local) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (local==null) {
 			throw new SBOLValidationException("sbol-10802", this);
 		}
@@ -186,7 +182,6 @@ public class MapsTo extends Identified{
 	 * is allowed to be edited.
 	 *
 	 * @param remote refers to the first “lower level” ComponentInstance
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the given {@code remote} argument is {@code null}
 	 * @throws SBOLValidationException if the given {@code remote} argument is not found in
 	 * the list of functional components that are owned by the ModuleDefinition instance that
@@ -196,7 +191,6 @@ public class MapsTo extends Identified{
 	 * this MapsTo object's parent Module instance refers to.
 	 */
 	public void setRemote(URI remote) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (remote==null) {
 			throw new SBOLValidationException("sbol-10805", this);
 		}

@@ -73,14 +73,12 @@ public class Module extends Identified {
 	 * a MapsTo instance.
 	 *
 	 * @param definitionURI The definition URI for this Module.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the given {@code definitionURI} is {@code null}
 	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code definitionURI} argument is not found in
 	 * its list of ModuleDefinition instances.
 	 */
 	public void setDefinition(URI definitionURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (definitionURI==null) {
 			throw new SBOLValidationException("sbol-11702",this);
 		}
@@ -139,7 +137,6 @@ public class Module extends Identified {
 	 * @param localId The second “higher level” ComponentInstance for this MapsTo object
 	 * @param remoteId The first “lower level” ComponentInstance for this MapsTo object
 	 * @return a MapsTo instance
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code local} argument is not found in the list
 	 * of functional components that are owned by the ModuleDefinition instance that
@@ -154,7 +151,6 @@ public class Module extends Identified {
 	 * this Module object refers to.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
 				localId, moduleDefinition.getVersion());
 		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
@@ -183,7 +179,6 @@ public class Module extends Identified {
 	 * @param local The second “higher level” ComponentInstance for this MapsTo object
 	 * @param remote The first “lower level” ComponentInstance for this MapsTo object
 	 * @return a MapsTo instance
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code local} argument is not found in the list
 	 * of functional components that are owned by the ModuleDefinition instance that
@@ -198,7 +193,6 @@ public class Module extends Identified {
 	 * this Module object refers to.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		URI newMapsToURI = createCompliantURI(parentPersistentIdStr, displayId, version);
@@ -255,10 +249,8 @@ public class Module extends Identified {
 	 *
 	 * @param mapsTo The MapsTo object to be removed
 	 * @return {@code true} if the matching MapsTo instance is removed successfully, {@code false} otherwise.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public boolean removeMapsTo(MapsTo mapsTo) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public boolean removeMapsTo(MapsTo mapsTo) {
 		return removeChildSafely(mapsTo,mapsTos);
 	}
 
@@ -304,10 +296,8 @@ public class Module extends Identified {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearMapsTos() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void clearMapsTos() {
 		Object[] valueSetArray = mapsTos.values().toArray();
 		for (Object mapsTo : valueSetArray) {
 			removeMapsTo((MapsTo)mapsTo);

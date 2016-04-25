@@ -62,12 +62,10 @@ public class FunctionalComponent extends ComponentInstance {
 	 * is allowed to be edited.
 	 *
 	 * @param direction The direction for the FunctionalComponent
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the given {@code direction} is {@code null}
 	 *
 	 */
 	public void setDirection(DirectionType direction) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (direction==null) {
 			throw new SBOLValidationException("sbol-11802",this);
 		}
@@ -155,7 +153,6 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @param localId refer to the ComponentInstance contained by the “higher level” ComponentDefinition or ModuleDefinition
 	 * @param remoteId refer to the ComponentInstance contained by the “lower level” ComponentDefinition or ModuleDefinition
 	 * @return a MapsTo instance
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the SBOLDocument instance already completely
 	 * specifies all URIs and the given {@code local} argument is not found in the list
 	 * of functional components that are owned by the ModuleDefinition instance that
@@ -170,7 +167,6 @@ public class FunctionalComponent extends ComponentInstance {
 	 * this Module object refers to.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
 				localId, moduleDefinition.getVersion());
 		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
@@ -203,7 +199,6 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		MapsTo m = createMapsTo(createCompliantURI(parentPersistentIdStr, displayId, version),
@@ -258,11 +253,9 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @param mapsTo The mapsTo object to be removed
 	 * @return {@code true} if the matching MapsTo instance is removed successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 *
 	 */
-	public boolean removeMapsTo(MapsTo mapsTo) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public boolean removeMapsTo(MapsTo mapsTo) {
 		return removeChildSafely(mapsTo,mapsTos);
 	}
 
@@ -308,10 +301,8 @@ public class FunctionalComponent extends ComponentInstance {
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearMapsTos() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void clearMapsTos() {
 		Object[] valueSetArray = mapsTos.values().toArray();
 		for (Object mapsTo : valueSetArray) {
 			removeMapsTo((MapsTo)mapsTo);

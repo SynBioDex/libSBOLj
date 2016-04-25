@@ -77,19 +77,15 @@ public class Participation extends Identified {
 	 * is allowed to be edited.
 	 *
 	 * @param participant the participant property of this object
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code participant} argument is {@code null}
 	 * @throws SBOLValidationException if the associated ModuleDefinition instance is not {@code null} and
 	 * given {@code participant} URI is not found in its list of FunctionalComponent instances.
 	 */
 	public void setParticipant(URI participant) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (participant == null) {
-			//throw new SBOLValidationException("Participation is required to have a participant.");
 			throw new SBOLValidationException("sbol-12002",this);
 		}
 		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participant)==null) {
-			//throw new SBOLValidationException("Functional component '" + participant + "' does not exist.");
 			throw new SBOLValidationException("sbol-12003",this);
 		}
 		this.participant = participant;
@@ -104,10 +100,8 @@ public class Participation extends Identified {
 	 *
 	 * @param roleURI the given role URI to this Participation's set of role URIs
 	 * @return {@code true} if this set did not already contain the specified role.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public boolean addRole(URI roleURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public boolean addRole(URI roleURI) {
 		return roles.add(roleURI);
 	}
 
@@ -120,10 +114,9 @@ public class Participation extends Identified {
 	 *
 	 * @param roleURI the given role reference from the set of role references.
 	 * @return {@code true} if the matching role reference is removed successfully, {@code false} otherwise.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if removing the last role
 	 */
 	public boolean removeRole(URI roleURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (roles.size()==1 && roles.contains(roleURI)) {
 			throw new SBOLValidationException("sbol-12004", this);
 		}
@@ -139,10 +132,9 @@ public class Participation extends Identified {
 	 * is allowed to be edited.
 	 *
 	 * @param roles the given role reference from the set of role references to be added
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if there are no roles
 	 */
 	public void setRoles(Set<URI> roles) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (roles==null || roles.size()==0) {
 			throw new SBOLValidationException("sbol-12004", this);
 		}
@@ -180,10 +172,8 @@ public class Participation extends Identified {
 	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	void clearRoles() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	void clearRoles() {
 		roles.clear();
 	}
 

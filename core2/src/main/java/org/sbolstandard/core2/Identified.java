@@ -103,7 +103,6 @@ public abstract class Identified {
 	 */
 	final void setIdentity(URI identity) throws SBOLValidationException {
 		if (identity == null) {
-			// throw new SBOLValidationException("Identity is a required field.");
 			throw new SBOLValidationException("sbol-10201", this);
 		}
 		this.identity = identity;
@@ -120,11 +119,15 @@ public abstract class Identified {
 
 	/**
 	 * Returns the persistent identity URI of this object.
+	 * If it is not set, it returns the identity.
 	 *
 	 * @return the persistent identity URI of this object.
 	 */
 	public URI getPersistentIdentity() {
-		return persistentIdentity;
+		if (isSetPersistentIdentity()) {
+			return persistentIdentity;
+		}
+		return identity;
 	}
 
 	/**
@@ -241,7 +244,6 @@ public abstract class Identified {
 	 */
 	public void setWasDerivedFrom(URI wasDerivedFrom) throws SBOLValidationException {
 		if (sbolDocument!=null) {
-			sbolDocument.checkReadOnly();
 			if (!SBOLValidate.checkWasDerivedFromVersion(sbolDocument, this, wasDerivedFrom)) {
 				throw new SBOLValidationException("sbol-10211", this);
 			}
@@ -273,7 +275,6 @@ public abstract class Identified {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public Annotation createAnnotation(QName qName, String literal) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
 		return annotation;
@@ -293,7 +294,6 @@ public abstract class Identified {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public Annotation createAnnotation(QName qName, double literal) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
 		return annotation;
@@ -313,7 +313,6 @@ public abstract class Identified {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public Annotation createAnnotation(QName qName, int literal) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
 		return annotation;
@@ -333,7 +332,6 @@ public abstract class Identified {
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, boolean literal) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
 		return annotation;
@@ -353,7 +351,6 @@ public abstract class Identified {
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, URI literal) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName,literal);
 		addAnnotation(annotation);
 		return annotation;
@@ -387,7 +384,6 @@ public abstract class Identified {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public Annotation createAnnotation(QName qName,QName nestedQName, URI nestedURI, List<Annotation> annotations) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Annotation annotation = new Annotation(qName, nestedQName, nestedURI, annotations);
 		addAnnotation(annotation);
 		return annotation;
@@ -455,10 +451,8 @@ public abstract class Identified {
 	 * @param annotation The annotation instance using the given {@code qName} and the {@code literal} to be removed
 	 * @return {@code true} if the matching Annotation instance is removed successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public boolean removeAnnotation(Annotation annotation) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public boolean removeAnnotation(Annotation annotation) {
 		return annotations.remove(annotation);
 	}
 
@@ -495,10 +489,8 @@ public abstract class Identified {
 	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearAnnotations() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void clearAnnotations() {
 		annotations.clear();
 	}
 
@@ -521,10 +513,8 @@ public abstract class Identified {
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void unsetWasDerivedFrom() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void unsetWasDerivedFrom() {
 		wasDerivedFrom = null;
 	}
 
@@ -679,10 +669,8 @@ public abstract class Identified {
 	 * is allowed to be edited.
 	 *
 	 * @param name Property is intended to be displayed to a human when visualizing an Identified object.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void setName(String name) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void setName(String name) {
 		this.name = name;
 	}
 
@@ -694,10 +682,8 @@ public abstract class Identified {
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void unsetName() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void unsetName() {
 		name = null;
 	}
 
@@ -728,10 +714,8 @@ public abstract class Identified {
 	 * is allowed to be edited.
 	 *
 	 * @param description Property is intended to contain a more thorough text description of an Identified object.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void setDescription(String description) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -743,10 +727,8 @@ public abstract class Identified {
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void unsetDescription() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void unsetDescription() {
 		description = null;
 	}
 
