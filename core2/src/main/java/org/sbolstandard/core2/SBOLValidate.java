@@ -1036,15 +1036,15 @@ public class SBOLValidate {
 	}
 
 	/**
-	 * Validates the given SBOL document. Errors encountered either throw exceptions or, if not fatal, add to the list of errors
-	 * that can be accessed using the {@link #getErrors()} method. Interpretations of the values for the following parameters are: 
-	 * <li> complete: A {@code true} value means all references in the given SBOLDocument object can dereference to objects 
+	 * Validates the given SBOL document. Errors encountered either throw exceptions or, if not fatal, are added to the list of errors
+	 * that can be accessed using the {@link #getErrors()} method. Interpretations of the complete, compliant, and bestPractice parameters 
+	 * are as follows:
+	 * <li> complete: A {@code true} value means that ALL references in the given SBOLDocument object can dereference to objects 
 	 * in the same document; {@code false} otherwise.
-	 * 
-	 * <li>the second item
-	 * <li>the third item
-	 * </ul><p>
-	 * 
+	 * <li> compliant: A {@code true} value means that ALL URIs in the given SBOLDocument object are compliant; {@code false} otherwise.
+	 * <li> best practice: A {@code true} value means that validation rules with the RECOMMENDED condition in the SBOL specification are
+	 * checked against the given SBOLDocuemnt object; {@code false} otherwise.
+	 *  </ul><p>
 	 * 
 	 * @param sbolDocument the given {@code SBOLDocument} object
 	 * @param complete the given {@code complete} flag 
