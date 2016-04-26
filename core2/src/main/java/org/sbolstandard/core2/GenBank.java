@@ -1,14 +1,10 @@
 package org.sbolstandard.core2;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -27,7 +23,7 @@ import javax.xml.namespace.QName;
  * @author Chris Myers
  *
  */
-public class GenBank {
+class GenBank {
 
 	private static SequenceOntology so = null;
 
@@ -57,32 +53,22 @@ public class GenBank {
 	private static final String NESTEDREFERENCE = "Reference";
 	private static final String BASECOUNT = "baseCount";
 	
-	private static String URIPrefix = null;
-	
-	static boolean isGenBankFile(String fileName) throws FileNotFoundException {
-		return isGenBankFile(new File(fileName));
-	}
-	
-	static boolean isGenBankFile(File file) throws FileNotFoundException {
+	static boolean isGenBankFile(String fileName) throws IOException {
+		File file = new File(fileName);
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
-		return isGenBankFile(buffer);
-	}
-	
-	static boolean isGenBankFile(InputStream in) {
 		String strLine;
-		
-		// using Java 7's try-with-resources statement
-		try (
-				BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			) {
-			strLine = readGenBankLine(br);
-			if (strLine!=null && strLine.startsWith("LOCUS")) return true;
-		} catch(Exception e) {
-		}
-		return false;
+		BufferedReader br = new BufferedReader(new InputStreamReader(buffer));
+		strLine = br.readLine();
+		br.close();
+		return isGenBankString(strLine);
 	}
 
+	static boolean isGenBankString(String inputString) {
+		if (inputString!=null && inputString.startsWith("LOCUS")) return true;
+		return false;
+	}
+	
 	private static void writeGenBankLine(Writer w, String line, int margin, int indent) throws IOException {
 		if (line.length() < margin) {
 			w.write(line+"\n");
@@ -106,46 +92,8 @@ public class GenBank {
 			}
 		}
 	}
-
-	/**
-	 * Serializes a given ComponentDefinition and outputs the data from the serialization to the given output
-	 * file name in GenBank format
-	 * @param componentDefinition a given ComponentDefinition
-	 * @param filename the given output file name in GenBank format
-	 * @throws IOException input/output operation failed
-	 * @throws SBOLConversionException violates conversion limitations
-	 */
-	public static void write(ComponentDefinition componentDefinition, String filename) throws IOException, SBOLConversionException
-	{
-		write(componentDefinition, new File(filename));
-	}
-
-	/**
-	 * Serializes a given ComponentDefinition and outputs the data from the serialization to the given file
-	 * in GenBank format.
-	 * @param componentDefinition a given ComponentDefinition
-	 * @param file the given output file name in GenBank format
-	 * @throws IOException input/output operation failed
-	 * @throws SBOLConversionException violates conversion limitations
-	 */
-	public static void write(ComponentDefinition componentDefinition, File file) throws IOException, SBOLConversionException{
-		FileOutputStream stream = new FileOutputStream(file);
-		BufferedOutputStream buffer = new BufferedOutputStream(stream);
-		write(componentDefinition, buffer);
-		stream.close();
-		buffer.close();
-	}
-
-	/**
-	 * Serializes a given ComponentDefinition and outputs the data from the serialization to the given output stream
-	 * in GenBank format.
-	 * @param componentDefinition a given ComponentDefinition
-	 * @param out the given output file name in GenBank format
-	 * @throws IOException input/output operation failed
-	 * @throws SBOLConversionException violates conversion limitations
-	 */
-	public static void write(ComponentDefinition componentDefinition, OutputStream out) throws IOException, SBOLConversionException {
-		Writer w = new OutputStreamWriter(out, "UTF-8");
+	
+	private static void writeComponentDefinition(ComponentDefinition componentDefinition, Writer w) throws IOException, SBOLConversionException {
 		so = new SequenceOntology();
 		Sequence seq = null;
 		for (Sequence sequence : componentDefinition.getSequences()) {
@@ -168,6 +116,33 @@ public class GenBank {
 		w.write("ORIGIN\n");
 		writeSequence(w,seq,size);
 		w.write("//\n");
+	}
+
+	/**
+	 * Serializes a given ComponentDefinition and outputs the data from the serialization to the given output stream
+	 * in GenBank format.
+	 * @param componentDefinition a given ComponentDefinition
+	 * @param out the given output file name in GenBank format
+	 * @throws IOException input/output operation failed
+	 * @throws SBOLConversionException violates conversion limitations
+	 */
+	private static void write(ComponentDefinition componentDefinition, Writer w) throws IOException, SBOLConversionException {
+		writeComponentDefinition(componentDefinition,w);
+	}
+	
+	/**
+	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
+	 * in GenBank format.
+	 * @param sbolDocument a given SBOLDocument
+	 * @param out the given output file name in GenBank format
+	 * @throws IOException input/output operation failed
+	 * @throws SBOLConversionException violates conversion limitations
+	 */
+	static void write(SBOLDocument sbolDocument, OutputStream out) throws IOException, SBOLConversionException {
+		Writer w = new OutputStreamWriter(out, "UTF-8");
+		for (ComponentDefinition componentDefinition : sbolDocument.getRootComponentDefinitions()) {
+			write(componentDefinition,w);
+		}
 		w.close();
 	}
 
@@ -713,74 +688,20 @@ public class GenBank {
 		}
 	}
 
-	/**
-	 * Takes in the given GenBank filename and converts the file to an SBOLDocument.
-	 * <p>
-	 * This method calls {@link #read(File)}.
-	 *
-	 * @param fileName the given GenBank filename
-	 * @return the converted SBOLDocument
-	 * @throws SBOLConversionException violates conversion limitations
-	 * @throws SBOLValidationException violates sbol validation rule
-	 * @throws IOException input/output operation failed
-	 */
-	public static SBOLDocument read(String fileName) throws SBOLConversionException, IOException, SBOLValidationException
-	{
-		return read(new File(fileName));
-	}
-
-	/**
-	 * Takes in the given GenBank file and converts the file to an SBOLDocument.
-	 *
-	 * @param file the given GenBank filename
-	 * @return the converted SBOLDocument instance
-	 * @throws SBOLConversionException violates conversion limitations
-	 * @throws SBOLValidationException violates sbol validation rule
-	 * @throws IOException input/output operation failed
-	 */
-	public static SBOLDocument read(File file) throws SBOLConversionException, IOException, SBOLValidationException
-	{
-		FileInputStream stream     = new FileInputStream(file);
-		BufferedInputStream buffer = new BufferedInputStream(stream);
-		return read(buffer);
-	}
-
-	/**
-	 * Takes in a given GenBank InputStream and converts the file to an SBOLDocument.
-	 *
-	 * @param in the given GenBank filename
-	 * @return the converted SBOLDocument instance
-	 * @throws SBOLConversionException violates conversion limitations
-	 * @throws SBOLValidationException violates sbol validation rule
-	 * @throws IOException input/output operation failed
-	 */
-	public static SBOLDocument read(InputStream in) throws SBOLConversionException, IOException, SBOLValidationException
-	{
-		SBOLDocument doc = new SBOLDocument();
-		doc.setCreateDefaults(true);
-		if (URIPrefix==null) {
-			throw new SBOLConversionException("No URI prefix has been provided.");
-		}
-		doc.setDefaultURIprefix(URIPrefix);
-		read(doc,in);
-		return doc;
-	}
-
-
 	// "look-ahead" line
 	private static String nextLine = null;
 
 	private static boolean featureMode = false;
 	private static boolean originMode = false;
 
-	private static int lineCounter = 0;
+	//private static int lineCounter = 0;
 
 	private static String readGenBankLine(BufferedReader br) throws IOException {
 		String newLine = "";
 
 		if (nextLine == null) {
 			newLine = br.readLine();
-			lineCounter ++;
+			//lineCounter ++;
 
 			if (newLine == null) return null;
 			newLine = newLine.trim();
@@ -834,7 +755,7 @@ public class GenBank {
 			} else {
 				newLine += " " + nextLine;
 			}
-			lineCounter++;
+			//lineCounter++;
 		}
 	}
 
@@ -854,18 +775,17 @@ public class GenBank {
 		}
 	}
 
-
-	static void read(SBOLDocument doc,InputStream in) throws IOException, SBOLConversionException, SBOLValidationException {
+	static void read(SBOLDocument doc,BufferedReader br,String URIPrefix) throws IOException, SBOLConversionException, SBOLValidationException {
 		so = new SequenceOntology();
 
 		// reset the global static variables needed for parsing
 		nextLine = null;
 		featureMode = false;
 		originMode = false;
-		lineCounter = 0;
+		//lineCounter = 0;
 
 		doc.addNamespace(URI.create(GBNAMESPACE), GBPREFIX);
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		//BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String strLine;
 		String id = "";
 		String version = "";
@@ -1164,36 +1084,32 @@ public class GenBank {
 							} else {
 								rangeSplit = range.split("\\.\\.");
 							}
-							try {
-								int start = Integer.parseInt(rangeSplit[0]);
-								int end = Integer.parseInt(rangeSplit[1]);
-								// TODO: check if the construct is circular or not
-								if (start > end) {
-									int temp = start;
-									start = end;
-									end = temp;
-								}
-
-								SequenceAnnotation sa =
-										topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
-								sa.setComponent("feature"+featureCnt);
-								Range newRange = (Range)sa.getLocation("range");
-								if (startLessThan) {
-									annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");
-									newRange.addAnnotation(annotation);
-								}
-								if (endGreaterThan) {
-									annotation = new Annotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX),"true");
-									newRange.addAnnotation(annotation);
-								}
-								if (singleBaseRange) {
-									annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
-									newRange.addAnnotation(annotation);
-								}
-							} catch(Exception e) {
-								//e.printStackTrace();
-								System.out.println(lineCounter + " --> " + strLine);
+							int start = Integer.parseInt(rangeSplit[0]);
+							int end = Integer.parseInt(rangeSplit[1]);
+							// TODO: check if the construct is circular or not
+							if (start > end) {
+								int temp = start;
+								start = end;
+								end = temp;
 							}
+
+							SequenceAnnotation sa =
+									topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
+							sa.setComponent("feature"+featureCnt);
+							Range newRange = (Range)sa.getLocation("range");
+							if (startLessThan) {
+								annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");
+								newRange.addAnnotation(annotation);
+							}
+							if (endGreaterThan) {
+								annotation = new Annotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX),"true");
+								newRange.addAnnotation(annotation);
+							}
+							if (singleBaseRange) {
+								annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
+								newRange.addAnnotation(annotation);
+							}
+
 						}
 
 						featureCnt++;
@@ -1223,15 +1139,4 @@ public class GenBank {
 		createSubComponentDefinitions(doc,topCD,type,sbSequence.toString(),version);
 		br.close();
 	}
-
-	/**
-	 * Set the specified authority as the prefix to all member's identity
-	 *
-	 *  @param uRIPrefix the specified authority as the prefix to all member's identity
-	 */
-	public static void setURIPrefix(String uRIPrefix) {
-		URIPrefix = uRIPrefix;
-	}
-
-
 }

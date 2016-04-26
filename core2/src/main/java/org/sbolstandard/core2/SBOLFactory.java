@@ -1580,6 +1580,19 @@ public final class SBOLFactory {
 	{
 		document.write(filename);
 	}
+	
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * file name in fileType format
+	 * @param filename the given output file name
+	 * @param fileType the file type to be written out to
+	 * @throws IOException see {@link IOException}
+	 * @throws SBOLConversionException see {@link SBOLConversionException}
+	 */
+	public static void write(String filename,String fileType) throws IOException, SBOLConversionException
+	{
+		document.write(new File(filename), fileType);
+	}
 
 	/**
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
@@ -1592,6 +1605,19 @@ public final class SBOLFactory {
 	{
 		document.write(file);
 	}
+	
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * file in fileType format
+	 * @param file the given output file
+	 * @param fileType the file type of the given output file
+	 * @throws IOException see {@link IOException}
+	 * @throws SBOLConversionException see {@link SBOLConversionException}
+	 */
+	public static void write(File file,String fileType) throws IOException, SBOLConversionException
+	{
+		document.write(file,fileType);
+	}
 
 	/**
 	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
@@ -1602,6 +1628,19 @@ public final class SBOLFactory {
 	public static void write(OutputStream out) throws SBOLConversionException 
 	{
 		document.write(out);
+	}
+	
+	/**
+	 * Serializes SBOLDocument and outputs the data from the serialization to the given output
+	 * stream in fileType format
+	 * @param out the given output stream
+	 * @param fileType specify what file type for the the given output stream
+	 * @throws SBOLConversionException see {@link SBOLConversionException}   
+	 * @throws IOException 
+	 */
+	public static void write(OutputStream out,String fileType) throws SBOLConversionException, IOException 
+	{
+		document.write(out, fileType);
 	}
 
 	@Override

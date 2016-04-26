@@ -1,7 +1,6 @@
 package org.sbolstandard.core2;
 
 import java.io.InputStream;
-import java.net.URI;
 
 public class readTester {
 	public static String filenameRdf 	= "writeTesterString_v1.3.rdf";

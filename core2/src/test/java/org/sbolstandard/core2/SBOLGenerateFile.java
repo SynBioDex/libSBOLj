@@ -42,7 +42,7 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 	public static void writeJsonFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
-			SBOLWriter.write(document, new File(fileName), SBOLReader.JSON);
+			SBOLWriter.write(document, new File(fileName), SBOLDocument.JSON);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -51,7 +51,7 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 	public static void writeTurtleFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
-			SBOLWriter.write(document, new File(fileName), SBOLReader.TURTLE);
+			SBOLWriter.write(document, new File(fileName), SBOLDocument.TURTLE);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

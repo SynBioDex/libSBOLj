@@ -22,9 +22,9 @@ public class SBOLReaderTest extends SBOLAbstractTests
 		if(fileType.equals("rdf"))
 			actual = SBOLReader.read(resourceAsStream);
 		else if (fileType.equals("json"))
-			actual = SBOLReader.read(resourceAsStream,SBOLReader.JSON);
+			actual = SBOLReader.read(resourceAsStream,SBOLDocument.JSON);
 		else if (fileType.equals("turtle"))
-			actual = SBOLReader.read(resourceAsStream,SBOLReader.TURTLE);
+			actual = SBOLReader.read(resourceAsStream,SBOLDocument.TURTLE);
 		else
 			actual = SBOLReader.read(resourceAsStream);
 		assertTrue(actual.equals(expected));

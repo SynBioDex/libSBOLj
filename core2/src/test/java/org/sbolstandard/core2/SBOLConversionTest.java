@@ -32,7 +32,7 @@ public class SBOLConversionTest {
 				SBOLReader.setDropObjectsWithDuplicateURIs(true);
 				SBOLDocument expected = SBOLReader.read(file);
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				SBOLWriter.write(expected, out, SBOLReader.RDFV1);
+				SBOLWriter.write(expected, out, SBOLDocument.RDFV1);
 				SBOLDocument actual = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 				if (!actual.equals(expected)) {
 					System.out.println(f.getName() + " FAILED");

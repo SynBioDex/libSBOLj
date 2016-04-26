@@ -3,8 +3,6 @@ package org.sbolstandard.core2;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
-import java.net.URI;
-import java.util.Random;
 
 import org.junit.Test;
 
@@ -56,8 +54,8 @@ public class FASTATest {
 					new ByteArrayInputStream(fasta.getBytes());
 			) {
 		
-			SBOLDocument doc = FASTA.read(
-					bais, URIprefix, "test", version, Sequence.IUPAC_DNA);
+			SBOLReader.setURIPrefix(URIprefix);
+			SBOLDocument doc = SBOLReader.read(bais);
 
 			assertTrue(doc.getSequences().size() == 1);
 
@@ -96,8 +94,8 @@ public class FASTATest {
 					new ByteArrayInputStream(fasta.getBytes());
 			) {
 		
-			SBOLDocument doc = FASTA.read(
-					bais, URIprefix, "test", version, Sequence.IUPAC_DNA);
+			SBOLReader.setURIPrefix(URIprefix);
+			SBOLDocument doc = SBOLReader.read(bais);
 
 			assertTrue(doc.getSequences().size() == 1);
 

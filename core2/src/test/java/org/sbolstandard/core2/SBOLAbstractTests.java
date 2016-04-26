@@ -856,10 +856,10 @@ public abstract class SBOLAbstractTests {
 			file = new File(f.getAbsolutePath());
 			try
 			{
-				GenBank.setURIPrefix("http://www.async.ece.utah.edu");
-				SBOLDocument actual = GenBank.read(file);
+				SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+				SBOLDocument actual = SBOLReader.read(file);
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				GenBank.write(actual.getRootComponentDefinitions().iterator().next(), out);
+				SBOLWriter.write(actual, out, SBOLDocument.GENBANK);
 				runTest("test/data/"+f.getName().replace(".gb", ".rdf"), actual, "rdf", true);
 			}
 			catch (SBOLValidationException e)
