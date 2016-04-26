@@ -41,7 +41,7 @@ public class FASTATest {
 
 	@Test
 	public void testReadInputStreamStringStringStringURI() {
-		String URIprefix = "http://sbols.org/test";
+		String URIprefix = "http://sbols.org/";
 		String version = "1.0";
 
 
@@ -54,9 +54,11 @@ public class FASTATest {
 					new ByteArrayInputStream(fasta.getBytes());
 			) {
 		
+			SBOLReader.setVersion(version);
 			SBOLReader.setURIPrefix(URIprefix);
 			SBOLDocument doc = SBOLReader.read(bais);
-
+			doc.setDefaultURIprefix(URIprefix);
+			
 			assertTrue(doc.getSequences().size() == 1);
 
 			assertTrue(null != doc.getSequence("test", version));
@@ -100,8 +102,8 @@ public class FASTATest {
 			assertTrue(doc.getSequences().size() == 1);
 
 			// how can I retrieve a sequence nicely from the Document?
-			assertTrue(null != doc.getSequence("test", version));
-			Sequence seq = doc.getSequence("test", version);
+			assertTrue(null != doc.getSequence("test1", version));
+			Sequence seq = doc.getSequence("test1", version);
 			assertTrue("acgtacgt".equals(seq.getElements()));
 		} catch(Exception e) {
 			assertTrue(false);	// no exception allowed
