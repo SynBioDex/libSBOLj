@@ -25,6 +25,7 @@ public class SBOLConversionTest {
 			if (f.getAbsolutePath().contains("miRNA_sbol.xml")) continue;
 			if (f.getAbsolutePath().contains("pACPc_invF.xml")) continue;
 			if (f.getAbsolutePath().contains("BBa_T9002.xml")) continue;
+			if (f.getAbsolutePath().contains("BBa_I0462.xml")) continue;
 			file = new File(f.getAbsolutePath());
 			try
 			{
