@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.io.Writer;
 import java.net.URI;
 import java.text.DateFormat;
@@ -775,7 +776,7 @@ class GenBank {
 		}
 	}
 
-	static void read(SBOLDocument doc,BufferedReader br,String URIPrefix) throws IOException, SBOLConversionException, SBOLValidationException {
+	static void read(SBOLDocument doc,String stringBuffer,String URIPrefix) throws IOException, SBOLConversionException, SBOLValidationException {
 		so = new SequenceOntology();
 
 		// reset the global static variables needed for parsing
@@ -785,7 +786,7 @@ class GenBank {
 		//lineCounter = 0;
 
 		doc.addNamespace(URI.create(GBNAMESPACE), GBPREFIX);
-		//BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		BufferedReader br = new BufferedReader(new StringReader(stringBuffer));
 		String strLine;
 		String id = "";
 		String version = "";

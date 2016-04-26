@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.io.Writer;
 import java.net.URI;
 
@@ -114,7 +115,7 @@ class FASTA {
 		return false;
 	}
 	
-	static void read(SBOLDocument doc,BufferedReader br,String URIprefix,String version,URI encoding) throws SBOLValidationException, IOException
+	static void read(SBOLDocument doc,String stringBuffer,String URIprefix,String version,URI encoding) throws SBOLValidationException, IOException
 	{
 		// reset the global static variables needed for parsing
 		nextLine = null;
@@ -126,6 +127,7 @@ class FASTA {
 		String description = "";
 		boolean sequenceMode = false;
 		String displayId;
+		BufferedReader br = new BufferedReader(new StringReader(stringBuffer));
 
 		while ((strLine = readFASTALine(br)) != null)   {
 			strLine = strLine.trim();
@@ -162,6 +164,7 @@ class FASTA {
 		displayId = URIcompliance.fixDisplayId(description);
 		Sequence sequence = doc.createSequence(URIprefix,displayId,version,sbSequence.toString(),encoding);
 		sequence.setDescription(description);
+		br.close();
 	}
 	
 //	/**

@@ -4,7 +4,6 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -461,22 +460,24 @@ public class SBOLReader
 		try {
 			if (FASTA.isFastaString(inputStreamString)) {
 				SBOLDoc.setCreateDefaults(true);
+				SBOLDoc.setCompliant(true);
 				if (URIPrefix==null) {
 					scanner.close();
 					throw new SBOLConversionException("No URI prefix has been provided.");
 				}
 				SBOLDoc.setDefaultURIprefix(URIPrefix);
-				FASTA.read(SBOLDoc, new BufferedReader(new StringReader(inputStreamString)), URIPrefix, version, defaultSequenceEncoding);
+				FASTA.read(SBOLDoc, inputStreamString, URIPrefix, version, defaultSequenceEncoding);
 				scanner.close();
 				return;
 			} else if (GenBank.isGenBankString(inputStreamString)) {
 				SBOLDoc.setCreateDefaults(true);
+				SBOLDoc.setCompliant(true);
 				if (URIPrefix==null) {
 					scanner.close();
 					throw new SBOLConversionException("No URI prefix has been provided.");
 				}
 				SBOLDoc.setDefaultURIprefix(URIPrefix);
-				GenBank.read(SBOLDoc, new BufferedReader(new StringReader(inputStreamString)), URIPrefix);
+				GenBank.read(SBOLDoc, inputStreamString, URIPrefix);
 				scanner.close();
 				return;
 			} else if (fileType.equals(SBOLDocument.JSON)) {
