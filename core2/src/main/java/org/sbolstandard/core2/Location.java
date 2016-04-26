@@ -97,9 +97,8 @@ public abstract class Location extends Identified implements Comparable<Location
 				+ "]";
 	}
 
-	@Override
-	public int compareTo(Location loc) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+//	@Override
+//	public int compareTo(Location loc) {
+//		return 0;
+//	}
 }

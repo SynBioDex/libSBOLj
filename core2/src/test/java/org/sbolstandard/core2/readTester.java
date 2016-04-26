@@ -42,15 +42,13 @@ public class readTester {
 			//SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			//SBOLReader.setVersion("1.0");
 			//SBOLReader.setTypesInURI(true);
-			SBOLDocument document1 = SBOLReader.read(file);
+//			SBOLDocument document1 = SBOLReader.read("/Users/myers/Downloads/michael.rdf");
 //			for (ComponentDefinition componentDefinition : document1.getComponentDefinitions()) {
 //				if (componentDefinition.getComponents().size()==0) continue;
-//				String original = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements();
-//				String implied = componentDefinition.getImpliedNucleicAcidSequence();
-//				if (!original.equals(implied)) {
-//					System.out.println("Original:"+componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements());
-//					System.out.println("Implied: "+componentDefinition.getImpliedNucleicAcidSequence());
-//				}
+//				//String original = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements();
+//				//String implied = componentDefinition.getImpliedNucleicAcidSequence();
+//				System.out.println(componentDefinition.getIdentity());
+//				System.out.println("Implied: "+componentDefinition.getImpliedNucleicAcidSequence());
 //			}
 			
 			//SBOLDocument document2 = document1.createRecursiveCopy(
@@ -96,7 +94,7 @@ public class readTester {
 //			SBOLFactory.createSequence("http://www.abc.com", "foo2", "1.0", "AGCT", Sequence.IUPAC_DNA);
 //			SBOLFactory.write((System.out));
 //			
-			GenBank.setURIPrefix("http://www.async.ece.utah.edu");
+//			GenBank.setURIPrefix("http://www.async.ece.utah.edu");
 //			SBOLDocument doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence1.gb"/*pTACK_Toggle_Switch_9*/);
 //			doc.write("/Users/myers/downloads/GenBankEx/sequence1.xml");
 //			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence1.xml");
@@ -124,15 +122,15 @@ public class readTester {
 //				GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence3out.gb");		
 //			}
 //			
-			SBOLDocument doc = GenBank.read("/Users/myers/git/libSBOLj/core2/src/test/resources/test/data/GenBank/sequence4.gb");
-			doc.write(System.out);
-			//doc.write("/Users/myers/downloads/GenBankEx/sequence4.xml");
-			//doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence4.xml");
-			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
-			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
-				ComponentDefinition cd = doc.getComponentDefinition(componentDefinition.getIdentity());
-				GenBank.write(cd, System.out);	
-			}
+//			SBOLDocument doc = GenBank.read("/Users/myers/git/libSBOLj/core2/src/test/resources/test/data/GenBank/sequence4.gb");
+//			doc.write(System.out);
+//			//doc.write("/Users/myers/downloads/GenBankEx/sequence4.xml");
+//			//doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence4.xml");
+//			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
+//			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
+//				ComponentDefinition cd = doc.getComponentDefinition(componentDefinition.getIdentity());
+//				GenBank.write(cd, System.out);	
+//			}
 			//SBOLWriter.write(document1,(System.out));
 			//SBOLWriter.writeRDF(SBOLTestUtils.writeAndRead(document1),(System.out));
 

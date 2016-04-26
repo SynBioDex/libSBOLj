@@ -395,9 +395,6 @@ public abstract class Identified {
 	 */
 	void addAnnotation(Annotation annotation) throws SBOLValidationException {
 		if (annotations.contains(annotation)) {
-			//throw new SBOLValidationException("Annotation already exists.");
-			//throw new SBOLValidationException("sbol-10214");
-			// TODO: not sure this is even an error, can just skip add
 			return;
 		}
 		if (annotation.getQName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI())) {

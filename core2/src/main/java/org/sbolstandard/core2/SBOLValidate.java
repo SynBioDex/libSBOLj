@@ -345,7 +345,6 @@ public class SBOLValidate {
 					errors.add(e.getMessage());
 				}
 			}
-			// TODO: need to check cycles in children?
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			try {
@@ -459,7 +458,6 @@ public class SBOLValidate {
 				} catch (Exception e){
 				}
 			}
-			// TODO: should add RNA
 			if (compDef.getTypes().contains(ComponentDefinition.DNA) || compDef.getTypes().contains(ComponentDefinition.RNA)) {
 				if (numSO!=1) {
 					errors.add(new SBOLValidationException("sbol-10527", compDef).getExceptionMessage());
@@ -605,8 +603,6 @@ public class SBOLValidate {
 					String impliedElements = componentDefinition.getImpliedNucleicAcidSequence();
 					Sequence dnaSequence = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA);
 					if (!includesSequence(dnaSequence.getElements(),impliedElements)) {
-						//System.out.println("Sequence:"+dnaSequence.getElements());
-						//System.out.println("Implied: "+impliedElements);
 						errors.add(new SBOLValidationException("sbol-10520", componentDefinition).getExceptionMessage());
 					}
 				}
@@ -1287,7 +1283,7 @@ public class SBOLValidate {
 				showDetail = true;
 			} else if (args[i].equals("-r")) { // TODO: -r is deprecated
 				genBankOut = true;
-			} else if (args[i].equals("-c"))  { 	//TODO: -c is deprecated
+			} else if (args[i].equals("-c"))  { //TODO: -c is deprecated
 				genBankOut = true;
 				if (i+1 >= args.length) {
 					usage();

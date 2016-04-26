@@ -1516,7 +1516,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
-		// TODO: is this check needed, it prevents copying of non-compliant objects even if making compliant
 		// topLevel.isURIcompliant();
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());

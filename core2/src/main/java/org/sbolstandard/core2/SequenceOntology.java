@@ -116,7 +116,6 @@ public class SequenceOntology {
 		}
 	}
 
-	// TODO: need method to convert from 1.1 SO term to 2.0
 	static URI convertSeqOntologyV1(String term)
 	{
 		String v1SO 	   = "http://purl.obolibrary.org/obo/SO_";
