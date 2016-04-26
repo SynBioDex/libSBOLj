@@ -320,7 +320,7 @@ public class SBOLTestUtils {
 
 	/**
 	 * The getRandomNumber returns a random number in the range [min..max] 
-	 * (both inclusive). If the min > max, then the method returns -1.
+	 * (both inclusive). If the min greater than max, then the method returns -1.
 	 * 
 	 * @param min ... the minimum number
 	 * @param max ... the maximum number

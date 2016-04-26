@@ -37,19 +37,15 @@ public class Range extends Location {
 	 * is allowed to be edited.
 	 *
 	 * @param value the start position of this Range
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code value} is less or equal to 0.
 	 * @throws SBOLValidationException if the given {@code value} is greater than
 	 * the {@code end} value of this Range object.
 	 */
 	public void setStart(int value) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (value<=0) {
-			//throw new SBOLValidationException("Range "+this.getIdentity()+" must have a start greater than zero.");
 			throw new SBOLValidationException("sbol-11102", this);
 		}
 		if (value > end) {
-			//throw new SBOLValidationException("Range "+this.getIdentity()+" must have a start before the end.");
 			throw new SBOLValidationException("sbol-11104", this);
 		}
 		start = value;
@@ -81,19 +77,15 @@ public class Range extends Location {
 	 * is allowed to be edited.
 	 *
 	 * @param value the start position of this Range
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code value} is less or equal to 0.
 	 * @throws SBOLValidationException if the given {@code value} is less than
 	 * the {@code start} value of this Range object.
 	 */
 	public void setEnd(int value) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (value<=0) {
-			// throw new SBOLValidationException("Range "+this.getIdentity()+" must have an end greater than zero.");
 			throw new SBOLValidationException("sbol-11103", this);
 		}
 		if (value < start) {
-			//throw new SBOLValidationException("Range "+this.getIdentity()+" must have a start before the end.");
 			throw new SBOLValidationException("sbol-11104", this);
 		}
 		end = value;

@@ -63,10 +63,8 @@ public class Interaction extends Identified {
 	 *
 	 * @param typeURI the given type URI
 	 * @return {@code true} if this set did not already contain the specified role.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public boolean addType(URI typeURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public boolean addType(URI typeURI) {
 		return types.add(typeURI);
 	}
 
@@ -79,12 +77,10 @@ public class Interaction extends Identified {
 	 *
 	 * @param typeURI the given type URI
 	 * @return {@code true} if the matching type reference is removed successfully, {@code false} otherwise.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if this Interaction object has only one element matching the given
 	 * {@code typeURI} before removal.
 	 */
 	public boolean removeType(URI typeURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types.size()==1 && types.contains(typeURI)) {
 			throw new SBOLValidationException("sbol-11902", this);
 		}
@@ -100,11 +96,9 @@ public class Interaction extends Identified {
 	 * is allowed to be edited.
 	 *
 	 * @param types the given set of types
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code types} argument is either {@code null} or empty
 	 */
 	public void setTypes(Set<URI> types) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (types==null || types.size()==0) {
 			throw new SBOLValidationException("sbol-11902", this);
 		}
@@ -228,7 +222,6 @@ public class Interaction extends Identified {
 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
 	public Participation createParticipation(String displayId, String participantId, Set<URI> roles) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI participantURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
 				participantId, moduleDefinition.getVersion());
 		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
@@ -283,14 +276,12 @@ public class Interaction extends Identified {
 	 * @param participant specify precisely one FunctionalComponent object that plays the designated 3 role in its parent Interaction object
 	 * @param roles describes the behavior of a Participation
 	 * @return a Participation instance
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the FunctionalComponent URI referenced by the Participation
 	 * instance, i.e. {@code participant}, does not belong to the list of FunctionalComponent instances owned by
 	 * this Interaction's parent ModuleDefinition instance.
 	 * @throws IllegalStateException if this Interaction instance has non-standard compliant identity
 	 */
 	public Participation createParticipation(String displayId, URI participant, Set<URI> roles) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		if(parentPersistentIdStr == null) {
@@ -331,10 +322,8 @@ public class Interaction extends Identified {
 	 * @param participation specify a particular FunctionalComponent behaves in its parent Interaction
 	 * @return {@code true} if the matching Participation instance is removed successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public boolean removeParticipation(Participation participation) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public boolean removeParticipation(Participation participation) {
 		return removeChildSafely(participation,participations);
 	}
 
@@ -388,10 +377,8 @@ public class Interaction extends Identified {
 	 * This method calls {@link #removeParticipation(Participation)} to iteratively remove
 	 * each Participation instance owned by this object.
 	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearParticipations() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void clearParticipations() {
 		Object[] valueSetArray = participations.values().toArray();
 		for (Object participation : valueSetArray) {
 			removeParticipation((Participation)participation);

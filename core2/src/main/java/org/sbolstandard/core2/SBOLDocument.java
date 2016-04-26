@@ -164,7 +164,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public ModuleDefinition createModuleDefinition(String URIprefix,String displayId, String version) throws SBOLValidationException {
-		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		ModuleDefinition md = createModuleDefinition(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, version, typesInURIs));
 		md.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, "", typesInURIs));
@@ -227,7 +226,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public boolean removeModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
-		checkReadOnly();
 		if (complete) {
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				for (Module m : md.getModules()) {
@@ -290,7 +288,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void clearModuleDefinitions() throws SBOLValidationException {
-		checkReadOnly();
 		Object[] valueSetArray = moduleDefinitions.values().toArray();
 		for (Object moduleDefinition : valueSetArray) {
 			removeModuleDefinition((ModuleDefinition)moduleDefinition);
@@ -409,7 +406,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public Collection createCollection(String URIprefix, String displayId, String version) throws SBOLValidationException {
-		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		Collection c = createCollection(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, version, typesInURIs));
 		c.setDisplayId(displayId);
@@ -440,7 +436,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public boolean removeCollection(Collection collection) throws SBOLValidationException {
-		checkReadOnly();
 		return removeTopLevel(collection,collections);
 	}
 
@@ -495,7 +490,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void clearCollections() throws SBOLValidationException {
-		checkReadOnly();
 		Object[] valueSetArray = collections.values().toArray();
 		for (Object collection : valueSetArray) {
 			removeCollection((Collection)collection);
@@ -611,7 +605,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public Model createModel(String URIprefix, String displayId, String version, URI source, URI language, URI framework) throws SBOLValidationException {
-		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		Model model = createModel(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, version, typesInURIs),
 				source, language, framework);
@@ -658,7 +651,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public boolean removeModel(Model model) throws SBOLValidationException {
-		checkReadOnly();
 		if (complete) {
 			for (ModuleDefinition md : moduleDefinitions.values()) {
 				if (md.containsModel(model.getIdentity())) {
@@ -720,7 +712,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void clearModels() throws SBOLValidationException {
-		checkReadOnly();
 		Object[] valueSetArray = models.values().toArray();
 		for (Object model : valueSetArray) {
 			removeModel((Model)model);
@@ -913,7 +904,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, Set<URI> types) throws SBOLValidationException {
-		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		ComponentDefinition cd = createComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
 				displayId, version, typesInURIs), types);
@@ -994,7 +984,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public boolean removeComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
-		checkReadOnly();
 		if (complete) {
 			for (ComponentDefinition cd : componentDefinitions.values()) {
 				for (Component c : cd.getComponents()) {
@@ -1092,7 +1081,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	void setComponentDefinitions(Set<ComponentDefinition> componentDefinitions) throws SBOLValidationException {
-		checkReadOnly();
 		clearComponentDefinitions();
 		for (ComponentDefinition componentDefinition : componentDefinitions) {
 			addComponentDefinition(componentDefinition);
@@ -1209,7 +1197,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}  
 	 */
 	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) throws SBOLValidationException {
-		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		Sequence s = createSequence(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, version, typesInURIs),
 				elements, encoding);
@@ -1529,9 +1516,8 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public TopLevel createCopy(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
-		checkReadOnly();
 		// TODO: is this check needed, it prevents copying of non-compliant objects even if making compliant
-		topLevel.isURIcompliant();
+		// topLevel.isURIcompliant();
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
 			URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -1686,7 +1672,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}  
 	 */
 	public boolean removeSequence(Sequence sequence) throws SBOLValidationException {
-		checkReadOnly();
 		if (complete) {
 			for (ComponentDefinition cd : componentDefinitions.values()) {
 				if (cd.containsSequence(sequence.getIdentity())) {
@@ -1748,7 +1733,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}  
 	 */
 	public void clearSequences() throws SBOLValidationException {
-		checkReadOnly();
 		Object[] valueSetArray = sequences.values().toArray();
 		for (Object sequence : valueSetArray) {
 			removeSequence((Sequence)sequence);
@@ -1858,7 +1842,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}  
 	 */
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) throws SBOLValidationException {
-		checkReadOnly();
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		GenericTopLevel g = createGenericTopLevel(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
 		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
@@ -1906,7 +1889,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}  
 	 */
 	public boolean removeGenericTopLevel(GenericTopLevel genericTopLevel) throws SBOLValidationException {
-		checkReadOnly();
 		return removeTopLevel(genericTopLevel,genericTopLevels);
 	}
 
@@ -1961,7 +1943,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void clearGenericTopLevels() throws SBOLValidationException {
-		checkReadOnly();
 		Object[] valueSetArray = genericTopLevels.values().toArray();
 		for (Object genericTopLevel : valueSetArray) {
 			removeGenericTopLevel((GenericTopLevel)genericTopLevel);
@@ -2121,10 +2102,8 @@ public class SBOLDocument {
 
 	/**
 	 *  Removes all non-required namespaces from the SBOL document.
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
-	public void clearNamespaces() throws SBOLValidationException {
-		checkReadOnly();
+	public void clearNamespaces() {
 		Object[] keySetArray = nameSpaces.keySet().toArray();
 		for (Object key : keySetArray) {
 			if (isRequiredNamespaceBinding((URI)key)) continue;
@@ -2179,10 +2158,8 @@ public class SBOLDocument {
 	 * is allowed to be edited.
 	 *
 	 * @param namespaceURI the namespaceURI to be removed from this SBOLDocument
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
-	public void removeNamespace(URI namespaceURI) throws SBOLValidationException {
-		checkReadOnly();
+	public void removeNamespace(URI namespaceURI) {
 		if (isRequiredNamespaceBinding(namespaceURI)) {
 			throw new IllegalStateException("Cannot remove required namespace " + namespaceURI.toString());
 		}
@@ -2191,9 +2168,8 @@ public class SBOLDocument {
 
 	/**
 	 * Clears the existing list of <code>namespaces</code>, then appends all of the namespaces to the end of this list.
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
-	void setNameSpaceBindings(List<NamespaceBinding> namespaceBinding) throws SBOLValidationException {
+	void setNameSpaceBindings(List<NamespaceBinding> namespaceBinding) {
 		clearNamespaces();
 		for (NamespaceBinding namespace : namespaceBinding) {
 			addNamespaceBinding(namespace);
@@ -2484,12 +2460,12 @@ public class SBOLDocument {
 		this.createDefaults = createDefaults;
 	}
 
-	void checkReadOnly() throws SBOLValidationException {
-		if (!compliant) {
-			throw new SBOLValidationException("Cannot modify a non-compliant SBOL document");
-			// TODO: (Validation) missing rule: Cannot modify a non-compliant SBOL document
-		}
-	}
+//	void checkReadOnly() throws SBOLValidationException {
+//		if (!compliant) {
+//			throw new SBOLValidationException("Cannot modify a non-compliant SBOL document");
+//			// TODO: (Validation) missing rule: Cannot modify a non-compliant SBOL document
+//		}
+//	}
 
 
 	/**

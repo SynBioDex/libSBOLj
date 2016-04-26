@@ -54,10 +54,8 @@ public abstract class Location extends Identified implements Comparable<Location
 	 * is allowed to be edited.
 	 *
 	 * @param orientation Indicate how the region specified by the SequenceAnnotation and any associated double stranded Component is oriented on the elements of a Sequence from their parent ComponentDefinition.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void setOrientation(OrientationType orientation) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void setOrientation(OrientationType orientation) {
 		this.orientation = orientation;
 	}
 
@@ -68,10 +66,8 @@ public abstract class Location extends Identified implements Comparable<Location
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void unsetOrientation() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void unsetOrientation() {
 		orientation = null;
 	}
 

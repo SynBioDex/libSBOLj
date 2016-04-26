@@ -87,7 +87,6 @@ public class Sequence extends TopLevel{
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void setElements(String elements) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (elements == null) {
 			throw new SBOLValidationException("sbol-10402",this);
 		}
@@ -118,7 +117,6 @@ public class Sequence extends TopLevel{
 	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public void setEncoding(URI encoding) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (encoding == null) {
 			throw new SBOLValidationException("sbol-10403",this);
 		}
