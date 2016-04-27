@@ -1176,7 +1176,11 @@ public class ComponentDefinition extends TopLevel {
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
-		SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited);
+		try {
+			SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited);
+		} catch (SBOLValidationException e) {
+			throw new SBOLValidationException("sbol-10605",component);
+		}
 		addChildSafely(component, components, "component",
 				sequenceAnnotations, sequenceConstraints);
 		for (MapsTo mapsTo : component.getMapsTos()) {

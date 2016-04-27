@@ -9,7 +9,7 @@ import org.junit.Test;
 
 public class SBOLConversionTest {
 
-	@Test
+	//@Test
 	public void test_SBOL1_Files() throws Exception
 	{
 		File file_base = null ;

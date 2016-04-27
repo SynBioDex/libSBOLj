@@ -265,7 +265,11 @@ public class ModuleDefinition extends TopLevel {
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
-		SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited);
+		try { 
+			SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited);
+		} catch (SBOLValidationException e) {
+			throw new SBOLValidationException("sbol-11705", module);
+		}
 		addChildSafely(module, modules, "module", functionalComponents, interactions);
 		for (MapsTo mapsTo : module.getMapsTos()) {
 			if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
