@@ -260,7 +260,9 @@ public class ModuleDefinition extends TopLevel {
 				throw new SBOLValidationException("sbol-11703", module);
 			}
 		}
-		if (module.getDefinitionURI().equals(this.getIdentity())) {
+		// TODO: persistent identity?
+		if (module.getDefinition()!=null &&
+				this.getIdentity().equals(module.getDefinition().getIdentity())) {
 			throw new SBOLValidationException("sbol-11704", module);
 		}
 		Set<URI> visited = new HashSet<>();
