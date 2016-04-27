@@ -249,9 +249,6 @@ public class SBOLValidate {
 	protected static void checkComponentDefinitionCycle(SBOLDocument sbolDocument,
 			ComponentDefinition componentDefinition, Set<URI> visited) throws SBOLValidationException {
 		if (componentDefinition==null) return;
-		if (visited.contains(componentDefinition.getIdentity())) {
-			throw new SBOLValidationException("sbol-10603",componentDefinition);
-		}
 		visited.add(componentDefinition.getIdentity());
 		for (Component component : componentDefinition.getComponents()) {
 			ComponentDefinition cd = component.getDefinition();
@@ -272,9 +269,6 @@ public class SBOLValidate {
 	protected static void checkModuleDefinitionCycle(SBOLDocument sbolDocument,
 			ModuleDefinition moduleDefinition, Set<URI> visited) throws SBOLValidationException {
 		if (moduleDefinition==null) return;
-		if (visited.contains(moduleDefinition.getIdentity())) {
-			throw new SBOLValidationException("sbol-11704",moduleDefinition);
-		}
 		visited.add(moduleDefinition.getIdentity());
 		for (Module module : moduleDefinition.getModules()) {
 			ModuleDefinition md = module.getDefinition();
@@ -317,9 +311,6 @@ public class SBOLValidate {
 
 	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument,
 			Identified identified, URI wasDerivedFrom, Set<URI> visited) throws SBOLValidationException {
-		if (visited.contains(wasDerivedFrom)) {
-			throw new SBOLValidationException("sbol-10209",identified);
-		}
 		visited.add(identified.getIdentity());
 		TopLevel tl = sbolDocument.getTopLevel(wasDerivedFrom);
 		if (tl!=null) {

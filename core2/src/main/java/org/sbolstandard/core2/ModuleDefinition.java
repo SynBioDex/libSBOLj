@@ -260,6 +260,9 @@ public class ModuleDefinition extends TopLevel {
 				throw new SBOLValidationException("sbol-11703", module);
 			}
 		}
+		if (module.getDefinitionURI().equals(this.getIdentity())) {
+			throw new SBOLValidationException("sbol-10704", module);
+		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
 		SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited);
