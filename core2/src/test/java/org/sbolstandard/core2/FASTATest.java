@@ -57,9 +57,10 @@ public class FASTATest {
 			SBOLReader.setVersion(version);
 			SBOLReader.setURIPrefix(URIprefix);
 			SBOLDocument doc = SBOLReader.read(bais);
-			doc.setDefaultURIprefix(URIprefix);
+//			doc.setDefaultURIprefix(URIprefix);
 			
 			assertTrue(doc.getSequences().size() == 1);
+			assertTrue(URIprefix.equals(doc.getDefaultURIprefix()));
 
 			assertTrue(null != doc.getSequence("test", version));
 		} catch(Exception e) {
@@ -76,13 +77,15 @@ public class FASTATest {
 					new ByteArrayInputStream(fasta.getBytes());
 			) {
 		
-			SBOLDocument doc = FASTA.read(
-					bais, URIprefix, "test", version, Sequence.IUPAC_DNA);
+			SBOLReader.setURIPrefix(URIprefix);
+			SBOLReader.setVersion(version);
+			SBOLDocument doc = SBOLReader.read(bais);
 
 			assertTrue(doc.getSequences().size() == 2);
 
 			// how can I retrieve a sequence nicely from the Document?
-			assertTrue(null != doc.getSequence("test", version));
+			assertTrue(null != doc.getSequence("test1", version));
+			assertTrue(null != doc.getSequence("test2", version));
 		} catch(Exception e) {
 			assertTrue(false);	// no exception allowed
 		}
