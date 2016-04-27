@@ -96,6 +96,7 @@ class GenBank {
 	
 	private static void writeComponentDefinition(ComponentDefinition componentDefinition, Writer w) throws IOException, SBOLConversionException {
 		so = new SequenceOntology();
+		// TODO: should check type is DNA or RNA
 		Sequence seq = null;
 		for (Sequence sequence : componentDefinition.getSequences()) {
 			if (sequence.getEncoding().equals(Sequence.IUPAC_DNA)||

@@ -1,7 +1,8 @@
 package org.sbolstandard.core2;
 
-import java.io.File;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -10,6 +11,26 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 	@Override
 	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception
 	{
+		SBOLValidate.validateSBOL(expected, false, false, false);
+		if (SBOLValidate.getNumErrors()>0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.err.println(error);
+			}
+			assertTrue(false);
+		}
+		SBOLDocument actual = SBOLTestUtils.writeAndRead(expected,compliant);
+		if (!actual.equals(expected)) {
+			System.out.println("Expected:"+expected.toString());
+			System.out.println("Actual  :"+actual.toString());
+		}
+		SBOLValidate.validateSBOL(actual, false, false, false);
+		if (SBOLValidate.getNumErrors()>0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.err.println(error);
+			}
+			assertTrue(false);
+		}
+		assertTrue(actual.equals(expected));
 		String PATH = "src/test/resources/";
 		if(fileType.equals("rdf"))
 			writeRdfFile(expected, PATH + fileName);

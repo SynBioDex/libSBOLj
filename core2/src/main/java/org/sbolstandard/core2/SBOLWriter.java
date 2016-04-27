@@ -627,6 +627,7 @@ public class SBOLWriter
 	
 	private static NestedDocument<QName> getSubComponent(ComponentDefinition componentDefinition) {
 		// TODO: should check of CD is null and error out in this case
+		// TODO: should make sure is DNA type
 		List<NamedProperty<QName>> list = new ArrayList<>();
 
 		if(componentDefinition.isSetDisplayId())
