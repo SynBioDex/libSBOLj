@@ -1171,8 +1171,9 @@ public class ComponentDefinition extends TopLevel {
 				throw new SBOLValidationException("sbol-10604",component);
 			}
 		}
-		if (this.getIdentity().equals(component.getDefinitionURI())) {
-			throw new SBOLValidationException("sbol-10603",component);
+		if (component.getDefinition()!=null &&
+				this.getIdentity().equals(component.getDefinition().getIdentity())) {
+			throw new SBOLValidationException("sbol-10605", component);
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());

@@ -260,7 +260,6 @@ public class ModuleDefinition extends TopLevel {
 				throw new SBOLValidationException("sbol-11703", module);
 			}
 		}
-		// TODO: persistent identity?
 		if (module.getDefinition()!=null &&
 				this.getIdentity().equals(module.getDefinition().getIdentity())) {
 			throw new SBOLValidationException("sbol-11704", module);
