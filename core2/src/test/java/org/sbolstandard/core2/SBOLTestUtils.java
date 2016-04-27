@@ -4,6 +4,7 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
@@ -72,9 +73,9 @@ public class SBOLTestUtils {
 			if(fileType.equals("rdf"))
 				actual = SBOLReader.read(resourceAsStream);
 			else if(fileType.equals("json"))
-				actual = SBOLReader.read(resourceAsStream,SBOLReader.JSON);
+				actual = SBOLReader.read(resourceAsStream,SBOLDocument.JSON);
 			else if(fileType.equals("turtle"))
-				actual = SBOLReader.read(resourceAsStream,SBOLReader.TURTLE);
+				actual = SBOLReader.read(resourceAsStream,SBOLDocument.TURTLE);
 			else
 				actual = SBOLReader.read(resourceAsStream);
 		} catch (Exception e) {
@@ -98,9 +99,9 @@ public class SBOLTestUtils {
 			if(fileType.equals("rdf"))
 				actual = SBOLReader.read(resourceAsStream);
 			else if(fileType.equals("json"))
-				actual = SBOLReader.read(resourceAsStream,SBOLReader.JSON);
+				actual = SBOLReader.read(resourceAsStream,SBOLDocument.JSON);
 			else if(fileType.equals("turtle"))
-				actual = SBOLReader.read(resourceAsStream,SBOLReader.TURTLE);
+				actual = SBOLReader.read(resourceAsStream,SBOLDocument.TURTLE);
 			else
 				actual = SBOLReader.read(resourceAsStream);
 		} catch (Exception e) {
@@ -111,7 +112,7 @@ public class SBOLTestUtils {
 
 	}
 	
-	public static void setDefaultNameSpace(SBOLDocument document, String uri) throws SBOLValidationException
+	public static void setDefaultNameSpace(SBOLDocument document, String uri) 
 	{
 		if (uri.endsWith("/"))
 		{
@@ -232,7 +233,7 @@ public class SBOLTestUtils {
 
 
 	public static SBOLDocument writeAndRead(SBOLDocument doc, boolean compliant)
-			throws SBOLValidationException, SBOLConversionException
+			throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		SBOLWriter.write(doc, out);
@@ -320,7 +321,7 @@ public class SBOLTestUtils {
 
 	/**
 	 * The getRandomNumber returns a random number in the range [min..max] 
-	 * (both inclusive). If the min > max, then the method returns -1.
+	 * (both inclusive). If the min greater than max, then the method returns -1.
 	 * 
 	 * @param min ... the minimum number
 	 * @param max ... the maximum number

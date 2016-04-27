@@ -72,22 +72,6 @@ public class SBOLWriter
 		stream.close();
 		buffer.close();
 	}
-
-	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
-	 * in SBOL 1.1 RDF format.
-	 * @param doc
-	 * @param file
-	 * @throws IOException
-	 * @throws SBOLConversionException - problem found during serialization 
-	 */
-	public static void writeV1(SBOLDocument doc, File file) throws IOException, SBOLConversionException{
-		FileOutputStream stream = new FileOutputStream(file);
-		BufferedOutputStream buffer = new BufferedOutputStream(stream);
-		writeV1(doc, buffer);
-		stream.close();
-		buffer.close();
-	}
 	
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
@@ -98,7 +82,7 @@ public class SBOLWriter
 	 * @throws IOException
 	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	static void write(SBOLDocument doc, File file, String fileType) throws IOException, SBOLConversionException
+	public static void write(SBOLDocument doc, File file, String fileType) throws IOException, SBOLConversionException
 	{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -131,19 +115,6 @@ public class SBOLWriter
 			throw new SBOLConversionException(e.getMessage());
 		}
 	}
-	
-
-	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
-	 * in SBOL 1.1 RDF format.
-	 * @param doc
-	 * @param out
-	 * @throws SBOLConversionException - problem found during serialization 
-	 */
-	public static void writeV1(SBOLDocument doc, OutputStream out) throws SBOLConversionException
-	{
-		write(doc,out,SBOLReader.RDFV1);
-	}
 
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
@@ -157,19 +128,6 @@ public class SBOLWriter
 	{
 		write(doc, new File(filename));
 	}
-
-	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
-	 * file name in SBOL 1.1 RDF format
-	 * @param doc
-	 * @param filename
-	 * @throws IOException
-	 * @throws SBOLConversionException - problem found during serialization 
-	 */
-	public static void writeV1(SBOLDocument doc, String filename) throws IOException, SBOLConversionException
-	{
-		writeV1(doc, new File(filename));
-	}
 	
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
@@ -180,7 +138,7 @@ public class SBOLWriter
 	 * @throws IOException
 	 * @throws SBOLConversionException - problem found during serialization 
 	 */
-	static void write(SBOLDocument doc, String filename, String fileType) throws IOException, SBOLConversionException
+	public static void write(SBOLDocument doc, String filename, String fileType) throws IOException, SBOLConversionException
 	{
 		write(doc, new File(filename), fileType);
 	}
@@ -192,10 +150,15 @@ public class SBOLWriter
 	 * @param out
 	 * @param fileType
 	 * @throws SBOLConversionException - problem found during serialization
+	 * @throws IOException 
 	 */
-	static void write(SBOLDocument doc, OutputStream out, String fileType) throws SBOLConversionException
+	public static void write(SBOLDocument doc, OutputStream out, String fileType) throws SBOLConversionException, IOException
 	{
-		if (fileType.equals(SBOLReader.JSON)) {
+		if (fileType.equals(SBOLDocument.FASTAformat)) {
+			FASTA.write(doc, out);
+		} else if (fileType.equals(SBOLDocument.GENBANK)) {
+			GenBank.write(doc, out);
+		} else if (fileType.equals(SBOLDocument.JSON)) {
 			try {
 				writeJSON(new OutputStreamWriter(out),
 						DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
@@ -204,7 +167,7 @@ public class SBOLWriter
 			catch (CoreIoException e) {
 				throw new SBOLConversionException(e.getMessage());
 			}
-		} else if (fileType.equals(SBOLReader.TURTLE)){
+		} else if (fileType.equals(SBOLDocument.TURTLE)){
 			try {
 				writeTurtle(new OutputStreamWriter(out),
 						DocumentRoot( NamespaceBindings(doc.getNamespaceBindings()),
@@ -213,7 +176,7 @@ public class SBOLWriter
 			catch (CoreIoException e) {
 				throw new SBOLConversionException(e.getMessage());
 			}
-		} else if (fileType.equals(SBOLReader.RDFV1)){
+		} else if (fileType.equals(SBOLDocument.RDFV1)){
 			try {
 				writeRDF(new OutputStreamWriter(out),
 						DocumentRoot( NamespaceBindings(getNamespaceBindingsV1()),

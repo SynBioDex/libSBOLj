@@ -46,10 +46,8 @@ public class Collection extends TopLevel{
 	 * @throws SBOLValidationException violates validation rule
 	 */
 	public boolean addMember(URI memberURI) throws SBOLValidationException {
-		if (sbolDocument != null) sbolDocument.checkReadOnly();
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getTopLevel(memberURI)==null) {
-				//throw new SBOLValidationException("Top level '" + memberURI + "' does not exist.");
 				throw new SBOLValidationException("sbol-12103", this);
 			}
 		}
@@ -67,10 +65,8 @@ public class Collection extends TopLevel{
 	 * @param memberURI the reference to a TopLevel object to be removed from the SBOL Document.
 	 * @return {@code true} if the matching member reference is removed successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException violates validation rule
 	 */
-	public boolean removeMember(URI memberURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public boolean removeMember(URI memberURI) {
 		return members.remove(memberURI);
 	}
 
@@ -87,7 +83,6 @@ public class Collection extends TopLevel{
 	 * @throws SBOLValidationException violates validation rule
 	 */
 	public void setMembers(Set<URI> members) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		clearMembers();
 		for (URI member : members) {
 			addMember(member);
@@ -138,10 +133,8 @@ public class Collection extends TopLevel{
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearMembers() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void clearMembers() {
 		members.clear();
 	}
 

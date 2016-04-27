@@ -1,9 +1,6 @@
 package org.sbolstandard.core2;
 
 import java.io.BufferedReader;
-//import java.io.BufferedWriter;
-//import java.io.File;
-//import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -17,6 +14,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Signals that an SBOL validation rule violation has occurred. 
+ * 
  * @author Zhen Zhang
  * @author Tramy Nguyen
  * @author Nicholas Roehner
@@ -218,6 +217,7 @@ public class SBOLValidationException extends Exception {
 		return sb.toString();
 	}
 	
+// TODO: Complete this method to write validation rules in XML format.
 //	private static void writeRulesToXML(String filename) {
 //		File outputFile;
 //		FileWriter outputFW;
@@ -330,7 +330,7 @@ public class SBOLValidationException extends Exception {
 	 * Return the validation rule number of the exception
 	 * @return the validation rule number of the exception
 	 */
-	public String getRule() {
+	String getRule() {
 		if (!getMessage().startsWith("sbol-")) return "";
 		return getMessage().split(":")[0];
 	}

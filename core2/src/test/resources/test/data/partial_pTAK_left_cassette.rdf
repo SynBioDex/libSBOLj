@@ -16,13 +16,6 @@
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/RBS">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/RBS"/>
-    <sbol:displayId>RBS</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="urn:c26b0115-3c37-4aa7-9e98-c491b3db9a53"/>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000139"/>
-  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete"/>
     <sbol:displayId>pTAKLeftCassete</sbol:displayId>
@@ -55,6 +48,21 @@
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation"/>
+        <sbol:displayId>Repressor2_annotation</sbol:displayId>
+        <prov:wasDerivedFrom rdf:resource="urn:53de82c6-ecf9-4899-8e06-0179ab03a9a0"/>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation/genericLocation">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:GenericLocation>
+        </sbol:location>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation"/>
         <sbol:displayId>Terminator_annotation</sbol:displayId>
@@ -86,21 +94,6 @@
         <sbol:component rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation"/>
-        <sbol:displayId>Repressor2_annotation</sbol:displayId>
-        <prov:wasDerivedFrom rdf:resource="urn:53de82c6-ecf9-4899-8e06-0179ab03a9a0"/>
-        <sbol:location>
-          <sbol:GenericLocation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation/genericLocation">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2_annotation/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:GenericLocation>
-        </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Repressor2"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
     <sbol:sequenceConstraint>
       <sbol:SequenceConstraint rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014_cons_Repressor2">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014_cons_Repressor2"/>
@@ -119,6 +112,13 @@
         <sbol:object rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator"/>
       </sbol:SequenceConstraint>
     </sbol:sequenceConstraint>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/RBS">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/RBS"/>
+    <sbol:displayId>RBS</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="urn:c26b0115-3c37-4aa7-9e98-c491b3db9a53"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000139"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/Repressor2">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/Repressor2"/>

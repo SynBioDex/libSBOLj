@@ -1,6 +1,15 @@
 package org.sbolstandard.core2;
 
-public class SBOLValidationRule {
+/**
+ * @author Zhen Zhang
+ * @author Tramy Nguyen
+ * @author Nicholas Roehner
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.0-beta
+ */
+class SBOLValidationRule {
 
 	private String ruleClass;
 	private String id;
@@ -8,50 +17,50 @@ public class SBOLValidationRule {
 	private String description;
 	private String reference;
 
-	public SBOLValidationRule(String ruleClass) {
+	SBOLValidationRule(String ruleClass) {
 		this.ruleClass = ruleClass;
 		id = null;
 		condition = null;
 		description = null;
 	}
 
-	public String getRuleClass() {
+	String getRuleClass() {
 		return ruleClass;
 	}
 
-	public void setModelClass(String modelClass) {
+	void setModelClass(String modelClass) {
 		this.ruleClass = modelClass;
 	}
 
-	public String getId() {
+	String getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	void setId(String id) {
 		this.id = id;
 	}
 
-	public String getCondition() {
+	String getCondition() {
 		return condition;
 	}
 
-	public void setCondition(String condition) {
+	void setCondition(String condition) {
 		this.condition = condition;
 	}
 
-	public String getDescription() {
+	String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	void setDescription(String description) {
 		this.description = description;
 	}
 	
-	public void setReference(String ref) {
+	void setReference(String ref) {
 		this.reference = ref;
 	}
 
-	public String getReference() {
+	String getReference() {
 		return reference;
 	}
 	
@@ -64,7 +73,7 @@ public class SBOLValidationRule {
 			+  "reference: " + this.reference+ "\n";
 	}
 	
-	public boolean isComplete() {
+	boolean isComplete() {
 //		if (this.getModelClass() == null) {
 //			return false;
 //		}
@@ -82,7 +91,7 @@ public class SBOLValidationRule {
 		}
 	}
 
-	public void setField(String field, String strBuff) {
+	void setField(String field, String strBuff) {
 		if (field.equals("id")) {
 			//currentRule.setId(strBuff);
 		}
@@ -95,7 +104,5 @@ public class SBOLValidationRule {
 		else if (field.equals("reference")) {
 			//currentRule.setReference(strBuff);
 		}
-	}
-	
-	
+	}	
 }

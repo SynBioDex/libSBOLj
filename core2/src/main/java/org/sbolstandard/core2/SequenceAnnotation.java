@@ -201,12 +201,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * 
 	 * @param location
 	 * @return {@code true} if the matching Location instance is removed successfully, {@code false} otherwise.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if removing the last location
 	 */	
 	public boolean removeLocation(Location location) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (locations.size()==1 && locations.containsValue(location)) {
-			//throw new SBOLValidationException("Sequence annotation " + this.getIdentity() + " must have at least one location.");
 			throw new SBOLValidationException("sbol-10902", this);
 		}
 		return removeChildSafely(location,locations);
@@ -268,10 +266,9 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * then the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant  
+	 * @throws SBOLValidationException if no locations remain // TODO: I think this method always fails
 	 */
 	void clearLocations() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = locations.values().toArray();
 		for (Object location : valueSetArray) {
 			removeLocation((Location)location);
@@ -280,7 +277,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		
 	/**
 	 * Clears the existing list of location instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if no locations are provided
 	 */
 	void setLocations(Set<Location> locations) throws SBOLValidationException {
 		clearLocations();	
@@ -397,13 +394,11 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * It then calls {@link #setComponent(URI)} to set the reference.
 	 * 
 	 * @param displayId
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the associated ComponentDefinition object is not {@code null},
 	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
 	 * list of Component instances.
 	 */
 	public void setComponent(String displayId) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
 				displayId, componentDefinition.getVersion());
 		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && componentDefinition!=null &&
@@ -421,13 +416,11 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * is allowed to be edited.
 	 * 
 	 * @param componentURI
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the associated ComponentDefinition object is not {@code null},
 	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
 	 * list of Component instances.
 	 */
 	public void setComponent(URI componentURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(componentURI)==null) {
 				throw new SBOLValidationException("sbol-10905",this);
@@ -450,10 +443,8 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void unsetComponent() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void unsetComponent() {
 		component = null;
 	}
 

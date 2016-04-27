@@ -1,7 +1,6 @@
 package org.sbolstandard.core2;
 
 import java.io.InputStream;
-import java.net.URI;
 
 public class readTester {
 	public static String filenameRdf 	= "writeTesterString_v1.3.rdf";
@@ -42,23 +41,21 @@ public class readTester {
 			//SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			//SBOLReader.setVersion("1.0");
 			//SBOLReader.setTypesInURI(true);
-			SBOLDocument document1 = SBOLReader.read(file);
+//			SBOLDocument document1 = SBOLReader.read("/Users/myers/Downloads/michael.rdf");
 //			for (ComponentDefinition componentDefinition : document1.getComponentDefinitions()) {
 //				if (componentDefinition.getComponents().size()==0) continue;
-//				String original = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements();
-//				String implied = componentDefinition.getImpliedNucleicAcidSequence();
-//				if (!original.equals(implied)) {
-//					System.out.println("Original:"+componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements());
-//					System.out.println("Implied: "+componentDefinition.getImpliedNucleicAcidSequence());
-//				}
+//				//String original = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements();
+//				//String implied = componentDefinition.getImpliedNucleicAcidSequence();
+//				System.out.println(componentDefinition.getIdentity());
+//				System.out.println("Implied: "+componentDefinition.getImpliedNucleicAcidSequence());
 //			}
 			
-			SBOLDocument document2 = document1.createRecursiveCopy(
-					document1.getTopLevel(URI.create("http://sbolhub.org/col/james_test_sbol2_061015155208")));
+			//SBOLDocument document2 = document1.createRecursiveCopy(
+			//		document1.getTopLevel(URI.create("http://sbolhub.org/col/james_test_sbol2_061015155208")));
 			//ByteArrayOutputStream out = new ByteArrayOutputStream();
 			//SBOLWriter.write(document1, out);//, SBOLReader.RDFV1);
 			//document1 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
-			SBOLWriter.write(document2,(System.out));
+			//SBOLWriter.write(document2,(System.out));
 			//ByteArrayOutputStream out = new ByteArrayOutputStream();
 			//SBOLWriter.writeV1(document1, out);
 			//SBOLDocument document2 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
@@ -124,13 +121,14 @@ public class readTester {
 //				GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence3out.gb");		
 //			}
 //			
-//			doc = GenBank.read("/Users/myers/downloads/GenBankEx/sequence4.gb");
-//			doc.write("/Users/myers/downloads/GenBankEx/sequence4.xml");
-//			doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence4.xml");
+//			SBOLDocument doc = GenBank.read("/Users/myers/git/libSBOLj/core2/src/test/resources/test/data/GenBank/sequence4.gb");
+//			doc.write(System.out);
+//			//doc.write("/Users/myers/downloads/GenBankEx/sequence4.xml");
+//			//doc = SBOLReader.read("/Users/myers/downloads/GenBankEx/sequence4.xml");
 //			doc.setDefaultURIprefix("http://www.async.ece.utah.edu");
 //			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
 //				ComponentDefinition cd = doc.getComponentDefinition(componentDefinition.getIdentity());
-//				GenBank.write(cd, "/Users/myers/downloads/GenBankEx/sequence4out.gb");	
+//				GenBank.write(cd, System.out);	
 //			}
 			//SBOLWriter.write(document1,(System.out));
 			//SBOLWriter.writeRDF(SBOLTestUtils.writeAndRead(document1),(System.out));

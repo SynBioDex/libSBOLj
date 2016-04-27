@@ -76,10 +76,9 @@ public class SequenceConstraint extends Identified {
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * @param restriction
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
+ 	 * @throws SBOLValidationException if no valid restriction is provided
 	 */
 	public void setRestriction(RestrictionType restriction) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (restriction==null) {
 			throw new SBOLValidationException("sbol-11407",this);
 		}
@@ -98,10 +97,9 @@ public class SequenceConstraint extends Identified {
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * @param restrictionURI
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
+ 	 * @throws SBOLValidationException if no restriction is provided
 	 */
 	public void setRestriction(URI restrictionURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (restrictionURI==null) {
 			throw new SBOLValidationException("sbol-11407",this);
 		}
@@ -150,7 +148,6 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * 
 	 * @param subjectURI
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the associated ComponentDefinition subject
 	 * is not {@code null}, and the given {@code subjectURI} does not exist in 
 	 * its associated ComponentDefinition subject's
@@ -158,7 +155,6 @@ public class SequenceConstraint extends Identified {
 	 * @throws SBOLValidationException if the given {@code subjectURI} is {@code null}.
 	 */
 	public void setSubject(URI subjectURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(subjectURI)==null) {
 				throw new SBOLValidationException("sbol-11403",this);
@@ -214,7 +210,6 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * 
 	 * @param objectURI
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the associated ComponentDefinition object
 	 * is not {@code null}, and the given {@code objectURI} does not exist in 
 	 * its associated ComponentDefinition object's
@@ -222,7 +217,6 @@ public class SequenceConstraint extends Identified {
 	 * @throws SBOLValidationException if the given {@code objectURI} is {@code null}.
 	 */
 	public void setObject(URI objectURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(objectURI)==null) {
 				throw new SBOLValidationException("sbol-11405",this);

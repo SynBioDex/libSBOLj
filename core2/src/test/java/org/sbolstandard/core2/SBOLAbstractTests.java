@@ -838,7 +838,7 @@ public abstract class SBOLAbstractTests {
 	}
 
 	@Test
-	public void test_GenBank_Files() throws Exception
+	public void test_GenBank_Files() 
 	{
 		File file_base = null ;
 		try {
@@ -856,13 +856,13 @@ public abstract class SBOLAbstractTests {
 			file = new File(f.getAbsolutePath());
 			try
 			{
-				GenBank.setURIPrefix("http://www.async.ece.utah.edu");
-				SBOLDocument actual = GenBank.read(file);
+				SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+				SBOLDocument actual = SBOLReader.read(file);
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				GenBank.write(actual.getRootComponentDefinitions().iterator().next(), out);
+				SBOLWriter.write(actual, out, SBOLDocument.GENBANK);
 				runTest("test/data/"+f.getName().replace(".gb", ".rdf"), actual, "rdf", true);
 			}
-			catch (SBOLValidationException e)
+			catch (Exception e)
 			{
 				throw new AssertionError("Failed for " + f.getName(), e);
 			}

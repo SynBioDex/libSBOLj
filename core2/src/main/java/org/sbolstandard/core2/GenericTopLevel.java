@@ -52,13 +52,10 @@ public class GenericTopLevel extends TopLevel{
 	 * is allowed to be edited.
 	 *
 	 * @param rdfType the RDF type property of this object
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code rdfType} argument is {@code null}
 	 */
 	public void setRDFType(QName rdfType) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (rdfType == null) {
-			//throw new SBOLValidationException("RDF type is a required field.");
 			throw new SBOLValidationException("sbol-12302", this);
 		}
 		this.rdfType = rdfType;

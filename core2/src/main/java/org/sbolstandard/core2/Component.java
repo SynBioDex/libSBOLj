@@ -116,7 +116,6 @@ public class Component extends ComponentInstance{
 	 * this Module object refers to.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI localURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(),
 				localId, componentDefinition.getVersion());
 		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && componentDefinition!=null &&
@@ -152,7 +151,6 @@ public class Component extends ComponentInstance{
 	 * this Module object refers to.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		MapsTo m = createMapsTo(createCompliantURI(parentPersistentIdStr, displayId, version),
@@ -210,11 +208,9 @@ public class Component extends ComponentInstance{
 	 * @param mapsTo Removes the specified MapsTo instance from the list of MapsTo instances.
 	 * @return {@code true} if the matching MapsTo instance is removed successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 *
 	 */
-	public boolean removeMapsTo(MapsTo mapsTo) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public boolean removeMapsTo(MapsTo mapsTo) {
 		return removeChildSafely(mapsTo,mapsTos);
 	}
 
@@ -259,11 +255,8 @@ public class Component extends ComponentInstance{
 	 * If this object belongs to an SBOLDocument instance,
 	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void clearMapsTos() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void clearMapsTos() {
 		Object[] valueSetArray = mapsTos.values().toArray();
 		for (Object mapsTo : valueSetArray) {
 			removeMapsTo((MapsTo)mapsTo);

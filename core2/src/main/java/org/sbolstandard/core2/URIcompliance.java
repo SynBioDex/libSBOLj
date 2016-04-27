@@ -401,4 +401,13 @@ final class URIcompliance {
 		}
 		return URIprefix;
 	}
+
+	static String fixDisplayId(String displayId) {
+		displayId = displayId.replaceAll("[^a-zA-Z0-9_]", "_");
+		displayId = displayId.replace(" ", "_");
+		if (Character.isDigit(displayId.charAt(0))) {
+			displayId = "_" + displayId;
+		}
+		return displayId;
+	}
 }

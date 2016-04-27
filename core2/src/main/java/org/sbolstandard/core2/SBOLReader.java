@@ -7,6 +7,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
@@ -57,31 +58,62 @@ import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 public class SBOLReader
 {
 
-	public static final String RDF = "RDF";
-	public static final String RDFV1 = "RDFV1";
-	public static final String JSON = "JSON";
-	public static final String TURTLE = "TURTLE";
+	/**
+	 * Constant representing SBOL version 1.1
+	 */
 	public static final String SBOLVERSION1 = "v1";
+	
+	/**
+	 * Constant representing SBOL version 2.0
+	 */
 	public static final String SBOLVERSION2 = "v2";
+	
+		
+	/**
+	 * A {@code true} value of the {@code keepGoing} flag tells the SBOL reader
+	 * to continue reading an SBOL input file, after it encounters an SBOL validation exception;
+	 * a {@code false} value forces the reader to stop reading after it encounters
+	 * an SBOL validation exception.
+	 */
 	public static boolean keepGoing = false;
 	private static List<String> errors = new ArrayList<String>();
 
+	/**
+	 * Returns the value of the {@code keepGoing} flag.
+	 * @return the value of the {@code keepGoing} flag
+	 */
 	public static boolean isKeepGoing() {
 		return keepGoing;
 	}
 
+	/**
+	 * Sets the value of the {@code keepGoing} flag to the specified Boolean value.
+	 * @param keepGoing The specified Boolean value
+	 */
 	public static void setKeepGoing(boolean keepGoing) {
 		SBOLReader.keepGoing = keepGoing;
 	}
 
+	/**
+	 * Sets the error list that is used to store SBOL validation exceptions 
+	 * during reading to empty. 
+	 */
 	public static void clearErrors() {
 		errors = new ArrayList<String>();
 	}
 
+	/**
+	 * Returns the error list that is used to store SBOL validation exceptions.
+	 * @return the error list that is used to store SBOL validation exceptions
+	 */
 	public static List<String> getErrors() {
 		return errors;
 	}
 
+	/**
+	 * Returns the number of errors in the error list. 
+	 * @return the number of errors in the error list
+	 */
 	public static int getNumErrors() {
 		return errors.size();
 	}
@@ -119,6 +151,7 @@ public class SBOLReader
 	private static boolean typesInURI = false;
 	private static boolean dropObjectsWithDuplicateURIs = false;
 	private static boolean compliant = true;
+	private static URI defaultSequenceEncoding = Sequence.IUPAC_DNA;
 
 	/**
 	 * Check if document is to be read as being compliant.
@@ -194,6 +227,20 @@ public class SBOLReader
 		SBOLReader.dropObjectsWithDuplicateURIs = dropObjectsWithDuplicateURIs;
 	}
 
+	/**
+	 * @return the defaultSequenceEncoding
+	 */
+	public static URI getDefaultSequenceEncoding() {
+		return defaultSequenceEncoding;
+	}
+
+	/**
+	 * @param defaultSequenceEncoding the defaultSequenceEncoding to set
+	 */
+	public static void setDefaultSequenceEncoding(URI defaultSequenceEncoding) {
+		SBOLReader.defaultSequenceEncoding = defaultSequenceEncoding;
+	}
+
 	private static String getSBOLVersion(DocumentRoot<QName> document) throws SBOLValidationException
 	{
 		boolean foundRDF = false;
@@ -226,11 +273,11 @@ public class SBOLReader
 	 * @param fileName a given RDF filename
 	 * @return the SBOL version of the file.
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public static String getSBOLVersion(String fileName) throws FileNotFoundException, SBOLValidationException
 	{
-		return getSBOLVersion(fileName,RDF);
+		return getSBOLVersion(fileName,SBOLDocument.RDF);
 	}
 
 	/**
@@ -239,7 +286,7 @@ public class SBOLReader
 	 * @param fileName
 	 * @return the SBOL version of the file.
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	static String getSBOLVersion(String fileName, String fileType) throws FileNotFoundException, SBOLValidationException
 	{
@@ -253,26 +300,28 @@ public class SBOLReader
 	 * <p>
 	 * This method calls {@link #read(File)}.
 	 *
-	 * @param fileName
+	 * @param fileName the name of the given RDF file
 	 * @return the converted SBOLDocument
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws FileNotFoundException if file not found
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	public static SBOLDocument read(String fileName) throws SBOLValidationException, FileNotFoundException
+	public static SBOLDocument read(String fileName) throws SBOLValidationException, IOException, SBOLConversionException
 	{
-		return read(fileName,RDF);
+		return read(fileName,SBOLDocument.RDF);
 	}
 
 	/**
 	 * Takes in the given filename and fileType, and converts the file to an SBOLDocument.
 	 *
-	 * @param fileName
-	 * @param fileType
+	 * @param fileName the name of the given file
+	 * @param fileType the file type of the given file 
 	 * @return the converted SBOLDocument
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
-	 * @throws FileNotFoundException if file not found
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	static SBOLDocument read(String fileName,String fileType) throws SBOLValidationException, FileNotFoundException
+	static SBOLDocument read(String fileName,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		return read(new File(fileName),fileType);
 	}
@@ -280,27 +329,28 @@ public class SBOLReader
 	/**
 	 * Takes in a given RDF File and returns the SBOL version of the file.
 	 *
-	 * @param file
+	 * @param file the given RDF file
 	 * @return the SBOL version of the file.
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public static String getSBOLVersion(File file) throws FileNotFoundException, SBOLValidationException
 	{
-		return getSBOLVersion(file,RDF);
+		return getSBOLVersion(file,SBOLDocument.RDF);
 	}
 
 	/**
-	 * Takes in the given RDF file and converts the file to an SBOLDocument.
+	 * Parses the given RDF file and stores its contents in an SBOLDocument object.
 	 *
-	 * @param file
-	 * @return the converted SBOLDocument instance
-	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @param file the given RDF file
+	 * @return an SBOLDocument object that stores the RDF file information
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	public static SBOLDocument read(File file) throws FileNotFoundException, SBOLValidationException
+	public static SBOLDocument read(File file) throws SBOLValidationException, IOException, SBOLConversionException
 	{
-		return read(file,RDF);
+		return read(file,SBOLDocument.RDF);
 	}
 
 	/**
@@ -311,10 +361,11 @@ public class SBOLReader
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 * @throws CoreIoException
-	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	static SBOLDocument read(File file,String fileType) throws FileNotFoundException, SBOLValidationException
+	static SBOLDocument read(File file,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -327,7 +378,7 @@ public class SBOLReader
 	 * @param file
 	 * @return the SBOL version of the file.
 	 * @throws FileNotFoundException if file not found
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	static String getSBOLVersion(File file,String fileType) throws FileNotFoundException, SBOLValidationException
 	{
@@ -342,16 +393,16 @@ public class SBOLReader
 	 * @param in a given InputStream
 	 * @param fileType a given file type
 	 * @return the SBOL version of the JSON file.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	static String getSBOLVersion(InputStream in,String fileType) throws SBOLValidationException
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();
 		DocumentRoot<QName> document = null;
-		if (fileType.equals(JSON)) {
+		if (fileType.equals(SBOLDocument.JSON)) {
 			document = readJSON(new StringReader(inputStreamString));
-		} else if (fileType.equals(TURTLE)) {
+		} else if (fileType.equals(SBOLDocument.TURTLE)) {
 			document = readTurtle(new StringReader(inputStreamString));
 		} else {
 			document = readRDF(new StringReader(inputStreamString));
@@ -365,13 +416,15 @@ public class SBOLReader
 	 *
 	 * @param in a given RDF InputStream
 	 * @return the converted SBOLDocument instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	public static SBOLDocument read(InputStream in) throws SBOLValidationException
+	public static SBOLDocument read(InputStream in) throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		SBOLDoc.setCompliant(compliant);
-		read(SBOLDoc,in,RDF);
+		read(SBOLDoc,in,SBOLDocument.RDF);
 		return SBOLDoc;
 	}
 
@@ -381,18 +434,22 @@ public class SBOLReader
 	 * @param in a given InputStream
 	 * @param fileType a given file type
 	 * @return the converted SBOLDocument instance
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 */
-	static SBOLDocument read(InputStream in,String fileType) throws SBOLValidationException
+	static SBOLDocument read(InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		SBOLDoc.setCompliant(compliant);
+		if (URIPrefix!=null) {
+			SBOLDoc.setDefaultURIprefix(URIPrefix);
+		}
 		read(SBOLDoc,in,fileType);
 		return SBOLDoc;
 	}
 
-
-	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws SBOLValidationException
+	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		compliant = SBOLDoc.isCompliant();
 		Scanner scanner = new Scanner(in, "UTF-8");
@@ -401,9 +458,31 @@ public class SBOLReader
 
 		DocumentRoot<QName> document = null;
 		try {
-			if (fileType.equals(JSON)) {
+			if (FASTA.isFastaString(inputStreamString)) {
+				SBOLDoc.setCreateDefaults(true);
+				SBOLDoc.setCompliant(true);
+				if (URIPrefix==null) {
+					scanner.close();
+					throw new SBOLConversionException("No URI prefix has been provided.");
+				}
+				SBOLDoc.setDefaultURIprefix(URIPrefix);
+				FASTA.read(SBOLDoc, inputStreamString, URIPrefix, version, defaultSequenceEncoding);
+				scanner.close();
+				return;
+			} else if (GenBank.isGenBankString(inputStreamString)) {
+				SBOLDoc.setCreateDefaults(true);
+				SBOLDoc.setCompliant(true);
+				if (URIPrefix==null) {
+					scanner.close();
+					throw new SBOLConversionException("No URI prefix has been provided.");
+				}
+				SBOLDoc.setDefaultURIprefix(URIPrefix);
+				GenBank.read(SBOLDoc, inputStreamString, URIPrefix);
+				scanner.close();
+				return;
+			} else if (fileType.equals(SBOLDocument.JSON)) {
 				document = readJSON(new StringReader(inputStreamString));
-			} else if (fileType.equals(TURTLE)){
+			} else if (fileType.equals(SBOLDocument.TURTLE)){
 				document = readTurtle(new StringReader(inputStreamString));
 			} else {
 				document = readRDF(new StringReader(inputStreamString));
@@ -450,11 +529,11 @@ public class SBOLReader
 	 *
 	 * @param in a given RDF InputStream
 	 * @return the SBOL version of the file.
-	 * @throws SBOLValidationException if this SBOLDocument object is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule is violated.
 	 */
 	public static String getSBOLVersion(InputStream in) throws SBOLValidationException
 	{
-		return getSBOLVersion(in,RDF);
+		return getSBOLVersion(in,SBOLDocument.RDF);
 	}
 
 	private static SBOLDocument readV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException
@@ -785,7 +864,7 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				displayId = fixDisplayId(displayId);
+				displayId = URIcompliance.fixDisplayId(displayId);
 				if (URIPrefix != null )
 				{
 					persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
@@ -1056,15 +1135,6 @@ public class SBOLReader
 		return sequence;
 	}
 
-	private static String fixDisplayId(String displayId) {
-		displayId = displayId.replaceAll("[^a-zA-Z0-9_]", "_");
-		displayId = displayId.replace(" ", "_");
-		if (Character.isDigit(displayId.charAt(0))) {
-			displayId = "_" + displayId;
-		}
-		return displayId;
-	}
-
 	private static String findDisplayId(String topLevelIdentity) {
 		String displayId = null;
 
@@ -1089,7 +1159,7 @@ public class SBOLReader
 		} else {
 			displayId = topLevelIdentity.toString();
 		}
-		displayId = fixDisplayId(displayId);
+		displayId = URIcompliance.fixDisplayId(displayId);
 		return displayId;
 	}
 
@@ -1115,7 +1185,7 @@ public class SBOLReader
 			if (namedProperty.getName().equals(Sbol1Terms.Collection.displayId))
 			{
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
-				displayId = fixDisplayId(displayId);
+				displayId = URIcompliance.fixDisplayId(displayId);
 				if (URIPrefix != null)
 				{
 					identity = createCompliantURI(URIPrefix,TopLevel.COLLECTION,displayId,version,typesInURI);

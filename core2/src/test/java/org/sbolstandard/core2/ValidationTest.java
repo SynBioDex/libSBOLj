@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,7 +67,7 @@ public class ValidationTest {
 //	}
 	
 	@Test
-	public void testValidation() {
+	public void testValidation() throws IOException, SBOLConversionException {
 		// TODO: generalize this test to perform on all files in directory in a loop
 		File file_base = null ;
 		try {

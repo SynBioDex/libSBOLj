@@ -84,11 +84,9 @@ public class Sequence extends TopLevel{
 	 * is allowed to be edited.
 	 * 
 	 * @param elements
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code elements} argument is {@code null}
 	 */
 	public void setElements(String elements) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (elements == null) {
 			throw new SBOLValidationException("sbol-10402",this);
 		}
@@ -116,11 +114,9 @@ public class Sequence extends TopLevel{
 	 * is allowed to be edited.
 	 * 
 	 * @param encoding
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code encoding} argument is {@code null}
 	 */
 	public void setEncoding(URI encoding) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (encoding == null) {
 			throw new SBOLValidationException("sbol-10403",this);
 		}
@@ -193,6 +189,7 @@ public class Sequence extends TopLevel{
 	/**
 	 * Perform the reverse complement of a sequence encoded using IUPAC_DNA
 	 * @param elements - sequence to reverse complement 
+	 * @param type - indicates if ComponentDefinition type is DNA or RNA
 	 * @return the reverse complement of a sequence encoded using IUPAC_DNA
 	 */
 	public static String reverseComplement(String elements,URI type) {
