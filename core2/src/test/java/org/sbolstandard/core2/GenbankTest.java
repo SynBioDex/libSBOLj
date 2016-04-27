@@ -55,9 +55,9 @@ public class GenbankTest {
 					new BufferedInputStream(new ByteArrayInputStream(genbank.getBytes()));
 			) {
 			
-			GenBank.setURIPrefix("http://synbio.jgi.doe.gov/");
+			SBOLReader.setURIPrefix("http://synbio.jgi.doe.gov/");
 			
-			SBOLDocument doc = GenBank.read(bis);
+			SBOLDocument doc = SBOLReader.read(bis);
 			
 			// two CDs
 			assertTrue(null != doc.getComponentDefinitions());
@@ -106,9 +106,9 @@ public class GenbankTest {
 					new BufferedInputStream(new ByteArrayInputStream(genbank.getBytes()));
 			) {
 			
-			GenBank.setURIPrefix("http://synbio.jgi.doe.gov/");
+			SBOLReader.setURIPrefix("http://synbio.jgi.doe.gov/");
 			
-			SBOLDocument doc = GenBank.read(bis);
+			SBOLDocument doc = SBOLReader.read(bis);
 			
 			// two CDs
 			assertTrue(null != doc.getComponentDefinitions());

@@ -54,6 +54,31 @@ public class SBOLDocument {
 	private boolean compliant = true;
 	private boolean typesInURIs = false;
 	private boolean createDefaults = false;
+	
+	/**
+	 * Constant representing TURTLE file format
+	 */
+	public static final String TURTLE = "TURTLE";
+	/**
+	 * Constant representing JSON file format
+	 */
+	public static final String JSON = "JSON";
+	/**
+	 * Constant representing the format of an SBOL version 1.1 output file as being RDF format
+	 */
+	public static final String RDFV1 = "RDFV1";
+	/**
+	 * Constant representing RDF file format
+	 */
+	public static final String RDF = "RDF";
+	/**
+	 * Constant representing FASTA file format
+	 */
+	public static final String FASTAformat = "FASTA";
+	/**
+	 * Constant representing GenBank file format
+	 */
+	public static final String GENBANK = "GENBANK";
 
 	/**
 	 * Creates a new SBOLDocument instance with one empty list for the namespaces and for each top-level instance,
@@ -2480,19 +2505,6 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Takes in a given fileName and fileType, and add the data read to this SBOLDocument.
-	 *
-	 * @param fileName a given fileName and fileType
-	 * @param fileType specify what file type is this file
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
-	 * @throws SBOLConversionException see {@link SBOLConversionException}
-	 * @throws IOException see {@link IOException}
-	 */
-	void read(String fileName,String fileType) throws SBOLValidationException, IOException, SBOLConversionException {
-		read(new File(fileName),fileType);
-	}
-
-	/**
 	 * Takes in a given RDF File and add the data read to this SBOLDocument.
 	 *
 	 * @param file a given RDF File
@@ -2503,22 +2515,7 @@ public class SBOLDocument {
 	public void read(File file) throws SBOLValidationException, IOException, SBOLConversionException {
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
-		this.read(buffer, SBOLReader.RDF);
-	}
-
-	/**
-	 * Takes in a given file and fileType, and add the data read to this SBOLDocument.
-	 *
-	 * @param file a given file
-	 * @param fileType specify what file type is this file
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
-	 * @throws SBOLConversionException see {@link SBOLConversionException} 
-	 * @throws IOException see {@link IOException}
-	 */
-	void read(File file,String fileType) throws SBOLValidationException, IOException, SBOLConversionException {
-		FileInputStream stream     = new FileInputStream(file);
-		BufferedInputStream buffer = new BufferedInputStream(stream);
-		this.read(buffer, fileType);
+		read(buffer);
 	}
 
 	/**
@@ -2530,27 +2527,7 @@ public class SBOLDocument {
 	 * @throws IOException see {@link IOException}
 	 */
 	public void read(InputStream in) throws SBOLValidationException, IOException, SBOLConversionException {
-		this.read(in, SBOLReader.RDF);
-	}
-
-	/**
-	 * Takes in a given InputStream and fileType, and add the data read to this SBOLDocument.
-	 *
-	 * @param in a given RDF InputStream
-	 * @param fileType the fileType that this file is in
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
-	 * @throws SBOLConversionException see {@link SBOLConversionException}
-	 * @throws IOException see {@link IOException}
-	 */
-	void read(InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException {
-		if (FASTA.isFastaFile(in)) {
-			FASTA.read(this, in, defaultURIprefix, null, "", Sequence.IUPAC_DNA);
-		} else if (GenBank.isGenBankFile(in)) {
-			GenBank.setURIPrefix(defaultURIprefix);
-			GenBank.read(this, in);
-		} else {
-			SBOLReader.read(this, in, fileType);
-		}
+		SBOLReader.read(in);
 	}
 
 	/**
@@ -2573,7 +2550,7 @@ public class SBOLDocument {
 	 * @throws IOException see {@link IOException}
 	 * @throws SBOLConversionException see {@link SBOLConversionException}
 	 */
-	void write(String filename,String fileType) throws IOException, SBOLConversionException
+	public void write(String filename,String fileType) throws IOException, SBOLConversionException
 	{
 		SBOLWriter.write(this, new File(filename), fileType);
 	}
@@ -2602,7 +2579,7 @@ public class SBOLDocument {
 	 * @throws IOException see {@link IOException}
 	 * @throws SBOLConversionException see {@link SBOLConversionException}
 	 */
-	void write(File file,String fileType) throws IOException, SBOLConversionException
+	public void write(File file,String fileType) throws IOException, SBOLConversionException
 	{
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
@@ -2628,8 +2605,9 @@ public class SBOLDocument {
 	 * @param out the given output stream
 	 * @param fileType specify what file type for the the given output stream
 	 * @throws SBOLConversionException see {@link SBOLConversionException}   
+	 * @throws IOException 
 	 */
-	void write(OutputStream out,String fileType) throws SBOLConversionException 
+	public void write(OutputStream out,String fileType) throws SBOLConversionException, IOException 
 	{
 		SBOLWriter.write(this, out, fileType);
 	}

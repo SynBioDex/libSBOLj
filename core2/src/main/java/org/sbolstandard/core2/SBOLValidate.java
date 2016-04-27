@@ -249,6 +249,9 @@ public class SBOLValidate {
 	protected static void checkComponentDefinitionCycle(SBOLDocument sbolDocument,
 			ComponentDefinition componentDefinition, Set<URI> visited) throws SBOLValidationException {
 		if (componentDefinition==null) return;
+		if (visited.contains(componentDefinition.getIdentity())) {
+			throw new SBOLValidationException("sbol-10603",componentDefinition);
+		}
 		visited.add(componentDefinition.getIdentity());
 		for (Component component : componentDefinition.getComponents()) {
 			ComponentDefinition cd = component.getDefinition();
@@ -269,6 +272,9 @@ public class SBOLValidate {
 	protected static void checkModuleDefinitionCycle(SBOLDocument sbolDocument,
 			ModuleDefinition moduleDefinition, Set<URI> visited) throws SBOLValidationException {
 		if (moduleDefinition==null) return;
+		if (visited.contains(moduleDefinition.getIdentity())) {
+			throw new SBOLValidationException("sbol-11704",moduleDefinition);
+		}
 		visited.add(moduleDefinition.getIdentity());
 		for (Module module : moduleDefinition.getModules()) {
 			ModuleDefinition md = module.getDefinition();
@@ -311,6 +317,9 @@ public class SBOLValidate {
 
 	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument,
 			Identified identified, URI wasDerivedFrom, Set<URI> visited) throws SBOLValidationException {
+		if (visited.contains(wasDerivedFrom)) {
+			throw new SBOLValidationException("sbol-10209",identified);
+		}
 		visited.add(identified.getIdentity());
 		TopLevel tl = sbolDocument.getTopLevel(wasDerivedFrom);
 		if (tl!=null) {
@@ -1051,6 +1060,9 @@ public class SBOLValidate {
 	public static void validateSBOL(SBOLDocument sbolDocument, boolean complete, boolean compliant,
 			boolean bestPractice) {
 		clearErrors();
+		// TODO: check if these are capable of being checked during construction and/or read
+		// if not during read, should check after read
+		// Maybe on write too
 		validateSequenceEncodings(sbolDocument);
 		validateWasDerivedFromVersion(sbolDocument);
 		validateCircularReferences(sbolDocument);
@@ -1345,32 +1357,24 @@ public class SBOLValidate {
 		if (fileName.equals("")) usage();
 		try {
 			SBOLDocument doc = null;
-			if (FASTA.isFastaFile(fileName)) {
-				doc = FASTA.read(fileName, URIPrefix, null, version, Sequence.IUPAC_DNA);
-			} else if (GenBank.isGenBankFile(fileName)){
-				if (!URIPrefix.equals("")) {
-					GenBank.setURIPrefix(URIPrefix);
-				}
-				//GenBank.setTypesInURI(typesInURI);
-				//GenBank.setVersion(version);
-				//doc.setTypesInURIs(typesInURI);
-				doc = GenBank.read(fileName);
-			} else {
-				if (!URIPrefix.equals("")) {
-					SBOLReader.setURIPrefix(URIPrefix);
-				}
-				if (!compliant) {
-					SBOLReader.setCompliant(false);
-				}
-				SBOLReader.setTypesInURI(typesInURI);
-				SBOLReader.setVersion(version);
-				SBOLReader.setKeepGoing(keepGoing);
-				if (SBOLReader.getSBOLVersion(fileName).equals(SBOLReader.SBOLVERSION1)) {
-					System.err.println("Converting SBOL Version 1 to SBOL Version 2");
-				}
-				doc = SBOLReader.read(fileName);
-				doc.setTypesInURIs(typesInURI);
+			if (!URIPrefix.equals("")) {
+				SBOLReader.setURIPrefix(URIPrefix);
 			}
+			if (!compliant) {
+				SBOLReader.setCompliant(false);
+			}
+			SBOLReader.setTypesInURI(typesInURI);
+			SBOLReader.setVersion(version);
+			SBOLReader.setKeepGoing(keepGoing);
+			if (FASTA.isFastaFile(fileName)) {
+				System.err.println("Converting FASTA to SBOL Version 2");
+			} else if (GenBank.isGenBankFile(fileName)) {
+				System.err.println("Converting GenBank to SBOL Version 2");
+			} else if (SBOLReader.getSBOLVersion(fileName).equals(SBOLReader.SBOLVERSION1)) {
+				System.err.println("Converting SBOL Version 1 to SBOL Version 2");
+			}
+			doc = SBOLReader.read(fileName);
+			doc.setTypesInURIs(typesInURI);
 			if (!compareFile.equals("")) {
 				SBOLDocument doc2 = SBOLReader.read(compareFile);
 				File f = new File(fileName);
@@ -1390,36 +1394,25 @@ public class SBOLValidate {
 					doc = doc.createRecursiveCopy(topLevel);
 				}
 				if (genBankOut) {
-					ComponentDefinition componentDefinition = null;
-					Set<ComponentDefinition> rootDefinitions = doc.getRootComponentDefinitions();
-					if (rootDefinitions.size()==0) {
-						System.err.println("GenBank output failed: no root ComponentDefinition found.");
-						return;
-					} else if (rootDefinitions.size()==1){
-						componentDefinition = doc.getComponentDefinition(rootDefinitions.iterator().next().getIdentity());
-					} else {
-						System.err.println("GenBank output failed: multiple root ComponentDefinitions, please specify one.");
-						return;
-					}
 					if (outputFile.equals("")) {
-						GenBank.write(componentDefinition, (System.out));
+						SBOLWriter.write(doc, (System.out), SBOLDocument.GENBANK);
 					} else {
 						System.out.println("Validation successful, no errors.");
-						GenBank.write(componentDefinition, outputFile);
+						SBOLWriter.write(doc, outputFile, SBOLDocument.GENBANK);
 					}
 				} else if (sbolV1out) {
 					if (outputFile.equals("")) {
-						SBOLWriter.writeV1(doc, (System.out));
+						SBOLWriter.write(doc, (System.out), SBOLDocument.RDFV1);
 					} else {
 						System.out.println("Validation successful, no errors.");
-						SBOLWriter.writeV1(doc, outputFile);
+						SBOLWriter.write(doc, outputFile, SBOLDocument.RDFV1);
 					}
 				} else if (fastaOut) {
 					if (outputFile.equals("")) {
-						FASTA.write(doc, (System.out));
+						SBOLWriter.write(doc, (System.out), SBOLDocument.FASTAformat);
 					} else {
 						System.out.println("Validation successful, no errors.");
-						FASTA.write(doc, outputFile);
+						SBOLWriter.write(doc, outputFile, SBOLDocument.FASTAformat);
 					}
 				} else {
 					if (outputFile.equals("")) {
@@ -1447,13 +1440,23 @@ public class SBOLValidate {
 			if (showDetail) {
 				e.printStackTrace();
 			}
-			System.err.println(e.getMessage()+"\nValidation failed.");
+			if (e.getMessage()!=null) {
+				System.err.println(e.getMessage()+"\nValidation failed.");
+			} else {
+				e.printStackTrace();
+				System.err.println("\nValidation failed.");
+			}
 		}
 		catch (Throwable e) {
 			if (showDetail) {
 				e.printStackTrace();
 			}
-			System.err.println(e.getMessage()+"\nValidation failed.");
+			if (e.getMessage()!=null) {
+				System.err.println(e.getMessage()+"\nValidation failed.");
+			} else {
+				e.printStackTrace();
+				System.err.println("\nValidation failed.");
+			}
 		}
 	}
 

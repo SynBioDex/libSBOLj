@@ -3,8 +3,6 @@ package org.sbolstandard.core2;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
-import java.net.URI;
-import java.util.Random;
 
 import org.junit.Test;
 
@@ -43,7 +41,7 @@ public class FASTATest {
 
 	@Test
 	public void testReadInputStreamStringStringStringURI() {
-		String URIprefix = "http://sbols.org/test";
+		String URIprefix = "http://sbols.org/";
 		String version = "1.0";
 
 
@@ -56,36 +54,41 @@ public class FASTATest {
 					new ByteArrayInputStream(fasta.getBytes());
 			) {
 		
-			SBOLDocument doc = FASTA.read(
-					bais, URIprefix, "test", version, Sequence.IUPAC_DNA);
-
+			SBOLReader.setVersion(version);
+			SBOLReader.setURIPrefix(URIprefix);
+			SBOLDocument doc = SBOLReader.read(bais);
+//			doc.setDefaultURIprefix(URIprefix);
+			
 			assertTrue(doc.getSequences().size() == 1);
+			assertTrue(URIprefix.equals(doc.getDefaultURIprefix()));
 
 			assertTrue(null != doc.getSequence("test", version));
 		} catch(Exception e) {
 			assertTrue(false);	// no exception allowed
 		}
 
-//		// two FASTA entries
-//		fasta = ">test1" + NEWLINE + 
-//				"acgt" + NEWLINE +
-//				">test2" + NEWLINE +
-//				"cgta";
-//		try (
-//				ByteArrayInputStream bais = 
-//					new ByteArrayInputStream(fasta.getBytes());
-//			) {
-//		
-//			SBOLDocument doc = FASTA.read(
-//					bais, URIprefix, "test", version, Sequence.IUPAC_DNA);
-//
-//			assertTrue(doc.getSequences().size() == 2);
-//
-//			// how can I retrieve a sequence nicely from the Document?
-//			assertTrue(null != doc.getSequence("test", version));
-//		} catch(Exception e) {
-//			assertTrue(false);	// no exception allowed
-//		}
+		// two FASTA entries
+		fasta = ">test1" + SBOLTestUtils.NEWLINE + 
+				"acgt" + SBOLTestUtils.NEWLINE +
+				">test2" + SBOLTestUtils.NEWLINE +
+				"cgta";
+		try (
+				ByteArrayInputStream bais = 
+					new ByteArrayInputStream(fasta.getBytes());
+			) {
+		
+			SBOLReader.setURIPrefix(URIprefix);
+			SBOLReader.setVersion(version);
+			SBOLDocument doc = SBOLReader.read(bais);
+
+			assertTrue(doc.getSequences().size() == 2);
+
+			// how can I retrieve a sequence nicely from the Document?
+			assertTrue(null != doc.getSequence("test1", version));
+			assertTrue(null != doc.getSequence("test2", version));
+		} catch(Exception e) {
+			assertTrue(false);	// no exception allowed
+		}
 	
 		// one multi-line FASTA entry
 		fasta = ">test1" + SBOLTestUtils.NEWLINE + 
@@ -96,14 +99,14 @@ public class FASTATest {
 					new ByteArrayInputStream(fasta.getBytes());
 			) {
 		
-			SBOLDocument doc = FASTA.read(
-					bais, URIprefix, "test", version, Sequence.IUPAC_DNA);
+			SBOLReader.setURIPrefix(URIprefix);
+			SBOLDocument doc = SBOLReader.read(bais);
 
 			assertTrue(doc.getSequences().size() == 1);
 
 			// how can I retrieve a sequence nicely from the Document?
-			assertTrue(null != doc.getSequence("test", version));
-			Sequence seq = doc.getSequence("test", version);
+			assertTrue(null != doc.getSequence("test1", version));
+			Sequence seq = doc.getSequence("test1", version);
 			assertTrue("acgtacgt".equals(seq.getElements()));
 		} catch(Exception e) {
 			assertTrue(false);	// no exception allowed

@@ -2,6 +2,7 @@ package org.sbolstandard.core2;
 
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,12 +22,13 @@ public class writeTester {
 	 * Top level types
 	 * @throws SBOLValidationException 
 	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 * @throws CoreIoException 
 	 * @throws XMLStreamException 
 	 *
 	 */
 
-	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException
+	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix("http://www.foo.org");
@@ -53,7 +55,7 @@ public class writeTester {
 				System.out.println(error);
 			}
 		}
-		SBOLWriter.write(sbolDocument, (System.out), SBOLReader.RDFV1);
+		SBOLWriter.write(sbolDocument, (System.out), SBOLDocument.RDFV1);
 		//SBOLDocument doc = new SBOLDocument();
 		//doc.createCollection("http://foo.org", "myPart", "");
 		//doc.createCollection("http://foo.org/myPart", "myPart2", "");
@@ -62,7 +64,7 @@ public class writeTester {
 		//writeRdfOutputStream(sbolDocument);
 	}
 
-	public static void writeRdfOutputStream(SBOLDocument SBOL2Doc_test)
+	public static void writeRdfOutputStream(SBOLDocument SBOL2Doc_test) throws IOException
 	{
 		try {
 			SBOLWriter.write(SBOL2Doc_test,(System.out));
@@ -476,12 +478,12 @@ public class writeTester {
 	}
 
 
-	private static void setCommonTopLevelData (TopLevel t, String name, String description) throws SBOLValidationException
+	private static void setCommonTopLevelData (TopLevel t, String name, String description) 
 	{
 		setCommonDocumentedData(t, name, description);
 	}
 
-	private static void setCommonDocumentedData(Identified d, String name, String description) throws SBOLValidationException
+	private static void setCommonDocumentedData(Identified d, String name, String description)
 	{
 		d.setName(name);
 		d.setDescription(description);

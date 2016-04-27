@@ -266,11 +266,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * then the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-<<<<<<< HEAD
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
-=======
-	 * @throws SBOLValidationException if no locations remain // TODO: I think this method always fails
->>>>>>> refs/remotes/origin/develop
 	 */
 	void clearLocations() throws SBOLValidationException {
 		Object[] valueSetArray = locations.values().toArray();
