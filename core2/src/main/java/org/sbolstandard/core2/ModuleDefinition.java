@@ -261,7 +261,7 @@ public class ModuleDefinition extends TopLevel {
 			}
 		}
 		if (module.getDefinitionURI().equals(this.getIdentity())) {
-			throw new SBOLValidationException("sbol-10704", module);
+			throw new SBOLValidationException("sbol-11704", module);
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
