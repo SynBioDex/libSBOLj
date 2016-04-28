@@ -31,15 +31,17 @@ public class SBOLConversionTest {
 			{
 				SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 				SBOLReader.setDropObjectsWithDuplicateURIs(true);
+				SBOLReader.setCompliant(true);
 				SBOLDocument expected = SBOLReader.read(file);
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				SBOLWriter.write(expected, out, SBOLDocument.RDFV1);
 				SBOLDocument actual = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 				if (!actual.equals(expected)) {
 					System.out.println(f.getName() + " FAILED");
-					//SBOLValidate.compareDocuments("expected", expected, "actual", actual);
+					SBOLValidate.compareDocuments("expected", expected, "actual", actual);
 					//break;
-					assert(false);
+					//assert(false);
+					throw new AssertionError("Failed for " + f.getName());
 				} else {
 					//System.out.println(f.getName() + " PASSED");
 				}
