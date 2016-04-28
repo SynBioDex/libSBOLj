@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
 
-class SBOLReaderTest extends SBOLAbstractTests
+public class SBOLReaderTest extends SBOLAbstractTests
 {
 	@Override
 	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception

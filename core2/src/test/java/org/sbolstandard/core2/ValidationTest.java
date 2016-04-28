@@ -24,7 +24,7 @@ import org.junit.Test;
  * @author Meher Samineni
  *
  */
-class ValidationTest {
+public class ValidationTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() {

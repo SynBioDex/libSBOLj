@@ -22,7 +22,7 @@ import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
  * @author Tramy Nguyen
  *
  */
-class SBOLTestUtils {
+public class SBOLTestUtils {
 
 	private SBOLTestUtils()
 	{

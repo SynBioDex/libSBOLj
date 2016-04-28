@@ -27,7 +27,7 @@ import org.junit.Test;
  *
  *
  */
-abstract class SBOLAbstractTests {
+public abstract class SBOLAbstractTests {
 
 	String VERSION_1_0 = "1.0";
 	String URIprefix = "http://www.async.ece.utah.edu";

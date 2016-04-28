@@ -11,7 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-class ComponentDefinitionTests {
+public class ComponentDefinitionTests {
 
 	private SBOLDocument doc = null;
 	private ComponentDefinition cas9_generic = null;

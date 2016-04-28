@@ -12,7 +12,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-class writeTester {
+public class writeTester {
 
 	private static SBOLDocument sbolDocument = new SBOLDocument();
 	

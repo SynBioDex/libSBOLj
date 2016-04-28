@@ -7,7 +7,7 @@ import java.net.URI;
 import org.junit.Test;
 
 
-class OntologyTest {
+public class OntologyTest {
 	
 	private static final String SO_URI_PREFIX = "http://identifiers.org/so/";
 	private static final String SBO_URI_PREFIX = "http://identifiers.org/biomodels.sbo/";

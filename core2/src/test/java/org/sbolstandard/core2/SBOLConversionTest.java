@@ -7,7 +7,7 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-class SBOLConversionTest {
+public class SBOLConversionTest {
 
 	@Test
 	public void test_SBOL1_Files() throws Exception

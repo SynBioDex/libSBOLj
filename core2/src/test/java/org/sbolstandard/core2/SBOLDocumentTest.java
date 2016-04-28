@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-class SBOLDocumentTest {
+public class SBOLDocumentTest {
 
 	@Test
 	public void Test_Sequence_CopyCreate_Create() throws SBOLValidationException {
