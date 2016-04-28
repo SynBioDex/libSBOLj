@@ -38,19 +38,19 @@ public class SBOLConversionTest {
 				SBOLDocument actual = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 				if (!actual.equals(expected)) {
 					System.out.println(f.getName() + " FAILED");
-					SBOLValidate.compareDocuments("expected", expected, "actual", actual);
+					//SBOLValidate.compareDocuments("expected", expected, "actual", actual);
 					//break;
-					//assert(false);
-					throw new AssertionError("Failed for " + f.getName());
+					assert(false);
+					//throw new AssertionError("Failed for " + f.getName());
 				} else {
 					//System.out.println(f.getName() + " PASSED");
 				}
 			}
 			catch (SBOLValidationException e)
 			{
-				throw new AssertionError("Failed for " + f.getName(), e);
+				System.out.println("Failed for " + f.getName() + "\n" + e.getMessage());
+				assert(false);
 			}
-			System.gc();
 		}
 	}
 	
