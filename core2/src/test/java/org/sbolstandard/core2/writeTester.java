@@ -12,7 +12,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-public class writeTester {
+class writeTester {
 
 	private static SBOLDocument sbolDocument = new SBOLDocument();
 	
@@ -20,6 +20,7 @@ public class writeTester {
 
 	/**
 	 * Top level types
+	 * @param args 
 	 * @throws SBOLValidationException 
 	 * @throws SBOLConversionException 
 	 * @throws IOException 

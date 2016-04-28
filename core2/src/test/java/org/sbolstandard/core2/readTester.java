@@ -2,7 +2,7 @@ package org.sbolstandard.core2;
 
 import java.io.InputStream;
 
-public class readTester {
+class readTester {
 	public static String filenameRdf 	= "writeTesterString_v1.3.rdf";
 	public static String filenameJson   = "writeTesterString_v1.3.json";
 	public static String filenameTurtle = "writeTesterString_v1.3.ttl";

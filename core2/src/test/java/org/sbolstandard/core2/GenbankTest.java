@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class GenbankTest {
+class GenbankTest {
 
 	private static final String NEWLINE = System.lineSeparator();
 	

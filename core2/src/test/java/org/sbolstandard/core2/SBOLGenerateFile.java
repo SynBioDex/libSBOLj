@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class SBOLGenerateFile extends SBOLAbstractTests {
+class SBOLGenerateFile extends SBOLAbstractTests {
 
 	@Override
 	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception

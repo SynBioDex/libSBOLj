@@ -7,7 +7,7 @@ import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-public class SBOLConversionTest {
+class SBOLConversionTest {
 
 	@Test
 	public void test_SBOL1_Files() throws Exception
@@ -20,6 +20,7 @@ public class SBOLConversionTest {
 			e1.printStackTrace();
 		}
 		File file;
+		int count = 0;
 		for (File f : file_base.listFiles()){
 			// TODO: should figure out why these fail
 			if (f.getAbsolutePath().contains("miRNA_sbol.xml")) continue;
@@ -45,6 +46,8 @@ public class SBOLConversionTest {
 				} else {
 					//System.out.println(f.getName() + " PASSED");
 				}
+				count++;
+				if (count==10) return;
 			}
 			catch (SBOLValidationException e)
 			{

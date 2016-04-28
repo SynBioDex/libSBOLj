@@ -6,7 +6,7 @@ import java.io.ByteArrayInputStream;
 
 import org.junit.Test;
 
-public class FASTATest {
+class FASTATest {
 	
 
 //	@Test

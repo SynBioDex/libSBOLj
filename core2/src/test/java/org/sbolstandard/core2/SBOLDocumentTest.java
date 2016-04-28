@@ -1,8 +1,5 @@
 package org.sbolstandard.core2;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -15,7 +12,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class SBOLDocumentTest {
+class SBOLDocumentTest {
 
 	@Test
 	public void Test_Sequence_CopyCreate_Create() throws SBOLValidationException {
