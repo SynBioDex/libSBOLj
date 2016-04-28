@@ -4,14 +4,24 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
+@RunWith(Parameterized.class)
 public class SBOLConversionTest {
-
-	//@Test
-	public void test_SBOL1_Files() throws Exception
-	{
+	
+	private File file;
+	
+	public SBOLConversionTest(File file) {
+		this.file = file;
+	}
+	
+	@Parameterized.Parameters
+	public static java.util.Collection files() {
 		File file_base = null ;
 		try {
 			file_base = new File(ValidationTest.class.getResource("/test/data/SBOL1/").toURI());
@@ -19,15 +29,31 @@ public class SBOLConversionTest {
 		catch (URISyntaxException e1) {
 			e1.printStackTrace();
 		}
-		File file;
-		int count = 0;
-		for (File f : file_base.listFiles()){
+		java.util.Collection col = new HashSet();
+		for (File f : file_base.listFiles()) {
+			col.add(f);
+		}
+		return col;
+	}
+
+	@Test
+	public void test_SBOL1_Files() throws Exception
+	{
+//		File file_base = null ;
+//		try {
+//			file_base = new File(ValidationTest.class.getResource("/test/data/SBOL1/").toURI());
+//		}
+//		catch (URISyntaxException e1) {
+//			e1.printStackTrace();
+//		}
+//		File file;
+//		for (File f : file_base.listFiles()){
 			// TODO: should figure out why these fail
-			if (f.getAbsolutePath().contains("miRNA_sbol.xml")) continue;
-			if (f.getAbsolutePath().contains("pACPc_invF.xml")) continue;
-			if (f.getAbsolutePath().contains("BBa_T9002.xml")) continue;
-			if (f.getAbsolutePath().contains("BBa_I0462.xml")) continue;
-			file = new File(f.getAbsolutePath());
+			if (file.getAbsolutePath().contains("miRNA_sbol.xml")) return;
+			if (file.getAbsolutePath().contains("pACPc_invF.xml")) return;
+			if (file.getAbsolutePath().contains("BBa_T9002.xml")) return;
+			//if (f.getAbsolutePath().contains("BBa_I0462.xml")) continue;
+			//file = new File(f.getAbsolutePath());
 			try
 			{
 				SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
@@ -38,7 +64,7 @@ public class SBOLConversionTest {
 				SBOLWriter.write(expected, out, SBOLDocument.RDFV1);
 				SBOLDocument actual = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 				if (!actual.equals(expected)) {
-					System.out.println(f.getName() + " FAILED");
+					System.out.println(file.getName() + " FAILED");
 					//SBOLValidate.compareDocuments("expected", expected, "actual", actual);
 					//break;
 					assert(false);
@@ -46,15 +72,13 @@ public class SBOLConversionTest {
 				} else {
 					//System.out.println(f.getName() + " PASSED");
 				}
-				count++;
-				if (count==10) return;
 			}
 			catch (SBOLValidationException e)
 			{
-				System.out.println("Failed for " + f.getName() + "\n" + e.getMessage());
+				System.out.println("Failed for " + file.getName() + "\n" + e.getMessage());
 				assert(false);
 			}
-		}
+		//}
 	}
 	
 //	@Test
