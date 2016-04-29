@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.HashSet;
 
 import org.junit.Test;
