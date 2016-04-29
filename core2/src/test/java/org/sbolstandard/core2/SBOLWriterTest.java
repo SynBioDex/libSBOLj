@@ -9,7 +9,7 @@ public class SBOLWriterTest extends SBOLAbstractTests {
 	@Override
 	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception {
 		assumeNotNull(expected);
-		SBOLValidate.validateSBOL(expected, false, false, false);
+		SBOLValidate.validateSBOL(expected, false, compliant, false);
 		if (SBOLValidate.getNumErrors()>0) {
 			for (String error : SBOLValidate.getErrors()) {
 				System.err.println(error);

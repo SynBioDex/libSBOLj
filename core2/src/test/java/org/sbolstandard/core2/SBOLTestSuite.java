@@ -18,7 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
 //						SBOLGenerateFile.class,
 			SBOLReaderTest.class,
 			SBOLWriterTest.class,
-			//SBOLConversionTest.class,
+			SBOLTestConversion.class,
 			URIcomplianceTest.class,
 			SBOLDocumentTest.class,
 			ValidationTest.class,

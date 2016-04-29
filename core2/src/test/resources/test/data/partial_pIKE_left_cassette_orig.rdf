@@ -15,6 +15,21 @@
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000139"/>
   </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="urn:49f0ad6c-dec4-4b82-a989-d9ce22ac8c58">
+    <sbol:persistentIdentity rdf:resource="urn:49f0ad6c-dec4-4b82-a989-d9ce22ac8c58"/>
+    <sbol:displayId>Terminator</sbol:displayId>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_R0040">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_R0040"/>
+    <sbol:displayId>BBa_R0040</sbol:displayId>
+    <dcterms:title>p(tetR)</dcterms:title>
+    <dcterms:description>TetR repressible promoter</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_187"/>
+  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="urn:f71298e4-a79b-4f94-ae8a-22b1f6d11d8b">
     <sbol:persistentIdentity rdf:resource="urn:f71298e4-a79b-4f94-ae8a-22b1f6d11d8b"/>
     <sbol:displayId>pIKELeftCasette</sbol:displayId>
@@ -62,20 +77,6 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="urn:678f5ee4-ef38-4c8e-a235-145a459b2128">
-        <sbol:persistentIdentity rdf:resource="urn:678f5ee4-ef38-4c8e-a235-145a459b2128"/>
-        <sbol:displayId>annotation3</sbol:displayId>
-        <sbol:location>
-          <sbol:GenericLocation rdf:about="urn:678f5ee4-ef38-4c8e-a235-145a459b2128/genericLocation">
-            <sbol:persistentIdentity rdf:resource="urn:678f5ee4-ef38-4c8e-a235-145a459b2128/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:GenericLocation>
-        </sbol:location>
-        <sbol:component rdf:resource="urn:f71298e4-a79b-4f94-ae8a-22b1f6d11d8b/component2"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="urn:2bc8890b-9fc3-44e8-9606-6b5e7dd7a690">
         <sbol:persistentIdentity rdf:resource="urn:2bc8890b-9fc3-44e8-9606-6b5e7dd7a690"/>
         <sbol:displayId>annotation2</sbol:displayId>
@@ -87,6 +88,20 @@
           </sbol:GenericLocation>
         </sbol:location>
         <sbol:component rdf:resource="urn:f71298e4-a79b-4f94-ae8a-22b1f6d11d8b/component1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="urn:678f5ee4-ef38-4c8e-a235-145a459b2128">
+        <sbol:persistentIdentity rdf:resource="urn:678f5ee4-ef38-4c8e-a235-145a459b2128"/>
+        <sbol:displayId>annotation3</sbol:displayId>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="urn:678f5ee4-ef38-4c8e-a235-145a459b2128/genericLocation">
+            <sbol:persistentIdentity rdf:resource="urn:678f5ee4-ef38-4c8e-a235-145a459b2128/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:GenericLocation>
+        </sbol:location>
+        <sbol:component rdf:resource="urn:f71298e4-a79b-4f94-ae8a-22b1f6d11d8b/component2"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceConstraint>
@@ -160,21 +175,6 @@
         <sbol:object rdf:resource="urn:2c324e1d-484e-4597-b92c-657b82eb8483/component1"/>
       </sbol:SequenceConstraint>
     </sbol:sequenceConstraint>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="urn:49f0ad6c-dec4-4b82-a989-d9ce22ac8c58">
-    <sbol:persistentIdentity rdf:resource="urn:49f0ad6c-dec4-4b82-a989-d9ce22ac8c58"/>
-    <sbol:displayId>Terminator</sbol:displayId>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_R0040">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_R0040"/>
-    <sbol:displayId>BBa_R0040</sbol:displayId>
-    <dcterms:title>p(tetR)</dcterms:title>
-    <dcterms:description>TetR repressible promoter</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
-    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_187"/>
   </sbol:ComponentDefinition>
   <sbol:Sequence rdf:about="http://partsregistry.org/seq/partseq_153">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/seq/partseq_153"/>

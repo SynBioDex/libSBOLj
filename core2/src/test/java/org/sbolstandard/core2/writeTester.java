@@ -20,6 +20,7 @@ public class writeTester {
 
 	/**
 	 * Top level types
+	 * @param args 
 	 * @throws SBOLValidationException 
 	 * @throws SBOLConversionException 
 	 * @throws IOException 

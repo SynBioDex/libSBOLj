@@ -11,7 +11,7 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 	@Override
 	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception
 	{
-		SBOLValidate.validateSBOL(expected, false, false, false);
+		SBOLValidate.validateSBOL(expected, false, compliant, false);
 		if (SBOLValidate.getNumErrors()>0) {
 			for (String error : SBOLValidate.getErrors()) {
 				System.err.println(error);
@@ -23,7 +23,7 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 			System.out.println("Expected:"+expected.toString());
 			System.out.println("Actual  :"+actual.toString());
 		}
-		SBOLValidate.validateSBOL(actual, false, false, false);
+		SBOLValidate.validateSBOL(actual, false, compliant, false);
 		if (SBOLValidate.getNumErrors()>0) {
 			for (String error : SBOLValidate.getErrors()) {
 				System.err.println(error);
