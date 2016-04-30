@@ -143,12 +143,12 @@ public class Range extends Location {
 		int thisPos = -1;
 		Annotation annotation = this.getAnnotation(new QName(GenBank.GBNAMESPACE,GenBank.POSITION,GenBank.GBPREFIX));
 		if (annotation!=null) {
-			thisPos = Integer.parseInt(annotation.getStringValue());
+			thisPos = Integer.parseInt(annotation.getStringValue().replace("position",""));
 		}
 		int otherPos = -1;
 		annotation = location.getAnnotation(new QName(GenBank.GBNAMESPACE,GenBank.POSITION,GenBank.GBPREFIX));
 		if (annotation!=null) {
-			otherPos = Integer.parseInt(annotation.getStringValue());
+			otherPos = Integer.parseInt(annotation.getStringValue().replace("position",""));
 		}
 		if (thisPos != -1 && otherPos != -1) {
 			int result = thisPos - otherPos;

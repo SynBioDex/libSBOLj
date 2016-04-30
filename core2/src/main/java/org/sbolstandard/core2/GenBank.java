@@ -1053,9 +1053,9 @@ class GenBank {
 										newRange = sa.addRange("range"+rangeCnt, start, end, orientation);
 									}
 									if (outerComplement) {
-										annotation = new Annotation(new QName(GBNAMESPACE,POSITION,GBPREFIX),((ranges.length-1)-rangeCnt)+"");
+										annotation = new Annotation(new QName(GBNAMESPACE,POSITION,GBPREFIX),"position"+((ranges.length-1)-rangeCnt));
 									} else {
-										annotation = new Annotation(new QName(GBNAMESPACE,POSITION,GBPREFIX),rangeCnt+"");
+										annotation = new Annotation(new QName(GBNAMESPACE,POSITION,GBPREFIX),"position"+rangeCnt);
 									}
 									newRange.addAnnotation(annotation);
 									if (startLessThan) {
