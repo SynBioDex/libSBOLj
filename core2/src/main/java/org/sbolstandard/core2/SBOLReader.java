@@ -302,9 +302,9 @@ public class SBOLReader
 	 *
 	 * @param fileName the name of the given RDF file
 	 * @return the converted SBOLDocument
-	 * @throws SBOLValidationException if an SBOL validation rule is violated.
-	 * @throws SBOLConversionException 
-	 * @throws IOException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @throws SBOLConversionException see {@link SBOLConversionException}
+	 * @throws IOException see {@link IOException}
 	 */
 	public static SBOLDocument read(String fileName) throws SBOLValidationException, IOException, SBOLConversionException
 	{
@@ -344,9 +344,9 @@ public class SBOLReader
 	 *
 	 * @param file the given RDF file
 	 * @return an SBOLDocument object that stores the RDF file information
-	 * @throws SBOLValidationException if an SBOL validation rule is violated.
-	 * @throws SBOLConversionException 
-	 * @throws IOException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @throws SBOLConversionException see {@link SBOLConversionException}
+	 * @throws IOException see {@link IOException}
 	 */
 	public static SBOLDocument read(File file) throws SBOLValidationException, IOException, SBOLConversionException
 	{
@@ -417,8 +417,8 @@ public class SBOLReader
 	 * @param in a given RDF InputStream
 	 * @return the converted SBOLDocument instance
 	 * @throws SBOLValidationException if an SBOL validation rule is violated.
-	 * @throws SBOLConversionException 
-	 * @throws IOException 
+	 * @throws SBOLConversionException see {@link SBOLConversionException}
+	 * @throws IOException see {@link IOException}
 	 */
 	public static SBOLDocument read(InputStream in) throws SBOLValidationException, IOException, SBOLConversionException
 	{

@@ -46,13 +46,13 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	
 	/**
 	 * Creates a GenericLocation instance with the given arguments, 
-	 * and then adds to this SequenceAnnotation object's list of locations.
+	 * and then adds to this SequenceAnnotation instance's list of locations.
 	 * <p>
 	 * This method creates the GenericLocation instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the GenericLocation instance. 
+	 * SequenceAnnotation instance, the given {@code displayId} of the GenericLocation instance. 
 	 *  
-	 * @param displayId
-	 * @return the generic location created
+	 * @param displayId the  display ID used to construct the identity of the generic location instance
+	 * @return the created generic location instance
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public GenericLocation addGenericLocation(String displayId) throws SBOLValidationException {
@@ -66,17 +66,17 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Creates a GenericLocation instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * Creates a GenericLocation instance with the given arguments and then adds to this SequenceAnnotation instance's
 	 * list of locations.
 	 * <p>
 	 * This method creates the GenericLocation instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the GenericLocation instance. 
+	 * SequenceAnnotation instance, the given {@code displayId} of the GenericLocation instance. 
 	 * The orientation property
 	 * of the created GenericLocation instance is set to the given {@code orientation}.
 	 *  
-	 * @param displayId
-	 * @param orientation
-	 * @return the generic location created
+	 * @param displayId the  display ID used to construct the identity of the generic location instance 
+	 * @param orientation the orientation property for the 
+	 * @return the created generic location instance
 	 * @throws SBOLValidationException see {@link SBOLValidationException} 
  	 */
 	public GenericLocation addGenericLocation(String displayId,OrientationType orientation) throws SBOLValidationException {
@@ -91,15 +91,15 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation instance's
 	 * list of locations.
 	 * <p>
 	 * This method creates the Cut instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the Cut instance. 
+	 * SequenceAnnotation instance, the given {@code displayId} of the Cut instance. 
 	 *  
-	 * @param displayId
-	 * @param at
-	 * @return the cut created
+	 * @param displayId the display ID for the Cut instance 
+	 * @param at the at property for the created Cut instance 
+	 * @return the created cut instance
 	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public Cut addCut(String displayId,int at) throws SBOLValidationException {
@@ -113,17 +113,17 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation instance's
 	 * list of locations.
 	 * <p>
 	 * This method creates the Cut instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the Cut instance. The orientation property
+	 * SequenceAnnotation instance, the given {@code displayId} of the Cut instance. The orientation property
 	 * of the created Cut instance is set to the given {@code orientation}.
 	 *  
-	 * @param displayId
-	 * @param at
-	 * @param orientation
-	 * @return the cut created
+	 * @param displayId the display ID for the Cut instance 
+	 * @param at the at property for the created Cut instance
+	 * @param orientation the orientation type
+	 * @return the created cut instance
 	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public Cut addCut(String displayId,int at,OrientationType orientation) throws SBOLValidationException {
@@ -138,16 +138,16 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation instance's
 	 * list of locations.
 	 * <p>
 	 * This method creates the Range instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the Range instance. 
+	 * SequenceAnnotation instance, the given {@code displayId} of the Range instance. 
 	 * 
-	 * @param displayId
-	 * @param start
-	 * @param end
-	 * @return the range created
+  	 * @param displayId the display ID for the Range instance
+	 * @param start the start index of the Range instance
+	 * @param end the end index of the Range instance
+	 * @return the created Range instance
 	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public Range addRange(String displayId,int start,int end) throws SBOLValidationException {
@@ -161,18 +161,18 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
- 	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation object's
+ 	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation instance's
 	 * list of locations.
 	 * <p>
 	 * This method creates the Range instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the Range instance. The orientation property
+	 * SequenceAnnotation instance, the given {@code displayId} of the Range instance. The orientation property
 	 * of the created Range instance is set to the given {@code orientation}.
 	 * 
-	 * @param displayId
-	 * @param start
-	 * @param end
-	 * @param orientation
-	 * @return the range created
+ 	 * @param displayId the display ID for the Range instance
+	 * @param start the start index of the Range instance
+	 * @param end the end index of the Range instance
+	 * @param orientation the oritentation type
+ 	 * @return the range created
 	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public Range addRange(String displayId,int start,int end,OrientationType orientation) throws SBOLValidationException {
@@ -195,11 +195,11 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * Removes the given Location instance from the list of Location
 	 * instances.
 	 * <p>
-	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @param location
+	 * @param location the Location instance
 	 * @return {@code true} if the matching Location instance is removed successfully, {@code false} otherwise.
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */	
@@ -211,10 +211,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Returns the Location instance owned by this SequenceAnnotation object 
+	 * Returns the Location instance owned by this SequenceAnnotation instance 
 	 * that matches the given {@code displayId}
 	 * 
-	 * @param displayId
+	 * @param displayId the display ID of the Location instance to be returned 
 	 * @return the matching Location instance
 	 */
 	public Location getLocation(String displayId) {
@@ -227,10 +227,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Returns the Location instance owned by this SequenceAnnotation object 
-	 * that matches the given {@code displayId}
+	 * Returns the Location instance owned by this SequenceAnnotation instance 
+	 * that matches the given location URI.
 	 * 
-	 * @param locationURI
+	 * @param locationURI the URI identity of 
 	 * @return the matching Location instance URI
 	 */
 	public Location getLocation(URI locationURI) {
@@ -238,18 +238,18 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Returns the set of Location instances referenced by this SequenceAnnotation object.
+	 * Returns the set of Location instances referenced by this SequenceAnnotation instance.
 	 * 
-	 * @return the set of Location instances referenced by this SequenceAnnotation object.
+	 * @return the set of Location instances referenced by this SequenceAnnotation instance.
 	 */
 	public Set<Location> getLocations() {
 		return new HashSet<>(locations.values());
 	}
 	
 	/**
-	 * Returns a sorted list of Locations referenced by this SequenceAnnotation object.
+	 * Returns a sorted list of Locations referenced by this SequenceAnnotation instance.
 	 * 
-	 * @return a sorted list of Locations referenced by this SequenceAnnotation object.
+	 * @return a sorted list of Locations referenced by this SequenceAnnotation instance.
 	 */
 	public List<Location> getSortedLocations() {
 		List<Location> sortedLocations = new ArrayList<Location>();
@@ -259,10 +259,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Removes all entries of this SequenceAnnotation object's list of Location
+	 * Removes all entries of this SequenceAnnotation instance's list of Location
 	 * instances. The set will be empty after this call returns.
   	 * <p>
-	 * If this SequenceAnnotation object belongs to an SBOLDocument instance,
+	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance,
 	 * then the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
@@ -276,12 +276,8 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 		
 	/**
-	 * Clears the existing list of location instances, then appends all of the elements in the specified collection to the end of this list.
-<<<<<<< HEAD
+	 * Clears the existing list of location instances first, then appends all of the elements in the specified collection to the end of this list.
 	 * @throws SBOLValidationException see {@link SBOLValidationException} 
-=======
-	 * @throws SBOLValidationException if no locations are provided
->>>>>>> refs/remotes/origin/develop
 	 */
 	void setLocations(Set<Location> locations) throws SBOLValidationException {
 		clearLocations();	
@@ -364,18 +360,18 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Returns the Component URI that this SequenceAnnotation object refers to.
+	 * Returns the Component URI that this SequenceAnnotation instance refers to.
 	 * 
-	 * @return the Component URI that this SequenceAnnotation object refers to
+	 * @return the Component URI that this SequenceAnnotation instance refers to
 	 */
 	public URI getComponentURI() {
 		return component;
 	}
 
 	/**
-	 * Returns the Component instance this SequenceAnnotation object refers to.
+	 * Returns the Component instance this SequenceAnnotation instance refers to.
 	 * 
-	 * @return the Component instance this SequenceAnnotation object refers to,
+	 * @return the Component instance this SequenceAnnotation instance refers to,
 	 * if the associated ComponentDefinition instance is not {@code null}, 
 	 * or {@code null} otherwise 
 	 */
@@ -388,23 +384,17 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * Sets the reference Component URI to the URI of the Component instance matching the 
 	 * given {@code displayId}.
 	 * <p>
-	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * This method creates a compliant URI for the reference Component instance using the
-	 * persistent identity of this SequenceAnnotation object's parent ComponentDefinition instance,
+	 * persistent identity of this SequenceAnnotation instance's parent ComponentDefinition instance,
 	 * the given {@code displayId}, and the parent ComponentDefinition instance's version.
 	 * It then calls {@link #setComponent(URI)} to set the reference.
 	 * 
-	 * @param displayId
-<<<<<<< HEAD
+	 * @param displayId the given display ID for the referenced component
  	 * @throws SBOLValidationException see {@link SBOLValidationException}
-=======
-	 * @throws SBOLValidationException if the associated ComponentDefinition object is not {@code null},
-	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
-	 * list of Component instances.
->>>>>>> refs/remotes/origin/develop
 	 */
 	public void setComponent(String displayId) throws SBOLValidationException {
 		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
@@ -419,18 +409,12 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	/**
 	 * Sets the reference component URI to the given {@code componentURI}.
 	 * <p>
-	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @param componentURI
-<<<<<<< HEAD
+	 * @param componentURI the given component identity URI
  	 * @throws SBOLValidationException see {@link SBOLValidationException}
-=======
-	 * @throws SBOLValidationException if the associated ComponentDefinition object is not {@code null},
-	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
-	 * list of Component instances.
->>>>>>> refs/remotes/origin/develop
 	 */
 	public void setComponent(URI componentURI) throws SBOLValidationException {
 		if (componentDefinition!=null) {
@@ -451,7 +435,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	/**
 	 * Dereference the component URI by setting it to {@code null}.
 	 * <p>
-	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 */
@@ -496,7 +480,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Assume this SequenceAnnotation object has compliant URI, and all given parameters have compliant forms.
+	 * Assume this SequenceAnnotation instance has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
 	 * @param URIprefix
 	 * @param parentDisplayId

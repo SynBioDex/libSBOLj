@@ -2605,7 +2605,7 @@ public class SBOLDocument {
 	 * @param out the given output stream
 	 * @param fileType specify what file type for the the given output stream
 	 * @throws SBOLConversionException see {@link SBOLConversionException}   
-	 * @throws IOException 
+	 * @throws IOException see {@link IOException} 
 	 */
 	public void write(OutputStream out,String fileType) throws SBOLConversionException, IOException 
 	{
