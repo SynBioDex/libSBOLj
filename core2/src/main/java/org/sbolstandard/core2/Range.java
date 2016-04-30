@@ -2,6 +2,8 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+import javax.xml.namespace.QName;
+
 /**
  * @author Zhen Zhang
  * @author Tramy Nguyen
@@ -138,6 +140,20 @@ public class Range extends Location {
 
 	@Override
 	public int compareTo(Location location) {
+		int thisPos = -1;
+		Annotation annotation = this.getAnnotation(new QName(GenBank.GBNAMESPACE,GenBank.POSITION,GenBank.GBPREFIX));
+		if (annotation!=null) {
+			thisPos = Integer.parseInt(annotation.getStringValue());
+		}
+		int otherPos = -1;
+		annotation = location.getAnnotation(new QName(GenBank.GBNAMESPACE,GenBank.POSITION,GenBank.GBPREFIX));
+		if (annotation!=null) {
+			otherPos = Integer.parseInt(annotation.getStringValue());
+		}
+		if (thisPos != -1 && otherPos != -1) {
+			int result = thisPos - otherPos;
+			return result;
+		}
 		if (location instanceof Range) {
 			int result = this.start - ((Range)location).getStart();
 			if (result==0) {

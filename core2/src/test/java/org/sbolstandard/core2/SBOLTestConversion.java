@@ -22,13 +22,13 @@ public class SBOLTestConversion {
 	@Parameterized.Parameters
 	public static java.util.Collection files() {
 		File file_base = null ;
+		java.util.Collection col = new HashSet();
 		try {
 			file_base = new File(ValidationTest.class.getResource("/test/data/SBOL1/").toURI());
 		}
 		catch (URISyntaxException e1) {
 			e1.printStackTrace();
 		}
-		java.util.Collection col = new HashSet();
 		for (File f : file_base.listFiles()) {
 			col.add(f);
 		}

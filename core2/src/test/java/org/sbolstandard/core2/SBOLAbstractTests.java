@@ -859,7 +859,7 @@ public abstract class SBOLAbstractTests {
 				SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 				SBOLDocument actual = SBOLReader.read(file);
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
-				SBOLWriter.write(actual, out, SBOLDocument.GENBANK);
+				SBOLWriter.write(actual, System.out, SBOLDocument.GENBANK);
 				runTest("test/data/"+f.getName().replace(".gb", ".rdf"), actual, "rdf", true);
 			}
 			catch (Exception e)

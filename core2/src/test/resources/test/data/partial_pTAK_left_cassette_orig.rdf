@@ -9,26 +9,6 @@
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
     <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_153"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="urn:c26b0115-3c37-4aa7-9e98-c491b3db9a53">
-    <sbol:persistentIdentity rdf:resource="urn:c26b0115-3c37-4aa7-9e98-c491b3db9a53"/>
-    <sbol:displayId>RBS</sbol:displayId>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000139"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_K121014">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_K121014"/>
-    <sbol:displayId>BBa_K121014</sbol:displayId>
-    <dcterms:description>promoter (lambda cI regulated)</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
-    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_12077"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="urn:bcb44a78-ed3e-485b-b4a4-ec5cff683588">
-    <sbol:persistentIdentity rdf:resource="urn:bcb44a78-ed3e-485b-b4a4-ec5cff683588"/>
-    <sbol:displayId>Terminator</sbol:displayId>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
-  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="urn:6d179ea6-dcff-4da5-be76-4d343cb99e90">
     <sbol:persistentIdentity rdf:resource="urn:6d179ea6-dcff-4da5-be76-4d343cb99e90"/>
     <sbol:displayId>Repressor2</sbol:displayId>
@@ -85,6 +65,26 @@
         <sbol:object rdf:resource="urn:6d179ea6-dcff-4da5-be76-4d343cb99e90/component1"/>
       </sbol:SequenceConstraint>
     </sbol:sequenceConstraint>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="urn:c26b0115-3c37-4aa7-9e98-c491b3db9a53">
+    <sbol:persistentIdentity rdf:resource="urn:c26b0115-3c37-4aa7-9e98-c491b3db9a53"/>
+    <sbol:displayId>RBS</sbol:displayId>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000139"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_K121014">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_K121014"/>
+    <sbol:displayId>BBa_K121014</sbol:displayId>
+    <dcterms:description>promoter (lambda cI regulated)</dcterms:description>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_12077"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="urn:bcb44a78-ed3e-485b-b4a4-ec5cff683588">
+    <sbol:persistentIdentity rdf:resource="urn:bcb44a78-ed3e-485b-b4a4-ec5cff683588"/>
+    <sbol:displayId>Terminator</sbol:displayId>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="urn:d0f2ca7b-33d4-4106-8b7a-4bfe7efa1a16">
     <sbol:persistentIdentity rdf:resource="urn:d0f2ca7b-33d4-4106-8b7a-4bfe7efa1a16"/>
