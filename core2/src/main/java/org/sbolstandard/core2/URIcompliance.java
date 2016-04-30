@@ -5,6 +5,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author Zhen Zhang
+ * @author Chris Myers
+ * @version 2.1
+ */
+
 final class URIcompliance {
 	
 	static void validateIdVersion(String displayId, String version) throws SBOLValidationException {

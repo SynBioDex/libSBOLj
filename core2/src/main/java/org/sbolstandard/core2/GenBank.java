@@ -22,7 +22,8 @@ import javax.xml.namespace.QName;
 /**
  * This class provides methods for converting GenBank files to and from SBOL 2.0 files.
  * @author Chris Myers
- *
+ * @author Ernst Oberortner
+ * @version 2.1
  */
 class GenBank {
 

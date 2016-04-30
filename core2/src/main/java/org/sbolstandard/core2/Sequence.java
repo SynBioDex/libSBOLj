@@ -6,14 +6,10 @@ import java.net.URI;
 
 /**
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
-
 public class Sequence extends TopLevel{
 
 	private String elements;

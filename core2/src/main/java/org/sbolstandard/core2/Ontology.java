@@ -11,6 +11,7 @@ import org.oboparser.obo.OBOStanza;
  * This class provides methods to 
  * 
  * @author Zhen Zhang
+ * @version 2.1
  *
  */
 public abstract class Ontology {
