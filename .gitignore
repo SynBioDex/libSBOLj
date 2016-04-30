@@ -1,5 +1,4 @@
-﻿.project
-/build
+﻿/build
 **/target
 *~
 *.swp
@@ -18,3 +17,4 @@ javadocs
 **/.classpath
 **/.project
 .git
+.project
