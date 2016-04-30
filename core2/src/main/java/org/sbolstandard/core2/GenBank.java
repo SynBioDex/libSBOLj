@@ -48,6 +48,7 @@ class GenBank {
 	public static final String PUBMED = "pubmed";
 	public static final String COMMENT = "comment";
 	public static final String POSITION = "position";
+	public static final String STRADLESORIGIN = "stradlesOrigin";
 	public static final String STARTLESSTHAN = "startLessThan";
 	public static final String ENDGREATERTHAN = "endGreaterThan";
 	public static final String SINGLEBASERANGE = "singleBaseRange";
@@ -97,7 +98,6 @@ class GenBank {
 	
 	private static void writeComponentDefinition(ComponentDefinition componentDefinition, Writer w) throws IOException, SBOLConversionException {
 		so = new SequenceOntology();
-		// TODO: should check type is DNA or RNA
 		Sequence seq = null;
 		for (Sequence sequence : componentDefinition.getSequences()) {
 			if (sequence.getEncoding().equals(Sequence.IUPAC_DNA)||
@@ -519,7 +519,7 @@ class GenBank {
 //		return ""+(offset+range.getEnd());
 //	}
 //	
-	private static String locationStr(Location location,int offset,boolean complement) throws SBOLConversionException {
+	private static String locationStr(Location location,int offset,boolean complement,Location location2) throws SBOLConversionException {
 		int start; 
 		int end;
 		String locationStr = "";
@@ -535,6 +535,15 @@ class GenBank {
 			isCut = true;
 		} else {
 			throw new SBOLConversionException("Location "+location.getIdentity()+" is not range or cut.");
+		}
+		if (location2!=null) {
+			if (location2 instanceof Range) {
+				Range range = (Range)location2;
+				end = offset+range.getEnd();
+			} else if (location2 instanceof Cut) {
+				Cut cut = (Cut)location2;
+				end = offset+cut.getAt()+1;
+			} 			
 		}
 		if (complement) {
 			locationStr += "complement(";
@@ -559,6 +568,14 @@ class GenBank {
 		}
 		return locationStr;
 	}
+	
+	private static boolean stradlesOrigin(SequenceAnnotation sa) {
+		Annotation annotation = sa.getAnnotation(new QName(GBNAMESPACE,STRADLESORIGIN,GBPREFIX));
+		if (annotation!=null) {
+			return true;
+		}
+		return false;
+	}
 
 	private static void writeFeature(Writer w,SequenceAnnotation sa,String role,int offset,boolean inline) 
 			throws IOException, SBOLConversionException {
@@ -566,9 +583,23 @@ class GenBank {
 			throw new SBOLConversionException("SequenceAnnotation "+sa.getIdentity()+" has no locations.");
 		} else if (sa.getLocations().size()==1) {
 			Location loc = sa.getLocations().iterator().next();
+			boolean locReverse = false;
+			if (loc.isSetOrientation()) {
+				locReverse = loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT);
+			}
 			w.write("     " + role + " " + locationStr(loc,offset,
-					((inline && loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))||
-					(!inline && !loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))))+"\n");
+					((inline && locReverse)||
+					(!inline && !locReverse)),null)+"\n");
+		} else if (stradlesOrigin(sa)) {
+			Location loc = sa.getLocation("range0");
+			Location loc2 = sa.getLocation("range1");
+			boolean locReverse = false;
+			if (loc.isSetOrientation()) {
+				locReverse = loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT);
+			}
+			w.write("     " + role + " " + locationStr(loc,offset,
+					((inline && locReverse)||
+					(!inline && !locReverse)),loc2)+"\n");			
 		} else {
 			String multiType = "join";
 			Annotation annotation = sa.getAnnotation(new QName(GBNAMESPACE,MULTIRANGETYPE,GBPREFIX));
@@ -580,9 +611,12 @@ class GenBank {
 			for (Location loc : sa.getSortedLocations()) {
 				if (!first) rangeStr += ",";
 				else first = false;
+				boolean locReverse = false;
+				if (loc.isSetOrientation()) {
+					locReverse = loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT);
+				}
 				rangeStr += locationStr(loc,offset,
-						((inline && loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))||
-						(!inline && !loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT))));
+						((inline && locReverse)||(!inline && !locReverse)),null);
 			}
 			rangeStr += ")";
 			writeGenBankLine(w,rangeStr,80,21);
@@ -652,7 +686,7 @@ class GenBank {
 	private static boolean isInlineFeature(SequenceAnnotation sa) {
 		boolean inlineFeature = true;
 		for (Location location : sa.getLocations()) {
-			if (location.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
+			if (location.isSetOrientation() && location.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
 				inlineFeature = false;
 			}
 		}
@@ -804,6 +838,8 @@ class GenBank {
 			List<Annotation> annotations = new ArrayList<Annotation>();
 			List<Annotation> nestedAnnotations = null;
 			Annotation annotation = null;
+			boolean circular = false;
+			int baseCount = 0;
 			while ((strLine = readGenBankLine(br)) != null)   {
 				strLine = strLine.trim();
 				// LOCUS line
@@ -817,6 +853,9 @@ class GenBank {
 					annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), strSplit[1]);
 					annotations.add(annotation);
 
+					// Base count of the sequence
+					baseCount = Integer.parseInt(strSplit[2]);
+					
 					// type of sequence
 					if (strSplit[4].toUpperCase().contains("RNA")) {
 						type = ComponentDefinition.RNA;
@@ -829,6 +868,7 @@ class GenBank {
 
 						// linear vs. circular construct
 						if (strSplit[i].startsWith("linear") || strSplit[i].startsWith("circular")) {
+							if (strSplit[i].startsWith("circular")) circular = true;
 							annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
 
 						} else if (strSplit[i].length()==3) {
@@ -1099,30 +1139,48 @@ class GenBank {
 								}
 								int start = Integer.parseInt(rangeSplit[0]);
 								int end = Integer.parseInt(rangeSplit[1]);
-								// TODO: check if the construct is circular or not
-								if (start > end) {
-									int temp = start;
-									start = end;
-									end = temp;
+								if (start > end && circular) {
+									SequenceAnnotation sa =
+											topCD.createSequenceAnnotation("annotation"+featureCnt,"range0",start,baseCount,orientation);
+									sa.setComponent("feature"+featureCnt);
+									annotation = new Annotation(new QName(GBNAMESPACE,STRADLESORIGIN,GBPREFIX),"true");
+									sa.addAnnotation(annotation);
+									Range newRange = (Range)sa.getLocation("range");
+									if (startLessThan) {
+										annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");
+										newRange.addAnnotation(annotation);
+									}
+									if (singleBaseRange) {
+										annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
+										newRange.addAnnotation(annotation);
+									}
+									newRange = sa.addRange("range1", 1, end, orientation);
+									if (singleBaseRange) {
+										annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
+										newRange.addAnnotation(annotation);
+									}
+									if (endGreaterThan) {
+										annotation = new Annotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX),"true");
+										newRange.addAnnotation(annotation);
+									}
+								} else {
+									SequenceAnnotation sa =
+											topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
+									sa.setComponent("feature"+featureCnt);
+									Range newRange = (Range)sa.getLocation("range");
+									if (startLessThan) {
+										annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");
+										newRange.addAnnotation(annotation);
+									}
+									if (endGreaterThan) {
+										annotation = new Annotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX),"true");
+										newRange.addAnnotation(annotation);
+									}
+									if (singleBaseRange) {
+										annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
+										newRange.addAnnotation(annotation);
+									}
 								}
-
-								SequenceAnnotation sa =
-										topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
-								sa.setComponent("feature"+featureCnt);
-								Range newRange = (Range)sa.getLocation("range");
-								if (startLessThan) {
-									annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");
-									newRange.addAnnotation(annotation);
-								}
-								if (endGreaterThan) {
-									annotation = new Annotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX),"true");
-									newRange.addAnnotation(annotation);
-								}
-								if (singleBaseRange) {
-									annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
-									newRange.addAnnotation(annotation);
-								}
-
 							}
 
 							featureCnt++;
