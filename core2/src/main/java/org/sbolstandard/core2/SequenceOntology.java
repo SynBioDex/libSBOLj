@@ -155,8 +155,8 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns the ID field of the stanza whose name matches the given name. If multiple matches are found, only the first matching
-	 * one is returned.
+	 * Returns the ID field of the stanza whose name matches the given name. 
+	 * If multiple matches are found, only the first matching one is returned.
 	 *  
 	 * @param stanzaName
 	 * @return the ID the matching stanza, or {@code null} if no match is found.
@@ -304,7 +304,7 @@ public class SequenceOntology {
 	/**
 	 * Creates a new URI from the Sequence Ontology namespace with the given ID. For example, the function call
 	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
-	 * @param id
+	 * @param id the given ID
 	 * @return the created URI
 	 */
 	public static final URI type(String id) {

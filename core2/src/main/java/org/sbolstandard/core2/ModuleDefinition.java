@@ -176,7 +176,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param moduleDefinitionId The ModuleDefinitionId for this Module object
 	 * @param version The version for this Module object
 	 * @return a Module instance
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public Module createModule(String displayId, String moduleDefinitionId, String version) throws SBOLValidationException {
 		URI module = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
@@ -403,7 +403,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param displayId The displayId identifier for this Interaction object
 	 * @param types The set of types to be added to the Interaction
 	 * @return the created Interaction instance
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public Interaction createInteraction(String displayId, Set<URI> types) throws SBOLValidationException {
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -431,7 +431,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param displayId The displayId identifier for this object
 	 * @param type The type to be added to the Interaction
 	 * @return the created Interaction instance
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public Interaction createInteraction(String displayId, URI type) throws SBOLValidationException {
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -584,7 +584,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param version The given version for this object
 	 * @param direction specify whether this FunctionalComponent is an input, output, both, or neither
 	 * @return a FunctionalComponent instance
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
 			String definitionId, String version, DirectionType direction) throws SBOLValidationException {
@@ -811,7 +811,7 @@ public class ModuleDefinition extends TopLevel {
 	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @throws SBOLValidationException
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void clearFunctionalComponents() throws SBOLValidationException {
 		Object[] valueSetArray = functionalComponents.values().toArray();
@@ -882,7 +882,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @param version The given version for this object
 	 * @return {@code true} if this set did not already contain the given Model
 	 *         instance URI.
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public boolean addModel(String modelId, String version) throws SBOLValidationException {
 		URI modelURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
@@ -967,7 +967,7 @@ public class ModuleDefinition extends TopLevel {
 	 * is allowed to be edited.
 	 *
 	 * @param models the given set of the Models to be added
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void setModels(Set<URI> models) throws SBOLValidationException {
 		clearModels();

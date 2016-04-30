@@ -60,9 +60,9 @@ public class SBOLWriter
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
 	 * in RDF format.
-	 * @param doc
-	 * @param file
-	 * @throws IOException
+	 * @param doc the given SBOLDocument object
+	 * @param file the serialized output file
+	 * @throws IOException see {@link IOException}
 	 * @throws SBOLConversionException - problem found during serialization 
 	 */
 	public static void write(SBOLDocument doc, File file) throws IOException, SBOLConversionException {
@@ -76,10 +76,10 @@ public class SBOLWriter
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
 	 * in the specified fileType format.
-	 * @param doc
-	 * @param file
-	 * @param fileType
-	 * @throws IOException
+	 * @param doc the given SBOLDocument object
+	 * @param file the serialized output file
+	 * @param fileType the given file format, such as RDF/XML, JSON, or Turtle. 
+	 * @throws IOException see {@link IOException}
 	 * @throws SBOLConversionException - problem found during serialization 
 	 */
 	public static void write(SBOLDocument doc, File file, String fileType) throws IOException, SBOLConversionException
@@ -94,8 +94,8 @@ public class SBOLWriter
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
 	 * in RDF format.
-	 * @param doc
-	 * @param out
+	 * @param doc the given SBOLDocument object
+	 * @param out the serialized output stream
 	 * @throws SBOLConversionException - problem found during serialization 
 	 */
 	public static void write(SBOLDocument doc, OutputStream out) throws SBOLConversionException
@@ -119,9 +119,9 @@ public class SBOLWriter
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
 	 * file name in RDF format
-	 * @param doc
-	 * @param filename
-	 * @throws IOException
+	 * @param doc the given SBOLDocument object
+	 * @param filename the name of the serialized output file
+	 * @throws IOException see {@link IOException}	 
 	 * @throws SBOLConversionException - problem found during serialization 
 	 */
 	public static void write(SBOLDocument doc, String filename) throws IOException, SBOLConversionException
@@ -132,10 +132,10 @@ public class SBOLWriter
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
 	 * filename in specified fileType format
-	 * @param doc
-	 * @param filename
-	 * @param fileType
-	 * @throws IOException
+	 * @param doc the given SBOLDocument object
+	 * @param filename the name of the serialized output file
+	 * @param fileType the given file format, such as RDF/XML, JSON, or Turtle.
+	 * @throws IOException see {@link IOException}
 	 * @throws SBOLConversionException - problem found during serialization 
 	 */
 	public static void write(SBOLDocument doc, String filename, String fileType) throws IOException, SBOLConversionException
@@ -146,11 +146,11 @@ public class SBOLWriter
 	/**
 	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
 	 * in the specified fileType format.
-	 * @param doc
-	 * @param out
-	 * @param fileType
+	 * @param doc the given SBOLDocument object
+	 * @param out the serialized output stream
+	 * @param fileType the given file format, such as RDF/XML, JSON, or Turtle.
 	 * @throws SBOLConversionException - problem found during serialization
-	 * @throws IOException 
+	 * @throws IOException see {@link IOException}
 	 */
 	public static void write(SBOLDocument doc, OutputStream out, String fileType) throws SBOLConversionException, IOException
 	{

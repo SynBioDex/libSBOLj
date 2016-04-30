@@ -1328,7 +1328,7 @@ public class ComponentDefinition extends TopLevel {
 	 * This method calls {@link #removeComponent(Component component)} to iteratively remove
 	 * each Component instance owned by this ComponentDefinition object.
 	 *
-	 * @throws SBOLValidationException
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void clearComponents() throws SBOLValidationException {
 		Object[] valueSetArray = components.values().toArray();
@@ -1392,7 +1392,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subjectId refers to a Component contained by the same parent ComponentDefinition that contains the SequenceConstraint
 	 * @param objectId refers to a Component contained by the same parent ComponentDefinition that contains the SequenceConstraint
 	 * @return a SequenceConstraint instance
-	 * @throws SBOLValidationException
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public SequenceConstraint createSequenceConstraint(String displayId,
 			RestrictionType restriction, String subjectId, String objectId) throws SBOLValidationException {
@@ -1426,7 +1426,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @param subject refers to a Component contained by the same parent ComponentDefinition that contains the SequenceConstraint
 	 * @param object refers to a Component contained by the same parent ComponentDefinition that contains the SequenceConstraint
 	 * @return a SequenceConstraint instance
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public SequenceConstraint createSequenceConstraint(String displayId,
 			RestrictionType restriction, URI subject, URI object) throws SBOLValidationException {

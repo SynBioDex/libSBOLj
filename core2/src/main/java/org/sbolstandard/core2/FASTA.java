@@ -210,6 +210,7 @@ class FASTA {
 //		// all sequences represented as SBOL objects
 //		return doc;
 //	}
+
 	
 //	/**
 //	 * Takes in the given FASTA file and converts the file to an SBOLDocument.
@@ -231,7 +232,7 @@ class FASTA {
 //		BufferedInputStream buffer = new BufferedInputStream(stream);
 //		return read(buffer,URIprefix,displayId,version,encoding);
 //	}
-	
+
 //	/**
 //	 * Takes in the given FASTA filename and converts the file to an SBOLDocument.
 //	 *
@@ -251,10 +252,10 @@ class FASTA {
 //		return read(new File(fileName),URIprefix,displayId,version,encoding);
 //	}
 
+
 //	public static void main(String[] args) throws SBOLConversionException, IOException, SBOLValidationException {
 //		SBOLDocument doc = read("/Users/myers/Downloads/sample.fasta","http://dummy.org","dummy","",Sequence.IUPAC_DNA);
 //		//doc.write(System.out);
 //		write(doc, System.out);
 //	}
-
 }
