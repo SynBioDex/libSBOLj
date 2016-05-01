@@ -7,6 +7,11 @@ import java.net.URI;
 import org.junit.Test;
 
 
+/**
+ * Tests for the ontology parser
+ * @author Zhen Zhang
+ *
+ */
 public class OntologyTest {
 	
 	private static final String SO_URI_PREFIX = "http://identifiers.org/so/";

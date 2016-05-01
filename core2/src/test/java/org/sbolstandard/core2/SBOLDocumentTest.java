@@ -12,6 +12,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * Tests for SBOLDocument methods.
+ * @author Meher Samineni
+ * @author Eugene Choe
+ *
+ */
 public class SBOLDocumentTest {
 
 	@Test

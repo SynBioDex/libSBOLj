@@ -6,10 +6,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Generate "golden" files for abstract tests.
+ * @author Chris Myers
+ *
+ */
 public class SBOLGenerateFile extends SBOLAbstractTests {
 
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception
+	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws SBOLValidationException, SBOLConversionException, IOException 
 	{
 		SBOLValidate.validateSBOL(expected, false, compliant, false);
 		if (SBOLValidate.getNumErrors()>0) {
@@ -51,7 +56,7 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 	//		}
 	//	}
 
-	public static void writeRdfFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
+	static void writeRdfFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
 			SBOLWriter.write(document, new File(fileName));
@@ -60,7 +65,7 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 		}
 	}
 
-	public static void writeJsonFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
+	static void writeJsonFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
 			SBOLWriter.write(document, new File(fileName), SBOLDocument.JSON);
@@ -69,7 +74,7 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 		}
 	}
 
-	public static void writeTurtleFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
+	static void writeTurtleFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
 			SBOLWriter.write(document, new File(fileName), SBOLDocument.TURTLE);

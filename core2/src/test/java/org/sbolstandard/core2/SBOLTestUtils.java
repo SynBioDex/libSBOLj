@@ -20,40 +20,41 @@ import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 /**
  * Construction of TopLevel objects along with any of its' sub-parts.
  * @author Tramy Nguyen
+ * @author Chris Myers
  *
  */
-public class SBOLTestUtils {
+class SBOLTestUtils {
 
 	private SBOLTestUtils()
 	{
 	}
 
-	public static final NamespaceBinding example = NamespaceBinding ("http://sbolstandard.org/example/", "example");
-	public static final NamespaceBinding biopax  = NamespaceBinding ("http://www.biopax.org/release/biopax-level3.owl#", "biopax");
-	public static final NamespaceBinding so 	 = NamespaceBinding ("http://identifiers.org/so/", "so");
-	public static final NamespaceBinding sbo	 = NamespaceBinding ("http://identifiers.org/biomodels.sbo/", "sbo");
-	public static final NamespaceBinding pr 	 = NamespaceBinding ("http://www.partsregistry.org/", "pr");
-	public static final NamespaceBinding vpr 	 = NamespaceBinding ("http://www.virtualparts.org/part/", "vpr");
-	public static final NamespaceBinding uniprot = NamespaceBinding ("http://identifiers.org/uniprot/", "uniprot");
+	static final NamespaceBinding example = NamespaceBinding ("http://sbolstandard.org/example/", "example");
+	static final NamespaceBinding biopax  = NamespaceBinding ("http://www.biopax.org/release/biopax-level3.owl#", "biopax");
+	static final NamespaceBinding so 	 = NamespaceBinding ("http://identifiers.org/so/", "so");
+	static final NamespaceBinding sbo	 = NamespaceBinding ("http://identifiers.org/biomodels.sbo/", "sbo");
+	static final NamespaceBinding pr 	 = NamespaceBinding ("http://www.partsregistry.org/", "pr");
+	static final NamespaceBinding vpr 	 = NamespaceBinding ("http://www.virtualparts.org/part/", "vpr");
+	static final NamespaceBinding uniprot = NamespaceBinding ("http://identifiers.org/uniprot/", "uniprot");
 
 
-	public static class Terms
+	static class Terms
 	{
-		public static class sequenceTypes
+		static class sequenceTypes
 		{
-			public static URI nucleotides = URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html");
-			public static URI aminoacids  = URI.create("http://www.chem.qmul.ac.uk/iupac/AminoAcid/");
-			public static URI atoms  	  = URI.create("http://www.opensmiles.org/opensmiles.html");
+			static URI nucleotides = URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html");
+			static URI aminoacids  = URI.create("http://www.chem.qmul.ac.uk/iupac/AminoAcid/");
+			static URI atoms  	  = URI.create("http://www.opensmiles.org/opensmiles.html");
 		}
 
-		public static class moduleRoles
+		static class moduleRoles
 		{
-			public static URI inverter = URI.create("http://parts.igem.org/cgi/partsdb/pgroup.cgi?pgroup=inverter");
+			static URI inverter = URI.create("http://parts.igem.org/cgi/partsdb/pgroup.cgi?pgroup=inverter");
 
 		}
 	}
 
-	public static SBOLDocument convertSBOL1(String fileName, String URIprefix, String fileType, boolean dropDuplicates)
+	static SBOLDocument convertSBOL1(String fileName, String URIprefix, String fileType, boolean dropDuplicates)
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
@@ -86,7 +87,7 @@ public class SBOLTestUtils {
 
 	}
 
-	public static SBOLDocument convertRDFTripleStore(String fileName, String fileType, boolean compliant)
+	static SBOLDocument convertRDFTripleStore(String fileName, String fileType, boolean compliant)
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
@@ -112,7 +113,7 @@ public class SBOLTestUtils {
 
 	}
 	
-	public static void setDefaultNameSpace(SBOLDocument document, String uri) 
+	static void setDefaultNameSpace(SBOLDocument document, String uri) 
 	{
 		if (uri.endsWith("/"))
 		{
@@ -121,7 +122,7 @@ public class SBOLTestUtils {
 		document.setDefaultURIprefix(uri);
 	}
 
-	public static void createInverter(SBOLDocument document, ModuleDefinition moduleDef, ComponentDefinition promoter, ComponentDefinition TF) throws Exception
+	static void createInverter(SBOLDocument document, ModuleDefinition moduleDef, ComponentDefinition promoter, ComponentDefinition TF) throws SBOLValidationException
 	{
 		FunctionalComponent  laciInverterModuleDef_promoter=moduleDef.createFunctionalComponent(
 				"promoter",
@@ -150,7 +151,7 @@ public class SBOLTestUtils {
 				SystemsBiologyOntology.INHIBITOR);
 	}
 
-	public static ComponentDefinition createComponenDefinition(SBOLDocument document,QName identifier,String name, URI type, URI role,String description) throws SBOLValidationException
+	static ComponentDefinition createComponenDefinition(SBOLDocument document,QName identifier,String name, URI type, URI role,String description) throws SBOLValidationException
 	{
 		ComponentDefinition componentDef = document.createComponentDefinition(
 				identifier.getLocalPart(),
@@ -161,17 +162,17 @@ public class SBOLTestUtils {
 		return componentDef;
 	}
 
-	public static Sequence addPRSequence(SBOLDocument document, ComponentDefinition componentDef, String elements) throws SBOLValidationException
+	static Sequence addPRSequence(SBOLDocument document, ComponentDefinition componentDef, String elements) throws SBOLValidationException
 	{
 		return addSequence(document, componentDef, componentDef.getDisplayId(), Terms.sequenceTypes.nucleotides, elements);
 	}
 
-	public static void addSubComponents(SBOLDocument document, ComponentDefinition componentDef, ComponentDefinition ... subComponents)	throws Exception
+	static void addSubComponents(SBOLDocument document, ComponentDefinition componentDef, ComponentDefinition ... subComponents)throws SBOLValidationException
 	{
 		addSubComponents(document, componentDef, Arrays.asList(subComponents));
 	}
 
-	public static void addSubComponents(SBOLDocument document, ComponentDefinition componentDef, List<ComponentDefinition> subComponents)	throws Exception
+	static void addSubComponents(SBOLDocument document, ComponentDefinition componentDef, List<ComponentDefinition> subComponents)	throws SBOLValidationException
 	{
 		int i=1;
 		int start=0;
@@ -191,7 +192,7 @@ public class SBOLTestUtils {
 		}
 	}
 
-	public static int getSequenceLength (SBOLDocument document, ComponentDefinition componentDef) throws Exception
+	static int getSequenceLength (SBOLDocument document, ComponentDefinition componentDef) throws SBOLValidationException
 	{		if (componentDef.getSequences()!=null && componentDef.getSequences().size()>0)
 	{
 		Sequence sequence=componentDef.getSequences().iterator().next();
@@ -212,27 +213,28 @@ public class SBOLTestUtils {
 			}
 			else
 			{
-				throw new Exception ("Can't get sequence length for an incomplete design");
+				// TODO: wrong exception likely
+				throw new SBOLValidationException ("Can't get sequence length for an incomplete design");
 			}
 		}
 		return total;
 	}
 	}
 
-	public static Sequence addSequence(SBOLDocument document, ComponentDefinition componentDef, String displayId, URI sequenceType, String elements) throws SBOLValidationException
+	static Sequence addSequence(SBOLDocument document, ComponentDefinition componentDef, String displayId, URI sequenceType, String elements) throws SBOLValidationException
 	{
 		Sequence sequence=document.createSequence(displayId,elements,sequenceType);
 		componentDef.addSequence(sequence.getIdentity());
 		return sequence;
 	}
 
-	public static URI toURI(QName name)
+	static URI toURI(QName name)
 	{
 		return URI.create(name.getNamespaceURI() + name.getLocalPart());
 	}
 
 
-	public static SBOLDocument writeAndRead(SBOLDocument doc, boolean compliant)
+	static SBOLDocument writeAndRead(SBOLDocument doc, boolean compliant)
 			throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -243,23 +245,23 @@ public class SBOLTestUtils {
 
 
 	/*
-	public static URI createCompliantIdentity(String id)
+	static URI createCompliantIdentity(String id)
 	{
 		return URI.create("http://www.async.ece.utah.edu/" + id + "/1/0");
 	}
 
-	public static URI createCompliantPersistentIdentity(String id)
+	static URI createCompliantPersistentIdentity(String id)
 	{
 		return URI.create("http://www.async.ece.utah.edu/" + id);
 	}
 
-	public static URI getURI(String append)
+	static URI getURI(String append)
 	{
 		return URI.create("http://www.async.ece.utah.edu/" + append);
 	}
 	 */
 
-	public static Set<URI> getSetPropertyURI(String ... appends)
+	static Set<URI> getSetPropertyURI(String ... appends)
 	{
 		Set<URI> list = new HashSet<URI>();
 		for(String append : appends)
@@ -269,7 +271,7 @@ public class SBOLTestUtils {
 		return list;
 	}
 
-	public static URI getPropertyURI(String append)
+	static URI getPropertyURI(String append)
 	{
 		return URI.create("http://some.ontology.org/" + append);
 	}
@@ -277,12 +279,12 @@ public class SBOLTestUtils {
 	/*------------------------
 	 * UTILS FOR SEQUENCES
 	 *------------------------*/
-	public static final String NEWLINE = System.lineSeparator();
-	public static final String[] sigmaDNA = new String[]{
+	static final String NEWLINE = System.lineSeparator();
+	static final String[] sigmaDNA = new String[]{
 			"A","C","G","T"};
-	public static final String[] sigmaRNA = new String[]{
+	static final String[] sigmaRNA = new String[]{
 			"A","C","G","U"};
-	public static final String[] sigmaAminoAcids = new String[]{
+	static final String[] sigmaAminoAcids = new String[]{
 			"F","L","I","M","V","S","P","T","A","Y","H","N","K","D","E","C","R","W","G","Q","*"};
 	private static Random rand;
 
@@ -294,7 +296,7 @@ public class SBOLTestUtils {
 	 * 
 	 * @return a random sequence as String
 	 */
-	public String generateRandomSequence(int N, String[] sigma) {
+	String generateRandomSequence(int N, String[] sigma) {
 		StringBuilder seq = new StringBuilder();
 		for(int i=0; i<N; i++) {
 			seq.append(
@@ -311,7 +313,7 @@ public class SBOLTestUtils {
 	 * 
 	 * @return a randomly chosen letter from the alphabet
 	 */
-	public String getRandomLetter(String[] sigma) {
+	String getRandomLetter(String[] sigma) {
 		if(null == rand) {
 			rand = new Random();
 		}
@@ -328,7 +330,7 @@ public class SBOLTestUtils {
 	 * 
 	 * @return a random number in the range [min..max]
 	 */
-	public int getRandomNumber(int min, int max) {
+	int getRandomNumber(int min, int max) {
 		if(min <= max) {
 			// pick a random number from min to max
 			return new Random().nextInt((max - min) + 1) + min;

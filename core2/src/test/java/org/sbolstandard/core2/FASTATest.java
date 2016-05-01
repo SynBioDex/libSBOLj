@@ -6,8 +6,13 @@ import java.io.ByteArrayInputStream;
 
 import org.junit.Test;
 
+/**
+ * Methods to test FASTA/SBOL conversion.
+ * @author Ernst Oberortner
+ * @author Chris Myers
+ */
 public class FASTATest {
-	
+
 
 //	@Test
 //	public void testWriteSequenceString() {
@@ -39,6 +44,9 @@ public class FASTATest {
 //		fail("Not yet implemented"); // TODO
 //	}
 
+	/**
+	 * Test read FASTA conversion
+	 */
 	@Test
 	public void testReadInputStreamStringStringStringURI() {
 		String URIprefix = "http://sbols.org/";

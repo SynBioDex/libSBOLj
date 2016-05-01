@@ -14,10 +14,19 @@ import java.util.List;
 
 import org.junit.Test;
 
+/**
+ * Methods to test GenBank/SBOL conversion.
+ * @author Ernst Oberortner
+ * @author Chris Myers
+ */
 public class GenbankTest {
 
 	private static final String NEWLINE = System.lineSeparator();
 	
+	/**
+	 * @param directory - test file directory
+	 * @return list of files in test directory
+	 */
 	public static List<String> fileList(String directory) {
         List<String> fileNames = new ArrayList<>();
         
@@ -37,6 +46,9 @@ public class GenbankTest {
         return fileNames;
     }
 	
+	/**
+	 * Test parsing multiline labal that contains SO terms.
+	 */
 	@Test
 	public void testParseMultilineLabelContainsSOTerm() {
 		String genbank = 
@@ -73,6 +85,9 @@ public class GenbankTest {
 		}
 	}
 	
+	/**
+	 * Test parsing of multi-line labels.
+	 */
 	@Test
 	public void testParseMultilineLabels() {
 		String genbank = 

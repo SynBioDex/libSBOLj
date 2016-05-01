@@ -2,12 +2,19 @@ package org.sbolstandard.core2;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * This test compares a generated SBOLDocument to a "golden" file read from disk. 
+ * @author Tramy Nguyen
+ * @author Chris Myers
+ *
+ */
 public class SBOLReaderTest extends SBOLAbstractTests
 {
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception
+	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws SBOLValidationException, IOException, SBOLConversionException 
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)

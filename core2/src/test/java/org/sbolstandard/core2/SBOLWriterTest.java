@@ -2,12 +2,22 @@ package org.sbolstandard.core2;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+
 import org.junit.Assume;
 
+/**
+ * This test compares a generated SBOLDocument to the SBOLDocument obtained by 
+ * writing and reading the original document.
+ * @author Tramy Nguyen
+ * @author Chris Myers
+ *
+ */
 public class SBOLWriterTest extends SBOLAbstractTests {
 
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception {
+	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws SBOLValidationException, SBOLConversionException, IOException 
+	{
 		assumeNotNull(expected);
 		SBOLValidate.validateSBOL(expected, false, compliant, false);
 		if (SBOLValidate.getNumErrors()>0) {

@@ -11,6 +11,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests for ComponentDefinition methods.
+ * @author Meher Samineni
+ *
+ */
 public class ComponentDefinitionTests {
 
 	private SBOLDocument doc = null;
