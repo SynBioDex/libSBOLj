@@ -24,7 +24,10 @@ public class SBOLReaderTest extends SBOLAbstractTests
 		SBOLReader.setCompliant(compliant);
 		
 		SBOLDocument actual;
-		if (compliant) SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+		if (compliant) {
+			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+			SBOLReader.setVersion("");
+		}
 		else SBOLReader.unsetURIPrefix();
 
 		if(fileType.equals("rdf"))

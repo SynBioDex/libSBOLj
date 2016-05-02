@@ -63,6 +63,7 @@ class SBOLTestUtils {
 		assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
 		SBOLDocument actual = null;
 		SBOLReader.setURIPrefix(URIprefix);
+		SBOLReader.setVersion("");
 		SBOLReader.setDropObjectsWithDuplicateURIs(dropDuplicates);
 		if (URIprefix==null) {
 			SBOLReader.setCompliant(false);
