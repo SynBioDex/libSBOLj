@@ -24,7 +24,8 @@ public class SBOLReaderTest extends SBOLAbstractTests
 		SBOLReader.setCompliant(compliant);
 		
 		SBOLDocument actual;
-		SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+		if (compliant) SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+		else SBOLReader.unsetURIPrefix();
 
 		if(fileType.equals("rdf"))
 			actual = SBOLReader.read(resourceAsStream);
@@ -34,6 +35,9 @@ public class SBOLReaderTest extends SBOLAbstractTests
 			actual = SBOLReader.read(resourceAsStream,SBOLDocument.TURTLE);
 		else
 			actual = SBOLReader.read(resourceAsStream);
+		if (!actual.equals(expected)) {
+			SBOLValidate.compareDocuments("actual", actual, "expected", expected);
+		}
 		assertTrue(actual.equals(expected));
 	}
 

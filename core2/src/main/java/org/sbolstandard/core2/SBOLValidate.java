@@ -1152,8 +1152,8 @@ public class SBOLValidate {
 				System.err.println("ComponentDefinition " + componentDefinition1.getIdentity() + " not found in " + file2);
 			} else if (!componentDefinition1.equals(componentDefinition2)) {
 				System.err.println("ComponentDefinition " + componentDefinition1.getIdentity() + " differ.");
-				System.err.println(componentDefinition1.toString());
-				System.err.println(componentDefinition2.toString());
+				//System.err.println(componentDefinition1.toString());
+				//System.err.println(componentDefinition2.toString());
 			}
 		}
 		for (ComponentDefinition componentDefinition2 : doc2.getComponentDefinitions()) {
