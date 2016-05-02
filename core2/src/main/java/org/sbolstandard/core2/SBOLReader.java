@@ -46,11 +46,13 @@ import uk.ac.ncl.intbio.core.io.json.StringifyQName;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 /**
- * @author Zhen Zhang
+ * Provides methods to read input SBOL files. 
+ *
  * @author Tramy Nguyen
+ * @author Chris Myers
+ * @author Zhen Zhang
  * @author Matthew Pocock
  * @author Goksel Misirli
- * @author Chris Myers
  * @version 2.1
  */
 

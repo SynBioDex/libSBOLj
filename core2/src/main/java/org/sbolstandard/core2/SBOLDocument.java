@@ -30,6 +30,8 @@ import javax.xml.namespace.QName;
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 
 /**
+ * Represents the SBOL document where all top-level instances can be created and manipulated.
+ * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Chris Myers

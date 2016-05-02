@@ -13,7 +13,8 @@ import org.oboparser.obo.OBOParser;
 import org.oboparser.obo.OBOStanza;
 
 /**
- * This class provides methods for accessing <a href="http://www.ebi.ac.uk/sbo/main/"><i>Systems Biology Ontology</i></a> (SBO) terms and querying their relationships.
+ * This class provides methods for accessing <a href="http://www.ebi.ac.uk/sbo/main/"><i>Systems Biology Ontology</i></a> (SBO) terms 
+ * and querying about their relationships.
  * 
  * 
  * 

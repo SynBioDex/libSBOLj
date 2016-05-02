@@ -4,6 +4,8 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import java.net.URI;
 
 /**
+ * Represents the SBOL Model data model.
+ * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Chris Myers

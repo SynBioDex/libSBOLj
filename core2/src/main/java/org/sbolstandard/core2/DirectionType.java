@@ -3,6 +3,8 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents all direction types for a {@link FunctionalComponent} object.
+ * 
  * @author Zhen Zhang
  * @author Chris Myers
  * @version 2.1

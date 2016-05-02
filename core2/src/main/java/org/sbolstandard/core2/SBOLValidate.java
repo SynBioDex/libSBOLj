@@ -15,6 +15,8 @@ import javax.xml.namespace.QName;
 import uk.co.turingatemyhamster.opensmiles.OpenSmilesParser;
 
 /**
+ * Provides functionality for validating SBOL data models.
+ * 
  * @author Zhen Zhang
  * @author Chris Myers
  * @version 2.1

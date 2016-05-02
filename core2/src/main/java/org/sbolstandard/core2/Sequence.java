@@ -5,6 +5,8 @@ import static org.sbolstandard.core2.URIcompliance.*;
 import java.net.URI;
 
 /**
+ * Represents the SBOL Sequence data model.
+ * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Chris Myers

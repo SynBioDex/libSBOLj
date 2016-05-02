@@ -197,6 +197,9 @@ public class OntologyTest {
 		assertTrue(systemsBiologyOntology.isDescendantOf(SBO_child1_id, SBO_parent2_id));
 	}
 	
+	/**
+	 * 
+	 */
 	@Test
 	public void test_SBO_isDescendantOf3() {
 		// Term SBO:1001260 has two is_a relations.

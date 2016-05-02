@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Represents the SBOL SequenceAnnotation data model.
+ * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Chris Myers

@@ -3,6 +3,8 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents the SBOL top-level classes.
+ * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Chris Myers

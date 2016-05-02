@@ -3,6 +3,8 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents the relationship between a sequence constraint's subject and object components.
+ * 
  * @author Zhen Zhang
  * @author Chris Myers
  * @version 2.1

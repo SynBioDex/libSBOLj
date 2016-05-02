@@ -13,7 +13,8 @@ import org.oboparser.obo.OBOParser;
 import org.oboparser.obo.OBOStanza;
 
 /**
- * This class provides methods for accessing <a href=http://www.sequenceontology.org/> <i>Sequence Ontology</i></a> (SO) terms and querying their relationships. 
+ * This class provides methods for accessing <a href=http://www.sequenceontology.org/> <i>Sequence Ontology</i></a> (SO) terms 
+ * and querying about their relationships. 
  * 
  * @author Zhen Zhang
  * @author Tramy Nguyen

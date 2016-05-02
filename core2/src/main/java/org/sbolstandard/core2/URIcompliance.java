@@ -6,8 +6,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author Zhen Zhang
+ * This class provides functionality to validate URI compliance. 
+ * 
  * @author Chris Myers
+ * @author Zhen Zhang
  * @version 2.1
  */
 
