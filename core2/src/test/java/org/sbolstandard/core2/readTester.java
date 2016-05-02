@@ -2,33 +2,33 @@ package org.sbolstandard.core2;
 
 import java.io.InputStream;
 
-public class readTester {
-	public static String filenameRdf 	= "writeTesterString_v1.3.rdf";
-	public static String filenameJson   = "writeTesterString_v1.3.json";
-	public static String filenameTurtle = "writeTesterString_v1.3.ttl";
+class readTester {
+	static String filenameRdf 	= "writeTesterString_v1.3.rdf";
+	static String filenameJson   = "writeTesterString_v1.3.json";
+	static String filenameTurtle = "writeTesterString_v1.3.ttl";
 
-	public static String filenameV1_1 	= "SBOL1/partial_pIKE_left_cassette.xml";
-	public static String filenameV1_2 	= "SBOL1/partial_pIKE_right_casette.xml";
-	public static String filenameV1_3 	= "SBOL1/partial_pIKE_right_cassette.xml";
-	public static String filenameV1_4 	= "SBOL1/partial_pTAK_left_cassette.xml";
-	public static String filenameV1_5 	= "SBOL1/partial_pTAK_right_cassette.xml";
-	public static String filenameV1_6 	= "SBOL1/pIKE_pTAK_cassettes 2.xml";
-	public static String filenameV1_7 	= "SBOL1/pIKE_pTAK_cassettes.xml";
-	public static String filenameV1_8 	= "SBOL1/pIKE_pTAK_left_right_cassettes.xml";
-	public static String filenameV1_9 	= "SBOL1/pIKE_pTAK_toggle_switches.xml";
-	public static String filenameV1_10 	= "SBOL1/miRNA_sbol.xml";
-	public static String filenameV1_11 	= "SBOL1/labhost_All.xml";
-	public static String filenameV1_12 	= "SBOL1/BBa_I0462.xml";
-	public static String filenameV1_13 	= "SBOL1/pACPc_invF.xml";
-	public static String filenameV1_14 	= "SBOL1/precedesTest.xml";
-	public static String filenameV1_15 	= "ComponentDefinitionOutput.rdf";
-	public static String filenameV1_16 	= "SimpleComponentDefinitionExample.rdf";
-	public static String filenameV1_17 	= "namespace.rdf";
-	public static String filenameV1_18 	= "SBOL1/SBOL1and2Test.xml";
-	public static String filenameV1_19 	= "toggle.rdf";
+	static String filenameV1_1 	= "SBOL1/partial_pIKE_left_cassette.xml";
+	static String filenameV1_2 	= "SBOL1/partial_pIKE_right_casette.xml";
+	static String filenameV1_3 	= "SBOL1/partial_pIKE_right_cassette.xml";
+	static String filenameV1_4 	= "SBOL1/partial_pTAK_left_cassette.xml";
+	static String filenameV1_5 	= "SBOL1/partial_pTAK_right_cassette.xml";
+	static String filenameV1_6 	= "SBOL1/pIKE_pTAK_cassettes 2.xml";
+	static String filenameV1_7 	= "SBOL1/pIKE_pTAK_cassettes.xml";
+	static String filenameV1_8 	= "SBOL1/pIKE_pTAK_left_right_cassettes.xml";
+	static String filenameV1_9 	= "SBOL1/pIKE_pTAK_toggle_switches.xml";
+	static String filenameV1_10 	= "SBOL1/miRNA_sbol.xml";
+	static String filenameV1_11 	= "SBOL1/labhost_All.xml";
+	static String filenameV1_12 	= "SBOL1/BBa_I0462.xml";
+	static String filenameV1_13 	= "SBOL1/pACPc_invF.xml";
+	static String filenameV1_14 	= "SBOL1/precedesTest.xml";
+	static String filenameV1_15 	= "ComponentDefinitionOutput.rdf";
+	static String filenameV1_16 	= "SimpleComponentDefinitionExample.rdf";
+	static String filenameV1_17 	= "namespace.rdf";
+	static String filenameV1_18 	= "SBOL1/SBOL1and2Test.xml";
+	static String filenameV1_19 	= "toggle.rdf";
 
 
-	public static String path = "test/data/";
+	static String path = "test/data/";
 
 	public static void main(String[] args) {
 

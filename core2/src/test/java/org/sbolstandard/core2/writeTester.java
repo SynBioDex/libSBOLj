@@ -12,7 +12,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-public class writeTester {
+class writeTester {
 
 	private static SBOLDocument sbolDocument = new SBOLDocument();
 	
@@ -28,7 +28,6 @@ public class writeTester {
 	 * @throws XMLStreamException 
 	 *
 	 */
-
 	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
@@ -65,18 +64,18 @@ public class writeTester {
 		//writeRdfOutputStream(sbolDocument);
 	}
 
-	public static void writeRdfOutputStream(SBOLDocument SBOL2Doc_test) throws IOException
-	{
-		try {
-			SBOLWriter.write(SBOL2Doc_test,(System.out));
-			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test,true);
-			SBOLWriter.write(SBOL2Doc_test,System.out);
-		} catch (SBOLConversionException e) {
-			e.printStackTrace();
-		} catch (SBOLValidationException e) {
-			e.printStackTrace();
-		}
-	}
+//	private static void writeRdfOutputStream(SBOLDocument SBOL2Doc_test) throws IOException
+//	{
+//		try {
+//			SBOLWriter.write(SBOL2Doc_test,(System.out));
+//			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test,true);
+//			SBOLWriter.write(SBOL2Doc_test,System.out);
+//		} catch (SBOLConversionException e) {
+//			e.printStackTrace();
+//		} catch (SBOLValidationException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	private static void get_myParts (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{

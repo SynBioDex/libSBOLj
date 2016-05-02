@@ -6,6 +6,7 @@ import static uk.ac.ncl.intbio.core.datatree.Datatree.QName;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,15 +17,19 @@ import java.util.Set;
 
 
 
+
+
 //import javax.sound.midi.Sequence;
 import javax.xml.namespace.QName;
 
 import org.junit.Test;
 
 /**
- * @author Goksel Misirli
+ * Abstract tests used by SBOLReaderTest, SBOLWriterTest, and SBOLGenerateFile.
  * @author Tramy Nguyen
- *
+ * @author Meher Samineni
+ * @author Eugene Choe
+ * @author Chris Myers
  *
  */
 public abstract class SBOLAbstractTests {
@@ -32,79 +37,14 @@ public abstract class SBOLAbstractTests {
 	String VERSION_1_0 = "1.0";
 	String URIprefix = "http://www.async.ece.utah.edu";
 
-	//	@Test
-	//	public void test_methods() throws Exception
-	//	{
-	//		//this method tests all remove methods for all top level
-	//		String prURI="http://partsregistry.org";
-	//		String prPrefix="pr";
-	//		SBOLDocument document = new SBOLDocument();
-	//		document.setDefaultURIprefix(prURI);
-	//		document.setTypesInURIs(true);
-	//		document.addNamespace(URI.create(prURI), prPrefix);
-	//
-	//		String prURI2="http://partsregistry.org";
-	//		String prPrefix2 ="pr";
-	//		SBOLDocument document2 = new SBOLDocument();
-	//		document2.setDefaultURIprefix(prURI);
-	//		document2.setTypesInURIs(true);
-	//		document2.addNamespace(URI.create(prURI), prPrefix);
-	//
-	//		String CD_ID = "ID";
-	//		String CD_Version = "1.0";
-	//		Set<URI> CD_Types = new HashSet<URI>();
-	//		CD_Types.add(URI.create("www.example.com"));
-	//
-	//		String SeqID = "ID2";
-	//		String SeqVersion = "1.0";
-	//		String SeqElements = "some_element";
-	//		URI SeqEncoding = URI.create("www.example2.com");
-	//
-	//		String ComponentID = "CID";
-	//		String ComponentVersion = "1.0";
-	//
-	//		String SeqAnnID = "Sequence_annotation_ID";
-	//		String SeqAnnLocID = "locationID";
-	//
-	//		String SC_ID = "SequenceConstraintID";
-	//		String SC_SubID = "SubjectID";
-	//		String SC_ObjID = "ObjectID";
-	//
-	//		String ModuleDefID = "ModuleDefinitionID";
-	//		String ModuleDefVersion = "1.0";
-	//
-	//		String GTL_ID = "generictoplevelID";
-	//		String GTL_Version = "1.0";
-	//
-	//		String ModelID = "ModelDisplayID";
-	//		String ModelVersion = "1.0";
-	//		URI source = URI.create("www.examplesource.com");
-	//		URI language = URI.create("www.examplelanguage.com");
-	//		URI framework = URI.create("www.exampleframework.com");
-	//
-	//		String CollectionID = "CollectionID";
-	//		String CollectionVersion = "1.0";
-	//
-	//		Sequence Seq = document.createSequence(SeqID, SeqVersion, SeqElements, SeqEncoding);	//create sequence
-	//		ComponentDefinition CD = document.createComponentDefinition(CD_ID, CD_Version, CD_Types);	//create component definition
-	//		CD.addSequence(Seq);
-	//		CD.createComponent(ComponentID, AccessType.PRIVATE, CD_ID, ComponentVersion);
-	//		CD.createSequenceAnnotation(SeqAnnID, SeqAnnLocID);
-	//		CD.createSequenceConstraint(SC_ID, RestrictionType.OPPOSITE_ORIENTATION_AS, SC_SubID, SC_ObjID);
-	//		ModuleDefinition MD = document.createModuleDefinition(ModuleDefID, ModuleDefVersion);
-	////		GenericTopLevel GTL = document.createGenericTopLevel(GTL_ID, GTL_Version, QName.valueOf(GTL_Version));
-	//		Model Mod = document.createModel(ModelID, ModelVersion, source, language, framework);
-	////		Collection Col = document.createCollection(CollectionID, CollectionVersion);
-	////
-	//		document.removeSequence(Seq);
-	//		document.removeComponentDefinition(CD);
-	//		document.removeModuleDefinition(MD);
-	//		document.removeModel(Mod);
-	//		runTest("test/data/test_Methods.rdf", document, "rdf", true);
-	//	}
-
+	/**
+	 * Test model remove method.
+	 * @throws SBOLValidationException 
+	 * @throws IOException 
+	 * @throws SBOLConversionException 
+	 */
 	@Test
-	public void test_Model_remove() throws Exception
+	public void test_Model_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
 		String prURI="http://partsregistry.org";
 		String prPrefix="pr";
@@ -124,8 +64,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/test_Model_remove.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test sequence remove method.
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_Sequence_remove() throws Exception
+	public void test_Sequence_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
 		String prURI="http://partsregistry.org";
 		String prPrefix="pr";
@@ -143,8 +89,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/test_Sequence_remove.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test Collection remove method
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_Collection_remove() throws Exception
+	public void test_Collection_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
 		String prURI="http://partsregistry.org";
 		String prPrefix="pr";
@@ -160,8 +112,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/test_Collection_remove.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test module definition remove method.
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_ModuleDefinition_remove() throws Exception
+	public void test_ModuleDefinition_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
 		String prURI="http://partsregistry.org";
 		String prPrefix="pr";
@@ -177,8 +135,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/test_ModuleDefinition_remove.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test ComponentDefinition remove method
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_ComponentDefinition_remove() throws Exception
+	public void test_ComponentDefinition_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
 		String prURI="http://partsregistry.org";
 		String prPrefix="pr";
@@ -196,8 +160,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/test_ComponentDefinition_remove.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test GenericTopLevel remove method
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_GenericTopLevel_remove() throws Exception
+	public void test_GenericTopLevel_remove() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		String prURI="http://partsregistry.org";
 		String prPrefix="pr";
@@ -215,8 +185,14 @@ public abstract class SBOLAbstractTests {
 	}
 
 
+	/**
+	 * Test annotation output.
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_AnnotationOutput() throws Exception
+	public void test_AnnotationOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		String prURI="http://partsregistry.org";
 		String prPrefix="pr";
@@ -258,8 +234,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/AnnotationOutput.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test collection output.
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_CollectionOutput() throws Exception
+	public void test_CollectionOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		//Collection col=document.createCollection(URI.create("http://parts.igem.org/Promoters/Catalog/Anderson"));
@@ -277,8 +259,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/CollectionOutput.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test ComponentDefinition Output
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_ComponentDefinitionOutput() throws Exception
+	public void test_ComponentDefinitionOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		String prURI="http://partsregistry.org";
 
@@ -427,8 +415,14 @@ public abstract class SBOLAbstractTests {
 	}
 
 
+	/**
+	 * Test Cut location
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_CutExample() throws Exception
+	public void test_CutExample() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		String prURI="http://partsregistry.org";
 		SBOLDocument document = new SBOLDocument();
@@ -463,8 +457,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/CutExample.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test GenericTopLevel output
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_GenericTopLevelOutput() throws Exception
+	public void test_GenericTopLevelOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		String myAppURI="http://www.myapp.org";
 		String myAppPrefix="myapp";
@@ -505,8 +505,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/GenericTopLevelOutput.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test model output
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_ModelOutput() throws Exception
+	public void test_ModelOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 
@@ -528,8 +534,14 @@ public abstract class SBOLAbstractTests {
 	}
 
 
+	/**
+	 * Test ModuleDefinition output
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_ModuleDefinitionOutput() throws Exception
+	public void test_ModuleDefinitionOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 
@@ -639,16 +651,28 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/ModuleDefinitionOutput.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test SBOLDocument output
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_SBOLDocumentOutput() throws Exception
+	public void test_SBOLDocumentOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		//		SBOLWriter.write(document,(System.out));
 		runTest("test/data/SBOLDocumentOutput.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test SequenceConstraint output
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_SequenceConstraintOutput() throws Exception
+	public void test_SequenceConstraintOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		String prURI="http://partsregistry.org";
 		//String prPrefix="pr";
@@ -702,8 +726,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/SequenceConstraintOutput.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test Sequence output
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_SequenceOutput() throws Exception
+	public void test_SequenceOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		String prURI="http://partsregistry.org";
 
@@ -721,8 +751,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/SequenceOutput.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test creation of a simple ComponentDefinition
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_SimpleComponentDefinitionExample() throws Exception
+	public void test_SimpleComponentDefinitionExample() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		String prURI="http://partsregistry.org";
 
@@ -757,8 +793,14 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/SimpleComponentDefinitionExample.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * Test creation of a simple ModuleDefinition
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_SimpleModuleDefinition() throws Exception
+	public void test_SimpleModuleDefinition() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 
@@ -796,8 +838,12 @@ public abstract class SBOLAbstractTests {
 		document.setDefaultURIprefix(uri);
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_BBa_I0462_File() throws Exception
+	public void test_BBa_I0462_File() throws SBOLConversionException, IOException
 	{
 		String fileName = "test/data/SBOL1/BBa_I0462.xml";
 
@@ -814,8 +860,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 	
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_SBOL1andSBOL2Test_File() throws Exception
+	public void test_SBOL1andSBOL2Test_File() throws SBOLConversionException, IOException
 	{
 		String fileName = "test/data/SBOL1and2Test.rdf";
 
@@ -837,6 +887,9 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * Test GenBank conversion
+	 */
 	@Test
 	public void test_GenBank_Files() 
 	{
@@ -868,50 +921,13 @@ public abstract class SBOLAbstractTests {
 			}
 		}
 	}
-//	@Test
-//	public void test_GenBank_Files() throws Exception
-//	{
-//		File file_base = null ;
-//		try {
-//			file_base = new File(ValidationTest.class.getResource("/test/data/GenBank/").toURI());
-//		}
-//		catch (URISyntaxException e1) {
-//			throw new AssertionError("Failed to read from directory test/data/GenBank", e1);
-//		}
-//
-//		for (File f : file_base.listFiles()){
-//			try {
-//				test_GenBank_File(f);
-//			} catch(Exception e) {
-//				throw new AssertionError("Failed for " + f.getName(), e);
-//			}
-//		}
-//	}
-//
-//	private void test_GenBank_File(File f) 
-//			throws IOException, SBOLValidationException {
-//		
-//		if(f.isDirectory()) { 
-//			for(File file : f.listFiles()) {
-//				this.test_GenBank_File(file);
-//			}
-//		} else {
-//			File file = new File(f.getAbsolutePath());
-//			GenBank.setURIPrefix("http://www.async.ece.utah.edu");
-//			SBOLDocument actual = GenBank.read(file);
-//			GenBank.write(actual.getRootComponentDefinitions().iterator().next(),
-//					"src/test/resources/test/data/GenBankOut/"+file.getName());
-//			try {
-//				runTest(file.getAbsolutePath().replace(".gb", ".rdf"), actual, "rdf", true);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//				throw new AssertionError("Failed for " + file.getName(), e);
-//			}
-//		}
-//	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_igem1_File() throws Exception
+	public void test_igem1_File() throws SBOLConversionException, IOException
 	{
 		String fileName = "test/data/RDF/igem1.xml";
 
@@ -926,8 +942,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_igem2_File() throws Exception
+	public void test_igem2_File() throws SBOLConversionException, IOException
 	{
 		String fileName = "test/data/RDF/igem2.xml";
 
@@ -942,8 +962,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_igem3_File() throws Exception
+	public void test_igem3_File() throws SBOLConversionException, IOException
 	{
 		String fileName = "test/data/RDF/igem3.xml";
 
@@ -958,8 +982,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_toggle_File() throws Exception
+	public void test_toggle_File() throws SBOLConversionException, IOException
 	{
 		String fileName = "test/data/RDF/toggle.xml";
 
@@ -974,8 +1002,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_BBa_T9002_File() throws Exception
+	public void test_BBa_T9002_File() throws SBOLConversionException, IOException
 	{
 		String fileName = "test/data/SBOL1/BBa_T9002.xml";
 
@@ -992,8 +1024,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_All_File() throws Exception
+	public void test_labhost_All_File() throws SBOLConversionException, IOException
 	{
 		String fileName = "test/data/SBOL1/labhost_All.xml";
 
@@ -1010,8 +1046,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Aspergillus_nidulans() throws Exception
+	public void test_labhost_Aspergillus_nidulans() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Aspergillus_nidulans";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1029,8 +1069,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Bacillus_subtilis() throws Exception
+	public void test_labhost_Bacillus_subtilis() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Bacillus_subtilis";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1048,8 +1092,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Drosophila_melanogaster() throws Exception
+	public void test_labhost_Drosophila_melanogaster() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Drosophila_melanogaster";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1067,8 +1115,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Escherichia_Coli() throws Exception
+	public void test_labhost_Escherichia_Coli() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Escherichia_Coli";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1086,8 +1138,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Gramnegative_bacteria() throws Exception
+	public void test_labhost_Gramnegative_bacteria() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Gram-negative_bacteria";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1105,8 +1161,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Insect_Cells() throws Exception
+	public void test_labhost_Insect_Cells() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Insect_Cells";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1124,8 +1184,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Kluyveromyces_lactis() throws Exception
+	public void test_labhost_Kluyveromyces_lactis() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Kluyveromyces_lactis";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1143,8 +1207,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Mammalian_Cells() throws Exception
+	public void test_labhost_Mammalian_Cells() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Mammalian_Cells";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1162,8 +1230,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Pichia_pastoris() throws Exception
+	public void test_labhost_Pichia_pastoris() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Pichia_pastoris";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1181,8 +1253,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Plant_Cells() throws Exception
+	public void test_labhost_Plant_Cells() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Plant_Cells";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1200,8 +1276,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Saccharomyces_cerevisiae() throws Exception
+	public void test_labhost_Saccharomyces_cerevisiae() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Saccharomyces_cerevisiae";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1219,8 +1299,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Schizosaccharomyces_pombe() throws Exception
+	public void test_labhost_Schizosaccharomyces_pombe() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Schizosaccharomyces_pombe";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1238,10 +1322,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
-
-
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_labhost_Unspecified() throws Exception
+	public void test_labhost_Unspecified() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Unspecified";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1259,26 +1345,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
-	//	@Test
-	//	public void test_miRNA_sbol() throws Exception
-	//	{
-	//		//TODO: This file is not parsing for some reason...
-	//		String filename = "miRNA_sbol";
-	//		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
-	//
-	//		try
-	//		{
-	//			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-	//			runTest("test/data/" + filename + ".rdf", actual, "rdf", true);
-	//		}
-	//		catch (SBOLValidationException e)
-	//		{
-	//			throw new AssertionError("Failed for " + fileDirectory, e);
-	//		}
-	//	}
-
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_partial_pIKE_left_cassette() throws Exception
+	public void test_partial_pIKE_left_cassette() throws SBOLConversionException, IOException
 	{
 		String filename = "partial_pIKE_left_cassette";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1296,8 +1368,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_partial_pIKE_right_casette() throws Exception
+	public void test_partial_pIKE_right_casette() throws SBOLConversionException, IOException
 	{
 		String filename = "partial_pIKE_right_casette";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1315,8 +1391,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_partial_pIKE_right_cassette() throws Exception
+	public void test_partial_pIKE_right_cassette() throws SBOLConversionException, IOException
 	{
 		String filename = "partial_pIKE_right_cassette";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1334,8 +1414,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_partial_pTAK_left_cassette() throws Exception
+	public void test_partial_pTAK_left_cassette() throws SBOLConversionException, IOException
 	{
 		String filename = "partial_pTAK_left_cassette";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1353,8 +1437,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_partial_pTAK_right_cassette() throws Exception
+	public void test_partial_pTAK_right_cassette() throws SBOLConversionException, IOException
 	{
 		String filename = "partial_pTAK_right_cassette";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1372,8 +1460,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_pIKE_pTAK_cassettes_2() throws Exception
+	public void test_pIKE_pTAK_cassettes_2() throws SBOLConversionException, IOException
 	{
 		String filename = "pIKE_pTAK_cassettes 2";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1391,8 +1483,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_pIKE_pTAK_cassettes() throws Exception
+	public void test_pIKE_pTAK_cassettes() throws SBOLConversionException, IOException
 	{
 		String filename = "pIKE_pTAK_cassettes";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1410,8 +1506,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_pIKE_pTAK_left_right_cassettes() throws Exception
+	public void test_pIKE_pTAK_left_right_cassettes() throws SBOLConversionException, IOException
 	{
 		String filename = "pIKE_pTAK_left_right_cassettes";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1429,8 +1529,12 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
+	/**
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_pIKE_pTAK_toggle_switches() throws Exception
+	public void test_pIKE_pTAK_toggle_switches() throws SBOLConversionException, IOException
 	{
 		String filename = "pIKE_pTAK_toggle_switches";
 		String fileDirectory = "test/data/SBOL1/" + filename + ".xml";
@@ -1448,17 +1552,13 @@ public abstract class SBOLAbstractTests {
 		}
 	}
 
-
-	//	@Test
-	//	public void test_JSONFile() throws Exception
-	//	{
-	//		SBOLDocument document = new SBOLDocument();
-	//		runTest("test/data/emptyJSONFile.json", document, "json");
-	//
-	//	}
-
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_memberAnnotations() throws Exception
+	public void test_memberAnnotations() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1484,7 +1584,7 @@ public abstract class SBOLAbstractTests {
 		interactionType.add(SystemsBiologyOntology.NON_COVALENT_BINDING);
 		//Interaction someInteraction =
 		someModDef.createInteraction("someInteraction", interactionType);
-		//		someModDef.createFunctionalComponent("someFunctionalComponent", AccessType.PUBLIC, "componentDef", VERSION_1_0, DirectionType.INOUT); //TODO replace componentDef
+		//		someModDef.createFunctionalComponent("someFunctionalComponent", AccessType.PUBLIC, "componentDef", VERSION_1_0, DirectionType.INOUT); 
 		//		someInteraction.createParticipation("someParticipation", "someFunctionalComponent");
 
 		//Module someModule =
@@ -1512,8 +1612,6 @@ public abstract class SBOLAbstractTests {
 		//SequenceAnnotation someSequenceAnnotation2 =
 		someCompDef.createSequenceAnnotation("someSequenceAnnotation2", "cut", 1, OrientationType.INLINE);
 
-		//		someSequenceAnnotation.setLocation(); //TODO range, multiRange, cut - how to access?
-
 		SequenceConstraint someSequenceConstraint = someCompDef.createSequenceConstraint("someSequenceConstraint", RestrictionType.PRECEDES, "someComponent", "someOtherComponent");
 		someSequenceConstraint.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
 
@@ -1525,8 +1623,13 @@ public abstract class SBOLAbstractTests {
 	}
 
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_CreateAndRemoveCollections() throws Exception
+	public void test_CreateAndRemoveCollections() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1548,8 +1651,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/CreateAndRemoveCollections.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_CreateAndRemoveComponentDefintion() throws Exception
+	public void test_CreateAndRemoveComponentDefintion() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1573,8 +1681,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/CreateAndRemoveComponentDefinition.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_CreateAndRemoveModuleDefintion() throws Exception
+	public void test_CreateAndRemoveModuleDefintion() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1597,8 +1710,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/CreateAndRemoveModuleDefinition.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_CreateAndRemoveGenericTopLevel() throws Exception
+	public void test_CreateAndRemoveGenericTopLevel() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1621,8 +1739,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/CreateAndRemoveGenericTopLevel.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_CreateAndRemoveModel() throws Exception
+	public void test_CreateAndRemoveModel() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1645,8 +1768,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/CreateAndRemoveModel.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_singleCollection() throws Exception
+	public void test_singleCollection() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1660,8 +1788,13 @@ public abstract class SBOLAbstractTests {
 	}
 
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_multipleCollections_no_Members() throws Exception
+	public void test_multipleCollections_no_Members() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1677,8 +1810,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/multipleCollections_no_Members.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_singleGenericTopLevel() throws Exception
+	public void test_singleGenericTopLevel() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1691,8 +1829,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/singleGenericTopLevel.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_multipleGenericTopLevel() throws Exception
+	public void test_multipleGenericTopLevel() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1708,8 +1851,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/multipleGenericTopLevel.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_singleModel() throws Exception
+	public void test_singleModel() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1726,8 +1874,13 @@ public abstract class SBOLAbstractTests {
 	}
 
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_singleSequence() throws Exception
+	public void test_singleSequence() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1742,8 +1895,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/singleSequence.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_multipleSquences() throws Exception
+	public void test_multipleSquences() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1763,8 +1921,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/multipleSequences.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_single_emptyModuleDefinition() throws Exception
+	public void test_single_emptyModuleDefinition() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1781,8 +1944,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/singleModuleDefinition.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_singleComponentDefinition() throws Exception
+	public void test_singleComponentDefinition() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1802,8 +1970,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/singleComponentDefinition.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_singleCompDef_withSeq() throws Exception
+	public void test_singleCompDef_withSeq() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1824,8 +1997,13 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/singleCompDef_withSeq.rdf", document, "rdf", true);
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
 	@Test
-	public void test_singleFunctionalComponent() throws Exception
+	public void test_singleFunctionalComponent() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
@@ -1846,275 +2024,17 @@ public abstract class SBOLAbstractTests {
 		runTest("test/data/singleFunctionalComponent.rdf", document, "rdf", true);
 	}
 
-	//	|------------------------------------TOGGLE SWITCH------------------------------------|
-	//	|		- double check on correct use of URIs										  |
-	//	|																					  |
-	//	|-------------------------------------------------------------------------------------|
-	//	@Test
-	//	public void test_ToggleSwitch() throws Exception
-	//	{
-	//		SBOLDocument document = new SBOLDocument();
-	//		document.addNameSpaceBinding(URI.create("http://myannotation.org"), "annot");
-	//		document.addNameSpaceBinding(URI.create("urn:bbn.com:tasbe:grn"), "grn");
-	//
-	//		List<Annotation> annotations = new ArrayList<Annotation>();
-	//		Annotation a = new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
-	//				"TurtleString"));
-	//		annotations.add(a);
-	//
-	//		//Sequence
-	//		URI pLacSeq_id = SBOLTestUtils.createSequence(document,"pLacSeq").getIdentity();
-	//		URI tetRSeq_id = SBOLTestUtils.createSequence(document,"tetRSeq").getIdentity();
-	//		URI pLactetRSeq_id = SBOLTestUtils.createSequence(document,"pLactetRSeq").getIdentity();
-	//
-	//		URI ptetSeq_id = SBOLTestUtils.createSequence(document,"ptetSeq").getIdentity();
-	//		URI lacISeq_id = SBOLTestUtils.createSequence(document,"lacISeq").getIdentity();
-	//		URI ptetlacISeq_id = SBOLTestUtils.createSequence(document,"ptetlacISeq").getIdentity();
-	//
-	//		//ComponentDefintion
-	//		URI pLac_id = get_pLac(document, pLacSeq_id).getIdentity();
-	//		URI tetR_id = get_tetR(document, tetRSeq_id).getIdentity();
-	//		URI pLactetR_id = get_pLactetR(document, pLac_id, tetR_id, pLactetRSeq_id).getIdentity();
-	//
-	//		URI LacI_id = get_LacI(document).getIdentity();
-	//		URI TetR_id = get_TetR(document).getIdentity();
-	//
-	//		URI ptet_id = get_ptet(document, ptetSeq_id).getIdentity();
-	//		URI lacI_id = get_lacI(document, lacISeq_id).getIdentity();
-	//		URI ptetlacI_id = get_ptetlacI(document, ptet_id, lacI_id, ptetlacISeq_id).getIdentity();
-	//
-	//		//ModuleDefinition
-	//		//		get_LacIIn(document, ptetlacI_id);
-	//		//		URI LacI_Inv_id = get_LacI_Inv(document, LacI_id, pLactetR_id, TetR_id, ptetlacI_id).getIdentity();
-	//
-	//		Collection myParts = SBOLTestUtils.createCollection(document, "myParts", annotations);
-	//		myParts.addMember(pLacSeq_id);
-	//		myParts.addMember(tetRSeq_id);
-	//		myParts.addMember(pLactetRSeq_id);
-	//
-	//		myParts.addMember(pLac_id);
-	//		myParts.addMember(tetR_id);
-	//		myParts.addMember(pLactetR_id);
-	//
-	//		//		myParts.addMember(LacI_Inv_id);
-	//
-	//		myParts.addMember(LacI_id);
-	//		myParts.addMember(TetR_id);
-	//
-	//		myParts.addMember(ptetSeq_id);
-	//		myParts.addMember(lacISeq_id);
-	//		myParts.addMember(ptetlacISeq_id);
-	//
-	//		myParts.addMember(ptet_id);
-	//		myParts.addMember(lacI_id);
-	//		myParts.addMember(ptetlacI_id);
-	//
-	//		//		myParts.addMember(get_TetR_Inv(SBOL2Doc_test).getIdentity());
-	//		//
-	//		//		myParts.addMember(get_Toggle(SBOL2Doc_test).getIdentity());
-	//		//		myParts.addMember(get_ToggleModel(SBOL2Doc_test).getIdentity());
-	//
-	//		myParts.addMember(SBOLTestUtils.createGenericTopLevel(document, "GenericTopLevel").getIdentity());
-	//
-	//		runTest("test/data/sampleToggleSwitch.rdf", document);
-	//	}
-
-	/*
-	public ComponentDefinition get_pLac(SBOLDocument document, URI pLacSeq_id)
-	{
-		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
-		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Promoter");
-		return SBOLTestUtils.createComponentDefinition(document, "pLac", type, role,
-				pLacSeq_id, null, null, null, null);
-	}
-
-	public ComponentDefinition get_tetR(SBOLDocument document, URI tetRSeq_id)
-	{
-		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
-		Set<URI> role = SBOLTestUtils.getSetPropertyURI("CDS");
-		return SBOLTestUtils.createComponentDefinition(document, "tetR", type, role,
-				tetRSeq_id, null, null, null, null);
-	}
-
-	public ComponentDefinition get_pLactetR(SBOLDocument document, URI pLac_id, URI tetR_id, URI pLactetRSeq_id)
-	{
-		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
-		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Gene");
-
-		List<Component> subComponents = new ArrayList<Component>();
-		//get_P & get_C 319
-		Component P = SBOLTestUtils.createComponent("P", AccessType.PUBLIC, pLac_id, null);
-		Component C = SBOLTestUtils.createComponent("C", AccessType.PUBLIC, tetR_id, null);
-		subComponents.add(P);
-		subComponents.add(C);
-
-		List<SequenceConstraint> sequenceConstraints = new ArrayList<SequenceConstraint>();
-		//get_struct_constraint 321
-		SequenceConstraint struct_constraint =
-				SBOLTestUtils.createSequenceConstraint("struct_constraint",
-						P.getIdentity(), C.getIdentity(), RestrictionType.PRECEDES, null);
-		sequenceConstraints.add(struct_constraint);
-
-		return SBOLTestUtils.createComponentDefinition(document, "pLactetR", type, role,
-				pLactetRSeq_id, null, sequenceConstraints, subComponents, null);
-	}
+	/**
+	 * Abstract method to run a single test
+	 * @param fileName - "golden" file
+	 * @param expected - SBOLDocument to check
+	 * @param fileType - Type of file format to use for serialization
+	 * @param compliant - Flag indicating if the document uses compliant URIs
+	 * @throws SBOLValidationException 
+	 * @throws SBOLConversionException
+	 * @throws IOException
 	 */
-	//
-	//	public ComponentDefinition get_LacI(SBOLDocument document)
-	//	{
-	//		Set<URI> type = SBOLTestUtils.getSetPropertyURI("Protein");
-	//		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Transcriptionfactor");
-	//
-	//		return SBOLTestUtils.createComponentDefinition(document, "LacI", type, role,
-	//				null, null, null, null);
-	//	}
-	//
-	//	public ComponentDefinition get_TetR(SBOLDocument document)
-	//	{
-	//		Set<URI> type = SBOLTestUtils.getSetPropertyURI("Protein");
-	//		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Transcriptionfactor");
-	//
-	//		return SBOLTestUtils.createComponentDefinition(document, "TetR", type, role,
-	//				null, null, null, null);
-	//	}
-	//
-	//	public ComponentDefinition get_ptet(SBOLDocument document, URI ptetSeq_id)
-	//	{
-	//		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
-	//		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Promoter");
-	//		return SBOLTestUtils.createComponentDefinition(document, "ptet", type, role,
-	//				ptetSeq_id, null, null, null);
-	//	}
-	//
-	//	public ComponentDefinition get_lacI(SBOLDocument document, URI tetRSeq_id)
-	//	{
-	//		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
-	//		Set<URI> role = SBOLTestUtils.getSetPropertyURI("CDS");
-	//		return SBOLTestUtils.createComponentDefinition(document, "lacI", type, role,
-	//				null, null, null, null);
-	//	}
-	//
-	//	public ComponentDefinition get_ptetlacI(SBOLDocument document, URI ptet_id, URI lacI_id, URI ptetlacISeq_id)
-	//	{
-	//		Set<URI> type = SBOLTestUtils.getSetPropertyURI("DNA");
-	//		Set<URI> role = SBOLTestUtils.getSetPropertyURI("Gene");
-	//
-	//		List<Component> subComponents = new ArrayList<Component>();
-	//		//get_T & get_L 514
-	//		Component T = SBOLTestUtils.createComponent("T", AccessType.PUBLIC, ptet_id);
-	//		Component L = SBOLTestUtils.createComponent("L", AccessType.PUBLIC, lacI_id);
-	//		subComponents.add(T);
-	//		subComponents.add(L);
-	//
-	//		List<SequenceAnnotation> sequenceAnnotations = new ArrayList<SequenceAnnotation>();
-	//
-	//		Range r1 = new Range(URI.create("p2_structAnnotate_range"), 0, 10);
-	//		Range r2 = new Range(URI.create("c2_structAnnotate_range"), 11, 20);
-	//		r1.setOrientation(Sbol2Terms.Orientation.inline);
-	//		r2.setOrientation(Sbol2Terms.Orientation.inline);
-	//
-	//		SequenceAnnotation t_structAnnotate =
-	//				SBOLTestUtils.createSequenceAnnotation("p2_structAnnotate", r1);
-	//		SequenceAnnotation l_structAnnotate =
-	//				SBOLTestUtils.createSequenceAnnotation("c2_structAnnotate", r2);
-	//
-	//		sequenceAnnotations.add(t_structAnnotate);
-	//		sequenceAnnotations.add(l_structAnnotate);
-	//
-	//		return SBOLTestUtils.createComponentDefinition(document, "ptetlacI", type, role,
-	//				ptetlacISeq_id, sequenceAnnotations, null, subComponents);
-	//	}
-	//
-	//	public FunctionalComponent get_LacIIn(SBOLDocument document, URI LacI_id)
-	//	{
-	//		return SBOLTestUtils.createFunctionalComponent("LacIIn",
-	//				AccessType.PUBLIC, DirectionType.INPUT, LacI_id);
-	//	}
-	//
-	//	public FunctionalComponent get_LacInv(SBOLDocument document, URI pLactetR_id)
-	//	{
-	//		return SBOLTestUtils.createFunctionalComponent("LacInv",
-	//				AccessType.PUBLIC, DirectionType.INPUT, pLactetR_id);
-	//	}
-	//
-	//	public FunctionalComponent get_TetROut(SBOLDocument document, URI TetR_id)
-	//	{
-	//		return SBOLTestUtils.createFunctionalComponent("TetROut",
-	//				AccessType.PUBLIC, DirectionType.OUTPUT, TetR_id);
-	//	}
-	//
-	//	public FunctionalComponent get_TetRInv(SBOLDocument document, URI ptetlacI_id)
-	//	{
-	//		return SBOLTestUtils.createFunctionalComponent("TetRInv",
-	//				AccessType.PRIVATE, DirectionType.NONE, ptetlacI_id);
-	//	}
-
-	//	public ModuleDefinition get_LacI_Inv(SBOLDocument document,
-	//			List<FunctionalComponent> functionalComponents,
-	//			URI LacI_id, URI pLactetR_id,
-	//			URI TetR_id, URI ptetlacI_id)
-	//	{
-	//		Set<URI> roles = SBOLTestUtils.getSetPropertyURI("Inverter");
-	//
-	//		List<Interaction> interactions = new ArrayList<Interaction>();
-	//
-	//		Set<URI> p1a_roles = SBOLTestUtils.getSetPropertyURI("repressor"); //365
-	//		Set<URI> p2a_roles = SBOLTestUtils.getSetPropertyURI("repressed"); //373
-	//		Set<URI> p3a_roles = SBOLTestUtils.getSetPropertyURI("produced");
-	//		Set<URI> p4a_roles = SBOLTestUtils.getSetPropertyURI("producer");
-	//
-	//		Set<URI> interact1a_type = SBOLTestUtils.getSetPropertyURI("repression");
-	//		Set<URI> interact2a_type = SBOLTestUtils.getSetPropertyURI("production");
-	//
-	//
-	//		URI p1a_FuncComp_id =
-	//				SBOLTestUtils.createFunctionalComponent("LacIIn",
-	//						AccessType.PUBLIC, DirectionType.INPUT, LacI_id).getIdentity();
-	//		URI p2a_FuncComp_id =
-	//				SBOLTestUtils.createFunctionalComponent("LacInv",
-	//						AccessType.PUBLIC, DirectionType.INPUT, pLactetR_id).getIdentity();
-	//		URI p3a_FuncComp_id =
-	//				SBOLTestUtils.createFunctionalComponent("TetROut",
-	//						AccessType.PUBLIC, DirectionType.OUTPUT, TetR_id).getIdentity();
-	//		URI p4a_FuncComp_id =
-	//				SBOLTestUtils.createFunctionalComponent("TetRInv",
-	//						AccessType.PRIVATE, DirectionType.NONE, ptetlacI_id).getIdentity();
-	//
-	//		List<Participation> interact1a_participations = new ArrayList<Participation>();
-	//		Participation p1a = SBOLTestUtils.createParticipation("p1a", p1a_roles, p1a_FuncComp_id);
-	//		Participation p2a = SBOLTestUtils.createParticipation("p2a", p2a_roles, p2a_FuncComp_id);
-	//		interact1a_participations.add(p1a);
-	//		interact1a_participations.add(p2a);
-	//
-	//		List<Participation> interact2a_participations = new ArrayList<Participation>(); //409
-	//		Participation p3a = SBOLTestUtils.createParticipation("p3a", p3a_roles, p3a_FuncComp_id);
-	//		Participation p4a = SBOLTestUtils.createParticipation("p4a", p4a_roles, p4a_FuncComp_id);
-	//		interact2a_participations.add(p1a);
-	//		interact2a_participations.add(p2a);
-	//
-	//		//get_interact1a & get_interact2a 424
-	//		Interaction interact1a = SBOLTestUtils.createInteraction("interact1", interact1a_type, interact1a_participations);
-	//		Interaction interact2a = SBOLTestUtils.createInteraction("interact2a", interact2a_type, interact2a_participations);
-	//		interactions.add(interact1a);
-	//		interactions.add(interact2a);
-	//
-	//		List<Annotation> annotations = new ArrayList<Annotation>();
-	//		Annotation a = new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"),
-	//				"TurtleString"));
-	//		annotations.add(a);
-	//
-	//		return SBOLTestUtils.createModuleDefinition(document, "LacI_Inv",
-	//				roles,
-	//				functionalComponents,
-	//				interactions,
-	//				null,
-	//				null,
-	//				annotations);
-	//
-	//	}
-
-
 	public abstract void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant)
-			throws Exception;
+			throws SBOLValidationException, SBOLConversionException, IOException;
 
 }

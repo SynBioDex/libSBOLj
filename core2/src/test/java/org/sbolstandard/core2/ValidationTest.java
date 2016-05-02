@@ -6,7 +6,6 @@ package org.sbolstandard.core2;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -14,132 +13,107 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 /**
+ * Checks a set of SBOL files in which each should fail a particular validation rule.
  * @author Meher Samineni
+ * @author Chris Myers
  *
  */
+@RunWith(Parameterized.class)
 public class ValidationTest {
-
-	@BeforeClass
-	public static void setUpBeforeClass() {
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() {
-	}
-
-	@Before
-	public void setUp() {
-	}
-
-	@After
-	public void tearDown() {
-	}
-
-//	@Test
-//	public void test() {
-//		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
-//		if(file == null)
-//			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
-//		try {
-//			SBOLReader.read(file);
-//			//fail();
-//		}
-//		catch (CoreIoException e) {
-//			e.printStackTrace();
-//		}
-//		catch (XMLStreamException e) {
-//			e.printStackTrace();
-//		}
-//		catch (FactoryConfigurationError e) {
-//			e.printStackTrace();
-//		}
-//		catch (SBOLValidationException e) {
-//			e.printStackTrace();
-//		} //"/test/data/Validation/sbol-10101.rdf");
-//		//fail("Not yet implemented");
-//	}
 	
-	@Test
-	public void testValidation() throws IOException, SBOLConversionException {
-		// TODO: generalize this test to perform on all files in directory in a loop
+	private File file;
+	private static HashSet<Integer> testedRules = new HashSet<Integer>(); 
+	private static HashSet<Integer> failedTests = new HashSet<Integer>(); 
+	
+	/**
+	 * @param file - file to test
+	 */
+	public ValidationTest(File file) {
+		this.file = file;
+	}
+	
+	/**
+	 * @return a set of files to test
+	 */
+	@Parameterized.Parameters
+	public static java.util.Collection<File> files() {
 		File file_base = null ;
+		java.util.Collection<File> col = new HashSet<File>();
 		try {
 			file_base = new File(ValidationTest.class.getResource("/test/data/Validation/").toURI());
 		}
 		catch (URISyntaxException e1) {
 			e1.printStackTrace();
 		}
-		File file;
-		SBOLDocument doc = null;
-		HashSet<Integer> testedRules = new HashSet<Integer>(); 
-		HashSet<Integer> failedTests = new HashSet<Integer>(); 
-		for (File f : file_base.listFiles()){
-			//InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
-			file = new File(f.getAbsolutePath());
-			//System.out.println(f.getName().replace(".rdf", ""));
-			SBOLReader.setKeepGoing(true);
-			try {
-				doc = SBOLReader.read(file);
-			} catch (SBOLValidationException e) {
-				e.printStackTrace();
-			}
-			catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-			SBOLValidate.validateSBOL(doc, true, true, true);
-
-
-			if (SBOLReader.getNumErrors() > 0) {
-				for(String error : SBOLReader.getErrors())
-				{
-					//System.out.println(error);
-					if(!error.split(":")[0].equals((f.getName()).replace(".rdf", "")))
-					{
-						System.out.println(f.getName().replace(".rdf", ""));
-						System.out.println(error);
-						fail();
-
-					}
-					else {
-						String ruleId = error.split(":")[0].replace(".rdf", "").replace("sbol-", "").trim();
-						testedRules.add(Integer.parseInt(ruleId));
-					}
-				}
-
-			} else if (SBOLValidate.getNumErrors() > 0) {
-				for(String error : SBOLValidate.getErrors())
-				{
-					//System.out.println(error);
-					if(!error.split(":")[0].equals(f.getName().replace(".rdf", "")))
-					{
-						String ruleId = f.getName().replace(".rdf", "").replace("sbol-", "").trim();
-						failedTests.add(Integer.parseInt(ruleId));
-						System.out.println(f.getName().replace(".rdf", ""));
-						System.out.println(error);
-						fail();
-					}
-					else {
-						String ruleId = error.split(":")[0].replace(".rdf", "").replace("sbol-", "").trim();
-						testedRules.add(Integer.parseInt(ruleId));
-					}
-
-				}
-			} else {
-				String ruleId = f.getName().replace(".rdf", "").replace("sbol-", "").trim();
-				failedTests.add(Integer.parseInt(ruleId));
-				System.out.println(f.getName().replace(".rdf", ""));
-				fail();
-			}
+		for (File f : file_base.listFiles()) {
+			col.add(f);
 		}
-		// Print out remaining rules that have not had a test yet.
-		//System.out.println(testedRules);
+		return col;
+	}
+	
+	/**
+	 * @throws IOException 
+	 * @throws SBOLConversionException
+	 * @throws SBOLValidationException
+	 */
+	@Test
+	public void testValidation() throws IOException, SBOLConversionException, SBOLValidationException {
+		SBOLReader.setKeepGoing(true);
+		SBOLDocument doc = SBOLReader.read(file);
+		SBOLValidate.validateSBOL(doc, true, true, true);
+		if (SBOLReader.getNumErrors() > 0) {
+			for(String error : SBOLReader.getErrors())
+			{
+				if(!error.split(":")[0].equals((file.getName()).replace(".rdf", "")))
+				{
+					System.out.println(file.getName().replace(".rdf", ""));
+					System.out.println(error);
+					fail();
+
+				}
+				else {
+					String ruleId = error.split(":")[0].replace(".rdf", "").replace("sbol-", "").trim();
+					testedRules.add(Integer.parseInt(ruleId));
+				}
+			}
+
+		} else if (SBOLValidate.getNumErrors() > 0) {
+			for(String error : SBOLValidate.getErrors())
+			{
+				if(!error.split(":")[0].equals(file.getName().replace(".rdf", "")))
+				{
+					String ruleId = file.getName().replace(".rdf", "").replace("sbol-", "").trim();
+					failedTests.add(Integer.parseInt(ruleId));
+					System.out.println(file.getName().replace(".rdf", ""));
+					System.out.println(error);
+					fail();
+				}
+				else {
+					String ruleId = error.split(":")[0].replace(".rdf", "").replace("sbol-", "").trim();
+					testedRules.add(Integer.parseInt(ruleId));
+				}
+
+			}
+		} else {
+			String ruleId = file.getName().replace(".rdf", "").replace("sbol-", "").trim();
+			failedTests.add(Integer.parseInt(ruleId));
+			System.out.println(file.getName().replace(".rdf", ""));
+			fail();
+		}
+	}
+
+	/**
+	 * Print out remaining rules that have not had a test yet.
+	 */
+	@SuppressWarnings("unchecked")
+	@AfterClass
+	public static void printRemainingRules() {
 		HashSet<Integer> red = new HashSet<Integer>(Arrays.asList(
 				10101, 10105,
 				10201, 10203, 10204, 10206, 10208, 10209, 10212, 10213, 10220,
@@ -240,7 +214,7 @@ public class ValidationTest {
 		}
 		//System.out.println("tested rules: ");
 		//System.out.println(sortIntegerHashSet(testedRules));
-		
+
 		HashSet<Integer> redNotTested = (HashSet<Integer>) red.clone();
 		red.retainAll(testedRules); 
 		//System.out.println(sortIntegerHashSet(green));
@@ -250,7 +224,7 @@ public class ValidationTest {
 			System.out.println("Red checked rules not tested: ");
 			System.out.println(sortIntegerHashSet(redNotTested));
 		}
-		
+
 		HashSet<Integer> blueNotTested = (HashSet<Integer>) blue.clone();
 		blue.retainAll(testedRules); 
 		//System.out.println(sortIntegerHashSet(green));
@@ -260,7 +234,7 @@ public class ValidationTest {
 			System.out.println("Blue partially checked rules not tested: ");
 			System.out.println(sortIntegerHashSet(blueNotTested));
 		}
-		
+
 		HashSet<Integer> greenNotTested = (HashSet<Integer>) green.clone();
 		green.retainAll(testedRules); 
 		//System.out.println(sortIntegerHashSet(green));
@@ -270,45 +244,15 @@ public class ValidationTest {
 			System.out.println("Green best practice rules not tested: ");
 			System.out.println(sortIntegerHashSet(greenNotTested));
 		}
-		
-		
-		
-//		greenNotTested.retainAll(green);
-//		ArrayList<Integer> sortedGreenNotTested = new ArrayList<Integer>(greenNotTested);
-//		Collections.sort(sortedGreenNotTested);
-//		System.out.println("Rules that need tests:");
-//		System.out.println(sortedGreenNotTested);
-		
-//		ArrayList<Integer> sortedTestRules = new ArrayList<Integer>(testedRules);	// 
-//		Collections.sort(sortedTestRules);
-//		System.out.println(sortedTestRules);
-} 
+	} 
 
-	public ArrayList<Integer> sortIntegerHashSet(HashSet<Integer> set) {
+	/**
+	 * @param set - a set of validation rules
+	 * @return a sorted set of validation rules
+	 */
+	public static ArrayList<Integer> sortIntegerHashSet(HashSet<Integer> set) {
 		ArrayList<Integer> sorted= new ArrayList<Integer>(set);
 		Collections.sort(sorted);
 		return sorted;
 	}
-	
-//	@Test (expected=SBOLValidationException.class)	
-//	public void test10101_alt1() throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException{
-//		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
-//		if(file == null)
-//			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
-//		SBOLReader.read(file);
-//	}
-//	
-//	@Rule
-//	public ExpectedException thrown = ExpectedException.none();
-//	@Test	
-//	public void test10101_alt2() throws CoreIoException, XMLStreamException, FactoryConfigurationError, SBOLValidationException{
-//		InputStream file = ValidationTest.class.getResourceAsStream("test/data/Validation/sbol-10101.rdf");
-//		if(file == null)
-//			file = ValidationTest.class.getResourceAsStream("/" + "test/data/Validation/" + "sbol-10101.rdf");
-//		thrown.expect(SBOLValidationException.class);
-//		thrown.expectMessage("sbol-10102");
-//		SBOLReader.read(file);		
-//		//thrown.reportMissingExceptionWithMessage("Should throw %s");
-//	}
-
 }

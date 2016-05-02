@@ -15,7 +15,8 @@ import java.net.URI;
 /**
  * Methods to convert FASTA to/from SBOL Sequences
  * @author Chris Myers
- *
+ * @author Ernst Oberortner
+ * @version 2.1
  */
 class FASTA {
 

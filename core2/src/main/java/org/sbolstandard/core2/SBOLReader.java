@@ -46,13 +46,12 @@ import uk.ac.ncl.intbio.core.io.json.StringifyQName;
 import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
 
 /**
- * @author Tramy Nguyen
  * @author Zhen Zhang
- * @author Nicholas Roehner
+ * @author Tramy Nguyen
  * @author Matthew Pocock
  * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public class SBOLReader
