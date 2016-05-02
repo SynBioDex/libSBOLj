@@ -13,6 +13,9 @@ import org.oboparser.obo.OBOParser;
 import org.oboparser.obo.OBOStanza;
 
 /**
+ * This class provides methods for accessing <a href="http://identifiers.org/edam/"><i>EMBRACE Data and Methods</i></a> (EDAM) terms 
+ * and querying about their relationships.
+ * 
  * @author Zhen Zhang
  * @author Chris Myers
  * @version 2.1

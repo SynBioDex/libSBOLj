@@ -13,6 +13,12 @@ import org.oboparser.obo.OBOParser;
 import org.oboparser.obo.OBOStanza;
 
 /**
+ * This class provides methods for accessing <a href="http://www.ebi.ac.uk/sbo/main/"><i>Systems Biology Ontology</i></a> (SBO) terms 
+ * and querying about their relationships.
+ * 
+ * 
+ * 
+ * 
  * @author Zhen Zhang
  * @author Tramy Nguyen
  * @author Nicholas Roehner
@@ -101,31 +107,32 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns the extracted ID of the given stanza's URI. 
+	 * Returns the extracted ID of the given term's URI. 
 	 * 
-	 * @param stanzaURI
-	 * @return the extracted ID of the given stanza's URI.
+	 * @param termURI the URI of the given term
+	 * @return the extracted ID of the given term's URI.
 	 */
-	public final String getId(URI stanzaURI) {
-		String stanzaURIstr = stanzaURI.toString().trim();
-		if (!stanzaURIstr.startsWith(URI_PREFIX)) {
+	public final String getId(URI termURI) {
+		String termURIstr = termURI.toString().trim();
+		if (!termURIstr.startsWith(URI_PREFIX)) {
 			try {
-				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
+				throw new IllegalArgumentException("Illegal " + termURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
 			}
 			catch (IllegalArgumentException e) {
 				return null;
 			}
 		}
-		int beginIndex = stanzaURIstr.lastIndexOf("/") + 1;
-		return stanzaURIstr.substring(beginIndex, stanzaURIstr.length());
+		int beginIndex = termURIstr.lastIndexOf("/") + 1;
+		return termURIstr.substring(beginIndex, termURIstr.length());
 	}
 	
 	/**
-	 * Returns the ID field of the stanza whose name matches the given name. If multiple matches are found, only the first matching
+	 * Returns the ID field of the stanza whose name matches the given name. 
+	 * If multiple matches are found, only the first matching
 	 * one is returned.
 	 *  
-	 * @param stanzaName
-	 * @return the ID the matching stanza, or {@code null} if no match is found.
+	 * @param stanzaName the name of a stanza
+	 * @return the matching stanza ID, or {@code null} if no match is found.
 	 */
 	public final String getId(String stanzaName) {
 		//return sequenceOntology.getStanza(stanzaName).getName();
@@ -148,16 +155,16 @@ public class SystemsBiologyOntology {
 	
 	
 	/**
-	 * Returns the name field of the stanza that matches the ID for the given stanzaURI.
+	 * Returns the name field of the stanza that matches the ID for the given term URI.
 	 * 
-	 * @param stanzaURI
-	 * @return the name field of the stanza that matches the ID in the given stanzaURI.
+	 * @param termURI the identity URI of a term
+	 * @return the name of the stanza that matches the ID in the given term URI.
 	 */
-	public final String getName(URI stanzaURI) {
-		String oboURIstr = stanzaURI.toString().trim();
+	public final String getName(URI termURI) {
+		String oboURIstr = termURI.toString().trim();
 		if (!oboURIstr.startsWith(URI_PREFIX)) {
 			try {
-				throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+				throw new IllegalArgumentException("Illegal " + termURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
 			}
 			catch (IllegalArgumentException e) {
 				return null;
@@ -177,10 +184,10 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns the name field of the stanza that matches the ID in the given stanzaURI.
+	 * Returns the name field of the stanza that matches the ID referred by the given stanzaURI.
 	 * 
-	 * @param stanzaId
-	 * @return the name field of the stanza that matches the ID in the given stanzaURI,
+	 * @param stanzaId the ID of a stanza
+	 * @return the name field of the stanza that matches the ID referred by the given stanzaURI,
 				or {@code null} if this no match is found.
 	 */
 	public final String getName(String stanzaId) {
@@ -197,11 +204,11 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns the URI, i.e. the Systems Biology Ontology namespace URL followed by an ID of an sequence ontology term, 
+	 * Returns the URI, i.e. the Systems Biology Ontology (SBO) namespace, "http://identifiers.org/biomodels.sbo/", followed by an ID of an SBO term,  
 	 * of the stanza whose name matches the given name. If multiple matches are found, only the first matching
 	 * one is returned. 
 	 * 
-	 * @param stanzaName
+	 * @param stanzaName the name of a term
 	 * @return the URI of the given SBO name.
 	 */
 	public final URI getURIbyName(String stanzaName) {
@@ -209,8 +216,8 @@ public class SystemsBiologyOntology {
 	}
 	
 	/** 
-	 * Creates a new URI from the Systems Biology Ontology namespace with the given ID. 
-	 * @param stanzaId
+	 * Creates a new URI from the Systems Biology Ontology namespace, "http://identifiers.org/biomodels.sbo/", with the given ID. 
+	 * @param stanzaId the ID of a stanza
 	 * @return the created URI
 	 */
 	public final URI getURIbyId(String stanzaId) {
@@ -225,12 +232,14 @@ public class SystemsBiologyOntology {
 		}
 		return URI.create(URI_PREFIX+stanzaId);
 	}
-
+	
+	
 	/**
-	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
-	 * @param childURI
-	 * @param parentURI
-	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
+	 * Returns {@code true} if the term with childURI is a descendant of the term with parentURI. This method first
+	 * extracts IDs for the child and parent terms, and then pass them to {@link #isDescendantOf(String, String)}.  
+	 * @param childURI the URI of the child term
+	 * @param parentURI the URI of the child term
+	 * @return {@code true} if the term with childURI is a descendant of the term with parentURI, {@code false} otherwise.
 	 */
 	public final boolean isDescendantOf(URI childURI, URI parentURI) {
 		String childId = getId(childURI);
@@ -240,8 +249,8 @@ public class SystemsBiologyOntology {
 	
 	/**
 	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
-	 * @param Id1
-	 * @param Id2
+	 * @param Id1 ID of the first stanza
+	 * @param Id2 ID of the second stanza
 	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
 	 */
 	public final boolean isDescendantOf(String Id1, String Id2) {
@@ -267,13 +276,13 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Creates a new URI from the Systems Biology Ontology namespace with the given local name. For example, the function call
+	 * Creates a new URI from the Systems Biology Ontology (SBO) namespace with the given local name. For example, the method call
 	 * <code>term("SBO_0000001")</code> will return the URI <a>http://purl.obolibrary.org/obo/SBO_0000001</a>
-	 * @param localName 
+	 * @param id the ID of a SBO term
 	 * @return the created URI
 	 */
-	public static final URI type(String localName) {
-		return URI.create(URI_PREFIX+localName);
+	public static final URI type(String id) {
+		return URI.create(URI_PREFIX+id);
 	}
 
 	// Modeling frameworks

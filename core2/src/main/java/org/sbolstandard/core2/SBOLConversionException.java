@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Signals that an exception related to conversion between SBOL and other file formats has occurred.
+ * 
  * @author Zhen Zhang
  * @author Chris Myers
  * @version 2.1

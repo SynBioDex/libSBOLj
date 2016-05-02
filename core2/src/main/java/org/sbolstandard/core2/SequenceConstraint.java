@@ -5,6 +5,8 @@ import java.net.URI;
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
+ * Represents the SBOL SequenceConstraint data model.
+ * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Chris Myers
@@ -72,7 +74,7 @@ public class SequenceConstraint extends Identified {
 	 * the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @param restriction
+	 * @param restriction the restriction type
  	 * @throws SBOLValidationException if no valid restriction is provided
 	 */
 	public void setRestriction(RestrictionType restriction) throws SBOLValidationException {
@@ -93,7 +95,7 @@ public class SequenceConstraint extends Identified {
 	 * the SBOLDocument instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @param restrictionURI
+	 * @param restrictionURI the identity URI of the restriction
  	 * @throws SBOLValidationException if no restriction is provided
 	 */
 	public void setRestriction(URI restrictionURI) throws SBOLValidationException {
@@ -144,7 +146,7 @@ public class SequenceConstraint extends Identified {
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * 
-	 * @param subjectURI
+	 * @param subjectURI the identity URI of the subject component
 	 * @throws SBOLValidationException if the associated ComponentDefinition subject
 	 * is not {@code null}, and the given {@code subjectURI} does not exist in 
 	 * its associated ComponentDefinition subject's
@@ -206,7 +208,7 @@ public class SequenceConstraint extends Identified {
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * 
-	 * @param objectURI
+	 * @param objectURI the identity URI of the object component
 	 * @throws SBOLValidationException if the associated ComponentDefinition object
 	 * is not {@code null}, and the given {@code objectURI} does not exist in 
 	 * its associated ComponentDefinition object's

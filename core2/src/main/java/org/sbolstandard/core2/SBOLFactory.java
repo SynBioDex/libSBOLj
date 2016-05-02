@@ -11,6 +11,9 @@ import java.util.Set;
 import javax.xml.namespace.QName;
 
 /**
+ * This is a helper class that avoids the need for the user to explicitly create an SBOLDocument instance,
+ * and allows the user to directly create and manipulate top-level instances.
+ * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Chris Myers

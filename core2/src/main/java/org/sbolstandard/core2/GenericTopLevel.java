@@ -7,6 +7,8 @@ import java.net.URI;
 import javax.xml.namespace.QName;
 
 /**
+ * Represents the SBOL GenericTopLevel data model.
+ * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Chris Myers

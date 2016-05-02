@@ -5,6 +5,8 @@ import java.net.URI;
 import javax.xml.namespace.QName;
 
 /**
+ * Represents the Cut extension of the SBOL Location class.
+ * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Chris Myers

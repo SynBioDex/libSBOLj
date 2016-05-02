@@ -18,6 +18,8 @@ import javax.xml.namespace.QName;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 
 /**
+ * Represents the SBOL Identified data model.
+ * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Chris Myers

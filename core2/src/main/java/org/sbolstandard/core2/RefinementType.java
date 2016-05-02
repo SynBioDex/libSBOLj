@@ -3,6 +3,8 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents the refinement relationship between a MapsTo instance's local and remote components.
+ *
  * @author Zhen Zhang
  * @author Chris Myers
  * @version 2.1

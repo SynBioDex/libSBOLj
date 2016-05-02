@@ -14,6 +14,8 @@ import java.util.Set;
 
 
 /**
+ * Represents the SBOL ComponentDefinition data model.
+ * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
  * @author Chris Myers

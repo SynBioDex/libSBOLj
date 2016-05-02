@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 /**
  * Provides qualified names for SBOL2.0 objects.
+ * 
  * @author Tramy Nguyen
  * @author Matthew Pocock
  * @author Goksel Misirli

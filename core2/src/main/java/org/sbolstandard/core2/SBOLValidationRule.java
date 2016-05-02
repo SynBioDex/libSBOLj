@@ -1,6 +1,8 @@
 package org.sbolstandard.core2;
 
 /**
+ * Represents an SBOL validation rule.
+ * 
  * @author Zhen Zhang
  * @version 2.1
  */

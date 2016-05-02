@@ -3,6 +3,8 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents the orientation type for extended classes of the Location class.
+ * 
  * @author Zhen Zhang
  * @author Chris Myers
  * @version 2.1
