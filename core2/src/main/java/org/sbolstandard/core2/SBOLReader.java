@@ -229,6 +229,8 @@ public class SBOLReader
 	}
 
 	/**
+	 * Sets the default sequence encoding for FASTA conversion.
+	 * 
 	 * @return the defaultSequenceEncoding
 	 */
 	public static URI getDefaultSequenceEncoding() {
