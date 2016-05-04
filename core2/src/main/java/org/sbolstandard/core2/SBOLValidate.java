@@ -1282,15 +1282,6 @@ public class SBOLValidate {
 				keepGoing = false;
 			} else if (args[i].equals("-d")) {
 				showDetail = true;
-			} else if (args[i].equals("-r")) { // TODO: -r is deprecated
-				genBankOut = true;
-			} else if (args[i].equals("-c"))  { //TODO: -c is deprecated
-				genBankOut = true;
-				if (i+1 >= args.length) {
-					usage();
-				}
-				topLevelURIStr = args[i+1];
-				i++;
 			} else if (args[i].equals("-s")) { 	
 				if (i+1 >= args.length) {
 					usage();
