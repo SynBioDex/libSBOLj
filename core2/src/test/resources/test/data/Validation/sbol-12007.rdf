@@ -67,11 +67,9 @@
             <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/cas9_complex_formation/gRNA_generic"/>
             <sbol:displayId>gRNA_generic</sbol:displayId>
             <sbol:version>1.0</sbol:version>
-	    <!--
             <sbol:role
-	    rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000010"/>
-	    -->
-            <sbol:role rdf:resource="http://identifiers.org/biomodels.sbo/SBO:000001010110101010"/>
+		rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000010"/>
+	     <sbol:role rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000013"/>
             <sbol:participant rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template/gRNA_generic/1.0"/>
           </sbol:Participation>
         </sbol:participation>
@@ -879,12 +877,14 @@
     <sbol:displayId>gRNA_generic</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#RnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0001998"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/gRNA_b/1.0">
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/gRNA_b"/>
     <sbol:displayId>gRNA_b</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#RnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0001998"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/gRNA_b_terminator/1.0">
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/gRNA_b_terminator"/>

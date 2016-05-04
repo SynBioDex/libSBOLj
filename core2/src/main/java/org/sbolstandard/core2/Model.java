@@ -1,19 +1,15 @@
 package org.sbolstandard.core2;
 
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
-import static org.sbolstandard.core2.URIcompliance.validateIdVersion;
-
 import java.net.URI;
 
 /**
+ * Represents the SBOL Model data model.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public class Model extends TopLevel {
@@ -21,25 +17,6 @@ public class Model extends TopLevel {
 	private URI source;
 	private URI language;
 	private URI framework;
-
-	/**
-	 * Systems Biology Markup Language (SBML), the standard XML format for models of biological
-	 * processes such as for example metabolism, cell signaling, and gene regulation
-	 * (<a href="http://identifiers.org/edam/format_2585">SBML</a>).
-	 */
-	public static final URI SBML = URI.create("http://identifiers.org/edam/format_2585");
-
-	/**
-	 * CellML, the format for mathematical models of biological and other networks
-	 * (<a href="http://identifiers.org/edam/format_3240">CELLML</a>).
-	 */
-	public static final URI CELLML = URI.create("http://identifiers.org/edam/format_3240");
-
-	/**
-	 * BioPAX is an exchange format for pathway data, with its data model defined in OWL
-	 * (<a href="http://identifiers.org/edam/format_3156">BIOPAX</a>).
-	 */
-	public static final URI BIOPAX = URI.create("http://identifiers.org/edam/format_3156");
 
 	Model(URI identity,URI source, URI language, URI framework) throws SBOLValidationException {
 		super(identity);
@@ -73,13 +50,10 @@ public class Model extends TopLevel {
 	 * is allowed to be edited.
 	 *
 	 * @param source a URI reference to the source file for a model.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code source} argument is {@code null}
 	 */
 	public void setSource(URI source) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (source==null) {
-			//throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a source location.");
 			throw new SBOLValidationException("sbol-11502", this);
 		}
 		this.source = source;
@@ -103,11 +77,9 @@ public class Model extends TopLevel {
 	 * is allowed to be edited.
 	 *
 	 * @param language a URI that specifies the language in which the model is implemented.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code language} argument is {@code null}
 	 */
 	public void setLanguage(URI language) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (language==null) {
 			throw new SBOLValidationException("sbol-11504",this);
 		}
@@ -132,13 +104,10 @@ public class Model extends TopLevel {
 	 * is allowed to be edited.
 	 *
 	 * @param framework a URI that specifies the framework in which the model is implemented.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code framework} argument is {@code null}
 	 */
 	public void setFramework(URI framework) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (framework==null) {
-			//throw new SBOLValidationException("Model '" + this.getIdentity() + "' must specify a framework.");
 			throw new SBOLValidationException("sbol-11508", this);
 		}
 		this.framework = framework;
@@ -215,9 +184,15 @@ public class Model extends TopLevel {
 
 	@Override
 	public String toString() {
-		return "Model [source=" + source + ", language=" + language + ", framework=" + framework
-				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "Model ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", source=" + source 
+				+ ", language=" + language 
+				+ ", framework=" + framework
+				+ "]";
 	}
 
 }

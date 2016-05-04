@@ -102,7 +102,7 @@
       <sbol:SequenceAnnotation rdf:about="p2_structAnnotate">
         <sbol:location>
           <sbol:Range rdf:about="p2_structAnnotate_range">
-            <sbol:start>0</sbol:start>
+            <sbol:start>1</sbol:start>
             <sbol:end>10</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>

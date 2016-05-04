@@ -2,12 +2,19 @@ package org.sbolstandard.core2;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * This test compares a generated SBOLDocument to a "golden" file read from disk. 
+ * @author Tramy Nguyen
+ * @author Chris Myers
+ *
+ */
 public class SBOLReaderTest extends SBOLAbstractTests
 {
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws Exception
+	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws SBOLValidationException, IOException, SBOLConversionException 
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
@@ -17,16 +24,23 @@ public class SBOLReaderTest extends SBOLAbstractTests
 		SBOLReader.setCompliant(compliant);
 		
 		SBOLDocument actual;
-		SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+		if (compliant) {
+			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
+			SBOLReader.setVersion("");
+		}
+		else SBOLReader.unsetURIPrefix();
 
 		if(fileType.equals("rdf"))
 			actual = SBOLReader.read(resourceAsStream);
 		else if (fileType.equals("json"))
-			actual = SBOLReader.read(resourceAsStream,SBOLReader.JSON);
+			actual = SBOLReader.read(resourceAsStream,SBOLDocument.JSON);
 		else if (fileType.equals("turtle"))
-			actual = SBOLReader.read(resourceAsStream,SBOLReader.TURTLE);
+			actual = SBOLReader.read(resourceAsStream,SBOLDocument.TURTLE);
 		else
 			actual = SBOLReader.read(resourceAsStream);
+		if (!actual.equals(expected)) {
+			SBOLValidate.compareDocuments("actual", actual, "expected", expected);
+		}
 		assertTrue(actual.equals(expected));
 	}
 

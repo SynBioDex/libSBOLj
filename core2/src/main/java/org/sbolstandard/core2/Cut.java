@@ -2,14 +2,15 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+import javax.xml.namespace.QName;
+
 /**
+ * Represents the Cut extension of the SBOL Location class.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public class Cut extends Location{
@@ -44,13 +45,10 @@ public class Cut extends Location{
 	 * is allowed to be edited.
 	 *
 	 * @param at The discrete position that that corresponds to the index of a character in the elements String of a Sequence.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 * @throws SBOLValidationException if the given {@code at} value is less than 0
 	 */
 	public void setAt(int at) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (at<0) {
-			//throw new SBOLValidationException("Cut "+this.getIdentity()+" must have a value greater than or equal to zero.");
 			throw new SBOLValidationException("sbol-11202", this);
 		}
 		this.at = at;
@@ -86,13 +84,32 @@ public class Cut extends Location{
 
 	@Override
 	public String toString() {
-		return "Cut [at=" + at + ", orientation=" + orientation + ", identity=" + identity
-				+ ", displayId=" + displayId + ", name=" + name + ", description=" + description
+		return "Cut ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", at=" + at 
+				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
 				+ "]";
 	}
 
 	@Override
 	public int compareTo(Location location) {
+		int thisPos = -1;
+		Annotation annotation = this.getAnnotation(new QName(GenBank.GBNAMESPACE,GenBank.POSITION,GenBank.GBPREFIX));
+		if (annotation!=null) {
+			thisPos = Integer.parseInt(annotation.getStringValue().replace("position",""));
+		}
+		int otherPos = -1;
+		annotation = location.getAnnotation(new QName(GenBank.GBNAMESPACE,GenBank.POSITION,GenBank.GBPREFIX));
+		if (annotation!=null) {
+			otherPos = Integer.parseInt(annotation.getStringValue().replace("position",""));
+		}
+		if (thisPos != -1 && otherPos != -1) {
+			int result = thisPos - otherPos;
+			return result;
+		}
 		if (location instanceof Range) {
 			int result = this.at - ((Range)location).getStart();
 			if (result==0) {

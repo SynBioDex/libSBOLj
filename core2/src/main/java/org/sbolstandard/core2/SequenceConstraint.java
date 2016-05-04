@@ -5,13 +5,12 @@ import java.net.URI;
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
+ * Represents the SBOL SequenceConstraint data model.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public class SequenceConstraint extends Identified {
@@ -75,11 +74,10 @@ public class SequenceConstraint extends Identified {
 	 * the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @param restriction
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
+	 * @param restriction the restriction type
+ 	 * @throws SBOLValidationException if no valid restriction is provided
 	 */
 	public void setRestriction(RestrictionType restriction) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (restriction==null) {
 			throw new SBOLValidationException("sbol-11407",this);
 		}
@@ -97,11 +95,10 @@ public class SequenceConstraint extends Identified {
 	 * the SBOLDocument instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @param restrictionURI
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant	 
+	 * @param restrictionURI the identity URI of the restriction
+ 	 * @throws SBOLValidationException if no restriction is provided
 	 */
 	public void setRestriction(URI restrictionURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (restrictionURI==null) {
 			throw new SBOLValidationException("sbol-11407",this);
 		}
@@ -149,8 +146,7 @@ public class SequenceConstraint extends Identified {
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * 
-	 * @param subjectURI
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @param subjectURI the identity URI of the subject component
 	 * @throws SBOLValidationException if the associated ComponentDefinition subject
 	 * is not {@code null}, and the given {@code subjectURI} does not exist in 
 	 * its associated ComponentDefinition subject's
@@ -158,7 +154,6 @@ public class SequenceConstraint extends Identified {
 	 * @throws SBOLValidationException if the given {@code subjectURI} is {@code null}.
 	 */
 	public void setSubject(URI subjectURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(subjectURI)==null) {
 				throw new SBOLValidationException("sbol-11403",this);
@@ -213,8 +208,7 @@ public class SequenceConstraint extends Identified {
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * 
-	 * @param objectURI
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @param objectURI the identity URI of the object component
 	 * @throws SBOLValidationException if the associated ComponentDefinition object
 	 * is not {@code null}, and the given {@code objectURI} does not exist in 
 	 * its associated ComponentDefinition object's
@@ -222,7 +216,6 @@ public class SequenceConstraint extends Identified {
 	 * @throws SBOLValidationException if the given {@code objectURI} is {@code null}.
 	 */
 	public void setObject(URI objectURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition != null) {
 			if (componentDefinition.getComponent(objectURI)==null) {
 				throw new SBOLValidationException("sbol-11405",this);
@@ -312,8 +305,14 @@ public class SequenceConstraint extends Identified {
 
 	@Override
 	public String toString() {
-		return "SequenceConstraint [restriction=" + restriction + ", subject=" + subject
-				+ ", object=" + object + ", identity=" + identity + ", displayId=" + displayId
-				+ ", name=" + name + ", description=" + description + "]";
+		return "SequenceConstraint ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", restriction=" + restriction 
+				+ ", subject=" + subject
+				+ ", object=" + object 
+				+ "]";
 	}
 }

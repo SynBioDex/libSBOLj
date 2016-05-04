@@ -28,6 +28,12 @@ properties, then it MUST declare the use of the following XML
 namespace: “http://www.w3.org/ns/prov#”.
 reference: Section 10 on page 54
 
+[SBOLDocument]
+id: sbol-10105
+condition: strong required
+description: An SBOL document MUST be serialized as a well-formed RDF/XML file.
+reference: https://www.w3.org/TR/rdf-syntax-grammar/
+
 [Identified]
 id: sbol-10201
 condition: strong required

@@ -1,21 +1,18 @@
 package org.sbolstandard.core2;
 
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
-import static org.sbolstandard.core2.URIcompliance.validateIdVersion;
 
 import java.net.URI;
 
 import javax.xml.namespace.QName;
 
 /**
+ * Represents the SBOL GenericTopLevel data model.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public class GenericTopLevel extends TopLevel{
@@ -25,8 +22,8 @@ public class GenericTopLevel extends TopLevel{
 	GenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		super(identity);
 		this.rdfType = rdfType;
-		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
-				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
+		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI())/* ||
+				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())*/) {
 			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
 			// TODO: (Validation) missing rule: QName is neither an SBOL 1 nor SBOL 2 namespace.
 		}
@@ -54,13 +51,10 @@ public class GenericTopLevel extends TopLevel{
 	 * is allowed to be edited.
 	 *
 	 * @param rdfType the RDF type property of this object
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 * @throws SBOLValidationException if the given {@code rdfType} argument is {@code null}
 	 */
 	public void setRDFType(QName rdfType) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (rdfType == null) {
-			//throw new SBOLValidationException("RDF type is a required field.");
 			throw new SBOLValidationException("sbol-12302", this);
 		}
 		this.rdfType = rdfType;
@@ -146,8 +140,13 @@ public class GenericTopLevel extends TopLevel{
 
 	@Override
 	public String toString() {
-		return "GenericTopLevel [rdfType=" + rdfType + ", identity=" + identity + ", displayId="
-				+ displayId + ", name=" + name + ", description=" + description + "]";
+		return "GenericTopLevel ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", rdfType=" + rdfType 
+				+ "]";
 	}
 
 }

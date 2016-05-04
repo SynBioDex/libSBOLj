@@ -12,13 +12,12 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Represents the SBOL SequenceAnnotation data model.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public class SequenceAnnotation extends Identified implements Comparable<SequenceAnnotation> {
@@ -46,37 +45,40 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	
 	/**
 	 * Creates a GenericLocation instance with the given arguments, 
-	 * and then adds to this SequenceAnnotation object's list of locations.
+	 * and then adds to this SequenceAnnotation instance's list of locations.
 	 * <p>
 	 * This method creates the GenericLocation instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the GenericLocation instance. 
+	 * SequenceAnnotation instance, the given {@code displayId} of the GenericLocation instance. 
 	 *  
-	 * @param displayId
-	 * @throws SBOLValidationException 
+	 * @param displayId the  display ID used to construct the identity of the generic location instance
+	 * @return the created generic location instance
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
-	public void addGenericLocation(String displayId) throws SBOLValidationException {
+	public GenericLocation addGenericLocation(String displayId) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		GenericLocation genericLocation = new GenericLocation(identity);
 		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
 		genericLocation.setDisplayId(displayId);
 		genericLocation.setVersion(this.getVersion());
 		addLocation(genericLocation);
+		return genericLocation;
 	}
 	
 	/**
-	 * Creates a GenericLocation instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * Creates a GenericLocation instance with the given arguments and then adds to this SequenceAnnotation instance's
 	 * list of locations.
 	 * <p>
 	 * This method creates the GenericLocation instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the GenericLocation instance. 
+	 * SequenceAnnotation instance, the given {@code displayId} of the GenericLocation instance. 
 	 * The orientation property
 	 * of the created GenericLocation instance is set to the given {@code orientation}.
 	 *  
-	 * @param displayId
-	 * @param orientation
-	 * @throws SBOLValidationException 
+	 * @param displayId the  display ID used to construct the identity of the generic location instance 
+	 * @param orientation the orientation property for the 
+	 * @return the created generic location instance
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
  	 */
-	public void addGenericLocation(String displayId,OrientationType orientation) throws SBOLValidationException {
+	public GenericLocation addGenericLocation(String displayId,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		GenericLocation genericLocation = new GenericLocation(identity);
 		genericLocation.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
@@ -84,42 +86,46 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		genericLocation.setVersion(this.getVersion());
 		genericLocation.setOrientation(orientation);
 		addLocation(genericLocation);
+		return genericLocation;
 	}
 	
 	/**
-	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation instance's
 	 * list of locations.
 	 * <p>
 	 * This method creates the Cut instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the Cut instance. 
+	 * SequenceAnnotation instance, the given {@code displayId} of the Cut instance. 
 	 *  
-	 * @param displayId
-	 * @param at
-	 * @throws SBOLValidationException 
+	 * @param displayId the display ID for the Cut instance 
+	 * @param at the at property for the created Cut instance 
+	 * @return the created cut instance
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
-	public void addCut(String displayId,int at) throws SBOLValidationException {
+	public Cut addCut(String displayId,int at) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Cut cut = new Cut(identity,at);
 		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
 		cut.setDisplayId(displayId);
 		cut.setVersion(this.getVersion());
 		addLocation(cut);
+		return cut;
 	}
 	
 	/**
-	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation instance's
 	 * list of locations.
 	 * <p>
 	 * This method creates the Cut instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the Cut instance. The orientation property
+	 * SequenceAnnotation instance, the given {@code displayId} of the Cut instance. The orientation property
 	 * of the created Cut instance is set to the given {@code orientation}.
 	 *  
-	 * @param displayId
-	 * @param at
-	 * @param orientation
-	 * @throws SBOLValidationException 
+	 * @param displayId the display ID for the Cut instance 
+	 * @param at the at property for the created Cut instance
+	 * @param orientation the orientation type
+	 * @return the created cut instance
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
-	public void addCut(String displayId,int at,OrientationType orientation) throws SBOLValidationException {
+	public Cut addCut(String displayId,int at,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Cut cut = new Cut(identity,at);
 		cut.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
@@ -127,44 +133,48 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		cut.setVersion(this.getVersion());
 		cut.setOrientation(orientation);
 		addLocation(cut);
+		return cut;
 	}
 
 	/**
-	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation object's
+	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation instance's
 	 * list of locations.
 	 * <p>
 	 * This method creates the Range instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the Range instance. 
+	 * SequenceAnnotation instance, the given {@code displayId} of the Range instance. 
 	 * 
-	 * @param displayId
-	 * @param start
-	 * @param end
-	 * @throws SBOLValidationException 
+  	 * @param displayId the display ID for the Range instance
+	 * @param start the start index of the Range instance
+	 * @param end the end index of the Range instance
+	 * @return the created Range instance
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
-	public void addRange(String displayId,int start,int end) throws SBOLValidationException {
+	public Range addRange(String displayId,int start,int end) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Range range = new Range(identity,start,end);
 		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
 		range.setDisplayId(displayId);
 		range.setVersion(this.getVersion());
 		addLocation(range);
+		return range;
 	}
 	
 	/**
- 	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation object's
+ 	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation instance's
 	 * list of locations.
 	 * <p>
 	 * This method creates the Range instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation object, the given {@code displayId} of the Range instance. The orientation property
+	 * SequenceAnnotation instance, the given {@code displayId} of the Range instance. The orientation property
 	 * of the created Range instance is set to the given {@code orientation}.
 	 * 
-	 * @param displayId
-	 * @param start
-	 * @param end
-	 * @param orientation
-	 * @throws SBOLValidationException 
+ 	 * @param displayId the display ID for the Range instance
+	 * @param start the start index of the Range instance
+	 * @param end the end index of the Range instance
+	 * @param orientation the oritentation type
+ 	 * @return the range created
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
-	public void addRange(String displayId,int start,int end,OrientationType orientation) throws SBOLValidationException {
+	public Range addRange(String displayId,int start,int end,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
 		Range range = new Range(identity,start,end);
 		range.setPersistentIdentity(createCompliantURI(this.getPersistentIdentity().toString(),displayId,""));
@@ -172,6 +182,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		range.setVersion(this.getVersion());
 		range.setOrientation(orientation);
 		addLocation(range);
+		return range;
 	}
 	
 	void addLocation(Location location) throws SBOLValidationException {
@@ -183,28 +194,26 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * Removes the given Location instance from the list of Location
 	 * instances.
 	 * <p>
-	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @param location
+	 * @param location the Location instance
 	 * @return {@code true} if the matching Location instance is removed successfully, {@code false} otherwise.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */	
 	public boolean removeLocation(Location location) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (locations.size()==1 && locations.containsValue(location)) {
-			//throw new SBOLValidationException("Sequence annotation " + this.getIdentity() + " must have at least one location.");
 			throw new SBOLValidationException("sbol-10902", this);
 		}
 		return removeChildSafely(location,locations);
 	}
 	
 	/**
-	 * Returns the Location instance owned by this SequenceAnnotation object 
+	 * Returns the Location instance owned by this SequenceAnnotation instance 
 	 * that matches the given {@code displayId}
 	 * 
-	 * @param displayId
+	 * @param displayId the display ID of the Location instance to be returned 
 	 * @return the matching Location instance
 	 */
 	public Location getLocation(String displayId) {
@@ -217,10 +226,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Returns the Location instance owned by this SequenceAnnotation object 
-	 * that matches the given {@code displayId}
+	 * Returns the Location instance owned by this SequenceAnnotation instance 
+	 * that matches the given location URI.
 	 * 
-	 * @param locationURI
+	 * @param locationURI the URI identity of 
 	 * @return the matching Location instance URI
 	 */
 	public Location getLocation(URI locationURI) {
@@ -228,20 +237,19 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Returns the set of Location instances referenced by this SequenceAnnotation object.
+	 * Returns the set of Location instances referenced by this SequenceAnnotation instance.
 	 * 
-	 * @return the set of Location instances referenced by this SequenceAnnotation object.
+	 * @return the set of Location instances referenced by this SequenceAnnotation instance.
 	 */
 	public Set<Location> getLocations() {
 		return new HashSet<>(locations.values());
 	}
 	
 	/**
-	 * Returns a sorted list of Locations referenced by this SequenceAnnotation object.
+	 * Returns a sorted list of Locations referenced by this SequenceAnnotation instance.
 	 * 
-	 * @return a sorted list of Locations referenced by this SequenceAnnotation object.
+	 * @return a sorted list of Locations referenced by this SequenceAnnotation instance.
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Location> getSortedLocations() {
 		List<Location> sortedLocations = new ArrayList<Location>();
 		sortedLocations.addAll(this.getLocations());
@@ -250,17 +258,16 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Removes all entries of this SequenceAnnotation object's list of Location
+	 * Removes all entries of this SequenceAnnotation instance's list of Location
 	 * instances. The set will be empty after this call returns.
   	 * <p>
-	 * If this SequenceAnnotation object belongs to an SBOLDocument instance,
+	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance,
 	 * then the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant  
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	void clearLocations() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		Object[] valueSetArray = locations.values().toArray();
 		for (Object location : valueSetArray) {
 			removeLocation((Location)location);
@@ -268,12 +275,14 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 		
 	/**
-	 * Clears the existing list of location instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException 
+	 * Clears the existing list of location instances first, then appends all of the elements in the specified collection to the end of this list.
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	void setLocations(Set<Location> locations) throws SBOLValidationException {
 		clearLocations();	
-		if (locations==null) return;
+		if (locations==null || locations.size()==0) {
+			throw new SBOLValidationException("sbol-10902", this);
+		}
 		for (Location location : locations) {
 			addLocation(location);
 		}
@@ -350,18 +359,18 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Returns the Component URI that this SequenceAnnotation object refers to.
+	 * Returns the Component URI that this SequenceAnnotation instance refers to.
 	 * 
-	 * @return the Component URI that this SequenceAnnotation object refers to
+	 * @return the Component URI that this SequenceAnnotation instance refers to
 	 */
 	public URI getComponentURI() {
 		return component;
 	}
 
 	/**
-	 * Returns the Component instance this SequenceAnnotation object refers to.
+	 * Returns the Component instance this SequenceAnnotation instance refers to.
 	 * 
-	 * @return the Component instance this SequenceAnnotation object refers to,
+	 * @return the Component instance this SequenceAnnotation instance refers to,
 	 * if the associated ComponentDefinition instance is not {@code null}, 
 	 * or {@code null} otherwise 
 	 */
@@ -374,23 +383,19 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * Sets the reference Component URI to the URI of the Component instance matching the 
 	 * given {@code displayId}.
 	 * <p>
-	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * <p>
 	 * This method creates a compliant URI for the reference Component instance using the
-	 * persistent identity of this SequenceAnnotation object's parent ComponentDefinition instance,
+	 * persistent identity of this SequenceAnnotation instance's parent ComponentDefinition instance,
 	 * the given {@code displayId}, and the parent ComponentDefinition instance's version.
 	 * It then calls {@link #setComponent(URI)} to set the reference.
 	 * 
-	 * @param displayId
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws SBOLValidationException if the associated ComponentDefinition object is not {@code null},
-	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
-	 * list of Component instances.
+	 * @param displayId the given display ID for the referenced component
+ 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void setComponent(String displayId) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
 				displayId, componentDefinition.getVersion());
 		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && componentDefinition!=null &&
@@ -403,18 +408,14 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	/**
 	 * Sets the reference component URI to the given {@code componentURI}.
 	 * <p>
-	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @param componentURI
- 	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws SBOLValidationException if the associated ComponentDefinition object is not {@code null},
-	 * and the given {@code componentURI} does not exist in its associated ComponentDefinition object's
-	 * list of Component instances.
+	 * @param componentURI the given component identity URI
+ 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void setComponent(URI componentURI) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(componentURI)==null) {
 				throw new SBOLValidationException("sbol-10905",this);
@@ -433,14 +434,11 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	/**
 	 * Dereference the component URI by setting it to {@code null}.
 	 * <p>
-	 * If this SequenceAnnotation object belongs to an SBOLDocument instance, then
+	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	 */
-	public void unsetComponent() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void unsetComponent() {
 		component = null;
 	}
 
@@ -481,12 +479,12 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Assume this SequenceAnnotation object has compliant URI, and all given parameters have compliant forms.
+	 * Assume this SequenceAnnotation instance has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
 	 * @param URIprefix
 	 * @param parentDisplayId
 	 * @param version
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
@@ -496,8 +494,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		this.setDisplayId(displayId);
 		this.setVersion(version);
-		String componentId = extractDisplayId(component);
-		this.setComponent(createCompliantURI(URIprefix,componentId,version));
+		if (component!=null) {
+			String componentId = extractDisplayId(component);
+			this.setComponent(createCompliantURI(URIprefix,componentId,version));
+		}
 		int count = 0;
 		for (Location location : this.getLocations()) {
 			if (!location.isSetDisplayId()) location.setDisplayId("location"+ ++count);
@@ -527,9 +527,14 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 
 	@Override
 	public String toString() {
-		return "SequenceAnnotation [locations=" + this.getLocations() + ", component=" + component
-				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "SequenceAnnotation ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", locations=" + this.getLocations() 
+				+ (this.isSetComponent()?", component=" + component:"")
+				+ "]";
 	}
 	
 	@Override

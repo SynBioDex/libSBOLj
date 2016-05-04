@@ -2,6 +2,7 @@ package org.sbolstandard.core2;
 
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,12 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
 
-import uk.ac.ncl.intbio.core.io.CoreIoException;
-
-public class writeTester {
+class writeTester {
 
 	private static SBOLDocument sbolDocument = new SBOLDocument();
 	
@@ -23,16 +20,27 @@ public class writeTester {
 
 	/**
 	 * Top level types
+	 * @param args 
 	 * @throws SBOLValidationException 
+	 * @throws SBOLConversionException 
+	 * @throws IOException 
 	 * @throws CoreIoException 
 	 * @throws XMLStreamException 
 	 *
 	 */
-
-	public static void main( String[] args ) throws FactoryConfigurationError, SBOLValidationException, XMLStreamException, CoreIoException
+	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		//SBOLDocument document = new SBOLDocument();
-		//document.createSequence("displayID", "ACGT", org.sbolstandard.core2.Sequence.IUPAC_DNA);
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix("http://www.foo.org");
+		Sequence seq = document.createSequence("displayID", "ACGT", org.sbolstandard.core2.Sequence.IUPAC_DNA);
+		document.addNamespace(URI.create("http://myannotation.org/"), "annot");
+		Annotation an = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), "1.0");
+		Annotation an2 = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), "foo");
+		List<Annotation> annos = new ArrayList<Annotation>();
+		annos.add(an);
+		annos.add(an2);
+		seq.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), 
+				new QName("http://myannotation.org", "thisNested", "annot"), URI.create("http://foo"), annos);
 		//SBOLWriter.write(document, (System.out));
 
 
@@ -47,6 +55,7 @@ public class writeTester {
 				System.out.println(error);
 			}
 		}
+		SBOLWriter.write(sbolDocument, (System.out), SBOLDocument.RDFV1);
 		//SBOLDocument doc = new SBOLDocument();
 		//doc.createCollection("http://foo.org", "myPart", "");
 		//doc.createCollection("http://foo.org/myPart", "myPart2", "");
@@ -55,23 +64,18 @@ public class writeTester {
 		//writeRdfOutputStream(sbolDocument);
 	}
 
-	public static void writeRdfOutputStream(SBOLDocument SBOL2Doc_test)
-	{
-		try {
-			SBOLWriter.write(SBOL2Doc_test,(System.out));
-			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test,true);
-			SBOLWriter.write(SBOL2Doc_test,System.out);
-		} catch (XMLStreamException e) {
-			e.printStackTrace();
-		} catch (FactoryConfigurationError e) {
-			e.printStackTrace();
-		} catch (CoreIoException e) {
-			e.printStackTrace();
-		}
-		catch (SBOLValidationException e) {
-			e.printStackTrace();
-		}
-	}
+//	private static void writeRdfOutputStream(SBOLDocument SBOL2Doc_test) throws IOException
+//	{
+//		try {
+//			SBOLWriter.write(SBOL2Doc_test,(System.out));
+//			SBOL2Doc_test = SBOLTestUtils.writeAndRead(SBOL2Doc_test,true);
+//			SBOLWriter.write(SBOL2Doc_test,System.out);
+//		} catch (SBOLConversionException e) {
+//			e.printStackTrace();
+//		} catch (SBOLValidationException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	private static void get_myParts (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
@@ -452,7 +456,7 @@ public class writeTester {
 		Model m = createModelData(SBOL2Doc_test,
 				getData("ToggleModel",version),
 				getPropertyURI("ToggleModel_source"), 
-				Model.SBML, 
+				EDAMOntology.SBML, 
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 		return m;
 	}
@@ -474,12 +478,12 @@ public class writeTester {
 	}
 
 
-	private static void setCommonTopLevelData (TopLevel t, String name, String description) throws SBOLValidationException
+	private static void setCommonTopLevelData (TopLevel t, String name, String description) 
 	{
 		setCommonDocumentedData(t, name, description);
 	}
 
-	private static void setCommonDocumentedData(Identified d, String name, String description) throws SBOLValidationException
+	private static void setCommonDocumentedData(Identified d, String name, String description)
 	{
 		d.setName(name);
 		d.setDescription(description);
@@ -527,13 +531,13 @@ public class writeTester {
 		return collection;
 	}
 
-	private static Annotation createAnnotation(QName relation, String literal) throws SBOLValidationException
+	private static Annotation createAnnotation(QName relation, String literal) 
 	{
 		return new Annotation(NamedProperty(relation, literal));
 
 	}
 
-	private static Annotation createAnnotation(QName relation, URI value) throws SBOLValidationException
+	private static Annotation createAnnotation(QName relation, URI value) 
 	{
 		return new Annotation(NamedProperty(relation, value));
 
@@ -667,8 +671,7 @@ public class writeTester {
 			String displayId, Set<URI> roles, String fi) throws SBOLValidationException
 	{
 		if (i.getParticipation(displayId)==null) {
-			Participation p = i.createParticipation(displayId, fi);
-			p.setRoles(roles);
+			i.createParticipation(displayId, fi, roles);
 		}
 	}
 

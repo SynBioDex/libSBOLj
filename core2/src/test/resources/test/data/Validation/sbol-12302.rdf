@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<rdf:RDF xmlns:prov="http://www.w3.org/ns/prov#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:pr="http://partsregistry.org" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/">
+<rdf:RDF xmlns:prov="http://www.w3.org/ns/prov#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:pr="http://partsregistry.org" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:myersLab="http://www.async.ece.utah.edu/" xmlns:annot="http://myannotation.org/">
   <sbol:ModuleDefinition rdf:about="http://sbols.org/CRISPR_Example/CRISPR_Template/1.0">
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/CRISPR_Template"/>
     <sbol:displayId>CRISPR_Template</sbol:displayId>
@@ -584,6 +584,7 @@
   <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/cas9m_BFP_cds/1.0">
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/cas9m_BFP_cds"/>
     <sbol:displayId>cas9m_BFP_cds</sbol:displayId>
+    <myersLab:datasheetName/>
     <sbol:version>1.0</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
@@ -875,12 +876,14 @@
     <sbol:displayId>gRNA_generic</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#RnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0001998"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/gRNA_b/1.0">
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/gRNA_b"/>
     <sbol:displayId>gRNA_b</sbol:displayId>
     <sbol:version>1.0</sbol:version>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#RnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0001998"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/gRNA_b_terminator/1.0">
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/gRNA_b_terminator"/>
@@ -918,6 +921,12 @@
     <sbol:encoding rdf:resource="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html"/>
   </sbol:Sequence>
   <sbol:Sequence rdf:about="http://sbols.org/CRISPR_Example/gRNA_b_seq/1.0">
+    <annot:thisAnnotation>
+      <annot:thisNested rdf:about="http://foo">
+        <annot:thisAnnotation>1.0</annot:thisAnnotation>
+        <annot:thisAnnotation>foo</annot:thisAnnotation>
+      </annot:thisNested>
+    </annot:thisAnnotation>
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/gRNA_b_seq"/>
     <sbol:displayId>gRNA_b_seq</sbol:displayId>
     <sbol:version>1.0</sbol:version>
@@ -927,6 +936,7 @@
   <!--
   <myersLab:datasheet rdf:about="http://sbols.org/CRISPR_Example/datasheet/1.1">
   -->
+<!--
   <myersLab:datasheet rdf:about="http://sbols.org/CRISPR_Example/datasheet/1.1">  
     <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/datasheet"/>
     <sbol:displayId>datasheet</sbol:displayId>
@@ -935,4 +945,24 @@
     <myersLab:characterizationData rdf:resource="http://www.async.ece.utah.edu/measurement/BBa_J23119"/>
     <myersLab:transcriptionRate>0.75</myersLab:transcriptionRate>
   </myersLab:datasheet>
+-->
+  <rdf:Description rdf:about="http://sbols.org/CRISPR_Example/datasheet/1.0">  
+    <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/datasheet"/>
+    <sbol:displayId>datasheet</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <dcterms:title>Datasheet for Custom Parameters</dcterms:title>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://sbols.org/CRISPR_Example/datasheet/1.1">  
+    <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/datasheet"/>
+    <sbol:displayId>datasheet</sbol:displayId>
+    <sbol:version>1.1</sbol:version>
+    <dcterms:title>Datasheet for Custom Parameters</dcterms:title>
+    <rdf:type rdf:resource="http://www.async.ece.utah.edu/MyCustomType"/>
+  </rdf:Description>
+  <myersLab:MyCustomType rdf:about="http://sbols.org/CRISPR_Example/datasheet/1.2">  
+    <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/datasheet"/>
+    <sbol:displayId>datasheet</sbol:displayId>
+    <sbol:version>1.2</sbol:version>
+    <dcterms:title>Datasheet for Custom Parameters</dcterms:title>
+   </myersLab:MyCustomType>
 </rdf:RDF>

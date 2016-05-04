@@ -20,13 +20,13 @@ import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 
 /**
+ * Represents the SBOL Annotation data model.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
- * @author Nicholas Roehner
  * @author Matthew Pocock
  * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public class Annotation {
@@ -38,14 +38,8 @@ public class Annotation {
 	 *
 	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name.
 	 * @param literal - used to denote an object that is of type String
-	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
-	public Annotation(QName qName, String literal) throws SBOLValidationException {
-		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
-				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
-			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
-			// TODO: (Validation) missing rule: Annotation cannot be in the namespace for either SBOL 1 or SBOL 2.
-		}
+	public Annotation(QName qName, String literal) {
 		value = NamedProperty(qName,literal);
 	}
 
@@ -54,14 +48,8 @@ public class Annotation {
 	 *
 	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
 	 * @param literal Used to denote an object that is of type Integer
-	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
-	public Annotation(QName qName, int literal) throws SBOLValidationException {
-		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
-				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
-			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
-			// TODO: (Validation) missing rule: Annotation cannot be in the namespace for either SBOL 1 or SBOL 2.
-		}
+	public Annotation(QName qName, int literal) {
 		value = NamedProperty(qName,literal);
 	}
 
@@ -90,14 +78,8 @@ public class Annotation {
 	 *
 	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name
 	 * @param literal - used to denote an object that is of type URI
-	 * @throws SBOLValidationException if the local part of the given {@code qName} is not an SBOL object.
 	 */
-	public Annotation(QName qName, URI literal) throws SBOLValidationException {
-		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
-				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
-			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
-			// TODO: (Validation) missing rule: Annotation cannot be in the namespace for either SBOL 1 or SBOL 2.
-		}
+	public Annotation(QName qName, URI literal) {
 		value = NamedProperty(qName,literal);
 	}
 
@@ -109,19 +91,8 @@ public class Annotation {
 	 * @param nestedQName A part of NestedAnnotations composed of a namespace, an OPTIONAL prefix, and a local name
 	 * @param nestedURI is a part of NestedAnnotations used to denote an object that is of type URI
 	 * @param annotations A property of NestedAnnotations that contains zero or more Annotation objects that store data in the form of name/value property pairs.
-	 * @throws SBOLValidationException 
 	 */
-	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) throws SBOLValidationException {
-		if (qName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
-				qName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
-			throw new SBOLValidationException(qName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
-			// TODO: (Validation) missing rule: Annotation cannot be in the namespace for either SBOL 1 or SBOL 2.
-		}
-		if (nestedQName.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
-				nestedQName.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
-			throw new SBOLValidationException(nestedQName.getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
-			// TODO: (Validation) missing rule: Annotation cannot be in the namespace for either SBOL 1 or SBOL 2.
-		}
+	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
 		List<NamedProperty<QName>> list = new ArrayList<>();
 		for(Annotation a : annotations)
 		{
@@ -130,14 +101,11 @@ public class Annotation {
 		value = NamedProperty(qName, NestedDocument(nestedQName, nestedURI, NamedProperties(list)));
 	}
 
-	Annotation(NamedProperty<QName> value) throws SBOLValidationException {
+	Annotation(NamedProperty<QName> value) {
 		if (value.getName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				value.getName().getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			if (value.getName().equals(Sbol2Terms.Identified.timeStamp)) {
 				System.out.println("Warning: sbol:timeStamp is deprecated");
-			} else {
-				throw new SBOLValidationException(value.getName().getLocalPart()+" is an illegal annotation, since annotations cannot be in the SBOL namespace.");
-				// TODO: (Validation) missing rule: Annotation cannot be in the namespace for either SBOL 1 or SBOL 2.
 			}
 		}
 		this.value = value;
@@ -155,10 +123,10 @@ public class Annotation {
 	public QName getQName() {
 		return value.getName();
 	}
-	
+
 	/**
 	 * Sets the Boolean representation of the {@code value} property.
-	 * @param literal
+	 * @param literal - The boolean representation of the property.
 	 */
 	public void setBooleanValue(boolean literal) {
 		QName qName = value.getName();
@@ -189,10 +157,10 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Sets the double representation of the {@code value} property.
-	 * @param literal
+	 * @param literal - The double representation of the property
 	 */
 	public void setDoubleValue(double literal) {
 		QName qName = value.getName();
@@ -223,10 +191,10 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Sets the integer representation of the {@code value} property.
-	 * @param literal
+	 * @param literal - The integer representation of the property
 	 */
 	public void setIntegerValue(int literal) {
 		QName qName = value.getName();
@@ -257,10 +225,10 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Sets the string representation of the {@code value} property.
-	 * @param literal
+	 * @param literal - The string representation of the property.
 	 */
 	public void setStringValue(String literal) {
 		QName qName = value.getName();
@@ -278,7 +246,7 @@ public class Annotation {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns a string representation of the {@code value} property.
 	 *
@@ -291,16 +259,16 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Sets the string representation of the {@code value} property.
-	 * @param literal
+	 * @param literal - The string representation of the property.
 	 */
 	public void setURIValue(String literal) {
 		QName qName = value.getName();
 		value = NamedProperty(qName,literal);
 	}
-	
+
 	/**
 	 * Returns a URI representation of the {@code value} property.
 	 *
@@ -313,7 +281,12 @@ public class Annotation {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Sets the {@code value} property to the specified list of annotations.
+	 * 
+	 * @param annotations The list of annotations
+	 */
 	public void setNestedAnnotations(List<Annotation> annotations) {
 		List<NamedProperty<QName>> list = new ArrayList<>();
 		for(Annotation a : annotations)
@@ -374,13 +347,7 @@ public class Annotation {
 		if (value.getValue() instanceof NestedDocument<?>) {
 			List<Annotation> annotations = new ArrayList<>();
 			for (NamedProperty<QName> namedProperty : ((NestedDocument<QName>) value.getValue()).getProperties()) {
-				try {
-					annotations.add(new Annotation(namedProperty));
-				}
-				catch (SBOLValidationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				annotations.add(new Annotation(namedProperty));
 			}
 			return annotations;
 		}
@@ -484,7 +451,6 @@ public class Annotation {
 				if (this.getAnnotations().size()!=other.getAnnotations().size()) {
 					return false;
 				}
-				// TODO: this may have an order dependence, also need to be sure it is in the other list, duplicates?
 				boolean equal = true;
 				for (Annotation annotation1 : this.getAnnotations()) {
 					boolean foundIt = false;

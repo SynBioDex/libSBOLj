@@ -3,17 +3,16 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents the SBOL top-level classes.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public abstract class TopLevel extends Identified {
-	
+
 	/**
 	 * The abbreviation for the Collection type in URI
 	 */
@@ -76,6 +75,17 @@ public abstract class TopLevel extends Identified {
 		}
 		this.checkDescendantsURIcompliance();
 	}
+
+	/**
+	 * The getDocument method returns the SBOLDocument that was used 
+	 * to instantiate this TopLevel object.
+	 * 
+	 * @return the SBOLDocument of the TopLevel's origin
+	 */
+	public SBOLDocument getDocument() {
+		return this.sbolDocument;
+	}
+
 	
 	/**
 	 * Check if this top-level object's and all of its descendants' URIs are all compliant. 

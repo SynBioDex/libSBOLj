@@ -5,13 +5,12 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import java.net.URI;
 
 /**
+ * Represents the SBOL Location data model.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public abstract class Location extends Identified implements Comparable<Location> {
@@ -54,10 +53,8 @@ public abstract class Location extends Identified implements Comparable<Location
 	 * is allowed to be edited.
 	 *
 	 * @param orientation Indicate how the region specified by the SequenceAnnotation and any associated double stranded Component is oriented on the elements of a Sequence from their parent ComponentDefinition.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void setOrientation(OrientationType orientation) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void setOrientation(OrientationType orientation) {
 		this.orientation = orientation;
 	}
 
@@ -68,10 +65,8 @@ public abstract class Location extends Identified implements Comparable<Location
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
 	 */
-	public void unsetOrientation() throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void unsetOrientation() {
 		orientation = null;
 	}
 
@@ -92,13 +87,17 @@ public abstract class Location extends Identified implements Comparable<Location
 
 	@Override
 	public String toString() {
-		return "Location [orientation=" + orientation + ", identity=" + identity + ", displayId="
-				+ displayId + ", name=" + name + ", description=" + description + "]";
+		return "Location ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
+				+ "]";
 	}
 
-	@Override
-	public int compareTo(Location loc) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+//	@Override
+//	public int compareTo(Location loc) {
+//		return 0;
+//	}
 }

@@ -5,6 +5,14 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class provides functionality to validate URI compliance. 
+ * 
+ * @author Chris Myers
+ * @author Zhen Zhang
+ * @version 2.1
+ */
+
 final class URIcompliance {
 	
 	static void validateIdVersion(String displayId, String version) throws SBOLValidationException {
@@ -151,7 +159,15 @@ final class URIcompliance {
 	}
 
 	static final void isChildURIcompliant(Identified parent, Identified child) throws SBOLValidationException {
-		isURIcompliant(child);
+		try {
+			isURIcompliant(child);
+		} catch (SBOLValidationException e) {
+			if (e.getMessage().contains("sbol-10216")) {
+				throw new SBOLValidationException("sbol-10217");
+			} else {
+				throw new SBOLValidationException(e.getMessage());
+			}
+		}
 		if (!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+"/"+child.getDisplayId()) &&
 				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+"#"+child.getDisplayId()) &&
 				!child.getPersistentIdentity().toString().equals(parent.getPersistentIdentity()+":"+child.getDisplayId())) {
@@ -392,5 +408,14 @@ final class URIcompliance {
 			// TODO: (Validation) missing rule: rule for URI prefix
 		}
 		return URIprefix;
+	}
+
+	static String fixDisplayId(String displayId) {
+		displayId = displayId.replaceAll("[^a-zA-Z0-9_]", "_");
+		displayId = displayId.replace(" ", "_");
+		if (Character.isDigit(displayId.charAt(0))) {
+			displayId = "_" + displayId;
+		}
+		return displayId;
 	}
 }

@@ -7,6 +7,11 @@ import java.net.URI;
 import org.junit.Test;
 
 
+/**
+ * Tests for the ontology parser
+ * @author Zhen Zhang
+ *
+ */
 public class OntologyTest {
 	
 	private static final String SO_URI_PREFIX = "http://identifiers.org/so/";
@@ -192,6 +197,9 @@ public class OntologyTest {
 		assertTrue(systemsBiologyOntology.isDescendantOf(SBO_child1_id, SBO_parent2_id));
 	}
 	
+	/**
+	 * 
+	 */
 	@Test
 	public void test_SBO_isDescendantOf3() {
 		// Term SBO:1001260 has two is_a relations.

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:sbol="http://sbols.org/v1#"
-	xmlns:sublime="http://clarkparsia.com/sublime#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v1#">
 	<sbol:DnaComponent rdf:about="urn:d0f2ca7b-33d4-4106-8b7a-4bfe7efa1a16">
 		<sbol:displayId>pTAKLeftCassete</sbol:displayId>
 		<sbol:name>pTAK Left Cassete</sbol:name>
@@ -88,5 +86,4 @@
 		</sbol:annotation>
 		<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000110" />
 	</sbol:DnaComponent>
-
 </rdf:RDF>

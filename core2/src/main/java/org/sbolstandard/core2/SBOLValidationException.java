@@ -14,13 +14,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Signals that an SBOL validation rule violation has occurred. 
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
- * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public class SBOLValidationException extends Exception {
@@ -136,6 +134,7 @@ public class SBOLValidationException extends Exception {
 						getResourceAsStream("/validation/rules.txt"));
 				try {					
 					parse(new BufferedReader(f));
+					//writeRulesToXML("rules.xml");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -164,6 +163,7 @@ public class SBOLValidationException extends Exception {
 						getResourceAsStream("/validation/rules.txt"));
 				try {					
 					parse(new BufferedReader(f));
+					//writeRulesToXML("rules.xml");
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -171,12 +171,12 @@ public class SBOLValidationException extends Exception {
 			//printAllRules();
 			String key = message.trim();
 			SBOLValidationRule rule = validationRules.get(key);
-			if (rule == null) {
-				throw new RuntimeException("Rule ID does not exist.");
-			}
-			sb.append(": " + rule.getDescription() + "\n");
+			sb.append(": ");
+			if (rule != null) {
+				sb.append(rule.getDescription());
+			} 
 			if (!objects.isEmpty()) {
-				sb.append(": ");
+				sb.append("\n: ");
 				boolean first = true;
 				for (Identified obj : objects) {
 					if (first) {
@@ -213,6 +213,51 @@ public class SBOLValidationException extends Exception {
 		return sb.toString();
 	}
 	
+// TODO: Complete this method to write validation rules in XML format.
+//	private static void writeRulesToXML(String filename) {
+//		File outputFile;
+//		FileWriter outputFW;
+//		BufferedWriter outputBW = null;
+//		try
+//		{
+//			outputFile = new File(filename);
+//			//System.out.println(outputFile.getAbsolutePath());
+//			//System.out.println(filename);
+//			outputFW = new FileWriter(outputFile);
+//			outputBW = new BufferedWriter(outputFW);//for OS to keep track of what you have written
+//		}
+//		catch(IOException e){
+//					
+//		}
+//		String eol = System.getProperty("line.separator");
+//		String rule = "";
+//		rule = rule + "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + eol;
+//		rule = rule + "<rules>" + eol;
+//		try {
+//			outputBW.write(rule);		
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		for (String key : validationRules.keySet()) {
+//			rule = rule + "<id>"+ key +"</id>" + eol;
+//			rule = rule + "<category>" + validationRules.get(key).getRuleClass() +"</category>" + eol;
+//			rule = rule + "<condition>" + validationRules.get(key).getCondition() +"</condition>" + eol;
+//			rule = rule + "<description>" + validationRules.get(key).getDescription() +"</description>" + eol;
+//			rule = rule + "<reference>" + validationRules.get(key).getReference() +"</reference>" + eol;
+//			
+//		}
+//		rule = rule + "</rules>";
+//		System.out.println(rule);
+//		try {
+//			outputBW.write(rule);		
+//			outputBW.close();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	
+//	
+//	}
+
 	/**
 	 * @param br
 	 * @throws IOException
@@ -281,7 +326,7 @@ public class SBOLValidationException extends Exception {
 	 * Return the validation rule number of the exception
 	 * @return the validation rule number of the exception
 	 */
-	public String getRule() {
+	String getRule() {
 		if (!getMessage().startsWith("sbol-")) return "";
 		return getMessage().split(":")[0];
 	}

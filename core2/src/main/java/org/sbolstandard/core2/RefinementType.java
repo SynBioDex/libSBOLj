@@ -3,13 +3,11 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents the refinement relationship between a MapsTo instance's local and remote components.
+ *
  * @author Zhen Zhang
- * @author Tramy Nguyen
- * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public enum RefinementType {

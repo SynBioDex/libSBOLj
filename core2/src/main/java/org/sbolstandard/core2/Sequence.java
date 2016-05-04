@@ -5,15 +5,13 @@ import static org.sbolstandard.core2.URIcompliance.*;
 import java.net.URI;
 
 /**
+ * Represents the SBOL Sequence data model.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
-
 public class Sequence extends TopLevel{
 
 	private String elements;
@@ -67,28 +65,26 @@ public class Sequence extends TopLevel{
 	//	}
 
 	/**
-	 * Returns the {@code elements} property of this Sequence object.
+	 * Returns the elements property of this Sequence object.
 	 * 
-	 * @return the {@code elements} property of this Sequence object.
+	 * @return the elements property of this Sequence object.
 	 */
 	public String getElements() {
 		return elements;
 	}
 	
 	/**
-	 * Sets the {@code elements} property to the given argument.  
+	 * Sets the elements property to the given argument.  
 	 * <p>
 	 * If this Sequence object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @param elements
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws SBOLValidationException if the given {@code elements} argument is {@code null}
+	 * @param elements the given elements property
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	public void setElements(String elements) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (elements == null) {
 			throw new SBOLValidationException("sbol-10402",this);
 		}
@@ -99,28 +95,26 @@ public class Sequence extends TopLevel{
 	}
 	
 	/**
-	 * Returns the {@code encoding} property of this Sequence object.
+	 * Returns the encoding property of this Sequence object.
 	 * 
-	 * @return the {@code encoding} property of this Sequence object.
+	 * @return the encoding property of this Sequence object.
 	 */
 	public URI getEncoding() {
 		return encoding;
 	}
 
 	/**
-	 * Sets the {@code encoding} property to the given argument.  
+	 * Sets the encoding property to the given argument.  
 	 * <p>
 	 * If this Sequence object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 * 
-	 * @param encoding
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws SBOLValidationException if the given {@code encoding} argument is {@code null}
+	 * @param encoding the given encoding property
+	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
 	public void setEncoding(URI encoding) throws SBOLValidationException {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		if (encoding == null) {
 			throw new SBOLValidationException("sbol-10403",this);
 		}
@@ -189,12 +183,70 @@ public class Sequence extends TopLevel{
 	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
 		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
+	
+	/**
+	 * Perform the reverse complement of a sequence encoded using IUPAC_DNA
+	 * @param elements sequence to reverse complement 
+	 * @param type DNA or RNA type
+	 * @return the reverse complement of a sequence encoded using IUPAC_DNA
+	 */
+	public static String reverseComplement(String elements,URI type) {
+		String reverse = "";
+		for (int i = elements.length()-1; i >= 0; i--) {
+			if (elements.charAt(i)=='a') {
+				if (type.equals(ComponentDefinition.DNA)) {
+					reverse += 't';
+				} else {
+					reverse += 'u';
+				}
+			} else if ((elements.charAt(i)=='t')||(elements.charAt(i)=='u')) {
+				reverse += 'a';
+			} else if (elements.charAt(i)=='g') {
+				reverse += 'c';
+			} else if (elements.charAt(i)=='c') {
+				reverse += 'g';
+			} else if (elements.charAt(i)=='r') {
+				reverse += 'y';
+			} else if (elements.charAt(i)=='y') {
+				reverse += 'r';
+			} else if (elements.charAt(i)=='s') {
+				reverse += 'w';
+			} else if (elements.charAt(i)=='w') {
+				reverse += 's';
+			} else if (elements.charAt(i)=='k') {
+				reverse += 'm';
+			} else if (elements.charAt(i)=='m') {
+				reverse += 'k';
+			} else if (elements.charAt(i)=='b') {
+				reverse += 'v';
+			} else if (elements.charAt(i)=='v') {
+				reverse += 'b';
+			} else if (elements.charAt(i)=='d') {
+				reverse += 'h';
+			} else if (elements.charAt(i)=='h') {
+				reverse += 'd';
+			} else if (elements.charAt(i)=='n') {
+				reverse += 'n';
+			} else if (elements.charAt(i)=='.') {
+				reverse += '.';
+			} else if (elements.charAt(i)=='-') {
+				reverse += '-';
+			}
+		}
+		return reverse;
+	}
 
 	@Override
 	public String toString() {
-		return "Sequence [elements=" + elements + ", encoding=" + encoding + ", identity="
-				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
-				+ description + "]";
+		return "Sequence ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", encoding=" + encoding 
+				+ ", elements=" + elements  
+				+ "]";
 	}
+	
 
 }

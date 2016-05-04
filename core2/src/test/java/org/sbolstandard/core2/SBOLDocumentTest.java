@@ -12,6 +12,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * Tests for SBOLDocument methods.
+ * @author Meher Samineni
+ * @author Eugene Choe
+ *
+ */
 public class SBOLDocumentTest {
 
 	@Test
@@ -314,7 +320,7 @@ public class SBOLDocumentTest {
 	
 	
 	@Test
-	public void Test_getModuleDefinition() throws SBOLValidationException{
+	public void Test_getModuleDefinition() {
 		
 		String preURI="http://partsregistry.org";
 		String displayID = "Anderson";
@@ -333,7 +339,7 @@ public class SBOLDocumentTest {
 	}
 	
 	@Test
-	public void Test_getCollection() throws URISyntaxException, SBOLValidationException
+	public void Test_getCollection() throws URISyntaxException
 	{
 		
 		String preURI="http://partsregistry.org";
@@ -727,13 +733,9 @@ public class SBOLDocumentTest {
 			TetR_promoter.addSequence(s);
 			
 			//case 1: document1 is null
-			try
-			{
-				assertTrue(TetR_promoter.containsSequence(Sequence.IUPAC_DNA));
-				assertTrue(TetR_promoter.removeSequence(Sequence.IUPAC_DNA));	
-				TetR_promoter.clearSequences();
-			}
-			catch(SBOLValidationException e){}
+			assertTrue(TetR_promoter.containsSequence(Sequence.IUPAC_DNA));
+			assertTrue(TetR_promoter.removeSequence(Sequence.IUPAC_DNA));	
+			TetR_promoter.clearSequences();
 			
 			//case 2: document is not null
 			String preURI="http://doesnotexist.com";
@@ -746,14 +748,10 @@ public class SBOLDocumentTest {
 			Sequence s2 = new Sequence(Sequence.IUPAC_PROTEIN, "", Sequence.IUPAC_DNA);
 			TetR_promoter.addSequence(s2);
 			document1.addComponentDefinition(TetR_promoter);
-			try
-			{
-				assertTrue(TetR_promoter.containsSequence(Sequence.IUPAC_PROTEIN));
-				assertFalse(TetR_promoter.containsSequence(Sequence.IUPAC_RNA));
-				assertTrue(TetR_promoter.removeSequence(Sequence.IUPAC_PROTEIN));	
-				//assertTrue(TetR_promoter.getSequences().size() == 0);
-			}
-			catch(SBOLValidationException e){}
+			assertTrue(TetR_promoter.containsSequence(Sequence.IUPAC_PROTEIN));
+			assertFalse(TetR_promoter.containsSequence(Sequence.IUPAC_RNA));
+			assertTrue(TetR_promoter.removeSequence(Sequence.IUPAC_PROTEIN));	
+			//assertTrue(TetR_promoter.getSequences().size() == 0);
 		}
 		
 		

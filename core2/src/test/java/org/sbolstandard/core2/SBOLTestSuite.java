@@ -15,12 +15,16 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses(
 		{
-			//			SBOLGenerateFile.class,
+//						SBOLGenerateFile.class,
 			SBOLReaderTest.class,
 			SBOLWriterTest.class,
+			SBOLTestConversion.class,
 			URIcomplianceTest.class,
 			SBOLDocumentTest.class,
-			OntologyTest.class
+			ValidationTest.class,
+			OntologyTest.class,
+			GenbankTest.class,
+			FASTATest.class
 		}
 		)
 
