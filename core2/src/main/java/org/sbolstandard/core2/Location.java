@@ -1,33 +1,33 @@
 package org.sbolstandard.core2;
 
-import static org.sbolstandard.core2.URIcompliance.*;
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 
 import java.net.URI;
 
 /**
+ * Represents the SBOL Location data model.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
-public abstract class Location extends Identified{
+public abstract class Location extends Identified implements Comparable<Location> {
 
 	protected OrientationType orientation;
 
-	Location(URI identity) {
-		super(identity);		
+	Location(URI identity) throws SBOLValidationException {
+		super(identity);
 	}
-	
-	protected Location(Location location) {
+
+	protected Location(Location location) throws SBOLValidationException {
 		super(location);
 		this.setOrientation(location.getOrientation());
 	}
-	
-	protected abstract Location deepCopy();
+
+	@Override
+	protected abstract Location deepCopy() throws SBOLValidationException;
 
 	/**
 	 * Test if the orientation property is set.
@@ -51,12 +51,10 @@ public abstract class Location extends Identified{
 	 * If this object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param orientation
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 *
+	 * @param orientation Indicate how the region specified by the SequenceAnnotation and any associated double stranded Component is oriented on the elements of a Sequence from their parent ComponentDefinition.
 	 */
 	public void setOrientation(OrientationType orientation) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		this.orientation = orientation;
 	}
 
@@ -66,19 +64,18 @@ public abstract class Location extends Identified{
 	 * If this object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 *
 	 */
 	public void unsetOrientation() {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
 		orientation = null;
 	}
-	
+
 	/**
 	 * Assume this Range object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link SequenceAnnotation#updateCompliantURI(String, String, String)}.
+	 * @throws SBOLValidationException 
 	 */
-	void updateCompliantURI(String URIprefix, String displayId, String version) {
+	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
 			this.setWasDerivedFrom(this.getIdentity());
 		}
@@ -90,7 +87,17 @@ public abstract class Location extends Identified{
 
 	@Override
 	public String toString() {
-		return "Location [orientation=" + orientation + ", identity=" + identity + ", displayId="
-				+ displayId + ", name=" + name + ", description=" + description + "]";
+		return "Location ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
+				+ "]";
 	}
+
+//	@Override
+//	public int compareTo(Location loc) {
+//		return 0;
+//	}
 }

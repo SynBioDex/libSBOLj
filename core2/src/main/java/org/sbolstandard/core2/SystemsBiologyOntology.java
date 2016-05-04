@@ -1,7 +1,7 @@
 package org.sbolstandard.core2;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 //import java.util.HashMap;
 //import java.util.Map;
@@ -13,13 +13,17 @@ import org.oboparser.obo.OBOParser;
 import org.oboparser.obo.OBOStanza;
 
 /**
+ * This class provides methods for accessing <a href="http://www.ebi.ac.uk/sbo/main/"><i>Systems Biology Ontology</i></a> (SBO) terms 
+ * and querying about their relationships.
+ * 
+ * 
+ * 
+ * 
  * @author Zhen Zhang
  * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public class SystemsBiologyOntology {
@@ -90,37 +94,45 @@ public class SystemsBiologyOntology {
 	
 	SystemsBiologyOntology() {
 		OBOParser oboParser = new OBOParser();
-		File f = new File("src/resources/ontologies/SystemsBiologyOntology/sbo_full.obo");
-		try {
-			oboParser.parse(f);
-			systemsBiologyOntology = oboParser.getOntology();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (systemsBiologyOntology == null) {
+			InputStreamReader f = new InputStreamReader(getClass().
+					getResourceAsStream("/ontologies/SystemsBiologyOntology/sbo_full.obo"));
+			try {
+				oboParser.parse(f);
+				systemsBiologyOntology = oboParser.getOntology();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	/**
-	 * Returns the extracted ID of the given stanza's URI. 
+	 * Returns the extracted ID of the given term's URI. 
 	 * 
-	 * @param stanzaURI
-	 * @return the extracted ID of the given stanza's URI.
-	 * @throws IllegalArgumentException if the given stanzaURI does not begin with "http://identifiers.org/so/".
+	 * @param termURI the URI of the given term
+	 * @return the extracted ID of the given term's URI.
 	 */
-	public final String getId(URI stanzaURI) {
-		String stanzaURIstr = stanzaURI.toString().trim();
-		if (!stanzaURIstr.contains(URI_PREFIX)) {
-			throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+	public final String getId(URI termURI) {
+		String termURIstr = termURI.toString().trim();
+		if (!termURIstr.startsWith(URI_PREFIX)) {
+			try {
+				throw new IllegalArgumentException("Illegal " + termURI.toString() + ". It does not begin with the URI prefix " + URI_PREFIX);
+			}
+			catch (IllegalArgumentException e) {
+				return null;
+			}
 		}
-		int beginIndex = stanzaURIstr.lastIndexOf("/") + 1;
-		return stanzaURIstr.substring(beginIndex, stanzaURIstr.length());
+		int beginIndex = termURIstr.lastIndexOf("/") + 1;
+		return termURIstr.substring(beginIndex, termURIstr.length());
 	}
 	
 	/**
-	 * Returns the ID field of the stanza whose name matches the given name. If multiple matches are found, only the first matching
+	 * Returns the ID field of the stanza whose name matches the given name. 
+	 * If multiple matches are found, only the first matching
 	 * one is returned.
 	 *  
-	 * @param stanzaName
-	 * @return the ID the matching stanza, or {@code null} if no match is found. 
+	 * @param stanzaName the name of a stanza
+	 * @return the matching stanza ID, or {@code null} if no match is found.
 	 */
 	public final String getId(String stanzaName) {
 		//return sequenceOntology.getStanza(stanzaName).getName();
@@ -131,96 +143,155 @@ public class SystemsBiologyOntology {
 			}
 		}
 		if (IdList.isEmpty()) {
-			return null;
+			try {
+				throw new IllegalArgumentException("Illegal name " + stanzaName + ". It does not exit.");
+			}
+			catch (IllegalArgumentException e) {
+				return null;
+			}
 		}
 		return IdList.get(0);
 	}
 	
 	
 	/**
-	 * Returns the name field of the stanza that matches the ID for the given stanzaURI.
+	 * Returns the name field of the stanza that matches the ID for the given term URI.
 	 * 
-	 * @param stanzaURI
-	 * @return the name field of the stanza that matches the ID in the given stanzaURI, or {@code null} if this no match is found.
-	 * @throws IllegalArgumentException if the given stanzaURI does not begin with "http://identifiers.org/so/".
+	 * @param termURI the identity URI of a term
+	 * @return the name of the stanza that matches the ID in the given term URI.
 	 */
-	public final String getName(URI stanzaURI) {
-		String oboURIstr = stanzaURI.toString().trim();
-		if (!oboURIstr.contains(URI_PREFIX)) {
-			throw new IllegalArgumentException("Illegal " + stanzaURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+	public final String getName(URI termURI) {
+		String oboURIstr = termURI.toString().trim();
+		if (!oboURIstr.startsWith(URI_PREFIX)) {
+			try {
+				throw new IllegalArgumentException("Illegal " + termURI.toString() + ". It does not contain URI prefix " + URI_PREFIX);
+			}
+			catch (IllegalArgumentException e) {
+				return null;
+			}
 		}
 		int beginIndex = oboURIstr.lastIndexOf("/") + 1;
 		String id = oboURIstr.substring(beginIndex, oboURIstr.length());
 		OBOStanza oboStanza = systemsBiologyOntology.getStanza(id);
+		if (oboStanza == null) {
+			try {
+				throw new IllegalArgumentException("ID " + id + " does not exist.");
+			}
+			catch (IllegalArgumentException e) {
+				return null;			}
+		}
 		return oboStanza.getName();
 	}
 	
 	/**
-	 * Returns the name field of the stanza that matches the ID in the given stanzaURI.
+	 * Returns the name field of the stanza that matches the ID referred by the given stanzaURI.
 	 * 
-	 * @param stanzaId
-	 * @return the name field of the stanza that matches the ID in the given stanzaURI,
+	 * @param stanzaId the ID of a stanza
+	 * @return the name field of the stanza that matches the ID referred by the given stanzaURI,
 				or {@code null} if this no match is found.
 	 */
 	public final String getName(String stanzaId) {
-		return systemsBiologyOntology.getStanza(stanzaId).getName();
+		OBOStanza oboStanza = systemsBiologyOntology.getStanza(stanzaId);
+		if (oboStanza == null) {
+			try {
+				throw new IllegalArgumentException("Illegal ID " + stanzaId + " does not exist.");
+			}
+			catch (IllegalArgumentException e) {
+				return null;
+			}
+		}
+		return oboStanza.getName();
 	}
 	
 	/**
-	 * Returns the URI, i.e. the Sequence Ontology namespace URL followed by an ID of an sequence ontology term, 
+	 * Returns the URI, i.e. the Systems Biology Ontology (SBO) namespace, "http://identifiers.org/biomodels.sbo/", followed by an ID of an SBO term,  
 	 * of the stanza whose name matches the given name. If multiple matches are found, only the first matching
 	 * one is returned. 
 	 * 
-	 * @param stanzaName
-	 * @return the URI of the given sequence ontology name, or {@code null} if no match is found.
+	 * @param stanzaName the name of a term
+	 * @return the URI of the given SBO name.
 	 */
 	public final URI getURIbyName(String stanzaName) {
-		String stanzaId = getId(stanzaName);
-		if (stanzaId == null) {
-			return null;
-		}
-		return getURIbyId(stanzaId);
+		return getURIbyId(getId(stanzaName));
 	}
 	
 	/** 
-	 * Creates a new URI from the Sequence Ontology namespace with the given ID. For example, the function call
-	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
-	 * @param stanzaId
+	 * Creates a new URI from the Systems Biology Ontology namespace, "http://identifiers.org/biomodels.sbo/", with the given ID. 
+	 * @param stanzaId the ID of a stanza
 	 * @return the created URI
 	 */
 	public final URI getURIbyId(String stanzaId) {
-		return type(stanzaId.trim());
+		OBOStanza oboStanza = systemsBiologyOntology.getStanza(stanzaId.trim());
+		if (oboStanza == null) {
+			try {
+				throw new IllegalArgumentException("ID " + stanzaId + " does not exist.");
+			}
+			catch (IllegalArgumentException e) {
+				return null;
+			}
+		}
+		return URI.create(URI_PREFIX+stanzaId);
 	}
-
+	
+	
+	/**
+	 * Returns {@code true} if the term with childURI is a descendant of the term with parentURI. This method first
+	 * extracts IDs for the child and parent terms, and then pass them to {@link #isDescendantOf(String, String)}.  
+	 * @param childURI the URI of the child term
+	 * @param parentURI the URI of the child term
+	 * @return {@code true} if the term with childURI is a descendant of the term with parentURI, {@code false} otherwise.
+	 */
+	public final boolean isDescendantOf(URI childURI, URI parentURI) {
+		String childId = getId(childURI);
+		String parentId = getId(parentURI);
+		return isDescendantOf(childId,parentId);
+	}
+	
 	/**
 	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
-	 * @param Id1
-	 * @param Id2
+	 * @param Id1 ID of the first stanza
+	 * @param Id2 ID of the second stanza
 	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
 	 */
 	public final boolean isDescendantOf(String Id1, String Id2) {
 		OBOStanza stanza1 = systemsBiologyOntology.getStanza(Id1);
 		OBOStanza stanza2 = systemsBiologyOntology.getStanza(Id2);
 		if (stanza1 == null) {
-			throw new IllegalArgumentException("Illegal ID: " + Id1 + ". No match was found.");
+			try {
+				throw new IllegalArgumentException("Illegal ID: " + Id1 + ". No match was found.");
+			}
+			catch (IllegalArgumentException e) {
+				return false;
+			}
 		}
 		if (stanza2 == null) {
-			throw new IllegalArgumentException("Illegal ID: " + Id2 + ". No match was found.");
+			try {
+				throw new IllegalArgumentException("Illegal ID: " + Id2 + ". No match was found.");
+			}
+			catch (IllegalArgumentException e) {
+				return false;
+			}
 		}
 		return systemsBiologyOntology.isDescendantOf(stanza1, stanza2);
 	}
 	
 	/**
-	 * Creates a new URI from the Systems Biology Ontology namespace with the given local name. For example, the function call
+	 * Creates a new URI from the Systems Biology Ontology (SBO) namespace with the given local name. For example, the method call
 	 * <code>term("SBO_0000001")</code> will return the URI <a>http://purl.obolibrary.org/obo/SBO_0000001</a>
-	 * @param localName 
+	 * @param id the ID of a SBO term
 	 * @return the created URI
 	 */
-	public static final URI type(String localName) {
-		return URI.create(URI_PREFIX+localName);
+	public static final URI type(String id) {
+		return URI.create(URI_PREFIX+id);
 	}
 
 	// Modeling frameworks
+	/**
+	 * Set of assumptions that underlay a mathematical description
+	 * (<a href="http://identifiers.org/biomodels.sbo/SBO:0000004">SBO:0000004</a>).
+	 */
+	public static final URI MODELING_FRAMEWORK 		 	 = type("SBO:0000004");
+	
 	/**
 	 * Modelling approach where the quantities of participants are considered continuous,
 	 * and represented by real values (<a href="http://identifiers.org/biomodels.sbo/SBO:0000062">SBO:0000062</a>).
@@ -286,6 +357,13 @@ public class SystemsBiologyOntology {
 	public static final URI BOOLEAN_LOGICAL_FRAMEWORK 		 = type("SBO:0000547");
 
 	// Interaction types
+	/**
+	 * Representation of an entity that manifests, unfolds or develops through time, such as a discrete event, 
+	 * or a mutual or reciprocal action or influence that happens between participating physical entities, 
+	 * and/or other occurring entities (<a href="http://identifiers.org/biomodels.sbo/SBO:0000231">SBO:0000231</a>). 
+	 */
+	public static final URI OCCURRING_ENTITY_REPRESENTATION		   = type("SBO:0000231");
+	
 	/**
 	 * The potential action that a biological entity has on other entities (<a href="http://identifiers.org/biomodels.sbo/SBO:0000412">SBO:0000412</a>). Example are
 	 * enzymatic activity, binding activity etc.
@@ -817,6 +895,12 @@ public class SystemsBiologyOntology {
 	public static final URI TRANS 								   = type("SBO:0000415");
 
 	// Participant roles
+	/**
+	 * The function of a physical or conceptual entity, that is its role, in the execution of an event or process
+	 * (<a href="http://identifiers.org/biomodels.sbo/SBO:0000003">SBO:0000003</a>). 
+	 */
+	public static final URI PARTICIPANT_ROLE 		 = type("SBO:0000003");
+
 	/**
 	 * Logical or physical subset of the event space that contains pools, that is sets of participants
 	 * considered identical when it comes to the event they are involved into (<a href="http://identifiers.org/biomodels.sbo/SBO:0000289">SBO:0000289</a>). A compartment can have any

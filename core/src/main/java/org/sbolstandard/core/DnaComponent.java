@@ -56,24 +56,27 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * @return Human readable text describing the component
      * @see #setDescription
      */
-    String getDescription();
+    @Override
+	String getDescription();
 
     /**
      * Text which is written for users to read and interpret. 
      * It should describe what the component is used for and/or what it does.
      * Suggestion: it should provide information that cannot yet be represented in
-     * the rest of the DNA components computable fields. Do not include <> tags
+     * the rest of the DNA components computable fields. Do not include tags
      * such as HTML or XML inside as that may break the RDF. Don't include {}
      * tags as that may break the Json.
      * @param description human readable text describing the component
      */
-    void setDescription(String description);
+    @Override
+	void setDescription(String description);
 
     /**
      * Identifier to display to users.
      * @return a human readable identifier
      */
-    String getDisplayId();
+    @Override
+	String getDisplayId();
 
     /**
      * Identifier that users will see as reference to the DNA construct.
@@ -83,7 +86,8 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * letter or underscore.
      * @param displayId a human readable identifier
      */
-    void setDisplayId(String displayId);
+    @Override
+	void setDisplayId(String displayId);
 
     /**
      * DNA sequence which this DnaComponent object represents.
@@ -104,7 +108,8 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * understanding" in CSCW field for more.
      * @return its name, commonly used to refer to this DnaComponent
      */
-    String getName();
+    @Override
+	String getName();
 
     /**
      * Common name of DNA component, confers meaning of what it is.
@@ -114,7 +119,8 @@ public interface DnaComponent extends SBOLNamedObject, SBOLRootObject {
      * @param name its name, commonly used to refer to this DnaComponent (eg. pLac-O1)
      * @see #getName
      */
-    void setName(String name);
+    @Override
+	void setName(String name);
 
     /**
      * Sequence Ontology vocabulary provides a defined term for types of DNA

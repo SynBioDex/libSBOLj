@@ -3,13 +3,11 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents the refinement relationship between a MapsTo instance's local and remote components.
+ *
  * @author Zhen Zhang
- * @author Tramy Nguyen
- * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public enum RefinementType {
@@ -59,22 +57,27 @@ public enum RefinementType {
 	/**
 	 * Convert the specified URI to its corresponding RefinementType instance. 
 	 * @return the corresponding RefinementType instance
+	 * @throws SBOLValidationException 
 	 */
-	static RefinementType convertToRefinementType(URI refinement) {
-		if (refinement.equals(merge)) {
-			return RefinementType.MERGE;
-		} 
-		else if (refinement.equals(useLocal)) {
-			return RefinementType.USELOCAL;
-		}
-		else if (refinement.equals(useRemote)) {
-			return RefinementType.USEREMOTE;
-		}
-		else if (refinement.equals(verifyIdentical)) {
-			return RefinementType.VERIFYIDENTICAL;
-		}
-		else {
-			throw new IllegalArgumentException("Unknown refinement URI `" + refinement + "'");
+	static RefinementType convertToRefinementType(URI refinement) throws SBOLValidationException {
+		if (refinement != null) {
+			if (refinement.equals(merge)) {
+				return RefinementType.MERGE;
+			} 
+			else if (refinement.equals(useLocal)) {
+				return RefinementType.USELOCAL;
+			}
+			else if (refinement.equals(useRemote)) {
+				return RefinementType.USEREMOTE;
+			}
+			else if (refinement.equals(verifyIdentical)) {
+				return RefinementType.VERIFYIDENTICAL;
+			}
+			else {
+				throw new SBOLValidationException("sbol-10810");
+			}
+		} else {
+			throw new SBOLValidationException("sbol-10810");
 		}
 	}
 

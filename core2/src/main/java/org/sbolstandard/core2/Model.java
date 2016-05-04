@@ -1,17 +1,15 @@
 package org.sbolstandard.core2;
 
-import static org.sbolstandard.core2.URIcompliance.*;
-
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import java.net.URI;
 
 /**
+ * Represents the SBOL Model data model.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public class Model extends TopLevel {
@@ -20,33 +18,14 @@ public class Model extends TopLevel {
 	private URI language;
 	private URI framework;
 
-	/**
-	 * Systems Biology Markup Language (SBML), the standard XML format for models of biological
-	 * processes such as for example metabolism, cell signaling, and gene regulation
-	 * (<a href="http://identifiers.org/edam/format_2585">SBML</a>).
-	 */
-	public static final URI SBML = URI.create("http://identifiers.org/edam/format_2585");
-
-	/**
-	 * CellML, the format for mathematical models of biological and other networks
-	 * (<a href="http://identifiers.org/edam/format_3240">CELLML</a>).
-	 */
-	public static final URI CELLML = URI.create("http://identifiers.org/edam/format_3240");
-
-	/**
-	 * BioPAX is an exchange format for pathway data, with its data model defined in OWL
-	 * (<a href="http://identifiers.org/edam/format_3156">BIOPAX</a>).
-	 */
-	public static final URI BIOPAX = URI.create("http://identifiers.org/edam/format_3156");
-
-	Model(URI identity,URI source, URI language, URI framework) {
+	Model(URI identity,URI source, URI language, URI framework) throws SBOLValidationException {
 		super(identity);
 		setSource(source);
 		setLanguage(language);
 		setFramework(framework);
 	}
 
-	private Model(Model model) {
+	private Model(Model model) throws SBOLValidationException {
 		super(model);
 		this.setSource(model.getSource());
 		this.setLanguage(model.getLanguage());
@@ -55,7 +34,7 @@ public class Model extends TopLevel {
 
 	/**
 	 * Returns the URI of the source property of this Model object.
-	 * 
+	 *
 	 * @return the URI of the source property of this Model object
 	 */
 	public URI getSource() {
@@ -63,28 +42,26 @@ public class Model extends TopLevel {
 	}
 
 	/**
-	 * Sets the {@code source} property to the given argument.  
+	 * Sets the {@code source} property to the given argument.
 	 * <p>
 	 * If this Model object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param source
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code source} argument is {@code null}
+	 *
+	 * @param source a URI reference to the source file for a model.
+	 * @throws SBOLValidationException if the given {@code source} argument is {@code null}
 	 */
-	public void setSource(URI source) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void setSource(URI source) throws SBOLValidationException {
 		if (source==null) {
-			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a source location.");
+			throw new SBOLValidationException("sbol-11502", this);
 		}
 		this.source = source;
 	}
 
 	/**
 	 * Returns the URI of the language property of this Model object.
-	 * 
+	 *
 	 * @return the URI of the language property of this Model object
 	 */
 	public URI getLanguage() {
@@ -92,50 +69,46 @@ public class Model extends TopLevel {
 	}
 
 	/**
-	 * Sets the {@code language} property to the given argument.  
+	 * Sets the {@code language} property to the given argument.
 	 * <p>
 	 * If this Model object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param language
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code language} argument is {@code null}
+	 *
+	 * @param language a URI that specifies the language in which the model is implemented.
+	 * @throws SBOLValidationException if the given {@code language} argument is {@code null}
 	 */
-	public void setLanguage(URI language) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void setLanguage(URI language) throws SBOLValidationException {
 		if (language==null) {
-			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a language.");
+			throw new SBOLValidationException("sbol-11504",this);
 		}
 		this.language = language;
 	}
 
 	/**
 	 * Returns the URI of the framework property of this Model object.
-	 * 
+	 *
 	 * @return the URI of the framework property of this Model object
 	 */
 	public URI getFramework() {
 		return framework;
 	}
-	
+
 	/**
-	 * Sets the {@code framework} property to the given argument.  
+	 * Sets the {@code framework} property to the given argument.
 	 * <p>
 	 * If this Model object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance
 	 * is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param framework
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code framework} argument is {@code null}
+	 *
+	 * @param framework a URI that specifies the framework in which the model is implemented.
+	 * @throws SBOLValidationException if the given {@code framework} argument is {@code null}
 	 */
-	public void setFramework(URI framework) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void setFramework(URI framework) throws SBOLValidationException {
 		if (framework==null) {
-			throw new IllegalArgumentException("Model '" + this.getIdentity() + "' must specify a framework.");
+			throw new SBOLValidationException("sbol-11508", this);
 		}
 		this.framework = framework;
 	}
@@ -178,7 +151,7 @@ public class Model extends TopLevel {
 	}
 
 	@Override
-	protected Model deepCopy() {
+	protected Model deepCopy() throws SBOLValidationException {
 		return new Model(this);
 	}
 
@@ -186,7 +159,7 @@ public class Model extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	Model copy(String URIprefix, String displayId, String version) {
+	Model copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		Model cloned = this.deepCopy();
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
@@ -205,15 +178,21 @@ public class Model extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected boolean checkDescendantsURIcompliance() {
-		return isTopLevelURIformCompliant(this.getIdentity());
+	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	@Override
 	public String toString() {
-		return "Model [source=" + source + ", language=" + language + ", framework=" + framework
-				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "Model ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", source=" + source 
+				+ ", language=" + language 
+				+ ", framework=" + framework
+				+ "]";
 	}
 
 }

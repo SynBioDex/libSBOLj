@@ -4,11 +4,14 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+
 import javax.xml.namespace.QName;
+
 import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.DirectionType;
+import org.sbolstandard.core2.EDAMOntology;
 import org.sbolstandard.core2.FunctionalComponent;
 import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.Model;
@@ -18,10 +21,12 @@ import org.sbolstandard.core2.OrientationType;
 import org.sbolstandard.core2.Participation;
 import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceAnnotation;
 import org.sbolstandard.core2.SystemsBiologyOntology;
+
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
@@ -90,7 +95,7 @@ public class ModuleDefinitionOutput {
 		}		
 	}
 	
-	private static void setDefaultNameSpace(SBOLDocument document, String uri)
+	private static void setDefaultNameSpace(SBOLDocument document, String uri) throws SBOLValidationException
 	{
 		if (uri.endsWith("/"))
 		{
@@ -196,7 +201,7 @@ public class ModuleDefinitionOutput {
 		Model model=document.createModel(
 				"toogleswitch",
 				URI.create("http://virtualparts.org/part/pIKE_Toggle_1"), 
-				Model.SBML, 
+				EDAMOntology.SBML, 
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 								
 		toggleSwitchModuleDef.addModel(model.getIdentity());
@@ -224,16 +229,16 @@ public class ModuleDefinitionOutput {
 		
 		Participation participation=interaction.createParticipation(
 				promoter.getDisplayId(), 
-				laciInverterModuleDef_promoter.getIdentity());
-		participation.addRole(toURI(Terms.participantRoles.promoter));
+				laciInverterModuleDef_promoter.getIdentity(),	
+				toURI(Terms.participantRoles.promoter));
 		
 		Participation participation2=interaction.createParticipation(
 				TF.getDisplayId(), 
-				laciInverterModuleDef_TF.getIdentity());		
-		participation2.addRole(toURI(Terms.participantRoles.inhibitor));
+				laciInverterModuleDef_TF.getIdentity(),
+				toURI(Terms.participantRoles.inhibitor));
 	}		
 	
-	private static ComponentDefinition createComponenDefinition(SBOLDocument document,QName identifier,String name, QName type, QName role,String description)
+	private static ComponentDefinition createComponenDefinition(SBOLDocument document,QName identifier,String name, QName type, QName role,String description) throws SBOLValidationException
 	{
 		ComponentDefinition componentDef = document.createComponentDefinition(
 				identifier.getLocalPart(), 				
@@ -244,7 +249,7 @@ public class ModuleDefinitionOutput {
 		return componentDef;
 	}
 	
-	private static Sequence addPRSequence(SBOLDocument document, ComponentDefinition componentDef, String elements)
+	private static Sequence addPRSequence(SBOLDocument document, ComponentDefinition componentDef, String elements) throws SBOLValidationException
 	{
 		return addSequence(document, componentDef, componentDef.getDisplayId(), Terms.sequenceTypes.nucleotides, elements);		
 	}
@@ -300,7 +305,7 @@ public class ModuleDefinitionOutput {
 		}
 	}
 	
-	private static Sequence addSequence(SBOLDocument document, ComponentDefinition componentDef, String displayId, URI sequenceType, String elements)
+	private static Sequence addSequence(SBOLDocument document, ComponentDefinition componentDef, String displayId, URI sequenceType, String elements) throws SBOLValidationException
 	{
 		Sequence sequence=document.createSequence(displayId,elements,sequenceType);				
 		componentDef.addSequence(sequence.getIdentity());

@@ -1,39 +1,42 @@
 package org.oboparser.obo;
 
-import java.io.*;
-import java.util.*;
+import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class OBOOntology extends OBOStanza {
 
 	private Map<String,OBOStanza> stanzas;
-	
-	public OBOOntology() { 
+
+	public OBOOntology() {
 		super("ontology");
 		stanzas = new TreeMap<String,OBOStanza>();
 	}
-	
+
 	public void addOBOStanza(OBOStanza s) {
 		assert s != null;
 		String id = s.getId();
-		if(id == null || stanzas.containsKey(id)) { 
+		if(id == null || stanzas.containsKey(id)) {
 			throw new IllegalArgumentException(String.format("ID: \"%s\"", id));
 		}
 		stanzas.put(id, s);
 	}
-	
-	public void add(OBOOntology ont) { 
+
+	public void add(OBOOntology ont) {
 		super.add(ont);
-		for(String key : ont.stanzas.keySet()) { 
-			if(!stanzas.containsKey(key)) { 
+		for(String key : ont.stanzas.keySet()) {
+			if(!stanzas.containsKey(key)) {
 				stanzas.put(key, (OBOStanza)ont.stanzas.get(key).clone());
-			} else { 
+			} else {
 				stanzas.get(key).add(ont.stanzas.get(key));
 			}
 		}
 	}
-	
-	public void print(PrintWriter w) { 
-		for(String id : stanzas.keySet()) { 
+
+	@Override
+	public void print(PrintWriter w) {
+		for(String id : stanzas.keySet()) {
 			stanzas.get(id).print(w);
 		}
 	}
@@ -41,20 +44,20 @@ public class OBOOntology extends OBOStanza {
 	public Collection<OBOStanza> getStanzas() {
 		return stanzas.values();
 	}
-	
-	public OBOStanza getStanza(String id) { 
+
+	public OBOStanza getStanza(String id) {
 		return stanzas.get(id);
 	}
-		
-	/**
-	 * Recursively retrieve the "is_a" relation to check if the child {@code OBOStanza} is a descendant of the parent {@code OBOStanza}.
-	 * @param child
-	 * @param terminateParent
-	 * @return {@code true} if the child is a descendant of the terminateParent; {@code false} otherwise.
-	 */
+
+	//	/**
+	//	 * Recursively retrieve the "is_a" relation to check if the child {@code OBOStanza} is a descendant of the parent {@code OBOStanza}.
+	//	 * @param child
+	//	 * @param terminateParent
+	//	 * @return {@code true} if the child is a descendant of the terminateParent; {@code false} otherwise.
+	//	 */
 	public boolean isDescendantOf(OBOStanza child, OBOStanza terminateParent) {
 		boolean result = false;
-		if (child.hasValue("replaced_by")) { 
+		if (child.hasValue("replaced_by")) {
 			for (OBOValue newChildId : child.values("replaced_by")) {
 				// child.values("replaced_by") should always return a list with a single element.
 				System.out.println(child.getId() + " is replaced by " + newChildId.getValue().trim());
@@ -62,7 +65,7 @@ public class OBOOntology extends OBOStanza {
 			}
 		}
 		if (!child.hasValue("is_a")) { // Reached a root OBOStanza but no match
-			return false; 
+			return false;
 		}
 		else {
 			for (OBOValue immediateParentInfo : child.values("is_a")) {
@@ -77,10 +80,10 @@ public class OBOOntology extends OBOStanza {
 					OBOStanza immediateParent = this.getStanza(immediateParentId);
 					result = result || isDescendantOf(immediateParent, terminateParent);
 					if (result == true) break;
-				}	
+				}
 			}
 			return result;
 		}
 	}
-	
+
 }

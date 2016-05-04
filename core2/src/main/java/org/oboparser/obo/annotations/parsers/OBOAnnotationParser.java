@@ -1,6 +1,5 @@
 package org.oboparser.obo.annotations.parsers;
 
-import java.util.*;
 import java.lang.reflect.*;
 
 public class OBOAnnotationParser extends OntologyAnnotationParser {

@@ -5,6 +5,7 @@ public class OBOIndividual extends OBOStanza {
 		super("Individual");
 	}
 	
+	@Override
 	public Object clone() { 
 		return super.clone(OBOIndividual.class);
 	}

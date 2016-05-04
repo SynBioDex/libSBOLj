@@ -1,36 +1,36 @@
+
 package org.sbolstandard.core2;
 
 import java.net.URI;
 
 /**
+ * Represents the SBOL ComponentInstance data model.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public abstract class ComponentInstance extends Identified {
-	
+
 	private AccessType access;
 	protected URI definition;
-	ComponentInstance(URI identity, AccessType access, URI definition) {
+	ComponentInstance(URI identity, AccessType access, URI definition) throws SBOLValidationException {
 		super(identity);
 		setAccess(access);
-		setDefinition(definition);		
+		setDefinition(definition);
 	}
-	
-	protected ComponentInstance(ComponentInstance component) {
+
+	protected ComponentInstance(ComponentInstance component) throws SBOLValidationException {
 		super(component);
 		setAccess(component.getAccess());
-		setDefinition(component.getDefinitionURI());	
+		setDefinition(component.getDefinitionURI());
 	}
 
 	/**
 	 * Returns the access property of this object.
-	 * 
+	 *
 	 * @return the access property of this object
 	 */
 	public AccessType getAccess() {
@@ -43,34 +43,32 @@ public abstract class ComponentInstance extends Identified {
 	 * If this object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param access
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code access} argument is {@code null}
+	 *
+	 * @param access Sets the access property of this object to the given one.
+	 * @throws SBOLValidationException if the given {@code access} argument is {@code null}
 	 */
-	public void setAccess(AccessType access) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void setAccess(AccessType access) throws SBOLValidationException {
 		if (access==null) {
-			throw new IllegalArgumentException("Not a valid access type.");
+			throw new SBOLValidationException("sbol-10607", this);
 		}
 		this.access = access;
 	}
-	
+
 	/**
 	 * Returns the reference ComponentDefinition URI.
-	 * 
+	 *
 	 * @return the reference ComponentDefinition URI
-	 */	
+	 */
 	public URI getDefinitionURI() {
 		return definition;
 	}
-	
+
 	/**
 	 * Returns the ComponentDefinition instance referenced by this object.
-	 * 
+	 *
 	 * @return {@code null} if the associated SBOLDocument instance is {@code null},
 	 * the ComponentDefinition instance referenced by this object otherwise.
-	 */	
+	 */
 	public ComponentDefinition getDefinition() {
 		if (sbolDocument==null) return null;
 		return sbolDocument.getComponentDefinition(definition);
@@ -82,28 +80,27 @@ public abstract class ComponentInstance extends Identified {
 	 * If this object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
-	 * 
-	 * @param definition
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code definition} argument is {@code null}
-	 * @throws IllegalArgumentException if the associated SBOLDocument instance already completely specifies 
+	 *
+	 * @param definition Sets the definition property of this object to the given one
+	 * @throws SBOLValidationException if the given {@code definition} argument is {@code null}
+	 * @throws SBOLValidationException if the associated SBOLDocument instance already completely specifies
 	 * 		all URIs and the given definition URI is not found in them.
-	 *             
+	 *
 	 */
-	public void setDefinition(URI definition) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	public void setDefinition(URI definition) throws SBOLValidationException {
 		if (definition==null) {
-			throw new IllegalArgumentException("Component "+this.getIdentity()+" must have a definition.");
+			throw new SBOLValidationException("sbol-10602",this);
 		}
 		if (sbolDocument != null && sbolDocument.isComplete()) {
 			if (sbolDocument.getComponentDefinition(definition)==null) {
-				throw new IllegalArgumentException("Component definition '" + definition + "' does not exist.");
+				throw new SBOLValidationException("sbol-10604",this);
 			}
 		}
 		this.definition = definition;
 	}
 
-	protected abstract ComponentInstance deepCopy();
+	@Override
+	protected abstract ComponentInstance deepCopy() throws SBOLValidationException;
 
 	@Override
 	public String toString() {

@@ -3,13 +3,11 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents the relationship between a sequence constraint's subject and object components.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
- * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public enum RestrictionType {
@@ -59,25 +57,31 @@ public enum RestrictionType {
 	/**
 	 * Convert the specified URI to its corresponding RestrictionType instance.
 	 * @return the corresponding RestrictionType instance.
+	 * @throws SBOLValidationException 
 	 */
-	static RestrictionType convertToRestrictionType(URI restriction) {
-		if (restriction.equals(precedes)) {
-			return RestrictionType.PRECEDES;
-		} else if (restriction.equals(sameOrientationAs)) {
-			return RestrictionType.SAME_ORIENTATION_AS;
-		} else if (restriction.equals(oppositeOrientationAs)) {
-			return RestrictionType.OPPOSITE_ORIENTATION_AS;
-		} 
-		else {
-			throw new IllegalArgumentException("Not a valid restriction type.");
+	static RestrictionType convertToRestrictionType(URI restriction) throws SBOLValidationException {
+		if (restriction!=null) {
+			if (restriction.equals(precedes)) {
+				return RestrictionType.PRECEDES;
+			} else if (restriction.equals(sameOrientationAs)) {
+				return RestrictionType.SAME_ORIENTATION_AS;
+			} else if (restriction.equals(oppositeOrientationAs)) {
+				return RestrictionType.OPPOSITE_ORIENTATION_AS;
+			} 
+			else {
+				throw new SBOLValidationException("sbol-11412");
+			}
+		} else {
+			throw new SBOLValidationException("sbol-11412");
 		}
 	}
 	
 	/**
 	 * Returns the restriction type in URI.
 	 * @return restriction type in URI
+	 * @throws SBOLValidationException 
 	 */
-	static URI convertToURI(RestrictionType restriction) {
+	static URI convertToURI(RestrictionType restriction) throws SBOLValidationException {
 		if (restriction != null) {
 			if (restriction.equals(RestrictionType.PRECEDES)) {
 				return precedes;
@@ -87,11 +91,11 @@ public enum RestrictionType {
 				return oppositeOrientationAs;
 			} 
 			else {
-				throw new IllegalArgumentException("Not a valid restriction type.");
+				throw new SBOLValidationException("sbol-11412");
 			}
 		}
 		else {
-			return null;
+			throw new SBOLValidationException("sbol-11412");
 		}
 	}
 	

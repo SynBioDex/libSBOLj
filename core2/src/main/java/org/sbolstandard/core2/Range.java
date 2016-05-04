@@ -2,28 +2,29 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 
+import javax.xml.namespace.QName;
+
 /**
+ * Represents the Range extension of the SBOL Location class.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
  * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
-public class Range extends Location{
-	
+public class Range extends Location {
+
 	private int start = 0;
 	private int end = 0;
-	
-	Range(URI identity, int start, int end) {
+
+	Range(URI identity, int start, int end) throws SBOLValidationException {
 		super(identity);
 		setEnd(end);
 		setStart(start);
 	}
-	
-	private Range(Range range) {
+
+	private Range(Range range) throws SBOLValidationException {
 		super(range);
 		this.setEnd(range.getEnd());
 		this.setStart(range.getStart());
@@ -31,40 +32,38 @@ public class Range extends Location{
 
 	/**
 	 * Sets the start position of this Range object.
- 	 * <p>
+	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param value
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code value} is less or equal to 0.
-	 * @throws IllegalArgumentException if the given {@code value} is greater than 
+	 * @param value the start position of this Range
+	 * @throws SBOLValidationException if the given {@code value} is less or equal to 0.
+	 * @throws SBOLValidationException if the given {@code value} is greater than
 	 * the {@code end} value of this Range object.
-	 */ 
-	public void setStart(int value) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	 */
+	public void setStart(int value) throws SBOLValidationException {
 		if (value<=0) {
-			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have a start greater than zero.");
+			throw new SBOLValidationException("sbol-11102", this);
 		}
 		if (value > end) {
-			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have a start before the end.");
+			throw new SBOLValidationException("sbol-11104", this);
 		}
-		start = value;		
+		start = value;
 	}
-	
+
 	/**
 	 * Returns the start position of this Range object.
-	 * 
+	 *
 	 * @return the start position of this Range object.
 	 */
-	public int getStart() {		
+	public int getStart() {
 		return start;
 	}
 
 	/**
 	 * Returns the end position of this Range object.
-	 * 
+	 *
 	 * @return the end position of this Range object.
 	 */
 	public int getEnd() {
@@ -73,31 +72,29 @@ public class Range extends Location{
 
 	/**
 	 * Sets the end position of this Range object.
- 	 * <p>
+	 * <p>
 	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
 	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
 	 * is allowed to be edited.
 	 *
-	 * @param value
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
-	 * @throws IllegalArgumentException if the given {@code value} is less or equal to 0.
-	 * @throws IllegalArgumentException if the given {@code value} is less than 
+	 * @param value the start position of this Range
+	 * @throws SBOLValidationException if the given {@code value} is less or equal to 0.
+	 * @throws SBOLValidationException if the given {@code value} is less than
 	 * the {@code start} value of this Range object.
-	 */ 
-	public void setEnd(int value) {
-		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	 */
+	public void setEnd(int value) throws SBOLValidationException {
 		if (value<=0) {
-			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have an end greater than zero.");
+			throw new SBOLValidationException("sbol-11103", this);
 		}
 		if (value < start) {
-			throw new IllegalArgumentException("Range "+this.getIdentity()+" must have a start before the end.");
+			throw new SBOLValidationException("sbol-11104", this);
 		}
 		end = value;
 	}
-	
-	
+
+
 	@Override
-	protected Location deepCopy() {
+	protected Location deepCopy() throws SBOLValidationException {
 		return new Range(this);
 	}
 
@@ -129,9 +126,46 @@ public class Range extends Location{
 
 	@Override
 	public String toString() {
-		return "Range [start=" + start + ", end=" + end + ", orientation=" + orientation
-				+ ", identity=" + identity + ", displayId=" + displayId + ", name=" + name
-				+ ", description=" + description + "]";
+		return "Range ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ ", start=" + start 
+				+ ", end=" + end
+				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
+				+ "]";
 	}
 
+	@Override
+	public int compareTo(Location location) {
+		int thisPos = -1;
+		Annotation annotation = this.getAnnotation(new QName(GenBank.GBNAMESPACE,GenBank.POSITION,GenBank.GBPREFIX));
+		if (annotation!=null) {
+			thisPos = Integer.parseInt(annotation.getStringValue().replace("position",""));
+		}
+		int otherPos = -1;
+		annotation = location.getAnnotation(new QName(GenBank.GBNAMESPACE,GenBank.POSITION,GenBank.GBPREFIX));
+		if (annotation!=null) {
+			otherPos = Integer.parseInt(annotation.getStringValue().replace("position",""));
+		}
+		if (thisPos != -1 && otherPos != -1) {
+			int result = thisPos - otherPos;
+			return result;
+		}
+		if (location instanceof Range) {
+			int result = this.start - ((Range)location).getStart();
+			if (result==0) {
+				result = ((Range)location).getEnd() - this.end;
+			}
+			return result;
+		} else if (location instanceof Cut) {
+			int result = this.start - ((Cut)location).getAt();
+			if (result==0) {
+				result = ((Cut)location).getAt() - this.end;
+			}
+			return result;
+		}
+		return this.start;
+	}
 }

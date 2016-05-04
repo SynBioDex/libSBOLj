@@ -42,10 +42,12 @@ public class OBOTerm extends OBOStanza {
 		name = null;
 	}
 	
+	@Override
 	public Object clone() { 
 		return super.clone(OBOTerm.class);
 	}
 	
+	@Override
 	public String getName() { return name; }
 	
 	public boolean isObsolete() { 
@@ -53,6 +55,7 @@ public class OBOTerm extends OBOStanza {
 			values("is_obsolete").get(0).getRawString().trim().equals("true");
 	}
 	
+	@Override
 	public void addValue(String k, OBOValue v) { 
 		super.addValue(k, v);
 		
@@ -68,6 +71,7 @@ public class OBOTerm extends OBOStanza {
 	
 	public String tag() { return String.format("%s ! %s", getId(), name); }
 	
+	@Override
 	public String toString() { return name; }
 	
 	public String[] relationships() { 

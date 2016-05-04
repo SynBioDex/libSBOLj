@@ -7,7 +7,12 @@ import javax.xml.namespace.QName;
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 /**
  * Provides qualified names for sbol1.0 objects.
- *
+ * 
+ * @author Tramy Nguyen
+ * @author Matthew Pocock
+ * @author Goksel Misirli
+ * @author Chris Myers
+ * @version 2.1
  */
 class Sbol1Terms
 {
@@ -15,7 +20,7 @@ class Sbol1Terms
 	/**
 	 * The namespacebinding for SBOL1.0
 	 */
-	static final NamespaceBinding sbol1 = NamespaceBinding("http://sbols.org/v1#", "sbol");
+	static final NamespaceBinding sbol1 = NamespaceBinding("http://sbols.org/v1#", "");
 	static final NamespaceBinding rdf = NamespaceBinding("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "rdf");
 
 	/**

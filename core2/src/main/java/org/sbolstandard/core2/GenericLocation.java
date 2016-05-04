@@ -3,22 +3,20 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents the GenericLocation extension of the SBOL Location class.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
- * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public class GenericLocation extends Location{
 	
-	GenericLocation(URI identity) {
+	GenericLocation(URI identity) throws SBOLValidationException {
 		super(identity);
 	}
 	
-	private GenericLocation(GenericLocation genericLocation) {
+	private GenericLocation(GenericLocation genericLocation) throws SBOLValidationException {
 		super(genericLocation);
 	}
 
@@ -43,14 +41,23 @@ public class GenericLocation extends Location{
 	}
 
 	@Override
-	protected GenericLocation deepCopy() {
+	protected GenericLocation deepCopy() throws SBOLValidationException {
 		return new GenericLocation(this);
 	}
 
 	@Override
 	public String toString() {
-		return "GenericLocation [orientation=" + orientation + ", identity=" + identity
-				+ ", displayId=" + displayId + ", name=" + name + ", description=" + description
+		return "GenericLocation ["
+				+ "identity=" + identity 
+				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetName()?", name=" + name:"")
+				+ (this.isSetDescription()?", description=" + description:"") 
+				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
 				+ "]";
+	}
+
+	@Override
+	public int compareTo(Location locaction) {
+		return Integer.MAX_VALUE;
 	}
 }

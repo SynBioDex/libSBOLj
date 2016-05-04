@@ -1,20 +1,41 @@
 package org.sbolstandard.core2;
 
-import java.io.File;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-
-import uk.ac.ncl.intbio.core.io.CoreIoException;
-
+/**
+ * Generate "golden" files for abstract tests.
+ * @author Chris Myers
+ *
+ */
 public class SBOLGenerateFile extends SBOLAbstractTests {
 
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType) throws Exception
+	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws SBOLValidationException, SBOLConversionException, IOException 
 	{
+		SBOLValidate.validateSBOL(expected, false, compliant, false);
+		if (SBOLValidate.getNumErrors()>0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.err.println(error);
+			}
+			assertTrue(false);
+		}
+		SBOLDocument actual = SBOLTestUtils.writeAndRead(expected,compliant);
+		if (!actual.equals(expected)) {
+			System.out.println("Expected:"+expected.toString());
+			System.out.println("Actual  :"+actual.toString());
+		}
+		SBOLValidate.validateSBOL(actual, false, compliant, false);
+		if (SBOLValidate.getNumErrors()>0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.err.println(error);
+			}
+			assertTrue(false);
+		}
+		assertTrue(actual.equals(expected));
 		String PATH = "src/test/resources/";
 		if(fileType.equals("rdf"))
 			writeRdfFile(expected, PATH + fileName);
@@ -35,7 +56,7 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 	//		}
 	//	}
 
-	public static void writeRdfFile(SBOLDocument document, String fileName) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	static void writeRdfFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
 			SBOLWriter.write(document, new File(fileName));
@@ -44,19 +65,19 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 		}
 	}
 
-	public static void writeJsonFile(SBOLDocument document, String fileName) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	static void writeJsonFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
-			SBOLWriter.write(document, new File(fileName), SBOLReader.JSON);
+			SBOLWriter.write(document, new File(fileName), SBOLDocument.JSON);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void writeTurtleFile(SBOLDocument document, String fileName) throws XMLStreamException, FactoryConfigurationError, CoreIoException, IOException
+	static void writeTurtleFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
-			SBOLWriter.write(document, new File(fileName), SBOLReader.TURTLE);
+			SBOLWriter.write(document, new File(fileName), SBOLDocument.TURTLE);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

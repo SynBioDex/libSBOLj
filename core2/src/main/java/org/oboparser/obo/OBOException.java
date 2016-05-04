@@ -2,6 +2,8 @@ package org.oboparser.obo;
 
 public class OBOException extends RuntimeException {
 
+	private static final long serialVersionUID = 1L;
+
 	public OBOException(String err) { 
 		super(err);
 	}

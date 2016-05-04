@@ -3,13 +3,11 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents the orientation type for extended classes of the Location class.
+ * 
  * @author Zhen Zhang
- * @author Tramy Nguyen
- * @author Nicholas Roehner
- * @author Matthew Pocock
- * @author Goksel Misirli
  * @author Chris Myers
- * @version 2.0-beta
+ * @version 2.1
  */
 
 public enum OrientationType {
@@ -44,16 +42,21 @@ public enum OrientationType {
 	/**
 	 * Convert the specified URI to its corresponding OrientationType instance. 
 	 * @return the corresponding OrientationType instance
+	 * @throws SBOLValidationException 
 	 */
-	static OrientationType convertToOrientationType(URI orientation) {
-		if (orientation.equals(inline)) {
-			return OrientationType.INLINE;
-		} 
-		else if (orientation.equals(reverseComplement)) {
-			return OrientationType.REVERSECOMPLEMENT;
-		}
-		else {
-			throw new IllegalArgumentException("Unknown orientation URI `" + orientation + "'");
+	static OrientationType convertToOrientationType(URI orientation) throws SBOLValidationException {
+		if (orientation != null) {
+			if (orientation.equals(inline)) {
+				return OrientationType.INLINE;
+			} 
+			else if (orientation.equals(reverseComplement)) {
+				return OrientationType.REVERSECOMPLEMENT;
+			}
+			else {
+				throw new SBOLValidationException("sbol-11002");
+			}
+		} else {
+			throw new SBOLValidationException("sbol-11002");
 		}
 	}
 

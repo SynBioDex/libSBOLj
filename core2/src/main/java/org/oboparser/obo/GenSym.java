@@ -1,6 +1,6 @@
 package org.oboparser.obo;
 
-public class GenSym {
+class GenSym {
 	
 	public static void main(String[] args) { 
 		GenSym s = new GenSym("test");
@@ -16,7 +16,7 @@ public class GenSym {
 	
 	public GenSym(String pref) { 
 		prefix = pref; 
-		id = (long)0;
+		id = 0;
 		setDigits(9);
 	}
 	
