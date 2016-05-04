@@ -2483,14 +2483,6 @@ public class SBOLDocument {
 		this.createDefaults = createDefaults;
 	}
 
-//	void checkReadOnly() throws SBOLValidationException {
-//		if (!compliant) {
-//			throw new SBOLValidationException("Cannot modify a non-compliant SBOL document");
-//			// TODO: (Validation) missing rule: Cannot modify a non-compliant SBOL document
-//		}
-//	}
-
-
 	/**
 	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
 	 *
