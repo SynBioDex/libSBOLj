@@ -537,7 +537,7 @@ public class SBOLReader
 		return getSBOLVersion(in,SBOLDocument.RDF);
 	}
 
-	private static SBOLDocument readV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException
+	private static SBOLDocument readV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException, SBOLConversionException
 	{
 		for (NamespaceBinding n : document.getNamespaceBindings())
 		{
@@ -615,7 +615,7 @@ public class SBOLReader
 		}
 	}
 
-	private static void readTopLevelDocsV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException
+	private static void readTopLevelDocsV1(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException, SBOLConversionException
 	{
 		clearErrors();
 		for (TopLevelDocument<QName> topLevel : document.getTopLevelDocuments())
@@ -829,7 +829,7 @@ public class SBOLReader
 	}
 
 	private static ComponentDefinition parseDnaComponentV1(
-			SBOLDocument SBOLDoc, IdentifiableDocument<QName> componentDef) throws SBOLValidationException
+			SBOLDocument SBOLDoc, IdentifiableDocument<QName> componentDef) throws SBOLValidationException, SBOLConversionException
 	{
 		String displayId   = null;
 		String name 	   = null;
@@ -1164,7 +1164,7 @@ public class SBOLReader
 		return displayId;
 	}
 
-	private static Collection parseCollectionV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel) throws SBOLValidationException
+	private static Collection parseCollectionV1(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel) throws SBOLValidationException, SBOLConversionException
 	{
 		URI identity 	   = topLevel.getIdentity();
 		URI persistentIdentity = null;
@@ -1244,7 +1244,7 @@ public class SBOLReader
 
 	private static SequenceAnnotation parseSequenceAnnotationV1(
 			SBOLDocument SBOLDoc, NestedDocument<QName> sequenceAnnotation,
-			List<SBOLPair> precedePairs, String parentURI, int sa_num) throws SBOLValidationException
+			List<SBOLPair> precedePairs, String parentURI, int sa_num) throws SBOLValidationException, SBOLConversionException
 	{
 		Integer start 	 = null;
 		Integer end 	 = null;
@@ -1262,8 +1262,7 @@ public class SBOLReader
 
 		if (!sequenceAnnotation.getType().equals(Sbol1Terms.SequenceAnnotations.SequenceAnnotation))
 		{
-			throw new SBOLValidationException("QName has to be" + Sbol1Terms.SequenceAnnotations.SequenceAnnotation.toString());
-			// TODO: (Validation) missing rule: QName for SBOL 1 terms.
+			throw new SBOLConversionException("QName has to be" + Sbol1Terms.SequenceAnnotations.SequenceAnnotation.toString());
 		}
 
 		for (NamedProperty<QName> namedProperty : sequenceAnnotation.getProperties())
