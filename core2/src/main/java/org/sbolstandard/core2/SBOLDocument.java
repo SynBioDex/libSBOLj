@@ -2518,7 +2518,7 @@ public class SBOLDocument {
 	 * @throws IOException see {@link IOException}
 	 */
 	public void read(InputStream in) throws SBOLValidationException, IOException, SBOLConversionException {
-		SBOLReader.read(in);
+		SBOLReader.read(this,in,SBOLDocument.RDF);
 	}
 
 	/**
