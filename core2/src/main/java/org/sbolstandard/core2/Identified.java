@@ -538,6 +538,7 @@ public abstract class Identified {
 		result = prime * result + ((identity == null) ? 0 : identity.hashCode());
 		result = prime * result	+ ((persistentIdentity == null) ? 0 : persistentIdentity.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
+		// wasDerivedFrom differences are not considered
 		//result = prime * result + ((wasDerivedFrom == null) ? 0 : wasDerivedFrom.hashCode());
 		result = prime * result + ((displayId == null) ? 0 : displayId.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
@@ -574,7 +575,7 @@ public abstract class Identified {
 				return false;
 		} else if (!version.equals(other.version))
 			return false;
-		// TODO: taking this out for now because it causes problems with comparisons with 1.1 converted data
+		// wasDerivedFrom differences are not considered differences
 		/*
 		if (wasDerivedFrom == null) {
 			if (other.wasDerivedFrom != null)

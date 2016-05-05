@@ -1346,6 +1346,7 @@ public class SBOLValidate {
 			SBOLReader.setTypesInURI(typesInURI);
 			SBOLReader.setVersion(version);
 			SBOLReader.setKeepGoing(keepGoing);
+			SBOLWriter.setKeepGoing(keepGoing);
 			if (FASTA.isFastaFile(fileName)) {
 				System.err.println("Converting FASTA to SBOL Version 2");
 			} else if (GenBank.isGenBankFile(fileName)) {
@@ -1386,6 +1387,11 @@ public class SBOLValidate {
 					} else {
 						System.out.println("Validation successful, no errors.");
 						SBOLWriter.write(doc, outputFile, SBOLDocument.RDFV1);
+					}
+					if (SBOLWriter.getNumErrors()!=0) {
+						for (String error : SBOLWriter.getErrors()) {
+							System.err.println(error);
+						}
 					}
 				} else if (fastaOut) {
 					if (outputFile.equals("")) {

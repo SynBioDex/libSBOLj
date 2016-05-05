@@ -13,37 +13,6 @@ import org.junit.Test;
  */
 public class FASTATest {
 
-
-//	@Test
-//	public void testWriteSequenceString() {
-//		fail("Not yet implemented"); // TODO
-//	}
-//
-//	@Test
-//	public void testWriteSBOLDocumentString() {
-//		fail("Not yet implemented"); // TODO
-//	}
-//
-//	@Test
-//	public void testWriteSequenceFile() {
-//		fail("Not yet implemented"); // TODO
-//	}
-//
-//	@Test
-//	public void testWriteSBOLDocumentFile() {
-//		fail("Not yet implemented"); // TODO
-//	}
-//
-//	@Test
-//	public void testWriteSequenceOutputStream() {
-//		fail("Not yet implemented"); // TODO
-//	}
-//
-//	@Test
-//	public void testWriteSBOLDocumentOutputStream() {
-//		fail("Not yet implemented"); // TODO
-//	}
-
 	/**
 	 * Test read FASTA conversion
 	 */
@@ -122,14 +91,45 @@ public class FASTATest {
 	}
 	
 
-//	@Test
-//	public void testReadFileStringStringStringURI() {
-//		fail("Not yet implemented"); // TODO
-//	}
-//
-//	@Test
-//	public void testReadStringStringStringStringURI() {
-//		fail("Not yet implemented"); // TODO
-//	}
+	// TODO: implement more FASTA tests
+//		@Test
+//		public void testWriteSequenceString() {
+//			fail("Not yet implemented"); 
+//		}
+	//
+//		@Test
+//		public void testWriteSBOLDocumentString() {
+//			fail("Not yet implemented"); 
+//		}
+	//
+//		@Test
+//		public void testWriteSequenceFile() {
+//			fail("Not yet implemented"); 
+//		}
+	//
+//		@Test
+//		public void testWriteSBOLDocumentFile() {
+//			fail("Not yet implemented"); 
+//		}
+	//
+//		@Test
+//		public void testWriteSequenceOutputStream() {
+//			fail("Not yet implemented"); 
+//		}
+	//
+//		@Test
+//		public void testWriteSBOLDocumentOutputStream() {
+//			fail("Not yet implemented"); 
+//		}
+
+//		@Test
+//		public void testReadFileStringStringStringURI() {
+//			fail("Not yet implemented");
+//		}
+	//
+//		@Test
+//		public void testReadStringStringStringStringURI() {
+//			fail("Not yet implemented");
+//		}
 
 }

@@ -195,8 +195,7 @@ final class URIcompliance {
 		r = Pattern.compile(toplevelURIpattern);
 		Matcher m = r.matcher(URIstr);
 		if (!m.matches()) {
-			// TODO: (Validation) missing rule
-			throw new SBOLValidationException("URI is not well-formed");
+			throw new SBOLValidationException("sbol-10201");
 		}
 	}
 	

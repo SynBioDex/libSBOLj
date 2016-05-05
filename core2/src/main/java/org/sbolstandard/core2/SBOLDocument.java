@@ -1882,8 +1882,7 @@ public class SBOLDocument {
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
-			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
-			// TODO: (Validation) actually should be new validation error, not to allow in SBOL namespace
+			throw new SBOLValidationException("sbol-12302");
 		}
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
 		addGenericTopLevel(newGenericTopLevel);

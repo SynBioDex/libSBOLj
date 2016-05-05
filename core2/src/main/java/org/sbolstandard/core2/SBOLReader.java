@@ -77,6 +77,7 @@ public class SBOLReader
 	 * an SBOL validation exception.
 	 */
 	public static boolean keepGoing = false;
+	
 	private static List<String> errors = new ArrayList<String>();
 
 	/**
@@ -891,7 +892,7 @@ public class SBOLReader
 			{
 				SequenceAnnotation sa = parseSequenceAnnotationV1(SBOLDoc,
 						((NestedDocument<QName>) namedProperty.getValue()),
-						precedePairs, persIdentity, ++sa_num);
+						precedePairs, persIdentity, ++sa_num, instantiatedComponents);
 
 				sequenceAnnotations.add(sa);
 
@@ -1246,7 +1247,8 @@ public class SBOLReader
 
 	private static SequenceAnnotation parseSequenceAnnotationV1(
 			SBOLDocument SBOLDoc, NestedDocument<QName> sequenceAnnotation,
-			List<SBOLPair> precedePairs, String parentURI, int sa_num) throws SBOLValidationException, SBOLConversionException
+			List<SBOLPair> precedePairs, String parentURI, int sa_num,
+			Set<String> instantiatedComponents) throws SBOLValidationException, SBOLConversionException
 	{
 		Integer start 	 = null;
 		Integer end 	 = null;
@@ -1302,11 +1304,11 @@ public class SBOLReader
 		}
 		String componentDisplayId = URIcompliance.extractDisplayId(componentURI);
 		String displayId = "annotation" + sa_num;
-		if (compliant && componentDisplayId!=null) {
+		if (compliant && componentDisplayId!=null && 
+				!instantiatedComponents.contains(componentDisplayId)) {
 			identity = createCompliantURI(parentURI,componentDisplayId+"_annotation",version);
 			persIdentity = createCompliantURI(parentURI,componentDisplayId+"_annotation","").toString();
 			displayId = componentDisplayId + "_annotation";
-			// TODO: need to make sure that it is first
 		}
 
 		Location location = null; // Note: Do not create a seqAnnotation if Location is empty
