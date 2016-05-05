@@ -262,12 +262,25 @@ public class Annotation {
 
 	/**
 	 * Sets the string representation of the {@code value} property.
-	 * @param literal - The string representation of the property.
+	 * @param literal - The URI representation of the property.
 	 */
-	public void setURIValue(String literal) {
+	public void setURIValue(URI literal) {
 		QName qName = value.getName();
 		value = NamedProperty(qName,literal);
 	}
+	
+	/**
+	 * Checks if the annotation is a URI {@code value} property.
+	 *
+	 * @return true if the annotation is a URI {@code value} property.
+	 */
+	public boolean isURIValue() {
+		if (value.getValue() instanceof UriLiteral<?>) {
+			return true;
+		}
+		return false;
+	}
+
 
 	/**
 	 * Returns a URI representation of the {@code value} property.
