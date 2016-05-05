@@ -24,8 +24,7 @@ public class GenericTopLevel extends TopLevel{
 		this.rdfType = rdfType;
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI())/* ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())*/) {
-			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
-			// TODO: (Validation) missing rule: QName is neither an SBOL 1 nor SBOL 2 namespace.
+			throw new SBOLValidationException("sbol-12302",this);
 		}
 	}
 
