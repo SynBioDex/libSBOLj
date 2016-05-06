@@ -1737,9 +1737,13 @@ public class ComponentDefinition extends TopLevel {
 	public String toString() {
 		return "ComponentDefinition ["
 				+ "identity=" + identity 
+				+ (this.isSetPersistentIdentity()?", persistentIdentity=" + persistentIdentity:"")
 				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
+				+ (this.isSetVersion()?", version=" + version:"")
 				+ (this.isSetName()?", name=" + name:"")
 				+ (this.isSetDescription()?", description=" + description:"") 
+				+ (annotations.size()>0?", annotations=" + annotations:"") 
+				+ (this.isSetWasDerivedFrom()?", wasDerivedFrom=" + wasDerivedFrom:"") 
 				+ ", types=" + types 
 				+ (roles.size()>0?", roles=" + roles:"")  
 				+ (this.getSequenceURIs().size()>0?", sequences=" + this.getSequenceURIs():"") 

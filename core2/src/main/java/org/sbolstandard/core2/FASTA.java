@@ -199,7 +199,6 @@ class FASTA {
 //		if (URIPrefix==null) {
 //			throw new SBOLConversionException("No URI prefix has been provided.");
 //		}
-//		// TODO: add more URIprefix validations (e.g. well-formed HTTP)???
 //		
 //		// if the URIprefix is valid, than we set it in the document 
 //		doc.setDefaultURIprefix(URIPrefix);
