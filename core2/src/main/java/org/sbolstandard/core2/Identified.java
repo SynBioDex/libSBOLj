@@ -98,7 +98,7 @@ public abstract class Identified {
 	/**
 	 * Sets field variable <code>identity</code> to the specified element.
 	 * @param identity URI for the specified element.
-	 * @throws SBOLValidationException when identity URI is null.
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10201.
 	 */
 	final void setIdentity(URI identity) throws SBOLValidationException {
 		if (identity == null) {
@@ -172,7 +172,7 @@ public abstract class Identified {
 
 	/**
 	 * Sets field variable <code>version</code> to the specified element.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10206
 	 */
 	void setVersion(String version) throws SBOLValidationException {
 		if (version==null || version.equals("")) {
@@ -205,7 +205,7 @@ public abstract class Identified {
 
 	/**
 	 * Set field variable <code>displayId</code> to the specified element.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException the following SBOL validation rule was violated: 10204
 	 */
 	void setDisplayId(String displayId) throws SBOLValidationException {
 		if (!URIcompliance.isDisplayIdValid(displayId)) {
@@ -239,7 +239,9 @@ public abstract class Identified {
 	 * is allowed to be edited.
 	 *
 	 * @param wasDerivedFrom The URI for with an SBOL object with this property refers to another SBOL object or non-SBOL resource from which this object was derived
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <li>the following SBOL validation rule was violated: 10211; or</li>
+	 * <li>an SBOL validation exception occurred in {@link SBOLValidate#checkWasDerivedFromCycle(SBOLDocument, Identified, URI, Set)}.</li>
 	 */
 	public void setWasDerivedFrom(URI wasDerivedFrom) throws SBOLValidationException {
 		if (sbolDocument!=null) {
@@ -601,6 +603,13 @@ public abstract class Identified {
 		return true;
 	}
 
+	/**
+	 * @param child
+	 * @param siblingsMap
+	 * @param typeName
+	 * @param maps
+	 * @throws SBOLValidationException if the following SBOL validation rule is violated: 10202
+	 */
 	@SafeVarargs
 	protected final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {
 		if (isChildURIformCompliant(this.getIdentity(), child.getIdentity())) {

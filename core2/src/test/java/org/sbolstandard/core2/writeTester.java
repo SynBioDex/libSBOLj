@@ -77,6 +77,10 @@ class writeTester {
 //		}
 //	}
 
+	/**
+	 * @param SBOL2Doc_test
+	 * @throws SBOLValidationException see SBOL validation rule violation at {@link Collection#addMember(URI)}
+	 */
 	private static void get_myParts (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		SBOL2Doc_test.setDefaultURIprefix("http://www.async.ece.utah.edu");
