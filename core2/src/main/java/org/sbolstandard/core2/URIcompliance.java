@@ -207,8 +207,7 @@ final class URIcompliance {
 		r = Pattern.compile(toplevelURIpattern);
 		Matcher m = r.matcher(URIstr);
 		if (!m.matches()) {
-			// TODO: (Validation) missing rule
-			throw new SBOLValidationException("URI is not well-formed");
+			throw new SBOLValidationException("sbol-10201");
 		}
 	}
 	
@@ -409,15 +408,13 @@ final class URIcompliance {
 	 */
 	static String checkURIprefix(String URIprefix) throws SBOLValidationException {
 		if (URIprefix==null) {
-			throw new SBOLValidationException("URI prefix must not be null");
-			// TODO: (Validation) missing rule: rule for URI prefix
+			throw new SBOLValidationException("sbol-10201");
 		}
 		if (!URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
 			URIprefix += "/";
 		}
 		if (!isURIprefixCompliant(URIprefix)) {
-			throw new SBOLValidationException("URI prefix '"+URIprefix+"' is invalid");
-			// TODO: (Validation) missing rule: rule for URI prefix
+			throw new SBOLValidationException("sbol-10201");
 		}
 		return URIprefix;
 	}

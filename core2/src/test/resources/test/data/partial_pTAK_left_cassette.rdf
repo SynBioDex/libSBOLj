@@ -16,13 +16,6 @@
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/RBS">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/RBS"/>
-    <sbol:displayId>RBS</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="urn:c26b0115-3c37-4aa7-9e98-c491b3db9a53"/>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000139"/>
-  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/Repressor2">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/Repressor2"/>
     <sbol:displayId>Repressor2</sbol:displayId>
@@ -85,6 +78,13 @@
       </sbol:SequenceConstraint>
     </sbol:sequenceConstraint>
   </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/RBS">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/RBS"/>
+    <sbol:displayId>RBS</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="urn:c26b0115-3c37-4aa7-9e98-c491b3db9a53"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000139"/>
+  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete"/>
     <sbol:displayId>pTAKLeftCassete</sbol:displayId>
@@ -117,20 +117,18 @@
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014_annotation">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014_annotation"/>
-        <sbol:displayId>BBa_K121014_annotation</sbol:displayId>
-        <prov:wasDerivedFrom rdf:resource="urn:032c2f83-39a5-44ee-a9cb-9b7be51d52ec"/>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation"/>
+        <sbol:displayId>Terminator_annotation</sbol:displayId>
+        <prov:wasDerivedFrom rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa"/>
         <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014_annotation/range">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014_annotation/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:start>1</sbol:start>
-            <sbol:end>90</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
+          <sbol:GenericLocation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation/genericLocation">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:GenericLocation>
         </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014"/>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -149,18 +147,20 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation"/>
-        <sbol:displayId>Terminator_annotation</sbol:displayId>
-        <prov:wasDerivedFrom rdf:resource="urn:c73c9f89-a174-43fc-9aa9-d250b3de02aa"/>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014_annotation">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014_annotation"/>
+        <sbol:displayId>BBa_K121014_annotation</sbol:displayId>
+        <prov:wasDerivedFrom rdf:resource="urn:032c2f83-39a5-44ee-a9cb-9b7be51d52ec"/>
         <sbol:location>
-          <sbol:GenericLocation rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation/genericLocation">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator_annotation/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:GenericLocation>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014_annotation/range">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014_annotation/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:start>1</sbol:start>
+            <sbol:end>90</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
         </sbol:location>
-        <sbol:component rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/Terminator"/>
+        <sbol:component rdf:resource="http://www.async.ece.utah.edu/pTAKLeftCassete/BBa_K121014"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceConstraint>

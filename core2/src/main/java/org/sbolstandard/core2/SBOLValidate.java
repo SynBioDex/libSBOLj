@@ -1294,15 +1294,6 @@ public class SBOLValidate {
 				keepGoing = false;
 			} else if (args[i].equals("-d")) {
 				showDetail = true;
-			} else if (args[i].equals("-r")) { // TODO: -r is deprecated
-				genBankOut = true;
-			} else if (args[i].equals("-c"))  { //TODO: -c is deprecated
-				genBankOut = true;
-				if (i+1 >= args.length) {
-					usage();
-				}
-				topLevelURIStr = args[i+1];
-				i++;
 			} else if (args[i].equals("-s")) { 	
 				if (i+1 >= args.length) {
 					usage();
@@ -1367,6 +1358,7 @@ public class SBOLValidate {
 			SBOLReader.setTypesInURI(typesInURI);
 			SBOLReader.setVersion(version);
 			SBOLReader.setKeepGoing(keepGoing);
+			SBOLWriter.setKeepGoing(keepGoing);
 			if (FASTA.isFastaFile(fileName)) {
 				System.err.println("Converting FASTA to SBOL Version 2");
 			} else if (GenBank.isGenBankFile(fileName)) {
@@ -1407,6 +1399,11 @@ public class SBOLValidate {
 					} else {
 						System.out.println("Validation successful, no errors.");
 						SBOLWriter.write(doc, outputFile, SBOLDocument.RDFV1);
+					}
+					if (SBOLWriter.getNumErrors()!=0) {
+						for (String error : SBOLWriter.getErrors()) {
+							System.err.println(error);
+						}
 					}
 				} else if (fastaOut) {
 					if (outputFile.equals("")) {
