@@ -1,8 +1,5 @@
 package org.sbolstandard.core2.examples;
 
-import java.io.IOException;
-
-import org.sbolstandard.core2.SBOLConversionException;
 import org.sbolstandard.core2.SBOLValidationException;
 
 public class TestCircularModules {
