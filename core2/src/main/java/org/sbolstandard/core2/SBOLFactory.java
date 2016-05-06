@@ -23,7 +23,6 @@ public final class SBOLFactory {
 
 	private static SBOLDocument document = new SBOLDocument();
 	
-	// TODO: is this really needed?
 	/**
 	 * This sets the internal SBOLDocument used by the factory.
 	 * @param sbolDocument The document used internally by the factory
