@@ -1,4 +1,4 @@
-package org.sbolstandard.core2;
+package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
 
