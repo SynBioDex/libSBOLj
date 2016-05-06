@@ -108,6 +108,11 @@ public class SBOLValidate {
 		}
 	}
 
+	/**
+	 * @param componentDefinition
+	 * @param mapsTo
+	 * @throws SBOLValidationException the following SBOL validation rule was violated: 10526
+	 */
 	protected static void checkComponentDefinitionMapsTos(ComponentDefinition componentDefinition,MapsTo mapsTo) throws SBOLValidationException {
 		for (Component component : componentDefinition.getComponents()) {
 			for (MapsTo mapsTo2 : component.getMapsTos()) {
@@ -307,6 +312,13 @@ public class SBOLValidate {
 		}
 	}
 
+	/**
+	 * @param sbolDocument
+	 * @param identified
+	 * @param wasDerivedFrom
+	 * @param visited
+	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 10209, 10210.
+	 */
 	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument,
 			Identified identified, URI wasDerivedFrom, Set<URI> visited) throws SBOLValidationException {
 		visited.add(identified.getIdentity());

@@ -15,6 +15,11 @@ import java.util.regex.Pattern;
 
 final class URIcompliance {
 	
+	/**
+	 * @param displayId
+	 * @param version
+	 * @throws SBOLValidationException if the following SBOL validation rules were violated: 10204, 10206.
+	 */
 	static void validateIdVersion(String displayId, String version) throws SBOLValidationException {
 		if (displayId!=null && !isDisplayIdValid(displayId)) {
 			throw new SBOLValidationException("sbol-10204");
@@ -24,6 +29,13 @@ final class URIcompliance {
 		}
 	}
 
+	/**
+	 * @param prefix
+	 * @param displayId
+	 * @param version
+	 * @return
+	 * @throws SBOLValidationException if an SBOL validation exception occurred in {@link URIcompliance#validateIdVersion(String, String)}.
+	 */
 	static URI createCompliantURI(String prefix, String displayId, String version) throws SBOLValidationException {
 		if (prefix == null) {
 			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");
