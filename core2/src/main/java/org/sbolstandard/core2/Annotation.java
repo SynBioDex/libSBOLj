@@ -262,7 +262,7 @@ public class Annotation {
 
 	/**
 	 * Sets the string representation of the value property.
-	 * @param literal the string representation of the value property
+	 * @param literal the URI representation of the value property
 	 */
 	public void setURIValue(URI literal) {
 		QName qName = value.getName();

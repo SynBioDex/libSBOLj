@@ -211,10 +211,6 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Adds the given role URI to this ComponentDefinition object's set of role URIs.
-	 * <p>
-	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
 	 * @param roleURI the given role URI to be added to this ComponentDefinition
 	 * @return {@code true} if this set did not already contain the specified role.
