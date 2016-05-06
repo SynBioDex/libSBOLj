@@ -29,11 +29,11 @@ import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 public abstract class Identified {
 
 	protected URI identity;
-	private URI persistentIdentity;
-	private String version;
+	protected URI persistentIdentity;
+	protected String version;
 	// TODO: can this be a set instead?
-	private List<Annotation> annotations;
-	private URI wasDerivedFrom;
+	protected List<Annotation> annotations;
+	protected URI wasDerivedFrom;
 	protected String displayId;
 	protected SBOLDocument sbolDocument = null;
 	protected String name;

@@ -617,17 +617,19 @@ public class SBOLValidate {
 					}
 				}
 			}
-			/* TODO: no rule for this currently
+			// Cannot check this one separately, since it either violates 10516 also OR it violates
+			// best practices and does not use encodings from Table 1 or types from Table 2.
+			/*
 			if ((!componentDefinition.getTypes().contains(ComponentDefinition.DNA) &&
 					!componentDefinition.getTypes().contains(ComponentDefinition.RNA))
 					&& foundNucleic) {
-				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getExceptionMessage());
 			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.PROTEIN) && foundProtein) {
-				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getExceptionMessage());
 			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && foundSmiles) {
-				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getExceptionMessage());
 			}
-			 */
+			*/
 		}
 	}
 	
@@ -1061,9 +1063,6 @@ public class SBOLValidate {
 	public static void validateSBOL(SBOLDocument sbolDocument, boolean complete, boolean compliant,
 			boolean bestPractice) {
 		clearErrors();
-		// TODO: check if these are capable of being checked during construction and/or read
-		// if not during read, should check after read
-		// Maybe on write too
 		validateSequenceEncodings(sbolDocument);
 		validateWasDerivedFromVersion(sbolDocument);
 		validateCircularReferences(sbolDocument);

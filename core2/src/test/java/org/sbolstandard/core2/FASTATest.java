@@ -90,8 +90,6 @@ public class FASTATest {
 		}
 	}
 	
-
-	// TODO: implement more FASTA tests
 //		@Test
 //		public void testWriteSequenceString() {
 //			fail("Not yet implemented"); 

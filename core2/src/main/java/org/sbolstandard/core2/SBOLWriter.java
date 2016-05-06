@@ -203,6 +203,7 @@ public class SBOLWriter
 	 */
 	public static void write(SBOLDocument doc, OutputStream out, String fileType) throws SBOLConversionException, IOException
 	{
+		clearErrors();
 		if (fileType.equals(SBOLDocument.FASTAformat)) {
 			FASTA.write(doc, out);
 		} else if (fileType.equals(SBOLDocument.GENBANK)) {
@@ -723,7 +724,6 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol1Terms.DNAComponent.name, componentDefinition.getName()));
 		if(componentDefinition.isSetDescription())
 			list.add(NamedProperty(Sbol1Terms.DNAComponent.description, componentDefinition.getDescription()));
-		// TODO: Dropping fields not supported by V1
 		for(Annotation annotation : componentDefinition.getAnnotations())
 		{
 			if (!annotation.getValue().getName().getPrefix().equals("sbol"))
@@ -777,7 +777,6 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol1Terms.DNAComponent.name, componentDefinition.getName()));
 		if(componentDefinition.isSetDescription())
 			list.add(NamedProperty(Sbol1Terms.DNAComponent.description, componentDefinition.getDescription()));
-		// TODO: Dropping fields not supported by V1
 		for(Annotation annotation : componentDefinition.getAnnotations())
 		{
 			if (!annotation.getValue().getName().getPrefix().equals("sbol"))
@@ -832,7 +831,6 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol1Terms.Collection.name, collection.getName()));
 		if(collection.isSetDescription())
 			list.add(NamedProperty(Sbol1Terms.Collection.description, collection.getDescription()));
-		// TODO: Dropping fields not supported by V1
 		for(Annotation annotation : collection.getAnnotations())
 		{
 			if (!annotation.getValue().getName().getPrefix().equals("sbol"))
@@ -853,6 +851,13 @@ public class SBOLWriter
 
 		topLevelDoc.add(TopLevelDocument(Sbol1Terms.Collection.Collection, 
 				collection.getIdentity(), NamedProperties(list)));
+	}
+	
+	private static void formatDNASequence(Sequence sequence, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+		List<NamedProperty<QName>> list = new ArrayList<>();
+		list.add(NamedProperty(Sbol1Terms.DNASequence.nucleotides, sequence.getElements()));
+		topLevelDoc.add(TopLevelDocument(Sbol1Terms.DNASequence.DNASequence, sequence.getIdentity(), NamedProperties(list)));
 	}
 	
 	private static List<NamespaceBinding> getNamespaceBindingsV1() {
@@ -885,22 +890,39 @@ public class SBOLWriter
 				throw new SBOLConversionException("SBOL 1.1 does not support GenericTopLevels.\n");
 			}	
 		}
-		if (doc.getCollections().size()>0) {
-			// TODO: assuming if any collections all components within them
-			for (Collection collection : doc.getCollections()) {
-				formatCollectionV1(collection, topLevelDoc);
-			}
-		} else {
-			for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
-				if (componentDefinition.getTypes().contains(ComponentDefinition.DNA)) {
-					formatDNAComponent(componentDefinition, topLevelDoc);
-				} else {
-					if (keepGoing) {
-						errors.add("SBOL 1.1 only supports DNA ComponentDefinitions.\n:"+componentDefinition.getIdentity());
-					} else {
-						throw new SBOLConversionException("SBOL 1.1 only supports DNA ComponentDefinitions.\n:"+componentDefinition.getIdentity());
-					}	
+		for (Collection collection : doc.getCollections()) {
+			formatCollectionV1(collection, topLevelDoc);
+		}
+		for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
+			if (componentDefinition.getTypes().contains(ComponentDefinition.DNA)) {
+				boolean skip = false;
+				for (Collection collection : doc.getCollections()) {
+					if (collection.getMemberURIs().contains(componentDefinition.getIdentity())) {
+						skip = true;
+						break;
+					}
 				}
+				if (!skip) {
+					formatDNAComponent(componentDefinition, topLevelDoc);
+				}
+			} else {
+				if (keepGoing) {
+					errors.add("SBOL 1.1 only supports DNA ComponentDefinitions.\n:"+componentDefinition.getIdentity());
+				} else {
+					throw new SBOLConversionException("SBOL 1.1 only supports DNA ComponentDefinitions.\n:"+componentDefinition.getIdentity());
+				}	
+			}
+		}
+		for (Sequence sequence : doc.getSequences()) {
+			boolean skip = false;
+			for (ComponentDefinition componentDefinition : doc.getComponentDefinitions()) {
+				if (componentDefinition.getSequenceURIs().contains(sequence.getIdentity())) {
+					skip = true;
+					break;
+				}
+			}
+			if (!skip) {
+				formatDNASequence(sequence, topLevelDoc);
 			}
 		}
 		return topLevelDoc;
