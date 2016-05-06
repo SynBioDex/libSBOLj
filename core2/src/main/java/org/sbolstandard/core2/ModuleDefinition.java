@@ -1213,7 +1213,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @return The flattened copy of this ModuleDefinition
 	 * @throws SBOLValidationException if an SBOL validation rule is violated
 	 */
-	public ModuleDefinition flatten(String URIprefix,String displayId,String version) throws SBOLValidationException {
+	ModuleDefinition flatten(String URIprefix,String displayId,String version) throws SBOLValidationException {
 		return flattenRecurse().copy(URIprefix, displayId, version);
 	}
 

@@ -203,6 +203,7 @@ public class SBOLWriter
 	 */
 	public static void write(SBOLDocument doc, OutputStream out, String fileType) throws SBOLConversionException, IOException
 	{
+		clearErrors();
 		if (fileType.equals(SBOLDocument.FASTAformat)) {
 			FASTA.write(doc, out);
 		} else if (fileType.equals(SBOLDocument.GENBANK)) {
@@ -723,7 +724,6 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol1Terms.DNAComponent.name, componentDefinition.getName()));
 		if(componentDefinition.isSetDescription())
 			list.add(NamedProperty(Sbol1Terms.DNAComponent.description, componentDefinition.getDescription()));
-		// TODO: Dropping fields not supported by V1
 		for(Annotation annotation : componentDefinition.getAnnotations())
 		{
 			if (!annotation.getValue().getName().getPrefix().equals("sbol"))
@@ -777,7 +777,6 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol1Terms.DNAComponent.name, componentDefinition.getName()));
 		if(componentDefinition.isSetDescription())
 			list.add(NamedProperty(Sbol1Terms.DNAComponent.description, componentDefinition.getDescription()));
-		// TODO: Dropping fields not supported by V1
 		for(Annotation annotation : componentDefinition.getAnnotations())
 		{
 			if (!annotation.getValue().getName().getPrefix().equals("sbol"))
@@ -832,7 +831,6 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol1Terms.Collection.name, collection.getName()));
 		if(collection.isSetDescription())
 			list.add(NamedProperty(Sbol1Terms.Collection.description, collection.getDescription()));
-		// TODO: Dropping fields not supported by V1
 		for(Annotation annotation : collection.getAnnotations())
 		{
 			if (!annotation.getValue().getName().getPrefix().equals("sbol"))

@@ -1063,9 +1063,6 @@ public class SBOLValidate {
 	public static void validateSBOL(SBOLDocument sbolDocument, boolean complete, boolean compliant,
 			boolean bestPractice) {
 		clearErrors();
-		// TODO: check if these are capable of being checked during construction and/or read
-		// if not during read, should check after read
-		// Maybe on write too
 		validateSequenceEncodings(sbolDocument);
 		validateWasDerivedFromVersion(sbolDocument);
 		validateCircularReferences(sbolDocument);

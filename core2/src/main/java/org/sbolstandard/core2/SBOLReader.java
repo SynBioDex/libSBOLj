@@ -453,7 +453,6 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
-	// TODO: should validate after read if in a strict read mode?
 	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		compliant = SBOLDoc.isCompliant();
