@@ -1063,13 +1063,13 @@ public class SBOLValidate {
 	public static void validateSBOL(SBOLDocument sbolDocument, boolean complete, boolean compliant,
 			boolean bestPractice) {
 		clearErrors();
-		//validateSequenceEncodings(sbolDocument);
+		validateSequenceEncodings(sbolDocument);
 		validateWasDerivedFromVersion(sbolDocument);
 		validateCircularReferences(sbolDocument);
 		validateURIuniqueness(sbolDocument);
 		validatePersistentIdentityUniqueness(sbolDocument);
-		//validateSequenceConstraints(sbolDocument);
-		//validateMapsTos(sbolDocument);
+		validateSequenceConstraints(sbolDocument);
+		validateMapsTos(sbolDocument);
 		if (compliant) validateCompliance(sbolDocument);
 		if (complete) validateCompleteness(sbolDocument);
 		if (bestPractice) {
