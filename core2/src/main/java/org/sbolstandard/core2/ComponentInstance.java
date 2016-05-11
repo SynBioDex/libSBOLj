@@ -45,22 +45,18 @@ public abstract class ComponentInstance extends Identified {
 	}
 
 	/**
-	 * Returns the access property of this object.
+	 * Returns the access property.
 	 *
-	 * @return the access property of this object
+	 * @return the access property
 	 */
 	public AccessType getAccess() {
 		return access;
 	}
 
 	/**
-	 * Sets the access property of this object to the given one.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the access property to the given one.
 	 *
-	 * @param access Sets the access property of this object to the given one.
+	 * @param access the given access type to be set
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10607
 	 */
 	public void setAccess(AccessType access) throws SBOLValidationException {
@@ -71,19 +67,20 @@ public abstract class ComponentInstance extends Identified {
 	}
 
 	/**
-	 * Returns the reference ComponentDefinition URI.
+	 * Returns the reference component definition URI.
 	 *
-	 * @return the reference ComponentDefinition URI
+	 * @return the reference component definition URI
 	 */
 	public URI getDefinitionURI() {
 		return definition;
 	}
 
 	/**
-	 * Returns the ComponentDefinition instance referenced by this object.
+	 * Returns the component definition referenced by this component or functional component. 
 	 *
-	 * @return {@code null} if the associated SBOLDocument instance is {@code null},
-	 * the ComponentDefinition instance referenced by this object otherwise.
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * component definition referenced by this component or functional component exits; 
+	 * or the matching component definition otherwise.
 	 */
 	public ComponentDefinition getDefinition() {
 		if (sbolDocument==null) return null;
@@ -91,13 +88,9 @@ public abstract class ComponentInstance extends Identified {
 	}
 
 	/**
-	 * Sets the definition property of this object to the given one.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the definition property to the given one.
 	 *
-	 * @param definition Sets the definition property of this object to the given one
+	 * @param definition the given definition URI to be set
 	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10602, 10604.
 	 */
 	public void setDefinition(URI definition) throws SBOLValidationException {
