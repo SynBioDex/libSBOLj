@@ -17,6 +17,10 @@ public abstract class Location extends Identified implements Comparable<Location
 
 	protected OrientationType orientation;
 
+	/**
+	 * @param identity
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Identified#Identified(URI)}.
+	 */
 	Location(URI identity) throws SBOLValidationException {
 		super(identity);
 	}

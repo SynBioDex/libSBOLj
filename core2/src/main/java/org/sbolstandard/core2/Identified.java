@@ -39,6 +39,10 @@ public abstract class Identified {
 	protected String name;
 	protected String description;
 
+	/**
+	 * @param identity
+	 * @throws SBOLValidationException if an SBOL validation rule violation occured in {@link #setIdentity(URI)}
+	 */
 	Identified(URI identity) throws SBOLValidationException {
 		setIdentity(identity);
 		this.annotations = new ArrayList<>();
@@ -608,7 +612,7 @@ public abstract class Identified {
 	 * @param siblingsMap
 	 * @param typeName
 	 * @param maps
-	 * @throws SBOLValidationException if the following SBOL validation rule is violated: 10202
+	 * @throws SBOLValidationException if the following SBOL validation rule is violated: 10202.
 	 */
 	@SafeVarargs
 	protected final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {

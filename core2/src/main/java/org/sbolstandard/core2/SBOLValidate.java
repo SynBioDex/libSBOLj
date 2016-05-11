@@ -249,6 +249,12 @@ public class SBOLValidate {
 		}
 	}
 
+	/**
+	 * @param sbolDocument
+	 * @param componentDefinition
+	 * @param visited
+	 * @throws SBOLValidationException if either of the following SBOL validation rule was violated: 10603, 10605.
+	 */
 	protected static void checkComponentDefinitionCycle(SBOLDocument sbolDocument,
 			ComponentDefinition componentDefinition, Set<URI> visited) throws SBOLValidationException {
 		if (componentDefinition==null) return;

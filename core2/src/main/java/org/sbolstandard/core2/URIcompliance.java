@@ -18,7 +18,7 @@ final class URIcompliance {
 	/**
 	 * @param displayId
 	 * @param version
-	 * @throws SBOLValidationException if the following SBOL validation rules were violated: 10204, 10206.
+	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10204, 10206.
 	 */
 	static void validateIdVersion(String displayId, String version) throws SBOLValidationException {
 		if (displayId!=null && !isDisplayIdValid(displayId)) {
@@ -50,6 +50,17 @@ final class URIcompliance {
 		return URI.create(prefix + displayId + '/' + version);
 	}
 	
+	/**
+	 * @param prefix
+	 * @param type
+	 * @param displayId
+	 * @param version
+	 * @param useType
+	 * @return
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <li>an SBOL validation exception occurred in {@link #validateIdVersion(String, String)}; or</li>
+	 * <li>an SBOL validation exception occurred in {@link #createCompliantURI(String, String, String)}.</li>
+	 */
 	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) throws SBOLValidationException {
 		if (prefix == null) {
 			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");

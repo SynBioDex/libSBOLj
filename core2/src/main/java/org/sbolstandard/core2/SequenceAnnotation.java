@@ -26,6 +26,13 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	private URI component;
 	private ComponentDefinition componentDefinition = null;
 	
+	/**
+	 * @param identity
+	 * @param locations
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(URI)}</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setLocations(Set)}</li>
+	 */
 	SequenceAnnotation(URI identity, Set<Location> locations) throws SBOLValidationException {
 		super(identity);
 		this.locations = new HashMap<>();
@@ -185,6 +192,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		return range;
 	}
 	
+	/**
+	 * @param location
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}
+	 */
 	void addLocation(Location location) throws SBOLValidationException {
 		addChildSafely(location, locations, "location");
 		location.setSBOLDocument(this.sbolDocument);
@@ -200,7 +211,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * 
 	 * @param location the Location instance
 	 * @return {@code true} if the matching Location instance is removed successfully, {@code false} otherwise.
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10902
 	 */	
 	public boolean removeLocation(Location location) throws SBOLValidationException {
 		if (locations.size()==1 && locations.containsValue(location)) {
@@ -265,7 +276,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * then the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #removeLocation(Location)}.
 	 */
 	void clearLocations() throws SBOLValidationException {
 		Object[] valueSetArray = locations.values().toArray();
@@ -276,7 +287,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		
 	/**
 	 * Clears the existing list of location instances first, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <li>the following SBOL validation rule was violated: 10902;</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #clearLocations()}; or </li>
+	 * <li>an SBOL validation rule violation occurred in {@link #addLocation(Location)}.</li>
 	 */
 	void setLocations(Set<Location> locations) throws SBOLValidationException {
 		clearLocations();	

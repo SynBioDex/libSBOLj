@@ -16,12 +16,28 @@ public abstract class ComponentInstance extends Identified {
 
 	private AccessType access;
 	protected URI definition;
+	/**
+	 * @param identity
+	 * @param access
+	 * @param definition
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(URI)};</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setAccess(AccessType)}; or</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setDefinition(URI)}. </li>
+	 */
 	ComponentInstance(URI identity, AccessType access, URI definition) throws SBOLValidationException {
 		super(identity);
 		setAccess(access);
 		setDefinition(definition);
 	}
 
+	/**
+	 * @param component
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(URI)};</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setAccess(AccessType)}; or</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setDefinition(URI)}.</li>
+	 */
 	protected ComponentInstance(ComponentInstance component) throws SBOLValidationException {
 		super(component);
 		setAccess(component.getAccess());
@@ -45,7 +61,7 @@ public abstract class ComponentInstance extends Identified {
 	 * is allowed to be edited.
 	 *
 	 * @param access Sets the access property of this object to the given one.
-	 * @throws SBOLValidationException if the given {@code access} argument is {@code null}
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10607
 	 */
 	public void setAccess(AccessType access) throws SBOLValidationException {
 		if (access==null) {
@@ -82,10 +98,7 @@ public abstract class ComponentInstance extends Identified {
 	 * is allowed to be edited.
 	 *
 	 * @param definition Sets the definition property of this object to the given one
-	 * @throws SBOLValidationException if the given {@code definition} argument is {@code null}
-	 * @throws SBOLValidationException if the associated SBOLDocument instance already completely specifies
-	 * 		all URIs and the given definition URI is not found in them.
-	 *
+	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10602, 10604.
 	 */
 	public void setDefinition(URI definition) throws SBOLValidationException {
 		if (definition==null) {

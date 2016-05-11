@@ -20,10 +20,20 @@ import java.util.Set;
 public class Component extends ComponentInstance{
 
 	protected HashMap<URI, MapsTo> mapsTos;
+	/**
+	 * Parent component definition of this component
+	 */
 	private ComponentDefinition componentDefinition = null;
 
-	Component(URI identity, AccessType access, URI componentDefinition) throws SBOLValidationException {
-		super(identity, access, componentDefinition);
+	/**
+	 * @param identity
+	 * @param access
+	 * @param definition the referenced component definition
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred 
+	 * in {@link ComponentInstance#ComponentInstance(URI, AccessType, URI)}
+	 */
+	Component(URI identity, AccessType access, URI definition) throws SBOLValidationException {
+		super(identity, access, definition);
 		this.mapsTos = new HashMap<>();
 	}
 
@@ -82,7 +92,7 @@ public class Component extends ComponentInstance{
 	 *
 	 * @return the created MapsTo instance.
  	 * @throws SBOLValidationException if any of the following is true: 
-	 * <li>one or more of the following SBOL validation rules are violated: 10803, 10807, 10808, 10811;</li>
+	 * <li>any of the following SBOL validation rules was violated: 10803, 10807, 10808, 10811;</li>
 	 * <li>an SBOL validation exception occurred in {@link SBOLValidate#checkComponentDefinitionMapsTos(ComponentDefinition, MapsTo)};</li>
 	 * <li>an SBOL validation exception occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)};</li>
 	 */
@@ -116,7 +126,10 @@ public class Component extends ComponentInstance{
 	 * @param localId the display ID of the local component
 	 * @param remoteId the display ID of the remote component
 	 * @return the created MapsTo instance 
-	 * @throws SBOLValidationException see {@link #createMapsTo(String, RefinementType, URI, URI)}
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <li>if either of the following SBOL validation rules was violated: 10204, 10206;</li>
+	 * <li>an SBOL validation exception occurred in {@link ComponentDefinition#createComponent(String, AccessType, String, String)}; or</li>
+	 * <li>an SBOL validation exception occurred in {@link #createMapsTo(String, RefinementType, URI, URI)}.</li>
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
 		URI localURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(),
@@ -139,7 +152,8 @@ public class Component extends ComponentInstance{
 	 * @param local the identity URI of the local component
 	 * @param remote the identity URI of the remote component
 	 * @return the created MapsTo instance 
- 	 * @throws SBOLValidationException if any of the following SBOL validation rules are violated: 10202, 10526, 10803, 10807, 10808, 10811.
+ 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+ 	 * 10202, 10204, 10206, 10526, 10803, 10807, 10808, 10811.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();
@@ -155,9 +169,9 @@ public class Component extends ComponentInstance{
 	/**
 	 * Adds the specified instance to the list of references.
 	 * @throws SBOLValidationException if any of the following is true: 
-	 * <li>one or more of the following SBOL validation rules are violated: 10803, 10807, 10808, 10811;</li>
-	 * <li>an SBOL validation exception occurred in {@link SBOLValidate#checkComponentDefinitionMapsTos(ComponentDefinition, MapsTo)};</li>
-	 * <li>an SBOL validation exception occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)};</li>
+	 * <li>any of the following SBOL validation rules was violated: 10803, 10807, 10808, 10811;</li>
+	 * <li>an SBOL validation exception occurred in {@link SBOLValidate#checkComponentDefinitionMapsTos(ComponentDefinition, MapsTo)}; or</li>
+	 * <li>an SBOL validation exception occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}.</li>
 	 */
 	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		mapsTo.setSBOLDocument(this.sbolDocument);
@@ -251,7 +265,7 @@ public class Component extends ComponentInstance{
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
 	 * 
  	 * @throws SBOLValidationException if any of the following is true: 
-	 * <li>one or more of the following SBOL validation rules are violated: 10803, 10807, 10808, 10811;</li>
+	 * <li>any of the following SBOL validation rules was violated: 10803, 10807, 10808, 10811;</li>
 	 * <li>an SBOL validation exception occurred in {@link SBOLValidate#checkComponentDefinitionMapsTos(ComponentDefinition, MapsTo)};</li>
 	 * <li>an SBOL validation exception occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)};</li>
 	 */
