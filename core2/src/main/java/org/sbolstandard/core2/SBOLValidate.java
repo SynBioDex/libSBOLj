@@ -378,29 +378,27 @@ public class SBOLValidate {
 		}
 	}
 
-	static void checkSequenceConstraints(ComponentDefinition componentDefinition) {
-		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
-			SequenceAnnotation saSubject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getSubject());
-			SequenceAnnotation saObject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getObject());
-			if (saSubject==null || saObject==null) return;
-			if (sequenceConstraint.getRestriction().equals(RestrictionType.PRECEDES)) {
-				if (saObject.compareTo(saSubject) < 0) {
-					errors.add(new SBOLValidationException("sbol-11409", sequenceConstraint).getExceptionMessage());
-				}
-			} else if (sequenceConstraint.getRestriction().equals(RestrictionType.SAME_ORIENTATION_AS)) {
-				for (Location locSubject : saSubject.getLocations()) {
-					for (Location locObject : saObject.getLocations()) {
-						if (!locSubject.getOrientation().equals(locObject.getOrientation())) {
-							errors.add(new SBOLValidationException("sbol-11410", sequenceConstraint).getExceptionMessage());
-						}
+	static void checkSequenceConstraint(ComponentDefinition componentDefinition,SequenceConstraint sequenceConstraint) throws SBOLValidationException {
+		SequenceAnnotation saSubject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getSubject());
+		SequenceAnnotation saObject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getObject());
+		if (saSubject==null || saObject==null) return;
+		if (sequenceConstraint.getRestriction().equals(RestrictionType.PRECEDES)) {
+			if (saObject.compareTo(saSubject) < 0) {
+				throw new SBOLValidationException("sbol-11409", sequenceConstraint);
+			}
+		} else if (sequenceConstraint.getRestriction().equals(RestrictionType.SAME_ORIENTATION_AS)) {
+			for (Location locSubject : saSubject.getLocations()) {
+				for (Location locObject : saObject.getLocations()) {
+					if (!locSubject.getOrientation().equals(locObject.getOrientation())) {
+						throw new SBOLValidationException("sbol-11410", sequenceConstraint);
 					}
 				}
-			} else if (sequenceConstraint.getRestriction().equals(RestrictionType.OPPOSITE_ORIENTATION_AS)) {
-				for (Location locSubject : saSubject.getLocations()) {
-					for (Location locObject : saObject.getLocations()) {
-						if (locSubject.getOrientation().equals(locObject.getOrientation())) {
-							errors.add(new SBOLValidationException("sbol-11411", sequenceConstraint).getExceptionMessage());
-						}
+			}
+		} else if (sequenceConstraint.getRestriction().equals(RestrictionType.OPPOSITE_ORIENTATION_AS)) {
+			for (Location locSubject : saSubject.getLocations()) {
+				for (Location locObject : saObject.getLocations()) {
+					if (locSubject.getOrientation().equals(locObject.getOrientation())) {
+						throw new SBOLValidationException("sbol-11411", sequenceConstraint);
 					}
 				}
 			}
@@ -735,7 +733,14 @@ public class SBOLValidate {
 
 	static void validateSequenceConstraints(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
-			checkSequenceConstraints(componentDefinition);
+			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
+				try {
+					checkSequenceConstraint(componentDefinition,sequenceConstraint);
+				}
+				catch (SBOLValidationException e) {
+					errors.add(e.getExceptionMessage());
+				}
+			}
 		}
 	}
 
@@ -1069,12 +1074,12 @@ public class SBOLValidate {
 	public static void validateSBOL(SBOLDocument sbolDocument, boolean complete, boolean compliant,
 			boolean bestPractice) {
 		clearErrors();
-		validateSequenceEncodings(sbolDocument);
+		//validateSequenceEncodings(sbolDocument);
+		//validateSequenceConstraints(sbolDocument);
 		validateWasDerivedFromVersion(sbolDocument);
 		validateCircularReferences(sbolDocument);
 		validateURIuniqueness(sbolDocument);
 		validatePersistentIdentityUniqueness(sbolDocument);
-		validateSequenceConstraints(sbolDocument);
 		validateMapsTos(sbolDocument);
 		if (compliant) validateCompliance(sbolDocument);
 		if (complete) validateCompleteness(sbolDocument);

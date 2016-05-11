@@ -1338,6 +1338,7 @@ public class ComponentDefinition extends TopLevel {
 		if (sequenceConstraint.getSubjectURI().equals(sequenceConstraint.getObjectURI())) {
 			throw new SBOLValidationException("sbol-11406", sequenceConstraint);
 		}
+		SBOLValidate.checkSequenceConstraint(this, sequenceConstraint);
 		addChildSafely(sequenceConstraint, sequenceConstraints, "sequenceConstraint",
 				components, sequenceAnnotations);
 	}
