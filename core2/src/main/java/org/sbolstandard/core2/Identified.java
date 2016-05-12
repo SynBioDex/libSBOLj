@@ -326,16 +326,13 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Creates an Annotation instance using the given parameters,
-	 * then adds to this object's list of Annotation instances.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Creates an annotation using the given arguments, and
+	 * then adds to the list of Annotation instances.
 	 *
-	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
+	 * @param qName a aName that composed of a namespace, an optional prefix, and a local name
 	 * @param literal the literal boolean
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 
+	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, boolean literal) throws SBOLValidationException {
@@ -364,10 +361,10 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Calls the Annotation constructor to create a new instance using the specified parameters,
-	 * then adds to the list of Annotation instances owned by this component.
-	 * @return the created Annotation instance.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * Calls the Annotation constructor {@link Annotation#Annotation(NamedProperty)} to create a new annoation using the specified parameters,
+	 * then adds to the list of annotations.
+	 * @return the created annotation
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addAnnotation(Annotation)}.
 	 */
 	Annotation createAnnotation(NamedProperty<QName> namedProperty) throws SBOLValidationException {
 		Annotation annotation = new Annotation(namedProperty);
@@ -397,8 +394,11 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Adds the specified instance to the list of structuralAnnotations.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * Adds the given annotation to the list of annotations.
+	 * 
+	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated:
+	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901,
+	 * 12001, 12101, 12301.
 	 */
 	void addAnnotation(Annotation annotation) throws SBOLValidationException {
 		if (annotations.contains(annotation)) {
@@ -486,13 +486,8 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Removes all entries of this object's list of Annotation
-	 * objects. The set will be empty after this call returns.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
+	 * Removes all entries of this object's list of annotations.
+	 * The set will be empty after this call returns.
 	 */
 	public void clearAnnotations() {
 		annotations.clear();
@@ -511,11 +506,6 @@ public abstract class Identified {
 
 	/**
 	 * Sets the {@code wasDerivedFrom} property to {@code null}.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
 	 */
 	public void unsetWasDerivedFrom() {

@@ -841,7 +841,7 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Returns a sorted list of components owned by this component definition. The order is determined by the
-	 * order of appearance of components on DNA.  
+	 * order of appearance of components on a DNA strand  
 	 *
 	 * @return a sorted list of components owned by this component definition
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10605.
@@ -903,7 +903,9 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Returns a sorted list of sequence annotations owned by this
-	 * component definition. The order is determined by each sequence annotation's location information.
+	 * component definition. The order is determined by each 
+	 * sequence annotation's location value(s), and the sorted list 
+	 * has an ascending ordering of sequence annotations. 
 	 *
 	 * @return a sorted list of sequence annotations owned by this
 	 *         component definition.

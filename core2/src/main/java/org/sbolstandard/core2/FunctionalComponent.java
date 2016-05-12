@@ -55,21 +55,16 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
-	 * Returns the direction property of this FunctionalComponent object.
+	 * Returns the direction property of this functional component.
 	 *
-	 * @return the direction property of this FunctionalComponent object
+	 * @return the direction property of this functional component
 	 */
 	public DirectionType getDirection() {
 		return direction;
 	}
 
 	/**
-	 * Sets the direction property of this FunctionalComponent object to the given one.
-	 * <p>
-	 * If this FunctionalComponent object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the direction property of this functional component to the given one.
 	 *
 	 * @param direction The direction for the FunctionalComponent
 	 * @throws SBOLValidationException if the following SBOL validation rule violation occurred: 11802.
@@ -108,9 +103,20 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
-	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
-	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
-	 * @throws SBOLValidationException
+	 * Update the URI of this functional component and its list of mapsTos.
+	 *  
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following
+	 * methods:
+	 * <ul>
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)}</li>
+	 * <li>{@link Identified#setWasDerivedFrom(URI)}</li>
+	 * <li>{@link #setIdentity(URI)}</li>
+	 * <li>{@link #setDisplayId(String)}</li>
+	 * <li>{@link #setVersion(String)}</li>
+	 * <li>{@link MapsTo#updateCompliantURI(String, String, String)}</li>
+	 * <li>{@link #addMapsTo(MapsTo)}</li>
+	 * <li>{@link MapsTo#setLocal(URI)}</li>
+	 * </ul>
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
@@ -131,11 +137,11 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
-	 * Calls the MapsTo constructor to create a new instance using the specified parameters,
-	 * then adds to the list of MapsTo instances owned by this component.
+	 * Calls the MapsTo constructor {@link MapsTo#MapsTo(URI, RefinementType, URI, URI)} to create a new 
+	 * mapsTo using the given arguments, and then adds to its list of mapsTos.
 	 *
-	 * @return the created MapsTo instance.
-	 * @throws SBOLValidationException if either of the following condition is satisifed:
+	 * @return the created MapsTo instance
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
 	 * <ul>
 	 * <li>an SBOL validation rule violation occurred in {@link MapsTo#MapsTo(URI, RefinementType, URI, URI)}</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #addMapsTo(MapsTo)}</li>
@@ -254,15 +260,10 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
-	 * Removes the given MapsTo instance from the list of
-	 * MapsTo instances.
-	 * <p>
-	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Removes the given mapsTo.
 	 *
-	 * @param mapsTo The mapsTo object to be removed
-	 * @return {@code true} if the matching MapsTo instance is removed successfully,
+	 * @param mapsTo The mapsTo to be removed
+	 * @return {@code true} if the matching mapsTo was removed successfully,
 	 *         {@code false} otherwise.
 	 *
 	 */
@@ -271,10 +272,10 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
-	 * Returns the MapsTo instance owned by this object that matches the given display ID.
+	 * Returns the mapsTo that matches the given display ID.
 	 *
-	 * @param displayId The displayId identifier for this object
-	 * @return the MapsTo instance owned by this object that matches the given display ID
+	 * @param displayId the display ID of the mapsTo to be retrieved
+	 * @return the mapsTo that matches the given display ID, or {@code null} otherwise
 	 */
 	public MapsTo getMapsTo(String displayId) {
 		try {
@@ -286,19 +287,19 @@ public class FunctionalComponent extends ComponentInstance {
 	}
 
 	/**
-	 * Returns the MapsTo instance owned by this object that matches the given URI.
+	 * Returns the mapsTo that matches the given URI.
 	 *
-	 * @param mapsToURI The URI reference for the MapsTo object
-	 * @return the MapsTo instance owned by this object that matches the given URI
+	 * @param mapsToURI the URI for the mapsTo to be retrieved
+	 * @return the matching mapsTo, or {@code null} otherwise
 	 */
 	public MapsTo getMapsTo(URI mapsToURI) {
 		return mapsTos.get(mapsToURI);
 	}
 
 	/**
-	 * Returns the set of MapsTo instances owned by this object.
+	 * Returns the set of mapsTos owned by this object.
 	 *
-	 * @return the set of MapsTo instances owned by this object.
+	 * @return the set of mapsTos owned by this object.
 	 */
 	public Set<MapsTo> getMapsTos() {
 		return new HashSet<>(mapsTos.values());
@@ -318,7 +319,7 @@ public class FunctionalComponent extends ComponentInstance {
 
 	/**
 	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addMapsTo(MapsTo)}.
 	 */
 	void setMapsTos(Set<MapsTo> mapsTos) throws SBOLValidationException {
 		clearMapsTos();
