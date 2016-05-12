@@ -137,6 +137,9 @@ public class GenericTopLevel extends TopLevel{
 		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.Identified#toString()
+	 */
 	@Override
 	public String toString() {
 		return "GenericTopLevel ["

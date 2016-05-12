@@ -21,9 +21,11 @@ public abstract class ComponentInstance extends Identified {
 	 * @param access
 	 * @param definition
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <ul>
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(URI)};</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #setAccess(AccessType)}; or</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #setDefinition(URI)}. </li>
+	 * </ul>
 	 */
 	ComponentInstance(URI identity, AccessType access, URI definition) throws SBOLValidationException {
 		super(identity);
@@ -34,9 +36,11 @@ public abstract class ComponentInstance extends Identified {
 	/**
 	 * @param component
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <ul>
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(URI)};</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #setAccess(AccessType)}; or</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #setDefinition(URI)}.</li>
+	 * </ul>
 	 */
 	protected ComponentInstance(ComponentInstance component) throws SBOLValidationException {
 		super(component);

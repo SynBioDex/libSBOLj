@@ -549,8 +549,12 @@ public class ModuleDefinition extends TopLevel {
 	 * @param access indicates whether the ComponentInstance can be referred to remotely
 	 * @param definitionURI
 	 * @param direction specify whether this FunctionalComponent is an input, output, both, or neither
-	 * @return a FunctionalComponent instance.
-	 * @throws SBOLValidationException
+	 * @return the created functional component
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>an SBOL validation rule violation occurred in {@link FunctionalComponent#FunctionalComponent(URI, AccessType, URI, DirectionType)}</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #addFunctionalComponent(FunctionalComponent)}</li>
+	 * </ul>
 	 */
 
 	FunctionalComponent createFunctionalComponent(URI identity, AccessType access,
@@ -562,27 +566,26 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * Creates a child FunctionalComponent instance for this ModuleDefinition
-	 * object with the given arguments, and then adds to this ModuleDefinition's list of FunctionalComponent
-	 * instances.
+	 * Creates a child functional component for this module definition with the given arguments, 
+	 * and then adds to this module definition's list of functional components.
 	 * <p>
-	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * This method creates a compliant FunctionalComponent URI with the default
-	 * URI prefix for this SBOLDocument instance, and the given {@code definition} and {@code version}.
+	 * This method first creates a compliant component definition URI referenced by the functional 
+	 * component. This compliant URI is created with the associated SBOLDocument instance's URI prefix, 
+	 * followed by the given component definition's display ID, which is followed by this module definition's version. 
 	 * It then calls {@link #createFunctionalComponent(String, AccessType, URI,DirectionType)}
-	 * with this component definition URI.
+	 * with the created component definition URI.
 	 *
-	 * @param displayId The displayId identifier for this object
-	 * @param access indicate whether the ComponentInstance can be referred to remotely
-	 * @param definitionId refers to the ComponentDefinition of the ComponentInstance
-	 * @param version The given version for this object
-	 * @param direction specify whether this FunctionalComponent is an input, output, both, or neither
-	 * @return a FunctionalComponent instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * @param displayId the display ID of the functional component to be created
+	 * @param access the access property of the functional component to be created
+	 * @param definitionId the display ID of the component definition referenced by the functional component to be created
+	 * @param version the version of the functional component to be created 
+	 * @param direction the direction property of the functional component to be created
+	 * @return the created functional component
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>if either of the following SBOL validation rules was violated: 10204, 10206; or</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #createFunctionalComponent(String, AccessType, URI, DirectionType)}</li>
+	 * </ul>
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
 			String definitionId, String version, DirectionType direction) throws SBOLValidationException {
@@ -623,10 +626,6 @@ public class ModuleDefinition extends TopLevel {
 	 * object with the given arguments, and then adds to this ModuleDefinition's list of FunctionalComponent
 	 * instances.
 	 * <p>
-	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
 	 * If the SBOLDocument instance already completely specifies all URIs and
 	 * the given {@code fcURI} is not found in them, then an {@link SBOLValidationException} is thrown.
 	 * <p>
@@ -639,8 +638,9 @@ public class ModuleDefinition extends TopLevel {
 	 * @param componentDefinitionURI The URI of the ComponentDefinition that this FunctionalComponent refers to
 	 * @param direction specify whether this FunctionalComponent is an input, output, both, or neither
 	 * @return a FunctionalComponent instance
-	 * @throws SBOLValidationException if the associated SBOLDocument instance already completely
-	           specifies all URIs and the given {@code definitionURI} is not found in them.
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * if any of the following SBOL validation rules was violated: 
+	 * 10201, 10204, 10206, 10602, 10604, 10607, 11802.
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
 			URI componentDefinitionURI, DirectionType direction) throws SBOLValidationException {
@@ -662,7 +662,11 @@ public class ModuleDefinition extends TopLevel {
 
 	/**
 	 * Adds the given instance to the list of components.
-	 * @throws SBOLValidationException
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>if either of the following SBOL validation rule was violated: 10604, 10804; or</li>
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
+	 * </ul>
 	 */
 	void addFunctionalComponent(FunctionalComponent functionalComponent) throws SBOLValidationException {
 		functionalComponent.setSBOLDocument(this.sbolDocument);

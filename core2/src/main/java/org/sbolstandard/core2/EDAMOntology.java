@@ -65,11 +65,11 @@ public class EDAMOntology {
 	}
 
 	/**
-	 * Returns the ID field of the stanza whose name matches the given name. If multiple matches are found, only the first matching
-	 * one is returned.
+	 * Returns the ID field of the stanza whose name field matches the given name. 
+	 * If multiple matches are found, only the first matching one is returned.
 	 *
 	 * @param stanzaName the given stanza's name
-	 * @return the ID the matching stanza, or {@code null} if no match is found.
+	 * @return the ID of the matching stanza, or {@code null} if no match was found
 	 */
 	public final String getId(String stanzaName) {
 		List<String> IdList = new ArrayList<String>();
@@ -94,7 +94,7 @@ public class EDAMOntology {
 	 * Returns the name field of the stanza that matches the ID for the given stanzaURI.
 	 *
 	 * @param stanzaURI the given stanza's URI
-	 * @return the name field of the stanza that matches the ID in the given stanzaURI.
+	 * @return the name field of the stanza that matches the ID extracted from the given stanzaURI
 	 */
 	public final String getName(URI stanzaURI) {
 		String oboURIstr = stanzaURI.toString().trim();
@@ -121,11 +121,11 @@ public class EDAMOntology {
 	}
 
 	/**
-	 * Returns the name field of the stanza that matches the ID in the given stanzaURI.
+	 * Returns the name field of the stanza matching the ID extracted from the given stanzaURI.
 	 *
 	 * @param stanzaId the given stanza's URI
 	 * @return the name field of the stanza that matches the ID in the given stanzaURI,
-					or {@code null} if this no match is found.
+					or {@code null} if no match was found
 	 */
 	public final String getName(String stanzaId) {
 		OBOStanza oboStanza = EDAMOntology.getStanza(stanzaId);
@@ -141,7 +141,7 @@ public class EDAMOntology {
 	}
 
 	/**
-	 * Returns the URI, i.e. the EDAM Ontology namespace URL followed by an ID of an sequence ontology term,
+	 * Returns the URI, i.e. the EDAM Ontology namespace URL followed by an ID of an EDAM ontology term,
 	 * of the stanza whose name matches the given name. If multiple matches are found, only the first matching
 	 * one is returned.
 	 *
@@ -173,8 +173,8 @@ public class EDAMOntology {
 
 	/**
 	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.
-	 * @param Id1 the given stanza's URI
-	 * @param Id2 the given stanza's URI
+	 * @param Id1 the given stanza's ID
+	 * @param Id2 the given stanza's ID
 	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
 	 */
 	public boolean isDescendantOf(String Id1, String Id2) {
@@ -200,10 +200,10 @@ public class EDAMOntology {
 	}
 
 	/**
-	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.
+	 * Returns {@code true} if the stanza with childURI is a descendant of the stanza with parentURI.
 	 * @param childURI the given stanza's URI
 	 * @param parentURI the given stanza's URI
-	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
+	 * @return {@code true} if the stanza with childURI is a descendant of the stanza with parentURI, {@code false} otherwise.
 	 */
 	public final boolean isDescendantOf(URI childURI, URI parentURI) {
 		String childId = getId(childURI);

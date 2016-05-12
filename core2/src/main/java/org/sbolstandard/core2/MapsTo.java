@@ -31,6 +31,18 @@ public class MapsTo extends Identified{
 	private ComponentDefinition componentDefinition = null;
 	private ComponentInstance componentInstance = null;
 
+	/**
+	 * @param identity
+	 * @param refinement
+	 * @param local
+	 * @param remote
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <ul>
+	 * <li>{@link Identified#Identified(URI)}</li>
+	 * <li>{@link #setLocal(URI)}</li>
+	 * <li>{@link #setRemote(URI)}</li>
+	 * </ul>
+	 */
 	MapsTo(URI identity, RefinementType refinement,
 			URI local, URI remote) throws SBOLValidationException {
 		super(identity);
@@ -187,13 +199,8 @@ public class MapsTo extends Identified{
 	 * is allowed to be edited.
 	 *
 	 * @param remote refers to the first “lower level” ComponentInstance
-	 * @throws SBOLValidationException if the given {@code remote} argument is {@code null}
-	 * @throws SBOLValidationException if the given {@code remote} argument is not found in
-	 * the list of functional components that are owned by the ModuleDefinition instance that
-	 * this MapsTo object's parent Module instance refers to.
-	 * @throws SBOLValidationException if the given {@code remote} argument refers to a FunctionalComponent
-	 * with {@code private} access type that is owned by the ModuleDefinition instance that
-	 * this MapsTo object's parent Module instance refers to.
+	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated:
+	 * 10805, 10807, 10808, 10809.
 	 */
 	public void setRemote(URI remote) throws SBOLValidationException {
 		if (remote==null) {
@@ -264,12 +271,14 @@ public class MapsTo extends Identified{
 	 * Assume this MapsTo object has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link Component#updateCompliantURI(String, String, String)}.
 	 * 
-  	 * @throws SBOLValidationException if any of the following is true: 
+  	 * @throws SBOLValidationException if any of the following is true:
+  	 * <ul> 
 	 * <li>an SBOL validation exception occurred in {@link URIcompliance#createCompliantURI(String, String, String)};</li>
 	 * <li>an SBOL validation exception occurred in {@link #setWasDerivedFrom(URI)};
 	 * <li>an SBOL validation exception occurred in {@link #setIdentity(URI)};
 	 * <li>an SBOL validation exception occurred in {@link #setDisplayId(String)}; or
 	 * <li>an SBOL validation exception occurred in {@link #setVersion(String)}.
+	 * </ul>
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
