@@ -245,14 +245,14 @@ public abstract class Identified {
 	 * @param wasDerivedFrom The URI for with an SBOL object with this property refers to another SBOL object or non-SBOL resource from which this object was derived
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
 	 * <ul>
-	 * <li>the following SBOL validation rule was violated: 10211; or</li>
+	 * <li>the following SBOL validation rule was violated: 10305; or</li>
 	 * <li>an SBOL validation exception occurred in {@link SBOLValidate#checkWasDerivedFromCycle(SBOLDocument, Identified, URI, Set)}.</li>
 	 * </ul>
 	 */
 	public void setWasDerivedFrom(URI wasDerivedFrom) throws SBOLValidationException {
 		if (sbolDocument!=null) {
 			if (!SBOLValidate.checkWasDerivedFromVersion(sbolDocument, this, wasDerivedFrom)) {
-				throw new SBOLValidationException("sbol-10211", this);
+				throw new SBOLValidationException("sbol-10305", this);
 			}
 			SBOLValidate.checkWasDerivedFromCycle(sbolDocument, this, wasDerivedFrom, new HashSet<URI>());
 		}

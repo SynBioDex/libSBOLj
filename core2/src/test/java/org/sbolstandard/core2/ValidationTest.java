@@ -57,10 +57,13 @@ public class ValidationTest {
 		return col;
 	}
 	
+
 	/**
-	 * @throws IOException 
-	 * @throws SBOLConversionException
-	 * @throws SBOLValidationException
+	 * Run each RDF/XML file under the "Validation" sub-directory to test SBOL validation exceptions.
+	 * 
+	 * @throws IOException see {@link IOException}
+	 * @throws SBOLConversionException see {@link SBOLConversionException}
+	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
 	@Test
 	public void testValidation() throws IOException, SBOLConversionException, SBOLValidationException {
@@ -116,7 +119,8 @@ public class ValidationTest {
 	public static void printRemainingRules() {
 		HashSet<Integer> red = new HashSet<Integer>(Arrays.asList(
 				10101, 10105,
-				10201, 10203, 10204, 10206, 10208, 10209, 10212, 10213, 10220,
+				10201, 10203, 10204, 10206, 10208, 10212, 10213, 10220,
+				10303, 
 				10401, 10402, 10403, 
 				10501, 10502, 10503, 10507, 10512, 10519, 10521, 10522, 10524, 10526,
 				10602, 10603, 10606, 10607, 
@@ -137,7 +141,8 @@ public class ValidationTest {
 				12101, 12102,
 				12301, 12302));
 		HashSet<Integer> blue = new HashSet<Integer>(Arrays.asList(
-				10202, 10210,
+				10202, 
+				10304,
 				10405, 
 				10513, 10516,
 				10604, 10605, 
@@ -148,7 +153,8 @@ public class ValidationTest {
 				12103
 				));
 		HashSet<Integer> green = new HashSet<Integer>(Arrays.asList(
-				10207, 10215, 10216, 10217, 10218, 10219, 
+				10215, 10216, 10217, 10218, 10219,
+				10302,
 				10407,
 				10511, 10518, 10520, 10523, 10525, 10527,
 				10903, 
@@ -158,7 +164,8 @@ public class ValidationTest {
 				12007 
 				));
 		HashSet<Integer> yellow = new HashSet<Integer>(Arrays.asList(
-				10211, 10214, 
+				10214,
+				10305,
 				10404, 10406, 
 				10504, 10505, 10506, 10508, 10509, 10510, 10514, 10515, 
 				11408,
