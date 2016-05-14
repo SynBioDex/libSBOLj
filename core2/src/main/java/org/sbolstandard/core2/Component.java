@@ -20,6 +20,8 @@ import java.util.Set;
 public class Component extends ComponentInstance{
 
 	protected HashMap<URI, MapsTo> mapsTos;
+	private Set<URI> roles;
+	private RoleIntegrationType roleIntegration;
 	/**
 	 * Parent component definition of this component
 	 */
@@ -35,10 +37,12 @@ public class Component extends ComponentInstance{
 	Component(URI identity, AccessType access, URI definition) throws SBOLValidationException {
 		super(identity, access, definition);
 		this.mapsTos = new HashMap<>();
+		this.roles = new HashSet<>();
 	}
 
 	protected Component(Component component) throws SBOLValidationException {
 		super(component);
+		this.roles = new HashSet<>();
 		this.mapsTos = new HashMap<>();
 		if (!component.getMapsTos().isEmpty()) {
 			Set<MapsTo> mapsTos = new HashSet<>();
@@ -86,6 +90,102 @@ public class Component extends ComponentInstance{
 			String localId = extractDisplayId(mapsTo.getLocalURI());
 			mapsTo.setLocal(createCompliantURI(URIprefix,localId,version));
 		}
+	}
+	
+	/**
+	 * Adds the given role URI to this component's set of role URIs.
+	 *
+	 * @param roleURI the role URI to be added
+	 * @return {@code true} if this set did not already contain the specified role, {@code false} otherwise.
+	 */
+	public boolean addRole(URI roleURI) {
+		return roles.add(roleURI);
+	}
+
+	/**
+	 * Removes the given role URI from the set of roles.
+	 *
+	 * @param roleURI the given role URI to be removed
+	 * @return {@code true} if the matching role reference was removed successfully, {@code false} otherwise.
+	 */
+	public boolean removeRole(URI roleURI) {
+		return roles.remove(roleURI);
+	}
+
+	/**
+	 * Clears the existing set of roles first, and then adds the given
+	 * set of the roles to this component.
+	 *
+	 * @param roles the set of roles to be set
+	 */
+	public void setRoles(Set<URI> roles) {
+		clearRoles();
+		if (roles==null) return;
+		for (URI role : roles) {
+			addRole(role);
+		}
+	}
+
+	/**
+	 * Returns the set of role URIs owned by this component. 
+	 *
+	 * @return the set of role URIs owned by this component.
+	 */
+	public Set<URI> getRoles() {
+		Set<URI> result = new HashSet<>();
+		result.addAll(roles);
+		return result;
+	}
+
+	/**
+	 * Checks if the given role URI is included in this component's set of role URIs.
+	 *
+	 * @param roleURI the role URI to be checked
+	 * @return {@code true} if this set contains the given role URI, {@code false} otherwise.
+	 */
+	public boolean containsRole(URI roleURI) {
+		return roles.contains(roleURI);
+	}
+
+	/**
+	 * Removes all entries of this component's set of role URIs.
+	 * The set will be empty after this call returns.	 
+	 */
+	public void clearRoles() {
+		roles.clear();
+	}
+	
+	/**
+	 * Test if the roleIntegration property is set.
+	 * @return {@code true} if it is not {@code null}
+	 */
+	public boolean isSetRoleIntegration() {
+		return roleIntegration != null;
+	}
+
+	/**
+	 * Returns the roleIntegration property of this object.
+	 * @return the roleIntegration property of this object.
+	 */
+	public RoleIntegrationType getRoleIntegration() {
+		return this.roleIntegration;
+	}
+
+	/**
+	 * Sets the roleIntegration property of this object to the given one.
+	 *
+	 * @param roleIntegration indicates how role is to be integrated with related roles.
+	 */
+	public void setRoleIntegration(RoleIntegrationType roleIntegration) {
+		this.roleIntegration = roleIntegration;
+	}
+
+	/**
+	 * Sets the roleIntegration property of this object to {@code null}.
+	 *
+	 */
+	public void unsetRoleIntegration() {
+		roleIntegration = null;
 	}
 
 	/**
@@ -294,6 +394,37 @@ public class Component extends ComponentInstance{
 	void setComponentDefinition(ComponentDefinition componentDefinition) {
 		this.componentDefinition = componentDefinition;
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		result = prime * result + ((mapsTos == null) ? 0 : mapsTos.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Component other = (Component) obj;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		if (mapsTos == null) {
+			if (other.mapsTos != null)
+				return false;
+		} else if (!mapsTos.equals(other.mapsTos))
+			return false;
+		return true;
+	}
 
 	@Override
 	public String toString() {
@@ -304,6 +435,7 @@ public class Component extends ComponentInstance{
 				+ (this.isSetDescription()?", description=" + description:"") 
 				+ ", access=" + this.getAccess()
 				+ ", definition=" + definition 
+				+ (roles.size()>0?", roles=" + roles:"")  
 				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
 				+ "]";
 	}

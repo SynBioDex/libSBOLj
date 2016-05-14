@@ -82,6 +82,7 @@ public class FunctionalComponent extends ComponentInstance {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((direction == null) ? 0 : direction.hashCode());
+		result = prime * result + ((mapsTos == null) ? 0 : mapsTos.hashCode());
 		return result;
 	}
 
@@ -94,7 +95,14 @@ public class FunctionalComponent extends ComponentInstance {
 		if (getClass() != obj.getClass())
 			return false;
 		FunctionalComponent other = (FunctionalComponent) obj;
-		return direction == other.direction;
+		if (direction != other.direction)
+			return false;
+		if (mapsTos == null) {
+			if (other.mapsTos != null)
+				return false;
+		} else if (!mapsTos.equals(other.mapsTos))
+			return false;
+		return true;
 	}
 
 	@Override

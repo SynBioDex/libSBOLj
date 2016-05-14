@@ -111,6 +111,35 @@ public abstract class ComponentInstance extends Identified {
 
 	@Override
 	protected abstract ComponentInstance deepCopy() throws SBOLValidationException;
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((access == null) ? 0 : access.hashCode());
+		result = prime * result + ((definition == null) ? 0 : definition.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ComponentInstance other = (ComponentInstance) obj;
+		if (definition == null) {
+			if (other.definition != null)
+				return false;
+		} else if (!definition.equals(other.definition))
+			return false;
+		if (access != other.access)
+			return false;
+		return true;
+	}
+
 
 	@Override
 	public String toString() {
