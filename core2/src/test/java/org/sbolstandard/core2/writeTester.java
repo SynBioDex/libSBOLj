@@ -30,6 +30,10 @@ class writeTester {
 	 */
 	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException, IOException
 	{
+		SequenceOntology seqOn = new SequenceOntology();
+		for (URI child : seqOn.getDescendantURIsOf(SequenceOntology.TERMINATOR)) {
+			System.out.println(child.toString());
+		}
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix("http://www.foo.org");
 		Sequence seq = document.createSequence("displayID", "ACGT", org.sbolstandard.core2.Sequence.IUPAC_DNA);
