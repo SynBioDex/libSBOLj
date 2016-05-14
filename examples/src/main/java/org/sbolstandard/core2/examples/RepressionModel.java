@@ -161,7 +161,6 @@ public class RepressionModel {
 		
 		// Create ComponentDefintion for gRNA_b coding sequence
 		ComponentDefinition gRNA_b_nc = doc.createComponentDefinition("gRNA_b_nc", version, ComponentDefinition.DNA);
-		// TODO: need to change gRNA gene
 		gRNA_b_nc.addRole(SequenceOntology.CDS);
 		gRNA_b_nc.addSequence("gRNA_b_seq");
 		

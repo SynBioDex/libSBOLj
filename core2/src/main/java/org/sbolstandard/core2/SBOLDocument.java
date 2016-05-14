@@ -1882,8 +1882,7 @@ public class SBOLDocument {
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
-			throw new SBOLValidationException(rdfType.getLocalPart()+" is not an SBOL object, so it cannot be in the SBOL namespace.");
-			// TODO: (Validation) actually should be new validation error, not to allow in SBOL namespace
+			throw new SBOLValidationException("sbol-12302");
 		}
 		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
 		addGenericTopLevel(newGenericTopLevel);
@@ -2483,14 +2482,6 @@ public class SBOLDocument {
 		this.createDefaults = createDefaults;
 	}
 
-//	void checkReadOnly() throws SBOLValidationException {
-//		if (!compliant) {
-//			throw new SBOLValidationException("Cannot modify a non-compliant SBOL document");
-//			// TODO: (Validation) missing rule: Cannot modify a non-compliant SBOL document
-//		}
-//	}
-
-
 	/**
 	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
 	 *
@@ -2526,7 +2517,7 @@ public class SBOLDocument {
 	 * @throws IOException see {@link IOException}
 	 */
 	public void read(InputStream in) throws SBOLValidationException, IOException, SBOLConversionException {
-		SBOLReader.read(in);
+		SBOLReader.read(this,in,SBOLDocument.RDF);
 	}
 
 	/**

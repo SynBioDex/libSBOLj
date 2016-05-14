@@ -28,6 +28,17 @@ public class SequenceConstraint extends Identified {
 		setObject(object);
 	}
 	
+	/**
+	 * @param identity
+	 * @param restriction
+	 * @param subject
+	 * @param object
+	 * @throws SBOLValidationException if any of the following condition is met:
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(URI)};</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setRestriction(RestrictionType)};</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setSubject(URI)}; or</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setObject(URI)}.</li>
+	 */
 	SequenceConstraint(URI identity, RestrictionType restriction, URI subject, URI object) throws SBOLValidationException {
 		super(identity);
 		setRestriction(restriction);
@@ -75,7 +86,7 @@ public class SequenceConstraint extends Identified {
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * @param restriction the restriction type
- 	 * @throws SBOLValidationException if no valid restriction is provided
+ 	 * @throws SBOLValidationException if either of the following SBOL validation rule was violated: 11407, 11412.
 	 */
 	public void setRestriction(RestrictionType restriction) throws SBOLValidationException {
 		if (restriction==null) {
@@ -151,7 +162,7 @@ public class SequenceConstraint extends Identified {
 	 * is not {@code null}, and the given {@code subjectURI} does not exist in 
 	 * its associated ComponentDefinition subject's
 	 * list of Component instances.
-	 * @throws SBOLValidationException if the given {@code subjectURI} is {@code null}.
+	 * @throws SBOLValidationException if any of the following SBOL validation rule violation was violated: 11402, 11403, 11406.
 	 */
 	public void setSubject(URI subjectURI) throws SBOLValidationException {
 		if (componentDefinition != null) {
@@ -213,7 +224,7 @@ public class SequenceConstraint extends Identified {
 	 * is not {@code null}, and the given {@code objectURI} does not exist in 
 	 * its associated ComponentDefinition object's
 	 * list of Component instances.
-	 * @throws SBOLValidationException if the given {@code objectURI} is {@code null}.
+	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 11402, 11404, 11405. 
 	 */
 	public void setObject(URI objectURI) throws SBOLValidationException {
 		if (componentDefinition != null) {

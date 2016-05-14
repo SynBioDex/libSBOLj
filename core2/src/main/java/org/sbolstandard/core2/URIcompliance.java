@@ -15,6 +15,11 @@ import java.util.regex.Pattern;
 
 final class URIcompliance {
 	
+	/**
+	 * @param displayId
+	 * @param version
+	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10204, 10206.
+	 */
 	static void validateIdVersion(String displayId, String version) throws SBOLValidationException {
 		if (displayId!=null && !isDisplayIdValid(displayId)) {
 			throw new SBOLValidationException("sbol-10204");
@@ -24,6 +29,13 @@ final class URIcompliance {
 		}
 	}
 
+	/**
+	 * @param prefix
+	 * @param displayId
+	 * @param version
+	 * @return
+	 * @throws SBOLValidationException if an SBOL validation exception occurred in {@link URIcompliance#validateIdVersion(String, String)}.
+	 */
 	static URI createCompliantURI(String prefix, String displayId, String version) throws SBOLValidationException {
 		if (prefix == null) {
 			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");
@@ -38,6 +50,17 @@ final class URIcompliance {
 		return URI.create(prefix + displayId + '/' + version);
 	}
 	
+	/**
+	 * @param prefix
+	 * @param type
+	 * @param displayId
+	 * @param version
+	 * @param useType
+	 * @return
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <li>an SBOL validation exception occurred in {@link #validateIdVersion(String, String)}; or</li>
+	 * <li>an SBOL validation exception occurred in {@link #createCompliantURI(String, String, String)}.</li>
+	 */
 	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) throws SBOLValidationException {
 		if (prefix == null) {
 			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");
@@ -195,8 +218,7 @@ final class URIcompliance {
 		r = Pattern.compile(toplevelURIpattern);
 		Matcher m = r.matcher(URIstr);
 		if (!m.matches()) {
-			// TODO: (Validation) missing rule
-			throw new SBOLValidationException("URI is not well-formed");
+			throw new SBOLValidationException("sbol-10201");
 		}
 	}
 	
@@ -397,15 +419,13 @@ final class URIcompliance {
 	 */
 	static String checkURIprefix(String URIprefix) throws SBOLValidationException {
 		if (URIprefix==null) {
-			throw new SBOLValidationException("URI prefix must not be null");
-			// TODO: (Validation) missing rule: rule for URI prefix
+			throw new SBOLValidationException("sbol-10201");
 		}
 		if (!URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
 			URIprefix += "/";
 		}
 		if (!isURIprefixCompliant(URIprefix)) {
-			throw new SBOLValidationException("URI prefix '"+URIprefix+"' is invalid");
-			// TODO: (Validation) missing rule: rule for URI prefix
+			throw new SBOLValidationException("sbol-10201");
 		}
 		return URIprefix;
 	}

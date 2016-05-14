@@ -29,16 +29,20 @@ import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 public abstract class Identified {
 
 	protected URI identity;
-	private URI persistentIdentity;
-	private String version;
+	protected URI persistentIdentity;
+	protected String version;
 	// TODO: can this be a set instead?
-	private List<Annotation> annotations;
-	private URI wasDerivedFrom;
+	protected List<Annotation> annotations;
+	protected URI wasDerivedFrom;
 	protected String displayId;
 	protected SBOLDocument sbolDocument = null;
 	protected String name;
 	protected String description;
 
+	/**
+	 * @param identity
+	 * @throws SBOLValidationException if an SBOL validation rule violation occured in {@link #setIdentity(URI)}
+	 */
 	Identified(URI identity) throws SBOLValidationException {
 		setIdentity(identity);
 		this.annotations = new ArrayList<>();
@@ -98,7 +102,7 @@ public abstract class Identified {
 	/**
 	 * Sets field variable <code>identity</code> to the specified element.
 	 * @param identity URI for the specified element.
-	 * @throws SBOLValidationException when identity URI is null.
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10201.
 	 */
 	final void setIdentity(URI identity) throws SBOLValidationException {
 		if (identity == null) {
@@ -172,7 +176,7 @@ public abstract class Identified {
 
 	/**
 	 * Sets field variable <code>version</code> to the specified element.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10206
 	 */
 	void setVersion(String version) throws SBOLValidationException {
 		if (version==null || version.equals("")) {
@@ -205,7 +209,7 @@ public abstract class Identified {
 
 	/**
 	 * Set field variable <code>displayId</code> to the specified element.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException the following SBOL validation rule was violated: 10204
 	 */
 	void setDisplayId(String displayId) throws SBOLValidationException {
 		if (!URIcompliance.isDisplayIdValid(displayId)) {
@@ -239,12 +243,16 @@ public abstract class Identified {
 	 * is allowed to be edited.
 	 *
 	 * @param wasDerivedFrom The URI for with an SBOL object with this property refers to another SBOL object or non-SBOL resource from which this object was derived
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant.
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <ul>
+	 * <li>the following SBOL validation rule was violated: 10305; or</li>
+	 * <li>an SBOL validation exception occurred in {@link SBOLValidate#checkWasDerivedFromCycle(SBOLDocument, Identified, URI, Set)}.</li>
+	 * </ul>
 	 */
 	public void setWasDerivedFrom(URI wasDerivedFrom) throws SBOLValidationException {
 		if (sbolDocument!=null) {
 			if (!SBOLValidate.checkWasDerivedFromVersion(sbolDocument, this, wasDerivedFrom)) {
-				throw new SBOLValidationException("sbol-10211", this);
+				throw new SBOLValidationException("sbol-10305", this);
 			}
 			SBOLValidate.checkWasDerivedFromCycle(sbolDocument, this, wasDerivedFrom, new HashSet<URI>());
 		}
@@ -318,16 +326,13 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Creates an Annotation instance using the given parameters,
-	 * then adds to this object's list of Annotation instances.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Creates an annotation using the given arguments, and
+	 * then adds to the list of Annotation instances.
 	 *
-	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
+	 * @param qName a aName that composed of a namespace, an optional prefix, and a local name
 	 * @param literal the literal boolean
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 
+	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101
 	 * @return the created Annotation instance.
 	 */
 	public Annotation createAnnotation(QName qName, boolean literal) throws SBOLValidationException {
@@ -356,10 +361,10 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Calls the Annotation constructor to create a new instance using the specified parameters,
-	 * then adds to the list of Annotation instances owned by this component.
-	 * @return the created Annotation instance.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * Calls the Annotation constructor {@link Annotation#Annotation(NamedProperty)} to create a new annoation using the specified parameters,
+	 * then adds to the list of annotations.
+	 * @return the created annotation
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addAnnotation(Annotation)}.
 	 */
 	Annotation createAnnotation(NamedProperty<QName> namedProperty) throws SBOLValidationException {
 		Annotation annotation = new Annotation(namedProperty);
@@ -389,8 +394,11 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Adds the specified instance to the list of structuralAnnotations.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * Adds the given annotation to the list of annotations.
+	 * 
+	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated:
+	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901,
+	 * 12001, 12101, 12301.
 	 */
 	void addAnnotation(Annotation annotation) throws SBOLValidationException {
 		if (annotations.contains(annotation)) {
@@ -478,13 +486,8 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Removes all entries of this object's list of Annotation
-	 * objects. The set will be empty after this call returns.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
+	 * Removes all entries of this object's list of annotations.
+	 * The set will be empty after this call returns.
 	 */
 	public void clearAnnotations() {
 		annotations.clear();
@@ -503,11 +506,6 @@ public abstract class Identified {
 
 	/**
 	 * Sets the {@code wasDerivedFrom} property to {@code null}.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
 	 */
 	public void unsetWasDerivedFrom() {
@@ -538,6 +536,7 @@ public abstract class Identified {
 		result = prime * result + ((identity == null) ? 0 : identity.hashCode());
 		result = prime * result	+ ((persistentIdentity == null) ? 0 : persistentIdentity.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
+		// wasDerivedFrom differences are not considered
 		//result = prime * result + ((wasDerivedFrom == null) ? 0 : wasDerivedFrom.hashCode());
 		result = prime * result + ((displayId == null) ? 0 : displayId.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
@@ -574,7 +573,7 @@ public abstract class Identified {
 				return false;
 		} else if (!version.equals(other.version))
 			return false;
-		// TODO: taking this out for now because it causes problems with comparisons with 1.1 converted data
+		// wasDerivedFrom differences are not considered differences
 		/*
 		if (wasDerivedFrom == null) {
 			if (other.wasDerivedFrom != null)
@@ -600,6 +599,13 @@ public abstract class Identified {
 		return true;
 	}
 
+	/**
+	 * @param child
+	 * @param siblingsMap
+	 * @param typeName
+	 * @param maps
+	 * @throws SBOLValidationException if the following SBOL validation rule is violated: 10202.
+	 */
 	@SafeVarargs
 	protected final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {
 		if (isChildURIformCompliant(this.getIdentity(), child.getIdentity())) {

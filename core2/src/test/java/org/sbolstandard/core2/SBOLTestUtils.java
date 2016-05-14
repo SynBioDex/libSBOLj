@@ -139,7 +139,7 @@ class SBOLTestUtils {
 
 		Interaction interaction=moduleDef.createInteraction(
 				"LacI_pLacI",
-				new HashSet<URI>(Arrays.asList(SystemsBiologyOntology.TRANSCRIPTION))); //TODO: is transcription a transcriptionalRepression?
+				new HashSet<URI>(Arrays.asList(SystemsBiologyOntology.INHIBITION))); 
 
 		interaction.createParticipation(
 				promoter.getDisplayId(),
@@ -173,7 +173,7 @@ class SBOLTestUtils {
 		addSubComponents(document, componentDef, Arrays.asList(subComponents));
 	}
 
-	static void addSubComponents(SBOLDocument document, ComponentDefinition componentDef, List<ComponentDefinition> subComponents)	throws SBOLValidationException
+	static void addSubComponents(SBOLDocument document, ComponentDefinition componentDef, List<ComponentDefinition> subComponents) throws SBOLValidationException
 	{
 		int i=1;
 		int start=0;
@@ -193,7 +193,7 @@ class SBOLTestUtils {
 		}
 	}
 
-	static int getSequenceLength (SBOLDocument document, ComponentDefinition componentDef) throws SBOLValidationException
+	static int getSequenceLength (SBOLDocument document, ComponentDefinition componentDef) 
 	{		if (componentDef.getSequences()!=null && componentDef.getSequences().size()>0)
 	{
 		Sequence sequence=componentDef.getSequences().iterator().next();
@@ -214,8 +214,7 @@ class SBOLTestUtils {
 			}
 			else
 			{
-				// TODO: wrong exception likely
-				throw new SBOLValidationException ("Can't get sequence length for an incomplete design");
+				throw new IllegalArgumentException("Can't get sequence length for an incomplete design");
 			}
 		}
 		return total;

@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * Signals that an exception related to conversion between SBOL and other file formats has occurred.
  * 
- * @author Zhen Zhang
  * @author Chris Myers
+ * @author Zhen Zhang
  * @version 2.1
  */
 

@@ -12,6 +12,10 @@ import java.net.URI;
 
 public class GenericLocation extends Location{
 	
+	/**
+	 * @param identity
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Location#Location(URI)}.
+	 */
 	GenericLocation(URI identity) throws SBOLValidationException {
 		super(identity);
 	}
