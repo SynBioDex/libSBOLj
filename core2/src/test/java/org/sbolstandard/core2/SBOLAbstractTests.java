@@ -236,7 +236,7 @@ public abstract class SBOLAbstractTests {
 
 	/**
 	 * Test collection output.
-	 * @throws SBOLValidationException
+	 * @throws SBOLValidationException see SBOL validation rule violation at {@link Collection#addMember(URI)}
 	 * @throws SBOLConversionException
 	 * @throws IOException
 	 */

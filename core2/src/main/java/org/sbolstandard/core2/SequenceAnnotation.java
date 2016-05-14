@@ -24,12 +24,22 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 
 	private HashMap<URI, Location> locations;
 	private URI component;
+	private Set<URI> roles;
+	private RoleIntegrationType roleIntegration;
 	private ComponentDefinition componentDefinition = null;
 	
+	/**
+	 * @param identity
+	 * @param locations
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(URI)}</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setLocations(Set)}</li>
+	 */
 	SequenceAnnotation(URI identity, Set<Location> locations) throws SBOLValidationException {
 		super(identity);
 		this.locations = new HashMap<>();
-		this.setLocations(locations);		
+		this.setLocations(locations);	
+		this.roles = new HashSet<>();
 	}
 	
 	private SequenceAnnotation(SequenceAnnotation sequenceAnnotation) throws SBOLValidationException {
@@ -41,6 +51,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		if (sequenceAnnotation.isSetComponent()) {
 			this.setComponent(sequenceAnnotation.getComponentURI());
 		}
+		this.roles = new HashSet<>();
 	}
 	
 	/**
@@ -185,6 +196,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		return range;
 	}
 	
+	/**
+	 * @param location
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}
+	 */
 	void addLocation(Location location) throws SBOLValidationException {
 		addChildSafely(location, locations, "location");
 		location.setSBOLDocument(this.sbolDocument);
@@ -200,7 +215,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * 
 	 * @param location the Location instance
 	 * @return {@code true} if the matching Location instance is removed successfully, {@code false} otherwise.
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10902
 	 */	
 	public boolean removeLocation(Location location) throws SBOLValidationException {
 		if (locations.size()==1 && locations.containsValue(location)) {
@@ -265,7 +280,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * then the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #removeLocation(Location)}.
 	 */
 	void clearLocations() throws SBOLValidationException {
 		Object[] valueSetArray = locations.values().toArray();
@@ -276,7 +291,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		
 	/**
 	 * Clears the existing list of location instances first, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <li>the following SBOL validation rule was violated: 10902;</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #clearLocations()}; or </li>
+	 * <li>an SBOL validation rule violation occurred in {@link #addLocation(Location)}.</li>
 	 */
 	void setLocations(Set<Location> locations) throws SBOLValidationException {
 		clearLocations();	
@@ -441,11 +459,108 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	public void unsetComponent() {
 		component = null;
 	}
+	
+	/**
+	 * Adds the given role URI to this sequence annotation's set of role URIs.
+	 *
+	 * @param roleURI the role URI to be added
+	 * @return {@code true} if this set did not already contain the specified role, {@code false} otherwise.
+	 */
+	public boolean addRole(URI roleURI) {
+		return roles.add(roleURI);
+	}
+
+	/**
+	 * Removes the given role URI from the set of roles.
+	 *
+	 * @param roleURI the given role URI to be removed
+	 * @return {@code true} if the matching role reference was removed successfully, {@code false} otherwise.
+	 */
+	public boolean removeRole(URI roleURI) {
+		return roles.remove(roleURI);
+	}
+
+	/**
+	 * Clears the existing set of roles first, and then adds the given
+	 * set of the roles to this sequence annotation.
+	 *
+	 * @param roles the set of roles to be set
+	 */
+	public void setRoles(Set<URI> roles) {
+		clearRoles();
+		if (roles==null) return;
+		for (URI role : roles) {
+			addRole(role);
+		}
+	}
+
+	/**
+	 * Returns the set of role URIs owned by this sequence annotation. 
+	 *
+	 * @return the set of role URIs owned by this sequence annotation.
+	 */
+	public Set<URI> getRoles() {
+		Set<URI> result = new HashSet<>();
+		result.addAll(roles);
+		return result;
+	}
+
+	/**
+	 * Checks if the given role URI is included in this sequence annotation's set of role URIs.
+	 *
+	 * @param roleURI the role URI to be checked
+	 * @return {@code true} if this set contains the given role URI, {@code false} otherwise.
+	 */
+	public boolean containsRole(URI roleURI) {
+		return roles.contains(roleURI);
+	}
+
+	/**
+	 * Removes all entries of this sequence annotation's set of role URIs.
+	 * The set will be empty after this call returns.	 
+	 */
+	public void clearRoles() {
+		roles.clear();
+	}
+	
+	/**
+	 * Test if the roleIntegration property is set.
+	 * @return {@code true} if it is not {@code null}
+	 */
+	public boolean isSetRoleIntegration() {
+		return roleIntegration != null;
+	}
+
+	/**
+	 * Returns the roleIntegration property of this object.
+	 * @return the roleIntegration property of this object.
+	 */
+	public RoleIntegrationType getRoleIntegration() {
+		return this.roleIntegration;
+	}
+
+	/**
+	 * Sets the roleIntegration property of this object to the given one.
+	 *
+	 * @param roleIntegration indicates how role is to be integrated with related roles.
+	 */
+	public void setRoleIntegration(RoleIntegrationType roleIntegration) {
+		this.roleIntegration = roleIntegration;
+	}
+
+	/**
+	 * Sets the roleIntegration property of this object to {@code null}.
+	 *
+	 */
+	public void unsetRoleIntegration() {
+		roleIntegration = null;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
 		result = prime * result + ((component == null) ? 0 : component.hashCode());
 		result = prime * result + ((locations == null) ? 0 : locations.hashCode());
 		return result;
@@ -464,6 +579,11 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 			if (other.component != null)
 				return false;
 		} else if (!component.equals(other.component))
+			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
 			return false;
 		if (locations == null) {
 			if (other.locations != null)
@@ -532,6 +652,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
 				+ (this.isSetName()?", name=" + name:"")
 				+ (this.isSetDescription()?", description=" + description:"") 
+				+ (roles.size()>0?", roles=" + roles:"")  
 				+ ", locations=" + this.getLocations() 
 				+ (this.isSetComponent()?", component=" + component:"")
 				+ "]";

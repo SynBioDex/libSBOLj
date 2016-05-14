@@ -34,63 +34,63 @@ public class Annotation {
 	private NamedProperty<QName> value;
 
 	/**
-	 * Constructs an Annotation instance using the given {@code qName} and the {@code literal} string.
+	 * Constructs an Annotation instance using the given qName and the string type literal.
 	 *
-	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name.
-	 * @param literal - used to denote an object that is of type String
+	 * @param qName the QName of this Annotation instance
+	 * @param literal a string type value
 	 */
 	public Annotation(QName qName, String literal) {
 		value = NamedProperty(qName,literal);
 	}
 
 	/**
-	 * Constructs an Annotation instance using the given {@code qName} and the {@code literal} integer.
+	 * Constructs an Annotation instance using the given qName and the integer type literal.
 	 *
-	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
-	 * @param literal Used to denote an object that is of type Integer
+	 * @param qName the QName of this Annotation instance
+	 * @param literal an integer type value
 	 */
 	public Annotation(QName qName, int literal) {
 		value = NamedProperty(qName,literal);
 	}
 
 	/**
-	 * Constructs an Annotation instance using the given {@code qName} and the {@code double} type {@code literal}.
+	 * Constructs an Annotation instance using the given qName and the double type literal.
 	 *
-	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name.
-	 * @param literal - used to denote an object that is of type Double
+	 * @param qName the QName of this Annotation instance
+	 * @param literal a double type value
 	 */
 	public Annotation(QName qName, double literal) {
 		value = NamedProperty(qName, literal);
 	}
 
 	/**
-	 * Constructs an Annotation instance using the given {@code qName} and the {@code boolean} type {@code literal}.
+	 * Constructs an Annotation instance using the given qName and the boolean type literal.
 	 *
-	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name
-	 * @param literal - used to denote an object that is of type Boolean
+	 * @param qName the QName of this Annotation instance
+	 * @param literal a boolean type value
 	 */
 	public Annotation(QName qName, boolean literal) {
 		value = NamedProperty(qName,literal);
 	}
 
 	/**
-	 * Constructs an Annotation instance using the given {@code qName} and the URI type {@code literal}.
+	 * Constructs an Annotation instance using the given qName and the {@code URI} type literal.
 	 *
-	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name
-	 * @param literal - used to denote an object that is of type URI
+	 * @param qName the QName of this Annotation instance
+	 * @param literal a URI type value
 	 */
 	public Annotation(QName qName, URI literal) {
 		value = NamedProperty(qName,literal);
 	}
 
 	/**
-	 * Constructs a nested Annotation instance using the given {@code qName}, {@code nestedQName},
-	 * {@code nestedURI}, and a list of {@code annotations} to include.
+	 * Constructs a nested Annotation instance using the given qName, nested qName,
+	 * nested URI, and list of annotations.
 	 *
-	 * @param qName - composed of a namespace, an OPTIONAL prefix, and a local name
-	 * @param nestedQName A part of NestedAnnotations composed of a namespace, an OPTIONAL prefix, and a local name
-	 * @param nestedURI is a part of NestedAnnotations used to denote an object that is of type URI
-	 * @param annotations A property of NestedAnnotations that contains zero or more Annotation objects that store data in the form of name/value property pairs.
+	 * @param qName the QName of this Annotation instance
+	 * @param nestedQName the QName of the nested Annotation
+	 * @param nestedURI the identity URI for the nested Annotation
+	 * @param annotations the list of annotations to construct the nested Annotation instance
 	 */
 	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
 		List<NamedProperty<QName>> list = new ArrayList<>();
@@ -116,17 +116,17 @@ public class Annotation {
 	}
 
 	/**
-	 * Returns the name of the {@code value} property.
+	 * Returns the QName of this Annotation instance.
 	 *
-	 * @return the name of the {@code value} property
+	 * @return the QName of this Annotation instance
 	 */
 	public QName getQName() {
 		return value.getName();
 	}
 
 	/**
-	 * Sets the Boolean representation of the {@code value} property.
-	 * @param literal - The boolean representation of the property.
+	 * Sets the boolean representation of the value property.
+	 * @param literal the boolean representation of the value property
 	 */
 	public void setBooleanValue(boolean literal) {
 		QName qName = value.getName();
@@ -134,9 +134,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Checks if the annotation is a boolean {@code value} property.
+	 * Checks if the annotation has a boolean value property.
 	 *
-	 * @return true if the annotation is a boolean {@code value} property.
+	 * @return {@code true} if the value property is a boolean, {@code false} otherwise. 
 	 */
 	public boolean isBooleanValue() {
 		if (value.getValue() instanceof BooleanLiteral<?>) {
@@ -146,10 +146,10 @@ public class Annotation {
 	}
 
 	/**
-	 * Returns a Boolean representation of the {@code value} property.
+	 * Returns a Boolean representation of the value property.
 	 *
-	 * @return a Boolean representation of the {@code value} property if its
-	 * value is of Boolean type, or {@code null} otherwise.
+	 * @return a Boolean representation of the value property if its
+	 * value is a Boolean, {@code null} otherwise.
 	 */
 	public Boolean getBooleanValue() {
 		if (value.getValue() instanceof BooleanLiteral) {
@@ -159,8 +159,8 @@ public class Annotation {
 	}
 
 	/**
-	 * Sets the double representation of the {@code value} property.
-	 * @param literal - The double representation of the property
+	 * Sets the double representation of the value property.
+	 * @param literal the double representation of the value property
 	 */
 	public void setDoubleValue(double literal) {
 		QName qName = value.getName();
@@ -168,9 +168,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Checks if the annotation is a double {@code value} property.
+	 * Checks if the annotation has a double value property.
 	 *
-	 * @return true if the annotation is a double {@code value} property.
+	 * @return true if the value property is a double integer, {@code false} otherwise
 	 */
 	public boolean isDoubleValue() {
 		if (value.getValue() instanceof DoubleLiteral<?>) {
@@ -180,10 +180,10 @@ public class Annotation {
 	}
 
 	/**
-	 * Returns a Double representation of the {@code value} property.
+	 * Returns a Double representation of the value property.
 	 *
-	 * @return a Double representation of the {@code value} property if its
-	 * value is of Double type, or {@code null} otherwise.
+	 * @return a Double integer representation of the value property if its
+	 * value is a Double integer, {@code null} otherwise.
 	 */
 	public Double getDoubleValue() {
 		if (value.getValue() instanceof DoubleLiteral) {
@@ -193,8 +193,8 @@ public class Annotation {
 	}
 
 	/**
-	 * Sets the integer representation of the {@code value} property.
-	 * @param literal - The integer representation of the property
+	 * Sets the integer representation of the value property.
+	 * @param literal the integer representation of the value property
 	 */
 	public void setIntegerValue(int literal) {
 		QName qName = value.getName();
@@ -202,9 +202,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Checks if the annotation is a integer {@code value} property.
+	 * Checks if the annotation has an integer value property.
 	 *
-	 * @return true if the annotation is a integer {@code value} property.
+	 * @return {@code true} if the value property is an integer, {@code false} otherwise
 	 */
 	public boolean isIntegerValue() {
 		if (value.getValue() instanceof IntegerLiteral<?>) {
@@ -214,10 +214,10 @@ public class Annotation {
 	}
 
 	/**
-	 * Returns a Integer representation of the {@code value} property.
+	 * Returns an Integer representation of the value property.
 	 *
-	 * @return a Integer representation of the {@code value} property if its
-	 * value is of Integer type, or {@code null} otherwise.
+	 * @return an Integer representation of the value property if its
+	 * value is an Integer, {@code null} otherwise.
 	 */
 	public Integer getIntegerValue() {
 		if (value.getValue() instanceof IntegerLiteral) {
@@ -227,8 +227,8 @@ public class Annotation {
 	}
 
 	/**
-	 * Sets the string representation of the {@code value} property.
-	 * @param literal - The string representation of the property.
+	 * Sets the string representation of the value property.
+	 * @param literal the string representation of the value property
 	 */
 	public void setStringValue(String literal) {
 		QName qName = value.getName();
@@ -236,9 +236,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Checks if the annotation is a string {@code value} property.
+	 * Checks if the annotation has a string value property.
 	 *
-	 * @return true if the annotation is a string {@code value} property.
+	 * @return true if the value property is string type, {@code false} otherwise
 	 */
 	public boolean isStringValue() {
 		if (value.getValue() instanceof StringLiteral<?>) {
@@ -248,10 +248,10 @@ public class Annotation {
 	}
 
 	/**
-	 * Returns a string representation of the {@code value} property.
+	 * Returns a string representation of the value property.
 	 *
-	 * @return a string representation of the {@code value} property if its
-	 * value is of String type, or {@code null} otherwise.
+	 * @return a string representation of the value property if it is a string, 
+	 * {@code null} otherwise.
 	 */
 	public String getStringValue() {
 		if (value.getValue() instanceof StringLiteral) {
@@ -261,19 +261,32 @@ public class Annotation {
 	}
 
 	/**
-	 * Sets the string representation of the {@code value} property.
-	 * @param literal - The string representation of the property.
+	 * Sets the string representation of the value property.
+	 * @param literal the URI representation of the value property
 	 */
-	public void setURIValue(String literal) {
+	public void setURIValue(URI literal) {
 		QName qName = value.getName();
 		value = NamedProperty(qName,literal);
 	}
+	
+	/**
+	 * Checks if the annotation is a URI {@code value} property.
+	 *
+	 * @return true if the annotation is a URI {@code value} property.
+	 */
+	public boolean isURIValue() {
+		if (value.getValue() instanceof UriLiteral<?>) {
+			return true;
+		}
+		return false;
+	}
+
 
 	/**
-	 * Returns a URI representation of the {@code value} property.
+	 * Returns a URI representation of the value property.
 	 *
-	 * @return a URI representation of the {@code value} property if its
-	 * the value is of a URI type, or {@code null} otherwise.
+	 * @return a URI representation of the value property if it is a URI, 
+	 * {@code null} otherwise.
 	 */
 	public URI getURIValue() {
 		if (value.getValue() instanceof UriLiteral) {
@@ -283,9 +296,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Sets the {@code value} property to the specified list of annotations.
+	 * Sets the value property to nested Annotations that include the given list of annotations.
 	 * 
-	 * @param annotations The list of annotations
+	 * @param annotations list of annotations
 	 */
 	public void setNestedAnnotations(List<Annotation> annotations) {
 		List<NamedProperty<QName>> list = new ArrayList<>();
@@ -300,10 +313,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Returns the type of the nested {@code value} property.
+	 * Returns the nested QName of the nested Annotation.
 	 *
-	 * @return the nested QName of the {@code value} property if its value is
-	 * of a nested list of Annotations, or {@code null} otherwise.
+	 * @return the nested QName if its value is nested Annotations, {@code null} otherwise.
 	 */
 	public QName getNestedQName() {
 		if (value.getValue() instanceof NestedDocument<?>) {
@@ -313,10 +325,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Returns the identity URI of the nested {@code value} property.
+	 * Returns the nested identity URI of the nested Annotation.
 	 *
-	 * @return the identity URI of the nested QName {@code value} property if its value is
-	 * of a nested list of Annotations, or {@code null} otherwise.
+	 * @return the nested identity URI of the nested nested Annotations if its value is nested Annotations, {@code null} otherwise.
 	 */
 	public URI getNestedIdentity() {
 		if (value.getValue() instanceof NestedDocument<?>) {
@@ -326,9 +337,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Checks if the annotation is a nested {@code value} property.
+	 * Checks if the annotation has a nested value property.
 	 *
-	 * @return true if the annotation is a nested {@code value} property.
+	 * @return true if the value property is nested Annotations, {@code false} otherwise
 	 */
 	public boolean isNestedAnnotations() {
 		if (value.getValue() instanceof NestedDocument<?>) {
@@ -338,10 +349,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Returns the list of Annotations of the nested {@code value} property.
+	 * Returns the list of Annotations of the nested value property.
 	 *
-	 * @return the list of Annotations of the nested {@code value} property if its value is
-	 * of a nested list of Annotations, or {@code null} otherwise.
+	 * @return the list of Annotations if its value is nested Annotations, {@code null} otherwise.
 	 */
 	public List<Annotation> getAnnotations() {
 		if (value.getValue() instanceof NestedDocument<?>) {
@@ -355,39 +365,39 @@ public class Annotation {
 	}
 
 	/**
-	 * Returns the value of this Annotation object.
+	 * Returns the value of this Annotation instance.
 	 *
-	 * @return the value of this Annotation object.
+	 * @return the value of this Annotation instance.
 	 */
 	NamedProperty<QName> getValue() {
 		return value;
 	}
 
 	/**
-	 * Sets the value of this Annotation object to the specified argument.
+	 * Sets the value of this Annotation instance to the specified argument.
 	 */
 	void setValue(NamedProperty<QName> value) {
 		this.value = value;
 	}
 
 	/**
-	 * Makes a deep copy of this Annotation object.
-	 * @return an Annotation object that is the exact copy of this object.
+	 * Makes a deep copy of this Annotation instance.
+	 * @return an Annotation instance that is the exact copy of this instance.
 	 */
 	private Annotation deepCopy() {
 		return new Annotation(this);
 	}
 
 	/**
-	 * Makes a deep copy of this Annotation object.
-	 * @return an Annotation object that is the exact copy of this object.
+	 * Makes a deep copy of this Annotation instance.
+	 * @return an Annotation instance that is the exact copy of this instance.
 	 */
 	Annotation copy() {
 		return this.deepCopy();
 	}
 
 	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
+	 * @see java.lang.Instance#hashCode()
 	 */
 	@Override
 	public int hashCode() {
@@ -398,7 +408,7 @@ public class Annotation {
 	}
 
 	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
+	 * @see java.lang.Instance#equals(java.lang.Instance)
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -413,6 +423,8 @@ public class Annotation {
 			if (other.value != null)
 				return false;
 		} else if (!value.equals(other.value)) {
+			// TODO: insert this line and comment out rest when sbol-data 0.1.3 is available
+			// return false;
 			if (!this.getQName().equals(other.getQName())) {
 				return false;
 			} else if ((this.getValue().getValue() instanceof StringLiteral<?>) &&

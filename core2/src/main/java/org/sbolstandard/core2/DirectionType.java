@@ -51,7 +51,7 @@ public enum DirectionType {
 	 * Convert the specified URI to its corresponding DirectionType instance.
 	 * @param direction
 	 * @return the corresponding DirectionType instance
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if either of the following SBOL validation rule was violated: 11802
 	 */
 	static DirectionType convertToDirectionType(URI direction) throws SBOLValidationException {
 		if (direction != null) {

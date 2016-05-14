@@ -36,13 +36,13 @@ public class Collection extends TopLevel{
 	}
 
 	/**
-	 * Adds the given member URI to this Collection object's
+	 * Adds the given member URI to this Collection instance's
 	 * set of reference member URIs.
 	 *
-	 * @param memberURI References to a TopLevel object
+	 * @param memberURI References to a TopLevel instance
 	 * @return {@code true} if the matching member reference has been added successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException violates validation rule
+	 * @throws SBOLValidationException if SBOL validation rule 12103 is violated.
 	 */
 	public boolean addMember(URI memberURI) throws SBOLValidationException {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -54,15 +54,10 @@ public class Collection extends TopLevel{
 	}
 
 	/**
-	 * Removes the given member reference from the set of member references.
-	 * <p>
-	 * If this Collection object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Removes the given member from this Collection instance's set of members.
 	 *
-	 * @param memberURI the reference to a TopLevel object to be removed from the SBOL Document.
-	 * @return {@code true} if the matching member reference is removed successfully,
+	 * @param memberURI the member identity URI to be removed from this Collection's members
+	 * @return {@code true} if the matching member is removed successfully,
 	 *         {@code false} otherwise.
 	 */
 	public boolean removeMember(URI memberURI) {
@@ -70,16 +65,11 @@ public class Collection extends TopLevel{
 	}
 
 	/**
-	 * Clears the existing set of member references first, then adds the given
-	 * set of the member references to this Collection object.
-	 * <p>
-	 * If this Collection object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
-	 * @param members A set of URI references to zero or more TopLevel objects within the SBOL Document.
-	 * @throws SBOLValidationException violates validation rule
+	 * Clears the existing set of members of this Collection instance first, then adds the given
+	 * set of the member references to it.
+	 * 
+	 * @param members a set of identity URIs of zero or more TopLevel instances to be added
+	 * @throws SBOLValidationException see SBOL validation rule violation at {@link Collection#addMember(URI)}
 	 */
 	public void setMembers(Set<URI> members) throws SBOLValidationException {
 		clearMembers();
@@ -89,9 +79,9 @@ public class Collection extends TopLevel{
 	}
 
 	/**
-	 * Returns the set of member URIs referenced by this Collection object.
+	 * Returns the set of member URIs referenced by this Collection instance.
 	 *
-	 * @return the set of member URIs referenced by this Collection object.
+	 * @return the set of member URIs referenced by this Collection instance.
 	 */
 	public Set<URI> getMemberURIs() {
 		Set<URI> result = new HashSet<>();
@@ -100,9 +90,9 @@ public class Collection extends TopLevel{
 	}
 
 	/**
-	 * Returns the set of Member instances referenced by this Collection object.
+	 * Returns the set instances referenced by this Collection instance's members.
 	 *
-	 * @return the set of Member instances referenced by this Collection object.
+	 * @return the set instances referenced by this Collection instance's members.
 	 */
 	public Set<TopLevel> getMembers() {
 		Set<TopLevel> result = new HashSet<>();
@@ -114,24 +104,19 @@ public class Collection extends TopLevel{
 	}
 
 	/**
-	 * Checks if the given member URI is included in this Collection
-	 * object's set of reference member URIs.
+	 * Checks if the given URI is included in this Collection
+	 * instance's set of member URIs.
 	 *
-	 * @param memberURI The URI that references to a TopLevel object within the SBOL Document
-	 * @return {@code true} if this set contains the given URI.
+	 * @param memberURI a URI that is checked against this Collection instance's list of member URIs 
+	 * @return {@code true} if its members contain the given URI, {@code false} otherwise.
 	 */
 	public boolean containsMember(URI memberURI) {
 		return members.contains(memberURI);
 	}
 
 	/**
-	 * Removes all entries of this Collection object's set of reference
+	 * Removes all entries of this Collection instance's set of reference
 	 * member URIs. The set will be empty after this call returns.
-	 * <p>
-	 * If this Collection object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
 	 */
 	public void clearMembers() {
 		members.clear();

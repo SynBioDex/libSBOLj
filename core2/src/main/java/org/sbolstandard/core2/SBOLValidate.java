@@ -108,6 +108,11 @@ public class SBOLValidate {
 		}
 	}
 
+	/**
+	 * @param componentDefinition
+	 * @param mapsTo
+	 * @throws SBOLValidationException the following SBOL validation rule was violated: 10526
+	 */
 	protected static void checkComponentDefinitionMapsTos(ComponentDefinition componentDefinition,MapsTo mapsTo) throws SBOLValidationException {
 		for (Component component : componentDefinition.getComponents()) {
 			for (MapsTo mapsTo2 : component.getMapsTos()) {
@@ -244,6 +249,12 @@ public class SBOLValidate {
 		}
 	}
 
+	/**
+	 * @param sbolDocument
+	 * @param componentDefinition
+	 * @param visited
+	 * @throws SBOLValidationException if either of the following SBOL validation rule was violated: 10603, 10605.
+	 */
 	protected static void checkComponentDefinitionCycle(SBOLDocument sbolDocument,
 			ComponentDefinition componentDefinition, Set<URI> visited) throws SBOLValidationException {
 		if (componentDefinition==null) return;
@@ -301,25 +312,32 @@ public class SBOLValidate {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (topLevel.isSetWasDerivedFrom()) {
 				if (!checkWasDerivedFromVersion(sbolDocument,topLevel,topLevel.getWasDerivedFrom())) {
-					errors.add(new SBOLValidationException("sbol-10207", topLevel).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10302", topLevel).getExceptionMessage());
 				}
 			}
 		}
 	}
 
+	/**
+	 * @param sbolDocument
+	 * @param identified
+	 * @param wasDerivedFrom
+	 * @param visited
+	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 10209, 10304.
+	 */
 	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument,
 			Identified identified, URI wasDerivedFrom, Set<URI> visited) throws SBOLValidationException {
 		visited.add(identified.getIdentity());
 		TopLevel tl = sbolDocument.getTopLevel(wasDerivedFrom);
 		if (tl!=null) {
 			if (visited.contains(tl.getIdentity())) {
-				throw new SBOLValidationException("sbol-10209",identified);
+				throw new SBOLValidationException("sbol-10303",identified);
 			}
 			if (tl.isSetWasDerivedFrom()) {
 				try {
 					checkWasDerivedFromCycle(sbolDocument,tl,tl.getWasDerivedFrom(),visited);
 				} catch (SBOLValidationException e) {
-					throw new SBOLValidationException("sbol-10210",identified);
+					throw new SBOLValidationException("sbol-10304",identified);
 				}
 			} else {
 				return;
@@ -360,29 +378,27 @@ public class SBOLValidate {
 		}
 	}
 
-	static void checkSequenceConstraints(ComponentDefinition componentDefinition) {
-		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
-			SequenceAnnotation saSubject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getSubject());
-			SequenceAnnotation saObject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getObject());
-			if (saSubject==null || saObject==null) return;
-			if (sequenceConstraint.getRestriction().equals(RestrictionType.PRECEDES)) {
-				if (saObject.compareTo(saSubject) < 0) {
-					errors.add(new SBOLValidationException("sbol-11409", sequenceConstraint).getExceptionMessage());
-				}
-			} else if (sequenceConstraint.getRestriction().equals(RestrictionType.SAME_ORIENTATION_AS)) {
-				for (Location locSubject : saSubject.getLocations()) {
-					for (Location locObject : saObject.getLocations()) {
-						if (!locSubject.getOrientation().equals(locObject.getOrientation())) {
-							errors.add(new SBOLValidationException("sbol-11410", sequenceConstraint).getExceptionMessage());
-						}
+	static void checkSequenceConstraint(ComponentDefinition componentDefinition,SequenceConstraint sequenceConstraint) throws SBOLValidationException {
+		SequenceAnnotation saSubject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getSubject());
+		SequenceAnnotation saObject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getObject());
+		if (saSubject==null || saObject==null) return;
+		if (sequenceConstraint.getRestriction().equals(RestrictionType.PRECEDES)) {
+			if (saObject.compareTo(saSubject) < 0) {
+				throw new SBOLValidationException("sbol-11409", sequenceConstraint);
+			}
+		} else if (sequenceConstraint.getRestriction().equals(RestrictionType.SAME_ORIENTATION_AS)) {
+			for (Location locSubject : saSubject.getLocations()) {
+				for (Location locObject : saObject.getLocations()) {
+					if (!locSubject.getOrientation().equals(locObject.getOrientation())) {
+						throw new SBOLValidationException("sbol-11410", sequenceConstraint);
 					}
 				}
-			} else if (sequenceConstraint.getRestriction().equals(RestrictionType.OPPOSITE_ORIENTATION_AS)) {
-				for (Location locSubject : saSubject.getLocations()) {
-					for (Location locObject : saObject.getLocations()) {
-						if (locSubject.getOrientation().equals(locObject.getOrientation())) {
-							errors.add(new SBOLValidationException("sbol-11411", sequenceConstraint).getExceptionMessage());
-						}
+			}
+		} else if (sequenceConstraint.getRestriction().equals(RestrictionType.OPPOSITE_ORIENTATION_AS)) {
+			for (Location locSubject : saSubject.getLocations()) {
+				for (Location locObject : saObject.getLocations()) {
+					if (locSubject.getOrientation().equals(locObject.getOrientation())) {
+						throw new SBOLValidationException("sbol-11411", sequenceConstraint);
 					}
 				}
 			}
@@ -605,17 +621,19 @@ public class SBOLValidate {
 					}
 				}
 			}
-			/* TODO: no rule for this currently
+			// Cannot check this one separately, since it either violates 10516 also OR it violates
+			// best practices and does not use encodings from Table 1 or types from Table 2.
+			/*
 			if ((!componentDefinition.getTypes().contains(ComponentDefinition.DNA) &&
 					!componentDefinition.getTypes().contains(ComponentDefinition.RNA))
 					&& foundNucleic) {
-				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getExceptionMessage());
 			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.PROTEIN) && foundProtein) {
-				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getExceptionMessage());
 			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && foundSmiles) {
-				errors.add(new SBOLValidationException("sbol-10514", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getExceptionMessage());
 			}
-			 */
+			*/
 		}
 	}
 	
@@ -715,7 +733,14 @@ public class SBOLValidate {
 
 	static void validateSequenceConstraints(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
-			checkSequenceConstraints(componentDefinition);
+			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
+				try {
+					checkSequenceConstraint(componentDefinition,sequenceConstraint);
+				}
+				catch (SBOLValidationException e) {
+					errors.add(e.getExceptionMessage());
+				}
+			}
 		}
 	}
 
@@ -1049,15 +1074,12 @@ public class SBOLValidate {
 	public static void validateSBOL(SBOLDocument sbolDocument, boolean complete, boolean compliant,
 			boolean bestPractice) {
 		clearErrors();
-		// TODO: check if these are capable of being checked during construction and/or read
-		// if not during read, should check after read
-		// Maybe on write too
-		validateSequenceEncodings(sbolDocument);
+		//validateSequenceEncodings(sbolDocument);
+		//validateSequenceConstraints(sbolDocument);
 		validateWasDerivedFromVersion(sbolDocument);
 		validateCircularReferences(sbolDocument);
 		validateURIuniqueness(sbolDocument);
 		validatePersistentIdentityUniqueness(sbolDocument);
-		validateSequenceConstraints(sbolDocument);
 		validateMapsTos(sbolDocument);
 		if (compliant) validateCompliance(sbolDocument);
 		if (complete) validateCompleteness(sbolDocument);
@@ -1346,6 +1368,7 @@ public class SBOLValidate {
 			SBOLReader.setTypesInURI(typesInURI);
 			SBOLReader.setVersion(version);
 			SBOLReader.setKeepGoing(keepGoing);
+			SBOLWriter.setKeepGoing(keepGoing);
 			if (FASTA.isFastaFile(fileName)) {
 				System.err.println("Converting FASTA to SBOL Version 2");
 			} else if (GenBank.isGenBankFile(fileName)) {
@@ -1386,6 +1409,11 @@ public class SBOLValidate {
 					} else {
 						System.out.println("Validation successful, no errors.");
 						SBOLWriter.write(doc, outputFile, SBOLDocument.RDFV1);
+					}
+					if (SBOLWriter.getNumErrors()!=0) {
+						for (String error : SBOLWriter.getErrors()) {
+							System.err.println(error);
+						}
 					}
 				} else if (fastaOut) {
 					if (outputFile.equals("")) {

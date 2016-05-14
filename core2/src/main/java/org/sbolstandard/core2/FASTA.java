@@ -116,6 +116,25 @@ class FASTA {
 		return false;
 	}
 	
+	static Sequence createSequence(SBOLDocument doc,String URIprefix,String displayId,String version,
+			String elements,URI encoding) throws SBOLValidationException {
+		try {
+			Sequence sequence = doc.createSequence(URIprefix,displayId,version,elements,encoding);
+			return sequence;
+		} catch (SBOLValidationException e) {
+			if (e.getMessage().contains("sbol-10405")) {
+				if (encoding.equals(Sequence.IUPAC_DNA)) {
+					Sequence sequence = doc.createSequence(URIprefix,displayId,version,elements,Sequence.IUPAC_PROTEIN);
+					return sequence;
+				} else {
+					Sequence sequence = doc.createSequence(URIprefix,displayId,version,elements,Sequence.IUPAC_DNA);
+					return sequence;
+				}
+			}
+			throw new SBOLValidationException(e.getMessage());
+		}
+	}
+	
 	static void read(SBOLDocument doc,String stringBuffer,String URIprefix,String version,URI encoding) throws SBOLValidationException, IOException
 	{
 		// reset the global static variables needed for parsing
@@ -137,7 +156,7 @@ class FASTA {
 				if (sequenceMode) {
 					sequenceMode = false;
 					displayId = URIcompliance.fixDisplayId(description);
-					Sequence sequence = doc.createSequence(URIprefix,displayId,version,sbSequence.toString(),encoding);
+					Sequence sequence = createSequence(doc,URIprefix,displayId,version,sbSequence.toString(),encoding);
 					sequence.setDescription(description);
 					description = "";
 					sbSequence = new StringBuilder();
@@ -147,7 +166,7 @@ class FASTA {
 				if (sequenceMode) {
 					sequenceMode = false;
 					displayId = URIcompliance.fixDisplayId(description);
-					Sequence sequence = doc.createSequence(URIprefix,displayId,version,sbSequence.toString(),encoding);
+					Sequence sequence = createSequence(doc,URIprefix,displayId,version,sbSequence.toString(),encoding);
 					sequence.setDescription(description);
 					description = "";
 					sbSequence = new StringBuilder();
@@ -163,7 +182,7 @@ class FASTA {
 			}
 		}
 		displayId = URIcompliance.fixDisplayId(description);
-		Sequence sequence = doc.createSequence(URIprefix,displayId,version,sbSequence.toString(),encoding);
+		Sequence sequence = createSequence(doc,URIprefix,displayId,version,sbSequence.toString(),encoding);
 		sequence.setDescription(description);
 		br.close();
 	}
@@ -199,7 +218,6 @@ class FASTA {
 //		if (URIPrefix==null) {
 //			throw new SBOLConversionException("No URI prefix has been provided.");
 //		}
-//		// TODO: add more URIprefix validations (e.g. well-formed HTTP)???
 //		
 //		// if the URIprefix is valid, than we set it in the document 
 //		doc.setDefaultURIprefix(URIPrefix);

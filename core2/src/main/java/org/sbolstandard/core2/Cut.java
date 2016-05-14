@@ -28,24 +28,19 @@ public class Cut extends Location{
 	}
 
 	/**
-	 * Returns the {@code at} property of this Cut object.
+	 * Returns the at property of this Cut instance.
 	 *
-	 * @return the {@code at} property of this Cut object
+	 * @return the at property of this Cut instance
 	 */
 	public int getAt() {
 		return at;
 	}
 
 	/**
-	 * Sets the {@code at} property of this Cut object to the given one.
-	 * <p>
-	 * If this Cut object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the at property of this Cut instance to the given one.
 	 *
-	 * @param at The discrete position that that corresponds to the index of a character in the elements String of a Sequence.
-	 * @throws SBOLValidationException if the given {@code at} value is less than 0
+	 * @param at the given at property
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 11202. 
 	 */
 	public void setAt(int at) throws SBOLValidationException {
 		if (at<0) {
