@@ -423,64 +423,65 @@ public class Annotation {
 			if (other.value != null)
 				return false;
 		} else if (!value.equals(other.value)) {
-			return false;
-//			if (!this.getQName().equals(other.getQName())) {
-//				return false;
-//			} else if ((this.getValue().getValue() instanceof StringLiteral<?>) &&
-//					(other.getValue().getValue() instanceof StringLiteral<?>)) {
-//				if (!this.getStringValue().equals(other.getStringValue())) {
-//					return false;
-//				}
-//			} else if ((this.getValue().getValue() instanceof BooleanLiteral<?>) &&
-//					(other.getValue().getValue() instanceof BooleanLiteral<?>)) {
-//				if (!this.getBooleanValue().equals(other.getBooleanValue())) {
-//					return false;
-//				}
-//			} else if ((this.getValue().getValue() instanceof DoubleLiteral<?>) &&
-//					(other.getValue().getValue() instanceof DoubleLiteral<?>)) {
-//				if (!this.getDoubleValue().equals(other.getDoubleValue())) {
-//					return false;
-//				}
-//			} else if ((this.getValue().getValue() instanceof IntegerLiteral<?>) &&
-//					(other.getValue().getValue() instanceof IntegerLiteral<?>)) {
-//				if (!this.getIntegerValue().equals(other.getIntegerValue())) {
-//					return false;
-//				}
-//			} else if ((this.getValue().getValue() instanceof UriLiteral<?>) &&
-//					(other.getValue().getValue() instanceof UriLiteral<?>)) {
-//				if (!this.getURIValue().equals(other.getURIValue())) {
-//					return false;
-//				}
-//			} else if ((this.getValue().getValue() instanceof NestedDocument<?>) &&
-//					(other.getValue().getValue() instanceof NestedDocument<?>)) {
-//				if (!this.getNestedQName().equals(other.getNestedQName())) {
-//					return false;
-//				}
-//				if (!this.getNestedIdentity().equals(other.getNestedIdentity())) {
-//					return false;
-//				}
-//				if (this.getAnnotations().size()!=other.getAnnotations().size()) {
-//					return false;
-//				}
-//				boolean equal = true;
-//				for (Annotation annotation1 : this.getAnnotations()) {
-//					boolean foundIt = false;
-//					for (Annotation annotation2 : other.getAnnotations()) {
-//						if (annotation1.equals(annotation2)) {
-//							foundIt = true;
-//							break;
-//						}
-//					}
-//					if (foundIt==false) {
-//						equal = false;
-//						break;
-//					}
-//				}
-//				return equal;
-//			} else {
-//				return false;
-//			}
-//			return true;
+			// TODO: insert this line and comment out rest when sbol-data 0.1.3 is available
+			// return false;
+			if (!this.getQName().equals(other.getQName())) {
+				return false;
+			} else if ((this.getValue().getValue() instanceof StringLiteral<?>) &&
+					(other.getValue().getValue() instanceof StringLiteral<?>)) {
+				if (!this.getStringValue().equals(other.getStringValue())) {
+					return false;
+				}
+			} else if ((this.getValue().getValue() instanceof BooleanLiteral<?>) &&
+					(other.getValue().getValue() instanceof BooleanLiteral<?>)) {
+				if (!this.getBooleanValue().equals(other.getBooleanValue())) {
+					return false;
+				}
+			} else if ((this.getValue().getValue() instanceof DoubleLiteral<?>) &&
+					(other.getValue().getValue() instanceof DoubleLiteral<?>)) {
+				if (!this.getDoubleValue().equals(other.getDoubleValue())) {
+					return false;
+				}
+			} else if ((this.getValue().getValue() instanceof IntegerLiteral<?>) &&
+					(other.getValue().getValue() instanceof IntegerLiteral<?>)) {
+				if (!this.getIntegerValue().equals(other.getIntegerValue())) {
+					return false;
+				}
+			} else if ((this.getValue().getValue() instanceof UriLiteral<?>) &&
+					(other.getValue().getValue() instanceof UriLiteral<?>)) {
+				if (!this.getURIValue().equals(other.getURIValue())) {
+					return false;
+				}
+			} else if ((this.getValue().getValue() instanceof NestedDocument<?>) &&
+					(other.getValue().getValue() instanceof NestedDocument<?>)) {
+				if (!this.getNestedQName().equals(other.getNestedQName())) {
+					return false;
+				}
+				if (!this.getNestedIdentity().equals(other.getNestedIdentity())) {
+					return false;
+				}
+				if (this.getAnnotations().size()!=other.getAnnotations().size()) {
+					return false;
+				}
+				boolean equal = true;
+				for (Annotation annotation1 : this.getAnnotations()) {
+					boolean foundIt = false;
+					for (Annotation annotation2 : other.getAnnotations()) {
+						if (annotation1.equals(annotation2)) {
+							foundIt = true;
+							break;
+						}
+					}
+					if (foundIt==false) {
+						equal = false;
+						break;
+					}
+				}
+				return equal;
+			} else {
+				return false;
+			}
+			return true;
 		}
 		return true;
 	}

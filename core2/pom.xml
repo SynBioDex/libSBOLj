@@ -11,7 +11,7 @@
 	<artifactId>libSBOLj</artifactId>
 
 	<properties>
-		<sbol-data.version>0.1.3-SNAPSHOT</sbol-data.version>
+		<sbol-data.version>0.1.2</sbol-data.version>
 	</properties>
 
 
