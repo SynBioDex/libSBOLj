@@ -3,11 +3,12 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
+ * Represents all access types for a {@link ComponentInstance} object.
+ * 
  * @author Zhen Zhang
  * @author Chris Myers
  * @version 2.1
  */
-
 public enum AccessType {
 	/**
 	 * The "public" access type indicates that the ComponentInstance MAY be referred to by remote references in MapsTo objects.
