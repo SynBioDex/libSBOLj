@@ -2,7 +2,9 @@ package org.oboparser.obo;
 
 import java.io.PrintWriter;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class OBOOntology extends OBOStanza {
@@ -60,7 +62,7 @@ public class OBOOntology extends OBOStanza {
 		if (child.hasValue("replaced_by")) {
 			for (OBOValue newChildId : child.values("replaced_by")) {
 				// child.values("replaced_by") should always return a list with a single element.
-				System.out.println(child.getId() + " is replaced by " + newChildId.getValue().trim());
+				//System.out.println(child.getId() + " is replaced by " + newChildId.getValue().trim());
 				child = this.getStanza(newChildId.getValue().trim());
 			}
 		}
@@ -86,4 +88,20 @@ public class OBOOntology extends OBOStanza {
 		}
 	}
 
+	public Set<String> getDescendantsOf(OBOStanza terminateParent) {
+		Set<String> result = new HashSet<String>();
+		for (OBOStanza child : getStanzas()) {
+			if (!child.hasValue("is_a")) { 
+				continue;
+			}
+			for (OBOValue immediateParentInfo : child.values("is_a")) {
+				String immediateParentId = immediateParentInfo.getValue().trim(); 
+				if (immediateParentId.equals(terminateParent.getId().trim())) {
+					result.add(child.getId());
+					result.addAll(getDescendantsOf(child));
+				}
+			}
+		}
+		return result;
+	}
 }

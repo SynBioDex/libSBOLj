@@ -34,23 +34,19 @@ public class GenericTopLevel extends TopLevel{
 	}
 
 	/**
-	 * Returns the RDF type property of this GenericTopLevel object.
+	 * Returns the RDF type property of this GenericTopLevel instance.
 	 *
-	 * @return the RDF type property of this GenericTopLevel object.
+	 * @return the RDF type property of this GenericTopLevel instance
 	 */
 	public QName getRDFType() {
 		return rdfType;
 	}
 
 	/**
-	 * Set the RDF type property of this GenericTopLevel object to the specified one.
-	 * <p>
-	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
-	 * @param rdfType the RDF type property of this object
-	 * @throws SBOLValidationException if the given {@code rdfType} argument is {@code null}
+	 * Set the RDF type property of this GenericTopLevel instance to the specified one.
+	 * 
+	 * @param rdfType the RDF type property
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12302.
 	 */
 	public void setRDFType(QName rdfType) throws SBOLValidationException {
 		if (rdfType == null) {
@@ -137,6 +133,9 @@ public class GenericTopLevel extends TopLevel{
 		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.Identified#toString()
+	 */
 	@Override
 	public String toString() {
 		return "GenericTopLevel ["

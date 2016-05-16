@@ -131,7 +131,7 @@ public class SBOLValidationException extends Exception {
 			if (validationRules == null) {
 				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
 				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
-						getResourceAsStream("/validation/rules.txt"));
+						getResourceAsStream("/validation/rules2p0p1.txt"));
 				try {					
 					parse(new BufferedReader(f));
 					//writeRulesToXML("rules.xml");
@@ -160,7 +160,7 @@ public class SBOLValidationException extends Exception {
 			if (validationRules == null) {
 				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
 				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
-						getResourceAsStream("/validation/rules.txt"));
+						getResourceAsStream("/validation/rules2p0p1.txt"));
 				try {					
 					parse(new BufferedReader(f));
 					//writeRulesToXML("rules.xml");

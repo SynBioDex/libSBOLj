@@ -433,7 +433,7 @@ reference: Section 7.7.1 on page 24
 [ComponentInstance]
 id: sbol-10604
 condition: weak required
-The URI contained by the definition property MUST refer to a
+description: The URI contained by the definition property MUST refer to a
 ComponentDefinition object.
 reference: Section 7.7.1 on page 24
 
@@ -521,7 +521,7 @@ reference: Section 7.7.3 on page 26
 [MapsTo]
 id: sbol-10809
 condition: weak required
-If a MapsTo is contained by a Module, then the remote property of the
+description: If a MapsTo is contained by a Module, then the remote property of the
 MapsTo MUST refer to a FunctionalComponent in the ModuleDefinition
 that is referenced by the definition property of the Module.
 reference: Section 7.7.3 on page 26
@@ -529,7 +529,7 @@ reference: Section 7.7.3 on page 26
 [MapsTo]
 id: sbol-10810
 condition: strong required
-description: The refinement property of a MapsTo is REQUIRED and MUST contain a URI from Table 5. Reference: Section 7.7.3 on page 26.
+description: The refinement property of a MapsTo is REQUIRED and MUST contain a URI from Table 5.
 reference: Section 7.7.3 on page 26
 
 [MapsTo]

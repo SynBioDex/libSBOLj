@@ -156,8 +156,10 @@ public class ComponentDefinition extends TopLevel {
 	 *
 	 * @param types the set of types to be set
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
 	 * <li>if the following SBOL validation rule was violated: 10502.</li>
-	 * <li>an SBOL validation rule violation occurred in {@link #addType(URI)}</li> 
+	 * <li>an SBOL validation rule violation occurred in {@link #addType(URI)}</li>
+	 * </ul> 
 	 */
 	public void setTypes(Set<URI> types) throws SBOLValidationException {
 		if (types==null || types.size()==0) {
@@ -497,8 +499,10 @@ public class ComponentDefinition extends TopLevel {
 	 * @param locations the locations property of the sequence annotation to be created
 	 * @return the created sequence annotation
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
 	 * <li>an SBOL validation rule violation occurred in {@link SequenceAnnotation#SequenceAnnotation(URI, Set)}</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #addSequenceAnnotation(SequenceAnnotation)}</li>
+	 * </ul>
 	 */
 	SequenceAnnotation createSequenceAnnotation(URI identity, Set<Location> locations) throws SBOLValidationException {
 		SequenceAnnotation sequenceAnnotation = new SequenceAnnotation(identity, locations);
@@ -514,10 +518,12 @@ public class ComponentDefinition extends TopLevel {
 	 * @param location the location of the sequence annotation to be created
 	 * @return the created sequence annotation
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <ul>
 	 * <li>an SBOL validation rule violation occurred in {@link URIcompliance#createCompliantURI(String, String, String)};</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #createSequenceAnnotation(URI, Set)};</li>
 	 * <li>an SBOL validation rule violation occurred in {@link SequenceAnnotation#setDisplayId(String)}; or</li>
 	 * <li>an SBOL validation rule violation occurred in {@link SequenceAnnotation#setVersion(String)}.</li>
+	 * </ul>
 	 */
 	SequenceAnnotation createSequenceAnnotation(String displayId, Location location) throws SBOLValidationException {
 		String URIprefix = this.getPersistentIdentity().toString();
@@ -717,8 +723,10 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Adds the specified instance to the list of sequenceAnnotations.
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
 	 * <li>any of the following SBOL validation rules was violated: 10522, 10905; or</li>
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}.</li>
+	 * </ul>
 	 */
 	void addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) throws SBOLValidationException {
 		sequenceAnnotation.setSBOLDocument(this.sbolDocument);
@@ -832,7 +840,8 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
-	 * Returns a sorted list of components owned by this component definition.
+	 * Returns a sorted list of components owned by this component definition. The order is determined by the
+	 * order of appearance of components on a DNA strand  
 	 *
 	 * @return a sorted list of components owned by this component definition
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10605.
@@ -894,7 +903,9 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Returns a sorted list of sequence annotations owned by this
-	 * component definition.
+	 * component definition. The order is determined by each 
+	 * sequence annotation's location value(s), and the sorted list 
+	 * has an ascending ordering of sequence annotations. 
 	 *
 	 * @return a sorted list of sequence annotations owned by this
 	 *         component definition.
@@ -954,8 +965,10 @@ public class ComponentDefinition extends TopLevel {
 	 * @param componentDefinitionURI parent ComponentDefinition
 	 * @return a Component instance
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
 	 * <li>an SBOL validation rule violation occurred in {@link Component#Component(URI, AccessType, URI)}</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #addComponent(Component)}</li>
+	 * </ul>
 	 */
 	Component createComponent(URI identity, AccessType access, URI componentDefinitionURI) throws SBOLValidationException {
 		Component component = new Component(identity, access, componentDefinitionURI);
@@ -980,8 +993,10 @@ public class ComponentDefinition extends TopLevel {
 	 * @param version the version for the component to be created
 	 * @return the created component
 	 * @throws SBOLValidationException if either of the following condition is satisfied: 
+	 * <ul>
 	 * <li>if either of the following SBOL validation rules was violated: 10204, 10206; or</li>
 	 * <li>an SBOL validation exception occurred in {@link #createComponent(String, AccessType, URI)}</li>
+	 * </ul>
 	 */
 	public Component createComponent(String displayId, AccessType access,
 			String definitionId, String version) throws SBOLValidationException {
@@ -1036,8 +1051,10 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Adds the given component to the list of components.
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
 	 * <li>any of the following SBOL validation rules was violated: 10604, 10605, 10803</li>
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
+	 * </ul>
 	 */
 	void addComponent(Component component) throws SBOLValidationException {
 		component.setSBOLDocument(this.sbolDocument);
@@ -1073,9 +1090,11 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * @param component
 	 * @throws SBOLValidationException if any of the following conditions is satisfied:
+	 * <ul>
 	 * <li>if the following SBOL validation rules was violated: 10603, 10604;</li>
 	 * <li>if an SBOL validation rule violation occurred in {@link SBOLValidate#checkComponentDefinitionCycle}; or </li>
 	 * <li>if an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
+	 * </ul>
 	 */
 	void addComponentNoCheck(Component component) throws SBOLValidationException {
 		component.setSBOLDocument(this.sbolDocument);
@@ -1207,9 +1226,11 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * @param components
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <ul>
 	 * <li>if an SBOL validation rule violation occurred in {@link #clearComponents()}</li>
 	 * <li>if an SBOL validation rule violation occurred in {@link #addComponentNoCheck(Component)}</li>
 	 * <li>if an SBOL validation rule violation occurred in {@link #checkMapsTosLocalURIs()}</li>
+	 * </ul>
 	 */
 	void setComponents(Set<Component> components) throws SBOLValidationException {
 		clearComponents();
@@ -1240,8 +1261,10 @@ public class ComponentDefinition extends TopLevel {
 	 * @param object
 	 * @return the created sequence constraint
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
 	 * <li>{@link SequenceConstraint#SequenceConstraint(URI, RestrictionType, URI, URI)}</li>
 	 * <li>{@link #addSequenceConstraint(SequenceConstraint)}</li>
+	 * </ul>
 	 */
 	SequenceConstraint createSequenceConstraint(URI identity, RestrictionType restriction, URI subject, URI object) throws SBOLValidationException {
 		SequenceConstraint sequenceConstraint = new SequenceConstraint(identity, restriction, subject, object);
@@ -1261,10 +1284,12 @@ public class ComponentDefinition extends TopLevel {
 	 * the sequence constraint.
 	 * <p>
 	 * This method automatically creates a subject component if all of the following conditions are satisfied:
+	 * <ul>
 	 * <li>the associated SBOLDocument, i.e., the SBOLDocument instance hosting this component definition, is not {@code null};</li>
 	 * <li>if default components should be automatically created when not present for the associated SBOLDocument instance,
 	 * i.e., {@link SBOLDocument#isCreateDefaults} returns {@code true}; and</li>
 	 * <li>if this component definition does not already have a component with the created compliant subject component URI.</li> 
+	 * </ul>
 	 * An object component is automatically created if the similar set of conditions hold.
 	 *
 	 * @param displayId the display ID of the sequence constraint to be created
@@ -1273,9 +1298,11 @@ public class ComponentDefinition extends TopLevel {
 	 * @param objectId the display ID of the object component
 	 * @return the created sequence constraint
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <ul>
 	 * <li>if any of the following SBOL validation rules was violated: 
-	 * 10201, 10202, 10204, 10206, 10602, 10604, 10605, 10607, 10803; or<\li>
-	 * <li>an SBOL validation rule violation occurred in {@link #createSequenceConstraint(String, RestrictionType, URI, URI)}.<\li>
+	 * 10201, 10202, 10204, 10206, 10602, 10604, 10605, 10607, 10803; or</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #createSequenceConstraint(String, RestrictionType, URI, URI)}.</li>
+	 * </ul>
 	 */
 	public SequenceConstraint createSequenceConstraint(String displayId,
 			RestrictionType restriction, String subjectId, String objectId) throws SBOLValidationException {
@@ -1323,8 +1350,10 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * @param sequenceConstraint
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <ul>
 	 * <li>if any of the following SBOL validation rule was violated: 11403, 11405, 11406; or</li>
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}.</li>
+	 * </ul>
 	 */
 	void addSequenceConstraint(SequenceConstraint sequenceConstraint) throws SBOLValidationException {
 		sequenceConstraint.setSBOLDocument(this.sbolDocument);

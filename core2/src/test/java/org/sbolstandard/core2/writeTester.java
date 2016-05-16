@@ -30,8 +30,23 @@ class writeTester {
 	 */
 	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException, IOException
 	{
+		SequenceOntology seqOn = new SequenceOntology();
+		for (URI child : seqOn.getDescendantURIsOf(SequenceOntology.TERMINATOR)) {
+			System.out.println(child.toString());
+		}
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix("http://www.foo.org");
+		ComponentDefinition cd = document.createComponentDefinition("myCD", ComponentDefinition.DNA);
+		document.createComponentDefinition("mySubCD", ComponentDefinition.DNA);
+		Component comp = cd.createComponent("myComp", AccessType.PRIVATE, "mySubCD");
+		comp.addRole(SequenceOntology.PROMOTER);
+		comp.setRoleIntegration(RoleIntegrationType.MERGEROLES);
+		SequenceAnnotation sa = cd.createSequenceAnnotation("mySeqAn", "myLoc");
+		sa.addRole(SequenceOntology.PROMOTER);
+		sa.setRoleIntegration(RoleIntegrationType.OVERRIDEROLES);
+		SBOLDocument actual = SBOLTestUtils.writeAndRead(document,true);
+		actual.write(System.out);
+		
 		Sequence seq = document.createSequence("displayID", "ACGT", org.sbolstandard.core2.Sequence.IUPAC_DNA);
 		document.addNamespace(URI.create("http://myannotation.org/"), "annot");
 		Annotation an = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), "1.0");

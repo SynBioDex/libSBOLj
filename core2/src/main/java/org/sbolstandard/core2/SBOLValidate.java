@@ -312,7 +312,7 @@ public class SBOLValidate {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (topLevel.isSetWasDerivedFrom()) {
 				if (!checkWasDerivedFromVersion(sbolDocument,topLevel,topLevel.getWasDerivedFrom())) {
-					errors.add(new SBOLValidationException("sbol-10207", topLevel).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10302", topLevel).getExceptionMessage());
 				}
 			}
 		}
@@ -323,7 +323,7 @@ public class SBOLValidate {
 	 * @param identified
 	 * @param wasDerivedFrom
 	 * @param visited
-	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 10209, 10210.
+	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 10209, 10304.
 	 */
 	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument,
 			Identified identified, URI wasDerivedFrom, Set<URI> visited) throws SBOLValidationException {
@@ -331,13 +331,13 @@ public class SBOLValidate {
 		TopLevel tl = sbolDocument.getTopLevel(wasDerivedFrom);
 		if (tl!=null) {
 			if (visited.contains(tl.getIdentity())) {
-				throw new SBOLValidationException("sbol-10209",identified);
+				throw new SBOLValidationException("sbol-10303",identified);
 			}
 			if (tl.isSetWasDerivedFrom()) {
 				try {
 					checkWasDerivedFromCycle(sbolDocument,tl,tl.getWasDerivedFrom(),visited);
 				} catch (SBOLValidationException e) {
-					throw new SBOLValidationException("sbol-10210",identified);
+					throw new SBOLValidationException("sbol-10304",identified);
 				}
 			} else {
 				return;
