@@ -20,7 +20,7 @@ public class CollectionTest {
 		String prURI="http://partsregistry.org";
 		doc = new SBOLDocument();
 		doc.setDefaultURIprefix(prURI);
-		
+		doc.setComplete(true);
 		TetR_promoter = doc.createComponentDefinition("TetR_promoter","", ComponentDefinition.DNA); 
 		gRNA_b_promoter = doc.createComponentDefinition("gRNA_b_promoter","", ComponentDefinition.DNA); 
 		CRa_U6_promoter = doc.createComponentDefinition("CRa_U6","",ComponentDefinition.DNA);
@@ -45,8 +45,11 @@ public class CollectionTest {
 	@Test
 	public void test_toString()
 	{
-		String promoters_collec_string = "promoters" + '@' + Integer.toHexString(promoters.hashCode());
-		equals(promoters.toString()==promoters_collec_string);
+		assertTrue(promoters.toString().length() != 0);
+		assertNotNull(promoters.toString());
+		assertTrue(promoters.toString().contains("identity="+promoters.getIdentity()));
+		assertTrue(!promoters.toString().contains("description="));
+		assertTrue(!promoters.toString().contains("name="));
 	}
 	
 

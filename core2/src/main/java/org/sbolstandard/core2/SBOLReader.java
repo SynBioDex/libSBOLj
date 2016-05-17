@@ -1438,7 +1438,7 @@ public class SBOLReader
 				}
 				type.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Model.roles))
+			else if (namedProperty.getName().equals(Sbol2Terms.ComponentDefinition.roles))
 			{
 				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
 					throw new SBOLValidationException("sbol-10507", topLevel.getIdentity());
@@ -1681,6 +1681,8 @@ public class SBOLReader
 		URI componentURI 	   = null;
 		String version   	   = null;
 		URI wasDerivedFrom 	   = null;
+		Set<URI> roles 	  	   = new HashSet<>();
+		URI roleIntegration = null;
 		Set<Location> locations = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
@@ -1709,6 +1711,22 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10206", sequenceAnnotation.getIdentity());
 				}
 				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.SequenceAnnotation.roles))
+			{
+				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+					// TODO: need a proper validation error number
+					throw new SBOLValidationException("TBD", sequenceAnnotation.getIdentity());
+				}
+				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.SequenceAnnotation.roleIntegration))
+			{
+				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+					// TODO: need a proper validation error number
+					throw new SBOLValidationException("TBD", sequenceAnnotation.getIdentity());
+				}
+				roleIntegration = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Location.Location))
 			{
@@ -1773,6 +1791,15 @@ public class SBOLReader
 			s.setWasDerivedFrom(wasDerivedFrom);
 		if (!annotations.isEmpty())
 			s.setAnnotations(annotations);
+		if (!roles.isEmpty())
+			s.setRoles(roles);
+		if (roleIntegration != null)
+			try {
+				s.setRoleIntegration(RoleIntegrationType.convertToRoleIntegrationType(roleIntegration));
+			} catch (SBOLValidationException e) {
+				// TODO: need proper validation error
+				throw new SBOLValidationException("TBD",s);
+			}
 		return s;
 	}
 
@@ -2130,7 +2157,8 @@ public class SBOLReader
 		URI subComponentURI    = null;
 		AccessType access 	   = null;
 		URI wasDerivedFrom 	   = null;
-
+		Set<URI> roles 	  	   = new HashSet<>();
+		URI roleIntegration = null;
 		List<Annotation> annotations = new ArrayList<>();
 		Set<MapsTo> mapsTo 		 = new HashSet<>();
 
@@ -2160,6 +2188,22 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10204", component.getIdentity());
 				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Component.roles))
+			{
+				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+					// TODO: need a proper validation error number
+					throw new SBOLValidationException("TBD", component.getIdentity());
+				}
+				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Component.roleIntegration))
+			{
+				if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+					// TODO: need a proper validation error number
+					throw new SBOLValidationException("TBD", component.getIdentity());
+				}
+				roleIntegration = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.ComponentInstance.access))
 			{
@@ -2231,6 +2275,15 @@ public class SBOLReader
 			c.setDisplayId(displayId);
 		if (access != null)
 			c.setAccess(access);
+		if (!roles.isEmpty())
+			c.setRoles(roles);
+		if (roleIntegration != null)
+			try {
+				c.setRoleIntegration(RoleIntegrationType.convertToRoleIntegrationType(roleIntegration));
+			} catch (SBOLValidationException e) {
+				// TODO: need proper validation error
+				throw new SBOLValidationException("TBD",c);
+			}
 		if (!mapsTo.isEmpty())
 			c.setMapsTos(mapsTo);
 		if (subComponentURI != null)

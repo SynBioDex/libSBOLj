@@ -60,7 +60,7 @@ public abstract class Location extends Identified implements Comparable<Location
 
 	/**
 	 * Sets the orientation property of this location to the given one.
-	 *
+	 * 
 	 * @param orientation the orientation to set to
 	 */
 	public void setOrientation(OrientationType orientation) {
@@ -68,7 +68,7 @@ public abstract class Location extends Identified implements Comparable<Location
 	}
 
 	/**
-	 * Sets the orientation property of this object to {@code null}.
+	 * Sets the orientation property of this location to {@code null}.
 	 */
 	public void unsetOrientation() {
 		orientation = null;

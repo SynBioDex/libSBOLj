@@ -501,6 +501,13 @@ public class SBOLWriter
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, s);
+			for (URI roles : s.getRoles())
+			{
+				list.add(NamedProperty(Sbol2Terms.SequenceAnnotation.roles, roles));
+			}
+			if (s.isSetRoleIntegration()) {
+				list.add(NamedProperty(Sbol2Terms.Component.roleIntegration, RoleIntegrationType.convertToURI(s.getRoleIntegration())));
+			}
 			for (Location location : s.getLocations()) {
 				list.add(getLocation(location));
 			}
@@ -549,6 +556,13 @@ public class SBOLWriter
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, s);
+			for (URI roles : s.getRoles())
+			{
+				list.add(NamedProperty(Sbol2Terms.Component.roles, roles));
+			}
+			if (s.isSetRoleIntegration()) {
+				list.add(NamedProperty(Sbol2Terms.Component.roleIntegration, RoleIntegrationType.convertToURI(s.getRoleIntegration())));
+			}
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, AccessType.convertToURI(s.getAccess())));
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinitionURI()));
 			List<NestedDocument<QName>> referenceList = getMapsTo(s.getMapsTos());

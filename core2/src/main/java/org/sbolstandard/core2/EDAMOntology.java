@@ -6,7 +6,9 @@ import java.net.URI;
 //import java.util.HashMap;
 //import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.oboparser.obo.OBOOntology;
 import org.oboparser.obo.OBOParser;
@@ -209,6 +211,62 @@ public class EDAMOntology {
 		String childId = getId(childURI);
 		String parentId = getId(parentURI);
 		return isDescendantOf(childId,parentId);
+	}
+	
+	/**
+	 * Returns a set of child ids that are descendants of a given parent id. 
+	 * @param parentId the id of the parent term
+	 * @return a set of child ids that are descendants of a given parent id. 
+	 */
+	public Set<String> getDescendantsOf(String parentId) {
+		OBOStanza stanza1 = EDAMOntology.getStanza(parentId);
+		if (stanza1 == null) {
+			try {
+				throw new IllegalArgumentException("Illegal ID: " + parentId + ". No match was found.");
+			}
+			catch (IllegalArgumentException e) {
+				return null;
+			}
+		}
+		return EDAMOntology.getDescendantsOf(stanza1);
+	}
+	
+	/**
+	 * Returns a set of child ids that are descendants of a given parent URI. 
+	 * @param parentURI the URI of the parent term
+	 * @return a set of child ids that are descendants of a given parent URI. 
+	 */
+	public final Set<String> getDescendantsOf(URI parentURI) {
+		String parentId = getId(parentURI);
+		return getDescendantsOf(parentId);
+	}
+	
+	/**
+	 * Returns a set of child URIs that are descendants of a given parent id. 
+	 * @param parentId the id of the parent term
+	 * @return a set of child URIs that are descendants of a given parent id. 
+	 */
+	public final Set<URI> getDescendantURIsOf(String parentId) {
+		Set<String> descendents = getDescendantsOf(parentId);
+		Set<URI> descendentURIs = new HashSet<URI>();
+		for (String child : descendents) {
+			descendentURIs.add(getURIbyId(child));
+		}
+		return descendentURIs;
+	}
+	
+	/**
+	 * Returns a set of child URIs that are descendants of a given parent URI. 
+	 * @param parentURI the URI of the parent term
+	 * @return a set of child URIs that are descendants of a given parent URI. 
+	 */
+	public final Set<URI> getDescendantURIsOf(URI parentURI) {
+		Set<String> descendents = getDescendantsOf(parentURI);
+		Set<URI> descendentURIs = new HashSet<URI>();
+		for (String child : descendents) {
+			descendentURIs.add(getURIbyId(child));
+		}
+		return descendentURIs;
 	}
 
 	/**

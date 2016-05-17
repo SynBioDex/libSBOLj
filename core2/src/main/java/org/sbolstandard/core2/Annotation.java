@@ -423,6 +423,8 @@ public class Annotation {
 			if (other.value != null)
 				return false;
 		} else if (!value.equals(other.value)) {
+			// TODO: insert this line and comment out rest when sbol-data 0.1.3 is available
+			// return false;
 			if (!this.getQName().equals(other.getQName())) {
 				return false;
 			} else if ((this.getValue().getValue() instanceof StringLiteral<?>) &&
