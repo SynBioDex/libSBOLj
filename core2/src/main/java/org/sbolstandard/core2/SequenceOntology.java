@@ -105,9 +105,12 @@ public class SequenceOntology {
 	 */
 	private static OBOOntology sequenceOntology = null;
 	
-	SequenceOntology() {
-		OBOParser oboParser = new OBOParser();
+	/**
+	 * Construct an SO ontology object and read the OBO definition file, if necessary.
+	 */
+	public SequenceOntology() {
 		if (sequenceOntology == null) {
+			OBOParser oboParser = new OBOParser();
 			InputStreamReader f = new InputStreamReader(getClass().
 					getResourceAsStream("/ontologies/SequenceOntology/so-xp.obo"));
 			try {
