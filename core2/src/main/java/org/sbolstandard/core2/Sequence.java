@@ -51,6 +51,16 @@ public class Sequence extends TopLevel{
 		setElements(elements);
 	}
 
+	/**
+	 * @param sequence
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the 
+	 * following constructors or methods:
+	 * <ul>
+	 * <li>{@link Identified#Identified(Identified)},</li>
+	 * <li>{@link #setEncoding(URI)}, or</li>
+	 * <li>{@link #setElements(String)}.</li>
+	 * </ul>
+	 */
 	private Sequence(Sequence sequence) throws SBOLValidationException {
 		//super(sequence.getIdentity());
 		super(sequence);
@@ -75,14 +85,10 @@ public class Sequence extends TopLevel{
 	
 	/**
 	 * Sets the elements property to the given argument.  
-	 * <p>
-	 * If this Sequence object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 * 
 	 * @param elements the given elements property
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @throws SBOLValidationException if either of the following SBOL validation rule was violated:
+	 * 10402, 10405.
 	 */
 	public void setElements(String elements) throws SBOLValidationException {
 		if (elements == null) {
@@ -105,14 +111,9 @@ public class Sequence extends TopLevel{
 
 	/**
 	 * Sets the encoding property to the given argument.  
-	 * <p>
-	 * If this Sequence object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 * 
 	 * @param encoding the given encoding property
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10403.
 	 */
 	public void setEncoding(URI encoding) throws SBOLValidationException {
 		if (encoding == null) {
@@ -152,6 +153,12 @@ public class Sequence extends TopLevel{
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.TopLevel#deepCopy()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Sequence(Sequence)}.
+	 */
 	@Override
 	protected Sequence deepCopy() throws SBOLValidationException {
 		return new Sequence(this);
@@ -159,6 +166,17 @@ public class Sequence extends TopLevel{
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following constructors or methods:
+	 * <ul>
+	 * <li>{@link #deepCopy()}</li>
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 * <li>{@link Identified#setDisplayId(String)},</li>
+	 * <li>{@link Identified#setVersion(String)},</li>
+	 * <li>{@link Identified#setWasDerivedFrom(URI)}, or</li>
+	 * <li>{@link Identified#setIdentity(URI)}.</li>
+	 * </ul>
 	 */
 	@Override
 	protected Sequence copy(String URIprefix, String displayId, String version) throws SBOLValidationException {

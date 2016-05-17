@@ -60,7 +60,7 @@ public abstract class ComponentInstance extends Identified {
 	/**
 	 * Sets the access property to the given one.
 	 *
-	 * @param access the given access type to be set
+	 * @param access the given access type ›to set to 
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10607
 	 */
 	public void setAccess(AccessType access) throws SBOLValidationException {
@@ -94,7 +94,7 @@ public abstract class ComponentInstance extends Identified {
 	/**
 	 * Sets the definition property to the given one.
 	 *
-	 * @param definition the given definition URI to be set
+	 * @param definition the given definition URI to set to 
 	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10602, 10604.
 	 */
 	public void setDefinition(URI definition) throws SBOLValidationException {

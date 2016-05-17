@@ -24,6 +24,15 @@ public class Collection extends TopLevel{
 		this.members = new HashSet<>();
 	}
 
+	/**
+	 * @param collection
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following 
+	 * constructor or method:
+	 * <ul>
+	 * <li>{@link TopLevel#TopLevel(TopLevel)}, or</li>
+	 * <li>{@link #setMembers(Set)}.</li>
+	 * </ul>
+	 */
 	private Collection(Collection collection) throws SBOLValidationException {
 		//super(collection.getIdentity());
 		super(collection);
@@ -42,7 +51,7 @@ public class Collection extends TopLevel{
 	 * @param memberURI References to a TopLevel instance
 	 * @return {@code true} if the matching member reference has been added successfully,
 	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException if SBOL validation rule 12103 is violated.
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12103.
 	 */
 	public boolean addMember(URI memberURI) throws SBOLValidationException {
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -156,6 +165,9 @@ public class Collection extends TopLevel{
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#deepCopy()
 	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Collection(Collection)}.
+	 */
 	@Override
 	protected Collection deepCopy() throws SBOLValidationException {
 		return new Collection(this);
@@ -163,6 +175,17 @@ public class Collection extends TopLevel{
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link #deepCopy()},</li>
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 * <li>{@link #setDisplayId(String)},</li>
+	 * <li>{@link #setVersion(String)},</li>
+	 * <li>{@link #setWasDerivedFrom(URI)}, or</li>
+	 * <li>{@link #setIdentity(URI)}.</li>
+	 * </ul>
 	 */
 	@Override
 	Collection copy(String URIprefix, String displayId, String version) throws SBOLValidationException {

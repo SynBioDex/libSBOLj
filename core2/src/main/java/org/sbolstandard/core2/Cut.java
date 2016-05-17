@@ -49,6 +49,12 @@ public class Cut extends Location{
 		this.at = at;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.Location#deepCopy()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Cut(Cut)}.
+	 */
 	@Override
 	protected Cut deepCopy() throws SBOLValidationException {
 		return new Cut(this);
