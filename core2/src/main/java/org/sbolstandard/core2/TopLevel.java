@@ -38,14 +38,25 @@ public abstract class TopLevel extends Identified {
 	 */
 	public static final String GENERIC_TOP_LEVEL = "gen";
 		
+	/**
+	 * @param identity
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Identified#Identified(URI)}.
+	 */
 	TopLevel(URI identity) throws SBOLValidationException {
 		super(identity);
 	}
 
+	/**
+	 * @param toplevel
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Identified#Identified(Identified)}.
+	 */
 	protected TopLevel(TopLevel toplevel) throws SBOLValidationException {
 		super(toplevel);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.Identified#deepCopy()
+	 */
 	@Override
 	protected abstract Identified deepCopy() throws SBOLValidationException;
 	
@@ -77,10 +88,10 @@ public abstract class TopLevel extends Identified {
 	}
 
 	/**
-	 * The getDocument method returns the SBOLDocument that was used 
-	 * to instantiate this TopLevel object.
+	 * Returns the SBOLDocument that was used 
+	 * to instantiate this TopLevel instance.
 	 * 
-	 * @return the SBOLDocument of the TopLevel's origin
+	 * @return the SBOLDocument of this TopLevel's origin
 	 */
 	public SBOLDocument getDocument() {
 		return this.sbolDocument;

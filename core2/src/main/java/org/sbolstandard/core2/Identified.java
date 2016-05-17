@@ -41,7 +41,7 @@ public abstract class Identified {
 
 	/**
 	 * @param identity
-	 * @throws SBOLValidationException if an SBOL validation rule violation occured in {@link #setIdentity(URI)}
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #setIdentity(URI)}
 	 */
 	Identified(URI identity) throws SBOLValidationException {
 		setIdentity(identity);
@@ -49,9 +49,18 @@ public abstract class Identified {
 	}
 
 	/**
-	 * This copy constructor creates a new {@link Identified} class and copies all fields specified by the <code>identified</code> object.
-	 * @param identified The identified object that all SBOL objects are referred to within the SBOL document or locations on the World Wide Web
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * This copy constructor creates a new Identified instance and copies all of its fields.
+	 * 
+	 * @param identified the identified instance to be copied
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following
+	 * methods:
+	 * <ul>
+	 * <li>{@link #setIdentity(URI)},</li>
+	 * <li>{@link #setAnnotations(List)},</li>
+	 * <li>{@link #setDisplayId(String)},</li>
+	 * <li>{@link #setVersion(String)}, or </li>
+	 * <li>{@link #setWasDerivedFrom(URI)}.</li>
+	 * </ul>
 	 */
 	protected Identified(Identified identified) throws SBOLValidationException {
 		this.setIdentity(identified.getIdentity());
@@ -91,17 +100,18 @@ public abstract class Identified {
 	//	}
 
 	/**
-	 * Returns the identity URI of this object.
+	 * Returns the identity URI of this instance.
 	 *
-	 * @return the identity URI of this object.
+	 * @return the identity URI of this instance.
 	 */
 	public URI getIdentity() {
 		return identity;
 	}
 
 	/**
-	 * Sets field variable <code>identity</code> to the specified element.
-	 * @param identity URI for the specified element.
+	 * Sets the identity URI of this instance. 
+	 * 
+	 * @param identity the identity URI to set to 
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10201.
 	 */
 	final void setIdentity(URI identity) throws SBOLValidationException {
@@ -114,17 +124,17 @@ public abstract class Identified {
 	/**
 	 * Test if the persistent identity URI is set.
 	 *
-	 * @return {@code true} if it is not {@code null}
+	 * @return {@code true} if it is not {@code null}, or {@code false} otherwise
 	 */
 	public boolean isSetPersistentIdentity() {
 		return persistentIdentity != null;
 	}
 
 	/**
-	 * Returns the persistent identity URI of this object.
-	 * If it is not set, it returns the identity.
+	 * Returns the persistent identity URI of this instance.
+	 * If its persistent identity is not set, this method returns the identity URI.
 	 *
-	 * @return the persistent identity URI of this object.
+	 * @return the persistent identity URI of this instance if it is set, or the identity URI otherwise
 	 */
 	public URI getPersistentIdentity() {
 		if (isSetPersistentIdentity()) {
@@ -134,14 +144,14 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Sets field variable <code>persistentIdentity</code> to the specified element.
+	 * Sets persistent identity for this instance. 
 	 */
 	void setPersistentIdentity(URI persistentIdentity) {
 		this.persistentIdentity = persistentIdentity;
 	}
 
 	/**
-	 * Set optional field variable <code>persistentIdentity</code> to {@code null}.
+	 * Set the persistent identity to {@code null}.
 	 */
 	void unsetPersistentIdentity() {
 		persistentIdentity = null;
@@ -150,32 +160,32 @@ public abstract class Identified {
 	/**
 	 * Test if the version is set.
 	 *
-	 * @return {@code true} if it is not {@code null}
+	 * @return {@code true} if it is not {@code null}, or {@code false} otherwise
 	 */
 	public boolean isSetVersion() {
 		return version != null;
 	}
 
 	/**
-	 * Test if the {@code wasDerivedFrom} property is set.
+	 * Test if the wasDerivedFrom property is set.
 	 *
-	 * @return {@code true} if it is not {@code null}
+	 * @return {@code true} if it is not {@code null}, or {@code false} otherwise
 	 */
 	public boolean isSetWasDerivedFrom() {
 		return wasDerivedFrom != null;
 	}
 
 	/**
-	 * Returns this object's version.
+	 * Returns this instance's version.
 	 *
-	 * @return this object's version.
+	 * @return this instance's version.
 	 */
 	public String getVersion() {
 		return version;
 	}
 
 	/**
-	 * Sets field variable <code>version</code> to the specified element.
+	 * Sets version to the given one.
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10206
 	 */
 	void setVersion(String version) throws SBOLValidationException {
@@ -192,24 +202,26 @@ public abstract class Identified {
 	/**
 	 * Test if the display ID is set.
 	 *
-	 * @return {@code true} if it is not {@code null}
+	 * @return {@code true} if it is not {@code null}, or {@code false} otherwise
 	 */
 	public boolean isSetDisplayId() {
 		return displayId != null;
 	}
 
 	/**
-	 * Returns the display ID of this object.
+	 * Returns the display ID of this instance.
 	 *
-	 * @return the display ID of this object.
+	 * @return the display ID of this instance.
 	 */
 	public String getDisplayId() {
 		return displayId;
 	}
 
 	/**
-	 * Set field variable <code>displayId</code> to the specified element.
-	 * @throws SBOLValidationException the following SBOL validation rule was violated: 10204
+	 * Sets the display ID for this instance.
+	 * 
+	 * @param displayId the display ID to set to
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10204
 	 */
 	void setDisplayId(String displayId) throws SBOLValidationException {
 		if (!URIcompliance.isDisplayIdValid(displayId)) {
@@ -219,35 +231,26 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Set optional field variable <code>displayId</code> to {@code null}.
+	 * Set optional the display ID to {@code null}.
 	 */
 	void unsetDisplayId() {
 		displayId = null;
 	}
 
 	/**
-	 * Returns the {@code wasDerivedFrom} property of this object.
+	 * Returns the wasDerivedFrom property of this instance.
 	 *
-	 * @return the {@code wasDerivedFrom} property of this object.
+	 * @return the wasDerivedFrom property of this instance.
 	 */
 	public URI getWasDerivedFrom() {
 		return wasDerivedFrom;
 	}
 
 	/**
-	 * Sets the {@code wasDerivedFrom} property of this object to the specified one.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the wasDerivedFrom property of this instance to the given one.
 	 *
-	 * @param wasDerivedFrom The URI for with an SBOL object with this property refers to another SBOL object or non-SBOL resource from which this object was derived
-	 * @throws SBOLValidationException if any of the following condition is satisfied:
-	 * <ul>
-	 * <li>the following SBOL validation rule was violated: 10305; or</li>
-	 * <li>an SBOL validation exception occurred in {@link SBOLValidate#checkWasDerivedFromCycle(SBOLDocument, Identified, URI, Set)}.</li>
-	 * </ul>
+	 * @param wasDerivedFrom the wasDerivedFrom property to set to 
+	 * @throws SBOLValidationException if the following SBOL validation rules was violated: 10303, 10304, 10305. 
 	 */
 	public void setWasDerivedFrom(URI wasDerivedFrom) throws SBOLValidationException {
 		if (sbolDocument!=null) {
@@ -260,26 +263,23 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Test if this object has any Annotation instances.
+	 * Test if this instance has any annotations.
 	 *
-	 * @return {@code true} if this object has any Annotation objects
+	 * @return {@code true} if this instance has any annotations, or {@code false} otherwise
 	 */
 	public boolean hasAnnotations() {
 		return !annotations.isEmpty();
 	}
 
 	/**
-	 * Creates an Annotation instance using the given parameters,
-	 * then adds to this object's list of Annotation instances.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Creates an annotation using the given arguments,
+	 * then adds to this instance's list of annotations.
 	 *
-	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name.
+	 * @param qName the QName of the annotation to be created
 	 * @param literal the literal string
-	 * @return the created Annotation instance.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @return the created annotation
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101, 12301.
 	 */
 	public Annotation createAnnotation(QName qName, String literal) throws SBOLValidationException {
 		Annotation annotation = new Annotation(qName,literal);
@@ -288,17 +288,14 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Creates an Annotation instance using the given parameters,
-	 * then adds to this object's list of Annotation instances.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Creates an annotation using the given arguments, 
+	 * then adds to this instance's list of annotations.
 	 *
-	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
-	 * @param literal literal the literal double
-	 * @return the created Annotation instance.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @param qName the QName of the annotation to be created
+	 * @param literal the double type literal
+	 * @return the created annotation 
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101, 12301.
 	 */
 	public Annotation createAnnotation(QName qName, double literal) throws SBOLValidationException {
 		Annotation annotation = new Annotation(qName,literal);
@@ -307,17 +304,14 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Creates an Annotation instance using the given parameters,
-	 * then adds to this object's list of Annotation instances.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Creates an annotation using the given arguments,
+	 * then adds to this instance's list of annotations.
 	 *
-	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
-	 * @param literal literal the literal int
-	 * @return the created Annotation instance.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @param qName the QName of the annotation to be created
+	 * @param literal the integer type literal
+	 * @return the created annotation 
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101, 12301.
 	 */
 	public Annotation createAnnotation(QName qName, int literal) throws SBOLValidationException {
 		Annotation annotation = new Annotation(qName,literal);
@@ -327,13 +321,14 @@ public abstract class Identified {
 
 	/**
 	 * Creates an annotation using the given arguments, and
-	 * then adds to the list of Annotation instances.
+	 * then adds to the list of annotaions.
 	 *
-	 * @param qName a aName that composed of a namespace, an optional prefix, and a local name
-	 * @param literal the literal boolean
+	 * @param qName the QName of the annotation to be created
+	 * @param literal a boolean type literal
+	 * @return the created annotation instance
 	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 
 	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101
-	 * @return the created Annotation instance.
+	 * 
 	 */
 	public Annotation createAnnotation(QName qName, boolean literal) throws SBOLValidationException {
 		Annotation annotation = new Annotation(qName,literal);
@@ -342,17 +337,15 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Creates an Annotation instance using the given parameters,
-	 * then adds to this object's list of Annotation instances.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Creates an annotation using the given arguments,
+	 * then adds to this instance's list of annotations.
 	 *
-	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
+	 * @param qName the QName of the annotation to be created
 	 * @param literal the literal URI
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @return the created Annotation instance.
+	 * @return the created annotation
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101, 12301.
+	 * 
 	 */
 	public Annotation createAnnotation(QName qName, URI literal) throws SBOLValidationException {
 		Annotation annotation = new Annotation(qName,literal);
@@ -361,8 +354,9 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Calls the Annotation constructor {@link Annotation#Annotation(NamedProperty)} to create a new annoation using the specified parameters,
-	 * then adds to the list of annotations.
+	 * Calls the Annotation constructor {@link Annotation#Annotation(NamedProperty)} to create a new annoation using the
+	 * give arguments, and then adds to the list of annotations.
+	 * 
 	 * @return the created annotation
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addAnnotation(Annotation)}.
 	 */
@@ -373,19 +367,15 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Creates an Annotation instance with nested annotations using the given parameters,
-	 * then adds to this object's list of Annotation instances.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance,
-	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
-	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
-	 * @param nestedQName A part of NestedAnnotations composed of a namespace, an OPTIONAL prefix, and a local name
-	 * @param nestedURI A part of NestedAnnotations used to denote an object that is of type URI
-	 * @param annotations A property of NestedAnnotations that contains zero or more Annotation objects that store data in the form of name/value property pairs.
-	 * @return the created Annotation instance.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * Creates an annotation with nested annotations using the given arguments, and then adds to this instance's list of annotations.
+	 * 
+	 * @param qName the QName of the annotation to be created
+	 * @param nestedQName the QName of the nested annotation
+	 * @param nestedURI the identity URI for the nested annotation
+	 * @param annotations the list of annotations used to construct the nested annotation
+	 * @return the created annotation
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101, 12301.
 	 */
 	public Annotation createAnnotation(QName qName,QName nestedQName, URI nestedURI, List<Annotation> annotations) throws SBOLValidationException {
 		Annotation annotation = new Annotation(qName, nestedQName, nestedURI, annotations);
@@ -396,7 +386,7 @@ public abstract class Identified {
 	/**
 	 * Adds the given annotation to the list of annotations.
 	 * 
-	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated:
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
 	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901,
 	 * 12001, 12101, 12301.
 	 */
@@ -445,25 +435,20 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Removes the given Annotation instance from the list of
-	 * Annotation instances.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Removes the given annotation from the list of annotations owned by this instance.
 	 *
-	 * @param annotation The annotation instance using the given {@code qName} and the {@code literal} to be removed
-	 * @return {@code true} if the matching Annotation instance is removed successfully,
-	 *         {@code false} otherwise.
+	 * @param annotation the annotation to be removed
+	 * @return {@code true} if the matching annotation was removed successfully,
+	 *         or {@code false} otherwise.
 	 */
 	public boolean removeAnnotation(Annotation annotation) {
 		return annotations.remove(annotation);
 	}
 
 	/**
-	 * Returns the list of Annotation instances owned by this object.
+	 * Returns the list of annotations owned by this instance.
 	 *
-	 * @return the list of Annotation instances owned by this object.
+	 * @return the list of annotations owned by this instance.
 	 */
 	public List<Annotation> getAnnotations() {
 		List<Annotation> annotations = new ArrayList<>();
@@ -472,9 +457,9 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Returns the Annotation for a given QName.
-	 * @param qName Composed of a namespace, an OPTIONAL prefix, and a local name
-	 * @return the Annotation for a given QName.
+	 * Returns the annotation matching the given QName.
+	 * @param qName the QName of the annotation to be retrieved
+	 * @return the annotation matching the given QName
 	 */
 	public Annotation getAnnotation(QName qName) {
 		for (Annotation annotation : annotations) {
@@ -486,7 +471,7 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Removes all entries of this object's list of annotations.
+	 * Removes all entries of this instance's list of annotations.
 	 * The set will be empty after this call returns.
 	 */
 	public void clearAnnotations() {
@@ -494,8 +479,10 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Clears the existing list of structuralAnnotation instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * Clears the existing list of annotations, then adds the given list of annotations.
+	 * 
+	 * @param annotations
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addAnnotation(Annotation)}.
 	 */
 	void setAnnotations(List<Annotation> annotations) throws SBOLValidationException {
 		clearAnnotations();
@@ -505,13 +492,17 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Sets the {@code wasDerivedFrom} property to {@code null}.
+	 * Sets the wasDerivedFrom property to {@code null}.
 	 *
 	 */
 	public void unsetWasDerivedFrom() {
 		wasDerivedFrom = null;
 	}
 
+	/**
+	 * Sets the associated SBOLDocument instance to the given one. 
+	 * @param sbolDocument
+	 */
 	protected void setSBOLDocument(SBOLDocument sbolDocument) {
 		this.sbolDocument = sbolDocument;
 	}
@@ -521,9 +512,9 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Provide a deep copy of this instance.
-	 * @return An identical copy of the specified object
-	 * @throws SBOLValidationException violates validation rule
+	 * Provides a deep copy of this instance.
+	 * @return An identical copy of the specified object.
+	 * @throws SBOLValidationException if an SBOL validation rule was violated.
 	 */
 	protected abstract Identified deepCopy() throws SBOLValidationException;
 
@@ -645,45 +636,34 @@ public abstract class Identified {
 	}
 
 	/**
-	 * Test if the name is set.
+	 * Test if the name property is set.
 	 *
-	 * @return {@code true} if it is not {@code null}
+	 * @return {@code true} if it is not {@code null}, or {@code false} otherwise
 	 */
 	public boolean isSetName() {
 		return name != null;
 	}
 
 	/**
-	 * Returns the name property of this object.
+	 * Returns the name property of this instance.
 	 *
-	 * @return the name property of this object.
+	 * @return the name property of this instance.
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * Sets the name of this object to the specified one.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the name property for this instance.
 	 *
-	 * @param name Property is intended to be displayed to a human when visualizing an Identified object.
+	 * @param name the name property to set to
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	/**
-	 * Sets the name of this object to {@code null}.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
+	 * Sets the name of this instance to {@code null}.
 	 */
 	public void unsetName() {
 		name = null;
@@ -692,30 +672,25 @@ public abstract class Identified {
 	/**
 	 * Test if the description property is set.
 	 *
-	 * @return {@code true} if it is not {@code null}
+	 * @return {@code true} if it is not {@code null}, or {@code false} otherwise
 	 */
 	public boolean isSetDescription() {
 		return description != null;
 	}
 
 	/**
-	 * Returns the description property of this object.
+	 * Returns the description property of this instance.
 	 *
-	 * @return the description property of this object.
+	 * @return the description property of this instance.
 	 */
 	public String getDescription() {
 		return description;
 	}
 
 	/**
-	 * Sets the description property of this object to the specified one.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the description property for this instance.
 	 *
-	 * @param description Property is intended to contain a more thorough text description of an Identified object.
+	 * @param description the description to set to
 	 */
 	public void setDescription(String description) {
 		this.description = description;
@@ -723,11 +698,6 @@ public abstract class Identified {
 
 	/**
 	 * Sets the description property to {@code null}.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
 	 */
 	public void unsetDescription() {
@@ -758,7 +728,7 @@ public abstract class Identified {
 
 	//	/**
 	//	 *
-	//	 * Sets the identifier for this object.
+	//	 * Sets the identifier for this instance.
 	//	 * @param value
 	//	 * @deprecated As of release 2.0, URI can only be set when an Identified instance is created.
 	//	 */

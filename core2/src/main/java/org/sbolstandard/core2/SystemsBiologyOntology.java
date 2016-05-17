@@ -94,9 +94,12 @@ public class SystemsBiologyOntology {
 
 	private static OBOOntology systemsBiologyOntology = null;
 	
-	SystemsBiologyOntology() {
-		OBOParser oboParser = new OBOParser();
+	/**
+	 * Construct an SBO ontology object and read the OBO definition file, if necessary.
+	 */
+	public SystemsBiologyOntology() {
 		if (systemsBiologyOntology == null) {
+			OBOParser oboParser = new OBOParser();
 			InputStreamReader f = new InputStreamReader(getClass().
 					getResourceAsStream("/ontologies/SystemsBiologyOntology/sbo_full.obo"));
 			try {

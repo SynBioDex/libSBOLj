@@ -25,51 +25,66 @@ public abstract class Location extends Identified implements Comparable<Location
 		super(identity);
 	}
 
+	/**
+	 * @param location
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link Identified#Identified(Identified)}.
+	 */
 	protected Location(Location location) throws SBOLValidationException {
 		super(location);
 		this.setOrientation(location.getOrientation());
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.Identified#deepCopy()
+	 */
 	@Override
 	protected abstract Location deepCopy() throws SBOLValidationException;
 
 	/**
-	 * Test if the orientation property is set.
-	 * @return {@code true} if it is not {@code null}
+	 * Checks if the orientation property is set.
+	 * 
+	 * @return {@code true} if it is not {@code null}, {@code false} otherwise
 	 */
 	public boolean isSetOrientation() {
 		return orientation != null;
 	}
 
 	/**
-	 * Returns the orientation property of this object.
-	 * @return the orientation property of this object.
+	 * Returns the orientation property of this location.
+	 * @return the orientation property of this location
 	 */
 	public OrientationType getOrientation() {
 		return this.orientation;
 	}
 
 	/**
-	 * Sets the orientation property of this object to the given one.
-	 *
-	 * @param orientation Indicate how the region specified by the SequenceAnnotation and any associated double stranded Component is oriented on the elements of a Sequence from their parent ComponentDefinition.
+	 * Sets the orientation property of this location to the given one.
+	 * 
+	 * @param orientation the orientation to set to
 	 */
 	public void setOrientation(OrientationType orientation) {
 		this.orientation = orientation;
 	}
 
 	/**
-	 * Sets the orientation property of this object to {@code null}.
-	 *
+	 * Sets the orientation property of this location to {@code null}.
 	 */
 	public void unsetOrientation() {
 		orientation = null;
 	}
 
 	/**
-	 * Assume this Range object has compliant URI, and all given parameters have compliant forms.
-	 * This method is called by {@link SequenceAnnotation#updateCompliantURI(String, String, String)}.
-	 * @throws SBOLValidationException 
+	 * Updates this location's identity URI with a compliant URI. 
+	 * 
+ 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 * <li>{@link #setWasDerivedFrom(URI)},</li>
+	 * <li>{@link Identified#setIdentity(URI)},</li>
+	 * <li>{@link Identified#setDisplayId(String)}, or</li>
+	 * <li>{@link Identified#setVersion(String)}. </li>
+	 * </ul> 
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {

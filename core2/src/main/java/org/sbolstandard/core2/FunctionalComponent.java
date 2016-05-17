@@ -41,6 +41,17 @@ public class FunctionalComponent extends ComponentInstance {
 		setDirection(direction);
 	}
 
+	/**
+	 * @param functionalComponent
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following
+	 * constructors or methods:
+	 * <ul>
+	 * <li>{@link ComponentInstance#ComponentInstance(ComponentInstance)},</li>
+	 * <li>{@link #setDirection(DirectionType)},</li>
+	 * <li>{@link MapsTo#deepCopy()}, or</li>
+	 * <li>{@link #setMapsTos(Set)}.</li>
+	 * </ul>
+	 */
 	private FunctionalComponent(FunctionalComponent functionalComponent) throws SBOLValidationException {
 		super(functionalComponent);
 		this.setDirection(functionalComponent.getDirection());
@@ -105,6 +116,12 @@ public class FunctionalComponent extends ComponentInstance {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.ComponentInstance#deepCopy()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link FunctionalComponent#FunctionalComponent(FunctionalComponent)}.
+	 */
 	@Override
 	protected FunctionalComponent deepCopy() throws SBOLValidationException {
 		return new FunctionalComponent(this);

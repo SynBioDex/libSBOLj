@@ -32,9 +32,12 @@ public class EDAMOntology {
 	public static final URI NAMESPACE = URI.create(URI_PREFIX);
 	private static OBOOntology EDAMOntology = null;
 
-	EDAMOntology() {
-		OBOParser oboParser = new OBOParser();
+	/**
+	 * Construct an EDAM ontology object and read the OBO definition file, if necessary.
+	 */
+	public EDAMOntology() {
 		if (EDAMOntology == null) {
+			OBOParser oboParser = new OBOParser();
 			InputStreamReader f = new InputStreamReader(getClass().
 					getResourceAsStream("/ontologies/EDAMOntology/EDAM.obo"));
 			try {
