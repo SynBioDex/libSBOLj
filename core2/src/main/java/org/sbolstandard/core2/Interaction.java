@@ -26,9 +26,14 @@ public class Interaction extends Identified {
 
 	/**
 	 *
-	 * @param identity an identity for the interaction
-	 * @param types A set of type to be added to Interaction
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @param identity the identity URI for the interaction to be created
+	 * @param types the set of types for the interaction to be created
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * either of the following constructor or method:
+	 * <ul>
+	 * <li>{@link Identified#Identified(URI)}, or</li>
+	 * <li>{@link #setTypes(Set)}.</li>
+	 * </ul> 
 	 */
 	Interaction(URI identity, Set<URI> types) throws SBOLValidationException {
 		super(identity);
@@ -54,30 +59,21 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Adds the given type URI to this Interaction's set of reference type URIs.
-	 * <p>
-	 * If this Interaction object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Adds the given type URI to this interaction's set of type URIs.
 	 *
-	 * @param typeURI the given type URI
-	 * @return {@code true} if this set did not already contain the specified role.
+	 * @param typeURI the given type URI to be added
+	 * @return {@code true} if this set did not contain the given type, {@code false} otherwise
 	 */
 	public boolean addType(URI typeURI) {
 		return types.add(typeURI);
 	}
 
 	/**
-	 * Removes the given type reference from the set of type references.
-	 * <p>
-	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Removes the given type URI from this interation's the set of type URIs.
 	 *
-	 * @param typeURI the given type URI
-	 * @return {@code true} if the matching type reference is removed successfully, {@code false} otherwise.
-	 * @throws SBOLValidationException if this Interaction object has only one element matching the given
-	 * {@code typeURI} before removal.
+	 * @param typeURI the type URI to be removed
+	 * @return {@code true} if the matching type URI was removed successfully, {@code false} otherwise
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 11902.  
 	 */
 	public boolean removeType(URI typeURI) throws SBOLValidationException {
 		if (types.size()==1 && types.contains(typeURI)) {
@@ -87,15 +83,11 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Clears the existing set of type references first, then adds the given
-	 * set of the type references to this Interaction object.
-	 * <p>
-	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Clears the existing set of type URIs first, then adds the given
+	 * set of the type URIs to this interaction.
 	 *
-	 * @param types the given set of types
-	 * @throws SBOLValidationException if the given {@code types} argument is either {@code null} or empty
+	 * @param types the given set of type URIs to set to
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 11902.
 	 */
 	public void setTypes(Set<URI> types) throws SBOLValidationException {
 		if (types==null || types.size()==0) {
@@ -117,18 +109,17 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Checks if the given type URI is included in this Interaction
-	 * object's set of reference type URIs.
+	 * Checks if the given type URI is included in this interaction's set of type URIs.
 	 *
-	 * @param typeURI the given type URI
-	 * @return {@code true} if this set contains the given URI, {@code false} otherwise.
+	 * @param typeURI the given type URI to be checked for existence
+	 * @return {@code true} if this set contains the given URI, {@code false} otherwise
 	 */
 	public boolean containsType(URI typeURI) {
 		return types.contains(typeURI);
 	}
 
 	/**
-	 * Removes all entries of the list of <code>type</code> instances owned by this instance.
+	 * Removes all entries this interation's list of types. 
 	 * The list will be empty after this call returns.
 	 */
 	void clearTypes() {
@@ -144,13 +135,18 @@ public class Interaction extends Identified {
 	//	}
 
 	/**
-	 * Calls the Participation constructor to create a new instance using the specified parameters,
-	 * then adds to the list of Participation instances owned by this instance.
-	 * @param identity the identifier for this object
-	 * @param participant specify precisely one FunctionalComponent object that plays the designated 3 role in its parent Interaction object
-	 * @param roles describes the behavior of a Participation
-	 * @return the  created Participation instance.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * Calls the Participation constructor to create a new participation using the given arguments,
+	 * then adds to the list of participations owned by this interaction.
+	 * 
+	 * @param identity the URI identifier of the participation to be created
+	 * @param participant the functional component the participation to be created refers to
+	 * @param roles the roles property of the participation to be created
+	 * @return the created participation
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>an SBOL validation rule violation occurred in {@link Participation#Participation(URI, URI, Set)}; or</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #addParticipation(Participation)}.</li>
+	 * </ul>
 	 */
 	Participation createParticipation(URI identity, URI participant, Set<URI> roles) throws SBOLValidationException {
 		Participation participation = new Participation(identity, participant, roles);
@@ -159,23 +155,18 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Creates a child Participation instance for this Interaction
-	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
+	 * Creates a child participation for this interaction with the given arguments, 
+	 * and then adds to this interaction's list of participations.
 	 * <p>
-	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * This method creates a compliant Participation URI with this Interaction object's
-	 * persistent identity URI, the given {@code paricipantId}, and this Interaction object's version.
-	 * It then calls {@link #createParticipation(String, String, URI)}
-	 * with this component definition URI.
+	 * This method creates a new set of roles, and adds to it the given role. It then calls
+	 * {@link #createParticipation(String, String, Set)} with the given display IDs for the participation 
+	 * and its reference participant, and the set of roles created in this method.
 	 *
-	 * @param displayId The displayId identifier for this
-	 * @param participantId specify precisely one FunctionalComponent object that plays the designated role in its parent Interaction object
-	 * @param role describes the behavior of a Participation
-	 * @return a Participation instance
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @param displayId the display ID of the participation to be created
+	 * @param participantId the display ID of the participant functional component referenced by the participation to be created
+	 * @param role the role of the participation to be created 
+	 * @return the created participation
+	 * @throws SBOLValidationException if an SBOL validation rule was violated in {@link #createParticipation(String, String, Set)}. 
 	 */
 	public Participation createParticipation(String displayId, String participantId, URI role) throws SBOLValidationException {
 		HashSet<URI> roles = new HashSet<URI>();
@@ -185,8 +176,8 @@ public class Interaction extends Identified {
 
 
 	//	/**
-	//	 * Creates a child Participation instance for this Interaction
-	//	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
+	//	 * Creates a child participation for this Interaction
+	//	 * object with the given arguments, and then adds to this Interaction's list of participations.
 	//	 * <p>
 	//	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
 	//	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
@@ -200,25 +191,31 @@ public class Interaction extends Identified {
 	//	 * @param displayId The displayId identifier for this
 	//	 * @param participantId specify precisely one FunctionalComponent object that plays the designated role in its parent Interaction object
 	//	 * @param roles describes the behavior of a Participation
-	//	 * @return a Participation instance
+	//	 * @return a participation
 	//	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
 	//	 */
 
 	/**
-	 * Creates a child Participation instance for this Interaction
-	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
+	 * Creates a child participation for this interaction with the given arguments, and then adds to this interaction's 
+	 * list of participations.
 	 * <p>
-	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * This first method creates a compliant URI for the reference functional component of the participation, i.e., the participant
+	 * property of the participation. This participant URI starts with the persistent identity of the module definition that hosts this interaction,
+	 * followed by the particpant's display ID, and ends with the hosting module definition's version.
 	 * <p>
-	 * This method creates a compliant Participation URI with this Interaction object's
-	 * persistent identity URI, the given {@code paricipantId}, and this Interaction object's version.
-	 * @param displayId The displayId identifier for this
-	 * @param participantId specify precisely one FunctionalComponent object that plays the designated role in its parent Interaction object
-	 * @param roles describes the behavior of a Participation
-	 * @return a Participation instance
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * This method then calls {@link #createParticipation(String, URI, Set)} with the given display ID, the 
+	 * created compliant URI for the participant, and the set of roles.
+	 * 
+	 * @param displayId the display ID of the participation to be created
+	 * @param participantId the display ID of the participant functional component 
+	 * @param roles the roles of the participation to be created
+	 * @return the created participation
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>if either of the following SBOL validation rules was violated: 10204, 10206;</li>
+	 * <li>an SBOL validation rule violation occurred in {@link ModuleDefinition#createFunctionalComponent(String, AccessType, String, String, DirectionType)}</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #createParticipation(String, URI, Set)}.</li>
+	 * </ul>
 	 */
 	public Participation createParticipation(String displayId, String participantId, Set<URI> roles) throws SBOLValidationException {
 		URI participantURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
@@ -232,26 +229,17 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Creates a child Participation instance for this Interaction
-	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
+	 * Creates a child participation for this interaction with the given arguments, and then adds to its list of participations.
 	 * <p>
-	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * This method creates a compliant Participation URI with this Interaction object's
-	 * persistent identity URI, the given {@code displayId}, and this Interaction object's version.
-	 *
-	 *
-	 * @param displayId The displayId identifier for this
-	 * @param participant specify precisely one FunctionalComponent object that plays the designated role in its parent Interaction object
-	 * @param role describes the behavior of a Participation
-	 * @return a Participation instance
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 * @throws SBOLValidationException if the FunctionalComponent URI referenced by the Participation
-	 * instance, i.e. {@code participant}, does not belong to the list of FunctionalComponent instances owned by
-	 * this Interaction's parent ModuleDefinition instance.
-	 * @throws IllegalStateException if this Interaction instance has non-standard compliant identity
+	 * This method creates a new set of roles, and adds to it the given role. It then calls
+	 * {@link #createParticipation(String, URI, Set)} with the given display ID for the participation, 
+	 * the URI identity of its reference participant, and the set of roles created in this method.
+	 *	 
+	 * @param displayId the display ID of the participation to be created
+	 * @param participant the participant functional component for the participation to be created
+	 * @param role the role of the participation to be created
+	 * @return the created participation
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #createParticipation(String, URI, Set)}.
 	 */
 	public Participation createParticipation(String displayId, URI participant, URI role) throws SBOLValidationException {
 		HashSet<URI> roles = new HashSet<URI>();
@@ -260,25 +248,19 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Creates a child Participation instance for this Interaction
-	 * object with the given arguments, and then adds to this Interaction's list of Participation instances.
+	 * Creates a child participation for this interaction with the given arguments, 
+	 * and then adds to this interaction's list of participations.
 	 * <p>
-	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * This method creates a compliant Participation URI with this Interaction object's
-	 * persistent identity URI, the given {@code displayId}, and this Interaction object's version.
+	 * This method first creates a compliant URI for the participation to be created. It starts with this Interaction object's
+	 * persistent identity URI, followed by the given display ID, and ends with this interaction's version.
 	 *
 	 *
 	 * @param displayId The displayId identifier for this
 	 * @param participant specify precisely one FunctionalComponent object that plays the designated 3 role in its parent Interaction object
 	 * @param roles describes the behavior of a Participation
-	 * @return a Participation instance
-	 * @throws SBOLValidationException if the FunctionalComponent URI referenced by the Participation
-	 * instance, i.e. {@code participant}, does not belong to the list of FunctionalComponent instances owned by
-	 * this Interaction's parent ModuleDefinition instance.
-	 * @throws IllegalStateException if this Interaction instance has non-standard compliant identity
+	 * @return the created participation
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+	 * 10201, 10202, 10204, 10206, 12002, 12003, 12004, 
 	 */
 	public Participation createParticipation(String displayId, URI participant, Set<URI> roles) throws SBOLValidationException {
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();
@@ -298,8 +280,14 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Adds the specified instance to the list of participations.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * Adds the given participation to the list of participations owned by this interaction.
+	 *
+	 * @param participation the participation to be added
+	 * @throws SBOLValidationException if eitehr of the following condition is satisified:
+	 * <ul>
+	 * <li>the following SBOL validation rule was violated: 12003; or</li>
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
+	 * </ul>
 	 */
 	void addParticipation(Participation participation) throws SBOLValidationException {
 		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participation.getParticipantURI())==null) {
@@ -311,27 +299,25 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Removes the given Participation instance from this Interaction object's list of
-	 * Participation instances.
-	 * <p>
-	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Removes the given participation from this interaction's list of participations.
 	 *
-	 * @param participation specify a particular FunctionalComponent behaves in its parent Interaction
-	 * @return {@code true} if the matching Participation instance is removed successfully,
-	 *         {@code false} otherwise.
+	 * @param participation the given participation to be removed
+	 * @return {@code true} if the matching participation was removed successfully,
+	 *         {@code false} otherwise
 	 */
 	public boolean removeParticipation(Participation participation) {
 		return removeChildSafely(participation,participations);
 	}
 
 	/**
-	 * Returns the Participation instance matching the given {@code displayId} from
-	 * this Interaction object's list of Participation instances.
+	 * Returns the participation matching the given display ID from
+	 * this interaction's list of participations.
+	 * <p>
+	 * This method first creates a compliant URI for the participation to be retrieved. It starts with this
+	 * interaction's persistent identity, followed by the given display ID, and ends with this interation's version.
 	 *
-	 * @param displayId The displayId identifier for this
-	 * @return the matching instance if present, or {@code null} otherwise.
+	 * @param displayId the display ID of the participation to be retrieved 
+	 * @return the matching participation if present, or {@code null} otherwise
 	 */
 	public Participation getParticipation(String displayId) {
 		try {
@@ -343,38 +329,34 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Returns the Participation instance matching the given {@code participationURI} from this
-	 * Interaction object's list of Participation instances.
+	 * Returns the participation matching the given participation URI from this
+	 * interaction's list of participations.
 	 *
-	 * @param participationURI the URI of this object
-	 * @return the matching Participation instance if present, or
-	 *         {@code null} otherwise.
+	 * @param participationURI the identity URI for the participation to be retrieved
+	 * @return the matching participation if present, or
+	 *         {@code null} otherwise
 	 */
 	public Participation getParticipation(URI participationURI) {
 		return participations.get(participationURI);
 	}
 
 	/**
-	 * Returns the set of Participation instances owned by this
-	 * Interaction object.
+	 * Returns the set of participations owned by this
+	 * interaction.
 	 *
-	 * @return the set of the set of Participation instances owned by this
-	 * Interaction object.
+	 * @return the set of the set of participations owned by this
+	 * interaction
 	 */
 	public Set<Participation> getParticipations() {
 		return new HashSet<>(participations.values());
 	}
 
 	/**
-	 * Removes all entries of this Interaction object's list of SequenceAnnotation objects.
+	 * Removes all entries of this interaction list of sequence annotations.
 	 * The list will be empty after this call returns.
 	 * <p>
-	 * If this Interaction object belongs to an SBOLDocument instance,
-	 * then the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
 	 * This method calls {@link #removeParticipation(Participation)} to iteratively remove
-	 * each Participation instance owned by this object.
+	 * each participation owned by this object.
 	 *
 	 */
 	public void clearParticipations() {
@@ -386,9 +368,11 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Clears the existing list of participation instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
-	 */
+	 * Clears the existing list of participations, then adds the given set of participations to this list.
+	 * 
+	 * @param participations the given set of participations to set to
+	 * @throws SBOLValidationException an SBOL validation rule violation occurred in {@link #addParticipation(Participation)}
+	 */	
 	void setParticipations(Set<Participation> participations) throws SBOLValidationException {
 		clearParticipations();
 		for (Participation participation : participations) {
@@ -435,9 +419,22 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Assume this Component object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
-	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * Updates this interaction's and each of its child participation's identity URI with a compliant URI. 
+	 *
+	 * @param URIprefix the URI prefix of this interaction used to created its compliant URI
+	 * @param displayId the display ID of this interaction used to created its compliant URI
+	 * @param version the version of this interaction used to created its compliant URI
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 * <li>{@link #setWasDerivedFrom(URI)},</li>
+	 * <li>{@link Identified#setIdentity(URI)},</li>
+	 * <li>{@link Identified#setDisplayId(String)}, </li>
+	 * <li>{@link Identified#setVersion(String)}, </li>
+	 * <li>{@link Participation#updateCompliantURI(String, String, String)},</li>
+	 * <li>{@link #addParticipation(Participation)}, or</li>
+	 * <li>{@link Participation#setParticipant(URI)}.</li>
+	 * </ul> 
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
@@ -460,16 +457,18 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Returns this Interaction object's parent ModuleDefinition instance.
+	 * Returns this interaction's parent ModuleDefinition instance.
 	 *
-	 * @return this Interaction object's parent ModuleDefinition instance
+	 * @return this interaction's parent ModuleDefinition instance
 	 */
 	ModuleDefinition getModuleDefinition() {
 		return moduleDefinition;
 	}
 
 	/**
-	 * @param moduleDefinition the moduleDefinition to set
+	 * Sets the given module definition to be the parent of this interation. 
+	 * 
+	 * @param moduleDefinition the parent module definition
 	 */
 	void setModuleDefinition(ModuleDefinition moduleDefinition) {
 		this.moduleDefinition = moduleDefinition;

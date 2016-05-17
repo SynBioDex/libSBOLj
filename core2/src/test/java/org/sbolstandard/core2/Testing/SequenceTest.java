@@ -24,6 +24,7 @@ public class SequenceTest {
 		doc = new SBOLDocument();
 		doc.setDefaultURIprefix(prURI);
 		doc.setTypesInURIs(false);
+		doc.setComplete(true);
 		generic_seq = doc.createSequence("generic_seq", "ttgacagctagctcagtcctaggtataatgctagc", Sequence.IUPAC_DNA);
 
 	}
@@ -36,8 +37,10 @@ public class SequenceTest {
 	@Test
 	public void test_toString()
 	{	
-		String generic_seq_string = "generic_seq" + '@' + Integer.toHexString(generic_seq.hashCode());
-		equals(doc.getSequence("generic_seq", "").toString() == generic_seq_string);
+		assertTrue(doc.getSequence("generic_seq", "").toString().length() != 0);
+		assertNotNull(generic_seq.toString());
+		assertTrue(generic_seq.toString().contains("displayId="+generic_seq.getDisplayId()));
+		assertTrue(!generic_seq.toString().contains("name="+generic_seq.getDisplayId()));
 	}
 	
 

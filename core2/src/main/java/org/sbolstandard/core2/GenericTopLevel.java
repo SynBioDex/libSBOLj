@@ -28,6 +28,15 @@ public class GenericTopLevel extends TopLevel{
 		}
 	}
 
+	/**
+	 * @param genericTopLevel
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in
+	 * the following constructor or method:
+	 * <ul>
+	 * <li>{@link TopLevel#TopLevel(TopLevel)}, or</li>
+	 * <li>{@link #setRDFType(QName)}.</li>
+	 * </ul>
+	 */
 	private GenericTopLevel(GenericTopLevel genericTopLevel) throws SBOLValidationException {
 		super(genericTopLevel);
 		this.setRDFType(genericTopLevel.getRDFType());
@@ -80,6 +89,13 @@ public class GenericTopLevel extends TopLevel{
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.TopLevel#deepCopy()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule was violated in 
+	 * {@link #GenericTopLevel(GenericTopLevel)}.
+	 */
 	@Override
 	protected GenericTopLevel deepCopy() throws SBOLValidationException {
 		return new GenericTopLevel(this);
@@ -108,6 +124,18 @@ public class GenericTopLevel extends TopLevel{
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * any of the following methods:
+	 * <ul>
+	 * <li>{@link #deepCopy()},</li>
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 * <li>{@link #setDisplayId(String)},</li>
+	 * <li>{@link #setVersion(String)},</li>
+	 * <li>{@link #setWasDerivedFrom(URI)}, or</li>
+	 * <li>{@link #setIdentity(URI)}.</li>
+	 * </ul>
 	 */
 	@Override
 	GenericTopLevel copy(String URIprefix, String displayId, String version) throws SBOLValidationException {

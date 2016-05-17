@@ -34,9 +34,9 @@ public class Annotation {
 	private NamedProperty<QName> value;
 
 	/**
-	 * Constructs an Annotation instance using the given qName and the string type literal.
+	 * Constructs an annotation using the given qName and the string type literal.
 	 *
-	 * @param qName the QName of this Annotation instance
+	 * @param qName the QName of this annotation
 	 * @param literal a string type value
 	 */
 	public Annotation(QName qName, String literal) {
@@ -44,9 +44,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Constructs an Annotation instance using the given qName and the integer type literal.
+	 * Constructs an annotation using the given qName and the integer type literal.
 	 *
-	 * @param qName the QName of this Annotation instance
+	 * @param qName the QName of this annotation
 	 * @param literal an integer type value
 	 */
 	public Annotation(QName qName, int literal) {
@@ -54,9 +54,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Constructs an Annotation instance using the given qName and the double type literal.
+	 * Constructs an annotation using the given qName and the double type literal.
 	 *
-	 * @param qName the QName of this Annotation instance
+	 * @param qName the QName of this annotation
 	 * @param literal a double type value
 	 */
 	public Annotation(QName qName, double literal) {
@@ -64,9 +64,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Constructs an Annotation instance using the given qName and the boolean type literal.
+	 * Constructs an annotation using the given qName and the boolean type literal.
 	 *
-	 * @param qName the QName of this Annotation instance
+	 * @param qName the QName of this annotation
 	 * @param literal a boolean type value
 	 */
 	public Annotation(QName qName, boolean literal) {
@@ -74,9 +74,9 @@ public class Annotation {
 	}
 
 	/**
-	 * Constructs an Annotation instance using the given qName and the {@code URI} type literal.
+	 * Constructs an annotation using the given qName and the {@code URI} type literal.
 	 *
-	 * @param qName the QName of this Annotation instance
+	 * @param qName the QName of this annotation
 	 * @param literal a URI type value
 	 */
 	public Annotation(QName qName, URI literal) {
@@ -84,13 +84,13 @@ public class Annotation {
 	}
 
 	/**
-	 * Constructs a nested Annotation instance using the given qName, nested qName,
+	 * Constructs a nested annotation using the given qName, nested qName,
 	 * nested URI, and list of annotations.
 	 *
-	 * @param qName the QName of this Annotation instance
-	 * @param nestedQName the QName of the nested Annotation
-	 * @param nestedURI the identity URI for the nested Annotation
-	 * @param annotations the list of annotations to construct the nested Annotation instance
+	 * @param qName the QName of this annotation
+	 * @param nestedQName the QName of the nested annotation
+	 * @param nestedURI the identity URI for the nested annotation
+	 * @param annotations the list of annotations to construct the nested annotation
 	 */
 	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
 		List<NamedProperty<QName>> list = new ArrayList<>();
@@ -423,6 +423,8 @@ public class Annotation {
 			if (other.value != null)
 				return false;
 		} else if (!value.equals(other.value)) {
+			// TODO: insert this line and comment out rest when sbol-data 0.1.3 is available
+			// return false;
 			if (!this.getQName().equals(other.getQName())) {
 				return false;
 			} else if ((this.getValue().getValue() instanceof StringLiteral<?>) &&

@@ -60,7 +60,7 @@ public abstract class ComponentInstance extends Identified {
 	/**
 	 * Sets the access property to the given one.
 	 *
-	 * @param access the given access type to be set
+	 * @param access the given access type ›to set to 
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10607
 	 */
 	public void setAccess(AccessType access) throws SBOLValidationException {
@@ -94,7 +94,7 @@ public abstract class ComponentInstance extends Identified {
 	/**
 	 * Sets the definition property to the given one.
 	 *
-	 * @param definition the given definition URI to be set
+	 * @param definition the given definition URI to set to 
 	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10602, 10604.
 	 */
 	public void setDefinition(URI definition) throws SBOLValidationException {
@@ -111,6 +111,35 @@ public abstract class ComponentInstance extends Identified {
 
 	@Override
 	protected abstract ComponentInstance deepCopy() throws SBOLValidationException;
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((access == null) ? 0 : access.hashCode());
+		result = prime * result + ((definition == null) ? 0 : definition.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ComponentInstance other = (ComponentInstance) obj;
+		if (definition == null) {
+			if (other.definition != null)
+				return false;
+		} else if (!definition.equals(other.definition))
+			return false;
+		if (access != other.access)
+			return false;
+		return true;
+	}
+
 
 	@Override
 	public String toString() {

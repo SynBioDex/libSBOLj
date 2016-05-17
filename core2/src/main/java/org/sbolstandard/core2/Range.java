@@ -24,6 +24,16 @@ public class Range extends Location {
 		setStart(start);
 	}
 
+	/**
+	 * @param range
+	 * @throws SBOLValidationException if an SBOL validation rule violation 
+	 * occurred in any of the following constructors or methods:
+	 * <ul>
+	 * <li>{@link Location#Location(Location)},</li>
+	 * <li>{@link #setEnd(int)}, or</li>
+	 * <li>{@link #setStart(int)}.</li>
+	 * </ul>
+	 */
 	private Range(Range range) throws SBOLValidationException {
 		super(range);
 		this.setEnd(range.getEnd());
@@ -31,16 +41,10 @@ public class Range extends Location {
 	}
 
 	/**
-	 * Sets the start position of this Range object.
-	 * <p>
-	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
-	 * @param value the start position of this Range
-	 * @throws SBOLValidationException if the given {@code value} is less or equal to 0.
-	 * @throws SBOLValidationException if the given {@code value} is greater than
-	 * the {@code end} value of this Range object.
+	 * Sets the start position of this range.
+	 * 
+	 * @param value the start position of this range
+	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 11102, 11104. 
 	 */
 	public void setStart(int value) throws SBOLValidationException {
 		if (value<=0) {
@@ -53,34 +57,28 @@ public class Range extends Location {
 	}
 
 	/**
-	 * Returns the start position of this Range object.
+	 * Returns the start position of this range.
 	 *
-	 * @return the start position of this Range object.
+	 * @return the start position of this range
 	 */
 	public int getStart() {
 		return start;
 	}
 
 	/**
-	 * Returns the end position of this Range object.
+	 * Returns the end position of this range.
 	 *
-	 * @return the end position of this Range object.
+	 * @return the end position of this range 
 	 */
 	public int getEnd() {
 		return end;
 	}
 
 	/**
-	 * Sets the end position of this Range object.
-	 * <p>
-	 * If this ModuleDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
-	 * @param value the start position of this Range
-	 * @throws SBOLValidationException if the given {@code value} is less or equal to 0.
-	 * @throws SBOLValidationException if the given {@code value} is less than
-	 * the {@code start} value of this Range object.
+	 * Sets the end position of this range.
+	 * 
+	 * @param value the end position to set to
+	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 11103, 11104.
 	 */
 	public void setEnd(int value) throws SBOLValidationException {
 		if (value<=0) {
@@ -93,6 +91,13 @@ public class Range extends Location {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.Location#deepCopy()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link #Range(Range)}.
+	 */
 	@Override
 	protected Location deepCopy() throws SBOLValidationException {
 		return new Range(this);
