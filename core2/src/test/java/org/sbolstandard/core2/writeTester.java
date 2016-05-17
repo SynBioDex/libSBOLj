@@ -31,6 +31,7 @@ class writeTester {
 	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SequenceOntology seqOn = new SequenceOntology();
+		System.out.println(seqOn.isDescendantOf(SequenceOntology.TERMINATOR, URI.create("http://www")));
 		for (URI child : seqOn.getDescendantURIsOf(SequenceOntology.TERMINATOR)) {
 			System.out.println(child.toString());
 		}

@@ -308,6 +308,7 @@ public class SequenceOntology {
 	public final boolean isDescendantOf(URI childURI, URI parentURI) {
 		String childId = getId(childURI);
 		String parentId = getId(parentURI);
+		if (childId==null || parentId==null) return false;
 		return isDescendantOf(childId,parentId);
 	}
 	
@@ -336,6 +337,7 @@ public class SequenceOntology {
 	 */
 	public final Set<String> getDescendantsOf(URI parentURI) {
 		String parentId = getId(parentURI);
+		if (parentId==null) return new HashSet<String>();
 		return getDescendantsOf(parentId);
 	}
 	
@@ -373,7 +375,7 @@ public class SequenceOntology {
 	 * @param id the ID of an SO term
 	 * @return the created URI
 	 */
-	public static final URI type(String id) {
+	static final URI type(String id) {
 		return URI.create(URI_PREFIX+id);
 	}
 		
