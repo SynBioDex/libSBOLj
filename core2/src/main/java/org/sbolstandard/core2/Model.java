@@ -18,6 +18,20 @@ public class Model extends TopLevel {
 	private URI language;
 	private URI framework;
 
+	/**
+	 * @param identity
+	 * @param source
+	 * @param language
+	 * @param framework
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of the following
+	 * constructors or methods:
+	 * <ul>
+	 * <li>{@link TopLevel#TopLevel(TopLevel)},</li>
+	 * <li>{@link #setSource(URI)},</li>
+	 * <li>{@link #setLanguage(URI)}, or</li>
+	 * <li>{@link #setFramework(URI)}.</li>
+	 * </ul>
+	 */
 	Model(URI identity,URI source, URI language, URI framework) throws SBOLValidationException {
 		super(identity);
 		setSource(source);

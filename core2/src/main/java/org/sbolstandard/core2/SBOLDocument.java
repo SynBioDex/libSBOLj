@@ -100,92 +100,47 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Creates a ModuleDefinition instance with this SBOLDocument object's {@code defaultURIprefix},
-	 * the given arguments, and an empty version string, and then
-	 * adds it to this SBOLDocument object's list of ModuleDefinition instances.
+	 * Creates a module definition, and then adds it to this SBOL document's list of module definitions.
 	 * <p>
-	 * This method calls {@link #createModuleDefinition(String, String, String)} to do the following
-	 * validity checks and create a ModuleDefinition instance.
-	 * <p>
-	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
-	 * then "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the {@code defaultURIprefix} field to be set, and
-	 * the given {@code displayId} is not {@code null} and is valid.
-	 * <p>
-	 * A ModuleDefinition instance is created with a compliant URI. This URI is composed from
-	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#MODULE_DEFINITION},
-	 * the given {@code displayId}, and an empty version string.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param displayId  an intermediate between name and identity that is machine-readable
-	 * @return the created ModuleDefinition instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * This method calls {@link #createModuleDefinition(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given module definition display ID, and an empty version string.
+	 * 
+	 * @param displayId the display ID of the module definition to be created
+	 * @return the created module definition
+	 * @throws SBOLValidationException if an SBOL validation rule was violated in {@link #createModuleDefinition(String, String, String)} . 
 	 */
 	public ModuleDefinition createModuleDefinition(String displayId) throws SBOLValidationException {
 		return createModuleDefinition(defaultURIprefix,displayId,"");
 	}
 
+
 	/**
-	 * Creates a ModuleDefinition instance with this SBOLDocument object's {@code defaultURIprefix}
-	 * and the given arguments, and then adds it to this SBOLDocument object's list of ModuleDefinition instances.
+	 * Creates a module definition, and then adds it to this SBOL document's list of module definitions.
 	 * <p>
-	 * This method calls {@link #createModuleDefinition(String, String, String)} to do the following
-	 * validity checks and create a ModuleDefinition instance.
-	 * <p>
-	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the {@code defaultURIprefix} field to be set, and
-	 * the given {@code displayId} and {@code version} arguments are not {@code null}
-	 * and are both valid.
-	 * <p>
-	 * A ModuleDefinition instance is created with a compliant URI. This URI is composed from
-	 * the this SBOLDocument object's {@code defaultURIprefix}, the optional type {@link TopLevel#MODULE_DEFINITION},
-	 * the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param displayId  an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @return the created ModuleDefinition instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
-	 */
+	 * This method calls {@link #createModuleDefinition(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given module definition display ID and version.
+	 * 
+	 * @param displayId the display ID of the module definition to be created
+	 * @param version the version of the module definition to be created
+	 * @return the created module definition
+	 * @throws SBOLValidationException if an SBOL validation rule was violated in {@link #createModuleDefinition(String, String, String)} .
+	 */ 
 	public ModuleDefinition createModuleDefinition(String displayId, String version) throws SBOLValidationException {
 		return createModuleDefinition(defaultURIprefix,displayId,version);
 	}
 
 	/**
-	 * Creates a ModuleDefinition instance with the given arguments, and then adds it to this SBOLDocument
-	 * object's list of ModuleDefinition instances.
+	 * Creates a module definition, and then adds it to this SBOL document's list of module definitions.
 	 * <p>
-	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires that the given {@code URIprefix}, {@code displayId},
-	 * and {@code version} are not {@code null} and are valid.
-	 * <p>
-	 * A ModuleDefinition instance is created with a compliant URI. This URI is composed from
-	 * the given {@code URIprefix}, the optional type {@link TopLevel#MODULE_DEFINITION},
-	 * the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param URIprefix maps to a domain over which the user has control
-	 * @param displayId  an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @return the created ModuleDefinition instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * This method calls {@link #createModuleDefinition(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given module definition display ID and version.
+	 * 
+	 * @param URIprefix the URI prefix used to construct the compliant URI for the module definition to be created
+	 * @param displayId the display ID of the module definition to be created
+	 * @param version the version of the module definition to be created
+	 * @return the created module definition
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+	 * 10201, 10202, 10204, 10206, 10220.
 	 */
 	public ModuleDefinition createModuleDefinition(String URIprefix,String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -199,7 +154,7 @@ public class SBOLDocument {
 	/**
 	 * @param identity a given identifier for this object
 	 * @return the new module definition
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 10201, 10202, 10220.
 	 */
 	ModuleDefinition createModuleDefinition(URI identity) throws SBOLValidationException {
 		ModuleDefinition newModule = new ModuleDefinition(identity);
@@ -500,101 +455,61 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Creates a Model instance with this SBOL document's {@code defaultURIprefix},
-	 * the given arguments, and an empty version string, and then
-	 * adds it to this SBOL document's list of Model instances.
+	 * Creates a model, and then adds it to this SBOL document's list of models.
 	 * <p>
-	 * This method calls {@link #createModel(String, String, String, URI, URI, URI)} to do the following
-	 * validity checks and create a Model instance.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
-	 * then "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the {@code defaultURIprefix} field to be set, and
-	 * the given {@code displayId} is not {@code null} and is valid.
-	 * <p>
-	 * A Model instance is created with a compliant URI. This URI is composed from
-	 * the this SBOL document's {@code defaultURIprefix}, the optional type {@link TopLevel#MODEL},
-	 * the given {@code displayId}, and an empty version string.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param displayId an intermediate between name and identity that is machine-readable
-	 * @param source location of the actual content of the model
-	 * @param language the language in which the model is implemented
-	 * @param framework the framework in which the model is implemented
-	 * @return the created Model instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * This method calls {@link #createModel(String, String, String, URI, URI, URI)} with this SBOL document's
+	 * default URI prefix, an empty version string, and all given arguments.
+	 * 
+	 * @param displayId the display ID of the model to be created
+	 * @param source the source of the model to be created
+	 * @param language the language of the model to be created
+	 * @param framework the framework of the model to be created
+	 * @return the created model 
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link #createModel(String, String, String, URI, URI, URI)};
 	 */
 	public Model createModel(String displayId, URI source, URI language, URI framework) throws SBOLValidationException {
 		return createModel(defaultURIprefix,displayId,"",source,language,framework);
 	}
 
 	/**
-	 * Creates a Model instance with this SBOL document's {@code defaultURIprefix}
-	 * and the given arguments, and then adds it to this SBOL document's list of Model instances.
+	 * Creates a model, and then adds it to this SBOL document's list of models.
 	 * <p>
-	 * This method calls {@link #createModel(String, String, String, URI, URI, URI)} to do the following
-	 * validity checks and create a Model instance.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the {@code defaultURIprefix} field to be set, and
-	 * the given {@code displayId} and {@code version} arguments are not {@code null}
-	 * and are both valid.
-	 * <p>
-	 * A Model instance is created with a compliant URI. This URI is composed from
-	 * the this SBOL document's {@code defaultURIprefix}, the optional type {@link TopLevel#MODEL},
-	 * the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param displayId an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @param source location of the actual content of the model
-	 * @param language the language in which the model is implemented
-	 * @param framework the framework in which the model is implemented
-	 * @return the created Model instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * This method calls {@link #createModel(String, String, String, URI, URI, URI)} with this SBOL document's
+	 * default URI prefix, and all given arguments.
+	 * 
+	 * @param displayId the display ID of the model to be created
+	 * @param version the version of the model to be created
+	 * @param source the source of the model to be created
+	 * @param language the language of the model to be created
+	 * @param framework the framework of the model to be created
+	 * @return the created model 
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link #createModel(String, String, String, URI, URI, URI)};
+	 * 
 	 */
 	public Model createModel(String displayId, String version, URI source, URI language, URI framework) throws SBOLValidationException {
 		return createModel(defaultURIprefix,displayId,version,source,language,framework);
 	}
 
 	/**
-	 * Creates a Model instance with the given arguments, and then adds it to this SBOLDocument
-	 * object's list of Model instances.
+	 * Creates a model, and then adds it to this SBOL document's list of models.
 	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires that the given {@code URIprefix}, {@code displayId},
-	 * and {@code version} are not {@code null} and are valid.
-	 * <p>
-	 * A Model instance is created with a compliant URI. This URI is composed from
-	 * the given {@code URIprefix}, the optional type {@link TopLevel#MODEL},
-	 * the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
+	 * This method first creates a compliant URI for the model to be created. It starts with the 
+	 * given URI prefix, followed by the given display ID, and ends with the given version. 
 	 *
-	 * @param URIprefix maps to a domain over which the user has control
-	 * @param displayId an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @param source location of the actual content of the model
-	 * @param language the language in which the model is implemented
-	 * @param framework the framework in which the model is implemented
-	 * @return the created Model instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @param URIprefix the URI prefix used to construct the compliant URI for the model to be created
+	 * @param displayId the display ID of the model to be created
+	 * @param version the version of the model to be created
+	 * @param source the source of the model to be created
+	 * @param language the language of the model to be created
+	 * @param framework the framework of the model to be created
+	 * @return the created model 
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+	 * 10201, 10202, 10204, 10206, 10220,  
+	 * 10303, 10304, 10305, 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 
+	 * 11501, 11502, 11504, 11508, 
+	 * 11601, 11701, 11801, 11901, 12001, 12301.
 	 */
 	public Model createModel(String URIprefix, String displayId, String version, URI source, URI language, URI framework) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -613,7 +528,12 @@ public class SBOLDocument {
 	 * @param language the language in which the model is implemented
 	 * @param framework the framework in which the model is implemented
 	 * @return the new model
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of the following
+	 * constructor or method:
+	 * <ul>
+	 * <li>{@link Model#Model(URI, URI, URI, URI)}, or</li>
+	 * <li>{@link #addModel(Model)}.</li>
+	 * </ul>
 	 */
 	Model createModel(URI identity, URI source, URI language, URI framework) throws SBOLValidationException {
 		Model newModel = new Model(identity, source, language, framework);
@@ -746,7 +666,7 @@ public class SBOLDocument {
 	 * Creates a component definition, and then adds it to this SBOL document's list of component definitions.
 	 * <p>
 	 * This method calls {@link #createComponentDefinition(String, String, String, Set)} with the default URI
-	 * prefix of this SBOL document, the given component definition display ID, an empty version string, and the
+	 * prefix of this SBOL document, the given component definition display ID, and an empty version string.
 	 * given types. 
 	 *
 	 * @param displayId the display ID of the component definition to be created
@@ -1652,95 +1572,53 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Creates a GenericTopLevel instance with this SBOL document's {@code defaultURIprefix},
-	 * the given arguments, and an empty version string, and then
-	 * adds it to this SBOL document's list of GenericTopLevel instances.
+ 	 * Creates a generic top-level, and then adds it to this SBOL document's list of generic top-levels.
 	 * <p>
-	 * This method calls {@link #createGenericTopLevel(String, String, String, QName)} to do the following
-	 * validity checks and create a GenericTopLevel instance.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
-	 * then "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the {@code defaultURIprefix} field to be set, and
-	 * the given {@code displayId} is not {@code null} and is valid.
-	 * <p>
-	 * A GenericTopLevel instance is created with a compliant URI. This URI is composed from
-	 * the this SBOL document's {@code defaultURIprefix}, the optional type {@link TopLevel#GENERIC_TOP_LEVEL},
-	 * the given {@code displayId}, and an empty version string.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
+	 * This method calls {@link #createGenericTopLevel(String, String, String, QName)} with the default URI
+	 * prefix of this SBOL document, the given component definition display ID, an empty version string, 
+	 * and the given RDF type. 
 	 *
-	 * @param displayId  an intermediate between name and identity that is machine-readable
-	 * @param rdfType a given QName for this annotated GenericTopLevel object
-	 * @return the created GenericTopLevel instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException}   
+	 * @param displayId the display ID of the generic top-level to be created
+	 * @param rdfType the types of the generic top-level to be created
+	 * @return the created generic top-level
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link #createGenericTopLevel(String, String, String, QName)}. 
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, QName rdfType) throws SBOLValidationException {
 		return createGenericTopLevel(defaultURIprefix,displayId,"",rdfType);
 	}
 
 	/**
-	 * Creates a GenericTopLevel instance with this SBOL document's {@code defaultURIprefix}
-	 * and the given arguments, and then adds it to this SBOL document's list of GenericTopLevel instances.
+	 * Creates a generic top-level, and then adds it to this SBOL document's list of generic top-levels.
 	 * <p>
-	 * This method calls {@link #createGenericTopLevel(String, String, String, QName)} to do the following
-	 * validity checks and create a GenericTopLevel instance.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the {@code defaultURIprefix} field to be set, and
-	 * the given {@code displayId} and {@code version} arguments are not {@code null}
-	 * and are both valid.
-	 * <p>
-	 * A GenericTopLevel instance is created with a compliant URI. This URI is composed from
-	 * the this SBOL document's {@code defaultURIprefix}, the optional type {@link TopLevel#GENERIC_TOP_LEVEL},
-	 * the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
+	 * This method calls {@link #createGenericTopLevel(String, String, String, QName)} with the default URI
+	 * prefix of this SBOL document, the given component definition display ID and version, and the given RDF type. 
 	 *
-	 * @param displayId  an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @param rdfType a given QName for this annotated GenericTopLevel object
-	 * @return the created GenericTopLevel instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException}  
+	 * @param displayId the display ID of the generic top-level to be created
+	 * @param version the version of the generic top-level to be created
+	 * @param rdfType the types of the generic top-level to be created
+	 * @return the created generic top-level
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link #createGenericTopLevel(String, String, String, QName)}. 
 	 */
 	public GenericTopLevel createGenericTopLevel(String displayId, String version, QName rdfType) throws SBOLValidationException {
 		return createGenericTopLevel(defaultURIprefix,displayId,version,rdfType);
 	}
 
 	/**
-	 * Creates a GenericTopLevel instance with the given arguments, and then adds it to this SBOLDocument
-	 * object's list of GenericTopLevel instances.
+	 * Creates a generic top-level, and then adds it to this SBOL document's list of generic top-levels.
 	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires that the given {@code URIprefix}, {@code displayId},
-	 * and {@code version} are not {@code null} and are valid.
-	 * <p>
-	 * A GenericTopLevel instance is created with a compliant URI. This URI is composed from
-	 * the given {@code URIprefix}, the optional type {@link TopLevel#GENERIC_TOP_LEVEL},
-	 * the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param URIprefix maps to a domain over which the user has control
-	 * @param displayId  an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @param rdfType a given QName for this annotated GenericTopLevel object
-	 * @return the created GenericTopLevel instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException}  
+	 * This method calls {@link #createGenericTopLevel(String, String, String, QName)} with the default URI
+	 * prefix of this SBOL document, the given component definition display ID and version, and the given RDF type. 
+	 * 
+	 * @param URIprefix the given URI prefix used to create a compliant URI for the generic top-level to be created 
+	 * @param displayId the display ID of the generic top-level to be created
+	 * @param version the version of the generic top-level to be created
+	 * @param rdfType the types of the generic top-level to be created
+	 * @return the created generic top-level
+	 * @throws SBOLValidationException if an SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 
+	 * 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12301, 12302. 
 	 */
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -1755,7 +1633,12 @@ public class SBOLDocument {
 	 * @param identity a given identifier for this object
 	 * @param rdfType a given QName for this annotated GenericTopLevel object
 	 * @return the new generic top level
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <ul>
+	 * <li>the following SBOL validation rule was violated: 12302;</li>
+	 * <li>an SBOL validation rule violation occurred in {@link GenericTopLevel#GenericTopLevel(URI, QName)}; or </li>
+	 * <li>an SBOL validation rule violation occurred in {@link #addGenericTopLevel(GenericTopLevel)}.</li>
+	 * </ul>
 	 */
 	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
@@ -2159,7 +2042,7 @@ public class SBOLDocument {
 	 * @param instancesMap
 	 * @param typeName
 	 * @param maps
-	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated:
 	 * 10202, 10220. 
 	 */
 	@SafeVarargs

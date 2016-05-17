@@ -19,6 +19,15 @@ public class GenericTopLevel extends TopLevel{
 
 	private QName rdfType;
 
+	/**
+	 * @param identity
+	 * @param rdfType
+	 * @throws SBOLValidationException if either of the following condition is satisfied: 
+	 * <ul>
+	 * <li>if an SBOL validation rule violation occurred in {@link TopLevel#TopLevel(TopLevel)}, or</li>
+	 * <li>the following SBOL validation rule was violated: 12302.</li>
+	 * </ul>
+	 */
 	GenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		super(identity);
 		this.rdfType = rdfType;
