@@ -48,6 +48,20 @@ public class ComponentDefinitionTest {
 				gRNA_b_gene.addSequence(generic_seq);
 		
 	}
+	
+	@Test
+	public void test_CD_addSequence() throws SBOLValidationException {
+		
+		doc.createComponentDefinition("CRa_U6","",ComponentDefinition.DNA);
+		try
+		{
+			doc.getComponentDefinition("CRa_U6", "").addSequence(CRa_U6_seq);
+			assertTrue(doc.getComponentDefinition("CRa_U6", "").getSequences().size() == 1);
+			int size = doc.getSequence("CRa_U6", "").toString().length();
+			assertTrue(size != 0);
+		}
+		catch(Exception e){}
+	} 
 	@Test
 	 /* CD.createComponent(String, AccessType, String)
 	 * Add a promoter component to a gene, get the promoter, remove the promoter
@@ -102,8 +116,25 @@ public class ComponentDefinitionTest {
 		promoter_annot = gRNA_b_gene.createSequenceAnnotation("cutAt5", "cut1", 5);
 		assertNotNull(gRNA_b_gene.getSequenceAnnotation("cutAt5"));
 		
-		gRNA_b_gene.createSequenceAnnotation("cutAt6", "cut2", OrientationType.INLINE);
-		assertNotNull(gRNA_b_gene.getSequenceAnnotation("cutAt6"));	
+		gRNA_b_gene.createSequenceAnnotation("cutAt6", "cut2", OrientationType.INLINE);		
+	}
+	
+	@Test
+	public void test_privateConst_SQ() throws SBOLValidationException
+	{
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
+		
+		//add SequenceAnnotation for CD with a displayID and LocationID
+		gRNA_b_gene.createSequenceAnnotation("cutAt5", "cut1");
+		gRNA_b_gene.createSequenceAnnotation("cutAt6", "cut2", 5);
+		gRNA_b_gene.createSequenceAnnotation("cutAt7", "cut3", OrientationType.INLINE);		
+
+
+		assertNotNull(gRNA_b_gene.getSequenceAnnotation("cutAt5"));
+		System.out.println(gRNA_b_gene.getSequenceAnnotations().size());
+		ComponentDefinition test = (ComponentDefinition) doc.createCopy(gRNA_b_gene, "gRNA_b_gene_copy", "");
+		assertTrue(test.getSequenceAnnotations().size() == 3);
 	}
 	
 	@Test
@@ -128,6 +159,7 @@ public class ComponentDefinitionTest {
 		assertNull(gRNA_b_gene.getSequenceConstraint("promoter_first"));
 	}
 	
+
 	@Test
 	public void test_sortedComponents_CD() throws SBOLValidationException
 	{
@@ -147,19 +179,7 @@ public class ComponentDefinitionTest {
 
 	} 
 
-	@Test
-	public void test_CD_addSequence() throws SBOLValidationException {
-		
-		doc.createComponentDefinition("CRa_U6","",ComponentDefinition.DNA);
-		try
-		{
-			doc.getComponentDefinition("CRa_U6", "").addSequence(CRa_U6_seq);
-				
-			int size = doc.getSequence("CRa_U6", "").toString().length();
-			assertTrue(size != 0);
-		}
-		catch(Exception e){}
-	} 
+	
 	
 //	
 //	@Test
