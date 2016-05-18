@@ -130,7 +130,6 @@ public class ComponentDefinitionTest {
 		gRNA_b_gene.createSequenceAnnotation("cutAt6", "cut2", 5);
 		gRNA_b_gene.createSequenceAnnotation("cutAt7", "cut3", OrientationType.INLINE);		
 
-
 		assertNotNull(gRNA_b_gene.getSequenceAnnotation("cutAt5"));
 		System.out.println(gRNA_b_gene.getSequenceAnnotations().size());
 		ComponentDefinition test = (ComponentDefinition) doc.createCopy(gRNA_b_gene, "gRNA_b_gene_copy", "");
@@ -168,6 +167,17 @@ public class ComponentDefinitionTest {
 		 * based on the annotations and constraints*/
 		/*test: a precedes b and b precedes c*/
 		/*interesting test: have a seqAnnotation and Constraints conflict*/
+		
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
+		
+		//add SequenceAnnotation for CD with a displayID and LocationID
+		gRNA_b_gene.createSequenceAnnotation("cutAt1", "cut1");
+		gRNA_b_gene.createSequenceAnnotation("cutAt5", "cut2", 5);
+		gRNA_b_gene.createSequenceAnnotation("cutAt10", "cut3", OrientationType.INLINE);	
+		
+		
+		/*
 		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
 		Component promoter = gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");		
 		Component terminator = null;
@@ -176,7 +186,7 @@ public class ComponentDefinitionTest {
 		doc.createComponentDefinition("gRNA_gene_terminator_comp", ComponentDefinition.DNA);
 		terminator = gRNA_b_gene.createComponent("gRNA_terminator", AccessType.PUBLIC, "gRNA_gene_terminator_comp");
 		assertTrue(gRNA_b_gene.getSortedComponents().contains(terminator));
-
+*/
 	} 
 
 	
