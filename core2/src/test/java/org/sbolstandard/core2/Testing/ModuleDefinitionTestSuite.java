@@ -18,6 +18,7 @@ import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.Participation;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
+import org.sbolstandard.core2.TopLevel;
 
 public class ModuleDefinitionTestSuite {
 	private SBOLDocument doc = null;
@@ -162,6 +163,19 @@ public class ModuleDefinitionTestSuite {
 		assertTrue(geneticToggleSwitch.toString().length() != 0);
 		assertNotNull(geneticToggleSwitch.toString());
 		assertTrue(!geneticToggleSwitch.toString().contains("version="));
+	}
+	
+	@Test
+	public void test_moduleDefinitionDeepCopy() throws SBOLValidationException
+	{
+		SBOLDocument doc_copy = new SBOLDocument();
+		doc_copy.setDefaultURIprefix("http://sbols.org/CRISPR_Example/");
+		doc_copy.setComplete(true);
+		doc_copy.setCreateDefaults(true);
+		doc_copy.setComplete(true);
+		doc_copy.createCopy(geneticToggleSwitch);
+		ModuleDefinition TetRInverter_copy = doc_copy.getModuleDefinition("geneticToggleSwitch", "");
+		assertTrue(TetRInverter_copy.getModule("TetRInverter").equals(TetRInverter));		
 	}
 	
 	
