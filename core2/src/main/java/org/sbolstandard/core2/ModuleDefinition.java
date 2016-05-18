@@ -1182,7 +1182,7 @@ public class ModuleDefinition extends TopLevel {
 	}
 
 	/**
-	 * @return
+	 * @return flattened ModuleDefinition
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
 	 * <ul>
 	 * <li>The following SBOL validation rule was violated: 10811; or</li> 
