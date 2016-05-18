@@ -77,15 +77,30 @@ public class Module extends Identified {
 	 * a MapsTo instance.
 	 *
 	 * @param definitionURI The definition URI for this Module.
-	 * @throws SBOLValidationException if either of the following SBOL validation rule was violated: 11702, 11703.
+	 * @throws SBOLValidationException if either of the following SBOL validation rule was violated: 11702, 11703, 11704, 11705.
 	 */
 	public void setDefinition(URI definitionURI) throws SBOLValidationException {
 		if (definitionURI==null) {
 			throw new SBOLValidationException("sbol-11702",this);
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getModuleDefinition(definitionURI)==null) {
-				throw new SBOLValidationException("sbol-11703",this);
+		if (sbolDocument != null) {
+			if (sbolDocument.isComplete()) {
+				if (sbolDocument.getModuleDefinition(definitionURI)==null) {
+					throw new SBOLValidationException("sbol-11703",this);
+				}
+			}
+			if (moduleDefinition!=null) {
+				ModuleDefinition md = sbolDocument.getModuleDefinition(definitionURI);
+				if (md!=null &&	moduleDefinition.getIdentity().equals(md.getIdentity())) {
+					throw new SBOLValidationException("sbol-11704", this);
+				}
+				Set<URI> visited = new HashSet<>();
+				visited.add(moduleDefinition.getIdentity());
+				try { 
+					SBOLValidate.checkModuleDefinitionCycle(sbolDocument, md, visited);
+				} catch (SBOLValidationException e) {
+					throw new SBOLValidationException("sbol-11705", this);
+				}
 			}
 		}
 		this.definition = definitionURI;

@@ -419,6 +419,36 @@ public class Component extends ComponentInstance{
 		this.componentDefinition = componentDefinition;
 	}
 	
+	/**
+	 * Sets the definition property to the given one.
+	 *
+	 * @param definition the given definition URI to set to 
+	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10604, 10605.
+	 */
+	public void setDefinition(URI definition) throws SBOLValidationException {
+		if (sbolDocument != null) {
+			ComponentDefinition cd = sbolDocument.getComponentDefinition(definition);
+			if (sbolDocument.isComplete()) {
+				if (cd==null) {
+					throw new SBOLValidationException("sbol-10604",this);
+				}
+			}
+			if (componentDefinition!=null) {
+				if (cd!=null &&	componentDefinition.getIdentity().equals(cd.getIdentity())) {
+					throw new SBOLValidationException("sbol-10605", this);
+				}
+				Set<URI> visited = new HashSet<>();
+				visited.add(componentDefinition.getIdentity());
+				try {
+					SBOLValidate.checkComponentDefinitionCycle(sbolDocument, cd, visited);
+				} catch (SBOLValidationException e) {
+					throw new SBOLValidationException("sbol-10605",this);
+				}
+			}
+		}
+		super.setDefinition(definition);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
