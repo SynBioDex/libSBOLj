@@ -7,6 +7,7 @@ import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -914,6 +915,28 @@ public class ComponentDefinition extends TopLevel {
 		List<SequenceAnnotation> sortedSAs = new ArrayList<SequenceAnnotation>();
 		sortedSAs.addAll(this.getSequenceAnnotations());
 		Collections.sort(sortedSAs);
+		return sortedSAs;
+	}
+
+	class SADisplayIdComparator implements Comparator {
+
+	    public int compare(Object obj1, Object obj2) {
+	        SequenceAnnotation myObj1 = (SequenceAnnotation)obj1;
+	        SequenceAnnotation myObj2 = (SequenceAnnotation)obj2;
+	        if (myObj1.getDisplayId().startsWith("annotation") &&
+	        		myObj2.getDisplayId().startsWith("annotation")) {
+	        	int myObj1int = Integer.parseInt(myObj1.getDisplayId().replace("annotation",""));
+	        	int myObj2int = Integer.parseInt(myObj2.getDisplayId().replace("annotation",""));
+	        	return myObj1int - myObj2int;
+	        }
+	        return myObj1.getDisplayId().compareTo(myObj2.getDisplayId());
+	    }
+	}
+	
+	List<SequenceAnnotation> getSortedSequenceAnnotationsByDisplayId() {
+		List<SequenceAnnotation> sortedSAs = new ArrayList<SequenceAnnotation>();
+		sortedSAs.addAll(this.getSequenceAnnotations());
+		Collections.sort(sortedSAs,new SADisplayIdComparator());
 		return sortedSAs;
 	}
 
