@@ -203,6 +203,10 @@ public class Interaction extends Identified {
 	 * property of the participation. This participant URI starts with the persistent identity of the module definition that hosts this interaction,
 	 * followed by the particpant's display ID, and ends with the hosting module definition's version.
 	 * <p>
+	 * If no functional component exists with the provided participantId and isCreateDefaults is true,
+	 * it creates a new functionalComponent instantiation for the componentDefinition with the displayId
+	 * that matches the participantId.
+	 * <p>
 	 * This method then calls {@link #createParticipation(String, URI, Set)} with the given display ID, the 
 	 * created compliant URI for the participant, and the set of roles.
 	 * 
