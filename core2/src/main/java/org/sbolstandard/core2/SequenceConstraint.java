@@ -46,6 +46,16 @@ public class SequenceConstraint extends Identified {
 		setObject(object);
 	}
 	
+	/**
+	 * @param sequenceConstraint
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of 
+	 * the following constructors or methods:
+	 * <ul>
+	 * <li>{@link Identified#Identified(Identified)},</li>
+	 * <li>{@link #setSubject(URI)}, or </li>
+	 * <li>{@link #setObject(URI)}</li>
+	 * </ul>
+	 */
 	private SequenceConstraint(SequenceConstraint sequenceConstraint) throws SBOLValidationException {
 		super(sequenceConstraint);
 		this.setRestriction(sequenceConstraint.getRestrictionURI());
@@ -158,11 +168,7 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * 
 	 * @param subjectURI the identity URI of the subject component
-	 * @throws SBOLValidationException if the associated ComponentDefinition subject
-	 * is not {@code null}, and the given {@code subjectURI} does not exist in 
-	 * its associated ComponentDefinition subject's
-	 * list of Component instances.
-	 * @throws SBOLValidationException if any of the following SBOL validation rule violation was violated: 11402, 11403, 11406.
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 11402, 11403, 11406.
 	 */
 	public void setSubject(URI subjectURI) throws SBOLValidationException {
 		if (componentDefinition != null) {
@@ -218,13 +224,8 @@ public class SequenceConstraint extends Identified {
 	 * the SBOLDcouement instance is checked for compliance first. 
 	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
-	 * 
 	 * @param objectURI the identity URI of the object component
-	 * @throws SBOLValidationException if the associated ComponentDefinition object
-	 * is not {@code null}, and the given {@code objectURI} does not exist in 
-	 * its associated ComponentDefinition object's
-	 * list of Component instances.
-	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 11402, 11404, 11405. 
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 11402, 11404, 11405. 
 	 */
 	public void setObject(URI objectURI) throws SBOLValidationException {
 		if (componentDefinition != null) {
@@ -276,15 +277,30 @@ public class SequenceConstraint extends Identified {
 	}
 
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.Identified#deepCopy()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in
+	 * {@link SequenceConstraint#SequenceConstraint(SequenceConstraint)}. 
+	 */
 	@Override
 	protected SequenceConstraint deepCopy() throws SBOLValidationException {		
 		return new SequenceConstraint(this);
 	}
 
 	/**
-	 * Assume this SequenceConstraint object has compliant URI, and all given parameters have compliant forms.
-	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
-	 * @throws SBOLValidationException 
+	 *  
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following constructors or methods:
+	 * <ul>
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 * <li>{@link #setWasDerivedFrom(URI)},</li>
+	 * <li>{@link #setIdentity(URI)},</li>
+	 * <li>{@link #setDisplayId(String)},</li>
+	 * <li>{@link #setVersion(String)},</li>
+	 * <li>{@link #setSubject(URI)}, or</li>
+	 * <li>{@link #setObject(URI)}.</li>
+	 * </ul>
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {

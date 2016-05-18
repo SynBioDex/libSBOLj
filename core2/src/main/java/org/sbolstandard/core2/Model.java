@@ -18,6 +18,20 @@ public class Model extends TopLevel {
 	private URI language;
 	private URI framework;
 
+	/**
+	 * @param identity
+	 * @param source
+	 * @param language
+	 * @param framework
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of the following
+	 * constructors or methods:
+	 * <ul>
+	 * <li>{@link TopLevel#TopLevel(TopLevel)},</li>
+	 * <li>{@link #setSource(URI)},</li>
+	 * <li>{@link #setLanguage(URI)}, or</li>
+	 * <li>{@link #setFramework(URI)}.</li>
+	 * </ul>
+	 */
 	Model(URI identity,URI source, URI language, URI framework) throws SBOLValidationException {
 		super(identity);
 		setSource(source);
@@ -25,6 +39,17 @@ public class Model extends TopLevel {
 		setFramework(framework);
 	}
 
+	/**
+	 * @param model
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of 
+	 * the following constructors or methods:
+	 * <ul>
+	 * <li>{@link TopLevel#TopLevel(TopLevel)},</li>
+	 * <li>{@link #setSource(URI)},</li>
+	 * <li>{@link #setLanguage(URI)}, or</li>
+	 * <li>{@link #setFramework(URI)}.</li>
+	 * </ul>
+	 */
 	private Model(Model model) throws SBOLValidationException {
 		super(model);
 		this.setSource(model.getSource());
@@ -33,24 +58,19 @@ public class Model extends TopLevel {
 	}
 
 	/**
-	 * Returns the URI of the source property of this Model object.
+	 * Returns the this model's source property.
 	 *
-	 * @return the URI of the source property of this Model object
+	 * @return the this model's source property
 	 */
 	public URI getSource() {
 		return source;
 	}
 
 	/**
-	 * Sets the {@code source} property to the given argument.
-	 * <p>
-	 * If this Model object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
-	 * @param source a URI reference to the source file for a model.
-	 * @throws SBOLValidationException if the given {@code source} argument is {@code null}
+	 * Sets the source property to the given one.
+	 * 
+	 * @param source the source property to set
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 11502.
 	 */
 	public void setSource(URI source) throws SBOLValidationException {
 		if (source==null) {
@@ -60,24 +80,20 @@ public class Model extends TopLevel {
 	}
 
 	/**
-	 * Returns the URI of the language property of this Model object.
+	 * Returns this model's language property.
 	 *
-	 * @return the URI of the language property of this Model object
+	 * @return this model's language property
 	 */
 	public URI getLanguage() {
 		return language;
 	}
 
 	/**
-	 * Sets the {@code language} property to the given argument.
-	 * <p>
-	 * If this Model object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the language property to the given one.
 	 *
-	 * @param language a URI that specifies the language in which the model is implemented.
-	 * @throws SBOLValidationException if the given {@code language} argument is {@code null}
+	 * @param language the language property to set to
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 11504.
+	 * 
 	 */
 	public void setLanguage(URI language) throws SBOLValidationException {
 		if (language==null) {
@@ -96,15 +112,10 @@ public class Model extends TopLevel {
 	}
 
 	/**
-	 * Sets the {@code framework} property to the given argument.
-	 * <p>
-	 * If this Model object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance
-	 * is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the framework property to the given one.
 	 *
-	 * @param framework a URI that specifies the framework in which the model is implemented.
-	 * @throws SBOLValidationException if the given {@code framework} argument is {@code null}
+	 * @param framework the framework to set to
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 11508.
 	 */
 	public void setFramework(URI framework) throws SBOLValidationException {
 		if (framework==null) {
@@ -150,6 +161,12 @@ public class Model extends TopLevel {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.TopLevel#deepCopy()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Model(Model)}.
+	 */
 	@Override
 	protected Model deepCopy() throws SBOLValidationException {
 		return new Model(this);
@@ -157,6 +174,17 @@ public class Model extends TopLevel {
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link #deepCopy()},</li>
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 * <li>{@link #setDisplayId(String)},</li>
+	 * <li>{@link #setVersion(String)},</li>
+	 * <li>{@link #setWasDerivedFrom(URI)}, or</li>
+	 * <li>{@link #setIdentity(URI)}.</li>
+	 * </ul>
 	 */
 	@Override
 	Model copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
