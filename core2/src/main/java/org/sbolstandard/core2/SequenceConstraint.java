@@ -90,10 +90,6 @@ public class SequenceConstraint extends Identified {
 
 	/**
 	 * Sets the restriction property to the given {@code restriction}.
-	 * <p>
-	 * If this SequenceConstraint restriction belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. 
-	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * @param restriction the restriction type
  	 * @throws SBOLValidationException if either of the following SBOL validation rule was violated: 11407, 11412.
@@ -111,10 +107,6 @@ public class SequenceConstraint extends Identified {
 	
 	/**
 	 * Sets the restriction property to the given {@code restrictionURI}.
-	 * <p>
-	 * If this SequenceConstraint restriction belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. 
-	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * @param restrictionURI the identity URI of the restriction
  	 * @throws SBOLValidationException if no restriction is provided
@@ -161,11 +153,6 @@ public class SequenceConstraint extends Identified {
 
 	/**
 	 * Sets the reference subject Component URI to the given {@code subjectURI}.
-	 * <p>
-	 * If this SequenceConstraint subject belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. 
-	 * Only a compliant SBOLDocument instance is allowed to be edited.
-	 * 
 	 * 
 	 * @param subjectURI the identity URI of the subject component
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 11402, 11403, 11406.
@@ -219,10 +206,6 @@ public class SequenceConstraint extends Identified {
 
 	/**
 	 * Sets the reference object Component URI to the given {@code objectURI}.
-	 * <p>
-	 * If this SequenceConstraint object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. 
-	 * Only a compliant SBOLDocument instance is allowed to be edited.
 	 * 
 	 * @param objectURI the identity URI of the object component
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 11402, 11404, 11405. 
