@@ -47,6 +47,15 @@ public class SBOLTestConversion {
 		for (File f : file_base.listFiles()) {
 			col.add(f);
 		}
+		try {
+			file_base = new File(ValidationTest.class.getResource("/test/data/GenBank/").toURI());
+		}
+		catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		}
+		for (File f : file_base.listFiles()) {
+			col.add(f);
+		}
 		return col;
 	}
 
@@ -61,6 +70,9 @@ public class SBOLTestConversion {
 		if (file.getAbsolutePath().contains("pACPc_invF.xml")) return;
 		if (file.getAbsolutePath().contains("BBa_T9002.xml")) return;
 		if (file.getAbsolutePath().contains("multipleInstance.xml")) return;
+		if (file.getAbsolutePath().contains("sequence2.gb")) return;
+		if (file.getAbsolutePath().contains("sequence4.gb")) return;
+		if (file.isDirectory()) return;
 		//if (f.getAbsolutePath().contains("BBa_I0462.xml")) continue;
 		try
 		{
@@ -69,12 +81,16 @@ public class SBOLTestConversion {
 			SBOLReader.setCompliant(true);
 			SBOLDocument expected = SBOLReader.read(file);
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			SBOLWriter.write(expected, out, SBOLDocument.RDFV1);
+			if (GenBank.isGenBankFile(file.getAbsolutePath())) {
+				SBOLWriter.write(expected, out, SBOLDocument.GENBANK);
+			} else {
+				SBOLWriter.write(expected, out, SBOLDocument.RDFV1);
+			}
 			SBOLDocument actual = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 			if (!actual.equals(expected)) {
 				System.out.println(file.getName() + " FAILED");
-				System.out.println("Actual:  "+actual.toString());
-				System.out.println("Expected:"+expected.toString());
+				//System.out.println("Actual:  "+actual.toString());
+				//System.out.println("Expected:"+expected.toString());
 				//SBOLValidate.compareDocuments("expected", expected, "actual", actual);
 				//break;
 				//assert(false);
@@ -85,47 +101,9 @@ public class SBOLTestConversion {
 		}
 		catch (SBOLValidationException e)
 		{
-			System.out.println("Failed for " + file.getName() + "\n" + e.getMessage());
-			assert(false);
+			//System.out.println("Failed for " + file.getName() + "\n" + e.getMessage());
+			throw new AssertionError("Failed for " + file.getName());
 		}
 	}
-	
-//	@Test
-//	public void test_GenBank_Files() throws Exception
-//	{
-//		File file_base = null ;
-//		try {
-//			file_base = new File(ValidationTest.class.getResource("/test/data/GenBank/").toURI());
-//		}
-//		catch (URISyntaxException e1) {
-//			e1.printStackTrace();
-//		}
-//		File file;
-//		for (File f : file_base.listFiles()){
-//			file = new File(f.getAbsolutePath());
-//			try
-//			{
-//				GenBank.setURIPrefix("http://www.async.ece.utah.edu");
-//				SBOLReader.setDropObjectsWithDuplicateURIs(true);
-//				SBOLDocument expected = GenBank.read(file);
-//				ByteArrayOutputStream out = new ByteArrayOutputStream();
-//				GenBank.write(expected.getRootComponentDefinitions().iterator().next(), out);
-//				SBOLDocument actual = GenBank.read(new ByteArrayInputStream(out.toByteArray()));
-//				if (!actual.equals(expected)) {
-//					System.out.println(f.getName() + " FAILED");
-//					SBOLValidate.compareDocuments("expected", expected, "actual", actual);
-//					//break;
-//					assert(false);
-//				} else {
-//					//System.out.println(f.getName() + " PASSED");
-//				}
-//			}
-//			catch (SBOLValidationException e)
-//			{
-//				throw new AssertionError("Failed for " + f.getName(), e);
-//			}
-//		}
-//	}
-
 
 }

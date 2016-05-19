@@ -287,11 +287,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	/**
 	 * Removes all entries of this SequenceAnnotation instance's list of Location
 	 * instances. The set will be empty after this call returns.
-  	 * <p>
-	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. 
-	 * Only a compliant SBOLDocument instance is allowed to be edited.
-	 * 
+ 	 * 
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #removeLocation(Location)}.
 	 */
 	void clearLocations() throws SBOLValidationException {
@@ -413,10 +409,6 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * Sets the reference Component URI to the URI of the Component instance matching the 
 	 * given {@code displayId}.
 	 * <p>
-	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
 	 * This method creates a compliant URI for the reference Component instance using the
 	 * persistent identity of this SequenceAnnotation instance's parent ComponentDefinition instance,
 	 * the given {@code displayId}, and the parent ComponentDefinition instance's version.
@@ -437,10 +429,6 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 
 	/**
 	 * Sets the reference component URI to the given {@code componentURI}.
-	 * <p>
-	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 * 
 	 * @param componentURI the given component identity URI
  	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated:
@@ -464,10 +452,6 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	
 	/**
 	 * Dereference the component URI by setting it to {@code null}.
-	 * <p>
-	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 */
 	public void unsetComponent() {
 		component = null;

@@ -197,9 +197,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the given {@code moduleDefinition} from this SBOLDocument object's list of ModuleDefinition instances.
-	 * <p>
-	 * This SBOLDocument object is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
 	 * @param moduleDefinition The moduleDefinition to be removed
 	 * @return {@code true} if the given {@code moduleDefinition} is successfully removed, {@code false} otherwise.
@@ -371,9 +368,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the given {@code collection} from this SBOL document's list of collections.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
 	 * @param collection the given collection object to be removed
 	 * @return {@code true} if the given {@code collection} is successfully removed, {@code false} otherwise.
@@ -554,9 +548,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the given {@code model} from this SBOL document's list of Model instances.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
 	 * @param model the given model to be removed
 	 * @return {@code true} if the given {@code model} is successfully removed, {@code false} otherwise.
@@ -811,9 +802,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the given {@code componentDefinition} from this SBOL document's list of component definitions.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
 	 * @param componentDefinition The ComponentDefinition to be removed
 	 * @return {@code true} if the given {@code componentDefinition} is successfully removed, {@code false} otherwise.
@@ -949,9 +937,6 @@ public class SBOLDocument {
 	 * This method calls {@link #createSequence(String, String, String, String, URI)} to do the following
 	 * validity checks and create a Sequence instance.
 	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
 	 * then "/" is appended to the end of it.
 	 * <p>
@@ -981,9 +966,6 @@ public class SBOLDocument {
 	 * This method calls {@link #createSequence(String, String, String, String, URI)} to do the following
 	 * validity checks and create a Sequence instance.
 	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
 	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
 	 * "/" is appended to the end of it.
 	 * <p>
@@ -1012,9 +994,6 @@ public class SBOLDocument {
 	/**
 	 * Creates a Sequence instance with the given arguments, and then adds it to this SBOLDocument
 	 * object's list of Sequence instances.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 * <p>
 	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
 	 * "/" is appended to the end of it.
@@ -1207,9 +1186,6 @@ public class SBOLDocument {
 	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
 	 * validity checks and create a copy top-level instance.
 	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
 	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
 	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
 	 * "/" is appended to the end of it.
@@ -1258,9 +1234,6 @@ public class SBOLDocument {
 	 * <p>
 	 * This method calls {@link #createCopy(TopLevel, String, String, String)} to do the following
 	 * validity checks and create a copy top-level instance.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 * <p>
 	 * If the {@code defaultURIprefix} is {@code null}, then it is extracted from the given
 	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
@@ -1439,9 +1412,6 @@ public class SBOLDocument {
 	 * Creates a copy of the given TopLevel instance with the given arguments, and then adds it to
 	 * the corresponding top-level list owned by this SBOL document.
 	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
 	 * If the given {@code URIprefix} is {@code null}, then it is extracted from the given
 	 * {@code topLevel} instance. If it does not end with one of the following delimiters: "/", ":", or "#", then
 	 * "/" is appended to the end of it.
@@ -1481,9 +1451,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the given {@code sequence} from this SBOL document's list of Sequence instances.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
 	 * @param sequence The given sequence to be removed
 	 * @return {@code true} if the given {@code sequence} is successfully removed, {@code false} otherwise.
@@ -1664,9 +1631,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the given {@code genericTopLevel} from this SBOL document's list of GenericTopLevel instances.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
 	 * @param genericTopLevel The given GenericTopLevel object to be removed from this document
 	 * @return {@code true} if the given {@code genericTopLevel} is successfully removed, {@code false} otherwise.
@@ -1943,9 +1907,6 @@ public class SBOLDocument {
 
 	/**
 	 * Removes the given {@code namespaceURI} from this SBOL document's list of ModuleDefinition instances.
-	 * <p>
-	 * This SBOL document is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
 	 * @param namespaceURI the namespaceURI to be removed from this SBOLDocument
 	 */

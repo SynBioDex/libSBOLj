@@ -87,6 +87,24 @@ public class FunctionalComponent extends ComponentInstance {
 		}
 		this.direction = direction;
 	}
+	
+	/**
+	 * Sets the definition property to the given one.
+	 *
+	 * @param definition the given definition URI to set to 
+	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10604.
+	 */
+	public void setDefinition(URI definition) throws SBOLValidationException {
+		if (sbolDocument != null) {
+			ComponentDefinition cd = sbolDocument.getComponentDefinition(definition);
+			if (sbolDocument.isComplete()) {
+				if (cd==null) {
+					throw new SBOLValidationException("sbol-10604",this);
+				}
+			}
+		}
+		super.setDefinition(definition);
+	}
 
 	@Override
 	public int hashCode() {

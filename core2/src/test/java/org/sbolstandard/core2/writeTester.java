@@ -40,6 +40,7 @@ class writeTester {
 		ComponentDefinition cd = document.createComponentDefinition("myCD", ComponentDefinition.DNA);
 		document.createComponentDefinition("mySubCD", ComponentDefinition.DNA);
 		Component comp = cd.createComponent("myComp", AccessType.PRIVATE, "mySubCD");
+		comp.setDefinition(cd.getIdentity());
 		comp.addRole(SequenceOntology.PROMOTER);
 		comp.setRoleIntegration(RoleIntegrationType.MERGEROLES);
 		SequenceAnnotation sa = cd.createSequenceAnnotation("mySeqAn", "myLoc");
