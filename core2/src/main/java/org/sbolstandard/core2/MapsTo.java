@@ -51,6 +51,16 @@ public class MapsTo extends Identified{
 		setRemote(remote);
 	}
 
+	/**
+	 * @param mapsTo
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following 
+	 * constructors or methods:
+	 * <ul>
+	 * <li>{@link Identified#Identified(Identified)},</li>
+	 * <li>{@link #setLocal(URI)}, or </li>
+	 * <li>{@link #setRemote(URI)}.</li>
+	 * </ul> 
+	 */
 	private MapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		super(mapsTo);
 		this.setRefinement(mapsTo.getRefinement());
@@ -59,43 +69,36 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Returns the refinement property of this MapsTo object.
+	 * Returns the refinement property of this mapsTo.
 	 *
-	 * @return the refinement property of this MapsTo object.
+	 * @return the refinement property of this mapsTo.
 	 */
 	public RefinementType getRefinement() {
 		return refinement;
 	}
 
 	/**
-	 * Sets the refinement property of this MapsTo object to the given one.
-	 * <p>
-	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the refinement property of this mapsTo to the given one.	 
 	 *
-	 * @param refinement The refinement type of the MapsTo object
+	 * @param refinement the refinement property to set to
 	 */
 	public void setRefinement(RefinementType refinement) {
 		this.refinement = refinement;
 	}
 
 	/**
-	 * Returns the local FunctionalComponent URI that this object refers to.
+	 * Returns this mapsTo's local component instance's URI.
 	 *
-	 * @return the local FunctionalComponent URI that this object refers to
+	 * @return this mapsTo's local component instance's URI
 	 */
 	public URI getLocalURI() {
 		return local;
 	}
 
 	/**
-	 * Returns the local ComponentInstance instance that this object refers to.
+	 * Returns this mapsTo's local component instance. 
 	 *
-	 * @return the local ComponentInstance instance that this object refers to
-	 * if this MapsTo object's reference ModuleDefinition instance is not {@code null},
-	 * or if this MapsTo object's parent ComponentInstance instance is not {@code null};
-	 * or {@code null} otherwise.
+	 * @return the this mapsTo's local component instance
 	 */
 	public ComponentInstance getLocal() {
 		if (moduleDefinition!=null) {
@@ -107,8 +110,9 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Get the component definition for the local element of this mapsTo.
-	 * @return the component definition for the local element of this mapsTo.
+	 * Retrieves referenced component definition by this mapsTo's local component instance. 
+	 * 
+	 * @return the referenced component definition by this mapsTo's local component instance
 	 */
 	public ComponentDefinition getLocalDefinition() {
 		if (moduleDefinition!=null) {
@@ -120,13 +124,9 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Sets the local property of this MapsTo object to the given one.
-	 * <p>
-	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
-	 * @param local refers to the second “higher level” ComponentInstance.
+	 * Sets the local property of this mapsTo to the given one.
+	 * 
+	 * @param local the given local property to set to
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 10802, 10803, 10804.
 	 */
 	public void setLocal(URI local) throws SBOLValidationException {
@@ -146,9 +146,9 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Returns the remote FunctionalComponent URI that this object refers to.
+	 * Returns this mapsTo's remote URI. 
 	 *
-	 * @return the remote FunctionalComponent URI that this object refers to
+	 * @return this mapsTo's remote URI
 	 */
 
 	public URI getRemoteURI() {
@@ -156,14 +156,9 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Returns the remote ComponentInstance instance that this object refers to.
+	 * Returns this mapsTo's remote component instance.
 	 *
-	 * @return the remote ComponentInstance instance that this object refers to,
-	 * if this MapsTo object's parent Module instance is not {@code null} and its
-	 * reference ModuleDefinition instance is not {@code null},
-	 * or if this MapsTo object's parent ComponentInstance instance is not {@code null}
-	 * and its reference ComponentDefinition instance is not {@code null};
-	 * or {@code null} otherwise.
+	 * @return this mapsTo's remote component instance
 	 */
 	public ComponentInstance getRemote() {
 		if (module!=null) {
@@ -177,8 +172,9 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Get the component definition for the remote element of this mapsTo.
-	 * @return the component definition for the remote element of this mapsTo.
+	 * Returns the remote component definition referenced by mapsTo.
+	 * 
+	 * @return the remote component definition referenced by mapsTo
 	 */
 	public ComponentDefinition getRemoteDefinition() {
 		if (module!=null) {
@@ -192,13 +188,9 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Sets the remote property of this MapsTo object to the given one.
-	 * <p>
-	 * If this ComponentDefinition object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the remote property of this mapsTo to the given one.
 	 *
-	 * @param remote refers to the first “lower level” ComponentInstance
+	 * @param remote the remote property to set to
 	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated:
 	 * 10805, 10807, 10808, 10809.
 	 */
@@ -262,13 +254,19 @@ public class MapsTo extends Identified{
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.Identified#deepCopy()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #MapsTo(MapsTo)}.
+	 */
 	@Override
 	protected MapsTo deepCopy() throws SBOLValidationException {
 		return new MapsTo(this);
 	}
 
 	/**
-	 * Assume this MapsTo object has compliant URI, and all given parameters have compliant forms.
+	 * Assume this mapsTo has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link Component#updateCompliantURI(String, String, String)}.
 	 * 
   	 * @throws SBOLValidationException if any of the following is true:
@@ -291,7 +289,8 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * @return the moduleDefinition
+	 * Returns the parent ModuleDefinition instance.
+	 * @return the parent ModuleDefinition instance
 	 */
 	ModuleDefinition getModuleDefinition() {
 		return moduleDefinition;

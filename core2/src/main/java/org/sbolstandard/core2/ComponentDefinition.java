@@ -7,6 +7,7 @@ import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -83,6 +84,16 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public static final URI EFFECTOR = URI.create("http://identifiers.org/chebi/CHEBI:35224");
 
+	/**
+	 * @param identity
+	 * @param types
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following
+	 * constructor or method: 
+	 * <ul>
+	 * <li>{@link TopLevel#TopLevel(TopLevel)}, or</li>
+	 * <li>{@link #setTypes(Set)}.</li>
+	 * </ul>
+	 */
 	ComponentDefinition(URI identity, Set<URI> types) throws SBOLValidationException {
 		super(identity);
 		this.types = new HashSet<>();
@@ -94,6 +105,22 @@ public class ComponentDefinition extends TopLevel {
 		setTypes(types);
 	}
 
+	/**
+	 * @param componentDefinition
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following
+	 * constructors or methods:
+	 * <ul>
+	 * <li>{@link TopLevel#TopLevel(TopLevel)},</li>
+	 * <li>{@link #addType(URI)},</li>
+	 * <li>{@link Component#deepCopy()},</li>
+	 * <li>{@link #addComponent(Component)},</li>
+	 * <li>{@link SequenceConstraint#deepCopy()},</li>
+	 * <li>{@link #addSequenceConstraint(SequenceConstraint)},</li>
+	 * <li>{@link SequenceAnnotation#deepCopy()},</li>
+	 * <li>{@link #addSequenceAnnotation(SequenceAnnotation)}, or</li>
+	 * <li>{@link #setSequences(Set)}.</li>
+	 * </ul>
+	 */
 	private ComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
 		super(componentDefinition);
 		this.types = new HashSet<>();
@@ -154,7 +181,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Clears the existing set of types first, then adds the given 
 	 * set of the types to this component definition.
 	 *
-	 * @param types the set of types to be set
+	 * @param types the set of types to set to
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
 	 * <ul>
 	 * <li>if the following SBOL validation rule was violated: 10502.</li>
@@ -225,7 +252,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Clears the existing set of roles first, and then adds the given
 	 * set of the roles to this component definition.
 	 *
-	 * @param roles the set of roles to be set
+	 * @param roles the set of roles to set to
 	 */
 	public void setRoles(Set<URI> roles) {
 		clearRoles();
@@ -435,7 +462,7 @@ public class ComponentDefinition extends TopLevel {
 	 * Clears the existing set of sequences first, and then adds the given
 	 * set of the sequences to this component definition.
 	 *
-	 * @param sequences the given set of the sequences to be set
+	 * @param sequences the given set of the sequences to set to
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addSequence(URI)}
 	 */
 	public void setSequences(Set<URI> sequences) throws SBOLValidationException {
@@ -917,6 +944,28 @@ public class ComponentDefinition extends TopLevel {
 		return sortedSAs;
 	}
 
+	class SADisplayIdComparator implements Comparator {
+
+	    public int compare(Object obj1, Object obj2) {
+	        SequenceAnnotation myObj1 = (SequenceAnnotation)obj1;
+	        SequenceAnnotation myObj2 = (SequenceAnnotation)obj2;
+	        if (myObj1.getDisplayId().startsWith("annotation") &&
+	        		myObj2.getDisplayId().startsWith("annotation")) {
+	        	int myObj1int = Integer.parseInt(myObj1.getDisplayId().replace("annotation",""));
+	        	int myObj2int = Integer.parseInt(myObj2.getDisplayId().replace("annotation",""));
+	        	return myObj1int - myObj2int;
+	        }
+	        return myObj1.getDisplayId().compareTo(myObj2.getDisplayId());
+	    }
+	}
+	
+	List<SequenceAnnotation> getSortedSequenceAnnotationsByDisplayId() {
+		List<SequenceAnnotation> sortedSAs = new ArrayList<SequenceAnnotation>();
+		sortedSAs.addAll(this.getSequenceAnnotations());
+		Collections.sort(sortedSAs,new SADisplayIdComparator());
+		return sortedSAs;
+	}
+
 	/**
 	 * Removes all entries of this component definition's list of sequence annotations.
 	 * The list will be empty after this call returns.
@@ -981,7 +1030,8 @@ public class ComponentDefinition extends TopLevel {
 	 * and then adds it to this component definition's list of components.
 	 * <p>
 	 * This method first creates a compliant URI for the component definition that is referenced by
-	 * the child component to be created. This URI starts with the default
+	 * the child component to be created, i.e., the child component's definition property. 
+	 * This URI starts with the default
 	 * URI prefix, which was set in the SBOLDocument instance hosting this component definition, 
 	 * followed by the given display ID and ends with {@code version}. 
 	 * It then calls {@link #createComponent(String, AccessType, URI)}
@@ -1023,8 +1073,13 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
-	 * Creates a child component for this component definition with the given arguments, and then adds to this component definition's list of components.
-	 *
+	 * Creates a child component for this component definition with the given arguments, 
+	 * and then adds to this component definition's list of components.
+	 * <p>
+	 * This method first creates a compliant URI for the child component to be created. 
+	 * This URI starts with this component definition's persistent identity, 
+	 * followed by the given display ID and ends with this component defintion's version. 
+	 * 
 	 * @param displayId the display ID for the component to be created
 	 * @param access the access property for the component to be created
 	 * @param definitionURI the URI of the component definition referenced by the component to be created
@@ -1172,7 +1227,11 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * Returns the component matching the given component's display ID.
-	 *
+	 * <p>
+	 * This method first creates a compliant URI for the component to be retrieved. It starts with
+	 * this component definition's persistent identity, followed by the given component's display ID,
+	 * and ends with this component definition's version.
+	 * 
 	 * @param displayId the display ID of the component to be retrieved
 	 * @return the matching component if present, or {@code null} otherwise.
 	 */
@@ -1523,9 +1582,11 @@ public class ComponentDefinition extends TopLevel {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.TopLevel#deepCopy()
+	 */
 	/**
-	 * Provide a deep copy of this instance.
-	 * @throws SBOLValidationException if the associated SBOLDocument is not compliant
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #ComponentDefinition(ComponentDefinition)}.
 	 */
 	@Override
 	protected ComponentDefinition deepCopy() throws SBOLValidationException {
@@ -1534,6 +1595,26 @@ public class ComponentDefinition extends TopLevel {
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#copy(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following constructors or methods:
+	 * <ul>
+	 * <li>{@link #deepCopy()},</li>
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 * <li>{@link #setDisplayId(String)},</li>
+	 * <li>{@link #setVersion(String)},</li>
+	 * <li>{@link #setWasDerivedFrom(URI)},</li>
+	 * <li>{@link #setIdentity(URI)}</li>
+	 * <li>{@link Component#setDisplayId(String)}</li>
+	 * <li>{@link Component#updateCompliantURI(String, String, String)},</li>
+	 * <li>{@link #addComponent(Component)},</li>
+ 	 * <li>{@link SequenceConstraint#setDisplayId(String)}</li>
+	 * <li>{@link SequenceConstraint#updateCompliantURI(String, String, String)},</li>
+	 * <li>{@link #addSequenceConstraint(SequenceConstraint)},</li>
+ 	 * <li>{@link SequenceAnnotation#setDisplayId(String)}</li>
+	 * <li>{@link SequenceAnnotation#updateCompliantURI(String, String, String)}, or</li>
+	 * <li>{@link #addSequenceAnnotation(SequenceAnnotation)},</li>
+	 * </ul>
 	 */
 	@Override
 	ComponentDefinition copy(String URIprefix, String displayId, String version) throws SBOLValidationException {

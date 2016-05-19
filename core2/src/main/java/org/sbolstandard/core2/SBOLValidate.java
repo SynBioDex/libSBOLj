@@ -126,6 +126,11 @@ public class SBOLValidate {
 		}
 	}
 
+	/**
+	 * @param moduleDefinition
+	 * @param mapsTo
+	 * @throws SBOLValidationException the following SBOL validation rule was violated: 11609.
+	 */
 	protected static void checkModuleDefinitionMapsTos(ModuleDefinition moduleDefinition,MapsTo mapsTo) throws SBOLValidationException {
 		for (Module module : moduleDefinition.getModules()) {
 			for (MapsTo mapsTo2 : module.getMapsTos()) {
@@ -323,7 +328,7 @@ public class SBOLValidate {
 	 * @param identified
 	 * @param wasDerivedFrom
 	 * @param visited
-	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 10209, 10304.
+	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 10303, 10304.
 	 */
 	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument,
 			Identified identified, URI wasDerivedFrom, Set<URI> visited) throws SBOLValidationException {

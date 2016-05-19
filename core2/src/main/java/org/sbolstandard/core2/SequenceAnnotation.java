@@ -42,11 +42,23 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		this.roles = new HashSet<>();
 	}
 	
+	/**
+	 * @param sequenceAnnotation
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the 
+	 * following constructors or methods:
+	 * <ul>
+	 * <li>{@link Identified#Identified(Identified)},</li>
+	 * <li>{@link Location#deepCopy()},</li>
+	 * <li>{@link #addLocation(Location)}, or</li>
+	 * <li>{@link #setComponent(URI)}.</li>
+	 * </ul>
+	 */
 	private SequenceAnnotation(SequenceAnnotation sequenceAnnotation) throws SBOLValidationException {
 		super(sequenceAnnotation);
 		this.locations = new HashMap<>();
 		for (Location location : sequenceAnnotation.getLocations()) {
 			addLocation(location.deepCopy());
+			// TODO: gereafdfsafd
 		}
 		if (sequenceAnnotation.isSetComponent()) {
 			this.setComponent(sequenceAnnotation.getComponentURI());
@@ -275,11 +287,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	/**
 	 * Removes all entries of this SequenceAnnotation instance's list of Location
 	 * instances. The set will be empty after this call returns.
-  	 * <p>
-	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. 
-	 * Only a compliant SBOLDocument instance is allowed to be edited.
-	 * 
+ 	 * 
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #removeLocation(Location)}.
 	 */
 	void clearLocations() throws SBOLValidationException {
@@ -401,10 +409,6 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * Sets the reference Component URI to the URI of the Component instance matching the 
 	 * given {@code displayId}.
 	 * <p>
-	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
 	 * This method creates a compliant URI for the reference Component instance using the
 	 * persistent identity of this SequenceAnnotation instance's parent ComponentDefinition instance,
 	 * the given {@code displayId}, and the parent ComponentDefinition instance's version.
@@ -425,13 +429,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 
 	/**
 	 * Sets the reference component URI to the given {@code componentURI}.
-	 * <p>
-	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 * 
 	 * @param componentURI the given component identity URI
- 	 * @throws SBOLValidationException see {@link SBOLValidationException}
+ 	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated:
+ 	 * 10522, 10905.
 	 */
 	public void setComponent(URI componentURI) throws SBOLValidationException {
 		if (componentDefinition!=null) {
@@ -451,10 +452,6 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	
 	/**
 	 * Dereference the component URI by setting it to {@code null}.
-	 * <p>
-	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 */
 	public void unsetComponent() {
 		component = null;
@@ -593,6 +590,13 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.Identified#deepCopy()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in
+	 * {@link SequenceAnnotation#SequenceAnnotation(SequenceAnnotation)}.
+	 */
 	@Override
 	protected SequenceAnnotation deepCopy() throws SBOLValidationException {
 		return new SequenceAnnotation(this);
@@ -604,7 +608,18 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @param URIprefix
 	 * @param parentDisplayId
 	 * @param version
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 * <li>{@link #setWasDerivedFrom(URI)},</li>
+	 * <li>{@link #setIdentity(URI)},</li>
+	 * <li>{@link #setDisplayId(String)},</li>
+	 * <li>{@link #setVersion(String)},</li>
+	 * <li>{@link #setComponent(URI)},</li>
+	 * <li>{@link Location#setDisplayId(String)},</li>
+	 * <li>{@link Location#updateCompliantURI(String, String, String)}, or</li>
+	 * <li>{@link #addLocation(Location)}.</li>
+	 * </ul>
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {

@@ -23,6 +23,16 @@ public class Module extends Identified {
 	private URI definition;
 	private ModuleDefinition moduleDefinition = null;
 
+	/**
+	 * @param identity
+	 * @param moduleDefinition
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of the
+	 * following constructor or method:
+	 * <ul>
+	 * <li>{@link Identified#Identified(URI)}, or</li>
+	 * <li>{@link #setDefinition(URI)}.</li>
+	 * </ul>
+	 */
 	Module(URI identity, URI moduleDefinition) throws SBOLValidationException {
 		super(identity);
 		this.mapsTos = new HashMap<>();
@@ -39,19 +49,18 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Returns the ModuleDefinition URI that this Module object refers to.
+	 * Returns the module definition URI that this module refers to.
 	 *
-	 * @return the ModuleDefinition URI that this Module object refers to
+	 * @return the module definition URI that this module refers to
 	 */
 	public URI getDefinitionURI() {
 		return definition;
 	}
 
 	/**
-	 * Returns the ModuleDefinition instance that this Module object refers to.
+	 * Returns the module definition that this module refers to.
 	 *
-	 * @return the ModuleDefinition instance that this Module object refers to,
-	 * if the associated SBOLDocument instance is not {@code null}; {@code null} otherwise
+	 * @return the the module definition that this module refers to
 	 */
 	public ModuleDefinition getDefinition() {
 		if (sbolDocument==null) return null;
@@ -59,11 +68,7 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Sets the reference definition URI to the given {@code definitionURI}.
-	 * <p>
-	 * If this Module object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Sets the reference definition URI to this module.
 	 * <p>
 	 * This method creates a compliant local and a compliant remote URIs.
 	 * They are created with this Module object's persistent ID,
@@ -72,18 +77,30 @@ public class Module extends Identified {
 	 * a MapsTo instance.
 	 *
 	 * @param definitionURI The definition URI for this Module.
-	 * @throws SBOLValidationException if the given {@code definitionURI} is {@code null}
-	 * @throws SBOLValidationException if the SBOLDocument instance already completely
-	 * specifies all URIs and the given {@code definitionURI} argument is not found in
-	 * its list of ModuleDefinition instances.
+	 * @throws SBOLValidationException if either of the following SBOL validation rule was violated: 11702, 11703, 11704, 11705.
 	 */
 	public void setDefinition(URI definitionURI) throws SBOLValidationException {
 		if (definitionURI==null) {
 			throw new SBOLValidationException("sbol-11702",this);
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getModuleDefinition(definitionURI)==null) {
-				throw new SBOLValidationException("sbol-11703",this);
+		if (sbolDocument != null) {
+			if (sbolDocument.isComplete()) {
+				if (sbolDocument.getModuleDefinition(definitionURI)==null) {
+					throw new SBOLValidationException("sbol-11703",this);
+				}
+			}
+			if (moduleDefinition!=null) {
+				ModuleDefinition md = sbolDocument.getModuleDefinition(definitionURI);
+				if (md!=null &&	moduleDefinition.getIdentity().equals(md.getIdentity())) {
+					throw new SBOLValidationException("sbol-11704", this);
+				}
+				Set<URI> visited = new HashSet<>();
+				visited.add(moduleDefinition.getIdentity());
+				try { 
+					SBOLValidate.checkModuleDefinitionCycle(sbolDocument, md, visited);
+				} catch (SBOLValidationException e) {
+					throw new SBOLValidationException("sbol-11705", this);
+				}
 			}
 		}
 		this.definition = definitionURI;
@@ -102,12 +119,19 @@ public class Module extends Identified {
 	//	}
 
 	/**
-	 * @param identity The displayId identifier for this Module
-	 * @param refinement the refinement type for this MapsTo object
-	 * @param local The reference URI local object for this MapsTo object
-	 * @param remote The reference URI remote object for this MapsTo object
-	 * @return new MapsTo object
-	 * @throws SBOLValidationException
+	 * Calls the MapsTo constructor to create a new instance using the specified parameters,
+	 * then adds to the list of MapsTo instances owned by this component.
+	 *
+	 * @param identity the identity URI for the mapsTo to be created
+	 * @param refinement the relationship between the local and remote components
+	 * @param local the identity URI of the local functional component
+	 * @param remote the identity URI of the remote functional component
+	 * @return the created mapsTo
+ 	 * @throws SBOLValidationException if either of the following conditions is satisfied:
+ 	 * <ul>
+	 * <li>an SBOL validation exception occurred in {@link MapsTo#MapsTo(URI, RefinementType, URI, URI)};</li>
+	 * <li>an SBOL validation exception occurred in {@link #addMapsTo(MapsTo)};</li>
+	 * </ul>
 	 */
 	MapsTo createMapsTo(URI identity, RefinementType refinement,
 			URI local, URI remote) throws SBOLValidationException {
@@ -117,37 +141,39 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Creates a child MapsTo instance for this Module
-	 * object with the given arguments, and then adds to this Module's list of MapsTo
-	 * instances.
+	 * Creates a child mapsTo for this module with the given arguments, and then adds it to its list of mapsTos.
 	 * <p>
-	 * If this Module object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * This method creates compliant local and remote URIs first.
+	 * The compliant local URI is created with this module's persistent identity URI, followed by
+	 * the given local module's display ID, followed by this module's version. 
+	 * The compliant remote URI is created following the same pattern.
+	 * It then calls {@link #createMapsTo(String, RefinementType, URI, URI)} with the given mapsTo's display ID, its refinement type,
+	 * and the created compliant local and remote functional components' URIs.
 	 * <p>
-	 * This method creates a compliant local and a compliant remote URIs.
-	 * They are created with this Module object's persistent ID,
-	 * the given {@code localId} or {@code remoteId}, and this Module object's version.
-	 * It then calls {@link #createMapsTo(String, RefinementType, URI, URI)} to create
-	 * a MapsTo instance.
+	 * This method calls {@link ModuleDefinition#createFunctionalComponent(String, AccessType, String, String, DirectionType)}
+	 * to automatically create a local functional component with the given display ID of referenced local component definition, 
+	 * {@link AccessType#PUBLIC}, an empty version string, and {@link DirectionType#INOUT}, if all of the following conditions are satisfied:
+	 * <ul>
+	 * <li>the associated SBOLDocument instance for this module is not {@code null};</li>
+	 * <li>if default functional components should be automatically created when not present in the associated SBOLDocument instance,
+	 * i.e., {@link SBOLDocument#isCreateDefaults} returns {@code true};</li>
+	 * <li>if this module's parent ModuleDefinition instance exists; and</li>
+	 * <li>if this module's parent ModuleDefinition instance does not already have a functional component
+	 * with the created compliant local URI.</li> 
+	 * </ul>
+	 * This automatically created created functional component has the same display ID as its referenced component definition. 
 	 *
-	 * @param displayId The displayId identifier for this MapsTo
-	 * @param refinement The refinementType for this MapsTo object
-	 * @param localId The second “higher level” ComponentInstance for this MapsTo object
-	 * @param remoteId The first “lower level” ComponentInstance for this MapsTo object
-	 * @return a MapsTo instance
-	 * @throws SBOLValidationException if the SBOLDocument instance already completely
-	 * specifies all URIs and the given {@code local} argument is not found in the list
-	 * of functional components that are owned by the ModuleDefinition instance that
-	 * this Module object refers to.
-	 * @throws SBOLValidationException if the SBOLDocument instance already completely
-	 * specifies all URIs and the given {@code remote} argument is not found in
-	 * the list of functional components that are owned by the ModuleDefinition instance that
-	 * this Module object refers to.
-	 * @throws SBOLValidationException if the SBOLDocument instance already completely
-	 * specifies all URIs and the given {@code remote} URI refers to a FunctionalComponent
-	 * with {@code private} access type that is owned by the ModuleDefinition instance that
-	 * this Module object refers to.
+	 * @param displayId the display ID of the mapsTo to be created 
+	 * @param refinement the relationship between the local and remote components
+	 * @param localId the display ID of the local functional component
+	 * @param remoteId the display ID of the remote functional component
+	 * @return the created mapsTo 
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <ul>
+	 * <li>if either of the following SBOL validation rules was violated: 10204, 10206;</li>
+	 * <li>an SBOL validation exception occurred in {@link ModuleDefinition#createFunctionalComponent(String, AccessType, String, String, DirectionType)}; or</li>
+	 * <li>an SBOL validation exception occurred in {@link #createMapsTo(String, RefinementType, URI, URI)}.</li>
+	 * </ul>
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
 		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
@@ -162,34 +188,18 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Creates a child MapsTo instance for this Module
-	 * object with the given arguments, and then adds to this Module's list of MapsTo
-	 * instances.
+	 * Creates a child mapsTo for this module with the given arguments, and then adds it to its list of mapsTos.
 	 * <p>
-	 * If this Module object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 * <p>
-	 * This method creates a compliant MapsTo URI with this Module object's persistent ID,
-	 * the given {@code displayId}, and this Module object's version.
-	 *
-	 * @param displayId The displayId identifier for this MapsTo object
-	 * @param refinement he rela- 25 tionship between its local and remote ComponentInstance objects using one of the REQUIRED refinement URIs
-	 * @param local The second “higher level” ComponentInstance for this MapsTo object
-	 * @param remote The first “lower level” ComponentInstance for this MapsTo object
-	 * @return a MapsTo instance
-	 * @throws SBOLValidationException if the SBOLDocument instance already completely
-	 * specifies all URIs and the given {@code local} argument is not found in the list
-	 * of functional components that are owned by the ModuleDefinition instance that
-	 * this Module object refers to.
-	 * @throws SBOLValidationException if the SBOLDocument instance already completely
-	 * specifies all URIs and the given {@code remote} argument is not found in
-	 * the list of functional components that are owned by the ModuleDefinition instance that
-	 * this Module object refers to.
-	 * @throws SBOLValidationException if the SBOLDocument instance already completely
-	 * specifies all URIs and the given {@code remote} URI refers to a FunctionalComponent
-	 * with {@code private} access type that is owned by the ModuleDefinition instance that
-	 * this Module object refers to.
+	 * This method creates a compliant URI for the mapsTo to be created. It starts with this module's persistent
+	 * identity, followed by the mapsTo's display ID, and ends with this module's version.
+	 * 
+	 * @param displayId the display ID of the mapsTo to be created
+	 * @param refinement the relationship between the local and remote components
+	 * @param local the identity URI of the local functional component
+	 * @param remote the identity URI of the remote functional component
+	 * @return the created mapsTo
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+ 	 * 10201, 10202, 10204, 10206, 10802, 10803, 10804, 10805, 10807, 10808, 10809, 10811, 11609.
 	 */
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();
@@ -203,8 +213,13 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * @param mapsTo
-	 * @throws SBOLValidationException
+	 * Adds the specified instance to the list of references.
+	 * @throws SBOLValidationException if any of the following conditions is satisfied:
+	 * <ul> 
+	 * <li>any of the following SBOL validation rules was violated: 10804, 10807, 10809, 10811;</li>
+	 * <li>an SBOL validation exception occurred in {@link SBOLValidate#checkModuleDefinitionMapsTos(ModuleDefinition, MapsTo)}; or</li>
+	 * <li>an SBOL validation exception occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}.</li>
+	 * </ul>
 	 */
 	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		mapsTo.setSBOLDocument(this.sbolDocument);
@@ -239,25 +254,23 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Removes the given MapsTo instance from the list of MapsTo
-	 * instances.
-	 * <p>
-	 * If this Module object belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Removes the given mapsTo from the list of mapsTos owned by this module.
 	 *
-	 * @param mapsTo The MapsTo object to be removed
-	 * @return {@code true} if the matching MapsTo instance is removed successfully, {@code false} otherwise.
+	 * @param mapsTo the mapsTo to be removed
+	 * @return {@code true} if the matching mapsTo is removed successfully, {@code false} otherwise
 	 */
 	public boolean removeMapsTo(MapsTo mapsTo) {
 		return removeChildSafely(mapsTo,mapsTos);
 	}
 
-	/**
-	 * Returns the MapsTo instance owned by this Module object that matches the given {@code displayId}
+ 	/**
+	 * Returns the mapsTo that matches the given display ID.
+	 * <p>
+	 * This method first creates a compliant URI for the mapsTo to be retrieved. It starts with this module's 
+	 * persistent identity, followed by the given display ID, and ends with this module's version.
 	 *
-	 * @param displayId The displayId identifier for this MapsTo object
-	 * @return the matching MapsTo instance
+	 * @param displayId the display ID of the mapsTo to be retrieved
+	 * @return the matching mapsTo
 	 */
 	public MapsTo getMapsTo(String displayId) {
 		try {
@@ -288,13 +301,10 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Removes all entries of this Module object's list of MapsTo
-	 * instances. The set will be empty after this call returns.
+	 * Removes all entries of this module's list of mapsTos.
+	 * The set will be empty after this call returns.
 	 * <p>
-	 * If this Module object belongs to an SBOLDocument instance,
-	 * then the SBOLDcouement instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
+	 * This method calls {@link #removeMapsTo(MapsTo)} iteratively to remove each mapsTo at a time.
 	 */
 	public void clearMapsTos() {
 		Object[] valueSetArray = mapsTos.values().toArray();
@@ -304,8 +314,9 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Clears the existing list of reference instances, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException
+	 * Clears the existing list of mapsTos first, and then adds the given set to this module.
+	 * 
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addMapsTo(MapsTo)}. 
 	 */
 	void setMapsTos(Set<MapsTo> mappings) throws SBOLValidationException {
 		clearMapsTos();
@@ -354,9 +365,19 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Assume this Module object and all its descendants (children, grand children, etc) have compliant URI, and all given parameters have compliant forms.
-	 * This method is called by {@link ModuleDefinition#copy(String, String, String)}.
-	 * @throws SBOLValidationException
+	 * Updates this module's and each of its child mapsTo's identity URIs with compliant URIs.
+	 *  
+  	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+ 	 * <ul> 
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)};</li>
+	 * <li>{@link #setWasDerivedFrom(URI)};</li>
+	 * <li>{@link #setIdentity(URI)};</li>
+	 * <li>{@link #setDisplayId(String)};</li>
+	 * <li>{@link #setVersion(String)};</li>
+	 * <li>{@link MapsTo#updateCompliantURI(String, String, String)};</li>
+	 * <li>{@link #addMapsTo(MapsTo)};</li>
+	 * <li>{@link MapsTo#setLocal(URI)};</li>
+	 * </ul>
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {

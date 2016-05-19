@@ -169,7 +169,7 @@ public class GenbankTest {
 							expectedValue = "\"2.7.7.7\"";
 							break;
 						case "note":
-							expectedValue = "\"identified by match to protein family HMM PF00712;match to protein family HMM PF02767; match to proteinfamily HMM PF02768; match to protein family HMM TIGR00663\"";
+							expectedValue = "\"identified by match to protein family HMM PF00712; match to protein family HMM PF02767; match to protein family HMM PF02768; match to protein family HMM TIGR00663\"";
 							break;
 						case "codon_start":
 							expectedValue = "1";

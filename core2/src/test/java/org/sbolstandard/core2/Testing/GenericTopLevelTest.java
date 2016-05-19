@@ -1,9 +1,7 @@
 package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
-
 import javax.xml.namespace.QName;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +16,7 @@ public class GenericTopLevelTest {
 		String prURI="http://partsregistry.org";
 		doc = new SBOLDocument();
 		doc.setDefaultURIprefix(prURI);
+		doc.setComplete(true);
 	}
 
 	@After
@@ -29,12 +28,16 @@ public class GenericTopLevelTest {
 	public void test_toString() throws SBOLValidationException
 	{
 		GenericTopLevel topLevel=doc.createGenericTopLevel(
-				"datasheet1",
+				"random_sheet1",
 				"",
-				new QName("http://partsregistry.org", "Datasheet", ""));
+				new QName("http://partsregistry.org", "Random_Sheet", ""));
 		
-		String topLevel_string = "datasheet1" + '@' + Integer.toHexString(topLevel.hashCode());
-		equals(topLevel_string == topLevel.toString());
+		//why doesn't toString method print version? Bigger problem: why aren't all toString methods standard?
+		assertTrue(doc.getGenericTopLevel(topLevel.getIdentity()).toString().length() != 0);
+		assertNotNull(topLevel.toString());
+		assertTrue(topLevel.toString().contains("displayId=random_sheet1"));
+		assertTrue(!topLevel.toString().contains("name="));
+
 		
 	}
 	

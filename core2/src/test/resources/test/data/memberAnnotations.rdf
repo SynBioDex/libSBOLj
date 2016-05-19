@@ -50,20 +50,20 @@
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
     <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/someCompDef/someComponent/1.0">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef/someComponent"/>
-        <sbol:displayId>someComponent</sbol:displayId>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/someCompDef/someOtherComponent/1.0">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef/someOtherComponent"/>
+        <sbol:displayId>someOtherComponent</sbol:displayId>
         <sbol:version>1.0</sbol:version>
-        <annot:thisAnnotation>turtleString</annot:thisAnnotation>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/someCompDefCDS/1.0"/>
       </sbol:Component>
     </sbol:component>
     <sbol:component>
-      <sbol:Component rdf:about="http://www.async.ece.utah.edu/someCompDef/someOtherComponent/1.0">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef/someOtherComponent"/>
-        <sbol:displayId>someOtherComponent</sbol:displayId>
+      <sbol:Component rdf:about="http://www.async.ece.utah.edu/someCompDef/someComponent/1.0">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef/someComponent"/>
+        <sbol:displayId>someComponent</sbol:displayId>
         <sbol:version>1.0</sbol:version>
+        <annot:thisAnnotation>turtleString</annot:thisAnnotation>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/someCompDefCDS/1.0"/>
       </sbol:Component>

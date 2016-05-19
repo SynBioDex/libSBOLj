@@ -20,6 +20,10 @@ public class GenericLocation extends Location{
 		super(identity);
 	}
 	
+	/**
+	 * @param genericLocation
+	 * @throws SBOLValidationException SBOLValidationException if an SBOL validation rule violation occurred in {@link Location#Location(Location)}.
+	 */
 	private GenericLocation(GenericLocation genericLocation) throws SBOLValidationException {
 		super(genericLocation);
 	}
@@ -44,6 +48,12 @@ public class GenericLocation extends Location{
 		return orientation == other.orientation;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.Location#deepCopy()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #GenericLocation(GenericLocation)}.
+	 */
 	@Override
 	protected GenericLocation deepCopy() throws SBOLValidationException {
 		return new GenericLocation(this);
