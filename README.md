@@ -13,7 +13,7 @@ In a Maven project that utilizes the libSBOLj library, add a dependency in the M
 <dependency>
 	<groupId>org.sbolstandard</groupId>
 	<artifactId>libSBOLj</artifactId>
-	<version>2.0.0</version>
+	<version>2.1.0</version>
 </dependency>
 ```
  
@@ -28,34 +28,26 @@ libSBOLj comes with a command-line interface (CLI) that can be used to validate 
 ```libSBOLj-<version>-withDependencies.jar``` to validate and convert files as follows.
 
 ```
-java -jar libSBOLj-<version>-withDependencies.jar <inputFile>
+java -jar libSBOLj-<version>-withDependencies.jar <inputFile> -l <language>
 ```
     
-If validation is successful, the program will print the contents of the SBOL document. You can also output the result to a file. 
+If validation/conversion is successful, the program will print the contents of the input file in the specified language (SBOL1, SBOL2, GenBank, and FASTA). You can also output the result to a file. 
 
 ```
-java -jar libSBOLj-<version>-withDependencies.jar <inputFile> -o <outputFile>
+java -jar libSBOLj-<version>-withDependencies.jar <inputFile> -l <language> -o <outputFile>
 ```
 
-If validation fails with an error, there will be a message printed about the validation error.  In addition to checking all required validation rules, it will also check if the URIs are compliant and whether the SBOL document is complete (i.e., all referenced objects are contained within the file).  These validation checks can be turned off with the -n and -i flags, respectively.  It is also possible to turn-on best practices checking using the -b flag.
+One can also provide a URI using the -s flag for a TopLevel object, and only that object and all its dependencies will be output.
 
-If the input file is an SBOL 1.1 file, then it will convert the file into an SBOL 2.0 file.  This conversion should be provided a default URI prefix.  It can also be provided a default version, if desired.  Finally, the -t flag will insert the type of top level objects into the URI during conversion, if desired.
+If validation fails with an error, there will be a message printed about the validation error.  The -f flag can be used to indicate that validation should continue after the first error, while the -d flag will provide a detailed error trace on a validation error.  
+
+In addition to checking all required validation rules, it will also check if the URIs are compliant and whether the SBOL document is complete (i.e., all referenced objects are contained within the file).  These validation checks can be turned off with the -n and -i flags, respectively.  It is also possible to turn-on best practices checking using the -b flag.  
+
+When the input file is being converted into SBOL 2.0, the conversion should be provided a default URI prefix.  It can also be provided a default version, if desired.  Finally, the -t flag will insert the type of top level objects into the URI during conversion, if desired.
 
 ```
 java -jar libSBOLj-<version>-withDependencies.jar <inFile> -o <outFile> -p <URIprefix> -v <version>
 ```
-
-The command line interface can also convert GenBank files into SBOL 2.0 files using the command below:
-
-```
-java -jar libSBOLj-<version>-withDependencies.jar -g <inFile> -o <outFile> -p <URIprefix> -v <version>
-```
-
-It can convert a specifed top-level ComponentDefinition within an SBOL 2.0 file into a GenBank file using the following command: 
-```
-java -jar libSBOLj-<version>-withDependencies.jar <inFile> -c <ComponentDefinitionURI> -o <outFile>
-```
-Note that if no top-level ComponentDefinition is specified, that it will attempt to find a root ComponentDefinition.  If it finds a single root, it will convert that, otherwise it will give an error message.
 
 Finally, it can be used to compare the equality of the contents of two SBOL files using the command below:
 ```
