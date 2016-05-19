@@ -20,7 +20,7 @@ import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.TopLevel;
 
-public class ModuleDefinitionTestSuite {
+public class ModuleDefinitionTest {
 	private SBOLDocument doc = null;
 	private ModuleDefinition geneticToggleSwitch = null;
 	private ModuleDefinition TetRInverter_MD = null;
@@ -96,7 +96,6 @@ public class ModuleDefinitionTestSuite {
 	{
 		assertNotNull(geneticToggleSwitch.getModule("TetRInverter"));
 		assertNotNull(geneticToggleSwitch.getModule("LacIInverter"));
-	
 	}
 	
 	@Test
@@ -175,7 +174,10 @@ public class ModuleDefinitionTestSuite {
 		doc_copy.setComplete(true);
 		doc_copy.createCopy(geneticToggleSwitch);
 		ModuleDefinition TetRInverter_copy = doc_copy.getModuleDefinition("geneticToggleSwitch", "");
-		assertTrue(TetRInverter_copy.getModule("TetRInverter").equals(TetRInverter));		
+		assertTrue(TetRInverter_copy.getModule("TetRInverter").equals(TetRInverter));	
+		
+		assertTrue(doc_copy.createRecursiveCopy(geneticToggleSwitch).equals(doc));
+		
 	}
 	
 	

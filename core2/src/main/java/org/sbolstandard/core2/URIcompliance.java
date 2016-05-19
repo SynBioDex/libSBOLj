@@ -414,8 +414,7 @@ final class URIcompliance {
 	 *
 	 * @param URIprefix
 	 * @return URIprefix
-	 * @throws SBOLValidationException if the given {@code URIprefix} is {@code null}
-	 * @throws SBOLValidationException if the given {@code URIprefix} is non-compliant
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10201. 
 	 */
 	static String checkURIprefix(String URIprefix) throws SBOLValidationException {
 		if (URIprefix==null) {

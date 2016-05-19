@@ -26,17 +26,7 @@ public class ComponentDefinitionTest {
 	private ModuleDefinition CRISPR_Template = null;
 	private Interaction Cas9Complex_Formation = null;
 	private Participation cas9_generic_part = null;
-	private String CRa_U6_seq = "GGTTTACCGAGCTCTTATTGGTTTTCAAACTTCATTGACTGTGCC" +
-	                "AAGGTCGGGCAGGAAGAGGGCCTATTTCCCATGATTCCTTCATAT" +
-	                "TTGCATATACGATACAAGGCTGTTAGAGAGATAATTAGAATTAAT" +
-	                "TTGACTGTAAACACAAAGATATTAGTACAAAATACGTGACGTAGA" +
-	                "AAGTAATAATTTCTTGGGTAGTTTGCAGTTTTAAAATTATGTTTT" +
-	                "AAAATGGACTATCATATGCTTACCGTAACTTGAAATATAGAACCG" +
-	                "ATCCTCCCATTGGTATATATTATAGAACCGATCCTCCCATTGGCT" +
-	                "TGTGGAAAGGACGAAACACCGTACCTCATCAGGAACATGTGTTTA" +
-	                "AGAGCTATGCTGGAAACAGCAGAAATAGCAAGTTTAAATAAGGCT" +
-	                "AGTCCGTTATCAACTTGAAAAAGTGGCACCGAGTCGGTGCTTTTT" +
-	                "TTGGTGCGTTTTTATGCTTGTAGTATTGTATAATGTTTTT";
+	private String CRa_U6_seq = "GGTTTACCGAGCTCTTATTGGTTTTCAAACTTCATTGACTGTGCC";
 	private ComponentDefinition TetR_promoter = null;
 	private HashSet <URI> types = null; 
 	private Sequence generic_seq = null;
@@ -50,22 +40,12 @@ public class ComponentDefinitionTest {
 				doc = new SBOLDocument();
 				doc.setDefaultURIprefix(prURI);
 				doc.setTypesInURIs(false);
+				doc.setComplete(true);
 				types = new HashSet <URI >(Arrays.asList(ComponentDefinition.DNA));
 				TetR_promoter = doc.createComponentDefinition("TetR_promoter", types); 
 				generic_seq = doc.createSequence("generic_seq", "ttgacagctagctcagtcctaggtataatgctagc", Sequence.IUPAC_DNA);
 				gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA);
 				gRNA_b_gene.addSequence(generic_seq);
-			
-				/*	//case 2: document is not null
-				String preURI="http://doesnotexist.com";
-				document1 = new SBOLDocument();
-				document1.setDefaultURIprefix(preURI);
-				document1.setTypesInURIs(true);
-				
-			//	document1.addComponentDefinition(TetR_promoter);
-				s2 = new Sequence(Sequence.IUPAC_PROTEIN, "", Sequence.IUPAC_DNA);
-				TetR_promoter.addSequence(s2);
-				document1.addComponentDefinition(TetR_promoter); */
 		
 	}
 	
@@ -73,25 +53,25 @@ public class ComponentDefinitionTest {
 	public void test_CD_addSequence() throws SBOLValidationException {
 		
 		doc.createComponentDefinition("CRa_U6","",ComponentDefinition.DNA);
-		try
-		{
-			doc.getComponentDefinition("CRa_U6", "").addSequence(CRa_U6_seq);
-				
-			int size = doc.getSequence("CRa_U6", "").toString().length();
-			assertTrue(size != 0);
-		}
-		catch(Exception e){}
+		Sequence gen_seq = doc.createSequence("CRa_U6_seq", CRa_U6_seq, Sequence.IUPAC_DNA);
+		doc.getComponentDefinition("CRa_U6", "").addSequence(gen_seq);
+		assertTrue(doc.getComponentDefinition("CRa_U6", "").getSequences().size() == 1);
+		int size = doc.getSequence("CRa_U6_seq", "").toString().length();
+		assertTrue(size != 0);
+		
 	} 
-	
 	@Test
 	 /* CD.createComponent(String, AccessType, String)
 	 * Add a promoter component to a gene, get the promoter, remove the promoter
 	 * toString the gene
 	 */
-	public void test_CD_createComp() throws SBOLValidationException
+	public void test_CD_methods() throws SBOLValidationException
 	{
-		//Question: when added creatingComponent(displayID, access remotely or not?, ComponentDefinitionID?--is this the ComponentDef it's part of?)
-		Component gRNA_promoter = gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter");
+		/*test ComponentMethods*/
+		
+		//create 
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		Component gRNA_promoter = gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
 		
 		//check that the component exists
 		assertNotNull(doc.getComponentDefinition("gRNA_b_gene", "").getComponent("gRNA_gene_promoter"));
@@ -103,16 +83,24 @@ public class ComponentDefinitionTest {
 		//check that component was removed from document
 		assertNull(doc.getComponentDefinition("gRNA_b_gene", "").getComponent("gRNA_gene_promoter"));	
 		
-		//check toString method for CD class
-		String gRNA_b_gene_string = gRNA_b_gene.getName() + '@' + Integer.toHexString(gRNA_b_gene.hashCode());
-		equals(gRNA_b_gene.toString().equals(gRNA_b_gene_string));
-		
 	} 
-	
+	/*
+	 * Check toString method for CD class
+	 */
+	@Test
+	public void test_toString() 
+	{
+		assertTrue(gRNA_b_gene.toString().length() != 0);
+		assertNotNull(gRNA_b_gene.toString());
+		assertTrue(!gRNA_b_gene.toString().contains("version="));
+		assertTrue(!gRNA_b_gene.toString().contains("name="));
+
+	}
 	@Test
 	public void test_createSeqAnnot_CD() throws SBOLValidationException
 	{
-		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter");
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
 		
 		//add SequenceAnnotation for CD with a displayID and LocationID
 		SequenceAnnotation promoter_annot = gRNA_b_gene.createSequenceAnnotation("cutAt5", "cut1");
@@ -126,15 +114,34 @@ public class ComponentDefinitionTest {
 		promoter_annot = gRNA_b_gene.createSequenceAnnotation("cutAt5", "cut1", 5);
 		assertNotNull(gRNA_b_gene.getSequenceAnnotation("cutAt5"));
 		
-		gRNA_b_gene.createSequenceAnnotation("cutAt6", "cut2", OrientationType.INLINE);
-		assertNotNull(gRNA_b_gene.getSequenceAnnotation("cutAt6"));	
+		gRNA_b_gene.createSequenceAnnotation("cutAt6", "cut2", OrientationType.INLINE);		
+	}
+	
+	@Test
+	public void test_privateConst_SQ() throws SBOLValidationException
+	{
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
+		
+		//add SequenceAnnotation for CD with a displayID and LocationID
+		gRNA_b_gene.createSequenceAnnotation("cutAt5", "cut1");
+		gRNA_b_gene.createSequenceAnnotation("cutAt6", "cut2", 5);
+		gRNA_b_gene.createSequenceAnnotation("cutAt7", "cut3", OrientationType.INLINE);		
+
+		assertNotNull(gRNA_b_gene.getSequenceAnnotation("cutAt5"));
+		System.out.println(gRNA_b_gene.getSequenceAnnotations().size());
+		ComponentDefinition test = (ComponentDefinition) doc.createCopy(gRNA_b_gene, "gRNA_b_gene_copy", "");
+		assertTrue(test.getSequenceAnnotations().size() == 3);
 	}
 	
 	@Test
 	public void test_seqConstraint_CD() throws SBOLValidationException
 	{
-		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter");
-		gRNA_b_gene.createComponent("gRNA_terminator", AccessType.PUBLIC, "gRNA_gene_terminator");
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		doc.createComponentDefinition("gRNA_gene_terminator_comp", ComponentDefinition.DNA);
+
+		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
+		gRNA_b_gene.createComponent("gRNA_terminator", AccessType.PUBLIC, "gRNA_gene_terminator_comp");
 		SequenceConstraint promoter_first = gRNA_b_gene.createSequenceConstraint("promoter_first", RestrictionType.PRECEDES, "gRNA_gene_promoter", "gRNA_terminator");
 		//check that added SeqConstraint exists with getSeqConst(displayID)
 		assertNotNull(gRNA_b_gene.getSequenceConstraint("promoter_first"));
@@ -149,17 +156,38 @@ public class ComponentDefinitionTest {
 		assertNull(gRNA_b_gene.getSequenceConstraint("promoter_first"));
 	}
 	
+
 	@Test
 	public void test_sortedComponents_CD() throws SBOLValidationException
 	{
-		Component promoter = gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter");		
+		/*not actually testing sorting components*/
+		/*sorting by: create several seqAnnotation, cuts, constraints, then check the sorted
+		 * based on the annotations and constraints*/
+		/*test: a precedes b and b precedes c*/
+		/*interesting test: have a seqAnnotation and Constraints conflict*/
+		
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
+		
+		//add SequenceAnnotation for CD with a displayID and LocationID
+		gRNA_b_gene.createSequenceAnnotation("cutAt1", "cut1");
+		gRNA_b_gene.createSequenceAnnotation("cutAt5", "cut2", 5);
+		gRNA_b_gene.createSequenceAnnotation("cutAt10", "cut3", OrientationType.INLINE);	
+		
+		/*
+		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		Component promoter = gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");		
 		Component terminator = null;
 		assertTrue(gRNA_b_gene.getSortedComponents().contains(promoter));
 		assertFalse(gRNA_b_gene.getSortedComponents().contains(terminator));
-		terminator = gRNA_b_gene.createComponent("gRNA_terminator", AccessType.PUBLIC, "gRNA_gene_terminator");
+		doc.createComponentDefinition("gRNA_gene_terminator_comp", ComponentDefinition.DNA);
+		terminator = gRNA_b_gene.createComponent("gRNA_terminator", AccessType.PUBLIC, "gRNA_gene_terminator_comp");
 		assertTrue(gRNA_b_gene.getSortedComponents().contains(terminator));
-
+*/
 	} 
+
+	
+	
 //	
 //	@Test
 //	public void addType_CD() throws URISyntaxException, SBOLValidationException

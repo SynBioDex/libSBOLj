@@ -31,6 +31,7 @@ class writeTester {
 	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SequenceOntology seqOn = new SequenceOntology();
+		System.out.println(seqOn.isDescendantOf(SequenceOntology.TERMINATOR, URI.create("http://www")));
 		for (URI child : seqOn.getDescendantURIsOf(SequenceOntology.TERMINATOR)) {
 			System.out.println(child.toString());
 		}
@@ -39,6 +40,7 @@ class writeTester {
 		ComponentDefinition cd = document.createComponentDefinition("myCD", ComponentDefinition.DNA);
 		document.createComponentDefinition("mySubCD", ComponentDefinition.DNA);
 		Component comp = cd.createComponent("myComp", AccessType.PRIVATE, "mySubCD");
+		comp.setDefinition(cd.getIdentity());
 		comp.addRole(SequenceOntology.PROMOTER);
 		comp.setRoleIntegration(RoleIntegrationType.MERGEROLES);
 		SequenceAnnotation sa = cd.createSequenceAnnotation("mySeqAn", "myLoc");

@@ -696,7 +696,7 @@ class GenBank {
 
 	private static void recurseComponentDefinition(ComponentDefinition componentDefinition, Writer w, int offset,
 			boolean inline, int featureEnd) throws IOException, SBOLConversionException {
-		for (SequenceAnnotation sa : componentDefinition.getSortedSequenceAnnotations()) {
+		for (SequenceAnnotation sa : componentDefinition.getSortedSequenceAnnotationsByDisplayId()) {
 			String role = "misc_feature   ";
 			Component comp = sa.getComponent();
 			if (comp != null) {
@@ -789,7 +789,11 @@ class GenBank {
 				return newLine;
 			}
 			if (featureMode) {
-				newLine += nextLine;
+				if (newLine.contains(" ") || nextLine.contains(" ")) {
+					newLine += " " + nextLine;
+				} else {
+					newLine += nextLine;
+				}
 			} else {
 				newLine += " " + nextLine;
 			}

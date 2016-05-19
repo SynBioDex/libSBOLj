@@ -21,6 +21,17 @@ public class Participation extends Identified {
 	private URI participant;
 	private ModuleDefinition moduleDefinition = null;
 
+	/**
+	 * @param identity
+	 * @param participant
+	 * @param roles
+	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * <ul>
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(URI)};</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setParticipant(URI)}; or </li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setRoles(Set)}.</li>
+	 * </ul>
+	 */
 	Participation(URI identity, URI participant, Set<URI> roles) throws SBOLValidationException {
 		super(identity);
 		this.roles = new HashSet<>();
@@ -38,19 +49,18 @@ public class Participation extends Identified {
 	}
 
 	/**
-	 * Returns the FunctionalComponent URI that this Particiaption object refers to.
+	 * Returns the FunctionalComponent URI that this participation refers to.
 	 *
-	 * @return the FunctionalComponent URI that this Particiaption object refers to
+	 * @return the FunctionalComponent URI that this participation refers to
 	 */
 	public URI getParticipantURI() {
 		return participant;
 	}
 
 	/**
-	 * Returns the FunctionalComponent instance that this Participation object refers to.
+	 * Returns the functional component this participation refers to.
 	 *
-	 * @return the FunctionalComponent instance that this Participation object refers to
-	 * if the associated SBOLDocument instance is not {@code null}, {@code null} otherwise
+	 * @return the functional component this participation refers to
 	 */
 	public FunctionalComponent getParticipant() {
 		if (moduleDefinition==null) return null;
@@ -58,8 +68,9 @@ public class Participation extends Identified {
 	}
 
 	/**
-	 * Get the component definition for the participant of this participation.
-	 * @return the component definition for the participant of this participation.
+	 * Returns the component definition referenced by this participation's participant.
+	 * 
+	 * @return the component definition referenced by this participation's participant
 	 */
 	public ComponentDefinition getParticipantDefinition() {
 		if (moduleDefinition!=null) {
@@ -70,15 +81,9 @@ public class Participation extends Identified {
 
 	/**
 	 * Sets the participant property of this object to the given one.
-	 * <p>
-	 * If this object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
 	 *
-	 * @param participant the participant property of this object
-	 * @throws SBOLValidationException if the given {@code participant} argument is {@code null}
-	 * @throws SBOLValidationException if the associated ModuleDefinition instance is not {@code null} and
-	 * given {@code participant} URI is not found in its list of FunctionalComponent instances.
+	 * @param participant the participant property to set to
+	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 12002, 12003.
 	 */
 	public void setParticipant(URI participant) throws SBOLValidationException {
 		if (participant == null) {
@@ -91,29 +96,22 @@ public class Participation extends Identified {
 	}
 
 	/**
-	 * Adds the given role URI to this Participation's set of role URIs.
-	 * <p>
-	 * If this Participation object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
-	 *
-	 * @param roleURI the given role URI to this Participation's set of role URIs
-	 * @return {@code true} if this set did not already contain the specified role.
+	 * Adds the given role to this participation's set of roles.
+	 * 	
+	 * @param roleURI the given role to be added
+	 * @return {@code true} if this set did not already contain the given role, 
+	 * or {@code false} otherwise
 	 */
 	public boolean addRole(URI roleURI) {
 		return roles.add(roleURI);
 	}
 
 	/**
-	 * Removes the given role reference from the set of role references.
-	 * <p>
-	 * If this Participation object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Removes the given role from the set of roles.
 	 *
-	 * @param roleURI the given role reference from the set of role references.
-	 * @return {@code true} if the matching role reference is removed successfully, {@code false} otherwise.
-	 * @throws SBOLValidationException if removing the last role
+	 * @param roleURI the given role to be removed
+	 * @return {@code true} if the matching role reference was removed successfully, or {@code false} otherwise.
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12004.
 	 */
 	public boolean removeRole(URI roleURI) throws SBOLValidationException {
 		if (roles.size()==1 && roles.contains(roleURI)) {
@@ -123,15 +121,11 @@ public class Participation extends Identified {
 	}
 
 	/**
-	 * Clears the existing set of role references first, then adds the given
-	 * set of the role references to this Participation object.
-	 * <p>
-	 * If this Participation object belongs to an SBOLDocument instance, then
-	 * the SBOLDocument instance is checked for compliance first. Only a compliant SBOLDocument instance
-	 * is allowed to be edited.
+	 * Clears the existing set of roles first, and then adds the given
+	 * set of the roles to this participation.
 	 *
-	 * @param roles the given role reference from the set of role references to be added
-	 * @throws SBOLValidationException if there are no roles
+	 * @param roles the set of roles to set to
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12004.
 	 */
 	public void setRoles(Set<URI> roles) throws SBOLValidationException {
 		if (roles==null || roles.size()==0) {
@@ -144,20 +138,19 @@ public class Participation extends Identified {
 	}
 
 	/**
-	 * Returns the set of role URIs owned by this Participation object.
+	 * Returns the set of role URIs owned by this participation.
 	 *
-	 * @return the set of role URIs owned by this Participation object.
+	 * @return the set of role URIs owned by this participation
 	 */
 	public Set<URI> getRoles() {
 		return roles;
 	}
 
 	/**
-	 * Checks if the given role URI is included in this Participation
-	 * object's set of reference role URIs.
+	 * Checks if the given role is included in this participation's set of roles.
 	 *
-	 * @param roleURI the given role reference from the set of role references.
-	 * @return {@code true} if this set contains the specified URI.
+	 * @param roleURI the given role to be checked 
+	 * @return {@code true} if this set contains the specified URI, or {@code false} otherwise
 	 */
 	public boolean containsRole(URI roleURI) {
 		return roles.contains(roleURI);
@@ -182,9 +175,16 @@ public class Participation extends Identified {
 	}
 
 	/**
-	 * Assume this Participation object has compliant URI, and all given parameters have compliant forms.
-	 * This method is called by {@link Interaction#updateCompliantURI(String, String, String)}.
-	 * @throws SBOLValidationException
+	 * Updates this participation with a compliant URI.
+	 * 
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 * <li>{@link #setWasDerivedFrom(URI)},</li>
+	 * <li>{@link #setIdentity(URI)},</li>
+	 * <li>{@link #setDisplayId(String)}, or</li>
+	 * <li>{@link #setVersion(String)}.</li>
+	 * </ul>
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
@@ -197,14 +197,18 @@ public class Participation extends Identified {
 	}
 
 	/**
-	 * @return the moduleDefinition
+	 * Returns the parent module definition. 
+	 * 
+	 * @return the parent module definition 
 	 */
 	ModuleDefinition getModuleDefinition() {
 		return moduleDefinition;
 	}
 
 	/**
-	 * @param moduleDefinition the moduleDefinition to set
+	 * Sets the module definition that hosts this participation's parent interaction.
+	 * 
+	 * @param moduleDefinition the module definition that hosts this participation's parent interaction
 	 */
 	void setModuleDefinition(ModuleDefinition moduleDefinition) {
 		this.moduleDefinition = moduleDefinition;

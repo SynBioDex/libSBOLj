@@ -32,9 +32,12 @@ public class EDAMOntology {
 	public static final URI NAMESPACE = URI.create(URI_PREFIX);
 	private static OBOOntology EDAMOntology = null;
 
-	EDAMOntology() {
-		OBOParser oboParser = new OBOParser();
+	/**
+	 * Construct an EDAM ontology object and read the OBO definition file, if necessary.
+	 */
+	public EDAMOntology() {
 		if (EDAMOntology == null) {
+			OBOParser oboParser = new OBOParser();
 			InputStreamReader f = new InputStreamReader(getClass().
 					getResourceAsStream("/ontologies/EDAMOntology/EDAM.obo"));
 			try {
@@ -210,6 +213,7 @@ public class EDAMOntology {
 	public final boolean isDescendantOf(URI childURI, URI parentURI) {
 		String childId = getId(childURI);
 		String parentId = getId(parentURI);
+		if (childId==null || parentId==null) return false;
 		return isDescendantOf(childId,parentId);
 	}
 	
@@ -238,6 +242,7 @@ public class EDAMOntology {
 	 */
 	public final Set<String> getDescendantsOf(URI parentURI) {
 		String parentId = getId(parentURI);
+		if (parentId==null) return new HashSet<String>();
 		return getDescendantsOf(parentId);
 	}
 	
@@ -275,7 +280,7 @@ public class EDAMOntology {
 	 * @param localName the given local name
 	 * @return the created URI
 	 */
-	public static final URI type(String localName) {
+	static final URI type(String localName) {
 		return URI.create(URI_PREFIX+localName);
 	}
 
