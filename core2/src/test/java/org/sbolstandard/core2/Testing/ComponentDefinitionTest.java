@@ -53,14 +53,12 @@ public class ComponentDefinitionTest {
 	public void test_CD_addSequence() throws SBOLValidationException {
 		
 		doc.createComponentDefinition("CRa_U6","",ComponentDefinition.DNA);
-		try
-		{
-			doc.getComponentDefinition("CRa_U6", "").addSequence(CRa_U6_seq);
-			assertTrue(doc.getComponentDefinition("CRa_U6", "").getSequences().size() == 1);
-			int size = doc.getSequence("CRa_U6", "").toString().length();
-			assertTrue(size != 0);
-		}
-		catch(Exception e){}
+		Sequence gen_seq = doc.createSequence("CRa_U6_seq", CRa_U6_seq, Sequence.IUPAC_DNA);
+		doc.getComponentDefinition("CRa_U6", "").addSequence(gen_seq);
+		assertTrue(doc.getComponentDefinition("CRa_U6", "").getSequences().size() == 1);
+		int size = doc.getSequence("CRa_U6_seq", "").toString().length();
+		assertTrue(size != 0);
+		
 	} 
 	@Test
 	 /* CD.createComponent(String, AccessType, String)
@@ -175,7 +173,6 @@ public class ComponentDefinitionTest {
 		gRNA_b_gene.createSequenceAnnotation("cutAt1", "cut1");
 		gRNA_b_gene.createSequenceAnnotation("cutAt5", "cut2", 5);
 		gRNA_b_gene.createSequenceAnnotation("cutAt10", "cut3", OrientationType.INLINE);	
-		
 		
 		/*
 		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
