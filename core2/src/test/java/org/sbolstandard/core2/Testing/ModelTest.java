@@ -43,7 +43,15 @@ public class ModelTest {
 		assertTrue(model.length() != 0);
 		assertNotNull(model);
 		assertTrue(model.contains("name=" + test_model.getName()));
-		assertTrue(!model.contains("description=" + test_model.getDescription()));
+		assertTrue(model.contains("identity=" + test_model.getIdentity()));
+		assertTrue(model.contains("displayId=" + test_model.getDisplayId()));
+		assertTrue(!model.contains("description=" + test_model.getDescription())); 
+		assertTrue(model.contains("source=" + test_model.getSource())); 
+		assertTrue(model.contains("language=" + test_model.getLanguage())); 
+		assertTrue(model.contains("framework=" + test_model.getFramework())); 
+
+
+		
 
 	}
 	
