@@ -13,11 +13,13 @@ import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.DirectionType;
 import org.sbolstandard.core2.FunctionalComponent;
 import org.sbolstandard.core2.Interaction;
+import org.sbolstandard.core2.Model;
 import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.Participation;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
+import org.sbolstandard.core2.SystemsBiologyOntology;
 import org.sbolstandard.core2.TopLevel;
 
 public class ModuleDefinitionTest {
@@ -178,6 +180,25 @@ public class ModuleDefinitionTest {
 		
 		assertTrue(doc_copy.createRecursiveCopy(geneticToggleSwitch).equals(doc));
 		
+	}
+	
+	@Test
+	public void test_modelMethods() throws SBOLValidationException
+	{
+		Model model=doc.createModel(
+				"pIKE_Toggle_1",
+				"1.0",
+				URI.create("http://virtualparts.org/part/pIKE_Toggle_1"),
+				URI.create("http://identifiers.org/edam/format_2585"), 
+				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK); 
+		
+		assertTrue(geneticToggleSwitch.addModel("pIKE_Toggle_1"));
+		assertTrue(doc.getModuleDefinition("geneticToggleSwitch", "").getModels().contains(model));
+		assertTrue(geneticToggleSwitch.removeModel(model.getPersistentIdentity()));
+		assertTrue(geneticToggleSwitch.addModel("pIKE_Toggle_1", "1.0"));
+		assertTrue(doc.getModuleDefinition("geneticToggleSwitch", "").getModels().contains(model));
+		assertTrue(geneticToggleSwitch.containsModel(model.getIdentity()));
+
 	}
 	
 	
