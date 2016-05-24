@@ -279,12 +279,12 @@ public class SBOLDocument {
 	 * Clears the existing list <code>modules</code>, then appends all of the elements in the specified collection to the end of this list.
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
-	void setModuleDefinitions(Set<ModuleDefinition> moduleDefinitions) throws SBOLValidationException {
+	/*void setModuleDefinitions(Set<ModuleDefinition> moduleDefinitions) throws SBOLValidationException {
 		clearModuleDefinitions();
 		for (ModuleDefinition module : moduleDefinitions) {
 			addModuleDefinition(module);
 		}
-	}
+	}*/
 
 	/**
 	 * Create a new collection by calling the constructor {@link Collection#Collection(URI)}, and then
@@ -441,12 +441,12 @@ public class SBOLDocument {
 	 * Clears the existing list <code>collections</code>, then appends all of the elements in the specified collection to the end of this list.
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
-	void setCollections(Set<Collection> collections) throws SBOLValidationException {
+	/*void setCollections(Set<Collection> collections) throws SBOLValidationException {
 		clearCollections();
 		for (Collection collection : collections) {
 			addCollection(collection);
 		}
-	}
+	}*/
 
 	/**
 	 * Creates a model, and then adds it to this SBOL document's list of models.
@@ -628,12 +628,13 @@ public class SBOLDocument {
 	 * Clears the existing list <code>models</code>, then appends all of the elements in the specified model to the end of this list.
 	 * @throws SBOLValidationException see {@link SBOLValidationException}
 	 */
-	void setModels(Set<Model> models) throws SBOLValidationException {
+	/*void setModels(Set<Model> models) throws SBOLValidationException {
 		clearModels();
 		for (Model model : models) {
 			addModel(model);
 		}
-	}
+	} 
+	*/
 
 	/**
 	 * @param identity 
@@ -908,12 +909,12 @@ public class SBOLDocument {
 	 * @param componentDefinitions The given set of ComponentDefinitions to be added
 	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
-	void setComponentDefinitions(Set<ComponentDefinition> componentDefinitions) throws SBOLValidationException {
+	/*void setComponentDefinitions(Set<ComponentDefinition> componentDefinitions) throws SBOLValidationException {
 		clearComponentDefinitions();
 		for (ComponentDefinition componentDefinition : componentDefinitions) {
 			addComponentDefinition(componentDefinition);
 		}
-	}
+	}*/
 
 
 	/**
@@ -1531,12 +1532,12 @@ public class SBOLDocument {
 	 * Clears the existing list <code>structures</code>, then appends all of the elements in the specified collection to the end of this list.
 	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
-	void setSequences(Set<Sequence> sequences) throws SBOLValidationException {
+	/*void setSequences(Set<Sequence> sequences) throws SBOLValidationException {
 		clearSequences();
 		for (Sequence sequence : sequences) {
 			addSequence(sequence);
 		}
-	}
+	}*/
 
 	/**
  	 * Creates a generic top-level, and then adds it to this SBOL document's list of generic top-levels.
@@ -1705,12 +1706,12 @@ public class SBOLDocument {
 	 * Clears the existing list <code>topLevels</code>, then appends all of the elements in the specified topLevels to the end of this list.
 	 * @throws SBOLValidationException see {@link SBOLValidationException} 
 	 */
-	void setGenericTopLevels(Set<GenericTopLevel> topLevels) throws SBOLValidationException {
+	/*void setGenericTopLevels(Set<GenericTopLevel> topLevels) throws SBOLValidationException {
 		clearGenericTopLevels();
 		for (GenericTopLevel topLevel : topLevels) {
 			addGenericTopLevel(topLevel);
 		}
-	}
+	}*/
 
 	/**
 	 * Returns the top-level instance matching the given {@code topLevelURI} from this
@@ -1920,12 +1921,12 @@ public class SBOLDocument {
 	/**
 	 * Clears the existing list of <code>namespaces</code>, then appends all of the namespaces to the end of this list.
 	 */
-	void setNameSpaceBindings(List<NamespaceBinding> namespaceBinding) {
+	/*void setNameSpaceBindings(List<NamespaceBinding> namespaceBinding) {
 		clearNamespaces();
 		for (NamespaceBinding namespace : namespaceBinding) {
 			addNamespaceBinding(namespace);
 		}
-	}
+	}*/
 
 	boolean isRequiredNamespaceBinding(URI namespaceURI) {
 		if (namespaceURI.toString().equals(Sbol2Terms.sbol2.getNamespaceURI())) return true;
