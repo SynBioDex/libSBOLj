@@ -1861,8 +1861,8 @@ public class SBOLDocument {
 	public void clearNamespaces() {
 		Object[] keySetArray = nameSpaces.keySet().toArray();
 		for (Object key : keySetArray) {
-			if (isRequiredNamespaceBinding((URI)key)) continue;
-			removeNamespace((URI) key);
+			if (isRequiredNamespaceBinding(URI.create((String)key))) continue;
+			removeNamespace(URI.create((String)key));
 		}
 	}
 
