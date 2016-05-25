@@ -930,7 +930,7 @@ public final class SBOLFactory {
 	 * @param document the document to be copied from
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #createCopy(TopLevel)}.
 	 */
-	public void createCopy(SBOLDocument document) throws SBOLValidationException {
+	public static void createCopy(SBOLDocument document) throws SBOLValidationException {
 		for (TopLevel topLevel : document.getTopLevels()) {
 			createCopy(topLevel);
 		}
