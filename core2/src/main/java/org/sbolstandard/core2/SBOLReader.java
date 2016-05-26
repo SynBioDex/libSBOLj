@@ -301,13 +301,13 @@ public class SBOLReader
 
 	/**
 	 * Takes in the given RDF filename and converts the file to an SBOLDocument.
-	 * <p>
-	 * This method calls {@link #read(File)}.
 	 *
 	 * @param fileName the name of the given RDF file
 	 * @return the converted SBOLDocument
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
-	 * @throws SBOLConversionException see {@link SBOLConversionException}
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+	 * 10201, 10204, 10206, 10402, 10403, 10405.
+	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10502, 10503, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101, 12301.
+	 * @throws SBOLConversionException
 	 * @throws IOException see {@link IOException}
 	 */
 	public static SBOLDocument read(String fileName) throws SBOLValidationException, IOException, SBOLConversionException
@@ -321,7 +321,7 @@ public class SBOLReader
 	 * @param fileName the name of the given file
 	 * @param fileType the file type of the given file 
 	 * @return the converted SBOLDocument
-	 * @throws SBOLValidationException if an SBOL validation rule is violated.
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #read(File, String)}.
 	 * @throws SBOLConversionException 
 	 * @throws IOException 
 	 */
@@ -365,7 +365,7 @@ public class SBOLReader
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
 	 * @throws CoreIoException
-	 * @throws SBOLValidationException if an SBOL validation rule is violated.
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #read(InputStream, String)}.
 	 * @throws SBOLConversionException 
 	 * @throws IOException 
 	 */
@@ -438,7 +438,7 @@ public class SBOLReader
 	 * @param in a given InputStream
 	 * @param fileType a given file type
 	 * @return the converted SBOLDocument instance
-	 * @throws SBOLValidationException if an SBOL validation rule is violated.
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #read(SBOLDocument, InputStream, String)}.
 	 * @throws SBOLConversionException 
 	 * @throws IOException 
 	 */
@@ -453,6 +453,28 @@ public class SBOLReader
 		return SBOLDoc;
 	}
 
+	/**
+	 * @param SBOLDoc
+	 * @param in
+	 * @param fileType
+	 * @throws SBOLValidationException if either of the following conditions is satisfied:
+	 * <ul>
+	 * <li>If {@link #keepGoing} was set to {@code false}, and an SBOL validation rule violation occurred in
+	 * any of the following methods:
+	 * 	<ul>
+	 * 		<li>{@link FASTA#read(SBOLDocument, String, String, String, URI)},</li>
+	 * 		<li>{@link GenBank#read(SBOLDocument, String, String)},</li>
+	 * 		<li>{@link #readJSON(Reader)}, </li>
+	 * 		<li>{@link #readRDF(Reader)}, </li>
+	 * 		<li>{@link #readTurtle(Reader)}, </li>
+	 * 		<li>{@link #getSBOLVersion(DocumentRoot)}, or</li>
+	 * 		<li>{@link #readV1(SBOLDocument, DocumentRoot)}; or</li>
+	 * 	</ul></li>
+	 * <li>an SBOL validation rule violation occurred in {@link #readTopLevelDocs(SBOLDocument, DocumentRoot)}.</li>
+	 * </ul>
+	 * @throws IOException
+	 * @throws SBOLConversionException
+	 */
 	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		compliant = SBOLDoc.isCompliant();
@@ -644,6 +666,25 @@ public class SBOLReader
 		}
 	}
 
+	/**
+	 *
+	 * @param SBOLDoc
+	 * @param document
+	 * @throws SBOLValidationException if {@link #keepGoing} was set to {@code false}, and either of the following condition is satisfied:
+	 * <ul> 
+	 * 	<li>the following SBOL validation rule was violated: 12302; or</li>
+	 * 	<li>an SBOL validation rule violation occurred in any of the following methods:
+	 * 		<ul>
+	 * 			<li>{@link #parseCollections(SBOLDocument, TopLevelDocument)},</li>
+	 * 			<li>{@link #parseModuleDefinition(SBOLDocument, TopLevelDocument, Map)},</li>
+	 * 			<li>{@link #parseModels(SBOLDocument, TopLevelDocument)},</li>
+	 * 			<li>{@link #parseSequences(SBOLDocument, TopLevelDocument)}, </li>
+	 * 			<li>{@link #parseComponentDefinitions(SBOLDocument, TopLevelDocument, Map)}, or</li>
+	 * 			<li>{@link #parseGenericTopLevel(SBOLDocument, TopLevelDocument)}.</li>
+	 * 		</ul>
+	 * 	</li>
+	 * </ul>
+	 */
 	private static void readTopLevelDocs(SBOLDocument SBOLDoc, DocumentRoot<QName> document) throws SBOLValidationException
 	{
 		Map<URI, NestedDocument<QName>> nested = new HashMap<URI, NestedDocument<QName>>();
@@ -831,6 +872,13 @@ public class SBOLReader
 		}
 	}
 
+	/**
+	 * @param SBOLDoc
+	 * @param componentDef
+	 * @return
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 */
 	private static ComponentDefinition parseDnaComponentV1(
 			SBOLDocument SBOLDoc, IdentifiableDocument<QName> componentDef) throws SBOLValidationException, SBOLConversionException
 	{
@@ -1390,6 +1438,30 @@ public class SBOLReader
 		return s;
 	}
 
+	/**
+	 * @param SBOLDoc
+	 * @param topLevel
+	 * @param nested
+	 * @return
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>any of the following SBOL validation rules was violated: 
+	 * 10202, 10203, 10204, 10206, 10208, 10212, 10213, 10502, 10507, 10512, or</li>
+	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
+	 * 	<ul>
+	 * 		<li>{@link ComponentDefinition#ComponentDefinition(URI, Set)}, </li>
+	 * 		<li>{@link ComponentDefinition#setDisplayId(String)}, </li>
+	 * 		<li>{@link ComponentDefinition#setVersion(String)}, </li>
+	 * 		<li>{@link ComponentDefinition#setWasDerivedFrom(URI)}, </li>
+	 * 		<li>{@link ComponentDefinition#setAnnotations(List)},</li>
+	 * 		<li>{@link ComponentDefinition#setComponents(Set)},</li>
+	 * 		<li>{@link ComponentDefinition#setSequenceAnnotations(Set)},</li>
+	 * 		<li>{@link ComponentDefinition#setSequenceConstraints(Set)}, or</li>
+	 * 		<li>{@link SBOLDocument#addComponentDefinition(ComponentDefinition)}.</li>
+	 * 	</ul>
+	 * </li>
+	 * </ul>
+	 */
 	private static ComponentDefinition parseComponentDefinitions(
 			SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
@@ -2300,6 +2372,27 @@ public class SBOLReader
 		return c;
 	}
 
+	/**
+	 * @param SBOLDoc
+	 * @param topLevel
+	 * @return
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>any of the following SBOL validation rules was violated: 
+	 * 10202, 10203, 10204, 10206, 10208, 10212, 10213, 12102; or</li>
+	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
+	 * 	<ul>
+	 * 		<li>{@link GenericTopLevel#GenericTopLevel(URI, QName)}, </li>
+	 * 		<li>{@link GenericTopLevel#setDisplayId(String)}, </li>
+	 * 		<li>{@link GenericTopLevel#setVersion(String)}, </li>
+	 * 		<li>{@link GenericTopLevel#setMembers(Set)}, </li>
+	 * 		<li>{@link GenericTopLevel#setWasDerivedFrom(URI)}, </li>
+	 * 		<li>{@link GenericTopLevel#setAnnotations(List)}, or</li>
+	 * 		<li>{@link SBOLDocument#addGenericTopLevel(GenericTopLevel)}.</li>
+	 * 	</ul>
+	 * </li>
+	 * </ul>
+	 */
 	private static GenericTopLevel parseGenericTopLevel(SBOLDocument SBOLDoc,
 			TopLevelDocument<QName> topLevel) throws SBOLValidationException
 	{
@@ -2398,6 +2491,26 @@ public class SBOLReader
 		return t;
 	}
 
+	/**
+	 * @param SBOLDoc
+	 * @param topLevel
+	 * @return
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>any of the following SBOL validation rules was violated: 
+	 * 10202, 10203, 10204, 10206, 10208, 10212, 10213, 10502, 10504, 10508; or</li>
+	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
+	 * 	<ul>
+	 * 		<li>{@link Model#Model(URI, URI, URI, URI)}, </li>
+	 * 		<li>{@link Model#setDisplayId(String)}, </li>
+	 * 		<li>{@link Model#setVersion(String)}, </li>
+	 * 		<li>{@link Model#setWasDerivedFrom(URI)}, </li>
+	 * 		<li>{@link Model#setAnnotations(List)}, or</li>
+	 * 		<li>{@link SBOLDocument#addModel(Model)}.</li>
+	 * 	</ul>
+	 * </li>
+	 * </ul>
+	 */
 	private static Model parseModels(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
@@ -2511,6 +2624,27 @@ public class SBOLReader
 		return m;
 	}
 
+	/**
+	 * @param SBOLDoc
+	 * @param topLevel
+	 * @return
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>any of the following SBOL validation rules was violated: 
+	 * 10202, 10203, 10204, 10206, 10208, 10212, 10213, 12102; or</li>
+	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
+	 * 	<ul>
+	 * 		<li>{@link Collection#Collection(URI)}, </li>
+	 * 		<li>{@link Collection#setDisplayId(String)}, </li>
+	 * 		<li>{@link Collection#setVersion(String)}, </li>
+	 * 		<li>{@link Collection#setMembers(Set)}, </li>
+	 * 		<li>{@link Collection#setWasDerivedFrom(URI)}, </li>
+	 * 		<li>{@link Collection#setAnnotations(List)}, or</li>
+	 * 		<li>{@link SBOLDocument#addCollection(Collection)}.</li>
+	 * 	</ul>
+	 * </li>
+	 * </ul>
+	 */
 	private static Collection parseCollections(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
@@ -2609,6 +2743,35 @@ public class SBOLReader
 		return c;
 	}
 
+	/**
+	 * @param SBOLDoc
+	 * @param topLevel
+	 * @param nested
+	 * @return
+	 * 
+ 	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>any of the following SBOL validation rules was violated: 
+	 * 10202, 10203, 10204, 10206, 10208, 10212, 10213, 11602, 11607 or</li>
+	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
+	 * 	<ul>
+	 * 		<li>{@link #parseModule(NestedDocument, Map)},</li>
+	 * 		<li>{@link #parseInteraction(NestedDocument, Map)},</li>
+	 * 		<li>{@link #parseFunctionalComponent(NestedDocument, Map)},</li>	
+	 * 		<li>{@link ModuleDefinition#ModuleDefinition(URI)}, </li>
+	 * 		<li>{@link ModuleDefinition#setDisplayId(String)}, </li>
+	 * 		<li>{@link ModuleDefinition#setVersion(String)}, </li>
+	 * 		<li>{@link ModuleDefinition#setFunctionalComponents(Set)}, </li>
+	 * 		<li>{@link ModuleDefinition#setInteractions(Set)}, </li>
+	 * 		<li>{@link ModuleDefinition#setModels(Set)}, </li>
+	 * 		<li>{@link ModuleDefinition#setModules(Set)}, </li>
+	 * 		<li>{@link ModuleDefinition#setWasDerivedFrom(URI)}, </li>
+	 * 		<li>{@link ModuleDefinition#setAnnotations(List)}, or</li>
+	 * 		<li>{@link SBOLDocument#addModuleDefinition(ModuleDefinition)}.</li>
+	 * 	</ul>
+	 * </li>
+	 * </ul>
+	 */
 	private static ModuleDefinition parseModuleDefinition(SBOLDocument SBOLDoc,
 			TopLevelDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
@@ -3358,6 +3521,26 @@ public class SBOLReader
 		return fc;
 	}
 
+	/**
+	 * @param SBOLDoc
+	 * @param topLevel
+	 * @return
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>any of the following SBOL validation rules was violated: 
+	 * 10202, 10203, 10204, 10206, 10208, 10212, 10213, 10402, 10403, ; or</li>
+	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
+	 * 	<ul>
+	 * 		<li>{@link Sequence#Sequence(URI, String, URI)}, </li>
+	 * 		<li>{@link Sequence#setDisplayId(String)}, </li>
+	 * 		<li>{@link Sequence#setVersion(String)}, </li>
+	 * 		<li>{@link Sequence#setWasDerivedFrom(URI)}, </li>
+	 * 		<li>{@link Sequence#setAnnotations(List)}, or</li>
+	 * 		<li>{@link SBOLDocument#addSequence(Sequence)}.</li>
+	 * 	</ul>
+	 * </li>
+	 * </ul>
+	 */
 	private static Sequence parseSequences(SBOLDocument SBOLDoc, TopLevelDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String displayId 	   = null; //URIcompliance.extractDisplayId(topLevel.getIdentity());

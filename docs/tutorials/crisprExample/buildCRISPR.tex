@@ -450,20 +450,24 @@ Template_Module.createMapsTo(
 \end{lstlisting}
 \end{minipage}
 
-At this point, we have completed the CRISPR circuit model. One final step is to serialize the complete model to produce an RDF/XML output. This can be done by adding the code below.
+At this point, we have completed the CRISPR circuit model. The next
+section illustrates several other main features of {\tt libSBOLj}, including
+validation and serialization. 
 
-\vspace{\abovedisplayskip}
-\begin{minipage}{0.95\textwidth}
-\begin{lstlisting}
-try {
-      SBOLWriter.write(doc, System.out);
-}
-catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
-      e.printStackTrace();
-}
-\end{lstlisting}
-\end{minipage}
+% One final step is to serialize the complete model to produce an RDF/XML output. This can be done by adding the code below.
 
-The complete repression model is described in the ``RepressionModel.java'' under the {\tt libSBOLj} examples directory. This example is self-contained in that you can run it to generate the RDF/XML output. Note that SBOL does not provide the specification of a mathematical model directly. It is possible, however, to generate a mathematical model using SBML~\cite{SBML} and the procedure described in~\cite{roehner2015generating}. Then, the SBOL document can reference this generated SBML model.
+% \vspace{\abovedisplayskip}
+% \begin{minipage}{0.95\textwidth}
+% \begin{lstlisting}
+% try {
+%       SBOLWriter.write(doc, System.out);
+% }
+% catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
+%       e.printStackTrace();
+% }
+% \end{lstlisting}
+% \end{minipage}
+
+% The complete repression model is described in the ``RepressionModel.java'' under the {\tt libSBOLj} examples directory. This example is self-contained in that you can run it to generate the RDF/XML output. Note that SBOL does not provide the specification of a mathematical model directly. It is possible, however, to generate a mathematical model using SBML~\cite{SBML} and the procedure described in~\cite{roehner2015generating}. Then, the SBOL document can reference this generated SBML model.
 
 % The next section gives an introduction to some other methods provided by the API of {\tt libSBOLj}.

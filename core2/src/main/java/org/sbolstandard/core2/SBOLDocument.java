@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 
 /**
@@ -132,8 +134,8 @@ public class SBOLDocument {
 	/**
 	 * Creates a module definition, and then adds it to this SBOL document's list of module definitions.
 	 * <p>
-	 * This method calls {@link #createModuleDefinition(String, String, String)} with the default URI
-	 * prefix of this SBOL document, the given module definition display ID and version.
+	 * This method first creates a compliant URI for the module definition to be created. It starts with the 
+	 * given URI prefix, followed by the given display ID, and ends with the given version. 
 	 * 
 	 * @param URIprefix the URI prefix used to construct the compliant URI for the module definition to be created
 	 * @param displayId the display ID of the module definition to be created
@@ -142,7 +144,7 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
 	 * 10201, 10202, 10204, 10206, 10220.
 	 */
-	public ModuleDefinition createModuleDefinition(String URIprefix,String displayId, String version) throws SBOLValidationException {
+	public ModuleDefinition createModuleDefinition(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		ModuleDefinition md = createModuleDefinition(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, version, typesInURIs));
 		md.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, "", typesInURIs));
@@ -214,20 +216,19 @@ public class SBOLDocument {
 		}
 		return removeTopLevel(moduleDefinition,moduleDefinitions);
 	}
-
+	
 	/**
-	 * Returns the ModuleDefinition instance matching the given {@code displayId}
-	 * and {@code version} from this SBOLDocument object's list of
-	 * ModuleDefinition instances.
+	 * Returns the module definition matching the given display ID and version.
 	 * <p>
-	 * A compliant ModuleDefinition URI is created first using the {@code defaultURIprefix},
-	 * the optional type {@link TopLevel#MODULE_DEFINITION}, the given {@code displayId}
-	 * and {@code version}. This URI is used to look up the ModuleDefinition instance
-	 * in this SBOLDocument object.
+	 * A compliant URI for the module definition to be retrieved is created first.
+	 * It starts with this SBOL document's default URI prefix, optionally followed
+	 * by its type {@link TopLevel#MODULE_DEFINITION}, followed by the given display ID,
+	 * and ends with the given version. This compliant URI is used to retrieve the module
+	 * definition in this SBOL document.
 	 *
-	 * @param displayId  an intermediate between name and identity that is machine-readable
-	 * @param version the version of this object
-	 * @return the matching ModuleDefinition instance if present, or {@code null} otherwise.
+	 * @param displayId the display ID of the module definition to be retrieved
+	 * @param version the given version of the module definition to be retrieved
+	 * @return the matching module definition if present, or {@code null} otherwise
 	 */
 	public ModuleDefinition getModuleDefinition(String displayId,String version) {
 		try {
@@ -238,20 +239,19 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the ModuleDefinition instance matching the given {@code modelURI} from this
-	 * SBOLDocument object's list of ModuleDefinition instances.
-	 *
-	 * @param moduleURI the given module URI from this document
-	 * @return the matching ModuleDefinition instance if present, or {@code null} otherwise.
+	 * Returns the module definition matching the given identity URI.
+	 * 
+	 * @param moduleDefinitionURI the identity URI of the module definition to be retrieved
+	 * @return the matching module definition if present, or {@code null} otherwise
 	 */
-	public ModuleDefinition getModuleDefinition(URI moduleURI) {
-		return moduleDefinitions.get(moduleURI);
+	public ModuleDefinition getModuleDefinition(URI moduleDefinitionURI) {
+		return moduleDefinitions.get(moduleDefinitionURI);
 	}
 
 	/**
-	 * Returns the set of {@code ModuleDefinition} instances owned by this SBOLDocument object.
+	 * Returns the set of module definitions owned by this SBOL document.
 	 *
-	 * @return the set of {@code ModuleDefinition} instances owned by this SBOLDocument object.
+	 * @return the set of module definitions owned by this SBOL document
 	 */
 	public Set<ModuleDefinition> getModuleDefinitions() {
 		Set<ModuleDefinition> moduleDefinitions = new HashSet<>();
@@ -378,18 +378,17 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the collection matching the given {@code displayId}
-	 * and {@code version} from this SBOL document's list of
-	 * collections.
+	 * Returns the collection matching the given display ID and version.
 	 * <p>
-	 * A compliant Collection URI is created first using the {@code defaultURIprefix},
-	 * the optional type {@link TopLevel#COLLECTION}, the given {@code displayId}
-	 * and {@code version}. This URI is used to look up the collection
+	 * A compliant URI for the collection to be retrieved is created first.
+	 * It starts with this SBOL document's default URI prefix, optionally followed
+	 * by its type {@link TopLevel#COLLECTION}, followed by the given display ID,
+	 * and ends with the given version. This compliant URI is used to retrieve the collection
 	 * in this SBOL document.
 	 *
-	 * @param displayId an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @return the matching collection if present, or {@code null} otherwise.
+	 * @param displayId the display ID of the collection to be retrieved
+	 * @param version the given version of the collection to be retrieved
+	 * @return the matching collection if present, or {@code null} otherwise
 	 */
 	public Collection getCollection(String displayId,String version) {
 		try {
@@ -398,23 +397,21 @@ public class SBOLDocument {
 			return null;
 		}
 	}
-
+	
 	/**
-	 * Returns the collection matching the given {@code collectionURI} from this
-	 * SBOL document's list of collections.
+	 * Returns the collection matching the given identity URI.
 	 *
-	 * @param collectionURI the given collectionURI from this document
-	 * @return the matching collection if present, or {@code null} otherwise.
-	 *
+	 * @param collectionURI the identity URI of the collection to be retrieved
+	 * @return the matching collection if present, or {@code null} otherwise
 	 */
 	public Collection getCollection(URI collectionURI) {
 		return collections.get(collectionURI);
 	}
 
 	/**
-	 * Returns the set of {@code Collection} instances owned by this SBOL document.
+	 * Returns the set of collections owned by this SBOL document.
 	 *
-	 * @return the set of {@code Collection} instances owned by this SBOL document.
+	 * @return the set of collections owned by this SBOL document
 	 */
 	public Set<Collection> getCollections() {
 		Set<Collection> collections = new HashSet<>();
@@ -565,18 +562,17 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the Model instance matching the given {@code displayId}
-	 * and {@code version} from this SBOL document's list of
-	 * Model instances.
+ 	 * Returns the model matching the given display ID and version.
 	 * <p>
-	 * A compliant Model URI is created first using the {@code defaultURIprefix},
-	 * the optional type {@link TopLevel#MODEL}, the given {@code displayId}
-	 * and {@code version}. This URI is used to look up the Model instance
+	 * A compliant URI for the model to be retrieved is created first.
+	 * It starts with this SBOL document's default URI prefix, optionally followed
+	 * by its type {@link TopLevel#MODEL}, followed by the given display ID,
+	 * and ends with the given version. This compliant URI is used to retrieve the model
 	 * in this SBOL document.
 	 *
-	 * @param displayId an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @return the matching Model instance if present, or {@code null} otherwise.
+	 * @param displayId the display ID of the model to be retrieved
+	 * @param version the given version of the model to be retrieved
+	 * @return the matching model if present, or {@code null} otherwise
 	 */
 	public Model getModel(String displayId,String version) {
 		try {
@@ -587,20 +583,19 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the Model instance matching the given {@code modelURI} from this
-	 * SBOL document's list of Model instances.
+	 * Returns the model matching the given identity URI.
 	 *
-	 * @param modelURI the modelURI
-	 * @return the matching Model instance if present, or {@code null} otherwise.
+	 * @param modelURI the identity URI of the model to be retrieved
+	 * @return the matching model if present, or {@code null} otherwise
 	 */
 	public Model getModel(URI modelURI) {
 		return models.get(modelURI);
 	}
 
 	/**
-	 * Returns the set of {@code Model} instances owned by this SBOL document.
+	 * Returns the set of models owned by this SBOL document.
 	 *
-	 * @return the set of {@code Model} instances owned by this SBOL document.
+	 * @return the set of models owned by this SBOL document
 	 */
 	public Set<Model> getModels() {
 		//		return (List<Model>) models.values();
@@ -828,18 +823,17 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the component definition matching the given {@code displayId}
-	 * and {@code version} from this SBOL document's list of
-	 * component definitions.
+	 * Returns the component definition matching the given display ID and version.
 	 * <p>
-	 * A compliant ComponentDefinition URI is created first using the {@code defaultURIprefix},
-	 * the optional type {@link TopLevel#COMPONENT_DEFINITION}, the given {@code displayId}
-	 * and {@code version}. This URI is used to look up the component definition
-	 * in this SBOL document.
+	 * A compliant URI for the component definition to be retrieved is created first.
+	 * It starts with this SBOL document's default URI prefix, optionally followed
+	 * by its type {@link TopLevel#COMPONENT_DEFINITION}, followed by the given display ID,
+	 * and ends with the given version. This compliant URI is used to retrieve the component
+	 * definition in this SBOL document.
 	 *
-	 * @param displayId an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @return the matching component definition if present, or {@code null} otherwise.
+	 * @param displayId the display ID of the component definition to be retrieved
+	 * @param version the given version of the component definition to be retrieved
+	 * @return the matching component definition if present, or {@code null} otherwise
 	 */
 	public ComponentDefinition getComponentDefinition(String displayId,String version) {
 		try {
@@ -850,20 +844,19 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the component definition matching the given {@code componentDefinitionURI} from this
-	 * SBOL document's list of component definitions.
-	 *
-	 * @param componentDefinitionURI The ComponentDefinition URI
-	 * @return the matching component definition if present, or {@code null} otherwise.
+	 * Returns the component definition matching the given identity URI.
+	 * 
+	 * @param componentDefinitionURI the identity URI of the component definition to be retrieved
+	 * @return the matching component definition if present, or {@code null} otherwise
 	 */
 	public ComponentDefinition getComponentDefinition(URI componentDefinitionURI) {
 		return componentDefinitions.get(componentDefinitionURI);
 	}
 
 	/**
-	 * Returns the set of {@code ComponentDefinition} instances owned by this SBOL document.
+	 * Returns the set of component definitions owned by this SBOL document.
 	 *
-	 * @return the set of {@code ComponentDefinition} instances owned by this SBOL document.
+	 * @return the set of component definitions owned by this SBOL document
 	 */
 	public Set<ComponentDefinition> getComponentDefinitions() {
 		Set<ComponentDefinition> components = new HashSet<>();
@@ -872,8 +865,11 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the set of root ComponentDefinitions.
-	 * @return the set of root ComponentDefinitions.
+	 * Returns the set of root component definitions owned by this SBOL document. 
+	 * A root component definition is a component definition that is not referenced by a child component
+	 * of another component definition in the same SBOL document
+	 *  
+	 * @return the set of root component definitions
 	 */
 	public Set<ComponentDefinition> getRootComponentDefinitions() {
 		Set<ComponentDefinition> components = getComponentDefinitions();
@@ -921,7 +917,12 @@ public class SBOLDocument {
 	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
 	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
 	 * @return the created Sequence instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of the 
+	 * following constructor or method:
+	 * <ul>
+	 * <li>{@link Sequence#Sequence(URI, String, URI)}, or</li>
+	 * <li>{@link #addSequence(Sequence)}.</li>
+	 * </ul>
 	 */
 	Sequence createSequence(URI identity, String elements, URI encoding) throws SBOLValidationException {
 		Sequence newSequence = new Sequence(identity, elements, encoding);
@@ -930,90 +931,56 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Creates a Sequence instance with this SBOL document's {@code defaultURIprefix},
-	 * the given arguments, and an empty version string, and then
-	 * adds it to this SBOL document's list of Sequence instances.
+	 * Creates a sequence with the given arguments, and then adds it to this SBOL document's
+	 * list of sequences.
 	 * <p>
-	 * This method calls {@link #createSequence(String, String, String, String, URI)} to do the following
-	 * validity checks and create a Sequence instance.
-	 * <p>
-	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#",
-	 * then "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the {@code defaultURIprefix} field to be set, and
-	 * the given {@code displayId} is not {@code null} and is valid.
-	 * <p>
-	 * A Sequence instance is created with a compliant URI. This URI is composed from
-	 * the this SBOL document's {@code defaultURIprefix}, the optional type {@link TopLevel#SEQUENCE},
-	 * the given {@code displayId}, and an empty version string.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 * @param displayId an intermediate between name and identity that is machine-readable
-	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
-	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
-	 * @return the created Sequence instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * This method calls {@link #createSequence(String, String, String, String, URI)} create a sequence
+	 * with this SBOL document's default URI prefix, the given display ID, an empty version string, the
+	 * given elements, and encoding.
+	 * 
+  	 * @param displayId the display ID of the sequence to be created 
+	 * @param elements the elements property of the sequence to be created
+	 * @param encoding the encoding property of the sequence to be created
+	 * @return the created sequence 
+	 * @throws SBOLValidationException if an SBOL validation rule was violated in {@link #createSequence(String, String, String, String, URI)}.
 	 */
 	public Sequence createSequence(String displayId, String elements, URI encoding) throws SBOLValidationException {
 		return createSequence(defaultURIprefix,displayId,"",elements,encoding);
 	}
 
 	/**
-	 * Creates a Sequence instance with this SBOL document's {@code defaultURIprefix}
-	 * and the given arguments, and then adds it to this SBOL document's list of Sequence instances.
+	 * Creates a sequence with the given arguments, and then adds it to this SBOL document's
+	 * list of sequences.
 	 * <p>
-	 * This method calls {@link #createSequence(String, String, String, String, URI)} to do the following
-	 * validity checks and create a Sequence instance.
-	 * <p>
-	 * If the {@code defaultURIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires the {@code defaultURIprefix} field to be set, and
-	 * the given {@code displayId} and {@code version} arguments are not {@code null}
-	 * and are both valid.
-	 * <p>
-	 * A Sequence instance is created with a compliant URI. This URI is composed from
-	 * the this SBOL document's {@code defaultURIprefix}, the optional type {@link TopLevel#SEQUENCE},
-	 * the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
-	 *
-	 *
-	 * @param displayId  an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
-	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
-	 * @return the created Sequence instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * This method calls {@link #createSequence(String, String, String, String, URI)} to create a sequence
+	 * with this SBOL document's default URI prefix, the given display ID, version, elements, and encoding.
+	 * 
+ 	 * @param displayId the display ID of the sequence to be created 
+	 * @param version the version of the sequence to be created
+	 * @param elements the elements property of the sequence to be created
+	 * @param encoding the encoding property of the sequence to be created
+	 * @return the created sequence 
+	 * @throws SBOLValidationException if an SBOL validation rule was violated in {@link #createSequence(String, String, String, String, URI)}.
 	 */
 	public Sequence createSequence(String displayId, String version, String elements, URI encoding) throws SBOLValidationException {
 		return createSequence(defaultURIprefix,displayId,version,elements,encoding);
 	}
 
 	/**
-	 * Creates a Sequence instance with the given arguments, and then adds it to this SBOLDocument
-	 * object's list of Sequence instances.
+	 * Creates a sequence with the given arguments, and then adds it to this SBOL document's
+	 * list of sequences.
 	 * <p>
-	 * If the given {@code URIprefix} does not end with one of the following delimiters: "/", ":", or "#", then
-	 * "/" is appended to the end of it.
-	 * <p>
-	 * This method requires that the given {@code URIprefix}, {@code displayId},
-	 * and {@code version} are not {@code null} and are valid.
-	 * <p>
-	 * A Sequence instance is created with a compliant URI. This URI is composed from
-	 * the given {@code URIprefix}, the optional type {@link TopLevel#SEQUENCE},
-	 * the given {@code displayId}, and {@code version}.
-	 * The display ID, persistent identity, and version fields of this instance
-	 * are then set accordingly.
+	 * This method first creates a compliant URI for the sequence to be created. It starts with the 
+	 * given URI prefix, followed by the given display ID, and ends with the given version. 
 	 *
-	 * @param URIprefix maps to a domain over which the user has control
-	 * @param displayId  an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
-	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
-	 * @return the created Sequence instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException}  
+	 * @param URIprefix the given URI prefix that is used to create a compliant URI for the sequence to be created
+	 * @param displayId the display ID of the sequence to be created 
+	 * @param version the version of the sequence to be created
+	 * @param elements the elements property of the sequence to be created
+	 * @param encoding the encoding property of the sequence to be created
+	 * @return the created sequence 
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10204, 10206, 10402, 10403, 10405.
 	 */
 	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -1357,12 +1324,18 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Creates an identical copy of the given TopLevel instance and all its dependencies and returns them in 
-	 * a new SBOLDocument.
+	 * Creates an identical copy of the given top-level, including all of its dependencies, 
+	 * and stores the copy in a new SBOLDocument instance, which gets returned.
 	 *
-	 * @param topLevel The topLevel object to be recursively copied from this SBOLDocument
-	 * @return the created SBOLDocument with this top-level instance and all its dependencies
-	 * @throws SBOLValidationException see {@link SBOLValidationException}  
+	 * @param topLevel the top-level to be recursively copied
+	 * @return the created SBOLDocument containing the copied top-level
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
+	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10402, 10403, 10405, 10501, 
+	 * 10503, 10522, 10526, 10602, 10604, 10605, 10607, 10701, 10801, 10802, 10803, 10804, 10805, 
+	 * 10807, 10808, 10809, 10811, 10901, 10905, 11101, 11201, 11301, 11401, 11402, 11403, 11404, 
+	 * 11405, 11406, 11501, 11502, 11504, 11508, 11601, 11608, 11609, 11701, 11703, 11704, 11705, 
+	 * 11801, 10802, 10803, 10804, 10807, 10808, 10809, 10811, 11901, 12001, 12002, 12003, 12101, 
+	 * 12103, 12301, 12302.
 	 */
 	public SBOLDocument createRecursiveCopy(TopLevel topLevel) throws SBOLValidationException {
 		SBOLDocument document = new SBOLDocument();
@@ -1370,6 +1343,11 @@ public class SBOLDocument {
 		return document;
 	}
 	
+	/**
+	 * @param document
+	 * @param topLevel
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #createCopy(TopLevel)}.
+	 */
 	private void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
 		if (document.getTopLevel(topLevel.getIdentity())!=null) return;
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model) {
@@ -1468,18 +1446,17 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the Sequence instance matching the given {@code displayId}
-	 * and {@code version} from this SBOL document's list of
-	 * Sequence instances.
+ 	 * Returns the sequence matching the given display ID and version.
 	 * <p>
-	 * A compliant Sequence URI is created first using the {@code defaultURIprefix},
-	 * the optional type {@link TopLevel#SEQUENCE}, the given {@code displayId}
-	 * and {@code version}. This URI is used to look up the Sequence instance
+	 * A compliant URI for the sequence to be retrieved is created first.
+	 * It starts with this SBOL document's default URI prefix, optionally followed
+	 * by its type {@link TopLevel#SEQUENCE}, followed by the given display ID,
+	 * and ends with the given version. This compliant URI is used to retrieve the sequence
 	 * in this SBOL document.
 	 *
-	 * @param displayId  an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @return the matching Sequence instance if present, or {@code null} otherwise.
+	 * @param displayId the display ID of the sequence to be retrieved
+	 * @param version the given version of the sequence to be retrieved
+	 * @return the matching sequence if present, or {@code null} otherwise
 	 */
 	public Sequence getSequence(String displayId,String version) {
 		try {
@@ -1490,20 +1467,19 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the Sequence instance matching the given {@code modelURI} from this
-	 * SBOL document's list of Sequence instances.
+	 * Returns the sequence matching the given identity URI.
 	 *
-	 * @param sequenceURI takes the given SequenceURI to retrieve the sequence from this SBOL document
-	 * @return the matching Sequence instance if present, or {@code null} otherwise.
+	 * @param sequenceURI the identity URI of the sequence to be retrieved
+	 * @return the matching sequence if present, or {@code null} otherwise
 	 */
 	public Sequence getSequence(URI sequenceURI) {
 		return sequences.get(sequenceURI);
 	}
 
 	/**
-	 * Returns the set of {@code Sequence} instances owned by this SBOL document.
+	 * Returns the set of sequences owned by this SBOL document.
 	 *
-	 * @return the set of {@code Sequence} instances owned by this SBOL document.
+	 * @return the set of sequences owned by this SBOL document
 	 */
 	public Set<Sequence> getSequences() {
 		//		return (List<Structure>) structures.values();
@@ -1641,18 +1617,17 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the GenericTopLevel instance matching the given {@code displayId}
-	 * and {@code version} from this SBOL document's list of
-	 * GenericTopLevel instances.
+ 	 * Returns the generic top-level matching the given display ID and version.
 	 * <p>
-	 * A compliant GenericTopLevel URI is created first using the {@code defaultURIprefix},
-	 * the optional type {@link TopLevel#GENERIC_TOP_LEVEL}, the given {@code displayId}
-	 * and {@code version}. This URI is used to look up the GenericTopLevel instance
+	 * A compliant URI for the generic top-level to be retrieved is created first.
+	 * It starts with this SBOL document's default URI prefix, optionally followed
+	 * by its type {@link TopLevel#GENERIC_TOP_LEVEL}, followed by the given display ID,
+	 * and ends with the given version. This compliant URI is used to retrieve the generic top-level
 	 * in this SBOL document.
 	 *
-	 * @param displayId  an intermediate between name and identity that is machine-readable
-	 * @param version The given version for this object
-	 * @return the matching GenericTopLevel instance if present, or {@code null} otherwise.
+	 * @param displayId the display ID of the generic top-level to be retrieved
+	 * @param version the given version of the generic top-level to be retrieved
+	 * @return the matching generic top-level if present, or {@code null} otherwise
 	 */
 	public GenericTopLevel getGenericTopLevel(String displayId, String version) {
 		try {
@@ -1663,20 +1638,19 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the GenericTopLevel instance matching the given {@code topLevelURI} from this
-	 * SBOL document's list of GenericTopLevel instances.
+ 	 * Returns the generic top-level matching the given identity URI.
 	 *
-	 * @param topLevelURI The topLevel object to be retrieved from this SBOLDocument
-	 * @return the matching GenericTopLevel instance if present, or {@code null} otherwise.
+	 * @param topLevelURI the identity URI of the generic top-level to be retrieved
+	 * @return the matching generic top-level if present, or {@code null} otherwise
 	 */
 	public GenericTopLevel getGenericTopLevel(URI topLevelURI) {
 		return genericTopLevels.get(topLevelURI);
 	}
 
 	/**
-	 * Returns the set of {@code GenericTopLevel} instances owned by this SBOL document.
+	 * Returns the set of generic top-levels owned by this SBOL document.
 	 *
-	 * @return the set of {@code GenericTopLevel} instances owned by this SBOL document.
+	 * @return the set of generic top-levels owned by this SBOL document
 	 */
 	public Set<GenericTopLevel> getGenericTopLevels() {
 		//		return (List<GenericTopLevel>) topLevels.values();
@@ -1713,11 +1687,10 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the top-level instance matching the given {@code topLevelURI} from this
-	 * SBOL document's lists of top-level instances.
+	 * Returns the top-level matching the given identity URI.
 	 *
-	 * @param topLevelURI The topLevel object to be retrieved from this SBOLDocument
-	 * @return the matching top-level instance if present, or {@code null} otherwise.
+	 * @param topLevelURI the identity URI of the top-level to be retrieved
+	 * @return the matching top-level if present, or {@code null} otherwise
 	 */
 	public TopLevel getTopLevel(URI topLevelURI) {
 		TopLevel topLevel = collections.get(topLevelURI);
@@ -1746,11 +1719,11 @@ public class SBOLDocument {
 		}
 		return null;
 	}
-
+	
 	/**
-	 * Returns a set of all TopLevel objects.
+	 * Returns the set of top-levels owned by this SBOL document.
 	 *
-	 * @return set of all TopLevel objects.
+	 * @return the set of top-levels owned by this SBOL document
 	 */
 	public Set<TopLevel> getTopLevels() {
 		Set<TopLevel> topLevels = new HashSet<>();
@@ -1776,10 +1749,10 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Creates a set of TopLevels with derived from the same object
-	 * as specified by the wasDerivedFrom parameter.
-	 * @param wasDerivedFrom refers to another SBOL object or non-SBOL resource from which this object was derived.
-	 * @return Set of TopLevels with a matching wasDerivedFrom URI.
+	 * Returns a set of top-levels that match the given URI for wasDerivedFrom.
+	 *  
+	 * @param wasDerivedFrom the given wasDerivedFrom  
+	 * @return a set of top-levels that match the given URI for wasDerivedFrom
 	 */
 	public Set<TopLevel> getByWasDerivedFrom(URI wasDerivedFrom) {
 		Set<TopLevel> topLevels = new HashSet<>();
@@ -1866,11 +1839,11 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the {@link QName} instance matching the given {@code modelURI} from this
-	 * SBOL document's list of namespace QName instances.
+	 * Returns the QName matching the given namespace URI from this
+	 * SBOL document's list of namespaces.
 	 *
-	 * @param namespaceURI the namespaceURI to be retrieved from this SBOLDocument
-	 * @return the matching instance if present, or {@code null} otherwise.
+	 * @param namespaceURI the namespace URI of the QName to be retrieved
+	 * @return the matching QName if present, or {@code null} otherwise
 	 */
 	public QName getNamespace(URI namespaceURI) {
 		//if (nameSpaces.get(namespaceURI)==null) return null;
@@ -1896,7 +1869,7 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Gets the namespace bindings for the document
+	 * Returns the namespace bindings for this SBOL document
 	 * @return A list of {@link NamespaceBinding}
 	 */
 	List<NamespaceBinding> getNamespaceBindings() {
@@ -2138,7 +2111,7 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns the default URI prefix of this SBOL document
+	 * Returns the default URI prefix of this SBOL document.
 	 *
 	 * @return the default URI prefix of this SBOL document
 	 */
@@ -2147,9 +2120,10 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns {@code true} if the {@code complete} flag for this SBOL document is set.
-	 * This flag is set to {@code true} if all objects are must be present within this SBOL document,
-	 * i.e. all URI references point to actual objects.
+	 * Returns {@code true} if the complete flag for this SBOL document is set.
+	 * A {@code true} value of this flag means that all URI references pointing 
+	 * to SBOL instances can be dereferenced in this SBOL document, 
+	 * i.e., the referenced instances exist in this SBOL document.
 	 *
 	 * @return {@code true} if the complete flag is set, {@code false} otherwise
 	 */
@@ -2170,7 +2144,7 @@ public class SBOLDocument {
 	/**
 	 * Returns {@code true} if all URIs in this SBOL document are compliant.
 	 *
-	 * @return {@code true} if all URIs in this SBOL document are compliant,
+	 * @return {@code true} if all URIs in this SBOL document are compliant, or
 	 * {@code false} otherwise
 	 */
 	public boolean isCompliant() {
@@ -2200,10 +2174,12 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Returns {@code true} if default component instances should be created when not present.
+	 * Returns {@code true} if default components should be automatically created when not present. See 
+	 * {@link ComponentDefinition#createSequenceConstraint(String, RestrictionType, String, String)}, and
+	 * {@link Component#createMapsTo(String, RefinementType, String, String)} for examples.
 	 *
-	 * @return {@code true} if default component instances should be created when not present,
-	 * {@code false} otherwise
+	 * @return {@code true} if default component instances should be automatically created when not present,
+	 * or {@code false} otherwise
 	 */
 	public boolean isCreateDefaults() {
 		return createDefaults;
@@ -2220,11 +2196,11 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Takes in a given RDF fileName and add the data read to this SBOLDocument.
+	 * Takes in the given RDF fileName and adds the data read to this SBOLDocument.
 	 *
 	 * @param fileName a given RDF fileName
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
-	 * @throws SBOLConversionException see {@link SBOLConversionException}
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #read(File)}.
+	 * @throws SBOLConversionException if an SBOL conversion exception occurred in {@link #read(File)}.
 	 * @throws IOException see {@link IOException}
 	 */
 	public void read(String fileName) throws SBOLValidationException, IOException, SBOLConversionException {
@@ -2232,11 +2208,11 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Takes in a given RDF File and add the data read to this SBOLDocument.
+	 * Takes in the given RDF File and adds the data read to this SBOLDocument.
 	 *
 	 * @param file a given RDF File
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
-	 * @throws SBOLConversionException see {@link SBOLConversionException}
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #read(InputStream)}.
+	 * @throws SBOLConversionException if an SBOL conversion exception occurred in {@link #read(InputStream)}.
 	 * @throws IOException see {@link IOException}
 	 */
 	public void read(File file) throws SBOLValidationException, IOException, SBOLConversionException {
@@ -2249,9 +2225,23 @@ public class SBOLDocument {
 	 * Takes in a given RDF InputStream and add the data read to this SBOLDocument.
 	 *
 	 * @param in a given RDF InputStream
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
-	 * @throws SBOLConversionException see {@link SBOLConversionException}
+	 * @throws SBOLValidationException if either of the following conditions is satisfied:
+	 * <ul>
+	 * <li>If {@link SBOLReader#keepGoing} was set to {@code false}, and an SBOL validation rule violation occurred in
+	 * any of the following methods:
+	 * 	<ul>
+	 * 		<li>{@link FASTA#read(SBOLDocument, String, String, String, URI)},</li>
+	 * 		<li>{@link GenBank#read(SBOLDocument, String, String)},</li>
+	 * 		<li>{@link SBOLReader#readJSON(Reader)}, </li>
+	 * 		<li>{@link SBOLReader#readRDF(Reader)}, </li>
+	 * 		<li>{@link SBOLReader#readTurtle(Reader)}, </li>
+	 * 		<li>{@link SBOLReader#getSBOLVersion(DocumentRoot)}, or</li>
+	 * 		<li>{@link SBOLReader#readV1(SBOLDocument, DocumentRoot)}; or</li>
+	 * 	</ul></li>
+	 * <li>an SBOL validation rule violation occurred in {@link SBOLReader#readTopLevelDocs(SBOLDocument, DocumentRoot)}.</li>
+	 * </ul>
 	 * @throws IOException see {@link IOException}
+	 * @throws SBOLConversionException TODO
 	 */
 	public void read(InputStream in) throws SBOLValidationException, IOException, SBOLConversionException {
 		SBOLReader.read(this,in,SBOLDocument.RDF);

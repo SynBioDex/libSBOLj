@@ -817,6 +817,28 @@ class GenBank {
 		}
 	}
 
+	/**
+	 * @param doc
+	 * @param stringBuffer
+	 * @param URIPrefix
+	 * @throws IOException
+	 * @throws SBOLConversionException
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link SBOLDocument#createComponentDefinition(String, String, URI)},</li>
+	 * <li>{@link Identified#setAnnotations(List)},</li>
+	 * <li>{@link SequenceAnnotation#addAnnotation(Annotation)},</li>
+	 * <li>{@link ComponentDefinition#createSequenceAnnotation(String, String, int, int, OrientationType)},</li>
+	 * <li>{@link SequenceAnnotation#setComponent(String)},</li>
+	 * <li>{@link SequenceAnnotation#addAnnotation(Annotation)},</li>
+	 * <li>{@link SequenceAnnotation#addRange(String, int, int, OrientationType)},</li>
+	 * <li>{@link Range#addAnnotation(Annotation)},</li>
+	 * <li>{@link ComponentDefinition#createSequenceAnnotation(String, String, int, OrientationType)},</li>
+	 * <li>{@link SBOLDocument#createSequence(String, String, String, URI)}, </li>
+	 * <li>{@link ComponentDefinition#addSequence(Sequence)}, or </li>
+	 * <li>{@link #createSubComponentDefinitions(SBOLDocument, ComponentDefinition, URI, String, String)}.</li>
+	 * </ul>
+	 */
 	static void read(SBOLDocument doc,String stringBuffer,String URIPrefix) throws IOException, SBOLConversionException, SBOLValidationException {
 		so = new SequenceOntology();
 
