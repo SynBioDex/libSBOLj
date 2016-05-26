@@ -307,7 +307,7 @@ public class SBOLReader
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
 	 * 10201, 10204, 10206, 10402, 10403, 10405.
 	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10502, 10503, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101, 12301.
-	 * @throws SBOLConversionException
+	 * @throws SBOLConversionException see {@link SBOLConversionException#SBOLConversionException}
 	 * @throws IOException see {@link IOException}
 	 */
 	public static SBOLDocument read(String fileName) throws SBOLValidationException, IOException, SBOLConversionException

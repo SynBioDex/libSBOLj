@@ -52,5 +52,11 @@ public class CollectionTest {
 		assertTrue(!promoters.toString().contains("name="));
 	}
 	
+	@Test
+	public void test_getCollection()
+	{
+		assertTrue(doc.getCollection("promoters", "").getMembers().size() == 3);	
+	}
+	
 
 }

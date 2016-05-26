@@ -920,6 +920,21 @@ public final class SBOLFactory {
 	//			return null;
 	//		}
 	//	}
+	
+	/**
+	 * Creates an identical copy of each top-level element of a document, and then adds the created top-level to the corresponding
+	 * list of top-levels in this SBOL document.
+	 * <p>
+	 * This method calls {@link #createCopy(TopLevel)} for each top-level instance.
+	 *
+	 * @param document the document to be copied from
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #createCopy(TopLevel)}.
+	 */
+	public static void createCopy(SBOLDocument document) throws SBOLValidationException {
+		for (TopLevel topLevel : document.getTopLevels()) {
+			createCopy(topLevel);
+		}
+	}
 
 	/**
 	 * Creates an identical copy of the given TopLevel instance.
