@@ -87,7 +87,7 @@ public class SBOLDocumentTestSuite {
 		assertTrue(doc.getNamespaces().size() == 5);
 
 		//what if namespace is empty
-		//doc.clearNamespaces();
+		doc.clearNamespaces();
 
 	}
 	

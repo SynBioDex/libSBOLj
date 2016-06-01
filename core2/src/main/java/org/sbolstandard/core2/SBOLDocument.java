@@ -1026,125 +1026,20 @@ public class SBOLDocument {
 		return s;
 	}
 
-	//	/**
-	// 	 * Create a copy of the given top-level object, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	//	 * {@link Sequence}, or {@link TopLevel} with the given version, and add it to its corresponding top-level objects list.
-	//	 * @param toplevel
-	//	 * @param newURIprefix
-	//	 * @return the created {@link TopLevel} object
-	//	 */
-	//	public TopLevel createCopyWithURIprefix(TopLevel toplevel, String newURIprefix) {
-	//		String olddisplayId = extractDisplayId(((Collection) toplevel).getIdentity(), 0);
-	//		String oldVersion = extractVersion(toplevel.getIdentity());
-	//		return createCopy(toplevel, newURIprefix, olddisplayId, oldVersion);
-	//	}
-	//
-	//	/**
-	//	 * Create a copy of the given top-level object, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	//	 * {@link Sequence}, or {@link TopLevel} with the given version, and add it to its corresponding top-level objects list.
-	//	 * @param toplevel
-	//	 * @param newVersion
-	//	 * @return {@link TopLevel} object
-	//	 */
-	//	public TopLevel createCopyWithVersion(TopLevel toplevel, String newVersion) {
-	//		String oldURIprefix = extractURIprefix(((Collection) toplevel).getIdentity());
-	//		String olddisplayId = extractDisplayId(((Collection) toplevel).getIdentity(), 0);
-	//		return createCopy(toplevel, oldURIprefix, olddisplayId, newVersion);
-	//	}
-	//
-	//	/**
-	//	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	//	 * {@link Sequence}, or {@link GenericTopLevel} with the given display ID, and add it to its corresponding top-level objects list.
-	//	 * @param toplevel
-	//	 * @param newDisplayId
-	//	 * @return {@link TopLevel} object
-	//	 */
-	//	public TopLevel createCopyWithDisplayId(TopLevel toplevel, String newDisplayId) {
-	//		String oldURIprefix = extractURIprefix(toplevel.getIdentity());
-	//		String oldVersion = extractVersion(toplevel.getIdentity());
-	//		return createCopy(toplevel, oldURIprefix,
-	//				newDisplayId, oldVersion);
-	//	}
-	//
-	//	/**
-	//	 * Create a copy of the given top-level object, which is i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	//	 * {@link Sequence}, or {@link GenericTopLevel} with the given URIprefix and display ID, and add it to its corresponding top-level objects list.
-	//	 * @param toplevel
-	//	 * @param newDisplayId
-	//	 * @return {@link TopLevel} object
-	//	 */
-	//	public TopLevel createCopyWithPersistentId(TopLevel toplevel, String newURIprefix, String newDisplayId) {
-	//		String oldVersion = extractVersion(toplevel.getIdentity());
-	//		return createCopy(toplevel, newURIprefix,
-	//				newDisplayId, oldVersion);
-	//	}
-
-	//	/**
-	//	 * Create an object of the top-level classes, i.e.{@link Collection}, {@link ComponentDefinition}, {@link Model}, {@link ModuleDefinition},
-	//	 * {@link Sequence}, or {@link TopLevel} with a new display ID, and add it to its corresponding top-level objects list.
-	//	 * @param toplevel
-	//	 * @param newPrefix
-	//	 * @return {@link TopLevel} object
-	//	 */
-	//	public TopLevel createCopyWithNewPrefix(TopLevel toplevel, String newPrefix) {
-	//		if (toplevel objectof Collection) {
-	//			Collection newCollection = ((Collection) toplevel).copy(newPrefix);
-	//			if (addCollection(newCollection)) {
-	//				return newCollection;
-	//			}
-	//			else {
-	//				return null;
-	//			}
-	//		}
-	//		else if (toplevel objectof ComponentDefinition) {
-	//			ComponentDefinition newComponentDefinition = ((ComponentDefinition) toplevel).copy(newPrefix);
-	//			if (addComponentDefinition(newComponentDefinition)) {
-	//				return newComponentDefinition;
-	//			}
-	//			else {
-	//				return null;
-	//			}
-	//		}
-	//		else if (toplevel objectof Model) {
-	//			Model newModel = ((Model) toplevel).copy(newPrefix);
-	//			if (addModel(newModel)) {
-	//				return newModel;
-	//			}
-	//			else {
-	//				return null;
-	//			}
-	//		}
-	//		else if (toplevel objectof ModuleDefinition) {
-	//			ModuleDefinition newModuleDefinition = ((ModuleDefinition) toplevel).copy(newPrefix);
-	//			if (addModuleDefinition(newModuleDefinition)) {
-	//				return newModuleDefinition;
-	//			}
-	//			else {
-	//				return null;
-	//			}
-	//		}
-	//		else if (toplevel objectof Sequence) {
-	//			Sequence newSequence = ((Sequence) toplevel).copy(newPrefix);
-	//			if (addSequence(newSequence)) {
-	//				return newSequence;
-	//			}
-	//			else {
-	//				return null;
-	//			}
-	//		}
-	//		else if (toplevel objectof GenericTopLevel) {
-	//			GenericTopLevel newGenericTopLevel = ((GenericTopLevel) toplevel).copy(newPrefix);
-	//			if (addGenericTopLevel(newGenericTopLevel)) {
-	//				return newGenericTopLevel;
-	//			}
-	//			else {
-	//				return null;
-	//			}
-	//		}
-	//		else {
-	//			return null;
-	//		}
-	//	}
+	/**
+	 * Creates an identical copy of each top-level element of a document, and then adds the created top-level to the corresponding
+	 * list of top-levels in this SBOL document.
+	 * <p>
+	 * This method calls {@link #createCopy(TopLevel)} for each top-level instance.
+	 *
+	 * @param document the document to be copied from
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #createCopy(TopLevel)}.
+	 */
+	public void createCopy(SBOLDocument document) throws SBOLValidationException {
+		for (TopLevel topLevel : document.getTopLevels()) {
+			createCopy(topLevel);
+		}
+	}
 
 	/**
 	 * Creates an identical copy of the given top-level, and then adds the created top-level to the corresponding
@@ -1861,8 +1756,8 @@ public class SBOLDocument {
 	public void clearNamespaces() {
 		Object[] keySetArray = nameSpaces.keySet().toArray();
 		for (Object key : keySetArray) {
-			if (isRequiredNamespaceBinding((URI)key)) continue;
-			removeNamespace((URI) key);
+			if (isRequiredNamespaceBinding(URI.create((String)key))) continue;
+			removeNamespace(URI.create((String)key));
 		}
 	}
 

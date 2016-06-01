@@ -45,6 +45,18 @@ public class Sequence extends TopLevel{
 	 */
 	public static final URI SMILES = URI.create("http://www.opensmiles.org/opensmiles.html");
 
+	/**
+	 * @param identity
+	 * @param elements
+	 * @param encoding
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following constructor
+	 * or methods: 
+	 * <ul>
+	 * <li>{@link TopLevel#TopLevel(URI)},</li>
+	 * <li>{@link #setEncoding(URI)}, or </li>
+	 * <li>{@link #setElements(String)}.</li>
+	 * </ul>
+	 */
 	Sequence(URI identity, String elements, URI encoding) throws SBOLValidationException {
 		super(identity);
 		setEncoding(encoding);
