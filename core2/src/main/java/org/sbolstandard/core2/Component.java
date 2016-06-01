@@ -409,11 +409,12 @@ public class Component extends ComponentInstance{
 		for (MapsTo reference : mapsTos) {
 			addMapsTo(reference);
 		}
-	}
+	} 
 
-	ComponentDefinition getComponentDefinition() {
+/*	ComponentDefinition getComponentDefinition() {
 		return componentDefinition;
 	}
+*/
 
 	void setComponentDefinition(ComponentDefinition componentDefinition) {
 		this.componentDefinition = componentDefinition;
