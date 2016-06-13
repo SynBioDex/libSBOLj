@@ -172,7 +172,7 @@ public class Sequence extends TopLevel{
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Sequence#Sequence(Sequence)}.
 	 */
 	@Override
-	protected Sequence deepCopy() throws SBOLValidationException {
+	Sequence deepCopy() throws SBOLValidationException {
 		return new Sequence(this);
 	}
 
@@ -191,7 +191,7 @@ public class Sequence extends TopLevel{
 	 * </ul>
 	 */
 	@Override
-	protected Sequence copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
+	Sequence copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		Sequence cloned = this.deepCopy();
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
@@ -214,7 +214,7 @@ public class Sequence extends TopLevel{
 	 * {@link URIcompliance#isTopLevelURIformCompliant(URI)}.
 	 */
 	@Override
-	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+	void checkDescendantsURIcompliance() throws SBOLValidationException {
 		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 	

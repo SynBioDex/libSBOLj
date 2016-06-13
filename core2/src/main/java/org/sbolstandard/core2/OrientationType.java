@@ -30,7 +30,7 @@ public enum OrientationType {
 	 * Returns the orientation type.
 	 * @return orientation type.
 	 */
-	String getOrientationType() {
+	private String getOrientationType() {
 		return orientationType;
 	}
 

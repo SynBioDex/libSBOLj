@@ -318,7 +318,7 @@ public class SBOLReader
 	 * @throws SBOLValidationException if if an SBOL validation rule violation occurred in the following method:
 	 * {@link #getSBOLVersion(InputStream, String)}.
 	 */
-	static String getSBOLVersion(String fileName, String fileType) throws FileNotFoundException, SBOLValidationException
+	private static String getSBOLVersion(String fileName, String fileType) throws FileNotFoundException, SBOLValidationException
 	{
 		FileInputStream stream     = new FileInputStream(new File(fileName));
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -370,7 +370,7 @@ public class SBOLReader
 	 * @throws SBOLConversionException 
 	 * @throws IOException 
 	 */
-	static SBOLDocument read(String fileName,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
+	private static SBOLDocument read(String fileName,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		return read(new File(fileName),fileType);
 	}
@@ -436,7 +436,7 @@ public class SBOLReader
 	 * @throws SBOLConversionException 
 	 * @throws IOException 
 	 */
-	static SBOLDocument read(File file,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
+	private static SBOLDocument read(File file,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -451,7 +451,7 @@ public class SBOLReader
 	 * @throws FileNotFoundException if file was not found.
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #getSBOLVersion(InputStream, String)}.
 	 */
-	static String getSBOLVersion(File file,String fileType) throws FileNotFoundException, SBOLValidationException
+	private static String getSBOLVersion(File file,String fileType) throws FileNotFoundException, SBOLValidationException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -473,7 +473,7 @@ public class SBOLReader
 	 * <li>{@link #getSBOLVersion(DocumentRoot)}.</li>
 	 * </ul>
 	 */
-	static String getSBOLVersion(InputStream in,String fileType) throws SBOLValidationException
+	private static String getSBOLVersion(InputStream in,String fileType) throws SBOLValidationException
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString = scanner.useDelimiter("\\A").next();

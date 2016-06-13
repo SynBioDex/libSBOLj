@@ -36,7 +36,7 @@ public class SBOLConversionException extends Exception {
 	 * @param message
 	 * @param objects
 	 */
-	SBOLConversionException(String message, URI identity) {
+	private SBOLConversionException(String message, URI identity) {
 		super(exceptionMessage = formatMessage(message, identity));
 		this.objects = null;
 	}
@@ -47,7 +47,7 @@ public class SBOLConversionException extends Exception {
 	 * @param message
 	 * @param objects
 	 */
-	SBOLConversionException(String message, java.util.Collection<? extends Identified> objects) {
+	private SBOLConversionException(String message, java.util.Collection<? extends Identified> objects) {
 		super(exceptionMessage = formatMessage(message, objects));
 		this.objects = Collections.unmodifiableList(new ArrayList<>(objects));
 	}
@@ -59,7 +59,7 @@ public class SBOLConversionException extends Exception {
 	 * @param cause
 	 * @param objects
 	 */
-	SBOLConversionException(String message, Throwable cause, Identified ... objects) {
+	private SBOLConversionException(String message, Throwable cause, Identified ... objects) {
 		super(message, cause);
 		this.objects = Collections.unmodifiableList(Arrays.asList(objects));
 	}
@@ -69,7 +69,7 @@ public class SBOLConversionException extends Exception {
 	 * 
 	 * @param cause
 	 */	
-	SBOLConversionException(Throwable cause) {
+	private SBOLConversionException(Throwable cause) {
 		super(cause);
 		this.objects = Collections.emptyList();
 	}
@@ -81,7 +81,7 @@ public class SBOLConversionException extends Exception {
 	 * 
 	 * @return a collection of Identified instances
 	 */
-	java.util.Collection<Identified> getObjects() {
+	private java.util.Collection<Identified> getObjects() {
 		return objects;
 	}
 	
@@ -111,7 +111,7 @@ public class SBOLConversionException extends Exception {
 		return sb.toString();
 	}
 	
-	String getExceptionMessage() {
+	private String getExceptionMessage() {
 		return exceptionMessage;
 	}
 

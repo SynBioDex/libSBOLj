@@ -168,7 +168,7 @@ public class Model extends TopLevel {
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Model(Model)}.
 	 */
 	@Override
-	protected Model deepCopy() throws SBOLValidationException {
+	Model deepCopy() throws SBOLValidationException {
 		return new Model(this);
 	}
 
@@ -206,7 +206,7 @@ public class Model extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+	void checkDescendantsURIcompliance() throws SBOLValidationException {
 		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 

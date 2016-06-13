@@ -111,7 +111,7 @@ public class Range extends Location {
 	 * {@link #Range(Range)}.
 	 */
 	@Override
-	protected Location deepCopy() throws SBOLValidationException {
+	Location deepCopy() throws SBOLValidationException {
 		return new Range(this);
 	}
 

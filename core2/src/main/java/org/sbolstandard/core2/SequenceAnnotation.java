@@ -315,7 +315,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * <li>an SBOL validation rule violation occurred in {@link #clearLocations()}; or </li>
 	 * <li>an SBOL validation rule violation occurred in {@link #addLocation(Location)}.</li>
 	 */
-	void setLocations(Set<Location> locations) throws SBOLValidationException {
+	private void setLocations(Set<Location> locations) throws SBOLValidationException {
 		clearLocations();	
 		if (locations==null || locations.size()==0) {
 			throw new SBOLValidationException("sbol-10902", this);
@@ -621,7 +621,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * {@link SequenceAnnotation#SequenceAnnotation(SequenceAnnotation)}.
 	 */
 	@Override
-	protected SequenceAnnotation deepCopy() throws SBOLValidationException {
+	SequenceAnnotation deepCopy() throws SBOLValidationException {
 		return new SequenceAnnotation(this);
 	}
 

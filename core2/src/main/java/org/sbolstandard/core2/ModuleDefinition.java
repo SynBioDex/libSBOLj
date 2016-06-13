@@ -153,7 +153,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <li>{@link #addModule(Module)}.</li>
 	 * </ul>
 	 */
-	Module createModule(URI identity, URI moduleDefinitionURI) throws SBOLValidationException {
+	private Module createModule(URI identity, URI moduleDefinitionURI) throws SBOLValidationException {
 		Module module = new Module(identity, moduleDefinitionURI);
 		addModule(module);
 		return module;
@@ -242,7 +242,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}.</li>
 	 * </ul>
 	 */
-	void addModule(Module module) throws SBOLValidationException {
+	private void addModule(Module module) throws SBOLValidationException {
 		module.setSBOLDocument(this.sbolDocument);
 		module.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -365,7 +365,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <li>{@link #addInteraction(Interaction)}</li>
 	 * </ul>
 	 */
-	Interaction createInteraction(URI identity, Set<URI> types) throws SBOLValidationException {
+	private Interaction createInteraction(URI identity, Set<URI> types) throws SBOLValidationException {
 		Interaction interaction = new Interaction(identity, types);
 		addInteraction(interaction);
 		return interaction;
@@ -432,7 +432,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}.</li>
 	 * </ul>
 	 */
-	void addInteraction(Interaction interaction) throws SBOLValidationException {
+	private void addInteraction(Interaction interaction) throws SBOLValidationException {
 		addChildSafely(interaction, interactions, "interaction", functionalComponents, modules);
 		interaction.setSBOLDocument(this.sbolDocument);
 		interaction.setModuleDefinition(this);
@@ -541,7 +541,7 @@ public class ModuleDefinition extends TopLevel {
 	 * </ul>
 	 */
 
-	FunctionalComponent createFunctionalComponent(URI identity, AccessType access,
+	private FunctionalComponent createFunctionalComponent(URI identity, AccessType access,
 			URI definitionURI, DirectionType direction) throws SBOLValidationException {
 		FunctionalComponent functionalComponent =
 				new FunctionalComponent(identity, access, definitionURI, direction);
@@ -642,7 +642,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
 	 * </ul>
 	 */
-	void addFunctionalComponent(FunctionalComponent functionalComponent) throws SBOLValidationException {
+	private void addFunctionalComponent(FunctionalComponent functionalComponent) throws SBOLValidationException {
 		functionalComponent.setSBOLDocument(this.sbolDocument);
 		functionalComponent.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -662,7 +662,7 @@ public class ModuleDefinition extends TopLevel {
 		}
 	}
 
-	void addFunctionalComponentNoCheck(FunctionalComponent functionalComponent) throws SBOLValidationException {
+	private void addFunctionalComponentNoCheck(FunctionalComponent functionalComponent) throws SBOLValidationException {
 		functionalComponent.setSBOLDocument(this.sbolDocument);
 		functionalComponent.setModuleDefinition(this);
 		if (sbolDocument != null && sbolDocument.isComplete()) {
@@ -678,7 +678,7 @@ public class ModuleDefinition extends TopLevel {
 	 * 
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10804.
 	 */
-	void checkMapsTosLocalURIs() throws SBOLValidationException {
+	private void checkMapsTosLocalURIs() throws SBOLValidationException {
 		for (FunctionalComponent functionalComponent : this.getFunctionalComponents()) {
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
 				if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
@@ -1016,7 +1016,7 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #ModuleDefinition(ModuleDefinition)}.
 	 */
 	@Override
-	protected ModuleDefinition deepCopy() throws SBOLValidationException {
+	ModuleDefinition deepCopy() throws SBOLValidationException {
 		return new ModuleDefinition(this);
 	}
 
@@ -1099,7 +1099,7 @@ public class ModuleDefinition extends TopLevel {
 	 * .lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
-	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+	void checkDescendantsURIcompliance() throws SBOLValidationException {
 		isTopLevelURIformCompliant(this.getIdentity());
 		if (!this.getModules().isEmpty()) {
 			for (Module module : this.getModules()) {
@@ -1177,7 +1177,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <li>{@link #copy(String, String, String)}</li>
 	 * </ul>
 	 */
-	ModuleDefinition flatten(String URIprefix,String displayId,String version) throws SBOLValidationException {
+	private ModuleDefinition flatten(String URIprefix,String displayId,String version) throws SBOLValidationException {
 		return flattenRecurse().copy(URIprefix, displayId, version);
 	}
 

@@ -225,7 +225,7 @@ public class Module extends Identified {
 	 * <li>an SBOL validation exception occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}.</li>
 	 * </ul>
 	 */
-	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
+	private void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		mapsTo.setSBOLDocument(this.sbolDocument);
 		mapsTo.setModuleDefinition(moduleDefinition);
 		mapsTo.setModule(this);
@@ -364,7 +364,7 @@ public class Module extends Identified {
 
 
 	@Override
-	protected Module deepCopy() throws SBOLValidationException {
+	Module deepCopy() throws SBOLValidationException {
 		return new Module(this);
 	}
 

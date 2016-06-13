@@ -50,7 +50,7 @@ public abstract class TopLevel extends Identified {
 	 * @param toplevel
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Identified#Identified(Identified)}.
 	 */
-	protected TopLevel(TopLevel toplevel) throws SBOLValidationException {
+	TopLevel(TopLevel toplevel) throws SBOLValidationException {
 		super(toplevel);
 	}
 	

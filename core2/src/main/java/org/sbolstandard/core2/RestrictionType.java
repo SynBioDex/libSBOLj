@@ -44,7 +44,7 @@ public enum RestrictionType {
 	 * Returns the restriction type.
 	 * @return restriction type.
 	 */
-	String getRestrictionType() {
+	private String getRestrictionType() {
 		return restrictionType;
 	}
 
@@ -99,8 +99,8 @@ public enum RestrictionType {
 		}
 	}
 	
-	static final URI precedes = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "precedes");
-	static final URI sameOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "sameOrientationAs");
-	static final URI oppositeOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "oppositeOrientationAs");
+	private static final URI precedes = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "precedes");
+	private static final URI sameOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "sameOrientationAs");
+	private static final URI oppositeOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "oppositeOrientationAs");
 
 }

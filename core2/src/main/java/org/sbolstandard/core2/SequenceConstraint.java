@@ -296,7 +296,7 @@ public class SequenceConstraint extends Identified {
 	 * {@link SequenceConstraint#SequenceConstraint(SequenceConstraint)}. 
 	 */
 	@Override
-	protected SequenceConstraint deepCopy() throws SBOLValidationException {		
+	SequenceConstraint deepCopy() throws SBOLValidationException {		
 		return new SequenceConstraint(this);
 	}
 
@@ -332,7 +332,7 @@ public class SequenceConstraint extends Identified {
 	 * 
 	 * @return the componentDefinition
 	 */
-	ComponentDefinition getComponentDefinition() {
+	private ComponentDefinition getComponentDefinition() {
 		return componentDefinition;
 	}
 

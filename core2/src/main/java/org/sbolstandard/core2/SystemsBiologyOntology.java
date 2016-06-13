@@ -354,7 +354,7 @@ public class SystemsBiologyOntology {
 	 * @param id the ID of a SBO term
 	 * @return the created URI
 	 */
-	static final URI type(String id) {
+	private static final URI type(String id) {
 		return URI.create(URI_PREFIX+id);
 	}
 

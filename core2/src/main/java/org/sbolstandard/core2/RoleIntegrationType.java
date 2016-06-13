@@ -33,7 +33,7 @@ public enum RoleIntegrationType {
 	 * Returns the roleIntegration type.
 	 * @return roleIntegration type.
 	 */
-	String getRoleIntegrationType() {
+	private String getRoleIntegrationType() {
 		return roleIntegrationType;
 	}
 
@@ -85,7 +85,7 @@ public enum RoleIntegrationType {
 		}
 	}
 	
-	static final URI mergeRoles = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "mergeRoles");
-	static final URI overrideRoles = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "overrideRoles");
+	private static final URI mergeRoles = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "mergeRoles");
+	private static final URI overrideRoles = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "overrideRoles");
 
 }

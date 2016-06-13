@@ -157,7 +157,7 @@ public class SBOLDocument {
 	 * @return the new module definition
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 10201, 10202, 10220.
 	 */
-	ModuleDefinition createModuleDefinition(URI identity) throws SBOLValidationException {
+	private ModuleDefinition createModuleDefinition(URI identity) throws SBOLValidationException {
 		ModuleDefinition newModule = new ModuleDefinition(identity);
 		addModuleDefinition(newModule);
 		return newModule;
@@ -296,7 +296,7 @@ public class SBOLDocument {
 	 * @return the created collection
 	 * @throws SBOLValidationException
 	 */
-	Collection createCollection(URI identity) throws SBOLValidationException {
+	private Collection createCollection(URI identity) throws SBOLValidationException {
 		Collection newCollection = new Collection(identity);
 		addCollection(newCollection);
 		return newCollection;
@@ -529,7 +529,7 @@ public class SBOLDocument {
 	 * <li>{@link #addModel(Model)}.</li>
 	 * </ul>
 	 */
-	Model createModel(URI identity, URI source, URI language, URI framework) throws SBOLValidationException {
+	private Model createModel(URI identity, URI source, URI language, URI framework) throws SBOLValidationException {
 		Model newModel = new Model(identity, source, language, framework);
 		addModel(newModel);
 		return newModel;
@@ -648,7 +648,7 @@ public class SBOLDocument {
 	 * <li>{@link #addComponentDefinition(ComponentDefinition)}.</li>
 	 * </ul> 
 	 */
-	ComponentDefinition createComponentDefinition(URI identity, Set<URI> types) throws SBOLValidationException {
+	private ComponentDefinition createComponentDefinition(URI identity, Set<URI> types) throws SBOLValidationException {
 		//ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types, roles);
 		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types);
 		addComponentDefinition(newComponentDefinition);
@@ -928,7 +928,7 @@ public class SBOLDocument {
 	 * <li>{@link #addSequence(Sequence)}.</li>
 	 * </ul>
 	 */
-	Sequence createSequence(URI identity, String elements, URI encoding) throws SBOLValidationException {
+	private Sequence createSequence(URI identity, String elements, URI encoding) throws SBOLValidationException {
 		Sequence newSequence = new Sequence(identity, elements, encoding);
 		addSequence(newSequence);
 		return newSequence;
@@ -1498,7 +1498,7 @@ public class SBOLDocument {
 	 * <li>an SBOL validation rule violation occurred in {@link #addGenericTopLevel(GenericTopLevel)}.</li>
 	 * </ul>
 	 */
-	GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
+	private GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException("sbol-12302");
@@ -1818,7 +1818,7 @@ public class SBOLDocument {
 		}
 	}*/
 
-	boolean isRequiredNamespaceBinding(URI namespaceURI) {
+	private boolean isRequiredNamespaceBinding(URI namespaceURI) {
 		if (namespaceURI.toString().equals(Sbol2Terms.sbol2.getNamespaceURI())) return true;
 		if (namespaceURI.toString().equals(Sbol2Terms.dc.getNamespaceURI())) return true;
 		if (namespaceURI.toString().equals(Sbol2Terms.prov.getNamespaceURI())) return true;

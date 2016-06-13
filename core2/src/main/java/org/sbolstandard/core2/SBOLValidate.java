@@ -71,7 +71,7 @@ public class SBOLValidate {
 		}
 	}
 
-	protected static void checkCollectionCompleteness(SBOLDocument sbolDocument,Collection collection) {
+	private static void checkCollectionCompleteness(SBOLDocument sbolDocument,Collection collection) {
 		for (URI member : collection.getMemberURIs()) {
 			if (sbolDocument.getTopLevel(member)==null) {
 				SBOLValidationException e = new SBOLValidationException("sbol-12103", collection);
@@ -80,7 +80,7 @@ public class SBOLValidate {
 		}
 	}
 
-	protected static void checkComponentDefinitionCompleteness(SBOLDocument sbolDocument,ComponentDefinition componentDefinition) {
+	private static void checkComponentDefinitionCompleteness(SBOLDocument sbolDocument,ComponentDefinition componentDefinition) {
 		for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
 			if (sbolDocument.getSequence(sequenceURI)==null) {
 				errors.add(new SBOLValidationException("sbol-10513", componentDefinition).getExceptionMessage());
@@ -112,7 +112,7 @@ public class SBOLValidate {
 	 * @param mapsTo
 	 * @throws SBOLValidationException the following SBOL validation rule was violated: 10526
 	 */
-	protected static void checkComponentDefinitionMapsTos(ComponentDefinition componentDefinition,MapsTo mapsTo) throws SBOLValidationException {
+	static void checkComponentDefinitionMapsTos(ComponentDefinition componentDefinition,MapsTo mapsTo) throws SBOLValidationException {
 		for (Component component : componentDefinition.getComponents()) {
 			for (MapsTo mapsTo2 : component.getMapsTos()) {
 				if (mapsTo==mapsTo2) continue;
@@ -130,7 +130,7 @@ public class SBOLValidate {
 	 * @param mapsTo
 	 * @throws SBOLValidationException the following SBOL validation rule was violated: 11609.
 	 */
-	protected static void checkModuleDefinitionMapsTos(ModuleDefinition moduleDefinition,MapsTo mapsTo) throws SBOLValidationException {
+	static void checkModuleDefinitionMapsTos(ModuleDefinition moduleDefinition,MapsTo mapsTo) throws SBOLValidationException {
 		for (Module module : moduleDefinition.getModules()) {
 			for (MapsTo mapsTo2 : module.getMapsTos()) {
 				if (mapsTo==mapsTo2) continue;
@@ -153,7 +153,7 @@ public class SBOLValidate {
 		}
 	}
 
-	static void validateMapsTos(SBOLDocument sbolDocument) {
+	private static void validateMapsTos(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			for (Component component : componentDefinition.getComponents()) {
 				for (MapsTo mapsTo : component.getMapsTos()) {
@@ -190,7 +190,7 @@ public class SBOLValidate {
 		}
 	}
 
-	protected static void checkModuleDefinitionCompleteness(SBOLDocument sbolDocument,ModuleDefinition moduleDefinition) {
+	private static void checkModuleDefinitionCompleteness(SBOLDocument sbolDocument,ModuleDefinition moduleDefinition) {
 		for (URI modelURI : moduleDefinition.getModelURIs()) {
 			if (sbolDocument.getModel(modelURI) == null) {
 				errors.add(new SBOLValidationException("sbol-11608", moduleDefinition).getExceptionMessage());
@@ -241,7 +241,7 @@ public class SBOLValidate {
 	 *
 	 * @param sbolDocument the given SBOL document to be validated for completeness
 	 */
-	static void validateCompleteness(SBOLDocument sbolDocument) {
+	private static void validateCompleteness(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
 			checkCollectionCompleteness(sbolDocument,collection);
 		}
@@ -259,7 +259,7 @@ public class SBOLValidate {
 	 * @param visited
 	 * @throws SBOLValidationException if either of the following SBOL validation rule was violated: 10603, 10605.
 	 */
-	protected static void checkComponentDefinitionCycle(SBOLDocument sbolDocument,
+	static void checkComponentDefinitionCycle(SBOLDocument sbolDocument,
 			ComponentDefinition componentDefinition, Set<URI> visited) throws SBOLValidationException {
 		if (componentDefinition==null) return;
 		visited.add(componentDefinition.getIdentity());
@@ -279,7 +279,7 @@ public class SBOLValidate {
 		return;
 	}
 
-	protected static void checkModuleDefinitionCycle(SBOLDocument sbolDocument,
+	static void checkModuleDefinitionCycle(SBOLDocument sbolDocument,
 			ModuleDefinition moduleDefinition, Set<URI> visited) throws SBOLValidationException {
 		if (moduleDefinition==null) return;
 		visited.add(moduleDefinition.getIdentity());
@@ -299,7 +299,7 @@ public class SBOLValidate {
 		return;
 	}
 
-	protected static boolean checkWasDerivedFromVersion(SBOLDocument sbolDocument, Identified identified,
+	static boolean checkWasDerivedFromVersion(SBOLDocument sbolDocument, Identified identified,
 			URI wasDerivedFrom) {
 		Identified derivedFrom = sbolDocument.getTopLevel(wasDerivedFrom);
 		if ((derivedFrom!=null) &&
@@ -312,7 +312,7 @@ public class SBOLValidate {
 		return true;
 	}
 
-	static void validateWasDerivedFromVersion(SBOLDocument sbolDocument) {
+	private static void validateWasDerivedFromVersion(SBOLDocument sbolDocument) {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (topLevel.isSetWasDerivedFrom()) {
 				if (!checkWasDerivedFromVersion(sbolDocument,topLevel,topLevel.getWasDerivedFrom())) {
@@ -329,7 +329,7 @@ public class SBOLValidate {
 	 * @param visited
 	 * @throws SBOLValidationException if any of the following SBOL validation rule was violated: 10303, 10304.
 	 */
-	protected static void checkWasDerivedFromCycle(SBOLDocument sbolDocument,
+	static void checkWasDerivedFromCycle(SBOLDocument sbolDocument,
 			Identified identified, URI wasDerivedFrom, Set<URI> visited) throws SBOLValidationException {
 		visited.add(identified.getIdentity());
 		TopLevel tl = sbolDocument.getTopLevel(wasDerivedFrom);
@@ -356,7 +356,7 @@ public class SBOLValidate {
 	 *
 	 * @param sbolDocument the given SBOL document to be validated for circular references
 	 */
-	static void validateCircularReferences(SBOLDocument sbolDocument) {
+	private static void validateCircularReferences(SBOLDocument sbolDocument) {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (topLevel.isSetWasDerivedFrom()) {
 				try {
@@ -415,7 +415,7 @@ public class SBOLValidate {
 		}
 	}
 
-	static void checkInteractionTypeParticipationRole(Interaction interaction,URI type,URI role) {
+	private static void checkInteractionTypeParticipationRole(Interaction interaction,URI type,URI role) {
 		if (type.equals(SystemsBiologyOntology.INHIBITION)) {
 			if (!role.equals(SystemsBiologyOntology.INHIBITOR) && !role.equals(SystemsBiologyOntology.PROMOTER)) {
 				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
@@ -444,7 +444,7 @@ public class SBOLValidate {
 		}
 	}
 
-	static void validateOntologyUsage(SBOLDocument sbolDocument) {
+	private static void validateOntologyUsage(SBOLDocument sbolDocument) {
 		SequenceOntology so = new SequenceOntology();
 		SystemsBiologyOntology sbo = new SystemsBiologyOntology();
 		EDAMOntology edam = new EDAMOntology();
@@ -558,7 +558,7 @@ public class SBOLValidate {
 		}
 	}
 
-	static void validateComponentDefinitionSequences(SBOLDocument sbolDocument) {
+	private static void validateComponentDefinitionSequences(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			if (componentDefinition.getSequences().size() < 1) continue;
 			boolean foundNucleic = false;
@@ -647,7 +647,7 @@ public class SBOLValidate {
 		}
 	}
 	
-	static boolean includesSequence(String specificSequence,String generalSequence) {
+	private static boolean includesSequence(String specificSequence,String generalSequence) {
 		//if (specificSequence.length()!=generalSequence.length()) return false;
 		specificSequence = specificSequence.toLowerCase();
 		generalSequence = generalSequence.toLowerCase();
@@ -741,7 +741,7 @@ public class SBOLValidate {
 		return true;
 	}
 
-	static void validateSequenceConstraints(SBOLDocument sbolDocument) {
+	private static void validateSequenceConstraints(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
 				try {
@@ -754,7 +754,7 @@ public class SBOLValidate {
 		}
 	}
 
-	static void validateSequenceAnnotations(SBOLDocument sbolDocument) {
+	private static void validateSequenceAnnotations(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
 				Object[] locations = sequenceAnnotation.getLocations().toArray();
@@ -812,7 +812,7 @@ public class SBOLValidate {
 		return true;
 	}
 
-	static void validateSequenceEncodings(SBOLDocument sbolDocument) {
+	private static void validateSequenceEncodings(SBOLDocument sbolDocument) {
 		for (Sequence sequence : sbolDocument.getSequences()) {
 			if (!checkSequenceEncoding(sequence)) {
 				errors.add(new SBOLValidationException("sbol-10405", sequence).getExceptionMessage());
@@ -820,7 +820,7 @@ public class SBOLValidate {
 		}
 	}
 
-	static void validatePersistentIdentityUniqueness(SBOLDocument sbolDocument) {
+	private static void validatePersistentIdentityUniqueness(SBOLDocument sbolDocument) {
 		HashMap<URI, Identified> elements = new HashMap<>();
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (!topLevel.isSetPersistentIdentity()) continue;
@@ -948,7 +948,7 @@ public class SBOLValidate {
 		}
 	}
 
-	static void validateURIuniqueness(SBOLDocument sbolDocument) {
+	private static void validateURIuniqueness(SBOLDocument sbolDocument) {
 		HashMap<URI, Identified> elements = new HashMap<>();
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (elements.get(topLevel.getIdentity())!=null) {

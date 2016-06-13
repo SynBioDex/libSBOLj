@@ -69,7 +69,7 @@ public class SBOLValidationException extends Exception {
 	 * @param message
 	 * @param objects
 	 */
-	SBOLValidationException(String message, java.util.Collection<? extends Identified> objects) {
+	private SBOLValidationException(String message, java.util.Collection<? extends Identified> objects) {
 		super(exceptionMessage = formatMessage(message, objects));
 		this.objects = Collections.unmodifiableList(new ArrayList<>(objects));
 	}
@@ -81,7 +81,7 @@ public class SBOLValidationException extends Exception {
 	 * @param cause
 	 * @param objects
 	 */
-	SBOLValidationException(String message, Throwable cause, Identified ... objects) {
+	private SBOLValidationException(String message, Throwable cause, Identified ... objects) {
 		super(message, cause);
 		this.objects = Collections.unmodifiableList(Arrays.asList(objects));
 	}
@@ -121,7 +121,7 @@ public class SBOLValidationException extends Exception {
 	 * 
 	 * @return a collection of Identified instances
 	 */
-	java.util.Collection<Identified> getObjects() {
+	private java.util.Collection<Identified> getObjects() {
 		return objects;
 	}
 	

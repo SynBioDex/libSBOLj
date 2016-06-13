@@ -379,7 +379,7 @@ public class SequenceOntology {
 	 * @param id the ID of an SO term
 	 * @return the created URI
 	 */
-	static final URI type(String id) {
+	private static final URI type(String id) {
 		return URI.create(URI_PREFIX+id);
 	}
 		

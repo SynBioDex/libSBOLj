@@ -169,12 +169,12 @@ public class Participation extends Identified {
 	 * is allowed to be edited.
 	 *
 	 */
-	void clearRoles() {
+	private void clearRoles() {
 		roles.clear();
 	}
 
 	@Override
-	protected Participation deepCopy() throws SBOLValidationException {
+	Participation deepCopy() throws SBOLValidationException {
 		return new Participation(this);
 	}
 
@@ -205,7 +205,7 @@ public class Participation extends Identified {
 	 * 
 	 * @return the parent module definition 
 	 */
-	ModuleDefinition getModuleDefinition() {
+	private ModuleDefinition getModuleDefinition() {
 		return moduleDefinition;
 	}
 
