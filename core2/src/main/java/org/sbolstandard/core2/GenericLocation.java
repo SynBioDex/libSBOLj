@@ -3,7 +3,7 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
- * Represents the GenericLocation extension of the SBOL Location class.
+ * Represents a GenericLocation extension object of the SBOL Location class.
  * 
  * @author Zhen Zhang
  * @author Chris Myers

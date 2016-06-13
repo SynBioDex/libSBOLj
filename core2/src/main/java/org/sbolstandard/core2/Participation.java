@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL Participation data model.
+ * Represents a Participation object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -39,6 +39,10 @@ public class Participation extends Identified {
 		setRoles(roles);
 	}
 
+	/**
+	 * @param participation
+	 * @throws SBOLValidationException
+	 */
 	private Participation(Participation participation) throws SBOLValidationException {
 		super(participation);
 		this.roles = new HashSet<>();

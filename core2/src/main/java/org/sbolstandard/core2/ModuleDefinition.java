@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL ModuleDefinition data model.
+ * Represents a ModuleDefinition object in the SBOL data model.
  *
  * @author Zhen Zhang
  * @author Nicholas Roehner

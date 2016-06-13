@@ -15,7 +15,7 @@ import java.util.Set;
 
 
 /**
- * Represents the SBOL ComponentDefinition data model.
+ * Represents a ComponentDefinition object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -90,7 +90,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following
 	 * constructor or method: 
 	 * <ul>
-	 * <li>{@link TopLevel#TopLevel(TopLevel)}, or</li>
+	 * <li>{@link TopLevel#TopLevel(URI)}, or</li>
 	 * <li>{@link #setTypes(Set)}.</li>
 	 * </ul>
 	 */
@@ -1169,6 +1169,9 @@ public class ComponentDefinition extends TopLevel {
 				sequenceAnnotations, sequenceConstraints);
 	}
 
+	/**
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10803.
+	 */
 	void checkMapsTosLocalURIs() throws SBOLValidationException {
 		for (Component component : this.getComponents()) {
 			for (MapsTo mapsTo : component.getMapsTos()) {
@@ -1273,7 +1276,7 @@ public class ComponentDefinition extends TopLevel {
 	 * This method calls {@link #removeComponent(Component component)} to iteratively remove
 	 * each component.
 	 *
-	 * @throws SBOLValidationException see {@link #removeComponent(Component)}
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #removeComponent(Component)}.
 	 */
 	public void clearComponents() throws SBOLValidationException {
 		Object[] valueSetArray = components.values().toArray();
@@ -1284,11 +1287,11 @@ public class ComponentDefinition extends TopLevel {
 
 	/**
 	 * @param components
-	 * @throws SBOLValidationException if any of the following condition is satisfied:
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
 	 * <ul>
-	 * <li>if an SBOL validation rule violation occurred in {@link #clearComponents()}</li>
-	 * <li>if an SBOL validation rule violation occurred in {@link #addComponentNoCheck(Component)}</li>
-	 * <li>if an SBOL validation rule violation occurred in {@link #checkMapsTosLocalURIs()}</li>
+	 * <li>{@link #clearComponents()}</li>
+	 * <li>{@link #addComponentNoCheck(Component)}, or</li>
+	 * <li>{@link #checkMapsTosLocalURIs()}.</li>
 	 * </ul>
 	 */
 	void setComponents(Set<Component> components) throws SBOLValidationException {
@@ -1508,6 +1511,13 @@ public class ComponentDefinition extends TopLevel {
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#updateCompliantURI(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	/**
+	 * @throws SBOLValidationException an SBOL validation rule violation occurred in either of the following methods:
+	 * <ul>
+	 * <li>{@link URIcompliance#isTopLevelURIformCompliant(URI)}, or</li>
+	 * <li>{@link URIcompliance#isChildURIcompliant(Identified, Identified)}.</li>
+	 * </ul>
 	 */
 	@Override
 	protected void checkDescendantsURIcompliance() throws SBOLValidationException {

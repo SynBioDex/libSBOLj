@@ -3,7 +3,8 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
- * Represents the role integration relationship between a roles specified in related objects.
+ * Represents the role integration relationship between roles specified in related objects.
+ * It indicates how role is to be integrated with related roles.
  *
  * @author Zhen Zhang
  * @author Chris Myers

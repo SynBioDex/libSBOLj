@@ -4,7 +4,7 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
- * Represents the SBOL ComponentInstance data model.
+ * Represents a ComponentInstance object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -37,7 +37,7 @@ public abstract class ComponentInstance extends Identified {
 	 * @param component
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
 	 * <ul>
-	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(URI)};</li>
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(Identified)};</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #setAccess(AccessType)}; or</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #setDefinition(URI)}.</li>
 	 * </ul>

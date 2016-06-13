@@ -20,7 +20,7 @@ import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 
 /**
- * Represents the SBOL Annotation data model.
+ * Represents an Annotation object in the cSBOL data model.
  * 
  * @author Zhen Zhang
  * @author Matthew Pocock

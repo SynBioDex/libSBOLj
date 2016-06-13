@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL Collection data model.
+ * Represents an Collection object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -19,6 +19,11 @@ public class Collection extends TopLevel{
 
 	private Set<URI> members;
 
+	/**
+	 * @param identity
+	 * @throws SBOLValidationException if an SBOL validation rule was violated in the following constructor:
+	 * {@link TopLevel#TopLevel(URI)}. 
+	 */
 	Collection(URI identity) throws SBOLValidationException {
 		super(identity);
 		this.members = new HashSet<>();

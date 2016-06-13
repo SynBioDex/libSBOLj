@@ -17,11 +17,27 @@ public class Cut extends Location{
 
 	private int at;
 	
+	/**
+	 * @param identity
+	 * @param at
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of 
+	 * the following constructor or method:
+	 * {@link Location#Location(URI)} or {@link #setAt(int)}.
+	 */
 	Cut(URI identity, int at) throws SBOLValidationException {
 		super(identity);
 		setAt(at);
 	}
 
+	/**
+	 * @param cut
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * either of the following constructors or methods:
+	 * <ul>
+	 * <li>{@link Location#Location(Location)}, or</li>
+	 * <li>{@link #setAt(int)}.</li>
+	 * </ul>
+	 */
 	private Cut(Cut cut) throws SBOLValidationException {
 		super(cut);
 		this.setAt(cut.getAt());

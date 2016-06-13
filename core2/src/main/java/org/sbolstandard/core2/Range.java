@@ -5,7 +5,7 @@ import java.net.URI;
 import javax.xml.namespace.QName;
 
 /**
- * Represents the Range extension of the SBOL Location class.
+ * Represents a Range extension object of the SBOL Location class.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -18,6 +18,18 @@ public class Range extends Location {
 	private int start = 0;
 	private int end = 0;
 
+	/**
+	 * @param identity
+	 * @param start
+	 * @param end
+	 * @throws SBOLValidationException if if an SBOL validation rule violation occurred 
+	 * in any of the following constructors or methods:
+	 * <ul>
+	 * <li>{@link Location#Location(URI)}, </li>
+	 * <li>{@link #setEnd(int)}, or </li>
+	 * <li>{@link #setStart(int)}.</li>
+	 * </ul>
+	 */
 	Range(URI identity, int start, int end) throws SBOLValidationException {
 		super(identity);
 		setEnd(end);

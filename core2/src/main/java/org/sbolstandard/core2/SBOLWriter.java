@@ -75,8 +75,12 @@ public class SBOLWriter
 	}
 
 	/**
-	 * Sets the value of the {@code keepGoing} flag to the specified Boolean value.
-	 * @param keepGoing The specified Boolean value
+	 * Sets the value for the keepGoing flag to the given boolean value.
+	 * <p>
+	 * A {@code true} value means that reading will keep going after encountering an SBOL validation exception, 
+	 * and a {@code false} value means otherwise.
+	 * 
+	 * @param keepGoing the boolean value for the keepGoing flag
 	 */
 	public static void setKeepGoing(boolean keepGoing) {
 		SBOLWriter.keepGoing = keepGoing;
@@ -107,10 +111,13 @@ public class SBOLWriter
 	}
 
 	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
-	 * in RDF format.
-	 * @param doc the given SBOLDocument object
-	 * @param file the serialized output file
+	 * Outputs the given SBOL document's data from the RDF/XML serialization to the given file.
+	 * <p>
+	 * This method first creates a {@link BufferedOutputStream} from the given file, and then
+	 * calls {@link #write(SBOLDocument, OutputStream)}.
+	 * 
+	 * @param doc the given SBOL document
+	 * @param file the given output file
 	 * @throws IOException see {@link IOException}
 	 * @throws SBOLConversionException - problem found during serialization 
 	 */
@@ -123,11 +130,15 @@ public class SBOLWriter
 	}
 	
 	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output file
-	 * in the specified fileType format.
-	 * @param doc the given SBOLDocument object
-	 * @param file the serialized output file
-	 * @param fileType the given file format, such as RDF/XML, JSON, or Turtle. 
+	 * Outputs this SBOL document's data from the serialization in the given serialization format 
+	 * to the given file.
+	 * <p>
+	 * This method first creates a {@link BufferedOutputStream} from the given file, and then
+	 * calls {@link #write(SBOLDocument, OutputStream, String)}.
+	 * 
+	 * @param doc the given SBOL document
+	 * @param file the given output file
+	 * @param fileType the given serialization format
 	 * @throws IOException see {@link IOException}
 	 * @throws SBOLConversionException - problem found during serialization 
 	 */
@@ -141,10 +152,10 @@ public class SBOLWriter
 	}
 
 	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output stream
-	 * in RDF format.
-	 * @param doc the given SBOLDocument object
-	 * @param out the serialized output stream
+	 *  Outputs this SBOL document's data from the RDF/XML serialization to the given output stream.
+	 * 
+	 * @param doc the given SBOL document
+	 * @param out the given output stream
 	 * @throws SBOLConversionException - problem found during serialization 
 	 */
 	public static void write(SBOLDocument doc, OutputStream out) throws SBOLConversionException
@@ -166,10 +177,13 @@ public class SBOLWriter
 	}
 
 	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
-	 * file name in RDF format
-	 * @param doc the given SBOLDocument object
-	 * @param filename the name of the serialized output file
+	 * Outputs this SBOL document's data from the RDF/XML serialization to a new file with the given file name.
+	 * <p>
+	 * This method calls {@link #write(SBOLDocument, File)} by passing this SBOL document, and a 
+	 * new file with the given file name.
+	 * 
+	 * @param doc the given SBOL document
+	 * @param filename the given output file name
 	 * @throws IOException see {@link IOException}	 
 	 * @throws SBOLConversionException - problem found during serialization 
 	 */
@@ -179,8 +193,12 @@ public class SBOLWriter
 	}
 	
 	/**
-	 * Serializes a given SBOLDocument and outputs the data from the serialization to the given output
-	 * filename in specified fileType format
+ 	 * Outputs this SBOL document's data from serialization in the given serialization format
+	 * to a new file with the given file name.
+	 * <p>
+	 * This method calls {@link #write(SBOLDocument, File, String)} by passing this SBOL document, and a 
+	 * new file with the given file name and type.
+	 * 
 	 * @param doc the given SBOLDocument object
 	 * @param filename the name of the serialized output file
 	 * @param fileType the given file format, such as RDF/XML, JSON, or Turtle.

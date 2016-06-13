@@ -5,7 +5,7 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import java.net.URI;
 
 /**
- * Represents the SBOL MapsTo data model.
+ * Represents a MapsTo object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner

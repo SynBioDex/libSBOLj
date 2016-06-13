@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL Component data model.
+ * Represents a Component object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner

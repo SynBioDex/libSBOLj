@@ -18,7 +18,7 @@ import javax.xml.namespace.QName;
 import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 
 /**
- * Represents the SBOL Identified data model.
+ * Represents an Identified object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -31,7 +31,6 @@ public abstract class Identified {
 	protected URI identity;
 	protected URI persistentIdentity;
 	protected String version;
-	// TODO: can this be a set instead?
 	protected List<Annotation> annotations;
 	protected URI wasDerivedFrom;
 	protected String displayId;

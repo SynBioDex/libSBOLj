@@ -57,9 +57,11 @@ final class URIcompliance {
 	 * @param version
 	 * @param useType
 	 * @return
-	 * @throws SBOLValidationException if either of the following condition is satisfied:
-	 * <li>an SBOL validation exception occurred in {@link #validateIdVersion(String, String)}; or</li>
-	 * <li>an SBOL validation exception occurred in {@link #createCompliantURI(String, String, String)}.</li>
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of the following methods:
+	 * <ul>
+	 * <li>{@link #validateIdVersion(String, String)}, or</li>
+	 * <li>{@link #createCompliantURI(String, String, String)}.</li>
+	 * </ul> 
 	 */
 	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) throws SBOLValidationException {
 		if (prefix == null) {
@@ -78,8 +80,8 @@ final class URIcompliance {
 
 	/**
 	 * Extract the persistent identity URI from the given URI.
-	 * The persistent identity is simply the identity URI without the version.
-	 * @return the extracted persistent identity URI, <code>null</code> otherwise.
+	 * 
+	 * @return the extracted persistent identity URI
 	 */
 	static String extractPersistentId(URI objURI) {
 		String URIstr = objURI.toString();
@@ -89,14 +91,15 @@ final class URIcompliance {
 			return m.group(1);
 		}
 		else {
-			return null;//throw new SBOLValidationException(objURI + " does not include a valid persistentIdentity.");
+			return null;
 		}
 
 	}
 
 	/**
 	 * Extract the URI prefix from this object's identity URI.
-	 * @return the extracted URI prefix, <code>null</code> otherwise.
+	 * 
+	 * @return the extracted URI prefix
 	 */
 	static String extractURIprefix(URI objURI) {
 		String URIstr = objURI.toString();
@@ -109,13 +112,9 @@ final class URIcompliance {
 	}
 
 	/**
-	 * Extract the object's display ID from the given object's identity URI, according to the given index.
-	 * The given URI is first checked for compliance. If the given index is 0, the extracted display ID is the
-	 * top-level object's display ID; if the given index is 1, the extracted display ID is the
-	 * child object's display ID; if the given index is 2, the extracted display ID is the
-	 * grand child object's display ID; if the given index is 3, the extracted display ID is the
-	 * great grand child object's display ID.
-	 * @return the extracted display ID.
+	 * Extract the object's display ID from the given object's identity URI.
+	 * 
+	 * @return the extracted display ID
 	 */
 	static String extractDisplayId(URI objURI) {
 		String URIstr = objURI.toString();
@@ -130,7 +129,8 @@ final class URIcompliance {
 
 	/**
 	 * Extract the version from this object's identity URI.
-	 * @return the version if the given URI is compliant, <code>null</code> otherwise.
+	 * 
+	 * @return the version if the given URI is compliant
 	 */
 	static String extractVersion(URI objURI) {
 		String URIstr = objURI.toString();
@@ -142,6 +142,11 @@ final class URIcompliance {
 			return null;
 	}
 
+	/**
+	 * @param identified
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10215, 10216, 10218.
+	 */
 	static final void isURIcompliant(Identified identified) throws SBOLValidationException {
 		if (!identified.isSetDisplayId()) {
 			throw new SBOLValidationException("sbol-10215");
@@ -181,6 +186,12 @@ final class URIcompliance {
 		}
 	}
 
+	/**
+	 * @param parent
+	 * @param child
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10216, 10217, 10219.
+	 */
 	static final void isChildURIcompliant(Identified parent, Identified child) throws SBOLValidationException {
 		try {
 			isURIcompliant(child);
@@ -208,9 +219,10 @@ final class URIcompliance {
 	/**
 	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
 	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
-	 * the level of the given object. 
+	 * the level of the given object.
+	 * 
 	 * @param objURI
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if any the following SBOL validation rule was violated: 10201.
 	 */
 	static final void isTopLevelURIformCompliant(URI topLevelURI) throws SBOLValidationException {
 		Pattern r;

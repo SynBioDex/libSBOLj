@@ -79,7 +79,7 @@ public enum RestrictionType {
 	/**
 	 * Returns the restriction type in URI.
 	 * @return restriction type in URI
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the following SOBL validation rule was violated: 11412.
 	 */
 	static URI convertToURI(RestrictionType restriction) throws SBOLValidationException {
 		if (restriction != null) {

@@ -3,7 +3,7 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
- * Represents the SBOL top-level classes.
+ * Represents a TopLevel object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -70,11 +70,15 @@ public abstract class TopLevel extends Identified {
 	abstract Identified copy(String URIprefix, String displayId, String version) throws SBOLValidationException;
 
 	/**
-	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
-	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
-	 * the level of the given object. 
+	 * Test if the given object's identity URI is compliant.
+	 * 
 	 * @param objURI
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link URIcompliance#isTopLevelURIformCompliant(URI)},</li> 
+	 * <li>{@link URIcompliance#isURIcompliant(Identified)}, or</li>
+	 * <li>{@link #checkDescendantsURIcompliance()}.</li>
+	 * </ul>
 	 */
 	void isURIcompliant() throws SBOLValidationException {	
 		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
@@ -88,10 +92,9 @@ public abstract class TopLevel extends Identified {
 	}
 
 	/**
-	 * Returns the SBOLDocument that was used 
-	 * to instantiate this TopLevel instance.
+	 * Returns the SBOL document that hosts this top-level.
 	 * 
-	 * @return the SBOLDocument of this TopLevel's origin
+	 * @return the SBOL document that hosts this top-level
 	 */
 	public SBOLDocument getDocument() {
 		return this.sbolDocument;

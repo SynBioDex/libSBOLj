@@ -5,7 +5,7 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import java.net.URI;
 
 /**
- * Represents the SBOL Location data model.
+ * Represents a Location object in the SOBL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -37,6 +37,15 @@ public abstract class Location extends Identified implements Comparable<Location
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.Identified#deepCopy()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link Range#deepCopy()},</li>
+	 * <li>{@link Cut#deepCopy()}, or</li>
+	 * <li>{@link GenericLocation#deepCopy()}.</li>
+	 * </ul>
+	 * 
 	 */
 	@Override
 	protected abstract Location deepCopy() throws SBOLValidationException;

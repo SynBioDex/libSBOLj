@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL FunctionalComponent data model.
+ * Represents a FunctionalComponent object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner

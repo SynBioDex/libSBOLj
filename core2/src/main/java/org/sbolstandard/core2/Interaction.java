@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL Interaction data model.
+ * Represents an Interaction object in the SOBL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -42,6 +42,10 @@ public class Interaction extends Identified {
 		setTypes(types);
 	}
 
+	/**
+	 * @param interaction
+	 * @throws SBOLValidationException
+	 */
 	Interaction(Interaction interaction) throws SBOLValidationException {
 		super(interaction);
 		this.types = new HashSet<>();

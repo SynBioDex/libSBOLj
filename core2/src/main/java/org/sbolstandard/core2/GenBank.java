@@ -801,6 +801,18 @@ class GenBank {
 		}
 	}
 
+	/**
+	 * @param doc
+	 * @param topCD
+	 * @param type
+	 * @param elements
+	 * @param version
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link SBOLDocument#createSequence(String, String, String, URI)}, or</li>
+	 * <li>{@link ComponentDefinition#addSequence(Sequence)}.</li>
+	 * </ul>
+	 */
 	private static void createSubComponentDefinitions(SBOLDocument doc,ComponentDefinition topCD,URI type,String elements,String version) throws SBOLValidationException {
 		for (SequenceAnnotation sa : topCD.getSequenceAnnotations()) {
 			Range range = (Range)sa.getLocation("range");
@@ -830,7 +842,6 @@ class GenBank {
 	 * <li>{@link SequenceAnnotation#addAnnotation(Annotation)},</li>
 	 * <li>{@link ComponentDefinition#createSequenceAnnotation(String, String, int, int, OrientationType)},</li>
 	 * <li>{@link SequenceAnnotation#setComponent(String)},</li>
-	 * <li>{@link SequenceAnnotation#addAnnotation(Annotation)},</li>
 	 * <li>{@link SequenceAnnotation#addRange(String, int, int, OrientationType)},</li>
 	 * <li>{@link Range#addAnnotation(Annotation)},</li>
 	 * <li>{@link ComponentDefinition#createSequenceAnnotation(String, String, int, OrientationType)},</li>

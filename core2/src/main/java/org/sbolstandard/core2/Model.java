@@ -4,7 +4,7 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import java.net.URI;
 
 /**
- * Represents the SBOL Model data model.
+ * Represents a Model object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -26,7 +26,7 @@ public class Model extends TopLevel {
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of the following
 	 * constructors or methods:
 	 * <ul>
-	 * <li>{@link TopLevel#TopLevel(TopLevel)},</li>
+	 * <li>{@link TopLevel#TopLevel(URI)},</li>
 	 * <li>{@link #setSource(URI)},</li>
 	 * <li>{@link #setLanguage(URI)}, or</li>
 	 * <li>{@link #setFramework(URI)}.</li>

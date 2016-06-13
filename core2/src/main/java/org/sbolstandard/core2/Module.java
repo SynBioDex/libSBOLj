@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL Module data model.
+ * Represents a Module object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -39,6 +39,10 @@ public class Module extends Identified {
 		setDefinition(moduleDefinition);
 	}
 
+	/**
+	 * @param module
+	 * @throws SBOLValidationException
+	 */
 	private Module(Module module) throws SBOLValidationException {
 		super(module);
 		this.mapsTos = new HashMap<>();

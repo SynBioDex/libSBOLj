@@ -7,7 +7,7 @@ import java.net.URI;
 import javax.xml.namespace.QName;
 
 /**
- * Represents the SBOL GenericTopLevel data model.
+ * Represents a GenericTopLevel object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -24,7 +24,7 @@ public class GenericTopLevel extends TopLevel{
 	 * @param rdfType
 	 * @throws SBOLValidationException if either of the following condition is satisfied: 
 	 * <ul>
-	 * <li>if an SBOL validation rule violation occurred in {@link TopLevel#TopLevel(TopLevel)}, or</li>
+	 * <li>if an SBOL validation rule violation occurred in {@link TopLevel#TopLevel(URI)}, or</li>
 	 * <li>the following SBOL validation rule was violated: 12302.</li>
 	 * </ul>
 	 */

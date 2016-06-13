@@ -5,7 +5,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
 import java.net.URI;
 
 /**
- * Represents the SBOL Sequence data model.
+ * Represents a Sequence object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -87,9 +87,9 @@ public class Sequence extends TopLevel{
 	//	}
 
 	/**
-	 * Returns the elements property of this Sequence object.
+	 * Returns the elements property of this sequence.
 	 * 
-	 * @return the elements property of this Sequence object.
+	 * @return the elements property of this sequence.
 	 */
 	public String getElements() {
 		return elements;
@@ -113,9 +113,9 @@ public class Sequence extends TopLevel{
 	}
 	
 	/**
-	 * Returns the encoding property of this Sequence object.
+	 * Returns the encoding property of this sequence.
 	 * 
-	 * @return the encoding property of this Sequence object.
+	 * @return the encoding property of this sequence
 	 */
 	public URI getEncoding() {
 		return encoding;
@@ -169,7 +169,7 @@ public class Sequence extends TopLevel{
 	 * @see org.sbolstandard.core2.TopLevel#deepCopy()
 	 */
 	/**
-	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Sequence(Sequence)}.
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Sequence#Sequence(Sequence)}.
 	 */
 	@Override
 	protected Sequence deepCopy() throws SBOLValidationException {
@@ -208,6 +208,10 @@ public class Sequence extends TopLevel{
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
+	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following method:
+	 * {@link URIcompliance#isTopLevelURIformCompliant(URI)}.
 	 */
 	@Override
 	protected void checkDescendantsURIcompliance() throws SBOLValidationException {

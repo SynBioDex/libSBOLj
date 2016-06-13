@@ -32,7 +32,7 @@ public class SBOLValidate {
 	private static List<String> errors = null;
 
 	/**
-	 * Empties the error list used to store SBOL validation exceptions.
+	 * Empties the error list that is used to store SBOL validation exceptions.
 	 */
 	public static void clearErrors() {
 		errors = new ArrayList<String>();
@@ -40,6 +40,7 @@ public class SBOLValidate {
 
 	/**
 	 * Returns the error list used to store SBOL validation exceptions.
+	 * 
 	 * @return the error list used to store SBOL validation exceptions
 	 */
 	public static List<String> getErrors() {
@@ -55,11 +56,9 @@ public class SBOLValidate {
 	}
 
 	/**
-	 * Validate SBOL objects are compliant in the given {@code sbolDocument}.
+	 * Validates if SBOL instances are compliant in the given SBOL document.
 	 *
-	 * @param sbolDocument the SBOLDocument object to be validated
-	 * @throws SBOLValidationException if any top-level objects or any of their children or grandchildren
-	 * in the given {@code sbolDocument} contain a non-compliant URI.
+	 * @param sbolDocument the SBOL document to be validated
 	 */
 	static void validateCompliance(SBOLDocument sbolDocument) {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
@@ -238,9 +237,9 @@ public class SBOLValidate {
 	}
 
 	/**
-	 * Validate if all URI references to SBOL objects are in the same given {@code sbolDocument}.
+	 * Validates if all URI references to SBOL objects are in the same given SBOL document.
 	 *
-	 * @param sbolDocument The SBOLDocument object to be validated for completeness
+	 * @param sbolDocument the given SBOL document to be validated for completeness
 	 */
 	static void validateCompleteness(SBOLDocument sbolDocument) {
 		for (Collection collection : sbolDocument.getCollections()) {
@@ -353,9 +352,9 @@ public class SBOLValidate {
 	}
 
 	/**
-	 * Validate if there are circular references in given {@code sbolDocument}.
+	 * Validates if there are circular references in the given SBOL document.
 	 *
-	 * @param sbolDocument The SBOLDocument object to be validated for circular references
+	 * @param sbolDocument the given SBOL document to be validated for circular references
 	 */
 	static void validateCircularReferences(SBOLDocument sbolDocument) {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
@@ -383,6 +382,12 @@ public class SBOLValidate {
 		}
 	}
 
+	/**
+	 * @param componentDefinition
+	 * @param sequenceConstraint
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 11409, 11410, 11411.
+	 */
 	static void checkSequenceConstraint(ComponentDefinition componentDefinition,SequenceConstraint sequenceConstraint) throws SBOLValidationException {
 		SequenceAnnotation saSubject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getSubject());
 		SequenceAnnotation saObject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getObject());
@@ -1064,12 +1069,12 @@ public class SBOLValidate {
 	 * that can be accessed using the {@link #getErrors()} method. Interpretations of the complete, compliant, and bestPractice parameters 
 	 * are as follows:
 	 * <ul>
-	 * <li> complete: A {@code true} value means that ALL references in the given SBOLDocument object can dereference to objects 
-	 * in the same document; {@code false} otherwise.
-	 * <li> compliant: A {@code true} value means that ALL URIs in the given SBOLDocument object are compliant; {@code false} otherwise.
+	 * <li> complete: A {@code true} value means that all identity URI references in the given SBOL document can dereference to objects 
+	 * in the same document; a {@code false} value means otherwise.</li>
+	 * <li> compliant: A {@code true} value means that all URIs in the given SBOL document are compliant; a {@code false} value means otherwise.</li>
 	 * <li> best practice: A {@code true} value means that validation rules with the RECOMMENDED condition in the SBOL specification are
-	 * checked against the given SBOLDocuemnt object; {@code false} otherwise.
-	 *  </ul><p>
+	 * checked against the given SBOLDocuemnt object; a {@code false} value means otherwise.</li>
+	 * </ul>
 	 * 
 	 * @param sbolDocument the given {@code SBOLDocument} object
 	 * @param complete the given {@code complete} flag 
@@ -1096,11 +1101,12 @@ public class SBOLValidate {
 	}
 
 	/**
-	 * Compare the given two SBOLDocument objects and outputs the "standard" error output stream (System.err).  
+	 * Compares the given two SBOL documents and outputs the "standard" error output stream (System.err).
+	 *   
 	 * @param file1 the file name associated with {@code doc1}
-	 * @param doc1 the first SBOLDocument object
+	 * @param doc1 the first SBOL document
 	 * @param file2 the file name associated with {@code doc2}
-	 * @param doc2 the second SBOLDocument object
+	 * @param doc2 the second SBOL document
 	 */
 	public static void compareDocuments(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
 		/*if (!doc1.getNamespaces().equals(doc2.getNamespaces())) {

@@ -106,7 +106,7 @@ public class SequenceOntology {
 	private static OBOOntology sequenceOntology = null;
 	
 	/**
-	 * Construct an SO ontology object and read the OBO definition file, if necessary.
+	 * Construct an SO ontology and reads the OBO definition file, if it has not been read in before.
 	 */
 	public SequenceOntology() {
 		if (sequenceOntology == null) {
@@ -141,13 +141,10 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * 	 * Creates a new URI from the Sequence Ontology namespace with the given ID. For example, the function call
-	 * <code>type("SO:0000001")</code> will return the URI <a>http://identifiers.org/so/SO:0000001</a>
-	 * 
 	 * Returns the extracted ID of the given term's URI. 
 	 * 
 	 * @param termURI the identity URI of a term 
-	 * @return the extracted ID of the given term's URI.
+	 * @return the extracted ID of the given term's URI
 	 */
 	public final String getId(URI termURI) {
 		String termURIstr = termURI.toString().trim();
@@ -188,7 +185,6 @@ public class SequenceOntology {
 		return IdList.get(0);
 	}
 	
-	
 	/**
 	 * Returns the name field of the stanza that matches the ID for the given term URI.
 	 * 
@@ -224,7 +220,7 @@ public class SequenceOntology {
 	 * 
 	 * @param stanzaId the ID of a stanza
 	 * @return the name field of the stanza that matches the ID referred by the given stanzaURI,
-				or {@code null} if this no match is found.
+	 * or {@code null} if this no match was found
 	 */
 	public final String getName(String stanzaId) {
 		OBOStanza oboStanza = sequenceOntology.getStanza(stanzaId);
@@ -240,19 +236,21 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns the URI, i.e. the Sequence Ontology (SO) namespace, i.e. "http://identifiers.org/so/", followed by the ID of an SO term, 
-	 * of the term whose name matches the given name. If multiple matches are found, only the first matching
+	 * Returns the URI that is composed of the Sequence Ontology (SO) namespace, i.e. "http://identifiers.org/so/", followed by the ID of an SO term, 
+	 * of the stanza whose name matches the given name. If multiple matches are found, only the first matching
 	 * one is returned. 
 	 * 
 	 * @param stanzaName the name of a term
-	 * @return the URI of the given SO name.
+	 * @return the URI of the given SO name
 	 */
 	public final URI getURIbyName(String stanzaName) {
 		return getURIbyId(getId(stanzaName));
 	}
 	
 	/** 
-	 * Creates a URI from the Sequence Ontology namespace，i.e. "http://identifiers.org/so/"， with the given stanza ID.
+	 * Creates a URI by appending the given stanza ID to the end of the
+	 * Sequence Ontology (SO) namespace，i.e. "http://identifiers.org/so/".
+	 * 
 	 * @param stanzaId the ID of a stanza
 	 * @return the created URI
 	 */
@@ -271,10 +269,11 @@ public class SequenceOntology {
 	}
 
 	/**
-	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
+	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2. 
+	 *  
 	 * @param Id1 ID of the first stanza
 	 * @param Id2 ID of the second stanza
-	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
+	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, or {@code false} otherwise
 	 */
 	public boolean isDescendantOf(String Id1, String Id2) {
 		OBOStanza stanza1 = sequenceOntology.getStanza(Id1);
@@ -299,11 +298,12 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns {@code true} if the term with childURI is a descendant of the term with parentURI. This method first
-	 * extracts IDs for the child and parent terms, and then pass them to {@link #isDescendantOf(String, String)}.  
-	 * @param childURI the URI of the child term
-	 * @param parentURI the URI of the parent term
-	 * @return {@code true} if the term with childURI is a descendant of the term with parentURI, {@code false} otherwise.
+	 * Returns {@code true} if the stanza with childURI is a descendant of the stanza with parentURI. This method first
+	 * extracts IDs for the child and parent, and then passes them to {@link #isDescendantOf(String, String)}.
+	 *   
+	 * @param childURI the URI of the child stanza
+	 * @param parentURI the URI of the parent stanza
+	 * @return {@code true} if the stanza with childURI is a descendant of the stanza with parentURI, or {@code false} otherwise
 	 */
 	public final boolean isDescendantOf(URI childURI, URI parentURI) {
 		String childId = getId(childURI);
@@ -313,9 +313,10 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns a set of child ids that are descendants of a given parent id. 
-	 * @param parentId the id of the parent term
-	 * @return a set of child ids that are descendants of a given parent id. 
+	 * Returns the set of child IDs that are descendants of a given parent ID. 
+	 * 
+	 * @param parentId the ID of the parent stanza
+	 * @return the set of child IDs that are descendants of a given parent ID
 	 */
 	public Set<String> getDescendantsOf(String parentId) {
 		OBOStanza stanza1 = sequenceOntology.getStanza(parentId);
@@ -331,9 +332,10 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns a set of child ids that are descendants of a given parent URI. 
-	 * @param parentURI the URI of the parent term
-	 * @return a set of child ids that are descendants of a given parent URI. 
+	 * Returns the set of child IDs that are descendants of a given parent URI. 
+	 * 
+	 * @param parentURI the URI of the parent stanza
+	 * @return the set of child IDs that are descendants of a given parent URI 
 	 */
 	public final Set<String> getDescendantsOf(URI parentURI) {
 		String parentId = getId(parentURI);
@@ -342,9 +344,10 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns a set of child URIs that are descendants of a given parent id. 
-	 * @param parentId the id of the parent term
-	 * @return a set of child URIs that are descendants of a given parent id. 
+	 * Returns the set of child URIs that are descendants of a given parent ID.
+	 *  
+	 * @param parentId the ID of the parent stanza
+	 * @return the set of child URIs that are descendants of a given parent ID. 
 	 */
 	public final Set<URI> getDescendantURIsOf(String parentId) {
 		Set<String> descendents = getDescendantsOf(parentId);
@@ -356,9 +359,10 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns a set of child URIs that are descendants of a given parent URI. 
-	 * @param parentURI the URI of the parent term
-	 * @return a set of child URIs that are descendants of a given parent URI. 
+	 * Returns the set of child URIs that are descendants of a given parent URI. 
+	 * 
+	 * @param parentURI the URI of the parent stanza
+	 * @return the set of child URIs that are descendants of a given parent URI 
 	 */
 	public final Set<URI> getDescendantURIsOf(URI parentURI) {
 		Set<String> descendents = getDescendantsOf(parentURI);
