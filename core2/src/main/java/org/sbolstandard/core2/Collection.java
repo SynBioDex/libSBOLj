@@ -174,7 +174,7 @@ public class Collection extends TopLevel{
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Collection(Collection)}.
 	 */
 	@Override
-	protected Collection deepCopy() throws SBOLValidationException {
+	Collection deepCopy() throws SBOLValidationException {
 		return new Collection(this);
 	}
 
@@ -212,7 +212,7 @@ public class Collection extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+	void checkDescendantsURIcompliance() throws SBOLValidationException {
 		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 

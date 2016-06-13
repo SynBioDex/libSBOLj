@@ -126,7 +126,7 @@ class FASTA {
 	 * @return
 	 * @throws SBOLValidationException if an SBOL validation rule was violated in {@link SBOLDocument#createSequence(String, String, String, String, URI)}.
 	 */
-	static Sequence createSequence(SBOLDocument doc,String URIprefix,String displayId,String version,
+	private static Sequence createSequence(SBOLDocument doc,String URIprefix,String displayId,String version,
 			String elements,URI encoding) throws SBOLValidationException {
 		try {
 			Sequence sequence = doc.createSequence(URIprefix,displayId,version,elements,encoding);

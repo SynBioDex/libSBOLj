@@ -68,7 +68,7 @@ public enum AccessType {
 	 * Returns the access type.
 	 * @return access type.
 	 */
-	String getAccessType() {
+	private String getAccessType() {
 		return accessType;
 	}
 

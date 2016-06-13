@@ -72,7 +72,7 @@ public class Cut extends Location{
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Cut(Cut)}.
 	 */
 	@Override
-	protected Cut deepCopy() throws SBOLValidationException {
+	Cut deepCopy() throws SBOLValidationException {
 		return new Cut(this);
 	}
 

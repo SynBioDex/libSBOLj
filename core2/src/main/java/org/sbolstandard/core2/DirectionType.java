@@ -38,7 +38,7 @@ public enum DirectionType {
 	 * 
 	 * @return direction type.
 	 */
-	String getDirectionType() {
+	private String getDirectionType() {
 		return directionType;
 	}
 
@@ -98,9 +98,9 @@ public enum DirectionType {
 		}
 	}
 
-	static final URI	in		= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "in");
-	static final URI	out		= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "out");
-	static final URI	inout	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "inout");
-	static final URI	none	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "none");
+	private static final URI	in		= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "in");
+	private static final URI	out		= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "out");
+	private static final URI	inout	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "inout");
+	private static final URI	none	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "none");
 
 }

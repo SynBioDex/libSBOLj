@@ -261,7 +261,7 @@ public class MapsTo extends Identified{
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #MapsTo(MapsTo)}.
 	 */
 	@Override
-	protected MapsTo deepCopy() throws SBOLValidationException {
+	MapsTo deepCopy() throws SBOLValidationException {
 		return new MapsTo(this);
 	}
 
@@ -292,7 +292,7 @@ public class MapsTo extends Identified{
 	 * Returns the parent ModuleDefinition instance.
 	 * @return the parent ModuleDefinition instance
 	 */
-	ModuleDefinition getModuleDefinition() {
+	private ModuleDefinition getModuleDefinition() {
 		return moduleDefinition;
 	}
 
@@ -304,7 +304,7 @@ public class MapsTo extends Identified{
 	}
 
 
-	Module getModule() {
+	private Module getModule() {
 		return module;
 	}
 
@@ -312,7 +312,7 @@ public class MapsTo extends Identified{
 		this.module = module;
 	}
 
-	ComponentDefinition getComponentDefinition() {
+	private ComponentDefinition getComponentDefinition() {
 		return componentDefinition;
 	}
 
@@ -320,7 +320,7 @@ public class MapsTo extends Identified{
 		this.componentDefinition = componentDefinition;
 	}
 
-	ComponentInstance getComponentInstance() {
+	private ComponentInstance getComponentInstance() {
 		return componentInstance;
 	}
 

@@ -28,15 +28,15 @@ import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 
 public abstract class Identified {
 
-	protected URI identity;
-	protected URI persistentIdentity;
-	protected String version;
-	protected List<Annotation> annotations;
-	protected URI wasDerivedFrom;
-	protected String displayId;
-	protected SBOLDocument sbolDocument = null;
-	protected String name;
-	protected String description;
+	URI identity;
+	URI persistentIdentity;
+	String version;
+	List<Annotation> annotations;
+	URI wasDerivedFrom;
+	String displayId;
+	SBOLDocument sbolDocument = null;
+	String name;
+	String description;
 
 	/**
 	 * @param identity
@@ -61,7 +61,7 @@ public abstract class Identified {
 	 * <li>{@link #setWasDerivedFrom(URI)}.</li>
 	 * </ul>
 	 */
-	protected Identified(Identified identified) throws SBOLValidationException {
+	Identified(Identified identified) throws SBOLValidationException {
 		this.setIdentity(identified.getIdentity());
 		this.annotations = new ArrayList<>();
 		if (identified.hasAnnotations()) {
@@ -152,7 +152,7 @@ public abstract class Identified {
 	/**
 	 * Set the persistent identity to {@code null}.
 	 */
-	void unsetPersistentIdentity() {
+	private void unsetPersistentIdentity() {
 		persistentIdentity = null;
 	}
 
@@ -232,7 +232,7 @@ public abstract class Identified {
 	/**
 	 * Set optional the display ID to {@code null}.
 	 */
-	void unsetDisplayId() {
+	private void unsetDisplayId() {
 		displayId = null;
 	}
 
@@ -359,7 +359,7 @@ public abstract class Identified {
 	 * @return the created annotation
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addAnnotation(Annotation)}.
 	 */
-	Annotation createAnnotation(NamedProperty<QName> namedProperty) throws SBOLValidationException {
+	private Annotation createAnnotation(NamedProperty<QName> namedProperty) throws SBOLValidationException {
 		Annotation annotation = new Annotation(namedProperty);
 		addAnnotation(annotation);
 		return annotation;
@@ -502,11 +502,11 @@ public abstract class Identified {
 	 * Sets the associated SBOLDocument instance to the given one. 
 	 * @param sbolDocument
 	 */
-	protected void setSBOLDocument(SBOLDocument sbolDocument) {
+	void setSBOLDocument(SBOLDocument sbolDocument) {
 		this.sbolDocument = sbolDocument;
 	}
 
-	protected SBOLDocument getSBOLDocument() {
+	private SBOLDocument getSBOLDocument() {
 		return sbolDocument;
 	}
 
@@ -515,7 +515,7 @@ public abstract class Identified {
 	 * @return An identical copy of the specified object.
 	 * @throws SBOLValidationException if an SBOL validation rule was violated.
 	 */
-	protected abstract Identified deepCopy() throws SBOLValidationException;
+	abstract Identified deepCopy() throws SBOLValidationException;
 
 
 	@Override
@@ -597,7 +597,7 @@ public abstract class Identified {
 	 * @throws SBOLValidationException if the following SBOL validation rule is violated: 10202.
 	 */
 	@SafeVarargs
-	protected final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {
+	final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {
 		if (isChildURIformCompliant(this.getIdentity(), child.getIdentity())) {
 			URI persistentId = URI.create(extractPersistentId(child.getIdentity()));
 			if(keyExistsInAnyMap(persistentId, maps)) {
@@ -628,7 +628,7 @@ public abstract class Identified {
 
 	}
 
-	protected final <I extends Identified> boolean removeChildSafely(Identified identified, Map<URI, I> siblingsMap) {
+	final <I extends Identified> boolean removeChildSafely(Identified identified, Map<URI, I> siblingsMap) {
 		Set<Identified> objectsToRemove = new HashSet<>();
 		objectsToRemove.add(identified);
 		return siblingsMap.values().removeAll(objectsToRemove);

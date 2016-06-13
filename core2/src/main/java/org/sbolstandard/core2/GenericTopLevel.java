@@ -106,7 +106,7 @@ public class GenericTopLevel extends TopLevel{
 	 * {@link #GenericTopLevel(GenericTopLevel)}.
 	 */
 	@Override
-	protected GenericTopLevel deepCopy() throws SBOLValidationException {
+	GenericTopLevel deepCopy() throws SBOLValidationException {
 		return new GenericTopLevel(this);
 	}
 
@@ -166,7 +166,7 @@ public class GenericTopLevel extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
+	void checkDescendantsURIcompliance() throws SBOLValidationException {
 		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 

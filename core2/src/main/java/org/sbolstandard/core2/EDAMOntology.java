@@ -280,7 +280,7 @@ public class EDAMOntology {
 	 * @param localName the given local name
 	 * @return the created URI
 	 */
-	static final URI type(String localName) {
+	private static final URI type(String localName) {
 		return URI.create(URI_PREFIX+localName);
 	}
 

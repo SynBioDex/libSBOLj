@@ -46,7 +46,7 @@ public class Interaction extends Identified {
 	 * @param interaction
 	 * @throws SBOLValidationException
 	 */
-	Interaction(Interaction interaction) throws SBOLValidationException {
+	private Interaction(Interaction interaction) throws SBOLValidationException {
 		super(interaction);
 		this.types = new HashSet<>();
 		this.participations = new HashMap<>();
@@ -126,7 +126,7 @@ public class Interaction extends Identified {
 	 * Removes all entries this interation's list of types. 
 	 * The list will be empty after this call returns.
 	 */
-	void clearTypes() {
+	private void clearTypes() {
 		types.clear();
 	}
 
@@ -152,7 +152,7 @@ public class Interaction extends Identified {
 	 * <li>an SBOL validation rule violation occurred in {@link #addParticipation(Participation)}.</li>
 	 * </ul>
 	 */
-	Participation createParticipation(URI identity, URI participant, Set<URI> roles) throws SBOLValidationException {
+	private Participation createParticipation(URI identity, URI participant, Set<URI> roles) throws SBOLValidationException {
 		Participation participation = new Participation(identity, participant, roles);
 		addParticipation(participation);
 		return participation;
@@ -297,7 +297,7 @@ public class Interaction extends Identified {
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
 	 * </ul>
 	 */
-	void addParticipation(Participation participation) throws SBOLValidationException {
+	private void addParticipation(Participation participation) throws SBOLValidationException {
 		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participation.getParticipantURI())==null) {
 			throw new SBOLValidationException("sbol-12003", participation);
 		}
@@ -422,7 +422,7 @@ public class Interaction extends Identified {
 	}
 
 	@Override
-	protected Interaction deepCopy() throws SBOLValidationException {
+	Interaction deepCopy() throws SBOLValidationException {
 		return new Interaction(this);
 	}
 
@@ -469,7 +469,7 @@ public class Interaction extends Identified {
 	 *
 	 * @return this interaction's parent ModuleDefinition instance
 	 */
-	ModuleDefinition getModuleDefinition() {
+	private ModuleDefinition getModuleDefinition() {
 		return moduleDefinition;
 	}
 

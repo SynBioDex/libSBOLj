@@ -15,7 +15,7 @@ import java.net.URI;
 
 public abstract class Location extends Identified implements Comparable<Location> {
 
-	protected OrientationType orientation;
+	OrientationType orientation;
 
 	/**
 	 * @param identity
@@ -30,7 +30,7 @@ public abstract class Location extends Identified implements Comparable<Location
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
 	 * {@link Identified#Identified(Identified)}.
 	 */
-	protected Location(Location location) throws SBOLValidationException {
+	Location(Location location) throws SBOLValidationException {
 		super(location);
 		this.setOrientation(location.getOrientation());
 	}
@@ -48,7 +48,7 @@ public abstract class Location extends Identified implements Comparable<Location
 	 * 
 	 */
 	@Override
-	protected abstract Location deepCopy() throws SBOLValidationException;
+	abstract Location deepCopy() throws SBOLValidationException;
 
 	/**
 	 * Checks if the orientation property is set.

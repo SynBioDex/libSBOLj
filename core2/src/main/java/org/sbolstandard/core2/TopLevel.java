@@ -58,7 +58,7 @@ public abstract class TopLevel extends Identified {
 	 * @see org.sbolstandard.core2.Identified#deepCopy()
 	 */
 	@Override
-	protected abstract Identified deepCopy() throws SBOLValidationException;
+	abstract Identified deepCopy() throws SBOLValidationException;
 	
 	/**
 	 * Make a copy of a top-level object whose URI and its descendants' URIs (children, grandchildren, etc) are all compliant. 
@@ -105,6 +105,6 @@ public abstract class TopLevel extends Identified {
 	 * Check if this top-level object's and all of its descendants' URIs are all compliant. 
 	 * @throws SBOLValidationException 
 	 */
-	protected abstract void checkDescendantsURIcompliance() throws SBOLValidationException;
+	abstract void checkDescendantsURIcompliance() throws SBOLValidationException;
 
 }

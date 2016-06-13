@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class Component extends ComponentInstance{
 
-	protected HashMap<URI, MapsTo> mapsTos;
+	private HashMap<URI, MapsTo> mapsTos;
 	private Set<URI> roles;
 	private RoleIntegrationType roleIntegration;
 	/**
@@ -51,7 +51,7 @@ public class Component extends ComponentInstance{
 	 * <li>{@link #setMapsTos(Set)}.</li>
 	 * </ul>
 	 */
-	protected Component(Component component) throws SBOLValidationException {
+	private Component(Component component) throws SBOLValidationException {
 		super(component);
 		this.roles = new HashSet<>();
 		this.mapsTos = new HashMap<>();
@@ -71,7 +71,7 @@ public class Component extends ComponentInstance{
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Component(Component)}.
 	 */
 	@Override
-	protected Component deepCopy() throws SBOLValidationException {
+	Component deepCopy() throws SBOLValidationException {
 		return new Component(this);
 	}
 
@@ -215,7 +215,7 @@ public class Component extends ComponentInstance{
 	 * <li>an SBOL validation exception occurred in {@link #addMapsTo(MapsTo)};</li>
 	 * </ul>
 	 */
-	MapsTo createMapsTo(URI identity, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
+	private MapsTo createMapsTo(URI identity, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
 		addMapsTo(mapping);
 		return mapping;
@@ -303,7 +303,7 @@ public class Component extends ComponentInstance{
 	 * <li>an SBOL validation exception occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}.</li>
 	 * </ul>
 	 */
-	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
+	private void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		mapsTo.setSBOLDocument(this.sbolDocument);
 		mapsTo.setComponentDefinition(componentDefinition);
 		mapsTo.setComponentInstance(this);

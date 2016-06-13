@@ -55,7 +55,7 @@ public class GenericLocation extends Location{
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #GenericLocation(GenericLocation)}.
 	 */
 	@Override
-	protected GenericLocation deepCopy() throws SBOLValidationException {
+	GenericLocation deepCopy() throws SBOLValidationException {
 		return new GenericLocation(this);
 	}
 

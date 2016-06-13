@@ -376,7 +376,7 @@ public class Annotation {
 	/**
 	 * Sets the value of this Annotation instance to the specified argument.
 	 */
-	void setValue(NamedProperty<QName> value) {
+	private void setValue(NamedProperty<QName> value) {
 		this.value = value;
 	}
 

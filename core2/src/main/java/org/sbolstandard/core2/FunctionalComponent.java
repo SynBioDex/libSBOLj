@@ -20,7 +20,7 @@ import java.util.Set;
 public class FunctionalComponent extends ComponentInstance {
 
 	private DirectionType direction;
-	protected HashMap<URI, MapsTo> mapsTos;
+	private HashMap<URI, MapsTo> mapsTos;
 	private ModuleDefinition moduleDefinition = null;
 
 	/**
@@ -141,7 +141,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link FunctionalComponent#FunctionalComponent(FunctionalComponent)}.
 	 */
 	@Override
-	protected FunctionalComponent deepCopy() throws SBOLValidationException {
+	FunctionalComponent deepCopy() throws SBOLValidationException {
 		return new FunctionalComponent(this);
 	}
 
@@ -190,7 +190,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * <li>an SBOL validation rule violation occurred in {@link #addMapsTo(MapsTo)}</li>
 	 * </ul>
 	 */
-	MapsTo createMapsTo(URI identity, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
+	private MapsTo createMapsTo(URI identity, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
 		addMapsTo(mapping);
 		return mapping;
@@ -273,7 +273,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 * <li>an SBOL validation rule exception occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)} </li>
 	 * </ul>
 	 */
-	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
+	private void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
 		mapsTo.setSBOLDocument(this.sbolDocument);
 		mapsTo.setModuleDefinition(moduleDefinition);
 		mapsTo.setComponentInstance(this);
@@ -371,7 +371,7 @@ public class FunctionalComponent extends ComponentInstance {
 		}
 	}
 
-	ModuleDefinition getModuleDefinition() {
+	private ModuleDefinition getModuleDefinition() {
 		return moduleDefinition;
 	}
 

@@ -15,7 +15,7 @@ import java.net.URI;
 public abstract class ComponentInstance extends Identified {
 
 	private AccessType access;
-	protected URI definition;
+	URI definition;
 	/**
 	 * @param identity
 	 * @param access
@@ -42,7 +42,7 @@ public abstract class ComponentInstance extends Identified {
 	 * <li>an SBOL validation rule violation occurred in {@link #setDefinition(URI)}.</li>
 	 * </ul>
 	 */
-	protected ComponentInstance(ComponentInstance component) throws SBOLValidationException {
+	ComponentInstance(ComponentInstance component) throws SBOLValidationException {
 		super(component);
 		setAccess(component.getAccess());
 		setDefinition(component.getDefinitionURI());
@@ -110,7 +110,7 @@ public abstract class ComponentInstance extends Identified {
 	}
 
 	@Override
-	protected abstract ComponentInstance deepCopy() throws SBOLValidationException;
+	abstract ComponentInstance deepCopy() throws SBOLValidationException;
 	
 	@Override
 	public int hashCode() {
