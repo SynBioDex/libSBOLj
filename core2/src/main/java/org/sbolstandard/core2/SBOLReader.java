@@ -1628,19 +1628,11 @@ public class SBOLReader
 			{
 				if (strand.equals("+"))
 				{
-					try {
-						location.setOrientation(OrientationType.convertToOrientationType(OrientationType.inline));
-					} catch (SBOLValidationException e) {
-						throw new SBOLValidationException("sbol-11002",location);
-					}
+					location.setOrientation(OrientationType.INLINE);
 				}
 				else if (strand.equals("-"))
 				{
-					try {
-						location.setOrientation(OrientationType.convertToOrientationType(OrientationType.reverseComplement));
-					} catch (SBOLValidationException e) {
-						throw new SBOLValidationException("sbol-11002",location);
-					}
+					location.setOrientation(OrientationType.REVERSECOMPLEMENT);
 				}
 			}
 		}
