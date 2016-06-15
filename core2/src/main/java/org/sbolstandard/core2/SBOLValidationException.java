@@ -1,14 +1,14 @@
 package org.sbolstandard.core2;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,8 +27,6 @@ public class SBOLValidationException extends Exception {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private final List<Identified> objects;
-
 	private static String ruleBegin = "^\\[(\\w+)\\]\\s*$";
 	private static String ruleId = "^id:\\s(sbol-\\d+)\\s*$";
 	private static String ruleCondition = "^condition:\\s(\\w+\\s*\\w*)\\s*$";
@@ -41,8 +39,6 @@ public class SBOLValidationException extends Exception {
 	private static String ruleReference = "^\\breference\\b:\\s(.+)";
 	private static SBOLValidationRule currentRule;
 	private static Map<String, SBOLValidationRule> validationRules;
-
-	private static String exceptionMessage;
 
 	/**
 	 * Creates a new exception instance with the given message and objects causing the problem.
@@ -59,8 +55,7 @@ public class SBOLValidationException extends Exception {
 	 * @param objects
 	 */
 	SBOLValidationException(String message, URI identity) {
-		super(exceptionMessage = formatMessage(message, identity));
-		this.objects = null;
+		super(formatMessage(message, identity));
 	}
 
 	/**
@@ -70,8 +65,7 @@ public class SBOLValidationException extends Exception {
 	 * @param objects
 	 */
 	private SBOLValidationException(String message, java.util.Collection<? extends Identified> objects) {
-		super(exceptionMessage = formatMessage(message, objects));
-		this.objects = Collections.unmodifiableList(new ArrayList<>(objects));
+		super(formatMessage(message, objects));
 	}
 
 	/**
@@ -81,9 +75,12 @@ public class SBOLValidationException extends Exception {
 	 * @param cause
 	 * @param objects
 	 */
-	private SBOLValidationException(String message, Throwable cause, Identified ... objects) {
-		super(message, cause);
-		this.objects = Collections.unmodifiableList(Arrays.asList(objects));
+	SBOLValidationException(String message, Throwable cause, Identified ... objects) {
+		this(message, cause, Arrays.asList(objects));
+	}
+	
+	private SBOLValidationException(String message, Throwable cause, java.util.Collection<? extends Identified> objects) {
+		super(formatMessage(message, objects),cause);
 	}
 
 	/**
@@ -93,36 +90,6 @@ public class SBOLValidationException extends Exception {
 	 */	
 	SBOLValidationException(Throwable cause) {
 		super(cause);
-		this.objects = Collections.emptyList();
-	}
-
-//	/**
-//	 * @param message
-//	 * @param annotations
-//	 */
-//	SBOLValidationException(String message, Annotation ... annotations) {
-//		this(message, Arrays.asList(annotations));
-//	}
-//
-//	/**
-//	 * @param message
-//	 * @param annotationist
-//	 */
-//	public SBOLValidationException(String message, List<Annotation> annotations) {
-//		super(formatMessage(message, annotations));
-//		this.objects = null;//Collections.unmodifiableList(new ArrayList<>(objects));
-//	}
-
-
-	/**
-	 * Returns the list of objects relevant for the validation exception. This list may be empty if the exact object
-	 * for the validation exception is not known. In those cases, the {@link #getCause() cause} of the exception can 
-	 * provide more information.
-	 * 
-	 * @return a collection of Identified instances
-	 */
-	private java.util.Collection<Identified> getObjects() {
-		return objects;
 	}
 	
 	private static String formatMessage(String message, URI identity) {
@@ -214,49 +181,49 @@ public class SBOLValidationException extends Exception {
 	}
 	
 // TODO: Complete this method to write validation rules in XML format.
-//	private static void writeRulesToXML(String filename) {
-//		File outputFile;
-//		FileWriter outputFW;
-//		BufferedWriter outputBW = null;
-//		try
-//		{
-//			outputFile = new File(filename);
-//			//System.out.println(outputFile.getAbsolutePath());
-//			//System.out.println(filename);
-//			outputFW = new FileWriter(outputFile);
-//			outputBW = new BufferedWriter(outputFW);//for OS to keep track of what you have written
-//		}
-//		catch(IOException e){
-//					
-//		}
-//		String eol = System.getProperty("line.separator");
-//		String rule = "";
-//		rule = rule + "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + eol;
-//		rule = rule + "<rules>" + eol;
-//		try {
-//			outputBW.write(rule);		
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		for (String key : validationRules.keySet()) {
-//			rule = rule + "<id>"+ key +"</id>" + eol;
-//			rule = rule + "<category>" + validationRules.get(key).getRuleClass() +"</category>" + eol;
-//			rule = rule + "<condition>" + validationRules.get(key).getCondition() +"</condition>" + eol;
-//			rule = rule + "<description>" + validationRules.get(key).getDescription() +"</description>" + eol;
-//			rule = rule + "<reference>" + validationRules.get(key).getReference() +"</reference>" + eol;
-//			
-//		}
-//		rule = rule + "</rules>";
-//		System.out.println(rule);
-//		try {
-//			outputBW.write(rule);		
-//			outputBW.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	
-//	
-//	}
+	static void writeRulesToXML(String filename) {
+		File outputFile;
+		FileWriter outputFW;
+		BufferedWriter outputBW = null;
+		try
+		{
+			outputFile = new File(filename);
+			//System.out.println(outputFile.getAbsolutePath());
+			//System.out.println(filename);
+			outputFW = new FileWriter(outputFile);
+			outputBW = new BufferedWriter(outputFW);//for OS to keep track of what you have written
+		}
+		catch(IOException e){
+					
+		}
+		String eol = System.getProperty("line.separator");
+		String rule = "";
+		rule = rule + "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" + eol;
+		rule = rule + "<rules>" + eol;
+		try {
+			outputBW.write(rule);		
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (String key : validationRules.keySet()) {
+			rule = rule + "<id>"+ key +"</id>" + eol;
+			rule = rule + "<category>" + validationRules.get(key).getRuleClass() +"</category>" + eol;
+			rule = rule + "<condition>" + validationRules.get(key).getCondition() +"</condition>" + eol;
+			rule = rule + "<description>" + validationRules.get(key).getDescription() +"</description>" + eol;
+			rule = rule + "<reference>" + validationRules.get(key).getReference() +"</reference>" + eol;
+			
+		}
+		rule = rule + "</rules>";
+		System.out.println(rule);
+		try {
+			outputBW.write(rule);		
+			outputBW.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
+	
+	}
 
 	/**
 	 * @param br
@@ -318,8 +285,9 @@ public class SBOLValidationException extends Exception {
 		br.close();
 	}
 	
+	// TODO: Remove this method
 	String getExceptionMessage() {
-		return exceptionMessage;
+		return this.getMessage();
 	}
 	
 	/*
@@ -331,11 +299,12 @@ public class SBOLValidationException extends Exception {
 		return getMessage().split(":")[0];
 	}
 
-//	private static void printAllRules() {
-//		for (String key : validationRules.keySet()) {
-//			System.out.println(validationRules.get(key));
-//		}
-//	}
+	// TODO: unfinished
+	static void printAllRules() {
+		for (String key : validationRules.keySet()) {
+			System.out.println(validationRules.get(key));
+		}
+	}
 
 }
 

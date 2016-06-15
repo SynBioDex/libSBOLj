@@ -166,13 +166,13 @@ public class SBOLWriter
 							TopLevelDocuments(getTopLevelDocument(doc))));
 		}
 		catch (XMLStreamException e) {
-			throw new SBOLConversionException(e.getMessage());
+			throw new SBOLConversionException(e);
 		}
 		catch (FactoryConfigurationError e) {
-			throw new SBOLConversionException(e.getMessage());
+			throw new SBOLConversionException(e);
 		}
 		catch (CoreIoException e) {
-			throw new SBOLConversionException(e.getMessage());
+			throw new SBOLConversionException(e);
 		}
 	}
 
@@ -233,7 +233,7 @@ public class SBOLWriter
 								TopLevelDocuments(getTopLevelDocument(doc))));
 			}
 			catch (CoreIoException e) {
-				throw new SBOLConversionException(e.getMessage());
+				throw new SBOLConversionException(e);
 			}
 		} else if (fileType.equals(SBOLDocument.TURTLE)){
 			try {
@@ -242,7 +242,7 @@ public class SBOLWriter
 								TopLevelDocuments(getTopLevelDocument(doc))));
 			}
 			catch (CoreIoException e) {
-				throw new SBOLConversionException(e.getMessage());
+				throw new SBOLConversionException(e);
 			}
 		} else if (fileType.equals(SBOLDocument.RDFV1)){
 			try {
@@ -251,13 +251,13 @@ public class SBOLWriter
 								TopLevelDocuments(convertToV1Document(doc))));
 			}
 			catch (XMLStreamException e) {
-				throw new SBOLConversionException(e.getMessage());
+				throw new SBOLConversionException(e);
 			}
 			catch (FactoryConfigurationError e) {
-				throw new SBOLConversionException(e.getMessage());
+				throw new SBOLConversionException(e);
 			}
 			catch (CoreIoException e) {
-				throw new SBOLConversionException(e.getMessage());
+				throw new SBOLConversionException(e);
 			}
 		} else {
 			try {
@@ -266,13 +266,13 @@ public class SBOLWriter
 								TopLevelDocuments(getTopLevelDocument(doc))));
 			}
 			catch (XMLStreamException e) {
-				throw new SBOLConversionException(e.getMessage());
+				throw new SBOLConversionException(e);
 			}
 			catch (FactoryConfigurationError e) {
-				throw new SBOLConversionException(e.getMessage());
+				throw new SBOLConversionException(e);
 			}
 			catch (CoreIoException e) {
-				throw new SBOLConversionException(e.getMessage());
+				throw new SBOLConversionException(e);
 			}
 		}
 	}

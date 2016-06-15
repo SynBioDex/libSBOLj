@@ -363,7 +363,8 @@ final class URIcompliance {
 		return m.matches();
 	}
 	
-	private static boolean isValidURI(String URIstr) {
+	// TODO: this is the proper URI matcher, but it is very open, should we use it?
+	static boolean isValidURI(String URIstr) {
 		Pattern r = Pattern.compile(URI_REFERENCE_REGEX);
 		Matcher m = r.matcher(URIstr);
 		if (m.matches()) {

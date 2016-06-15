@@ -708,7 +708,7 @@ public class SBOLReader
 			root = ioReader.read();
 		}
 		catch (CoreIoException e) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 		return StringifyQName.string2qname.mapDR(root);
 	}
@@ -726,19 +726,19 @@ public class SBOLReader
 			return rdfIo.createIoReader(xmlReader).read();
 		}
 		catch (FactoryConfigurationError e) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 		catch (XMLStreamException e) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 		catch (CoreIoException e) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 		catch (ClassCastException e) {
 			if (e.getMessage().contains("IdentifiableDocument")) {
-				throw new SBOLValidationException("sbol-10201");
+				throw new SBOLValidationException("sbol-10201",e);
 			}
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 	}
 
@@ -754,7 +754,7 @@ public class SBOLReader
 			return turtleIo.createIoReader(reader).read();
 		}
 		catch (CoreIoException e) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 	}
 

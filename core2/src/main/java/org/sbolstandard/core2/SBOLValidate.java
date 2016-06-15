@@ -741,6 +741,8 @@ public class SBOLValidate {
 		return true;
 	}
 
+	// TODO: this should be checked in object construction, so removed from validator, need to verify
+	/*
 	private static void validateSequenceConstraints(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
@@ -753,6 +755,7 @@ public class SBOLValidate {
 			}
 		}
 	}
+	*/
 
 	private static void validateSequenceAnnotations(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
@@ -812,6 +815,8 @@ public class SBOLValidate {
 		return true;
 	}
 
+	// TODO: this should be checked in object construction, so removed from validator, need to verify
+	/*
 	private static void validateSequenceEncodings(SBOLDocument sbolDocument) {
 		for (Sequence sequence : sbolDocument.getSequences()) {
 			if (!checkSequenceEncoding(sequence)) {
@@ -819,6 +824,7 @@ public class SBOLValidate {
 			}
 		}
 	}
+	*/
 
 	private static void validatePersistentIdentityUniqueness(SBOLDocument sbolDocument) {
 		HashMap<URI, Identified> elements = new HashMap<>();
