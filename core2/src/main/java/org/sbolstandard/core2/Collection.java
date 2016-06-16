@@ -59,8 +59,8 @@ public class Collection extends TopLevel{
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12103.
 	 */
 	public boolean addMember(URI memberURI) throws SBOLValidationException {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getTopLevel(memberURI)==null) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getTopLevel(memberURI)==null) {
 				throw new SBOLValidationException("sbol-12103", this);
 			}
 		}
@@ -111,7 +111,7 @@ public class Collection extends TopLevel{
 	public Set<TopLevel> getMembers() {
 		Set<TopLevel> result = new HashSet<>();
 		for (URI memberURI : members) {
-			TopLevel member = sbolDocument.getTopLevel(memberURI);
+			TopLevel member = this.getDocument().getTopLevel(memberURI);
 			result.add(member);
 		}
 		return result;
@@ -219,10 +219,10 @@ public class Collection extends TopLevel{
 	@Override
 	public String toString() {
 		return "Collection ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ (members.size()>0?", members=" + members:"")  
 				+ "]";
 	}

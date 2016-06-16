@@ -32,7 +32,7 @@ public class GenericLocation extends Location{
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+		result = prime * result + ((this.getOrientation() == null) ? 0 : this.getOrientation().hashCode());
 		return result;
 	}
 
@@ -45,7 +45,7 @@ public class GenericLocation extends Location{
 		if (getClass() != obj.getClass())
 			return false;
 		GenericLocation other = (GenericLocation) obj;
-		return orientation == other.orientation;
+		return this.getOrientation() == other.getOrientation();
 	}
 
 	/* (non-Javadoc)
@@ -62,11 +62,11 @@ public class GenericLocation extends Location{
 	@Override
 	public String toString() {
 		return "GenericLocation ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
-				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
+				+ (this.isSetOrientation()?", orientation=" + this.getOrientation():"") 
 				+ "]";
 	}
 

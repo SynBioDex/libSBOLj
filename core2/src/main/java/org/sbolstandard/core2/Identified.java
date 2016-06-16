@@ -28,15 +28,15 @@ import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 
 public abstract class Identified {
 
-	URI identity;
-	URI persistentIdentity;
-	String version;
-	List<Annotation> annotations;
-	URI wasDerivedFrom;
-	String displayId;
-	SBOLDocument sbolDocument = null;
-	String name;
-	String description;
+	private URI identity;
+	private URI persistentIdentity;
+	private String version;
+	private List<Annotation> annotations;
+	private URI wasDerivedFrom;
+	private String displayId;
+	private SBOLDocument sbolDocument = null;
+	private String name;
+	private String description;
 
 	/**
 	 * @param identity
@@ -506,7 +506,7 @@ public abstract class Identified {
 		this.sbolDocument = sbolDocument;
 	}
 
-	private SBOLDocument getSBOLDocument() {
+	SBOLDocument getSBOLDocument() {
 		return sbolDocument;
 	}
 

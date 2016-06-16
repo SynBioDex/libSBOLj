@@ -300,8 +300,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10513.
 	 */
 	public boolean addSequence(Sequence sequence) throws SBOLValidationException {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getSequence(sequence.getIdentity())==null) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getSequence(sequence.getIdentity())==null) {
 				throw new SBOLValidationException("sbol-10513", sequence);
 			}
 		}
@@ -316,8 +316,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10513. 
 	 */
 	public boolean addSequence(URI sequenceURI) throws SBOLValidationException {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getSequence(sequenceURI)==null) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getSequence(sequenceURI)==null) {
 				throw new SBOLValidationException("sbol-10513",this);
 			}
 		}
@@ -338,8 +338,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @throws SBOLValidationException see {@link #addSequence(URI)} 
 	 */
 	public boolean addSequence(String displayId,String version) throws SBOLValidationException {
-		URI sequenceURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-				TopLevel.SEQUENCE, displayId, version, sbolDocument.isTypesInURIs());
+		URI sequenceURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
+				TopLevel.SEQUENCE, displayId, version, this.getSBOLDocument().isTypesInURIs());
 		return addSequence(sequenceURI);
 	}
 
@@ -371,10 +371,10 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the set of sequences referenced by this component definition
 	 */
 	public Set<Sequence> getSequences() {
-		if (sbolDocument==null) return null;
+		if (this.getSBOLDocument()==null) return null;
 		Set<Sequence> resolved = new HashSet<>();
 		for(URI su : sequences) {
-			Sequence seq = sbolDocument.getSequence(su);
+			Sequence seq = this.getSBOLDocument().getSequence(su);
 			if(seq != null) {
 				resolved.add(seq);
 			}
@@ -389,7 +389,7 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the first sequence that matches the given encoding
 	 */
 	public Sequence getSequenceByEncoding(URI encoding) {
-		if (sbolDocument==null) return null;
+		if (this.getSBOLDocument()==null) return null;
 		for (Sequence sequence : this.getSequences()) {
 			if (sequence.getEncoding().equals(encoding)) {
 				return sequence;
@@ -706,7 +706,7 @@ public class ComponentDefinition extends TopLevel {
 	//	 */
 	//	public SequenceAnnotation createSequenceAnnotation(String displayId, int start, int end,OrientationType orientation,
 	//			String componentDefinitionId) {
-	//		if (sbolDocument!=null) sbolDocument.checkReadOnly();
+	//		if (this.getSBOLDocument()!=null) this.getSBOLDocument().checkReadOnly();
 	//		SequenceAnnotation sequenceAnnotation = createSequenceAnnotation(displayId,"range",start,end,orientation);
 	//		if (this.getComponent(componentDefinitionId)==null) {
 	//			createComponent(componentDefinitionId,AccessType.PUBLIC,componentDefinitionId,"");
@@ -756,7 +756,7 @@ public class ComponentDefinition extends TopLevel {
 	 * </ul>
 	 */
 	void addSequenceAnnotation(SequenceAnnotation sequenceAnnotation) throws SBOLValidationException {
-		sequenceAnnotation.setSBOLDocument(this.sbolDocument);
+		sequenceAnnotation.setSBOLDocument(this.getSBOLDocument());
 		sequenceAnnotation.setComponentDefinition(this);
 		if (sequenceAnnotation.isSetComponent()) {
 			if (sequenceAnnotation.getComponent()==null) {
@@ -771,7 +771,7 @@ public class ComponentDefinition extends TopLevel {
 			}
 		}
 		for (Location location : sequenceAnnotation.getLocations()) {
-			location.setSBOLDocument(sbolDocument);
+			location.setSBOLDocument(this.getSBOLDocument());
 		}
 		addChildSafely(sequenceAnnotation, sequenceAnnotations, "sequenceAnnotation",
 				components, sequenceConstraints);
@@ -1050,8 +1050,8 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public Component createComponent(String displayId, AccessType access,
 			String definitionId, String version) throws SBOLValidationException {
-		URI definitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-				TopLevel.COMPONENT_DEFINITION, definitionId, version, sbolDocument.isTypesInURIs());
+		URI definitionURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
+				TopLevel.COMPONENT_DEFINITION, definitionId, version, this.getSBOLDocument().isTypesInURIs());
 		return createComponent(displayId,access,definitionURI);
 	}
 
@@ -1088,8 +1088,8 @@ public class ComponentDefinition extends TopLevel {
 	 * 10201, 10202, 10204, 10206, 10602, 10604, 10605, 10607, 10803.
 	 */
 	public Component createComponent(String displayId, AccessType access, URI definitionURI) throws SBOLValidationException {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getComponentDefinition(definitionURI)==null) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getComponentDefinition(definitionURI)==null) {
 				throw new SBOLValidationException("sbol-10604",this);
 			}
 		}
@@ -1112,9 +1112,9 @@ public class ComponentDefinition extends TopLevel {
 	 * </ul>
 	 */
 	private void addComponent(Component component) throws SBOLValidationException {
-		component.setSBOLDocument(this.sbolDocument);
+		component.setSBOLDocument(this.getSBOLDocument());
 		component.setComponentDefinition(this);
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (component.getDefinition()==null) {
 				throw new SBOLValidationException("sbol-10604",component);
 			}
@@ -1126,7 +1126,7 @@ public class ComponentDefinition extends TopLevel {
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
 		try {
-			SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited);
+			SBOLValidate.checkComponentDefinitionCycle(this.getSBOLDocument(), component.getDefinition(), visited);
 		} catch (SBOLValidationException e) {
 			throw new SBOLValidationException("sbol-10605",component);
 		}
@@ -1136,7 +1136,7 @@ public class ComponentDefinition extends TopLevel {
 			if (this.getComponent(mapsTo.getLocalURI())==null) {
 				throw new SBOLValidationException("sbol-10803", mapsTo);
 			}
-			mapsTo.setSBOLDocument(sbolDocument);
+			mapsTo.setSBOLDocument(this.getSBOLDocument());
 			mapsTo.setComponentDefinition(this);
 			mapsTo.setComponentInstance(component);
 		}
@@ -1152,9 +1152,9 @@ public class ComponentDefinition extends TopLevel {
 	 * </ul>
 	 */
 	private void addComponentNoCheck(Component component) throws SBOLValidationException {
-		component.setSBOLDocument(this.sbolDocument);
+		component.setSBOLDocument(this.getSBOLDocument());
 		component.setComponentDefinition(this);
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (component.getDefinition()==null) {
 				throw new SBOLValidationException("sbol-10604",component);
 			}
@@ -1164,7 +1164,7 @@ public class ComponentDefinition extends TopLevel {
 		}
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
-		SBOLValidate.checkComponentDefinitionCycle(sbolDocument, component.getDefinition(), visited);
+		SBOLValidate.checkComponentDefinitionCycle(this.getSBOLDocument(), component.getDefinition(), visited);
 		addChildSafely(component, components, "component",
 				sequenceAnnotations, sequenceConstraints);
 	}
@@ -1178,7 +1178,7 @@ public class ComponentDefinition extends TopLevel {
 				if (this.getComponent(mapsTo.getLocalURI())==null) {
 					throw new SBOLValidationException("sbol-10803", mapsTo);
 				}
-				mapsTo.setSBOLDocument(sbolDocument);
+				mapsTo.setSBOLDocument(this.getSBOLDocument());
 				mapsTo.setComponentDefinition(this);
 				mapsTo.setComponentInstance(component);
 			}
@@ -1214,8 +1214,8 @@ public class ComponentDefinition extends TopLevel {
 				}
 			}
 		}
-		if (sbolDocument!=null) {
-			for (ComponentDefinition cd : sbolDocument.getComponentDefinitions()) {
+		if (this.getSBOLDocument()!=null) {
+			for (ComponentDefinition cd : this.getSBOLDocument().getComponentDefinitions()) {
 				for (Component c : cd.getComponents()) {
 					for (MapsTo mt : c.getMapsTos()) {
 						if (mt.getRemoteURI().equals(component.getIdentity())) {
@@ -1370,13 +1370,13 @@ public class ComponentDefinition extends TopLevel {
 			RestrictionType restriction, String subjectId, String objectId) throws SBOLValidationException {
 		URI subjectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),
 				subjectId, this.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() &&
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() &&
 				this.getComponent(subjectURI)==null) {
 			this.createComponent(subjectId,AccessType.PUBLIC,subjectId,"");
 		}
 		URI objectURI = URIcompliance.createCompliantURI(this.getPersistentIdentity().toString(),
 				objectId, this.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() &&
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() &&
 				this.getComponent(objectURI)==null) {
 			this.createComponent(objectId,AccessType.PUBLIC,objectId,"");
 		}
@@ -1418,7 +1418,7 @@ public class ComponentDefinition extends TopLevel {
 	 * </ul>
 	 */
 	private void addSequenceConstraint(SequenceConstraint sequenceConstraint) throws SBOLValidationException {
-		sequenceConstraint.setSBOLDocument(this.sbolDocument);
+		sequenceConstraint.setSBOLDocument(this.getSBOLDocument());
 		sequenceConstraint.setComponentDefinition(this);
 		if (sequenceConstraint.getSubject()==null) {
 			throw new SBOLValidationException("sbol-11403", sequenceConstraint);
@@ -1729,14 +1729,14 @@ public class ComponentDefinition extends TopLevel {
 	@Override
 	public String toString() {
 		return "ComponentDefinition ["
-				+ "identity=" + identity 
-				+ (this.isSetPersistentIdentity()?", persistentIdentity=" + persistentIdentity:"")
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetVersion()?", version=" + version:"")
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
-				+ (annotations.size()>0?", annotations=" + annotations:"") 
-				+ (this.isSetWasDerivedFrom()?", wasDerivedFrom=" + wasDerivedFrom:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetPersistentIdentity()?", persistentIdentity=" + this.getPersistentIdentity():"")
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetVersion()?", version=" + this.getVersion():"")
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
+				+ (this.getAnnotations().size()>0?", annotations=" + this.getAnnotations():"") 
+				+ (this.isSetWasDerivedFrom()?", wasDerivedFrom=" + this.getWasDerivedFrom():"") 
 				+ ", types=" + types 
 				+ (roles.size()>0?", roles=" + roles:"")  
 				+ (this.getSequenceURIs().size()>0?", sequences=" + this.getSequenceURIs():"") 

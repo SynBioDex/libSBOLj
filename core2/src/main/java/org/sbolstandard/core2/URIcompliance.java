@@ -160,11 +160,11 @@ final class URIcompliance {
 			throw new SBOLValidationException("sbol-10216");
 		}
 		if (!identified.isSetVersion()) {
-			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString())) {
+			if (!identified.getIdentity().toString().equals(identified.getPersistentIdentity().toString())) {
 				throw new SBOLValidationException("sbol-10218");
 			}
 		} else {
-			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString()+"/"
+			if (!identified.getIdentity().toString().equals(identified.getPersistentIdentity().toString()+"/"
 					+identified.getVersion())) {
 				throw new SBOLValidationException("sbol-10218");
 			}

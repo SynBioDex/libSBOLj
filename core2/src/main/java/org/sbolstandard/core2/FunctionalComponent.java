@@ -95,9 +95,9 @@ public class FunctionalComponent extends ComponentInstance {
 	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10604.
 	 */
 	public void setDefinition(URI definition) throws SBOLValidationException {
-		if (sbolDocument != null) {
-			ComponentDefinition cd = sbolDocument.getComponentDefinition(definition);
-			if (sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null) {
+			ComponentDefinition cd = this.getSBOLDocument().getComponentDefinition(definition);
+			if (this.getSBOLDocument().isComplete()) {
 				if (cd==null) {
 					throw new SBOLValidationException("sbol-10604",this);
 				}
@@ -230,7 +230,7 @@ public class FunctionalComponent extends ComponentInstance {
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
 		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
 				localId, moduleDefinition.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() && moduleDefinition!=null &&
 				moduleDefinition.getFunctionalComponent(localURI)==null) {
 			moduleDefinition.createFunctionalComponent(localId,AccessType.PUBLIC,localId,"",DirectionType.INOUT);
 		}
@@ -274,16 +274,16 @@ public class FunctionalComponent extends ComponentInstance {
 	 * </ul>
 	 */
 	private void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
-		mapsTo.setSBOLDocument(this.sbolDocument);
+		mapsTo.setSBOLDocument(this.getSBOLDocument());
 		mapsTo.setModuleDefinition(moduleDefinition);
 		mapsTo.setComponentInstance(this);
-		if (sbolDocument != null) {
+		if (this.getSBOLDocument() != null) {
 			if (moduleDefinition.getFunctionalComponent(mapsTo.getLocalURI())==null) {
 				//throw new SBOLValidationException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
 				throw new SBOLValidationException("sbol-10804", mapsTo);
 			}
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (getDefinition().getComponent(mapsTo.getRemoteURI())==null) {
 				//throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' does not exist.");
 				throw new SBOLValidationException("sbol-10808", mapsTo);
@@ -382,13 +382,13 @@ public class FunctionalComponent extends ComponentInstance {
 	@Override
 	public String toString() {
 		return "FunctionalComponent ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ ", access=" + this.getAccess()
 				+ ", direction=" + direction 
-				+ ", definition=" + definition 
+				+ ", definition=" + this.getDefinitionURI()
 				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
 				+ "]";
 	}

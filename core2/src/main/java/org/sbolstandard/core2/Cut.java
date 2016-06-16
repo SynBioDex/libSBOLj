@@ -81,7 +81,7 @@ public class Cut extends Location{
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + at;
-		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+		result = prime * result + ((this.getOrientation() == null) ? 0 : this.getOrientation().hashCode());
 		return result;
 	}
 
@@ -96,18 +96,18 @@ public class Cut extends Location{
 		Cut other = (Cut) obj;
 		if (at != other.at)
 			return false;
-		return orientation == other.orientation;
+		return this.getOrientation() == other.getOrientation();
 	}
 
 	@Override
 	public String toString() {
 		return "Cut ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ ", at=" + at 
-				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
+				+ (this.isSetOrientation()?", orientation=" + this.getOrientation():"") 
 				+ "]";
 	}
 

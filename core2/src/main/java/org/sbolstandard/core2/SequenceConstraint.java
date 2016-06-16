@@ -348,10 +348,10 @@ public class SequenceConstraint extends Identified {
 	@Override
 	public String toString() {
 		return "SequenceConstraint ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ ", restriction=" + restriction 
 				+ ", subject=" + subject
 				+ ", object=" + object 

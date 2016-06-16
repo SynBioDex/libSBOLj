@@ -67,8 +67,8 @@ public class Module extends Identified {
 	 * @return the the module definition that this module refers to
 	 */
 	public ModuleDefinition getDefinition() {
-		if (sbolDocument==null) return null;
-		return sbolDocument.getModuleDefinition(definition);
+		if (this.getSBOLDocument()==null) return null;
+		return this.getSBOLDocument().getModuleDefinition(definition);
 	}
 
 	/**
@@ -87,21 +87,21 @@ public class Module extends Identified {
 		if (definitionURI==null) {
 			throw new SBOLValidationException("sbol-11702",this);
 		}
-		if (sbolDocument != null) {
-			if (sbolDocument.isComplete()) {
-				if (sbolDocument.getModuleDefinition(definitionURI)==null) {
+		if (this.getSBOLDocument() != null) {
+			if (this.getSBOLDocument().isComplete()) {
+				if (this.getSBOLDocument().getModuleDefinition(definitionURI)==null) {
 					throw new SBOLValidationException("sbol-11703",this);
 				}
 			}
 			if (moduleDefinition!=null) {
-				ModuleDefinition md = sbolDocument.getModuleDefinition(definitionURI);
+				ModuleDefinition md = this.getSBOLDocument().getModuleDefinition(definitionURI);
 				if (md!=null &&	moduleDefinition.getIdentity().equals(md.getIdentity())) {
 					throw new SBOLValidationException("sbol-11704", this);
 				}
 				Set<URI> visited = new HashSet<>();
 				visited.add(moduleDefinition.getIdentity());
 				try { 
-					SBOLValidate.checkModuleDefinitionCycle(sbolDocument, md, visited);
+					SBOLValidate.checkModuleDefinitionCycle(this.getSBOLDocument(), md, visited);
 				} catch (SBOLValidationException e) {
 					throw new SBOLValidationException("sbol-11705", this);
 				}
@@ -182,7 +182,7 @@ public class Module extends Identified {
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
 		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
 				localId, moduleDefinition.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() && moduleDefinition!=null &&
 				moduleDefinition.getFunctionalComponent(localURI)==null) {
 			moduleDefinition.createFunctionalComponent(localId,AccessType.PUBLIC,localId,"",DirectionType.INOUT);
 		}
@@ -226,16 +226,16 @@ public class Module extends Identified {
 	 * </ul>
 	 */
 	private void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
-		mapsTo.setSBOLDocument(this.sbolDocument);
+		mapsTo.setSBOLDocument(this.getSBOLDocument());
 		mapsTo.setModuleDefinition(moduleDefinition);
 		mapsTo.setModule(this);
-		if (sbolDocument != null) {
+		if (this.getSBOLDocument() != null) {
 			if (mapsTo.getLocal()==null) {
 				//throw new SBOLValidationException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
 				throw new SBOLValidationException("sbol-10804", mapsTo);
 			}
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (mapsTo.getRemote()==null) {
 				//throw new SBOLValidationException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
 				throw new SBOLValidationException("sbol-10809", mapsTo);
@@ -412,10 +412,10 @@ public class Module extends Identified {
 	@Override
 	public String toString() {
 		return "Module ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ ", definition=" + definition 
 				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
 				+ "]";

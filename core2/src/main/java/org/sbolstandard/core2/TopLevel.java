@@ -97,7 +97,8 @@ public abstract class TopLevel extends Identified {
 	 * @return the SBOL document that hosts this top-level
 	 */
 	public SBOLDocument getDocument() {
-		return this.sbolDocument;
+		//return this.sbolDocument;
+		return this.getSBOLDocument();	
 	}
 
 	

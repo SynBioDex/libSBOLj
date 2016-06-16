@@ -224,7 +224,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 */
 	void addLocation(Location location) throws SBOLValidationException {
 		addChildSafely(location, locations, "location");
-		location.setSBOLDocument(this.sbolDocument);
+		location.setSBOLDocument(this.getSBOLDocument());
 	}
 	
 	/**
@@ -440,7 +440,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	public void setComponent(String displayId) throws SBOLValidationException {
 		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
 				displayId, componentDefinition.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && componentDefinition!=null &&
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() && componentDefinition!=null &&
 				componentDefinition.getComponent(componentURI)==null) {
 			componentDefinition.createComponent(displayId,AccessType.PUBLIC,displayId,"");
 		}
@@ -691,10 +691,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	@Override
 	public String toString() {
 		return "SequenceAnnotation ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ (roles.size()>0?", roles=" + roles:"")  
 				+ ", locations=" + this.getLocations() 
 				+ (this.isSetComponent()?", component=" + component:"")
