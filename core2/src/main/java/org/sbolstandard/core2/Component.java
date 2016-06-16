@@ -489,7 +489,7 @@ public class Component extends ComponentInstance{
 				+ (this.isSetName()?", name=" + name:"")
 				+ (this.isSetDescription()?", description=" + description:"") 
 				+ ", access=" + this.getAccess()
-				+ ", definition=" + definition 
+				+ ", definition=" + this.getDefinition()//definition 
 				+ (roles.size()>0?", roles=" + roles:"")  
 				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
 				+ "]";

@@ -1163,6 +1163,7 @@ public class ModuleDefinition extends TopLevel {
 		}
 	}
 
+	// TODO: "flatten" is half-written method, needs to be changed to public once completed.
 	/**
 	 * Returns a flattened copy of the module definition matching the given arguments, which has all internal
 	 * hierarchy removed.   
@@ -1177,7 +1178,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <li>{@link #copy(String, String, String)}</li>
 	 * </ul>
 	 */
-	private ModuleDefinition flatten(String URIprefix,String displayId,String version) throws SBOLValidationException {
+	ModuleDefinition flatten(String URIprefix,String displayId,String version) throws SBOLValidationException {
 		return flattenRecurse().copy(URIprefix, displayId, version);
 	}
 

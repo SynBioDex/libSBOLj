@@ -285,11 +285,6 @@ public class SBOLValidationException extends Exception {
 		br.close();
 	}
 	
-	// TODO: Remove this method
-	String getExceptionMessage() {
-		return this.getMessage();
-	}
-	
 	/*
 	 * Return the validation rule number of the exception
 	 * @return the validation rule number of the exception

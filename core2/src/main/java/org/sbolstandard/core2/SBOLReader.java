@@ -827,7 +827,7 @@ public class SBOLReader
 			if (topLevel.getType().equals(Sbol2Terms.Description.Description)) {
 				if (topLevel.getPropertyValues(Sbol2Terms.Description.type).isEmpty()) {
 					if (keepGoing) {
-						errors.add(new SBOLValidationException("sbol-12302",topLevel.getIdentity()).getExceptionMessage());
+						errors.add(new SBOLValidationException("sbol-12302",topLevel.getIdentity()).getMessage());
 					} else {
 						throw new SBOLValidationException("sbol-12302",topLevel.getIdentity());
 					}
