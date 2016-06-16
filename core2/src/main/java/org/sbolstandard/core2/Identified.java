@@ -15,7 +15,6 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 
 /**
  * Represents an Identified object in the SBOL data model.
@@ -148,13 +147,14 @@ public abstract class Identified {
 	void setPersistentIdentity(URI persistentIdentity) {
 		this.persistentIdentity = persistentIdentity;
 	}
-
-	/**
-	 * Set the persistent identity to {@code null}.
-	 */
-	private void unsetPersistentIdentity() {
-		persistentIdentity = null;
-	}
+	
+	// TODO: unsetPersistentIdentity() currently not used, could be useful in future library releases.
+//	/**
+//	 * Set the persistent identity to {@code null}.
+//	 */
+//	private void unsetPersistentIdentity() {
+//		persistentIdentity = null;
+//	}
 
 	/**
 	 * Test if the version is set.
@@ -229,12 +229,13 @@ public abstract class Identified {
 		this.displayId = displayId;
 	}
 
-	/**
-	 * Set optional the display ID to {@code null}.
-	 */
-	private void unsetDisplayId() {
-		displayId = null;
-	}
+	// TODO: unsetDisplayId() currently not used, could be useful in future library releases.
+//	/**
+//	 * Set optional the display ID to {@code null}.
+//	 */
+//	private void unsetDisplayId() {
+//		displayId = null;
+//	}
 
 	/**
 	 * Returns the wasDerivedFrom property of this instance.
@@ -352,18 +353,19 @@ public abstract class Identified {
 		return annotation;
 	}
 
-	/**
-	 * Calls the Annotation constructor {@link Annotation#Annotation(NamedProperty)} to create a new annoation using the
-	 * give arguments, and then adds to the list of annotations.
-	 * 
-	 * @return the created annotation
-	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addAnnotation(Annotation)}.
-	 */
-	private Annotation createAnnotation(NamedProperty<QName> namedProperty) throws SBOLValidationException {
-		Annotation annotation = new Annotation(namedProperty);
-		addAnnotation(annotation);
-		return annotation;
-	}
+	// TODO: createAnnotation(NamedProperty) currently not used, could be useful in future library releases.
+//	/**
+//	 * Calls the Annotation constructor {@link Annotation#Annotation(NamedProperty)} to create a new annotation using the
+//	 * give arguments, and then adds to the list of annotations.
+//	 * 
+//	 * @return the created annotation
+//	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addAnnotation(Annotation)}.
+//	 */
+//	private Annotation createAnnotation(NamedProperty<QName> namedProperty) throws SBOLValidationException {
+//		Annotation annotation = new Annotation(namedProperty);
+//		addAnnotation(annotation);
+//		return annotation;
+//	}
 
 	/**
 	 * Creates an annotation with nested annotations using the given arguments, and then adds to this instance's list of annotations.

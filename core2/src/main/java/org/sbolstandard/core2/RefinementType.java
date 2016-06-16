@@ -41,14 +41,6 @@ public enum RefinementType {
 		this.refinementType = refinementType;
 	}
 
-	/**
-	 * Returns the refinement type.
-	 * @return refinement type.
-	 */
-	private String getRefinementType() {
-		return refinementType;
-	}
-
 	@Override
 	public String toString() {
 		return refinementType;

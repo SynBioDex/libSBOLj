@@ -944,7 +944,7 @@ public class ComponentDefinition extends TopLevel {
 		return sortedSAs;
 	}
 
-	class SADisplayIdComparator implements Comparator {
+	class SADisplayIdComparator implements Comparator<Object> {
 
 	    public int compare(Object obj1, Object obj2) {
 	        SequenceAnnotation myObj1 = (SequenceAnnotation)obj1;

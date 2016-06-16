@@ -465,15 +465,6 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Returns this interaction's parent ModuleDefinition instance.
-	 *
-	 * @return this interaction's parent ModuleDefinition instance
-	 */
-	private ModuleDefinition getModuleDefinition() {
-		return moduleDefinition;
-	}
-
-	/**
 	 * Sets the given module definition to be the parent of this interaction. 
 	 * 
 	 * @param moduleDefinition the parent module definition

@@ -201,15 +201,6 @@ public class Participation extends Identified {
 	}
 
 	/**
-	 * Returns the parent module definition. 
-	 * 
-	 * @return the parent module definition 
-	 */
-	private ModuleDefinition getModuleDefinition() {
-		return moduleDefinition;
-	}
-
-	/**
 	 * Sets the module definition that hosts this participation's parent interaction.
 	 * 
 	 * @param moduleDefinition the module definition that hosts this participation's parent interaction

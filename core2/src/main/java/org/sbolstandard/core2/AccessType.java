@@ -64,14 +64,6 @@ public enum AccessType {
 		}
 	}
 
-	/**
-	 * Returns the access type.
-	 * @return access type.
-	 */
-	private String getAccessType() {
-		return accessType;
-	}
-
 	@Override
 	public String toString() {
 		return accessType;

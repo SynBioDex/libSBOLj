@@ -26,14 +26,6 @@ public enum OrientationType {
 		this.orientationType = orientationType;
 	}
 
-	/**
-	 * Returns the orientation type.
-	 * @return orientation type.
-	 */
-	private String getOrientationType() {
-		return orientationType;
-	}
-
 	@Override
 	public String toString() {
 		return orientationType;

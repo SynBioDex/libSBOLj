@@ -33,15 +33,6 @@ public enum DirectionType {
 		this.directionType = directionType;
 	}
 
-	/**
-	 * Returns the direction type.
-	 * 
-	 * @return direction type.
-	 */
-	private String getDirectionType() {
-		return directionType;
-	}
-
 	@Override
 	public String toString() {
 		return directionType;

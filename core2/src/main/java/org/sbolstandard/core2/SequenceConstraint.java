@@ -328,15 +328,6 @@ public class SequenceConstraint extends Identified {
 	}
 
 	/**
-	 * Returns the parent component definition for this sequence constraint. 
-	 * 
-	 * @return the componentDefinition
-	 */
-	private ComponentDefinition getComponentDefinition() {
-		return componentDefinition;
-	}
-
-	/**
 	 * Sets this sequence constraint's parent component definition to the given one. 
 	 * 
 	 * @param componentDefinition the component definition to set to

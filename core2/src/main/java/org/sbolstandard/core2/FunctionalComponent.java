@@ -371,10 +371,6 @@ public class FunctionalComponent extends ComponentInstance {
 		}
 	}
 
-	private ModuleDefinition getModuleDefinition() {
-		return moduleDefinition;
-	}
-
 	void setModuleDefinition(ModuleDefinition moduleDefinition) {
 		this.moduleDefinition = moduleDefinition;
 	}

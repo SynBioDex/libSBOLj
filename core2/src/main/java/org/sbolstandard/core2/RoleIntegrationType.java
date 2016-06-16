@@ -29,14 +29,6 @@ public enum RoleIntegrationType {
 		this.roleIntegrationType = roleIntegrationType;
 	}
 
-	/**
-	 * Returns the roleIntegration type.
-	 * @return roleIntegration type.
-	 */
-	private String getRoleIntegrationType() {
-		return roleIntegrationType;
-	}
-
 	@Override
 	public String toString() {
 		return roleIntegrationType;
