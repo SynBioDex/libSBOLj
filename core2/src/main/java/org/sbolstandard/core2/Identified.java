@@ -383,6 +383,25 @@ public abstract class Identified {
 		addAnnotation(annotation);
 		return annotation;
 	}
+	
+	private void addNamespace(Annotation annotation) {
+		if (sbolDocument==null) return;
+		QName qName = annotation.getQName();
+		QName qNameInNamespace = sbolDocument.getNamespace(URI.create(qName.getNamespaceURI()));
+		if (qNameInNamespace==null || qName.getPrefix()!=qNameInNamespace.getPrefix()) {
+			sbolDocument.addNamespace(URI.create(qName.getNamespaceURI()), qName.getPrefix());
+		}
+		if (annotation.isNestedAnnotations()) {
+			qName = annotation.getNestedQName();
+			qNameInNamespace = sbolDocument.getNamespace(URI.create(qName.getNamespaceURI()));
+			if (qNameInNamespace==null || qName.getPrefix()!=qNameInNamespace.getPrefix()) {
+				sbolDocument.addNamespace(URI.create(qName.getNamespaceURI()), qName.getPrefix());
+			}
+			for (Annotation nestedAnnotation : annotation.getAnnotations()) {
+				addNamespace(nestedAnnotation);
+			}
+		}
+	}
 
 	/**
 	 * Adds the given annotation to the list of annotations.
@@ -395,6 +414,7 @@ public abstract class Identified {
 		if (annotations.contains(annotation)) {
 			return;
 		}
+		addNamespace(annotation);
 		if (annotation.getQName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI())) {
 			if (this instanceof Sequence) {
 				throw new SBOLValidationException("sbol-10401");
