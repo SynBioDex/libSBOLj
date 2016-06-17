@@ -377,7 +377,7 @@ final class URIcompliance {
 	// (?:...) is a non-capturing group
 	//static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
 	
-	private static final String delimiter = "[/|#|:]";
+	private static final String delimiter = "[/|#|:|=]";
 			
 	private static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
