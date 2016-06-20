@@ -22,16 +22,8 @@ public enum OrientationType {
 	REVERSECOMPLEMENT("reverseComplement");
 	private final String orientationType;
 
-	OrientationType(String orientationType) {
+	private OrientationType(String orientationType) {
 		this.orientationType = orientationType;
-	}
-
-	/**
-	 * Returns the orientation type.
-	 * @return orientation type.
-	 */
-	private String getOrientationType() {
-		return orientationType;
 	}
 
 	@Override
@@ -82,6 +74,6 @@ public enum OrientationType {
 	}
 	
 
-	static final URI inline 		  = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "inline");
-	static final URI reverseComplement = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "reverseComplement");
+	private static final URI inline 		  = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "inline");
+	private static final URI reverseComplement = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "reverseComplement");
 }

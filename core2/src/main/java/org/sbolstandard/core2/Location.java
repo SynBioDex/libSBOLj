@@ -15,7 +15,7 @@ import java.net.URI;
 
 public abstract class Location extends Identified implements Comparable<Location> {
 
-	OrientationType orientation;
+	private OrientationType orientation;
 
 	/**
 	 * @param identity
@@ -108,10 +108,10 @@ public abstract class Location extends Identified implements Comparable<Location
 	@Override
 	public String toString() {
 		return "Location ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
 				+ "]";
 	}

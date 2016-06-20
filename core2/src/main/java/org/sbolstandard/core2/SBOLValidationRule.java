@@ -21,12 +21,8 @@ class SBOLValidationRule {
 		description = null;
 	}
 
-	private String getRuleClass() {
+	String getRuleClass() {
 		return ruleClass;
-	}
-
-	private void setModelClass(String modelClass) {
-		this.ruleClass = modelClass;
 	}
 
 	String getId() {
@@ -57,7 +53,7 @@ class SBOLValidationRule {
 		this.reference = ref;
 	}
 
-	private String getReference() {
+	String getReference() {
 		return reference;
 	}
 	
@@ -69,37 +65,4 @@ class SBOLValidationRule {
 			+  "description: " + this.description + "\n"
 			+  "reference: " + this.reference+ "\n";
 	}
-	
-	private boolean isComplete() {
-//		if (this.getModelClass() == null) {
-//			return false;
-//		}
-		if (this.getId() == null) {
-			return false;
-		}
-		else if (this.getCondition() == null) {
-			return false;
-		}
-		else if (this.getDescription() == null) {
-			return false;
-		}
-		else {
-			return true;
-		}
-	}
-
-	private void setField(String field, String strBuff) {
-		if (field.equals("id")) {
-			//currentRule.setId(strBuff);
-		}
-		else if (field.equals("condition")) {
-			//currentRule.setCondition(strBuff);
-		}
-		else if (field.equals("description")) {
-			//currentRule.setDescription(strBuff);
-		}
-		else if (field.equals("reference")) {
-			//currentRule.setReference(strBuff);
-		}
-	}	
 }

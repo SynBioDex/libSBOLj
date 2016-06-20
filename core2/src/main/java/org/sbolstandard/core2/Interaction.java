@@ -228,7 +228,7 @@ public class Interaction extends Identified {
 	public Participation createParticipation(String displayId, String participantId, Set<URI> roles) throws SBOLValidationException {
 		URI participantURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
 				participantId, moduleDefinition.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() && moduleDefinition!=null &&
 				moduleDefinition.getFunctionalComponent(participantURI)==null) {
 			moduleDefinition.createFunctionalComponent(participantId,AccessType.PUBLIC,participantId,"",
 					DirectionType.INOUT);
@@ -302,7 +302,7 @@ public class Interaction extends Identified {
 			throw new SBOLValidationException("sbol-12003", participation);
 		}
 		addChildSafely(participation, participations, "participation");
-		participation.setSBOLDocument(this.sbolDocument);
+		participation.setSBOLDocument(this.getSBOLDocument());
 		participation.setModuleDefinition(moduleDefinition);
 	}
 
@@ -465,16 +465,7 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Returns this interaction's parent ModuleDefinition instance.
-	 *
-	 * @return this interaction's parent ModuleDefinition instance
-	 */
-	private ModuleDefinition getModuleDefinition() {
-		return moduleDefinition;
-	}
-
-	/**
-	 * Sets the given module definition to be the parent of this interation. 
+	 * Sets the given module definition to be the parent of this interaction. 
 	 * 
 	 * @param moduleDefinition the parent module definition
 	 */
@@ -485,10 +476,10 @@ public class Interaction extends Identified {
 	@Override
 	public String toString() {
 		return "Interaction ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ ", types=" + types 
 				+ (participations.size()>0?", participations=" + participations:"") 
 				+ "]";

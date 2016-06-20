@@ -180,8 +180,8 @@ public class ModuleDefinition extends TopLevel {
 	 * </ul>
 	 */
 	public Module createModule(String displayId, String moduleDefinitionId, String version) throws SBOLValidationException {
-		URI definitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-				TopLevel.MODULE_DEFINITION, moduleDefinitionId, version, sbolDocument.isTypesInURIs());
+		URI definitionURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
+				TopLevel.MODULE_DEFINITION, moduleDefinitionId, version, this.getSBOLDocument().isTypesInURIs());
 		return createModule(displayId, definitionURI);
 	}
 
@@ -216,8 +216,8 @@ public class ModuleDefinition extends TopLevel {
 	 * 10201, 10202, 10204, 10206, 10804, 11702, 11703, 11704, 11705.
 	 */
 	public Module createModule(String displayId, URI moduleDefinitionURI) throws SBOLValidationException {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getModuleDefinition(moduleDefinitionURI) == null) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getModuleDefinition(moduleDefinitionURI) == null) {
 				throw new SBOLValidationException("sbol-11703",this);
 			}
 		}
@@ -243,9 +243,9 @@ public class ModuleDefinition extends TopLevel {
 	 * </ul>
 	 */
 	private void addModule(Module module) throws SBOLValidationException {
-		module.setSBOLDocument(this.sbolDocument);
+		module.setSBOLDocument(this.getSBOLDocument());
 		module.setModuleDefinition(this);
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (module.getDefinition() == null) {
 				throw new SBOLValidationException("sbol-11703", module);
 			}
@@ -257,7 +257,7 @@ public class ModuleDefinition extends TopLevel {
 		Set<URI> visited = new HashSet<>();
 		visited.add(this.getIdentity());
 		try { 
-			SBOLValidate.checkModuleDefinitionCycle(sbolDocument, module.getDefinition(), visited);
+			SBOLValidate.checkModuleDefinitionCycle(this.getSBOLDocument(), module.getDefinition(), visited);
 		} catch (SBOLValidationException e) {
 			throw new SBOLValidationException("sbol-11705", module);
 		}
@@ -266,7 +266,7 @@ public class ModuleDefinition extends TopLevel {
 			if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
 				throw new SBOLValidationException("sbol-10804", mapsTo);
 			}
-			mapsTo.setSBOLDocument(sbolDocument);
+			mapsTo.setSBOLDocument(this.getSBOLDocument());
 			mapsTo.setModuleDefinition(this);
 			mapsTo.setModule(module);
 		}
@@ -434,13 +434,13 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	private void addInteraction(Interaction interaction) throws SBOLValidationException {
 		addChildSafely(interaction, interactions, "interaction", functionalComponents, modules);
-		interaction.setSBOLDocument(this.sbolDocument);
+		interaction.setSBOLDocument(this.getSBOLDocument());
 		interaction.setModuleDefinition(this);
 		for (Participation participation : interaction.getParticipations()) {
 			if (this.getFunctionalComponent(participation.getParticipantURI())==null) {
 				throw new SBOLValidationException("sbol-12003",participation);
 			}
-			participation.setSBOLDocument(sbolDocument);
+			participation.setSBOLDocument(this.getSBOLDocument());
 			participation.setModuleDefinition(this);
 		}
 	}
@@ -575,8 +575,8 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
 			String definitionId, String version, DirectionType direction) throws SBOLValidationException {
-		URI definitionURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-				TopLevel.COMPONENT_DEFINITION, definitionId, version, sbolDocument.isTypesInURIs());
+		URI definitionURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
+				TopLevel.COMPONENT_DEFINITION, definitionId, version, this.getSBOLDocument().isTypesInURIs());
 		return createFunctionalComponent(displayId, access, definitionURI, direction);
 	}
 
@@ -618,8 +618,8 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	public FunctionalComponent createFunctionalComponent(String displayId, AccessType access,
 			URI definitionURI, DirectionType direction) throws SBOLValidationException {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getComponentDefinition(definitionURI) == null) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getComponentDefinition(definitionURI) == null) {
 				throw new SBOLValidationException("sbol-10604",this);
 			}
 		}
@@ -643,9 +643,9 @@ public class ModuleDefinition extends TopLevel {
 	 * </ul>
 	 */
 	private void addFunctionalComponent(FunctionalComponent functionalComponent) throws SBOLValidationException {
-		functionalComponent.setSBOLDocument(this.sbolDocument);
+		functionalComponent.setSBOLDocument(this.getSBOLDocument());
 		functionalComponent.setModuleDefinition(this);
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (functionalComponent.getDefinition()== null) {
 				throw new SBOLValidationException("sbol-10604", functionalComponent);
 			}
@@ -656,16 +656,16 @@ public class ModuleDefinition extends TopLevel {
 			if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
 				throw new SBOLValidationException("sbol-10804", mapsTo);
 			}
-			mapsTo.setSBOLDocument(sbolDocument);
+			mapsTo.setSBOLDocument(this.getSBOLDocument());
 			mapsTo.setModuleDefinition(this);
 			mapsTo.setComponentInstance(functionalComponent);
 		}
 	}
 
 	private void addFunctionalComponentNoCheck(FunctionalComponent functionalComponent) throws SBOLValidationException {
-		functionalComponent.setSBOLDocument(this.sbolDocument);
+		functionalComponent.setSBOLDocument(this.getSBOLDocument());
 		functionalComponent.setModuleDefinition(this);
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (functionalComponent.getDefinition()== null) {
 				throw new SBOLValidationException("sbol-10604", functionalComponent);
 			}
@@ -684,7 +684,7 @@ public class ModuleDefinition extends TopLevel {
 				if (this.getFunctionalComponent(mapsTo.getLocalURI())==null) {
 					throw new SBOLValidationException("sbol-10804", mapsTo);
 				}
-				mapsTo.setSBOLDocument(sbolDocument);
+				mapsTo.setSBOLDocument(this.getSBOLDocument());
 				mapsTo.setModuleDefinition(this);
 				mapsTo.setComponentInstance(functionalComponent);
 			}
@@ -724,8 +724,8 @@ public class ModuleDefinition extends TopLevel {
 				}
 			}
 		}
-		if (sbolDocument != null) {
-			for (ModuleDefinition md : sbolDocument.getModuleDefinitions()) {
+		if (this.getSBOLDocument() != null) {
+			for (ModuleDefinition md : this.getSBOLDocument().getModuleDefinitions()) {
 				for (Module m : md.getModules()) {
 					for (MapsTo mt : m.getMapsTos()) {
 						if (mt.getRemoteURI().equals(functionalComponent.getIdentity())) {
@@ -831,8 +831,8 @@ public class ModuleDefinition extends TopLevel {
 	 * </ul>
 	 */
 	public boolean addModel(Model model) throws SBOLValidationException {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getModel(model.getIdentity()) == null) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getModel(model.getIdentity()) == null) {
 				throw new SBOLValidationException("sbol-11608", model);
 			}
 		}
@@ -854,8 +854,8 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLValidationException if an SBOL validation violation occurred in {@link #addModel(URI)}.
 	 */
 	public boolean addModel(String modelId, String version) throws SBOLValidationException {
-		URI modelURI = URIcompliance.createCompliantURI(sbolDocument.getDefaultURIprefix(),
-				TopLevel.MODEL, modelId, version, sbolDocument.isTypesInURIs());
+		URI modelURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
+				TopLevel.MODEL, modelId, version, this.getSBOLDocument().isTypesInURIs());
 		return addModel(modelURI);
 	}
 
@@ -882,8 +882,8 @@ public class ModuleDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 11608.
 	 */
 	public boolean addModel(URI modelURI) throws SBOLValidationException {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getModel(modelURI) == null) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getModel(modelURI) == null) {
 				throw new SBOLValidationException("sbol-11608", this);
 			}
 		}
@@ -936,7 +936,7 @@ public class ModuleDefinition extends TopLevel {
 	public Set<Model> getModels() {
 		Set<Model> result = new HashSet<>();
 		for (URI modelURI : models) {
-			Model model = sbolDocument.getModel(modelURI);
+			Model model = this.getSBOLDocument().getModel(modelURI);
 			result.add(model);
 		}
 		return result;
@@ -1163,6 +1163,7 @@ public class ModuleDefinition extends TopLevel {
 		}
 	}
 
+	// TODO: "flatten" is half-written method, needs to be changed to public once completed.
 	/**
 	 * Returns a flattened copy of the module definition matching the given arguments, which has all internal
 	 * hierarchy removed.   
@@ -1177,7 +1178,7 @@ public class ModuleDefinition extends TopLevel {
 	 * <li>{@link #copy(String, String, String)}</li>
 	 * </ul>
 	 */
-	private ModuleDefinition flatten(String URIprefix,String displayId,String version) throws SBOLValidationException {
+	ModuleDefinition flatten(String URIprefix,String displayId,String version) throws SBOLValidationException {
 		return flattenRecurse().copy(URIprefix, displayId, version);
 	}
 
@@ -1254,10 +1255,10 @@ public class ModuleDefinition extends TopLevel {
 	@Override
 	public String toString() {
 		return "ModuleDefinition ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 				
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 				
 				+ (this.getRoles().size()>0?", roles=" + this.getRoles():"") 
 				+ (this.getFunctionalComponents().size()>0?", functionalComponents=" + this.getFunctionalComponents():"") 
 				+ (this.getModules().size()>0?", modules=" + this.getModules():"") 

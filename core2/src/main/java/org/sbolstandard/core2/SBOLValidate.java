@@ -83,24 +83,24 @@ public class SBOLValidate {
 	private static void checkComponentDefinitionCompleteness(SBOLDocument sbolDocument,ComponentDefinition componentDefinition) {
 		for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
 			if (sbolDocument.getSequence(sequenceURI)==null) {
-				errors.add(new SBOLValidationException("sbol-10513", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10513", componentDefinition).getMessage());
 			}
 		}
 		for (Component component : componentDefinition.getComponents()) {
 			if (component.getDefinition()==null) {
-				errors.add(new SBOLValidationException("sbol-10604", component).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10604", component).getMessage());
 			}
 			for (MapsTo mapsTo : component.getMapsTos()) {
 				if (mapsTo.getRemote()==null) {
-					errors.add(new SBOLValidationException("sbol-10808", mapsTo).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10808", mapsTo).getMessage());
 					continue;
 				}
 				if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
-					errors.add(new SBOLValidationException("sbol-10807", mapsTo).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10807", mapsTo).getMessage());
 				}
 				if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
 					if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
-						errors.add(new SBOLValidationException("sbol-10811").getExceptionMessage());
+						errors.add(new SBOLValidationException("sbol-10811").getMessage());
 					}
 				}
 			}
@@ -193,43 +193,43 @@ public class SBOLValidate {
 	private static void checkModuleDefinitionCompleteness(SBOLDocument sbolDocument,ModuleDefinition moduleDefinition) {
 		for (URI modelURI : moduleDefinition.getModelURIs()) {
 			if (sbolDocument.getModel(modelURI) == null) {
-				errors.add(new SBOLValidationException("sbol-11608", moduleDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11608", moduleDefinition).getMessage());
 			}
 		}
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			if (functionalComponent.getDefinition() == null) {
-				errors.add(new SBOLValidationException("sbol-10604", functionalComponent).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10604", functionalComponent).getMessage());
 			}
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
 				if (mapsTo.getRemote()==null) {
-					errors.add(new SBOLValidationException("sbol-10808", mapsTo).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10808", mapsTo).getMessage());
 					continue;
 				}
 				if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
-					errors.add(new SBOLValidationException("sbol-10807", mapsTo).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10807", mapsTo).getMessage());
 				}
 				if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
 					if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
-						errors.add(new SBOLValidationException("sbol-10811").getExceptionMessage());
+						errors.add(new SBOLValidationException("sbol-10811").getMessage());
 					}
 				}
 			}
 		}
 		for (Module module : moduleDefinition.getModules()) {
 			if (module.getDefinition() == null) {
-				errors.add(new SBOLValidationException("sbol-11703", module).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11703", module).getMessage());
 			}
 			for (MapsTo mapsTo : module.getMapsTos()) {
 				if (mapsTo.getRemote()==null) {
-					errors.add(new SBOLValidationException("sbol-10809", mapsTo).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10809", mapsTo).getMessage());
 					continue;
 				}
 				if (mapsTo.getRemote().getAccess().equals(AccessType.PRIVATE)) {
-					errors.add(new SBOLValidationException("sbol-10807", mapsTo).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10807", mapsTo).getMessage());
 				}
 				if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
 					if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
-						errors.add(new SBOLValidationException("sbol-10811").getExceptionMessage());
+						errors.add(new SBOLValidationException("sbol-10811").getMessage());
 					}
 				}
 			}
@@ -316,7 +316,7 @@ public class SBOLValidate {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
 			if (topLevel.isSetWasDerivedFrom()) {
 				if (!checkWasDerivedFromVersion(sbolDocument,topLevel,topLevel.getWasDerivedFrom())) {
-					errors.add(new SBOLValidationException("sbol-10302", topLevel).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10302", topLevel).getMessage());
 				}
 			}
 		}
@@ -418,28 +418,28 @@ public class SBOLValidate {
 	private static void checkInteractionTypeParticipationRole(Interaction interaction,URI type,URI role) {
 		if (type.equals(SystemsBiologyOntology.INHIBITION)) {
 			if (!role.equals(SystemsBiologyOntology.INHIBITOR) && !role.equals(SystemsBiologyOntology.PROMOTER)) {
-				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getMessage());
 			}
 		} else if (type.equals(SystemsBiologyOntology.STIMULATION)) {
 			if (!role.equals(SystemsBiologyOntology.STIMULATOR) && !role.equals(SystemsBiologyOntology.PROMOTER)) {
-				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getMessage());
 			}
 		} else if (type.equals(SystemsBiologyOntology.NON_COVALENT_BINDING)) {
 			if (!role.equals(SystemsBiologyOntology.REACTANT) && !role.equals(SystemsBiologyOntology.PRODUCT)) {
-				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getMessage());
 			}
 		} else if (type.equals(SystemsBiologyOntology.DEGRADATION)) {
 			if (!role.equals(SystemsBiologyOntology.REACTANT)) {
-				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getMessage());
 			}
 		} else if (type.equals(SystemsBiologyOntology.BIOCHEMICAL_REACTION)) {
 			if (!role.equals(SystemsBiologyOntology.REACTANT) && !role.equals(SystemsBiologyOntology.PRODUCT) &&
 					!role.equals(SystemsBiologyOntology.MODIFIER)) {
-				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getMessage());
 			}
 		} else if (type.equals(SystemsBiologyOntology.GENETIC_PRODUCTION)) {
 			if (!role.equals(SystemsBiologyOntology.PROMOTER) && !role.equals(SystemsBiologyOntology.PRODUCT)) {
-				errors.add(new SBOLValidationException("sbol-11907",interaction).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getMessage());
 			}
 		}
 	}
@@ -453,7 +453,7 @@ public class SBOLValidate {
 					!sequence.getEncoding().equals(Sequence.IUPAC_RNA) &&
 					!sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN) &&
 					!sequence.getEncoding().equals(Sequence.SMILES)) {
-				errors.add(new SBOLValidationException("sbol-10407", sequence).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10407", sequence).getMessage());
 
 			}
 		}
@@ -469,9 +469,9 @@ public class SBOLValidate {
 				}
 			}
 			if (numBioPAXtypes == 0) {
-				errors.add(new SBOLValidationException("sbol-10525", compDef).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10525", compDef).getMessage());
 			} else if (numBioPAXtypes > 1){
-				errors.add(new SBOLValidationException("sbol-10503", compDef).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10503", compDef).getMessage());
 			}
 			int numSO = 0;;
 			for (URI role : compDef.getRoles()) {
@@ -484,11 +484,11 @@ public class SBOLValidate {
 			}
 			if (compDef.getTypes().contains(ComponentDefinition.DNA) || compDef.getTypes().contains(ComponentDefinition.RNA)) {
 				if (numSO!=1) {
-					errors.add(new SBOLValidationException("sbol-10527", compDef).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10527", compDef).getMessage());
 				}
 			} else if (!compDef.getTypes().contains(ComponentDefinition.RNA)) {
 				if (numSO!=0) {
-					errors.add(new SBOLValidationException("sbol-10511", compDef).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10511", compDef).getMessage());
 				}
 			}
 			for (SequenceConstraint sc : compDef.getSequenceConstraints()) {
@@ -496,26 +496,26 @@ public class SBOLValidate {
 					RestrictionType.convertToRestrictionType(sc.getRestrictionURI());
 				}
 				catch (Exception e) {
-					errors.add(new SBOLValidationException("sbol-11412", sc).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-11412", sc).getMessage());
 				}
 			}
 		}
 		for (Model model : sbolDocument.getModels()) {
 			try {
 				if (!edam.isDescendantOf(model.getLanguage(), EDAMOntology.FORMAT)) {
-					errors.add(new SBOLValidationException("sbol-11507", model).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-11507", model).getMessage());
 				}
 			}
 			catch (Exception e) {
-				errors.add(new SBOLValidationException("sbol-11507", model).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11507", model).getMessage());
 			}
 			try {
 				if (!sbo.isDescendantOf(model.getFramework(), SystemsBiologyOntology.MODELING_FRAMEWORK)) {
-					errors.add(new SBOLValidationException("sbol-11511", model).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-11511", model).getMessage());
 				}
 			}
 			catch (Exception e) {
-				errors.add(new SBOLValidationException("sbol-11511", model).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-11511", model).getMessage());
 			}
 		}
 		for (ModuleDefinition modDef : sbolDocument.getModuleDefinitions()) {
@@ -533,7 +533,7 @@ public class SBOLValidate {
 					}
 				}
 				if (numSBOtype != 1) {
-					errors.add(new SBOLValidationException("sbol-11905").getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-11905").getMessage());
 				}
 				for (Participation participation : interaction.getParticipations()) {
 					int numSBOrole = 0;
@@ -549,7 +549,7 @@ public class SBOLValidate {
 						}
 					}
 					if (numSBOrole != 1) {
-						errors.add(new SBOLValidationException("sbol-12007", participation).getExceptionMessage());
+						errors.add(new SBOLValidationException("sbol-12007", participation).getMessage());
 					} else {
 						checkInteractionTypeParticipationRole(interaction,SBOtype,SBOrole);
 					}
@@ -572,7 +572,7 @@ public class SBOLValidate {
 						sequence.getEncoding().equals(Sequence.IUPAC_RNA)) {
 					if (foundNucleic) {
 						if (nucleicLength != sequence.getElements().length()) {
-							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getMessage());
 						}
 					} else {
 						foundNucleic = true;
@@ -583,12 +583,12 @@ public class SBOLValidate {
 							if (location instanceof Range) {
 								Range range = (Range)location;
 								if (range.getStart() <= 0 || range.getEnd() > nucleicLength) {
-									errors.add(new SBOLValidationException("sbol-10523", componentDefinition).getExceptionMessage());
+									errors.add(new SBOLValidationException("sbol-10523", componentDefinition).getMessage());
 								}
 							} else if (location instanceof Cut) {
 								Cut cut = (Cut)location;
 								if (cut.getAt() < 0 || cut.getAt() > nucleicLength) {
-									errors.add(new SBOLValidationException("sbol-10523", componentDefinition).getExceptionMessage());
+									errors.add(new SBOLValidationException("sbol-10523", componentDefinition).getMessage());
 								}
 							}
 						}
@@ -596,7 +596,7 @@ public class SBOLValidate {
 				} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
 					if (foundProtein) {
 						if (proteinLength != sequence.getElements().length()) {
-							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getMessage());
 						}
 					} else {
 						foundProtein = true;
@@ -605,7 +605,7 @@ public class SBOLValidate {
 				} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
 					if (foundSmiles) {
 						if (smilesLength != sequence.getElements().length()) {
-							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10518", componentDefinition).getMessage());
 						}
 					} else {
 						foundSmiles = true;
@@ -614,20 +614,20 @@ public class SBOLValidate {
 				}
 			}
 			if (componentDefinition.getTypes().contains(ComponentDefinition.DNA) && !foundNucleic) {
-				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getMessage());
 			} else if (componentDefinition.getTypes().contains(ComponentDefinition.RNA) && !foundNucleic) {
-				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getMessage());
 			} else if (componentDefinition.getTypes().contains(ComponentDefinition.PROTEIN) && !foundProtein) {
-				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getMessage());
 			} else if (componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && !foundSmiles) {
-				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getMessage());
 			}
 			if (foundNucleic) {
 				if (componentDefinition.getSequenceAnnotations().size()>0) {
 					String impliedElements = componentDefinition.getImpliedNucleicAcidSequence();
 					Sequence dnaSequence = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA);
 					if (!includesSequence(dnaSequence.getElements(),impliedElements)) {
-						errors.add(new SBOLValidationException("sbol-10520", componentDefinition).getExceptionMessage());
+						errors.add(new SBOLValidationException("sbol-10520", componentDefinition).getMessage());
 					}
 				}
 			}
@@ -637,11 +637,11 @@ public class SBOLValidate {
 			if ((!componentDefinition.getTypes().contains(ComponentDefinition.DNA) &&
 					!componentDefinition.getTypes().contains(ComponentDefinition.RNA))
 					&& foundNucleic) {
-				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getMessage());
 			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.PROTEIN) && foundProtein) {
-				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getMessage());
 			} else if (!componentDefinition.getTypes().contains(ComponentDefinition.SMALL_MOLECULE) && foundSmiles) {
-				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10517", componentDefinition).getMessage());
 			}
 			*/
 		}
@@ -741,6 +741,8 @@ public class SBOLValidate {
 		return true;
 	}
 
+	// TODO: this should be checked in object construction, so removed from validator, need to verify
+	/*
 	private static void validateSequenceConstraints(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
@@ -748,11 +750,12 @@ public class SBOLValidate {
 					checkSequenceConstraint(componentDefinition,sequenceConstraint);
 				}
 				catch (SBOLValidationException e) {
-					errors.add(e.getExceptionMessage());
+					errors.add(e.getMessage());
 				}
 			}
 		}
 	}
+	*/
 
 	private static void validateSequenceAnnotations(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
@@ -769,21 +772,21 @@ public class SBOLValidate {
 									||
 									((((Range)location2).getStart() >= ((Range)location1).getStart()) &&
 											(((Range)location2).getStart() <= ((Range)location1).getEnd()))) {
-								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getMessage());
 							}
 						} else if (location1 instanceof Range && location2 instanceof Cut) {
 							if ((((Range)location1).getEnd() > ((Cut)location2).getAt()) &&
 									(((Cut)location2).getAt() >= ((Range)location1).getStart())) {
-								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getMessage());
 							}
 						} else if (location2 instanceof Range && location1 instanceof Cut) {
 							if ((((Range)location2).getEnd() > ((Cut)location1).getAt()) &&
 									(((Cut)location1).getAt() >= ((Range)location2).getStart())) {
-								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getMessage());
 							}
 						} else if (location2 instanceof Cut && location1 instanceof Cut) {
 							if (((Cut)location2).getAt() == ((Cut)location1).getAt()) {
-								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10903", location1, location2).getMessage());
 							}
 						}
 					}
@@ -812,13 +815,16 @@ public class SBOLValidate {
 		return true;
 	}
 
+	// TODO: this should be checked in object construction, so removed from validator, need to verify
+	/*
 	private static void validateSequenceEncodings(SBOLDocument sbolDocument) {
 		for (Sequence sequence : sbolDocument.getSequences()) {
 			if (!checkSequenceEncoding(sequence)) {
-				errors.add(new SBOLValidationException("sbol-10405", sequence).getExceptionMessage());
+				errors.add(new SBOLValidationException("sbol-10405", sequence).getMessage());
 			}
 		}
 	}
+	*/
 
 	private static void validatePersistentIdentityUniqueness(SBOLDocument sbolDocument) {
 		HashMap<URI, Identified> elements = new HashMap<>();
@@ -827,7 +833,7 @@ public class SBOLValidate {
 			if (elements.get(topLevel.getPersistentIdentity())!=null) {
 				Identified identified = elements.get(topLevel.getPersistentIdentity());
 				if (!topLevel.getClass().equals(identified.getClass())) {
-					errors.add(new SBOLValidationException("sbol-10220", topLevel).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10220", topLevel).getMessage());
 				}
 			}
 			elements.put(topLevel.getPersistentIdentity(),topLevel);
@@ -837,7 +843,7 @@ public class SBOLValidate {
 					if (elements.get(c.getPersistentIdentity())!=null) {
 						Identified identified = elements.get(c.getPersistentIdentity());
 						if (!c.getClass().equals(identified.getClass())) {
-							errors.add(new SBOLValidationException("sbol-10220", c).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10220", c).getMessage());
 						}
 					}
 					elements.put(c.getPersistentIdentity(),c);
@@ -846,7 +852,7 @@ public class SBOLValidate {
 						if (elements.get(m.getPersistentIdentity())!=null) {
 							Identified identified = elements.get(m.getPersistentIdentity());
 							if (!m.getClass().equals(identified.getClass())) {
-								errors.add(new SBOLValidationException("sbol-10220", m).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10220", m).getMessage());
 							}
 						}
 						elements.put(m.getPersistentIdentity(),m);
@@ -857,7 +863,7 @@ public class SBOLValidate {
 					if (elements.get(sa.getPersistentIdentity())!=null) {
 						Identified identified = elements.get(sa.getPersistentIdentity());
 						if (!sa.getClass().equals(identified.getClass())) {
-							errors.add(new SBOLValidationException("sbol-10220", sa).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10220", sa).getMessage());
 						}
 					}
 					elements.put(sa.getPersistentIdentity(),sa);
@@ -866,7 +872,7 @@ public class SBOLValidate {
 						if (elements.get(l.getPersistentIdentity())!=null) {
 							Identified identified = elements.get(l.getPersistentIdentity());
 							if (!l.getClass().equals(identified.getClass())) {
-								errors.add(new SBOLValidationException("sbol-10220", l).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10220", l).getMessage());
 							}
 						}
 						elements.put(l.getPersistentIdentity(),l);
@@ -877,7 +883,7 @@ public class SBOLValidate {
 					if (elements.get(sc.getPersistentIdentity())!=null) {
 						Identified identified = elements.get(sc.getPersistentIdentity());
 						if (!sc.getClass().equals(identified.getClass())) {
-							errors.add(new SBOLValidationException("sbol-10220", sc).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10220", sc).getMessage());
 						}
 					}
 					elements.put(sc.getPersistentIdentity(),sc);
@@ -889,7 +895,7 @@ public class SBOLValidate {
 					if (elements.get(c.getPersistentIdentity())!=null) {
 						Identified identified = elements.get(c.getPersistentIdentity());
 						if (!c.getClass().equals(identified.getClass())) {
-							errors.add(new SBOLValidationException("sbol-10220", c).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10220", c).getMessage());
 						}
 					}
 					elements.put(c.getPersistentIdentity(),c);
@@ -898,7 +904,7 @@ public class SBOLValidate {
 						if (elements.get(m.getPersistentIdentity())!=null) {
 							Identified identified = elements.get(m.getPersistentIdentity());
 							if (!m.getClass().equals(identified.getClass())) {
-								errors.add(new SBOLValidationException("sbol-10220", m).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10220", m).getMessage());
 							}
 						}
 						elements.put(m.getPersistentIdentity(),m);
@@ -909,7 +915,7 @@ public class SBOLValidate {
 					if (elements.get(mod.getPersistentIdentity())!=null) {
 						Identified identified = elements.get(mod.getPersistentIdentity());
 						if (!mod.getClass().equals(identified.getClass())) {
-							errors.add(new SBOLValidationException("sbol-10220", mod).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10220", mod).getMessage());
 						}
 					}
 					elements.put(mod.getPersistentIdentity(),mod);
@@ -918,7 +924,7 @@ public class SBOLValidate {
 						if (elements.get(m.getPersistentIdentity())!=null) {
 							Identified identified = elements.get(m.getPersistentIdentity());
 							if (!m.getClass().equals(identified.getClass())) {
-								errors.add(new SBOLValidationException("sbol-10220", m).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10220", m).getMessage());
 							}
 						}
 						elements.put(m.getPersistentIdentity(),m);
@@ -929,7 +935,7 @@ public class SBOLValidate {
 					if (elements.get(i.getPersistentIdentity())!=null) {
 						Identified identified = elements.get(i.getPersistentIdentity());
 						if (!i.getClass().equals(identified.getClass())) {
-							errors.add(new SBOLValidationException("sbol-10220", i).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10220", i).getMessage());
 						}
 					}
 					elements.put(i.getPersistentIdentity(),i);
@@ -938,7 +944,7 @@ public class SBOLValidate {
 						if (elements.get(p.getPersistentIdentity())!=null) {
 							Identified identified = elements.get(p.getPersistentIdentity());
 							if (!p.getClass().equals(identified.getClass())) {
-								errors.add(new SBOLValidationException("sbol-10220", p).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10220", p).getMessage());
 							}
 						}
 						elements.put(p.getPersistentIdentity(),p);
@@ -954,7 +960,7 @@ public class SBOLValidate {
 			if (elements.get(topLevel.getIdentity())!=null) {
 				Identified identified = elements.get(topLevel.getIdentity());
 				if (!topLevel.equals(identified)) {
-					errors.add(new SBOLValidationException("sbol-10202", topLevel).getExceptionMessage());
+					errors.add(new SBOLValidationException("sbol-10202", topLevel).getMessage());
 				}
 			}
 			elements.put(topLevel.getIdentity(),topLevel);
@@ -963,7 +969,7 @@ public class SBOLValidate {
 					if (elements.get(c.getIdentity())!=null) {
 						Identified identified = elements.get(c.getIdentity());
 						if (!c.equals(identified)) {
-							errors.add(new SBOLValidationException("sbol-10202", c).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10202", c).getMessage());
 						}
 					}
 					elements.put(c.getIdentity(),c);
@@ -971,7 +977,7 @@ public class SBOLValidate {
 						if (elements.get(m.getIdentity())!=null) {
 							Identified identified = elements.get(m.getIdentity());
 							if (!m.equals(identified)) {
-								errors.add(new SBOLValidationException("sbol-10202", m).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10202", m).getMessage());
 							}
 						}
 						elements.put(m.getIdentity(),m);
@@ -981,7 +987,7 @@ public class SBOLValidate {
 					if (elements.get(sa.getIdentity())!=null) {
 						Identified identified = elements.get(sa.getIdentity());
 						if (!sa.equals(identified)) {
-							errors.add(new SBOLValidationException("sbol-10202", sa).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10202", sa).getMessage());
 						}
 					}
 					elements.put(sa.getIdentity(),sa);
@@ -989,7 +995,7 @@ public class SBOLValidate {
 						if (elements.get(l.getIdentity())!=null) {
 							Identified identified = elements.get(l.getIdentity());
 							if (!l.equals(identified)) {
-								errors.add(new SBOLValidationException("sbol-10202", l).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10202", l).getMessage());
 							}
 						}
 						elements.put(l.getIdentity(),l);
@@ -999,7 +1005,7 @@ public class SBOLValidate {
 					if (elements.get(sc.getIdentity())!=null) {
 						Identified identified = elements.get(sc.getIdentity());
 						if (!sc.equals(identified)) {
-							errors.add(new SBOLValidationException("sbol-10202", sc).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10202", sc).getMessage());
 						}
 					}
 					elements.put(sc.getIdentity(),sc);
@@ -1010,7 +1016,7 @@ public class SBOLValidate {
 					if (elements.get(c.getIdentity())!=null) {
 						Identified identified = elements.get(c.getIdentity());
 						if (!c.equals(identified)) {
-							errors.add(new SBOLValidationException("sbol-10202", c).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10202", c).getMessage());
 						}
 					}
 					elements.put(c.getIdentity(),c);
@@ -1018,7 +1024,7 @@ public class SBOLValidate {
 						if (elements.get(m.getIdentity())!=null) {
 							Identified identified = elements.get(m.getIdentity());
 							if (!m.equals(identified)) {
-								errors.add(new SBOLValidationException("sbol-10202", m).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10202", m).getMessage());
 							}
 						}
 						elements.put(m.getIdentity(),m);
@@ -1028,7 +1034,7 @@ public class SBOLValidate {
 					if (elements.get(mod.getIdentity())!=null) {
 						Identified identified = elements.get(mod.getIdentity());
 						if (!mod.equals(identified)) {
-							errors.add(new SBOLValidationException("sbol-10202", mod).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10202", mod).getMessage());
 						}
 					}
 					elements.put(mod.getIdentity(),mod);
@@ -1036,7 +1042,7 @@ public class SBOLValidate {
 						if (elements.get(m.getIdentity())!=null) {
 							Identified identified = elements.get(m.getIdentity());
 							if (!m.equals(identified)) {
-								errors.add(new SBOLValidationException("sbol-10202", m).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10202", m).getMessage());
 							}
 						}
 						elements.put(m.getIdentity(),m);
@@ -1046,7 +1052,7 @@ public class SBOLValidate {
 					if (elements.get(i.getIdentity())!=null) {
 						Identified identified = elements.get(i.getIdentity());
 						if (!i.equals(identified)) {
-							errors.add(new SBOLValidationException("sbol-10202", i).getExceptionMessage());
+							errors.add(new SBOLValidationException("sbol-10202", i).getMessage());
 						}
 					}
 					elements.put(i.getIdentity(),i);
@@ -1054,7 +1060,7 @@ public class SBOLValidate {
 						if (elements.get(p.getIdentity())!=null) {
 							Identified identified = elements.get(p.getIdentity());
 							if (!p.equals(identified)) {
-								errors.add(new SBOLValidationException("sbol-10202", p).getExceptionMessage());
+								errors.add(new SBOLValidationException("sbol-10202", p).getMessage());
 							}
 						}
 						elements.put(p.getIdentity(),p);

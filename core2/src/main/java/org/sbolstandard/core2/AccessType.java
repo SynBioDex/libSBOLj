@@ -20,7 +20,7 @@ public enum AccessType {
 	PRIVATE("private");
 	private final String accessType;
 
-	AccessType(String accessType) {
+	private AccessType(String accessType) {
 		this.accessType = accessType;
 	}
 
@@ -64,19 +64,11 @@ public enum AccessType {
 		}
 	}
 
-	/**
-	 * Returns the access type.
-	 * @return access type.
-	 */
-	private String getAccessType() {
-		return accessType;
-	}
-
 	@Override
 	public String toString() {
 		return accessType;
 	}
 
-	static final URI publicURI = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "public");
-	static final URI privateURI = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "private");
+	private static final URI publicURI = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "public");
+	private static final URI privateURI = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "private");
 }

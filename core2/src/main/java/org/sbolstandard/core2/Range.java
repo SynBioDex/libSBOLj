@@ -120,7 +120,7 @@ public class Range extends Location {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + end;
-		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+		result = prime * result + ((this.getOrientation() == null) ? 0 : this.getOrientation().hashCode());
 		result = prime * result + start;
 		return result;
 	}
@@ -136,7 +136,7 @@ public class Range extends Location {
 		Range other = (Range) obj;
 		if (end != other.end)
 			return false;
-		if (orientation != other.orientation)
+		if (this.getOrientation() != other.getOrientation())
 			return false;
 		return start == other.start;
 	}
@@ -144,13 +144,13 @@ public class Range extends Location {
 	@Override
 	public String toString() {
 		return "Range ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ ", start=" + start 
 				+ ", end=" + end
-				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
+				+ (this.isSetOrientation()?", orientation=" + this.getOrientation():"") 
 				+ "]";
 	}
 

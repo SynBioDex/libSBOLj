@@ -273,10 +273,10 @@ public class Sequence extends TopLevel{
 	@Override
 	public String toString() {
 		return "Sequence ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ ", encoding=" + encoding 
 				+ ", elements=" + elements  
 				+ "]";

@@ -328,15 +328,6 @@ public class SequenceConstraint extends Identified {
 	}
 
 	/**
-	 * Returns the parent component definition for this sequence constraint. 
-	 * 
-	 * @return the componentDefinition
-	 */
-	private ComponentDefinition getComponentDefinition() {
-		return componentDefinition;
-	}
-
-	/**
 	 * Sets this sequence constraint's parent component definition to the given one. 
 	 * 
 	 * @param componentDefinition the component definition to set to
@@ -348,10 +339,10 @@ public class SequenceConstraint extends Identified {
 	@Override
 	public String toString() {
 		return "SequenceConstraint ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ ", restriction=" + restriction 
 				+ ", subject=" + subject
 				+ ", object=" + object 

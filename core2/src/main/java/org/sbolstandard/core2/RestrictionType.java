@@ -39,14 +39,6 @@ public enum RestrictionType {
 	RestrictionType(String restrictionType) {
 		this.restrictionType = restrictionType;
 	}
-	
-	/**
-	 * Returns the restriction type.
-	 * @return restriction type.
-	 */
-	private String getRestrictionType() {
-		return restrictionType;
-	}
 
 	@Override
 	public String toString() {

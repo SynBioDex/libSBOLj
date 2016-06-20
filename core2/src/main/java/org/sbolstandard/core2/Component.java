@@ -259,7 +259,7 @@ public class Component extends ComponentInstance{
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
 		URI localURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(),
 				localId, componentDefinition.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && componentDefinition!=null &&
+		if (this.getSBOLDocument() !=null && this.getSBOLDocument().isCreateDefaults() && componentDefinition!=null &&
 				componentDefinition.getComponent(localURI)==null) {
 			componentDefinition.createComponent(localId,AccessType.PUBLIC,localId,"");
 		}
@@ -304,16 +304,16 @@ public class Component extends ComponentInstance{
 	 * </ul>
 	 */
 	private void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
-		mapsTo.setSBOLDocument(this.sbolDocument);
+		mapsTo.setSBOLDocument(this.getSBOLDocument());
 		mapsTo.setComponentDefinition(componentDefinition);
 		mapsTo.setComponentInstance(this);
-		if (sbolDocument != null) {
+		if (this.getSBOLDocument() != null) {
 			if (componentDefinition.getComponent(mapsTo.getLocalURI())==null) {
 				//throw new SBOLValidationException("Component '" + mapsTo.getLocalURI() + "' does not exist.");
 				throw new SBOLValidationException("sbol-10803", mapsTo);
 			}
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (getDefinition().getComponent(mapsTo.getRemoteURI())==null) {
 				//throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' does not exist.");
 				throw new SBOLValidationException("sbol-10808", mapsTo);
@@ -427,9 +427,9 @@ public class Component extends ComponentInstance{
 	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10604, 10605.
 	 */
 	public void setDefinition(URI definition) throws SBOLValidationException {
-		if (sbolDocument != null) {
-			ComponentDefinition cd = sbolDocument.getComponentDefinition(definition);
-			if (sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null) {
+			ComponentDefinition cd = this.getSBOLDocument().getComponentDefinition(definition);
+			if (this.getSBOLDocument().isComplete()) {
 				if (cd==null) {
 					throw new SBOLValidationException("sbol-10604",this);
 				}
@@ -441,7 +441,7 @@ public class Component extends ComponentInstance{
 				Set<URI> visited = new HashSet<>();
 				visited.add(componentDefinition.getIdentity());
 				try {
-					SBOLValidate.checkComponentDefinitionCycle(sbolDocument, cd, visited);
+					SBOLValidate.checkComponentDefinitionCycle(this.getSBOLDocument(), cd, visited);
 				} catch (SBOLValidationException e) {
 					throw new SBOLValidationException("sbol-10605",this);
 				}
@@ -484,12 +484,12 @@ public class Component extends ComponentInstance{
 	@Override
 	public String toString() {
 		return "Component ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ ", access=" + this.getAccess()
-				+ ", definition=" + definition 
+				+ ", definition=" + this.getDefinitionURI()
 				+ (roles.size()>0?", roles=" + roles:"")  
 				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
 				+ "]";

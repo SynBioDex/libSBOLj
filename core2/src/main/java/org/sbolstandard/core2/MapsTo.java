@@ -289,39 +289,18 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Returns the parent ModuleDefinition instance.
-	 * @return the parent ModuleDefinition instance
-	 */
-	private ModuleDefinition getModuleDefinition() {
-		return moduleDefinition;
-	}
-
-	/**
 	 * @param moduleDefinition the moduleDefinition to set
 	 */
 	void setModuleDefinition(ModuleDefinition moduleDefinition) {
 		this.moduleDefinition = moduleDefinition;
 	}
 
-
-	private Module getModule() {
-		return module;
-	}
-
 	void setModule(Module module) {
 		this.module = module;
 	}
 
-	private ComponentDefinition getComponentDefinition() {
-		return componentDefinition;
-	}
-
 	void setComponentDefinition(ComponentDefinition componentDefinition) {
 		this.componentDefinition = componentDefinition;
-	}
-
-	private ComponentInstance getComponentInstance() {
-		return componentInstance;
 	}
 
 	void setComponentInstance(ComponentInstance componentInstance) {
@@ -331,10 +310,10 @@ public class MapsTo extends Identified{
 	@Override
 	public String toString() {
 		return "MapsTo ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ ", refinement=" + refinement 
 				+ ", local=" + local 
 				+ ", remote=" + remote

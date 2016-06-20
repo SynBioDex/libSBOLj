@@ -708,7 +708,7 @@ public class SBOLReader
 			root = ioReader.read();
 		}
 		catch (CoreIoException e) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 		return StringifyQName.string2qname.mapDR(root);
 	}
@@ -726,19 +726,19 @@ public class SBOLReader
 			return rdfIo.createIoReader(xmlReader).read();
 		}
 		catch (FactoryConfigurationError e) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 		catch (XMLStreamException e) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 		catch (CoreIoException e) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 		catch (ClassCastException e) {
 			if (e.getMessage().contains("IdentifiableDocument")) {
-				throw new SBOLValidationException("sbol-10201");
+				throw new SBOLValidationException("sbol-10201",e);
 			}
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 	}
 
@@ -754,7 +754,7 @@ public class SBOLReader
 			return turtleIo.createIoReader(reader).read();
 		}
 		catch (CoreIoException e) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10105",e);
 		}
 	}
 
@@ -827,7 +827,7 @@ public class SBOLReader
 			if (topLevel.getType().equals(Sbol2Terms.Description.Description)) {
 				if (topLevel.getPropertyValues(Sbol2Terms.Description.type).isEmpty()) {
 					if (keepGoing) {
-						errors.add(new SBOLValidationException("sbol-12302",topLevel.getIdentity()).getExceptionMessage());
+						errors.add(new SBOLValidationException("sbol-12302",topLevel.getIdentity()).getMessage());
 					} else {
 						throw new SBOLValidationException("sbol-12302",topLevel.getIdentity());
 					}
@@ -1607,19 +1607,11 @@ public class SBOLReader
 			{
 				if (strand.equals("+"))
 				{
-					try {
-						location.setOrientation(OrientationType.convertToOrientationType(OrientationType.inline));
-					} catch (SBOLValidationException e) {
-						throw new SBOLValidationException("sbol-11002",location);
-					}
+					location.setOrientation(OrientationType.INLINE);
 				}
 				else if (strand.equals("-"))
 				{
-					try {
-						location.setOrientation(OrientationType.convertToOrientationType(OrientationType.reverseComplement));
-					} catch (SBOLValidationException e) {
-						throw new SBOLValidationException("sbol-11002",location);
-					}
+					location.setOrientation(OrientationType.REVERSECOMPLEMENT);
 				}
 			}
 		}
@@ -1636,19 +1628,11 @@ public class SBOLReader
 			{
 				if (strand.equals("+"))
 				{
-					try {
-						location.setOrientation(OrientationType.convertToOrientationType(OrientationType.inline));
-					} catch (SBOLValidationException e) {
-						throw new SBOLValidationException("sbol-11002",location);
-					}
+					location.setOrientation(OrientationType.INLINE);
 				}
 				else if (strand.equals("-"))
 				{
-					try {
-						location.setOrientation(OrientationType.convertToOrientationType(OrientationType.reverseComplement));
-					} catch (SBOLValidationException e) {
-						throw new SBOLValidationException("sbol-11002",location);
-					}
+					location.setOrientation(OrientationType.REVERSECOMPLEMENT);
 				}
 			}
 		}

@@ -201,15 +201,6 @@ public class Participation extends Identified {
 	}
 
 	/**
-	 * Returns the parent module definition. 
-	 * 
-	 * @return the parent module definition 
-	 */
-	private ModuleDefinition getModuleDefinition() {
-		return moduleDefinition;
-	}
-
-	/**
 	 * Sets the module definition that hosts this participation's parent interaction.
 	 * 
 	 * @param moduleDefinition the module definition that hosts this participation's parent interaction
@@ -221,10 +212,10 @@ public class Participation extends Identified {
 	@Override
 	public String toString() {
 		return "Participation ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 				
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 				
 				+ ", roles=" + roles 
 				+ ", participant=" + participant 
 				+ "]";
