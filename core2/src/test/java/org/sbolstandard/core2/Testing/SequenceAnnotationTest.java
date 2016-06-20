@@ -69,6 +69,10 @@ public class SequenceAnnotationTest {
 	public void test_locationMethods() throws SBOLValidationException{
 		Cut promoter_cut = promoter_SA.addCut("promoter_cut", 1);
 		assertTrue(gRNA_b_gene.getSequenceAnnotation("promoter_SA").getLocation("promoter_cut").equals(promoter_cut));
+		promoter_cut.unsetOrientation();
+		assertNull(promoter_cut.getOrientation());
+		Location test = promoter_cut; 
+		assertNotNull(test.toString());
 		Cut terminator_cut = terminator_SA.addCut("terminator_cut", 100);
 		assertTrue(gRNA_b_gene.getSequenceAnnotation("terminator_SA").getLocation("terminator_cut").equals(terminator_cut));
 		Cut gene_cut = gene_SA.addCut("gene_cut", 50, OrientationType.INLINE);
@@ -79,7 +83,8 @@ public class SequenceAnnotationTest {
 		
 		Range gene_range = gene_SA.addRange("gene_range",50,99);
 		assertTrue(gRNA_b_gene.getSequenceAnnotation("gene_SA").getLocation("gene_range").equals(gene_range));
-		
+		gene_range.unsetOrientation();
+		assertNull(gene_range.getOrientation());
 		promoter_SA.removeLocation(promoter_cut);
 		assertNull(promoter_SA.getLocation(promoter_cut.getIdentity()));
 
@@ -127,6 +132,25 @@ public class SequenceAnnotationTest {
 		assertNotNull(promoter_SA.toString());
 		assertTrue(!promoter_SA.toString().contains("version="));
 		assertTrue(!promoter_SA.toString().contains("name="));
+		
+	}
+	
+	/*
+	 * 
+	 * move to Location Test class
+	 */
+	@Test
+	public void test_LocToString() throws SBOLValidationException
+	{
+		Location test = promoter_SA.addGenericLocation("promoter_cut");
+		assertTrue(test.toString().length() != 0);
+		assertNotNull(test.toString());
+		assertTrue(test.toString().contains("identity="));
+		assertTrue(test.toString().contains("displayId="));
+		assertTrue(!test.toString().contains("description="));
+		assertTrue(!test.toString().contains("orientation="));
+		assertTrue(!test.toString().contains("name="));
+
 	}
 
 }
