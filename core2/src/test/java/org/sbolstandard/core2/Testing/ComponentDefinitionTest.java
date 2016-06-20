@@ -100,12 +100,13 @@ public class ComponentDefinitionTest {
 	public void test_createSeqAnnot_CD() throws SBOLValidationException
 	{
 		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		
 		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
 		
 		//add SequenceAnnotation for CD with a displayID and LocationID
 		SequenceAnnotation promoter_annot = gRNA_b_gene.createSequenceAnnotation("cutAt5", "cut1");
 		assertNotNull(gRNA_b_gene.getSequenceAnnotation("cutAt5"));
-		
+		SequenceAnnotation terminator_annot = gRNA_b_gene.createSequenceAnnotation("cutAt10", "cut2");
 		//remove SeqAnnotation for promoter
 		assertTrue(gRNA_b_gene.removeSequenceAnnotation(promoter_annot));
 		assertNull(gRNA_b_gene.getSequenceAnnotation("cutAt5"));
@@ -114,7 +115,8 @@ public class ComponentDefinitionTest {
 		promoter_annot = gRNA_b_gene.createSequenceAnnotation("cutAt5", "cut1", 5);
 		assertNotNull(gRNA_b_gene.getSequenceAnnotation("cutAt5"));
 		
-		gRNA_b_gene.createSequenceAnnotation("cutAt6", "cut2", OrientationType.INLINE);		
+		SequenceAnnotation gen_cut = gRNA_b_gene.createSequenceAnnotation("cutAt6", "cut2", OrientationType.INLINE);		
+		
 	}
 	
 	@Test
@@ -137,18 +139,21 @@ public class ComponentDefinitionTest {
 	@Test
 	public void test_seqConstraint_CD() throws SBOLValidationException
 	{
-		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
-		doc.createComponentDefinition("gRNA_gene_terminator_comp", ComponentDefinition.DNA);
+		ComponentDefinition gRNA_gene_promoter_comp = doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);
+		ComponentDefinition gRNA_gene_terminator_comp = doc.createComponentDefinition("gRNA_gene_terminator_comp", ComponentDefinition.DNA);
 
 		gRNA_b_gene.createComponent("gRNA_gene_promoter", AccessType.PUBLIC, "gRNA_gene_promoter_comp");
 		gRNA_b_gene.createComponent("gRNA_terminator", AccessType.PUBLIC, "gRNA_gene_terminator_comp");
 		SequenceConstraint promoter_first = gRNA_b_gene.createSequenceConstraint("promoter_first", RestrictionType.PRECEDES, "gRNA_gene_promoter", "gRNA_terminator");
 		//check that added SeqConstraint exists with getSeqConst(displayID)
 		assertNotNull(gRNA_b_gene.getSequenceConstraint("promoter_first"));
-		equals(promoter_first.equals(gRNA_b_gene.getSequenceConstraint("promoter_first")));
+
+		assertTrue(promoter_first.getObjectDefinition().equals(gRNA_gene_terminator_comp));
+		assertTrue(promoter_first.getSubjectDefinition().equals(gRNA_gene_promoter_comp));
+		assertTrue(promoter_first.equals(gRNA_b_gene.getSequenceConstraint("promoter_first")));
 		//check added SeqConstraint exists with getSeqConst(URI)
 		URI seq_const = promoter_first.getObjectURI();
-		equals(promoter_first.equals(gRNA_b_gene.getSequenceConstraint(seq_const)));	
+		assertFalse(promoter_first.equals(gRNA_b_gene.getSequenceConstraint(seq_const)));	
 		
 		//remove added SeqConstraint
 		gRNA_b_gene.removeSequenceConstraint(promoter_first);
