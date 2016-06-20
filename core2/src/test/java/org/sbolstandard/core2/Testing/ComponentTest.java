@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
+import org.sbolstandard.core2.MapsTo;
 import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
@@ -26,11 +27,12 @@ public class ComponentTest {
 	private ComponentDefinition promoter_CD = null;
 	private ComponentDefinition gene_CD = null;
 	private ComponentDefinition terminator_CD = null;
-
+	private ComponentDefinition target_protein = null;
 	private Component promoter = null;
 	private Component gene = null;
 	private Component target_gene = null;
 	private Component terminator = null;
+	private Component protein = null;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -41,18 +43,23 @@ public class ComponentTest {
 		doc.setComplete(true);
 		/*create CD's for main CD and sub-components*/
 		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA);
-		target_gene_CD = doc.createComponentDefinition("target_gene_CD", "", ComponentDefinition.DNA);
-		target_gene_comp_CD = doc.createComponentDefinition("target_gene_comp_CD", "", ComponentDefinition.DNA);
-		target_gene = target_gene_CD.createComponent("target_gene", AccessType.PUBLIC, "target_gene_comp_CD");
 		promoter_CD = doc.createComponentDefinition("promoter_CD", "", ComponentDefinition.DNA);
 		gene_CD = doc.createComponentDefinition("gene_CD", "", ComponentDefinition.DNA);
 		terminator_CD = doc.createComponentDefinition("terminator_CD", "", ComponentDefinition.DNA);
+		
 		/*create Components   */
 		promoter = gRNA_b_gene.createComponent("promoter", AccessType.PUBLIC, "promoter_CD");
-		gene = gRNA_b_gene.createComponent("gene", AccessType.PUBLIC, "promoter_CD");
-		terminator = gRNA_b_gene.createComponent("terminator", AccessType.PUBLIC, "promoter_CD");
+		gene = gRNA_b_gene.createComponent("gene", AccessType.PUBLIC, "gene_CD");
+		terminator = gRNA_b_gene.createComponent("terminator", AccessType.PUBLIC, "terminator_CD");
+		
+		target_gene_CD = doc.createComponentDefinition("target_gene_CD", "", ComponentDefinition.DNA);
+		target_gene = gRNA_b_gene.createComponent("target_gene", AccessType.PUBLIC, "target_gene_CD");
+		
+		target_protein = doc.createComponentDefinition("target_protein", ComponentDefinition.DNA);
+		protein = gene_CD.createComponent("protein", AccessType.PUBLIC, "target_protein");
 	}
 
+	
 	@After
 	public void tearDown() throws Exception {
 	}
@@ -79,11 +86,32 @@ public class ComponentTest {
 		assertTrue(promoter.containsRole(SequenceOntology.PROMOTER));
 	}
 	
-	/*@Test
-	public void test_MapsTo() throws SBOLValidationException
+	@Test
+	public void test_ComponentMapsTo() throws SBOLValidationException
 	{
-		target_gene.createMapsTo("local_gene", RefinementType.USELOCAL, gene.getDisplayId(), target_gene.getDisplayId());
+		MapsTo geneMapsTo = gene.createMapsTo("local_gene", RefinementType.USELOCAL, target_gene.getDisplayId(), protein.getDisplayId());
+		assertTrue(gene.getMapsTos().size() == 1);
+		assertNotNull(gene.getMapsTo("local_gene"));
+		assertEquals(gene.getMapsTo("local_gene"), geneMapsTo);
+		gene.removeMapsTo(geneMapsTo);
+		assertTrue(gene.getMapsTos().size() == 0);
+		geneMapsTo = gene.createMapsTo("local_gene", RefinementType.USELOCAL, target_gene.getIdentity(), protein.getIdentity());
+		assertNotNull(gene.getMapsTo(geneMapsTo.getIdentity()));
+		assertTrue(gene.getMapsTos().size() == 1);
+		gene.clearMapsTos();
+		assertTrue(gene.getMapsTos().size() == 0);
+	} 
 	
-	} */
+	@Test
+	public void test_toString()
+	{
+		assertTrue(gene.toString().length() != 0);
+		assertNotNull(gene.toString());
+		assertTrue(gene.toString().contains("identity="));
+		assertTrue(gene.toString().contains("displayId="));
+		assertFalse(gene.toString().contains("name="));
+		assertFalse(gene.toString().contains("description="));
+
+	}
 	
 }
