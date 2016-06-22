@@ -142,7 +142,7 @@ public class Interaction extends Identified {
 	 * Calls the Participation constructor to create a new participation using the given arguments,
 	 * then adds to the list of participations owned by this interaction.
 	 * 
-	 * @param identity the URI identifier of the participation to be created
+	 * @param identity the URI identity of the participation to be created
 	 * @param participant the functional component the participation to be created refers to
 	 * @param roles the roles property of the participation to be created
 	 * @return the created participation

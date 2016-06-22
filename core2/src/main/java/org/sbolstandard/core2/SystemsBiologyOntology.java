@@ -187,10 +187,10 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns the name field of the stanza that matches the ID referred by the given stanzaURI.
+	 * Returns the name field of the stanza that matches the ID referred by the given stanza URI.
 	 * 
 	 * @param stanzaId the ID of a stanza
-	 * @return the name field of the stanza that matches the ID referred by the given stanzaURI,
+	 * @return the name field of the stanza that matches the ID referred by the given stanza URI,
 	 * or {@code null} if this no match was found
 	 */
 	public final String getName(String stanzaId) {
