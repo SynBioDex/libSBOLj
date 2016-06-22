@@ -357,12 +357,12 @@ class ComparableVersion
         }
     }
 
-    public ComparableVersion( String version )
+    ComparableVersion( String version )
     {
         parseVersion( version );
     }
 
-    public final void parseVersion( String version )
+    private final void parseVersion( String version )
     {
         this.value = version;
 
