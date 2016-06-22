@@ -96,10 +96,10 @@ public class EDAMOntology {
 
 
 	/**
-	 * Returns the name field of the stanza that matches the ID for the given stanzaURI.
+	 * Returns the name field of the stanza that matches the ID for the given stanza URI.
 	 *
-	 * @param stanzaURI the given stanza's URI
-	 * @return the name field of the stanza that matches the ID extracted from the given stanzaURI
+	 * @param stanzaURI the given stanza URI
+	 * @return the name field of the stanza that matches the ID extracted from the given stanza URI
 	 */
 	public final String getName(URI stanzaURI) {
 		String oboURIstr = stanzaURI.toString().trim();
@@ -126,10 +126,10 @@ public class EDAMOntology {
 	}
 
 	/**
-	 * Returns the name field of the stanza matching the ID extracted from the given stanzaURI.
+	 * Returns the name field of the stanza matching the ID extracted from the given stanza URI.
 	 *
-	 * @param stanzaId the given stanza's URI
-	 * @return the name field of the stanza that matches the ID in the given stanzaURI,
+	 * @param stanzaId the given stanza URI
+	 * @return the name field of the stanza that matches the ID in the given stanza URI,
 					or {@code null} if no match was found
 	 */
 	public final String getName(String stanzaId) {
