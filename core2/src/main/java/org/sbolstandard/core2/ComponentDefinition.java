@@ -1729,14 +1729,7 @@ public class ComponentDefinition extends TopLevel {
 	@Override
 	public String toString() {
 		return "ComponentDefinition ["
-				+ "identity=" + this.getIdentity()
-				+ (this.isSetPersistentIdentity()?", persistentIdentity=" + this.getPersistentIdentity():"")
-				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
-				+ (this.isSetVersion()?", version=" + this.getVersion():"")
-				+ (this.isSetName()?", name=" + this.getName():"")
-				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
-				+ (this.getAnnotations().size()>0?", annotations=" + this.getAnnotations():"") 
-				+ (this.isSetWasDerivedFrom()?", wasDerivedFrom=" + this.getWasDerivedFrom():"") 
+				+ super.toString()
 				+ ", types=" + types 
 				+ (roles.size()>0?", roles=" + roles:"")  
 				+ (this.getSequenceURIs().size()>0?", sequences=" + this.getSequenceURIs():"") 

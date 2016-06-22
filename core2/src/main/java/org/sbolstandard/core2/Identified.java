@@ -727,16 +727,14 @@ public abstract class Identified {
 
 	@Override
 	public String toString() {
-		return "Identified ["
-				+ "identity=" + identity 
+		return  "identity=" + identity 
 				+ (this.isSetPersistentIdentity()?", persistentIdentity=" + persistentIdentity:"")
 				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
 				+ (this.isSetVersion()?", version=" + version:"")
 				+ (this.isSetName()?", name=" + name:"")
 				+ (this.isSetDescription()?", description=" + description:"") 
 				+ (annotations.size()>0?", annotations=" + annotations:"") 
-				+ (this.isSetWasDerivedFrom()?", wasDerivedFrom=" + wasDerivedFrom:"") 
-				+ "]";
+				+ (this.isSetWasDerivedFrom()?", wasDerivedFrom=" + wasDerivedFrom:""); 
 	}
 
 	//	/**

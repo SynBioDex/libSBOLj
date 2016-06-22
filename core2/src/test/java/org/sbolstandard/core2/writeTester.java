@@ -37,7 +37,8 @@ class writeTester {
 //		}
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix("http://www.foo.org");
-//		ComponentDefinition cd = document.createComponentDefinition("myCD", ComponentDefinition.DNA);
+		ComponentDefinition cd = document.createComponentDefinition("myCD", ComponentDefinition.DNA);
+		System.out.println(cd.toString());
 //		document.createComponentDefinition("mySubCD", ComponentDefinition.DNA);
 //		Component comp = cd.createComponent("myComp", AccessType.PRIVATE, "mySubCD");
 //		comp.setDefinition(cd.getIdentity());
@@ -67,7 +68,7 @@ class writeTester {
 		gen.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), 
 				new QName("http://myannotation.org", "thisNested", "annot"), URI.create("http://foo"), annos);
 		SBOLTestUtils.writeAndRead(document,true);
-		SBOLWriter.write(document, (System.out));
+		//SBOLWriter.write(document, (System.out));
 
 
 //		get_myParts(sbolDocument);

@@ -107,13 +107,7 @@ public abstract class Location extends Identified implements Comparable<Location
 
 	@Override
 	public String toString() {
-		return "Location ["
-				+ "identity=" + this.getIdentity()
-				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
-				+ (this.isSetName()?", name=" + this.getName():"")
-				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
-				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
-				+ "]";
+		return super.toString() + (this.isSetOrientation()?", orientation=" + orientation:""); 
 	}
 
 //	@Override
