@@ -5,20 +5,18 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.sbolstandard.core.util.SequenceOntology;
 import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.DirectionType;
 import org.sbolstandard.core2.FunctionalComponent;
 import org.sbolstandard.core2.Interaction;
-import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.Participation;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SystemsBiologyOntology;
 
-public class ParticipationTest {
+public class InteractionTest {
 	private SBOLDocument doc = null;
 	private ComponentDefinition TetR = null;
 	private FunctionalComponent TetRInverter_fc = null;
@@ -36,33 +34,29 @@ public class ParticipationTest {
 		TetR = doc.createComponentDefinition("TetR", ComponentDefinition.PROTEIN);
 		TetRInverter_fc = TetRInverter_MD.createFunctionalComponent(
 				"TetRInverter_fc", AccessType.PUBLIC, TetR.getIdentity(), DirectionType.INOUT);
-
 	}
 
+	@After
+	public void tearDown() throws Exception {
+	}
+
+
 	@Test
-	public void test_RoleMethods()
+	public void test_RoleAndParticpantMethods() throws SBOLValidationException
 	{
-		assertTrue(TetR.addRole(SystemsBiologyOntology.INHIBITOR));
-		assertTrue(TetR.containsRole(SystemsBiologyOntology.INHIBITOR));
-		assertTrue(TetR.removeRole(SystemsBiologyOntology.INHIBITOR));
-		assertTrue(TetR.getRoles().size() == 0);
-	}
-	
-	@Test
-	public void test_ParticipantMethods() throws SBOLValidationException
-	{		
-		TetR.addRole(SystemsBiologyOntology.INHIBITOR);
 		Interaction TetR_Interaction = TetRInverter_MD.createInteraction("TetR_Interaction", SystemsBiologyOntology.NON_COVALENT_BINDING);
 		Participation TetR_part = TetR_Interaction.createParticipation("TetR", "TetR", SystemsBiologyOntology.PRODUCT);
-		assertTrue(TetR_Interaction.getParticipation("TetR").equals(TetR_part));
-		assertTrue(TetR_part.addRole(SystemsBiologyOntology.COMPETITIVE_INHIBITOR));
-		assertTrue(TetR_part.containsRole(SystemsBiologyOntology.COMPETITIVE_INHIBITOR));
-		assertTrue(TetR_part.getRoles().size()== 2);
-		assertTrue(TetR_part.removeRole(SystemsBiologyOntology.COMPETITIVE_INHIBITOR));
-		assertFalse(TetR_part.containsRole(SystemsBiologyOntology.COMPETITIVE_INHIBITOR));
-		assertTrue(TetR_part.getParticipantDefinition().getIdentity().equals(TetR.getIdentity()));
-		assertTrue(TetR_part.getParticipant().getIdentity().equals(TetRInverter_MD.getFunctionalComponent("TetR").getIdentity()));
-		assertNotNull(TetR_part);
+		assertTrue(TetR_Interaction.containsType(SystemsBiologyOntology.NON_COVALENT_BINDING));
+		assertTrue(TetR_Interaction.addType(SystemsBiologyOntology.ABSOLUTE_STIMULATION));
+		assertTrue(TetR_Interaction.getTypes().size() == 2);
+		assertTrue(TetR_Interaction.removeType(SystemsBiologyOntology.NON_COVALENT_BINDING));
+		assertTrue(TetR_Interaction.getTypes().size() == 1);
+		assertTrue(TetR_Interaction.getParticipation(TetR_part.getIdentity()).equals(TetR_part));
+		assertTrue(TetR_Interaction.getParticipations().size() == 1);
+		assertTrue(TetR_Interaction.removeParticipation(TetR_part));
+		assertTrue(TetR_Interaction.getParticipations().size() == 0);
+		assertFalse(TetR_Interaction.removeType(SystemsBiologyOntology.NON_COVALENT_BINDING));
+
 	}
 	
 
