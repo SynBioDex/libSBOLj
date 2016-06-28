@@ -18,7 +18,7 @@ import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SystemsBiologyOntology;
 
-public class ParticipationTestSuite {
+public class ParticipationTest {
 	private SBOLDocument doc = null;
 	private ComponentDefinition TetR = null;
 	private FunctionalComponent TetRInverter_fc = null;
