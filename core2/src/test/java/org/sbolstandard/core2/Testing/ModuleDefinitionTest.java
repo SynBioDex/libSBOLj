@@ -158,12 +158,14 @@ public class ModuleDefinitionTest {
 		assertTrue(geneticToggleSwitch.getInteractions().size()== 0);
 	}
 	
-	/*@Test
-	public void test_getRole() throws URISyntaxException
+	@Test
+	public void test_RoleMethods() throws URISyntaxException
 	{
-		assertTrue(geneticToggleSwitch.containsRole(new URI("http://identifiers.org/biomodels.sbo/SBO:0000169")));
-		
-	}*/
+		TetRInverter_MD.addRole(SystemsBiologyOntology.PROMOTER);
+		assertTrue(TetRInverter_MD.containsRole(SystemsBiologyOntology.PROMOTER));
+		TetRInverter_MD.removeRole(SystemsBiologyOntology.PROMOTER);
+		assertFalse(TetRInverter_MD.containsRole(SystemsBiologyOntology.PROMOTER));
+	}
 	
 	@Test
 	public void test_toString()
@@ -207,13 +209,7 @@ public class ModuleDefinitionTest {
 		assertTrue(geneticToggleSwitch.containsModel(model.getIdentity()));
 
 	}
-	
-	/*@Test
-	public void test_ModuleMapsTo() throws SBOLValidationException
-	{
-		TetRInverter.createMapsTo("TetRMapsTo", RefinementType.USELOCAL, "LacIInverter", "target_gene");
-	} */
-	
+
 	
 	
 }
