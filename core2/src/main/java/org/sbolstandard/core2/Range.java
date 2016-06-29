@@ -143,7 +143,8 @@ public class Range extends Location {
 
 	@Override
 	public String toString() {
-		return "Range [" + super.toString() 
+		return "Range [" 
+				+ super.toString() 
 				+ ", start=" + start 
 				+ ", end=" + end
 				+ "]";

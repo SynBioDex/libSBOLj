@@ -62,11 +62,7 @@ public class GenericLocation extends Location{
 	@Override
 	public String toString() {
 		return "GenericLocation ["
-				+ "identity=" + this.getIdentity()
-				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
-				+ (this.isSetName()?", name=" + this.getName():"")
-				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
-				+ (this.isSetOrientation()?", orientation=" + this.getOrientation():"") 
+				+ super.toString()
 				+ "]";
 	}
 

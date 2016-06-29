@@ -482,14 +482,10 @@ public class Component extends ComponentInstance{
 	}
 
 	@Override
+	// TODO: Remove until roles. Add roleIntegration.
 	public String toString() {
 		return "Component ["
-				+ "identity=" + this.getIdentity()
-				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
-				+ (this.isSetName()?", name=" + this.getName():"")
-				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
-				+ ", access=" + this.getAccess()
-				+ ", definition=" + this.getDefinitionURI()
+				+ super.toString()
 				+ (roles.size()>0?", roles=" + roles:"")  
 				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
 				+ "]";

@@ -378,14 +378,8 @@ public class FunctionalComponent extends ComponentInstance {
 	@Override
 	public String toString() {
 		return "FunctionalComponent ["
-				+ "identity=" + this.getIdentity()
-				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
-				+ (this.isSetName()?", name=" + this.getName():"")
-				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
-				+ ", access=" + this.getAccess()
+				+ super.toString()
 				+ ", direction=" + direction 
-				+ ", definition=" + this.getDefinitionURI()
-				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
 				+ "]";
 	}
 }

@@ -476,10 +476,7 @@ public class Interaction extends Identified {
 	@Override
 	public String toString() {
 		return "Interaction ["
-				+ "identity=" + this.getIdentity()
-				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
-				+ (this.isSetName()?", name=" + this.getName():"")
-				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
+				+ super.toString()
 				+ ", types=" + types 
 				+ (participations.size()>0?", participations=" + participations:"") 
 				+ "]";

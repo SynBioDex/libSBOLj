@@ -1255,10 +1255,7 @@ public class ModuleDefinition extends TopLevel {
 	@Override
 	public String toString() {
 		return "ModuleDefinition ["
-				+ "identity=" + this.getIdentity()
-				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
-				+ (this.isSetName()?", name=" + this.getName():"")
-				+ (this.isSetDescription()?", description=" + this.getDescription():"") 				
+				+ super.toString()
 				+ (this.getRoles().size()>0?", roles=" + this.getRoles():"") 
 				+ (this.getFunctionalComponents().size()>0?", functionalComponents=" + this.getFunctionalComponents():"") 
 				+ (this.getModules().size()>0?", modules=" + this.getModules():"") 

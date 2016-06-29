@@ -107,7 +107,8 @@ public abstract class Location extends Identified implements Comparable<Location
 
 	@Override
 	public String toString() {
-		return super.toString() + (this.isSetOrientation()?", orientation=" + orientation:""); 
+		return super.toString() 
+			+ (this.isSetOrientation()?", orientation=" + orientation:""); 
 	}
 
 //	@Override
