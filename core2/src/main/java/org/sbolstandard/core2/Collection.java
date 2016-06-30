@@ -212,8 +212,8 @@ public class Collection extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	void checkDescendantsURIcompliance() throws SBOLValidationException {
-		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+	void checkDescendantsURIcompliance() {//throws SBOLValidationException {
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	@Override

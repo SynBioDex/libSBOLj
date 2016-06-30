@@ -68,7 +68,7 @@ class writeTester {
 		gen.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), 
 				new QName("http://myannotation.org", "thisNested", "annot"), URI.create("http://foo"), annos);
 		SBOLTestUtils.writeAndRead(document,true);
-		//SBOLWriter.write(document, (System.out));
+		SBOLWriter.write(document, (System.out));
 
 
 //		get_myParts(sbolDocument);

@@ -81,7 +81,7 @@ public abstract class TopLevel extends Identified {
 	 * </ul>
 	 */
 	void isURIcompliant() throws SBOLValidationException {	
-		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 		try {
 			URIcompliance.isURIcompliant(this);
 		}

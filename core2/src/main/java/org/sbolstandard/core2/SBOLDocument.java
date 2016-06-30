@@ -145,23 +145,24 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition createModuleDefinition(String URIprefix,String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		ModuleDefinition md = createModuleDefinition(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, version, typesInURIs));
+		ModuleDefinition md = new ModuleDefinition(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, version, typesInURIs));
 		md.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODULE_DEFINITION, displayId, "", typesInURIs));
 		md.setDisplayId(displayId);
 		md.setVersion(version);
+		addModuleDefinition(md);
 		return md;
 	}
 
-	/**
-	 * @param identity a given identifier for this object
-	 * @return the new module definition
-	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 10201, 10202, 10220.
-	 */
-	private ModuleDefinition createModuleDefinition(URI identity) throws SBOLValidationException {
-		ModuleDefinition newModule = new ModuleDefinition(identity);
-		addModuleDefinition(newModule);
-		return newModule;
-	}
+//	/**
+//	 * @param identity a given identifier for this object
+//	 * @return the new module definition
+//	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 10201, 10202, 10220.
+//	 */
+//	private ModuleDefinition createModuleDefinition(URI identity) throws SBOLValidationException {
+//		ModuleDefinition newModule = new ModuleDefinition(identity);
+//		addModuleDefinition(newModule);
+//		return newModule;
+//	}
 
 	/**
 	 * Appends the specified {@code moduleDefinition} object to the end of the list of module definitions.
@@ -289,18 +290,18 @@ public class SBOLDocument {
 		}
 	}*/
 
-	/**
-	 * Create a new collection by calling the constructor {@link Collection#Collection(URI)}, and then
-	 * adds it to the list of collections to this SBOL document. 
-	 * 
-	 * @return the created collection
-	 * @throws SBOLValidationException
-	 */
-	private Collection createCollection(URI identity) throws SBOLValidationException {
-		Collection newCollection = new Collection(identity);
-		addCollection(newCollection);
-		return newCollection;
-	}
+//	/**
+//	 * Create a new collection by calling the constructor {@link Collection#Collection(URI)}, and then
+//	 * adds it to the list of collections to this SBOL document. 
+//	 * 
+//	 * @return the created collection
+//	 * @throws SBOLValidationException
+//	 */
+//	private Collection createCollection(URI identity) throws SBOLValidationException {
+//		Collection newCollection = new Collection(identity);
+//		addCollection(newCollection);
+//		return newCollection;
+//	}
 
 	/**
 	 * Creates a collection first, and then adds to this SBOL document's list of collections.
@@ -350,10 +351,11 @@ public class SBOLDocument {
 	 */
 	public Collection createCollection(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		Collection c = createCollection(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, version, typesInURIs));
+		Collection c = new Collection(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, version, typesInURIs));
 		c.setDisplayId(displayId);
 		c.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.COLLECTION, displayId, "", typesInURIs));
 		c.setVersion(version);
+		addCollection(c);
 		return c;
 	}
 
@@ -507,33 +509,34 @@ public class SBOLDocument {
 	 */
 	public Model createModel(String URIprefix, String displayId, String version, URI source, URI language, URI framework) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		Model model = createModel(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, version, typesInURIs),
+		Model model = new Model(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, version, typesInURIs),
 				source, language, framework);
 		model.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.MODEL, displayId, "", typesInURIs));
 		model.setDisplayId(displayId);
 		model.setVersion(version);
+		addModel(model);
 		return model;
 	}
 
-	/**
-	 * @param identity a given identifier for this object
-	 * @param version The given version for this object
-	 * @param source location of the actual content of the model
-	 * @param language the language in which the model is implemented
-	 * @param framework the framework in which the model is implemented
-	 * @return the new model
-	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of the following
-	 * constructor or method:
-	 * <ul>
-	 * <li>{@link Model#Model(URI, URI, URI, URI)}, or</li>
-	 * <li>{@link #addModel(Model)}.</li>
-	 * </ul>
-	 */
-	private Model createModel(URI identity, URI source, URI language, URI framework) throws SBOLValidationException {
-		Model newModel = new Model(identity, source, language, framework);
-		addModel(newModel);
-		return newModel;
-	}
+//	/**
+//	 * @param identity a given identifier for this object
+//	 * @param version The given version for this object
+//	 * @param source location of the actual content of the model
+//	 * @param language the language in which the model is implemented
+//	 * @param framework the framework in which the model is implemented
+//	 * @return the new model
+//	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of the following
+//	 * constructor or method:
+//	 * <ul>
+//	 * <li>{@link Model#Model(URI, URI, URI, URI)}, or</li>
+//	 * <li>{@link #addModel(Model)}.</li>
+//	 * </ul>
+//	 */
+//	private Model createModel(URI identity, URI source, URI language, URI framework) throws SBOLValidationException {
+//		Model newModel = new Model(identity, source, language, framework);
+//		addModel(newModel);
+//		return newModel;
+//	}
 
 	/**
 	 *
@@ -637,23 +640,23 @@ public class SBOLDocument {
 	} 
 	*/
 
-	/**
-	 * @param identity 
-	 * @param types 
-	 * @return the created component definition
-	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following constructor
-	 * or method:
-	 * <ul>
-	 * <li>{@link ComponentDefinition#ComponentDefinition(URI, Set)}, or</li>
-	 * <li>{@link #addComponentDefinition(ComponentDefinition)}.</li>
-	 * </ul> 
-	 */
-	private ComponentDefinition createComponentDefinition(URI identity, Set<URI> types) throws SBOLValidationException {
-		//ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types, roles);
-		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types);
-		addComponentDefinition(newComponentDefinition);
-		return newComponentDefinition;
-	}
+//	/**
+//	 * @param identity 
+//	 * @param types 
+//	 * @return the created component definition
+//	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following constructor
+//	 * or method:
+//	 * <ul>
+//	 * <li>{@link ComponentDefinition#ComponentDefinition(URI, Set)}, or</li>
+//	 * <li>{@link #addComponentDefinition(ComponentDefinition)}.</li>
+//	 * </ul> 
+//	 */
+//	private ComponentDefinition createComponentDefinition(URI identity, Set<URI> types) throws SBOLValidationException {
+//		//ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types, roles);
+//		ComponentDefinition newComponentDefinition = new ComponentDefinition(identity, types);
+//		addComponentDefinition(newComponentDefinition);
+//		return newComponentDefinition;
+//	}
 
 	/**
 	 * Creates a component definition, and then adds it to this SBOL document's list of component definitions.
@@ -745,11 +748,12 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition createComponentDefinition(String URIprefix,String displayId, String version, Set<URI> types) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		ComponentDefinition cd = createComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
+		ComponentDefinition cd = new ComponentDefinition(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION,
 				displayId, version, typesInURIs), types);
 		cd.setDisplayId(displayId);
 		cd.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION, displayId,"", typesInURIs));
 		cd.setVersion(version);
+		addComponentDefinition(cd);
 		return cd;
 	}
 
@@ -917,22 +921,22 @@ public class SBOLDocument {
 	}*/
 
 
-	/**
-	 * @param identity a given identifier for this object
-	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
-	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
-	 * @return the created Sequence instance
-	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following constructors or methods:
-	 * <ul>
-	 * <li>{@link Sequence#Sequence(URI, String, URI)}, or </li>
-	 * <li>{@link #addSequence(Sequence)}.</li>
-	 * </ul>
-	 */
-	private Sequence createSequence(URI identity, String elements, URI encoding) throws SBOLValidationException {
-		Sequence newSequence = new Sequence(identity, elements, encoding);
-		addSequence(newSequence);
-		return newSequence;
-	}
+//	/**
+//	 * @param identity a given identifier for this object
+//	 * @param elements characters that represents the constituents of a biological or chemical molecule (i.e. nucleotide bases of a molecule of DNA, the amino acid residues of a protein, or the atoms and chemical bonds of a small molecule)
+//	 * @param encoding Indicate how the elements property of a Sequence must be formed and interpreted
+//	 * @return the created Sequence instance
+//	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following constructors or methods:
+//	 * <ul>
+//	 * <li>{@link Sequence#Sequence(URI, String, URI)}, or </li>
+//	 * <li>{@link #addSequence(Sequence)}.</li>
+//	 * </ul>
+//	 */
+//	private Sequence createSequence(URI identity, String elements, URI encoding) throws SBOLValidationException {
+//		Sequence newSequence = new Sequence(identity, elements, encoding);
+//		addSequence(newSequence);
+//		return newSequence;
+//	}
 
 	/**
 	 * Creates a Sequence instance with this SBOL document's {@code defaultURIprefix},
@@ -1023,11 +1027,12 @@ public class SBOLDocument {
 	 */
 	public Sequence createSequence(String URIprefix, String displayId, String version, String elements, URI encoding) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		Sequence s = createSequence(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, version, typesInURIs),
+		Sequence s = new Sequence(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, version, typesInURIs),
 				elements, encoding);
 		s.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.SEQUENCE, displayId, "", typesInURIs));
 		s.setDisplayId(displayId);
 		s.setVersion(version);
+		addSequence(s);
 		return s;
 	}
 
@@ -1480,33 +1485,38 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		GenericTopLevel g = createGenericTopLevel(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
-		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
-		g.setDisplayId(displayId);
-		g.setVersion(version);
-		return g;
-	}
-
-	/**
-	 * @param identity a given identifier for this object
-	 * @param rdfType a given QName for this annotated GenericTopLevel object
-	 * @return the new generic top level
-	 * @throws SBOLValidationException if any of the following condition is satisfied:
-	 * <ul>
-	 * <li>the following SBOL validation rule was violated: 12302;</li>
-	 * <li>an SBOL validation rule violation occurred in {@link GenericTopLevel#GenericTopLevel(URI, QName)}; or </li>
-	 * <li>an SBOL validation rule violation occurred in {@link #addGenericTopLevel(GenericTopLevel)}.</li>
-	 * </ul>
-	 */
-	private GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException("sbol-12302");
 		}
-		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
-		addGenericTopLevel(newGenericTopLevel);
-		return newGenericTopLevel;
+		GenericTopLevel g = new GenericTopLevel(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
+		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
+		g.setDisplayId(displayId);
+		g.setVersion(version);
+		addGenericTopLevel(g);
+		return g;
 	}
+
+//	/**
+//	 * @param identity a given identifier for this object
+//	 * @param rdfType a given QName for this annotated GenericTopLevel object
+//	 * @return the new generic top level
+//	 * @throws SBOLValidationException if any of the following condition is satisfied:
+//	 * <ul>
+//	 * <li>the following SBOL validation rule was violated: 12302;</li>
+//	 * <li>an SBOL validation rule violation occurred in {@link GenericTopLevel#GenericTopLevel(URI, QName)}; or </li>
+//	 * <li>an SBOL validation rule violation occurred in {@link #addGenericTopLevel(GenericTopLevel)}.</li>
+//	 * </ul>
+//	 */
+//	private GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
+//		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
+//				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
+//			throw new SBOLValidationException("sbol-12302");
+//		}
+//		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
+//		addGenericTopLevel(newGenericTopLevel);
+//		return newGenericTopLevel;
+//	}
 
 	/**
 	 * Appends the specified {@code genericTopLevel} object to the end of the list of generic top levels.
@@ -1901,7 +1911,8 @@ public class SBOLDocument {
 	private final <TL extends TopLevel> void addTopLevel(TL newTopLevel, Map<URI, TL> instancesMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {
 		boolean childrenCompliant = true;
 		try {
-			newTopLevel.checkDescendantsURIcompliance();
+			URIcompliance.isURIcompliant(newTopLevel);
+			//newTopLevel.checkDescendantsURIcompliance();
 		} catch (SBOLValidationException e) {
 			childrenCompliant = false;
 		}

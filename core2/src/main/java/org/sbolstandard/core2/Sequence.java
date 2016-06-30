@@ -214,8 +214,8 @@ public class Sequence extends TopLevel{
 	 * {@link URIcompliance#isTopLevelURIformCompliant(URI)}.
 	 */
 	@Override
-	void checkDescendantsURIcompliance() throws SBOLValidationException {
-		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+	void checkDescendantsURIcompliance() {// throws SBOLValidationException {
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 	
 	/**
