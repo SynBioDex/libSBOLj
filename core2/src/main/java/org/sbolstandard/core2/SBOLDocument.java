@@ -888,6 +888,24 @@ public class SBOLDocument {
 		}
 		return componentDefs;
 	}
+	
+	/**
+	 * Returns the set of root module definitions. A root module definition is a module definition
+	 * that is not referenced by a child module.
+	 * @return the set of root module definitions
+	 */
+	public Set<ModuleDefinition> getRootModuleDefinitions() {
+		Set<ModuleDefinition> moduleDefs = getModuleDefinitions();
+		for (ModuleDefinition moduleDefinition : getModuleDefinitions()) {
+			for (Module module : moduleDefinition.getModules()) {
+				ModuleDefinition childDefinition = module.getDefinition();
+				if (childDefinition != null && moduleDefs.contains(childDefinition)) {
+					moduleDefs.remove(childDefinition);
+				}
+			}
+		}
+		return moduleDefs;
+	}
 
 	/**
 	 * Removes all entries in the list of component definitions owned by this SBOL document. 
