@@ -216,23 +216,23 @@ final class URIcompliance {
 		}
 	}
 	
-	/**
-	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
-	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
-	 * the level of the given object.
-	 * 
-	 * @param objURI
-	 * @throws SBOLValidationException if any the following SBOL validation rule was violated: 10201.
-	 */
-	static final void isTopLevelURIformCompliant(URI topLevelURI) throws SBOLValidationException {
-		Pattern r;
-		String URIstr = topLevelURI.toString();		
-		r = Pattern.compile(toplevelURIpattern);
-		Matcher m = r.matcher(URIstr);
-		if (!m.matches()) {
-			throw new SBOLValidationException("sbol-10201");
-		}
-	}
+//	/**
+//	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
+//	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
+//	 * the level of the given object.
+//	 * 
+//	 * @param objURI
+//	 * @throws SBOLValidationException if any the following SBOL validation rule was violated: 10201.
+//	 */
+//	static final void isTopLevelURIformCompliant(URI topLevelURI) throws SBOLValidationException {
+//		Pattern r;
+//		String URIstr = topLevelURI.toString();		
+//		r = Pattern.compile(toplevelURIpattern);
+//		Matcher m = r.matcher(URIstr);
+//		if (!m.matches()) {
+//			throw new SBOLValidationException("sbol-10201");
+//		}
+//	}
 	
 //	static final boolean isURIcompliantTemp(URI objURI, String URIprefix, String version, String ... displayIds) {
 //		if (displayIds.length == 0 || displayIds.length > 4) {
@@ -399,7 +399,7 @@ final class URIcompliance {
 	// group 4: top-level's grand grand child display ID
 	//static final String genericURIpattern2 = URIprefixPattern + delimiter + "((" + displayIDpattern + "/){1,3})" + versionPattern;
 
-	private static final String toplevelURIpattern = URIprefixPattern + delimiter + displayIDpattern + "(/" + versionPattern + ")?";
+	//private static final String toplevelURIpattern = URIprefixPattern + delimiter + displayIDpattern + "(/" + versionPattern + ")?";
 	
 	private static final String URI_REFERENCE_REGEX = "(([a-zA-Z][a-zA-Z0-9\\+\\-\\.]*:((((//((((([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);:\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)\\@)?((((([a-zA-Z0-9](([a-zA-Z0-9\\-])*[a-zA-Z0-9])?)\\.)*([a-zA-Z](([a-zA-Z0-9\\-])*[a-zA-Z0-9])?)(\\.)?)|([0-9]+((\\.[0-9]+){3})))(:[0-9]*)?))?|([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\)$,;:\\@\\&=\\+]|(%[a-fA-F0-9]{2}))+)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*))*)?)|(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*))*))(\\?([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);/\\?:\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)?)|(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);\\?:\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);/\\?:\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)))|(((//((((([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);:\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)\\@)?((((([a-zA-Z0-9](([a-zA-Z0-9\\-])*[a-zA-Z0-9])?)\\.)*([a-zA-Z](([a-zA-Z0-9\\-])*[a-zA-Z0-9])?)(\\.)?)|([0-9]+((\\.[0-9]+){3})))(:[0-9]*)?))?|([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\)$,;:\\@\\&=\\+]|(%[a-fA-F0-9]{2}))+)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*))*)?)|(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*))*)|(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))+(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*))*)?))(\\?([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);/\\?:\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)?))?(\\#([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);/\\?:\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)?";
 
@@ -431,12 +431,14 @@ final class URIcompliance {
 	 */
 	static String checkURIprefix(String URIprefix) throws SBOLValidationException {
 		if (URIprefix==null) {
+			// TODO: not really the right exception here, this is our pattern and not the specs one
 			throw new SBOLValidationException("sbol-10201");
 		}
 		if (!URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
 			URIprefix += "/";
 		}
 		if (!isURIprefixCompliant(URIprefix)) {
+			// TODO: not really the right exception here, this is our pattern and not the specs one
 			throw new SBOLValidationException("sbol-10201");
 		}
 		return URIprefix;

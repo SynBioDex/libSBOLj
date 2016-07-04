@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -737,6 +738,12 @@ public class SBOLReader
 		}
 		catch (ClassCastException e) {
 			if (e.getMessage().contains("IdentifiableDocument")) {
+				throw new SBOLValidationException("sbol-10201",e);
+			}
+			throw new SBOLValidationException("sbol-10105",e);
+		}
+		catch (IllegalArgumentException e) {
+			if (e.getCause() instanceof URISyntaxException) {
 				throw new SBOLValidationException("sbol-10201",e);
 			}
 			throw new SBOLValidationException("sbol-10105",e);

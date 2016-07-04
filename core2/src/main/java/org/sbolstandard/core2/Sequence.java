@@ -214,8 +214,8 @@ public class Sequence extends TopLevel{
 	 * {@link URIcompliance#isTopLevelURIformCompliant(URI)}.
 	 */
 	@Override
-	void checkDescendantsURIcompliance() throws SBOLValidationException {
-		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+	void checkDescendantsURIcompliance() {// throws SBOLValidationException {
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 	
 	/**
@@ -273,10 +273,7 @@ public class Sequence extends TopLevel{
 	@Override
 	public String toString() {
 		return "Sequence ["
-				+ "identity=" + this.getIdentity()
-				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
-				+ (this.isSetName()?", name=" + this.getName():"")
-				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
+				+ super.toString()
 				+ ", encoding=" + encoding 
 				+ ", elements=" + elements  
 				+ "]";

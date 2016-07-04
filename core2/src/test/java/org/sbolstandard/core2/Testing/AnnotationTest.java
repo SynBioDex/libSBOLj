@@ -70,7 +70,17 @@ public class AnnotationTest {
 		assertTrue(CD_annot.getIntegerValue() == 7);
 		gRNA_b_gene.removeAnnotation(CD_annot);
 		assertTrue(gRNA_b_gene.getAnnotations().size() == 0);
-
+		
+		//test constructor with string
+		CD_annot = gRNA_b_gene.createAnnotation(new QName(prURI, "protein", "pr"),
+				"protein");	
+		assertTrue(gRNA_b_gene.getAnnotation(CD_annot.getQName()).getStringValue().equals("protein"));
+		assertTrue(gRNA_b_gene.getAnnotations().size() == 1);
+		assertTrue(CD_annot.isStringValue());
+		CD_annot.setStringValue("notAProtein");
+		assertTrue(CD_annot.getStringValue().equals("notAProtein"));
+		gRNA_b_gene.removeAnnotation(CD_annot);
+		assertTrue(gRNA_b_gene.getAnnotations().size() == 0);
 
 	}
 	

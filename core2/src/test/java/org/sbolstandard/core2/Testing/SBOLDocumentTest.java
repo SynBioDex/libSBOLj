@@ -26,7 +26,7 @@ import org.sbolstandard.core2.SystemsBiologyOntology;
 import org.sbolstandard.core2.TopLevel;
 import org.sbolstandard.core2.ValidationTest;
 
-public class SBOLDocumentTestSuite {
+public class SBOLDocumentTest {
 	private SBOLDocument doc = null;
 	private ComponentDefinition gRNA_promoter = null;
 	private ComponentDefinition CRa_promoter = null;

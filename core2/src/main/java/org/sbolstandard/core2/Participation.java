@@ -212,10 +212,7 @@ public class Participation extends Identified {
 	@Override
 	public String toString() {
 		return "Participation ["
-				+ "identity=" + this.getIdentity()
-				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
-				+ (this.isSetName()?", name=" + this.getName():"")
-				+ (this.isSetDescription()?", description=" + this.getDescription():"") 				
+				+ super.toString()
 				+ ", roles=" + roles 
 				+ ", participant=" + participant 
 				+ "]";

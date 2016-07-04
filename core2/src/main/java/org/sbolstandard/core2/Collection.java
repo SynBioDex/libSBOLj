@@ -212,17 +212,14 @@ public class Collection extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	void checkDescendantsURIcompliance() throws SBOLValidationException {
-		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+	void checkDescendantsURIcompliance() {//throws SBOLValidationException {
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	@Override
 	public String toString() {
 		return "Collection ["
-				+ "identity=" + this.getIdentity()
-				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
-				+ (this.isSetName()?", name=" + this.getName():"")
-				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
+				+ super.toString()
 				+ (members.size()>0?", members=" + members:"")  
 				+ "]";
 	}

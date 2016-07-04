@@ -2,7 +2,6 @@ package org.sbolstandard.core2;
 
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static org.sbolstandard.core2.URIcompliance.isChildURIcompliant;
-import static org.sbolstandard.core2.URIcompliance.isTopLevelURIformCompliant;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -1100,7 +1099,7 @@ public class ModuleDefinition extends TopLevel {
 	 */
 	@Override
 	void checkDescendantsURIcompliance() throws SBOLValidationException {
-		isTopLevelURIformCompliant(this.getIdentity());
+		//isTopLevelURIformCompliant(this.getIdentity());
 		if (!this.getModules().isEmpty()) {
 			for (Module module : this.getModules()) {
 				try {
@@ -1255,10 +1254,7 @@ public class ModuleDefinition extends TopLevel {
 	@Override
 	public String toString() {
 		return "ModuleDefinition ["
-				+ "identity=" + this.getIdentity()
-				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
-				+ (this.isSetName()?", name=" + this.getName():"")
-				+ (this.isSetDescription()?", description=" + this.getDescription():"") 				
+				+ super.toString()
 				+ (this.getRoles().size()>0?", roles=" + this.getRoles():"") 
 				+ (this.getFunctionalComponents().size()>0?", functionalComponents=" + this.getFunctionalComponents():"") 
 				+ (this.getModules().size()>0?", modules=" + this.getModules():"") 
