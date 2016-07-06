@@ -40,6 +40,12 @@ class writeTester {
 		for (Component component : compDef.getSortedComponents()) {
 			System.out.println(component.getIdentity());
 		}
+		SBOLValidate.validateSBOL(doc, true, true, true);
+		if (SBOLValidate.getNumErrors()>0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.out.println(error);
+			}
+		}
 		
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix("http://www.foo.org");
