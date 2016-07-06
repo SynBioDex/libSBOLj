@@ -46,7 +46,7 @@ public class ValidationTest {
 		File file_base = null ;
 		java.util.Collection<File> col = new HashSet<File>();
 		try {
-			file_base = new File(ValidationTest.class.getResource("/test/data/InvalidFiles/").toURI());
+			file_base = new File(ValidationTest.class.getResource("/InvalidFiles/").toURI());
 		}
 		catch (URISyntaxException e1) {
 			e1.printStackTrace();
