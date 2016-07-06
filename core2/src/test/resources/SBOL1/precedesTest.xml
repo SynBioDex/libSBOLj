@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:sbol="http://sbols.org/v1#">
+<sbol:DnaComponent rdf:about="urn:d40dfc96-f38d-4b6d-aa21-ba3ae81e2c70">
+	<sbol:displayId>Unnamed</sbol:displayId>
+	<sbol:dnaSequence>
+		<sbol:DnaSequence rdf:about="urn:7c72c3dc-080a-4e00-8657-20fe26b5605a">
+			<sbol:nucleotides>acgtagct</sbol:nucleotides>
+		</sbol:DnaSequence>
+	</sbol:dnaSequence>
+	<sbol:annotation>
+		<sbol:SequenceAnnotation rdf:about="urn:ab3885a7-514d-4ccd-bc6d-b0821cd8efd6">
+			<sbol:bioStart>1</sbol:bioStart>
+			<sbol:bioEnd>8</sbol:bioEnd>
+			<sbol:strand>+</sbol:strand>
+			<sbol:subComponent>
+				<sbol:DnaComponent rdf:about="urn:f8a03f37-c038-4357-b6ef-0f056068dd1c">
+					<sbol:displayId>Gen</sbol:displayId>
+					<sbol:name></sbol:name>
+					<sbol:description></sbol:description>
+					<sbol:dnaSequence>
+						<sbol:DnaSequence rdf:about="urn:ccf0a0fd-d7df-4e48-bee5-2234dfc3dbca">
+							<sbol:nucleotides>acgtagct</sbol:nucleotides>
+						</sbol:DnaSequence>
+					</sbol:dnaSequence>
+					<sbol:annotation>
+						<sbol:SequenceAnnotation rdf:about="urn:8d87e6d5-2ad4-45b1-b65b-76294b597366">
+							<sbol:precedes rdf:resource="urn:7778e28b-a4e6-4cbe-a8ea-712f4e8d53b1"/>
+							<sbol:bioStart>1</sbol:bioStart>
+							<sbol:bioEnd>4</sbol:bioEnd>
+							<sbol:strand>+</sbol:strand>
+							<sbol:subComponent>
+								<sbol:DnaComponent rdf:about="urn:8c76a850-ef7e-406f-9092-72433cac3e80">
+									<sbol:displayId>Pro</sbol:displayId>
+									<sbol:name></sbol:name>
+									<sbol:description></sbol:description>
+									<sbol:dnaSequence>
+										<sbol:DnaSequence rdf:about="urn:9f1efb6b-ceb1-4db8-b8cb-c52e999d901a">
+											<sbol:nucleotides>acgt</sbol:nucleotides>
+										</sbol:DnaSequence>
+									</sbol:dnaSequence>
+									<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000167"/>
+								</sbol:DnaComponent>
+							</sbol:subComponent>
+						</sbol:SequenceAnnotation>
+					</sbol:annotation>
+					<sbol:annotation>
+						<sbol:SequenceAnnotation rdf:about="urn:7778e28b-a4e6-4cbe-a8ea-712f4e8d53b1">
+							<sbol:bioStart>5</sbol:bioStart>
+							<sbol:bioEnd>8</sbol:bioEnd>
+							<sbol:strand>+</sbol:strand>
+							<sbol:subComponent>
+								<sbol:DnaComponent rdf:about="urn:fcf40a37-9e5b-4584-90cf-7c54252ca47d">
+									<sbol:displayId>CDS</sbol:displayId>
+									<sbol:name></sbol:name>
+									<sbol:description></sbol:description>
+									<sbol:dnaSequence>
+										<sbol:DnaSequence rdf:about="urn:e150a76b-e96a-48b6-b3e8-3f4982af45cd">
+											<sbol:nucleotides>agct</sbol:nucleotides>
+										</sbol:DnaSequence>
+									</sbol:dnaSequence>
+									<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000316"/>
+								</sbol:DnaComponent>
+							</sbol:subComponent>
+						</sbol:SequenceAnnotation>
+					</sbol:annotation>
+					<rdf:type rdf:resource="http://purl.obolibrary.org/obo/SO_0000110"/>
+				</sbol:DnaComponent>
+			</sbol:subComponent>
+		</sbol:SequenceAnnotation>
+	</sbol:annotation>
+</sbol:DnaComponent>
+
+</rdf:RDF>
