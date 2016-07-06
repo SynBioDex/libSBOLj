@@ -126,12 +126,13 @@ public class Cut extends Location{
 		if (location instanceof Range) {
 			int result = this.at - ((Range)location).getStart();
 			if (result==0) {
-				result = ((Range)location).getEnd() - this.at;
+				result = this.at - ((Range)location).getEnd();
 			}
 			return result;
 		} else if (location instanceof Cut) {
 			return this.at - ((Cut)location).getAt();
 		} 
-		return this.at;
+		return -1*(Integer.MAX_VALUE);
+		//return this.at;
 	}
 }
