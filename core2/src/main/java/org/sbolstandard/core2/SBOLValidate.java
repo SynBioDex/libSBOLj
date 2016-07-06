@@ -393,7 +393,8 @@ public class SBOLValidate {
 		SequenceAnnotation saObject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getObject());
 		if (saSubject==null || saObject==null) return;
 		if (sequenceConstraint.getRestriction().equals(RestrictionType.PRECEDES)) {
-			if (saObject.compareTo(saSubject) < 0) {
+			if (saObject.compareTo(saSubject) != (-1)*Integer.MAX_VALUE
+					&& saObject.compareTo(saSubject) < 0) {
 				throw new SBOLValidationException("sbol-11409", sequenceConstraint);
 			}
 		} else if (sequenceConstraint.getRestriction().equals(RestrictionType.SAME_ORIENTATION_AS)) {
