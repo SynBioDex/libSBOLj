@@ -865,6 +865,17 @@ public class ComponentDefinition extends TopLevel {
 		visited.remove(component);
 	}
 
+	private boolean isGenericSequenceAnnotation(SequenceAnnotation sequenceAnnotation) {
+		boolean generic = true;
+		for (Location location : sequenceAnnotation.getLocations()) {
+			if (location instanceof Range || location instanceof Cut) {
+				generic = false;
+				break;
+			}
+		}
+		return generic;
+	}
+	
 	/**
 	 * Returns a sorted list of components owned by this component definition. The order is determined by the
 	 * order of appearance of components on a DNA strand  
@@ -883,14 +894,12 @@ public class ComponentDefinition extends TopLevel {
 		}
 		for (int i = 0; i < sortedSAs.size(); i++) {
 			SequenceAnnotation source = sortedSAs.get(i);
-			if (source.getLocations().iterator().next()==null ||
-					source.getLocations().iterator().next() instanceof GenericLocation) continue;
+			if (isGenericSequenceAnnotation(source)) continue;
 			if (source.isSetComponent()) {
 				Component sourceComponent = source.getComponent();
 				for (int j = i + 1; j < sortedSAs.size(); j++) {
 					SequenceAnnotation target = sortedSAs.get(j);
-					if (target.getLocations().iterator().next()==null ||
-							target.getLocations().iterator().next() instanceof GenericLocation) continue;
+					if (isGenericSequenceAnnotation(target)) continue;
 					if (target.isSetComponent()) {
 						Component targetComponent = target.getComponent();
 						successorMap.get(sourceComponent).add(targetComponent);
