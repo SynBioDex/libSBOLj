@@ -74,7 +74,7 @@ reference: Section 7.4 on page 16
 [Identified]
 id: sbol-10214
 condition: weak required (not machine checkable)
-description: The annotations property of an Identified object is OPTIONAL and MAY contain a set of 1 Annotation objects.
+description: The annotations property of an Identified object is OPTIONAL and MAY contain a set of Annotation objects.
 reference: Section 7.4 on page 16
 
 [Identified]
@@ -380,13 +380,13 @@ reference: Section 7.7 on page 21
 [ComponentDefinition]
 id: sbol-10526
 condition: strong required
-description: If multiple MapsTos belonging to the Components of a ComponentDefinition have local 27 properties that refer to the same Component, then there MUST NOT be more than one 28 such MapsTo that has a refinement property that contains the URI http://sbols.org/v2# 29 useRemote.
+description: If multiple MapsTos belonging to the Components of a ComponentDefinition have local properties that refer to the same Component, then there MUST NOT be more than one such MapsTo that has a refinement property that contains the URI http://sbols.org/v2# useRemote.
 reference: Section 7.7 on page 21
 
 [ComponentDefinition]
 id: sbol-10527
 condition: recommended
-description: If the types property of a ComponentDefinition contains the DNA or RNA type URI, then 32 its roles property SHOULD contain exactly one URI that refers to a term from the sequence 33 feature branch of the SO.
+description: If the types property of a ComponentDefinition contains the DNA or RNA type URI, then its roles property SHOULD contain exactly one URI that refers to a term from the sequence feature branch of the SO.
 reference: Section 7.7 on page 21
 
 [ComponentInstance]
@@ -517,7 +517,7 @@ reference: Section 7.7.4 on page 29
 [SequenceAnnotation]
 id: sbol-10902
 condition: strong required
-description: The locations property of a SequenceAnnotation is REQUIRED and MUST contain a non- empty set of Location objects. 
+description: The locations property of a SequenceAnnotation is REQUIRED and MUST contain a non-empty set of Location objects. 
 reference: Section 7.7.4 on page 29
 
 [SequenceAnnotation]

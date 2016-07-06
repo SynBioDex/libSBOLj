@@ -67,7 +67,7 @@ public class GenericLocation extends Location{
 	}
 
 	@Override
-	public int compareTo(Location locaction) {
+	public int compareTo(Location location) {
 		return Integer.MAX_VALUE;
 	}
 }

@@ -169,16 +169,17 @@ public class Range extends Location {
 		if (location instanceof Range) {
 			int result = this.start - ((Range)location).getStart();
 			if (result==0) {
-				result = ((Range)location).getEnd() - this.end;
+				result = this.end - ((Range)location).getEnd();
 			}
 			return result;
 		} else if (location instanceof Cut) {
 			int result = this.start - ((Cut)location).getAt();
 			if (result==0) {
-				result = ((Cut)location).getAt() - this.end;
+				result = this.end - ((Cut)location).getAt(); 
 			}
 			return result;
 		}
-		return this.start;
+		return -1*(Integer.MAX_VALUE);
+		//return this.start;
 	}
 }

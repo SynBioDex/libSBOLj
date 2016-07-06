@@ -35,10 +35,22 @@ class writeTester {
 //		for (URI child : seqOn.getDescendantURIsOf(SequenceOntology.TERMINATOR)) {
 //			System.out.println(child.toString());
 //		}
+		SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/SynBioTutorialv2.sbol");
+		ComponentDefinition compDef = doc.getComponentDefinition(URI.create("http://www.async.ece.utah.edu/tets/1"));
+		for (Component component : compDef.getSortedComponents()) {
+			System.out.println(component.getIdentity());
+		}
+		SBOLValidate.validateSBOL(doc, true, true, true);
+		if (SBOLValidate.getNumErrors()>0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.out.println(error);
+			}
+		}
+		
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix("http://www.foo.org");
 		ComponentDefinition cd = document.createComponentDefinition("myCD", ComponentDefinition.DNA);
-		System.out.println(cd.toString());
+//		System.out.println(cd.toString());
 //		document.createComponentDefinition("mySubCD", ComponentDefinition.DNA);
 //		Component comp = cd.createComponent("myComp", AccessType.PRIVATE, "mySubCD");
 //		comp.setDefinition(cd.getIdentity());
@@ -68,7 +80,7 @@ class writeTester {
 		gen.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), 
 				new QName("http://myannotation.org", "thisNested", "annot"), URI.create("http://foo"), annos);
 		SBOLTestUtils.writeAndRead(document,true);
-		SBOLWriter.write(document, (System.out));
+//		SBOLWriter.write(document, (System.out));
 
 
 //		get_myParts(sbolDocument);
