@@ -76,27 +76,33 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		for (Location location : sequenceAnnotation.getLocations()) {
 			if (location instanceof Range) {
 				Range range = (Range)location;
+				Range newRange;
 				if (range.isSetOrientation()) {
-					this.addRange(range.getDisplayId(), range.getStart(), range.getEnd(), 
+					newRange = this.addRange(range.getDisplayId(), range.getStart(), range.getEnd(), 
 							range.getOrientation());
 				} else {
-					this.addRange(range.getDisplayId(), range.getStart(), range.getEnd());
+					newRange = this.addRange(range.getDisplayId(), range.getStart(), range.getEnd());
 				}
+				newRange.copy(range);
 			} else if (location instanceof Cut) {
 				Cut cut = (Cut)location;
+				Cut newCut;
 				if (cut.isSetOrientation()) {
-					this.addCut(cut.getDisplayId(), cut.getAt(), cut.getOrientation());
+					newCut = this.addCut(cut.getDisplayId(), cut.getAt(), cut.getOrientation());
 				} else {
-					this.addCut(cut.getDisplayId(), cut.getAt());
+					newCut = this.addCut(cut.getDisplayId(), cut.getAt());
 				}
+				newCut.copy(cut);
 			} else if (location instanceof GenericLocation) {
 				GenericLocation genericLocation = (GenericLocation)location;
+				GenericLocation newGenericLocation;
 				if (genericLocation.isSetOrientation()) {
-					this.addGenericLocation(genericLocation.getDisplayId(),
+					newGenericLocation = this.addGenericLocation(genericLocation.getDisplayId(),
 							genericLocation.getOrientation());
 				} else {
-					this.addGenericLocation(genericLocation.getDisplayId());
+					newGenericLocation = this.addGenericLocation(genericLocation.getDisplayId());
 				}
+				newGenericLocation.copy(genericLocation);
 			}
 		}
 		Location location = this.getLocation("DUMMY__LOCATION");
@@ -104,7 +110,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 			this.removeLocation(location);
 		}
 		if (sequenceAnnotation.isSetComponent()) {
-			this.setComponent(sequenceAnnotation.getComponentURI());
+			this.setComponent(sequenceAnnotation.getComponent().getDisplayId());
 		}
 		this.roles = new HashSet<>();
 		for (URI role : sequenceAnnotation.getRoles()) {

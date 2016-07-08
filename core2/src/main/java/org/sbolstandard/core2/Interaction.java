@@ -66,7 +66,7 @@ public class Interaction extends Identified {
 		((Identified)this).copy(interaction);
 		for (Participation participation : interaction.getParticipations()) {
 			Participation newParticipation = this.createParticipation(participation.getDisplayId(), 
-					participation.getParticipantURI(), participation.getRoles());
+					participation.getParticipant().getDisplayId(), participation.getRoles());
 			newParticipation.copy(participation);
 		}		
 	}

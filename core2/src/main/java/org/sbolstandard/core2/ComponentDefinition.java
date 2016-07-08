@@ -158,8 +158,8 @@ public class ComponentDefinition extends TopLevel {
 		}
 		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
 			SequenceConstraint newSequenceConstraint = this.createSequenceConstraint(sequenceConstraint.getDisplayId(), 
-					sequenceConstraint.getRestriction(), sequenceConstraint.getSubjectURI(),
-					sequenceConstraint.getObjectURI());
+					sequenceConstraint.getRestriction(), sequenceConstraint.getSubject().getDisplayId(),
+					sequenceConstraint.getObject().getDisplayId());
 			newSequenceConstraint.copy(sequenceConstraint);
 		}
 		for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {

@@ -70,7 +70,7 @@ public class FunctionalComponent extends ComponentInstance {
 		this.mapsTos = new HashMap<>();
 		if (!functionalComponent.getMapsTos().isEmpty()) {
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
-				MapsTo newMapsTo = this.createMapsTo(mapsTo.getDisplayId(), mapsTo.getRefinement(), mapsTo.getLocalURI(), 
+				MapsTo newMapsTo = this.createMapsTo(mapsTo.getDisplayId(), mapsTo.getRefinement(), mapsTo.getLocal().getDisplayId(), 
 						mapsTo.getRemoteURI());
 				newMapsTo.copy(mapsTo);
 			}
@@ -248,6 +248,16 @@ public class FunctionalComponent extends ComponentInstance {
 		}
 		URI remoteURI = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(),
 				remoteId, getDefinition().getVersion());
+		return createMapsTo(displayId,refinement,localURI,remoteURI);
+	}
+	
+	MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, URI remoteURI) throws SBOLValidationException {
+		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
+				localId, moduleDefinition.getVersion());
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() && moduleDefinition!=null &&
+				moduleDefinition.getFunctionalComponent(localURI)==null) {
+			moduleDefinition.createFunctionalComponent(localId,AccessType.PUBLIC,localId,"",DirectionType.INOUT);
+		}
 		return createMapsTo(displayId,refinement,localURI,remoteURI);
 	}
 

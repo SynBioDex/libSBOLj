@@ -34,6 +34,10 @@ public abstract class Location extends Identified implements Comparable<Location
 		super(location);
 		this.setOrientation(location.getOrientation());
 	}
+	
+	void copy(Location location) throws SBOLValidationException {
+		((Identified)this).copy((Identified)location);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.Identified#deepCopy()

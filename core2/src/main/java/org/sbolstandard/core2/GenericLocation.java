@@ -27,6 +27,10 @@ public class GenericLocation extends Location{
 	private GenericLocation(GenericLocation genericLocation) throws SBOLValidationException {
 		super(genericLocation);
 	}
+	
+	void copy(GenericLocation genericLocation) throws SBOLValidationException {
+		((Location)this).copy((Location)genericLocation);
+	}
 
 	@Override
 	public int hashCode() {

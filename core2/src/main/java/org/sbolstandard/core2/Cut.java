@@ -42,6 +42,10 @@ public class Cut extends Location{
 		super(cut);
 		this.setAt(cut.getAt());
 	}
+	
+	void copy(Cut cut) throws SBOLValidationException {
+		((Location)this).copy((Location)cut);
+	}
 
 	/**
 	 * Returns the at property of this Cut instance.

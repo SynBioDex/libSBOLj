@@ -51,6 +51,10 @@ public class Range extends Location {
 		this.setEnd(range.getEnd());
 		this.setStart(range.getStart());
 	}
+	
+	void copy(Range range) throws SBOLValidationException {
+		((Location)this).copy((Location)range);
+	}
 
 	/**
 	 * Sets the start position of this range.
