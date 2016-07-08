@@ -1218,33 +1218,49 @@ public class SBOLDocument {
 		}
 		//validateIdVersion(displayId,version);
 		if (topLevel instanceof Collection) {
-			Collection newCollection = ((Collection) topLevel).copy(URIprefix, displayId, version);
-			addCollection(newCollection);
+			//Collection newCollection = ((Collection) topLevel).copy(URIprefix, displayId, version);
+			//addCollection(newCollection);
+			Collection newCollection = this.createCollection(URIprefix, displayId, version);
+			newCollection.copy((Collection)topLevel);
 			return newCollection;
 		}
 		else if (topLevel instanceof ComponentDefinition) {
-			ComponentDefinition newComponentDefinition = ((ComponentDefinition) topLevel).copy(URIprefix, displayId, version);
-			addComponentDefinition(newComponentDefinition);
+			//ComponentDefinition newComponentDefinition = ((ComponentDefinition) topLevel).copy(URIprefix, displayId, version);
+			//addComponentDefinition(newComponentDefinition);
+			ComponentDefinition newComponentDefinition = this.createComponentDefinition(URIprefix, displayId, version,
+					((ComponentDefinition)topLevel).getTypes());
+			newComponentDefinition.copy((ComponentDefinition)topLevel);
 			return newComponentDefinition;
 		}
 		else if (topLevel instanceof Model) {
-			Model newModel = ((Model) topLevel).copy(URIprefix, displayId, version);
-			addModel(newModel);
+			//Model newModel = ((Model) topLevel).copy(URIprefix, displayId, version);
+			//addModel(newModel);
+			Model newModel = this.createModel(URIprefix, displayId, version, ((Model)topLevel).getSource(), 
+					((Model)topLevel).getLanguage(), ((Model)topLevel).getFramework());
+			newModel.copy((Model)topLevel);
 			return newModel;
 		}
 		else if (topLevel instanceof ModuleDefinition) {
-			ModuleDefinition newModuleDefinition = ((ModuleDefinition) topLevel).copy(URIprefix, displayId, version);
-			addModuleDefinition(newModuleDefinition);
+			//ModuleDefinition newModuleDefinition = ((ModuleDefinition) topLevel).copy(URIprefix, displayId, version);
+			//addModuleDefinition(newModuleDefinition);
+			ModuleDefinition newModuleDefinition = this.createModuleDefinition(URIprefix, displayId, version);
+			newModuleDefinition.copy((ModuleDefinition)topLevel);
 			return newModuleDefinition;
 		}
 		else if (topLevel instanceof Sequence) {
-			Sequence newSequence = ((Sequence) topLevel).copy(URIprefix, displayId, version);
-			addSequence(newSequence);
+			//Sequence newSequence = ((Sequence) topLevel).copy(URIprefix, displayId, version);
+			//addSequence(newSequence);
+			Sequence newSequence = this.createSequence(URIprefix, displayId, version, 
+					((Sequence)topLevel).getElements(), ((Sequence)topLevel).getEncoding());
+			newSequence.copy((Sequence)topLevel);
 			return newSequence;
 		}
 		else if (topLevel instanceof GenericTopLevel) {
-			GenericTopLevel newGenericTopLevel = ((GenericTopLevel) topLevel).copy(URIprefix, displayId, version);
-			addGenericTopLevel(newGenericTopLevel);
+			//GenericTopLevel newGenericTopLevel = ((GenericTopLevel) topLevel).copy(URIprefix, displayId, version);
+			//addGenericTopLevel(newGenericTopLevel);
+			GenericTopLevel newGenericTopLevel = this.createGenericTopLevel(URIprefix, displayId, version, 
+					((GenericTopLevel)topLevel).getRDFType());
+			newGenericTopLevel.copy((GenericTopLevel)topLevel);
 			return newGenericTopLevel;
 		}
 		else {

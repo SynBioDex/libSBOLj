@@ -61,6 +61,15 @@ public class Interaction extends Identified {
 		}
 		this.setParticipations(participations);
 	}
+	
+	void copy(Interaction interaction) throws SBOLValidationException {
+		((Identified)this).copy(interaction);
+		for (Participation participation : interaction.getParticipations()) {
+			Participation newParticipation = this.createParticipation(participation.getDisplayId(), 
+					participation.getParticipantURI(), participation.getRoles());
+			newParticipation.copy(participation);
+		}		
+	}
 
 	/**
 	 * Adds the given type URI to this interaction's set of type URIs.

@@ -66,6 +66,50 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 			this.setComponent(sequenceAnnotation.getComponentURI());
 		}
 		this.roles = new HashSet<>();
+		for (URI role : sequenceAnnotation.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
+	}
+	
+	void copy(SequenceAnnotation sequenceAnnotation) throws SBOLValidationException {
+		((Identified)this).copy((Identified)sequenceAnnotation);
+		for (Location location : sequenceAnnotation.getLocations()) {
+			if (location instanceof Range) {
+				Range range = (Range)location;
+				if (range.isSetOrientation()) {
+					this.addRange(range.getDisplayId(), range.getStart(), range.getEnd(), 
+							range.getOrientation());
+				} else {
+					this.addRange(range.getDisplayId(), range.getStart(), range.getEnd());
+				}
+			} else if (location instanceof Cut) {
+				Cut cut = (Cut)location;
+				if (cut.isSetOrientation()) {
+					this.addCut(cut.getDisplayId(), cut.getAt(), cut.getOrientation());
+				} else {
+					this.addCut(cut.getDisplayId(), cut.getAt());
+				}
+			} else if (location instanceof GenericLocation) {
+				GenericLocation genericLocation = (GenericLocation)location;
+				if (genericLocation.isSetOrientation()) {
+					this.addGenericLocation(genericLocation.getDisplayId(),
+							genericLocation.getOrientation());
+				} else {
+					this.addGenericLocation(genericLocation.getDisplayId());
+				}
+			}
+		}
+		Location location = this.getLocation("DUMMY__LOCATION");
+		if (location!=null) {
+			this.removeLocation(location);
+		}
+		if (sequenceAnnotation.isSetComponent()) {
+			this.setComponent(sequenceAnnotation.getComponentURI());
+		}
+		this.roles = new HashSet<>();
+		for (URI role : sequenceAnnotation.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
 	}
 	
 	/**

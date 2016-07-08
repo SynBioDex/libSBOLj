@@ -131,7 +131,6 @@ public class ComponentDefinitionTest {
 		gRNA_b_gene.createSequenceAnnotation("cutAt7", "cut3", OrientationType.INLINE);		
 
 		assertNotNull(gRNA_b_gene.getSequenceAnnotation("cutAt5"));
-		System.out.println(gRNA_b_gene.getSequenceAnnotations().size());
 		ComponentDefinition test = (ComponentDefinition) doc.createCopy(gRNA_b_gene, "gRNA_b_gene_copy", "");
 		assertTrue(test.getSequenceAnnotations().size() == 3);
 	}

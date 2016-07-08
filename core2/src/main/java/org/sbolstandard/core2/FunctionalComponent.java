@@ -64,6 +64,18 @@ public class FunctionalComponent extends ComponentInstance {
 			this.setMapsTos(mapsTos);
 		}
 	}
+	
+	void copy(FunctionalComponent functionalComponent) throws SBOLValidationException {
+		((ComponentInstance)this).copy((ComponentInstance)functionalComponent);
+		this.mapsTos = new HashMap<>();
+		if (!functionalComponent.getMapsTos().isEmpty()) {
+			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+				MapsTo newMapsTo = this.createMapsTo(mapsTo.getDisplayId(), mapsTo.getRefinement(), mapsTo.getLocalURI(), 
+						mapsTo.getRemoteURI());
+				newMapsTo.copy(mapsTo);
+			}
+		}
+	}
 
 	/**
 	 * Returns the direction property of this functional component.

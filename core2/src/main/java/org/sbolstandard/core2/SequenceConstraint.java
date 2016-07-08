@@ -82,6 +82,10 @@ public class SequenceConstraint extends Identified {
 		this.setObject(sequenceConstraint.getObjectURI());
 	}
 	
+	void copy(SequenceConstraint sequenceConstraint) throws SBOLValidationException {
+		((Identified)this).copy((Identified)sequenceConstraint);
+	}
+	
 	/**
 	 * Returns the restriction property of this sequence constraint.
 	 * 

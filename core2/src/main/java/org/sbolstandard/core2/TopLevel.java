@@ -54,6 +54,10 @@ public abstract class TopLevel extends Identified {
 		super(toplevel);
 	}
 	
+	void copy(TopLevel topLevel) throws SBOLValidationException {
+		((Identified)this).copy((Identified)topLevel);
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.Identified#deepCopy()
 	 */

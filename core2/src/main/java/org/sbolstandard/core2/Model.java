@@ -56,6 +56,10 @@ public class Model extends TopLevel {
 		this.setLanguage(model.getLanguage());
 		this.setFramework(model.getFramework());
 	}
+	
+	void copy(Model model) throws SBOLValidationException {
+		((TopLevel)this).copy((Identified)model);
+	}
 
 	/**
 	 * Returns the this model's source property.

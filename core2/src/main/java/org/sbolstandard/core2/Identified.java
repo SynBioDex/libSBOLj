@@ -89,6 +89,26 @@ public abstract class Identified {
 			this.setDescription(identified.getDescription());
 		}
 	}
+	
+	void copy(Identified identified) throws SBOLValidationException {
+		this.annotations = new ArrayList<>();
+		if (identified.hasAnnotations()) {
+			List<Annotation> clonedAnnotations = new ArrayList<>();
+			for (Annotation annotation : identified.getAnnotations()) {
+				clonedAnnotations.add(annotation.copy());
+			}
+			this.setAnnotations(clonedAnnotations);
+		}
+		if (identified.isSetWasDerivedFrom()) {
+			this.setWasDerivedFrom(URI.create(identified.getWasDerivedFrom().toString()));
+		}
+		if (identified.isSetName()) {
+			this.setName(identified.getName());
+		}
+		if (identified.isSetDescription()) {
+			this.setDescription(identified.getDescription());
+		}		
+	}
 
 	//	public Identified (String URIprefix, String displayId, String version) {
 	//		setIdentity(URI.create(URIprefix.trim() + '/' + displayId.trim() + '/' + version));

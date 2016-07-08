@@ -51,6 +51,17 @@ public class Module extends Identified {
 			this.addMapsTo(mapping.deepCopy());
 		}
 	}
+	
+	void copy(Module module) throws SBOLValidationException {
+		((Identified)this).copy((Identified)module);
+		if (!module.getMapsTos().isEmpty()) {
+			for (MapsTo mapsTo : module.getMapsTos()) {
+				MapsTo newMapsTo = this.createMapsTo(mapsTo.getDisplayId(), mapsTo.getRefinement(), mapsTo.getLocalURI(), 
+						mapsTo.getRemoteURI());
+				newMapsTo.copy(mapsTo);
+			}
+		}
+	}
 
 	/**
 	 * Returns the module definition URI that this module refers to.

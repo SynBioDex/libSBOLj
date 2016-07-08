@@ -145,6 +145,30 @@ public class ComponentDefinition extends TopLevel {
 		}
 		this.setSequences(componentDefinition.getSequenceURIs());
 	}
+	
+	void copy(ComponentDefinition componentDefinition) throws SBOLValidationException {
+		((TopLevel)this).copy((TopLevel)componentDefinition);
+		for (URI role : componentDefinition.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
+		for (Component component : componentDefinition.getComponents()) {
+			Component newComponent = this.createComponent(component.getDisplayId(), 
+					component.getAccess(), component.getDefinitionURI());
+			newComponent.copy(component);
+		}
+		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
+			SequenceConstraint newSequenceConstraint = this.createSequenceConstraint(sequenceConstraint.getDisplayId(), 
+					sequenceConstraint.getRestriction(), sequenceConstraint.getSubjectURI(),
+					sequenceConstraint.getObjectURI());
+			newSequenceConstraint.copy(sequenceConstraint);
+		}
+		for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
+			SequenceAnnotation newSequenceAnnotation = this.createSequenceAnnotation(
+				sequenceAnnotation.getDisplayId(),"DUMMY__LOCATION");
+			newSequenceAnnotation.copy(sequenceAnnotation);
+		}
+		this.setSequences(componentDefinition.getSequenceURIs());
+	}
 
 	/**
 	 * Adds the given type URI to this component definition's set of type URIs.

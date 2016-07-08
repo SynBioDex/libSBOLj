@@ -67,6 +67,10 @@ public class MapsTo extends Identified{
 		this.setLocal(mapsTo.getLocalURI());
 		this.setRemote(mapsTo.getRemoteURI());
 	}
+	
+	void copy(MapsTo mapsTo) throws SBOLValidationException {
+		((Identified)this).copy((Identified)mapsTo);
+	}
 
 	/**
 	 * Returns the refinement property of this mapsTo.

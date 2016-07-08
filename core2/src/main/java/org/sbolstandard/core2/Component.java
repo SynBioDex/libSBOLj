@@ -62,6 +62,24 @@ public class Component extends ComponentInstance{
 			}
 			this.setMapsTos(mapsTos);
 		}
+		this.roles = new HashSet<>();
+		for (URI role : component.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
+	}
+	
+	void copy(Component component) throws SBOLValidationException {
+		((ComponentInstance)this).copy((ComponentInstance)component);
+		if (!component.getMapsTos().isEmpty()) {
+			for (MapsTo mapsTo : component.getMapsTos()) {
+				MapsTo newMapsTo = this.createMapsTo(mapsTo.getDisplayId(), mapsTo.getRefinement(), mapsTo.getLocalURI(), 
+						mapsTo.getRemoteURI());
+				newMapsTo.copy(mapsTo);
+			}
+		}
+		for (URI role : component.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
 	}
 
 	/* (non-Javadoc)

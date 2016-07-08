@@ -50,6 +50,10 @@ public class GenericTopLevel extends TopLevel{
 		super(genericTopLevel);
 		this.setRDFType(genericTopLevel.getRDFType());
 	}
+	
+	void copy(GenericTopLevel genericTopLevel) throws SBOLValidationException {
+		((TopLevel)this).copy((Identified)genericTopLevel);
+	}
 
 	/**
 	 * Returns the RDF type property of this GenericTopLevel instance.

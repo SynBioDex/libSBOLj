@@ -71,6 +71,28 @@ public class ModuleDefinition extends TopLevel {
 		}
 		this.setModels(moduleDefinition.getModelURIs());
 	}
+	
+	void copy(ModuleDefinition moduleDefinition) throws SBOLValidationException {
+		((TopLevel)this).copy((TopLevel)moduleDefinition);
+		for (URI role : moduleDefinition.getRoles()) {
+			this.addRole(role);
+		}
+		for (FunctionalComponent component : moduleDefinition.getFunctionalComponents()) {
+			FunctionalComponent newComponent = this.createFunctionalComponent(component.getDisplayId(), 
+					component.getAccess(), component.getDefinitionURI(), component.getDirection());
+			newComponent.copy(component);
+		}
+		for (Module subModule : moduleDefinition.getModules()) {
+			Module newModule = this.createModule(subModule.getDisplayId(), subModule.getDefinitionURI());
+			newModule.copy(subModule);
+		}
+		for (Interaction interaction : moduleDefinition.getInteractions()) {
+			Interaction newInteraction = this.createInteraction(interaction.getDisplayId(), 
+					interaction.getTypes());
+			newInteraction.copy(interaction);
+		}
+		this.setModels(moduleDefinition.getModelURIs());
+	}
 
 	/**
 	 * Adds the given role URI to this module definition's set of role URIs.

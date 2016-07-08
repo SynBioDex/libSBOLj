@@ -42,11 +42,16 @@ public class Collection extends TopLevel{
 		//super(collection.getIdentity());
 		super(collection);
 		this.members = new HashSet<>();
-		Set<URI> newMembers = new HashSet<>();
 		for (URI member : collection.getMemberURIs()) {
-			newMembers.add(member);
+			this.addMember(member);
 		}
-		this.setMembers(newMembers);
+	}
+	
+	void copy(Collection collection) throws SBOLValidationException {
+		((TopLevel)this).copy((TopLevel)collection);
+		for (URI member : collection.getMemberURIs()) {
+			this.addMember(member);
+		}
 	}
 
 	/**

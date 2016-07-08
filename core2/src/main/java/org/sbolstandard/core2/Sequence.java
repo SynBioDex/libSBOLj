@@ -79,6 +79,10 @@ public class Sequence extends TopLevel{
 		this.setEncoding(sequence.getEncoding());
 		this.setElements(sequence.getElements());
 	}
+	
+	void copy(Sequence sequence) throws SBOLValidationException {
+		((TopLevel)this).copy((Identified)sequence);
+	}
 
 	//	public Sequence(String authority, String Id, String elements, URI encoding) {
 	//		super(authority, Id);

@@ -52,6 +52,10 @@ public class Participation extends Identified {
 		this.setParticipant(participation.getParticipantURI());
 	}
 
+	void copy(Participation participation) throws SBOLValidationException {
+		((Identified)this).copy((Identified)participation);
+	}
+	
 	/**
 	 * Returns the FunctionalComponent URI that this participation refers to.
 	 *

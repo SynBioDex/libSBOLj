@@ -180,9 +180,8 @@ public class ModuleDefinitionTest {
 	{
 		SBOLDocument doc_copy = new SBOLDocument();
 		doc_copy.setDefaultURIprefix("http://sbols.org/CRISPR_Example/");
-		doc_copy.setComplete(true);
+		doc_copy.setComplete(false);
 		doc_copy.setCreateDefaults(true);
-		doc_copy.setComplete(true);
 		doc_copy.createCopy(geneticToggleSwitch);
 		ModuleDefinition TetRInverter_copy = doc_copy.getModuleDefinition("geneticToggleSwitch", "");
 		assertTrue(TetRInverter_copy.getModule("TetRInverter").equals(TetRInverter));	

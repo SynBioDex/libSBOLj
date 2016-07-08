@@ -47,6 +47,10 @@ public abstract class ComponentInstance extends Identified {
 		setAccess(component.getAccess());
 		setDefinition(component.getDefinitionURI());
 	}
+	
+	void copy(ComponentInstance component) throws SBOLValidationException {
+		((Identified)this).copy(component);
+	}
 
 	/**
 	 * Returns the access property.
