@@ -2,6 +2,9 @@ package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.xml.namespace.QName;
 
 import org.junit.After;
@@ -37,7 +40,7 @@ public class AnnotationTest {
 	}
 
 	@Test
-	public void test_pubConstructors() throws SBOLValidationException
+	public void test_pubConstructors() throws SBOLValidationException, URISyntaxException
 	{
 		Annotation CD_annot = gRNA_b_gene.createAnnotation(new QName(prURI, "protein", "pr"),
 				true);	
@@ -81,7 +84,25 @@ public class AnnotationTest {
 		assertTrue(CD_annot.getStringValue().equals("notAProtein"));
 		gRNA_b_gene.removeAnnotation(CD_annot);
 		assertTrue(gRNA_b_gene.getAnnotations().size() == 0);
+		
+		//test constructor with URI
+		CD_annot = gRNA_b_gene.createAnnotation(new QName(prURI, "protein", "pr"), new URI("http://www.sbolstandard.org/protein"));
+		assertTrue(gRNA_b_gene.getAnnotation(CD_annot.getQName()).getURIValue().equals(new URI("http://www.sbolstandard.org/protein")));
+		assertTrue(gRNA_b_gene.getAnnotations().size() == 1);
+		assertTrue(CD_annot.isURIValue());
+		CD_annot.setURIValue(new URI("http://www.sbolstandard.org/gene"));
+		assertTrue(CD_annot.getURIValue().equals(new URI("http://www.sbolstandard.org/gene")));
+		gRNA_b_gene.removeAnnotation(CD_annot);
+		assertTrue(gRNA_b_gene.getAnnotations().size() == 0);
 
+	}
+	
+	@Test
+	public void test_toString() throws SBOLValidationException
+	{
+		Annotation CD_annot = gRNA_b_gene.createAnnotation(new QName(prURI, "protein", "pr"),
+				true);	
+		assertTrue(CD_annot.toString().contains("value=" + true));
 	}
 	
 
