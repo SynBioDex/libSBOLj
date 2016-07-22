@@ -2,6 +2,7 @@ package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -9,8 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.sbolstandard.core2.ComponentDefinition;
-import org.sbolstandard.core2.MapsTo;
-import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SequenceConstraint;
 
@@ -24,7 +23,8 @@ public class SequenceConstraintTest {
 		repression_doc.setDefaultURIprefix(prURI);
 		repression_doc.setTypesInURIs(false);
 		repression_doc.setComplete(true);
-		repression_doc.read("C:/Users/meher/Documents/workspace/libSBOLj/core2/src/test/resources/SBOL2/RepressionModel.rdf");
+		InputStream docAsStream = SequenceConstraintTest.class.getResourceAsStream("/SBOL2/RepressionModel.rdf");
+		repression_doc.read(docAsStream);
 	}
 
 	@After
@@ -38,7 +38,6 @@ public class SequenceConstraintTest {
 		assertNotNull(repression_doc);
 		URI gRNA_gene = new URI("http://sbols.org/CRISPR_Example/gRNA_b_gene/1.0");
 		ComponentDefinition gRNA_b_gene = repression_doc.getComponentDefinition(gRNA_gene);
-		//gRNA_b_gene = repression_doc.getComponentDefinition("gRNA_b_gene", "1.0");
 		assertNotNull(gRNA_b_gene);
 		assertTrue(gRNA_b_gene.getSequenceConstraints().size() == 2);
 		SequenceConstraint gRNA_b_gene_constraint1 = gRNA_b_gene.getSequenceConstraint("gRNA_b_gene_constraint1");
