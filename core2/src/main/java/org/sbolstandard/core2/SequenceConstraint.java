@@ -344,7 +344,8 @@ public class SequenceConstraint extends Identified {
 	public String toString() {
 		return "SequenceConstraint ["
 				+ super.toString()
-				+ ", restriction=" + restriction 
+				//+ ", restriction=" + restriction
+				+ ", restriction=" + this.getRestriction().toString()
 				+ ", subject=" + subject
 				+ ", object=" + object 
 				+ "]";
