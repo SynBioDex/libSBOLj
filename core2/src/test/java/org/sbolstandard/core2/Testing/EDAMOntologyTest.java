@@ -2,6 +2,7 @@ package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
 
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -9,14 +10,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.sbolstandard.core2.EDAMOntology;
-import org.sbolstandard.core2.SystemsBiologyOntology;
 
 public class EDAMOntologyTest {
-	private EDAMOntology descendents = new EDAMOntology();
+	private EDAMOntology descendents = null;
 
 
 	@Before
 	public void setUp() throws Exception {
+		descendents = new EDAMOntology();
 	}
 
 	@After
@@ -26,7 +27,6 @@ public class EDAMOntologyTest {
 
 	@Test
 	public void test_getDescendantsMethods() throws URISyntaxException {
-		
 		//binary format URI
 		URI binary_format = new URI("http://identifiers.org/edam/format_2333");
 		/*descendent format_2333: binary format*/

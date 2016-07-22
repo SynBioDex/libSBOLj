@@ -1,11 +1,6 @@
 package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
-
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

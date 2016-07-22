@@ -21,17 +21,10 @@ import org.sbolstandard.core2.SequenceOntology;
 public class ComponentTest {
 	private SBOLDocument doc = null;
 	private ComponentDefinition gRNA_b_gene = null;
-	private ComponentDefinition target_gene_CD = null;
-
-	private ComponentDefinition target_gene_comp_CD = null;
-	private ComponentDefinition promoter_CD = null;
 	private ComponentDefinition gene_CD = null;
-	private ComponentDefinition terminator_CD = null;
-	private ComponentDefinition target_protein = null;
 	private Component promoter = null;
 	private Component gene = null;
 	private Component target_gene = null;
-	private Component terminator = null;
 	private Component protein = null;
 	
 	@Before
@@ -43,19 +36,19 @@ public class ComponentTest {
 		doc.setComplete(true);
 		/*create CD's for main CD and sub-components*/
 		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA);
-		promoter_CD = doc.createComponentDefinition("promoter_CD", "", ComponentDefinition.DNA);
+		doc.createComponentDefinition("promoter_CD", "", ComponentDefinition.DNA);
 		gene_CD = doc.createComponentDefinition("gene_CD", "", ComponentDefinition.DNA);
-		terminator_CD = doc.createComponentDefinition("terminator_CD", "", ComponentDefinition.DNA);
+		doc.createComponentDefinition("terminator_CD", "", ComponentDefinition.DNA);
 		
 		/*create Components   */
 		promoter = gRNA_b_gene.createComponent("promoter", AccessType.PUBLIC, "promoter_CD");
 		gene = gRNA_b_gene.createComponent("gene", AccessType.PUBLIC, "gene_CD");
-		terminator = gRNA_b_gene.createComponent("terminator", AccessType.PUBLIC, "terminator_CD");
+		gRNA_b_gene.createComponent("terminator", AccessType.PUBLIC, "terminator_CD");
 		
-		target_gene_CD = doc.createComponentDefinition("target_gene_CD", "", ComponentDefinition.DNA);
+		doc.createComponentDefinition("target_gene_CD", "", ComponentDefinition.DNA);
 		target_gene = gRNA_b_gene.createComponent("target_gene", AccessType.PUBLIC, "target_gene_CD");
 		
-		target_protein = doc.createComponentDefinition("target_protein", ComponentDefinition.DNA);
+		doc.createComponentDefinition("target_protein", ComponentDefinition.DNA);
 		protein = gene_CD.createComponent("protein", AccessType.PUBLIC, "target_protein");
 	}
 

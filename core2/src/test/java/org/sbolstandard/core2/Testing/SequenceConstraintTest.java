@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,17 +1,15 @@
 package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.Range;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SequenceAnnotation;
 
-public class RangeTestSuite {
+public class RangeTest {
 	private SBOLDocument doc = null;
 	private ComponentDefinition gRNA_b_gene = null;
 	private SequenceAnnotation gene_SA = null;
