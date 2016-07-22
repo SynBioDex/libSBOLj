@@ -1,12 +1,10 @@
 package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.sbolstandard.core2.AccessType;
-import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.Cut;
 import org.sbolstandard.core2.GenericLocation;
@@ -22,13 +20,6 @@ public class SequenceAnnotationTest {
 	private SBOLDocument doc = null;
 	private ComponentDefinition gRNA_b_gene = null;
 	private ComponentDefinition promoter_CD = null;
-	private ComponentDefinition gene_CD = null;
-	private ComponentDefinition terminator_CD = null;
-
-	private Component promoter = null;
-	private Component gene = null;
-	private Component terminator = null;
-	
 	private SequenceAnnotation promoter_SA = null;
 	private SequenceAnnotation gene_SA = null;
 	private SequenceAnnotation terminator_SA = null;
@@ -44,12 +35,11 @@ public class SequenceAnnotationTest {
 		/*create CD's for main CD and sub-components*/
 		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA);
 		promoter_CD = doc.createComponentDefinition("promoter_CD", "", ComponentDefinition.DNA);
-		gene_CD = doc.createComponentDefinition("gene_CD", "", ComponentDefinition.DNA);
-		terminator_CD = doc.createComponentDefinition("terminator_CD", "", ComponentDefinition.DNA);
-		/*create Components   */
-		promoter = gRNA_b_gene.createComponent("promoter", AccessType.PUBLIC, "promoter_CD");
-		gene = gRNA_b_gene.createComponent("gene", AccessType.PUBLIC, "promoter_CD");
-		terminator = gRNA_b_gene.createComponent("terminator", AccessType.PUBLIC, "promoter_CD");
+		doc.createComponentDefinition("gene_CD", "", ComponentDefinition.DNA);
+		doc.createComponentDefinition("terminator_CD", "", ComponentDefinition.DNA);
+		gRNA_b_gene.createComponent("promoter", AccessType.PUBLIC, "promoter_CD");
+		gRNA_b_gene.createComponent("gene", AccessType.PUBLIC, "promoter_CD");
+		gRNA_b_gene.createComponent("terminator", AccessType.PUBLIC, "promoter_CD");
 		
 		/*create SequenceAnnotations*/
 		promoter_SA = gRNA_b_gene.createSequenceAnnotation("promoter_SA", "cutAt1");

@@ -127,7 +127,29 @@ public class SBOLDocumentTest {
 		InputStream file = new FileInputStream(file_base.toString());
 		test_doc.read(file);
 		assertNotNull(test_doc); */
-	}		
+	}	
+	
+	@Test
+	public void test_createCopy() throws SBOLValidationException, IOException, SBOLConversionException
+	{
+		SBOLDocument repression_doc = new SBOLDocument();
+		repression_doc.setDefaultURIprefix(prURI);
+		repression_doc.setTypesInURIs(false);
+		//repression_doc.setComplete(true);
+		
+		SBOLDocument copied_doc = new SBOLDocument();
+		copied_doc.setDefaultURIprefix(prURI);
+		copied_doc.setTypesInURIs(false);
+		//copied_doc.setComplete(true);
+		
+		///core2/src/test/java/org/sbolstandard/core2/Testing/RepressionModel.rdf"
+		repression_doc.read("C:/Users/meher/Documents/workspace/libSBOLj/core2/src/test/resources/SBOL2/RepressionModel.rdf");
+		copied_doc.createCopy(repression_doc);
+		assertTrue(repression_doc.equals(copied_doc));
+		
+		
+		
+	}
 
 	
 

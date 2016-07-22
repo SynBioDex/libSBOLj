@@ -102,6 +102,7 @@ public class ComponentTest {
 		assertTrue(gene.getMapsTos().size() == 0);
 	} 
 	
+	
 	@Test
 	public void test_toString()
 	{
