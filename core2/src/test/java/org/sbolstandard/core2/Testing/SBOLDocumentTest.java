@@ -2,6 +2,7 @@ package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -131,7 +132,9 @@ public class SBOLDocumentTest {
 		//copied_doc.setComplete(true);
 		
 		///core2/src/test/java/org/sbolstandard/core2/Testing/RepressionModel.rdf"
-		repression_doc.read("C:/Users/meher/Documents/workspace/libSBOLj/core2/src/test/resources/SBOL2/RepressionModel.rdf");
+		InputStream docAsStream = SequenceConstraintTest.class.getResourceAsStream("/SBOL2/RepressionModel.rdf");
+		repression_doc.read(docAsStream);
+		//repression_doc.read("C:/Users/meher/Documents/workspace/libSBOLj/core2/src/test/resources/SBOL2/RepressionModel.rdf");
 		copied_doc.createCopy(repression_doc);
 		assertTrue(repression_doc.equals(copied_doc));
 		
