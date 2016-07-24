@@ -32,7 +32,6 @@ public class GenericTopLevelTest {
 				"",
 				new QName("http://partsregistry.org", "Random_Sheet", ""));
 		
-		//why doesn't toString method print version? Bigger problem: why aren't all toString methods standard?
 		assertTrue(doc.getGenericTopLevel(topLevel.getIdentity()).toString().length() != 0);
 		assertNotNull(topLevel.toString());
 		assertTrue(topLevel.toString().contains("displayId=random_sheet1"));

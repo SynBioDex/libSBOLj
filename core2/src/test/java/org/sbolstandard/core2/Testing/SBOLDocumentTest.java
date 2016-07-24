@@ -1,19 +1,12 @@
 package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import javax.xml.namespace.QName;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,13 +17,9 @@ import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SystemsBiologyOntology;
 import org.sbolstandard.core2.TopLevel;
-import org.sbolstandard.core2.ValidationTest;
 
 public class SBOLDocumentTest {
 	private SBOLDocument doc = null;
-	private ComponentDefinition gRNA_promoter = null;
-	private ComponentDefinition CRa_promoter = null;
-	private ComponentDefinition TetR_promoter = null;
 	private TopLevel gRNA_b_gene = null;
 	private String prURI="http://partsregistry.org";
 
@@ -41,9 +30,9 @@ public class SBOLDocumentTest {
 		doc.setTypesInURIs(false);
 		doc.setComplete(true);
 		
-		 gRNA_promoter = doc.createComponentDefinition("http://partsregistry.org", "gRNA_promoter", "", ComponentDefinition.DNA);
-		 CRa_promoter = doc.createComponentDefinition(prURI, "CRa_promoter", "", ComponentDefinition.DNA);
-		 TetR_promoter = doc.createComponentDefinition(prURI, "TetR_promoter","", ComponentDefinition.DNA); 
+		 doc.createComponentDefinition("http://partsregistry.org", "gRNA_promoter", "", ComponentDefinition.DNA);
+		 doc.createComponentDefinition(prURI, "CRa_promoter", "", ComponentDefinition.DNA);
+		 doc.createComponentDefinition(prURI, "TetR_promoter","", ComponentDefinition.DNA); 
 	}
 
 	@After
@@ -76,7 +65,7 @@ public class SBOLDocumentTest {
 	public void test_namespaceMethods() throws URISyntaxException
 	{
 		List<QName> doc_namespaces = doc.getNamespaces();
-		QName namespace = doc_namespaces.get(0);
+		doc_namespaces.get(0);
 		assertTrue(doc.getNamespaces().size() == 4);
 		QName created_ns = new QName("http://www.w3.org/1999/02/prov#");
 		doc.addNamespace(created_ns);
@@ -127,7 +116,31 @@ public class SBOLDocumentTest {
 		InputStream file = new FileInputStream(file_base.toString());
 		test_doc.read(file);
 		assertNotNull(test_doc); */
-	}		
+	}	
+	
+	@Test
+	public void test_createCopy() throws SBOLValidationException, IOException, SBOLConversionException
+	{
+		SBOLDocument repression_doc = new SBOLDocument();
+		repression_doc.setDefaultURIprefix(prURI);
+		repression_doc.setTypesInURIs(false);
+		//repression_doc.setComplete(true);
+		
+		SBOLDocument copied_doc = new SBOLDocument();
+		copied_doc.setDefaultURIprefix(prURI);
+		copied_doc.setTypesInURIs(false);
+		//copied_doc.setComplete(true);
+		
+		///core2/src/test/java/org/sbolstandard/core2/Testing/RepressionModel.rdf"
+		InputStream docAsStream = SequenceConstraintTest.class.getResourceAsStream("/SBOL2/RepressionModel.rdf");
+		repression_doc.read(docAsStream);
+		//repression_doc.read("C:/Users/meher/Documents/workspace/libSBOLj/core2/src/test/resources/SBOL2/RepressionModel.rdf");
+		copied_doc.createCopy(repression_doc);
+		assertTrue(repression_doc.equals(copied_doc));
+		
+		
+		
+	}
 
 	
 

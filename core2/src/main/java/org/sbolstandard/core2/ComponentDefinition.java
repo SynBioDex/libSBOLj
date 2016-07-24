@@ -406,7 +406,7 @@ public class ComponentDefinition extends TopLevel {
 	}
 	
 	/**
-	 * Returns the first sequence that matches the given encoding.
+	 * Returns the first sequence referenced by this component definition that matches the given sequence encoding.
 	 * 
 	 * @param encoding URI for a sequence encoding
 	 * @return the first sequence that matches the given encoding
@@ -423,6 +423,12 @@ public class ComponentDefinition extends TopLevel {
 	
 	/**
 	 *  Return the elements of a nucleic acid sequence implied by the hierarchically included components.
+	 *  <p>
+	 *  This method first tries to obtain the length of a nucleic acid sequence from the set of sequences referenced by this component definition 
+	 *  that has an {@link Sequence#IUPAC_DNA} encoding. It then iterates through this component defintion's 
+	 *  sequence annotations, and update the length with the ending locations that have a larger value than the current length. It then populates
+	 *  the elements with this length with unknown bases. This method iterates through this component defintion's sequence annotations to recursively
+	 *  search for bases implied by the hierarchically included components, and fills the elements with these known bases.
 	 *  
 	 *  @return the elements of a nucleic sequence implied by the hierarchically included components
 	 */
@@ -902,7 +908,7 @@ public class ComponentDefinition extends TopLevel {
 	
 	/**
 	 * Returns a sorted list of components owned by this component definition. The order is determined by the
-	 * order of appearance of components on a DNA strand  
+	 * order of appearance of components on a DNA strand.
 	 *
 	 * @return a sorted list of components owned by this component definition
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10605.
@@ -963,8 +969,20 @@ public class ComponentDefinition extends TopLevel {
 	/**
 	 * Returns a sorted list of sequence annotations owned by this
 	 * component definition. The order is determined by each 
-	 * sequence annotation's location value(s), and the sorted list 
-	 * has an ascending ordering of sequence annotations. 
+	 * sequence annotation's location. 
+	 * <p>
+	 * Priority is given to a sequence annotation whose location has a lower (starting) value. Here is an example.
+	 * <ul>
+	 * <li>SA1 has a range location (4, 10);</li>
+	 * <li>SA2 has a range location (3, 7);</li>
+	 * <li>SA3 has a cut location 2;</li>
+	 * <li>SA4 has a cut location 4;</li>
+	 * <li>SA5 has a cut location 6;</li>
+	 * <li>SA6 has a cut location 10; and</li>
+	 * <li>SA7 has a generic location.</li>
+	 * </ul>
+	 * The sorted list it returns is [SA3, SA2, SA4, SA1, SA5, SA6, SA7].
+	 * 
 	 *
 	 * @return a sorted list of sequence annotations owned by this
 	 *         component definition.

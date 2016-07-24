@@ -1,11 +1,6 @@
 package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
-
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,17 +11,15 @@ import org.sbolstandard.core2.MapsTo;
 import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
-import org.sbolstandard.core2.SequenceOntology;
 
-public class ComponentTest {
+public class MapsToTest {
 	private SBOLDocument doc = null;
 	private ComponentDefinition gRNA_b_gene = null;
 	private ComponentDefinition gene_CD = null;
-	private Component promoter = null;
 	private Component gene = null;
 	private Component target_gene = null;
 	private Component protein = null;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		String prURI="http://partsregistry.org";
@@ -40,8 +33,7 @@ public class ComponentTest {
 		gene_CD = doc.createComponentDefinition("gene_CD", "", ComponentDefinition.DNA);
 		doc.createComponentDefinition("terminator_CD", "", ComponentDefinition.DNA);
 		
-		/*create Components   */
-		promoter = gRNA_b_gene.createComponent("promoter", AccessType.PUBLIC, "promoter_CD");
+		gRNA_b_gene.createComponent("promoter", AccessType.PUBLIC, "promoter_CD");
 		gene = gRNA_b_gene.createComponent("gene", AccessType.PUBLIC, "gene_CD");
 		gRNA_b_gene.createComponent("terminator", AccessType.PUBLIC, "terminator_CD");
 		
@@ -52,60 +44,27 @@ public class ComponentTest {
 		protein = gene_CD.createComponent("protein", AccessType.PUBLIC, "target_protein");
 	}
 
-	
 	@After
 	public void tearDown() throws Exception {
-	}
-
-
-	@Test
-	public void test_roleMethods()
-	{	
-		/*add roles    */
-		assertTrue(promoter.addRole(SequenceOntology.PROMOTER));
-		assertTrue(promoter.getRoles().contains(SequenceOntology.PROMOTER));
-		assertTrue(promoter.containsRole(SequenceOntology.PROMOTER));
-		/*remove role*/
-		promoter.removeRole(SequenceOntology.PROMOTER);
-		assertFalse(promoter.containsRole(SequenceOntology.PROMOTER));
-		/*clear Roles  */
-		assertTrue(promoter.addRole(SequenceOntology.PROMOTER));
-		promoter.clearRoles();
-		assertFalse(promoter.containsRole(SequenceOntology.PROMOTER));
 		
-		Set<URI> promoter_roles = new HashSet<URI>();
-		promoter_roles.add(SequenceOntology.PROMOTER);
-		promoter.setRoles(promoter_roles);
-		assertTrue(promoter.containsRole(SequenceOntology.PROMOTER));
 	}
-	
+
+
 	@Test
-	public void test_ComponentMapsTo() throws SBOLValidationException
+	public void test_toString() throws SBOLValidationException
 	{
 		MapsTo geneMapsTo = gene.createMapsTo("local_gene", RefinementType.USELOCAL, target_gene.getDisplayId(), protein.getDisplayId());
-		assertTrue(gene.getMapsTos().size() == 1);
-		assertNotNull(gene.getMapsTo("local_gene"));
-		assertEquals(gene.getMapsTo("local_gene"), geneMapsTo);
-		gene.removeMapsTo(geneMapsTo);
-		assertTrue(gene.getMapsTos().size() == 0);
-		geneMapsTo = gene.createMapsTo("local_gene", RefinementType.USELOCAL, target_gene.getIdentity(), protein.getIdentity());
-		assertNotNull(gene.getMapsTo(geneMapsTo.getIdentity()));
-		assertTrue(gene.getMapsTos().size() == 1);
-		gene.clearMapsTos();
-		assertTrue(gene.getMapsTos().size() == 0);
-	} 
-	
-	
-	@Test
-	public void test_toString()
-	{
-		assertTrue(gene.toString().length() != 0);
-		assertNotNull(gene.toString());
-		assertTrue(gene.toString().contains("identity="));
-		assertTrue(gene.toString().contains("displayId="));
-		assertFalse(gene.toString().contains("name="));
-		assertFalse(gene.toString().contains("description="));
+		assertTrue(geneMapsTo.toString().length() != 0);
+		assertNotNull(geneMapsTo.toString());
+		assertTrue(geneMapsTo.toString().contains("identity="));
+		assertTrue(geneMapsTo.toString().contains("displayId="));
+		assertFalse(geneMapsTo.toString().contains("name="));
+		assertFalse(geneMapsTo.toString().contains("description="));
+		assertTrue(geneMapsTo.toString().contains("refinement="));
+		assertTrue(geneMapsTo.toString().contains("local="));
+		assertTrue(geneMapsTo.toString().contains("remote="));
 
 	}
 	
+
 }

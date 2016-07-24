@@ -1,14 +1,12 @@
 package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.sbolstandard.core2.AccessType;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.DirectionType;
-import org.sbolstandard.core2.FunctionalComponent;
 import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.ModuleDefinition;
 import org.sbolstandard.core2.Participation;
@@ -19,7 +17,6 @@ import org.sbolstandard.core2.SystemsBiologyOntology;
 public class InteractionTest {
 	private SBOLDocument doc = null;
 	private ComponentDefinition TetR = null;
-	private FunctionalComponent TetRInverter_fc = null;
 	private ModuleDefinition TetRInverter_MD = null;
 
 	@Before
@@ -32,7 +29,7 @@ public class InteractionTest {
 		TetRInverter_MD = doc.createModuleDefinition("TetRInverter_MD");
 
 		TetR = doc.createComponentDefinition("TetR", ComponentDefinition.PROTEIN);
-		TetRInverter_fc = TetRInverter_MD.createFunctionalComponent(
+		TetRInverter_MD.createFunctionalComponent(
 				"TetRInverter_fc", AccessType.PUBLIC, TetR.getIdentity(), DirectionType.INOUT);
 	}
 
