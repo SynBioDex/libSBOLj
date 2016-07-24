@@ -314,6 +314,7 @@ public class SequenceOntology {
 	
 	/**
 	 * Returns the set of child IDs that are descendants of the given parent ID. 
+	 * This set excludes the given parent ID.
 	 * 
 	 * @param parentId the ID of the parent stanza
 	 * @return the set of child IDs that are descendants of the given parent ID
@@ -332,7 +333,8 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns the set of child IDs that are descendants of the given parent URI. 
+	 * Returns the set of child IDs that are descendants of the given parent URI.
+	 * This set excludes the given parent ID. 
 	 * 
 	 * @param parentURI the URI of the parent stanza
 	 * @return the set of child IDs that are descendants of the given parent URI 
@@ -345,6 +347,7 @@ public class SequenceOntology {
 	
 	/**
 	 * Returns the set of child URIs that are descendants of the given parent ID.
+	 * This set excludes the given parent URI.
 	 *  
 	 * @param parentId the ID of the parent stanza
 	 * @return the set of child URIs that are descendants of the given parent ID. 
@@ -359,7 +362,8 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns the set of child URIs that are descendants of the given parent URI. 
+	 * Returns the set of child URIs that are descendants of the given parent URI.
+	 * This set excludes the given parent URI. 
 	 * 
 	 * @param parentURI the URI of the parent stanza
 	 * @return the set of child URIs that are descendants of the given parent URI 
@@ -375,6 +379,7 @@ public class SequenceOntology {
 	
 	/**
 	 * Returns the set of child names that are descendants of a given parent ID.
+	 * This set excludes the given parent name.
 	 *  
 	 * @param parentId the ID of the parent stanza
 	 * @return the set of child names that are descendants of a given parent ID. 
@@ -390,7 +395,8 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns the set of child names that are descendants of a given parent URI. 
+	 * Returns the set of child names that are descendants of a given parent URI.
+	 * This set excludes the given parent name. 
 	 * 
 	 * @param parentURI the URI of the parent stanza
 	 * @return the set of child names that are descendants of a given parent URI
