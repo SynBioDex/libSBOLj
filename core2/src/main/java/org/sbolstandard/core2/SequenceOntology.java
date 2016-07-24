@@ -313,10 +313,10 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns the set of child IDs that are descendants of a given parent ID. 
+	 * Returns the set of child IDs that are descendants of the given parent ID. 
 	 * 
 	 * @param parentId the ID of the parent stanza
-	 * @return the set of child IDs that are descendants of a given parent ID
+	 * @return the set of child IDs that are descendants of the given parent ID
 	 */
 	public Set<String> getDescendantsOf(String parentId) {
 		OBOStanza stanza1 = sequenceOntology.getStanza(parentId);
@@ -332,10 +332,10 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns the set of child IDs that are descendants of a given parent URI. 
+	 * Returns the set of child IDs that are descendants of the given parent URI. 
 	 * 
 	 * @param parentURI the URI of the parent stanza
-	 * @return the set of child IDs that are descendants of a given parent URI 
+	 * @return the set of child IDs that are descendants of the given parent URI 
 	 */
 	public final Set<String> getDescendantsOf(URI parentURI) {
 		String parentId = getId(parentURI);
@@ -344,10 +344,10 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns the set of child URIs that are descendants of a given parent ID.
+	 * Returns the set of child URIs that are descendants of the given parent ID.
 	 *  
 	 * @param parentId the ID of the parent stanza
-	 * @return the set of child URIs that are descendants of a given parent ID. 
+	 * @return the set of child URIs that are descendants of the given parent ID. 
 	 */
 	public final Set<URI> getDescendantURIsOf(String parentId) {
 		Set<String> descendents = getDescendantsOf(parentId);
@@ -359,10 +359,10 @@ public class SequenceOntology {
 	}
 	
 	/**
-	 * Returns the set of child URIs that are descendants of a given parent URI. 
+	 * Returns the set of child URIs that are descendants of the given parent URI. 
 	 * 
 	 * @param parentURI the URI of the parent stanza
-	 * @return the set of child URIs that are descendants of a given parent URI 
+	 * @return the set of child URIs that are descendants of the given parent URI 
 	 */
 	public final Set<URI> getDescendantURIsOf(URI parentURI) {
 		Set<String> descendents = getDescendantsOf(parentURI);
