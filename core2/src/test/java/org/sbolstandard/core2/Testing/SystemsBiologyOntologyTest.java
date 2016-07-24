@@ -6,14 +6,15 @@ import org.junit.Test;
 import org.sbolstandard.core2.SystemsBiologyOntology;
 
 public class SystemsBiologyOntologyTest {
+	private SystemsBiologyOntology descendents = null;
 
 	@Before
 	public void setUp() throws Exception {
+		descendents = new SystemsBiologyOntology();
 	}
 
 	@Test
 	public void test_getDescendantsMethods() {
-		SystemsBiologyOntology descendents = new SystemsBiologyOntology();
 		assertTrue(descendents.getDescendantsOf(SystemsBiologyOntology.PRODUCT).contains("SBO:0000603"));
 		assertTrue(descendents.getDescendantsOf(SystemsBiologyOntology.PRODUCT).size() == 1);
 		assertTrue(descendents.getDescendantsOf("SBO:0000003").contains("SBO:0000603"));

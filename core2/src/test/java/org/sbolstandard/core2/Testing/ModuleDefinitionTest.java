@@ -1,14 +1,12 @@
 package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.sbolstandard.core2.AccessType;
-import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.DirectionType;
 import org.sbolstandard.core2.FunctionalComponent;
@@ -16,12 +14,9 @@ import org.sbolstandard.core2.Interaction;
 import org.sbolstandard.core2.Model;
 import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.ModuleDefinition;
-import org.sbolstandard.core2.Participation;
-import org.sbolstandard.core2.RefinementType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SystemsBiologyOntology;
-import org.sbolstandard.core2.TopLevel;
 
 public class ModuleDefinitionTest {
 	private SBOLDocument doc = null;
@@ -32,13 +27,9 @@ public class ModuleDefinitionTest {
 	private Module LacIInverter = null;
 	private ComponentDefinition TetR_CD = null;
 	private ComponentDefinition LacI_CD = null;
-	private ComponentDefinition target_gene = null;
 	private FunctionalComponent TetR_FC = null;
 	private FunctionalComponent LacI_FC = null;
 	private Interaction TetR_promotes_LacI = null;
-	private Component gene = null;
-	private Component TetR_gene = null;
-
 	@Before
 	public void setUp() throws Exception {
 		doc = new SBOLDocument();
@@ -61,22 +52,21 @@ public class ModuleDefinitionTest {
 		TetR_CD = doc.createComponentDefinition("TetR_CD", ComponentDefinition.DNA);
 		LacI_CD = doc.createComponentDefinition("LacI_CD", ComponentDefinition.DNA);
 		
-		/*create ComponentDefinitions for the individual Components*/
-		ComponentDefinition TetR_Promoter_CD = doc.createComponentDefinition("TetR_Promoter_CD", ComponentDefinition.DNA);
-		ComponentDefinition TetR_Terminator_CD = doc.createComponentDefinition("TetR_Terminator_CD", ComponentDefinition.DNA);
-		ComponentDefinition TetR_Gene_CD = doc.createComponentDefinition("TetR_Gene_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("TetR_Promoter_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("TetR_Terminator_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("TetR_Gene_CD", ComponentDefinition.DNA);
 
-		ComponentDefinition LacI_Promoter_CD = doc.createComponentDefinition("LacI_Promoter_CD", ComponentDefinition.DNA);
-		ComponentDefinition LacI_Terminator_CD = doc.createComponentDefinition("LacI_Terminator_CD", ComponentDefinition.DNA);
-		ComponentDefinition LacI_Gene_CD = doc.createComponentDefinition("LacI_Gene_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("LacI_Promoter_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("LacI_Terminator_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("LacI_Gene_CD", ComponentDefinition.DNA);
 		
-		target_gene = doc.createComponentDefinition("target_gene", ComponentDefinition.DNA);
-		gene = TetR_CD.createComponent("gene", AccessType.PUBLIC, "target_gene");
+		doc.createComponentDefinition("target_gene", ComponentDefinition.DNA);
+		TetR_CD.createComponent("gene", AccessType.PUBLIC, "target_gene");
 		
 		/*add the corresponding components to the appropriate CD*/
 		TetR_CD.createComponent("TetR_promoter", AccessType.PUBLIC, "TetR_Promoter_CD", "");
 		TetR_CD.createComponent("TetR_terminator", AccessType.PUBLIC, "TetR_Terminator_CD", "");
-		TetR_gene = TetR_CD.createComponent("TetR_gene", AccessType.PUBLIC, "TetR_Gene_CD", "");
+		TetR_CD.createComponent("TetR_gene", AccessType.PUBLIC, "TetR_Gene_CD", "");
 				
 		LacI_CD.createComponent("LacI_promoter", AccessType.PUBLIC, "LacI_Promoter_CD", "");
 		LacI_CD.createComponent("LacI_terminator", AccessType.PUBLIC, "LacI_Terminator_CD", "");

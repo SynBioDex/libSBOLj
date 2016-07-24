@@ -372,6 +372,38 @@ public class SequenceOntology {
 		}
 		return descendentURIs;
 	}
+	
+	/**
+	 * Returns the set of child names that are descendants of a given parent ID.
+	 *  
+	 * @param parentId the ID of the parent stanza
+	 * @return the set of child names that are descendants of a given parent ID. 
+	 */
+
+	public final Set<String> getDescendantNamesOf(String parentId) {
+		Set<String> descendents = getDescendantsOf(parentId);
+		Set<String> descendentNames = new HashSet<String>();
+		for (String child : descendents) {
+			descendentNames.add(getName(child));
+		}
+		return descendentNames;
+	}
+	
+	/**
+	 * Returns the set of child names that are descendants of a given parent URI. 
+	 * 
+	 * @param parentURI the URI of the parent stanza
+	 * @return the set of child names that are descendants of a given parent URI
+	 */
+
+	public final Set<String> getDescendantNamesOf(URI parentURI) {
+		Set<String> descendents = getDescendantsOf(parentURI);
+		Set<String> descendentNames = new HashSet<String>();
+		for (String child : descendents) {
+			descendentNames.add(getName(child));
+		}
+		return descendentNames;
+	}
 
 	/**
 	 * Creates a new URI from the Sequence Ontology (SO) namespace, i.e. "http://identifiers.org/so/", with the given ID. 
