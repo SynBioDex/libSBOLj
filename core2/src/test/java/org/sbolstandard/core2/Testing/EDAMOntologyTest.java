@@ -53,6 +53,19 @@ public class EDAMOntologyTest {
 		assertTrue(descendents.getURIbyName("Format").equals(Format));
 	}
 	
+	@Test
+	public void test_getDecendentNames() throws URISyntaxException
+	{
+	
+		assertTrue(descendents.getDescendantNamesOf(EDAMOntology.FORMAT).size() != 0);
+		assertTrue(descendents.getDescendantNamesOf(EDAMOntology.FORMAT).contains("OBO"));
+		assertTrue(descendents.getDescendantNamesOf("format_1915").size() != 0);
+		assertTrue(descendents.getDescendantNamesOf("format_1915").contains("RDF/XML"));
+		
+		//failing but should be passing
+		//assertTrue(descendents.getDescendantNamesOf(EDAMOntology.FORMAT).contains("JSON"));
+
+	}
 	
 
 }
