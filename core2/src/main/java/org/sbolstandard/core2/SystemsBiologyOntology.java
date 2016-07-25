@@ -285,10 +285,11 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
- 	 * Returns the set of child IDs that are descendants of a given parent ID. 
+ 	 * Returns the set of child IDs that are descendants of the given parent ID.
+ 	 * This set excludes the given parent ID.
 	 * 
 	 * @param parentId the ID of the parent stanza
-	 * @return the set of child IDs that are descendants of a given parent ID
+	 * @return the set of child IDs that are descendants of the given parent ID
 	 */
 	public Set<String> getDescendantsOf(String parentId) {
 		OBOStanza stanza1 = systemsBiologyOntology.getStanza(parentId);
@@ -304,10 +305,11 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
- 	 * Returns the set of child IDs that are descendants of a given parent URI. 
+ 	 * Returns the set of child IDs that are descendants of the given parent URI. 
+ 	 * This set excludes the given parent ID.
 	 * 
 	 * @param parentURI the URI of the parent stanza
-	 * @return the set of child IDs that are descendants of a given parent URI 
+	 * @return the set of child IDs that are descendants of the given parent URI 
 	 */
 	public final Set<String> getDescendantsOf(URI parentURI) {
 		String parentId = getId(parentURI);
@@ -316,10 +318,11 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns the set of child URIs that are descendants of a given parent ID.
+	 * Returns the set of child URIs that are descendants of the given parent ID.
+	 * This set excludes the given parent URI.
 	 *  
 	 * @param parentId the ID of the parent stanza
-	 * @return the set of child URIs that are descendants of a given parent ID. 
+	 * @return the set of child URIs that are descendants of the given parent ID. 
 	 */
 
 	public final Set<URI> getDescendantURIsOf(String parentId) {
@@ -332,10 +335,11 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns the set of child URIs that are descendants of a given parent URI. 
+	 * Returns the set of child URIs that are descendants of the given parent URI.
+	 * This set excludes the given parent URI. 
 	 * 
 	 * @param parentURI the URI of the parent stanza
-	 * @return the set of child URIs that are descendants of a given parent URI
+	 * @return the set of child URIs that are descendants of the given parent URI
 	 */
 
 	public final Set<URI> getDescendantURIsOf(URI parentURI) {
@@ -347,7 +351,40 @@ public class SystemsBiologyOntology {
 		return descendentURIs;
 	}
 
+	/**
+	 * Returns the set of child names that are descendants of a given parent ID.
+	 * This set excludes the given parent name.
+	 *  
+	 * @param parentId the ID of the parent stanza
+	 * @return the set of child names that are descendants of a given parent ID. 
+	 */
+
+	public final Set<String> getDescendantNamesOf(String parentId) {
+		Set<String> descendents = getDescendantsOf(parentId);
+		Set<String> descendentNames = new HashSet<String>();
+		for (String child : descendents) {
+			descendentNames.add(getName(child));
+		}
+		return descendentNames;
+	}
 	
+	/**
+	 * Returns the set of child names that are descendants of a given parent URI.
+	 * This set excludes the given parent name. 
+	 * 
+	 * @param parentURI the URI of the parent stanza
+	 * @return the set of child names that are descendants of a given parent URI
+	 */
+
+	public final Set<String> getDescendantNamesOf(URI parentURI) {
+		Set<String> descendents = getDescendantsOf(parentURI);
+		Set<String> descendentNames = new HashSet<String>();
+		for (String child : descendents) {
+			descendentNames.add(getName(child));
+		}
+		return descendentNames;
+	}
+
 	/**
 	 * Creates a new URI from the Systems Biology Ontology (SBO) namespace with the given local name. For example, the method call
 	 * <code>term("SBO_0000001")</code> will return the URI <a>http://purl.obolibrary.org/obo/SBO_0000001</a>
