@@ -36,9 +36,6 @@ public class SequenceOntologyTest {
 		assertTrue(SQ.getDescendantNamesOf(SequenceOntology.PROMOTER).contains("constitutive_promoter"));
 		assertTrue(SQ.getDescendantNamesOf("SO:0000167").size() != 0);
 		assertTrue(SQ.getDescendantNamesOf("SO:0000167").contains("constitutive_promoter"));
-		
-
-
 	}
 	
 	
