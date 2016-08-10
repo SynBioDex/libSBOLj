@@ -100,7 +100,7 @@ public class SBOLValidate {
 				}
 				if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
 					if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
-						errors.add(new SBOLValidationException("sbol-10811").getMessage());
+						errors.add(new SBOLValidationException("sbol-10811", mapsTo).getMessage());
 					}
 				}
 			}
@@ -210,7 +210,7 @@ public class SBOLValidate {
 				}
 				if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
 					if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
-						errors.add(new SBOLValidationException("sbol-10811").getMessage());
+						errors.add(new SBOLValidationException("sbol-10811", mapsTo).getMessage());
 					}
 				}
 			}
@@ -229,7 +229,7 @@ public class SBOLValidate {
 				}
 				if (mapsTo.getRefinement().equals(RefinementType.VERIFYIDENTICAL)) {
 					if (!mapsTo.getLocal().getDefinitionURI().equals(mapsTo.getRemote().getDefinitionURI())) {
-						errors.add(new SBOLValidationException("sbol-10811").getMessage());
+						errors.add(new SBOLValidationException("sbol-10811", mapsTo).getMessage());
 					}
 				}
 			}
