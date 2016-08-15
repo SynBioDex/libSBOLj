@@ -534,7 +534,7 @@ public class SBOLValidate {
 					}
 				}
 				if (numSBOtype != 1) {
-					errors.add(new SBOLValidationException("sbol-11905").getMessage());
+					errors.add(new SBOLValidationException("sbol-11905", interaction).getMessage());
 				}
 				for (Participation participation : interaction.getParticipations()) {
 					int numSBOrole = 0;
