@@ -345,6 +345,7 @@ final class URIcompliance {
 //	}
 
 	static boolean isDisplayIdValid(String newDisplayId) {
+		if (newDisplayId==null) return false;
 		Pattern r = Pattern.compile(displayIDpattern);
 		Matcher m = r.matcher(newDisplayId);
 		return m.matches();

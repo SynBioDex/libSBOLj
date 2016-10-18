@@ -2150,19 +2150,19 @@ public class SBOLReader
 				if (!(namedProperty.getValue() instanceof Literal) ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					// TODO: need a proper validation error number
-					throw new SBOLValidationException("TBD", sequenceAnnotation.getIdentity());
+					throw new SBOLValidationException("sbol-10906", sequenceAnnotation.getIdentity());
 				}
 				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.SequenceAnnotation.roleIntegration))
-			{
-				if (!(namedProperty.getValue() instanceof Literal) ||
-						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
-					// TODO: need a proper validation error number
-					throw new SBOLValidationException("TBD", sequenceAnnotation.getIdentity());
-				}
-				roleIntegration = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
-			}
+//			else if (namedProperty.getName().equals(Sbol2Terms.SequenceAnnotation.roleIntegration))
+//			{
+//				if (!(namedProperty.getValue() instanceof Literal) ||
+//						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+//					// TODO: need a proper validation error number
+//					throw new SBOLValidationException("sbol-10912", sequenceAnnotation.getIdentity());
+//				}
+//				roleIntegration = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+//			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Location.Location))
 			{
 				if (namedProperty.getValue() instanceof NestedDocument) {
@@ -2232,13 +2232,12 @@ public class SBOLReader
 			s.setAnnotations(annotations);
 		if (!roles.isEmpty())
 			s.setRoles(roles);
-		if (roleIntegration != null)
-			try {
-				s.setRoleIntegration(RoleIntegrationType.convertToRoleIntegrationType(roleIntegration));
-			} catch (SBOLValidationException e) {
-				// TODO: need proper validation error
-				throw new SBOLValidationException("TBD",s);
-			}
+//		if (roleIntegration != null)
+//			try {
+//				s.setRoleIntegration(RoleIntegrationType.convertToRoleIntegrationType(roleIntegration));
+//			} catch (SBOLValidationException e) {
+//				throw new SBOLValidationException("sbol-10912",s);
+//			}
 		return s;
 	}
 
@@ -2769,8 +2768,7 @@ public class SBOLReader
 			{
 				if (!(namedProperty.getValue() instanceof Literal) ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
-					// TODO: need a proper validation error number
-					throw new SBOLValidationException("TBD", component.getIdentity());
+					throw new SBOLValidationException("sbol-10702", component.getIdentity());
 				}
 				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
@@ -2779,7 +2777,7 @@ public class SBOLReader
 				if (!(namedProperty.getValue() instanceof Literal) ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					// TODO: need a proper validation error number
-					throw new SBOLValidationException("TBD", component.getIdentity());
+					throw new SBOLValidationException("sbol-10708", component.getIdentity());
 				}
 				roleIntegration = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -2878,7 +2876,7 @@ public class SBOLReader
 				c.setRoleIntegration(RoleIntegrationType.convertToRoleIntegrationType(roleIntegration));
 			} catch (SBOLValidationException e) {
 				// TODO: need proper validation error
-				throw new SBOLValidationException("TBD",c);
+				throw new SBOLValidationException("sbol-10708",c);
 			}
 		if (!mapsTo.isEmpty())
 			c.setMapsTos(mapsTo);

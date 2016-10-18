@@ -25,7 +25,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	private HashMap<URI, Location> locations;
 	private URI component;
 	private Set<URI> roles;
-	private RoleIntegrationType roleIntegration;
+//	private RoleIntegrationType roleIntegration;
 	/**
 	 * The parent component definition for this sequence annotation.
 	 */
@@ -502,9 +502,12 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * 
 	 * @param componentURI the given component identity URI
  	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated:
- 	 * 10522, 10905.
+ 	 * 10522, 10905, 10909.
 	 */
 	public void setComponent(URI componentURI) throws SBOLValidationException {
+		if (!roles.isEmpty()) {
+			throw new SBOLValidationException("sbol-10909", this);
+		}
 		if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(componentURI)==null) {
 				throw new SBOLValidationException("sbol-10905",this);
@@ -532,8 +535,12 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 *
 	 * @param roleURI the role to be added
 	 * @return {@code true} if this set did not already contain the specified role, {@code false} otherwise
+	 * @throws SBOLValidationException if component property is already set
 	 */
-	public boolean addRole(URI roleURI) {
+	public boolean addRole(URI roleURI) throws SBOLValidationException {
+		if (isSetComponent()) {
+			throw new SBOLValidationException("sbol-10909", this);
+		}
 		return roles.add(roleURI);
 	}
 
@@ -552,8 +559,9 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * set of the roles to this sequence annotation.
 	 *
 	 * @param roles the set of roles to be set
+	 * @throws SBOLValidationException if component property is already set
 	 */
-	public void setRoles(Set<URI> roles) {
+	public void setRoles(Set<URI> roles) throws SBOLValidationException {
 		clearRoles();
 		if (roles==null) return;
 		for (URI role : roles) {
@@ -590,41 +598,41 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		roles.clear();
 	}
 	
-	/**
-	 * Test if the roleIntegration property is set.
-	 * 
-	 * @return {@code true} if this sequence annotation's ruleIntegration property is not {@code null}, 
-	 * {@code false} otherwise 
-	 */
-	public boolean isSetRoleIntegration() {
-		return roleIntegration != null;
-	}
-
-	/**
-	 * Returns the roleIntegration property of this sequence annotation.
-	 * 
-	 * @return the roleIntegration property of this sequence annotation
-	 */
-	public RoleIntegrationType getRoleIntegration() {
-		return this.roleIntegration;
-	}
-
-	/**
-	 * Sets the roleIntegration property to the given one.
-	 * 
-	 * @param roleIntegration the given roleIntegration type
-	 */
-	public void setRoleIntegration(RoleIntegrationType roleIntegration) {
-		this.roleIntegration = roleIntegration;
-	}
-
-	/**
-	 * Sets the roleIntegration property of this sequence annotation to {@code null}.
-	 *
-	 */
-	public void unsetRoleIntegration() {
-		roleIntegration = null;
-	}
+//	/**
+//	 * Test if the roleIntegration property is set.
+//	 * 
+//	 * @return {@code true} if this sequence annotation's ruleIntegration property is not {@code null}, 
+//	 * {@code false} otherwise 
+//	 */
+//	public boolean isSetRoleIntegration() {
+//		return roleIntegration != null;
+//	}
+//
+//	/**
+//	 * Returns the roleIntegration property of this sequence annotation.
+//	 * 
+//	 * @return the roleIntegration property of this sequence annotation
+//	 */
+//	public RoleIntegrationType getRoleIntegration() {
+//		return this.roleIntegration;
+//	}
+//
+//	/**
+//	 * Sets the roleIntegration property to the given one.
+//	 * 
+//	 * @param roleIntegration the given roleIntegration type
+//	 */
+//	public void setRoleIntegration(RoleIntegrationType roleIntegration) {
+//		this.roleIntegration = roleIntegration;
+//	}
+//
+//	/**
+//	 * Sets the roleIntegration property of this sequence annotation to {@code null}.
+//	 *
+//	 */
+//	public void unsetRoleIntegration() {
+//		roleIntegration = null;
+//	}
 
 	@Override
 	public int hashCode() {

@@ -131,8 +131,12 @@ public class Component extends ComponentInstance{
 	 *
 	 * @param roleURI the role URI to be added
 	 * @return {@code true} if this set did not already contain the specified role, {@code false} otherwise.
+	 * @throws SBOLValidationException if RoleIntegration is not set (10709).
 	 */
-	public boolean addRole(URI roleURI) {
+	public boolean addRole(URI roleURI) throws SBOLValidationException {
+		if (!isSetRoleIntegration()) {
+			throw new SBOLValidationException("sbol-10709", this);
+		}
 		return roles.add(roleURI);
 	}
 
@@ -151,8 +155,9 @@ public class Component extends ComponentInstance{
 	 * set of the roles to this component.
 	 *
 	 * @param roles the set of roles to be set
+	 * @throws SBOLValidationException if RoleIntegration is not set (10709).
 	 */
-	public void setRoles(Set<URI> roles) {
+	public void setRoles(Set<URI> roles) throws SBOLValidationException {
 		clearRoles();
 		if (roles==null) return;
 		for (URI role : roles) {
@@ -209,16 +214,24 @@ public class Component extends ComponentInstance{
 	 * Sets the roleIntegration property of this object to the given one.
 	 *
 	 * @param roleIntegration indicates how role is to be integrated with related roles.
+	 * @throws SBOLValidationException if there are roles on this Component (10709).
 	 */
-	public void setRoleIntegration(RoleIntegrationType roleIntegration) {
+	public void setRoleIntegration(RoleIntegrationType roleIntegration) throws SBOLValidationException {
+		if (roleIntegration==null && !roles.isEmpty()) {
+			throw new SBOLValidationException("sbol-10709", this);
+		}
 		this.roleIntegration = roleIntegration;
 	}
 
 	/**
 	 * Sets the roleIntegration property of this object to {@code null}.
+	 * @throws SBOLValidationException if there are roles on this Component (10709).
 	 *
 	 */
-	public void unsetRoleIntegration() {
+	public void unsetRoleIntegration() throws SBOLValidationException {
+		if (!roles.isEmpty()) {
+			throw new SBOLValidationException("sbol-10709", this);
+		}
 		roleIntegration = null;
 	}
 

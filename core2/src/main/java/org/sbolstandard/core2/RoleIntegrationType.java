@@ -49,10 +49,10 @@ public enum RoleIntegrationType {
 				return RoleIntegrationType.OVERRIDEROLES;
 			}
 			else {
-				throw new SBOLValidationException("TBD");
+				throw new SBOLValidationException("sbol-10708");
 			}
 		} else {
-			throw new SBOLValidationException("TBD");
+			throw new SBOLValidationException("sbol-10708");
 		}
 	}
 

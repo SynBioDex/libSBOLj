@@ -59,7 +59,7 @@ public class ComponentTest {
 
 
 	@Test
-	public void test_roleMethods()
+	public void test_roleMethods() throws SBOLValidationException
 	{	
 		/*add roles    */
 		assertTrue(promoter.addRole(SequenceOntology.PROMOTER));

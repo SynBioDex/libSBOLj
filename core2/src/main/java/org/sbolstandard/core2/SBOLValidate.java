@@ -492,6 +492,30 @@ public class SBOLValidate {
 					errors.add(new SBOLValidationException("sbol-10511", compDef).getMessage());
 				}
 			}
+			for (Component c : compDef.getComponents()) {
+				ComponentDefinition def = c.getDefinition();
+				if (def==null) continue;
+				numSO = 0;;
+				for (URI role : c.getRoles()) {
+					try {
+						if (so.isDescendantOf(role, SequenceOntology.SEQUENCE_FEATURE)) {
+							numSO++;
+						}
+					} catch (Exception e){
+					}
+				}
+				if (!def.getTypes().contains(ComponentDefinition.DNA) && 
+						!def.getTypes().contains(ComponentDefinition.RNA)) {
+					if (numSO!=0) {
+						errors.add(new SBOLValidationException("sbol-10706", compDef).getMessage());
+					}
+				} else {
+					if (numSO>1) {
+						errors.add(new SBOLValidationException("sbol-10707", compDef).getMessage());
+					}
+				}
+
+			}
 			for (SequenceConstraint sc : compDef.getSequenceConstraints()) {
 				try {
 					RestrictionType.convertToRestrictionType(sc.getRestrictionURI());

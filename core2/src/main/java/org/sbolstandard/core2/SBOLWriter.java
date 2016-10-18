@@ -523,9 +523,9 @@ public class SBOLWriter
 			{
 				list.add(NamedProperty(Sbol2Terms.SequenceAnnotation.roles, roles));
 			}
-			if (s.isSetRoleIntegration()) {
-				list.add(NamedProperty(Sbol2Terms.Component.roleIntegration, RoleIntegrationType.convertToURI(s.getRoleIntegration())));
-			}
+//			if (s.isSetRoleIntegration()) {
+//				list.add(NamedProperty(Sbol2Terms.Component.roleIntegration, RoleIntegrationType.convertToURI(s.getRoleIntegration())));
+//			}
 			for (Location location : s.getLocations()) {
 				list.add(getLocation(location));
 			}
