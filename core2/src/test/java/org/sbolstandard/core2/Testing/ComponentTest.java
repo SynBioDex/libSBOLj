@@ -14,6 +14,7 @@ import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.MapsTo;
 import org.sbolstandard.core2.RefinementType;
+import org.sbolstandard.core2.RoleIntegrationType;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SequenceOntology;
@@ -62,6 +63,7 @@ public class ComponentTest {
 	public void test_roleMethods() throws SBOLValidationException
 	{	
 		/*add roles    */
+		promoter.setRoleIntegration(RoleIntegrationType.OVERRIDEROLES);
 		assertTrue(promoter.addRole(SequenceOntology.PROMOTER));
 		assertTrue(promoter.getRoles().contains(SequenceOntology.PROMOTER));
 		assertTrue(promoter.containsRole(SequenceOntology.PROMOTER));

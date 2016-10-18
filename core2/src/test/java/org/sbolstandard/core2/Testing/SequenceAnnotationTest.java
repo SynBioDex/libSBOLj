@@ -92,6 +92,7 @@ public class SequenceAnnotationTest {
 	public void test_roleMethod() throws SBOLValidationException
 	{
 		assertEquals(promoter_SA.getRoles().size(), 0);
+		promoter_SA.unsetComponent();
 		assertTrue(promoter_SA.addRole(SequenceOntology.PROMOTER));
 		promoter_SA.addRole(SequenceOntology.PROMOTER);
 		assertFalse(promoter_SA.getRoles().size() == 2);
