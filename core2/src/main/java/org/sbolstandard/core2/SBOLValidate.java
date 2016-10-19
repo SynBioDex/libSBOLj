@@ -824,7 +824,7 @@ public class SBOLValidate {
 	private static final Pattern iupacDNAparser = Pattern.compile(IUPAC_DNA_PATTERN);
 	private static final String IUPAC_PROTEIN_PATTERN = "([ABCDEFGHIKLMNPQRSTVWXYZ]*)";
 	private static final Pattern iupacProteinParser = Pattern.compile(IUPAC_PROTEIN_PATTERN);
-	private static OpenSmilesParser openSmilesParser = new OpenSmilesParser();
+//	private static OpenSmilesParser openSmilesParser = new OpenSmilesParser();
 
 	static boolean checkSequenceEncoding(Sequence sequence) {
 		if (sequence.getEncoding().equals(Sequence.IUPAC_DNA) ||
@@ -834,9 +834,9 @@ public class SBOLValidate {
 		} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
 			Matcher m = iupacProteinParser.matcher(sequence.getElements().toUpperCase());
 			return m.matches();
-		} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
+		} /* else if (sequence.getEncoding().equals(Sequence.SMILES)) {
 			return openSmilesParser.check(sequence.getElements());
-		}
+		} */
 		return true;
 	}
 
