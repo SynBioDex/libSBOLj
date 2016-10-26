@@ -13,15 +13,15 @@
     <sbol:member rdf:resource="http://www.async.ece.utah.edu/MCS_220"/>
     <sbol:member rdf:resource="http://www.async.ece.utah.edu/AmpR_promoter_009"/>
   </sbol:Collection>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/MCS_220">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/MCS_220"/>
-    <sbol:displayId>MCS_220</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:MCS-220"/>
-    <dcterms:title>MCS-220</dcterms:title>
-    <dcterms:description>multiple cloning site</dcterms:description>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/AmpR_promoter_009">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AmpR_promoter_009"/>
+    <sbol:displayId>AmpR_promoter_009</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:AmpR_promoter-009"/>
+    <dcterms:title>AmpR promoter-009</dcterms:title>
+    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000001"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_MCS_220_seq"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_AmpR_promoter_009_seq"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/TcR_006">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/TcR_006"/>
@@ -29,19 +29,10 @@
     <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:TcR-006"/>
     <dcterms:title>TcR-006</dcterms:title>
     <dcterms:description>confers resistance to tetracycline</dcterms:description>
+    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_TcR_006_seq"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/AmpR_017">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AmpR_017"/>
-    <sbol:displayId>AmpR_017</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:AmpR-017"/>
-    <dcterms:title>AmpR-017</dcterms:title>
-    <dcterms:description>confers resistance to ampicillin, carbenicillin, and related antibiotics</dcterms:description>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_AmpR_017_seq"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/repB">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/repB"/>
@@ -49,18 +40,32 @@
     <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:repB"/>
     <dcterms:title>repB</dcterms:title>
     <dcterms:description>from Enterococcus faecalis plasmid pAM-alpha-1</dcterms:description>
+    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_repB_seq"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/AmpR_promoter_009">
-    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AmpR_promoter_009"/>
-    <sbol:displayId>AmpR_promoter_009</sbol:displayId>
-    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:AmpR_promoter-009"/>
-    <dcterms:title>AmpR promoter-009</dcterms:title>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/MCS_220">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/MCS_220"/>
+    <sbol:displayId>MCS_220</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:MCS-220"/>
+    <dcterms:title>MCS-220</dcterms:title>
+    <dcterms:description>multiple cloning site</dcterms:description>
+    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
-    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_AmpR_promoter_009_seq"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000001"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_MCS_220_seq"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/AmpR_017">
+    <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AmpR_017"/>
+    <sbol:displayId>AmpR_017</sbol:displayId>
+    <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:AmpR-017"/>
+    <dcterms:title>AmpR-017</dcterms:title>
+    <dcterms:description>confers resistance to ampicillin, carbenicillin, and related antibiotics</dcterms:description>
+    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+    <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_AmpR_017_seq"/>
   </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/p15A_ori_001">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/p15A_ori_001"/>
@@ -68,6 +73,7 @@
     <prov:wasDerivedFrom rdf:resource="http://genocad.org/SBOL/doi:10.6084/m9.figshare.1159038/Part:p15A_ori-001"/>
     <dcterms:title>p15A ori-001</dcterms:title>
     <dcterms:description>Plasmids containing the medium-copy-number p15A origin of replication can be propagated in E. coli cells</dcterms:description>
+    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000296"/>
     <sbol:sequence rdf:resource="http://www.async.ece.utah.edu/Part_p15A_ori_001_seq"/>

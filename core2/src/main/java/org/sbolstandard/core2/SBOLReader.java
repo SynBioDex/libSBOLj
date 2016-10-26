@@ -1068,6 +1068,7 @@ public class SBOLReader
 
 		Set<URI> type = new HashSet<>();
 		type.add(ComponentDefinition.DNA);
+		type.add(SequenceOntology.LINEAR);
 
 		int component_num = 0;
 		int sa_num 		  = 0;

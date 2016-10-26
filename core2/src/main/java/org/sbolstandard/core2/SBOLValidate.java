@@ -505,7 +505,7 @@ public class SBOLValidate {
 				if (numSO!=1) {
 					errors.add(new SBOLValidationException("sbol-10527", compDef).getMessage());
 				}
-				if (numTopo!=1) {
+				if (numTopo>1) {
 					errors.add(new SBOLValidationException("sbol-10528", compDef).getMessage());
 				}
 			} else if (!compDef.getTypes().contains(ComponentDefinition.RNA)) {
