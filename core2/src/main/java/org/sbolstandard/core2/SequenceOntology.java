@@ -514,5 +514,42 @@ public class SequenceOntology {
 	 * CRISPR/cas mutagenesis method. (<a href="http://identifiers.org/so/SO:0001998">SO:0001998</a>).
 	 */
 	public static final URI SGRNA = type("SO:0001998");
+	
+	/**
+	 * A quality of a nucleotide polymer that has a 3'-terminal residue and a 5'-terminal residue.
+	 * (<a href="http://identifiers.org/so/SO:0000987">SO:0000987</a>).
+	 */
+	public static final URI LINEAR = type("SO:0000987");
+	
+	/**
+	 * A quality of a nucleotide polymer that has no terminal nucleotide residues.
+	 * (<a href="http://identifiers.org/so/SO:0000988">SO:0000988</a>).
+	 */
+	public static final URI CIRCULAR = type("SO:0000988");
+	
+	/**
+	 * A stand attribute that it indicates it is composed of a single strand.
+	 * (<a href="http://identifiers.org/so/SO:0000984">SO:0000984</a>).
+	 */
+	public static final URI SINGLE = type("SO:0000984");
+	
+	/**
+	 * A stand attribute that it indicates it is composed of a double strand.
+	 * (<a href="http://identifiers.org/so/SO:0000985">SO:0000985</a>).
+	 */
+	public static final URI DOUBLE = type("SO:0000985");
+	
+	/**
+	 * An attribute describing a sequence consisting of nucleobases bound to a 
+	 * repeating unit made of a 2-deoxy-D-ribose ring connected to a phosphate backbone.
+	 * (<a href="http://identifiers.org/so/SO:0000352">SO:0000352</a>).
+	 */
+	public static final URI DNA = type("SO:0000352");
 
+	/**
+	 * An attribute describing a sequence consisting of nucleobases bound to a repeating 
+	 * unit made of a D-ribose ring connected to a phosphate backbone.
+	 * (<a href="http://identifiers.org/so/SO:0000356">SO:0000356</a>).
+	 */
+	public static final URI RNA = type("SO:0000356");
 }

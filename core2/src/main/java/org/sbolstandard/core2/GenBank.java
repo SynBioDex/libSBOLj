@@ -399,9 +399,16 @@ class GenBank {
 			type = annotation.getStringValue();
 		}
 		String linCirc = "linear";
+		// Below only needed for backwards compatibility with 2.1.0 converter.
 		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,TOPOLOGY,GBPREFIX));
 		if (annotation!=null) {
 			linCirc = annotation.getStringValue();
+		}
+		if (componentDefinition.containsType(SequenceOntology.CIRCULAR)) {
+			linCirc = "circular";
+		}
+		if (componentDefinition.containsType(SequenceOntology.LINEAR)) {
+			linCirc = "linear";
 		}
 		String division = "UNK";
 		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,DIVISION,GBPREFIX));
@@ -907,7 +914,7 @@ class GenBank {
 						// linear vs. circular construct
 						if (strSplit[i].startsWith("linear") || strSplit[i].startsWith("circular")) {
 							if (strSplit[i].startsWith("circular")) circular = true;
-							annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
+							//annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
 
 						} else if (strSplit[i].length()==3) {
 							annotation = new Annotation(new QName(GBNAMESPACE, DIVISION, GBPREFIX), strSplit[i]);
@@ -998,6 +1005,11 @@ class GenBank {
 				} else if (strLine.startsWith("FEATURE")) {
 
 					topCD = doc.createComponentDefinition(id, version, type);
+					if (circular) {
+						topCD.addType(SequenceOntology.CIRCULAR);
+					} else {
+						topCD.addType(SequenceOntology.LINEAR);
+					}
 					topCD.addRole(SequenceOntology.ENGINEERED_REGION);
 					if (!"".equals(description)) {
 						topCD.setDescription(description);

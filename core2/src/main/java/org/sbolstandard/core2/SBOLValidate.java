@@ -1412,11 +1412,11 @@ public class SBOLValidate {
 			SBOLReader.setKeepGoing(keepGoing);
 			SBOLWriter.setKeepGoing(keepGoing);
 			if (FASTA.isFastaFile(fileName)) {
-				System.err.println("Converting FASTA to SBOL Version 2");
+				System.out.println("Converting FASTA to SBOL Version 2");
 			} else if (GenBank.isGenBankFile(fileName)) {
-				System.err.println("Converting GenBank to SBOL Version 2");
+				System.out.println("Converting GenBank to SBOL Version 2");
 			} else if (SBOLReader.getSBOLVersion(fileName).equals(SBOLReader.SBOLVERSION1)) {
-				System.err.println("Converting SBOL Version 1 to SBOL Version 2");
+				System.out.println("Converting SBOL Version 1 to SBOL Version 2");
 			}
 			doc = SBOLReader.read(fileName);
 			doc.setTypesInURIs(typesInURI);
