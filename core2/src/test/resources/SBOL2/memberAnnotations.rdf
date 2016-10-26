@@ -69,6 +69,22 @@
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation2/1.0">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation2"/>
+        <sbol:displayId>someSequenceAnnotation2</sbol:displayId>
+        <sbol:version>1.0</sbol:version>
+        <sbol:location>
+          <sbol:Cut rdf:about="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation2/cut/1.0">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation2/cut"/>
+            <sbol:displayId>cut</sbol:displayId>
+            <sbol:version>1.0</sbol:version>
+            <sbol:at>1</sbol:at>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Cut>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation/1.0">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation"/>
         <sbol:displayId>someSequenceAnnotation</sbol:displayId>
@@ -82,22 +98,6 @@
             <sbol:start>1</sbol:start>
             <sbol:end>10</sbol:end>
           </sbol:Range>
-        </sbol:location>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation2/1.0">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation2"/>
-        <sbol:displayId>someSequenceAnnotation2</sbol:displayId>
-        <sbol:version>1.0</sbol:version>
-        <sbol:location>
-          <sbol:Cut rdf:about="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation2/cut/1.0">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/someCompDef/someSequenceAnnotation2/cut"/>
-            <sbol:displayId>cut</sbol:displayId>
-            <sbol:version>1.0</sbol:version>
-            <sbol:at>1</sbol:at>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Cut>
         </sbol:location>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
