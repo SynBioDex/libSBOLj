@@ -483,13 +483,37 @@ public class SBOLValidate {
 				} catch (Exception e){
 				}
 			}
+			int numTopo = 0;;
+			for (URI type : compDef.getTypes()) {
+				try {
+					if (so.isDescendantOf(type, SequenceOntology.TOPOLOGY_ATTRIBUTE)) {
+						numTopo++;
+					}
+				} catch (Exception e){
+				}
+			}
+			int numStrand = 0;;
+			for (URI type : compDef.getTypes()) {
+				try {
+					if (so.isDescendantOf(type, SequenceOntology.STRAND_ATTRIBUTE)) {
+						numStrand++;
+					}
+				} catch (Exception e){
+				}
+			}
 			if (compDef.getTypes().contains(ComponentDefinition.DNA) || compDef.getTypes().contains(ComponentDefinition.RNA)) {
 				if (numSO!=1) {
 					errors.add(new SBOLValidationException("sbol-10527", compDef).getMessage());
 				}
+				if (numTopo!=1) {
+					errors.add(new SBOLValidationException("sbol-10528", compDef).getMessage());
+				}
 			} else if (!compDef.getTypes().contains(ComponentDefinition.RNA)) {
 				if (numSO!=0) {
 					errors.add(new SBOLValidationException("sbol-10511", compDef).getMessage());
+				}
+				if ((numTopo!=0)||(numStrand!=0)) {
+					errors.add(new SBOLValidationException("sbol-10529", compDef).getMessage());
 				}
 			}
 			for (Component c : compDef.getComponents()) {

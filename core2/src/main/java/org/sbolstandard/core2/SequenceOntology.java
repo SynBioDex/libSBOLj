@@ -514,18 +514,12 @@ public class SequenceOntology {
 	 * CRISPR/cas mutagenesis method. (<a href="http://identifiers.org/so/SO:0001998">SO:0001998</a>).
 	 */
 	public static final URI SGRNA = type("SO:0001998");
-	
+
 	/**
-	 * A quality of a nucleotide polymer that has a 3'-terminal residue and a 5'-terminal residue.
-	 * (<a href="http://identifiers.org/so/SO:0000987">SO:0000987</a>).
+	 * Attributes added to describe the different kinds of replicon. 
+	 * (<a href="http://identifiers.org/so/SO:0000983">SO:0000983</a>).
 	 */
-	public static final URI LINEAR = type("SO:0000987");
-	
-	/**
-	 * A quality of a nucleotide polymer that has no terminal nucleotide residues.
-	 * (<a href="http://identifiers.org/so/SO:0000988">SO:0000988</a>).
-	 */
-	public static final URI CIRCULAR = type("SO:0000988");
+	public static final URI STRAND_ATTRIBUTE = type("SO:0000983");
 	
 	/**
 	 * A stand attribute that it indicates it is composed of a single strand.
@@ -539,6 +533,25 @@ public class SequenceOntology {
 	 */
 	public static final URI DOUBLE = type("SO:0000985");
 	
+	
+	/**
+	 * Attributes added to describe the different kinds of replicon. 
+	 * (<a href="http://identifiers.org/so/SO:0000986">SO:0000986</a>).
+	 */
+	public static final URI TOPOLOGY_ATTRIBUTE = type("SO:0000986");
+	
+	/**
+	 * A quality of a nucleotide polymer that has a 3'-terminal residue and a 5'-terminal residue.
+	 * (<a href="http://identifiers.org/so/SO:0000987">SO:0000987</a>).
+	 */
+	public static final URI LINEAR = type("SO:0000987");
+	
+	/**
+	 * A quality of a nucleotide polymer that has no terminal nucleotide residues.
+	 * (<a href="http://identifiers.org/so/SO:0000988">SO:0000988</a>).
+	 */
+	public static final URI CIRCULAR = type("SO:0000988");
+		
 	/**
 	 * An attribute describing a sequence consisting of nucleobases bound to a 
 	 * repeating unit made of a 2-deoxy-D-ribose ring connected to a phosphate backbone.
