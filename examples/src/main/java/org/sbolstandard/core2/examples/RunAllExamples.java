@@ -16,5 +16,7 @@ public class RunAllExamples
         SequenceOutput.main(null);        
         SimpleComponentDefinitionExample.main(null);   
         SimpleModuleDefinition.main(null);
+        Provenance_CodonOptimization.main(null);
+        Provenance_StrainDerivation.main(null);
     }
 }
