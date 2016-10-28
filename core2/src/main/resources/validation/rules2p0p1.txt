@@ -2,27 +2,27 @@
 id: sbol-10101
 condition: strong required
 description: An SBOL document MUST declare the use of the following XML namespace: “http://sbols.org/v2#”.
-reference: Section 10 on page 55
+reference: Section 10 on page 58
 
 [SBOLDocument]
 id: sbol-10105
 condition: strong required
 description: An SBOL document MUST be serialized as a well-formed
 RDF/XML file that adheres to the grammar defined by: “https://www.w3.org/TR/rdf-syntax-grammar/” 
-reference: Section 10 on page 55
+reference: Section 10 on page 58
 
 [Identified]
 id: sbol-10201
 condition: strong required
 description: The identity property of an Identified object is REQUIRED and MUST contain a URI that adheres to the syntax defined by:
 “http://www.w3.org/1999/02/22-rdf-syntax#about”
-reference: Section 7.4 on page 16
+reference: Section 7.4 on page 17
 
 [Identified]
 id: sbol-10202
 condition: weak required
 description: The identity property of an Identified object MUST be globally unique.
-reference: Section 7.4 on page 16
+reference: Section 7.4 on page 17
 
 [Identified]
 id: sbol-10203
@@ -31,7 +31,7 @@ description: The persistentIdentity property of an Identified object
 is OPTIONAL and MAY contain a URI that MUST adhere to the syntax
 defined by:
 “http://www.w3.org/1999/02/22-rdf-syntax#about”
-reference: Section 7.4 on page 16
+reference: Section 7.4 on page 17
 
 [Identified]
 id: sbol-10204
@@ -39,7 +39,7 @@ condition: strong required
 description: The displayId property of an Identified object is
 OPTIONAL and MAY contain a String that MUST be composed of only
 alphanumeric or underscore characters and MUST NOT begin with a digit.
-reference: Section 7.4 on page 16
+reference: Section 7.4 on page 17
 
 [Identified]
 id: sbol-10206
@@ -48,14 +48,14 @@ description: The version property of an Identified object is OPTIONAL
 and MAY contain a String that MUST be composed of only alphanumeric
 characters, underscores, hyphens, or periods and MUST begin with a
 digit.
-reference: Section 7.4 on page 16
+reference: Section 7.4 on page 17
 
 [Identified]
 id: sbol-10208
 condition: strong required
 description: The wasDerivedFrom property of an Identified object is
 OPTIONAL and MAY contain a URI.
-reference: Section 7.4 on page 16
+reference: Section 7.4 on page 17
 
 [Identified]
 id: sbol-10212
@@ -389,6 +389,22 @@ condition: recommended
 description: If the types property of a ComponentDefinition contains the DNA or RNA type URI, then its roles property SHOULD contain exactly one URI that refers to a term from the sequence feature branch of the SO.
 reference: Section 7.7 on page 21
 
+[ComponentDefinition]
+id: sbol-10528
+condition: recommended
+description: If the types property of a ComponentDefinition contains the DNA or RNA type URI, then 
+its types property SHOULD also contain at most one URI that refers to a term from the topology 
+attribute branch of the SO.
+reference: Section 7.7 on page 22
+
+[ComponentDefinition]
+id: sbol-10529
+condition: recommended
+description: The types property of a ComponentDefinition SHOULD NOT contain a URI that refers to a 
+term from the topology attribute or strand attribute branch of the SO unless its 
+types property contains the DNA or RNA type URI listed in Table 2.
+reference: Section 7.7 on page 22
+
 [ComponentInstance]
 id: sbol-10602
 condition: strong required
@@ -434,15 +450,73 @@ reference: Section 7.7.1 on page 25
 [Component]
 id: sbol-10701
 condition: strong required
-description: A Component MUST NOT have properties other than the following: identity, persistentIdentity, displayId,version,wasDerivedFrom,name,description,annotations,access,definition, and mapsTos.
-reference: Section 7.7.1 on page 25
+description: A Component MUST NOT have properties other than the following: identity, persistentIdentity, 
+displayId,version,wasDerivedFrom,name,description,annotations,access,definition, mapsTos, roles, and roleIntegration.
+reference: Section 7.7.1 on page 27
+
+[Component]
+id: sbol-10702
+condition: strong required
+description: The roles property of a Component is OPTIONAL and MAY contain a set of URIs. 
+reference: Section 7.7.2 on page 27
+
+[Component]
+id: sbol-10703
+condition: weak required
+description: Each URI contained by the roles property of a Component MUST refer to an ontology
+term that clarifies the potential function of the Component in a biochemical or physical context.
+reference: Section 7.7.2 on page 27
+
+[Component]
+id: sbol-10704
+condition: weak required
+description: Each URI contained by the roles property of a Component MUST refer to an ontology
+term that is consistent with the types property of the ComponentDefinition referred to by its 
+definition property.
+reference: Section 7.7.2 on page 27
+
+[Component]
+id: sbol-10705
+condition: weak required
+description: The roles property of a Component MUST contain a URI from Table 4 if it is 
+well-described by this URI. 
+reference: Section 7.7.2 on page 27
+
+[Component]
+id: sbol-10706
+condition: recommended
+description: The roles property of a Component SHOULD NOT contain a URI that refers to a term
+from the sequence feature branch of the SO unless the types property of the ComponentDefinition
+referred to by its definition property contains the DNA or RNA type URI listed in Table 2. 
+reference: Section 7.7.2 on page 27
+
+[Component]
+id: sbol-10707
+condition: recommended
+description: If the types property of the ComponentDefinition referred to by its definition contains
+the DNA or RNA type URI, then its roles property SHOULD contain no more than one URI that refers to a 
+term from the sequence feature branch of the SO.
+reference: Section 7.7.2 on page 27
+
+[Component]
+id: sbol-10708
+condition: strong required
+description: The roleIntegration property of a Component, if provided, MUST contain a URI from Table 6.
+reference: Section 7.7.2 on page 27
+
+[Component]
+id: sbol-10709
+condition: strong required
+description: The roleIntegration property of a Component is REQUIRED, if roles property includes one
+or more rules. 
+reference: Section 7.7.2 on page 27
 
 [MapsTo]
 id: sbol-10801
 condition: strong required
 description: A MapsTo MUST NOT have properties other than the
 following: identity, persistentIdentity, displayId, version, wasDerivedFrom, name, description, annotations, refinement, local, and remote.
-reference: Section 7.7.3 on page 26
+reference: Section 7.7.3 on page 29
 
 [MapsTo]
 id: sbol-10802
@@ -511,8 +585,8 @@ id: sbol-10901
 condition: strong required
 description: A SequenceAnnotation MUST NOT have properties other than
 the following: identity, persistentIdentity, displayId, version,
-wasDerivedFrom, name, description, annotations, component, and locations.
-reference: Section 7.7.4 on page 29
+wasDerivedFrom, name, description, annotations, component, locations, and roles.
+reference: Section 7.7.4 on page 32
 
 [SequenceAnnotation]
 id: sbol-10902
@@ -537,6 +611,32 @@ id: sbol-10905
 condition: strong required
 description: The Component referenced by the component property of a SequenceAnnotation MUST be contained by the ComponentDefinition that contains the SequenceAnnotation.
 reference: Section 7.7.4 on page 29
+
+[SequenceAnnotation]
+id: sbol-10906
+condition: strong required
+description: The roles property of a SequenceAnnotation is OPTIONAL and MAY contain a set of URIs.
+reference: Section 7.7.4 on page 32
+
+[SequenceAnnotation]
+id: sbol-10907
+condition: weak required
+description: Each URI contained by the roles property of a SequenceAnnotation MUST refer to an ontology
+term that clarifies the potential function of the SequenceAnnotation in a biochemical or physical context.
+reference: Section 7.7.4 on page 32
+
+[SequenceAnnotation]
+id: sbol-10908
+condition: weak required
+description: The roles property of a SequenceAnnotation MUST contain a URI from Table 4 if it is 
+well-described by this URI. 
+reference: Section 7.7.4 on page 32
+
+[SequenceAnnotation]
+id: sbol-10909
+condition: strong required
+description: A SequenceAnnotation MUST NOT include both a component property and a roles property. 
+reference: Section 7.7.4 on page 32
 
 [Location]
 id: sbol-11002
