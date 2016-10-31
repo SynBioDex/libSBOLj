@@ -5,7 +5,7 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import java.net.URI;
 
 /**
- * Represents the SBOL MapsTo data model.
+ * Represents a MapsTo object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -66,6 +66,10 @@ public class MapsTo extends Identified{
 		this.setRefinement(mapsTo.getRefinement());
 		this.setLocal(mapsTo.getLocalURI());
 		this.setRemote(mapsTo.getRemoteURI());
+	}
+	
+	void copy(MapsTo mapsTo) throws SBOLValidationException {
+		((Identified)this).copy((Identified)mapsTo);
 	}
 
 	/**
@@ -261,7 +265,7 @@ public class MapsTo extends Identified{
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #MapsTo(MapsTo)}.
 	 */
 	@Override
-	protected MapsTo deepCopy() throws SBOLValidationException {
+	MapsTo deepCopy() throws SBOLValidationException {
 		return new MapsTo(this);
 	}
 
@@ -289,39 +293,18 @@ public class MapsTo extends Identified{
 	}
 
 	/**
-	 * Returns the parent ModuleDefinition instance.
-	 * @return the parent ModuleDefinition instance
-	 */
-	ModuleDefinition getModuleDefinition() {
-		return moduleDefinition;
-	}
-
-	/**
 	 * @param moduleDefinition the moduleDefinition to set
 	 */
 	void setModuleDefinition(ModuleDefinition moduleDefinition) {
 		this.moduleDefinition = moduleDefinition;
 	}
 
-
-	Module getModule() {
-		return module;
-	}
-
 	void setModule(Module module) {
 		this.module = module;
 	}
 
-	ComponentDefinition getComponentDefinition() {
-		return componentDefinition;
-	}
-
 	void setComponentDefinition(ComponentDefinition componentDefinition) {
 		this.componentDefinition = componentDefinition;
-	}
-
-	ComponentInstance getComponentInstance() {
-		return componentInstance;
 	}
 
 	void setComponentInstance(ComponentInstance componentInstance) {
@@ -331,10 +314,7 @@ public class MapsTo extends Identified{
 	@Override
 	public String toString() {
 		return "MapsTo ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ super.toString()
 				+ ", refinement=" + refinement 
 				+ ", local=" + local 
 				+ ", remote=" + remote

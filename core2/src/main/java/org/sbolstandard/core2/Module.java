@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL Module data model.
+ * Represents a Module object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -39,12 +39,27 @@ public class Module extends Identified {
 		setDefinition(moduleDefinition);
 	}
 
+	/**
+	 * @param module
+	 * @throws SBOLValidationException
+	 */
 	private Module(Module module) throws SBOLValidationException {
 		super(module);
 		this.mapsTos = new HashMap<>();
 		this.setDefinition(module.getDefinitionURI());
 		for (MapsTo mapping : module.getMapsTos()) {
 			this.addMapsTo(mapping.deepCopy());
+		}
+	}
+	
+	void copy(Module module) throws SBOLValidationException {
+		((Identified)this).copy((Identified)module);
+		if (!module.getMapsTos().isEmpty()) {
+			for (MapsTo mapsTo : module.getMapsTos()) {
+				MapsTo newMapsTo = this.createMapsTo(mapsTo.getDisplayId(), mapsTo.getRefinement(), mapsTo.getLocal().getDisplayId(), 
+						mapsTo.getRemoteURI());
+				newMapsTo.copy(mapsTo);
+			}
 		}
 	}
 
@@ -63,8 +78,8 @@ public class Module extends Identified {
 	 * @return the the module definition that this module refers to
 	 */
 	public ModuleDefinition getDefinition() {
-		if (sbolDocument==null) return null;
-		return sbolDocument.getModuleDefinition(definition);
+		if (this.getSBOLDocument()==null) return null;
+		return this.getSBOLDocument().getModuleDefinition(definition);
 	}
 
 	/**
@@ -83,21 +98,21 @@ public class Module extends Identified {
 		if (definitionURI==null) {
 			throw new SBOLValidationException("sbol-11702",this);
 		}
-		if (sbolDocument != null) {
-			if (sbolDocument.isComplete()) {
-				if (sbolDocument.getModuleDefinition(definitionURI)==null) {
+		if (this.getSBOLDocument() != null) {
+			if (this.getSBOLDocument().isComplete()) {
+				if (this.getSBOLDocument().getModuleDefinition(definitionURI)==null) {
 					throw new SBOLValidationException("sbol-11703",this);
 				}
 			}
 			if (moduleDefinition!=null) {
-				ModuleDefinition md = sbolDocument.getModuleDefinition(definitionURI);
+				ModuleDefinition md = this.getSBOLDocument().getModuleDefinition(definitionURI);
 				if (md!=null &&	moduleDefinition.getIdentity().equals(md.getIdentity())) {
 					throw new SBOLValidationException("sbol-11704", this);
 				}
 				Set<URI> visited = new HashSet<>();
 				visited.add(moduleDefinition.getIdentity());
 				try { 
-					SBOLValidate.checkModuleDefinitionCycle(sbolDocument, md, visited);
+					SBOLValidate.checkModuleDefinitionCycle(this.getSBOLDocument(), md, visited);
 				} catch (SBOLValidationException e) {
 					throw new SBOLValidationException("sbol-11705", this);
 				}
@@ -178,12 +193,22 @@ public class Module extends Identified {
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
 		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
 				localId, moduleDefinition.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() && moduleDefinition!=null &&
 				moduleDefinition.getFunctionalComponent(localURI)==null) {
 			moduleDefinition.createFunctionalComponent(localId,AccessType.PUBLIC,localId,"",DirectionType.INOUT);
 		}
 		URI remoteURI = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(),
 				remoteId, getDefinition().getVersion());
+		return createMapsTo(displayId,refinement,localURI,remoteURI);
+	}
+	
+	MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, URI remoteURI) throws SBOLValidationException {
+		URI localURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
+				localId, moduleDefinition.getVersion());
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() && moduleDefinition!=null &&
+				moduleDefinition.getFunctionalComponent(localURI)==null) {
+			moduleDefinition.createFunctionalComponent(localId,AccessType.PUBLIC,localId,"",DirectionType.INOUT);
+		}
 		return createMapsTo(displayId,refinement,localURI,remoteURI);
 	}
 
@@ -221,17 +246,17 @@ public class Module extends Identified {
 	 * <li>an SBOL validation exception occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}.</li>
 	 * </ul>
 	 */
-	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
-		mapsTo.setSBOLDocument(this.sbolDocument);
+	private void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
+		mapsTo.setSBOLDocument(this.getSBOLDocument());
 		mapsTo.setModuleDefinition(moduleDefinition);
 		mapsTo.setModule(this);
-		if (sbolDocument != null) {
+		if (this.getSBOLDocument() != null) {
 			if (mapsTo.getLocal()==null) {
 				//throw new SBOLValidationException("Functional component '" + mapsTo.getLocalURI() + "' does not exist.");
 				throw new SBOLValidationException("sbol-10804", mapsTo);
 			}
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (mapsTo.getRemote()==null) {
 				//throw new SBOLValidationException("Functional component '" + mapsTo.getRemoteURI() + "' does not exist.");
 				throw new SBOLValidationException("sbol-10809", mapsTo);
@@ -360,7 +385,7 @@ public class Module extends Identified {
 
 
 	@Override
-	protected Module deepCopy() throws SBOLValidationException {
+	Module deepCopy() throws SBOLValidationException {
 		return new Module(this);
 	}
 
@@ -408,10 +433,7 @@ public class Module extends Identified {
 	@Override
 	public String toString() {
 		return "Module ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ super.toString()
 				+ ", definition=" + definition 
 				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
 				+ "]";

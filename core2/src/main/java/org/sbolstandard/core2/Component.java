@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL Component data model.
+ * Represents a Component object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class Component extends ComponentInstance{
 
-	protected HashMap<URI, MapsTo> mapsTos;
+	private HashMap<URI, MapsTo> mapsTos;
 	private Set<URI> roles;
 	private RoleIntegrationType roleIntegration;
 	/**
@@ -51,7 +51,7 @@ public class Component extends ComponentInstance{
 	 * <li>{@link #setMapsTos(Set)}.</li>
 	 * </ul>
 	 */
-	protected Component(Component component) throws SBOLValidationException {
+	private Component(Component component) throws SBOLValidationException {
 		super(component);
 		this.roles = new HashSet<>();
 		this.mapsTos = new HashMap<>();
@@ -62,6 +62,24 @@ public class Component extends ComponentInstance{
 			}
 			this.setMapsTos(mapsTos);
 		}
+		this.roles = new HashSet<>();
+		for (URI role : component.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
+	}
+	
+	void copy(Component component) throws SBOLValidationException {
+		((ComponentInstance)this).copy((ComponentInstance)component);
+		if (!component.getMapsTos().isEmpty()) {
+			for (MapsTo mapsTo : component.getMapsTos()) {
+				MapsTo newMapsTo = this.createMapsTo(mapsTo.getDisplayId(), mapsTo.getRefinement(), mapsTo.getLocal().getDisplayId(), 
+						mapsTo.getRemoteURI());
+				newMapsTo.copy(mapsTo);
+			}
+		}
+		for (URI role : component.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
 	}
 
 	/* (non-Javadoc)
@@ -71,7 +89,7 @@ public class Component extends ComponentInstance{
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Component(Component)}.
 	 */
 	@Override
-	protected Component deepCopy() throws SBOLValidationException {
+	Component deepCopy() throws SBOLValidationException {
 		return new Component(this);
 	}
 
@@ -113,8 +131,12 @@ public class Component extends ComponentInstance{
 	 *
 	 * @param roleURI the role URI to be added
 	 * @return {@code true} if this set did not already contain the specified role, {@code false} otherwise.
+	 * @throws SBOLValidationException if RoleIntegration is not set (10709).
 	 */
-	public boolean addRole(URI roleURI) {
+	public boolean addRole(URI roleURI) throws SBOLValidationException {
+		if (!isSetRoleIntegration()) {
+			throw new SBOLValidationException("sbol-10709", this);
+		}
 		return roles.add(roleURI);
 	}
 
@@ -133,8 +155,9 @@ public class Component extends ComponentInstance{
 	 * set of the roles to this component.
 	 *
 	 * @param roles the set of roles to be set
+	 * @throws SBOLValidationException if RoleIntegration is not set (10709).
 	 */
-	public void setRoles(Set<URI> roles) {
+	public void setRoles(Set<URI> roles) throws SBOLValidationException {
 		clearRoles();
 		if (roles==null) return;
 		for (URI role : roles) {
@@ -191,16 +214,24 @@ public class Component extends ComponentInstance{
 	 * Sets the roleIntegration property of this object to the given one.
 	 *
 	 * @param roleIntegration indicates how role is to be integrated with related roles.
+	 * @throws SBOLValidationException if there are roles on this Component (10709).
 	 */
-	public void setRoleIntegration(RoleIntegrationType roleIntegration) {
+	public void setRoleIntegration(RoleIntegrationType roleIntegration) throws SBOLValidationException {
+		if (roleIntegration==null && !roles.isEmpty()) {
+			throw new SBOLValidationException("sbol-10709", this);
+		}
 		this.roleIntegration = roleIntegration;
 	}
 
 	/**
 	 * Sets the roleIntegration property of this object to {@code null}.
+	 * @throws SBOLValidationException if there are roles on this Component (10709).
 	 *
 	 */
-	public void unsetRoleIntegration() {
+	public void unsetRoleIntegration() throws SBOLValidationException {
+		if (!roles.isEmpty()) {
+			throw new SBOLValidationException("sbol-10709", this);
+		}
 		roleIntegration = null;
 	}
 
@@ -215,7 +246,7 @@ public class Component extends ComponentInstance{
 	 * <li>an SBOL validation exception occurred in {@link #addMapsTo(MapsTo)};</li>
 	 * </ul>
 	 */
-	MapsTo createMapsTo(URI identity, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
+	private MapsTo createMapsTo(URI identity, RefinementType refinement, URI local, URI remote) throws SBOLValidationException {
 		MapsTo mapping = new MapsTo(identity, refinement, local, remote);
 		addMapsTo(mapping);
 		return mapping;
@@ -259,12 +290,22 @@ public class Component extends ComponentInstance{
 	public MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, String remoteId) throws SBOLValidationException {
 		URI localURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(),
 				localId, componentDefinition.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && componentDefinition!=null &&
+		if (this.getSBOLDocument() !=null && this.getSBOLDocument().isCreateDefaults() && componentDefinition!=null &&
 				componentDefinition.getComponent(localURI)==null) {
 			componentDefinition.createComponent(localId,AccessType.PUBLIC,localId,"");
 		}
 		URI remoteURI = URIcompliance.createCompliantURI(getDefinition().getPersistentIdentity().toString(),
 				remoteId, getDefinition().getVersion());
+		return createMapsTo(displayId,refinement,localURI,remoteURI);
+	}
+	
+	MapsTo createMapsTo(String displayId, RefinementType refinement, String localId, URI remoteURI) throws SBOLValidationException {
+		URI localURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(),
+				localId, componentDefinition.getVersion());
+		if (this.getSBOLDocument() !=null && this.getSBOLDocument().isCreateDefaults() && componentDefinition!=null &&
+				componentDefinition.getComponent(localURI)==null) {
+			componentDefinition.createComponent(localId,AccessType.PUBLIC,localId,"");
+		}
 		return createMapsTo(displayId,refinement,localURI,remoteURI);
 	}
 
@@ -303,17 +344,17 @@ public class Component extends ComponentInstance{
 	 * <li>an SBOL validation exception occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}.</li>
 	 * </ul>
 	 */
-	void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
-		mapsTo.setSBOLDocument(this.sbolDocument);
+	private void addMapsTo(MapsTo mapsTo) throws SBOLValidationException {
+		mapsTo.setSBOLDocument(this.getSBOLDocument());
 		mapsTo.setComponentDefinition(componentDefinition);
 		mapsTo.setComponentInstance(this);
-		if (sbolDocument != null) {
+		if (this.getSBOLDocument() != null) {
 			if (componentDefinition.getComponent(mapsTo.getLocalURI())==null) {
 				//throw new SBOLValidationException("Component '" + mapsTo.getLocalURI() + "' does not exist.");
 				throw new SBOLValidationException("sbol-10803", mapsTo);
 			}
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (getDefinition().getComponent(mapsTo.getRemoteURI())==null) {
 				//throw new SBOLValidationException("Component '" + mapsTo.getRemoteURI() + "' does not exist.");
 				throw new SBOLValidationException("sbol-10808", mapsTo);
@@ -409,11 +450,12 @@ public class Component extends ComponentInstance{
 		for (MapsTo reference : mapsTos) {
 			addMapsTo(reference);
 		}
-	}
+	} 
 
-	ComponentDefinition getComponentDefinition() {
+/*	ComponentDefinition getComponentDefinition() {
 		return componentDefinition;
 	}
+*/
 
 	void setComponentDefinition(ComponentDefinition componentDefinition) {
 		this.componentDefinition = componentDefinition;
@@ -426,9 +468,9 @@ public class Component extends ComponentInstance{
 	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10604, 10605.
 	 */
 	public void setDefinition(URI definition) throws SBOLValidationException {
-		if (sbolDocument != null) {
-			ComponentDefinition cd = sbolDocument.getComponentDefinition(definition);
-			if (sbolDocument.isComplete()) {
+		if (this.getSBOLDocument() != null) {
+			ComponentDefinition cd = this.getSBOLDocument().getComponentDefinition(definition);
+			if (this.getSBOLDocument().isComplete()) {
 				if (cd==null) {
 					throw new SBOLValidationException("sbol-10604",this);
 				}
@@ -440,7 +482,7 @@ public class Component extends ComponentInstance{
 				Set<URI> visited = new HashSet<>();
 				visited.add(componentDefinition.getIdentity());
 				try {
-					SBOLValidate.checkComponentDefinitionCycle(sbolDocument, cd, visited);
+					SBOLValidate.checkComponentDefinitionCycle(this.getSBOLDocument(), cd, visited);
 				} catch (SBOLValidationException e) {
 					throw new SBOLValidationException("sbol-10605",this);
 				}
@@ -481,14 +523,10 @@ public class Component extends ComponentInstance{
 	}
 
 	@Override
+	// TODO: Remove until roles. Add roleIntegration.
 	public String toString() {
 		return "Component ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
-				+ ", access=" + this.getAccess()
-				+ ", definition=" + definition 
+				+ super.toString()
 				+ (roles.size()>0?", roles=" + roles:"")  
 				+ (this.getMapsTos().size()>0?", mapsTos=" + this.getMapsTos():"") 
 				+ "]";

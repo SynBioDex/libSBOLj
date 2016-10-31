@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL Participation data model.
+ * Represents a Participation object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -39,6 +39,10 @@ public class Participation extends Identified {
 		setRoles(roles);
 	}
 
+	/**
+	 * @param participation
+	 * @throws SBOLValidationException
+	 */
 	private Participation(Participation participation) throws SBOLValidationException {
 		super(participation);
 		this.roles = new HashSet<>();
@@ -48,6 +52,10 @@ public class Participation extends Identified {
 		this.setParticipant(participation.getParticipantURI());
 	}
 
+	void copy(Participation participation) throws SBOLValidationException {
+		((Identified)this).copy((Identified)participation);
+	}
+	
 	/**
 	 * Returns the FunctionalComponent URI that this participation refers to.
 	 *
@@ -165,12 +173,12 @@ public class Participation extends Identified {
 	 * is allowed to be edited.
 	 *
 	 */
-	void clearRoles() {
+	private void clearRoles() {
 		roles.clear();
 	}
 
 	@Override
-	protected Participation deepCopy() throws SBOLValidationException {
+	Participation deepCopy() throws SBOLValidationException {
 		return new Participation(this);
 	}
 
@@ -197,15 +205,6 @@ public class Participation extends Identified {
 	}
 
 	/**
-	 * Returns the parent module definition. 
-	 * 
-	 * @return the parent module definition 
-	 */
-	ModuleDefinition getModuleDefinition() {
-		return moduleDefinition;
-	}
-
-	/**
 	 * Sets the module definition that hosts this participation's parent interaction.
 	 * 
 	 * @param moduleDefinition the module definition that hosts this participation's parent interaction
@@ -217,10 +216,7 @@ public class Participation extends Identified {
 	@Override
 	public String toString() {
 		return "Participation ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 				
+				+ super.toString()
 				+ ", roles=" + roles 
 				+ ", participant=" + participant 
 				+ "]";

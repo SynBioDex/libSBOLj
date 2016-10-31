@@ -3,7 +3,8 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
- * Represents the role integration relationship between a roles specified in related objects.
+ * Represents the role integration relationship between roles specified in related objects.
+ * It indicates how role is to be integrated with related roles.
  *
  * @author Zhen Zhang
  * @author Chris Myers
@@ -28,14 +29,6 @@ public enum RoleIntegrationType {
 		this.roleIntegrationType = roleIntegrationType;
 	}
 
-	/**
-	 * Returns the roleIntegration type.
-	 * @return roleIntegration type.
-	 */
-	String getRoleIntegrationType() {
-		return roleIntegrationType;
-	}
-
 	@Override
 	public String toString() {
 		return roleIntegrationType;
@@ -56,10 +49,10 @@ public enum RoleIntegrationType {
 				return RoleIntegrationType.OVERRIDEROLES;
 			}
 			else {
-				throw new SBOLValidationException("TBD");
+				throw new SBOLValidationException("sbol-10708");
 			}
 		} else {
-			throw new SBOLValidationException("TBD");
+			throw new SBOLValidationException("sbol-10708");
 		}
 	}
 
@@ -84,7 +77,7 @@ public enum RoleIntegrationType {
 		}
 	}
 	
-	static final URI mergeRoles = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "mergeRoles");
-	static final URI overrideRoles = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "overrideRoles");
+	private static final URI mergeRoles = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "mergeRoles");
+	private static final URI overrideRoles = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "overrideRoles");
 
 }

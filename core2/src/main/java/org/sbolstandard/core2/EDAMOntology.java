@@ -96,10 +96,10 @@ public class EDAMOntology {
 
 
 	/**
-	 * Returns the name field of the stanza that matches the ID for the given stanzaURI.
+	 * Returns the name field of the stanza that matches the ID for the given stanza URI.
 	 *
-	 * @param stanzaURI the given stanza's URI
-	 * @return the name field of the stanza that matches the ID extracted from the given stanzaURI
+	 * @param stanzaURI the given stanza URI
+	 * @return the name field of the stanza that matches the ID extracted from the given stanza URI
 	 */
 	public final String getName(URI stanzaURI) {
 		String oboURIstr = stanzaURI.toString().trim();
@@ -126,10 +126,10 @@ public class EDAMOntology {
 	}
 
 	/**
-	 * Returns the name field of the stanza matching the ID extracted from the given stanzaURI.
+	 * Returns the name field of the stanza matching the ID extracted from the given stanza URI.
 	 *
-	 * @param stanzaId the given stanza's URI
-	 * @return the name field of the stanza that matches the ID in the given stanzaURI,
+	 * @param stanzaId the given stanza URI
+	 * @return the name field of the stanza that matches the ID in the given stanza URI,
 					or {@code null} if no match was found
 	 */
 	public final String getName(String stanzaId) {
@@ -218,9 +218,11 @@ public class EDAMOntology {
 	}
 	
 	/**
-	 * Returns a set of child ids that are descendants of a given parent id. 
+	 * Returns a set of child IDs that are descendants of the given parent ID. 
+	 * This set excludes the given parent ID.
+	 * 
 	 * @param parentId the id of the parent term
-	 * @return a set of child ids that are descendants of a given parent id. 
+	 * @return a set of child IDs that are descendants of the given parent ID. 
 	 */
 	public Set<String> getDescendantsOf(String parentId) {
 		OBOStanza stanza1 = EDAMOntology.getStanza(parentId);
@@ -236,9 +238,11 @@ public class EDAMOntology {
 	}
 	
 	/**
-	 * Returns a set of child ids that are descendants of a given parent URI. 
+	 * Returns a set of child IDs that are descendants of the given parent URI. 
+	 * This set excludes the given parent ID.
+	 * 
 	 * @param parentURI the URI of the parent term
-	 * @return a set of child ids that are descendants of a given parent URI. 
+	 * @return a set of child IDs that are descendants of the given parent URI. 
 	 */
 	public final Set<String> getDescendantsOf(URI parentURI) {
 		String parentId = getId(parentURI);
@@ -247,9 +251,11 @@ public class EDAMOntology {
 	}
 	
 	/**
-	 * Returns a set of child URIs that are descendants of a given parent id. 
-	 * @param parentId the id of the parent term
-	 * @return a set of child URIs that are descendants of a given parent id. 
+	 * Returns a set of child URIs that are descendants of the given parent ID. 
+	 * This set excludes the given parent URI.
+	 * 
+	 * @param parentId the ID of the parent term
+	 * @return a set of child URIs that are descendants of the given parent ID. 
 	 */
 	public final Set<URI> getDescendantURIsOf(String parentId) {
 		Set<String> descendents = getDescendantsOf(parentId);
@@ -261,9 +267,11 @@ public class EDAMOntology {
 	}
 	
 	/**
-	 * Returns a set of child URIs that are descendants of a given parent URI. 
+	 * Returns a set of child URIs that are descendants of the given parent URI. 
+	 * This set excludes the given parent URI.
+	 * 
 	 * @param parentURI the URI of the parent term
-	 * @return a set of child URIs that are descendants of a given parent URI. 
+	 * @return a set of child URIs that are descendants of the given parent URI. 
 	 */
 	public final Set<URI> getDescendantURIsOf(URI parentURI) {
 		Set<String> descendents = getDescendantsOf(parentURI);
@@ -273,6 +281,40 @@ public class EDAMOntology {
 		}
 		return descendentURIs;
 	}
+	
+	/**
+	 * Returns the set of child names that are descendants of the given parent ID. 
+	 * This set excludes the given parent name.
+	 *  
+	 * @param parentId the ID of the parent stanza
+	 * @return the set of child names that are descendants of the given parent ID. 
+	 */
+
+	public final Set<String> getDescendantNamesOf(String parentId) {
+		Set<String> descendents = getDescendantsOf(parentId);
+		Set<String> descendentNames = new HashSet<String>();
+		for (String child : descendents) {
+			descendentNames.add(getName(child));
+		}
+		return descendentNames;
+	}
+	
+	/**
+	 * Returns the set of child names that are descendants of the given parent URI. 
+	 * This set excludes the given parent name. 
+	 * 
+	 * @param parentURI the URI of the parent stanza
+	 * @return the set of child names that are descendants of the given parent URI
+	 */
+
+	public final Set<String> getDescendantNamesOf(URI parentURI) {
+		Set<String> descendents = getDescendantsOf(parentURI);
+		Set<String> descendentNames = new HashSet<String>();
+		for (String child : descendents) {
+			descendentNames.add(getName(child));
+		}
+		return descendentNames;
+	}
 
 	/**
 	 * Creates a new URI from the EDAM Ontology namespace with the given local name. For example, the function call
@@ -280,7 +322,7 @@ public class EDAMOntology {
 	 * @param localName the given local name
 	 * @return the created URI
 	 */
-	static final URI type(String localName) {
+	private static final URI type(String localName) {
 		return URI.create(URI_PREFIX+localName);
 	}
 

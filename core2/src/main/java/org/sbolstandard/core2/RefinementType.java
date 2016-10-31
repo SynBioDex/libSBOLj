@@ -41,14 +41,6 @@ public enum RefinementType {
 		this.refinementType = refinementType;
 	}
 
-	/**
-	 * Returns the refinement type.
-	 * @return refinement type.
-	 */
-	String getRefinementType() {
-		return refinementType;
-	}
-
 	@Override
 	public String toString() {
 		return refinementType;
@@ -108,9 +100,9 @@ public enum RefinementType {
 		}
 	}
 	
-	static final URI merge = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "merge");
-	static final URI useLocal = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "useLocal");
-	static final URI useRemote = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "useRemote");
-	static final URI verifyIdentical = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "verifyIdentical");
+	private static final URI merge = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "merge");
+	private static final URI useLocal = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "useLocal");
+	private static final URI useRemote = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "useRemote");
+	private static final URI verifyIdentical = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "verifyIdentical");
 
 }

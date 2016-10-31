@@ -4,7 +4,7 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
- * Represents the SBOL ComponentInstance data model.
+ * Represents a ComponentInstance object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -15,7 +15,7 @@ import java.net.URI;
 public abstract class ComponentInstance extends Identified {
 
 	private AccessType access;
-	protected URI definition;
+	private URI definition;
 	/**
 	 * @param identity
 	 * @param access
@@ -37,15 +37,19 @@ public abstract class ComponentInstance extends Identified {
 	 * @param component
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
 	 * <ul>
-	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(URI)};</li>
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(Identified)};</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #setAccess(AccessType)}; or</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #setDefinition(URI)}.</li>
 	 * </ul>
 	 */
-	protected ComponentInstance(ComponentInstance component) throws SBOLValidationException {
+	ComponentInstance(ComponentInstance component) throws SBOLValidationException {
 		super(component);
 		setAccess(component.getAccess());
 		setDefinition(component.getDefinitionURI());
+	}
+	
+	void copy(ComponentInstance component) throws SBOLValidationException {
+		((Identified)this).copy(component);
 	}
 
 	/**
@@ -87,8 +91,8 @@ public abstract class ComponentInstance extends Identified {
 	 * or the matching component definition otherwise.
 	 */
 	public ComponentDefinition getDefinition() {
-		if (sbolDocument==null) return null;
-		return sbolDocument.getComponentDefinition(definition);
+		if (this.getSBOLDocument()==null) return null;
+		return this.getSBOLDocument().getComponentDefinition(definition);
 	}
 
 	/**
@@ -101,8 +105,8 @@ public abstract class ComponentInstance extends Identified {
 		if (definition==null) {
 			throw new SBOLValidationException("sbol-10602",this);
 		}
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getComponentDefinition(definition)==null) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getComponentDefinition(definition)==null) {
 				throw new SBOLValidationException("sbol-10604",this);
 			}
 		}
@@ -110,7 +114,7 @@ public abstract class ComponentInstance extends Identified {
 	}
 
 	@Override
-	protected abstract ComponentInstance deepCopy() throws SBOLValidationException;
+	abstract ComponentInstance deepCopy() throws SBOLValidationException;
 	
 	@Override
 	public int hashCode() {
@@ -143,9 +147,9 @@ public abstract class ComponentInstance extends Identified {
 
 	@Override
 	public String toString() {
-		return "ComponentInstance [access=" + access + ", definition=" + definition + ", identity="
-				+ identity + ", displayId=" + displayId + ", name=" + name + ", description="
-				+ description + "]";
+		return super.toString() 
+				+ ", access=" + access
+				+ ", definition=" + definition;
 	}
 
 }

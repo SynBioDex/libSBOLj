@@ -39,14 +39,6 @@ public enum RestrictionType {
 	RestrictionType(String restrictionType) {
 		this.restrictionType = restrictionType;
 	}
-	
-	/**
-	 * Returns the restriction type.
-	 * @return restriction type.
-	 */
-	String getRestrictionType() {
-		return restrictionType;
-	}
 
 	@Override
 	public String toString() {
@@ -79,7 +71,7 @@ public enum RestrictionType {
 	/**
 	 * Returns the restriction type in URI.
 	 * @return restriction type in URI
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the following SOBL validation rule was violated: 11412.
 	 */
 	static URI convertToURI(RestrictionType restriction) throws SBOLValidationException {
 		if (restriction != null) {
@@ -99,8 +91,8 @@ public enum RestrictionType {
 		}
 	}
 	
-	static final URI precedes = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "precedes");
-	static final URI sameOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "sameOrientationAs");
-	static final URI oppositeOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "oppositeOrientationAs");
+	private static final URI precedes = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "precedes");
+	private static final URI sameOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "sameOrientationAs");
+	private static final URI oppositeOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "oppositeOrientationAs");
 
 }

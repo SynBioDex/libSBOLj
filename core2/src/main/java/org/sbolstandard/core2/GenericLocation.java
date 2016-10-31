@@ -3,7 +3,7 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
- * Represents the GenericLocation extension of the SBOL Location class.
+ * Represents a GenericLocation extension object of the SBOL Location class.
  * 
  * @author Zhen Zhang
  * @author Chris Myers
@@ -27,12 +27,16 @@ public class GenericLocation extends Location{
 	private GenericLocation(GenericLocation genericLocation) throws SBOLValidationException {
 		super(genericLocation);
 	}
+	
+	void copy(GenericLocation genericLocation) throws SBOLValidationException {
+		((Location)this).copy((Location)genericLocation);
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+		result = prime * result + ((this.getOrientation() == null) ? 0 : this.getOrientation().hashCode());
 		return result;
 	}
 
@@ -45,7 +49,7 @@ public class GenericLocation extends Location{
 		if (getClass() != obj.getClass())
 			return false;
 		GenericLocation other = (GenericLocation) obj;
-		return orientation == other.orientation;
+		return this.getOrientation() == other.getOrientation();
 	}
 
 	/* (non-Javadoc)
@@ -55,23 +59,19 @@ public class GenericLocation extends Location{
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #GenericLocation(GenericLocation)}.
 	 */
 	@Override
-	protected GenericLocation deepCopy() throws SBOLValidationException {
+	GenericLocation deepCopy() throws SBOLValidationException {
 		return new GenericLocation(this);
 	}
 
 	@Override
 	public String toString() {
 		return "GenericLocation ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
-				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
+				+ super.toString()
 				+ "]";
 	}
 
 	@Override
-	public int compareTo(Location locaction) {
+	public int compareTo(Location location) {
 		return Integer.MAX_VALUE;
 	}
 }

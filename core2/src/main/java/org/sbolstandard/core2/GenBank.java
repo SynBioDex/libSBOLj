@@ -399,9 +399,16 @@ class GenBank {
 			type = annotation.getStringValue();
 		}
 		String linCirc = "linear";
+		// Below only needed for backwards compatibility with 2.1.0 converter.
 		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,TOPOLOGY,GBPREFIX));
 		if (annotation!=null) {
 			linCirc = annotation.getStringValue();
+		}
+		if (componentDefinition.containsType(SequenceOntology.CIRCULAR)) {
+			linCirc = "circular";
+		}
+		if (componentDefinition.containsType(SequenceOntology.LINEAR)) {
+			linCirc = "linear";
 		}
 		String division = "UNK";
 		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,DIVISION,GBPREFIX));
@@ -580,10 +587,10 @@ class GenBank {
 
 	private static void writeFeature(Writer w,SequenceAnnotation sa,String role,int offset,boolean inline) 
 			throws IOException, SBOLConversionException {
-		if (sa.getLocations().size()==0) {
-			throw new SBOLConversionException("SequenceAnnotation "+sa.getIdentity()+" has no locations.");
-		} else if (sa.getLocations().size()==1) {
-			Location loc = sa.getLocations().iterator().next();
+		if (sa.getPreciseLocations().size()==0) {
+			throw new SBOLConversionException("SequenceAnnotation "+sa.getIdentity()+" has no range/cut locations.");
+		} else if (sa.getPreciseLocations().size()==1) {
+			Location loc = sa.getPreciseLocations().iterator().next();
 			boolean locReverse = false;
 			if (loc.isSetOrientation()) {
 				locReverse = loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT);
@@ -646,7 +653,7 @@ class GenBank {
 	
 	private static int getFeatureStart(SequenceAnnotation sa) {
 		int featureStart = Integer.MAX_VALUE;
-		for (Location location : sa.getLocations()) {
+		for (Location location : sa.getPreciseLocations()) {
 			if (location instanceof Range) {
 				Range range = (Range)location;
 				if (range.getStart() < featureStart) {
@@ -666,7 +673,7 @@ class GenBank {
 	
 	private static int getFeatureEnd(SequenceAnnotation sa) {
 		int featureEnd = 0;
-		for (Location location : sa.getLocations()) {
+		for (Location location : sa.getPreciseLocations()) {
 			if (location instanceof Range) {
 				Range range = (Range)location;
 				if (range.getEnd() > featureEnd) {
@@ -686,7 +693,7 @@ class GenBank {
 	// TODO: assumes any complement then entirely complemented, need to fix
 	private static boolean isInlineFeature(SequenceAnnotation sa) {
 		boolean inlineFeature = true;
-		for (Location location : sa.getLocations()) {
+		for (Location location : sa.getPreciseLocations()) {
 			if (location.isSetOrientation() && location.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
 				inlineFeature = false;
 			}
@@ -716,6 +723,14 @@ class GenBank {
 					recurseComponentDefinition(compDef, w, offset + getFeatureStart(sa)-1,
 							!(inline^isInlineFeature(sa)),newFeatureEnd);
 				}
+			} else {
+				for (URI roleURI : sa.getRoles()) {
+					String soRole = so.getId(roleURI);
+					if (soRole != null) {
+						role = convertSOtoGenBank(so.getId(roleURI));
+						break;
+					}
+				}				
 			}
 			if (!inline) {
 				writeFeature(w,sa,role,(featureEnd - (getFeatureEnd(sa)+getFeatureStart(sa)-1) - offset),inline);
@@ -801,8 +816,21 @@ class GenBank {
 		}
 	}
 
+	/**
+	 * @param doc
+	 * @param topCD
+	 * @param type
+	 * @param elements
+	 * @param version
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link SBOLDocument#createSequence(String, String, String, URI)}, or</li>
+	 * <li>{@link ComponentDefinition#addSequence(Sequence)}.</li>
+	 * </ul>
+	 */
 	private static void createSubComponentDefinitions(SBOLDocument doc,ComponentDefinition topCD,URI type,String elements,String version) throws SBOLValidationException {
 		for (SequenceAnnotation sa : topCD.getSequenceAnnotations()) {
+			if (!sa.isSetComponent()) continue;
 			Range range = (Range)sa.getLocation("range");
 			if (range!=null) {
 				String subElements = elements.substring(range.getStart()-1,range.getEnd()).toLowerCase();
@@ -817,6 +845,27 @@ class GenBank {
 		}
 	}
 
+	/**
+	 * @param doc
+	 * @param stringBuffer
+	 * @param URIPrefix
+	 * @throws IOException
+	 * @throws SBOLConversionException
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link SBOLDocument#createComponentDefinition(String, String, URI)},</li>
+	 * <li>{@link Identified#setAnnotations(List)},</li>
+	 * <li>{@link SequenceAnnotation#addAnnotation(Annotation)},</li>
+	 * <li>{@link ComponentDefinition#createSequenceAnnotation(String, String, int, int, OrientationType)},</li>
+	 * <li>{@link SequenceAnnotation#setComponent(String)},</li>
+	 * <li>{@link SequenceAnnotation#addRange(String, int, int, OrientationType)},</li>
+	 * <li>{@link Range#addAnnotation(Annotation)},</li>
+	 * <li>{@link ComponentDefinition#createSequenceAnnotation(String, String, int, OrientationType)},</li>
+	 * <li>{@link SBOLDocument#createSequence(String, String, String, URI)}, </li>
+	 * <li>{@link ComponentDefinition#addSequence(Sequence)}, or </li>
+	 * <li>{@link #createSubComponentDefinitions(SBOLDocument, ComponentDefinition, URI, String, String)}.</li>
+	 * </ul>
+	 */
 	static void read(SBOLDocument doc,String stringBuffer,String URIPrefix) throws IOException, SBOLConversionException, SBOLValidationException {
 		so = new SequenceOntology();
 
@@ -874,7 +923,7 @@ class GenBank {
 						// linear vs. circular construct
 						if (strSplit[i].startsWith("linear") || strSplit[i].startsWith("circular")) {
 							if (strSplit[i].startsWith("circular")) circular = true;
-							annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
+							//annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
 
 						} else if (strSplit[i].length()==3) {
 							annotation = new Annotation(new QName(GBNAMESPACE, DIVISION, GBPREFIX), strSplit[i]);
@@ -965,6 +1014,11 @@ class GenBank {
 				} else if (strLine.startsWith("FEATURE")) {
 
 					topCD = doc.createComponentDefinition(id, version, type);
+					if (circular) {
+						topCD.addType(SequenceOntology.CIRCULAR);
+					} else {
+						topCD.addType(SequenceOntology.LINEAR);
+					}
 					topCD.addRole(SequenceOntology.ENGINEERED_REGION);
 					if (!"".equals(description)) {
 						topCD.setDescription(description);
@@ -1037,9 +1091,10 @@ class GenBank {
 							// a Genbank feature is mapped to a SBOL role
 							// documented by an SO term
 							URI role = convertGenBanktoSO(strSplit[0]);
-							ComponentDefinition feature =
-									doc.createComponentDefinition("feature"+featureCnt, version, type);
-							feature.addRole(role);
+							// TODO: add switch to allow for sub-components to be created
+//							ComponentDefinition feature =
+//									doc.createComponentDefinition("feature"+featureCnt, version, type);
+//							feature.addRole(role);
 
 							String range = strSplit[1];
 							boolean outerComplement = false;
@@ -1090,7 +1145,9 @@ class GenBank {
 									if (rangeCnt==0) {
 										sa = topCD.createSequenceAnnotation("annotation"+featureCnt,"range"+rangeCnt,
 												start,end,orientation);
-										sa.setComponent("feature"+featureCnt);
+										// TODO: add switch to allow for sub-components to be created
+										//sa.setComponent("feature"+featureCnt);
+										sa.addRole(role);
 										annotation = new Annotation(new QName(GBNAMESPACE,MULTIRANGETYPE,GBPREFIX),multiType);
 										sa.addAnnotation(annotation);
 										newRange = (Range)sa.getLocation("range"+rangeCnt);
@@ -1122,7 +1179,9 @@ class GenBank {
 								int at = Integer.parseInt(rangeSplit[0]);
 								SequenceAnnotation sa =
 										topCD.createSequenceAnnotation("annotation"+featureCnt,"cut",at,orientation);
-								sa.setComponent("feature"+featureCnt);
+								// TODO: add switch to allow for sub-components to be created
+								//sa.setComponent("feature"+featureCnt);
+								sa.addRole(role);
 							} else {
 								boolean startLessThan=false;
 								boolean endGreaterThan=false;
@@ -1147,7 +1206,9 @@ class GenBank {
 								if (start > end && circular) {
 									SequenceAnnotation sa =
 											topCD.createSequenceAnnotation("annotation"+featureCnt,"range0",start,baseCount,orientation);
-									sa.setComponent("feature"+featureCnt);
+									// TODO: add switch to allow for sub-components to be created
+									//sa.setComponent("feature"+featureCnt);
+									sa.addRole(role);
 									annotation = new Annotation(new QName(GBNAMESPACE,STRADLESORIGIN,GBPREFIX),"true");
 									sa.addAnnotation(annotation);
 									Range newRange = (Range)sa.getLocation("range");
@@ -1171,7 +1232,9 @@ class GenBank {
 								} else {
 									SequenceAnnotation sa =
 											topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
-									sa.setComponent("feature"+featureCnt);
+									// TODO: add switch to allow for sub-components to be created
+									//sa.setComponent("feature"+featureCnt);
+									sa.addRole(role);
 									Range newRange = (Range)sa.getLocation("range");
 									if (startLessThan) {
 										annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");

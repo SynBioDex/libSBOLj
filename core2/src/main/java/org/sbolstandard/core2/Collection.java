@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL Collection data model.
+ * Represents an Collection object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -19,6 +19,11 @@ public class Collection extends TopLevel{
 
 	private Set<URI> members;
 
+	/**
+	 * @param identity
+	 * @throws SBOLValidationException if an SBOL validation rule was violated in the following constructor:
+	 * {@link TopLevel#TopLevel(URI)}. 
+	 */
 	Collection(URI identity) throws SBOLValidationException {
 		super(identity);
 		this.members = new HashSet<>();
@@ -37,11 +42,16 @@ public class Collection extends TopLevel{
 		//super(collection.getIdentity());
 		super(collection);
 		this.members = new HashSet<>();
-		Set<URI> newMembers = new HashSet<>();
 		for (URI member : collection.getMemberURIs()) {
-			newMembers.add(member);
+			this.addMember(member);
 		}
-		this.setMembers(newMembers);
+	}
+	
+	void copy(Collection collection) throws SBOLValidationException {
+		((TopLevel)this).copy((TopLevel)collection);
+		for (URI member : collection.getMemberURIs()) {
+			this.addMember(member);
+		}
 	}
 
 	/**
@@ -54,8 +64,8 @@ public class Collection extends TopLevel{
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12103.
 	 */
 	public boolean addMember(URI memberURI) throws SBOLValidationException {
-		if (sbolDocument != null && sbolDocument.isComplete()) {
-			if (sbolDocument.getTopLevel(memberURI)==null) {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getTopLevel(memberURI)==null) {
 				throw new SBOLValidationException("sbol-12103", this);
 			}
 		}
@@ -106,7 +116,7 @@ public class Collection extends TopLevel{
 	public Set<TopLevel> getMembers() {
 		Set<TopLevel> result = new HashSet<>();
 		for (URI memberURI : members) {
-			TopLevel member = sbolDocument.getTopLevel(memberURI);
+			TopLevel member = this.getDocument().getTopLevel(memberURI);
 			result.add(member);
 		}
 		return result;
@@ -169,7 +179,7 @@ public class Collection extends TopLevel{
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Collection(Collection)}.
 	 */
 	@Override
-	protected Collection deepCopy() throws SBOLValidationException {
+	Collection deepCopy() throws SBOLValidationException {
 		return new Collection(this);
 	}
 
@@ -207,17 +217,14 @@ public class Collection extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
-		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+	void checkDescendantsURIcompliance() {//throws SBOLValidationException {
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	@Override
 	public String toString() {
 		return "Collection ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ super.toString()
 				+ (members.size()>0?", members=" + members:"")  
 				+ "]";
 	}

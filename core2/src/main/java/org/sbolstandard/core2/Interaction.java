@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents the SBOL Interaction data model.
+ * Represents an Interaction object in the SOBL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -42,7 +42,11 @@ public class Interaction extends Identified {
 		setTypes(types);
 	}
 
-	Interaction(Interaction interaction) throws SBOLValidationException {
+	/**
+	 * @param interaction
+	 * @throws SBOLValidationException
+	 */
+	private Interaction(Interaction interaction) throws SBOLValidationException {
 		super(interaction);
 		this.types = new HashSet<>();
 		this.participations = new HashMap<>();
@@ -56,6 +60,15 @@ public class Interaction extends Identified {
 			participations.add(participation.deepCopy());
 		}
 		this.setParticipations(participations);
+	}
+	
+	void copy(Interaction interaction) throws SBOLValidationException {
+		((Identified)this).copy(interaction);
+		for (Participation participation : interaction.getParticipations()) {
+			Participation newParticipation = this.createParticipation(participation.getDisplayId(), 
+					participation.getParticipant().getDisplayId(), participation.getRoles());
+			newParticipation.copy(participation);
+		}		
 	}
 
 	/**
@@ -122,7 +135,7 @@ public class Interaction extends Identified {
 	 * Removes all entries this interation's list of types. 
 	 * The list will be empty after this call returns.
 	 */
-	void clearTypes() {
+	private void clearTypes() {
 		types.clear();
 	}
 
@@ -138,7 +151,7 @@ public class Interaction extends Identified {
 	 * Calls the Participation constructor to create a new participation using the given arguments,
 	 * then adds to the list of participations owned by this interaction.
 	 * 
-	 * @param identity the URI identifier of the participation to be created
+	 * @param identity the URI identity of the participation to be created
 	 * @param participant the functional component the participation to be created refers to
 	 * @param roles the roles property of the participation to be created
 	 * @return the created participation
@@ -148,7 +161,7 @@ public class Interaction extends Identified {
 	 * <li>an SBOL validation rule violation occurred in {@link #addParticipation(Participation)}.</li>
 	 * </ul>
 	 */
-	Participation createParticipation(URI identity, URI participant, Set<URI> roles) throws SBOLValidationException {
+	private Participation createParticipation(URI identity, URI participant, Set<URI> roles) throws SBOLValidationException {
 		Participation participation = new Participation(identity, participant, roles);
 		addParticipation(participation);
 		return participation;
@@ -224,7 +237,7 @@ public class Interaction extends Identified {
 	public Participation createParticipation(String displayId, String participantId, Set<URI> roles) throws SBOLValidationException {
 		URI participantURI = URIcompliance.createCompliantURI(moduleDefinition.getPersistentIdentity().toString(),
 				participantId, moduleDefinition.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && moduleDefinition!=null &&
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() && moduleDefinition!=null &&
 				moduleDefinition.getFunctionalComponent(participantURI)==null) {
 			moduleDefinition.createFunctionalComponent(participantId,AccessType.PUBLIC,participantId,"",
 					DirectionType.INOUT);
@@ -293,12 +306,12 @@ public class Interaction extends Identified {
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
 	 * </ul>
 	 */
-	void addParticipation(Participation participation) throws SBOLValidationException {
+	private void addParticipation(Participation participation) throws SBOLValidationException {
 		if (moduleDefinition != null && moduleDefinition.getFunctionalComponent(participation.getParticipantURI())==null) {
 			throw new SBOLValidationException("sbol-12003", participation);
 		}
 		addChildSafely(participation, participations, "participation");
-		participation.setSBOLDocument(this.sbolDocument);
+		participation.setSBOLDocument(this.getSBOLDocument());
 		participation.setModuleDefinition(moduleDefinition);
 	}
 
@@ -418,7 +431,7 @@ public class Interaction extends Identified {
 	}
 
 	@Override
-	protected Interaction deepCopy() throws SBOLValidationException {
+	Interaction deepCopy() throws SBOLValidationException {
 		return new Interaction(this);
 	}
 
@@ -461,16 +474,7 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Returns this interaction's parent ModuleDefinition instance.
-	 *
-	 * @return this interaction's parent ModuleDefinition instance
-	 */
-	ModuleDefinition getModuleDefinition() {
-		return moduleDefinition;
-	}
-
-	/**
-	 * Sets the given module definition to be the parent of this interation. 
+	 * Sets the given module definition to be the parent of this interaction. 
 	 * 
 	 * @param moduleDefinition the parent module definition
 	 */
@@ -481,10 +485,7 @@ public class Interaction extends Identified {
 	@Override
 	public String toString() {
 		return "Interaction ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ super.toString()
 				+ ", types=" + types 
 				+ (participations.size()>0?", participations=" + participations:"") 
 				+ "]";

@@ -1,4 +1,4 @@
-\section*{Other Methods in the API of {\tt libSBOj}}
+\section*{Other Features of {\tt libSBOj}}
 So far, we have demonstrated how one can build the CRISPR-based repression module ~\cite{kiani2014crispr} using {\tt libSBOLj}. In this section, we present other major methods in the library's API. 
 
 \subsection*{Retrieving an Existing Object}
@@ -75,7 +75,7 @@ gRNA_b_gene.setRoles(new HashSet<URI>(
 
 \subsection*{Creating and Editing References}
 \sbol{TopLevel} objects can refer to other \sbol{TopLevel} objects.  For example, 
-a \lstinline+ComponentDefinition+ object can refer to one or more sequences.  This reference is created by calling the \lstinline+addSequence(URI)+ method.  Methods available for manipulating references are similar to those for the optional fields. Previously, we added the \lstinline+CRP_b_seq+ \sbol{Sequence} to the \lstinline+CRP_b+ \sbol{ComponentDefinition}. The code below first clears all sequences associated with \lstinline+CRP_b+,  then adds the \lstinline+CRP_b_seq+ \sbol{Sequence} back. The last three lines will cause an exception to be thrown indicating that the sequence with the specified URI cannot be found in the \lstinline+doc+ \sbol{SBOLDocument} object. Note that since the ``complete'' flag is set to \lstinline+true+, the library verifies that all objects referenced are present in it.
+a \lstinline+ComponentDefinition+ object can refer to one or more sequences.  This reference is created by calling the \lstinline+addSequence(URI)+ method.  Methods available for manipulating references are similar to those for the optional fields. Previously, we added the \lstinline+CRP_b_seq+ \sbol{Sequence} to the \lstinline+CRP_b+ \sbol{ComponentDefinition}. The code below first clears all sequences associated with \lstinline+CRP_b+,  then adds the \lstinline+CRP_b_seq+ \sbol{Sequence} back. The last three lines will cause an exception to be thrown indicating that the sequence with the specified URI cannot be found in the \lstinline+doc+ \sbol{SBOLDocument} object. Note that since the \lstinline+complete+ flag is set to \lstinline+true+, the library verifies that all objects referenced are present in it.
 
 \vspace{\abovedisplayskip}
 \begin{minipage}{0.95\textwidth} 
@@ -190,6 +190,45 @@ pConst_alt.addSequence(pConst_alt_seq);
 \end{lstlisting}
 \end{minipage}
 
+\subsection*{Validation}
+Since version 2.1.0 of {\tt libSBOLj}, validation rules defined in
+the~\href{http://sbolstandard.org/downloads/specification-data-model-2-0/}{SBOL
+  Version 2.0.1 specification} that are at least partially
+machine-chackable have been encoded in the library. This enables users
+of the library to automatically validate an SBOL file on reading
+and/or during construction of SBOL objects using the library's API
+call. The code below validates the complete model we created in this
+tutorial. 
+
+\vspace{\abovedisplayskip}
+\begin{minipage}{0.95\textwidth} 
+\begin{lstlisting}
+SBOLValidate.validateSBOL(doc, true, true, true);
+if (SBOLValidate.getNumErrors() > 0) {
+  for (String error : SBOLValidate.getErrors()) {
+    System.out.println(error);
+  }
+  return;
+}
+\end{lstlisting}
+\end{minipage}
+
+The method
+\lstinline+SBOLValidate.validateSBOL(SBOLDocument sbolDocument, boolean complete, boolean compliant, boolean bestPractice)+ 
+is called to validate the SBOL document we created in the beginning of
+this tutorial. Errors encountered during validation either throw
+exceptions or, if not fatal, are added to the list of errors that can
+be later accessed using the \lstinline+getErrors()+ method. Setting the \lstinline+complete+
+flag to \lstinline+true+ enables the validation routine to check if
+{\bf all} references to SBOL objects in the given document can
+dereference to objects that exist in the same document. A
+\lstinline+true+ value for the \lstinline+compliant+ flag means that
+all SBOL objects' identity URIs in the given SBOL document are
+compliant. Lastly, setting \lstinline+bestPractice+ to
+\lstinline+true+ enables the validator to check rules with the
+RECOMMENDED condition in the~\href{http://sbolstandard.org/downloads/specification-data-model-2-0/}{SBOL
+  Version 2.0.1 specification}.
+
 \subsection*{Serialization}
 The library supports reading and writing data encoded in RDF/XML
 format. We can produce a serialization output by
@@ -228,6 +267,8 @@ public static SBOLDocument writeThenRead(SBOLDocument doc)
 }
 \end{lstlisting}
 \end{minipage}
+
+The complete repression model described in this tutorial is provided as ``RepressionModel.java'' under the {\tt libSBOLj} examples directory. This example is self-contained in that you can run it to generate the RDF/XML output. Note that SBOL does not provide the specification of a mathematical model directly. It is possible, however, to generate a mathematical model using SBML~\cite{SBML} and the procedure described in~\cite{roehner2015generating}. Then, the SBOL document can reference this generated SBML model.
 
 % The RDF serialization for the SBOLDocument object created in this
 % tutorial is shown below. Note that we only show the beginning of the

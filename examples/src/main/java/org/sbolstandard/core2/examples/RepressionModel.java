@@ -175,6 +175,8 @@ public class RepressionModel {
 
 		// Create ComponentDefinition for gRNA_b RNA
 		doc.createComponentDefinition("gRNA_b", version, ComponentDefinition.RNA).addRole(SequenceOntology.SGRNA);
+		SequenceOntology so = new SequenceOntology();
+		URI sgrna = so.getURIbyName("sgRNA");
 		  
 		// Create ComponentDefinition for cas9m_BFP gRNA_b complex 
 		doc.createComponentDefinition("cas9m_BFP_gRNA_b", version, ComponentDefinition.COMPLEX);

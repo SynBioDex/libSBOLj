@@ -95,7 +95,7 @@ public class SystemsBiologyOntology {
 	private static OBOOntology systemsBiologyOntology = null;
 	
 	/**
-	 * Construct an SBO ontology object and read the OBO definition file, if necessary.
+	 * Construct an SBO ontology object and read the OBO definition file, if it has not been constructed.
 	 */
 	public SystemsBiologyOntology() {
 		if (systemsBiologyOntology == null) {
@@ -114,8 +114,8 @@ public class SystemsBiologyOntology {
 	/**
 	 * Returns the extracted ID of the given term's URI. 
 	 * 
-	 * @param termURI the URI of the given term
-	 * @return the extracted ID of the given term's URI.
+	 * @param termURI the identity URI of a term 
+	 * @return the extracted ID of the given term's URI
 	 */
 	public final String getId(URI termURI) {
 		String termURIstr = termURI.toString().trim();
@@ -132,9 +132,8 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns the ID field of the stanza whose name matches the given name. 
-	 * If multiple matches are found, only the first matching
-	 * one is returned.
+	 * Returns the ID of the stanza whose name matches the given stanza name. 
+	 * If multiple matches are found, only the first matching one is returned.
 	 *  
 	 * @param stanzaName the name of a stanza
 	 * @return the matching stanza ID, or {@code null} if no match is found.
@@ -158,12 +157,11 @@ public class SystemsBiologyOntology {
 		return IdList.get(0);
 	}
 	
-	
 	/**
 	 * Returns the name field of the stanza that matches the ID for the given term URI.
 	 * 
 	 * @param termURI the identity URI of a term
-	 * @return the name of the stanza that matches the ID in the given term URI.
+	 * @return the name field of the stanza whose ID is referred to by the given term URI.
 	 */
 	public final String getName(URI termURI) {
 		String oboURIstr = termURI.toString().trim();
@@ -189,11 +187,11 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns the name field of the stanza that matches the ID referred by the given stanzaURI.
+	 * Returns the name field of the stanza that matches the ID referred by the given stanza URI.
 	 * 
 	 * @param stanzaId the ID of a stanza
-	 * @return the name field of the stanza that matches the ID referred by the given stanzaURI,
-				or {@code null} if this no match is found.
+	 * @return the name field of the stanza that matches the ID referred by the given stanza URI,
+	 * or {@code null} if this no match was found
 	 */
 	public final String getName(String stanzaId) {
 		OBOStanza oboStanza = systemsBiologyOntology.getStanza(stanzaId);
@@ -209,19 +207,21 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns the URI, i.e. the Systems Biology Ontology (SBO) namespace, "http://identifiers.org/biomodels.sbo/", followed by an ID of an SBO term,  
-	 * of the stanza whose name matches the given name. If multiple matches are found, only the first matching
+	 * Returns the URI that is composed of the Systems Biology Ontology (SBO) namespace, "http://identifiers.org/biomodels.sbo/", 
+	 * followed by the ID of an SBO term, of the stanza whose name matches the given name. If multiple matches are found, only the first matching
 	 * one is returned. 
 	 * 
 	 * @param stanzaName the name of a term
-	 * @return the URI of the given SBO name.
+	 * @return the URI of the given SBO name
 	 */
 	public final URI getURIbyName(String stanzaName) {
 		return getURIbyId(getId(stanzaName));
 	}
 	
 	/** 
-	 * Creates a new URI from the Systems Biology Ontology namespace, "http://identifiers.org/biomodels.sbo/", with the given ID. 
+	 * Creates a URI by appending the given stanza ID to the end of the
+	 * Systems Biology Ontology (SBO) namespace，i.e. "http://identifiers.org/biomodels.sbo/".
+	 * 
 	 * @param stanzaId the ID of a stanza
 	 * @return the created URI
 	 */
@@ -240,12 +240,14 @@ public class SystemsBiologyOntology {
 	
 	
 	/**
-	 * Returns {@code true} if the term with childURI is a descendant of the term with parentURI. This method first
-	 * extracts IDs for the child and parent terms, and then pass them to {@link #isDescendantOf(String, String)}.  
-	 * @param childURI the URI of the child term
-	 * @param parentURI the URI of the child term
-	 * @return {@code true} if the term with childURI is a descendant of the term with parentURI, {@code false} otherwise.
+	 * Returns {@code true} if the stanza with childURI is a descendant of the stanza with parentURI. This method first
+	 * extracts IDs for the child and parent, and then passes them to {@link #isDescendantOf(String, String)}.
+	 *   
+	 * @param childURI the URI of the child stanza
+	 * @param parentURI the URI of the parent stanza
+	 * @return {@code true} if the stanza with childURI is a descendant of the stanza with parentURI, or {@code false} otherwise
 	 */
+	
 	public final boolean isDescendantOf(URI childURI, URI parentURI) {
 		String childId = getId(childURI);
 		String parentId = getId(parentURI);
@@ -254,10 +256,11 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.  
+	 * Returns {@code true} if the stanza with Id1 is a descendant of the stanza with Id2.
+	 *   
 	 * @param Id1 ID of the first stanza
 	 * @param Id2 ID of the second stanza
-	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, {@code false} otherwise.
+	 * @return {@code true} if the stanza with Id1 is a descendant of the stanza with Id2, or {@code false} otherwise
 	 */
 	public final boolean isDescendantOf(String Id1, String Id2) {
 		OBOStanza stanza1 = systemsBiologyOntology.getStanza(Id1);
@@ -282,9 +285,11 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns a set of child ids that are descendants of a given parent id. 
-	 * @param parentId the id of the parent term
-	 * @return a set of child ids that are descendants of a given parent id. 
+ 	 * Returns the set of child IDs that are descendants of the given parent ID.
+ 	 * This set excludes the given parent ID.
+	 * 
+	 * @param parentId the ID of the parent stanza
+	 * @return the set of child IDs that are descendants of the given parent ID
 	 */
 	public Set<String> getDescendantsOf(String parentId) {
 		OBOStanza stanza1 = systemsBiologyOntology.getStanza(parentId);
@@ -300,9 +305,11 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns a set of child ids that are descendants of a given parent URI. 
-	 * @param parentURI the URI of the parent term
-	 * @return a set of child ids that are descendants of a given parent URI. 
+ 	 * Returns the set of child IDs that are descendants of the given parent URI. 
+ 	 * This set excludes the given parent ID.
+	 * 
+	 * @param parentURI the URI of the parent stanza
+	 * @return the set of child IDs that are descendants of the given parent URI 
 	 */
 	public final Set<String> getDescendantsOf(URI parentURI) {
 		String parentId = getId(parentURI);
@@ -311,10 +318,13 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns a set of child URIs that are descendants of a given parent id. 
-	 * @param parentId the id of the parent term
-	 * @return a set of child URIs that are descendants of a given parent id. 
+	 * Returns the set of child URIs that are descendants of the given parent ID.
+	 * This set excludes the given parent URI.
+	 *  
+	 * @param parentId the ID of the parent stanza
+	 * @return the set of child URIs that are descendants of the given parent ID. 
 	 */
+
 	public final Set<URI> getDescendantURIsOf(String parentId) {
 		Set<String> descendents = getDescendantsOf(parentId);
 		Set<URI> descendentURIs = new HashSet<URI>();
@@ -325,10 +335,13 @@ public class SystemsBiologyOntology {
 	}
 	
 	/**
-	 * Returns a set of child URIs that are descendants of a given parent URI. 
-	 * @param parentURI the URI of the parent term
-	 * @return a set of child URIs that are descendants of a given parent URI. 
+	 * Returns the set of child URIs that are descendants of the given parent URI.
+	 * This set excludes the given parent URI. 
+	 * 
+	 * @param parentURI the URI of the parent stanza
+	 * @return the set of child URIs that are descendants of the given parent URI
 	 */
+
 	public final Set<URI> getDescendantURIsOf(URI parentURI) {
 		Set<String> descendents = getDescendantsOf(parentURI);
 		Set<URI> descendentURIs = new HashSet<URI>();
@@ -338,14 +351,47 @@ public class SystemsBiologyOntology {
 		return descendentURIs;
 	}
 
+	/**
+	 * Returns the set of child names that are descendants of a given parent ID.
+	 * This set excludes the given parent name.
+	 *  
+	 * @param parentId the ID of the parent stanza
+	 * @return the set of child names that are descendants of a given parent ID. 
+	 */
+
+	public final Set<String> getDescendantNamesOf(String parentId) {
+		Set<String> descendents = getDescendantsOf(parentId);
+		Set<String> descendentNames = new HashSet<String>();
+		for (String child : descendents) {
+			descendentNames.add(getName(child));
+		}
+		return descendentNames;
+	}
 	
+	/**
+	 * Returns the set of child names that are descendants of a given parent URI.
+	 * This set excludes the given parent name. 
+	 * 
+	 * @param parentURI the URI of the parent stanza
+	 * @return the set of child names that are descendants of a given parent URI
+	 */
+
+	public final Set<String> getDescendantNamesOf(URI parentURI) {
+		Set<String> descendents = getDescendantsOf(parentURI);
+		Set<String> descendentNames = new HashSet<String>();
+		for (String child : descendents) {
+			descendentNames.add(getName(child));
+		}
+		return descendentNames;
+	}
+
 	/**
 	 * Creates a new URI from the Systems Biology Ontology (SBO) namespace with the given local name. For example, the method call
 	 * <code>term("SBO_0000001")</code> will return the URI <a>http://purl.obolibrary.org/obo/SBO_0000001</a>
 	 * @param id the ID of a SBO term
 	 * @return the created URI
 	 */
-	static final URI type(String id) {
+	private static final URI type(String id) {
 		return URI.create(URI_PREFIX+id);
 	}
 
@@ -1125,15 +1171,39 @@ public class SystemsBiologyOntology {
 	public static final URI INTERACTOR 					 = type("SBO:0000336");
 
 	/**
-	 * Molecule which is acted upon by an enzyme (<a href="http://identifiers.org/biomodels.sbo/SBO:0000015">SBO:0000015</a>). The substrate binds with the enzyme's active
-	 * site, and the enzyme catalyzes a chemical reaction involving the substrate.
+	 * Molecule which is acted upon by an enzyme (<a href="http://identifiers.org/biomodels.sbo/SBO:0000015">SBO:0000015</a>). 
+	 * The substrate binds with the enzyme's active site, and the enzyme catalyzes a chemical reaction involving the substrate.
 	 */
 	public static final URI SUBSTRATE 					 = type("SBO:0000015");
 
 	/**
 	 * A substance that is consumed in a chemical reaction but is not itself the primary
-	 * substrate or focus of that reaction (<a href="http://identifiers.org/biomodels.sbo/SBO:0000604">SBO:0000604</a>). Examples include, but are not limited to, currency
-	 * compounds such as ATP, NADPH and protons.
+	 * substrate or focus of that reaction (<a href="http://identifiers.org/biomodels.sbo/SBO:0000604">SBO:0000604</a>). 
+	 * Examples include, but are not limited to, currency compounds such as ATP, NADPH and protons.
 	 */
 	public static final URI SIDE_SUBSTRATE 				 = type("SBO:0000604");
+	
+	/**
+	 * Conceptual or material entity that is the object of an inhibition process, and is 
+	 * acted upon by an inhibitor (<a href="http://identifiers.org/biomodels.sbo/SBO:0000642">SBO:0000642</a>). 
+	 */
+	public static final URI INHIBITED 				 = type("SBO:0000642");
+	
+	/**
+	 * Conceptual or material entity that is the object of a stimulation process, and is 
+	 * acted upon by a stimulator (<a href="http://identifiers.org/biomodels.sbo/SBO:0000643">SBO:0000643</a>). 
+	 */
+	public static final URI STIMULATED 				 = type("SBO:0000643");
+	
+	/**
+	 * Conceptual or material entity that is the object of a modification process, and is 
+	 * acted upon by a modifier (<a href="http://identifiers.org/biomodels.sbo/SBO:0000644">SBO:0000644</a>). 
+	 */
+	public static final URI MODIFIED 				 = type("SBO:0000644");
+	
+	/**
+	 * An entity that acts as the starting material for genetic production 
+	 * (<a href="http://identifiers.org/biomodels.sbo/SBO:0000645">SBO:0000645</a>). 
+	 */
+	public static final URI TEMPLATE 				 = type("SBO:0000645");
 }

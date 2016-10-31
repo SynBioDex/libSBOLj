@@ -249,7 +249,7 @@ class Sbol2Terms
 		static final QName hasComponent 		 = sbol2.withLocalPart("component");
 		static final QName hasLocation 		 = sbol2.withLocalPart("location");
 		static final QName roles 	  	 		  = sbol2.withLocalPart("role");
-		static final QName roleIntegration = sbol2.withLocalPart("roleIntegration");
+//		static final QName roleIntegration = sbol2.withLocalPart("roleIntegration");
 	}
 
 	/**

@@ -15,10 +15,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 
 /**
- * Represents the SBOL Identified data model.
+ * Represents an Identified object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -28,16 +27,15 @@ import uk.ac.ncl.intbio.core.datatree.NamedProperty;
 
 public abstract class Identified {
 
-	protected URI identity;
-	protected URI persistentIdentity;
-	protected String version;
-	// TODO: can this be a set instead?
-	protected List<Annotation> annotations;
-	protected URI wasDerivedFrom;
-	protected String displayId;
-	protected SBOLDocument sbolDocument = null;
-	protected String name;
-	protected String description;
+	private URI identity;
+	private URI persistentIdentity;
+	private String version;
+	private List<Annotation> annotations;
+	private URI wasDerivedFrom;
+	private String displayId;
+	private SBOLDocument sbolDocument = null;
+	private String name;
+	private String description;
 
 	/**
 	 * @param identity
@@ -62,7 +60,7 @@ public abstract class Identified {
 	 * <li>{@link #setWasDerivedFrom(URI)}.</li>
 	 * </ul>
 	 */
-	protected Identified(Identified identified) throws SBOLValidationException {
+	Identified(Identified identified) throws SBOLValidationException {
 		this.setIdentity(identified.getIdentity());
 		this.annotations = new ArrayList<>();
 		if (identified.hasAnnotations()) {
@@ -90,6 +88,26 @@ public abstract class Identified {
 		if (identified.isSetDescription()) {
 			this.setDescription(identified.getDescription());
 		}
+	}
+	
+	void copy(Identified identified) throws SBOLValidationException {
+		this.annotations = new ArrayList<>();
+		if (identified.hasAnnotations()) {
+			List<Annotation> clonedAnnotations = new ArrayList<>();
+			for (Annotation annotation : identified.getAnnotations()) {
+				clonedAnnotations.add(annotation.copy());
+			}
+			this.setAnnotations(clonedAnnotations);
+		}
+		if (identified.isSetWasDerivedFrom()) {
+			this.setWasDerivedFrom(URI.create(identified.getWasDerivedFrom().toString()));
+		}
+		if (identified.isSetName()) {
+			this.setName(identified.getName());
+		}
+		if (identified.isSetDescription()) {
+			this.setDescription(identified.getDescription());
+		}		
 	}
 
 	//	public Identified (String URIprefix, String displayId, String version) {
@@ -149,13 +167,14 @@ public abstract class Identified {
 	void setPersistentIdentity(URI persistentIdentity) {
 		this.persistentIdentity = persistentIdentity;
 	}
-
-	/**
-	 * Set the persistent identity to {@code null}.
-	 */
-	void unsetPersistentIdentity() {
-		persistentIdentity = null;
-	}
+	
+	// TODO: unsetPersistentIdentity() currently not used, could be useful in future library releases.
+//	/**
+//	 * Set the persistent identity to {@code null}.
+//	 */
+//	private void unsetPersistentIdentity() {
+//		persistentIdentity = null;
+//	}
 
 	/**
 	 * Test if the version is set.
@@ -230,12 +249,13 @@ public abstract class Identified {
 		this.displayId = displayId;
 	}
 
-	/**
-	 * Set optional the display ID to {@code null}.
-	 */
-	void unsetDisplayId() {
-		displayId = null;
-	}
+	// TODO: unsetDisplayId() currently not used, could be useful in future library releases.
+//	/**
+//	 * Set optional the display ID to {@code null}.
+//	 */
+//	private void unsetDisplayId() {
+//		displayId = null;
+//	}
 
 	/**
 	 * Returns the wasDerivedFrom property of this instance.
@@ -353,18 +373,19 @@ public abstract class Identified {
 		return annotation;
 	}
 
-	/**
-	 * Calls the Annotation constructor {@link Annotation#Annotation(NamedProperty)} to create a new annoation using the
-	 * give arguments, and then adds to the list of annotations.
-	 * 
-	 * @return the created annotation
-	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addAnnotation(Annotation)}.
-	 */
-	Annotation createAnnotation(NamedProperty<QName> namedProperty) throws SBOLValidationException {
-		Annotation annotation = new Annotation(namedProperty);
-		addAnnotation(annotation);
-		return annotation;
-	}
+	// TODO: createAnnotation(NamedProperty) currently not used, could be useful in future library releases.
+//	/**
+//	 * Calls the Annotation constructor {@link Annotation#Annotation(NamedProperty)} to create a new annotation using the
+//	 * give arguments, and then adds to the list of annotations.
+//	 * 
+//	 * @return the created annotation
+//	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addAnnotation(Annotation)}.
+//	 */
+//	private Annotation createAnnotation(NamedProperty<QName> namedProperty) throws SBOLValidationException {
+//		Annotation annotation = new Annotation(namedProperty);
+//		addAnnotation(annotation);
+//		return annotation;
+//	}
 
 	/**
 	 * Creates an annotation with nested annotations using the given arguments, and then adds to this instance's list of annotations.
@@ -382,6 +403,25 @@ public abstract class Identified {
 		addAnnotation(annotation);
 		return annotation;
 	}
+	
+	private void addNamespace(Annotation annotation) {
+		if (sbolDocument==null) return;
+		QName qName = annotation.getQName();
+		QName qNameInNamespace = sbolDocument.getNamespace(URI.create(qName.getNamespaceURI()));
+		if (qNameInNamespace==null || qName.getPrefix()!=qNameInNamespace.getPrefix()) {
+			sbolDocument.addNamespace(URI.create(qName.getNamespaceURI()), qName.getPrefix());
+		}
+		if (annotation.isNestedAnnotations()) {
+			qName = annotation.getNestedQName();
+			qNameInNamespace = sbolDocument.getNamespace(URI.create(qName.getNamespaceURI()));
+			if (qNameInNamespace==null || qName.getPrefix()!=qNameInNamespace.getPrefix()) {
+				sbolDocument.addNamespace(URI.create(qName.getNamespaceURI()), qName.getPrefix());
+			}
+			for (Annotation nestedAnnotation : annotation.getAnnotations()) {
+				addNamespace(nestedAnnotation);
+			}
+		}
+	}
 
 	/**
 	 * Adds the given annotation to the list of annotations.
@@ -394,6 +434,7 @@ public abstract class Identified {
 		if (annotations.contains(annotation)) {
 			return;
 		}
+		addNamespace(annotation);
 		if (annotation.getQName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI())) {
 			if (this instanceof Sequence) {
 				throw new SBOLValidationException("sbol-10401");
@@ -503,11 +544,11 @@ public abstract class Identified {
 	 * Sets the associated SBOLDocument instance to the given one. 
 	 * @param sbolDocument
 	 */
-	protected void setSBOLDocument(SBOLDocument sbolDocument) {
+	void setSBOLDocument(SBOLDocument sbolDocument) {
 		this.sbolDocument = sbolDocument;
 	}
 
-	protected SBOLDocument getSBOLDocument() {
+	SBOLDocument getSBOLDocument() {
 		return sbolDocument;
 	}
 
@@ -516,7 +557,7 @@ public abstract class Identified {
 	 * @return An identical copy of the specified object.
 	 * @throws SBOLValidationException if an SBOL validation rule was violated.
 	 */
-	protected abstract Identified deepCopy() throws SBOLValidationException;
+	abstract Identified deepCopy() throws SBOLValidationException;
 
 
 	@Override
@@ -598,7 +639,7 @@ public abstract class Identified {
 	 * @throws SBOLValidationException if the following SBOL validation rule is violated: 10202.
 	 */
 	@SafeVarargs
-	protected final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {
+	final <I extends Identified> void addChildSafely(I child, Map<URI, I> siblingsMap, String typeName, Map<URI, ? extends Identified> ... maps) throws SBOLValidationException {
 		if (isChildURIformCompliant(this.getIdentity(), child.getIdentity())) {
 			URI persistentId = URI.create(extractPersistentId(child.getIdentity()));
 			if(keyExistsInAnyMap(persistentId, maps)) {
@@ -629,7 +670,7 @@ public abstract class Identified {
 
 	}
 
-	protected final <I extends Identified> boolean removeChildSafely(Identified identified, Map<URI, I> siblingsMap) {
+	final <I extends Identified> boolean removeChildSafely(Identified identified, Map<URI, I> siblingsMap) {
 		Set<Identified> objectsToRemove = new HashSet<>();
 		objectsToRemove.add(identified);
 		return siblingsMap.values().removeAll(objectsToRemove);
@@ -706,16 +747,14 @@ public abstract class Identified {
 
 	@Override
 	public String toString() {
-		return "Identified ["
-				+ "identity=" + identity 
+		return  "identity=" + identity 
 				+ (this.isSetPersistentIdentity()?", persistentIdentity=" + persistentIdentity:"")
 				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
 				+ (this.isSetVersion()?", version=" + version:"")
 				+ (this.isSetName()?", name=" + name:"")
 				+ (this.isSetDescription()?", description=" + description:"") 
 				+ (annotations.size()>0?", annotations=" + annotations:"") 
-				+ (this.isSetWasDerivedFrom()?", wasDerivedFrom=" + wasDerivedFrom:"") 
-				+ "]";
+				+ (this.isSetWasDerivedFrom()?", wasDerivedFrom=" + wasDerivedFrom:""); 
 	}
 
 	//	/**
