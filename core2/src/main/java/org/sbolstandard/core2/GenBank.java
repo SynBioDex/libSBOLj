@@ -723,6 +723,14 @@ class GenBank {
 					recurseComponentDefinition(compDef, w, offset + getFeatureStart(sa)-1,
 							!(inline^isInlineFeature(sa)),newFeatureEnd);
 				}
+			} else {
+				for (URI roleURI : sa.getRoles()) {
+					String soRole = so.getId(roleURI);
+					if (soRole != null) {
+						role = convertSOtoGenBank(so.getId(roleURI));
+						break;
+					}
+				}				
 			}
 			if (!inline) {
 				writeFeature(w,sa,role,(featureEnd - (getFeatureEnd(sa)+getFeatureStart(sa)-1) - offset),inline);
@@ -822,6 +830,7 @@ class GenBank {
 	 */
 	private static void createSubComponentDefinitions(SBOLDocument doc,ComponentDefinition topCD,URI type,String elements,String version) throws SBOLValidationException {
 		for (SequenceAnnotation sa : topCD.getSequenceAnnotations()) {
+			if (!sa.isSetComponent()) continue;
 			Range range = (Range)sa.getLocation("range");
 			if (range!=null) {
 				String subElements = elements.substring(range.getStart()-1,range.getEnd()).toLowerCase();
@@ -1082,9 +1091,10 @@ class GenBank {
 							// a Genbank feature is mapped to a SBOL role
 							// documented by an SO term
 							URI role = convertGenBanktoSO(strSplit[0]);
-							ComponentDefinition feature =
-									doc.createComponentDefinition("feature"+featureCnt, version, type);
-							feature.addRole(role);
+							// TODO: add switch to allow for sub-components to be created
+//							ComponentDefinition feature =
+//									doc.createComponentDefinition("feature"+featureCnt, version, type);
+//							feature.addRole(role);
 
 							String range = strSplit[1];
 							boolean outerComplement = false;
@@ -1135,7 +1145,9 @@ class GenBank {
 									if (rangeCnt==0) {
 										sa = topCD.createSequenceAnnotation("annotation"+featureCnt,"range"+rangeCnt,
 												start,end,orientation);
-										sa.setComponent("feature"+featureCnt);
+										// TODO: add switch to allow for sub-components to be created
+										//sa.setComponent("feature"+featureCnt);
+										sa.addRole(role);
 										annotation = new Annotation(new QName(GBNAMESPACE,MULTIRANGETYPE,GBPREFIX),multiType);
 										sa.addAnnotation(annotation);
 										newRange = (Range)sa.getLocation("range"+rangeCnt);
@@ -1167,7 +1179,9 @@ class GenBank {
 								int at = Integer.parseInt(rangeSplit[0]);
 								SequenceAnnotation sa =
 										topCD.createSequenceAnnotation("annotation"+featureCnt,"cut",at,orientation);
-								sa.setComponent("feature"+featureCnt);
+								// TODO: add switch to allow for sub-components to be created
+								//sa.setComponent("feature"+featureCnt);
+								sa.addRole(role);
 							} else {
 								boolean startLessThan=false;
 								boolean endGreaterThan=false;
@@ -1192,7 +1206,9 @@ class GenBank {
 								if (start > end && circular) {
 									SequenceAnnotation sa =
 											topCD.createSequenceAnnotation("annotation"+featureCnt,"range0",start,baseCount,orientation);
-									sa.setComponent("feature"+featureCnt);
+									// TODO: add switch to allow for sub-components to be created
+									//sa.setComponent("feature"+featureCnt);
+									sa.addRole(role);
 									annotation = new Annotation(new QName(GBNAMESPACE,STRADLESORIGIN,GBPREFIX),"true");
 									sa.addAnnotation(annotation);
 									Range newRange = (Range)sa.getLocation("range");
@@ -1216,7 +1232,9 @@ class GenBank {
 								} else {
 									SequenceAnnotation sa =
 											topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
-									sa.setComponent("feature"+featureCnt);
+									// TODO: add switch to allow for sub-components to be created
+									//sa.setComponent("feature"+featureCnt);
+									sa.addRole(role);
 									Range newRange = (Range)sa.getLocation("range");
 									if (startLessThan) {
 										annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");
