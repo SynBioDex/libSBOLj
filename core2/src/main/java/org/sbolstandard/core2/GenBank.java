@@ -587,10 +587,10 @@ class GenBank {
 
 	private static void writeFeature(Writer w,SequenceAnnotation sa,String role,int offset,boolean inline) 
 			throws IOException, SBOLConversionException {
-		if (sa.getLocations().size()==0) {
-			throw new SBOLConversionException("SequenceAnnotation "+sa.getIdentity()+" has no locations.");
-		} else if (sa.getLocations().size()==1) {
-			Location loc = sa.getLocations().iterator().next();
+		if (sa.getPreciseLocations().size()==0) {
+			throw new SBOLConversionException("SequenceAnnotation "+sa.getIdentity()+" has no range/cut locations.");
+		} else if (sa.getPreciseLocations().size()==1) {
+			Location loc = sa.getPreciseLocations().iterator().next();
 			boolean locReverse = false;
 			if (loc.isSetOrientation()) {
 				locReverse = loc.getOrientation().equals(OrientationType.REVERSECOMPLEMENT);
@@ -653,7 +653,7 @@ class GenBank {
 	
 	private static int getFeatureStart(SequenceAnnotation sa) {
 		int featureStart = Integer.MAX_VALUE;
-		for (Location location : sa.getLocations()) {
+		for (Location location : sa.getPreciseLocations()) {
 			if (location instanceof Range) {
 				Range range = (Range)location;
 				if (range.getStart() < featureStart) {
@@ -673,7 +673,7 @@ class GenBank {
 	
 	private static int getFeatureEnd(SequenceAnnotation sa) {
 		int featureEnd = 0;
-		for (Location location : sa.getLocations()) {
+		for (Location location : sa.getPreciseLocations()) {
 			if (location instanceof Range) {
 				Range range = (Range)location;
 				if (range.getEnd() > featureEnd) {
@@ -693,7 +693,7 @@ class GenBank {
 	// TODO: assumes any complement then entirely complemented, need to fix
 	private static boolean isInlineFeature(SequenceAnnotation sa) {
 		boolean inlineFeature = true;
-		for (Location location : sa.getLocations()) {
+		for (Location location : sa.getPreciseLocations()) {
 			if (location.isSetOrientation() && location.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
 				inlineFeature = false;
 			}

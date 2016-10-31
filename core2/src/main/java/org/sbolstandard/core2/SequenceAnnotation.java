@@ -332,6 +332,21 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
+	 * Returns the set of Range/Cut locations referenced by this sequence annotation.
+	 * 
+	 * @return the set of Range/Cut locations referenced by this sequence annotation
+	 */
+	public Set<Location> getPreciseLocations() {
+		HashSet<Location> preciseLocations = new HashSet<>();
+		for (Location location : locations.values()) {
+			if (!(location instanceof GenericLocation)) {
+				preciseLocations.add(location);
+			}
+		}
+		return preciseLocations;
+	}
+	
+	/**
 	 * Returns a sorted list of locations owned by this sequence annotation.
 	 * 
 	 * @return a sorted list of locations owned by this sequence annotation
