@@ -1,6 +1,7 @@
 package org.sbolstandard.core2;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
 
 import javax.xml.namespace.QName;
 
-import uk.co.turingatemyhamster.opensmiles.OpenSmilesParser;
+//import uk.co.turingatemyhamster.opensmiles.OpenSmilesParser;
 
 /**
  * Provides functionality for validating SBOL data models.
@@ -801,22 +802,6 @@ public class SBOLValidate {
 		return true;
 	}
 
-	// TODO: this should be checked in object construction, so removed from validator, need to verify
-	/*
-	private static void validateSequenceConstraints(SBOLDocument sbolDocument) {
-		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
-			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
-				try {
-					checkSequenceConstraint(componentDefinition,sequenceConstraint);
-				}
-				catch (SBOLValidationException e) {
-					errors.add(e.getMessage());
-				}
-			}
-		}
-	}
-	*/
-
 	private static void validateSequenceAnnotations(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
@@ -869,22 +854,13 @@ public class SBOLValidate {
 		} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
 			Matcher m = iupacProteinParser.matcher(sequence.getElements().toUpperCase());
 			return m.matches();
-		} /* else if (sequence.getEncoding().equals(Sequence.SMILES)) {
+		} 
+		// TODO: removed tempoarily until smiles parser is fixed
+		/* else if (sequence.getEncoding().equals(Sequence.SMILES)) {
 			return openSmilesParser.check(sequence.getElements());
 		} */
 		return true;
 	}
-
-	// TODO: this should be checked in object construction, so removed from validator, need to verify
-	/*
-	private static void validateSequenceEncodings(SBOLDocument sbolDocument) {
-		for (Sequence sequence : sbolDocument.getSequences()) {
-			if (!checkSequenceEncoding(sequence)) {
-				errors.add(new SBOLValidationException("sbol-10405", sequence).getMessage());
-			}
-		}
-	}
-	*/
 
 	private static void validatePersistentIdentityUniqueness(SBOLDocument sbolDocument) {
 		HashMap<URI, Identified> elements = new HashMap<>();
@@ -1521,7 +1497,7 @@ public class SBOLValidate {
 				System.err.println("Validation failed.\n");
 			}
 		}
-		catch (Exception e) {
+		catch (SBOLValidationException e) {
 			if (showDetail) {
 				e.printStackTrace();
 			}
@@ -1532,16 +1508,20 @@ public class SBOLValidate {
 				System.err.println("\nValidation failed.");
 			}
 		}
-		catch (Throwable e) {
+		catch (SBOLConversionException e) {
 			if (showDetail) {
 				e.printStackTrace();
 			}
 			if (e.getMessage()!=null) {
-				System.err.println(e.getMessage()+"\nValidation failed.");
+				System.err.println(e.getMessage()+"\nConversion failed.");
 			} else {
 				e.printStackTrace();
-				System.err.println("\nValidation failed.");
+				System.err.println("\nConversion failed.");
 			}
+		}
+		catch (IOException e) {
+			System.err.println(e.getMessage()+"\nI/O exception.");
+			e.printStackTrace();
 		}
 	}
 
