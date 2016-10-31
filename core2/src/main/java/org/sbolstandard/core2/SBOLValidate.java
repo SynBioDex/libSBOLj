@@ -418,11 +418,15 @@ public class SBOLValidate {
 
 	private static void checkInteractionTypeParticipationRole(Interaction interaction,URI type,URI role) {
 		if (type.equals(SystemsBiologyOntology.INHIBITION)) {
-			if (!role.equals(SystemsBiologyOntology.INHIBITOR) && !role.equals(SystemsBiologyOntology.PROMOTER)) {
+			if (!role.equals(SystemsBiologyOntology.INHIBITOR) && 
+					!role.equals(SystemsBiologyOntology.INHIBITED) && 
+					!role.equals(SystemsBiologyOntology.PROMOTER)) {
 				errors.add(new SBOLValidationException("sbol-11907",interaction).getMessage());
 			}
 		} else if (type.equals(SystemsBiologyOntology.STIMULATION)) {
-			if (!role.equals(SystemsBiologyOntology.STIMULATOR) && !role.equals(SystemsBiologyOntology.PROMOTER)) {
+			if (!role.equals(SystemsBiologyOntology.STIMULATOR) && 
+					!role.equals(SystemsBiologyOntology.STIMULATED) && 
+					!role.equals(SystemsBiologyOntology.PROMOTER)) {
 				errors.add(new SBOLValidationException("sbol-11907",interaction).getMessage());
 			}
 		} else if (type.equals(SystemsBiologyOntology.NON_COVALENT_BINDING)) {
@@ -439,7 +443,14 @@ public class SBOLValidate {
 				errors.add(new SBOLValidationException("sbol-11907",interaction).getMessage());
 			}
 		} else if (type.equals(SystemsBiologyOntology.GENETIC_PRODUCTION)) {
-			if (!role.equals(SystemsBiologyOntology.PROMOTER) && !role.equals(SystemsBiologyOntology.PRODUCT)) {
+			if (!role.equals(SystemsBiologyOntology.PROMOTER) && 
+					!role.equals(SystemsBiologyOntology.TEMPLATE) && 
+					!role.equals(SystemsBiologyOntology.PRODUCT)) {
+				errors.add(new SBOLValidationException("sbol-11907",interaction).getMessage());
+			}
+		} else if (type.equals(SystemsBiologyOntology.CONTROL)) {
+			if (!role.equals(SystemsBiologyOntology.MODIFIER) && 
+					!role.equals(SystemsBiologyOntology.MODIFIED)) { 
 				errors.add(new SBOLValidationException("sbol-11907",interaction).getMessage());
 			}
 		}

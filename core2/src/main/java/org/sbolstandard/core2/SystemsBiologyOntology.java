@@ -1182,4 +1182,28 @@ public class SystemsBiologyOntology {
 	 * compounds such as ATP, NADPH and protons.
 	 */
 	public static final URI SIDE_SUBSTRATE 				 = type("SBO:0000604");
+	
+	/**
+	 * Conceptual or material entity that is the object of an inhibition process, and is 
+	 * acted upon by an inhibitor (<a href="http://identifiers.org/biomodels.sbo/SBO:0000642">SBO:0000642</a>). 
+	 */
+	public static final URI INHIBITED 				 = type("SBO:0000642");
+	
+	/**
+	 * Conceptual or material entity that is the object of a stimulation process, and is 
+	 * acted upon by a stimulator (<a href="http://identifiers.org/biomodels.sbo/SBO:0000643">SBO:0000643</a>). 
+	 */
+	public static final URI STIMULATED 				 = type("SBO:0000643");
+	
+	/**
+	 * Conceptual or material entity that is the object of a modification process, and is 
+	 * acted upon by a modifier (<a href="http://identifiers.org/biomodels.sbo/SBO:0000644">SBO:0000644</a>). 
+	 */
+	public static final URI MODIFIED 				 = type("SBO:0000644");
+	
+	/**
+	 * An entity that acts as the starting material for genetic production 
+	 * (<a href="http://identifiers.org/biomodels.sbo/SBO:0000645">SBO:0000645</a>). 
+	 */
+	public static final URI TEMPLATE 				 = type("SBO:0000645");
 }
