@@ -116,7 +116,17 @@ class FASTA {
 		return false;
 	}
 	
-	static Sequence createSequence(SBOLDocument doc,String URIprefix,String displayId,String version,
+	/**
+	 * @param doc
+	 * @param URIprefix
+	 * @param displayId
+	 * @param version
+	 * @param elements
+	 * @param encoding
+	 * @return
+	 * @throws SBOLValidationException if an SBOL validation rule was violated in {@link SBOLDocument#createSequence(String, String, String, String, URI)}.
+	 */
+	private static Sequence createSequence(SBOLDocument doc,String URIprefix,String displayId,String version,
 			String elements,URI encoding) throws SBOLValidationException {
 		try {
 			Sequence sequence = doc.createSequence(URIprefix,displayId,version,elements,encoding);
@@ -135,6 +145,15 @@ class FASTA {
 		}
 	}
 	
+	/**
+	 * @param doc
+	 * @param stringBuffer
+	 * @param URIprefix
+	 * @param version
+	 * @param encoding
+	 * @throws SBOLValidationException if an SBOL validation rule was violated in {@link #createSequence(SBOLDocument, String, String, String, String, URI)}.
+	 * @throws IOException
+	 */
 	static void read(SBOLDocument doc,String stringBuffer,String URIprefix,String version,URI encoding) throws SBOLValidationException, IOException
 	{
 		// reset the global static variables needed for parsing

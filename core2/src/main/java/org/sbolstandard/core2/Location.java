@@ -5,7 +5,7 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import java.net.URI;
 
 /**
- * Represents the SBOL Location data model.
+ * Represents a Location object in the SOBL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -15,7 +15,7 @@ import java.net.URI;
 
 public abstract class Location extends Identified implements Comparable<Location> {
 
-	protected OrientationType orientation;
+	private OrientationType orientation;
 
 	/**
 	 * @param identity
@@ -30,16 +30,29 @@ public abstract class Location extends Identified implements Comparable<Location
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
 	 * {@link Identified#Identified(Identified)}.
 	 */
-	protected Location(Location location) throws SBOLValidationException {
+	Location(Location location) throws SBOLValidationException {
 		super(location);
 		this.setOrientation(location.getOrientation());
+	}
+	
+	void copy(Location location) throws SBOLValidationException {
+		((Identified)this).copy((Identified)location);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.Identified#deepCopy()
 	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link Range#deepCopy()},</li>
+	 * <li>{@link Cut#deepCopy()}, or</li>
+	 * <li>{@link GenericLocation#deepCopy()}.</li>
+	 * </ul>
+	 * 
+	 */
 	@Override
-	protected abstract Location deepCopy() throws SBOLValidationException;
+	abstract Location deepCopy() throws SBOLValidationException;
 
 	/**
 	 * Checks if the orientation property is set.
@@ -98,13 +111,8 @@ public abstract class Location extends Identified implements Comparable<Location
 
 	@Override
 	public String toString() {
-		return "Location ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
-				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
-				+ "]";
+		return super.toString() 
+			+ (this.isSetOrientation()?", orientation=" + orientation:""); 
 	}
 
 //	@Override

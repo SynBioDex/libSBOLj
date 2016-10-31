@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Represents the SBOL SequenceAnnotation data model.
+ * Represents a SequenceAnnotation object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -25,7 +25,10 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	private HashMap<URI, Location> locations;
 	private URI component;
 	private Set<URI> roles;
-	private RoleIntegrationType roleIntegration;
+//	private RoleIntegrationType roleIntegration;
+	/**
+	 * The parent component definition for this sequence annotation.
+	 */
 	private ComponentDefinition componentDefinition = null;
 	
 	/**
@@ -58,24 +61,75 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		this.locations = new HashMap<>();
 		for (Location location : sequenceAnnotation.getLocations()) {
 			addLocation(location.deepCopy());
-			// TODO: gereafdfsafd
 		}
 		if (sequenceAnnotation.isSetComponent()) {
 			this.setComponent(sequenceAnnotation.getComponentURI());
 		}
 		this.roles = new HashSet<>();
+		for (URI role : sequenceAnnotation.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
+	}
+	
+	void copy(SequenceAnnotation sequenceAnnotation) throws SBOLValidationException {
+		((Identified)this).copy((Identified)sequenceAnnotation);
+		for (Location location : sequenceAnnotation.getLocations()) {
+			if (location instanceof Range) {
+				Range range = (Range)location;
+				Range newRange;
+				if (range.isSetOrientation()) {
+					newRange = this.addRange(range.getDisplayId(), range.getStart(), range.getEnd(), 
+							range.getOrientation());
+				} else {
+					newRange = this.addRange(range.getDisplayId(), range.getStart(), range.getEnd());
+				}
+				newRange.copy(range);
+			} else if (location instanceof Cut) {
+				Cut cut = (Cut)location;
+				Cut newCut;
+				if (cut.isSetOrientation()) {
+					newCut = this.addCut(cut.getDisplayId(), cut.getAt(), cut.getOrientation());
+				} else {
+					newCut = this.addCut(cut.getDisplayId(), cut.getAt());
+				}
+				newCut.copy(cut);
+			} else if (location instanceof GenericLocation) {
+				GenericLocation genericLocation = (GenericLocation)location;
+				GenericLocation newGenericLocation;
+				if (genericLocation.isSetOrientation()) {
+					newGenericLocation = this.addGenericLocation(genericLocation.getDisplayId(),
+							genericLocation.getOrientation());
+				} else {
+					newGenericLocation = this.addGenericLocation(genericLocation.getDisplayId());
+				}
+				newGenericLocation.copy(genericLocation);
+			}
+		}
+		Location location = this.getLocation("DUMMY__LOCATION");
+		if (location!=null) {
+			this.removeLocation(location);
+		}
+		if (sequenceAnnotation.isSetComponent()) {
+			this.setComponent(sequenceAnnotation.getComponent().getDisplayId());
+		}
+		this.roles = new HashSet<>();
+		for (URI role : sequenceAnnotation.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
 	}
 	
 	/**
-	 * Creates a GenericLocation instance with the given arguments, 
-	 * and then adds to this SequenceAnnotation instance's list of locations.
+	 * Creates a generic location with the given arguments and then adds it to this sequence annotation's
+	 * list of locations.
 	 * <p>
-	 * This method creates the GenericLocation instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation instance, the given {@code displayId} of the GenericLocation instance. 
+	 * This method first creates a compliant URI for the generic location to be created. 
+	 * It starts with this sequence annotation's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
 	 *  
-	 * @param displayId the  display ID used to construct the identity of the generic location instance
+	 * @param displayId the display ID for the generic location to be created
 	 * @return the created generic location instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException}
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206.
 	 */
 	public GenericLocation addGenericLocation(String displayId) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -88,18 +142,18 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Creates a GenericLocation instance with the given arguments and then adds to this SequenceAnnotation instance's
+	 * Creates a generic location with the given arguments and then adds it to this sequence annotation's
 	 * list of locations.
 	 * <p>
-	 * This method creates the GenericLocation instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation instance, the given {@code displayId} of the GenericLocation instance. 
-	 * The orientation property
-	 * of the created GenericLocation instance is set to the given {@code orientation}.
+	 * This method first creates a compliant URI for the generic location to be created. 
+	 * It starts with this sequence annotation's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
 	 *  
-	 * @param displayId the  display ID used to construct the identity of the generic location instance 
-	 * @param orientation the orientation property for the 
+	 * @param displayId the display ID for the generic location to be created
+	 * @param orientation the orientation type
 	 * @return the created generic location instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206. 
  	 */
 	public GenericLocation addGenericLocation(String displayId,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -113,16 +167,18 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation instance's
+	 * Creates a cut with the given arguments and then adds it to this sequence annotation's
 	 * list of locations.
 	 * <p>
-	 * This method creates the Cut instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation instance, the given {@code displayId} of the Cut instance. 
+	 * This method first creates a compliant URI for the cut to be created. 
+	 * It starts with this sequence annotation's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
 	 *  
-	 * @param displayId the display ID for the Cut instance 
-	 * @param at the at property for the created Cut instance 
-	 * @return the created cut instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * @param displayId the display ID for the cut to be created
+	 * @param at the at property for the cut to be created
+	 * @return the created cut
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11202.
 	 */
 	public Cut addCut(String displayId,int at) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -135,18 +191,19 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Creates a Cut instance with the given arguments and then adds to this SequenceAnnotation instance's
+	 * Creates a cut with the given arguments and then adds it to this sequence annotation's
 	 * list of locations.
 	 * <p>
-	 * This method creates the Cut instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation instance, the given {@code displayId} of the Cut instance. The orientation property
-	 * of the created Cut instance is set to the given {@code orientation}.
+	 * This method first creates a compliant URI for the cut to be created. 
+	 * It starts with this sequence annotation's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
 	 *  
-	 * @param displayId the display ID for the Cut instance 
-	 * @param at the at property for the created Cut instance
+	 * @param displayId the display ID for the cut to be created
+	 * @param at the at property for the cut to be created
 	 * @param orientation the orientation type
-	 * @return the created cut instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * @return the created cut
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11202. 
 	 */
 	public Cut addCut(String displayId,int at,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -160,17 +217,19 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation instance's
+	 * Creates a range with the given arguments and then adds it to this sequence annotation's
 	 * list of locations.
 	 * <p>
-	 * This method creates the Range instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation instance, the given {@code displayId} of the Range instance. 
-	 * 
-  	 * @param displayId the display ID for the Range instance
-	 * @param start the start index of the Range instance
-	 * @param end the end index of the Range instance
-	 * @return the created Range instance
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * This method first creates a compliant URI for the range to be created. 
+	 * It starts with this sequence annotation's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
+	 *  
+	 * @param displayId the display ID for the range to be created
+ 	 * @param start the start index for the range to be created
+	 * @param end the end index for the range to be created
+	 * @return the created range
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11102, 11103, 11104. 
 	 */
 	public Range addRange(String displayId,int start,int end) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -183,19 +242,20 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
- 	 * Creates a Range instance with the given arguments and then adds to this SequenceAnnotation instance's
+	 * Creates a range with the given arguments and then adds it to this sequence annotation's
 	 * list of locations.
 	 * <p>
-	 * This method creates the Range instance's identity URI with the persistent identity of this
-	 * SequenceAnnotation instance, the given {@code displayId} of the Range instance. The orientation property
-	 * of the created Range instance is set to the given {@code orientation}.
+	 * This method first creates a compliant URI for the range to be created. 
+	 * It starts with this sequence annotation's persistent identity URI, 
+	 * followed by the given display ID, and ends an empty string for version.
 	 * 
- 	 * @param displayId the display ID for the Range instance
-	 * @param start the start index of the Range instance
-	 * @param end the end index of the Range instance
-	 * @param orientation the oritentation type
- 	 * @return the range created
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
+	 * @param displayId the display ID for the range to be created
+ 	 * @param start the start index for the range to be created
+	 * @param end the end index for the range to be created
+	 * @param orientation the orientation type
+	 * @return the created range
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 11102, 11103, 11104.
 	 */
 	public Range addRange(String displayId,int start,int end,OrientationType orientation) throws SBOLValidationException {
 		URI identity = createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion());
@@ -214,19 +274,14 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 */
 	void addLocation(Location location) throws SBOLValidationException {
 		addChildSafely(location, locations, "location");
-		location.setSBOLDocument(this.sbolDocument);
+		location.setSBOLDocument(this.getSBOLDocument());
 	}
 	
 	/**
-	 * Removes the given Location instance from the list of Location
-	 * instances.
-	 * <p>
-	 * If this SequenceAnnotation instance belongs to an SBOLDocument instance, then
-	 * the SBOLDcouement instance is checked for compliance first. 
-	 * Only a compliant SBOLDocument instance is allowed to be edited.
+	 * Removes the given location from the list of locations.
 	 * 
-	 * @param location the Location instance
-	 * @return {@code true} if the matching Location instance is removed successfully, {@code false} otherwise.
+	 * @param location the location to be removed
+	 * @return {@code true} if the matching location was removed successfully, {@code false} otherwise
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10902
 	 */	
 	public boolean removeLocation(Location location) throws SBOLValidationException {
@@ -237,11 +292,15 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Returns the Location instance owned by this SequenceAnnotation instance 
-	 * that matches the given {@code displayId}
+	 * Returns the location owned by this sequence annotation 
+	 * that matches the given display ID.
+	 * <p>
+	 * This method first creates a compliant URI. It starts with the sequence annotation's persistent identity URI,
+	 * followed by the given display ID, and ends with this sequence annotation's version. This compliant URI is used
+	 * to look up for the location to be retrieved.
 	 * 
-	 * @param displayId the display ID of the Location instance to be returned 
-	 * @return the matching Location instance
+	 * @param displayId the display ID of the location to be retrieved
+	 * @return the matching location
 	 */
 	public Location getLocation(String displayId) {
 		try {
@@ -253,29 +312,44 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Returns the Location instance owned by this SequenceAnnotation instance 
-	 * that matches the given location URI.
+	 * Returns the location owned by this sequence annotation 
+	 * that matches the given identity URI.
 	 * 
-	 * @param locationURI the URI identity of 
-	 * @return the matching Location instance URI
+	 * @param locationURI the URI identity of the location to be retrieved
+	 * @return the matching location 
 	 */
 	public Location getLocation(URI locationURI) {
 		return locations.get(locationURI);
 	}
 	
 	/**
-	 * Returns the set of Location instances referenced by this SequenceAnnotation instance.
+	 * Returns the set of locations referenced by this sequence annotation.
 	 * 
-	 * @return the set of Location instances referenced by this SequenceAnnotation instance.
+	 * @return the set of locations referenced by this sequence annotation
 	 */
 	public Set<Location> getLocations() {
 		return new HashSet<>(locations.values());
 	}
 	
 	/**
-	 * Returns a sorted list of Locations referenced by this SequenceAnnotation instance.
+	 * Returns the set of Range/Cut locations referenced by this sequence annotation.
 	 * 
-	 * @return a sorted list of Locations referenced by this SequenceAnnotation instance.
+	 * @return the set of Range/Cut locations referenced by this sequence annotation
+	 */
+	public Set<Location> getPreciseLocations() {
+		HashSet<Location> preciseLocations = new HashSet<>();
+		for (Location location : locations.values()) {
+			if (!(location instanceof GenericLocation)) {
+				preciseLocations.add(location);
+			}
+		}
+		return preciseLocations;
+	}
+	
+	/**
+	 * Returns a sorted list of locations owned by this sequence annotation.
+	 * 
+	 * @return a sorted list of locations owned by this sequence annotation
 	 */
 	public List<Location> getSortedLocations() {
 		List<Location> sortedLocations = new ArrayList<Location>();
@@ -285,8 +359,8 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Removes all entries of this SequenceAnnotation instance's list of Location
-	 * instances. The set will be empty after this call returns.
+	 * Removes all entries of this sequence annotation's list of locations.
+	 * The set will be empty after this call returns.
  	 * 
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #removeLocation(Location)}.
 	 */
@@ -298,13 +372,15 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 		
 	/**
-	 * Clears the existing list of location instances first, then appends all of the elements in the specified collection to the end of this list.
+	 * Clears the existing list of location instances first, 
+	 * then adds the given set of locations.
+	 * 
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
 	 * <li>the following SBOL validation rule was violated: 10902;</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #clearLocations()}; or </li>
 	 * <li>an SBOL validation rule violation occurred in {@link #addLocation(Location)}.</li>
 	 */
-	void setLocations(Set<Location> locations) throws SBOLValidationException {
+	private void setLocations(Set<Location> locations) throws SBOLValidationException {
 		clearLocations();	
 		if (locations==null || locations.size()==0) {
 			throw new SBOLValidationException("sbol-10902", this);
@@ -376,29 +452,30 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	*/
 		
 	/**
-	 * Test if the reference Component instance is set.
+	 * Test if the reference component is set.
 	 *  
-	 * @return {@code true} if it refers to a Component instance; {@code false} otherwise.
+	 * @return {@code true} if this sequence annotation refers to a component, {@code false} otherwise
 	 */
 	public boolean isSetComponent() {
 		return component != null;
 	}
 
 	/**
-	 * Returns the Component URI that this SequenceAnnotation instance refers to.
+	 * Returns the component that this sequence annotation refers to.
 	 * 
-	 * @return the Component URI that this SequenceAnnotation instance refers to
+	 * @return the component that this sequence annotation refers to
 	 */
 	public URI getComponentURI() {
 		return component;
 	}
 
 	/**
-	 * Returns the Component instance this SequenceAnnotation instance refers to.
+	 * Returns the component this sequence annotation refers to.
+	 * <p>
+	 * If this sequence annotation's parent component definition is {@code null}, this method returns {@code null}.
+	 * Otherwise, it returns its child component which is also referenced by this sequence annotation.   
 	 * 
-	 * @return the Component instance this SequenceAnnotation instance refers to,
-	 * if the associated ComponentDefinition instance is not {@code null}, 
-	 * or {@code null} otherwise 
+	 * @return the component this sequence annotation refers to  
 	 */
 	public Component getComponent() {
 		if (componentDefinition==null) return null;
@@ -406,21 +483,29 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Sets the reference Component URI to the URI of the Component instance matching the 
-	 * given {@code displayId}.
+	 * Sets this sequence annotation's reference component (its identity URI) to the one matching
+	 * the given display ID. 
 	 * <p>
-	 * This method creates a compliant URI for the reference Component instance using the
-	 * persistent identity of this SequenceAnnotation instance's parent ComponentDefinition instance,
-	 * the given {@code displayId}, and the parent ComponentDefinition instance's version.
-	 * It then calls {@link #setComponent(URI)} to set the reference.
+	 * This method first creates a compliant URI for the reference component. It starts with this sequence
+	 * annotation's parent component defintion's persistent identity URI, followed by the given display ID,
+	 * and ends with this sequence annotation's parent component defintion's version.
 	 * 
-	 * @param displayId the given display ID for the referenced component
- 	 * @throws SBOLValidationException see {@link SBOLValidationException}
-	 */
+	 * @param displayId the given display ID for the reference component
+ 	 * @throws SBOLValidationException if either of the following conditions is satisfied:
+ 	 * <ul>
+ 	 * <li>either of the following SBOL validation rules was violated: 10204, 10206; or</li>
+ 	 * <li>if an SBOL validation rule violation occurred in any of the following constructors or methods:
+ 	 * 	<ul>
+ 	 * 		<li>{@link ComponentDefinition#createComponent(String, AccessType, String, String)}, or</li>
+ 	 * 		<li>{@link #setComponent(URI)}.</li>
+ 	 * 	</ul>
+ 	 * </li>
+ 	 * </ul> 
+ 	 */
 	public void setComponent(String displayId) throws SBOLValidationException {
 		URI componentURI = URIcompliance.createCompliantURI(componentDefinition.getPersistentIdentity().toString(), 
 				displayId, componentDefinition.getVersion());
-		if (sbolDocument!=null && sbolDocument.isCreateDefaults() && componentDefinition!=null &&
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() && componentDefinition!=null &&
 				componentDefinition.getComponent(componentURI)==null) {
 			componentDefinition.createComponent(displayId,AccessType.PUBLIC,displayId,"");
 		}
@@ -428,13 +513,16 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Sets the reference component URI to the given {@code componentURI}.
+	 * Sets the reference component's identity URI to the given URI.
 	 * 
 	 * @param componentURI the given component identity URI
  	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated:
- 	 * 10522, 10905.
+ 	 * 10522, 10905, 10909.
 	 */
 	public void setComponent(URI componentURI) throws SBOLValidationException {
+		if (!roles.isEmpty()) {
+			throw new SBOLValidationException("sbol-10909", this);
+		}
 		if (componentDefinition!=null) {
 			if (componentDefinition.getComponent(componentURI)==null) {
 				throw new SBOLValidationException("sbol-10905",this);
@@ -451,27 +539,31 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 	
 	/**
-	 * Dereference the component URI by setting it to {@code null}.
+	 * Sets the reference component to {@code null}.
 	 */
 	public void unsetComponent() {
 		component = null;
 	}
 	
 	/**
-	 * Adds the given role URI to this sequence annotation's set of role URIs.
+	 * Adds the given role to this sequence annotation's set of roles.
 	 *
-	 * @param roleURI the role URI to be added
-	 * @return {@code true} if this set did not already contain the specified role, {@code false} otherwise.
+	 * @param roleURI the role to be added
+	 * @return {@code true} if this set did not already contain the specified role, {@code false} otherwise
+	 * @throws SBOLValidationException if component property is already set
 	 */
-	public boolean addRole(URI roleURI) {
+	public boolean addRole(URI roleURI) throws SBOLValidationException {
+		if (isSetComponent()) {
+			throw new SBOLValidationException("sbol-10909", this);
+		}
 		return roles.add(roleURI);
 	}
 
 	/**
-	 * Removes the given role URI from the set of roles.
+	 * Removes the given role from this sequence annotation's set of roles.
 	 *
-	 * @param roleURI the given role URI to be removed
-	 * @return {@code true} if the matching role reference was removed successfully, {@code false} otherwise.
+	 * @param roleURI the given role to be removed
+	 * @return {@code true} if the matching role was removed successfully, {@code false} otherwise
 	 */
 	public boolean removeRole(URI roleURI) {
 		return roles.remove(roleURI);
@@ -482,8 +574,9 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * set of the roles to this sequence annotation.
 	 *
 	 * @param roles the set of roles to be set
+	 * @throws SBOLValidationException if component property is already set
 	 */
-	public void setRoles(Set<URI> roles) {
+	public void setRoles(Set<URI> roles) throws SBOLValidationException {
 		clearRoles();
 		if (roles==null) return;
 		for (URI role : roles) {
@@ -492,9 +585,9 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Returns the set of role URIs owned by this sequence annotation. 
+	 * Returns this sequence annotation's set of roles.
 	 *
-	 * @return the set of role URIs owned by this sequence annotation.
+	 * @return this sequence annotation's set of roles
 	 */
 	public Set<URI> getRoles() {
 		Set<URI> result = new HashSet<>();
@@ -503,55 +596,58 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Checks if the given role URI is included in this sequence annotation's set of role URIs.
+	 * Checks if the given role is included in this sequence annotation's set of roles.
 	 *
-	 * @param roleURI the role URI to be checked
-	 * @return {@code true} if this set contains the given role URI, {@code false} otherwise.
+	 * @param roleURI the role to be checked
+	 * @return {@code true} if this set contains the given role, {@code false} otherwise
 	 */
 	public boolean containsRole(URI roleURI) {
 		return roles.contains(roleURI);
 	}
 
 	/**
-	 * Removes all entries of this sequence annotation's set of role URIs.
+	 * Removes all entries of this sequence annotation's set of roles.
 	 * The set will be empty after this call returns.	 
 	 */
 	public void clearRoles() {
 		roles.clear();
 	}
 	
-	/**
-	 * Test if the roleIntegration property is set.
-	 * @return {@code true} if it is not {@code null}
-	 */
-	public boolean isSetRoleIntegration() {
-		return roleIntegration != null;
-	}
-
-	/**
-	 * Returns the roleIntegration property of this object.
-	 * @return the roleIntegration property of this object.
-	 */
-	public RoleIntegrationType getRoleIntegration() {
-		return this.roleIntegration;
-	}
-
-	/**
-	 * Sets the roleIntegration property of this object to the given one.
-	 *
-	 * @param roleIntegration indicates how role is to be integrated with related roles.
-	 */
-	public void setRoleIntegration(RoleIntegrationType roleIntegration) {
-		this.roleIntegration = roleIntegration;
-	}
-
-	/**
-	 * Sets the roleIntegration property of this object to {@code null}.
-	 *
-	 */
-	public void unsetRoleIntegration() {
-		roleIntegration = null;
-	}
+//	/**
+//	 * Test if the roleIntegration property is set.
+//	 * 
+//	 * @return {@code true} if this sequence annotation's ruleIntegration property is not {@code null}, 
+//	 * {@code false} otherwise 
+//	 */
+//	public boolean isSetRoleIntegration() {
+//		return roleIntegration != null;
+//	}
+//
+//	/**
+//	 * Returns the roleIntegration property of this sequence annotation.
+//	 * 
+//	 * @return the roleIntegration property of this sequence annotation
+//	 */
+//	public RoleIntegrationType getRoleIntegration() {
+//		return this.roleIntegration;
+//	}
+//
+//	/**
+//	 * Sets the roleIntegration property to the given one.
+//	 * 
+//	 * @param roleIntegration the given roleIntegration type
+//	 */
+//	public void setRoleIntegration(RoleIntegrationType roleIntegration) {
+//		this.roleIntegration = roleIntegration;
+//	}
+//
+//	/**
+//	 * Sets the roleIntegration property of this sequence annotation to {@code null}.
+//	 *
+//	 */
+//	public void unsetRoleIntegration() {
+//		roleIntegration = null;
+//	}
 
 	@Override
 	public int hashCode() {
@@ -598,12 +694,12 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * {@link SequenceAnnotation#SequenceAnnotation(SequenceAnnotation)}.
 	 */
 	@Override
-	protected SequenceAnnotation deepCopy() throws SBOLValidationException {
+	SequenceAnnotation deepCopy() throws SBOLValidationException {
 		return new SequenceAnnotation(this);
 	}
 
 	/**
-	 * Assume this SequenceAnnotation instance has compliant URI, and all given parameters have compliant forms.
+	 * Assume this sequence annotation has compliant URI, and all given parameters have compliant forms.
 	 * This method is called by {@link ComponentDefinition#copy(String, String, String)}.
 	 * @param URIprefix
 	 * @param parentDisplayId
@@ -643,8 +739,13 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	}
 
 	/**
-	 * Get the component definition for the component annotated by this sequence annotation.
-	 * @return the component definition annotated by this sequence annotation.
+	 * Returns the component definition for the component annotated by this sequence annotation.
+	 * <p>
+	 * If the parent component definition for this sequence annotation is not set, then this method
+	 * returns {@code null}. The component definition returned is the definition of the component that 
+	 * is referenced by the "component" field of this sequence annotation.
+	 * 
+	 * @return the component definition for the component annotated by this sequence annotation
 	 */
 	public ComponentDefinition getComponentDefinition() {
 		if (componentDefinition!=null) {
@@ -663,10 +764,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	@Override
 	public String toString() {
 		return "SequenceAnnotation ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ super.toString()
 				+ (roles.size()>0?", roles=" + roles:"")  
 				+ ", locations=" + this.getLocations() 
 				+ (this.isSetComponent()?", component=" + component:"")

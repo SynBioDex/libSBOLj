@@ -3,6 +3,9 @@ package org.sbolstandard.core2.examples;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashSet;
+
+import org.sbolstandard.core2.AccessType;
+import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLWriter;
@@ -48,9 +51,12 @@ public class SequenceConstraintOutput {
 		operator.setName("LacI operator");
 		operator.setDescription("LacI binding site");	
 		
+		Component promoterComponent=promoter.createComponent ("promoter",AccessType.PUBLIC, constPromoter.getIdentity());
+		Component operatorComponent=promoter.createComponent ("operator",AccessType.PUBLIC, operator.getIdentity());
+		
 		promoter.createSequenceConstraint(
 				 "r1", 
-				RestrictionType.PRECEDES, constPromoter.getIdentity(),operator.getIdentity() );
+				RestrictionType.PRECEDES, promoterComponent.getIdentity(),operatorComponent.getIdentity() );
 				
 		SBOLWriter.write(document,(System.out));		
     }

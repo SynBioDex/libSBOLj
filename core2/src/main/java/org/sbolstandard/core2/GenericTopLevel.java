@@ -7,7 +7,7 @@ import java.net.URI;
 import javax.xml.namespace.QName;
 
 /**
- * Represents the SBOL GenericTopLevel data model.
+ * Represents a GenericTopLevel object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -24,7 +24,7 @@ public class GenericTopLevel extends TopLevel{
 	 * @param rdfType
 	 * @throws SBOLValidationException if either of the following condition is satisfied: 
 	 * <ul>
-	 * <li>if an SBOL validation rule violation occurred in {@link TopLevel#TopLevel(TopLevel)}, or</li>
+	 * <li>if an SBOL validation rule violation occurred in {@link TopLevel#TopLevel(URI)}, or</li>
 	 * <li>the following SBOL validation rule was violated: 12302.</li>
 	 * </ul>
 	 */
@@ -49,6 +49,10 @@ public class GenericTopLevel extends TopLevel{
 	private GenericTopLevel(GenericTopLevel genericTopLevel) throws SBOLValidationException {
 		super(genericTopLevel);
 		this.setRDFType(genericTopLevel.getRDFType());
+	}
+	
+	void copy(GenericTopLevel genericTopLevel) throws SBOLValidationException {
+		((TopLevel)this).copy((Identified)genericTopLevel);
 	}
 
 	/**
@@ -106,7 +110,7 @@ public class GenericTopLevel extends TopLevel{
 	 * {@link #GenericTopLevel(GenericTopLevel)}.
 	 */
 	@Override
-	protected GenericTopLevel deepCopy() throws SBOLValidationException {
+	GenericTopLevel deepCopy() throws SBOLValidationException {
 		return new GenericTopLevel(this);
 	}
 
@@ -166,8 +170,8 @@ public class GenericTopLevel extends TopLevel{
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
-		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+	void checkDescendantsURIcompliance() {//throws SBOLValidationException {
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	/* (non-Javadoc)
@@ -176,10 +180,7 @@ public class GenericTopLevel extends TopLevel{
 	@Override
 	public String toString() {
 		return "GenericTopLevel ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ super.toString()
 				+ ", rdfType=" + rdfType 
 				+ "]";
 	}

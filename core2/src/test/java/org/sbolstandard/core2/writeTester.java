@@ -30,49 +30,72 @@ class writeTester {
 	 */
 	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		SequenceOntology seqOn = new SequenceOntology();
-		System.out.println(seqOn.isDescendantOf(SequenceOntology.TERMINATOR, URI.create("http://www")));
-		for (URI child : seqOn.getDescendantURIsOf(SequenceOntology.TERMINATOR)) {
-			System.out.println(child.toString());
+		URI.create("xyz:1*23");
+//		SequenceOntology seqOn = new SequenceOntology();
+//		System.out.println(seqOn.isDescendantOf(SequenceOntology.TERMINATOR, URI.create("http://www")));
+//		for (URI child : seqOn.getDescendantURIsOf(SequenceOntology.TERMINATOR)) {
+//			System.out.println(child.toString());
+//		}
+		SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/SynBioTutorialv2.sbol");
+		ComponentDefinition compDef = doc.getComponentDefinition(URI.create("http://www.async.ece.utah.edu/tets/1"));
+		for (Component component : compDef.getSortedComponents()) {
+			System.out.println(component.getIdentity());
 		}
+		SBOLValidate.validateSBOL(doc, true, true, true);
+		if (SBOLValidate.getNumErrors()>0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.out.println(error);
+			}
+		}
+		
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix("http://www.foo.org");
 		ComponentDefinition cd = document.createComponentDefinition("myCD", ComponentDefinition.DNA);
-		document.createComponentDefinition("mySubCD", ComponentDefinition.DNA);
-		Component comp = cd.createComponent("myComp", AccessType.PRIVATE, "mySubCD");
-		comp.setDefinition(cd.getIdentity());
-		comp.addRole(SequenceOntology.PROMOTER);
-		comp.setRoleIntegration(RoleIntegrationType.MERGEROLES);
-		SequenceAnnotation sa = cd.createSequenceAnnotation("mySeqAn", "myLoc");
-		sa.addRole(SequenceOntology.PROMOTER);
-		sa.setRoleIntegration(RoleIntegrationType.OVERRIDEROLES);
-		SBOLDocument actual = SBOLTestUtils.writeAndRead(document,true);
-		actual.write(System.out);
+//		System.out.println(cd.toString());
+//		document.createComponentDefinition("mySubCD", ComponentDefinition.DNA);
+//		Component comp = cd.createComponent("myComp", AccessType.PRIVATE, "mySubCD");
+//		comp.setDefinition(cd.getIdentity());
+//		comp.addRole(SequenceOntology.PROMOTER);
+//		comp.setRoleIntegration(RoleIntegrationType.MERGEROLES);
+//		SequenceAnnotation sa = cd.createSequenceAnnotation("mySeqAn", "myLoc");
+//		sa.addRole(SequenceOntology.PROMOTER);
+//		sa.setRoleIntegration(RoleIntegrationType.OVERRIDEROLES);
+//		SBOLFactory.createCopy(document.createRecursiveCopy(cd));
+//		SBOLFactory.write(System.out);
+//		System.out.println("END");
+		//SBOLDocument actual = SBOLTestUtils.writeAndRead(document,true);
+		//actual.write(System.out);
 		
 		Sequence seq = document.createSequence("displayID", "ACGT", org.sbolstandard.core2.Sequence.IUPAC_DNA);
-		document.addNamespace(URI.create("http://myannotation.org/"), "annot");
-		Annotation an = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), "1.0");
+		//document.addNamespace(URI.create("http://myannotation.org/"), "annot");
+		Annotation an = new Annotation(new QName("http://myannotation.com", "thisAnnotation", "annt"), "1.0");
 		Annotation an2 = new Annotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), "foo");
 		List<Annotation> annos = new ArrayList<Annotation>();
 		annos.add(an);
 		annos.add(an2);
 		seq.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), 
+				new QName("http://myannotation.biz", "thisNested", "bnnot"), URI.create("http://foo"), annos);
+		GenericTopLevel gen = document.createGenericTopLevel("generic",new QName("http://myannotation.org", "thisAnnotation", "annot"));
+		gen.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), "1.0");
+		gen.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), "foo");
+		gen.createAnnotation(new QName("http://myannotation.org", "thisAnnotation", "annot"), 
 				new QName("http://myannotation.org", "thisNested", "annot"), URI.create("http://foo"), annos);
-		//SBOLWriter.write(document, (System.out));
+		SBOLTestUtils.writeAndRead(document,true);
+//		SBOLWriter.write(document, (System.out));
 
 
-		get_myParts(sbolDocument);
-		//ComponentDefinition cd = 
-		sbolDocument.getComponentDefinition("ptetlacI", "1.0");
-		//Sequence sequence = sbolDocument.createSequence("newSeq2", "AGCTA", Sequence.IUPAC_DNA);
-		//cd.addSequence(sequence);
-		SBOLValidate.validateSBOL(sbolDocument, true, true, true);
-		if (SBOLValidate.getNumErrors() > 0) {
-			for (String error : SBOLValidate.getErrors()) {
-				System.out.println(error);
-			}
-		}
-		SBOLWriter.write(sbolDocument, (System.out), SBOLDocument.RDFV1);
+//		get_myParts(sbolDocument);
+//		//ComponentDefinition cd = 
+//		sbolDocument.getComponentDefinition("ptetlacI", "1.0");
+//		//Sequence sequence = sbolDocument.createSequence("newSeq2", "AGCTA", Sequence.IUPAC_DNA);
+//		//cd.addSequence(sequence);
+//		SBOLValidate.validateSBOL(sbolDocument, true, true, true);
+//		if (SBOLValidate.getNumErrors() > 0) {
+//			for (String error : SBOLValidate.getErrors()) {
+//				System.out.println(error);
+//			}
+//		}
+//		SBOLWriter.write(sbolDocument, (System.out), SBOLDocument.RDFV1);
 		//SBOLDocument doc = new SBOLDocument();
 		//doc.createCollection("http://foo.org", "myPart", "");
 		//doc.createCollection("http://foo.org/myPart", "myPart2", "");

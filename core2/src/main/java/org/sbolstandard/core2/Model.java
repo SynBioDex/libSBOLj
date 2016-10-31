@@ -4,7 +4,7 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import java.net.URI;
 
 /**
- * Represents the SBOL Model data model.
+ * Represents a Model object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -26,7 +26,7 @@ public class Model extends TopLevel {
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of the following
 	 * constructors or methods:
 	 * <ul>
-	 * <li>{@link TopLevel#TopLevel(TopLevel)},</li>
+	 * <li>{@link TopLevel#TopLevel(URI)},</li>
 	 * <li>{@link #setSource(URI)},</li>
 	 * <li>{@link #setLanguage(URI)}, or</li>
 	 * <li>{@link #setFramework(URI)}.</li>
@@ -55,6 +55,10 @@ public class Model extends TopLevel {
 		this.setSource(model.getSource());
 		this.setLanguage(model.getLanguage());
 		this.setFramework(model.getFramework());
+	}
+	
+	void copy(Model model) throws SBOLValidationException {
+		((TopLevel)this).copy((Identified)model);
 	}
 
 	/**
@@ -168,7 +172,7 @@ public class Model extends TopLevel {
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Model(Model)}.
 	 */
 	@Override
-	protected Model deepCopy() throws SBOLValidationException {
+	Model deepCopy() throws SBOLValidationException {
 		return new Model(this);
 	}
 
@@ -206,17 +210,17 @@ public class Model extends TopLevel {
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
 	@Override
-	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
-		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+	void checkDescendantsURIcompliance() {//throws SBOLValidationException {
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 
 	@Override
 	public String toString() {
 		return "Model ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ "identity=" + this.getIdentity()
+				+ (this.isSetDisplayId()?", displayId=" + this.getDisplayId():"") 
+				+ (this.isSetName()?", name=" + this.getName():"")
+				+ (this.isSetDescription()?", description=" + this.getDescription():"") 
 				+ ", source=" + source 
 				+ ", language=" + language 
 				+ ", framework=" + framework

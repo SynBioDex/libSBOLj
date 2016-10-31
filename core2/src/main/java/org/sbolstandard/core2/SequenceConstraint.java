@@ -5,7 +5,7 @@ import java.net.URI;
 import static org.sbolstandard.core2.URIcompliance.*;
 
 /**
- * Represents the SBOL SequenceConstraint data model.
+ * Represents a SequenceConstraint object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -19,8 +19,24 @@ public class SequenceConstraint extends Identified {
 	private URI restriction;
 	private URI subject;
 	private URI object;
+	/**
+	 * the parent component definition of this sequence constraint
+	 */
 	private ComponentDefinition componentDefinition = null;
 	
+	/**
+	 * @param identity
+	 * @param restriction
+	 * @param subject
+	 * @param object
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following constructors or methods:
+	 * <ul>
+	 * <li>{@link Identified#Identified(URI)},</li>
+	 * <li>{@link #setRestriction(URI)},</li>
+	 * <li>{@link #setSubject(URI)}, or</li>
+	 * <li>{@link #setObject(URI)},</li>
+	 * </ul>
+	 */
 	SequenceConstraint(URI identity, URI restriction, URI subject, URI object) throws SBOLValidationException {
 		super(identity);
 		setRestriction(restriction);
@@ -33,11 +49,14 @@ public class SequenceConstraint extends Identified {
 	 * @param restriction
 	 * @param subject
 	 * @param object
-	 * @throws SBOLValidationException if any of the following condition is met:
-	 * <li>an SBOL validation rule violation occurred in {@link Identified#Identified(URI)};</li>
-	 * <li>an SBOL validation rule violation occurred in {@link #setRestriction(RestrictionType)};</li>
-	 * <li>an SBOL validation rule violation occurred in {@link #setSubject(URI)}; or</li>
-	 * <li>an SBOL validation rule violation occurred in {@link #setObject(URI)}.</li>
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of 
+	 * the following methods:
+	 * <ul>
+	 * <li>{@link Identified#Identified(URI)},</li>
+	 * <li>{@link #setRestriction(RestrictionType)},</li>
+	 * <li>{@link #setSubject(URI)}, or</li>
+	 * <li>{@link #setObject(URI)}.</li>
+	 * </ul>
 	 */
 	SequenceConstraint(URI identity, RestrictionType restriction, URI subject, URI object) throws SBOLValidationException {
 		super(identity);
@@ -63,10 +82,14 @@ public class SequenceConstraint extends Identified {
 		this.setObject(sequenceConstraint.getObjectURI());
 	}
 	
+	void copy(SequenceConstraint sequenceConstraint) throws SBOLValidationException {
+		((Identified)this).copy((Identified)sequenceConstraint);
+	}
+	
 	/**
-	 * Returns the restriction property of this SequenceConstraint object.
+	 * Returns the restriction property of this sequence constraint.
 	 * 
-	 * @return the restriction property of this SequenceConstraint object
+	 * @return the restriction property of this sequence constraint
 	 */
 	public RestrictionType getRestriction() {
 		try {
@@ -79,9 +102,9 @@ public class SequenceConstraint extends Identified {
 	
 	
 	/**
-	 * Returns the restriction property of this SequenceConstraint object.
+	 * Returns the restriction property of this sequence constraint.
 	 * 
-	 * @return the restriction property of this SequenceConstraint object
+	 * @return the restriction property of this sequence constraint
 	 */
 	public URI getRestrictionURI() {
 		return restriction;
@@ -89,9 +112,9 @@ public class SequenceConstraint extends Identified {
 
 
 	/**
-	 * Sets the restriction property to the given {@code restriction}.
+	 * Sets the restriction property to the given one.
 	 * 
-	 * @param restriction the restriction type
+	 * @param restriction the restriction type to set to
  	 * @throws SBOLValidationException if either of the following SBOL validation rule was violated: 11407, 11412.
 	 */
 	public void setRestriction(RestrictionType restriction) throws SBOLValidationException {
@@ -106,10 +129,10 @@ public class SequenceConstraint extends Identified {
 	}
 	
 	/**
-	 * Sets the restriction property to the given {@code restrictionURI}.
+	 * Sets the reference subject component's identity URI to the given one.
 	 * 
-	 * @param restrictionURI the identity URI of the restriction
- 	 * @throws SBOLValidationException if no restriction is provided
+	 * @param restrictionURI the identity URI of the restriction to set to
+ 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 11407.
 	 */
 	public void setRestriction(URI restrictionURI) throws SBOLValidationException {
 		if (restrictionURI==null) {
@@ -119,21 +142,21 @@ public class SequenceConstraint extends Identified {
 	}
 
 	/**
-	 * Returns the subject Component URI that this SequenceConstraint object refers to.
+	 * Returns the subject component's identity URI that this sequence constraint refers to.
 	 * 
-	 * @return the subject Component URI that this SequenceConstraint object refers to
+	 * @return the subject component's identity URI that this sequence constraint refers to
 	 */
 	public URI getSubjectURI() {
 		return subject;
 	}
 
+
 	/**
-	 * Returns the subject Component instance this SequenceConstraint object refers to.
+	 * Returns the subject component this sequence constraint refers to.
 	 * <p>
-	 * This method calls {@link ComponentDefinition#getComponent(URI)},
-	 * 
-	 * @return the subject Component instance this SequenceConstraint object refers to,
-	 * if the associated ComponentDefinition instance is not {@code null}, or {@code null} otherwise
+	 * If this sequence constraint's parent component definition is {@code null}, this method returns {@code null}.
+	 * Otherwise, it returns its child component which is also referenced by this sequence constraint.
+	 * @return the subject component this sequence constraint refers to
 	 */
 	public Component getSubject() {
 		if (componentDefinition==null) return null;
@@ -141,8 +164,12 @@ public class SequenceConstraint extends Identified {
 	}
 	
 	/**
-	 * Get the component definition for the subject of this sequence constraint.
-	 * @return the component definition for the subject of this sequence constraint.
+	 * Returns the component definition that defines the subject component of this sequence constraint.
+	 * <p>
+	 * If this sequence constraint's parent component definition is {@code null}, this method returns {@code null}.
+	 * Otherwise, it returns the component definition that defines the subject component of this sequence constraint.
+	 * 
+	 * @return the component definition that defines the subject component of this sequence constraint
 	 */
 	public ComponentDefinition getSubjectDefinition() {
 		if (componentDefinition!=null) {
@@ -154,7 +181,7 @@ public class SequenceConstraint extends Identified {
 	/**
 	 * Sets the reference subject Component URI to the given {@code subjectURI}.
 	 * 
-	 * @param subjectURI the identity URI of the subject component
+	 * @param subjectURI the reference subject's identity URI of the subject component
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 11402, 11403, 11406.
 	 */
 	public void setSubject(URI subjectURI) throws SBOLValidationException {
@@ -173,29 +200,34 @@ public class SequenceConstraint extends Identified {
 	}
 
 	/**
-	 * Returns the object Component URI that this SequenceConstraint object refers to.
+	 * Returns the object component's identity URI that this sequence constraint refers to.
 	 * 
-	 * @return the object Component URI that this SequenceConstraint object refers to
+	 * @return the object component's identity URI that this sequence constraint refers to
 	 */
 	public URI getObjectURI() {
 		return object;
 	}
 	
 	/**
-	 * Returns the object Component instance this SequenceConstraint object refers to.
+	 * Returns the object component this sequence constraint refers to.
+	 * <p>
+	 * If this sequence constraint's parent component definition is {@code null}, this method returns {@code null}.
+	 * Otherwise, it returns its child component which is also referenced by this sequence constraint.
 	 * 
-	 * @return the object Component instance this SequenceConstraint object refers to,
-	 * if the associated ComponentDefinition instance is not {@code null}, or {@code null} otherwise
+	 * @return the object component this sequence constraint refers to
 	 */
 	public Component getObject() {
 		if (componentDefinition==null) return null;
 		return componentDefinition.getComponent(object);
 	}
 	
-	
 	/**
-	 * Get the component definition for the object of this sequence constraint.
-	 * @return the component definition for the object of this sequence constraint.
+	 * Returns the component definition that defines the object component of this sequence constraint.
+	 * <p>
+	 * If this sequence constraint's parent component definition is {@code null}, this method returns {@code null}.
+	 * Otherwise, it returns the component definition that defines the object component of this sequence constraint.
+	 * 
+	 * @return the component definition that defines the object component of this sequence constraint
 	 */
 	public ComponentDefinition getObjectDefinition() {
 		if (componentDefinition!=null) {
@@ -205,9 +237,9 @@ public class SequenceConstraint extends Identified {
 	}
 
 	/**
-	 * Sets the reference object Component URI to the given {@code objectURI}.
+	 * Sets the reference object component's identity URI to the given one.
 	 * 
-	 * @param objectURI the identity URI of the object component
+	 * @param objectURI the reference object component's identity URI to set to 
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 11402, 11404, 11405. 
 	 */
 	public void setObject(URI objectURI) throws SBOLValidationException {
@@ -268,7 +300,7 @@ public class SequenceConstraint extends Identified {
 	 * {@link SequenceConstraint#SequenceConstraint(SequenceConstraint)}. 
 	 */
 	@Override
-	protected SequenceConstraint deepCopy() throws SBOLValidationException {		
+	SequenceConstraint deepCopy() throws SBOLValidationException {		
 		return new SequenceConstraint(this);
 	}
 
@@ -300,14 +332,9 @@ public class SequenceConstraint extends Identified {
 	}
 
 	/**
-	 * @return the componentDefinition
-	 */
-	ComponentDefinition getComponentDefinition() {
-		return componentDefinition;
-	}
-
-	/**
-	 * @param componentDefinition the componentDefinition to set
+	 * Sets this sequence constraint's parent component definition to the given one. 
+	 * 
+	 * @param componentDefinition the component definition to set to
 	 */
 	void setComponentDefinition(ComponentDefinition componentDefinition) {
 		this.componentDefinition = componentDefinition;
@@ -316,11 +343,9 @@ public class SequenceConstraint extends Identified {
 	@Override
 	public String toString() {
 		return "SequenceConstraint ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
-				+ ", restriction=" + restriction 
+				+ super.toString()
+				//+ ", restriction=" + restriction
+				+ ", restriction=" + this.getRestriction().toString()
 				+ ", subject=" + subject
 				+ ", object=" + object 
 				+ "]";

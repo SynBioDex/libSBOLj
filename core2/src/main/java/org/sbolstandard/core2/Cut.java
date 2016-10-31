@@ -17,14 +17,34 @@ public class Cut extends Location{
 
 	private int at;
 	
+	/**
+	 * @param identity
+	 * @param at
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of 
+	 * the following constructor or method:
+	 * {@link Location#Location(URI)} or {@link #setAt(int)}.
+	 */
 	Cut(URI identity, int at) throws SBOLValidationException {
 		super(identity);
 		setAt(at);
 	}
 
+	/**
+	 * @param cut
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * either of the following constructors or methods:
+	 * <ul>
+	 * <li>{@link Location#Location(Location)}, or</li>
+	 * <li>{@link #setAt(int)}.</li>
+	 * </ul>
+	 */
 	private Cut(Cut cut) throws SBOLValidationException {
 		super(cut);
 		this.setAt(cut.getAt());
+	}
+	
+	void copy(Cut cut) throws SBOLValidationException {
+		((Location)this).copy((Location)cut);
 	}
 
 	/**
@@ -56,7 +76,7 @@ public class Cut extends Location{
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Cut(Cut)}.
 	 */
 	@Override
-	protected Cut deepCopy() throws SBOLValidationException {
+	Cut deepCopy() throws SBOLValidationException {
 		return new Cut(this);
 	}
 
@@ -65,7 +85,7 @@ public class Cut extends Location{
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + at;
-		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+		result = prime * result + ((this.getOrientation() == null) ? 0 : this.getOrientation().hashCode());
 		return result;
 	}
 
@@ -80,18 +100,14 @@ public class Cut extends Location{
 		Cut other = (Cut) obj;
 		if (at != other.at)
 			return false;
-		return orientation == other.orientation;
+		return this.getOrientation() == other.getOrientation();
 	}
 
 	@Override
 	public String toString() {
 		return "Cut ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ super.toString()
 				+ ", at=" + at 
-				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
 				+ "]";
 	}
 
@@ -114,12 +130,13 @@ public class Cut extends Location{
 		if (location instanceof Range) {
 			int result = this.at - ((Range)location).getStart();
 			if (result==0) {
-				result = ((Range)location).getEnd() - this.at;
+				result = this.at - ((Range)location).getEnd();
 			}
 			return result;
 		} else if (location instanceof Cut) {
 			return this.at - ((Cut)location).getAt();
 		} 
-		return this.at;
+		return -1*(Integer.MAX_VALUE);
+		//return this.at;
 	}
 }

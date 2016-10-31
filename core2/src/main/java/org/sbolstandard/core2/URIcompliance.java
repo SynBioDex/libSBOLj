@@ -20,7 +20,7 @@ final class URIcompliance {
 	 * @param version
 	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 10204, 10206.
 	 */
-	static void validateIdVersion(String displayId, String version) throws SBOLValidationException {
+	private static void validateIdVersion(String displayId, String version) throws SBOLValidationException {
 		if (displayId!=null && !isDisplayIdValid(displayId)) {
 			throw new SBOLValidationException("sbol-10204");
 		}
@@ -57,9 +57,11 @@ final class URIcompliance {
 	 * @param version
 	 * @param useType
 	 * @return
-	 * @throws SBOLValidationException if either of the following condition is satisfied:
-	 * <li>an SBOL validation exception occurred in {@link #validateIdVersion(String, String)}; or</li>
-	 * <li>an SBOL validation exception occurred in {@link #createCompliantURI(String, String, String)}.</li>
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in either of the following methods:
+	 * <ul>
+	 * <li>{@link #validateIdVersion(String, String)}, or</li>
+	 * <li>{@link #createCompliantURI(String, String, String)}.</li>
+	 * </ul> 
 	 */
 	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) throws SBOLValidationException {
 		if (prefix == null) {
@@ -78,8 +80,8 @@ final class URIcompliance {
 
 	/**
 	 * Extract the persistent identity URI from the given URI.
-	 * The persistent identity is simply the identity URI without the version.
-	 * @return the extracted persistent identity URI, <code>null</code> otherwise.
+	 * 
+	 * @return the extracted persistent identity URI
 	 */
 	static String extractPersistentId(URI objURI) {
 		String URIstr = objURI.toString();
@@ -89,14 +91,15 @@ final class URIcompliance {
 			return m.group(1);
 		}
 		else {
-			return null;//throw new SBOLValidationException(objURI + " does not include a valid persistentIdentity.");
+			return null;
 		}
 
 	}
 
 	/**
 	 * Extract the URI prefix from this object's identity URI.
-	 * @return the extracted URI prefix, <code>null</code> otherwise.
+	 * 
+	 * @return the extracted URI prefix
 	 */
 	static String extractURIprefix(URI objURI) {
 		String URIstr = objURI.toString();
@@ -109,13 +112,9 @@ final class URIcompliance {
 	}
 
 	/**
-	 * Extract the object's display ID from the given object's identity URI, according to the given index.
-	 * The given URI is first checked for compliance. If the given index is 0, the extracted display ID is the
-	 * top-level object's display ID; if the given index is 1, the extracted display ID is the
-	 * child object's display ID; if the given index is 2, the extracted display ID is the
-	 * grand child object's display ID; if the given index is 3, the extracted display ID is the
-	 * great grand child object's display ID.
-	 * @return the extracted display ID.
+	 * Extract the object's display ID from the given object's identity URI.
+	 * 
+	 * @return the extracted display ID
 	 */
 	static String extractDisplayId(URI objURI) {
 		String URIstr = objURI.toString();
@@ -130,7 +129,8 @@ final class URIcompliance {
 
 	/**
 	 * Extract the version from this object's identity URI.
-	 * @return the version if the given URI is compliant, <code>null</code> otherwise.
+	 * 
+	 * @return the version if the given URI is compliant
 	 */
 	static String extractVersion(URI objURI) {
 		String URIstr = objURI.toString();
@@ -142,6 +142,11 @@ final class URIcompliance {
 			return null;
 	}
 
+	/**
+	 * @param identified
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10215, 10216, 10218.
+	 */
 	static final void isURIcompliant(Identified identified) throws SBOLValidationException {
 		if (!identified.isSetDisplayId()) {
 			throw new SBOLValidationException("sbol-10215");
@@ -155,11 +160,11 @@ final class URIcompliance {
 			throw new SBOLValidationException("sbol-10216");
 		}
 		if (!identified.isSetVersion()) {
-			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString())) {
+			if (!identified.getIdentity().toString().equals(identified.getPersistentIdentity().toString())) {
 				throw new SBOLValidationException("sbol-10218");
 			}
 		} else {
-			if (!identified.identity.toString().equals(identified.getPersistentIdentity().toString()+"/"
+			if (!identified.getIdentity().toString().equals(identified.getPersistentIdentity().toString()+"/"
 					+identified.getVersion())) {
 				throw new SBOLValidationException("sbol-10218");
 			}
@@ -181,6 +186,12 @@ final class URIcompliance {
 		}
 	}
 
+	/**
+	 * @param parent
+	 * @param child
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10216, 10217, 10219.
+	 */
 	static final void isChildURIcompliant(Identified parent, Identified child) throws SBOLValidationException {
 		try {
 			isURIcompliant(child);
@@ -205,22 +216,23 @@ final class URIcompliance {
 		}
 	}
 	
-	/**
-	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
-	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
-	 * the level of the given object. 
-	 * @param objURI
-	 * @throws SBOLValidationException 
-	 */
-	static final void isTopLevelURIformCompliant(URI topLevelURI) throws SBOLValidationException {
-		Pattern r;
-		String URIstr = topLevelURI.toString();		
-		r = Pattern.compile(toplevelURIpattern);
-		Matcher m = r.matcher(URIstr);
-		if (!m.matches()) {
-			throw new SBOLValidationException("sbol-10201");
-		}
-	}
+//	/**
+//	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
+//	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
+//	 * the level of the given object.
+//	 * 
+//	 * @param objURI
+//	 * @throws SBOLValidationException if any the following SBOL validation rule was violated: 10201.
+//	 */
+//	static final void isTopLevelURIformCompliant(URI topLevelURI) throws SBOLValidationException {
+//		Pattern r;
+//		String URIstr = topLevelURI.toString();		
+//		r = Pattern.compile(toplevelURIpattern);
+//		Matcher m = r.matcher(URIstr);
+//		if (!m.matches()) {
+//			throw new SBOLValidationException("sbol-10201");
+//		}
+//	}
 	
 //	static final boolean isURIcompliantTemp(URI objURI, String URIprefix, String version, String ... displayIds) {
 //		if (displayIds.length == 0 || displayIds.length > 4) {
@@ -333,6 +345,7 @@ final class URIcompliance {
 //	}
 
 	static boolean isDisplayIdValid(String newDisplayId) {
+		if (newDisplayId==null) return false;
 		Pattern r = Pattern.compile(displayIDpattern);
 		Matcher m = r.matcher(newDisplayId);
 		return m.matches();
@@ -351,6 +364,7 @@ final class URIcompliance {
 		return m.matches();
 	}
 	
+	// TODO: this is the proper URI matcher, but it is very open, should we use it?
 	static boolean isValidURI(String URIstr) {
 		Pattern r = Pattern.compile(URI_REFERENCE_REGEX);
 		Matcher m = r.matcher(URIstr);
@@ -364,20 +378,20 @@ final class URIcompliance {
 	// (?:...) is a non-capturing group
 	//static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
 	
-	static final String delimiter = "[/|#|:]";
+	private static final String delimiter = "[/|#|:]";
 			
-	static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+	private static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
-	static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]*";//"[a-zA-Z0-9_]+";
+	private static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]*";//"[a-zA-Z0-9_]+";
 
-	static final String versionPattern = "[0-9]+[a-zA-Z0-9_\\.-]*"; // ^ and $ are the beginning and end of the string anchors respectively. 
+	private static final String versionPattern = "[0-9]+[a-zA-Z0-9_\\.-]*"; // ^ and $ are the beginning and end of the string anchors respectively. 
 															// | is used to denote alternates. 
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: persistent ID
 	// group 2: URI prefix
 	// group 3: version
-	static final String genericURIpattern1 = "((" + URIprefixPattern + ")("+delimiter+"(" + displayIDpattern + ")){1,3})(/(" + versionPattern + "))?";
+	private static final String genericURIpattern1 = "((" + URIprefixPattern + ")("+delimiter+"(" + displayIDpattern + ")){1,3})(/(" + versionPattern + "))?";
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: top-level display ID
@@ -386,7 +400,7 @@ final class URIcompliance {
 	// group 4: top-level's grand grand child display ID
 	//static final String genericURIpattern2 = URIprefixPattern + delimiter + "((" + displayIDpattern + "/){1,3})" + versionPattern;
 
-	static final String toplevelURIpattern = URIprefixPattern + delimiter + displayIDpattern + "(/" + versionPattern + ")?";
+	//private static final String toplevelURIpattern = URIprefixPattern + delimiter + displayIDpattern + "(/" + versionPattern + ")?";
 	
 	private static final String URI_REFERENCE_REGEX = "(([a-zA-Z][a-zA-Z0-9\\+\\-\\.]*:((((//((((([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);:\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)\\@)?((((([a-zA-Z0-9](([a-zA-Z0-9\\-])*[a-zA-Z0-9])?)\\.)*([a-zA-Z](([a-zA-Z0-9\\-])*[a-zA-Z0-9])?)(\\.)?)|([0-9]+((\\.[0-9]+){3})))(:[0-9]*)?))?|([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\)$,;:\\@\\&=\\+]|(%[a-fA-F0-9]{2}))+)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*))*)?)|(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*))*))(\\?([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);/\\?:\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)?)|(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);\\?:\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);/\\?:\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)))|(((//((((([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);:\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)\\@)?((((([a-zA-Z0-9](([a-zA-Z0-9\\-])*[a-zA-Z0-9])?)\\.)*([a-zA-Z](([a-zA-Z0-9\\-])*[a-zA-Z0-9])?)(\\.)?)|([0-9]+((\\.[0-9]+){3})))(:[0-9]*)?))?|([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\)$,;:\\@\\&=\\+]|(%[a-fA-F0-9]{2}))+)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*))*)?)|(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*))*)|(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))+(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*)(/(([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*(;([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\):\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)*))*)?))(\\?([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);/\\?:\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)?))?(\\#([a-zA-Z0-9\\-_\\.!\\~\\*'\\(\\);/\\?:\\@\\&=\\+$,]|(%[a-fA-F0-9]{2}))*)?";
 
@@ -418,12 +432,14 @@ final class URIcompliance {
 	 */
 	static String checkURIprefix(String URIprefix) throws SBOLValidationException {
 		if (URIprefix==null) {
+			// TODO: not really the right exception here, this is our pattern and not the specs one
 			throw new SBOLValidationException("sbol-10201");
 		}
 		if (!URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
 			URIprefix += "/";
 		}
 		if (!isURIprefixCompliant(URIprefix)) {
+			// TODO: not really the right exception here, this is our pattern and not the specs one
 			throw new SBOLValidationException("sbol-10201");
 		}
 		return URIprefix;

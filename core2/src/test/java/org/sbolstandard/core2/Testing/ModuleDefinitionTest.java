@@ -1,24 +1,22 @@
 package org.sbolstandard.core2.Testing;
 
 import static org.junit.Assert.*;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.sbolstandard.core2.AccessType;
-import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.DirectionType;
 import org.sbolstandard.core2.FunctionalComponent;
 import org.sbolstandard.core2.Interaction;
+import org.sbolstandard.core2.Model;
 import org.sbolstandard.core2.Module;
 import org.sbolstandard.core2.ModuleDefinition;
-import org.sbolstandard.core2.Participation;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
-import org.sbolstandard.core2.TopLevel;
+import org.sbolstandard.core2.SystemsBiologyOntology;
 
 public class ModuleDefinitionTest {
 	private SBOLDocument doc = null;
@@ -32,7 +30,6 @@ public class ModuleDefinitionTest {
 	private FunctionalComponent TetR_FC = null;
 	private FunctionalComponent LacI_FC = null;
 	private Interaction TetR_promotes_LacI = null;
-	
 	@Before
 	public void setUp() throws Exception {
 		doc = new SBOLDocument();
@@ -55,20 +52,22 @@ public class ModuleDefinitionTest {
 		TetR_CD = doc.createComponentDefinition("TetR_CD", ComponentDefinition.DNA);
 		LacI_CD = doc.createComponentDefinition("LacI_CD", ComponentDefinition.DNA);
 		
-		/*create ComponentDefinitions for the individual Components*/
-		ComponentDefinition TetR_Promoter_CD = doc.createComponentDefinition("TetR_Promoter_CD", ComponentDefinition.DNA);
-		ComponentDefinition TetR_Terminator_CD = doc.createComponentDefinition("TetR_Terminator_CD", ComponentDefinition.DNA);
-		ComponentDefinition TetR_Gene_CD = doc.createComponentDefinition("TetR_Gene_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("TetR_Promoter_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("TetR_Terminator_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("TetR_Gene_CD", ComponentDefinition.DNA);
 
-		ComponentDefinition LacI_Promoter_CD = doc.createComponentDefinition("LacI_Promoter_CD", ComponentDefinition.DNA);
-		ComponentDefinition LacI_Terminator_CD = doc.createComponentDefinition("LacI_Terminator_CD", ComponentDefinition.DNA);
-		ComponentDefinition LacI_Gene_CD = doc.createComponentDefinition("LacI_Gene_CD", ComponentDefinition.DNA);
-
+		doc.createComponentDefinition("LacI_Promoter_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("LacI_Terminator_CD", ComponentDefinition.DNA);
+		doc.createComponentDefinition("LacI_Gene_CD", ComponentDefinition.DNA);
+		
+		doc.createComponentDefinition("target_gene", ComponentDefinition.DNA);
+		TetR_CD.createComponent("gene", AccessType.PUBLIC, "target_gene");
+		
 		/*add the corresponding components to the appropriate CD*/
 		TetR_CD.createComponent("TetR_promoter", AccessType.PUBLIC, "TetR_Promoter_CD", "");
 		TetR_CD.createComponent("TetR_terminator", AccessType.PUBLIC, "TetR_Terminator_CD", "");
 		TetR_CD.createComponent("TetR_gene", AccessType.PUBLIC, "TetR_Gene_CD", "");
-
+				
 		LacI_CD.createComponent("LacI_promoter", AccessType.PUBLIC, "LacI_Promoter_CD", "");
 		LacI_CD.createComponent("LacI_terminator", AccessType.PUBLIC, "LacI_Terminator_CD", "");
 		LacI_CD.createComponent("LacI_gene", AccessType.PUBLIC, "LacI_Gene_CD", "");
@@ -149,12 +148,14 @@ public class ModuleDefinitionTest {
 		assertTrue(geneticToggleSwitch.getInteractions().size()== 0);
 	}
 	
-	/*@Test
-	public void test_getRole() throws URISyntaxException
+	@Test
+	public void test_RoleMethods() throws URISyntaxException
 	{
-		assertTrue(geneticToggleSwitch.containsRole(new URI("http://identifiers.org/biomodels.sbo/SBO:0000169")));
-		
-	}*/
+		TetRInverter_MD.addRole(SystemsBiologyOntology.PROMOTER);
+		assertTrue(TetRInverter_MD.containsRole(SystemsBiologyOntology.PROMOTER));
+		TetRInverter_MD.removeRole(SystemsBiologyOntology.PROMOTER);
+		assertFalse(TetRInverter_MD.containsRole(SystemsBiologyOntology.PROMOTER));
+	}
 	
 	@Test
 	public void test_toString()
@@ -169,9 +170,8 @@ public class ModuleDefinitionTest {
 	{
 		SBOLDocument doc_copy = new SBOLDocument();
 		doc_copy.setDefaultURIprefix("http://sbols.org/CRISPR_Example/");
-		doc_copy.setComplete(true);
+		doc_copy.setComplete(false);
 		doc_copy.setCreateDefaults(true);
-		doc_copy.setComplete(true);
 		doc_copy.createCopy(geneticToggleSwitch);
 		ModuleDefinition TetRInverter_copy = doc_copy.getModuleDefinition("geneticToggleSwitch", "");
 		assertTrue(TetRInverter_copy.getModule("TetRInverter").equals(TetRInverter));	
@@ -179,6 +179,26 @@ public class ModuleDefinitionTest {
 		assertTrue(doc_copy.createRecursiveCopy(geneticToggleSwitch).equals(doc));
 		
 	}
+	
+	@Test
+	public void test_modelMethods() throws SBOLValidationException
+	{
+		Model model=doc.createModel(
+				"pIKE_Toggle_1",
+				"1.0",
+				URI.create("http://virtualparts.org/part/pIKE_Toggle_1"),
+				URI.create("http://identifiers.org/edam/format_2585"), 
+				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK); 
+		
+		assertTrue(geneticToggleSwitch.addModel("pIKE_Toggle_1"));
+		assertTrue(doc.getModuleDefinition("geneticToggleSwitch", "").getModels().contains(model));
+		assertTrue(geneticToggleSwitch.removeModel(model.getPersistentIdentity()));
+		assertTrue(geneticToggleSwitch.addModel("pIKE_Toggle_1", "1.0"));
+		assertTrue(doc.getModuleDefinition("geneticToggleSwitch", "").getModels().contains(model));
+		assertTrue(geneticToggleSwitch.containsModel(model.getIdentity()));
+
+	}
+
 	
 	
 }

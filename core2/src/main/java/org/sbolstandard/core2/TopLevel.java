@@ -3,7 +3,7 @@ package org.sbolstandard.core2;
 import java.net.URI;
 
 /**
- * Represents the SBOL top-level classes.
+ * Represents a TopLevel object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -50,15 +50,19 @@ public abstract class TopLevel extends Identified {
 	 * @param toplevel
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Identified#Identified(Identified)}.
 	 */
-	protected TopLevel(TopLevel toplevel) throws SBOLValidationException {
+	TopLevel(TopLevel toplevel) throws SBOLValidationException {
 		super(toplevel);
+	}
+	
+	void copy(TopLevel topLevel) throws SBOLValidationException {
+		((Identified)this).copy((Identified)topLevel);
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.Identified#deepCopy()
 	 */
 	@Override
-	protected abstract Identified deepCopy() throws SBOLValidationException;
+	abstract Identified deepCopy() throws SBOLValidationException;
 	
 	/**
 	 * Make a copy of a top-level object whose URI and its descendants' URIs (children, grandchildren, etc) are all compliant. 
@@ -70,14 +74,18 @@ public abstract class TopLevel extends Identified {
 	abstract Identified copy(String URIprefix, String displayId, String version) throws SBOLValidationException;
 
 	/**
-	 * Test if the given object's identity URI is compliant with the form {@code ⟨prefix⟩/(⟨displayId⟩/)}{1,3}⟨version⟩.
-	 * The prefix is established by the owner of this object. The number of displayIds can range from 1 to 4, depending on
-	 * the level of the given object. 
+	 * Test if the given object's identity URI is compliant.
+	 * 
 	 * @param objURI
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link URIcompliance#isTopLevelURIformCompliant(URI)},</li> 
+	 * <li>{@link URIcompliance#isURIcompliant(Identified)}, or</li>
+	 * <li>{@link #checkDescendantsURIcompliance()}.</li>
+	 * </ul>
 	 */
 	void isURIcompliant() throws SBOLValidationException {	
-		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 		try {
 			URIcompliance.isURIcompliant(this);
 		}
@@ -88,13 +96,13 @@ public abstract class TopLevel extends Identified {
 	}
 
 	/**
-	 * Returns the SBOLDocument that was used 
-	 * to instantiate this TopLevel instance.
+	 * Returns the SBOL document that hosts this top-level.
 	 * 
-	 * @return the SBOLDocument of this TopLevel's origin
+	 * @return the SBOL document that hosts this top-level
 	 */
 	public SBOLDocument getDocument() {
-		return this.sbolDocument;
+		//return this.sbolDocument;
+		return this.getSBOLDocument();	
 	}
 
 	
@@ -102,6 +110,6 @@ public abstract class TopLevel extends Identified {
 	 * Check if this top-level object's and all of its descendants' URIs are all compliant. 
 	 * @throws SBOLValidationException 
 	 */
-	protected abstract void checkDescendantsURIcompliance() throws SBOLValidationException;
+	abstract void checkDescendantsURIcompliance() throws SBOLValidationException;
 
 }

@@ -5,7 +5,7 @@ import java.net.URI;
 import javax.xml.namespace.QName;
 
 /**
- * Represents the Range extension of the SBOL Location class.
+ * Represents a Range extension object of the SBOL Location class.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -18,6 +18,18 @@ public class Range extends Location {
 	private int start = 0;
 	private int end = 0;
 
+	/**
+	 * @param identity
+	 * @param start
+	 * @param end
+	 * @throws SBOLValidationException if if an SBOL validation rule violation occurred 
+	 * in any of the following constructors or methods:
+	 * <ul>
+	 * <li>{@link Location#Location(URI)}, </li>
+	 * <li>{@link #setEnd(int)}, or </li>
+	 * <li>{@link #setStart(int)}.</li>
+	 * </ul>
+	 */
 	Range(URI identity, int start, int end) throws SBOLValidationException {
 		super(identity);
 		setEnd(end);
@@ -38,6 +50,10 @@ public class Range extends Location {
 		super(range);
 		this.setEnd(range.getEnd());
 		this.setStart(range.getStart());
+	}
+	
+	void copy(Range range) throws SBOLValidationException {
+		((Location)this).copy((Location)range);
 	}
 
 	/**
@@ -99,7 +115,7 @@ public class Range extends Location {
 	 * {@link #Range(Range)}.
 	 */
 	@Override
-	protected Location deepCopy() throws SBOLValidationException {
+	Location deepCopy() throws SBOLValidationException {
 		return new Range(this);
 	}
 
@@ -108,7 +124,7 @@ public class Range extends Location {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + end;
-		result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+		result = prime * result + ((this.getOrientation() == null) ? 0 : this.getOrientation().hashCode());
 		result = prime * result + start;
 		return result;
 	}
@@ -124,21 +140,17 @@ public class Range extends Location {
 		Range other = (Range) obj;
 		if (end != other.end)
 			return false;
-		if (orientation != other.orientation)
+		if (this.getOrientation() != other.getOrientation())
 			return false;
 		return start == other.start;
 	}
 
 	@Override
 	public String toString() {
-		return "Range ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+		return "Range [" 
+				+ super.toString() 
 				+ ", start=" + start 
 				+ ", end=" + end
-				+ (this.isSetOrientation()?", orientation=" + orientation:"") 
 				+ "]";
 	}
 
@@ -161,16 +173,17 @@ public class Range extends Location {
 		if (location instanceof Range) {
 			int result = this.start - ((Range)location).getStart();
 			if (result==0) {
-				result = ((Range)location).getEnd() - this.end;
+				result = this.end - ((Range)location).getEnd();
 			}
 			return result;
 		} else if (location instanceof Cut) {
 			int result = this.start - ((Cut)location).getAt();
 			if (result==0) {
-				result = ((Cut)location).getAt() - this.end;
+				result = this.end - ((Cut)location).getAt(); 
 			}
 			return result;
 		}
-		return this.start;
+		return -1*(Integer.MAX_VALUE);
+		//return this.start;
 	}
 }

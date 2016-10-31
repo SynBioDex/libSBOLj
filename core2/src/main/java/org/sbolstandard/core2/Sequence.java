@@ -5,7 +5,7 @@ import static org.sbolstandard.core2.URIcompliance.*;
 import java.net.URI;
 
 /**
- * Represents the SBOL Sequence data model.
+ * Represents a Sequence object in the SBOL data model.
  * 
  * @author Zhen Zhang
  * @author Nicholas Roehner
@@ -45,6 +45,18 @@ public class Sequence extends TopLevel{
 	 */
 	public static final URI SMILES = URI.create("http://www.opensmiles.org/opensmiles.html");
 
+	/**
+	 * @param identity
+	 * @param elements
+	 * @param encoding
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following constructor
+	 * or methods: 
+	 * <ul>
+	 * <li>{@link TopLevel#TopLevel(URI)},</li>
+	 * <li>{@link #setEncoding(URI)}, or </li>
+	 * <li>{@link #setElements(String)}.</li>
+	 * </ul>
+	 */
 	Sequence(URI identity, String elements, URI encoding) throws SBOLValidationException {
 		super(identity);
 		setEncoding(encoding);
@@ -67,6 +79,10 @@ public class Sequence extends TopLevel{
 		this.setEncoding(sequence.getEncoding());
 		this.setElements(sequence.getElements());
 	}
+	
+	void copy(Sequence sequence) throws SBOLValidationException {
+		((TopLevel)this).copy((Identified)sequence);
+	}
 
 	//	public Sequence(String authority, String Id, String elements, URI encoding) {
 	//		super(authority, Id);
@@ -75,9 +91,9 @@ public class Sequence extends TopLevel{
 	//	}
 
 	/**
-	 * Returns the elements property of this Sequence object.
+	 * Returns the elements property of this sequence.
 	 * 
-	 * @return the elements property of this Sequence object.
+	 * @return the elements property of this sequence.
 	 */
 	public String getElements() {
 		return elements;
@@ -101,9 +117,9 @@ public class Sequence extends TopLevel{
 	}
 	
 	/**
-	 * Returns the encoding property of this Sequence object.
+	 * Returns the encoding property of this sequence.
 	 * 
-	 * @return the encoding property of this Sequence object.
+	 * @return the encoding property of this sequence
 	 */
 	public URI getEncoding() {
 		return encoding;
@@ -157,10 +173,10 @@ public class Sequence extends TopLevel{
 	 * @see org.sbolstandard.core2.TopLevel#deepCopy()
 	 */
 	/**
-	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #Sequence(Sequence)}.
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Sequence#Sequence(Sequence)}.
 	 */
 	@Override
-	protected Sequence deepCopy() throws SBOLValidationException {
+	Sequence deepCopy() throws SBOLValidationException {
 		return new Sequence(this);
 	}
 
@@ -179,7 +195,7 @@ public class Sequence extends TopLevel{
 	 * </ul>
 	 */
 	@Override
-	protected Sequence copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
+	Sequence copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		Sequence cloned = this.deepCopy();
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
 		cloned.setDisplayId(displayId);
@@ -197,9 +213,13 @@ public class Sequence extends TopLevel{
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
+	/**
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following method:
+	 * {@link URIcompliance#isTopLevelURIformCompliant(URI)}.
+	 */
 	@Override
-	protected void checkDescendantsURIcompliance() throws SBOLValidationException {
-		URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
+	void checkDescendantsURIcompliance() {// throws SBOLValidationException {
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 	
 	/**
@@ -257,10 +277,7 @@ public class Sequence extends TopLevel{
 	@Override
 	public String toString() {
 		return "Sequence ["
-				+ "identity=" + identity 
-				+ (this.isSetDisplayId()?", displayId=" + displayId:"") 
-				+ (this.isSetName()?", name=" + name:"")
-				+ (this.isSetDescription()?", description=" + description:"") 
+				+ super.toString()
 				+ ", encoding=" + encoding 
 				+ ", elements=" + elements  
 				+ "]";
