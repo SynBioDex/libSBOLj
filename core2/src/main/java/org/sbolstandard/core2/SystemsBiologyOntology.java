@@ -1171,15 +1171,15 @@ public class SystemsBiologyOntology {
 	public static final URI INTERACTOR 					 = type("SBO:0000336");
 
 	/**
-	 * Molecule which is acted upon by an enzyme (<a href="http://identifiers.org/biomodels.sbo/SBO:0000015">SBO:0000015</a>). The substrate binds with the enzyme's active
-	 * site, and the enzyme catalyzes a chemical reaction involving the substrate.
+	 * Molecule which is acted upon by an enzyme (<a href="http://identifiers.org/biomodels.sbo/SBO:0000015">SBO:0000015</a>). 
+	 * The substrate binds with the enzyme's active site, and the enzyme catalyzes a chemical reaction involving the substrate.
 	 */
 	public static final URI SUBSTRATE 					 = type("SBO:0000015");
 
 	/**
 	 * A substance that is consumed in a chemical reaction but is not itself the primary
-	 * substrate or focus of that reaction (<a href="http://identifiers.org/biomodels.sbo/SBO:0000604">SBO:0000604</a>). Examples include, but are not limited to, currency
-	 * compounds such as ATP, NADPH and protons.
+	 * substrate or focus of that reaction (<a href="http://identifiers.org/biomodels.sbo/SBO:0000604">SBO:0000604</a>). 
+	 * Examples include, but are not limited to, currency compounds such as ATP, NADPH and protons.
 	 */
 	public static final URI SIDE_SUBSTRATE 				 = type("SBO:0000604");
 	
