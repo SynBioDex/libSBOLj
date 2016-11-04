@@ -1532,6 +1532,7 @@
           </sbol:Range>
         </sbol:location>
         <sbol:component rdf:resource="http://www.async.ece.utah.edu#comp_10_8_2013_12_57_38_712_iBioSim/component0"/>
+      	<sbol:role rdf:resource="http://identifiers.org/biomodels.sbo/SBO:0000010"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
@@ -3280,7 +3281,6 @@
           </sbol:Range>
         </sbol:location>
         <sbol:component rdf:resource="http://www.eugenecad.org/pIKERightCassette_4/component2"/>
-    	<sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
