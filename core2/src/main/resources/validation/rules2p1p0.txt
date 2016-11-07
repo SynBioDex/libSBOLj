@@ -308,7 +308,7 @@ reference: Section 7.7 on page 22
 [ComponentDefinition]
 id: sbol-10516
 condition: weak required
-description: f the sequences property of a ComponentDefinition refers
+description: If the sequences property of a ComponentDefinition refers
 to one or more Sequence objects, and one of the types of this ComponentDefinition comes from Table 2, then one of the Sequence objects MUST have the encoding that is cross-listed with this type in Table 1.
 reference: Section 7.7 on page 22
 

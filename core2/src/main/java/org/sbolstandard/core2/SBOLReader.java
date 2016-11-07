@@ -2858,14 +2858,14 @@ public class SBOLReader
 			c.setDisplayId(displayId);
 		if (access != null)
 			c.setAccess(access);
-		if (!roles.isEmpty())
-			c.setRoles(roles);
 		if (roleIntegration != null)
 			try {
 				c.setRoleIntegration(RoleIntegrationType.convertToRoleIntegrationType(roleIntegration));
 			} catch (SBOLValidationException e) {
 				throw new SBOLValidationException("sbol-10708",c);
 			}
+		if (!roles.isEmpty())
+			c.setRoles(roles);
 		if (!mapsTo.isEmpty())
 			c.setMapsTos(mapsTo);
 		if (subComponentURI != null)
