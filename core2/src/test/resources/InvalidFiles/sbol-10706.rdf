@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#">
+  <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/cas9_generic/1.0">
+    <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/cas9_generic"/>
+    <sbol:displayId>cas9_generic</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#Protein"/>
+    <sbol:component>
+      <sbol:Component rdf:about="http://sbols.org/CRISPR_Example/cas9_generic/pConst/1.0">
+        <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/cas9_generic/pConst"/>
+        <sbol:displayId>pConst</sbol:displayId>
+        <sbol:version>1.0</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#private"/>
+        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/pConst"/>
+      </sbol:Component>
+    </sbol:component>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/sub_CD/1.0">
+    <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/sub_CD"/>
+    <sbol:displayId>sub_CD</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#Protein"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://sbols.org/CRISPR_Example/pConst/1.0">
+    <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/pConst"/>
+    <sbol:displayId>pConst</sbol:displayId>
+    <sbol:version>1.0</sbol:version>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+    <sbol:component>
+      <sbol:Component rdf:about="http://sbols.org/CRISPR_Example/pConst/illegal_CD/1.0">
+        <sbol:persistentIdentity rdf:resource="http://sbols.org/CRISPR_Example/pConst/illegal_CD"/>
+        <sbol:displayId>illegal_CD</sbol:displayId>
+        <sbol:version>1.0</sbol:version>
+        <sbol:access rdf:resource="http://sbols.org/v2#private"/>
+        <sbol:definition rdf:resource="http://sbols.org/CRISPR_Example/sub_CD"/>
+        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000167"/>
+        <sbol:roleIntegration rdf:resource="http://sbols.org/v2#overrideRoles"/>
+      </sbol:Component>
+    </sbol:component>
+  </sbol:ComponentDefinition>
+</rdf:RDF>

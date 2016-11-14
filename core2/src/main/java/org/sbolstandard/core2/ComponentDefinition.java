@@ -881,8 +881,10 @@ public class ComponentDefinition extends TopLevel {
 	private void getSuccessorComponents(HashMap<Component,Set<Component>> successorMap,
 			Component component, Set<Component> visited) throws SBOLValidationException {
 		if (visited.contains(component)) {
-			//throw new SBOLValidationException("Cycle in sequence constraints");
-			throw new SBOLValidationException("sbol-10605", component);
+			// TODO: cycle detected.  This needs to be handled better.
+			throw new SBOLValidationException("Cycle in sequence constraints");
+			//throw new SBOLValidationException("sbol-10605", component);
+			//return;
 		}
 		visited.add(component);
 		for (SequenceConstraint sc : this.getSequenceConstraints()) {
