@@ -392,7 +392,7 @@ public class RepressionModel {
 		}
 		
 		SBOLWriter.write(doc,(System.out));
-		SBOLWriter.write(doc, "/Users/myers/Downloads/libSBOL/CRISPR/RepressionModel.rdf");
+		SBOLWriter.write(doc, "RepressionModel.rdf");
 				
 	}
 	
