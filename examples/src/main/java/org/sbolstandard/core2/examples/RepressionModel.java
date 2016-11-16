@@ -46,7 +46,7 @@ public class RepressionModel {
 		doc.setComplete(true);
 		doc.setCreateDefaults(true);
 		
-		String version = "1.0";
+		String version = "1.0.0";
 		
 		// Create ComponentDefinition for cas9_generic protein
 		doc.createComponentDefinition("cas9_generic", version, ComponentDefinition.PROTEIN);
@@ -392,7 +392,7 @@ public class RepressionModel {
 		}
 		
 		SBOLWriter.write(doc,(System.out));
-		SBOLWriter.write(doc, "RepressionModel.rdf");
+		SBOLWriter.write(doc, "/Users/myers/Downloads/libSBOL/CRISPR/RepressionModel.rdf");
 				
 	}
 	
