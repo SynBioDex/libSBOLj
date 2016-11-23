@@ -842,7 +842,7 @@ public class SBOLValidate {
 
 	private static final String IUPAC_DNA_PATTERN = "([ACGTURYSWKMBDHVN\\-\\.]*)";
 	private static final Pattern iupacDNAparser = Pattern.compile(IUPAC_DNA_PATTERN);
-	private static final String IUPAC_PROTEIN_PATTERN = "([ABCDEFGHIKLMNPQRSTVWXYZ]*)";
+	private static final String IUPAC_PROTEIN_PATTERN = "([ABCDEFGHIJKLMNOPQRSTUVWXYZ]*)";
 	private static final Pattern iupacProteinParser = Pattern.compile(IUPAC_PROTEIN_PATTERN);
 //	private static OpenSmilesParser openSmilesParser = new OpenSmilesParser();
 
