@@ -1545,6 +1545,8 @@ public class SBOLValidate {
 		String fileName = "";
 		String outputFile = "";
 		String compareFile = "";
+		String mainFileName = "";
+		String compareFileName = "";
 		String topLevelURIStr = "";
 		String URIPrefix = "";
 		String version = "";
@@ -1604,6 +1606,18 @@ public class SBOLValidate {
 				}
 				compareFile = args[i+1];
 				i++;
+			} else if (args[i].equals("-mf")) {
+				if (i+1 >= args.length) {
+					usage();
+				}
+				mainFileName = args[i+1];
+				i++;
+			} else if (args[i].equals("-cf")) {
+				if (i+1 >= args.length) {
+					usage();
+				}
+				compareFileName = args[i+1];
+				i++;
 			} else if (args[i].equals("-p")) {
 				if (i+1 >= args.length) {
 					usage();
@@ -1647,11 +1661,15 @@ public class SBOLValidate {
 			doc.setTypesInURIs(typesInURI);
 			if (!compareFile.equals("")) {
 				SBOLDocument doc2 = SBOLReader.read(compareFile);
-				File f = new File(fileName);
-				String fileNameStr = f.getName();
-				f = new File(compareFile);
-				String compareFileStr = f.getName();
-				compareDocuments(fileNameStr, doc, compareFileStr, doc2);
+				if (mainFileName.equals("")) {
+					File f = new File(fileName);
+					mainFileName = f.getName();
+				}
+				if (compareFileName.equals("")) {
+					File f = new File(compareFile);
+					compareFileName = f.getName();
+				}
+				compareDocuments(mainFileName, doc, compareFileName, doc2);
 			}
 			validateSBOL(doc, complete, compliant, bestPractice);
 			if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
