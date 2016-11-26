@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -304,8 +305,9 @@ public class SBOLReader
 	 * @throws FileNotFoundException if file was not found.
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
 	 * 10101, 10102, 10105, 10201.
+	 * @throws SBOLConversionException if file is empty
 	 */
-	public static String getSBOLVersion(String fileName) throws FileNotFoundException, SBOLValidationException
+	public static String getSBOLVersion(String fileName) throws FileNotFoundException, SBOLValidationException, SBOLConversionException
 	{
 		return getSBOLVersion(fileName,SBOLDocument.RDF);
 	}
@@ -318,8 +320,9 @@ public class SBOLReader
 	 * @throws FileNotFoundException if file was not found.
 	 * @throws SBOLValidationException if if an SBOL validation rule violation occurred in the following method:
 	 * {@link #getSBOLVersion(InputStream, String)}.
+	 * @throws SBOLConversionException if file is empty
 	 */
-	private static String getSBOLVersion(String fileName, String fileType) throws FileNotFoundException, SBOLValidationException
+	private static String getSBOLVersion(String fileName, String fileType) throws FileNotFoundException, SBOLValidationException, SBOLConversionException
 	{
 		FileInputStream stream     = new FileInputStream(new File(fileName));
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -384,8 +387,9 @@ public class SBOLReader
 	 * @throws FileNotFoundException if file was not found.
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
 	 * 10101, 10102, 10105, 10201.
+	 * @throws SBOLConversionException if file is empty
 	 */
-	public static String getSBOLVersion(File file) throws FileNotFoundException, SBOLValidationException
+	public static String getSBOLVersion(File file) throws FileNotFoundException, SBOLValidationException, SBOLConversionException
 	{
 		return getSBOLVersion(file,SBOLDocument.RDF);
 	}
@@ -434,7 +438,7 @@ public class SBOLReader
 	 * @throws XMLStreamException
 	 * @throws CoreIoException
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #read(InputStream, String)}.
-	 * @throws SBOLConversionException 
+	 * @throws SBOLConversionException if file is empty
 	 * @throws IOException 
 	 */
 	private static SBOLDocument read(File file,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
@@ -451,8 +455,9 @@ public class SBOLReader
 	 * @return the SBOL version of the file
 	 * @throws FileNotFoundException if file was not found.
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #getSBOLVersion(InputStream, String)}.
+	 * @throws SBOLConversionException 
 	 */
-	private static String getSBOLVersion(File file,String fileType) throws FileNotFoundException, SBOLValidationException
+	private static String getSBOLVersion(File file,String fileType) throws FileNotFoundException, SBOLValidationException, SBOLConversionException
 	{
 		FileInputStream stream     = new FileInputStream(file);
 		BufferedInputStream buffer = new BufferedInputStream(stream);
@@ -473,11 +478,18 @@ public class SBOLReader
 	 * <li>{@link #readRDF(Reader)}, or</li>
 	 * <li>{@link #getSBOLVersion(DocumentRoot)}.</li>
 	 * </ul>
+	 * @throws SBOLConversionException if file is empty
 	 */
-	private static String getSBOLVersion(InputStream in,String fileType) throws SBOLValidationException
+	private static String getSBOLVersion(InputStream in,String fileType) throws SBOLValidationException, SBOLConversionException
 	{
 		Scanner scanner = new Scanner(in, "UTF-8");
-		String inputStreamString = scanner.useDelimiter("\\A").next();
+		String inputStreamString;
+		try {
+			inputStreamString = scanner.useDelimiter("\\A").next();
+		} catch (NoSuchElementException e) {
+			scanner.close();
+			throw new SBOLConversionException("File is empty.");
+		}
 		DocumentRoot<QName> document = null;
 		if (fileType.equals(SBOLDocument.JSON)) {
 			document = readJSON(new StringReader(inputStreamString));
@@ -536,10 +548,10 @@ public class SBOLReader
 	 * @param fileType a given file type
 	 * @return the converted SBOLDocument instance
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #read(SBOLDocument, InputStream, String)}.
-	 * @throws SBOLConversionException 
+	 * @throws SBOLConversionException if file is empty
 	 * @throws IOException 
 	 */
-	static SBOLDocument read(InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
+	public static SBOLDocument read(InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		SBOLDoc.setCompliant(compliant);
@@ -576,7 +588,13 @@ public class SBOLReader
 	{
 		compliant = SBOLDoc.isCompliant();
 		Scanner scanner = new Scanner(in, "UTF-8");
-		String inputStreamString = scanner.useDelimiter("\\A").next();
+		String inputStreamString;
+		try {
+			inputStreamString = scanner.useDelimiter("\\A").next();
+		} catch (NoSuchElementException e) {
+			scanner.close();
+			throw new SBOLConversionException("File is empty.");
+		}
 		clearErrors();
 
 		DocumentRoot<QName> document = null;
@@ -654,8 +672,9 @@ public class SBOLReader
 	 * @return the SBOL version of the file.
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
 	 * 10101, 10102, 10105, 10201.
+	 * @throws SBOLConversionException if file is empty
 	 */
-	public static String getSBOLVersion(InputStream in) throws SBOLValidationException
+	public static String getSBOLVersion(InputStream in) throws SBOLValidationException, SBOLConversionException
 	{
 		return getSBOLVersion(in,SBOLDocument.RDF);
 	}
