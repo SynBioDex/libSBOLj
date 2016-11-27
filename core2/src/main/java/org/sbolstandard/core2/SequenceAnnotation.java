@@ -748,7 +748,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @return the component definition for the component annotated by this sequence annotation
 	 */
 	public ComponentDefinition getComponentDefinition() {
-		if (componentDefinition!=null) {
+		if (componentDefinition!=null && isSetComponent()) {
 			return componentDefinition.getComponent(component).getDefinition();
 		}
 		return null;
