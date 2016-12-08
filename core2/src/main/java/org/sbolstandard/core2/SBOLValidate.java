@@ -853,6 +853,11 @@ public class SBOLValidate {
 	private static final Pattern iupacProteinParser = Pattern.compile(IUPAC_PROTEIN_PATTERN);
 //	private static OpenSmilesParser openSmilesParser = new OpenSmilesParser();
 
+	static boolean checkSmilesEncoding(String Elements) {
+		// TODO: add smiles parser code here
+		return true;
+	}
+	
 	static boolean checkSequenceEncoding(Sequence sequence) {
 		if (sequence.getEncoding().equals(Sequence.IUPAC_DNA) ||
 				(sequence.getEncoding().equals(Sequence.IUPAC_RNA))) {
@@ -861,7 +866,9 @@ public class SBOLValidate {
 		} else if (sequence.getEncoding().equals(Sequence.IUPAC_PROTEIN)) {
 			Matcher m = iupacProteinParser.matcher(sequence.getElements().toUpperCase());
 			return m.matches();
-		} 
+		} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
+			return checkSmilesEncoding(sequence.getElements());
+		}
 		// TODO: removed tempoarily until smiles parser is fixed
 		/* else if (sequence.getEncoding().equals(Sequence.SMILES)) {
 			return openSmilesParser.check(sequence.getElements());
@@ -1458,15 +1465,17 @@ public class SBOLValidate {
 		for (GenericTopLevel genericTopLevel1 : doc1.getGenericTopLevels()) {
 			GenericTopLevel genericTopLevel2 = doc2.getGenericTopLevel(genericTopLevel1.getIdentity());
 			if (genericTopLevel2==null) {
-				System.err.println("Collection " + genericTopLevel1.getIdentity() + " not found in " + file2);
+				System.err.println("GenericTopLevel " + genericTopLevel1.getIdentity() + " not found in " + file2);
 			} else if (!genericTopLevel1.equals(genericTopLevel2)) {
-				System.err.println("Collection " + genericTopLevel1.getIdentity() + " differ.");
+				System.err.println("GenericTopLevel " + genericTopLevel1.getIdentity() + " differ.");
+				//System.err.println(genericTopLevel1.toString());
+				//System.err.println(genericTopLevel2.toString());
 			}
 		}
 		for (GenericTopLevel genericTopLevel2 : doc2.getGenericTopLevels()) {
 			GenericTopLevel genericTopLevel1 = doc1.getGenericTopLevel(genericTopLevel2.getIdentity());
 			if (genericTopLevel1==null) {
-				System.err.println("Collection " + genericTopLevel2.getIdentity() + " not found in " + file1);
+				System.err.println("GenericTopLevel " + genericTopLevel2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
