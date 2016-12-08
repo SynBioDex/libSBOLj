@@ -470,15 +470,16 @@ public class ComponentDefinition extends TopLevel {
 				} else {
 					subElements = compDef.getImpliedNucleicAcidSequence();
 				}
-			}
-			for (Location location : sequenceAnnotation.getLocations()) {
-				if (location instanceof Range) {
-					Range range = (Range)location;
-					if (range.isSetOrientation() && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
-						subElements = Sequence.reverseComplement(subElements, type);
-					}
-					for (int i = 0; i < subElements.length(); i++) {
-						elementsArray[(range.getStart()+i)-1] = subElements.charAt(i);
+				for (Location location : sequenceAnnotation.getLocations()) {
+					if (location instanceof Range) {
+						Range range = (Range)location;
+						if (range.isSetOrientation() && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
+							subElements = Sequence.reverseComplement(subElements, type);
+						}
+						for (int i = 0; i < subElements.length(); i++) {
+							// TODO: need to deal with when start index out of range
+							elementsArray[(range.getStart()+i)-1] = subElements.charAt(i);
+						}
 					}
 				}
 			}
