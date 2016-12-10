@@ -1621,11 +1621,13 @@ public class SBOLValidate {
 				if (getNumErrors()!=0) {
 					for (String error : getErrors()) {
 						System.err.println(error);
+						System.err.println();
 					}
 				}
 				if (SBOLReader.getNumErrors()!=0) {
 					for (String error : SBOLReader.getErrors()) {
 						System.err.println(error);
+						System.err.println();
 					}
 				}
 				System.err.println("Validation failed.\n");
