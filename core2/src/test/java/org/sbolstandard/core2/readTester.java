@@ -1,6 +1,9 @@
 package org.sbolstandard.core2;
 
 import java.io.InputStream;
+import java.net.URI;
+
+import org.sbolstack.frontend.StackFrontend;
 
 class readTester {
 	static String filenameRdf 	= "writeTesterString_v1.3.rdf";
@@ -33,9 +36,15 @@ class readTester {
 	public static void main(String[] args) {
 
 		try {
-			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_19);
-			if (file == null)
-				file = readTester.class.getResourceAsStream("/" + path + filenameV1_19);
+			StackFrontend frontend = new StackFrontend("http://synbiohub.org:9090");
+			ComponentDefinition cdef = frontend.fetchComponentDefinition(new URI("http://synbiohub.org/igem/BBa_K136042/1"));
+			SBOLDocument doc2 = new SBOLDocument();
+			doc2 = doc2.createRecursiveCopy(cdef); 
+			doc2.write(System.out);
+			
+//			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_19);
+//			if (file == null)
+//				file = readTester.class.getResourceAsStream("/" + path + filenameV1_19);
 
 			//			InputStream file = readTester.class.getResourceAsStream(path + filenameV1_1);
 			//SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
