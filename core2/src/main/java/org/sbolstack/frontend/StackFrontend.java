@@ -304,7 +304,7 @@ public class StackFrontend
 
         TopLevel topLevel = fetchTopLevel(url, sequenceUri);
 
-        if(! (topLevel instanceof Collection))
+        if(! (topLevel instanceof Sequence))
             throw new StackException("Expected Sequence, found " + topLevel.getClass().getName());
 
         return (Sequence) topLevel;

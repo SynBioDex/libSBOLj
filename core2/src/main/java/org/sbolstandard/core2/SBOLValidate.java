@@ -306,6 +306,11 @@ public class SBOLValidate {
 
 	static boolean checkWasDerivedFromVersion(SBOLDocument sbolDocument, Identified identified,
 			URI wasDerivedFrom) {
+		String wasDerivedFromPI = URIcompliance.extractPersistentId(wasDerivedFrom);
+		if (wasDerivedFromPI ==null ||
+				!wasDerivedFromPI.equals(identified.getPersistentIdentity())) {
+			return true;
+		}
 		Identified derivedFrom = sbolDocument.getTopLevel(wasDerivedFrom);
 		if ((derivedFrom!=null) &&
 				(derivedFrom.isSetPersistentIdentity() && identified.isSetPersistentIdentity()) &&
