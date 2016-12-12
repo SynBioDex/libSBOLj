@@ -308,7 +308,7 @@ public class SBOLValidate {
 			URI wasDerivedFrom) {
 		String wasDerivedFromPI = URIcompliance.extractPersistentId(wasDerivedFrom);
 		if (wasDerivedFromPI ==null ||
-				!wasDerivedFromPI.equals(identified.getPersistentIdentity())) {
+				!wasDerivedFromPI.equals(identified.getPersistentIdentity().toString())) {
 			return true;
 		}
 		Identified derivedFrom = sbolDocument.getTopLevel(wasDerivedFrom);
