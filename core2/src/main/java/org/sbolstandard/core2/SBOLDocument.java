@@ -27,6 +27,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.sbolstack.frontend.StackException;
+import org.sbolstack.frontend.StackFrontend;
+
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 
 /**
@@ -47,6 +50,7 @@ public class SBOLDocument {
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
 	private HashMap<String, NamespaceBinding> nameSpaces;
+	private HashMap<String, StackFrontend> registries;
 	private Set<String> prefixes;
 	private String defaultURIprefix;
 	private boolean complete = false;
@@ -97,6 +101,7 @@ public class SBOLDocument {
 		nameSpaces.put(Sbol2Terms.dc.getPrefix(), Sbol2Terms.dc);
 		nameSpaces.put(Sbol2Terms.prov.getPrefix(), Sbol2Terms.prov);
 		prefixes = new HashSet<>();
+		registries = new HashMap<>();
 	}
 
 	/**
@@ -235,7 +240,7 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition getModuleDefinition(String displayId,String version) {
 		try {
-			return moduleDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.MODULE_DEFINITION,displayId,version, typesInURIs));
+			return getModuleDefinition(createCompliantURI(defaultURIprefix,TopLevel.MODULE_DEFINITION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -249,7 +254,24 @@ public class SBOLDocument {
 	 * @return the matching module definition if present, or {@code null} otherwise
 	 */
 	public ModuleDefinition getModuleDefinition(URI moduleURI) {
-		return moduleDefinitions.get(moduleURI);
+		ModuleDefinition moduleDefinition = moduleDefinitions.get(moduleURI);
+		if (moduleDefinition==null) {
+			for (StackFrontend frontend : getRegistries()) {
+				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
+				if (!moduleURI.toString().startsWith(frontendPrefix)) continue;
+				try {
+					moduleDefinition = frontend.fetchModuleDefinition(moduleURI);
+					if (moduleDefinition != null) {
+						//moduleDefinition.setSBOLDocument(null);
+						createCopy(moduleDefinition);
+					}
+				}
+				catch (StackException | SBOLValidationException e) {
+					return null;
+				}
+			}
+		} 
+		return moduleDefinition;
 	}
 
 	/**
@@ -395,7 +417,7 @@ public class SBOLDocument {
 	 */
 	public Collection getCollection(String displayId,String version) {
 		try {
-			return collections.get(createCompliantURI(defaultURIprefix,TopLevel.COLLECTION,displayId,version, typesInURIs));
+			return getCollection(createCompliantURI(defaultURIprefix,TopLevel.COLLECTION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -410,7 +432,24 @@ public class SBOLDocument {
 	 *
 	 */
 	public Collection getCollection(URI collectionURI) {
-		return collections.get(collectionURI);
+		Collection collection = collections.get(collectionURI);
+		if (collection==null) {
+			for (StackFrontend frontend : getRegistries()) {
+				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
+				if (!collectionURI.toString().startsWith(frontendPrefix)) continue;
+				try {
+					collection = frontend.fetchCollection(collectionURI);
+					if (collection != null) {
+						//collection.setSBOLDocument(null);
+						createCopy(collection);
+					}
+				}
+				catch (StackException | SBOLValidationException e) {
+					return null;
+				}
+			}
+		} 
+		return collection;
 	}
 
 	/**
@@ -847,7 +886,7 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition getComponentDefinition(String displayId,String version) {
 		try {
-			return componentDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.COMPONENT_DEFINITION,displayId,version, typesInURIs));
+			return getComponentDefinition(createCompliantURI(defaultURIprefix,TopLevel.COMPONENT_DEFINITION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -861,7 +900,24 @@ public class SBOLDocument {
 	 * @return the matching component definition if present, or {@code null} otherwise.
 	 */
 	public ComponentDefinition getComponentDefinition(URI componentDefinitionURI) {
-		return componentDefinitions.get(componentDefinitionURI);
+		ComponentDefinition componentDefinition = componentDefinitions.get(componentDefinitionURI);
+		if (componentDefinition==null) {
+			for (StackFrontend frontend : getRegistries()) {
+				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
+				if (!componentDefinitionURI.toString().startsWith(frontendPrefix)) continue;
+				try {
+					componentDefinition = frontend.fetchComponentDefinition(componentDefinitionURI);
+					if (componentDefinition != null) {
+						//componentDefinition.setSBOLDocument(null);
+						createCopy(componentDefinition);
+					}
+				}
+				catch (StackException | SBOLValidationException e) {
+					return null;
+				}
+			}
+		} 
+		return componentDefinition;
 	}
 
 	/**
@@ -1413,7 +1469,7 @@ public class SBOLDocument {
 	 */
 	public Sequence getSequence(String displayId,String version) {
 		try {
-			return sequences.get(createCompliantURI(defaultURIprefix,TopLevel.SEQUENCE,displayId,version, typesInURIs));
+			return getSequence(createCompliantURI(defaultURIprefix,TopLevel.SEQUENCE,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -1427,7 +1483,24 @@ public class SBOLDocument {
 	 * @return the matching sequence if present, or {@code null} otherwise.
 	 */
 	public Sequence getSequence(URI sequenceURI) {
-		return sequences.get(sequenceURI);
+		Sequence sequence = sequences.get(sequenceURI);
+		if (sequence==null) {
+			for (StackFrontend frontend : getRegistries()) {
+				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
+				if (!sequenceURI.toString().startsWith(frontendPrefix)) continue;
+				try {
+					sequence = frontend.fetchSequence(sequenceURI);
+					if (sequence != null) {
+						//sequence.setSBOLDocument(null);
+						createCopy(sequence);
+					}
+				}
+				catch (StackException | SBOLValidationException e) {
+					return null;
+				}
+			}
+		} 
+		return sequence;
 	}
 
 	/**
@@ -1654,27 +1727,27 @@ public class SBOLDocument {
 	 * @return the matching top-level if present, or {@code null} otherwise.
 	 */
 	public TopLevel getTopLevel(URI topLevelURI) {
-		TopLevel topLevel = collections.get(topLevelURI);
+		TopLevel topLevel = getCollection(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
-		topLevel = moduleDefinitions.get(topLevelURI);
+		topLevel = getModuleDefinition(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
-		topLevel = models.get(topLevelURI);
+		topLevel = getModel(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
-		topLevel = componentDefinitions.get(topLevelURI);
+		topLevel = getComponentDefinition(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
-		topLevel = sequences.get(topLevelURI);
+		topLevel = getSequence(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
-		topLevel = genericTopLevels.get(topLevelURI);
+		topLevel = getGenericTopLevel(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
@@ -1756,7 +1829,16 @@ public class SBOLDocument {
 		}
 		return topLevels;
 	}
-
+	
+	/**
+	 * Adds the given registry to this SBOL document.
+	 * @param registryURL URL of the registry to add
+	 */
+	public void addRegistry(String registryURL) {
+		StackFrontend stackFrontend = new StackFrontend(registryURL);
+		registries.put(registryURL, stackFrontend);
+	}
+	
 	/**
 	 * Adds the given namespace URI and its prefix to this SBOL document.
 	 *
@@ -1799,6 +1881,18 @@ public class SBOLDocument {
 			removeNamespace(URI.create((String)key));
 		}
 	}
+	
+	/**
+	 *  Removes all registries from this SBOL document.
+	 *  <p>
+	 *  This method calls {@link #removeRegistry(URI)} to iteratively remove each registry.
+	 */
+	public void clearRegistries() {
+		Object[] keySetArray = registries.keySet().toArray();
+		for (Object key : keySetArray) {
+			removeRegistry((String)key);
+		}
+	}
 
 	/**
 	 * Returns the QName matching the given namespace URI from this
@@ -1829,6 +1923,29 @@ public class SBOLDocument {
 		}
 		return bindings;
 	}
+	
+	/**
+	 * Returns the StackFrontend for the registry specified by its URL
+	 * 
+	 * @param registryURL URL for the registry to return
+	 * @return a StackFrontend for the registry specified by its URL
+	 */
+	public StackFrontend getRegistry(String registryURL) {
+		return registries.get(registryURL);
+	}
+	
+	/**
+	 * Returns the list of registries used by this SBOL document.
+	 *
+	 * @return the list of registries used by this SBOL document
+	 */
+	public List<StackFrontend> getRegistries() {
+		List<StackFrontend> registries = new ArrayList<>();
+		for (StackFrontend registry : this.registries.values()) {
+			registries.add(registry);
+		}
+		return registries;
+	}
 
 	/**
 	 * Returns the namespace bindings for this SBOL document
@@ -1850,6 +1967,15 @@ public class SBOLDocument {
 			throw new IllegalStateException("Cannot remove required namespace " + namespaceURI.toString());
 		}
 		nameSpaces.remove(namespaceURI);
+	}
+	
+	/**
+	 * Removes the given registry id from this SBOL document's list of registries.
+	 *
+	 * @param registryId the URL of the registry to be removed
+	 */
+	public void removeRegistry(String registryId) {
+		registries.remove(registryId);
 	}
 
 //	/**
