@@ -1885,7 +1885,7 @@ public class SBOLDocument {
 	/**
 	 *  Removes all registries from this SBOL document.
 	 *  <p>
-	 *  This method calls {@link #removeRegistry(URI)} to iteratively remove each registry.
+	 *  This method calls {@link #removeRegistry(String)} to iteratively remove each registry.
 	 */
 	public void clearRegistries() {
 		Object[] keySetArray = registries.keySet().toArray();

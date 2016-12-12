@@ -218,8 +218,6 @@ public class StackFrontend
      *
      * @return A libSBOLj ModuleDefinition instance corresponding to the module
      *
-     * @param storeName The name of the store to query
-     *
      * @throws StackException if there was an error communicating with the stack
      * @throws StackException if the specified store name does not exist
      */
