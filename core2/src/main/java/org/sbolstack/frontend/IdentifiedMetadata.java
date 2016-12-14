@@ -8,10 +8,80 @@ package org.sbolstack.frontend;
 public class IdentifiedMetadata
 {
 	// TODO: should we change these to private variables with getters/setters?
-	public String uri;
-	public String name;
-	public String displayId;
-	public String description;
-    public String version;
+	private String uri;
+	private String name;
+	private String displayId;
+	private String description;
+    private String version;
+    
+	/**
+	 * @return URI 
+	 */
+	public String getUri() {
+		return uri;
+	}
+	
+	/**
+	 * @param uri set the URI
+	 */
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+
+	/**
+	 * @return name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name set the name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return displayId
+	 */
+	public String getDisplayId() {
+		return displayId;
+	}
+
+	/**
+	 * @param displayId set the displayId
+	 */
+	public void setDisplayId(String displayId) {
+		this.displayId = displayId;
+	}
+
+	/**
+	 * @return description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description set the description
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return version
+	 */
+	public String getVersion() {
+		return version;
+	}
+
+	/**
+	 * @param version set the version
+	 */
+	public void setVersion(String version) {
+		this.version = version;
+	}
 }
 
