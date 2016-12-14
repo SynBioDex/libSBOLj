@@ -143,6 +143,60 @@ public class StackFrontend
     {
         return fetchCount(backendUrl + storeUriFragment(storeName) + "/collection/count");
     }
+    
+    /**
+     * Return the total number of Model instances present in the default store.
+     *
+     * @return the number of Model instances as an integer
+     *
+     * @throws StackException if there was an error communicating with the Stack
+     */
+    public int countModels() throws StackException
+    {
+        return countModels(null);
+    }
+
+    /**
+     * Return the total number of Model instances present in a given store.
+     *
+     * @return the number of Model instances as an integer
+     *
+     * @param storeName The name of the store to query
+     *
+     * @throws StackException if there was an error communicating with the stack
+     * @throws StackException if the specified store name does not exist
+     */
+    public int countModels(String storeName) throws StackException
+    {
+        return fetchCount(backendUrl + storeUriFragment(storeName) + "/model/count");
+    }
+
+    /**
+     * Return the total number of GenericTopLevel instances present in the default store.
+     *
+     * @return the number of GenericTopLevel instances as an integer
+     *
+     * @throws StackException if there was an error communicating with the Stack
+     */
+    public int countGenericTopLevels() throws StackException
+    {
+        return countGenericTopLevels(null);
+    }
+
+    /**
+     * Return the total number of GenericTopLevel instances present in a given store.
+     *
+     * @return the number of GenericTopLevel instances as an integer
+     *
+     * @param storeName The name of the store to query
+     *
+     * @throws StackException if there was an error communicating with the stack
+     * @throws StackException if the specified store name does not exist
+     */
+    public int countGenericTopLevels(String storeName) throws StackException
+    {
+        return fetchCount(backendUrl + storeUriFragment(storeName) + "/genericTopLevel/count");
+    }
 
     /**
      * Return the total number of Sequence instances present in the default store.
@@ -170,8 +224,6 @@ public class StackFrontend
     {
         return fetchCount(backendUrl + storeUriFragment(storeName) + "/sequence/count");
     }
-    
-    // TODO: for completeness, there should be countModels and countGenericTopLevels
 
     /**
      * Retrieve a ComponentDefinition from a given store by URI.
@@ -322,9 +374,79 @@ public class StackFrontend
         return fetchSequence(null, sequenceUri);
     }
     
-    // TODO: for completeness there should be fetchModel and fetchGenericTopLevel
-    // TODO: ensure that all these fetches return exception when URI matches wrong type of object
-    // TODO: all fetch methods return an object and not the entire document, maybe should have methods to return the document
+    /**
+     * Retrieve a Model from a given store by URI.
+     *
+     * @param storeName The name of the store to query
+     * @param modelUri The URI of the model to retrieve
+     *
+     * @return A libSBOLj Model instance corresponding to the model
+     *
+     * @throws StackException if there was an error communicating with the stack
+     * @throws StackException if the specified store name does not exist
+     */
+    public Model fetchModel(String storeName, URI modelUri) throws StackException
+    {
+        String url = backendUrl + storeUriFragment(storeName) + "/model/" + encodeUri(modelUri) + "/sbol";
+
+        TopLevel topLevel = fetchTopLevel(url, modelUri);
+
+        if(! (topLevel instanceof Model))
+            throw new StackException("Expected Model, found " + topLevel.getClass().getName());
+
+        return (Model) topLevel;
+    }
+
+    /**
+     * Retrieve a Model from the default store by URI.
+     *
+     * @param modelUri The URI of the model
+     *
+     * @return A libSBOLj Model instance corresponding to the model
+     *
+     * @throws StackException if there was an error communicating with the stack
+     */
+    public Model fetchModel(URI modelUri) throws StackException
+    {
+        return fetchModel(null, modelUri);
+    }
+    
+    /**
+     * Retrieve a GenericTopLevel from a given store by URI.
+     *
+     * @param storeName The name of the store to query
+     * @param genericTopLevelUri The URI of the genericTopLevel to retrieve
+     *
+     * @return A libSBOLj GenericTopLevel instance corresponding to the genericTopLevel
+     *
+     * @throws StackException if there was an error communicating with the stack
+     * @throws StackException if the specified store name does not exist
+     */
+    public GenericTopLevel fetchGenericTopLevel(String storeName, URI genericTopLevelUri) throws StackException
+    {
+        String url = backendUrl + storeUriFragment(storeName) + "/genericTopLevel/" + encodeUri(genericTopLevelUri) + "/sbol";
+
+        TopLevel topLevel = fetchTopLevel(url, genericTopLevelUri);
+
+        if(! (topLevel instanceof GenericTopLevel))
+            throw new StackException("Expected GenericTopLevel, found " + topLevel.getClass().getName());
+
+        return (GenericTopLevel) topLevel;
+    }
+
+    /**
+     * Retrieve a GenericTopLevel from the default store by URI.
+     *
+     * @param genericTopLevelUri The URI of the GenericTopLevel
+     *
+     * @return A libSBOLj GenericTopLevel instance corresponding to the genericTopLevel
+     *
+     * @throws StackException if there was an error communicating with the stack
+     */
+    public GenericTopLevel fetchgenericTopLevel(URI genericTopLevelUri) throws StackException
+    {
+        return fetchGenericTopLevel(null, genericTopLevelUri);
+    }
     
     /**
      * Search a given store for ComponentDefinition instances matching a ComponentDefinition template.
