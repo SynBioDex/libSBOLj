@@ -199,6 +199,33 @@ public class StackFrontend
     }
 
     /**
+     * Return the total number of TopLevel instances present in the default store.
+     *
+     * @return the number of TopLevel instances as an integer
+     *
+     * @throws StackException if there was an error communicating with the Stack
+     */
+    public int countTopLevels() throws StackException
+    {
+        return countTopLevels(null);
+    }
+
+    /**
+     * Return the total number of GenericTopLevel instances present in a given store.
+     *
+     * @return the number of GenericTopLevel instances as an integer
+     *
+     * @param storeName The name of the store to query
+     *
+     * @throws StackException if there was an error communicating with the stack
+     * @throws StackException if the specified store name does not exist
+     */
+    public int countTopLevels(String storeName) throws StackException
+    {
+        return fetchCount(backendUrl + storeUriFragment(storeName) + "/topLevel/count");
+    }
+
+    /**
      * Return the total number of Sequence instances present in the default store.
      *
      * @return the number of Sequence instances as an integer
@@ -240,7 +267,7 @@ public class StackFrontend
     {
         String url = backendUrl + storeUriFragment(storeName) + "/component/" + encodeUri(componentUri) + "/sbol";
 
-        TopLevel topLevel = fetchTopLevel(url, componentUri);
+        TopLevel topLevel = fetchTopLevelFromStack(url, componentUri);
 
         if(! (topLevel instanceof ComponentDefinition))
             throw new StackException("Expected ComponentDefinition, found " + topLevel.getClass().getName());
@@ -277,7 +304,7 @@ public class StackFrontend
     {
         String url = backendUrl + storeUriFragment(storeName) + "/module/" + encodeUri(moduleUri) + "/sbol";
 
-        TopLevel topLevel = fetchTopLevel(url, moduleUri);
+        TopLevel topLevel = fetchTopLevelFromStack(url, moduleUri);
 
         if(! (topLevel instanceof ModuleDefinition))
             throw new StackException("Expected ModuleDefinition, found " + topLevel.getClass().getName());
@@ -299,7 +326,7 @@ public class StackFrontend
         return fetchModuleDefinition(null, moduleUri);
     }
 
-
+    // TODO: should these fetch deep or just the object?
     /**
      * Retrieve a Collection from a given store by URI.
      *
@@ -315,7 +342,7 @@ public class StackFrontend
     {
         String url = backendUrl + storeUriFragment(storeName) + "/collection/" + encodeUri(collectionUri) + "/sbol";
 
-        TopLevel topLevel = fetchTopLevel(url, collectionUri);
+        TopLevel topLevel = fetchTopLevelFromStack(url, collectionUri);
 
         if(! (topLevel instanceof Collection))
             throw new StackException("Expected Collection, found " + topLevel.getClass().getName());
@@ -352,7 +379,7 @@ public class StackFrontend
     {
         String url = backendUrl + storeUriFragment(storeName) + "/sequence/" + encodeUri(sequenceUri) + "/sbol";
 
-        TopLevel topLevel = fetchTopLevel(url, sequenceUri);
+        TopLevel topLevel = fetchTopLevelFromStack(url, sequenceUri);
 
         if(! (topLevel instanceof Sequence))
             throw new StackException("Expected Sequence, found " + topLevel.getClass().getName());
@@ -389,7 +416,7 @@ public class StackFrontend
     {
         String url = backendUrl + storeUriFragment(storeName) + "/model/" + encodeUri(modelUri) + "/sbol";
 
-        TopLevel topLevel = fetchTopLevel(url, modelUri);
+        TopLevel topLevel = fetchTopLevelFromStack(url, modelUri);
 
         if(! (topLevel instanceof Model))
             throw new StackException("Expected Model, found " + topLevel.getClass().getName());
@@ -426,7 +453,7 @@ public class StackFrontend
     {
         String url = backendUrl + storeUriFragment(storeName) + "/genericTopLevel/" + encodeUri(genericTopLevelUri) + "/sbol";
 
-        TopLevel topLevel = fetchTopLevel(url, genericTopLevelUri);
+        TopLevel topLevel = fetchTopLevelFromStack(url, genericTopLevelUri);
 
         if(! (topLevel instanceof GenericTopLevel))
             throw new StackException("Expected GenericTopLevel, found " + topLevel.getClass().getName());
@@ -443,191 +470,228 @@ public class StackFrontend
      *
      * @throws StackException if there was an error communicating with the stack
      */
-    public GenericTopLevel fetchgenericTopLevel(URI genericTopLevelUri) throws StackException
+    public GenericTopLevel fetchGenericTopLevel(URI genericTopLevelUri) throws StackException
     {
         return fetchGenericTopLevel(null, genericTopLevelUri);
     }
     
     /**
-     * Search a given store for ComponentDefinition instances matching a ComponentDefinition template.
+     * Retrieve a TopLevel from a given store by URI.
      *
      * @param storeName The name of the store to query
-     * @param template An SBOL document containing the ComponentDefinition template to match
-     * @param offset The offset of the results to begin at, or null to begin at 0
-     * @param limit The maximum number of results to return, or null to return all results
+     * @param topLevelUri The URI of the TopLevel to retrieve
      *
-     * @return An SBOL2 document with a summary of all matching components.
+     * @return A libSBOLj TopLevel instance corresponding to the TopLevel
      *
      * @throws StackException if there was an error communicating with the stack
      * @throws StackException if the specified store name does not exist
      */
-    public SBOLDocument searchComponentDefinitions(String storeName, SBOLDocument template, Integer offset, Integer limit) throws StackException
+    public TopLevel fetchTopLevel(String storeName, URI topLevelUri) throws StackException
     {
-        String url = backendUrl + storeUriFragment(storeName) + "/component/search/template";
+        String url = backendUrl + storeUriFragment(storeName) + "/topLevel/" + encodeUri(topLevelUri) + "/sbol";
 
-        HttpPost request = new HttpPost(url);
+        TopLevel topLevel = fetchTopLevelFromStack(url, topLevelUri);
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        if(! (topLevel instanceof TopLevel))
+            throw new StackException("Expected TopLevel, found " + topLevel.getClass().getName());
 
-        params.add(new BasicNameValuePair("sbol", serializeDocument(template)));
-
-        if(offset != null)
-            params.add(new BasicNameValuePair("offset", Integer.toString(offset)));
-
-        if(limit != null)
-            params.add(new BasicNameValuePair("limit", Integer.toString(limit)));
-
-        try
-        {
-            request.setEntity(new UrlEncodedFormEntity(params));
-
-            HttpResponse response = client.execute(request);
-
-            checkResponseCode(response);
-
-            InputStream inputStream = response.getEntity().getContent();
-
-            SBOLDocument resultDocument = SBOLReader.read(inputStream);
-
-            return resultDocument;
-        }
-        catch (Exception e)
-        {
-            throw new StackException(e);
-        }
-        finally
-        {
-            request.releaseConnection();
-        }
-    }
-
-
-    /**
-     * Search a given store for ComponentDefinition instances matching a name and/or a set of roles
-     *
-     * @param storeName The name of the store to query
-     * @param name The dcterms:title to search for, or null
-     * @param roles A set of role URIs to search for, or null
-     * @param types A set of type URIs to search for, or null
-     * @param collections A set of Collection URIs to search for, or null
-     * @param offset The offset of the results to begin at, or null to begin at 0
-     * @param limit The maximum number of results to return, or null to return all results
-     *
-     * @return An SBOL2 document with a summary of all matching components.
-     *
-     * @throws StackException if there was an error communicating with the stack
-     * @throws StackException if the specified store name does not exist
-     */
-    public SBOLDocument searchComponentDefinitions(String storeName, String name, Set<URI> roles, Set<URI> types, Set<URI> collections, Integer offset, Integer limit)
-            throws StackException
-    {
-        String url = backendUrl + storeUriFragment(storeName) + "/component/search/sbol";
-
-        SearchQuery query = new SearchQuery();
-
-        query.offset = offset;
-        query.limit = limit;
-
-        for(URI uri : roles)
-        {
-            SearchCriteria roleCriteria = new SearchCriteria();
-
-            roleCriteria.key = "role";
-            roleCriteria.value = uri.toString();
-        }
-
-        for(URI uri : types)
-        {
-            SearchCriteria typeCriteria = new SearchCriteria();
-
-            typeCriteria.key = "type";
-            typeCriteria.value = uri.toString();
-        }
-
-        for(URI uri : collections)
-        {
-            SearchCriteria collectionCriteria = new SearchCriteria();
-
-            collectionCriteria.key = "collection";
-            collectionCriteria.value = uri.toString();
-        }
-
-        if(name != null)
-        {
-            SearchCriteria nameCriteria = new SearchCriteria();
-
-            nameCriteria.key = "name";
-            nameCriteria.value = name;
-        }
-
-        Gson gson = new Gson();
-
-        HttpPost request = new HttpPost(url);
-
-        try
-        {
-            request.setHeader("Content-Type", "application/json");
-            request.setEntity(new StringEntity(gson.toJson(query)));
-
-            HttpResponse response = client.execute(request);
-
-            checkResponseCode(response);
-
-            InputStream inputStream = response.getEntity().getContent();
-
-            SBOLDocument resultDocument = SBOLReader.read(inputStream);
-
-            return resultDocument;
-        }
-        catch (Exception e)
-        {
-            throw new StackException(e);
-        }
-        finally
-        {
-            request.releaseConnection();
-        }
+        return (TopLevel) topLevel;
     }
 
     /**
-     * Search the default store for ComponentDefinition instances matching a name and/or a set of roles
+     * Retrieve a TopLevel from the default store by URI.
      *
-     * @param name The dcterms:title to search for, or null
-     * @param roles A set of role URIs to search for, or null
-     * @param types A set of type URIs to search for, or null
-     * @param collections A set of Colleciton URIs to search for, or null
-     * @param offset The offset of the results to begin at, or null to begin at 0
-     * @param limit The maximum number of results to return, or null to return all results
+     * @param TopLevelUri The URI of the TopLevel
      *
-     * @return An SBOL2 document with a summary of all matching components.
+     * @return A libSBOLj TopLevel instance corresponding to the TopLevel
      *
      * @throws StackException if there was an error communicating with the stack
      */
-    public SBOLDocument searchComponentDefinitions(String name, Set<URI> roles, Set<URI> types, Set<URI> collections, Integer offset, Integer limit)
-            throws StackException
+    public TopLevel fetchTopLevel(URI TopLevelUri) throws StackException
     {
-        return searchComponentDefinitions(null, name, roles, types, collections, offset, limit);
+        return fetchGenericTopLevel(null, TopLevelUri);
     }
+    
+//    /**
+//     * Search a given store for ComponentDefinition instances matching a ComponentDefinition template.
+//     *
+//     * @param storeName The name of the store to query
+//     * @param template An SBOL document containing the ComponentDefinition template to match
+//     * @param offset The offset of the results to begin at, or null to begin at 0
+//     * @param limit The maximum number of results to return, or null to return all results
+//     *
+//     * @return An SBOL2 document with a summary of all matching components.
+//     *
+//     * @throws StackException if there was an error communicating with the stack
+//     * @throws StackException if the specified store name does not exist
+//     */
+//    public SBOLDocument searchComponentDefinitions(String storeName, SBOLDocument template, Integer offset, Integer limit) throws StackException
+//    {
+//        String url = backendUrl + storeUriFragment(storeName) + "/component/search/template";
+//
+//        HttpPost request = new HttpPost(url);
+//
+//        List<NameValuePair> params = new ArrayList<NameValuePair>();
+//
+//        params.add(new BasicNameValuePair("sbol", serializeDocument(template)));
+//
+//        if(offset != null)
+//            params.add(new BasicNameValuePair("offset", Integer.toString(offset)));
+//
+//        if(limit != null)
+//            params.add(new BasicNameValuePair("limit", Integer.toString(limit)));
+//
+//        try
+//        {
+//            request.setEntity(new UrlEncodedFormEntity(params));
+//
+//            HttpResponse response = client.execute(request);
+//
+//            checkResponseCode(response);
+//
+//            InputStream inputStream = response.getEntity().getContent();
+//
+//            SBOLDocument resultDocument = SBOLReader.read(inputStream);
+//
+//            return resultDocument;
+//        }
+//        catch (Exception e)
+//        {
+//            throw new StackException(e);
+//        }
+//        finally
+//        {
+//            request.releaseConnection();
+//        }
+//    }
 
 
-    /**
-     * Search the default store for ComponentDefinition instances matching a ComponentDefinition template.
-     * 
-     * @param template An SBOL document containing the ComponentDefinition template to match
-     * @param offset The offset of the results to begin at, or null to begin at 0
-     * @param limit The maximum number of results to return, or null to return all results
-     * 
-     * @return An SBOL2 document with a summary of all matching components.
-     *
-     * @throws StackException if there was an error communicating with the stack
-     */
-    public SBOLDocument searchComponentDefinitions(SBOLDocument template, Integer offset, Integer limit) throws StackException
-    {
-        return searchComponentDefinitions(null, template, offset, limit);
-    }
+//    /**
+//     * Search a given store for ComponentDefinition instances matching a name and/or a set of roles
+//     *
+//     * @param storeName The name of the store to query
+//     * @param name The dcterms:title to search for, or null
+//     * @param roles A set of role URIs to search for, or null
+//     * @param types A set of type URIs to search for, or null
+//     * @param collections A set of Collection URIs to search for, or null
+//     * @param offset The offset of the results to begin at, or null to begin at 0
+//     * @param limit The maximum number of results to return, or null to return all results
+//     *
+//     * @return An SBOL2 document with a summary of all matching components.
+//     *
+//     * @throws StackException if there was an error communicating with the stack
+//     * @throws StackException if the specified store name does not exist
+//     */
+//    public SBOLDocument searchComponentDefinitions(String storeName, String name, Set<URI> roles, Set<URI> types, Set<URI> collections, Integer offset, Integer limit)
+//            throws StackException
+//    {
+//        String url = backendUrl + storeUriFragment(storeName) + "/component/search/sbol";
+//
+//        SearchQuery query = new SearchQuery();
+//
+//        query.offset = offset;
+//        query.limit = limit;
+//
+//        for(URI uri : roles)
+//        {
+//            SearchCriteria roleCriteria = new SearchCriteria();
+//
+//            roleCriteria.key = "role";
+//            roleCriteria.value = uri.toString();
+//        }
+//
+//        for(URI uri : types)
+//        {
+//            SearchCriteria typeCriteria = new SearchCriteria();
+//
+//            typeCriteria.key = "type";
+//            typeCriteria.value = uri.toString();
+//        }
+//
+//        for(URI uri : collections)
+//        {
+//            SearchCriteria collectionCriteria = new SearchCriteria();
+//
+//            collectionCriteria.key = "collection";
+//            collectionCriteria.value = uri.toString();
+//        }
+//
+//        if(name != null)
+//        {
+//            SearchCriteria nameCriteria = new SearchCriteria();
+//
+//            nameCriteria.key = "name";
+//            nameCriteria.value = name;
+//        }
+//
+//        Gson gson = new Gson();
+//
+//        HttpPost request = new HttpPost(url);
+//
+//        try
+//        {
+//            request.setHeader("Content-Type", "application/json");
+//            request.setEntity(new StringEntity(gson.toJson(query)));
+//
+//            HttpResponse response = client.execute(request);
+//
+//            checkResponseCode(response);
+//
+//            InputStream inputStream = response.getEntity().getContent();
+//
+//            SBOLDocument resultDocument = SBOLReader.read(inputStream);
+//
+//            return resultDocument;
+//        }
+//        catch (Exception e)
+//        {
+//            throw new StackException(e);
+//        }
+//        finally
+//        {
+//            request.releaseConnection();
+//        }
+//    }
+
+//    /**
+//     * Search the default store for ComponentDefinition instances matching a name and/or a set of roles
+//     *
+//     * @param name The dcterms:title to search for, or null
+//     * @param roles A set of role URIs to search for, or null
+//     * @param types A set of type URIs to search for, or null
+//     * @param collections A set of Colleciton URIs to search for, or null
+//     * @param offset The offset of the results to begin at, or null to begin at 0
+//     * @param limit The maximum number of results to return, or null to return all results
+//     *
+//     * @return An SBOL2 document with a summary of all matching components.
+//     *
+//     * @throws StackException if there was an error communicating with the stack
+//     */
+//    public SBOLDocument searchComponentDefinitions(String name, Set<URI> roles, Set<URI> types, Set<URI> collections, Integer offset, Integer limit)
+//            throws StackException
+//    {
+//        return searchComponentDefinitions(null, name, roles, types, collections, offset, limit);
+//    }
+
+    
+ //    /**
+//     * Search the default store for ComponentDefinition instances matching a ComponentDefinition template.
+//     * 
+//     * @param template An SBOL document containing the ComponentDefinition template to match
+//     * @param offset The offset of the results to begin at, or null to begin at 0
+//     * @param limit The maximum number of results to return, or null to return all results
+//     * 
+//     * @return An SBOL2 document with a summary of all matching components.
+//     *
+//     * @throws StackException if there was an error communicating with the stack
+//     */
+//    public SBOLDocument searchComponentDefinitions(SBOLDocument template, Integer offset, Integer limit) throws StackException
+//    {
+//        return searchComponentDefinitions(null, template, offset, limit);
+//    }
 
 
-    /**
+   /**
      * Search the default store for ComponentDefinition instances matching a name and/or a set of roles
      *
      * @param name The dcterms:title to search for, or null
@@ -674,34 +738,40 @@ public class StackFrontend
         query.offset = offset;
         query.limit = limit;
 
-        for(URI uri : roles)
-        {
-            SearchCriteria roleCriteria = new SearchCriteria();
+        if (roles != null) {
+        	for(URI uri : roles)
+        	{
+        		SearchCriteria roleCriteria = new SearchCriteria();
 
-            roleCriteria.key = "role";
-            roleCriteria.value = uri.toString();
-            
-            query.criteria.add(roleCriteria);
+        		roleCriteria.key = "role";
+        		roleCriteria.value = uri.toString();
+
+        		query.criteria.add(roleCriteria);
+        	}
         }
+        
+        if (types != null) {
+        	for(URI uri : types)
+        	{
+        		SearchCriteria typeCriteria = new SearchCriteria();
 
-        for(URI uri : types)
-        {
-            SearchCriteria typeCriteria = new SearchCriteria();
+        		typeCriteria.key = "type";
+        		typeCriteria.value = uri.toString();
 
-            typeCriteria.key = "type";
-            typeCriteria.value = uri.toString();
-            
-            query.criteria.add(typeCriteria);
+        		query.criteria.add(typeCriteria);
+        	}
         }
+        
+        if (collections != null) {
+        	for(URI uri : collections)
+        	{
+        		SearchCriteria collectionCriteria = new SearchCriteria();
 
-        for(URI uri : collections)
-        {
-            SearchCriteria collectionCriteria = new SearchCriteria();
+        		collectionCriteria.key = "collection";
+        		collectionCriteria.value = uri.toString();
 
-            collectionCriteria.key = "collection";
-            collectionCriteria.value = uri.toString();
-            
-            query.criteria.add(collectionCriteria);
+        		query.criteria.add(collectionCriteria);
+        	}
         }
 
         if(name != null)
@@ -746,86 +816,86 @@ public class StackFrontend
     }
 
 
-    /**
-     * Search a given store for Collection instances matching a name
-     *
-     * @param storeName The name of the store to query
-     * @param name The dcterms:title to search for, or null
-     * @param offset The offset of the results to begin at, or null to begin at 0
-     * @param limit The maximum number of results to return, or null to return all results
-     *
-     * @return An ArrayList of CollectionMetaData objects with a summary of all matching Collections.
-     *
-     * @throws StackException if there was an error communicating with the stack
-     * @throws StackException if the specified store name does not exist
-     */
-    public ArrayList<IdentifiedMetadata> searchCollectionMetadata(String storeName, String name, Integer offset, Integer limit)
-            throws StackException
-    {
-        String url = backendUrl + storeUriFragment(storeName) + "/collection/search/metadata";
-
-        SearchQuery query = new SearchQuery();
-
-        query.offset = offset;
-        query.limit = limit;
-
-        if(name != null)
-        {
-            SearchCriteria nameCriteria = new SearchCriteria();
-
-            nameCriteria.key = "name";
-            nameCriteria.value = name;
-
-            query.criteria.add(nameCriteria);
-        }
-
-        Gson gson = new Gson();
-
-        HttpPost request = new HttpPost(url);
-
-        try
-        {
-            request.setHeader("Content-Type", "application/json");
-            request.setEntity(new StringEntity(gson.toJson(query)));
-
-            HttpResponse response = client.execute(request);
-
-            checkResponseCode(response);
-
-            InputStream inputStream = response.getEntity().getContent();
-
-            ArrayList<IdentifiedMetadata> metadataList = gson.fromJson(
-            		new InputStreamReader(inputStream),
-            			new TypeToken<ArrayList<IdentifiedMetadata>>(){}.getType());
-            
-            return metadataList;
-        }
-        catch (Exception e)
-        {
-            throw new StackException(e);
-        }
-        finally
-        {
-            request.releaseConnection();
-        }
-    }
+//    /**
+//     * Search a given store for Collection instances matching a name
+//     *
+//     * @param storeName The name of the store to query
+//     * @param name The dcterms:title to search for, or null
+//     * @param offset The offset of the results to begin at, or null to begin at 0
+//     * @param limit The maximum number of results to return, or null to return all results
+//     *
+//     * @return An ArrayList of CollectionMetaData objects with a summary of all matching Collections.
+//     *
+//     * @throws StackException if there was an error communicating with the stack
+//     * @throws StackException if the specified store name does not exist
+//     */
+//    public ArrayList<IdentifiedMetadata> searchCollectionMetadata(String storeName, String name, Integer offset, Integer limit)
+//            throws StackException
+//    {
+//        String url = backendUrl + storeUriFragment(storeName) + "/collection/search/metadata";
+//
+//        SearchQuery query = new SearchQuery();
+//
+//        query.offset = offset;
+//        query.limit = limit;
+//
+//        if(name != null)
+//        {
+//            SearchCriteria nameCriteria = new SearchCriteria();
+//
+//            nameCriteria.key = "name";
+//            nameCriteria.value = name;
+//
+//            query.criteria.add(nameCriteria);
+//        }
+//
+//        Gson gson = new Gson();
+//
+//        HttpPost request = new HttpPost(url);
+//
+//        try
+//        {
+//            request.setHeader("Content-Type", "application/json");
+//            request.setEntity(new StringEntity(gson.toJson(query)));
+//
+//            HttpResponse response = client.execute(request);
+//
+//            checkResponseCode(response);
+//
+//            InputStream inputStream = response.getEntity().getContent();
+//
+//            ArrayList<IdentifiedMetadata> metadataList = gson.fromJson(
+//            		new InputStreamReader(inputStream),
+//            			new TypeToken<ArrayList<IdentifiedMetadata>>(){}.getType());
+//            
+//            return metadataList;
+//        }
+//        catch (Exception e)
+//        {
+//            throw new StackException(e);
+//        }
+//        finally
+//        {
+//            request.releaseConnection();
+//        }
+//    }
     
-    /**
-     * Search the default store for Collections instances matching a name.
-     *
-     * @param name The dcterms:title to search for, or null
-     * @param offset The offset of the results to begin at, or null to begin at 0
-     * @param limit The maximum number of results to return, or null to return all results
-     *
-     * @return An ArrayList of CollectionMetaData objects with a summary of all matching Collections.
-     *
-     * @throws StackException if there was an error communicating with the stack
-     */    
-    public ArrayList<IdentifiedMetadata> searchCollectionMetadata(String name, Integer offset, Integer limit)
-            throws StackException
-    {
-    	return searchCollectionMetadata(null, name, offset, limit);
-    }
+//    /**
+//     * Search the default store for Collections instances matching a name.
+//     *
+//     * @param name The dcterms:title to search for, or null
+//     * @param offset The offset of the results to begin at, or null to begin at 0
+//     * @param limit The maximum number of results to return, or null to return all results
+//     *
+//     * @return An ArrayList of CollectionMetaData objects with a summary of all matching Collections.
+//     *
+//     * @throws StackException if there was an error communicating with the stack
+//     */    
+//    public ArrayList<IdentifiedMetadata> searchCollectionMetadata(String name, Integer offset, Integer limit)
+//            throws StackException
+//    {
+//    	return searchCollectionMetadata(null, name, offset, limit);
+//    }
 
     /**
      * Search the default store for Collections that are not members of any other Collections
@@ -834,10 +904,10 @@ public class StackFrontend
      *
      * @throws StackException if there was an error communicating with the stack
      */    
-    public ArrayList<IdentifiedMetadata> fetchRootCollectionMetadata()
+    public ArrayList<IdentifiedMetadata> searchRootCollectionMetadata()
             throws StackException
     {
-    	return fetchRootCollectionMetadata(null);
+    	return searchRootCollectionMetadata(null);
     }
 
     /**
@@ -848,7 +918,7 @@ public class StackFrontend
      *
      * @throws StackException if there was an error communicating with the stack
      */    
-    public ArrayList<IdentifiedMetadata> fetchRootCollectionMetadata(String storeName)
+    public ArrayList<IdentifiedMetadata> searchRootCollectionMetadata(String storeName)
             throws StackException
     {
         String url = backendUrl + storeUriFragment(storeName) + "/collection/roots";
@@ -881,7 +951,6 @@ public class StackFrontend
         }
     }
     
-    // TODO: could we perhaps combine the two above by allowing Null for parent collection
     /**
      * Search the default store for Collections that are members of the specified Collection
      *
@@ -890,12 +959,12 @@ public class StackFrontend
      *
      * @throws StackException if there was an error communicating with the stack
      */    
-    public ArrayList<IdentifiedMetadata> fetchSubCollectionMetadata(URI parentCollectionUri)
+    public ArrayList<IdentifiedMetadata> searchSubCollectionMetadata(URI parentCollectionUri)
             throws StackException
     {
-    	return fetchSubCollectionMetadata(null, parentCollectionUri);
+    	return searchSubCollectionMetadata(null, parentCollectionUri);
     }
-
+    
     /**
      * Search a given store for Collections that are members of the specified Collection
      *
@@ -905,7 +974,7 @@ public class StackFrontend
      *
      * @throws StackException if there was an error communicating with the stack
      */    
-    public ArrayList<IdentifiedMetadata> fetchSubCollectionMetadata(String storeName, URI parentCollectionUri)
+    public ArrayList<IdentifiedMetadata> searchSubCollectionMetadata(String storeName, URI parentCollectionUri)
             throws StackException
     {
         String url = backendUrl + storeUriFragment(storeName) + "/collection/" + encodeUri(parentCollectionUri) + "/subCollections";
@@ -938,61 +1007,61 @@ public class StackFrontend
         }
     }
     
-    /**
-     * Return the number of ComponentDefinition instances matching a ComponentDefinition template in a given store.
-     * 
-     * @param storeName The name of the store to query
-     * @param template An SBOL document containing the ComponentDefinition template to match
-     * 
-     * @return the number of matching instances as an integer
-     *
-     * @throws StackException if there was an error communicating with the stack
-     * @throws StackException if the specified store name does not exist
-     */
-    public int countMatchingComponentDefinitions(String storeName, SBOLDocument template) throws StackException
-    {
-        String url = backendUrl + storeUriFragment(storeName) + "/component/search/template";
+//    /**
+//     * Return the number of ComponentDefinition instances matching a ComponentDefinition template in a given store.
+//     * 
+//     * @param storeName The name of the store to query
+//     * @param template An SBOL document containing the ComponentDefinition template to match
+//     * 
+//     * @return the number of matching instances as an integer
+//     *
+//     * @throws StackException if there was an error communicating with the stack
+//     * @throws StackException if the specified store name does not exist
+//     */
+//    public int countMatchingComponentDefinitions(String storeName, SBOLDocument template) throws StackException
+//    {
+//        String url = backendUrl + storeUriFragment(storeName) + "/component/search/template";
+//
+//        HttpPost request = new HttpPost(url);
+//        
+//        List<NameValuePair> params = new ArrayList<NameValuePair>();
+//        params.add(new BasicNameValuePair("sbol", serializeDocument(template)));
+//                
+//        try
+//        {
+//            request.setEntity(new UrlEncodedFormEntity(params));
+//
+//            HttpResponse response = client.execute(request);
+//
+//            checkResponseCode(response);
+//            
+//            InputStream inputStream = response.getEntity().getContent();
+//            
+//            return Integer.parseInt(inputStreamToString(inputStream));
+//        }
+//        catch (Exception e)
+//        {
+//            throw new StackException(e);
+//        }
+//        finally
+//        {
+//            request.releaseConnection();
+//        }
+//    }
 
-        HttpPost request = new HttpPost(url);
-        
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("sbol", serializeDocument(template)));
-                
-        try
-        {
-            request.setEntity(new UrlEncodedFormEntity(params));
-
-            HttpResponse response = client.execute(request);
-
-            checkResponseCode(response);
-            
-            InputStream inputStream = response.getEntity().getContent();
-            
-            return Integer.parseInt(inputStreamToString(inputStream));
-        }
-        catch (Exception e)
-        {
-            throw new StackException(e);
-        }
-        finally
-        {
-            request.releaseConnection();
-        }
-    }
-
-    /**
-     * Return the number of ComponentDefinition instances matching a ComponentDefinition template in the default store.
-     * 
-     * @param template An SBOL document containing the ComponentDefinition template to match
-     * 
-     * @return the number of matching instances as an integer
-     *
-     * @throws StackException if there was an error communicating with the stack
-     */
-    public int countMatchingComponentDefinitions(SBOLDocument template) throws StackException
-    {
-        return countMatchingComponentDefinitions(null, template);
-    }
+ //    /**
+//     * Return the number of ComponentDefinition instances matching a ComponentDefinition template in the default store.
+//     * 
+//     * @param template An SBOL document containing the ComponentDefinition template to match
+//     * 
+//     * @return the number of matching instances as an integer
+//     *
+//     * @throws StackException if there was an error communicating with the stack
+//     */
+//    public int countMatchingComponentDefinitions(SBOLDocument template) throws StackException
+//    {
+//        return countMatchingComponentDefinitions(null, template);
+//    }
     
 
     /**
@@ -1099,7 +1168,7 @@ public class StackFrontend
         
     }
 
-    private TopLevel fetchTopLevel(String url, URI topLevelUri) throws StackException
+    private TopLevel fetchTopLevelFromStack(String url, URI topLevelUri) throws StackException
     {
     	HttpStream stream;
         

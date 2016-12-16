@@ -623,7 +623,7 @@ public class SBOLDocument {
 	 */
 	public Model getModel(String displayId,String version) {
 		try {
-			return models.get(createCompliantURI(defaultURIprefix,TopLevel.MODEL,displayId,version, typesInURIs));
+			return getModel(createCompliantURI(defaultURIprefix,TopLevel.MODEL,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -637,7 +637,24 @@ public class SBOLDocument {
 	 * @return the matching model if present, or {@code null} otherwise
 	 */
 	public Model getModel(URI modelURI) {
-		return models.get(modelURI);
+		Model model = models.get(modelURI);
+		if (model==null) {
+			for (StackFrontend frontend : getRegistries()) {
+				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
+				if (!modelURI.toString().startsWith(frontendPrefix)) continue;
+				try {
+					model = frontend.fetchModel(modelURI);
+					if (model != null) {
+						//sequence.setSBOLDocument(null);
+						createCopy(model);
+					}
+				}
+				catch (StackException | SBOLValidationException e) {
+					return null;
+				}
+			}
+		} 
+		return model;
 	}
 
 	/**
@@ -1663,7 +1680,7 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel getGenericTopLevel(String displayId, String version) {
 		try {
-			return genericTopLevels.get(createCompliantURI(defaultURIprefix,TopLevel.GENERIC_TOP_LEVEL,displayId,version, typesInURIs));
+			return getGenericTopLevel(createCompliantURI(defaultURIprefix,TopLevel.GENERIC_TOP_LEVEL,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -1673,11 +1690,28 @@ public class SBOLDocument {
 	 * Returns the generic top-level matching the given display identity URI from this SBOL document's list of
 	 * generic top-levels.
 	 *
-	 * @param topLevelURI the identity URI of the top-level to be retrieved
+	 * @param genericTopLevelURI the identity URI of the top-level to be retrieved
 	 * @return the matching generic top-level if present, or {@code null} otherwise.
 	 */
-	public GenericTopLevel getGenericTopLevel(URI topLevelURI) {
-		return genericTopLevels.get(topLevelURI);
+	public GenericTopLevel getGenericTopLevel(URI genericTopLevelURI) {
+		GenericTopLevel genericTopLevel = genericTopLevels.get(genericTopLevelURI);
+		if (genericTopLevel==null) {
+			for (StackFrontend frontend : getRegistries()) {
+				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
+				if (!genericTopLevelURI.toString().startsWith(frontendPrefix)) continue;
+				try {
+					genericTopLevel = frontend.fetchGenericTopLevel(genericTopLevelURI);
+					if (genericTopLevel != null) {
+						//sequence.setSBOLDocument(null);
+						createCopy(genericTopLevel);
+					}
+				}
+				catch (StackException | SBOLValidationException e) {
+					return null;
+				}
+			}
+		} 
+		return genericTopLevel;
 	}
 
 	/**
@@ -1727,30 +1761,46 @@ public class SBOLDocument {
 	 * @return the matching top-level if present, or {@code null} otherwise.
 	 */
 	public TopLevel getTopLevel(URI topLevelURI) {
-		TopLevel topLevel = getCollection(topLevelURI);
+		TopLevel topLevel = collections.get(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
-		topLevel = getModuleDefinition(topLevelURI);
+		topLevel = moduleDefinitions.get(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
-		topLevel = getModel(topLevelURI);
+		topLevel = models.get(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
-		topLevel = getComponentDefinition(topLevelURI);
+		topLevel = componentDefinitions.get(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
-		topLevel = getSequence(topLevelURI);
+		topLevel = sequences.get(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
-		topLevel = getGenericTopLevel(topLevelURI);
+		topLevel = genericTopLevels.get(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
+		if (topLevel==null) {
+			for (StackFrontend frontend : getRegistries()) {
+				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
+				if (!topLevelURI.toString().startsWith(frontendPrefix)) continue;
+				try {
+					topLevel = frontend.fetchTopLevel(topLevelURI);
+					if (topLevel != null) {
+						//sequence.setSBOLDocument(null);
+						createCopy(topLevel);
+					}
+				}
+				catch (StackException | SBOLValidationException e) {
+					return null;
+				}
+			}
+		} 
 		return null;
 	}
 
