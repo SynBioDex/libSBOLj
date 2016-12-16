@@ -7,6 +7,15 @@ package org.sbolstack.frontend;
  */
 public class IdentifiedMetadata
 {
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "IdentifiedMetadata [uri=" + uri + ", name=" + name + ", displayId=" + displayId
+				+ ", description=" + description + ", version=" + version + "]";
+	}
+
 	// TODO: should we change these to private variables with getters/setters?
 	private String uri;
 	private String name;
