@@ -509,7 +509,7 @@ public class StackFrontend
      */
     public TopLevel fetchTopLevel(URI TopLevelUri) throws StackException
     {
-        return fetchGenericTopLevel(null, TopLevelUri);
+        return fetchTopLevel(null, TopLevelUri);
     }
     
 //    /**

@@ -257,8 +257,6 @@ public class SBOLDocument {
 		ModuleDefinition moduleDefinition = moduleDefinitions.get(moduleURI);
 		if (moduleDefinition==null) {
 			for (StackFrontend frontend : getRegistries()) {
-				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
-				if (!moduleURI.toString().startsWith(frontendPrefix)) continue;
 				try {
 					moduleDefinition = frontend.fetchModuleDefinition(moduleURI);
 					if (moduleDefinition != null) {
@@ -435,8 +433,6 @@ public class SBOLDocument {
 		Collection collection = collections.get(collectionURI);
 		if (collection==null) {
 			for (StackFrontend frontend : getRegistries()) {
-				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
-				if (!collectionURI.toString().startsWith(frontendPrefix)) continue;
 				try {
 					collection = frontend.fetchCollection(collectionURI);
 					if (collection != null) {
@@ -640,8 +636,6 @@ public class SBOLDocument {
 		Model model = models.get(modelURI);
 		if (model==null) {
 			for (StackFrontend frontend : getRegistries()) {
-				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
-				if (!modelURI.toString().startsWith(frontendPrefix)) continue;
 				try {
 					model = frontend.fetchModel(modelURI);
 					if (model != null) {
@@ -920,8 +914,6 @@ public class SBOLDocument {
 		ComponentDefinition componentDefinition = componentDefinitions.get(componentDefinitionURI);
 		if (componentDefinition==null) {
 			for (StackFrontend frontend : getRegistries()) {
-				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
-				if (!componentDefinitionURI.toString().startsWith(frontendPrefix)) continue;
 				try {
 					componentDefinition = frontend.fetchComponentDefinition(componentDefinitionURI);
 					if (componentDefinition != null) {
@@ -1503,8 +1495,6 @@ public class SBOLDocument {
 		Sequence sequence = sequences.get(sequenceURI);
 		if (sequence==null) {
 			for (StackFrontend frontend : getRegistries()) {
-				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
-				if (!sequenceURI.toString().startsWith(frontendPrefix)) continue;
 				try {
 					sequence = frontend.fetchSequence(sequenceURI);
 					if (sequence != null) {
@@ -1697,8 +1687,6 @@ public class SBOLDocument {
 		GenericTopLevel genericTopLevel = genericTopLevels.get(genericTopLevelURI);
 		if (genericTopLevel==null) {
 			for (StackFrontend frontend : getRegistries()) {
-				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
-				if (!genericTopLevelURI.toString().startsWith(frontendPrefix)) continue;
 				try {
 					genericTopLevel = frontend.fetchGenericTopLevel(genericTopLevelURI);
 					if (genericTopLevel != null) {
@@ -1787,8 +1775,6 @@ public class SBOLDocument {
 		}
 		if (topLevel==null) {
 			for (StackFrontend frontend : getRegistries()) {
-				String frontendPrefix = frontend.getBackendUrl().substring(0,frontend.getBackendUrl().lastIndexOf(":"));
-				if (!topLevelURI.toString().startsWith(frontendPrefix)) continue;
 				try {
 					topLevel = frontend.fetchTopLevel(topLevelURI);
 					if (topLevel != null) {
