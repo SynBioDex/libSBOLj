@@ -224,7 +224,7 @@ public class RepressionModel {
 		doc.createComponentDefinition("EYFP", version, ComponentDefinition.PROTEIN);
 
 		// Create ModuleDefintion for CRISPR Repression
-		ModuleDefinition CRPb_circuit = doc.createModuleDefinition("CRPb_characterization_Circuit", version);
+		ModuleDefinition CRPb_circuit = doc.createModuleDefinition("CRPb_characterization_circuit", version);
 		
 		// Create the FunctionalComponents for the ModuleDefinition CRISPR_Repression
 		CRPb_circuit.createFunctionalComponent("cas9m_BFP", AccessType.PRIVATE, "cas9m_BFP", version, DirectionType.NONE);
