@@ -1204,15 +1204,15 @@ public class SBOLValidate {
 		for (MapsTo mapsTo1 : component1.getMapsTos()) {
 			MapsTo mapsTo2 = component2.getMapsTo(mapsTo1.getIdentity());
 			if (mapsTo2==null) {
-				System.err.println("    MapsTo " + mapsTo1.getIdentity() + " not found in " + file2);
+				System.err.println("--->MapsTo " + mapsTo1.getIdentity() + " not found in " + file2);
 			} else if (!mapsTo1.equals(mapsTo2)) {
-				System.err.println("    MapsTo " + mapsTo1.getIdentity() + " differ.");
+				System.err.println("--->MapsTo " + mapsTo1.getIdentity() + " differ.");
 			}
 		}
 		for (MapsTo mapsTo2 : component2.getMapsTos()) {
 			MapsTo mapsTo1 = component1.getMapsTo(mapsTo2.getIdentity());
 			if (mapsTo1==null) {
-				System.err.println("    MapsTo " + mapsTo2.getIdentity() + " not found in " + file1);
+				System.err.println("--->MapsTo " + mapsTo2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
@@ -1222,16 +1222,16 @@ public class SBOLValidate {
 		for (Component component1 : componentDefinition1.getComponents()) {
 			Component component2 = componentDefinition2.getComponent(component1.getIdentity());
 			if (component2==null) {
-				System.err.println("  Component " + component1.getIdentity() + " not found in " + file2);
+				System.err.println("->Component " + component1.getIdentity() + " not found in " + file2);
 			} else if (!component1.equals(component2)) {
-				System.err.println("  Component " + component1.getIdentity() + " differ.");
+				System.err.println("->Component " + component1.getIdentity() + " differ.");
 				compareMapsTos(file1,component1,file2,component2);
 			}
 		}
 		for (Component component2 : componentDefinition2.getComponents()) {
 			Component component1 = componentDefinition1.getComponent(component2.getIdentity());
 			if (component1==null) {
-				System.err.println("  Component " + component2.getIdentity() + " not found in " + file1);
+				System.err.println("->Component " + component2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
@@ -1241,15 +1241,15 @@ public class SBOLValidate {
 		for (Location location1 : sequenceAnnotation1.getLocations()) {
 			Location location2 = sequenceAnnotation2.getLocation(location1.getIdentity());
 			if (location2==null) {
-				System.err.println("    Location " + location1.getIdentity() + " not found in " + file2);
+				System.err.println("--->Location " + location1.getIdentity() + " not found in " + file2);
 			} else if (!location1.equals(location2)) {
-				System.err.println("    Location " + location1.getIdentity() + " differ.");
+				System.err.println("--->Location " + location1.getIdentity() + " differ.");
 			}
 		}
 		for (Location location2 : sequenceAnnotation2.getLocations()) {
 			Location location1 = sequenceAnnotation1.getLocation(location2.getIdentity());
 			if (location1==null) {
-				System.err.println("    Location " + location2.getIdentity() + " not found in " + file1);
+				System.err.println("--->Location " + location2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
@@ -1259,16 +1259,16 @@ public class SBOLValidate {
 		for (SequenceAnnotation sequenceAnnotation1 : componentDefinition1.getSequenceAnnotations()) {
 			SequenceAnnotation sequenceAnnotation2 = componentDefinition2.getSequenceAnnotation(sequenceAnnotation1.getIdentity());
 			if (sequenceAnnotation2==null) {
-				System.err.println("  SequenceAnnotation " + sequenceAnnotation1.getIdentity() + " not found in " + file2);
+				System.err.println("->SequenceAnnotation " + sequenceAnnotation1.getIdentity() + " not found in " + file2);
 			} else if (!sequenceAnnotation1.equals(sequenceAnnotation2)) {
-				System.err.println("  SequenceAnnotation " + sequenceAnnotation1.getIdentity() + " differ.");
+				System.err.println("->SequenceAnnotation " + sequenceAnnotation1.getIdentity() + " differ.");
 				compareLocations(file1,sequenceAnnotation1,file2,sequenceAnnotation2);
 			}
 		}
 		for (SequenceAnnotation sequenceAnnotation2 : componentDefinition2.getSequenceAnnotations()) {
 			SequenceAnnotation sequenceAnnotation1 = componentDefinition1.getSequenceAnnotation(sequenceAnnotation2.getIdentity());
 			if (sequenceAnnotation1==null) {
-				System.err.println("  SequenceAnnotation " + sequenceAnnotation2.getIdentity() + " not found in " + file1);
+				System.err.println("->SequenceAnnotation " + sequenceAnnotation2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
@@ -1278,15 +1278,15 @@ public class SBOLValidate {
 		for (SequenceConstraint sequenceConstraint1 : componentDefinition1.getSequenceConstraints()) {
 			SequenceConstraint sequenceConstraint2 = componentDefinition2.getSequenceConstraint(sequenceConstraint1.getIdentity());
 			if (sequenceConstraint2==null) {
-				System.err.println("  SequenceConstraint " + sequenceConstraint1.getIdentity() + " not found in " + file2);
+				System.err.println("->SequenceConstraint " + sequenceConstraint1.getIdentity() + " not found in " + file2);
 			} else if (!sequenceConstraint1.equals(sequenceConstraint2)) {
-				System.err.println("  SequenceConstraint " + sequenceConstraint1.getIdentity() + " differ.");
+				System.err.println("->SequenceConstraint " + sequenceConstraint1.getIdentity() + " differ.");
 			}
 		}
 		for (SequenceConstraint sequenceConstraint2 : componentDefinition2.getSequenceConstraints()) {
 			SequenceConstraint sequenceConstraint1 = componentDefinition1.getSequenceConstraint(sequenceConstraint2.getIdentity());
 			if (sequenceConstraint1==null) {
-				System.err.println("  SequenceConstraint " + sequenceConstraint2.getIdentity() + " not found in " + file1);
+				System.err.println("->SequenceConstraint " + sequenceConstraint2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
@@ -1333,15 +1333,15 @@ public class SBOLValidate {
 		for (MapsTo mapsTo1 : functionalComponent1.getMapsTos()) {
 			MapsTo mapsTo2 = functionalComponent2.getMapsTo(mapsTo1.getIdentity());
 			if (mapsTo2==null) {
-				System.err.println("    MapsTo " + mapsTo1.getIdentity() + " not found in " + file2);
+				System.err.println("--->MapsTo " + mapsTo1.getIdentity() + " not found in " + file2);
 			} else if (!mapsTo1.equals(mapsTo2)) {
-				System.err.println("    MapsTo " + mapsTo1.getIdentity() + " differ.");
+				System.err.println("--->MapsTo " + mapsTo1.getIdentity() + " differ.");
 			}
 		}
 		for (MapsTo mapsTo2 : functionalComponent2.getMapsTos()) {
 			MapsTo mapsTo1 = functionalComponent1.getMapsTo(mapsTo2.getIdentity());
 			if (mapsTo1==null) {
-				System.err.println("    MapsTo " + mapsTo2.getIdentity() + " not found in " + file1);
+				System.err.println("--->MapsTo " + mapsTo2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
@@ -1351,16 +1351,16 @@ public class SBOLValidate {
 		for (FunctionalComponent functionalComponent1 : moduleDefinition1.getFunctionalComponents()) {
 			FunctionalComponent functionalComponent2 = moduleDefinition2.getFunctionalComponent(functionalComponent1.getIdentity());
 			if (functionalComponent2==null) {
-				System.err.println("  FunctionalComponent " + functionalComponent1.getIdentity() + " not found in " + file2);
+				System.err.println("->FunctionalComponent " + functionalComponent1.getIdentity() + " not found in " + file2);
 			} else if (!functionalComponent1.equals(functionalComponent2)) {
-				System.err.println("  FunctionalComponent " + functionalComponent1.getIdentity() + " differ.");
+				System.err.println("->FunctionalComponent " + functionalComponent1.getIdentity() + " differ.");
 				compareMapsTos(file1,functionalComponent1,file2,functionalComponent2);
 			}
 		}
 		for (FunctionalComponent functionalComponent2 : moduleDefinition2.getFunctionalComponents()) {
 			FunctionalComponent functionalComponent1 = moduleDefinition1.getFunctionalComponent(functionalComponent2.getIdentity());
 			if (functionalComponent1==null) {
-				System.err.println("  FunctionalComponent " + functionalComponent2.getIdentity() + " not found in " + file1);
+				System.err.println("->FunctionalComponent " + functionalComponent2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
@@ -1370,15 +1370,15 @@ public class SBOLValidate {
 		for (MapsTo mapsTo1 : module1.getMapsTos()) {
 			MapsTo mapsTo2 = module2.getMapsTo(mapsTo1.getIdentity());
 			if (mapsTo2==null) {
-				System.err.println("    MapsTo " + mapsTo1.getIdentity() + " not found in " + file2);
+				System.err.println("--->MapsTo " + mapsTo1.getIdentity() + " not found in " + file2);
 			} else if (!mapsTo1.equals(mapsTo2)) {
-				System.err.println("    MapsTo " + mapsTo1.getIdentity() + " differ.");
+				System.err.println("--->MapsTo " + mapsTo1.getIdentity() + " differ.");
 			}
 		}
 		for (MapsTo mapsTo2 : module2.getMapsTos()) {
 			MapsTo mapsTo1 = module1.getMapsTo(mapsTo2.getIdentity());
 			if (mapsTo1==null) {
-				System.err.println("    MapsTo " + mapsTo2.getIdentity() + " not found in " + file1);
+				System.err.println("--->MapsTo " + mapsTo2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
@@ -1388,16 +1388,16 @@ public class SBOLValidate {
 		for (Module module1 : moduleDefinition1.getModules()) {
 			Module module2 = moduleDefinition2.getModule(module1.getIdentity());
 			if (module2==null) {
-				System.err.println("  Module " + module1.getIdentity() + " not found in " + file2);
+				System.err.println("->Module " + module1.getIdentity() + " not found in " + file2);
 			} else if (!module1.equals(module2)) {
-				System.err.println("  Module " + module1.getIdentity() + " differ.");
+				System.err.println("->Module " + module1.getIdentity() + " differ.");
 				compareMapsTos(file1,module1,file2,module2);
 			}
 		}
 		for (Module module2 : moduleDefinition2.getModules()) {
 			Module module1 = moduleDefinition1.getModule(module2.getIdentity());
 			if (module1==null) {
-				System.err.println("  Module " + module2.getIdentity() + " not found in " + file1);
+				System.err.println("->Module " + module2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
@@ -1407,15 +1407,15 @@ public class SBOLValidate {
 		for (Participation participation1 : interaction1.getParticipations()) {
 			Participation participation2 = interaction2.getParticipation(participation1.getIdentity());
 			if (participation2==null) {
-				System.err.println("    Participation " + participation1.getIdentity() + " not found in " + file2);
+				System.err.println("--->Participation " + participation1.getIdentity() + " not found in " + file2);
 			} else if (!participation1.equals(participation2)) {
-				System.err.println("    Participation " + participation1.getIdentity() + " differ.");
+				System.err.println("--->Participation " + participation1.getIdentity() + " differ.");
 			}
 		}
 		for (Participation participation2 : interaction2.getParticipations()) {
 			Participation participation1 = interaction1.getParticipation(participation2.getIdentity());
 			if (participation1==null) {
-				System.err.println("    Participation " + participation2.getIdentity() + " not found in " + file1);
+				System.err.println("--->Participation " + participation2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}	
@@ -1425,16 +1425,16 @@ public class SBOLValidate {
 		for (Interaction interaction1 : moduleDefinition1.getInteractions()) {
 			Interaction interaction2 = moduleDefinition2.getInteraction(interaction1.getIdentity());
 			if (interaction2==null) {
-				System.err.println("  Interaction " + interaction1.getIdentity() + " not found in " + file2);
+				System.err.println("->Interaction " + interaction1.getIdentity() + " not found in " + file2);
 			} else if (!interaction1.equals(interaction2)) {
-				System.err.println("  Interaction " + interaction1.getIdentity() + " differ.");
+				System.err.println("->Interaction " + interaction1.getIdentity() + " differ.");
 				compareParticipations(file1,interaction1,file1,interaction2);
 			}
 		}
 		for (Interaction interaction2 : moduleDefinition2.getInteractions()) {
 			Interaction interaction1 = moduleDefinition1.getInteraction(interaction2.getIdentity());
 			if (interaction1==null) {
-				System.err.println("  Interaction " + interaction2.getIdentity() + " not found in " + file1);
+				System.err.println("->Interaction " + interaction2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
