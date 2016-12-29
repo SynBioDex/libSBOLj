@@ -1174,11 +1174,11 @@ public class SBOLValidate {
 	private static void compareNamespaces(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
 		for (QName namespace : doc1.getNamespaces()) {
 			if (doc2.getNamespaces().contains(namespace)) continue;
-			System.err.println("Namesapce " + namespace.toString() + " not found in " + file2);
+			System.err.println("Namespace " + namespace.toString() + " not found in " + file2);
 		}
 		for (QName namespace : doc2.getNamespaces()) {
 			if (doc1.getNamespaces().contains(namespace)) continue;
-			System.err.println("Namesapce " + namespace.toString() + " not found in " + file1);
+			System.err.println("Namespace " + namespace.toString() + " not found in " + file1);
 		}
 	}
 
