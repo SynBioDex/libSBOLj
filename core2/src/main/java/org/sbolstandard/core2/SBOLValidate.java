@@ -1576,16 +1576,20 @@ public class SBOLValidate {
 				}
 				compareDocuments(mainFileName, doc, compareFileName, doc2);
 			}
+			if (!topLevelURIStr.equals("")) {
+				TopLevel topLevel = doc.getTopLevel(URI.create(topLevelURIStr));
+				if (topLevel==null) {
+					System.err.println("TopLevel " + topLevelURIStr + " not found.");
+					return;
+				}
+				doc = doc.createRecursiveCopy(topLevel);
+			}
+			if (!URIPrefix.equals("")) {
+				System.out.println("Updating URI prefix to: " + URIPrefix);
+				doc = doc.changeURIPrefix(URIPrefix);
+			}
 			validateSBOL(doc, complete, compliant, bestPractice);
 			if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
-				if (!topLevelURIStr.equals("")) {
-					TopLevel topLevel = doc.getTopLevel(URI.create(topLevelURIStr));
-					if (topLevel==null) {
-						System.err.println("TopLevel " + topLevelURIStr + " not found.");
-						return;
-					}
-					doc = doc.createRecursiveCopy(topLevel);
-				}
 				if (noOutput) {
 					System.out.println("Validation successful, no errors.");
 				} else if (genBankOut) {
