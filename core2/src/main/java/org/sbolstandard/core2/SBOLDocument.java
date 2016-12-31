@@ -1414,8 +1414,13 @@ public class SBOLDocument {
 		}
 	}
 
-	// TODO: should we make this public?
-	SBOLDocument changeURIPrefix(String URIPrefix) throws SBOLValidationException {
+	/**
+	 * Copy all objects to an a new SBOL Document and change the URI prefix of each object
+	 * @param URIPrefix new URI prefix
+	 * @return new SBOL document with changed URI prefix
+	 * @throws SBOLValidationException
+	 */
+	public SBOLDocument changeURIPrefix(String URIPrefix) throws SBOLValidationException {
 		// TODO: should fail if not complete document
 		SBOLDocument document = createCopy(URIPrefix);
 		document.setDefaultURIprefix(URIPrefix);
