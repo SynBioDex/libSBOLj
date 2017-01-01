@@ -1134,10 +1134,10 @@ public class SBOLDocument {
 		}
 	}
 	
-	private SBOLDocument createCopy(String URIPrefix) throws SBOLValidationException {
+	private SBOLDocument createCopy(String URIPrefix, String displayId, String version) throws SBOLValidationException {
 		SBOLDocument document = new SBOLDocument();
 		for (TopLevel topLevel : getTopLevels()) {
-			document.createCopy(topLevel, URIPrefix, null, null);
+			document.createCopy(topLevel, URIPrefix, displayId, version);
 		}
 		return document;
 	}
@@ -1415,50 +1415,51 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Copy all objects to an a new SBOL Document and change the URI prefix of each object
+	 * Copy all objects to an a new SBOL Document and change the URI prefix/version of each object
 	 * @param URIPrefix new URI prefix
+	 * @param version new version
 	 * @return new SBOL document with changed URI prefix
 	 * @throws SBOLValidationException
 	 */
-	public SBOLDocument changeURIPrefix(String URIPrefix) throws SBOLValidationException {
+	public SBOLDocument changeURIPrefixVersion(String URIPrefix,String version) throws SBOLValidationException {
 		// TODO: should fail if not complete document
-		SBOLDocument document = createCopy(URIPrefix);
+		SBOLDocument document = createCopy(URIPrefix,null,version);
 		document.setDefaultURIprefix(URIPrefix);
 		for (Collection collection : getCollections()) {
 			Set<URI> members = new HashSet<URI>();
 			for (TopLevel member : collection.getMembers()) {
 				if (member instanceof Sequence) {
-					Sequence tl = document.getSequence(member.getDisplayId(), member.getVersion());
+					Sequence tl = document.getSequence(member.getDisplayId(), version!=null?version:member.getVersion());
 					members.add(tl.getIdentity());
 				}
 				if (member instanceof ComponentDefinition) {
-					ComponentDefinition tl = document.getComponentDefinition(member.getDisplayId(), member.getVersion());
+					ComponentDefinition tl = document.getComponentDefinition(member.getDisplayId(), version!=null?version:member.getVersion());
 					members.add(tl.getIdentity());
 				}
 				if (member instanceof ModuleDefinition) {
-					ModuleDefinition tl = document.getModuleDefinition(member.getDisplayId(), member.getVersion());
+					ModuleDefinition tl = document.getModuleDefinition(member.getDisplayId(), version!=null?version:member.getVersion());
 					members.add(tl.getIdentity());
 				}
 				if (member instanceof Model) {
-					Model tl = document.getModel(member.getDisplayId(), member.getVersion());
+					Model tl = document.getModel(member.getDisplayId(), version!=null?version:member.getVersion());
 					members.add(tl.getIdentity());
 				}
 				if (member instanceof GenericTopLevel) {
-					GenericTopLevel tl = document.getGenericTopLevel(member.getDisplayId(), member.getVersion());
+					GenericTopLevel tl = document.getGenericTopLevel(member.getDisplayId(), version!=null?version:member.getVersion());
 					members.add(tl.getIdentity());
 				}
 				if (member instanceof Collection) {
-					Collection tl = document.getCollection(member.getDisplayId(), member.getVersion());
+					Collection tl = document.getCollection(member.getDisplayId(), version!=null?version:member.getVersion());
 					members.add(tl.getIdentity());
 				}
 			}
 			document.getCollection(collection.getDisplayId(), collection.getVersion()).setMembers(members);
 		}
 		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
-			ComponentDefinition docCD = document.getComponentDefinition(componentDefinition.getDisplayId(), componentDefinition.getVersion());
+			ComponentDefinition docCD = document.getComponentDefinition(componentDefinition.getDisplayId(), version!=null?version:componentDefinition.getVersion());
 			for (Component component : componentDefinition.getComponents()) {
 				ComponentDefinition cd = component.getDefinition();
-				ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), cd.getVersion());
+				ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
 				Component docComp = docCD.getComponent(component.getDisplayId());
 				docComp.setDefinition(docRefCD.getIdentity());
 				for (MapsTo mapsTo : component.getMapsTos()) {
@@ -1469,16 +1470,16 @@ public class SBOLDocument {
 			}
 			Set<URI> sequences = new HashSet<URI>();
 			for (Sequence sequence : componentDefinition.getSequences()) {
-				Sequence docSeq = document.getSequence(sequence.getDisplayId(), sequence.getVersion());
+				Sequence docSeq = document.getSequence(sequence.getDisplayId(), version!=null?version:sequence.getVersion());
 				sequences.add(docSeq.getIdentity());
 			}
 			docCD.setSequences(sequences);
 		}
 		for (ModuleDefinition moduleDefinition : getModuleDefinitions()) {
-			ModuleDefinition docMD = document.getModuleDefinition(moduleDefinition.getDisplayId(), moduleDefinition.getVersion());
+			ModuleDefinition docMD = document.getModuleDefinition(moduleDefinition.getDisplayId(), version!=null?version:moduleDefinition.getVersion());
 			for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 				ComponentDefinition cd = functionalComponent.getDefinition();
-				ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), cd.getVersion());
+				ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
 				FunctionalComponent docComp = docMD.getFunctionalComponent(functionalComponent.getDisplayId());
 				docComp.setDefinition(docRefCD.getIdentity());
 				for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
@@ -1489,7 +1490,7 @@ public class SBOLDocument {
 			}
 			for (Module module : moduleDefinition.getModules()) {
 				ModuleDefinition md = module.getDefinition();
-				ModuleDefinition docRefMD = document.getModuleDefinition(md.getDisplayId(), md.getVersion());
+				ModuleDefinition docRefMD = document.getModuleDefinition(md.getDisplayId(), version!=null?version:md.getVersion());
 				Module docModule = docMD.getModule(module.getDisplayId());
 				docModule.setDefinition(docRefMD.getIdentity());
 				for (MapsTo mapsTo : module.getMapsTos()) {
@@ -1500,7 +1501,7 @@ public class SBOLDocument {
 			}
 			Set<URI> models = new HashSet<URI>();
 			for (Model model : moduleDefinition.getModels()) {
-				Model docMod = document.getModel(model.getDisplayId(), model.getVersion());
+				Model docMod = document.getModel(model.getDisplayId(), version!=null?version:model.getVersion());
 				models.add(docMod.getIdentity());
 			}
 			docMD.setModels(models);

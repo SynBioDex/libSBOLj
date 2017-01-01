@@ -1586,7 +1586,13 @@ public class SBOLValidate {
 			}
 			if (!URIPrefix.equals("")) {
 				System.out.println("Updating URI prefix to: " + URIPrefix);
-				doc = doc.changeURIPrefix(URIPrefix);
+				if (version != null) {
+					System.out.println("Updating Version to: " + version);
+				}
+				doc = doc.changeURIPrefixVersion(URIPrefix,version);
+			} else if (version != null) {
+				System.out.println("Updating Version to: " + version);
+				doc = doc.changeURIPrefixVersion(null,version);
 			}
 			validateSBOL(doc, complete, compliant, bestPractice);
 			if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
@@ -1712,7 +1718,7 @@ public class SBOLValidate {
 		String compareFileName = "";
 		String topLevelURIStr = "";
 		String URIPrefix = "";
-		String version = "";
+		String version = null;
 		boolean complete = true;
 		boolean compliant = true;
 		boolean typesInURI = false;
