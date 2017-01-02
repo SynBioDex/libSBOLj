@@ -1453,7 +1453,7 @@ public class SBOLDocument {
 					members.add(tl.getIdentity());
 				}
 			}
-			document.getCollection(collection.getDisplayId(), collection.getVersion()).setMembers(members);
+			document.getCollection(collection.getDisplayId(), version!=null?version:collection.getVersion()).setMembers(members);
 		}
 		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
 			ComponentDefinition docCD = document.getComponentDefinition(componentDefinition.getDisplayId(), version!=null?version:componentDefinition.getVersion());
