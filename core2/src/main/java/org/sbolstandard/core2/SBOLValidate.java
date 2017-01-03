@@ -1287,7 +1287,7 @@ public class SBOLValidate {
 		System.err.println("\t-n  allow non-compliant URIs");
 		System.err.println("\t-i  allow SBOL document to be incomplete");
 		System.err.println("\t-b  check best practices");
-		System.err.println("\t-f  fail on first error");
+		System.err.println("\t-f  continue after first error");
 		System.err.println("\t-d  display detailed error trace");
 		System.exit(1);
 	}
@@ -1321,7 +1321,7 @@ public class SBOLValidate {
 	 * <p>
 	 * "-b" check best practices
 	 * <p>
-	 * "-f" fail on first error
+	 * "-f" continue after first error
 	 * <p>
 	 * "-d" display detailed error trace
 	 *
