@@ -2,7 +2,9 @@ package org.sbolstandard.core2;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
 
+import org.sbolstack.frontend.IdentifiedMetadata;
 import org.sbolstack.frontend.StackFrontend;
 
 class readTester {
@@ -36,10 +38,15 @@ class readTester {
 	public static void main(String[] args) {
 
 		try {
-			StackFrontend frontend = new StackFrontend("http://synbiohub.org:9090");
-			ComponentDefinition cdef = frontend.fetchComponentDefinition(new URI("http://synbiohub.org/igem/BBa_K136042/1"));
+			//SBOLDocument doc3 = SBOLReader.read("/Users/myers/repressionModel.rdf");
+			//ModuleDefinition md = doc3.getModuleDefinition(URI.create("http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/1.0"));
+			//System.out.println(md.getWasDerivedFrom());
 			SBOLDocument doc2 = new SBOLDocument();
-			doc2 = doc2.createRecursiveCopy(cdef); 
+			doc2.setComplete(false);
+			doc2.addRegistry("http://localhost:9090");
+			//ArrayList<IdentifiedMetadata> imd = doc2.getRegistry("http://synbiohub.org:9090").searchRootCollectionMetadata();
+			//System.out.println(imd.toString());
+			doc2.getTopLevel(new URI("http://synbiohub.org/public/igem/BBa_K136042/1"));
 			doc2.write(System.out);
 			
 //			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_19);
