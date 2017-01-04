@@ -1158,11 +1158,11 @@ public class SBOLValidate {
 		}*/
 		for (QName namespace : doc1.getNamespaces()) {
 			if (doc2.getNamespaces().contains(namespace)) continue;
-			System.err.println("Namesapce " + namespace.toString() + " not found in " + file2);
+			System.err.println("Namespace " + namespace.toString() + " not found in " + file2);
 		}
 		for (QName namespace : doc2.getNamespaces()) {
 			if (doc1.getNamespaces().contains(namespace)) continue;
-			System.err.println("Namesapce " + namespace.toString() + " not found in " + file1);
+			System.err.println("Namespace " + namespace.toString() + " not found in " + file1);
 		}
 		for (GenericTopLevel genericTopLevel1 : doc1.getGenericTopLevels()) {
 			GenericTopLevel genericTopLevel2 = doc2.getGenericTopLevel(genericTopLevel1.getIdentity());
