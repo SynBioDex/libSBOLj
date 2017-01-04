@@ -1413,6 +1413,28 @@ public class SBOLDocument {
 			document.createCopy(topLevel);
 		}
 	}
+	
+	private void changeURIPrefixVersion(List<Annotation> annotations,String URIPrefix,String version) throws SBOLValidationException {
+		for (Annotation annotation : annotations) {
+			if (annotation.isURIValue()) {
+				GenericTopLevel genericTopLevel = getGenericTopLevel(annotation.getURIValue());
+				if (genericTopLevel!=null) {
+					annotation.setURIValue(URIcompliance.createCompliantURI(URIPrefix, 
+							genericTopLevel.getDisplayId(), version!=null?version:genericTopLevel.getVersion()));
+				}
+			} else if (annotation.isNestedAnnotations()) {
+				changeURIPrefixVersion(annotation.getAnnotations(),URIPrefix,version);
+			}
+		}
+	}
+	
+	private void changeURIPrefixVersion(Identified identified,String URIPrefix,String version) throws SBOLValidationException {
+		if (URIPrefix == null) {
+			URIPrefix = extractURIprefix(identified.getIdentity());
+			URIPrefix = URIcompliance.checkURIprefix(URIPrefix);
+		} 
+		changeURIPrefixVersion(identified.getAnnotations(),URIPrefix,version);
+	}
 
 	/**
 	 * Copy all objects to an a new SBOL Document and change the URI prefix/version of each object
@@ -1453,20 +1475,33 @@ public class SBOLDocument {
 					members.add(tl.getIdentity());
 				}
 			}
-			document.getCollection(collection.getDisplayId(), version!=null?version:collection.getVersion()).setMembers(members);
+			Collection docCol = document.getCollection(collection.getDisplayId(), 
+					version!=null?version:collection.getVersion());
+			docCol.setMembers(members);
+			changeURIPrefixVersion(docCol,URIPrefix,version);
 		}
 		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
 			ComponentDefinition docCD = document.getComponentDefinition(componentDefinition.getDisplayId(), version!=null?version:componentDefinition.getVersion());
+			changeURIPrefixVersion(docCD,URIPrefix,version);
 			for (Component component : componentDefinition.getComponents()) {
 				ComponentDefinition cd = component.getDefinition();
 				ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
 				Component docComp = docCD.getComponent(component.getDisplayId());
 				docComp.setDefinition(docRefCD.getIdentity());
+				changeURIPrefixVersion(docComp,URIPrefix,version);
 				for (MapsTo mapsTo : component.getMapsTos()) {
 					Component remoteComponent = (Component)mapsTo.getRemote();
 					Component docRemoteComponent = docRefCD.getComponent(remoteComponent.getDisplayId());
-					docComp.getMapsTo(mapsTo.getDisplayId()).setRemote(docRemoteComponent.getIdentity());
+					MapsTo docMapsTo = docComp.getMapsTo(mapsTo.getDisplayId());
+					docMapsTo.setRemote(docRemoteComponent.getIdentity());
+					changeURIPrefixVersion(docMapsTo,URIPrefix,version);
 				}
+			}
+			for (SequenceAnnotation sa : docCD.getSequenceAnnotations()) {
+				changeURIPrefixVersion(sa,URIPrefix,version);
+			}
+			for (SequenceConstraint sc : docCD.getSequenceConstraints()) {
+				changeURIPrefixVersion(sc,URIPrefix,version);
 			}
 			Set<URI> sequences = new HashSet<URI>();
 			for (Sequence sequence : componentDefinition.getSequences()) {
@@ -1477,15 +1512,19 @@ public class SBOLDocument {
 		}
 		for (ModuleDefinition moduleDefinition : getModuleDefinitions()) {
 			ModuleDefinition docMD = document.getModuleDefinition(moduleDefinition.getDisplayId(), version!=null?version:moduleDefinition.getVersion());
+			changeURIPrefixVersion(docMD,URIPrefix,version);
 			for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 				ComponentDefinition cd = functionalComponent.getDefinition();
 				ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
 				FunctionalComponent docComp = docMD.getFunctionalComponent(functionalComponent.getDisplayId());
 				docComp.setDefinition(docRefCD.getIdentity());
+				changeURIPrefixVersion(docComp,URIPrefix,version);
 				for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
 					ComponentInstance remoteComponent = mapsTo.getRemote();
 					Component docRemoteComponent = docRefCD.getComponent(remoteComponent.getDisplayId());
-					docComp.getMapsTo(mapsTo.getDisplayId()).setRemote(docRemoteComponent.getIdentity());
+					MapsTo docMapsTo = docComp.getMapsTo(mapsTo.getDisplayId());
+					docMapsTo.setRemote(docRemoteComponent.getIdentity());
+					changeURIPrefixVersion(docMapsTo,URIPrefix,version);
 				}
 			}
 			for (Module module : moduleDefinition.getModules()) {
@@ -1493,11 +1532,20 @@ public class SBOLDocument {
 				ModuleDefinition docRefMD = document.getModuleDefinition(md.getDisplayId(), version!=null?version:md.getVersion());
 				Module docModule = docMD.getModule(module.getDisplayId());
 				docModule.setDefinition(docRefMD.getIdentity());
+				changeURIPrefixVersion(docModule,URIPrefix,version);
 				for (MapsTo mapsTo : module.getMapsTos()) {
 					ComponentInstance remoteComponent = mapsTo.getRemote();
 					FunctionalComponent docRemoteComponent = docRefMD.getFunctionalComponent(remoteComponent.getDisplayId());
-					docModule.getMapsTo(mapsTo.getDisplayId()).setRemote(docRemoteComponent.getIdentity());
+					MapsTo docMapsTo = docModule.getMapsTo(mapsTo.getDisplayId());
+					docMapsTo.setRemote(docRemoteComponent.getIdentity());
+					changeURIPrefixVersion(docMapsTo,URIPrefix,version);
 				}
+			}
+			for (Interaction interaction : docMD.getInteractions()) {
+				changeURIPrefixVersion(interaction,URIPrefix,version);
+				for (Participation participation : interaction.getParticipations()) {
+					changeURIPrefixVersion(participation,URIPrefix,version);	
+				}		
 			}
 			Set<URI> models = new HashSet<URI>();
 			for (Model model : moduleDefinition.getModels()) {
@@ -1505,6 +1553,15 @@ public class SBOLDocument {
 				models.add(docMod.getIdentity());
 			}
 			docMD.setModels(models);
+		}
+		for (Model model : document.getModels()) {
+			changeURIPrefixVersion(model,URIPrefix,version);
+		}
+		for (Sequence sequence : document.getSequences()) {
+			changeURIPrefixVersion(sequence,URIPrefix,version);
+		}
+		for (GenericTopLevel genericTopLevel : document.getGenericTopLevels()) {
+			changeURIPrefixVersion(genericTopLevel,URIPrefix,version);
 		}
 		return document;
 	}

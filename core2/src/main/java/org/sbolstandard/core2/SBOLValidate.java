@@ -33,7 +33,7 @@ public class SBOLValidate {
 	 * the current SBOL version
 	 */
 	private static final String SBOLVersion = "2.0";
-	private static final String libSBOLj_Version = "2.1";
+	private static final String libSBOLj_Version = "2.1.2";
 	private static List<String> errors = null;
 
 	/**
