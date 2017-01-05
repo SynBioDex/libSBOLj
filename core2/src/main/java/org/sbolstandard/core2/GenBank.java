@@ -29,8 +29,8 @@ class GenBank {
 
 	private static SequenceOntology so = null;
 
-	public static final String GBPREFIX = "gb";
-	public static final String GBNAMESPACE = "http://www.ncbi.nlm.nih.gov";
+	public static final String GBPREFIX = "ncbi";
+	public static final String GBNAMESPACE = "http://www.ncbi.nlm.nih.gov#";
 	public static final String LOCUS = "locus";
 	public static final String MOLECULE = "molecule";
 	public static final String TOPOLOGY = "topology";

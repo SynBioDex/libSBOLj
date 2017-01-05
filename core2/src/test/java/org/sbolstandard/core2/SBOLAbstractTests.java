@@ -46,7 +46,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_Model_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -73,7 +73,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_Sequence_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -98,7 +98,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_Collection_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -121,7 +121,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_ModuleDefinition_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -144,7 +144,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_ComponentDefinition_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -169,7 +169,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_GenericTopLevel_remove() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -194,7 +194,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_AnnotationOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 
@@ -268,7 +268,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_ComponentDefinitionOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
@@ -424,7 +424,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_CutExample() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(true);
@@ -466,9 +466,9 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_GenericTopLevelOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String myAppURI="http://www.myapp.org";
+		String myAppURI="http://www.myapp.org/";
 		String myAppPrefix="myapp";
-		String prURI="http://www.partsregistry.org";
+		String prURI="http://www.partsregistry.org/";
 
 		SBOLDocument document = new SBOLDocument();
 		document.addNamespace(URI.create(myAppURI) , myAppPrefix);
@@ -479,7 +479,7 @@ public abstract class SBOLAbstractTests {
 		GenericTopLevel topLevel=document.createGenericTopLevel(
 				"datasheet1",
 				"",
-				new QName("http://www.myapp.org", "Datasheet", myAppPrefix)
+				new QName("http://www.myapp.org/", "Datasheet", myAppPrefix)
 				);
 		topLevel.setName("Datasheet 1");
 
@@ -674,7 +674,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_SequenceConstraintOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		//String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		/*
@@ -735,7 +735,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_SequenceOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -760,7 +760,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_SimpleComponentDefinitionExample() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 
 
 		SBOLDocument document = new SBOLDocument();
@@ -1564,20 +1564,20 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		String id    	= "someModel";
 		URI source 		= URI.create(id + "_source");
 
 		Collection myParts = document.createCollection("myParts", VERSION_1_0);
-		myParts.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		myParts.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 		Model someModel = document.createModel(id, VERSION_1_0, source, EDAMOntology.SBML, SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
-		someModel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someModel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 		ModuleDefinition someModDef = document.createModuleDefinition("someModuleDef", VERSION_1_0);
-		someModDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someModDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 		document.createModuleDefinition("someModuleDefSub", VERSION_1_0);
 
 		Set<URI> interactionType = new HashSet<URI>();
@@ -1594,29 +1594,29 @@ public abstract class SBOLAbstractTests {
 
 		String seq_id = "someSeq";
 		Sequence someSeq = document.createSequence(seq_id, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
-		someSeq.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someSeq.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 		Set<URI> types = new HashSet<URI>();
 		types.add(ComponentDefinition.DNA);
 		ComponentDefinition someCompDef = document.createComponentDefinition("someCompDef", VERSION_1_0, types);
-		someCompDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someCompDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 		someCompDef.addRole(SequenceOntology.PROMOTER);
 		ComponentDefinition someCompDefCDS = document.createComponentDefinition("someCompDefCDS", VERSION_1_0, types);
 		someCompDefCDS.addRole(SequenceOntology.CDS);
 		Component someComponent = someCompDef.createComponent("someComponent", AccessType.PUBLIC, "someCompDefCDS", VERSION_1_0);
 		someCompDef.createComponent("someOtherComponent", AccessType.PUBLIC, "someCompDefCDS", VERSION_1_0);
-		someComponent.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someComponent.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 		SequenceAnnotation someSequenceAnnotation = someCompDef.createSequenceAnnotation("someSequenceAnnotation", "cut", 1, 10);
-		someSequenceAnnotation.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someSequenceAnnotation.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 		//SequenceAnnotation someSequenceAnnotation2 =
 		someCompDef.createSequenceAnnotation("someSequenceAnnotation2", "cut", 1, OrientationType.INLINE);
 
 		SequenceConstraint someSequenceConstraint = someCompDef.createSequenceConstraint("someSequenceConstraint", RestrictionType.PRECEDES, "someComponent", "someOtherComponent");
-		someSequenceConstraint.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someSequenceConstraint.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
-		GenericTopLevel someGenericTopLevel = document.createGenericTopLevel("someGenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
-		someGenericTopLevel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		GenericTopLevel someGenericTopLevel = document.createGenericTopLevel("someGenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
+		someGenericTopLevel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 
 		runTest("/SBOL2/memberAnnotations.rdf", document, "rdf", true);
@@ -1635,8 +1635,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Collection c = document.createCollection("myParts", VERSION_1_0);
 		document.removeCollection(c);
@@ -1661,10 +1661,10 @@ public abstract class SBOLAbstractTests {
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
-		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu/");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> types = new HashSet<URI>();
 		types.add(ComponentDefinition.PROTEIN);
@@ -1693,8 +1693,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		ModuleDefinition md = document.createModuleDefinition("someModDef", VERSION_1_0);
 		document.removeModuleDefinition(md);
@@ -1722,19 +1722,19 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
-		GenericTopLevel gen = document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+		GenericTopLevel gen = document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
 		document.removeGenericTopLevel(gen);
 
 		for(int i = 1; i < 4; i++)
 		{
-			document.createGenericTopLevel("someGenTopLev"+i, VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+			document.createGenericTopLevel("someGenTopLev"+i, VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
 		}
 
 		document.clearGenericTopLevels();
-		document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+		document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
 
 		runTest("/SBOL2/CreateAndRemoveGenericTopLevel.rdf", document, "rdf", true);
 	}
@@ -1751,8 +1751,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Sequence s = document.createSequence("someSequence", VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 		document.removeSequence(s);
@@ -1780,8 +1780,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		document.createCollection("myParts", VERSION_1_0);
 		runTest("/SBOL2/singleCollection.rdf", document, "rdf", true);
@@ -1800,8 +1800,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		document.createCollection("myPart1", VERSION_1_0);
 		document.createCollection("myPart2", VERSION_1_0);
@@ -1822,10 +1822,10 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
-		document.createGenericTopLevel("GenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+		document.createGenericTopLevel("GenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
 		runTest("/SBOL2/singleGenericTopLevel.rdf", document, "rdf", true);
 	}
 
@@ -1841,12 +1841,12 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
-		document.createGenericTopLevel("GenericTopLevel1", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction1", "grn"));
-		document.createGenericTopLevel("GenericTopLevel2", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction2", "grn"));
-		document.createGenericTopLevel("GenericTopLevel3", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction3", "grn"));
+		document.createGenericTopLevel("GenericTopLevel1", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction1", "grn"));
+		document.createGenericTopLevel("GenericTopLevel2", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction2", "grn"));
+		document.createGenericTopLevel("GenericTopLevel3", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction3", "grn"));
 
 		runTest("/SBOL2/multipleGenericTopLevel.rdf", document, "rdf", true);
 	}
@@ -1863,8 +1863,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		String id = "ToggleModel";
 		document.createModel( id, VERSION_1_0, URI.create(id + "_source"), EDAMOntology.SBML,
@@ -1886,8 +1886,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		String id = "pLacSeq";
 		document.createSequence(id, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
@@ -1907,8 +1907,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		String id = "pLacSeq";
 		String id2 = "tetRSeq";
@@ -1933,8 +1933,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> roles = SBOLTestUtils.getSetPropertyURI("Inverter");
 		ModuleDefinition LacI_Inv = document.createModuleDefinition("LacI_Inv", VERSION_1_0);
@@ -1956,8 +1956,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> type = new HashSet<URI>();
 		type.add(ComponentDefinition.DNA);
@@ -1982,8 +1982,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> type = new HashSet<URI>();
 		type.add(ComponentDefinition.DNA);
@@ -2009,8 +2009,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> type = new HashSet<URI>();
 		type.add(ComponentDefinition.PROTEIN);

@@ -1819,6 +1819,7 @@ public class SBOLValidate {
 					showDetail, noOutput);
 		} else {
 			for (File eachFile : file.listFiles()) {
+				// TODO: should allow compare to a directory of same named files
 				System.out.println(eachFile.getAbsolutePath());
 				validate(eachFile.getAbsolutePath(), URIPrefix, complete, compliant, bestPractice, typesInURI, 
 						version, keepGoing, compareFile, compareFileName, mainFileName, 

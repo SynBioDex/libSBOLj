@@ -22,7 +22,7 @@ import org.sbolstandard.core2.SequenceOntology;
 public class ComponentDefinitionOutput {
 	public static void main( String[] args ) throws Exception
     {
-		String prURI="http://partsregistry.org";		
+		String prURI="http://partsregistry.org/";		
 		String prPrefix="pr";	
 		
 		SBOLDocument document = new SBOLDocument();				

@@ -19,7 +19,7 @@ public class CutExample {
 
 	public static void main( String[] args ) throws Exception
     {
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		
 		SBOLDocument document = new SBOLDocument();		
 		document.setDefaultURIprefix(prURI);

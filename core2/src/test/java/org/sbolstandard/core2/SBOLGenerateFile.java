@@ -24,10 +24,10 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 			assertTrue(false);
 		}
 		SBOLDocument actual = SBOLTestUtils.writeAndRead(expected,compliant);
-//		if (!actual.equals(expected)) {
-//			System.out.println("Expected:"+expected.toString());
-//			System.out.println("Actual  :"+actual.toString());
-//		}
+		if (!actual.equals(expected)) {
+			System.out.println("Expected:"+expected.toString());
+			System.out.println("Actual  :"+actual.toString());
+		}
 		SBOLValidate.validateSBOL(actual, false, compliant, false);
 		if (SBOLValidate.getNumErrors()>0) {
 			for (String error : SBOLValidate.getErrors()) {

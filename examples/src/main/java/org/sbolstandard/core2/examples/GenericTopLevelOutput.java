@@ -19,9 +19,9 @@ public class GenericTopLevelOutput {
 
 	public static void main( String[] args ) throws Exception
     {
-		String myAppURI="http://www.myapp.org";
+		String myAppURI="http://www.myapp.org/";
 		String myAppPrefix="myapp";
-		String prURI="http://www.partsregistry.org";
+		String prURI="http://www.partsregistry.org/";
 				
 		SBOLDocument document = new SBOLDocument();		
 		document.addNamespace(URI.create(myAppURI+ "/") , myAppPrefix);		
