@@ -71,8 +71,8 @@ public class SBOLDocumentTest {
 		doc.addNamespace(created_ns);
 		assertTrue(doc.getNamespaces().size() == 5);
 		// TODO: something wrong here
-		//doc.removeNamespace(new URI(created_ns.getNamespaceURI()));
-		//assertTrue(doc.getNamespace(new URI(created_ns.getNamespaceURI())).toString().length() == 0);
+		doc.removeNamespace(new URI(created_ns.getNamespaceURI()));
+		assertTrue(doc.getNamespace(new URI(created_ns.getNamespaceURI())) == null);
 		doc.addNamespace(created_ns);
 		assertTrue(doc.getNamespaces().size() == 5);
 

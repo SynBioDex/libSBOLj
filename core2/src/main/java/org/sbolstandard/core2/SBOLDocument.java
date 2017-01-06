@@ -2168,7 +2168,7 @@ public class SBOLDocument {
 		if (isRequiredNamespaceBinding(namespaceURI)) {
 			throw new IllegalStateException("Cannot remove required namespace " + namespaceURI.toString());
 		}
-		nameSpaces.remove(namespaceURI);
+		nameSpaces.remove(namespaceURI.toString());
 	}
 	
 	/**
