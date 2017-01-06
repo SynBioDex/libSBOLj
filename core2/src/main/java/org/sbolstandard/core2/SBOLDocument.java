@@ -96,10 +96,10 @@ public class SBOLDocument {
 		moduleDefinitions = new HashMap<>();
 		sequences = new HashMap<>();
 		nameSpaces = new HashMap<>();
-		nameSpaces.put(Sbol2Terms.sbol2.getPrefix(), Sbol2Terms.sbol2);
-		nameSpaces.put(Sbol1Terms.rdf.getPrefix(), Sbol1Terms.rdf);
-		nameSpaces.put(Sbol2Terms.dc.getPrefix(), Sbol2Terms.dc);
-		nameSpaces.put(Sbol2Terms.prov.getPrefix(), Sbol2Terms.prov);
+		nameSpaces.put(Sbol2Terms.sbol2.getNamespaceURI(), Sbol2Terms.sbol2);
+		nameSpaces.put(Sbol1Terms.rdf.getNamespaceURI(), Sbol1Terms.rdf);
+		nameSpaces.put(Sbol2Terms.dc.getNamespaceURI(), Sbol2Terms.dc);
+		nameSpaces.put(Sbol2Terms.prov.getNamespaceURI(), Sbol2Terms.prov);
 		prefixes = new HashSet<>();
 		registries = new HashMap<>();
 	}
@@ -2068,7 +2068,7 @@ public class SBOLDocument {
 				!namespaceBinding.getNamespaceURI().endsWith("/")) {
 			throw new SBOLValidationException("sbol-10105");
 		}
-		nameSpaces.put(namespaceBinding.getPrefix(), namespaceBinding);
+		nameSpaces.put(namespaceBinding.getNamespaceURI(), namespaceBinding);
 	}
 
 	/**
