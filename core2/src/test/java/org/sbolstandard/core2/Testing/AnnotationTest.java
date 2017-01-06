@@ -20,7 +20,7 @@ public class AnnotationTest {
 
 	private SBOLDocument doc = null;
 	private ComponentDefinition gRNA_b_gene = null;
-	private String prURI="http://partsregistry.org";
+	private String prURI="http://partsregistry.org/";
 
 	@Before
 	public void setUp() throws Exception {

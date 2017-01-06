@@ -404,7 +404,7 @@ public abstract class Identified {
 		return annotation;
 	}
 	
-	private void addNamespace(Annotation annotation) {
+	private void addNamespace(Annotation annotation) throws SBOLValidationException {
 		if (sbolDocument==null) return;
 		QName qName = annotation.getQName();
 		QName qNameInNamespace = sbolDocument.getNamespace(URI.create(qName.getNamespaceURI()));

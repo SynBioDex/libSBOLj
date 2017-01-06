@@ -68,7 +68,7 @@ public class ValidationTest {
 	@Test
 	public void testValidation() throws IOException, SBOLConversionException, SBOLValidationException {
 		SBOLReader.setKeepGoing(true);
-		SBOLDocument doc = SBOLReader.read(file);
+			SBOLDocument doc = SBOLReader.read(file);
 		SBOLValidate.validateSBOL(doc, true, true, true);
 		if (SBOLReader.getNumErrors() > 0) {
 			for(String error : SBOLReader.getErrors())

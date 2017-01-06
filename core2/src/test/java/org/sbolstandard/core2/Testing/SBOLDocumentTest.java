@@ -62,7 +62,7 @@ public class SBOLDocumentTest {
 	}
 	
 	@Test
-	public void test_namespaceMethods() throws URISyntaxException
+	public void test_namespaceMethods() throws URISyntaxException, SBOLValidationException
 	{
 		List<QName> doc_namespaces = doc.getNamespaces();
 		doc_namespaces.get(0);

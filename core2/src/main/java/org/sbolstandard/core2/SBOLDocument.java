@@ -2040,13 +2040,14 @@ public class SBOLDocument {
 	 *
 	 * @param nameSpaceURI the URI used to construct a new namespace
 	 * @param prefix the prefix used to construct a new namespace
+	 * @throws SBOLValidationException if namespace URI does not end with a delimeter
 	 */
-	public void addNamespace(URI nameSpaceURI, String prefix) {
+	public void addNamespace(URI nameSpaceURI, String prefix) throws SBOLValidationException {
 
 		//		if (!URIcompliance.isURIprefixCompliant(nameSpaceURI.toString())) {
 		//			throw new SBOLException("Namespace URI " + nameSpaceURI.toString() + " is not valid.");
 		//		}
-		nameSpaces.put(prefix, NamespaceBinding(nameSpaceURI.toString(), prefix));
+		addNamespaceBinding(NamespaceBinding(nameSpaceURI.toString(), prefix));
 
 	}
 
@@ -2054,14 +2055,19 @@ public class SBOLDocument {
 	 * Adds the given namespace QName to this SBOL document.
 	 *
 	 * @param qName the QName to be added
+	 * @throws SBOLValidationException when namespace URI does not end with a delimiter
 	 */
-	public void addNamespace(QName qName) {
+	public void addNamespace(QName qName) throws SBOLValidationException {
 
-		nameSpaces.put(qName.getPrefix(), NamespaceBinding(qName.getNamespaceURI(),
-				qName.getPrefix()));
+		addNamespaceBinding(NamespaceBinding(qName.getNamespaceURI(),qName.getPrefix()));
 	}
 
-	void addNamespaceBinding(NamespaceBinding namespaceBinding) {
+	void addNamespaceBinding(NamespaceBinding namespaceBinding) throws SBOLValidationException {
+		if (!namespaceBinding.getNamespaceURI().endsWith("#")&&
+				!namespaceBinding.getNamespaceURI().endsWith(":")&&
+				!namespaceBinding.getNamespaceURI().endsWith("/")) {
+			throw new SBOLValidationException("sbol-10105");
+		}
 		nameSpaces.put(namespaceBinding.getPrefix(), namespaceBinding);
 	}
 
