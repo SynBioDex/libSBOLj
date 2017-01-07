@@ -33,18 +33,18 @@
     <dcterms:description>pLactetR</dcterms:description>
     <sbol:type rdf:resource="http://some.ontology.org/DNA"/>
     <sbol:role rdf:resource="http://some.ontology.org/Gene"/>
-    <sbol:subComponent>
+    <sbol:component>
       <sbol:Component rdf:about="P">
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/pLac/1/0"/>
       </sbol:Component>
-    </sbol:subComponent>
-    <sbol:subComponent>
+    </sbol:component>
+    <sbol:component>
       <sbol:Component rdf:about="C">
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:definition rdf:resource="http://www.async.ece.utah.edu/tetR/1/0"/>
       </sbol:Component>
-    </sbol:subComponent>
+    </sbol:component>
     <sbol:sequenceConstraint>
       <sbol:SequenceConstraint rdf:about="struct_constraint">
         <sbol:restriction rdf:resource="http://sbols.org/v2#precedes"/>
