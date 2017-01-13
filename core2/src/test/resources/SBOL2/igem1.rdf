@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<rdf:RDF xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbolhub="http://sbolhub.org/" xmlns:igem="http://parts.igem.org/#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sesame="http://www.openrdf.org/schema/sesame#" xmlns:fn="http://www.w3.org/2005/xpath-functions#" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:fn="http://www.w3.org/2005/xpath-functions#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:sesame="http://www.openrdf.org/schema/sesame#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbol="http://sbols.org/v2#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:sbolhub="http://sbolhub.org/" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:igem="http://parts.igem.org/#">
   <sbol:Collection rdf:about="http://sbolhub.org/col/igem_sbol2_151015212715">
     <sbol:persistentIdentity rdf:resource="http://sbolhub.org/col/igem_sbol2_151015212715"/>
     <sbol:displayId>igem_sbol2_151015212715</sbol:displayId>

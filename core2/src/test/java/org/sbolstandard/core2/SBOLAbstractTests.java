@@ -179,7 +179,7 @@ public abstract class SBOLAbstractTests {
 		String GTL_ID = "ID";
 		String GTL_Version = "1.0";
 		String GTL_Qname = "name";
-		GenericTopLevel GTL = document.createGenericTopLevel(GTL_ID, GTL_Version, QName.valueOf(GTL_Qname));
+		GenericTopLevel GTL = document.createGenericTopLevel(GTL_ID, GTL_Version, new QName(prURI, "group", prPrefix));
 		document.removeGenericTopLevel(GTL);
 		runTest("/SBOL2/test_GenericTopLevel_remove.rdf", document, "rdf", true);
 	}

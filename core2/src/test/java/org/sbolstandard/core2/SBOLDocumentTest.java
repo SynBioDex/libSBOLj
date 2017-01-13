@@ -157,13 +157,13 @@ public class SBOLDocumentTest {
 	@Test
 	public void Test_GenericTopLevel_CopyCreate() throws SBOLValidationException{
 		
-		String prURI="http://partsregistry.org";
-//		String prPrefix="pr";
+		String prURI="http://partsregistry.org/";
+		String prPrefix="pr";
 		SBOLDocument document1 = new SBOLDocument();
 		document1.setDefaultURIprefix(prURI);
 		document1.setTypesInURIs(false);
 		
-		String prURI2="http://partsregistry2.org";
+		String prURI2="http://partsregistry2.org/";
 //		String prPrefix2="pr2";
 		SBOLDocument document2 = new SBOLDocument();
 		document2.setDefaultURIprefix(prURI2);
@@ -173,8 +173,7 @@ public class SBOLDocumentTest {
 		String GTL1Name = "GTL1";
 		String GTL1Description = "Description";
 		String GTL1Version = "1.0";
-		String GTL1Qname = "name";
-		GenericTopLevel GTL1 = document1.createGenericTopLevel(GTL1ID, GTL1Version, QName.valueOf(GTL1Qname));
+		GenericTopLevel GTL1 = document1.createGenericTopLevel(GTL1ID, GTL1Version, new QName(prURI, "group", prPrefix));
 		GTL1.setDescription(GTL1Description);
 		GTL1.setName(GTL1Name);
 		GenericTopLevel GTL2 = (GenericTopLevel)document2.createCopy(GTL1);

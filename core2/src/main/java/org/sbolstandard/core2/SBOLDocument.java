@@ -1763,6 +1763,10 @@ public class SBOLDocument {
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException("sbol-12302");
 		}
+		QName qNameInNamespace = getNamespace(URI.create(rdfType.getNamespaceURI()));
+		if (qNameInNamespace==null || rdfType.getPrefix()!=qNameInNamespace.getPrefix()) {
+			addNamespace(URI.create(rdfType.getNamespaceURI()), rdfType.getPrefix());
+		}
 		GenericTopLevel g = new GenericTopLevel(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
 		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
 		g.setDisplayId(displayId);
