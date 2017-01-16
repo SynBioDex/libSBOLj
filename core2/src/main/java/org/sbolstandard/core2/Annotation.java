@@ -335,6 +335,15 @@ public class Annotation {
 		}
 		return null;
 	}
+	
+	void setNestedIdentity(URI nestedURI) {
+		List<NamedProperty<QName>> list = new ArrayList<>();
+		for(Annotation a : getAnnotations())
+		{
+			list.add(a.getValue());
+		}
+		value = NamedProperty(getQName(), NestedDocument(getNestedQName(), nestedURI, NamedProperties(list)));
+	}
 
 	/**
 	 * Checks if the annotation has a nested value property.

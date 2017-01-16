@@ -227,7 +227,7 @@ public abstract class SBOLAbstractTests {
 		promoter.createAnnotation(
 				new QName(prURI, "information", prPrefix),
 				new QName(prURI, "Information", prPrefix),
-				URI.create("http://parts.igem.org/cgi/partsdb/part_info.cgi?part_name=BBa_J23119"),
+				URI.create("http://partsregistry.org/cd/BBa_J23119/information"),
 				new ArrayList<Annotation>(Arrays.asList(sigmaFactor,regulation)));
 
 		//		SBOLWriter.write(document,(System.out));

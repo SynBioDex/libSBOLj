@@ -1285,6 +1285,9 @@ public class SBOLDocument {
 		}
 		if (displayId == null) {
 			displayId = topLevel.getDisplayId();
+			if (displayId == null) {
+				displayId = URIcompliance.extractDisplayId(topLevel.getIdentity());
+			}
 		}
 		if (version == null) {
 			version = topLevel.getVersion();
@@ -1420,9 +1423,13 @@ public class SBOLDocument {
 				GenericTopLevel genericTopLevel = getGenericTopLevel(annotation.getURIValue());
 				if (genericTopLevel!=null) {
 					annotation.setURIValue(URIcompliance.createCompliantURI(URIPrefix, 
-							genericTopLevel.getDisplayId(), version!=null?version:genericTopLevel.getVersion()));
+							genericTopLevel.getDisplayId()!=null?genericTopLevel.getDisplayId():URIcompliance.extractDisplayId(genericTopLevel.getIdentity()), 
+							version!=null?version:genericTopLevel.getVersion()));
 				}
 			} else if (annotation.isNestedAnnotations()) {
+				URI nestedURI = annotation.getNestedIdentity();
+				URI newURI = URI.create(nestedURI.toString().replace("http://",URIPrefix)+"/"+version);
+				annotation.setNestedIdentity(newURI);
 				changeURIPrefixVersion(annotation.getAnnotations(),URIPrefix,version);
 			}
 		}
