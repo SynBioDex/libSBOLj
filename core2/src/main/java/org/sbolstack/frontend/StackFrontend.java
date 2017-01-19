@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -41,6 +42,7 @@ public class StackFrontend
     PoolingHttpClientConnectionManager connectionManager;
     HttpClient client;
     String backendUrl;
+    String user = null;
 
     /**
      * Creates an instance of the SBOL Stack API.
@@ -1148,9 +1150,112 @@ public class StackFrontend
         }
     }
     
+    /**
+	 * Sets the user to null to indicate that no user is logged in.
+     */
+    public void logout() 
+    {
+    	user = null;
+    }
+
+    /**
+     * Login to the stack.
+     * @param email The user's email
+     * @param password The user's password
+     * 
+     * @throws StackException if there was an error communicating with the stack
+     */
+    public void login(String email, String password) throws StackException
+    {    	
+        String url = backendUrl + "/remoteLogin";
+
+        HttpPost request = new HttpPost(url);
+        
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("email", email));
+        params.add(new BasicNameValuePair("password", password));
+                
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(params));
+            request.setHeader("Content-Type", "application/x-www-form-urlencoded");
+            System.out.println(params.toString());
+            
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+
+            HttpEntity entity = response.getEntity();
+            user = inputStreamToString(entity.getContent());
+            System.out.println(user.toString());
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+            throw new StackException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
     
-    
-    
+    /**
+     * Submit to the stack.
+     * @param id 
+     * @param version 
+     * @param name 
+     * @param citations 
+     * @param description 
+     * @param keywords 
+     * @param chassis 
+     * @param purpose 
+     * @param document 
+     * 
+     * @throws StackException if there was an error communicating with the stack
+     */
+    public void submit(String id, String version, String name, String description, String citations,
+    		String keywords, String chassis, String purpose, SBOLDocument document) throws StackException
+    {
+    	if (user==null) {
+    		Exception e = new Exception("Must be logged in to submit.");
+    		throw new StackException(e);
+    	}
+        String url = backendUrl + "/remoteSubmit";
+
+        HttpPost request = new HttpPost(url);
+        
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("id", id));
+        params.add(new BasicNameValuePair("version", version));
+        params.add(new BasicNameValuePair("name", name));
+        params.add(new BasicNameValuePair("description", description));
+        params.add(new BasicNameValuePair("citations", citations));
+        params.add(new BasicNameValuePair("keywords", keywords));
+        params.add(new BasicNameValuePair("chassis", chassis));
+        params.add(new BasicNameValuePair("purpose", purpose));
+        params.add(new BasicNameValuePair("file", serializeDocument(document)));
+        params.add(new BasicNameValuePair("user",user));
+	        
+        try
+        {
+            request.setEntity(new UrlEncodedFormEntity(params));
+            request.setHeader("Content-Type", "application/x-www-form-urlencoded");
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	e.printStackTrace();
+            throw new StackException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
+     
     private String serializeDocument(SBOLDocument document) throws StackException
     {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -1314,7 +1419,18 @@ public class StackFrontend
                 throw new NotFoundException();
             
             default:
-                throw new StackException();
+            	HttpEntity entity = response.getEntity();
+                try {
+					throw new StackException(inputStreamToString(entity.getContent()));
+				}
+				catch (UnsupportedOperationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         }
     }

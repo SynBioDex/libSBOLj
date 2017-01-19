@@ -2040,10 +2040,12 @@ public class SBOLDocument {
 	/**
 	 * Adds the given registry to this SBOL document.
 	 * @param registryURL URL of the registry to add
+	 * @return The StackFrontend object that has been created
 	 */
-	public void addRegistry(String registryURL) {
+	public StackFrontend addRegistry(String registryURL) {
 		StackFrontend stackFrontend = new StackFrontend(registryURL);
 		registries.put(registryURL, stackFrontend);
+		return stackFrontend;
 	}
 	
 	/**

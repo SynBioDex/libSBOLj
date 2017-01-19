@@ -1,10 +1,5 @@
 package org.sbolstandard.core2;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.util.ArrayList;
-
-import org.sbolstack.frontend.IdentifiedMetadata;
 import org.sbolstack.frontend.StackFrontend;
 
 class readTester {
@@ -42,12 +37,16 @@ class readTester {
 			//ModuleDefinition md = doc3.getModuleDefinition(URI.create("http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/1.0"));
 			//System.out.println(md.getWasDerivedFrom());
 			SBOLDocument doc2 = new SBOLDocument();
+			doc2.setDefaultURIprefix("http://dummy.org");
 			doc2.setComplete(false);
-			doc2.addRegistry("http://localhost:9090");
+			doc2.createSequence("testSeq", "1", "agct", Sequence.IUPAC_DNA);
+			StackFrontend sfe = doc2.addRegistry("http://localhost:7777");
+			sfe.login("test@utah.edu", "test");
+			sfe.submit("testId", "1", "testName", "testDescription", "", "", "", "", doc2);
 			//ArrayList<IdentifiedMetadata> imd = doc2.getRegistry("http://synbiohub.org:9090").searchRootCollectionMetadata();
 			//System.out.println(imd.toString());
-			doc2.getTopLevel(new URI("http://synbiohub.org/public/igem/BBa_K136042/1"));
-			doc2.write(System.out);
+			//doc2.getTopLevel(new URI("http://synbiohub.org/public/igem/BBa_K136042/1"));
+			//doc2.write(System.out);
 			
 //			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_19);
 //			if (file == null)
