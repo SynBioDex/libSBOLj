@@ -42,11 +42,11 @@ class readTester {
 			doc2.setDefaultURIprefix("http://dummy.org");
 			doc2.setComplete(false);
 			ComponentDefinition cd = doc2.createComponentDefinition("testCD", "1", ComponentDefinition.DNA);
-			cd.addSequence(URI.create("http://myfakesequence.com"));
+			//cd.addSequence(URI.create("http://myfakesequence.com"));
 			SBOLWriter.write(doc2, System.out);
 			StackFrontend sfe = doc2.addRegistry("http://localhost:7777");
 			sfe.login("test@utah.edu", "test");
-			sfe.submit("testCDCol", "1", "testName", "testDescription", "", "", "", "", doc2);
+			sfe.submit("testCDCol", "1", "testName", "testDescription", "", "", "0", doc2);
 			//ArrayList<IdentifiedMetadata> imd = doc2.getRegistry("http://synbiohub.org:9090").searchRootCollectionMetadata();
 			//System.out.println(imd.toString());
 			//doc2.getTopLevel(new URI("http://synbiohub.org/public/igem/BBa_K136042/1"));

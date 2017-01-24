@@ -1202,20 +1202,19 @@ public class StackFrontend
     
     /**
      * Submit to the stack.
-     * @param id 
-     * @param version 
-     * @param name 
-     * @param citations 
-     * @param description 
-     * @param keywords 
-     * @param chassis 
-     * @param purpose 
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param name The submission name
+     * @param description The 
+     * @param citations The pubMedIds for this submission
+     * @param keywords A comma separated list of keywords
+     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge
      * @param document 
      * 
      * @throws StackException if there was an error communicating with the stack
      */
     public void submit(String id, String version, String name, String description, String citations,
-    		String keywords, String chassis, String purpose, SBOLDocument document) throws StackException
+    		String keywords, String overwrite_merge, SBOLDocument document) throws StackException
     {
     	if (user==null) {
     		Exception e = new Exception("Must be logged in to submit.");
@@ -1232,8 +1231,7 @@ public class StackFrontend
         params.add(new BasicNameValuePair("description", description));
         params.add(new BasicNameValuePair("citations", citations));
         params.add(new BasicNameValuePair("keywords", keywords));
-        params.add(new BasicNameValuePair("chassis", chassis));
-        params.add(new BasicNameValuePair("purpose", purpose));
+        params.add(new BasicNameValuePair("overwrite_merge", overwrite_merge));
         params.add(new BasicNameValuePair("file", serializeDocument(document)));
         params.add(new BasicNameValuePair("user",user));
 	        
