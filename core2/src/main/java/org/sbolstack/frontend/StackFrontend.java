@@ -27,6 +27,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -1224,21 +1226,28 @@ public class StackFrontend
 
         HttpPost request = new HttpPost(url);
         
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("id", id));
-        params.add(new BasicNameValuePair("version", version));
-        params.add(new BasicNameValuePair("name", name));
-        params.add(new BasicNameValuePair("description", description));
-        params.add(new BasicNameValuePair("citations", citations));
-        params.add(new BasicNameValuePair("keywords", keywords));
-        params.add(new BasicNameValuePair("overwrite_merge", overwrite_merge));
-        params.add(new BasicNameValuePair("file", serializeDocument(document)));
-        params.add(new BasicNameValuePair("user",user));
+        MultipartEntity params = new MultipartEntity();
+        try {
+			params.addPart("id", new StringBody(id));
+	        params.addPart("version", new StringBody(version));
+	        params.addPart("name", new StringBody(name));
+	        params.addPart("description", new StringBody(description));
+	        params.addPart("citations", new StringBody(citations));
+	        params.addPart("keywords", new StringBody(keywords));
+	        params.addPart("overwrite_merge", new StringBody(overwrite_merge));
+	        params.addPart("user", new StringBody(user));
+	        params.addPart("file", new StringBody(serializeDocument(document)));
+		}
+		catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new StackException(e1);
+		}
 	        
         try
         {
-            request.setEntity(new UrlEncodedFormEntity(params));
-            request.setHeader("Content-Type", "application/x-www-form-urlencoded");
+            request.setEntity(params);
+            //request.setHeader("Content-Type", "application/x-www-form-urlencoded");
             HttpResponse response = client.execute(request);
             checkResponseCode(response);
         }
