@@ -1190,7 +1190,6 @@ public class StackFrontend
         }
         catch (Exception e)
         {
-        	e.printStackTrace();
             throw new StackException(e);
             
         }
