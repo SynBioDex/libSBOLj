@@ -1181,14 +1181,12 @@ public class StackFrontend
         {
             request.setEntity(new UrlEncodedFormEntity(params));
             request.setHeader("Content-Type", "application/x-www-form-urlencoded");
-            System.out.println(params.toString());
             
             HttpResponse response = client.execute(request);
             checkResponseCode(response);
 
             HttpEntity entity = response.getEntity();
             user = inputStreamToString(entity.getContent());
-            System.out.println(user.toString());
         }
         catch (Exception e)
         {
