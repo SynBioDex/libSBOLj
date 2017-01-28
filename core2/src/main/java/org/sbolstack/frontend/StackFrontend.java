@@ -1429,11 +1429,11 @@ public class StackFrontend
 				}
 				catch (UnsupportedOperationException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
             }
         }
