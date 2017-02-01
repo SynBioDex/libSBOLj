@@ -1496,21 +1496,22 @@ public class SBOLDocument {
 			ComponentDefinition docCD = document.getComponentDefinition(componentDefinition.getDisplayId(), version!=null?version:componentDefinition.getVersion());
 			changeURIPrefixVersion(docCD,URIPrefix,version);
 			for (Component component : componentDefinition.getComponents()) {
-				ComponentDefinition cd = component.getDefinition();
 				Component docComp = docCD.getComponent(component.getDisplayId());
-				ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
-				if (docRefCD==null) {
+				ComponentDefinition cd = component.getDefinition();
+				if (cd==null) {
 					docComp.setDefinition(component.getDefinitionURI());
 				} else {
+					ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
 					docComp.setDefinition(docRefCD.getIdentity());
 				}
 				changeURIPrefixVersion(docComp,URIPrefix,version);
 				for (MapsTo mapsTo : component.getMapsTos()) {
-					Component remoteComponent = (Component)mapsTo.getRemote();
 					MapsTo docMapsTo = docComp.getMapsTo(mapsTo.getDisplayId());
-					if (docRefCD==null) {
+					Component remoteComponent = (Component)mapsTo.getRemote();
+					if (remoteComponent==null) {
 						docMapsTo.setRemote(mapsTo.getRemoteURI());
 					} else {
+						ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
 						Component docRemoteComponent = docRefCD.getComponent(remoteComponent.getDisplayId());
 						docMapsTo.setRemote(docRemoteComponent.getIdentity());
 					}
@@ -1539,21 +1540,22 @@ public class SBOLDocument {
 			ModuleDefinition docMD = document.getModuleDefinition(moduleDefinition.getDisplayId(), version!=null?version:moduleDefinition.getVersion());
 			changeURIPrefixVersion(docMD,URIPrefix,version);
 			for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
-				ComponentDefinition cd = functionalComponent.getDefinition();
 				FunctionalComponent docComp = docMD.getFunctionalComponent(functionalComponent.getDisplayId());
-				ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
-				if (docRefCD==null) {
+				ComponentDefinition cd = functionalComponent.getDefinition();
+				if (cd==null) {
 					docComp.setDefinition(functionalComponent.getDefinitionURI());
 				} else {
+					ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
 					docComp.setDefinition(docRefCD.getIdentity());
 				}
 				changeURIPrefixVersion(docComp,URIPrefix,version);
 				for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
-					ComponentInstance remoteComponent = mapsTo.getRemote();
 					MapsTo docMapsTo = docComp.getMapsTo(mapsTo.getDisplayId());
-					if (docRefCD==null) {
+					ComponentInstance remoteComponent = mapsTo.getRemote();
+					if (remoteComponent==null) {
 						docMapsTo.setRemote(mapsTo.getRemoteURI());
 					} else {
+						ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
 						Component docRemoteComponent = docRefCD.getComponent(remoteComponent.getDisplayId());
 						docMapsTo.setRemote(docRemoteComponent.getIdentity());
 					}
@@ -1561,21 +1563,22 @@ public class SBOLDocument {
 				}
 			}
 			for (Module module : moduleDefinition.getModules()) {
-				ModuleDefinition md = module.getDefinition();
 				Module docModule = docMD.getModule(module.getDisplayId());
-				ModuleDefinition docRefMD = document.getModuleDefinition(md.getDisplayId(), version!=null?version:md.getVersion());
-				if (docRefMD==null) {
+				ModuleDefinition md = module.getDefinition();
+				if (md==null) {
 					docModule.setDefinition(module.getDefinitionURI());
 				} else {
+					ModuleDefinition docRefMD = document.getModuleDefinition(md.getDisplayId(), version!=null?version:md.getVersion());
 					docModule.setDefinition(docRefMD.getIdentity());
 				}
 				changeURIPrefixVersion(docModule,URIPrefix,version);
 				for (MapsTo mapsTo : module.getMapsTos()) {
-					ComponentInstance remoteComponent = mapsTo.getRemote();
 					MapsTo docMapsTo = docModule.getMapsTo(mapsTo.getDisplayId());
-					if (docRefMD==null) {
+					ComponentInstance remoteComponent = mapsTo.getRemote();
+					if (remoteComponent==null) {
 						docMapsTo.setRemote(mapsTo.getRemoteURI());
 					} else {
+						ModuleDefinition docRefMD = document.getModuleDefinition(md.getDisplayId(), version!=null?version:md.getVersion());
 						FunctionalComponent docRemoteComponent = docRefMD.getFunctionalComponent(remoteComponent.getDisplayId());
 						docMapsTo.setRemote(docRemoteComponent.getIdentity());
 					}
@@ -2425,6 +2428,7 @@ public class SBOLDocument {
 	}
 
 	/**
+	 * Method to remove a TopLevel object
 	 * @param topLevel
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
 	 * <ul>
@@ -2436,7 +2440,7 @@ public class SBOLDocument {
 	 * <li>{@link #removeModuleDefinition(ModuleDefinition)}.</li>
 	 * </ul>
 	 */
-	private void removeTopLevel(TopLevel topLevel) throws SBOLValidationException {
+	public void removeTopLevel(TopLevel topLevel) throws SBOLValidationException {
 		if (topLevel instanceof GenericTopLevel) removeGenericTopLevel((GenericTopLevel) topLevel);
 		else if (topLevel instanceof Collection) removeCollection((Collection) topLevel);
 		else if (topLevel instanceof Sequence) removeSequence((Sequence) topLevel);
