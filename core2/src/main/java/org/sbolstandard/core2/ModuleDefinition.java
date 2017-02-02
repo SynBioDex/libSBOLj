@@ -78,16 +78,28 @@ public class ModuleDefinition extends TopLevel {
 			this.addRole(role);
 		}
 		for (FunctionalComponent component : moduleDefinition.getFunctionalComponents()) {
-			FunctionalComponent newComponent = this.createFunctionalComponent(component.getDisplayId(), 
+			String displayId = component.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(component.getIdentity());
+			}
+			FunctionalComponent newComponent = this.createFunctionalComponent(displayId, 
 					component.getAccess(), component.getDefinitionURI(), component.getDirection());
 			newComponent.copy(component);
 		}
 		for (Module subModule : moduleDefinition.getModules()) {
-			Module newModule = this.createModule(subModule.getDisplayId(), subModule.getDefinitionURI());
+			String displayId = subModule.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(subModule.getIdentity());
+			}
+			Module newModule = this.createModule(displayId, subModule.getDefinitionURI());
 			newModule.copy(subModule);
 		}
 		for (Interaction interaction : moduleDefinition.getInteractions()) {
-			Interaction newInteraction = this.createInteraction(interaction.getDisplayId(), 
+			String displayId = interaction.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(interaction.getIdentity());
+			}
+			Interaction newInteraction = this.createInteraction(displayId, 
 					interaction.getTypes());
 			newInteraction.copy(interaction);
 		}

@@ -70,7 +70,11 @@ public class FunctionalComponent extends ComponentInstance {
 		this.mapsTos = new HashMap<>();
 		if (!functionalComponent.getMapsTos().isEmpty()) {
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
-				MapsTo newMapsTo = this.createMapsTo(mapsTo.getDisplayId(), mapsTo.getRefinement(), mapsTo.getLocal().getDisplayId(), 
+				String displayId = mapsTo.getDisplayId();
+				if (displayId==null) {
+					displayId = URIcompliance.extractDisplayId(mapsTo.getIdentity());
+				}
+				MapsTo newMapsTo = this.createMapsTo(displayId, mapsTo.getRefinement(), mapsTo.getLocal().getDisplayId(), 
 						mapsTo.getRemoteURI());
 				newMapsTo.copy(mapsTo);
 			}

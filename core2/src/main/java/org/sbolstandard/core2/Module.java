@@ -56,7 +56,11 @@ public class Module extends Identified {
 		((Identified)this).copy((Identified)module);
 		if (!module.getMapsTos().isEmpty()) {
 			for (MapsTo mapsTo : module.getMapsTos()) {
-				MapsTo newMapsTo = this.createMapsTo(mapsTo.getDisplayId(), mapsTo.getRefinement(), mapsTo.getLocal().getDisplayId(), 
+				String displayId = mapsTo.getDisplayId();
+				if (displayId==null) {
+					displayId = URIcompliance.extractDisplayId(mapsTo.getIdentity());
+				}
+				MapsTo newMapsTo = this.createMapsTo(displayId, mapsTo.getRefinement(), mapsTo.getLocal().getDisplayId(), 
 						mapsTo.getRemoteURI());
 				newMapsTo.copy(mapsTo);
 			}

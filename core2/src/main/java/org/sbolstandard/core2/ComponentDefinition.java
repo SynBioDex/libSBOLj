@@ -152,19 +152,31 @@ public class ComponentDefinition extends TopLevel {
 			this.addRole(URI.create(role.toString()));
 		}
 		for (Component component : componentDefinition.getComponents()) {
-			Component newComponent = this.createComponent(component.getDisplayId(), 
+			String displayId = component.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(component.getIdentity());
+			}
+			Component newComponent = this.createComponent(displayId, 
 					component.getAccess(), component.getDefinitionURI());
 			newComponent.copy(component);
 		}
 		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
-			SequenceConstraint newSequenceConstraint = this.createSequenceConstraint(sequenceConstraint.getDisplayId(), 
+			String displayId = sequenceConstraint.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(sequenceConstraint.getIdentity());
+			}
+			SequenceConstraint newSequenceConstraint = this.createSequenceConstraint(displayId, 
 					sequenceConstraint.getRestriction(), sequenceConstraint.getSubject().getDisplayId(),
 					sequenceConstraint.getObject().getDisplayId());
 			newSequenceConstraint.copy(sequenceConstraint);
 		}
 		for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
+			String displayId = sequenceAnnotation.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(sequenceAnnotation.getIdentity());
+			}
 			SequenceAnnotation newSequenceAnnotation = this.createSequenceAnnotation(
-				sequenceAnnotation.getDisplayId(),"DUMMY__LOCATION");
+				displayId,"DUMMY__LOCATION");
 			newSequenceAnnotation.copy(sequenceAnnotation);
 		}
 		this.setSequences(componentDefinition.getSequenceURIs());
