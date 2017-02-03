@@ -1430,7 +1430,9 @@ public class SBOLDocument {
 				URI nestedURI = annotation.getNestedIdentity();
 				URI newURI = URI.create(nestedURI.toString().replace("http://",URIPrefix)+"/"+version);
 				annotation.setNestedIdentity(newURI);
-				changeURIPrefixVersion(annotation.getAnnotations(),URIPrefix,version);
+				List<Annotation> nestedAnnotations = annotation.getAnnotations();
+				changeURIPrefixVersion(nestedAnnotations,URIPrefix,version);
+				annotation.setNestedAnnotations(nestedAnnotations);
 			}
 		}
 	}
