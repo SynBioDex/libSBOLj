@@ -1420,11 +1420,11 @@ public class SBOLDocument {
 	private void changeURIPrefixVersion(List<Annotation> annotations,String URIPrefix,String version) throws SBOLValidationException {
 		for (Annotation annotation : annotations) {
 			if (annotation.isURIValue()) {
-				GenericTopLevel genericTopLevel = getGenericTopLevel(annotation.getURIValue());
-				if (genericTopLevel!=null) {
+				TopLevel topLevel = getTopLevel(annotation.getURIValue());
+				if (topLevel!=null) {
 					annotation.setURIValue(URIcompliance.createCompliantURI(URIPrefix, 
-							genericTopLevel.getDisplayId()!=null?genericTopLevel.getDisplayId():URIcompliance.extractDisplayId(genericTopLevel.getIdentity()), 
-							version!=null?version:genericTopLevel.getVersion()));
+							topLevel.getDisplayId()!=null?topLevel.getDisplayId():URIcompliance.extractDisplayId(topLevel.getIdentity()), 
+							version!=null?version:topLevel.getVersion()));
 				}
 			} else if (annotation.isNestedAnnotations()) {
 				URI nestedURI = annotation.getNestedIdentity();
