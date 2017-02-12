@@ -70,6 +70,6 @@ public class Provenance_CodonOptimization {
 								)));
 								
 		optimizedCds.createAnnotation(provNs.withLocalPart("wasGeneratedBy"), activity.getIdentity());
-		SBOLWriter.write(document,(System.out));		
+		SBOLWriter.write(document,"/Users/myers/Provenance_CodonOptimization.xml");		
     }
 }

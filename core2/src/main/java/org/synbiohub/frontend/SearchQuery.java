@@ -1,5 +1,5 @@
 
-package org.sbolstack.frontend;
+package org.synbiohub.frontend;
 
 import java.util.ArrayList;
 

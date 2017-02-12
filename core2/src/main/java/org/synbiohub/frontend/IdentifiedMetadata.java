@@ -1,4 +1,4 @@
-package org.sbolstack.frontend;
+package org.synbiohub.frontend;
 
 /**
  * The metadata common to all SBOL data objects

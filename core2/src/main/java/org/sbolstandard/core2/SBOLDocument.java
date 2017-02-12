@@ -27,8 +27,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import org.sbolstack.frontend.StackException;
-import org.sbolstack.frontend.StackFrontend;
+import org.synbiohub.frontend.SynBioHubException;
+import org.synbiohub.frontend.SynBioHubFrontend;
 
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 
@@ -50,7 +50,7 @@ public class SBOLDocument {
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
 	private HashMap<String, NamespaceBinding> nameSpaces;
-	private HashMap<String, StackFrontend> registries;
+	private HashMap<String, SynBioHubFrontend> registries;
 	private Set<String> prefixes;
 	private String defaultURIprefix;
 	private boolean complete = false;
@@ -250,22 +250,22 @@ public class SBOLDocument {
 	 * Returns the module definition matching the given identity URI from this
 	 * SBOL document object's list of module definitions.
 	 *
-	 * @param moduleURI the give identity URI of the module definition to be retrieved
+	 * @param moduleDefinitionURI the give identity URI of the module definition to be retrieved
 	 * @return the matching module definition if present, or {@code null} otherwise
 	 */
-	public ModuleDefinition getModuleDefinition(URI moduleURI) {
-		ModuleDefinition moduleDefinition = moduleDefinitions.get(moduleURI);
+	public ModuleDefinition getModuleDefinition(URI moduleDefinitionURI) {
+		ModuleDefinition moduleDefinition = moduleDefinitions.get(moduleDefinitionURI);
 		if (moduleDefinition==null) {
-			for (StackFrontend frontend : getRegistries()) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
 				try {
-					moduleDefinition = frontend.fetchModuleDefinition(moduleURI);
-					if (moduleDefinition != null) {
-						//moduleDefinition.setSBOLDocument(null);
-						createCopy(moduleDefinition);
+					SBOLDocument document = frontend.getSBOL(moduleDefinitionURI);
+					if (document != null) {
+						moduleDefinition = document.getModuleDefinition(moduleDefinitionURI);
+						createCopy(document);
 					}
 				}
-				catch (StackException | SBOLValidationException e) {
-					return null;
+				catch (SynBioHubException | SBOLValidationException e) {
+					moduleDefinition = null;
 				}
 			}
 		} 
@@ -432,16 +432,16 @@ public class SBOLDocument {
 	public Collection getCollection(URI collectionURI) {
 		Collection collection = collections.get(collectionURI);
 		if (collection==null) {
-			for (StackFrontend frontend : getRegistries()) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
 				try {
-					collection = frontend.fetchCollection(collectionURI);
-					if (collection != null) {
-						//collection.setSBOLDocument(null);
-						createCopy(collection);
+					SBOLDocument document = frontend.getSBOL(collectionURI);
+					if (document != null) {
+						collection = document.getCollection(collectionURI);
+						createCopy(document);
 					}
 				}
-				catch (StackException | SBOLValidationException e) {
-					return null;
+				catch (SynBioHubException | SBOLValidationException e) {
+					collection = null;
 				}
 			}
 		} 
@@ -635,16 +635,16 @@ public class SBOLDocument {
 	public Model getModel(URI modelURI) {
 		Model model = models.get(modelURI);
 		if (model==null) {
-			for (StackFrontend frontend : getRegistries()) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
 				try {
-					model = frontend.fetchModel(modelURI);
-					if (model != null) {
-						//sequence.setSBOLDocument(null);
-						createCopy(model);
+					SBOLDocument document = frontend.getSBOL(modelURI);
+					if (document != null) {
+						model = document.getModel(modelURI);
+						createCopy(document);
 					}
 				}
-				catch (StackException | SBOLValidationException e) {
-					return null;
+				catch (SynBioHubException | SBOLValidationException e) {
+					model = null;
 				}
 			}
 		} 
@@ -913,16 +913,16 @@ public class SBOLDocument {
 	public ComponentDefinition getComponentDefinition(URI componentDefinitionURI) {
 		ComponentDefinition componentDefinition = componentDefinitions.get(componentDefinitionURI);
 		if (componentDefinition==null) {
-			for (StackFrontend frontend : getRegistries()) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
 				try {
-					componentDefinition = frontend.fetchComponentDefinition(componentDefinitionURI);
-					if (componentDefinition != null) {
-						//componentDefinition.setSBOLDocument(null);
-						createCopy(componentDefinition);
+					SBOLDocument document = frontend.getSBOL(componentDefinitionURI);
+					if (document != null) {
+						componentDefinition = document.getComponentDefinition(componentDefinitionURI);
+						createCopy(document);
 					}
 				}
-				catch (StackException | SBOLValidationException e) {
-					return null;
+				catch (SynBioHubException | SBOLValidationException e) {
+					componentDefinition = null;
 				}
 			}
 		} 
@@ -1705,16 +1705,16 @@ public class SBOLDocument {
 	public Sequence getSequence(URI sequenceURI) {
 		Sequence sequence = sequences.get(sequenceURI);
 		if (sequence==null) {
-			for (StackFrontend frontend : getRegistries()) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
 				try {
-					sequence = frontend.fetchSequence(sequenceURI);
-					if (sequence != null) {
-						//sequence.setSBOLDocument(null);
-						createCopy(sequence);
+					SBOLDocument document = frontend.getSBOL(sequenceURI);
+					if (document != null) {
+						sequence = document.getSequence(sequenceURI);
+						createCopy(document);
 					}
 				}
-				catch (StackException | SBOLValidationException e) {
-					return null;
+				catch (SynBioHubException | SBOLValidationException e) {
+					sequence = null;
 				}
 			}
 		} 
@@ -1901,16 +1901,16 @@ public class SBOLDocument {
 	public GenericTopLevel getGenericTopLevel(URI genericTopLevelURI) {
 		GenericTopLevel genericTopLevel = genericTopLevels.get(genericTopLevelURI);
 		if (genericTopLevel==null) {
-			for (StackFrontend frontend : getRegistries()) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
 				try {
-					genericTopLevel = frontend.fetchGenericTopLevel(genericTopLevelURI);
-					if (genericTopLevel != null) {
-						//sequence.setSBOLDocument(null);
-						createCopy(genericTopLevel);
+					SBOLDocument document = frontend.getSBOL(genericTopLevelURI);
+					if (document != null) {
+						genericTopLevel = document.getGenericTopLevel(genericTopLevelURI);
+						createCopy(document);
 					}
 				}
-				catch (StackException | SBOLValidationException e) {
-					return null;
+				catch (SynBioHubException | SBOLValidationException e) {
+					genericTopLevel = null;
 				}
 			}
 		} 
@@ -1989,16 +1989,16 @@ public class SBOLDocument {
 			return topLevel;
 		}
 		if (topLevel==null) {
-			for (StackFrontend frontend : getRegistries()) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
 				try {
-					topLevel = frontend.fetchTopLevel(topLevelURI);
-					if (topLevel != null) {
-						//sequence.setSBOLDocument(null);
-						createCopy(topLevel);
+					SBOLDocument document = frontend.getSBOL(topLevelURI);
+					if (document != null) {
+						topLevel = document.getTopLevel(topLevelURI);
+						createCopy(document);
 					}
 				}
-				catch (StackException | SBOLValidationException e) {
-					return null;
+				catch (SynBioHubException | SBOLValidationException e) {
+					topLevel = null;
 				}
 			}
 		} 
@@ -2086,8 +2086,20 @@ public class SBOLDocument {
 	 * @param registryURL URL of the registry to add
 	 * @return The StackFrontend object that has been created
 	 */
-	public StackFrontend addRegistry(String registryURL) {
-		StackFrontend stackFrontend = new StackFrontend(registryURL);
+	public SynBioHubFrontend addRegistry(String registryURL) {
+		SynBioHubFrontend stackFrontend = new SynBioHubFrontend(registryURL);
+		registries.put(registryURL, stackFrontend);
+		return stackFrontend;
+	}
+	
+	/**
+	 * Adds the given registry to this SBOL document.
+	 * @param registryURL URL of the registry to add
+	 * @param uriPrefix URI prefix for everything stored in this repository
+	 * @return The StackFrontend object that has been created
+	 */
+	public SynBioHubFrontend addRegistry(String registryURL, String uriPrefix) {
+		SynBioHubFrontend stackFrontend = new SynBioHubFrontend(registryURL,uriPrefix);
 		registries.put(registryURL, stackFrontend);
 		return stackFrontend;
 	}
@@ -2189,7 +2201,7 @@ public class SBOLDocument {
 	 * @param registryURL URL for the registry to return
 	 * @return a StackFrontend for the registry specified by its URL
 	 */
-	public StackFrontend getRegistry(String registryURL) {
+	public SynBioHubFrontend getRegistry(String registryURL) {
 		return registries.get(registryURL);
 	}
 	
@@ -2198,9 +2210,9 @@ public class SBOLDocument {
 	 *
 	 * @return the list of registries used by this SBOL document
 	 */
-	public List<StackFrontend> getRegistries() {
-		List<StackFrontend> registries = new ArrayList<>();
-		for (StackFrontend registry : this.registries.values()) {
+	public List<SynBioHubFrontend> getRegistries() {
+		List<SynBioHubFrontend> registries = new ArrayList<>();
+		for (SynBioHubFrontend registry : this.registries.values()) {
 			registries.add(registry);
 		}
 		return registries;

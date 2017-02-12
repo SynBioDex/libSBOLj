@@ -71,8 +71,8 @@ public class Provenance_StrainDerivation {
 								new Annotation(provNs.withLocalPart("hadRole"), myAppNs.namespacedUri("mutagen"))
 								)));
 		
-		b168.createAnnotation(provNs.withLocalPart("wasGeneratedBy"), b3610.getIdentity());
+		b168.createAnnotation(provNs.withLocalPart("wasGeneratedBy"), activity.getIdentity());
 		
-		SBOLWriter.write(document,(System.out));		
+		SBOLWriter.write(document,"/Users/myers/Provenance_StrainDerivation.xml");		
     }
 }

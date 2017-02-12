@@ -1,30 +1,30 @@
-package org.sbolstack.frontend;
+package org.synbiohub.frontend;
 
 /**
  * Thrown when the SBOL Stack returns an error code.
  * @author James McLaughlin
  *
  */
-public class StackException extends Exception
+public class SynBioHubException extends Exception
 {
       static final long serialVersionUID = 1;
     
-      StackException()
+      SynBioHubException()
       {
           super();
       }
       
-      StackException(String message)
+      SynBioHubException(String message)
       {
           super(message);
       }
       
-      StackException(String message, Throwable cause)
+      SynBioHubException(String message, Throwable cause)
       {
           super(message, cause);
       }
       
-      StackException(Throwable cause)
+      SynBioHubException(Throwable cause)
       {
           super(cause);
       }
