@@ -1,52 +1,74 @@
 <?xml version="1.0" ?>
-<rdf:RDF xmlns:ncbi="http://www.ncbi.nlm.nih.gov#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbol="http://sbols.org/v2#">
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:sbol="http://sbols.org/v2#" xmlns:genbank="http://www.ncbi.nlm.nih.gov/genbank#">
   <sbol:ComponentDefinition rdf:about="http://www.async.ece.utah.edu/U49845/1">
     <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845"/>
     <sbol:displayId>U49845</sbol:displayId>
     <sbol:version>1</sbol:version>
     <dcterms:description>Saccharomyces cerevisiae TCP1-beta gene, partial cds; and Axl2p (AXL2) and Rev7p (REV7) genes, complete cds.</dcterms:description>
-    <ncbi:locus>SCU49845</ncbi:locus>
-    <ncbi:molecule>DNA</ncbi:molecule>
-    <ncbi:division>PLN</ncbi:division>
-    <ncbi:date>23-MAR-2010</ncbi:date>
-    <ncbi:GInumber>GI:1293613</ncbi:GInumber>
-    <ncbi:keywords>.</ncbi:keywords>
-    <ncbi:source>Saccharomyces cerevisiae (baker's yeast)</ncbi:source>
-    <ncbi:organism>Saccharomyces cerevisiae Eukaryota; Fungi; Dikarya; Ascomycota; Saccharomycotina; Saccharomycetes; Saccharomycetales; Saccharomycetaceae; Saccharomyces.</ncbi:organism>
-    <ncbi:reference>
-      <ncbi:Reference rdf:about="http://www.async.ece.utah.eduU49845/reference0">
-        <ncbi:label>1  (bases 1 to 5028)</ncbi:label>
-        <ncbi:authors>Roemer,T., Madden,K., Chang,J. and Snyder,M.</ncbi:authors>
-        <ncbi:title>Selection of axial growth sites in yeast requires Axl2p, a novel plasma membrane glycoprotein</ncbi:title>
-        <ncbi:journal>Genes Dev. 10 (7), 777-793 (1996)</ncbi:journal>
-        <ncbi:pubmed>8846915</ncbi:pubmed>
-      </ncbi:Reference>
-    </ncbi:reference>
-    <ncbi:reference>
-      <ncbi:Reference rdf:about="http://www.async.ece.utah.eduU49845/reference1">
-        <ncbi:label>2  (bases 1 to 5028)</ncbi:label>
-        <ncbi:authors>Roemer,T.</ncbi:authors>
-        <ncbi:title>Direct Submission</ncbi:title>
-        <ncbi:journal>Submitted (22-FEB-1996) Biology, Yale University, New Haven, CT 06520, USA</ncbi:journal>
-      </ncbi:Reference>
-    </ncbi:reference>
+    <genbank:locus>SCU49845</genbank:locus>
+    <genbank:molecule>DNA</genbank:molecule>
+    <genbank:division>PLN</genbank:division>
+    <genbank:date>23-MAR-2010</genbank:date>
+    <genbank:GInumber>GI:1293613</genbank:GInumber>
+    <genbank:keywords>.</genbank:keywords>
+    <genbank:source>Saccharomyces cerevisiae (baker's yeast)</genbank:source>
+    <genbank:organism>Saccharomyces cerevisiae Eukaryota; Fungi; Dikarya; Ascomycota; Saccharomycotina; Saccharomycetes; Saccharomycetales; Saccharomycetaceae; Saccharomyces.</genbank:organism>
+    <genbank:reference>
+      <genbank:Reference rdf:about="http://www.async.ece.utah.eduU49845/reference0">
+        <genbank:label>1  (bases 1 to 5028)</genbank:label>
+        <genbank:authors>Roemer,T., Madden,K., Chang,J. and Snyder,M.</genbank:authors>
+        <genbank:title>Selection of axial growth sites in yeast requires Axl2p, a novel plasma membrane glycoprotein</genbank:title>
+        <genbank:journal>Genes Dev. 10 (7), 777-793 (1996)</genbank:journal>
+        <genbank:pubmed>8846915</genbank:pubmed>
+      </genbank:Reference>
+    </genbank:reference>
+    <genbank:reference>
+      <genbank:Reference rdf:about="http://www.async.ece.utah.eduU49845/reference1">
+        <genbank:label>2  (bases 1 to 5028)</genbank:label>
+        <genbank:authors>Roemer,T.</genbank:authors>
+        <genbank:title>Direct Submission</genbank:title>
+        <genbank:journal>Submitted (22-FEB-1996) Biology, Yale University, New Haven, CT 06520, USA</genbank:journal>
+      </genbank:Reference>
+    </genbank:reference>
     <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000804"/>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/U49845/annotation7/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation7"/>
+        <sbol:displayId>annotation7</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <genbank:gene>"REV7"</genbank:gene>
+        <genbank:product>"Rev7p"</genbank:product>
+        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000234"/>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation7/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation7/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:startLessThan>true</genbank:startLessThan>
+            <genbank:endGreaterThan>true</genbank:endGreaterThan>
+            <sbol:start>3300</sbol:start>
+            <sbol:end>4037</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#reverseComplement"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/U49845/annotation3/1">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation3"/>
         <sbol:displayId>annotation3</sbol:displayId>
         <sbol:version>1</sbol:version>
-        <ncbi:gene>"AXL2"</ncbi:gene>
+        <genbank:gene>"AXL2"</genbank:gene>
         <sbol:role rdf:resource="http://identifiers.org/so/SO:0000704"/>
         <sbol:location>
           <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation3/range/1">
             <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation3/range"/>
             <sbol:displayId>range</sbol:displayId>
             <sbol:version>1</sbol:version>
-            <ncbi:startLessThan>true</ncbi:startLessThan>
-            <ncbi:endGreaterThan>true</ncbi:endGreaterThan>
+            <genbank:startLessThan>true</genbank:startLessThan>
+            <genbank:endGreaterThan>true</genbank:endGreaterThan>
             <sbol:start>687</sbol:start>
             <sbol:end>3158</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
@@ -59,15 +81,39 @@
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation1"/>
         <sbol:displayId>annotation1</sbol:displayId>
         <sbol:version>1</sbol:version>
-        <ncbi:product>"TCP1-beta"</ncbi:product>
+        <genbank:product>"TCP1-beta"</genbank:product>
         <sbol:role rdf:resource="http://identifiers.org/so/SO:0000234"/>
         <sbol:location>
           <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation1/range/1">
             <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation1/range"/>
             <sbol:displayId>range</sbol:displayId>
             <sbol:version>1</sbol:version>
-            <ncbi:startLessThan>true</ncbi:startLessThan>
-            <ncbi:endGreaterThan>true</ncbi:endGreaterThan>
+            <genbank:startLessThan>true</genbank:startLessThan>
+            <genbank:endGreaterThan>true</genbank:endGreaterThan>
+            <sbol:start>1</sbol:start>
+            <sbol:end>206</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/U49845/annotation2/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation2"/>
+        <sbol:displayId>annotation2</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <genbank:codon_start>3</genbank:codon_start>
+        <genbank:product>"TCP1-beta"</genbank:product>
+        <genbank:protein_id>"AAA98665.1"</genbank:protein_id>
+        <genbank:db_xref>"GI:1293614"</genbank:db_xref>
+        <genbank:translation>"SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEAAEVLLRVDNIIRARPRTANRQHM"</genbank:translation>
+        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation2/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation2/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:startLessThan>true</genbank:startLessThan>
             <sbol:start>1</sbol:start>
             <sbol:end>206</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
@@ -80,18 +126,64 @@
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation6"/>
         <sbol:displayId>annotation6</sbol:displayId>
         <sbol:version>1</sbol:version>
-        <ncbi:gene>"REV7"</ncbi:gene>
+        <genbank:gene>"REV7"</genbank:gene>
         <sbol:role rdf:resource="http://identifiers.org/so/SO:0000704"/>
         <sbol:location>
           <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation6/range/1">
             <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation6/range"/>
             <sbol:displayId>range</sbol:displayId>
             <sbol:version>1</sbol:version>
-            <ncbi:startLessThan>true</ncbi:startLessThan>
-            <ncbi:endGreaterThan>true</ncbi:endGreaterThan>
+            <genbank:startLessThan>true</genbank:startLessThan>
+            <genbank:endGreaterThan>true</genbank:endGreaterThan>
             <sbol:start>3300</sbol:start>
             <sbol:end>4037</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#reverseComplement"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/U49845/annotation8/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation8"/>
+        <sbol:displayId>annotation8</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <genbank:gene>"REV7"</genbank:gene>
+        <genbank:codon_start>1</genbank:codon_start>
+        <genbank:product>"Rev7p"</genbank:product>
+        <genbank:protein_id>"AAA98667.1"</genbank:protein_id>
+        <genbank:db_xref>"GI:1293616"</genbank:db_xref>
+        <genbank:translation>"MNRWVEKWLRVYLKCYINLILFYRNVYPPQSFDYTTYQSFNLPQFVPINRHPALIDYIEELILDVLSKLTHVYRFSICIINKKNDLCIEKYVLDFSELQHVDKDDQIITETEVFDEFRSSLNSLIMHLEKLPKVNDDTITFEAVINAIELELGHKLDRNRRVDSLEEKAEIERDSNWVKCQEDENLPDNNGFQPPKIKLTSLVGSDVGPLIIHQFSEKLISGDDKILNGVYSQYEEGESIFGSLF"</genbank:translation>
+        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation8/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation8/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>3300</sbol:start>
+            <sbol:end>4037</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#reverseComplement"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/U49845/annotation4/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation4"/>
+        <sbol:displayId>annotation4</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <genbank:gene>"AXL2"</genbank:gene>
+        <genbank:product>"Axl2p"</genbank:product>
+        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000234"/>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation4/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation4/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:startLessThan>true</genbank:startLessThan>
+            <genbank:endGreaterThan>true</genbank:endGreaterThan>
+            <sbol:start>687</sbol:start>
+            <sbol:end>3158</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
       </sbol:SequenceAnnotation>
@@ -101,13 +193,13 @@
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation5"/>
         <sbol:displayId>annotation5</sbol:displayId>
         <sbol:version>1</sbol:version>
-        <ncbi:gene>"AXL2"</ncbi:gene>
-        <ncbi:note>"plasma membrane glycoprotein"</ncbi:note>
-        <ncbi:codon_start>1</ncbi:codon_start>
-        <ncbi:product>"Axl2p"</ncbi:product>
-        <ncbi:protein_id>"AAA98666.1"</ncbi:protein_id>
-        <ncbi:db_xref>"GI:1293615"</ncbi:db_xref>
-        <ncbi:translation>"MTQLQISLLLTATISLLHLVVATPYEAYPIGKQYPPVARVNESFTFQISNDTYKSSVDKTAQITYNCFDLPSWLSFDSSSRTFSGEPSSDLLSDANTTLYFNVILEGTDSADSTSLNNTYQFVVTNRPSISLSSDFNLLALLKNYGYTNGKNALKLDPNEVFNVTFDRSMFTNEESIVSYYGRSQLYNAPLPNWLFFDSGELKFTGTAPVINSAIAPETSYSFVIIATDIEGFSAVEVEFELVIGAHQLTTSIQNSLIINVTDTGNVSYDLPLNYVYLDDDPISSDKLGSINLLDAPDWVALDNATISGSVPDELLGKNSNPANFSVSIYDTYGDVIYFNFEVVSTTDLFAISSLPNINATRGEWFSYYFLPSQFTDYVNTNVSLEFTNSSQDHDWVKFQSSNLTLAGEVPKNFDKLSLGLKANQGSQSQELYFNIIGMDSKITHSNHSANATSTRSSHHSTSTSSYTSSTYTAKISSTSAAATSSAPAALPAANKTSSHNKKAVAIACGVAIPLGVILVALICFLIFWRRRRENPDDENLPHAISGPDLNNPANKPNQENATPLNNPFDDDASSYDDTSIARRLAALNTLKLDNHSATESDISSVDEKRDSLSGMNTYNDQFQSQSKEELLAKPPVQPPESPFFDPQNRSSSVYMDSEPAVNKSWRYTGNLSPVSDIVRDSYGSQKTVDTEKLFDLEAPEKEKRTSRDVTMSSLDPWNSNISPSPVRKSVTPSPYNVTKHRNRHLQNIQDSQSGKNGITPTTMSTSSSDDFVPVKDGENFCWVHSMEPDRRPSKKRLVDFSNKSNVNVGQVKDIHGRIPEML"</ncbi:translation>
+        <genbank:gene>"AXL2"</genbank:gene>
+        <genbank:note>"plasma membrane glycoprotein"</genbank:note>
+        <genbank:codon_start>1</genbank:codon_start>
+        <genbank:product>"Axl2p"</genbank:product>
+        <genbank:protein_id>"AAA98666.1"</genbank:protein_id>
+        <genbank:db_xref>"GI:1293615"</genbank:db_xref>
+        <genbank:translation>"MTQLQISLLLTATISLLHLVVATPYEAYPIGKQYPPVARVNESFTFQISNDTYKSSVDKTAQITYNCFDLPSWLSFDSSSRTFSGEPSSDLLSDANTTLYFNVILEGTDSADSTSLNNTYQFVVTNRPSISLSSDFNLLALLKNYGYTNGKNALKLDPNEVFNVTFDRSMFTNEESIVSYYGRSQLYNAPLPNWLFFDSGELKFTGTAPVINSAIAPETSYSFVIIATDIEGFSAVEVEFELVIGAHQLTTSIQNSLIINVTDTGNVSYDLPLNYVYLDDDPISSDKLGSINLLDAPDWVALDNATISGSVPDELLGKNSNPANFSVSIYDTYGDVIYFNFEVVSTTDLFAISSLPNINATRGEWFSYYFLPSQFTDYVNTNVSLEFTNSSQDHDWVKFQSSNLTLAGEVPKNFDKLSLGLKANQGSQSQELYFNIIGMDSKITHSNHSANATSTRSSHHSTSTSSYTSSTYTAKISSTSAAATSSAPAALPAANKTSSHNKKAVAIACGVAIPLGVILVALICFLIFWRRRRENPDDENLPHAISGPDLNNPANKPNQENATPLNNPFDDDASSYDDTSIARRLAALNTLKLDNHSATESDISSVDEKRDSLSGMNTYNDQFQSQSKEELLAKPPVQPPESPFFDPQNRSSSVYMDSEPAVNKSWRYTGNLSPVSDIVRDSYGSQKTVDTEKLFDLEAPEKEKRTSRDVTMSSLDPWNSNISPSPVRKSVTPSPYNVTKHRNRHLQNIQDSQSGKNGITPTTMSTSSSDDFVPVKDGENFCWVHSMEPDRRPSKKRLVDFSNKSNVNVGQVKDIHGRIPEML"</genbank:translation>
         <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
         <sbol:location>
           <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation5/range/1">
@@ -126,10 +218,10 @@
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation0"/>
         <sbol:displayId>annotation0</sbol:displayId>
         <sbol:version>1</sbol:version>
-        <ncbi:organism>"Saccharomyces cerevisiae"</ncbi:organism>
-        <ncbi:mol_type>"genomic DNA"</ncbi:mol_type>
-        <ncbi:db_xref>"taxon:4932"</ncbi:db_xref>
-        <ncbi:chromosome>"IX"</ncbi:chromosome>
+        <genbank:organism>"Saccharomyces cerevisiae"</genbank:organism>
+        <genbank:mol_type>"genomic DNA"</genbank:mol_type>
+        <genbank:db_xref>"taxon:4932"</genbank:db_xref>
+        <genbank:chromosome>"IX"</genbank:chromosome>
         <sbol:role rdf:resource="http://identifiers.org/so/SO:0000149"/>
         <sbol:location>
           <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation0/range/1">
@@ -139,98 +231,6 @@
             <sbol:start>1</sbol:start>
             <sbol:end>5028</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/U49845/annotation4/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation4"/>
-        <sbol:displayId>annotation4</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <ncbi:gene>"AXL2"</ncbi:gene>
-        <ncbi:product>"Axl2p"</ncbi:product>
-        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000234"/>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation4/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation4/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <ncbi:startLessThan>true</ncbi:startLessThan>
-            <ncbi:endGreaterThan>true</ncbi:endGreaterThan>
-            <sbol:start>687</sbol:start>
-            <sbol:end>3158</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/U49845/annotation2/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation2"/>
-        <sbol:displayId>annotation2</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <ncbi:codon_start>3</ncbi:codon_start>
-        <ncbi:product>"TCP1-beta"</ncbi:product>
-        <ncbi:protein_id>"AAA98665.1"</ncbi:protein_id>
-        <ncbi:db_xref>"GI:1293614"</ncbi:db_xref>
-        <ncbi:translation>"SSIYNGISTSGLDLNNGTIADMRQLGIVESYKLKRAVVSSASEAAEVLLRVDNIIRARPRTANRQHM"</ncbi:translation>
-        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation2/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation2/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <ncbi:startLessThan>true</ncbi:startLessThan>
-            <sbol:start>1</sbol:start>
-            <sbol:end>206</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/U49845/annotation7/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation7"/>
-        <sbol:displayId>annotation7</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <ncbi:gene>"REV7"</ncbi:gene>
-        <ncbi:product>"Rev7p"</ncbi:product>
-        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000234"/>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation7/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation7/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <ncbi:startLessThan>true</ncbi:startLessThan>
-            <ncbi:endGreaterThan>true</ncbi:endGreaterThan>
-            <sbol:start>3300</sbol:start>
-            <sbol:end>4037</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#reverseComplement"/>
-          </sbol:Range>
-        </sbol:location>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/U49845/annotation8/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation8"/>
-        <sbol:displayId>annotation8</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <ncbi:gene>"REV7"</ncbi:gene>
-        <ncbi:codon_start>1</ncbi:codon_start>
-        <ncbi:product>"Rev7p"</ncbi:product>
-        <ncbi:protein_id>"AAA98667.1"</ncbi:protein_id>
-        <ncbi:db_xref>"GI:1293616"</ncbi:db_xref>
-        <ncbi:translation>"MNRWVEKWLRVYLKCYINLILFYRNVYPPQSFDYTTYQSFNLPQFVPINRHPALIDYIEELILDVLSKLTHVYRFSICIINKKNDLCIEKYVLDFSELQHVDKDDQIITETEVFDEFRSSLNSLIMHLEKLPKVNDDTITFEAVINAIELELGHKLDRNRRVDSLEEKAEIERDSNWVKCQEDENLPDNNGFQPPKIKLTSLVGSDVGPLIIHQFSEKLISGDDKILNGVYSQYEEGESIFGSLF"</ncbi:translation>
-        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/U49845/annotation8/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/U49845/annotation8/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>3300</sbol:start>
-            <sbol:end>4037</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#reverseComplement"/>
           </sbol:Range>
         </sbol:location>
       </sbol:SequenceAnnotation>
