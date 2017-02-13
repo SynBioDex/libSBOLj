@@ -970,7 +970,7 @@ class GenBank {
 					nestedAnnotations = new ArrayList<Annotation>();
 					Annotation labelAnnotation = new Annotation(new QName(GBNAMESPACE,LABEL,GBPREFIX), annotationStr);
 					nestedAnnotations.add(labelAnnotation);
-					URI nestedURI = URI.create(URIPrefix+"/"+id+"/reference"+refCnt);
+					URI nestedURI = URI.create(URIPrefix+id+"/reference"+refCnt);
 					refCnt++;
 					annotation = new Annotation(new QName(GBNAMESPACE,REFERENCE,GBPREFIX),
 							new QName(GBNAMESPACE,NESTEDREFERENCE,GBPREFIX),nestedURI,nestedAnnotations);

@@ -47,8 +47,8 @@ class readTester {
 			System.out.println(sfe.getCountTopLevels("Collection"));
 			doc2.getComponentDefinition(URI.create("http://synbiohub.org/public/igem/BBa_J18935/1"));
 			SBOLWriter.write(doc2, System.out);
-			//sfe.login("test@utah.edu", "test");
-			//sfe.submit("testCDCol", "1", "testName", "testDescription", "", "", "0", doc2);
+			sfe.login("myers@ece.utah.edu", "test");
+			sfe.submit("testCDCol", "1", "testName", "testDescription", "", "", "0", doc2);
 			//ArrayList<IdentifiedMetadata> imd = doc2.getRegistry("http://synbiohub.org:9090").searchRootCollectionMetadata();
 			//System.out.println(imd.toString());
 			//doc2.getTopLevel(new URI("http://synbiohub.org/public/igem/BBa_K136042/1"));

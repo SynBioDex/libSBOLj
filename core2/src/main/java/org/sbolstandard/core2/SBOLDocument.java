@@ -1428,7 +1428,12 @@ public class SBOLDocument {
 				}
 			} else if (annotation.isNestedAnnotations()) {
 				URI nestedURI = annotation.getNestedIdentity();
-				URI newURI = URI.create(nestedURI.toString().replace("http://",URIPrefix)+"/"+version);
+				URI newURI;
+				if (nestedURI.toString().startsWith(URIPrefix)) {
+					newURI = URI.create(nestedURI.toString()+"/"+version);
+				} else {
+					newURI = URI.create(nestedURI.toString().replace("http://",URIPrefix)+"/"+version);
+				}
 				annotation.setNestedIdentity(newURI);
 				List<Annotation> nestedAnnotations = annotation.getAnnotations();
 				changeURIPrefixVersion(nestedAnnotations,URIPrefix,version);
