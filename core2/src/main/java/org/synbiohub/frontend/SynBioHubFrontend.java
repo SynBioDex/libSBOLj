@@ -26,7 +26,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.HttpClients;
@@ -139,23 +138,25 @@ public class SynBioHubFrontend
     		Set<URI> types, Set<URI> collections, Integer offset, Integer limit)
             throws SynBioHubException
     {
-        String url = backendUrl + "/component/search/metadata";
+    	SearchQuery query = new SearchQuery();
 
-        SearchQuery query = new SearchQuery();
+    	query.setOffset(offset);
+    	query.setLimit(limit);
 
-        query.offset = offset;
-        query.limit = limit;
+    	SearchCriteria objectCriteria = new SearchCriteria();
+    	objectCriteria.setKey("objectType");
+    	objectCriteria.setValue("ComponentDefinition");
+    	query.addCriteria(objectCriteria);
+    	if (roles != null) {
+    		for(URI uri : roles)
+    		{
+    			SearchCriteria roleCriteria = new SearchCriteria();
 
-        if (roles != null) {
-        	for(URI uri : roles)
-        	{
-        		SearchCriteria roleCriteria = new SearchCriteria();
+    			roleCriteria.setKey("role");
+    			roleCriteria.setValue(uri.toString());
 
-        		roleCriteria.key = "role";
-        		roleCriteria.value = uri.toString();
-
-        		query.criteria.add(roleCriteria);
-        	}
+    			query.getCriteria().add(roleCriteria);
+        	}	
         }
         
         if (types != null) {
@@ -163,10 +164,10 @@ public class SynBioHubFrontend
         	{
         		SearchCriteria typeCriteria = new SearchCriteria();
 
-        		typeCriteria.key = "type";
-        		typeCriteria.value = uri.toString();
+        		typeCriteria.setKey("type");
+        		typeCriteria.setValue(uri.toString());
 
-        		query.criteria.add(typeCriteria);
+        		query.getCriteria().add(typeCriteria);
         	}
         }
         
@@ -175,10 +176,10 @@ public class SynBioHubFrontend
         	{
         		SearchCriteria collectionCriteria = new SearchCriteria();
 
-        		collectionCriteria.key = "collection";
-        		collectionCriteria.value = uri.toString();
+        		collectionCriteria.setKey("collection");
+        		collectionCriteria.setValue(uri.toString());
 
-        		query.criteria.add(collectionCriteria);
+        		query.getCriteria().add(collectionCriteria);
         	}
         }
 
@@ -186,21 +187,64 @@ public class SynBioHubFrontend
         {
             SearchCriteria nameCriteria = new SearchCriteria();
 
-            nameCriteria.key = "name";
-            nameCriteria.value = name;
+            nameCriteria.setKey("name");
+            nameCriteria.setValue(name);
 
-            query.criteria.add(nameCriteria);
+            query.getCriteria().add(nameCriteria);
         }
+    	return search(query);
+    }
 
+    /**
+     * Search this SynBioHub instance for objects matching a search query
+     * 
+     * @param query the search query
+     *
+     * @return An ArrayList of MetaData for objects that match the specified search query
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public ArrayList<IdentifiedMetadata> search(SearchQuery query) throws SynBioHubException
+    {
+        String url = backendUrl + "/remoteSearch/";
+
+        //query.offset = offset;
+        //query.limit = limit;
+
+        String textQuery = "";
+        boolean first = true;
+        for (SearchCriteria criteria : query.getCriteria()) {
+        	if (criteria.getKey().equals("objectType")) {
+        		url += encodeUri(criteria.getKey()+"="+criteria.getValue()+"&");
+        		continue;
+        	}
+        	if (criteria.getKey().equals("name")) {
+        		if (first) first = false;
+        		else textQuery = " ";
+        		textQuery = criteria.getValue();
+        		continue;
+        	} 
+        	if (criteria.getKey().startsWith("http")) {
+        		url += encodeUri("<" + criteria.getKey() + ">=");
+        	} else {
+        		url += encodeUri(criteria.getKey()+"=");
+        	}
+        	if (criteria.getValue().startsWith("http")) {
+        		url += encodeUri("<"+criteria.getValue()+">&");
+        	} else {
+        		url += encodeUri("'"+criteria.getValue()+"'&");
+        	}
+        }
+        url += encodeUri(textQuery);
+       	url += "/?offset="+query.getOffset() + "&" + "limit="+query.getLimit();
+
+       	//System.out.println(url);
         Gson gson = new Gson();
 
-        HttpPost request = new HttpPost(url);
+        HttpGet request = new HttpGet(url);
 
         try
         {
-            request.setHeader("Content-Type", "application/json");
-            request.setEntity(new StringEntity(gson.toJson(query)));
-
             HttpResponse response = client.execute(request);
 
             checkResponseCode(response);
@@ -222,7 +266,7 @@ public class SynBioHubFrontend
             request.releaseConnection();
         }
     }
-
+    
     /**
      * Search the default store for Collections that are not members of any other Collections
      *
@@ -233,7 +277,7 @@ public class SynBioHubFrontend
     public ArrayList<IdentifiedMetadata> getRootCollectionMetadata()
             throws SynBioHubException
     {
-        String url = backendUrl + "/collection/roots";
+        String url = backendUrl + "/rootCollections";
 
         Gson gson = new Gson();
 
@@ -274,10 +318,13 @@ public class SynBioHubFrontend
     public ArrayList<IdentifiedMetadata> getSubCollectionMetadata(URI parentCollectionUri)
             throws SynBioHubException
     {
-        String url = backendUrl + "/collection/" + encodeUri(parentCollectionUri) + "/subCollections";
+        if (!parentCollectionUri.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = parentCollectionUri + "/subCollections";
+        url = url.replace(uriPrefix, backendUrl);
 
         Gson gson = new Gson();
-
         HttpGet request = new HttpGet(url);
 
         try
@@ -381,7 +428,25 @@ public class SynBioHubFrontend
         {
             request.releaseConnection();
         }
-    }   
+    } 
+    
+	/**
+	 * Remove all parts from this registry from a given SBOL document
+	 * 
+	 * @param document The document to remove all registry parts from
+	 */
+	public void removeRegistryParts(SBOLDocument document) {
+		for (TopLevel topLevel : document.getTopLevels()) {
+			if (topLevel.getIdentity().toString().startsWith(uriPrefix)) {
+				try {
+					document.removeTopLevel(topLevel);
+				}
+				catch (SBOLValidationException e) {
+					// TODO: ignore for now
+				}
+			}	
+		}
+	}
     
     /**
      * Submit to the SynBioHub.
@@ -572,11 +637,11 @@ public class SynBioHubFrontend
     	}
     }
 
-    private String encodeUri(URI uri)
+    private String encodeUri(String uri)
     {
         try
         {
-            return URLEncoder.encode(uri.toString(), "UTF-8");
+            return URLEncoder.encode(uri, "UTF-8").replace("+", "%20");
         }
         catch (UnsupportedEncodingException e)
         {

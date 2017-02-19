@@ -1,8 +1,9 @@
 package org.synbiohub.frontend;
 
 /**
- * Thrown when the SBOL Stack returns an error code.
+ * Thrown when the SynBioHub returns an error code.
  * @author James McLaughlin
+ * @author Chris Myers
  *
  */
 public class SynBioHubException extends Exception
