@@ -1537,7 +1537,34 @@ public class SBOLValidate {
 		System.exit(1);
 	}
 
-	private static void validate(String fileName, String URIPrefix, boolean complete, 
+	/**
+	 * The validate function will:
+	 * - perform validation on the given input SBOL file
+	 * - perform comparison between 2 SBOL files
+	 * - perform interconversion between SBOL1 and SBOL2
+	 * - convert from SBOL to GenBank
+	 * - convert from SBOL to FASTA
+	 * 
+	 * @param fileName - Input SBOL file name
+	 * @param URIPrefix - Default URI prefix to set the SBOL Document to be read in or to be created.
+	 * @param complete - Set boolean variable to false to allow SBOL document to be incomplete. True otherwise.
+	 * @param compliant - Set boolean variable to false to allow non-compliant URIs. True otherwise. 
+	 * @param bestPractice - Set boolean variable to true to check best practices. False otherwise.
+	 * @param typesInURI - Set boolean variable to true to indicate that types are inserted into top-level identity URIs when they are created of the SBOL Document.
+	 * @param version - Specify the version to use for converted SBOL objects.
+	 * @param keepGoing - Set boolean variable to false to indicate fail on first error and stop program from continuing. True otherwise. 
+	 * @param compareFile - Second SBOL file to compare to the primary SBOL file.
+	 * @param compareFileName - The name of the second SBOL file to compare to the primary SBOL file.
+	 * @param mainFileName - Primary SBOL file to compare to the second SBOL file.
+	 * @param topLevelURIStr - Specify the top level URI SBOL object contained within the given SBOL Document.
+	 * @param genBankOut - Set boolean variable to true to convert input file to GenBank. False otherwise. 
+	 * @param sbolV1out - Set boolean variable to true to convert input file to SBOL1. False otherwise. 
+	 * @param fastaOut - Set boolean variable to true to convert input file to FASTA. False otherwise. 
+	 * @param outputFile - The specified output name to be generated if the validation must produce an output file.
+	 * @param showDetail - Set boolean variable to true to display detailed error trace. False otherwise. 
+	 * @param noOutput - Set boolean variable to true to indicate no output file to be generated from validation
+	 */
+	public static void validate(String fileName, String URIPrefix, boolean complete, 
 			boolean compliant, boolean bestPractice, boolean typesInURI, String version, 
 			boolean keepGoing, String compareFile, String compareFileName, 
 			String mainFileName, String topLevelURIStr, boolean genBankOut, 
@@ -1707,6 +1734,12 @@ public class SBOLValidate {
 	 * "-f" fail on first error
 	 * <p>
 	 * "-d" display detailed error trace
+	 * <p>
+	 * "-mf" main SBOL file if file diff. option is selected
+	 * <p>
+	 * "-cf" second SBOL file if file diff. option is selected
+	 * <p>
+	 * "-no" indicate no output file to be generated from validation
 	 *
 	 * @param args arguments supplied at command line
 	 */
@@ -1778,7 +1811,7 @@ public class SBOLValidate {
 				}
 				compareFile = args[i+1];
 				i++;
-			} else if (args[i].equals("-mf")) {
+			} else if (args[i].equals("-mf")) { 
 				if (i+1 >= args.length) {
 					usage();
 				}
