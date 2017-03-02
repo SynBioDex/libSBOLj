@@ -1,7 +1,9 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.HashSet;
 
+import org.synbiohub.frontend.IdentifiedMetadata;
 import org.synbiohub.frontend.SynBioHubFrontend;
 
 class readTester {
@@ -40,15 +42,29 @@ class readTester {
 			//System.out.println(md.getWasDerivedFrom());
 			SBOLDocument doc2 = new SBOLDocument();
 			doc2.setDefaultURIprefix("http://dummy.org");
-			doc2.setComplete(true);
+			//doc2.setComplete(true);
 			//ComponentDefinition cd = doc2.createComponentDefinition("testCD", "1", ComponentDefinition.DNA);
 			//cd.addSequence(URI.create("http://myfakesequence.com"));
+			
 			SynBioHubFrontend sfe = doc2.addRegistry("http://localhost:7777","http://synbiohub.org");
-			System.out.println(sfe.getCountTopLevels("Collection"));
-			doc2.getComponentDefinition(URI.create("http://synbiohub.org/public/igem/BBa_J18935/1"));
-			SBOLWriter.write(doc2, System.out);
-			sfe.login("myers@ece.utah.edu", "test");
-			sfe.submit("testCDCol", "1", "testName", "testDescription", "", "", "0", doc2);
+			HashSet<URI> types = new HashSet<URI>();
+			types.add(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"));
+			HashSet<URI> roles = new HashSet<URI>();
+			roles.add(URI.create("http://identifiers.org/so/SO:0000167"));
+			HashSet<URI> collections = new HashSet<URI>();
+			collections.add(URI.create("http://synbiohub.org/public/igem/category/regulation/constitutive_collection/1"));
+			System.out.println(sfe.getMatchingComponentDefinitionMetadata("", roles, types, collections, 1, 10));
+			
+			//doc2.read("/Users/myers/Downloads/MyPartTest.xml");
+			//sfe.removeRegistryParts(doc2);
+			//doc2.write(System.out);
+			
+			
+			//System.out.println(sfe.getCountTopLevels("Collection"));
+			//doc2.getComponentDefinition(URI.create("http://synbiohub.org/public/igem/BBa_J18935/1"));
+			//SBOLWriter.write(doc2, System.out);
+			//sfe.login("myers@ece.utah.edu", "test");
+			//sfe.submit("testCDCol", "1", "testName", "testDescription", "", "", "0", doc2);
 			//ArrayList<IdentifiedMetadata> imd = doc2.getRegistry("http://synbiohub.org:9090").searchRootCollectionMetadata();
 			//System.out.println(imd.toString());
 			//doc2.getTopLevel(new URI("http://synbiohub.org/public/igem/BBa_K136042/1"));

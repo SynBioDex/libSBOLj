@@ -1582,7 +1582,13 @@ public class SBOLValidate {
 					System.err.println("TopLevel " + topLevelURIStr + " not found.");
 					return;
 				}
-				doc = doc.createRecursiveCopy(topLevel);
+				if (complete) {
+					doc = doc.createRecursiveCopy(topLevel);
+				} else {
+					SBOLDocument newDoc = new SBOLDocument();
+					newDoc.createCopy(topLevel);
+					doc = newDoc;
+				}
 			}
 			if (!URIPrefix.equals("")) {
 				System.out.println("Updating URI prefix to: " + URIPrefix);
