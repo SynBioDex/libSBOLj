@@ -9,6 +9,7 @@ import org.sbolstandard.core2.Component;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.OrientationType;
 import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceAnnotation;
@@ -20,8 +21,9 @@ import org.sbolstandard.core2.SequenceOntology;
  *
  */
 public class ComponentDefinitionOutput {
-	public static void main( String[] args ) throws Exception
-    {
+	
+	public static SBOLDocument createComponentDefinitionOutput() throws SBOLValidationException {
+				
 		String prURI="http://partsregistry.org/";		
 		String prPrefix="pr";	
 		
@@ -151,6 +153,12 @@ public class ComponentDefinitionOutput {
 		SequenceAnnotation anno5= device.createSequenceAnnotation("anno5", "location5",start,end,OrientationType.INLINE);
 		anno5.setComponent(comPluxR.getIdentity());
 		
+		return document;
+	}
+	
+	public static void main( String[] args ) throws Exception
+    {
+		SBOLDocument document = createComponentDefinitionOutput();
 		SBOLWriter.write(document,(System.out));		
     }
 }	
