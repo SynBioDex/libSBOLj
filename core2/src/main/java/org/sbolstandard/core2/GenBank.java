@@ -1202,7 +1202,10 @@ class GenBank {
 									rangeSplit = range.split("\\.\\.");
 								}
 								int start = Integer.parseInt(rangeSplit[0]);
-								int end = Integer.parseInt(rangeSplit[1]);
+								int end = Integer.parseInt(rangeSplit[0]);
+								if (rangeSplit.length > 1) {
+									end = Integer.parseInt(rangeSplit[1]);
+								}
 								if (start > end && circular) {
 									SequenceAnnotation sa =
 											topCD.createSequenceAnnotation("annotation"+featureCnt,"range0",start,baseCount,orientation);

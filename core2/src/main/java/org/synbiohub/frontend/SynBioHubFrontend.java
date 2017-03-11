@@ -119,6 +119,24 @@ public class SynBioHubFrontend
 
         return document;
     }
+    
+    /**
+     * Remove SBOL TopLevel object from a SynBioHub instance using its URI.
+     *
+     * @param topLevelUri The URI of the SBOL TopLevel
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void removeSBOL(URI topLevelUri) throws SynBioHubException
+    {
+        if (!topLevelUri.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = topLevelUri + "/remove";
+        url = url.replace(uriPrefix, backendUrl);
+
+        fetchFromSynBioHub(url);
+    }
 
    /**
      * Search the default store for ComponentDefinition instances matching a name and/or a set of roles
