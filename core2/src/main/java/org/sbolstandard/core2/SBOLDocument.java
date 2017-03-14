@@ -1526,6 +1526,9 @@ public class SBOLDocument {
 				}
 			}
 			for (SequenceAnnotation sa : docCD.getSequenceAnnotations()) {
+				for (Location loc : sa.getLocations()) {
+					changeURIPrefixVersion(loc,URIPrefix,version);
+				}
 				changeURIPrefixVersion(sa,URIPrefix,version);
 			}
 			for (SequenceConstraint sc : docCD.getSequenceConstraints()) {
