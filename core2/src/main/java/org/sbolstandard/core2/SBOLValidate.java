@@ -1624,8 +1624,10 @@ public class SBOLValidate {
 				}
 				doc = doc.changeURIPrefixVersion(URIPrefix,version);
 			} else if (version != null) {
-				System.out.println("Updating Version to: " + version);
-				doc = doc.changeURIPrefixVersion(null,version);
+				System.err.println("Cannot change version without also changing the URI prefix.");
+				return;
+				//System.out.println("Updating Version to: " + version);
+				//doc = doc.changeURIPrefixVersion(null,version);
 			}
 			validateSBOL(doc, complete, compliant, bestPractice);
 			if (getNumErrors()==0 && SBOLReader.getNumErrors()==0) {
