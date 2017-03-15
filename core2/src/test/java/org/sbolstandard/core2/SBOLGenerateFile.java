@@ -37,14 +37,14 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 		}
 		assertTrue(actual.equals(expected));
 		String PATH = "src/test/resources/";
-		if(fileType.equals("rdf"))
-			writeRdfFile(expected, PATH + fileName);
+		if(fileType.equals("xml"))
+			writeXmlFile(expected, PATH + fileName);
 		else if (fileType.equals("json"))
 			writeJsonFile(expected, PATH + fileName);
 		else if (fileType.equals("turtle"))
 			writeTurtleFile(expected, PATH + fileName);
 		else
-			writeRdfFile(expected, PATH + fileName);
+			writeXmlFile(expected, PATH + fileName);
 	}
 
 	//	public static void writeRdfFile(SBOLDocument document, File fileName)
@@ -56,6 +56,15 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 	//		}
 	//	}
 
+	static void writeXmlFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
+	{
+		try {
+			SBOLWriter.write(document, new File(fileName));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	static void writeRdfFile(SBOLDocument document, String fileName) throws IOException, SBOLConversionException
 	{
 		try {
