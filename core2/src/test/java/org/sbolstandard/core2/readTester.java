@@ -7,7 +7,7 @@ import org.synbiohub.frontend.IdentifiedMetadata;
 import org.synbiohub.frontend.SynBioHubFrontend;
 
 class readTester {
-	static String filenameRdf 	= "writeTesterString_v1.3.rdf";
+	static String filenameXml 	= "writeTesterString_v1.3.xml";
 	static String filenameJson   = "writeTesterString_v1.3.json";
 	static String filenameTurtle = "writeTesterString_v1.3.ttl";
 
@@ -25,11 +25,11 @@ class readTester {
 	static String filenameV1_12 	= "SBOL1/BBa_I0462.xml";
 	static String filenameV1_13 	= "SBOL1/pACPc_invF.xml";
 	static String filenameV1_14 	= "SBOL1/precedesTest.xml";
-	static String filenameV1_15 	= "ComponentDefinitionOutput.rdf";
-	static String filenameV1_16 	= "SimpleComponentDefinitionExample.rdf";
-	static String filenameV1_17 	= "namespace.rdf";
+	static String filenameV1_15 	= "ComponentDefinitionOutput.xml";
+	static String filenameV1_16 	= "SimpleComponentDefinitionExample.xml";
+	static String filenameV1_17 	= "namespace.xml";
 	static String filenameV1_18 	= "SBOL1/SBOL1and2Test.xml";
-	static String filenameV1_19 	= "toggle.rdf";
+	static String filenameV1_19 	= "toggle.xml";
 
 
 	static String path = "test/data/";
@@ -37,7 +37,7 @@ class readTester {
 	public static void main(String[] args) {
 
 		try {
-			//SBOLDocument doc3 = SBOLReader.read("/Users/myers/repressionModel.rdf");
+			//SBOLDocument doc3 = SBOLReader.read("/Users/myers/repressionModel.xml");
 			//ModuleDefinition md = doc3.getModuleDefinition(URI.create("http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/1.0"));
 			//System.out.println(md.getWasDerivedFrom());
 			SBOLDocument doc2 = new SBOLDocument();
@@ -78,7 +78,7 @@ class readTester {
 			//SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");
 			//SBOLReader.setVersion("1.0");
 			//SBOLReader.setTypesInURI(true);
-//			SBOLDocument document1 = SBOLReader.read("/Users/myers/Downloads/michael.rdf");
+//			SBOLDocument document1 = SBOLReader.read("/Users/myers/Downloads/michael.xml");
 //			for (ComponentDefinition componentDefinition : document1.getComponentDefinitions()) {
 //				if (componentDefinition.getComponents().size()==0) continue;
 //				//String original = componentDefinition.getSequenceByEncoding(Sequence.IUPAC_DNA).getElements();
@@ -90,7 +90,7 @@ class readTester {
 			//SBOLDocument document2 = document1.createRecursiveCopy(
 			//		document1.getTopLevel(URI.create("http://sbolhub.org/col/james_test_sbol2_061015155208")));
 			//ByteArrayOutputStream out = new ByteArrayOutputStream();
-			//SBOLWriter.write(document1, out);//, SBOLReader.RDFV1);
+			//SBOLWriter.write(document1, out);//, SBOLReader.xmlV1);
 			//document1 = SBOLReader.read(new ByteArrayInputStream(out.toByteArray()));
 			//SBOLWriter.write(document2,(System.out));
 			//ByteArrayOutputStream out = new ByteArrayOutputStream();
