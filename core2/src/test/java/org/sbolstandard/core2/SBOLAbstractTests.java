@@ -896,7 +896,7 @@ public abstract class SBOLAbstractTests {
 		catch (URISyntaxException e1) {
 			e1.printStackTrace();
 		}
-		File file;
+		File file; 
 		for (File f : file_base.listFiles()){
 			
 			// ignore sub-directories for the time being
