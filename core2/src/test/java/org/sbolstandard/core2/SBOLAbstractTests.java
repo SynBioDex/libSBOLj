@@ -925,7 +925,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_igem1_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "XML/igem1.xml";
+		String fileName = "RDF/igem1.xml";
 
 		try
 		{
@@ -945,7 +945,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_igem2_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "XML/igem2.xml";
+		String fileName = "RDF/igem2.xml";
 
 		try
 		{
@@ -965,7 +965,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_igem3_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "XML/igem3.xml";
+		String fileName = "RDF/igem3.xml";
 
 		try
 		{
@@ -985,7 +985,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_toggle_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "XML/toggle.xml";
+		String fileName = "RDF/toggle.xml";
 
 		try
 		{

@@ -33,6 +33,25 @@
     <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000804"/>
     <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF165912/annotation7/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation7"/>
+        <sbol:displayId>annotation7</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <genbank:gene>"CCT"</genbank:gene>
+        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000205"/>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation7/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation7/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>4310</sbol:start>
+            <sbol:end>4637</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF165912/annotation0/1">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation0"/>
         <sbol:displayId>annotation0</sbol:displayId>
@@ -49,26 +68,6 @@
             <sbol:version>1</sbol:version>
             <sbol:start>1</sbol:start>
             <sbol:end>5485</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF165912/annotation2/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation2"/>
-        <sbol:displayId>annotation2</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <genbank:regulatory_class>"promoter"</genbank:regulatory_class>
-        <genbank:gene>"CCT"</genbank:gene>
-        <sbol:role rdf:resource="http://identifiers.org/so/SO:0005836"/>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation2/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation2/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>1</sbol:start>
-            <sbol:end>1602</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
@@ -95,6 +94,144 @@
       </sbol:SequenceAnnotation>
     </sbol:sequenceAnnotation>
     <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF165912/annotation5/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation5"/>
+        <sbol:displayId>annotation5</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <genbank:gene>"CCT"</genbank:gene>
+        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000204"/>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation5/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation5/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>1603</sbol:start>
+            <sbol:end>1712</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF165912/annotation2/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation2"/>
+        <sbol:displayId>annotation2</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <genbank:regulatory_class>"promoter"</genbank:regulatory_class>
+        <genbank:gene>"CCT"</genbank:gene>
+        <sbol:role rdf:resource="http://identifiers.org/so/SO:0005836"/>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation2/range/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation2/range"/>
+            <sbol:displayId>range</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <sbol:start>1</sbol:start>
+            <sbol:end>1602</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/1">
+        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4"/>
+        <sbol:displayId>annotation4</sbol:displayId>
+        <sbol:version>1</sbol:version>
+        <genbank:multiRangeType>join</genbank:multiRangeType>
+        <genbank:gene>"CCT"</genbank:gene>
+        <genbank:product>"CTP:phosphocholine cytidylyltransferase"</genbank:product>
+        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000234"/>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range4/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range4"/>
+            <sbol:displayId>range4</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:position>position4</genbank:position>
+            <sbol:start>2918</sbol:start>
+            <sbol:end>3073</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range5/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range5"/>
+            <sbol:displayId>range5</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:position>position5</genbank:position>
+            <sbol:start>3167</sbol:start>
+            <sbol:end>3247</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range3/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range3"/>
+            <sbol:displayId>range3</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:position>position3</genbank:position>
+            <sbol:start>2801</sbol:start>
+            <sbol:end>2843</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range6/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range6"/>
+            <sbol:displayId>range6</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:position>position6</genbank:position>
+            <sbol:start>3874</sbol:start>
+            <sbol:end>3972</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range2/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range2"/>
+            <sbol:displayId>range2</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:position>position2</genbank:position>
+            <sbol:start>2538</sbol:start>
+            <sbol:end>2633</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range1/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range1"/>
+            <sbol:displayId>range1</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:position>position1</genbank:position>
+            <sbol:start>2322</sbol:start>
+            <sbol:end>2438</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range7/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range7"/>
+            <sbol:displayId>range7</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:position>position7</genbank:position>
+            <sbol:start>4082</sbol:start>
+            <sbol:end>4637</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range0/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range0"/>
+            <sbol:displayId>range0</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:position>position0</genbank:position>
+            <sbol:start>1603</sbol:start>
+            <sbol:end>1891</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
       <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/1">
         <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6"/>
         <sbol:displayId>annotation6</sbol:displayId>
@@ -109,39 +246,6 @@
         <genbank:translation>"MSNVIGDRTEDGLSTAAAASGSTAVQSSPPTDRPVRVYADGIYDLFHFGHARSLEQAKLAFPNNTYLLVGCCNDETTHKYKGRTVMTAEERYESLRHCKWVDEVIPDAPWVVNQEFLDKHQIDYVAHDSLPYADSSGAGKDVYEFVKKVGRFKETQRTEGISTSDIIMRIVKDYNQYVMRNLDRGYSREDLGVSFVKEKRLRVNMRLKKLQERVKEQQERVGEKIQTVKMLRNEWVENADRWVAGFLEIFEEGCHKMGTAIVDSIQERLMRQKSAERLENGQDDDTDDQFYEEYFDHDMGSDDDEDEKFYDEEEVKEEETEKTVMTDAKDNK"</genbank:translation>
         <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
         <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/range6/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6/range6"/>
-            <sbol:displayId>range6</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <genbank:position>position6</genbank:position>
-            <sbol:start>3874</sbol:start>
-            <sbol:end>3972</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/range7/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6/range7"/>
-            <sbol:displayId>range7</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <genbank:position>position7</genbank:position>
-            <sbol:start>4082</sbol:start>
-            <sbol:end>4309</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/range1/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6/range1"/>
-            <sbol:displayId>range1</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <genbank:position>position1</genbank:position>
-            <sbol:start>2322</sbol:start>
-            <sbol:end>2438</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:location>
           <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/range5/1">
             <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6/range5"/>
             <sbol:displayId>range5</sbol:displayId>
@@ -153,13 +257,13 @@
           </sbol:Range>
         </sbol:location>
         <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/range2/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6/range2"/>
-            <sbol:displayId>range2</sbol:displayId>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/range3/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6/range3"/>
+            <sbol:displayId>range3</sbol:displayId>
             <sbol:version>1</sbol:version>
-            <genbank:position>position2</genbank:position>
-            <sbol:start>2538</sbol:start>
-            <sbol:end>2633</sbol:end>
+            <genbank:position>position3</genbank:position>
+            <sbol:start>2801</sbol:start>
+            <sbol:end>2843</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
@@ -186,115 +290,8 @@
           </sbol:Range>
         </sbol:location>
         <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/range3/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6/range3"/>
-            <sbol:displayId>range3</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <genbank:position>position3</genbank:position>
-            <sbol:start>2801</sbol:start>
-            <sbol:end>2843</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF165912/annotation5/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation5"/>
-        <sbol:displayId>annotation5</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <genbank:gene>"CCT"</genbank:gene>
-        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000204"/>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation5/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation5/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>1603</sbol:start>
-            <sbol:end>1712</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4"/>
-        <sbol:displayId>annotation4</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <genbank:multiRangeType>join</genbank:multiRangeType>
-        <genbank:gene>"CCT"</genbank:gene>
-        <genbank:product>"CTP:phosphocholine cytidylyltransferase"</genbank:product>
-        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000234"/>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range2/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range2"/>
-            <sbol:displayId>range2</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <genbank:position>position2</genbank:position>
-            <sbol:start>2538</sbol:start>
-            <sbol:end>2633</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range5/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range5"/>
-            <sbol:displayId>range5</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <genbank:position>position5</genbank:position>
-            <sbol:start>3167</sbol:start>
-            <sbol:end>3247</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range0/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range0"/>
-            <sbol:displayId>range0</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <genbank:position>position0</genbank:position>
-            <sbol:start>1603</sbol:start>
-            <sbol:end>1891</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range7/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range7"/>
-            <sbol:displayId>range7</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <genbank:position>position7</genbank:position>
-            <sbol:start>4082</sbol:start>
-            <sbol:end>4637</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range3/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range3"/>
-            <sbol:displayId>range3</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <genbank:position>position3</genbank:position>
-            <sbol:start>2801</sbol:start>
-            <sbol:end>2843</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range4/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range4"/>
-            <sbol:displayId>range4</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <genbank:position>position4</genbank:position>
-            <sbol:start>2918</sbol:start>
-            <sbol:end>3073</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range6/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range6"/>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/range6/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6/range6"/>
             <sbol:displayId>range6</sbol:displayId>
             <sbol:version>1</sbol:version>
             <genbank:position>position6</genbank:position>
@@ -304,32 +301,35 @@
           </sbol:Range>
         </sbol:location>
         <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation4/range1/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation4/range1"/>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/range2/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6/range2"/>
+            <sbol:displayId>range2</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:position>position2</genbank:position>
+            <sbol:start>2538</sbol:start>
+            <sbol:end>2633</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/range7/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6/range7"/>
+            <sbol:displayId>range7</sbol:displayId>
+            <sbol:version>1</sbol:version>
+            <genbank:position>position7</genbank:position>
+            <sbol:start>4082</sbol:start>
+            <sbol:end>4309</sbol:end>
+            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:Range>
+        </sbol:location>
+        <sbol:location>
+          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation6/range1/1">
+            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation6/range1"/>
             <sbol:displayId>range1</sbol:displayId>
             <sbol:version>1</sbol:version>
             <genbank:position>position1</genbank:position>
             <sbol:start>2322</sbol:start>
             <sbol:end>2438</sbol:end>
-            <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:Range>
-        </sbol:location>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="http://www.async.ece.utah.edu/AF165912/annotation7/1">
-        <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation7"/>
-        <sbol:displayId>annotation7</sbol:displayId>
-        <sbol:version>1</sbol:version>
-        <genbank:gene>"CCT"</genbank:gene>
-        <sbol:role rdf:resource="http://identifiers.org/so/SO:0000205"/>
-        <sbol:location>
-          <sbol:Range rdf:about="http://www.async.ece.utah.edu/AF165912/annotation7/range/1">
-            <sbol:persistentIdentity rdf:resource="http://www.async.ece.utah.edu/AF165912/annotation7/range"/>
-            <sbol:displayId>range</sbol:displayId>
-            <sbol:version>1</sbol:version>
-            <sbol:start>4310</sbol:start>
-            <sbol:end>4637</sbol:end>
             <sbol:orientation rdf:resource="http://sbols.org/v2#inline"/>
           </sbol:Range>
         </sbol:location>
