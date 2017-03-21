@@ -350,13 +350,13 @@ public class RepressionModel {
 //		CRP_b.addSequence(
 //				  URI.create("http://partsregistry.org/seq/partseq_154")
 //				  );
-		String prURI = "http://partsregistry.org"; 
+		String prURI = "http://partsregistry.org/"; 
 		String prPrefix = "pr";
 		doc.addNamespace(URI.create(prURI) , prPrefix);
 		ComponentDefinition pConst = doc.getComponentDefinition("pConst", version);
 		pConst.createAnnotation(new QName(prURI, "experience", prPrefix),
 				URI.create("http://parts.igem.org/Part:BBa_J23119:Experience"));		
-		String myersLabURI = "http://www.async.ece.utah.edu";
+		String myersLabURI = "http://www.async.ece.utah.edu/";
 		String myersLabPrefix = "myersLab";	
 		doc.addNamespace(URI.create(myersLabURI) , myersLabPrefix);
 		GenericTopLevel datasheet=doc.createGenericTopLevel(
