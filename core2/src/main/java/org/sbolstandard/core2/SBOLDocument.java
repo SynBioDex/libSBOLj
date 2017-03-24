@@ -49,7 +49,7 @@ public class SBOLDocument {
 	private HashMap<URI, Model> models;
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
-	private HashMap<String, NamespaceBinding> nameSpaces;
+	private HashMap<String, HashMap<String,NamespaceBinding>> nameSpaces;
 	private HashMap<String, SynBioHubFrontend> registries;
 	private Set<String> prefixes;
 	private String defaultURIprefix;
@@ -96,10 +96,16 @@ public class SBOLDocument {
 		moduleDefinitions = new HashMap<>();
 		sequences = new HashMap<>();
 		nameSpaces = new HashMap<>();
-		nameSpaces.put(Sbol2Terms.sbol2.getNamespaceURI(), Sbol2Terms.sbol2);
-		nameSpaces.put(Sbol1Terms.rdf.getNamespaceURI(), Sbol1Terms.rdf);
-		nameSpaces.put(Sbol2Terms.dc.getNamespaceURI(), Sbol2Terms.dc);
-		nameSpaces.put(Sbol2Terms.prov.getNamespaceURI(), Sbol2Terms.prov);
+		try {
+			addNamespaceBinding(Sbol2Terms.sbol2);
+			addNamespaceBinding(Sbol1Terms.rdf);
+			addNamespaceBinding(Sbol2Terms.dc);
+			addNamespaceBinding(Sbol2Terms.prov);
+		}
+		catch (SBOLValidationException e) {
+			// TODO: this should never happen
+			e.printStackTrace();
+		}
 		prefixes = new HashSet<>();
 		registries = new HashMap<>();
 	}
@@ -2145,7 +2151,13 @@ public class SBOLDocument {
 				!namespaceBinding.getNamespaceURI().endsWith("/")) {
 			throw new SBOLValidationException("sbol-10105");
 		}
-		nameSpaces.put(namespaceBinding.getNamespaceURI(), namespaceBinding);
+		HashMap<String,NamespaceBinding> prefixMap;
+		prefixMap = nameSpaces.get(namespaceBinding.getNamespaceURI());
+		if (prefixMap==null) {
+			prefixMap = new HashMap<>();
+		}
+		prefixMap.put(namespaceBinding.getPrefix(), namespaceBinding);
+		nameSpaces.put(namespaceBinding.getNamespaceURI(), prefixMap);
 	}
 
 	/**
@@ -2182,9 +2194,11 @@ public class SBOLDocument {
 	 */
 	public QName getNamespace(URI namespaceURI) {
 		//if (nameSpaces.get(namespaceURI)==null) return null;
-		for (NamespaceBinding namespaceBinding : nameSpaces.values()) {
-			if (namespaceBinding.getNamespaceURI().equals(namespaceURI.toString())) {
-				return new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix());
+		for (String NamespaceUri : nameSpaces.keySet()) {
+			for (NamespaceBinding namespaceBinding : nameSpaces.get(NamespaceUri).values()) {
+				if (namespaceBinding.getNamespaceURI().equals(namespaceURI.toString())) {
+					return new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix());
+				}	
 			}
 		}
 		return null;
@@ -2197,8 +2211,10 @@ public class SBOLDocument {
 	 */
 	public List<QName> getNamespaces() {
 		List<QName> bindings = new ArrayList<>();
-		for (NamespaceBinding namespaceBinding : this.nameSpaces.values()) {
-			bindings.add(new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix()));
+		for (String NamespaceUri : this.nameSpaces.keySet()) {
+			for (NamespaceBinding namespaceBinding : this.nameSpaces.get(NamespaceUri).values()) {
+				bindings.add(new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix()));
+			}
 		}
 		return bindings;
 	}
@@ -2232,7 +2248,9 @@ public class SBOLDocument {
 	 */
 	List<NamespaceBinding> getNamespaceBindings() {
 		List<NamespaceBinding> bindings = new ArrayList<>();
-		bindings.addAll(this.nameSpaces.values());
+		for (String NamespaceUri : this.nameSpaces.keySet()) {
+			bindings.addAll(this.nameSpaces.get(NamespaceUri).values());
+		}
 		return bindings;
 	}
 

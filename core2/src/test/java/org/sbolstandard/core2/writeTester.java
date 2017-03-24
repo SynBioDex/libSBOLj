@@ -33,17 +33,22 @@ class writeTester {
 	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument doc2 = new SBOLDocument();
-		doc2.setDefaultURIprefix("http://dummy.org");
-		Sequence seq = doc2.createSequence("id", "agct", Sequence.IUPAC_DNA);
-		seq.setDescription("description");
+		doc2.setDefaultURIprefix("http://myuri.org/");
+		doc2.createGenericTopLevel("test", new QName("http://dummy.org/","dumb","dumb"));
+		doc2.addNamespace(URI.create("http://dummy.org/"), "dummy");
 		doc2.write(System.out);
-		doc2.write(System.out,SBOLDocument.FASTAformat);
-		ByteArrayOutputStream out2 = new ByteArrayOutputStream();
-		SBOLWriter.write(doc2, out2, SBOLDocument.FASTAformat);
-		SBOLReader.setURIPrefix("http://dummy.org");
-		doc2 = SBOLReader.read(new ByteArrayInputStream(out2.toByteArray()));
-		doc2.write(System.err);
-		doc2.write(System.err,SBOLDocument.FASTAformat);
+		SBOLTestUtils.writeAndRead(doc2,true);
+//		doc2.setDefaultURIprefix("http://dummy.org");
+//		Sequence seq = doc2.createSequence("id", "agct", Sequence.IUPAC_DNA);
+//		seq.setDescription("description");
+//		doc2.write(System.out);
+//		doc2.write(System.out,SBOLDocument.FASTAformat);
+//		ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+//		SBOLWriter.write(doc2, out2, SBOLDocument.FASTAformat);
+//		SBOLReader.setURIPrefix("http://dummy.org");
+//		doc2 = SBOLReader.read(new ByteArrayInputStream(out2.toByteArray()));
+//		doc2.write(System.err);
+//		doc2.write(System.err,SBOLDocument.FASTAformat);
 		
 //		URI.create("xyz:1*23");
 ////		SequenceOntology seqOn = new SequenceOntology();

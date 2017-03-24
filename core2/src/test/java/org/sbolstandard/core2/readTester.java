@@ -47,13 +47,14 @@ class readTester {
 			//cd.addSequence(URI.create("http://myfakesequence.com"));
 			
 			SynBioHubFrontend sfe = doc2.addRegistry("http://localhost:7777","http://synbiohub.org");
-			HashSet<URI> types = new HashSet<URI>();
-			types.add(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"));
-			HashSet<URI> roles = new HashSet<URI>();
-			roles.add(URI.create("http://identifiers.org/so/SO:0000167"));
-			HashSet<URI> collections = new HashSet<URI>();
-			collections.add(URI.create("http://synbiohub.org/public/igem/category/regulation/constitutive_collection/1"));
-			System.out.println(sfe.getMatchingComponentDefinitionMetadata("", roles, types, collections, 1, 10));
+			System.out.println(sfe.getRootCollectionMetadata());
+//			HashSet<URI> types = new HashSet<URI>();
+//			types.add(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"));
+//			HashSet<URI> roles = new HashSet<URI>();
+//			roles.add(URI.create("http://identifiers.org/so/SO:0000167"));
+//			HashSet<URI> collections = new HashSet<URI>();
+//			collections.add(URI.create("http://synbiohub.org/public/igem/category/regulation/constitutive_collection/1"));
+//			System.out.println(sfe.getMatchingComponentDefinitionMetadata("", roles, types, collections, 1, 10));
 			
 			//doc2.read("/Users/myers/Downloads/MyPartTest.xml");
 			//sfe.removeRegistryParts(doc2);
