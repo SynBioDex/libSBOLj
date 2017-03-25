@@ -2184,6 +2184,30 @@ public class SBOLDocument {
 			removeRegistry((String)key);
 		}
 	}
+	
+	String getNamespacePrefix(URI namespaceURI) {
+		QName qName = getNamespace(namespaceURI);
+		int nsNum = 0;
+		if (qName==null) {
+			boolean foundIt;
+			do {
+				foundIt = false;
+				for (String uri : nameSpaces.keySet()) {
+					if (nameSpaces.get(uri).keySet().contains("ns"+nsNum)) {
+						nsNum++;
+						foundIt = true;
+						break;
+					}
+				}
+			} while (foundIt);
+			HashMap<String,NamespaceBinding> nsMap = new HashMap<>();
+			nsMap.put("ns"+nsNum, NamespaceBinding(namespaceURI.toString(),"ns"+nsNum));
+			nameSpaces.put(namespaceURI.toString(), nsMap);
+			return "ns"+nsNum;
+		} else {
+			return qName.getPrefix();
+		}
+	}
 
 	/**
 	 * Returns the QName matching the given namespace URI from this

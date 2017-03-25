@@ -2971,7 +2971,7 @@ public class SBOLReader
 				String typeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				String nameSpace = URIcompliance.extractNamespace(URI.create(typeStr));
 				String localPart = URIcompliance.extractDisplayId(URI.create(typeStr));
-				String prefix = SBOLDoc.getNamespace(URI.create(nameSpace)).getPrefix();
+				String prefix = SBOLDoc.getNamespacePrefix(URI.create(nameSpace));
 				type = new QName(nameSpace,localPart,prefix);
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))

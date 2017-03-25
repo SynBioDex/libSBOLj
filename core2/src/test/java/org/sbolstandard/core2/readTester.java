@@ -40,6 +40,8 @@ class readTester {
 			//SBOLDocument doc3 = SBOLReader.read("/Users/myers/repressionModel.xml");
 			//ModuleDefinition md = doc3.getModuleDefinition(URI.create("http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/1.0"));
 			//System.out.println(md.getWasDerivedFrom());
+			SBOLDocument doc = SBOLReader.read("/var/folders/ff/gcgl5w9d1jn4f3czn2y888900000gn/T/tmp.v0eE6XGK");
+			doc.write(System.out);
 			SBOLDocument doc2 = new SBOLDocument();
 			doc2.setDefaultURIprefix("http://dummy.org");
 			//doc2.setComplete(true);
