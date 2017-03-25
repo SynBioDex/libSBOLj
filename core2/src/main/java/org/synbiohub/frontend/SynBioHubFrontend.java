@@ -84,18 +84,18 @@ public class SynBioHubFrontend
     }
 
     /**
-     * Return the total number of TopLevels of a specified type in the repository.
+     * Return the total number of objects of a specified type in the repository.
      *
-     * @return the total number of TopLevels of a specified type in the repository.
+     * @return the total number of objects of a specified type in the repository.
      *
-     * @param topLevelType The TopLevel type to count 
-     * (Collection, ComponentDefinition, Sequence, ModuleDefinition, Model).
+     * @param objectType The object type to count 
+     * (Collection, ComponentDefinition, Sequence, ModuleDefinition, Model, etc.).
      *
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */ 
-    public int getCountTopLevels(String topLevelType) throws SynBioHubException
+    public int getCount(String objectType) throws SynBioHubException
     {
-        return fetchCount(backendUrl + "/" + topLevelType + "/count");
+        return fetchCount(backendUrl + "/" + objectType + "/count");
     }
     
     /**
