@@ -1464,7 +1464,6 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException
 	 */
 	public SBOLDocument changeURIPrefixVersion(String URIPrefix,String version) throws SBOLValidationException {
-		// TODO: should fail if not complete document
 		SBOLDocument document = createCopy(URIPrefix,null,version);
 		document.setDefaultURIprefix(URIPrefix);
 		for (Collection collection : getCollections()) {

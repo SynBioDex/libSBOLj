@@ -631,8 +631,10 @@ class GenBank {
 		}
 		for (Annotation a : sa.getAnnotations()) {
 			if (a.getQName().getLocalPart().equals("multiRangeType")) continue;
-			writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
-					a.getStringValue(),80,21);
+			if (a.isStringValue()) {
+				writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
+						a.getStringValue(),80,21);
+			}
 		}
 	}
 

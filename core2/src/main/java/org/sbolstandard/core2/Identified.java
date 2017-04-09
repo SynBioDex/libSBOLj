@@ -31,7 +31,7 @@ public abstract class Identified {
 	private URI persistentIdentity;
 	private String version;
 	private List<Annotation> annotations;
-	private URI wasDerivedFrom;
+	private Set<URI> wasDerivedFroms;
 	private String displayId;
 	private SBOLDocument sbolDocument = null;
 	private String name;
@@ -42,6 +42,7 @@ public abstract class Identified {
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #setIdentity(URI)}
 	 */
 	Identified(URI identity) throws SBOLValidationException {
+		wasDerivedFroms = new HashSet<URI>();
 		setIdentity(identity);
 		this.annotations = new ArrayList<>();
 	}
@@ -62,6 +63,7 @@ public abstract class Identified {
 	 */
 	Identified(Identified identified) throws SBOLValidationException {
 		this.setIdentity(identified.getIdentity());
+		this.wasDerivedFroms = new HashSet<URI>();
 		this.annotations = new ArrayList<>();
 		if (identified.hasAnnotations()) {
 			List<Annotation> clonedAnnotations = new ArrayList<>();
@@ -78,6 +80,9 @@ public abstract class Identified {
 		}
 		if (identified.isSetPersistentIdentity()) {
 			this.setPersistentIdentity(URI.create(identified.getPersistentIdentity().toString()));
+		}
+		for (URI wasDerivedFrom : identified.getWasDerivedFroms()) {
+			this.addWasDerivedFrom(URI.create(wasDerivedFrom.toString()));
 		}
 		if (identified.isSetWasDerivedFrom()) {
 			this.setWasDerivedFrom(URI.create(identified.getWasDerivedFrom().toString()));
@@ -191,7 +196,7 @@ public abstract class Identified {
 	 * @return {@code true} if it is not {@code null}, or {@code false} otherwise
 	 */
 	public boolean isSetWasDerivedFrom() {
-		return wasDerivedFrom != null;
+		return wasDerivedFroms.size() > 0;
 	}
 
 	/**
@@ -256,6 +261,55 @@ public abstract class Identified {
 //	private void unsetDisplayId() {
 //		displayId = null;
 //	}
+	
+	/**
+	 * Adds the given wasDerivedFrom URI to the set of wasDerivedFrom URIs.
+	 *
+	 * @param wasDerivedFromURI the wasDerivedFrom URI to be added
+	 * @return {@code true} if this set did not already contain the specified wasDerivedFrom, {@code false} otherwise.
+	 */
+	public boolean addWasDerivedFrom(URI wasDerivedFromURI) {
+		return wasDerivedFroms.add(wasDerivedFromURI);
+	}
+	
+	/**
+	 * Removes the given wasDerivedFrom URI from the set of wasDerivedFroms.
+	 *
+	 * @param wasDerivedFromURI the given wasDerivedFrom URI to be removed
+	 * @return {@code true} if the matching wasDerivedFrom reference was removed successfully, {@code false} otherwise.
+	 */
+	public boolean removeWasDerivedFrom(URI wasDerivedFromURI) {
+		return wasDerivedFroms.remove(wasDerivedFromURI);
+	}
+
+	/**
+	 * Checks if the given wasDerivedFrom URI is included in the set of wasDerivedFrom URIs.
+	 *
+	 * @param wasDerivedFromURI the wasDerivedFrom URI to be checked
+	 * @return {@code true} if this set contains the given wasDerivedFrom URI, {@code false} otherwise.
+	 */
+	public boolean containsWasDerivedFrom(URI wasDerivedFromURI) {
+		return wasDerivedFroms.contains(wasDerivedFromURI);
+	}
+
+	/**
+	 * Removes all entries from the set of wasDerivedFrom URIs.
+	 * The set will be empty after this call returns.	 
+	 */
+	public void clearWasDerivedFroms() {
+		wasDerivedFroms.clear();
+	}
+	
+	/**
+	 * Returns the set of wasDerivedFrom URIs.
+	 *
+	 * @return the set of wasDerivedFrom URIs.
+	 */
+	public Set<URI> getWasDerivedFroms() {
+		Set<URI> result = new HashSet<>();
+		result.addAll(wasDerivedFroms);
+		return result;
+	}
 
 	/**
 	 * Returns the wasDerivedFrom property of this instance.
@@ -263,6 +317,10 @@ public abstract class Identified {
 	 * @return the wasDerivedFrom property of this instance.
 	 */
 	public URI getWasDerivedFrom() {
+		URI wasDerivedFrom = null;
+		if (wasDerivedFroms.size() > 0) {
+			wasDerivedFrom = (URI)wasDerivedFroms.toArray()[0];
+		}
 		return wasDerivedFrom;
 	}
 
@@ -279,7 +337,8 @@ public abstract class Identified {
 			}
 			SBOLValidate.checkWasDerivedFromCycle(sbolDocument, this, wasDerivedFrom, new HashSet<URI>());
 		}
-		this.wasDerivedFrom = wasDerivedFrom;
+		clearWasDerivedFroms();
+		addWasDerivedFrom(wasDerivedFrom);
 	}
 
 	/**
@@ -537,7 +596,7 @@ public abstract class Identified {
 	 *
 	 */
 	public void unsetWasDerivedFrom() {
-		wasDerivedFrom = null;
+		clearWasDerivedFroms();
 	}
 
 	/**
@@ -569,7 +628,7 @@ public abstract class Identified {
 		result = prime * result	+ ((persistentIdentity == null) ? 0 : persistentIdentity.hashCode());
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
 		// wasDerivedFrom differences are not considered
-		//result = prime * result + ((wasDerivedFrom == null) ? 0 : wasDerivedFrom.hashCode());
+		//result = prime * result + ((wasDerivedFroms == null) ? 0 : wasDerivedFroms.hashCode());
 		result = prime * result + ((displayId == null) ? 0 : displayId.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -607,12 +666,12 @@ public abstract class Identified {
 			return false;
 		// wasDerivedFrom differences are not considered differences
 		/*
-		if (wasDerivedFrom == null) {
-			if (other.wasDerivedFrom != null)
+		if (wasDerivedFroms == null) {
+			if (other.wasDerivedFroms != null)
 				return false;
-		} else if (!wasDerivedFrom.equals(other.wasDerivedFrom))
+		} else if (!wasDerivedFroms.equals(other.wasDerivedFroms))
 			return false;
-		 */
+			*/
 		if (description == null) {
 			if (other.description != null)
 				return false;
@@ -754,7 +813,7 @@ public abstract class Identified {
 				+ (this.isSetName()?", name=" + name:"")
 				+ (this.isSetDescription()?", description=" + description:"") 
 				+ (annotations.size()>0?", annotations=" + annotations:"") 
-				+ (this.isSetWasDerivedFrom()?", wasDerivedFrom=" + wasDerivedFrom:""); 
+				+ (wasDerivedFroms.size()>0?", wasDerivedFroms=" + wasDerivedFroms:"");  
 	}
 
 	//	/**
