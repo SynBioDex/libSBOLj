@@ -24,7 +24,7 @@ public class SequenceOutput {
 				"ttgacagctagctcagtcctaggtataatgctagc", 
 				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
 				);
-		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
+		seq.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		
 		SBOLWriter.write(document,(System.out));		
     }

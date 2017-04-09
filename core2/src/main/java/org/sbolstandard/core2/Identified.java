@@ -84,8 +84,8 @@ public abstract class Identified {
 		for (URI wasDerivedFrom : identified.getWasDerivedFroms()) {
 			this.addWasDerivedFrom(URI.create(wasDerivedFrom.toString()));
 		}
-		if (identified.isSetWasDerivedFrom()) {
-			this.setWasDerivedFrom(URI.create(identified.getWasDerivedFrom().toString()));
+		for (URI wasDerivedFrom : identified.getWasDerivedFroms()) {
+			this.addWasDerivedFrom(URI.create(wasDerivedFrom.toString()));
 		}
 		if (identified.isSetName()) {
 			this.setName(identified.getName());
@@ -104,8 +104,8 @@ public abstract class Identified {
 			}
 			this.setAnnotations(clonedAnnotations);
 		}
-		if (identified.isSetWasDerivedFrom()) {
-			this.setWasDerivedFrom(URI.create(identified.getWasDerivedFrom().toString()));
+		for (URI wasDerivedFrom : identified.getWasDerivedFroms()) {
+			this.addWasDerivedFrom(URI.create(wasDerivedFrom.toString()));
 		}
 		if (identified.isSetName()) {
 			this.setName(identified.getName());
@@ -195,6 +195,7 @@ public abstract class Identified {
 	 *
 	 * @return {@code true} if it is not {@code null}, or {@code false} otherwise
 	 */
+	@Deprecated
 	public boolean isSetWasDerivedFrom() {
 		return wasDerivedFroms.size() > 0;
 	}
@@ -316,6 +317,7 @@ public abstract class Identified {
 	 *
 	 * @return the wasDerivedFrom property of this instance.
 	 */
+	@Deprecated
 	public URI getWasDerivedFrom() {
 		URI wasDerivedFrom = null;
 		if (wasDerivedFroms.size() > 0) {
@@ -330,6 +332,7 @@ public abstract class Identified {
 	 * @param wasDerivedFrom the wasDerivedFrom property to set to 
 	 * @throws SBOLValidationException if the following SBOL validation rules was violated: 10303, 10304, 10305. 
 	 */
+	@Deprecated
 	public void setWasDerivedFrom(URI wasDerivedFrom) throws SBOLValidationException {
 		if (sbolDocument!=null) {
 			if (!SBOLValidate.checkWasDerivedFromVersion(sbolDocument, this, wasDerivedFrom)) {
@@ -339,6 +342,20 @@ public abstract class Identified {
 		}
 		clearWasDerivedFroms();
 		addWasDerivedFrom(wasDerivedFrom);
+	}
+	
+	/**
+	 * Clears the existing set of wasDerivedFroms first, and then adds the given
+	 * set of the wasDerivedFroms.
+	 *
+	 * @param wasDerivedFroms the set of wasDerivedFroms to set to
+	 */
+	public void setWasDerivedFroms(Set<URI> wasDerivedFroms) {
+		clearWasDerivedFroms();
+		if (wasDerivedFroms==null) return;
+		for (URI wasDerivedFrom : wasDerivedFroms) {
+			addWasDerivedFrom(wasDerivedFrom);
+		}
 	}
 
 	/**
@@ -595,6 +612,7 @@ public abstract class Identified {
 	 * Sets the wasDerivedFrom property to {@code null}.
 	 *
 	 */
+	@Deprecated
 	public void unsetWasDerivedFrom() {
 		clearWasDerivedFroms();
 	}

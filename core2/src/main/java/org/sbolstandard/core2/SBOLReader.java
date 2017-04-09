@@ -1251,7 +1251,7 @@ public class SBOLReader
 		if(roles != null)
 			c.setRoles(roles);
 		if(identity != componentDef.getIdentity())
-			c.setWasDerivedFrom(componentDef.getIdentity());
+			c.addWasDerivedFrom(componentDef.getIdentity());
 		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (name != null && !name.isEmpty())
@@ -1550,7 +1550,7 @@ public class SBOLReader
 			c.setVersion(version);
 		}
 		if(identity != topLevel.getIdentity())
-			c.setWasDerivedFrom(topLevel.getIdentity());
+			c.addWasDerivedFrom(topLevel.getIdentity());
 		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (name != null)
@@ -1757,7 +1757,7 @@ public class SBOLReader
 			s.setVersion(version);
 		}
 		if(identity != sequenceAnnotation.getIdentity())
-			s.setWasDerivedFrom(sequenceAnnotation.getIdentity());
+			s.addWasDerivedFrom(sequenceAnnotation.getIdentity());
 		if (componentURI != null)
 			s.setComponent(componentURI);
 		if (!annotations.isEmpty())
@@ -1801,7 +1801,7 @@ public class SBOLReader
 		String description 	   = null;
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
-		URI wasDerivedFrom     = null;
+		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> type 		   = new HashSet<>();
 		Set<URI> roles 	  	   = new HashSet<>();
 		Set<URI> sequences	   = new HashSet<>();
@@ -1956,7 +1956,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208",topLevel.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -1990,8 +1990,7 @@ public class SBOLReader
 			c.setAnnotations(annotations);
 		if (version != null)
 			c.setVersion(version);
-		if (wasDerivedFrom != null)
-			c.setWasDerivedFrom(wasDerivedFrom);
+		c.setWasDerivedFroms(wasDerivedFroms);
 
 		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(topLevel.getIdentity());
 		if (oldC == null) {
@@ -2014,7 +2013,7 @@ public class SBOLReader
 		URI subject 				 = null;
 		URI object 					 = null;
 		String version 				 = null;
-		URI wasDerivedFrom 			 = null;
+		Set<URI> wasDerivedFroms	 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : sequenceConstraint.getProperties())
@@ -2095,7 +2094,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208",sequenceConstraint.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -2114,8 +2113,7 @@ public class SBOLReader
 			s.setPersistentIdentity(persistentIdentity);
 		if (version != null)
 			s.setVersion(version);
-		if (wasDerivedFrom != null)
-			s.setWasDerivedFrom(wasDerivedFrom);
+		s.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			s.setAnnotations(annotations);
 		return s;
@@ -2154,7 +2152,7 @@ public class SBOLReader
 		Location location 	   = null;
 		URI componentURI 	   = null;
 		String version   	   = null;
-		URI wasDerivedFrom 	   = null;
+		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> roles 	  	   = new HashSet<>();
 		Set<Location> locations = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
@@ -2248,7 +2246,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208",sequenceAnnotation.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -2270,8 +2268,7 @@ public class SBOLReader
 			s.setName(name);
 		if (description != null)
 			s.setDescription(description);
-		if (wasDerivedFrom != null)
-			s.setWasDerivedFrom(wasDerivedFrom);
+		s.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			s.setAnnotations(annotations);
 		if (!roles.isEmpty())
@@ -2348,7 +2345,7 @@ public class SBOLReader
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(typeGenLoc.getIdentity()));
 		URI orientation 			 = null;
 		String version        	     = null;
-		URI wasDerivedFrom 			 = null;
+		Set<URI> wasDerivedFroms	 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : typeGenLoc.getProperties())
@@ -2407,7 +2404,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208",typeGenLoc.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -2432,8 +2429,7 @@ public class SBOLReader
 			gl.setPersistentIdentity(persistentIdentity);
 		if(version != null)
 			gl.setVersion(version);
-		if(wasDerivedFrom != null)
-			gl.setWasDerivedFrom(wasDerivedFrom);
+		gl.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			gl.setAnnotations(annotations);
 
@@ -2469,7 +2465,7 @@ public class SBOLReader
 		Integer at 			   = null;
 		URI orientation 	   = null;
 		String version 		   = null;
-		URI wasDerivedFrom 	   = null;
+		Set<URI> wasDerivedFroms = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : typeCut.getProperties())
@@ -2543,7 +2539,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208", typeCut.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -2573,8 +2569,7 @@ public class SBOLReader
 			}
 		if(version != null)
 			c.setVersion(version);
-		if (wasDerivedFrom != null)
-			c.setWasDerivedFrom(wasDerivedFrom);
+		c.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
 
@@ -2610,7 +2605,7 @@ public class SBOLReader
 		Integer end 		   = null;
 		URI orientation 	   = null;
 		String version 		   = null;
-		URI wasDerivedFrom     = null;
+		Set<URI> wasDerivedFroms = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : typeRange.getProperties())
@@ -2701,7 +2696,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208",typeRange.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -2726,8 +2721,7 @@ public class SBOLReader
 			}
 		if(version != null)
 			r.setVersion(version);
-		if (wasDerivedFrom != null)
-			r.setWasDerivedFrom(wasDerivedFrom);
+		r.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			r.setAnnotations(annotations);
 		return r;
@@ -2768,7 +2762,7 @@ public class SBOLReader
 		String version 		   = null;
 		URI subComponentURI    = null;
 		AccessType access 	   = null;
-		URI wasDerivedFrom 	   = null;
+		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> roles 	  	   = new HashSet<>();
 		URI roleIntegration = null;
 		List<Annotation> annotations = new ArrayList<>();
@@ -2900,7 +2894,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208", component.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -2933,8 +2927,7 @@ public class SBOLReader
 			c.setName(name);
 		if (description != null)
 			c.setDescription(description);
-		if (wasDerivedFrom != null)
-			c.setWasDerivedFrom(wasDerivedFrom);
+		c.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
 
@@ -2969,7 +2962,7 @@ public class SBOLReader
 		String description 	   = null;
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
-		URI wasDerivedFrom 	   = null;
+		Set<URI> wasDerivedFroms = new HashSet<>();
 		QName type 			   = topLevel.getType();
 
 		List<Annotation> annotations = new ArrayList<>();
@@ -3029,7 +3022,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208", topLevel.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -3049,8 +3042,7 @@ public class SBOLReader
 			t.setName(name);
 		if (description != null)
 			t.setDescription(description);
-		if (wasDerivedFrom != null)
-			t.setWasDerivedFrom(wasDerivedFrom);
+		t.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			t.setAnnotations(annotations);
 
@@ -3095,7 +3087,7 @@ public class SBOLReader
 		URI source 			   = null;
 		URI language 		   = null;
 		URI framework 	 	   = null;
-		URI wasDerivedFrom 	   = null;
+		Set<URI> wasDerivedFroms = new HashSet<>();
 
 		List<Annotation> annotations = new ArrayList<>();
 
@@ -3171,7 +3163,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208", topLevel.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -3191,8 +3183,7 @@ public class SBOLReader
 			m.setName(name);
 		if (description != null)
 			m.setDescription(description);
-		if (wasDerivedFrom != null)
-			m.setWasDerivedFrom(wasDerivedFrom);
+		m.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			m.setAnnotations(annotations);
 
@@ -3237,8 +3228,7 @@ public class SBOLReader
 		String description 	   = null;
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 		   = null;
-		URI wasDerivedFrom 	   = null;
-
+		Set<URI> wasDerivedFroms	 = new HashSet<>();
 		Set<URI> members 			 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
@@ -3314,7 +3304,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208", topLevel.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -3335,8 +3325,7 @@ public class SBOLReader
 			c.setName(name);
 		if (description != null)
 			c.setDescription(description);
-		if( wasDerivedFrom != null)
-			c.setWasDerivedFrom(wasDerivedFrom);
+		c.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
 
@@ -3389,7 +3378,7 @@ public class SBOLReader
 		String description 	   = null;
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		String version 	       = null;
-		URI wasDerivedFrom 	   = null;
+		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> roles 		   = new HashSet<>();
 		Set<URI> models 	   = new HashSet<>();
 
@@ -3537,7 +3526,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208",topLevel.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -3567,8 +3556,7 @@ public class SBOLReader
 			moduleDefinition.setName(name);
 		if (description != null)
 			moduleDefinition.setDescription(description);
-		if (wasDerivedFrom != null)
-			moduleDefinition.setWasDerivedFrom(wasDerivedFrom);
+		moduleDefinition.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			moduleDefinition.setAnnotations(annotations);
 
@@ -3615,7 +3603,7 @@ public class SBOLReader
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(module.getIdentity()));
 		String version 		   = null;
 		URI definitionURI 	   = null;
-		URI wasDerivedFrom 	   = null;
+		Set<URI> wasDerivedFroms     = new HashSet<>();
 		Set<MapsTo> mappings 		 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
@@ -3722,7 +3710,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208", module.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -3743,8 +3731,7 @@ public class SBOLReader
 			submodule.setName(name);
 		if (description != null)
 			submodule.setDescription(description);
-		if( wasDerivedFrom != null)
-			submodule.setWasDerivedFrom(wasDerivedFrom);
+		submodule.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			submodule.setAnnotations(annotations);
 		return submodule;
@@ -3780,7 +3767,7 @@ public class SBOLReader
 		URI remote 				  = null;
 		RefinementType refinement = null;
 		URI local 				  = null;
-		URI wasDerivedFrom 		  = null;
+		Set<URI> wasDerivedFroms     = new HashSet<>();
 
 		List<Annotation> annotations = new ArrayList<>();
 
@@ -3865,7 +3852,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208", mapsTo.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -3884,8 +3871,7 @@ public class SBOLReader
 			map.setPersistentIdentity(persistentIdentity);
 		if (version != null)
 			map.setVersion(version);
-		if (wasDerivedFrom != null)
-			map.setWasDerivedFrom(wasDerivedFrom);
+		map.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			map.setAnnotations(annotations);
 		return map;
@@ -3920,8 +3906,7 @@ public class SBOLReader
 		String description 	   = null;
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(interaction.getIdentity()));
 		String version 		   = null;
-		URI wasDerivedFrom	   = null;
-
+		Set<URI> wasDerivedFroms   = new HashSet<>();
 		Set<URI> type 		   			   = new HashSet<>();
 		Set<Participation> participations = new HashSet<>();
 		List<Annotation> annotations 	   = new ArrayList<>();
@@ -4002,7 +3987,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208", interaction.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -4023,8 +4008,7 @@ public class SBOLReader
 			i.setName(name);
 		if (description != null)
 			i.setDescription(description);
-		if (wasDerivedFrom != null)
-			i.setWasDerivedFrom(wasDerivedFrom);
+		i.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			i.setAnnotations(annotations);
 		return i;
@@ -4058,7 +4042,7 @@ public class SBOLReader
 		String version 		   = null;
 		Set<URI> roles 		   = new HashSet<>();
 		URI participant        = null;
-		URI wasDerivedFrom 	   = null;
+		Set<URI> wasDerivedFroms	 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : participation.getProperties())
@@ -4126,7 +4110,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208", participation.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -4145,8 +4129,7 @@ public class SBOLReader
 			p.setPersistentIdentity(persistentIdentity);
 		if (version != null)
 			p.setVersion(version);
-		if( wasDerivedFrom != null)
-			p.setWasDerivedFrom(wasDerivedFrom);
+		p.setWasDerivedFroms(wasDerivedFroms);
 		if(!annotations.isEmpty())
 			p.setAnnotations(annotations);
 		return p;
@@ -4186,7 +4169,7 @@ public class SBOLReader
 		AccessType access 		   = null;
 		DirectionType direction    = null;
 		URI functionalComponentURI = null;
-		URI wasDerivedFrom 		   = null;
+		Set<URI> wasDerivedFroms	 = new HashSet<>();
 
 		List<Annotation> annotations = new ArrayList<>();
 		Set<MapsTo> mappings 		 = new HashSet<>();
@@ -4320,7 +4303,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208", functionalComponent.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -4343,8 +4326,7 @@ public class SBOLReader
 			fc.setName(name);
 		if (description != null)
 			fc.setDescription(description);
-		if (wasDerivedFrom != null)
-			fc.setWasDerivedFrom(wasDerivedFrom);
+		fc.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			fc.setAnnotations(annotations);
 		return fc;
@@ -4379,7 +4361,7 @@ public class SBOLReader
 		String version 		   = null;
 		String elements 	   = null;
 		URI encoding 		   = null;
-		URI wasDerivedFrom 	   = null;
+		Set<URI> wasDerivedFroms	 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
@@ -4449,7 +4431,7 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-10208", topLevel.getIdentity());
 				}
-				wasDerivedFrom = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -4469,8 +4451,7 @@ public class SBOLReader
 			sequence.setName(name);
 		if (description != null)
 			sequence.setDescription(description);
-		if (wasDerivedFrom != null)
-			sequence.setWasDerivedFrom(wasDerivedFrom);
+		sequence.setWasDerivedFroms(wasDerivedFroms);
 		if (!annotations.isEmpty())
 			sequence.setAnnotations(annotations);
 

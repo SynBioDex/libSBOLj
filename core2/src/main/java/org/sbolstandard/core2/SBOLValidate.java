@@ -324,8 +324,8 @@ public class SBOLValidate {
 
 	private static void validateWasDerivedFromVersion(SBOLDocument sbolDocument) {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
-			if (topLevel.isSetWasDerivedFrom()) {
-				if (!checkWasDerivedFromVersion(sbolDocument,topLevel,topLevel.getWasDerivedFrom())) {
+			for (URI wasDerivedFrom : topLevel.getWasDerivedFroms()) {
+				if (!checkWasDerivedFromVersion(sbolDocument,topLevel,wasDerivedFrom)) {
 					errors.add(new SBOLValidationException("sbol-10302", topLevel).getMessage());
 				}
 			}
@@ -347,15 +347,14 @@ public class SBOLValidate {
 			if (visited.contains(tl.getIdentity())) {
 				throw new SBOLValidationException("sbol-10303",identified);
 			}
-			if (tl.isSetWasDerivedFrom()) {
+			if (tl.getWasDerivedFroms().size()==0) return;
+			for (URI wdf : tl.getWasDerivedFroms()) {
 				try {
-					checkWasDerivedFromCycle(sbolDocument,tl,tl.getWasDerivedFrom(),visited);
+					checkWasDerivedFromCycle(sbolDocument,tl,wdf,visited);
 				} catch (SBOLValidationException e) {
 					throw new SBOLValidationException("sbol-10304",identified);
 				}
-			} else {
-				return;
-			}
+			} 
 		}
 		visited.remove(identified.getIdentity());
 		return;
@@ -368,9 +367,9 @@ public class SBOLValidate {
 	 */
 	private static void validateCircularReferences(SBOLDocument sbolDocument) {
 		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
-			if (topLevel.isSetWasDerivedFrom()) {
+			for (URI wasDerivedFrom : topLevel.getWasDerivedFroms()) {
 				try {
-					checkWasDerivedFromCycle(sbolDocument,topLevel,topLevel.getWasDerivedFrom(), new HashSet<URI>());
+					checkWasDerivedFromCycle(sbolDocument,topLevel,wasDerivedFrom, new HashSet<URI>());
 				} catch (SBOLValidationException e) {
 					errors.add(e.getMessage());
 				}

@@ -433,7 +433,7 @@ public abstract class SBOLAbstractTests {
 
 		promoter.setName("J23119 promoter");
 		promoter.setDescription("Constitutive promoter");
-		promoter.setWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
+		promoter.addWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
 
 		document.setDefaultURIprefix(prURI);
 		Sequence seq=document.createSequence(
@@ -442,7 +442,7 @@ public abstract class SBOLAbstractTests {
 				"ttgacagctagctcagtcctaggtataatgctagc",
 				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
 				);
-		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
+		seq.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		promoter.addSequence(seq.getIdentity());
 
 		//promoter.createSequenceAnnotation("cut", 10);
@@ -496,7 +496,7 @@ public abstract class SBOLAbstractTests {
 		promoter.setDescription("Constitutive promoter");
 
 		promoter.createAnnotation(new QName(myAppURI, "datasheet", myAppPrefix), topLevel.getIdentity());
-		promoter.setWasDerivedFrom(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));
+		promoter.addWasDerivedFrom(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));
 
 		runTest("/SBOL2/GenericTopLevelOutput.xml", document, "xml", true);
 	}
@@ -742,7 +742,7 @@ public abstract class SBOLAbstractTests {
 				"ttgacagctagctcagtcctaggtataatgctagc",
 				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
 				);
-		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
+		seq.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		//		SBOLWriter.write(document,(System.out));
 		runTest("/SBOL2/SequenceOutput.xml", document, "xml", true);
 	}
@@ -774,7 +774,7 @@ public abstract class SBOLAbstractTests {
 
 		promoter.setName("J23119 promoter");
 		promoter.setDescription("Constitutive promoter");
-		promoter.setWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
+		promoter.addWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
 
 		document.setDefaultURIprefix(prURI);
 		Sequence seq=document.createSequence(
@@ -783,7 +783,7 @@ public abstract class SBOLAbstractTests {
 				"ttgacagctagctcagtcctaggtataatgctagc",
 				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
 				);
-		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
+		seq.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		promoter.addSequence(seq.getIdentity());
 		//		SBOLWriter.write(document,(System.out));
 		runTest("/SBOL2/SimpleComponentDefinitionExample.xml", document, "xml", true);

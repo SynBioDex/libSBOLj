@@ -46,7 +46,7 @@ public class GenericTopLevelOutput {
 		promoter.setName("J23119");
 		promoter.setDescription("Constitutive promoter");					
 		promoter.createAnnotation(new QName(myAppURI, "datasheet", myAppPrefix), topLevel.getIdentity());
-		promoter.setWasDerivedFrom(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));		
+		promoter.addWasDerivedFrom(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));		
 		
 		SBOLWriter.write(document,(System.out));		
     }

@@ -1380,6 +1380,18 @@ public class SBOLDocument {
 		return document;
 	}
 	
+	private void createRecursiveCopy(SBOLDocument document, Annotation annotation) throws SBOLValidationException {
+		if (annotation.isURIValue()) {
+			TopLevel gtl = getTopLevel(annotation.getURIValue());
+			if (gtl != null) 
+				createRecursiveCopy(document,gtl);
+		} else if (annotation.isNestedAnnotations()) {
+			for (Annotation nestedAnnotation : annotation.getAnnotations()) {
+				createRecursiveCopy(document,nestedAnnotation);
+			}
+		}
+	}
+	
 	/**
 	 * @param document
 	 * @param topLevel
@@ -1387,6 +1399,18 @@ public class SBOLDocument {
 	 */
 	private void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
 		if (document.getTopLevel(topLevel.getIdentity())!=null) return;
+		for (Annotation annotation : topLevel.getAnnotations()) {
+			if (annotation.isURIValue()) {
+				TopLevel gtl = getTopLevel(annotation.getURIValue());
+				if (gtl != null) 
+					createRecursiveCopy(document,gtl);
+			} else if (annotation.isNestedAnnotations()) {
+				for (Annotation nestedAnnotation : annotation.getAnnotations()) {
+					createRecursiveCopy(document,nestedAnnotation);
+				}
+			}
+			// TODO: need to handle nested annotations
+		}
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model) {
 			document.createCopy(topLevel);
 		} else if (topLevel instanceof Collection) {
@@ -2055,40 +2079,11 @@ public class SBOLDocument {
 	 */
 	public Set<TopLevel> getByWasDerivedFrom(URI wasDerivedFrom) {
 		Set<TopLevel> topLevels = new HashSet<>();
-		for (Collection topLevel : collections.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
-			}
-		}
-		for (Sequence topLevel : sequences.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
-			}
-		}
-		for (Model topLevel : models.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
-			}
-		}
-		for (GenericTopLevel topLevel : genericTopLevels.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
-			}
-		}
-		for (ComponentDefinition topLevel : componentDefinitions.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
-			}
-		}
-		for (ModuleDefinition topLevel : moduleDefinitions.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
+		for (TopLevel topLevel : getTopLevels()) {
+			for (URI wdf : topLevel.getWasDerivedFroms()) {
+				if (wdf.equals(wasDerivedFrom)) {
+					topLevels.add(topLevel);
+				}
 			}
 		}
 		return topLevels;
