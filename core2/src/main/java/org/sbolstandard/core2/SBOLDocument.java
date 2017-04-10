@@ -2171,7 +2171,7 @@ public class SBOLDocument {
 		Object[] keySetArray = nameSpaces.keySet().toArray();
 		for (Object key : keySetArray) {
 			if (isRequiredNamespaceBinding(URI.create((String)key))) continue;
-			removeNamespace(URI.create((String)key));
+			nameSpaces.remove((String)key);
 		}
 	}
 	
@@ -2292,7 +2292,8 @@ public class SBOLDocument {
 		if (isRequiredNamespaceBinding(namespaceURI)) {
 			throw new IllegalStateException("Cannot remove required namespace " + namespaceURI.toString());
 		}
-		nameSpaces.remove(namespaceURI.toString());
+		String prefix = getNamespace(namespaceURI).getPrefix();
+		nameSpaces.remove(prefix);
 	}
 	
 	/**
