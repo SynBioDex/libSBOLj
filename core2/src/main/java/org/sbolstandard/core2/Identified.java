@@ -172,14 +172,6 @@ public abstract class Identified {
 	void setPersistentIdentity(URI persistentIdentity) {
 		this.persistentIdentity = persistentIdentity;
 	}
-	
-	// TODO: unsetPersistentIdentity() currently not used, could be useful in future library releases.
-//	/**
-//	 * Set the persistent identity to {@code null}.
-//	 */
-//	private void unsetPersistentIdentity() {
-//		persistentIdentity = null;
-//	}
 
 	/**
 	 * Test if the version is set.
@@ -254,14 +246,6 @@ public abstract class Identified {
 		}
 		this.displayId = displayId;
 	}
-
-	// TODO: unsetDisplayId() currently not used, could be useful in future library releases.
-//	/**
-//	 * Set optional the display ID to {@code null}.
-//	 */
-//	private void unsetDisplayId() {
-//		displayId = null;
-//	}
 	
 	/**
 	 * Adds the given wasDerivedFrom URI to the set of wasDerivedFrom URIs.
@@ -449,20 +433,6 @@ public abstract class Identified {
 		return annotation;
 	}
 
-	// TODO: createAnnotation(NamedProperty) currently not used, could be useful in future library releases.
-//	/**
-//	 * Calls the Annotation constructor {@link Annotation#Annotation(NamedProperty)} to create a new annotation using the
-//	 * give arguments, and then adds to the list of annotations.
-//	 * 
-//	 * @return the created annotation
-//	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addAnnotation(Annotation)}.
-//	 */
-//	private Annotation createAnnotation(NamedProperty<QName> namedProperty) throws SBOLValidationException {
-//		Annotation annotation = new Annotation(namedProperty);
-//		addAnnotation(annotation);
-//		return annotation;
-//	}
-
 	/**
 	 * Creates an annotation with nested annotations using the given arguments, and then adds to this instance's list of annotations.
 	 * 
@@ -484,14 +454,24 @@ public abstract class Identified {
 		if (sbolDocument==null) return;
 		QName qName = annotation.getQName();
 		QName qNameInNamespace = sbolDocument.getNamespace(URI.create(qName.getNamespaceURI()));
-		if (qNameInNamespace==null || qName.getPrefix()!=qNameInNamespace.getPrefix()) {
-			sbolDocument.addNamespace(URI.create(qName.getNamespaceURI()), qName.getPrefix());
+		if (qNameInNamespace==null) {
+			String prefix = qName.getPrefix();
+			if (sbolDocument.getNamespace(prefix)!=null) {
+				prefix = sbolDocument.getNamespacePrefix(URI.create(qName.getNamespaceURI()));
+				annotation.setQName(new QName(qName.getNamespaceURI(),qName.getLocalPart(),prefix));
+			} else {
+				sbolDocument.addNamespace(URI.create(qName.getNamespaceURI()), qName.getPrefix());
+			}
+		} else if (qName.getPrefix()!=qNameInNamespace.getPrefix()) {
+			annotation.setQName(new QName(qName.getNamespaceURI(),qName.getLocalPart(),qNameInNamespace.getPrefix()));
 		}
 		if (annotation.isNestedAnnotations()) {
 			qName = annotation.getNestedQName();
 			qNameInNamespace = sbolDocument.getNamespace(URI.create(qName.getNamespaceURI()));
-			if (qNameInNamespace==null || qName.getPrefix()!=qNameInNamespace.getPrefix()) {
+			if (qNameInNamespace==null) { 
 				sbolDocument.addNamespace(URI.create(qName.getNamespaceURI()), qName.getPrefix());
+			} else if (qName.getPrefix()!=qNameInNamespace.getPrefix()) {
+				annotation.setNestedQName(new QName(qName.getNamespaceURI(),qName.getLocalPart(),qNameInNamespace.getPrefix()));
 			}
 			for (Annotation nestedAnnotation : annotation.getAnnotations()) {
 				addNamespace(nestedAnnotation);
@@ -510,7 +490,6 @@ public abstract class Identified {
 		if (annotations.contains(annotation)) {
 			return;
 		}
-		addNamespace(annotation);
 		if (annotation.getQName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI())) {
 			if (this instanceof Sequence) {
 				throw new SBOLValidationException("sbol-10401");
@@ -548,6 +527,7 @@ public abstract class Identified {
 				throw new SBOLValidationException("sbol-12301");
 			}
 		}
+		addNamespace(annotation);
 		annotations.add(annotation);
 	}
 

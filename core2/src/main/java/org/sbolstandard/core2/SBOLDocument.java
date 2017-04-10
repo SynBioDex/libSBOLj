@@ -49,7 +49,7 @@ public class SBOLDocument {
 	private HashMap<URI, Model> models;
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
-	private HashMap<String, HashMap<String,NamespaceBinding>> nameSpaces;
+	private HashMap<String, NamespaceBinding> nameSpaces;
 	private HashMap<String, SynBioHubFrontend> registries;
 	private Set<String> prefixes;
 	private String defaultURIprefix;
@@ -1467,7 +1467,7 @@ public class SBOLDocument {
 				annotation.setNestedIdentity(newURI);
 				List<Annotation> nestedAnnotations = annotation.getAnnotations();
 				changeURIPrefixVersion(nestedAnnotations,URIPrefix,version);
-				annotation.setNestedAnnotations(nestedAnnotations);
+				annotation.setAnnotations(nestedAnnotations);
 			}
 		}
 	}
@@ -1851,10 +1851,10 @@ public class SBOLDocument {
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException("sbol-12302");
 		}
-		QName qNameInNamespace = getNamespace(URI.create(rdfType.getNamespaceURI()));
-		if (qNameInNamespace==null || rdfType.getPrefix()!=qNameInNamespace.getPrefix()) {
-			addNamespace(URI.create(rdfType.getNamespaceURI()), rdfType.getPrefix());
-		}
+//		QName qNameInNamespace = getNamespace(URI.create(rdfType.getNamespaceURI()));
+//		if (qNameInNamespace==null || rdfType.getPrefix()!=qNameInNamespace.getPrefix()) {
+//			addNamespace(URI.create(rdfType.getNamespaceURI()), rdfType.getPrefix());
+//		}
 		GenericTopLevel g = new GenericTopLevel(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
 		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
 		g.setDisplayId(displayId);
@@ -1892,6 +1892,20 @@ public class SBOLDocument {
 	 * {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addGenericTopLevel(GenericTopLevel genericTopLevel) throws SBOLValidationException {
+		QName qNameInNamespace = getNamespace(URI.create(genericTopLevel.getRDFType().getNamespaceURI()));
+		if (qNameInNamespace==null) {
+			String prefix = genericTopLevel.getRDFType().getPrefix();
+			if (getNamespace(prefix)!=null) {
+				prefix = getNamespacePrefix(URI.create(genericTopLevel.getRDFType().getNamespaceURI()));
+				genericTopLevel.setRDFType(new QName(genericTopLevel.getRDFType().getNamespaceURI(),
+						genericTopLevel.getRDFType().getLocalPart(),prefix));
+			} else {
+				addNamespace(URI.create(genericTopLevel.getRDFType().getNamespaceURI()), genericTopLevel.getRDFType().getPrefix());
+			}
+		} else if (genericTopLevel.getRDFType().getPrefix()!=qNameInNamespace.getPrefix()) {
+			genericTopLevel.setRDFType(new QName(genericTopLevel.getRDFType().getNamespaceURI(),
+					genericTopLevel.getRDFType().getLocalPart(),qNameInNamespace.getPrefix()));
+		}
 		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel",
 				collections, componentDefinitions, models, moduleDefinitions, sequences);
 	}
@@ -2145,13 +2159,7 @@ public class SBOLDocument {
 				!namespaceBinding.getNamespaceURI().endsWith("/")) {
 			throw new SBOLValidationException("sbol-10105");
 		}
-		HashMap<String,NamespaceBinding> prefixMap;
-		prefixMap = nameSpaces.get(namespaceBinding.getNamespaceURI());
-		if (prefixMap==null) {
-			prefixMap = new HashMap<>();
-		}
-		prefixMap.put(namespaceBinding.getPrefix(), namespaceBinding);
-		nameSpaces.put(namespaceBinding.getNamespaceURI(), prefixMap);
+		nameSpaces.put(namespaceBinding.getPrefix(), namespaceBinding);
 	}
 
 	/**
@@ -2186,21 +2194,30 @@ public class SBOLDocument {
 			boolean foundIt;
 			do {
 				foundIt = false;
-				for (String uri : nameSpaces.keySet()) {
-					if (nameSpaces.get(uri).keySet().contains("ns"+nsNum)) {
-						nsNum++;
-						foundIt = true;
-						break;
-					}
+				if (nameSpaces.keySet().contains("ns"+nsNum)) {
+					nsNum++;
+					foundIt = true;
+					break;
 				}
 			} while (foundIt);
-			HashMap<String,NamespaceBinding> nsMap = new HashMap<>();
-			nsMap.put("ns"+nsNum, NamespaceBinding(namespaceURI.toString(),"ns"+nsNum));
-			nameSpaces.put(namespaceURI.toString(), nsMap);
+			nameSpaces.put("ns"+nsNum, NamespaceBinding(namespaceURI.toString(),"ns"+nsNum));
 			return "ns"+nsNum;
 		} else {
 			return qName.getPrefix();
 		}
+	}
+	
+	/**
+	 * Returns the QName matching the given namespace prefix from this
+	 * SBOL document's list of QNames.
+	 *
+	 * @param namespacePrefix the prefix of the namespace to be retrieved
+	 * @return the matching QName if present, or {@code null} otherwise
+	 */
+	public QName getNamespace(String namespacePrefix) {
+		NamespaceBinding namespaceBinding = nameSpaces.get(namespacePrefix);
+		if (namespaceBinding==null) return null;
+		return new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix());
 	}
 
 	/**
@@ -2212,11 +2229,9 @@ public class SBOLDocument {
 	 */
 	public QName getNamespace(URI namespaceURI) {
 		//if (nameSpaces.get(namespaceURI)==null) return null;
-		for (String NamespaceUri : nameSpaces.keySet()) {
-			for (NamespaceBinding namespaceBinding : nameSpaces.get(NamespaceUri).values()) {
-				if (namespaceBinding.getNamespaceURI().equals(namespaceURI.toString())) {
-					return new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix());
-				}	
+		for (NamespaceBinding namespaceBinding : nameSpaces.values()) {
+			if (namespaceBinding.getNamespaceURI().equals(namespaceURI.toString())) {
+				return new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix());
 			}
 		}
 		return null;
@@ -2229,10 +2244,8 @@ public class SBOLDocument {
 	 */
 	public List<QName> getNamespaces() {
 		List<QName> bindings = new ArrayList<>();
-		for (String NamespaceUri : this.nameSpaces.keySet()) {
-			for (NamespaceBinding namespaceBinding : this.nameSpaces.get(NamespaceUri).values()) {
-				bindings.add(new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix()));
-			}
+		for (NamespaceBinding namespaceBinding : this.nameSpaces.values()) {
+			bindings.add(new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix()));
 		}
 		return bindings;
 	}
@@ -2266,9 +2279,7 @@ public class SBOLDocument {
 	 */
 	List<NamespaceBinding> getNamespaceBindings() {
 		List<NamespaceBinding> bindings = new ArrayList<>();
-		for (String NamespaceUri : this.nameSpaces.keySet()) {
-			bindings.addAll(this.nameSpaces.get(NamespaceUri).values());
-		}
+		bindings.addAll(this.nameSpaces.values());
 		return bindings;
 	}
 

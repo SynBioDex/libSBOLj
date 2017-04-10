@@ -984,27 +984,27 @@ class GenBank {
 					String annotationStr = strLine.replace("AUTHORS", "").trim();
 					Annotation nestedAnnotation = new Annotation(new QName(GBNAMESPACE,AUTHORS,GBPREFIX), annotationStr);
 					nestedAnnotations.add(nestedAnnotation);
-					annotation.setNestedAnnotations(nestedAnnotations);
+					annotation.setAnnotations(nestedAnnotations);
 				} else if (strLine.startsWith("TITLE")) {
 					String annotationStr = strLine.replace("TITLE", "").trim();
 					Annotation nestedAnnotation = new Annotation(new QName(GBNAMESPACE,TITLE,GBPREFIX), annotationStr);
 					nestedAnnotations.add(nestedAnnotation);
-					annotation.setNestedAnnotations(nestedAnnotations);
+					annotation.setAnnotations(nestedAnnotations);
 				} else if (strLine.startsWith("JOURNAL")) {
 					String annotationStr = strLine.replace("JOURNAL", "").trim();
 					Annotation nestedAnnotation = new Annotation(new QName(GBNAMESPACE,JOURNAL,GBPREFIX), annotationStr);
 					nestedAnnotations.add(nestedAnnotation);
-					annotation.setNestedAnnotations(nestedAnnotations);
+					annotation.setAnnotations(nestedAnnotations);
 				} else if (strLine.startsWith("MEDLINE")) {
 					String annotationStr = strLine.replace("MEDLINE", "").trim();
 					Annotation nestedAnnotation = new Annotation(new QName(GBNAMESPACE,MEDLINE,GBPREFIX), annotationStr);
 					nestedAnnotations.add(nestedAnnotation);
-					annotation.setNestedAnnotations(nestedAnnotations);
+					annotation.setAnnotations(nestedAnnotations);
 				} else if (strLine.startsWith("PUBMED")) {
 					String annotationStr = strLine.replace("PUBMED", "").trim();
 					Annotation nestedAnnotation = new Annotation(new QName(GBNAMESPACE,PUBMED,GBPREFIX), annotationStr);
 					nestedAnnotations.add(nestedAnnotation);
-					annotation.setNestedAnnotations(nestedAnnotations);
+					annotation.setAnnotations(nestedAnnotations);
 				} else if (strLine.startsWith("COMMENT")) {
 					String annotationStr = strLine.replace("COMMENT", "").trim();
 					annotation = new Annotation(new QName(GBNAMESPACE,COMMENT,GBPREFIX), annotationStr);

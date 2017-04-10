@@ -30,11 +30,13 @@ public class GenericTopLevel extends TopLevel{
 	 */
 	GenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
 		super(identity);
-		this.rdfType = rdfType;
 		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI())/* ||
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())*/) {
 			throw new SBOLValidationException("sbol-12302",this);
 		}
+		// TODO: should update based on documents namespaces, i.e., use prefix for this document,
+		// generate new prefix if overlaps existing one.
+		this.rdfType = rdfType;
 	}
 
 	/**
