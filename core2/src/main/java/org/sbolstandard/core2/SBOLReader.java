@@ -371,8 +371,8 @@ public class SBOLReader
 	 * @param fileType the file type of the given file 
 	 * @return the converted SBOLDocument
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #read(File, String)}.
-	 * @throws SBOLConversionException 
-	 * @throws IOException 
+	 * @throws SBOLConversionException if conversion fails
+	 * @throws IOException see {@link IOException} 
 	 */
 	private static SBOLDocument read(String fileName,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
@@ -439,7 +439,7 @@ public class SBOLReader
 	 * @throws CoreIoException
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #read(InputStream, String)}.
 	 * @throws SBOLConversionException if file is empty
-	 * @throws IOException 
+	 * @throws IOException see {@link IOException} 
 	 */
 	private static SBOLDocument read(File file,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
@@ -549,7 +549,7 @@ public class SBOLReader
 	 * @return the converted SBOLDocument instance
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #read(SBOLDocument, InputStream, String)}.
 	 * @throws SBOLConversionException if file is empty
-	 * @throws IOException 
+	 * @throws IOException see {@link IOException} 
 	 */
 	public static SBOLDocument read(InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
@@ -581,7 +581,7 @@ public class SBOLReader
 	 * 	</ul></li>
 	 * <li>an SBOL validation rule violation occurred in {@link #readTopLevelDocs(SBOLDocument, DocumentRoot)}.</li>
 	 * </ul>
-	 * @throws IOException
+	 * @throws IOException see {@link IOException}
 	 * @throws SBOLConversionException
 	 */
 	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException

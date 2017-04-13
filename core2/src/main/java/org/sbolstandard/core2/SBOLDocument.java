@@ -1608,7 +1608,7 @@ public class SBOLDocument {
 	 * @param URIPrefix new URI prefix
 	 * @param version new version
 	 * @return new SBOL document with changed URI prefix
-	 * @throws SBOLValidationException
+	 * @throws SBOLValidationException if URIprefix or version provided is invalid
 	 */
 	public SBOLDocument changeURIPrefixVersion(String URIPrefix,String version) throws SBOLValidationException {
 		SBOLDocument document = new SBOLDocument();
@@ -2467,7 +2467,7 @@ public class SBOLDocument {
 
 	/**
 	 * Method to remove a TopLevel object
-	 * @param topLevel
+	 * @param topLevel the TopLevel object to remove
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
 	 * <ul>
 	 * <li>{@link #removeGenericTopLevel(GenericTopLevel)},</li>
