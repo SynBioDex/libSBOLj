@@ -32,12 +32,27 @@ class writeTester {
 	 */
 	public static void main( String[] args ) throws SBOLValidationException, SBOLConversionException, IOException
 	{
+		SBOLDocument doc = new SBOLDocument();
+		doc.addNamespace(new QName("http://www.dummy.org/","dumb","dumbName"));
+		doc.setDefaultURIprefix("http://myuri.org/");
+		GenericTopLevel gtl0 = doc.createGenericTopLevel("docTest", new QName("http://www.dummy.org/","xyz","dumbName"));
+
 		SBOLDocument doc2 = new SBOLDocument();
+		doc2.addNamespace(new QName("http://dummy.org/","dumb","dumbName"));
 		doc2.setDefaultURIprefix("http://myuri.org/");
-		doc2.createGenericTopLevel("test", new QName("http://dummy.org/","dumb","dumb"));
-		doc2.addNamespace(URI.create("http://dummy.org/"), "dummy");
+		GenericTopLevel gtl = doc2.createGenericTopLevel("test", new QName("http://dummy.org/","dumb","dumb"));
+		//doc2.addNamespace(URI.create("http://dummy.org/"), "dummy");
+		Sequence seq = doc2.createSequence("SeqTest", "agct", Sequence.IUPAC_DNA);
+		Annotation ann = new Annotation(new QName("http://dummy.org/","dumb","dumb"), gtl.getIdentity());
+		ArrayList<Annotation> anns = new ArrayList<>();
+		anns.add(ann);
+		seq.createAnnotation(new QName("http://dummy.org/","dumbTop","dumb"), 
+				new QName("http://dummy.org/","dumbNested","dumb"), 
+				URI.create("http://myuri.org/anno"), anns);
+		//doc2 = doc2.createRecursiveCopy(seq);
+		doc2.createCopy(gtl0);
 		doc2.write(System.out);
-		SBOLTestUtils.writeAndRead(doc2,true);
+//		SBOLTestUtils.writeAndRead(doc2,true);
 //		doc2.setDefaultURIprefix("http://dummy.org");
 //		Sequence seq = doc2.createSequence("id", "agct", Sequence.IUPAC_DNA);
 //		seq.setDescription("description");

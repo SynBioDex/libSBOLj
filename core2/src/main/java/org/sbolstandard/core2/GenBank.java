@@ -33,7 +33,7 @@ class GenBank {
 	public static final String GBNAMESPACE = "http://www.ncbi.nlm.nih.gov/genbank#";
 	public static final String LOCUS = "locus";
 	public static final String MOLECULE = "molecule";
-	public static final String TOPOLOGY = "topology";
+	public static final String TOPOLOGY = "topology"; // Only used for backward compatiblity with 2.1.0
 	public static final String DIVISION = "division";
 	public static final String DATE = "date";
 	public static final String GINUMBER = "GInumber";
@@ -41,6 +41,7 @@ class GenBank {
 	public static final String SOURCE = "source";
 	public static final String ORGANISM = "organism";
 	public static final String REFERENCE = "reference";
+	public static final String NESTEDREFERENCE = "Reference";
 	public static final String LABEL = "label";
 	public static final String AUTHORS = "authors";
 	public static final String TITLE = "title";
@@ -48,14 +49,16 @@ class GenBank {
 	public static final String MEDLINE = "medline";
 	public static final String PUBMED = "pubmed";
 	public static final String COMMENT = "comment";
+	public static final String BASECOUNT = "baseCount";
+
+	public static final String GBCONVPREFIX = "gbConv";
+	public static final String GBCONVNAMESPACE = "http://sbols.org/genBankConversion#";
 	public static final String POSITION = "position";
 	public static final String STRADLESORIGIN = "stradlesOrigin";
 	public static final String STARTLESSTHAN = "startLessThan";
 	public static final String ENDGREATERTHAN = "endGreaterThan";
 	public static final String SINGLEBASERANGE = "singleBaseRange";
 	public static final String MULTIRANGETYPE = "multiRangeType";
-	public static final String NESTEDREFERENCE = "Reference";
-	public static final String BASECOUNT = "baseCount";
 	
 	static boolean isGenBankFile(String fileName) throws IOException {
 		File file = new File(fileName);
@@ -556,18 +559,18 @@ class GenBank {
 		if (complement) {
 			locationStr += "complement(";
 		}
-		if (location.getAnnotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX))!=null) {
+		if (location.getAnnotation(new QName(GBCONVNAMESPACE,STARTLESSTHAN,GBCONVPREFIX))!=null) {
 			locationStr += "<";
 		}
 		locationStr += start;
 		if (isCut) {
 			locationStr += "^";
-		} else if (location.getAnnotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX))!=null) {
+		} else if (location.getAnnotation(new QName(GBCONVNAMESPACE,SINGLEBASERANGE,GBCONVPREFIX))!=null) {
 			locationStr += ".";
 		} else {
 			locationStr += "..";
 		}
-		if (location.getAnnotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX))!=null) {
+		if (location.getAnnotation(new QName(GBCONVNAMESPACE,ENDGREATERTHAN,GBCONVPREFIX))!=null) {
 			locationStr += ">";
 		}
 		locationStr += end;
@@ -578,7 +581,7 @@ class GenBank {
 	}
 	
 	private static boolean stradlesOrigin(SequenceAnnotation sa) {
-		Annotation annotation = sa.getAnnotation(new QName(GBNAMESPACE,STRADLESORIGIN,GBPREFIX));
+		Annotation annotation = sa.getAnnotation(new QName(GBCONVNAMESPACE,STRADLESORIGIN,GBCONVPREFIX));
 		if (annotation!=null) {
 			return true;
 		}
@@ -610,7 +613,7 @@ class GenBank {
 					(!inline && !locReverse)),loc2)+"\n");			
 		} else {
 			String multiType = "join";
-			Annotation annotation = sa.getAnnotation(new QName(GBNAMESPACE,MULTIRANGETYPE,GBPREFIX));
+			Annotation annotation = sa.getAnnotation(new QName(GBNAMESPACE,MULTIRANGETYPE,GBCONVPREFIX));
 			if (annotation!=null) {
 				multiType = annotation.getStringValue();
 			}
@@ -632,8 +635,17 @@ class GenBank {
 		for (Annotation a : sa.getAnnotations()) {
 			if (a.getQName().getLocalPart().equals("multiRangeType")) continue;
 			if (a.isStringValue()) {
+				try {
+					int aInt = Integer.parseInt(a.getStringValue());
+					writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
+							aInt,80,21);
+				} catch (NumberFormatException e) {
+					writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
+							"\"" + a.getStringValue() + "\"",80,21);
+				}
+			} else if (a.isIntegerValue()) {
 				writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
-						a.getStringValue(),80,21);
+						a.getIntegerValue(),80,21);
 			}
 		}
 	}
@@ -875,6 +887,7 @@ class GenBank {
 		//lineCounter = 0;
 
 		doc.addNamespace(URI.create(GBNAMESPACE), GBPREFIX);
+		doc.addNamespace(URI.create(GBCONVNAMESPACE), GBCONVPREFIX);
 		BufferedReader br = new BufferedReader(new StringReader(stringBuffer));
 		String strLine;
 		int featureCnt = 0;
@@ -1005,6 +1018,8 @@ class GenBank {
 					Annotation nestedAnnotation = new Annotation(new QName(GBNAMESPACE,PUBMED,GBPREFIX), annotationStr);
 					nestedAnnotations.add(nestedAnnotation);
 					annotation.setAnnotations(nestedAnnotations);
+					Annotation pubMedAnnotation = new Annotation(new QName("http://purl.obolibrary.org/obo/", "OBI_0001617", "obo"), annotationStr);
+					annotations.add(pubMedAnnotation);
 				} else if (strLine.startsWith("COMMENT")) {
 					String annotationStr = strLine.replace("COMMENT", "").trim();
 					annotation = new Annotation(new QName(GBNAMESPACE,COMMENT,GBPREFIX), annotationStr);
@@ -1083,7 +1098,16 @@ class GenBank {
 							// a Genbank feature label is mapped to an SBOL SequenceAnnotation
 							SequenceAnnotation sa = topCD.getSequenceAnnotation("annotation" + (featureCnt - 1));
 							if(null != sa) {
-								annotation = new Annotation(new QName(GBNAMESPACE,tag,GBPREFIX),value);
+								if (value.startsWith("\"")) {
+									value = value.replaceAll("\"", "");
+									// TODO: perhaps a different namespace for these
+									annotation = new Annotation(new QName(GBCONVNAMESPACE,tag,GBCONVPREFIX),value);
+								} else {
+									// TODO: perhaps a different namespace for these
+									annotation = new Annotation(new QName(GBCONVNAMESPACE,tag,GBCONVPREFIX),value);
+									// TODO: does not work because integer type of annotation is lost on serialization
+									//annotation = new Annotation(new QName(GBNAMESPACE,tag,GBPREFIX),Integer.parseInt(value));
+								}
 								sa.addAnnotation(annotation);
 							}
 
@@ -1153,28 +1177,28 @@ class GenBank {
 										// TODO: add switch to allow for sub-components to be created
 										//sa.setComponent("feature"+featureCnt);
 										sa.addRole(role);
-										annotation = new Annotation(new QName(GBNAMESPACE,MULTIRANGETYPE,GBPREFIX),multiType);
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,MULTIRANGETYPE,GBCONVPREFIX),multiType);
 										sa.addAnnotation(annotation);
 										newRange = (Range)sa.getLocation("range"+rangeCnt);
 									} else if (sa != null) {
 										newRange = sa.addRange("range"+rangeCnt, start, end, orientation);
 									}
 									if (outerComplement) {
-										annotation = new Annotation(new QName(GBNAMESPACE,POSITION,GBPREFIX),"position"+((ranges.length-1)-rangeCnt));
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,POSITION,GBCONVPREFIX),"position"+((ranges.length-1)-rangeCnt));
 									} else {
-										annotation = new Annotation(new QName(GBNAMESPACE,POSITION,GBPREFIX),"position"+rangeCnt);
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,POSITION,GBCONVPREFIX),"position"+rangeCnt);
 									}
 									newRange.addAnnotation(annotation);
 									if (startLessThan) {
-										annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,STARTLESSTHAN,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 									if (endGreaterThan) {
-										annotation = new Annotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX),"true");
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,ENDGREATERTHAN,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 									if (singleBaseRange) {
-										annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,SINGLEBASERANGE,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 									rangeCnt++;
@@ -1217,24 +1241,24 @@ class GenBank {
 									// TODO: add switch to allow for sub-components to be created
 									//sa.setComponent("feature"+featureCnt);
 									sa.addRole(role);
-									annotation = new Annotation(new QName(GBNAMESPACE,STRADLESORIGIN,GBPREFIX),"true");
+									annotation = new Annotation(new QName(GBCONVNAMESPACE,STRADLESORIGIN,GBCONVPREFIX),"true");
 									sa.addAnnotation(annotation);
 									Range newRange = (Range)sa.getLocation("range");
 									if (startLessThan) {
-										annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,STARTLESSTHAN,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 									if (singleBaseRange) {
-										annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,SINGLEBASERANGE,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 									newRange = sa.addRange("range1", 1, end, orientation);
 									if (singleBaseRange) {
-										annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,SINGLEBASERANGE,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 									if (endGreaterThan) {
-										annotation = new Annotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX),"true");
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,ENDGREATERTHAN,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 								} else {
@@ -1245,15 +1269,15 @@ class GenBank {
 									sa.addRole(role);
 									Range newRange = (Range)sa.getLocation("range");
 									if (startLessThan) {
-										annotation = new Annotation(new QName(GBNAMESPACE,STARTLESSTHAN,GBPREFIX),"true");
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,STARTLESSTHAN,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 									if (endGreaterThan) {
-										annotation = new Annotation(new QName(GBNAMESPACE,ENDGREATERTHAN,GBPREFIX),"true");
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,ENDGREATERTHAN,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 									if (singleBaseRange) {
-										annotation = new Annotation(new QName(GBNAMESPACE,SINGLEBASERANGE,GBPREFIX),"true");
+										annotation = new Annotation(new QName(GBCONVNAMESPACE,SINGLEBASERANGE,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
 									}
 								}

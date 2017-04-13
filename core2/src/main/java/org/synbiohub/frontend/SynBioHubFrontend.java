@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -473,14 +474,14 @@ public class SynBioHubFrontend
      * @param name The submission name
      * @param description The 
      * @param citations The pubMedIds for this submission
-     * @param keywords A comma separated list of keywords
+     * @param collections A comma separated list of keywords
      * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge
      * @param document 
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */
     public void submit(String id, String version, String name, String description, String citations,
-    		String keywords, String overwrite_merge, SBOLDocument document) throws SynBioHubException
+    		String collections, String overwrite_merge, SBOLDocument document) throws SynBioHubException
     {
     	if (user==null) {
     		Exception e = new Exception("Must be logged in to submit.");
@@ -497,7 +498,7 @@ public class SynBioHubFrontend
 	        params.addPart("name", new StringBody(name));
 	        params.addPart("description", new StringBody(description));
 	        params.addPart("citations", new StringBody(citations));
-	        params.addPart("keywords", new StringBody(keywords));
+	        params.addPart("collectionChoices", new StringBody(collections));
 	        params.addPart("overwrite_merge", new StringBody(overwrite_merge));
 	        params.addPart("user", new StringBody(user));
 	        params.addPart("file", new StringBody(serializeDocument(document)));

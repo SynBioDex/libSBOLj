@@ -1140,13 +1140,13 @@ public class SBOLDocument {
 		}
 	}
 	
-	private SBOLDocument createCopy(String URIPrefix, String displayId, String version) throws SBOLValidationException {
-		SBOLDocument document = new SBOLDocument();
-		for (TopLevel topLevel : getTopLevels()) {
-			document.createCopy(topLevel, URIPrefix, displayId, version);
-		}
-		return document;
-	}
+//	private SBOLDocument createCopy(String URIPrefix, String displayId, String version) throws SBOLValidationException {
+//		SBOLDocument document = new SBOLDocument();
+//		for (TopLevel topLevel : getTopLevels()) {
+//			document.createCopy(topLevel, URIPrefix, displayId, version);
+//		}
+//		return document;
+//	}
 
 	/**
 	 * Creates an identical copy of the given top-level, and then adds the created top-level to the corresponding
@@ -1200,9 +1200,7 @@ public class SBOLDocument {
 	 * </ul>
 	 */
 	public TopLevel rename(TopLevel topLevel, String displayId) throws SBOLValidationException {
-		TopLevel renamedTopLevel = createCopy(topLevel,defaultURIprefix,displayId,"");
-		removeTopLevel(topLevel);
-		return renamedTopLevel;
+		return rename(topLevel,defaultURIprefix,displayId,"");
 	}
 
 	/**
@@ -1243,9 +1241,7 @@ public class SBOLDocument {
 	 * </ul>
 	 */
 	public TopLevel rename(TopLevel topLevel, String displayId, String version) throws SBOLValidationException {
-		TopLevel renamedTopLevel = createCopy(topLevel,defaultURIprefix,displayId,version);
-		removeTopLevel(topLevel);
-		return renamedTopLevel;
+		return rename(topLevel,defaultURIprefix,displayId,version);
 	}
 
 	/**
@@ -1298,48 +1294,35 @@ public class SBOLDocument {
 		if (version == null) {
 			version = topLevel.getVersion();
 		}
-		//validateIdVersion(displayId,version);
 		if (topLevel instanceof Collection) {
-			//Collection newCollection = ((Collection) topLevel).copy(URIprefix, displayId, version);
-			//addCollection(newCollection);
 			Collection newCollection = this.createCollection(URIprefix, displayId, version);
 			newCollection.copy((Collection)topLevel);
 			return newCollection;
 		}
 		else if (topLevel instanceof ComponentDefinition) {
-			//ComponentDefinition newComponentDefinition = ((ComponentDefinition) topLevel).copy(URIprefix, displayId, version);
-			//addComponentDefinition(newComponentDefinition);
 			ComponentDefinition newComponentDefinition = this.createComponentDefinition(URIprefix, displayId, version,
 					((ComponentDefinition)topLevel).getTypes());
 			newComponentDefinition.copy((ComponentDefinition)topLevel);
 			return newComponentDefinition;
 		}
 		else if (topLevel instanceof Model) {
-			//Model newModel = ((Model) topLevel).copy(URIprefix, displayId, version);
-			//addModel(newModel);
 			Model newModel = this.createModel(URIprefix, displayId, version, ((Model)topLevel).getSource(), 
 					((Model)topLevel).getLanguage(), ((Model)topLevel).getFramework());
 			newModel.copy((Model)topLevel);
 			return newModel;
 		}
 		else if (topLevel instanceof ModuleDefinition) {
-			//ModuleDefinition newModuleDefinition = ((ModuleDefinition) topLevel).copy(URIprefix, displayId, version);
-			//addModuleDefinition(newModuleDefinition);
 			ModuleDefinition newModuleDefinition = this.createModuleDefinition(URIprefix, displayId, version);
 			newModuleDefinition.copy((ModuleDefinition)topLevel);
 			return newModuleDefinition;
 		}
 		else if (topLevel instanceof Sequence) {
-			//Sequence newSequence = ((Sequence) topLevel).copy(URIprefix, displayId, version);
-			//addSequence(newSequence);
 			Sequence newSequence = this.createSequence(URIprefix, displayId, version, 
 					((Sequence)topLevel).getElements(), ((Sequence)topLevel).getEncoding());
 			newSequence.copy((Sequence)topLevel);
 			return newSequence;
 		}
 		else if (topLevel instanceof GenericTopLevel) {
-			//GenericTopLevel newGenericTopLevel = ((GenericTopLevel) topLevel).copy(URIprefix, displayId, version);
-			//addGenericTopLevel(newGenericTopLevel);
 			GenericTopLevel newGenericTopLevel = this.createGenericTopLevel(URIprefix, displayId, version, 
 					((GenericTopLevel)topLevel).getRDFType());
 			newGenericTopLevel.copy((GenericTopLevel)topLevel);
@@ -1447,37 +1430,177 @@ public class SBOLDocument {
 		}
 	}
 	
-	private void changeURIPrefixVersion(List<Annotation> annotations,String URIPrefix,String version) throws SBOLValidationException {
+	private String extractDocumentURIPrefix() {
+		String documentURIPrefix = "";
+		for (TopLevel topLevel : getTopLevels()) {
+			if (documentURIPrefix.equals("")) {
+				documentURIPrefix = URIcompliance.extractURIprefix(topLevel.getIdentity());
+			} else {
+				for (int i=0; i < documentURIPrefix.length(); i++) {
+					if (i >= topLevel.getIdentity().toString().length() 
+						|| documentURIPrefix.charAt(i)!=topLevel.getIdentity().toString().charAt(i)) {
+						if (i==0) {
+							documentURIPrefix="";
+						} else {
+							documentURIPrefix = documentURIPrefix.substring(0, i);
+						}
+						break;
+					}
+				}
+				if (documentURIPrefix.equals("")) break;
+			}
+		}
+		return documentURIPrefix;
+	}
+	
+	private void fixDocumentURIPrefix() throws SBOLValidationException {
+		String documentURIPrefix = extractDocumentURIPrefix();
+		setDefaultURIprefix(documentURIPrefix);
+		for (TopLevel topLevel : getTopLevels()) {
+			if (!topLevel.getIdentity()
+					.equals(URIcompliance.createCompliantURI(documentURIPrefix, topLevel.getDisplayId(), topLevel.getVersion()))) {
+				String newDisplayId = topLevel.getIdentity().toString().replaceAll(documentURIPrefix, "");
+				String newVersion = "";
+				if (topLevel.isSetVersion()) {
+					newDisplayId = newDisplayId.replace("/"+topLevel.getVersion(), "");
+					newVersion = topLevel.getVersion();
+				}
+				newDisplayId = newDisplayId.replaceAll("/","_");
+				while (getTopLevel(URIcompliance.createCompliantURI(documentURIPrefix, 
+						newDisplayId, newVersion))!=null) {
+					newDisplayId = newDisplayId.replaceAll("_","__");
+				}
+				TopLevel newTopLevel = this.createCopy(topLevel,newDisplayId,newVersion);
+				removeTopLevel(topLevel);
+				updateReferences(topLevel.getIdentity(),newTopLevel.getIdentity());
+				updateReferences(topLevel.getPersistentIdentity(),newTopLevel.getPersistentIdentity());
+			}	
+		}
+	}
+	
+	private void updateReferences(List<Annotation> annotations,URI originalIdentity,URI newIdentity) {
 		for (Annotation annotation : annotations) {
 			if (annotation.isURIValue()) {
-				TopLevel topLevel = getTopLevel(annotation.getURIValue());
-				if (topLevel!=null) {
-					annotation.setURIValue(URIcompliance.createCompliantURI(URIPrefix, 
-							topLevel.getDisplayId()!=null?topLevel.getDisplayId():URIcompliance.extractDisplayId(topLevel.getIdentity()), 
-							version!=null?version:topLevel.getVersion()));
+				if (annotation.getURIValue().equals(originalIdentity)) {
+					annotation.setURIValue(newIdentity);
 				}
 			} else if (annotation.isNestedAnnotations()) {
-				URI nestedURI = annotation.getNestedIdentity();
-				URI newURI;
-				if (nestedURI.toString().startsWith(URIPrefix)) {
-					newURI = URI.create(nestedURI.toString()+"/"+version);
-				} else {
-					newURI = URI.create(nestedURI.toString().replace("http://",URIPrefix)+"/"+version);
-				}
-				annotation.setNestedIdentity(newURI);
-				List<Annotation> nestedAnnotations = annotation.getAnnotations();
-				changeURIPrefixVersion(nestedAnnotations,URIPrefix,version);
-				annotation.setAnnotations(nestedAnnotations);
+				updateReferences(annotation.getAnnotations(),originalIdentity,newIdentity);
 			}
 		}
 	}
 	
-	private void changeURIPrefixVersion(Identified identified,String URIPrefix,String version) throws SBOLValidationException {
-		if (URIPrefix == null) {
-			URIPrefix = extractURIprefix(identified.getIdentity());
-			URIPrefix = URIcompliance.checkURIprefix(URIPrefix);
-		} 
-		changeURIPrefixVersion(identified.getAnnotations(),URIPrefix,version);
+	private void updateReferences(Identified identified,URI originalIdentity,URI newIdentity) {
+		updateReferences(identified.getAnnotations(),originalIdentity,newIdentity);
+	}
+	
+	// TODO: need to update persistentIdentities too
+	private void updateReferences(URI originalIdentity, URI newIdentity) throws SBOLValidationException {
+		for (Collection collection : getCollections()) {
+			for (URI memberURI : collection.getMemberURIs()) {
+				if (memberURI.equals(originalIdentity)) {
+					collection.removeMember(originalIdentity);
+					collection.addMember(newIdentity);
+				}
+			}
+			updateReferences(collection,originalIdentity,newIdentity);
+		}
+		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
+			updateReferences(componentDefinition,originalIdentity,newIdentity);
+			for (Component component : componentDefinition.getComponents()) {
+				if (component.getDefinitionURI().equals(originalIdentity)) {
+					component.setDefinition(newIdentity);
+					for (MapsTo mapsTo : component.getMapsTos()) {
+						ComponentDefinition cd = getComponentDefinition(newIdentity);
+						if (cd!=null) {
+							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
+							URI newURI = URIcompliance.createCompliantURI(cd.getPersistentIdentity().toString(),
+									displayId, cd.getVersion());
+							mapsTo.setRemote(newURI);
+						}
+					}
+				}
+				updateReferences(component,originalIdentity,newIdentity);
+				for (MapsTo mapsTo : component.getMapsTos()) {
+					updateReferences(mapsTo,originalIdentity,newIdentity);
+				}
+			}
+			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
+				for (Location loc : sa.getLocations()) {
+					updateReferences(loc,originalIdentity,newIdentity);
+				}
+				updateReferences(sa,originalIdentity,newIdentity);
+			}
+			for (SequenceConstraint sc : componentDefinition.getSequenceConstraints()) {
+				updateReferences(sc,originalIdentity,newIdentity);
+			}
+			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
+				if (sequenceURI.equals(originalIdentity)) {
+					componentDefinition.removeSequence(originalIdentity);
+					componentDefinition.addSequence(newIdentity);
+				}	
+			}
+		}
+		for (ModuleDefinition moduleDefinition : getModuleDefinitions()) {
+			updateReferences(moduleDefinition,originalIdentity,newIdentity);
+			for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
+				if (functionalComponent.getDefinitionURI().equals(originalIdentity)) {
+					functionalComponent.setDefinition(newIdentity);
+					for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+						ComponentDefinition cd = getComponentDefinition(newIdentity);
+						if (cd!=null) {
+							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
+							URI newURI = URIcompliance.createCompliantURI(cd.getPersistentIdentity().toString(),
+									displayId, cd.getVersion());
+							mapsTo.setRemote(newURI);
+						}
+					}
+				}
+				updateReferences(functionalComponent,originalIdentity,newIdentity);
+				for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+					updateReferences(mapsTo,originalIdentity,newIdentity);
+				}
+			}
+			for (Module module : moduleDefinition.getModules()) {
+				if (module.getDefinitionURI().equals(originalIdentity)) {
+					module.setDefinition(newIdentity);
+					for (MapsTo mapsTo : module.getMapsTos()) {
+						ModuleDefinition md = getModuleDefinition(newIdentity);
+						if (md!=null) {
+							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
+							URI newURI = URIcompliance.createCompliantURI(md.getPersistentIdentity().toString(),
+									displayId, md.getVersion());
+							mapsTo.setRemote(newURI);
+						}
+					}
+				}
+				updateReferences(module,originalIdentity,newIdentity);
+				for (MapsTo mapsTo : module.getMapsTos()) {
+					updateReferences(mapsTo,originalIdentity,newIdentity);
+				}
+			}
+			for (Interaction interaction : moduleDefinition.getInteractions()) {
+				updateReferences(interaction,originalIdentity,newIdentity);
+				for (Participation participation : interaction.getParticipations()) {
+					updateReferences(participation,originalIdentity,newIdentity);
+				}		
+			}
+			for (URI modelURI : moduleDefinition.getModelURIs()) {
+				if (modelURI.equals(originalIdentity)) {
+					moduleDefinition.removeModel(originalIdentity);
+					moduleDefinition.addModel(newIdentity);
+				}	
+			}
+		}
+		for (Model model : getModels()) {
+			updateReferences(model,originalIdentity,newIdentity);
+		}
+		for (Sequence sequence : getSequences()) {
+			updateReferences(sequence,originalIdentity,newIdentity);
+		}
+		for (GenericTopLevel genericTopLevel : getGenericTopLevels()) {
+			updateReferences(genericTopLevel,originalIdentity,newIdentity);
+		}
 	}
 
 	/**
@@ -1488,168 +1611,11 @@ public class SBOLDocument {
 	 * @throws SBOLValidationException
 	 */
 	public SBOLDocument changeURIPrefixVersion(String URIPrefix,String version) throws SBOLValidationException {
-		SBOLDocument document = createCopy(URIPrefix,null,version);
-		document.setDefaultURIprefix(URIPrefix);
-		for (Collection collection : getCollections()) {
-			Set<URI> members = new HashSet<URI>();
-			for (URI memberURI : collection.getMemberURIs()) {
-				TopLevel member = getTopLevel(memberURI);
-				if (member==null) {
-					members.add(memberURI);
-				} else {
-					if (member instanceof Sequence) {
-						Sequence tl = document.getSequence(member.getDisplayId(), version!=null?version:member.getVersion());
-						members.add(tl.getIdentity());
-					}
-					if (member instanceof ComponentDefinition) {
-						ComponentDefinition tl = document.getComponentDefinition(member.getDisplayId(), version!=null?version:member.getVersion());
-						members.add(tl.getIdentity());
-					}
-					if (member instanceof ModuleDefinition) {
-						ModuleDefinition tl = document.getModuleDefinition(member.getDisplayId(), version!=null?version:member.getVersion());
-						members.add(tl.getIdentity());
-					}
-					if (member instanceof Model) {
-						Model tl = document.getModel(member.getDisplayId(), version!=null?version:member.getVersion());
-						members.add(tl.getIdentity());
-					}
-					if (member instanceof GenericTopLevel) {
-						GenericTopLevel tl = document.getGenericTopLevel(member.getDisplayId(), version!=null?version:member.getVersion());
-						members.add(tl.getIdentity());
-					}
-					if (member instanceof Collection) {
-						Collection tl = document.getCollection(member.getDisplayId(), version!=null?version:member.getVersion());
-						members.add(tl.getIdentity());
-					}
-				}
-			}
-			Collection docCol = document.getCollection(collection.getDisplayId(), 
-					version!=null?version:collection.getVersion());
-			docCol.setMembers(members);
-			changeURIPrefixVersion(docCol,URIPrefix,version);
-		}
-		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
-			ComponentDefinition docCD = document.getComponentDefinition(componentDefinition.getDisplayId(), version!=null?version:componentDefinition.getVersion());
-			changeURIPrefixVersion(docCD,URIPrefix,version);
-			for (Component component : componentDefinition.getComponents()) {
-				Component docComp = docCD.getComponent(component.getDisplayId());
-				ComponentDefinition cd = component.getDefinition();
-				if (cd==null) {
-					docComp.setDefinition(component.getDefinitionURI());
-				} else {
-					ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
-					docComp.setDefinition(docRefCD.getIdentity());
-				}
-				changeURIPrefixVersion(docComp,URIPrefix,version);
-				for (MapsTo mapsTo : component.getMapsTos()) {
-					MapsTo docMapsTo = docComp.getMapsTo(mapsTo.getDisplayId());
-					Component remoteComponent = (Component)mapsTo.getRemote();
-					if (remoteComponent==null) {
-						docMapsTo.setRemote(mapsTo.getRemoteURI());
-					} else {
-						ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
-						Component docRemoteComponent = docRefCD.getComponent(remoteComponent.getDisplayId());
-						docMapsTo.setRemote(docRemoteComponent.getIdentity());
-					}
-					changeURIPrefixVersion(docMapsTo,URIPrefix,version);
-				}
-			}
-			for (SequenceAnnotation sa : docCD.getSequenceAnnotations()) {
-				for (Location loc : sa.getLocations()) {
-					changeURIPrefixVersion(loc,URIPrefix,version);
-				}
-				changeURIPrefixVersion(sa,URIPrefix,version);
-			}
-			for (SequenceConstraint sc : docCD.getSequenceConstraints()) {
-				changeURIPrefixVersion(sc,URIPrefix,version);
-			}
-			Set<URI> sequences = new HashSet<URI>();
-			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
-				Sequence sequence = getSequence(sequenceURI);
-				if (sequence==null) {
-					sequences.add(sequenceURI);
-				} else {
-					Sequence docSeq = document.getSequence(sequence.getDisplayId(), version!=null?version:sequence.getVersion());
-					sequences.add(docSeq.getIdentity());
-				}
-			}
-			docCD.setSequences(sequences);
-		}
-		for (ModuleDefinition moduleDefinition : getModuleDefinitions()) {
-			ModuleDefinition docMD = document.getModuleDefinition(moduleDefinition.getDisplayId(), version!=null?version:moduleDefinition.getVersion());
-			changeURIPrefixVersion(docMD,URIPrefix,version);
-			for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
-				FunctionalComponent docComp = docMD.getFunctionalComponent(functionalComponent.getDisplayId());
-				ComponentDefinition cd = functionalComponent.getDefinition();
-				if (cd==null) {
-					docComp.setDefinition(functionalComponent.getDefinitionURI());
-				} else {
-					ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
-					docComp.setDefinition(docRefCD.getIdentity());
-				}
-				changeURIPrefixVersion(docComp,URIPrefix,version);
-				for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
-					MapsTo docMapsTo = docComp.getMapsTo(mapsTo.getDisplayId());
-					ComponentInstance remoteComponent = mapsTo.getRemote();
-					if (remoteComponent==null) {
-						docMapsTo.setRemote(mapsTo.getRemoteURI());
-					} else {
-						ComponentDefinition docRefCD = document.getComponentDefinition(cd.getDisplayId(), version!=null?version:cd.getVersion());
-						Component docRemoteComponent = docRefCD.getComponent(remoteComponent.getDisplayId());
-						docMapsTo.setRemote(docRemoteComponent.getIdentity());
-					}
-					changeURIPrefixVersion(docMapsTo,URIPrefix,version);
-				}
-			}
-			for (Module module : moduleDefinition.getModules()) {
-				Module docModule = docMD.getModule(module.getDisplayId());
-				ModuleDefinition md = module.getDefinition();
-				if (md==null) {
-					docModule.setDefinition(module.getDefinitionURI());
-				} else {
-					ModuleDefinition docRefMD = document.getModuleDefinition(md.getDisplayId(), version!=null?version:md.getVersion());
-					docModule.setDefinition(docRefMD.getIdentity());
-				}
-				changeURIPrefixVersion(docModule,URIPrefix,version);
-				for (MapsTo mapsTo : module.getMapsTos()) {
-					MapsTo docMapsTo = docModule.getMapsTo(mapsTo.getDisplayId());
-					ComponentInstance remoteComponent = mapsTo.getRemote();
-					if (remoteComponent==null) {
-						docMapsTo.setRemote(mapsTo.getRemoteURI());
-					} else {
-						ModuleDefinition docRefMD = document.getModuleDefinition(md.getDisplayId(), version!=null?version:md.getVersion());
-						FunctionalComponent docRemoteComponent = docRefMD.getFunctionalComponent(remoteComponent.getDisplayId());
-						docMapsTo.setRemote(docRemoteComponent.getIdentity());
-					}
-					changeURIPrefixVersion(docMapsTo,URIPrefix,version);
-				}
-			}
-			for (Interaction interaction : docMD.getInteractions()) {
-				changeURIPrefixVersion(interaction,URIPrefix,version);
-				for (Participation participation : interaction.getParticipations()) {
-					changeURIPrefixVersion(participation,URIPrefix,version);	
-				}		
-			}
-			Set<URI> models = new HashSet<URI>();
-			for (URI modelURI : moduleDefinition.getModelURIs()) {
-				Model model = getModel(modelURI);
-				if (model==null) {
-					models.add(modelURI);
-				} else {
-					Model docMod = document.getModel(model.getDisplayId(), version!=null?version:model.getVersion());
-					models.add(docMod.getIdentity());
-				}
-			}
-			docMD.setModels(models);
-		}
-		for (Model model : document.getModels()) {
-			changeURIPrefixVersion(model,URIPrefix,version);
-		}
-		for (Sequence sequence : document.getSequences()) {
-			changeURIPrefixVersion(sequence,URIPrefix,version);
-		}
-		for (GenericTopLevel genericTopLevel : document.getGenericTopLevels()) {
-			changeURIPrefixVersion(genericTopLevel,URIPrefix,version);
+		SBOLDocument document = new SBOLDocument();
+		document.createCopy(this);
+		document.fixDocumentURIPrefix();
+		for (TopLevel topLevel : document.getTopLevels()) {
+			document.rename(topLevel, URIPrefix, null, version);
 		}
 		return document;
 	}
@@ -1677,6 +1643,8 @@ public class SBOLDocument {
 	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
 		TopLevel renamedTopLevel = createCopy(topLevel,URIprefix,displayId,version);
 		removeTopLevel(topLevel);
+		updateReferences(topLevel.getIdentity(),renamedTopLevel.getIdentity());
+		updateReferences(topLevel.getPersistentIdentity(),renamedTopLevel.getPersistentIdentity());
 		return renamedTopLevel;
 	}
 

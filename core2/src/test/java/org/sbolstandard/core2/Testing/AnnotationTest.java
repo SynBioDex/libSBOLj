@@ -102,7 +102,7 @@ public class AnnotationTest {
 	{
 		Annotation CD_annot = gRNA_b_gene.createAnnotation(new QName(prURI, "protein", "pr"),
 				true);	
-		System.out.println(CD_annot.toString());
+		//System.out.println(CD_annot.toString());
 		assertTrue(CD_annot.toString().contains("value=" + true));
 	}
 	
