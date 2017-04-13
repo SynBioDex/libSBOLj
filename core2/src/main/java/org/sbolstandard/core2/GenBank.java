@@ -1100,10 +1100,8 @@ class GenBank {
 							if(null != sa) {
 								if (value.startsWith("\"")) {
 									value = value.replaceAll("\"", "");
-									// TODO: perhaps a different namespace for these
 									annotation = new Annotation(new QName(GBCONVNAMESPACE,tag,GBCONVPREFIX),value);
 								} else {
-									// TODO: perhaps a different namespace for these
 									annotation = new Annotation(new QName(GBCONVNAMESPACE,tag,GBCONVPREFIX),value);
 									// TODO: does not work because integer type of annotation is lost on serialization
 									//annotation = new Annotation(new QName(GBNAMESPACE,tag,GBPREFIX),Integer.parseInt(value));
@@ -1120,7 +1118,6 @@ class GenBank {
 							// a Genbank feature is mapped to a SBOL role
 							// documented by an SO term
 							URI role = convertGenBanktoSO(strSplit[0]);
-							// TODO: add switch to allow for sub-components to be created
 //							ComponentDefinition feature =
 //									doc.createComponentDefinition("feature"+featureCnt, version, type);
 //							feature.addRole(role);
@@ -1174,7 +1171,6 @@ class GenBank {
 									if (rangeCnt==0) {
 										sa = topCD.createSequenceAnnotation("annotation"+featureCnt,"range"+rangeCnt,
 												start,end,orientation);
-										// TODO: add switch to allow for sub-components to be created
 										//sa.setComponent("feature"+featureCnt);
 										sa.addRole(role);
 										annotation = new Annotation(new QName(GBCONVNAMESPACE,MULTIRANGETYPE,GBCONVPREFIX),multiType);
@@ -1208,7 +1204,6 @@ class GenBank {
 								int at = Integer.parseInt(rangeSplit[0]);
 								SequenceAnnotation sa =
 										topCD.createSequenceAnnotation("annotation"+featureCnt,"cut",at,orientation);
-								// TODO: add switch to allow for sub-components to be created
 								//sa.setComponent("feature"+featureCnt);
 								sa.addRole(role);
 							} else {
@@ -1238,7 +1233,6 @@ class GenBank {
 								if (start > end && circular) {
 									SequenceAnnotation sa =
 											topCD.createSequenceAnnotation("annotation"+featureCnt,"range0",start,baseCount,orientation);
-									// TODO: add switch to allow for sub-components to be created
 									//sa.setComponent("feature"+featureCnt);
 									sa.addRole(role);
 									annotation = new Annotation(new QName(GBCONVNAMESPACE,STRADLESORIGIN,GBCONVPREFIX),"true");
@@ -1264,7 +1258,6 @@ class GenBank {
 								} else {
 									SequenceAnnotation sa =
 											topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
-									// TODO: add switch to allow for sub-components to be created
 									//sa.setComponent("feature"+featureCnt);
 									sa.addRole(role);
 									Range newRange = (Range)sa.getLocation("range");
