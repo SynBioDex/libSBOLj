@@ -177,7 +177,7 @@ public class ComponentDefinitionTest {
 		gRNA_b_gene.createSequenceAnnotation("cutAt10", "cut3", OrientationType.INLINE);	
 		
 		List<Component> sorted_Cuts = gRNA_b_gene.getSortedComponents();
-		System.out.println(sorted_Cuts.size());
+		//System.out.println(sorted_Cuts.size());
 		
 		/*
 		doc.createComponentDefinition("gRNA_gene_promoter_comp", ComponentDefinition.DNA);

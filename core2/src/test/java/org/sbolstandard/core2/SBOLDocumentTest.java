@@ -178,7 +178,7 @@ public class SBOLDocumentTest {
 		GTL1.setName(GTL1Name);
 		GenericTopLevel GTL2 = (GenericTopLevel)document2.createCopy(GTL1);
 		
-		GTL2.unsetWasDerivedFrom();
+		GTL2.clearWasDerivedFroms();
 		
 		assertTrue(GTL1.equals(GTL2));	
 		assertTrue(GTL1.getAnnotations().equals(GTL2.getAnnotations()));
@@ -224,7 +224,7 @@ public class SBOLDocumentTest {
 //		Collection Col3 = (Collection)document3.createCopy(Col1, Col1ID);
 		
 //		Col3.unsetWasDerivedFrom();
-		Col2.unsetWasDerivedFrom();
+		Col2.clearWasDerivedFroms();
 		
 //		assertTrue(Col1.equals(Col3));
 		assertTrue(Col1.equals(Col2));
@@ -262,7 +262,7 @@ public class SBOLDocumentTest {
 		CD1.setName("CD1");
 		ComponentDefinition CD2 = (ComponentDefinition)document2.createCopy(CD1);
 
-		CD2.unsetWasDerivedFrom();
+		CD2.clearWasDerivedFroms();
 		
 		assertTrue(CD1.equals(CD2));
 		assertTrue(CD1.getAnnotations().equals(CD2.getAnnotations()));
@@ -303,7 +303,7 @@ public class SBOLDocumentTest {
 		MD1.setName("MD1");
 		ModuleDefinition MD2 = (ModuleDefinition)document2.createCopy(MD1);
 		
-		MD2.unsetWasDerivedFrom();
+		MD2.clearWasDerivedFroms();
 		
 		assertTrue(MD1.equals(MD2));
 		assertTrue(MD1.getAnnotations().equals(MD2.getAnnotations()));

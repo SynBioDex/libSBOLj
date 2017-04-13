@@ -84,18 +84,18 @@ public class SynBioHubFrontend
     }
 
     /**
-     * Return the total number of TopLevels of a specified type in the repository.
+     * Return the total number of objects of a specified type in the repository.
      *
-     * @return the total number of TopLevels of a specified type in the repository.
+     * @return the total number of objects of a specified type in the repository.
      *
-     * @param topLevelType The TopLevel type to count 
-     * (Collection, ComponentDefinition, Sequence, ModuleDefinition, Model).
+     * @param objectType The object type to count 
+     * (Collection, ComponentDefinition, Sequence, ModuleDefinition, Model, etc.).
      *
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */ 
-    public int getCountTopLevels(String topLevelType) throws SynBioHubException
+    public int getCount(String objectType) throws SynBioHubException
     {
-        return fetchCount(backendUrl + "/" + topLevelType + "/count");
+        return fetchCount(backendUrl + "/" + objectType + "/count");
     }
     
     /**
@@ -471,16 +471,16 @@ public class SynBioHubFrontend
      * @param id The submission identifier
      * @param version The submission version
      * @param name The submission name
-     * @param description The 
+     * @param description The submission description
      * @param citations The pubMedIds for this submission
-     * @param keywords A comma separated list of keywords
+     * @param collections A comma separated list of keywords
      * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge
-     * @param document 
+     * @param document the SBOL document to submit
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */
     public void submit(String id, String version, String name, String description, String citations,
-    		String keywords, String overwrite_merge, SBOLDocument document) throws SynBioHubException
+    		String collections, String overwrite_merge, SBOLDocument document) throws SynBioHubException
     {
     	if (user==null) {
     		Exception e = new Exception("Must be logged in to submit.");
@@ -497,7 +497,7 @@ public class SynBioHubFrontend
 	        params.addPart("name", new StringBody(name));
 	        params.addPart("description", new StringBody(description));
 	        params.addPart("citations", new StringBody(citations));
-	        params.addPart("keywords", new StringBody(keywords));
+	        params.addPart("collectionChoices", new StringBody(collections));
 	        params.addPart("overwrite_merge", new StringBody(overwrite_merge));
 	        params.addPart("user", new StringBody(user));
 	        params.addPart("file", new StringBody(serializeDocument(document)));

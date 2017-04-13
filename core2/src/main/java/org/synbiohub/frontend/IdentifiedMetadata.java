@@ -16,7 +16,6 @@ public class IdentifiedMetadata
 				+ ", description=" + description + ", version=" + version + "]";
 	}
 
-	// TODO: should we change these to private variables with getters/setters?
 	private String uri;
 	private String name;
 	private String displayId;

@@ -1089,9 +1089,9 @@ public class ModuleDefinition extends TopLevel {
 		cloned.setVersion(version);
 		URI newIdentity = createCompliantURI(URIprefix, displayId, version);
 		if (!this.getIdentity().equals(newIdentity)) {
-			cloned.setWasDerivedFrom(this.getIdentity());
+			cloned.addWasDerivedFrom(this.getIdentity());
 		} else {
-			cloned.setWasDerivedFrom(this.getWasDerivedFrom());
+			cloned.setWasDerivedFroms(this.getWasDerivedFroms());
 		}
 		cloned.setIdentity(newIdentity);
 		int count = 0;

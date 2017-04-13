@@ -103,7 +103,7 @@ final class URIcompliance {
 	 */
 	static String extractURIprefix(URI objURI) {
 		String URIstr = objURI.toString();
-		Pattern r = Pattern.compile(genericURIpattern1);
+		Pattern r = Pattern.compile(genericURIpattern1b);
 		Matcher m = r.matcher(URIstr);
 		if (m.matches())
 			return m.group(2);
@@ -407,7 +407,9 @@ final class URIcompliance {
 	// group 1: persistent ID
 	// group 2: URI prefix
 	// group 3: version
-	private static final String genericURIpattern1 = "((" + URIprefixPattern + ")("+delimiter+"(" + displayIDpattern + ")){1,3})(/(" + versionPattern + "))?";
+	private static final String genericURIpattern1 = "((" + URIprefixPattern + ")(" + delimiter+"(" + displayIDpattern + ")){1,3})(/(" + versionPattern + "))?";
+
+	private static final String genericURIpattern1b = "((" + URIprefixPattern + delimiter+")(" + displayIDpattern + "){1,3})(/(" + versionPattern + "))?";
 
 	private static final String namespacePattern = "((" + URIprefixPattern + delimiter + ")(" + displayIDpattern + "){1,3})(/(" + versionPattern + "))?";
 

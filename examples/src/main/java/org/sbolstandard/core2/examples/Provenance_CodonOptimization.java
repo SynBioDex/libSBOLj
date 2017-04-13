@@ -39,7 +39,7 @@ public class Provenance_CodonOptimization {
 						
 		ComponentDefinition optimizedCds = getCds(document, "codon_optimized","Codon optimised CDS");
 		ComponentDefinition sourceCds = getCds(document,"non_codon_optimized", "Non Codon optimised CDS");		
-		optimizedCds.setWasDerivedFrom(sourceCds.getIdentity());
+		optimizedCds.addWasDerivedFrom(sourceCds.getIdentity());
 		
 		//Create the agent definition for the codon optimization software		
 		GenericTopLevel agent=document.createGenericTopLevel("codon_optimization_software", provNs.withLocalPart("Agent"));

@@ -327,8 +327,9 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol2Terms.Identified.displayId, t.getDisplayId()));
 		if(t.isSetVersion())
 			list.add(NamedProperty(Sbol2Terms.Identified.version, t.getVersion()));
-		if(t.isSetWasDerivedFrom())
-			list.add(NamedProperty(Sbol2Terms.Identified.wasDerivedFrom, t.getWasDerivedFrom()));
+		for (URI wasDerivedFrom : t.getWasDerivedFroms()) {
+			list.add(NamedProperty(Sbol2Terms.Identified.wasDerivedFrom, wasDerivedFrom));
+		}
 		if(t.isSetName())
 			list.add(NamedProperty(Sbol2Terms.Identified.title, t.getName()));
 		if(t.isSetDescription())
