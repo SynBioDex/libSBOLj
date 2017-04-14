@@ -2,7 +2,6 @@
 **/target
 *~
 *.swp
-javadocs
 *.jar
 *.zip
 .idea
