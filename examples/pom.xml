@@ -18,7 +18,7 @@
         <dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>libSBOLj</artifactId>
-            <version>2.1.1-SNAPSHOT</version>
+            <version>2.2</version>
         </dependency>
 
         <!-- test dependencies -->

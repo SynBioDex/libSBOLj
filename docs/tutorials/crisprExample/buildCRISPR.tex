@@ -1,17 +1,20 @@
+This tutorial explains how to use SBOL 2.0 to represent the function of a state-of-art design, namely a CRISPR-based repression module Kiana et al. [1] using the Java library. Before attempting this tutorial, users may find the corresponding tutorial on Maven instructions for using libSBOLj to be useful. The detailed Maven instructions can be accessed in the  \href{http://sbolstandard.org/wp-content/uploads/2016/09/GettingStartedTutorial_libSBOLj.pdf}{Maven Setup} tutorial. 
+
 \section*{A brief description of the CRISPR circuit using SBOL 2.0 data model}
 We first give a brief description of the CRISPR-based repression module. We use bold font in the following text and figure captions to mark available data model in SBOL 2.0. Detailed description of properties of the data model is available in the~\href{http://sbolstandard.org/downloads/specification-data-model-2-0/}{Specification
   (Data Model 2.0)}.
 
 First, consider the CRISPR-based Repression Template \sbol{ModuleDefinition} shown in the center of Figure~\ref{fig:fig-CRPb}. It provides a generic description of CRISPR-based repression behavior. Namely, it includes generic \emph{Cas9}, \emph{guide RNA} (gRNA), and \emph{target} DNA \sbol{FunctionalComponent} instances. It also includes a \emph{genetic production} \sbol{Interaction} that expresses a generic target gene product.  Finally, it includes a \emph{non-covalent binding} \sbol{Interaction} that forms the Cas9/gRNA complex (shown as dashed arrows), which in turn participates in an \emph{inhibition} \sbol{Interaction} to repress the target gene product production (shown with a tee-headed arrow). The CRISPR-based Repression Template is then instantiated to test a particular CRISPR-based repression device, CRPb, by the outer CRPb Characterization Circuit \sbol{ModuleDefinition}.  This outer characterization circuit includes gene \sbol{FunctionalComponents} to produce specific products (i.e., mKate, Gal4VP16, cas9m\_BFP, gRNA\_b, and EYFP), as well as \sbol{FunctionalComponents} for the products themselves.  Next, it includes \emph{genetic production} \sbol{Interactions} connecting the genes to their products, and it has a \emph{stimulation} \sbol{Interaction} that indicates that Gal4VP16 stimulates production of EYFP.  Finally, it uses \sbol{MapsTo} objects (shown as dashed lines) to connect the generic \sbol{FunctionalComponents} in the template to the specific objects in the outer \sbol{ModuleDefinition}.  For example, the outer module indicates that the target protein is EYFP, while the cas9\_gRNA complex is cas9m\_BFP\_gRNA\_b.
 
-\begin{figure}[tbph]
 \begin{center}
-  \includegraphics[width=0.95\textwidth]{figures/crispr_repression2} 
+  \includegraphics[width=0.85\textwidth]{figures/crispr_repression2} 
 \end{center}
+
+\begin{figure}[tbph]
 \caption{\label{fig:fig-CRPb} Illustration of a hierarchical CRISPR-based repression module represented in SBOL 2.0 (adapted from Figure~1a in \cite{kiani2014crispr}). The CRISPR-based Repression Template \sbol{ModuleDefinition} describes a generic CRISPR repression circuit that combines a Cas9 protein with a gRNA to form a complex (represented by the dashed arrows) that represses a target gene (represented by the arrow with the tee arrowhead).  These relationships between these \sbol{FunctionalComponents} (instances of \sbol{ComponentDefinitions}) are represented in SBOL 2.0 using \sbol{Interactions}.  This \sbol{Module} is instantiated in the outer CRPb Characterization Circuit \sbol{ModuleDefinition} in order to specify the precise (including \sbol{Sequences} when provided) \sbol{FunctionalComponents}  used for each generic \sbol{FunctionalComponent}. The undirected dashed lines going into the template \sbol{Module} represent \sbol{MapsTo} objects that specify how specific \sbol{FunctionalComponents} replace the generic ones.}
 \end{figure}
-
-\section*{Modeling CRISPR repression using {\tt libSBOLj 2.0}}
+\newpage
+\section*{Modeling CRISPR repression using {\tt libSBOLj 2.1.0}}
 
 \subsection*{Setting up the CRISPR repression model}
 Now we are ready to create the CRISPR model to our project. When the ``crispr'' project was created, two template Java class files ``App.java'' and ``AppTest.java'' were automatically created as shown below. 
@@ -44,12 +47,12 @@ import uk.ac.ncl.intbio.core.io.CoreIoException;
 \end{minipage}
 
 \subsection*{Creating SBOL Document}
-For simplicity, we put all of our code in the \lstinline+main+ method of the \lstinline+RepressionModel+ class. All SBOL data objects are organized within an \sbol{SBOLDocument} object. The \sbol{SBOLDocument} provides a rich set of methods to create, access, update, and delete each type of \sbol{TopLevel} object (i.e., \sbol{Collection}, \sbol{ModuleDefinition}, \sbol{ComponentDefinition}, \sbol{Sequence}, \sbol{Model}, or \sbol{GenericTopLevel}). Every SBOL object has a \emph{uniform resource identifier} (URI) and consists of properties that may refer to other objects, including non-\sbol{TopLevel} objects such as SequenceConstraint and Interaction objects. \texttt{libSBOLj 2.0} organizes the URI collections to enable efficient access, and validation of uniqueness. We first create an \sbol{SBOLDocument} object by calling its constructor as shown below.
+For simplicity, we put all of our code in the \lstinline+main+ method of the \lstinline+RepressionModel+ class. All SBOL data objects are organized within an \sbol{SBOLDocument} object. The \sbol{SBOLDocument} provides a rich set of methods to create, access, update, and delete each type of \sbol{TopLevel} object (i.e., \sbol{Collection}, \sbol{ModuleDefinition}, \sbol{ComponentDefinition}, \sbol{Sequence}, \sbol{Model}, or \sbol{GenericTopLevel}). Every SBOL object has a \emph{uniform resource identifier} (URI) and consists of properties that may refer to other objects, including non-\sbol{TopLevel} objects such as SequenceConstraint and Interaction objects. \texttt{libSBOLj 2.0} organizes the URI collections to enable efficient access, and validation of uniqueness. We first create an \sbol{SBOLDocument} object by calling its constructor as shown below. One thing to mention, if users receive compiler errors for unhandled exceptions, then add the exception to the list of possible thrown exceptions as shown below. 
 
 \begin{minipage}{0.95\textwidth} 
 \begin{lstlisting}
 public class RepressionModel {
-	public static void main(String[] args) throws URISyntaxException {
+	public static void main(String[] args) throws URISyntaxException, SBOLValidationException, SBOLConversionException {
 		SBOLDocument doc = new SBOLDocument();
 		doc.setDefaultURIprefix("http://sbols.org/CRISPR_Example/");
 		doc.setComplete(true);
@@ -59,17 +62,24 @@ public class RepressionModel {
 \end{lstlisting}
 \end{minipage}
 
-The method \lstinline+setDefaultURIprefix+ sets the
-default URI prefix to the string ``http://sbols.org/CRISPR\_Example/''. All data objects created following this statement carry this default URI prefix.  The \lstinline+doc.setComplete(true)+ statement sets the ``complete'' flag to \lstinline+true+ for the given \lstinline+doc+. It means that the URI for each data object in the current \lstinline+doc+ can be dereferenced to a valid object in this \sbol{SBOLDocuemnt} object. Otherwise, the library throws an exception. Finally, the \lstinline+doc.setCreateDefaults(true)+ statement
+\begin{itemize}
+\item \lstinline+setDefaultURIprefix+ sets the
+default URI prefix to the string ``http://sbols.org/CRISPR\_Example/''. All data objects created following this statement carry this default URI prefix.
+\item \lstinline+doc.setComplete(true)+ statement sets the ``complete'' flag to \lstinline+true+ for the given \lstinline+doc+. It means that the URI for each data object in the current \lstinline+doc+ can be dereferenced to a valid object in this \sbol{SBOLDocuemnt} object. Otherwise, the library throws an exception. 
+
+\item \lstinline+doc.setCreateDefaults(true)+ statement
 sets the ``createDefaults'' flag to \lstinline+true+ for the given
 \lstinline+doc+.  It means that when an object that must
 reference either a \lstinline+Component+ or \lstinline+FunctionalComponent+ object and cannot find the component, but it can find a \lstinline+ComponentDefinition+ object
 with the same \lstinline+displayId+, it creates a default \lstinline+Component+ or \lstinline+FunctionalComponent+ object with this \lstinline+displayId+ and references it.
 
+\end{itemize}
+
 \subsection*{Adding CRISPR-based Repression Template module}
 \subsubsection*{Creating \sbol{TopLevel} objects}
+A point reiterated is all code present in this tutorial should be pasted into the \lstinline+main+ method of a java project.
 We first create the CRISPR-based Repression Template module shown in
-Figure~\ref{fig:fig-CRPb}. In this template, we include definitions
+Figure~\ref{fig:fig-CRPb}.  In this template, we include definitions
 for generic \emph{Cas9}, \emph{guide RNA} (gRNA), and \emph{target}
 DNA \sbol{FunctionalComponent} instances. They are encoded as
 \sbol{ComponentDefinition} objects. Creation of the generic Cas9 (line
@@ -271,7 +281,7 @@ doc.createSequence("CRP_b_seq", version, CRP_b_seq_elements, Sequence.IUPAC_DNA)
 
 Next, we specify \sbol{ComponentDefinitions} for all \sbol{FunctionalComponents} in the CRPb Characterization Circuit. The code snippet below first creates a \sbol{ComponentDefinition} of DNA type for the \lstinline+CRP_b+ promoter (lines 1-7). Note that by using compliant URIs, the sequence can be looked up using its \emph{displayId}, i.e. \lstinline+CRP_b_seq+ that was added previously, and since no version is provided, it is referenced by its \emph{persistentIdentity} URI (line 7). It is simply its URI without the version when using compliant URIs. The purpose of a persistent identity is to allow an object to refer to the latest version of another object using this URI. The latest version of an object is determined using \emph{semantic versioning} conventions (c.f., \url{http://semver.org/}). Then, we create two \sbol{ComponentDefinition} objects, one for the EYFP \emph{coding sequence} (CDS), and one for the EYFP gene (lines 8-17). We use a \sbol{SequenceConstraint} object (lines 18-23) to indicate that the \lstinline+CRP_b+ promoter precedes the \lstinline+EYFP_cds+, because the sequence for the CDS has not been provided and thus cannot be given an exact \sbol{Range}. Note that since the ``createDefaults'' flag is set to \lstinline+true+, \sbol{FunctionalComponents} are automatically created for \lstinline+CRP_b+ and \lstinline+EYFP_cds+ \sbol{ComponentDefinition} objects, completing the reference from \lstinline+EYFP_gene_constraint+, via the \lstinline+CRP_b+ \sbol{FunctionalComponent}, to the \lstinline+CRP_b+ \sbol{ComponentDefinition}, and the reference from \lstinline+EYFP_gene_constraint+, via the \lstinline+EYFP_cds+ \sbol{FunctionalComponent}, to the \lstinline+EYFP_cds+ \sbol{ComponentDefinition}. 
 
-Other \sbol{ComponentDefinition} objects can be created using the same set of method calls. As an exercise, the reader is encouraged to specify them according to Table~\ref{tbl:tbl-ComponentDef} and~\ref{tbl:tbl-SeqConstraint}. You can use the same \lstinline+version+ for all of the \sbol{ComponentDefinition} objects. Entries ``type'' column in the table are defined as constants in the \sbol{ComonentDefinition} class. Roles are SO terms defined as URI constants in the \sbol{SequenceOntology} class. URIs for these terms are described in Table 3 of the~\href{http://sbolstandard.org/downloads/specification-data-model-2-0/}{Specification  (Data Model 2.0)} document.
+Other \sbol{ComponentDefinition} objects can be created using the same set of method calls. As an exercise, the reader should next create the ComponentDefinitions specified in Table~\ref{tbl:tbl-ComponentDef} and~\ref{tbl:tbl-SeqConstraint}. \textbf{Please note that the code will not run correctly unless these ComponentDefinitions are created.} You can use the same \lstinline+version+ for all of the \sbol{ComponentDefinition} objects. Entries ``type'' column in the table are defined as constants in the \sbol{ComonentDefinition} class. Roles are SO terms defined as URI constants in the \sbol{SequenceOntology} class. URIs for these terms are described in Table 3 of the~\href{http://sbolstandard.org/downloads/specification-data-model-2-0/}{Specification  (Data Model 2.0)} document.
 
 \vspace{\abovedisplayskip}
 \begin{minipage}{0.95\textwidth}
@@ -330,9 +340,9 @@ mKate&PROTEIN&n/a&n/a&n/a\\%
 Gal4VP16\_cds&DNA&CDS&n/a&n/a\\%
 Gal4VP16\_gene&DNA&PROMOTER&n/a&GAL4VP16\_gene\_constraint\\%
 Gal4VP16&PROTEIN&n/a&n/a&n/a\\%
-CRP\_b&DNA&PROMOTER&CRP\_b\_seq&n/a\\%
-EYFP\_cds&DNA&CDS&n/a&n/a\\%
-EYFP\_gene&DNA&PROMOTER&n/a&EYFP\_gene\_constraint\\%
+CRP\_b*&DNA&PROMOTER&CRP\_b\_seq&n/a\\%
+EYFP\_cds*&DNA&CDS&n/a&n/a\\%
+EYFP\_gene*&DNA&PROMOTER&n/a&EYFP\_gene\_constraint\\%
 EYFP&PROTEIN&n/a&n/a&n/a\\%
 \hline
 \end{tabular}%
@@ -351,12 +361,14 @@ cas9m\_BFP\_gene\_constraint&PRECEDES&pConst&cas9m\_BFP\_cds\\%
 gRNA\_b\_gene\_constraint1&PRECEDES&CRa\_U6&gRNA\_b\_nc\\%
 gRNA\_b\_gene\_constraint2&PRECEDES&gRNA\_b\_nc&gRNA\_b\_terminator\\%
 mKate\_gene\_constraint&PRECEDES&pConst&mKate\_cds\\%
-GAL4VP16\_gene\_constraint&PRECEDES&pConst&Gal4VP16\_cds\\%
-EYFP\_gene\_constraint&PRECEDES&CRP\_b&EYFP\_cds\\%
+Gal4VP16\_gene\_constraint&PRECEDES&pConst&Gal4VP16\_cds\\%
+EYFP\_gene\_constraint*&PRECEDES&CRP\_b&EYFP\_cds\\%
 \end{tabular}
 \end{table}
 
 We are now ready to create all remaining \sbol{FunctionalComponent} objects. We first create a \sbol{ModuleDefinition} object for the CRPb Characterization Circuit as shown below (lines 1-4). Then we create a \sbol{FunctionalComponent} \lstinline+EYFP+ that has a \sbol{PRIVATE} access type and refers to the \lstinline+EYFP+ \sbol{ComponentDefinition} object. The private access type means that this \sbol{FunctionalComponent} must not be referred to by remote \sbol{MapsTo} objects. Its direction property is \lstinline+NONE+, indicating that it serves neither input or output with regards to the \lstinline+CPRb_circuit+. Other \sbol{FunctionalComponent} objects, namely \lstinline+cas9m_BFP+, \lstinline+cas9m_BFP_gene+, \lstinline+gRNA_b+, \lstinline+gRNA_b_gene+, \lstinline+mKate+, \lstinline+mKate_gene+, \lstinline+Gal4VP16+, \lstinline+Gal4VP16_gene+, \lstinline+EYFP_gene+, and \lstinline+cas9m_BFP_gRNA_b+, can be created similarly with the same access type, version, and direction type. 
+
+\textbf{Note:} * in Table~\ref{tbl:tbl-ComponentDef} and~\ref{tbl:tbl-SeqConstraint} denote that the code has been provided in this tutorial for those objects. \textbf{Users will have to create the remaining components mentioned in the tables in order to create a fully functional model.} \newline
 
 \vspace{\abovedisplayskip}
 \begin{minipage}{0.95\textwidth}
@@ -374,7 +386,8 @@ CRPb_circuit.createFunctionalComponent(
 \end{lstlisting}
 \end{minipage}
 
-Next, we need to specify all interactions for the CRPb Characterization Circuit. Following the same procedure for creating \sbol{Interactions} before, we can create those specified in Table~\ref{tbl:tbl-Interaction}. 
+
+Next, we need to specify all interactions for the CRPb Characterization Circuit. Following the same procedure for creating \sbol{Interactions} before, we can create those specified in Table~\ref{tbl:tbl-Interaction}. Remember to use the CRPb circuit module definition. 
 
 \begin{table}[tb]
 \caption{\sbol{Interaction} objects}
@@ -395,14 +408,14 @@ role\\
   &&cas9m\_BFP&PRODUCT\\ \hline %
 \multirow{2}{*}{gRNA\_b\_production}&\multirow{2}{*}{GENETIC\_PRODUCTION}&gRNA\_b\_gene&PROMOTER\\
   &&gRNA\_b&PRODUCT\\ \hline %
-\multirow{2}{*}{EYFP\_Activation}&\multirow{2}{*}{STIMULATION}&EYFP\_gene&PROMOTER\\
+\multirow{2}{*}{EYFP\_activation}&\multirow{2}{*}{STIMULATION}&EYFP\_gene&PROMOTER\\
   &&Gal4VP16&STIMULATOR\\ \hline %
 mKate\_deg&DEGRADATION&mKate&REACTANT\\ \hline%
 GAL4VP16\_deg&DEGRADATION&GAL4VP16&REACTANT\\ \hline%
 cas9m\_BFP\_deg&DEGRADATION&cas9m\_BFP&REACTANT\\ \hline%
-gRNA\_b\_BFP\_deg&DEGRADATION&gRNA\_b\_BFP&REACTANT\\ \hline%
-EYFP\_BFP\_deg&DEGRADATION&EYFP\_BFP&REACTANT\\ \hline%
-cas9m\_BFP\_gRNA\_b\_BFP\_deg&DEGRADATION&cas9m\_BFP\_gRNA\_b\_BFP&REACTANT\\ \hline%
+gRNA\_b\_deg&DEGRADATION&gRNA\_b&REACTANT\\ \hline%
+EYFP\_deg&DEGRADATION&EYFP&REACTANT\\ \hline%
+cas9m\_BFP\_gRNA\_b\_deg&DEGRADATION&cas9m\_BFP\_gRNA\_b&REACTANT\\ \hline%
 \end{tabular}
 \end{table}
 
@@ -450,24 +463,20 @@ Template_Module.createMapsTo(
 \end{lstlisting}
 \end{minipage}
 
-At this point, we have completed the CRISPR circuit model. The next
-section illustrates several other main features of {\tt libSBOLj}, including
-validation and serialization. 
+At this point, we have completed the CRISPR circuit model. One final step is to serialize the complete model to produce an RDF/XML output. This can be done by adding the code below.
 
-% One final step is to serialize the complete model to produce an RDF/XML output. This can be done by adding the code below.
+\vspace{\abovedisplayskip}
+\begin{minipage}{0.95\textwidth}
+\begin{lstlisting}
+try {
+      SBOLWriter.write(doc, System.out);
+}
+catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
+      e.printStackTrace();
+}
+\end{lstlisting}
+\end{minipage}
 
-% \vspace{\abovedisplayskip}
-% \begin{minipage}{0.95\textwidth}
-% \begin{lstlisting}
-% try {
-%       SBOLWriter.write(doc, System.out);
-% }
-% catch (XMLStreamException | FactoryConfigurationError | CoreIoException e) {
-%       e.printStackTrace();
-% }
-% \end{lstlisting}
-% \end{minipage}
-
-% The complete repression model is described in the ``RepressionModel.java'' under the {\tt libSBOLj} examples directory. This example is self-contained in that you can run it to generate the RDF/XML output. Note that SBOL does not provide the specification of a mathematical model directly. It is possible, however, to generate a mathematical model using SBML~\cite{SBML} and the procedure described in~\cite{roehner2015generating}. Then, the SBOL document can reference this generated SBML model.
+The complete repression model is described in the ``RepressionModel.java'' under the {\tt libSBOLj} examples directory. This example is self-contained in that you can run it to generate the RDF/XML output. Note that SBOL does not provide the specification of a mathematical model directly. It is possible, however, to generate a mathematical model using SBML~\cite{SBML} and the procedure described in~\cite{roehner2015generating}. Then, the SBOL document can reference this generated SBML model.
 
 % The next section gives an introduction to some other methods provided by the API of {\tt libSBOLj}.

@@ -157,13 +157,13 @@ public class SBOLDocumentTest {
 	@Test
 	public void Test_GenericTopLevel_CopyCreate() throws SBOLValidationException{
 		
-		String prURI="http://partsregistry.org";
-//		String prPrefix="pr";
+		String prURI="http://partsregistry.org/";
+		String prPrefix="pr";
 		SBOLDocument document1 = new SBOLDocument();
 		document1.setDefaultURIprefix(prURI);
 		document1.setTypesInURIs(false);
 		
-		String prURI2="http://partsregistry2.org";
+		String prURI2="http://partsregistry2.org/";
 //		String prPrefix2="pr2";
 		SBOLDocument document2 = new SBOLDocument();
 		document2.setDefaultURIprefix(prURI2);
@@ -173,13 +173,12 @@ public class SBOLDocumentTest {
 		String GTL1Name = "GTL1";
 		String GTL1Description = "Description";
 		String GTL1Version = "1.0";
-		String GTL1Qname = "name";
-		GenericTopLevel GTL1 = document1.createGenericTopLevel(GTL1ID, GTL1Version, QName.valueOf(GTL1Qname));
+		GenericTopLevel GTL1 = document1.createGenericTopLevel(GTL1ID, GTL1Version, new QName(prURI, "group", prPrefix));
 		GTL1.setDescription(GTL1Description);
 		GTL1.setName(GTL1Name);
 		GenericTopLevel GTL2 = (GenericTopLevel)document2.createCopy(GTL1);
 		
-		GTL2.unsetWasDerivedFrom();
+		GTL2.clearWasDerivedFroms();
 		
 		assertTrue(GTL1.equals(GTL2));	
 		assertTrue(GTL1.getAnnotations().equals(GTL2.getAnnotations()));
@@ -225,7 +224,7 @@ public class SBOLDocumentTest {
 //		Collection Col3 = (Collection)document3.createCopy(Col1, Col1ID);
 		
 //		Col3.unsetWasDerivedFrom();
-		Col2.unsetWasDerivedFrom();
+		Col2.clearWasDerivedFroms();
 		
 //		assertTrue(Col1.equals(Col3));
 		assertTrue(Col1.equals(Col2));
@@ -263,7 +262,7 @@ public class SBOLDocumentTest {
 		CD1.setName("CD1");
 		ComponentDefinition CD2 = (ComponentDefinition)document2.createCopy(CD1);
 
-		CD2.unsetWasDerivedFrom();
+		CD2.clearWasDerivedFroms();
 		
 		assertTrue(CD1.equals(CD2));
 		assertTrue(CD1.getAnnotations().equals(CD2.getAnnotations()));
@@ -304,7 +303,7 @@ public class SBOLDocumentTest {
 		MD1.setName("MD1");
 		ModuleDefinition MD2 = (ModuleDefinition)document2.createCopy(MD1);
 		
-		MD2.unsetWasDerivedFrom();
+		MD2.clearWasDerivedFroms();
 		
 		assertTrue(MD1.equals(MD2));
 		assertTrue(MD1.getAnnotations().equals(MD2.getAnnotations()));

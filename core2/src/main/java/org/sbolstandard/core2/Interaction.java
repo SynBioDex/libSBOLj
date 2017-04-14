@@ -65,7 +65,11 @@ public class Interaction extends Identified {
 	void copy(Interaction interaction) throws SBOLValidationException {
 		((Identified)this).copy(interaction);
 		for (Participation participation : interaction.getParticipations()) {
-			Participation newParticipation = this.createParticipation(participation.getDisplayId(), 
+			String displayId = participation.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(participation.getIdentity());
+			}
+			Participation newParticipation = this.createParticipation(displayId, 
 					participation.getParticipant().getDisplayId(), participation.getRoles());
 			newParticipation.copy(participation);
 		}		
@@ -455,7 +459,7 @@ public class Interaction extends Identified {
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
-			this.setWasDerivedFrom(this.getIdentity());
+			this.addWasDerivedFrom(this.getIdentity());
 		}
 		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
 		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));

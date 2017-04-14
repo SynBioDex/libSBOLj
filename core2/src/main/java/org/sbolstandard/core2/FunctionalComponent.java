@@ -70,7 +70,11 @@ public class FunctionalComponent extends ComponentInstance {
 		this.mapsTos = new HashMap<>();
 		if (!functionalComponent.getMapsTos().isEmpty()) {
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
-				MapsTo newMapsTo = this.createMapsTo(mapsTo.getDisplayId(), mapsTo.getRefinement(), mapsTo.getLocal().getDisplayId(), 
+				String displayId = mapsTo.getDisplayId();
+				if (displayId==null) {
+					displayId = URIcompliance.extractDisplayId(mapsTo.getIdentity());
+				}
+				MapsTo newMapsTo = this.createMapsTo(displayId, mapsTo.getRefinement(), mapsTo.getLocal().getDisplayId(), 
 						mapsTo.getRemoteURI());
 				newMapsTo.copy(mapsTo);
 			}
@@ -175,7 +179,7 @@ public class FunctionalComponent extends ComponentInstance {
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
-			this.setWasDerivedFrom(this.getIdentity());
+			this.addWasDerivedFrom(this.getIdentity());
 		}
 		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
 		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));

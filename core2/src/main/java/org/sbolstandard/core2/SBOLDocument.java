@@ -27,6 +27,9 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.synbiohub.frontend.SynBioHubException;
+import org.synbiohub.frontend.SynBioHubFrontend;
+
 import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
 
 /**
@@ -47,6 +50,7 @@ public class SBOLDocument {
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
 	private HashMap<String, NamespaceBinding> nameSpaces;
+	private HashMap<String, SynBioHubFrontend> registries;
 	private Set<String> prefixes;
 	private String defaultURIprefix;
 	private boolean complete = false;
@@ -92,11 +96,18 @@ public class SBOLDocument {
 		moduleDefinitions = new HashMap<>();
 		sequences = new HashMap<>();
 		nameSpaces = new HashMap<>();
-		nameSpaces.put(Sbol2Terms.sbol2.getPrefix(), Sbol2Terms.sbol2);
-		nameSpaces.put(Sbol1Terms.rdf.getPrefix(), Sbol1Terms.rdf);
-		nameSpaces.put(Sbol2Terms.dc.getPrefix(), Sbol2Terms.dc);
-		nameSpaces.put(Sbol2Terms.prov.getPrefix(), Sbol2Terms.prov);
+		try {
+			addNamespaceBinding(Sbol2Terms.sbol2);
+			addNamespaceBinding(Sbol1Terms.rdf);
+			addNamespaceBinding(Sbol2Terms.dc);
+			addNamespaceBinding(Sbol2Terms.prov);
+		}
+		catch (SBOLValidationException e) {
+			// TODO: this should never happen
+			e.printStackTrace();
+		}
 		prefixes = new HashSet<>();
+		registries = new HashMap<>();
 	}
 
 	/**
@@ -235,7 +246,7 @@ public class SBOLDocument {
 	 */
 	public ModuleDefinition getModuleDefinition(String displayId,String version) {
 		try {
-			return moduleDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.MODULE_DEFINITION,displayId,version, typesInURIs));
+			return getModuleDefinition(createCompliantURI(defaultURIprefix,TopLevel.MODULE_DEFINITION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -245,11 +256,26 @@ public class SBOLDocument {
 	 * Returns the module definition matching the given identity URI from this
 	 * SBOL document object's list of module definitions.
 	 *
-	 * @param moduleURI the give identity URI of the module definition to be retrieved
+	 * @param moduleDefinitionURI the give identity URI of the module definition to be retrieved
 	 * @return the matching module definition if present, or {@code null} otherwise
 	 */
-	public ModuleDefinition getModuleDefinition(URI moduleURI) {
-		return moduleDefinitions.get(moduleURI);
+	public ModuleDefinition getModuleDefinition(URI moduleDefinitionURI) {
+		ModuleDefinition moduleDefinition = moduleDefinitions.get(moduleDefinitionURI);
+		if (moduleDefinition==null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(moduleDefinitionURI);
+					if (document != null) {
+						moduleDefinition = document.getModuleDefinition(moduleDefinitionURI);
+						createCopy(document);
+					}
+				}
+				catch (SynBioHubException | SBOLValidationException e) {
+					moduleDefinition = null;
+				}
+			}
+		} 
+		return moduleDefinition;
 	}
 
 	/**
@@ -395,7 +421,7 @@ public class SBOLDocument {
 	 */
 	public Collection getCollection(String displayId,String version) {
 		try {
-			return collections.get(createCompliantURI(defaultURIprefix,TopLevel.COLLECTION,displayId,version, typesInURIs));
+			return getCollection(createCompliantURI(defaultURIprefix,TopLevel.COLLECTION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -410,7 +436,22 @@ public class SBOLDocument {
 	 *
 	 */
 	public Collection getCollection(URI collectionURI) {
-		return collections.get(collectionURI);
+		Collection collection = collections.get(collectionURI);
+		if (collection==null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(collectionURI);
+					if (document != null) {
+						collection = document.getCollection(collectionURI);
+						createCopy(document);
+					}
+				}
+				catch (SynBioHubException | SBOLValidationException e) {
+					collection = null;
+				}
+			}
+		} 
+		return collection;
 	}
 
 	/**
@@ -584,7 +625,7 @@ public class SBOLDocument {
 	 */
 	public Model getModel(String displayId,String version) {
 		try {
-			return models.get(createCompliantURI(defaultURIprefix,TopLevel.MODEL,displayId,version, typesInURIs));
+			return getModel(createCompliantURI(defaultURIprefix,TopLevel.MODEL,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -598,7 +639,22 @@ public class SBOLDocument {
 	 * @return the matching model if present, or {@code null} otherwise
 	 */
 	public Model getModel(URI modelURI) {
-		return models.get(modelURI);
+		Model model = models.get(modelURI);
+		if (model==null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(modelURI);
+					if (document != null) {
+						model = document.getModel(modelURI);
+						createCopy(document);
+					}
+				}
+				catch (SynBioHubException | SBOLValidationException e) {
+					model = null;
+				}
+			}
+		} 
+		return model;
 	}
 
 	/**
@@ -847,7 +903,7 @@ public class SBOLDocument {
 	 */
 	public ComponentDefinition getComponentDefinition(String displayId,String version) {
 		try {
-			return componentDefinitions.get(createCompliantURI(defaultURIprefix,TopLevel.COMPONENT_DEFINITION,displayId,version, typesInURIs));
+			return getComponentDefinition(createCompliantURI(defaultURIprefix,TopLevel.COMPONENT_DEFINITION,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -861,7 +917,22 @@ public class SBOLDocument {
 	 * @return the matching component definition if present, or {@code null} otherwise.
 	 */
 	public ComponentDefinition getComponentDefinition(URI componentDefinitionURI) {
-		return componentDefinitions.get(componentDefinitionURI);
+		ComponentDefinition componentDefinition = componentDefinitions.get(componentDefinitionURI);
+		if (componentDefinition==null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(componentDefinitionURI);
+					if (document != null) {
+						componentDefinition = document.getComponentDefinition(componentDefinitionURI);
+						createCopy(document);
+					}
+				}
+				catch (SynBioHubException | SBOLValidationException e) {
+					componentDefinition = null;
+				}
+			}
+		} 
+		return componentDefinition;
 	}
 
 	/**
@@ -1068,6 +1139,14 @@ public class SBOLDocument {
 			createCopy(topLevel);
 		}
 	}
+	
+//	private SBOLDocument createCopy(String URIPrefix, String displayId, String version) throws SBOLValidationException {
+//		SBOLDocument document = new SBOLDocument();
+//		for (TopLevel topLevel : getTopLevels()) {
+//			document.createCopy(topLevel, URIPrefix, displayId, version);
+//		}
+//		return document;
+//	}
 
 	/**
 	 * Creates an identical copy of the given top-level, and then adds the created top-level to the corresponding
@@ -1121,9 +1200,7 @@ public class SBOLDocument {
 	 * </ul>
 	 */
 	public TopLevel rename(TopLevel topLevel, String displayId) throws SBOLValidationException {
-		TopLevel renamedTopLevel = createCopy(topLevel,defaultURIprefix,displayId,"");
-		removeTopLevel(topLevel);
-		return renamedTopLevel;
+		return rename(topLevel,defaultURIprefix,displayId,"");
 	}
 
 	/**
@@ -1164,9 +1241,7 @@ public class SBOLDocument {
 	 * </ul>
 	 */
 	public TopLevel rename(TopLevel topLevel, String displayId, String version) throws SBOLValidationException {
-		TopLevel renamedTopLevel = createCopy(topLevel,defaultURIprefix,displayId,version);
-		removeTopLevel(topLevel);
-		return renamedTopLevel;
+		return rename(topLevel,defaultURIprefix,displayId,version);
 	}
 
 	/**
@@ -1212,52 +1287,42 @@ public class SBOLDocument {
 		}
 		if (displayId == null) {
 			displayId = topLevel.getDisplayId();
+			if (displayId == null) {
+				displayId = URIcompliance.extractDisplayId(topLevel.getIdentity());
+			}
 		}
 		if (version == null) {
 			version = topLevel.getVersion();
 		}
-		//validateIdVersion(displayId,version);
 		if (topLevel instanceof Collection) {
-			//Collection newCollection = ((Collection) topLevel).copy(URIprefix, displayId, version);
-			//addCollection(newCollection);
 			Collection newCollection = this.createCollection(URIprefix, displayId, version);
 			newCollection.copy((Collection)topLevel);
 			return newCollection;
 		}
 		else if (topLevel instanceof ComponentDefinition) {
-			//ComponentDefinition newComponentDefinition = ((ComponentDefinition) topLevel).copy(URIprefix, displayId, version);
-			//addComponentDefinition(newComponentDefinition);
 			ComponentDefinition newComponentDefinition = this.createComponentDefinition(URIprefix, displayId, version,
 					((ComponentDefinition)topLevel).getTypes());
 			newComponentDefinition.copy((ComponentDefinition)topLevel);
 			return newComponentDefinition;
 		}
 		else if (topLevel instanceof Model) {
-			//Model newModel = ((Model) topLevel).copy(URIprefix, displayId, version);
-			//addModel(newModel);
 			Model newModel = this.createModel(URIprefix, displayId, version, ((Model)topLevel).getSource(), 
 					((Model)topLevel).getLanguage(), ((Model)topLevel).getFramework());
 			newModel.copy((Model)topLevel);
 			return newModel;
 		}
 		else if (topLevel instanceof ModuleDefinition) {
-			//ModuleDefinition newModuleDefinition = ((ModuleDefinition) topLevel).copy(URIprefix, displayId, version);
-			//addModuleDefinition(newModuleDefinition);
 			ModuleDefinition newModuleDefinition = this.createModuleDefinition(URIprefix, displayId, version);
 			newModuleDefinition.copy((ModuleDefinition)topLevel);
 			return newModuleDefinition;
 		}
 		else if (topLevel instanceof Sequence) {
-			//Sequence newSequence = ((Sequence) topLevel).copy(URIprefix, displayId, version);
-			//addSequence(newSequence);
 			Sequence newSequence = this.createSequence(URIprefix, displayId, version, 
 					((Sequence)topLevel).getElements(), ((Sequence)topLevel).getEncoding());
 			newSequence.copy((Sequence)topLevel);
 			return newSequence;
 		}
 		else if (topLevel instanceof GenericTopLevel) {
-			//GenericTopLevel newGenericTopLevel = ((GenericTopLevel) topLevel).copy(URIprefix, displayId, version);
-			//addGenericTopLevel(newGenericTopLevel);
 			GenericTopLevel newGenericTopLevel = this.createGenericTopLevel(URIprefix, displayId, version, 
 					((GenericTopLevel)topLevel).getRDFType());
 			newGenericTopLevel.copy((GenericTopLevel)topLevel);
@@ -1298,6 +1363,18 @@ public class SBOLDocument {
 		return document;
 	}
 	
+	private void createRecursiveCopy(SBOLDocument document, Annotation annotation) throws SBOLValidationException {
+		if (annotation.isURIValue()) {
+			TopLevel gtl = getTopLevel(annotation.getURIValue());
+			if (gtl != null) 
+				createRecursiveCopy(document,gtl);
+		} else if (annotation.isNestedAnnotations()) {
+			for (Annotation nestedAnnotation : annotation.getAnnotations()) {
+				createRecursiveCopy(document,nestedAnnotation);
+			}
+		}
+	}
+	
 	/**
 	 * @param document
 	 * @param topLevel
@@ -1305,6 +1382,18 @@ public class SBOLDocument {
 	 */
 	private void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
 		if (document.getTopLevel(topLevel.getIdentity())!=null) return;
+		for (Annotation annotation : topLevel.getAnnotations()) {
+			if (annotation.isURIValue()) {
+				TopLevel gtl = getTopLevel(annotation.getURIValue());
+				if (gtl != null) 
+					createRecursiveCopy(document,gtl);
+			} else if (annotation.isNestedAnnotations()) {
+				for (Annotation nestedAnnotation : annotation.getAnnotations()) {
+					createRecursiveCopy(document,nestedAnnotation);
+				}
+			}
+			// TODO: need to handle nested annotations
+		}
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model) {
 			document.createCopy(topLevel);
 		} else if (topLevel instanceof Collection) {
@@ -1340,7 +1429,235 @@ public class SBOLDocument {
 			document.createCopy(topLevel);
 		}
 	}
+	
+	private String extractDocumentURIPrefix() {
+		String documentURIPrefix = "";
+		for (TopLevel topLevel : getTopLevels()) {
+			if (documentURIPrefix.equals("")) {
+				documentURIPrefix = URIcompliance.extractURIprefix(topLevel.getIdentity());
+			} else {
+				for (int i=0; i < documentURIPrefix.length(); i++) {
+					if (i >= topLevel.getIdentity().toString().length() 
+						|| documentURIPrefix.charAt(i)!=topLevel.getIdentity().toString().charAt(i)) {
+						if (i==0) {
+							documentURIPrefix="";
+						} else {
+							documentURIPrefix = documentURIPrefix.substring(0, i);
+						}
+						break;
+					}
+				}
+				if (documentURIPrefix.equals("")) break;
+			}
+		}
+		return documentURIPrefix;
+	}
+	
+	private void fixDocumentURIPrefix() throws SBOLValidationException {
+		String documentURIPrefix = extractDocumentURIPrefix();
+		setDefaultURIprefix(documentURIPrefix);
+		for (TopLevel topLevel : getTopLevels()) {
+			if (!topLevel.getIdentity()
+					.equals(URIcompliance.createCompliantURI(documentURIPrefix, topLevel.getDisplayId(), topLevel.getVersion()))) {
+				String newDisplayId = topLevel.getIdentity().toString().replaceAll(documentURIPrefix, "");
+				String newVersion = "";
+				if (topLevel.isSetVersion()) {
+					newDisplayId = newDisplayId.replace("/"+topLevel.getVersion(), "");
+					newVersion = topLevel.getVersion();
+				}
+				newDisplayId = newDisplayId.replaceAll("/","_");
+				while (getTopLevel(URIcompliance.createCompliantURI(documentURIPrefix, 
+						newDisplayId, newVersion))!=null) {
+					newDisplayId = newDisplayId.replaceAll("_","__");
+				}
+				TopLevel newTopLevel = this.createCopy(topLevel,newDisplayId,newVersion);
+				removeTopLevel(topLevel);
+				updateReferences(topLevel.getIdentity(),newTopLevel.getIdentity());
+				updateReferences(topLevel.getPersistentIdentity(),newTopLevel.getPersistentIdentity());
+			}	
+		}
+	}
+	
+	private void updateReferences(List<Annotation> annotations,URI originalIdentity,URI newIdentity) {
+		for (Annotation annotation : annotations) {
+			if (annotation.isURIValue()) {
+				if (annotation.getURIValue().equals(originalIdentity)) {
+					annotation.setURIValue(newIdentity);
+				}
+			} else if (annotation.isNestedAnnotations()) {
+				updateReferences(annotation.getAnnotations(),originalIdentity,newIdentity);
+			}
+		}
+	}
+	
+	private void updateReferences(Identified identified,URI originalIdentity,URI newIdentity) {
+		updateReferences(identified.getAnnotations(),originalIdentity,newIdentity);
+	}
+	
+	// TODO: need to update persistentIdentities too
+	private void updateReferences(URI originalIdentity, URI newIdentity) throws SBOLValidationException {
+		for (Collection collection : getCollections()) {
+			for (URI memberURI : collection.getMemberURIs()) {
+				if (memberURI.equals(originalIdentity)) {
+					collection.removeMember(originalIdentity);
+					collection.addMember(newIdentity);
+				}
+			}
+			updateReferences(collection,originalIdentity,newIdentity);
+		}
+		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
+			updateReferences(componentDefinition,originalIdentity,newIdentity);
+			for (Component component : componentDefinition.getComponents()) {
+				if (component.getDefinitionURI().equals(originalIdentity)) {
+					component.setDefinition(newIdentity);
+					for (MapsTo mapsTo : component.getMapsTos()) {
+						ComponentDefinition cd = getComponentDefinition(newIdentity);
+						if (cd!=null) {
+							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
+							URI newURI = URIcompliance.createCompliantURI(cd.getPersistentIdentity().toString(),
+									displayId, cd.getVersion());
+							mapsTo.setRemote(newURI);
+						}
+					}
+				}
+				updateReferences(component,originalIdentity,newIdentity);
+				for (MapsTo mapsTo : component.getMapsTos()) {
+					updateReferences(mapsTo,originalIdentity,newIdentity);
+				}
+			}
+			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
+				for (Location loc : sa.getLocations()) {
+					updateReferences(loc,originalIdentity,newIdentity);
+				}
+				updateReferences(sa,originalIdentity,newIdentity);
+			}
+			for (SequenceConstraint sc : componentDefinition.getSequenceConstraints()) {
+				updateReferences(sc,originalIdentity,newIdentity);
+			}
+			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
+				if (sequenceURI.equals(originalIdentity)) {
+					componentDefinition.removeSequence(originalIdentity);
+					componentDefinition.addSequence(newIdentity);
+				}	
+			}
+		}
+		for (ModuleDefinition moduleDefinition : getModuleDefinitions()) {
+			updateReferences(moduleDefinition,originalIdentity,newIdentity);
+			for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
+				if (functionalComponent.getDefinitionURI().equals(originalIdentity)) {
+					functionalComponent.setDefinition(newIdentity);
+					for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+						ComponentDefinition cd = getComponentDefinition(newIdentity);
+						if (cd!=null) {
+							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
+							URI newURI = URIcompliance.createCompliantURI(cd.getPersistentIdentity().toString(),
+									displayId, cd.getVersion());
+							mapsTo.setRemote(newURI);
+						}
+					}
+				}
+				updateReferences(functionalComponent,originalIdentity,newIdentity);
+				for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+					updateReferences(mapsTo,originalIdentity,newIdentity);
+				}
+			}
+			for (Module module : moduleDefinition.getModules()) {
+				if (module.getDefinitionURI().equals(originalIdentity)) {
+					module.setDefinition(newIdentity);
+					for (MapsTo mapsTo : module.getMapsTos()) {
+						ModuleDefinition md = getModuleDefinition(newIdentity);
+						if (md!=null) {
+							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
+							URI newURI = URIcompliance.createCompliantURI(md.getPersistentIdentity().toString(),
+									displayId, md.getVersion());
+							mapsTo.setRemote(newURI);
+						}
+					}
+				}
+				updateReferences(module,originalIdentity,newIdentity);
+				for (MapsTo mapsTo : module.getMapsTos()) {
+					updateReferences(mapsTo,originalIdentity,newIdentity);
+				}
+			}
+			for (Interaction interaction : moduleDefinition.getInteractions()) {
+				updateReferences(interaction,originalIdentity,newIdentity);
+				for (Participation participation : interaction.getParticipations()) {
+					updateReferences(participation,originalIdentity,newIdentity);
+				}		
+			}
+			for (URI modelURI : moduleDefinition.getModelURIs()) {
+				if (modelURI.equals(originalIdentity)) {
+					moduleDefinition.removeModel(originalIdentity);
+					moduleDefinition.addModel(newIdentity);
+				}	
+			}
+		}
+		for (Model model : getModels()) {
+			updateReferences(model,originalIdentity,newIdentity);
+		}
+		for (Sequence sequence : getSequences()) {
+			updateReferences(sequence,originalIdentity,newIdentity);
+		}
+		for (GenericTopLevel genericTopLevel : getGenericTopLevels()) {
+			updateReferences(genericTopLevel,originalIdentity,newIdentity);
+		}
+	}
 
+	private void changeURIPrefixVersion(List<Annotation> annotations,String URIPrefix,String version) throws SBOLValidationException {
+		for (Annotation annotation : annotations) {
+			if (annotation.isURIValue()) {
+				TopLevel topLevel = getTopLevel(annotation.getURIValue());
+				if (topLevel!=null) {
+					annotation.setURIValue(URIcompliance.createCompliantURI(URIPrefix, 
+							topLevel.getDisplayId()!=null?topLevel.getDisplayId():URIcompliance.extractDisplayId(topLevel.getIdentity()), 
+							version!=null?version:topLevel.getVersion()));
+				}
+			} else if (annotation.isNestedAnnotations()) {
+				URI nestedURI = annotation.getNestedIdentity();
+				URI newURI;
+				if (nestedURI.toString().startsWith(URIPrefix)) {
+					newURI = URI.create(nestedURI.toString()+"/"+version);
+				} else {
+					newURI = URI.create(nestedURI.toString().replace("http://",URIPrefix)+"/"+version);
+				}
+				annotation.setNestedIdentity(newURI);
+				List<Annotation> nestedAnnotations = annotation.getAnnotations();
+				changeURIPrefixVersion(nestedAnnotations,URIPrefix,version);
+				annotation.setAnnotations(nestedAnnotations);
+			}
+		}
+	}
+	
+	private void changeURIPrefixVersion(Identified identified,String URIPrefix,String version) throws SBOLValidationException {
+		if (URIPrefix == null) {
+			URIPrefix = extractURIprefix(identified.getIdentity());
+			URIPrefix = URIcompliance.checkURIprefix(URIPrefix);
+		} 
+		changeURIPrefixVersion(identified.getAnnotations(),URIPrefix,version);
+	}
+	
+	/**
+	 * Copy all objects to an a new SBOL Document and change the URI prefix/version of each object
+	 * @param URIPrefix new URI prefix
+	 * @param version new version
+	 * @return new SBOL document with changed URI prefix
+	 * @throws SBOLValidationException if URIprefix or version provided is invalid
+	 */
+	public SBOLDocument changeURIPrefixVersion(String URIPrefix,String version) throws SBOLValidationException {
+		SBOLDocument document = new SBOLDocument();
+		document.createCopy(this);
+		document.fixDocumentURIPrefix();
+		for (TopLevel topLevel : document.getTopLevels()) {
+			document.rename(topLevel, URIPrefix, null, version);
+		}
+		for (TopLevel topLevel : document.getTopLevels()) {
+			// TODO: this is stop-gap, needs to be over all identified
+			document.changeURIPrefixVersion(topLevel, URIPrefix, version);
+		}
+		document.setDefaultURIprefix(URIPrefix);
+		return document;
+	}
+	
 	/**
 	 * Renames the given top-level's URI prefix, display ID, and version with the given ones.  
 	 * <p>
@@ -1364,6 +1681,8 @@ public class SBOLDocument {
 	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
 		TopLevel renamedTopLevel = createCopy(topLevel,URIprefix,displayId,version);
 		removeTopLevel(topLevel);
+		updateReferences(topLevel.getIdentity(),renamedTopLevel.getIdentity());
+		updateReferences(topLevel.getPersistentIdentity(),renamedTopLevel.getPersistentIdentity());
 		return renamedTopLevel;
 	}
 
@@ -1413,7 +1732,7 @@ public class SBOLDocument {
 	 */
 	public Sequence getSequence(String displayId,String version) {
 		try {
-			return sequences.get(createCompliantURI(defaultURIprefix,TopLevel.SEQUENCE,displayId,version, typesInURIs));
+			return getSequence(createCompliantURI(defaultURIprefix,TopLevel.SEQUENCE,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -1427,7 +1746,22 @@ public class SBOLDocument {
 	 * @return the matching sequence if present, or {@code null} otherwise.
 	 */
 	public Sequence getSequence(URI sequenceURI) {
-		return sequences.get(sequenceURI);
+		Sequence sequence = sequences.get(sequenceURI);
+		if (sequence==null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(sequenceURI);
+					if (document != null) {
+						sequence = document.getSequence(sequenceURI);
+						createCopy(document);
+					}
+				}
+				catch (SynBioHubException | SBOLValidationException e) {
+					sequence = null;
+				}
+			}
+		} 
+		return sequence;
 	}
 
 	/**
@@ -1523,6 +1857,10 @@ public class SBOLDocument {
 				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			throw new SBOLValidationException("sbol-12302");
 		}
+//		QName qNameInNamespace = getNamespace(URI.create(rdfType.getNamespaceURI()));
+//		if (qNameInNamespace==null || rdfType.getPrefix()!=qNameInNamespace.getPrefix()) {
+//			addNamespace(URI.create(rdfType.getNamespaceURI()), rdfType.getPrefix());
+//		}
 		GenericTopLevel g = new GenericTopLevel(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, version, typesInURIs), rdfType);
 		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.GENERIC_TOP_LEVEL, displayId, "", typesInURIs));
 		g.setDisplayId(displayId);
@@ -1560,6 +1898,20 @@ public class SBOLDocument {
 	 * {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addGenericTopLevel(GenericTopLevel genericTopLevel) throws SBOLValidationException {
+		QName qNameInNamespace = getNamespace(URI.create(genericTopLevel.getRDFType().getNamespaceURI()));
+		if (qNameInNamespace==null) {
+			String prefix = genericTopLevel.getRDFType().getPrefix();
+			if (getNamespace(prefix)!=null) {
+				prefix = getNamespacePrefix(URI.create(genericTopLevel.getRDFType().getNamespaceURI()));
+				genericTopLevel.setRDFType(new QName(genericTopLevel.getRDFType().getNamespaceURI(),
+						genericTopLevel.getRDFType().getLocalPart(),prefix));
+			} else {
+				addNamespace(URI.create(genericTopLevel.getRDFType().getNamespaceURI()), genericTopLevel.getRDFType().getPrefix());
+			}
+		} else if (genericTopLevel.getRDFType().getPrefix()!=qNameInNamespace.getPrefix()) {
+			genericTopLevel.setRDFType(new QName(genericTopLevel.getRDFType().getNamespaceURI(),
+					genericTopLevel.getRDFType().getLocalPart(),qNameInNamespace.getPrefix()));
+		}
 		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel",
 				collections, componentDefinitions, models, moduleDefinitions, sequences);
 	}
@@ -1590,7 +1942,7 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel getGenericTopLevel(String displayId, String version) {
 		try {
-			return genericTopLevels.get(createCompliantURI(defaultURIprefix,TopLevel.GENERIC_TOP_LEVEL,displayId,version, typesInURIs));
+			return getGenericTopLevel(createCompliantURI(defaultURIprefix,TopLevel.GENERIC_TOP_LEVEL,displayId,version, typesInURIs));
 		} catch (SBOLValidationException e) {
 			return null;
 		}
@@ -1600,11 +1952,26 @@ public class SBOLDocument {
 	 * Returns the generic top-level matching the given display identity URI from this SBOL document's list of
 	 * generic top-levels.
 	 *
-	 * @param topLevelURI the identity URI of the top-level to be retrieved
+	 * @param genericTopLevelURI the identity URI of the top-level to be retrieved
 	 * @return the matching generic top-level if present, or {@code null} otherwise.
 	 */
-	public GenericTopLevel getGenericTopLevel(URI topLevelURI) {
-		return genericTopLevels.get(topLevelURI);
+	public GenericTopLevel getGenericTopLevel(URI genericTopLevelURI) {
+		GenericTopLevel genericTopLevel = genericTopLevels.get(genericTopLevelURI);
+		if (genericTopLevel==null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(genericTopLevelURI);
+					if (document != null) {
+						genericTopLevel = document.getGenericTopLevel(genericTopLevelURI);
+						createCopy(document);
+					}
+				}
+				catch (SynBioHubException | SBOLValidationException e) {
+					genericTopLevel = null;
+				}
+			}
+		} 
+		return genericTopLevel;
 	}
 
 	/**
@@ -1678,6 +2045,20 @@ public class SBOLDocument {
 		if (topLevel!=null) {
 			return topLevel;
 		}
+		if (topLevel==null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(topLevelURI);
+					if (document != null) {
+						topLevel = document.getTopLevel(topLevelURI);
+						createCopy(document);
+					}
+				}
+				catch (SynBioHubException | SBOLValidationException e) {
+					topLevel = null;
+				}
+			}
+		} 
 		return null;
 	}
 
@@ -1718,57 +2099,52 @@ public class SBOLDocument {
 	 */
 	public Set<TopLevel> getByWasDerivedFrom(URI wasDerivedFrom) {
 		Set<TopLevel> topLevels = new HashSet<>();
-		for (Collection topLevel : collections.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
-			}
-		}
-		for (Sequence topLevel : sequences.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
-			}
-		}
-		for (Model topLevel : models.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
-			}
-		}
-		for (GenericTopLevel topLevel : genericTopLevels.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
-			}
-		}
-		for (ComponentDefinition topLevel : componentDefinitions.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
-			}
-		}
-		for (ModuleDefinition topLevel : moduleDefinitions.values()) {
-			if (topLevel.isSetWasDerivedFrom() &&
-					topLevel.getWasDerivedFrom().equals(wasDerivedFrom)) {
-				topLevels.add(topLevel);
+		for (TopLevel topLevel : getTopLevels()) {
+			for (URI wdf : topLevel.getWasDerivedFroms()) {
+				if (wdf.equals(wasDerivedFrom)) {
+					topLevels.add(topLevel);
+				}
 			}
 		}
 		return topLevels;
 	}
-
+	
+	/**
+	 * Adds the given registry to this SBOL document.
+	 * @param registryURL URL of the registry to add
+	 * @return The StackFrontend object that has been created
+	 */
+	public SynBioHubFrontend addRegistry(String registryURL) {
+		SynBioHubFrontend stackFrontend = new SynBioHubFrontend(registryURL);
+		registries.put(registryURL, stackFrontend);
+		return stackFrontend;
+	}
+	
+	/**
+	 * Adds the given registry to this SBOL document.
+	 * @param registryURL URL of the registry to add
+	 * @param uriPrefix URI prefix for everything stored in this repository
+	 * @return The StackFrontend object that has been created
+	 */
+	public SynBioHubFrontend addRegistry(String registryURL, String uriPrefix) {
+		SynBioHubFrontend stackFrontend = new SynBioHubFrontend(registryURL,uriPrefix);
+		registries.put(registryURL, stackFrontend);
+		return stackFrontend;
+	}
+	
 	/**
 	 * Adds the given namespace URI and its prefix to this SBOL document.
 	 *
 	 * @param nameSpaceURI the URI used to construct a new namespace
 	 * @param prefix the prefix used to construct a new namespace
+	 * @throws SBOLValidationException if namespace URI does not end with a delimeter
 	 */
-	public void addNamespace(URI nameSpaceURI, String prefix) {
+	public void addNamespace(URI nameSpaceURI, String prefix) throws SBOLValidationException {
 
 		//		if (!URIcompliance.isURIprefixCompliant(nameSpaceURI.toString())) {
 		//			throw new SBOLException("Namespace URI " + nameSpaceURI.toString() + " is not valid.");
 		//		}
-		nameSpaces.put(prefix, NamespaceBinding(nameSpaceURI.toString(), prefix));
+		addNamespaceBinding(NamespaceBinding(nameSpaceURI.toString(), prefix));
 
 	}
 
@@ -1776,14 +2152,19 @@ public class SBOLDocument {
 	 * Adds the given namespace QName to this SBOL document.
 	 *
 	 * @param qName the QName to be added
+	 * @throws SBOLValidationException when namespace URI does not end with a delimiter
 	 */
-	public void addNamespace(QName qName) {
+	public void addNamespace(QName qName) throws SBOLValidationException {
 
-		nameSpaces.put(qName.getPrefix(), NamespaceBinding(qName.getNamespaceURI(),
-				qName.getPrefix()));
+		addNamespaceBinding(NamespaceBinding(qName.getNamespaceURI(),qName.getPrefix()));
 	}
 
-	void addNamespaceBinding(NamespaceBinding namespaceBinding) {
+	void addNamespaceBinding(NamespaceBinding namespaceBinding) throws SBOLValidationException {
+		if (!namespaceBinding.getNamespaceURI().endsWith("#")&&
+				!namespaceBinding.getNamespaceURI().endsWith(":")&&
+				!namespaceBinding.getNamespaceURI().endsWith("/")) {
+			throw new SBOLValidationException("sbol-10105");
+		}
 		nameSpaces.put(namespaceBinding.getPrefix(), namespaceBinding);
 	}
 
@@ -1796,8 +2177,53 @@ public class SBOLDocument {
 		Object[] keySetArray = nameSpaces.keySet().toArray();
 		for (Object key : keySetArray) {
 			if (isRequiredNamespaceBinding(URI.create((String)key))) continue;
-			removeNamespace(URI.create((String)key));
+			nameSpaces.remove((String)key);
 		}
+	}
+	
+	/**
+	 *  Removes all registries from this SBOL document.
+	 *  <p>
+	 *  This method calls {@link #removeRegistry(String)} to iteratively remove each registry.
+	 */
+	public void clearRegistries() {
+		Object[] keySetArray = registries.keySet().toArray();
+		for (Object key : keySetArray) {
+			removeRegistry((String)key);
+		}
+	}
+	
+	String getNamespacePrefix(URI namespaceURI) {
+		QName qName = getNamespace(namespaceURI);
+		int nsNum = 0;
+		if (qName==null) {
+			boolean foundIt;
+			do {
+				foundIt = false;
+				if (nameSpaces.keySet().contains("ns"+nsNum)) {
+					nsNum++;
+					foundIt = true;
+					break;
+				}
+			} while (foundIt);
+			nameSpaces.put("ns"+nsNum, NamespaceBinding(namespaceURI.toString(),"ns"+nsNum));
+			return "ns"+nsNum;
+		} else {
+			return qName.getPrefix();
+		}
+	}
+	
+	/**
+	 * Returns the QName matching the given namespace prefix from this
+	 * SBOL document's list of QNames.
+	 *
+	 * @param namespacePrefix the prefix of the namespace to be retrieved
+	 * @return the matching QName if present, or {@code null} otherwise
+	 */
+	public QName getNamespace(String namespacePrefix) {
+		NamespaceBinding namespaceBinding = nameSpaces.get(namespacePrefix);
+		if (namespaceBinding==null) return null;
+		return new QName(namespaceBinding.getNamespaceURI(), "", namespaceBinding.getPrefix());
 	}
 
 	/**
@@ -1829,6 +2255,29 @@ public class SBOLDocument {
 		}
 		return bindings;
 	}
+	
+	/**
+	 * Returns the StackFrontend for the registry specified by its URL
+	 * 
+	 * @param registryURL URL for the registry to return
+	 * @return a StackFrontend for the registry specified by its URL
+	 */
+	public SynBioHubFrontend getRegistry(String registryURL) {
+		return registries.get(registryURL);
+	}
+	
+	/**
+	 * Returns the list of registries used by this SBOL document.
+	 *
+	 * @return the list of registries used by this SBOL document
+	 */
+	public List<SynBioHubFrontend> getRegistries() {
+		List<SynBioHubFrontend> registries = new ArrayList<>();
+		for (SynBioHubFrontend registry : this.registries.values()) {
+			registries.add(registry);
+		}
+		return registries;
+	}
 
 	/**
 	 * Returns the namespace bindings for this SBOL document
@@ -1849,7 +2298,17 @@ public class SBOLDocument {
 		if (isRequiredNamespaceBinding(namespaceURI)) {
 			throw new IllegalStateException("Cannot remove required namespace " + namespaceURI.toString());
 		}
-		nameSpaces.remove(namespaceURI);
+		String prefix = getNamespace(namespaceURI).getPrefix();
+		nameSpaces.remove(prefix);
+	}
+	
+	/**
+	 * Removes the given registry id from this SBOL document's list of registries.
+	 *
+	 * @param registryId the URL of the registry to be removed
+	 */
+	public void removeRegistry(String registryId) {
+		registries.remove(registryId);
 	}
 
 //	/**
@@ -2045,7 +2504,8 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * @param topLevel
+	 * Method to remove a TopLevel object
+	 * @param topLevel the TopLevel object to remove
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
 	 * <ul>
 	 * <li>{@link #removeGenericTopLevel(GenericTopLevel)},</li>
@@ -2056,7 +2516,7 @@ public class SBOLDocument {
 	 * <li>{@link #removeModuleDefinition(ModuleDefinition)}.</li>
 	 * </ul>
 	 */
-	private void removeTopLevel(TopLevel topLevel) throws SBOLValidationException {
+	public void removeTopLevel(TopLevel topLevel) throws SBOLValidationException {
 		if (topLevel instanceof GenericTopLevel) removeGenericTopLevel((GenericTopLevel) topLevel);
 		else if (topLevel instanceof Collection) removeCollection((Collection) topLevel);
 		else if (topLevel instanceof Sequence) removeSequence((Sequence) topLevel);

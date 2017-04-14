@@ -41,7 +41,7 @@ public class Provenance_StrainDerivation {
 		
 		ComponentDefinition b168 = getCds(document, "bsubtilis168","Bacillus subtilis 168");
 		ComponentDefinition b3610 = getCds(document,"bsubtilisncib3610", "Bacillus subtilis Ncbi 3610");		
-		b168.setWasDerivedFrom(b3610.getIdentity());
+		b168.addWasDerivedFrom(b3610.getIdentity());
 				
 		//Create the agent definition to represent X-ray		
 		GenericTopLevel agent=document.createGenericTopLevel("x_ray", provNs.withLocalPart("Agent"));
@@ -71,8 +71,8 @@ public class Provenance_StrainDerivation {
 								new Annotation(provNs.withLocalPart("hadRole"), myAppNs.namespacedUri("mutagen"))
 								)));
 		
-		b168.createAnnotation(provNs.withLocalPart("wasGeneratedBy"), b3610.getIdentity());
+		b168.createAnnotation(provNs.withLocalPart("wasGeneratedBy"), activity.getIdentity());
 		
-		SBOLWriter.write(document,(System.out));		
+		SBOLWriter.write(document,"/Users/myers/Provenance_StrainDerivation.xml");		
     }
 }

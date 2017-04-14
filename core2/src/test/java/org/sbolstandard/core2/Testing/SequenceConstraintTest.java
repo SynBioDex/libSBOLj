@@ -22,7 +22,7 @@ public class SequenceConstraintTest {
 		repression_doc.setDefaultURIprefix(prURI);
 		repression_doc.setTypesInURIs(false);
 		repression_doc.setComplete(true);
-		InputStream docAsStream = SequenceConstraintTest.class.getResourceAsStream("/SBOL2/RepressionModel.rdf");
+		InputStream docAsStream = SequenceConstraintTest.class.getResourceAsStream("/SBOL2/RepressionModel.xml");
 		repression_doc.read(docAsStream);
 	}
 

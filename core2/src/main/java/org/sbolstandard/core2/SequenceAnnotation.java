@@ -74,33 +74,37 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	void copy(SequenceAnnotation sequenceAnnotation) throws SBOLValidationException {
 		((Identified)this).copy((Identified)sequenceAnnotation);
 		for (Location location : sequenceAnnotation.getLocations()) {
+			String displayId = location.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(location.getIdentity());
+			}
 			if (location instanceof Range) {
 				Range range = (Range)location;
 				Range newRange;
 				if (range.isSetOrientation()) {
-					newRange = this.addRange(range.getDisplayId(), range.getStart(), range.getEnd(), 
+					newRange = this.addRange(displayId, range.getStart(), range.getEnd(), 
 							range.getOrientation());
 				} else {
-					newRange = this.addRange(range.getDisplayId(), range.getStart(), range.getEnd());
+					newRange = this.addRange(displayId, range.getStart(), range.getEnd());
 				}
 				newRange.copy(range);
 			} else if (location instanceof Cut) {
 				Cut cut = (Cut)location;
 				Cut newCut;
 				if (cut.isSetOrientation()) {
-					newCut = this.addCut(cut.getDisplayId(), cut.getAt(), cut.getOrientation());
+					newCut = this.addCut(displayId, cut.getAt(), cut.getOrientation());
 				} else {
-					newCut = this.addCut(cut.getDisplayId(), cut.getAt());
+					newCut = this.addCut(displayId, cut.getAt());
 				}
 				newCut.copy(cut);
 			} else if (location instanceof GenericLocation) {
 				GenericLocation genericLocation = (GenericLocation)location;
 				GenericLocation newGenericLocation;
 				if (genericLocation.isSetOrientation()) {
-					newGenericLocation = this.addGenericLocation(genericLocation.getDisplayId(),
+					newGenericLocation = this.addGenericLocation(displayId,
 							genericLocation.getOrientation());
 				} else {
-					newGenericLocation = this.addGenericLocation(genericLocation.getDisplayId());
+					newGenericLocation = this.addGenericLocation(displayId);
 				}
 				newGenericLocation.copy(genericLocation);
 			}
@@ -719,7 +723,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
-			this.setWasDerivedFrom(this.getIdentity());
+			this.addWasDerivedFrom(this.getIdentity());
 		}
 		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
 		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
@@ -748,7 +752,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	 * @return the component definition for the component annotated by this sequence annotation
 	 */
 	public ComponentDefinition getComponentDefinition() {
-		if (componentDefinition!=null) {
+		if (componentDefinition!=null && isSetComponent()) {
 			return componentDefinition.getComponent(component).getDefinition();
 		}
 		return null;

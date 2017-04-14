@@ -1043,8 +1043,9 @@ public final class SBOLFactory {
 	 *
 	 * @param namespaceURI the URI used to construct a new namespace
 	 * @param prefix the prefix used to construct a new namespace
+	 * @throws SBOLValidationException if namespace URI does not end with a delimeter
 	 */
-	public static void addNamespace(URI namespaceURI, String prefix) {
+	public static void addNamespace(URI namespaceURI, String prefix) throws SBOLValidationException {
 		document.addNamespace(namespaceURI, prefix);
 	}
 
@@ -1054,8 +1055,9 @@ public final class SBOLFactory {
 	 * This method calls {@link SBOLDocument#addNamespace(QName)} with the given QName.
 	 *
 	 * @param qName the QName to be added
+	 * @throws SBOLValidationException if namespace URI does not end with a delimeter
 	 */
-	public static void addNamespace(QName qName) {
+	public static void addNamespace(QName qName) throws SBOLValidationException {
 		document.addNamespace(qName);
 	}
 

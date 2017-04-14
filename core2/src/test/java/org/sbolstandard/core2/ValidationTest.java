@@ -59,7 +59,7 @@ public class ValidationTest {
 	
 
 	/**
-	 * Run each RDF/XML file under the "Validation" sub-directory to test SBOL validation exceptions.
+	 * Run each xml/XML file under the "Validation" sub-directory to test SBOL validation exceptions.
 	 * 
 	 * @throws IOException see {@link IOException}
 	 * @throws SBOLConversionException see {@link SBOLConversionException}
@@ -68,20 +68,20 @@ public class ValidationTest {
 	@Test
 	public void testValidation() throws IOException, SBOLConversionException, SBOLValidationException {
 		SBOLReader.setKeepGoing(true);
-		SBOLDocument doc = SBOLReader.read(file);
+			SBOLDocument doc = SBOLReader.read(file);
 		SBOLValidate.validateSBOL(doc, true, true, true);
 		if (SBOLReader.getNumErrors() > 0) {
 			for(String error : SBOLReader.getErrors())
 			{
-				if(!error.split(":")[0].equals((file.getName()).replace(".rdf", "")))
+				if(!error.split(":")[0].equals((file.getName()).replace(".xml", "")))
 				{
-					System.out.println(file.getName().replace(".rdf", ""));
+					System.out.println(file.getName().replace(".xml", ""));
 					System.out.println(error);
 					fail();
 
 				}
 				else {
-					String ruleId = error.split(":")[0].replace(".rdf", "").replace("sbol-", "").trim();
+					String ruleId = error.split(":")[0].replace(".xml", "").replace("sbol-", "").trim();
 					testedRules.add(Integer.parseInt(ruleId));
 				}
 			}
@@ -89,24 +89,24 @@ public class ValidationTest {
 		} else if (SBOLValidate.getNumErrors() > 0) {
 			for(String error : SBOLValidate.getErrors())
 			{
-				if(!error.split(":")[0].equals(file.getName().replace(".rdf", "")))
+				if(!error.split(":")[0].equals(file.getName().replace(".xml", "")))
 				{
-					String ruleId = file.getName().replace(".rdf", "").replace("sbol-", "").trim();
+					String ruleId = file.getName().replace(".xml", "").replace("sbol-", "").trim();
 					failedTests.add(Integer.parseInt(ruleId));
-					System.out.println(file.getName().replace(".rdf", ""));
+					System.out.println(file.getName().replace(".xml", ""));
 					System.out.println(error);
 					fail();
 				}
 				else {
-					String ruleId = error.split(":")[0].replace(".rdf", "").replace("sbol-", "").trim();
+					String ruleId = error.split(":")[0].replace(".xml", "").replace("sbol-", "").trim();
 					testedRules.add(Integer.parseInt(ruleId));
 				}
 
 			}
 		} else {
-			String ruleId = file.getName().replace(".rdf", "").replace("sbol-", "").trim();
+			String ruleId = file.getName().replace(".xml", "").replace("sbol-", "").trim();
 			failedTests.add(Integer.parseInt(ruleId));
-			System.out.println(file.getName().replace(".rdf", ""));
+			System.out.println(file.getName().replace(".xml", ""));
 			fail();
 		}
 	}

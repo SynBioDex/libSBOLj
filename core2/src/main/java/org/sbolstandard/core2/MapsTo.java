@@ -284,7 +284,7 @@ public class MapsTo extends Identified{
 	 */
 	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		if (!this.getIdentity().equals(createCompliantURI(URIprefix,displayId,version))) {
-			this.setWasDerivedFrom(this.getIdentity());
+			this.addWasDerivedFrom(this.getIdentity());
 		}
 		this.setIdentity(createCompliantURI(URIprefix,displayId,version));
 		this.setPersistentIdentity(createCompliantURI(URIprefix,displayId,""));
