@@ -1603,6 +1603,39 @@ public class SBOLDocument {
 		}
 	}
 
+	private void changeURIPrefixVersion(List<Annotation> annotations,String URIPrefix,String version) throws SBOLValidationException {
+		for (Annotation annotation : annotations) {
+			if (annotation.isURIValue()) {
+				TopLevel topLevel = getTopLevel(annotation.getURIValue());
+				if (topLevel!=null) {
+					annotation.setURIValue(URIcompliance.createCompliantURI(URIPrefix, 
+							topLevel.getDisplayId()!=null?topLevel.getDisplayId():URIcompliance.extractDisplayId(topLevel.getIdentity()), 
+							version!=null?version:topLevel.getVersion()));
+				}
+			} else if (annotation.isNestedAnnotations()) {
+				URI nestedURI = annotation.getNestedIdentity();
+				URI newURI;
+				if (nestedURI.toString().startsWith(URIPrefix)) {
+					newURI = URI.create(nestedURI.toString()+"/"+version);
+				} else {
+					newURI = URI.create(nestedURI.toString().replace("http://",URIPrefix)+"/"+version);
+				}
+				annotation.setNestedIdentity(newURI);
+				List<Annotation> nestedAnnotations = annotation.getAnnotations();
+				changeURIPrefixVersion(nestedAnnotations,URIPrefix,version);
+				annotation.setAnnotations(nestedAnnotations);
+			}
+		}
+	}
+	
+	private void changeURIPrefixVersion(Identified identified,String URIPrefix,String version) throws SBOLValidationException {
+		if (URIPrefix == null) {
+			URIPrefix = extractURIprefix(identified.getIdentity());
+			URIPrefix = URIcompliance.checkURIprefix(URIPrefix);
+		} 
+		changeURIPrefixVersion(identified.getAnnotations(),URIPrefix,version);
+	}
+	
 	/**
 	 * Copy all objects to an a new SBOL Document and change the URI prefix/version of each object
 	 * @param URIPrefix new URI prefix
@@ -1617,6 +1650,11 @@ public class SBOLDocument {
 		for (TopLevel topLevel : document.getTopLevels()) {
 			document.rename(topLevel, URIPrefix, null, version);
 		}
+		for (TopLevel topLevel : document.getTopLevels()) {
+			// TODO: this is stop-gap, needs to be over all identified
+			document.changeURIPrefixVersion(topLevel, URIPrefix, version);
+		}
+		document.setDefaultURIprefix(URIPrefix);
 		return document;
 	}
 	
