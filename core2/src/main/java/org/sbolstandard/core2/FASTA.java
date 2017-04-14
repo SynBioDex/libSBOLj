@@ -174,7 +174,13 @@ class FASTA {
 			if (strLine.startsWith(">")) {
 				if (sequenceMode) {
 					sequenceMode = false;
-					displayId = URIcompliance.fixDisplayId(description);
+					if (description.contains(":")) {
+						displayId = description.substring(0, description.indexOf(":")).trim();
+						description = description.substring(description.indexOf(":")+1).trim();
+					} else {
+						displayId = description;
+					}
+					displayId = URIcompliance.fixDisplayId(displayId);
 					Sequence sequence = createSequence(doc,URIprefix,displayId,version,sbSequence.toString(),encoding);
 					sequence.setDescription(description);
 					description = "";
@@ -184,7 +190,13 @@ class FASTA {
 			} else if (strLine.startsWith(";")) {
 				if (sequenceMode) {
 					sequenceMode = false;
-					displayId = URIcompliance.fixDisplayId(description);
+					if (description.contains(":")) {
+						displayId = description.substring(0, description.indexOf(":")).trim();
+						description = description.substring(description.indexOf(":")+1).trim();
+					} else {
+						displayId = description;
+					}
+					displayId = URIcompliance.fixDisplayId(displayId);
 					Sequence sequence = createSequence(doc,URIprefix,displayId,version,sbSequence.toString(),encoding);
 					sequence.setDescription(description);
 					description = "";
@@ -200,7 +212,13 @@ class FASTA {
 				}
 			}
 		}
-		displayId = URIcompliance.fixDisplayId(description);
+		if (description.contains(":")) {
+			displayId = description.substring(0, description.indexOf(":")).trim();
+			description = description.substring(description.indexOf(":")+1).trim();
+		} else {
+			displayId = description;
+		}
+		displayId = URIcompliance.fixDisplayId(displayId);
 		Sequence sequence = createSequence(doc,URIprefix,displayId,version,sbSequence.toString(),encoding);
 		sequence.setDescription(description);
 		br.close();

@@ -17,7 +17,7 @@ import org.sbolstandard.core2.SequenceOntology;
 public class SimpleComponentDefinitionExample {
 	public static void main( String[] args ) throws Exception
     {
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 	
 		SBOLDocument document = new SBOLDocument();		
 		document.setDefaultURIprefix(prURI);
@@ -34,7 +34,7 @@ public class SimpleComponentDefinitionExample {
 		promoter.addRole(URI.create("http://identifiers.org/so/SO:0000613"));				
 		promoter.setName("J23119 promoter");
 		promoter.setDescription("Constitutive promoter");	
-		promoter.setWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
+		promoter.addWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
 	  
 		document.setDefaultURIprefix(prURI);	
 		Sequence seq=document.createSequence(
@@ -43,7 +43,7 @@ public class SimpleComponentDefinitionExample {
 				 "ttgacagctagctcagtcctaggtataatgctagc", 
 				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
 				);
-		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
+		seq.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		promoter.addSequence(seq.getIdentity());
 			
 		SBOLWriter.write(document,(System.out));		

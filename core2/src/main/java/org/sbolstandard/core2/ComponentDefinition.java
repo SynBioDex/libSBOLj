@@ -152,19 +152,31 @@ public class ComponentDefinition extends TopLevel {
 			this.addRole(URI.create(role.toString()));
 		}
 		for (Component component : componentDefinition.getComponents()) {
-			Component newComponent = this.createComponent(component.getDisplayId(), 
+			String displayId = component.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(component.getIdentity());
+			}
+			Component newComponent = this.createComponent(displayId, 
 					component.getAccess(), component.getDefinitionURI());
 			newComponent.copy(component);
 		}
 		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
-			SequenceConstraint newSequenceConstraint = this.createSequenceConstraint(sequenceConstraint.getDisplayId(), 
+			String displayId = sequenceConstraint.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(sequenceConstraint.getIdentity());
+			}
+			SequenceConstraint newSequenceConstraint = this.createSequenceConstraint(displayId, 
 					sequenceConstraint.getRestriction(), sequenceConstraint.getSubject().getDisplayId(),
 					sequenceConstraint.getObject().getDisplayId());
 			newSequenceConstraint.copy(sequenceConstraint);
 		}
 		for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
+			String displayId = sequenceAnnotation.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(sequenceAnnotation.getIdentity());
+			}
 			SequenceAnnotation newSequenceAnnotation = this.createSequenceAnnotation(
-				sequenceAnnotation.getDisplayId(),"DUMMY__LOCATION");
+				displayId,"DUMMY__LOCATION");
 			newSequenceAnnotation.copy(sequenceAnnotation);
 		}
 		this.setSequences(componentDefinition.getSequenceURIs());
@@ -470,15 +482,16 @@ public class ComponentDefinition extends TopLevel {
 				} else {
 					subElements = compDef.getImpliedNucleicAcidSequence();
 				}
-			}
-			for (Location location : sequenceAnnotation.getLocations()) {
-				if (location instanceof Range) {
-					Range range = (Range)location;
-					if (range.isSetOrientation() && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
-						subElements = Sequence.reverseComplement(subElements, type);
-					}
-					for (int i = 0; i < subElements.length(); i++) {
-						elementsArray[(range.getStart()+i)-1] = subElements.charAt(i);
+				for (Location location : sequenceAnnotation.getLocations()) {
+					if (location instanceof Range) {
+						Range range = (Range)location;
+						if (range.isSetOrientation() && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
+							subElements = Sequence.reverseComplement(subElements, type);
+						}
+						for (int i = 0; i < subElements.length(); i++) {
+							// TODO: need to deal with when start index out of range
+							elementsArray[(range.getStart()+i)-1] = subElements.charAt(i);
+						}
 					}
 				}
 			}
@@ -1686,9 +1699,9 @@ public class ComponentDefinition extends TopLevel {
 		cloned.setVersion(version);
 		URI newIdentity = createCompliantURI(URIprefix,displayId,version);
 		if (!this.getIdentity().equals(newIdentity)) {
-			cloned.setWasDerivedFrom(this.getIdentity());
+			cloned.addWasDerivedFrom(this.getIdentity());
 		} else {
-			cloned.setWasDerivedFrom(this.getWasDerivedFrom());
+			cloned.setWasDerivedFroms(this.getWasDerivedFroms());
 		}
 		cloned.setIdentity(newIdentity);
 		int count = 0;

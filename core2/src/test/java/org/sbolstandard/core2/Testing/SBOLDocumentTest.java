@@ -62,16 +62,17 @@ public class SBOLDocumentTest {
 	}
 	
 	@Test
-	public void test_namespaceMethods() throws URISyntaxException
+	public void test_namespaceMethods() throws URISyntaxException, SBOLValidationException
 	{
 		List<QName> doc_namespaces = doc.getNamespaces();
 		doc_namespaces.get(0);
 		assertTrue(doc.getNamespaces().size() == 4);
-		QName created_ns = new QName("http://www.w3.org/1999/02/prov#");
+		QName created_ns = new QName("http://www.w3.org/1999/02/prov#","prov");
 		doc.addNamespace(created_ns);
 		assertTrue(doc.getNamespaces().size() == 5);
+		// TODO: something wrong here
 		doc.removeNamespace(new URI(created_ns.getNamespaceURI()));
-		assertTrue(doc.getNamespace(new URI(created_ns.getNamespaceURI())).toString().length() == 0);
+		assertTrue(doc.getNamespace(new URI(created_ns.getNamespaceURI())) == null);
 		doc.addNamespace(created_ns);
 		assertTrue(doc.getNamespaces().size() == 5);
 
@@ -100,7 +101,7 @@ public class SBOLDocumentTest {
 		test_doc.setDefaultURIprefix(prURI);
 		test_doc.setTypesInURIs(false);
 		test_doc.setComplete(true);
-		File file_base = new File(SBOLDocumentTestSuite.class.getResource("/test/data/toggle.rdf/").toURI());
+		File file_base = new File(SBOLDocumentTestSuite.class.getResource("/test/data/toggle.xml/").toURI());
 		test_doc.read(file_base);
 		assertNotNull(test_doc);
 		test_doc = new SBOLDocument();
@@ -131,10 +132,10 @@ public class SBOLDocumentTest {
 		copied_doc.setTypesInURIs(false);
 		//copied_doc.setComplete(true);
 		
-		///core2/src/test/java/org/sbolstandard/core2/Testing/RepressionModel.rdf"
-		InputStream docAsStream = SequenceConstraintTest.class.getResourceAsStream("/SBOL2/RepressionModel.rdf");
+		///core2/src/test/java/org/sbolstandard/core2/Testing/RepressionModel.xml"
+		InputStream docAsStream = SequenceConstraintTest.class.getResourceAsStream("/SBOL2/RepressionModel.xml");
 		repression_doc.read(docAsStream);
-		//repression_doc.read("C:/Users/meher/Documents/workspace/libSBOLj/core2/src/test/resources/SBOL2/RepressionModel.rdf");
+		//repression_doc.read("C:/Users/meher/Documents/workspace/libSBOLj/core2/src/test/resources/SBOL2/RepressionModel.xml");
 		copied_doc.createCopy(repression_doc);
 		assertTrue(repression_doc.equals(copied_doc));
 		

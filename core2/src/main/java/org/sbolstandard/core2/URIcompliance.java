@@ -103,7 +103,7 @@ final class URIcompliance {
 	 */
 	static String extractURIprefix(URI objURI) {
 		String URIstr = objURI.toString();
-		Pattern r = Pattern.compile(genericURIpattern1);
+		Pattern r = Pattern.compile(genericURIpattern1b);
 		Matcher m = r.matcher(URIstr);
 		if (m.matches())
 			return m.group(2);
@@ -111,6 +111,22 @@ final class URIcompliance {
 			return null;
 	}
 
+	/**
+	 * Extract the URI prefix from this object's identity URI.
+	 * 
+	 * @return the extracted URI prefix
+	 */
+	static String extractNamespace(URI objURI) {
+		String URIstr = objURI.toString();
+		Pattern r = Pattern.compile(namespacePattern);
+		Matcher m = r.matcher(URIstr);
+		if (m.matches())
+			return m.group(2);
+		else
+			return null;
+	}
+
+	
 	/**
 	 * Extract the object's display ID from the given object's identity URI.
 	 * 
@@ -391,7 +407,11 @@ final class URIcompliance {
 	// group 1: persistent ID
 	// group 2: URI prefix
 	// group 3: version
-	private static final String genericURIpattern1 = "((" + URIprefixPattern + ")("+delimiter+"(" + displayIDpattern + ")){1,3})(/(" + versionPattern + "))?";
+	private static final String genericURIpattern1 = "((" + URIprefixPattern + ")(" + delimiter+"(" + displayIDpattern + ")){1,3})(/(" + versionPattern + "))?";
+
+	private static final String genericURIpattern1b = "((" + URIprefixPattern + delimiter+")(" + displayIDpattern + "){1,3})(/(" + versionPattern + "))?";
+
+	private static final String namespacePattern = "((" + URIprefixPattern + delimiter + ")(" + displayIDpattern + "){1,3})(/(" + versionPattern + "))?";
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: top-level display ID

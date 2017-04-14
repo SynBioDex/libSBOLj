@@ -28,9 +28,9 @@ import org.sbolstandard.core2.SequenceOntology;
  */
 public class GettingStartedExample {
 	public static void main( String[] args ) throws IOException, SBOLValidationException, SBOLConversionException {
-		String prURI = "http://partsregistry.org";
+		String prURI = "http://partsregistry.org/";
 		String prPrefix = "pr";
-		String myersLabURI = "http://www.async.ece.utah.edu";
+		String myersLabURI = "http://www.async.ece.utah.edu/";
 		String myersLabPrefix = "myersLab";		
 		
 		SBOLDocument document = new SBOLDocument();

@@ -15,7 +15,7 @@ public class ModelOutput {
     {
 		SBOLDocument document = new SBOLDocument();				
 		document.setTypesInURIs(false);		
-		document.setDefaultURIprefix("http://www.sbolstandard.org/examples");
+		document.setDefaultURIprefix("http://www.sbolstandard.org/examples/");
 		
 		Model model=document.createModel(
 				"pIKE_Toggle_1",

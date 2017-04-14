@@ -30,7 +30,7 @@ public class GenericTopLevelTest {
 		GenericTopLevel topLevel=doc.createGenericTopLevel(
 				"random_sheet1",
 				"",
-				new QName("http://partsregistry.org", "Random_Sheet", ""));
+				new QName("http://partsregistry.org/", "Random_Sheet", "pr"));
 		
 		assertTrue(doc.getGenericTopLevel(topLevel.getIdentity()).toString().length() != 0);
 		assertNotNull(topLevel.toString());

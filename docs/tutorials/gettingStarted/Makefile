@@ -12,7 +12,7 @@
 # [06-Jul-1993] 
 # --------------------------------------------------------------------
 
-LATEX = pdflatex
+PDFLATEX = pdflatex
 BIBTEX = bibtex
 DETEX = detex -n
 LACHECK = lacheck
@@ -33,9 +33,9 @@ SHELL = /bin/bash
 	chap1.tex \
 	chap2.tex \
 	chap3.tex \
-	howto.tex
+	top.tex
 
-TEXFILES = howto.tex
+TEXFILES = top.tex
 
 FIGURES = 
 
@@ -49,47 +49,45 @@ EPSFILES = \
 %.eps: %.fig
 	$(FIG2EPS) $< >$@
 
-all: howto.dvi
+all: top.dvi
 
-pdf: howto.pdf
+pdf: top.pdf
 
-ps: howto.ps
+ps: top.ps
 
 check: dw syn
 
-#howto.dvi: howto.tex aliascnt.sty $(FIGURES) $(TEXFILES) $(EPSFILES)
-howto.dvi: howto.tex $(FIGURES) $(TEXFILES) $(EPSFILES)
+#top.dvi: top.tex aliascnt.sty $(FIGURES) $(TEXFILES) $(EPSFILES)
+top.dvi: top.tex $(FIGURES) $(TEXFILES) $(EPSFILES)
 	@echo '-------------------- latex #1 --------------------'
-	$(LATEX) --shell-escape howto.tex
-	# @echo '-------------------- bibtex --------------------'
-	# $(LATEX) --shell-escape howto.tex
-	# $(BIBTEX) howto
+	$(PDFLATEX) --shell-escape top.tex
 	@echo '-------------------- latex #2 --------------------'
-	$(LATEX) --shell-escape howto.tex
+	$(PDFLATEX) --shell-escape top.tex
+	$(BIBTEX) top
 	@echo '-------------------- latex #3 --------------------'
-	$(LATEX) --shell-escape howto.tex
+	$(PDFLATEX) --shell-escape top.tex
 
-howto.pdf: howto.ps
+top.pdf: top.ps
 	@echo '-------------------- pdf --------------------'
 	$(DISTILL) $?
 
-howto.ps: howto.dvi
+top.ps: top.dvi
 	@echo '-------------------- ps --------------------'
 	$(DVIPS) -o $@ $?
 
 dw:
-	@-$(RM) howto.dw
+	@-$(RM) top.dw
 	@echo '-------------------- doubled words --------------------'
 	@for f in $(TEXFILES) ;\
 	do \
 		echo ----- $$f ----- ; \
-		echo ----- $$f ----- >> howto.dw ; \
-		$(DETEX) $$f  | $(DW) >> howto.dw ; \
+		echo ----- $$f ----- >> top.dw ; \
+		$(DETEX) $$f  | $(DW) >> top.dw ; \
 	done
 
 syn:
 	@echo '-------------------- syntax check --------------------'
-	@$(LACHECK) howto.tex
+	@$(LACHECK) top.tex
 
 clean:
 	@$(RM) $(FIGFILES:.fig=.eps) *.blg *.dvi* *.dw *.ilg \

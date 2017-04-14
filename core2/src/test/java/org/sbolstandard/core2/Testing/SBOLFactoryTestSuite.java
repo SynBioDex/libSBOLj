@@ -32,10 +32,10 @@ public class SBOLFactoryTestSuite {
 		actual_doc.setDefaultURIprefix(prURI);
 		actual_doc.setTypesInURIs(false);
 		actual_doc.setComplete(true);
-		InputStream docAsStream = SequenceConstraintTest.class.getResourceAsStream("/SBOL2/RepressionModel.rdf");
+		InputStream docAsStream = SequenceConstraintTest.class.getResourceAsStream("/SBOL2/RepressionModel.xml");
 		actual_doc.read(docAsStream);
 		
-		//actual_doc.read("C:/Users/meher/Documents/workspace/libSBOLj/core2/src/test/resources/SBOL2/RepressionModel.rdf");
+		//actual_doc.read("C:/Users/meher/Documents/workspace/libSBOLj/core2/src/test/resources/SBOL2/RepressionModel.xml");
 		
 		SBOLFactory.setSBOLDocument(repression_doc);
 		SBOLFactory.setDefaultURIprefix(prURI);

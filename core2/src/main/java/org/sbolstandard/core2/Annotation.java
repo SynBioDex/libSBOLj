@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import uk.ac.ncl.intbio.core.datatree.Literal;
 import uk.ac.ncl.intbio.core.datatree.Literal.BooleanLiteral;
 import uk.ac.ncl.intbio.core.datatree.Literal.DoubleLiteral;
 import uk.ac.ncl.intbio.core.datatree.Literal.IntegerLiteral;
@@ -31,7 +30,21 @@ import uk.ac.ncl.intbio.core.datatree.NestedDocument;
 
 public class Annotation {
 
-	private NamedProperty<QName> value;
+	//private NamedProperty<QName> value;
+	private String namespaceURI = null;
+	private String localPart = null;
+	private String prefix = null;
+	private String type = null;
+	private Boolean boolValue = null;
+	private Double doubleValue = null;
+	private Integer intValue = null;
+	private String stringValue = null;
+	private URI URIValue = null;
+	private String nestedNamespaceURI = null;
+	private String nestedLocalPart = null;
+	private String nestedPrefix = null;
+	private URI nestedURI = null;
+	private List<Annotation> nestedAnnotations = null;
 
 	/**
 	 * Constructs an annotation using the given qName and the string type literal.
@@ -40,7 +53,8 @@ public class Annotation {
 	 * @param literal a string type value
 	 */
 	public Annotation(QName qName, String literal) {
-		value = NamedProperty(qName,literal);
+		setQName(qName);
+		setStringValue(literal);
 	}
 
 	/**
@@ -50,7 +64,8 @@ public class Annotation {
 	 * @param literal an integer type value
 	 */
 	public Annotation(QName qName, int literal) {
-		value = NamedProperty(qName,literal);
+		setQName(qName);
+		setIntegerValue(literal);
 	}
 
 	/**
@@ -60,7 +75,8 @@ public class Annotation {
 	 * @param literal a double type value
 	 */
 	public Annotation(QName qName, double literal) {
-		value = NamedProperty(qName, literal);
+		setQName(qName);
+		setDoubleValue(literal);
 	}
 
 	/**
@@ -70,7 +86,8 @@ public class Annotation {
 	 * @param literal a boolean type value
 	 */
 	public Annotation(QName qName, boolean literal) {
-		value = NamedProperty(qName,literal);
+		setQName(qName);
+		setBooleanValue(literal);
 	}
 
 	/**
@@ -80,7 +97,8 @@ public class Annotation {
 	 * @param literal a URI type value
 	 */
 	public Annotation(QName qName, URI literal) {
-		value = NamedProperty(qName,literal);
+		setQName(qName);
+		setURIValue(literal);
 	}
 
 	/**
@@ -93,12 +111,10 @@ public class Annotation {
 	 * @param annotations the list of annotations to construct the nested annotation
 	 */
 	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
-		List<NamedProperty<QName>> list = new ArrayList<>();
-		for(Annotation a : annotations)
-		{
-			list.add(a.getValue());
-		}
-		value = NamedProperty(qName, NestedDocument(nestedQName, nestedURI, NamedProperties(list)));
+		setQName(qName);
+		setNestedQName(nestedQName);
+		setNestedIdentity(nestedURI);
+		setAnnotations(annotations);
 	}
 
 	Annotation(NamedProperty<QName> value) {
@@ -108,11 +124,45 @@ public class Annotation {
 				System.out.println("Warning: sbol:timeStamp is deprecated");
 			}
 		}
-		this.value = value;
+		setQName(value.getName());
+		if ((value.getValue() instanceof BooleanLiteral<?>)) {
+			setBooleanValue(((BooleanLiteral<QName>) value.getValue()).getValue());
+		} else if ((value.getValue() instanceof DoubleLiteral<?>)) {
+			setDoubleValue(((DoubleLiteral<QName>) value.getValue()).getValue());
+		} else if ((value.getValue() instanceof IntegerLiteral<?>)) {
+			setIntegerValue(((IntegerLiteral<QName>) value.getValue()).getValue());
+		} else if ((value.getValue() instanceof StringLiteral<?>)) {
+			setStringValue(((StringLiteral<QName>) value.getValue()).getValue());
+		} else if ((value.getValue() instanceof UriLiteral<?>)) {
+			setURIValue(((UriLiteral<QName>) value.getValue()).getValue());
+		} else if (value.getValue() instanceof NestedDocument<?>) {
+			setNestedQName(((NestedDocument<QName>) value.getValue()).getType());
+			setNestedIdentity(((NestedDocument<QName>) value.getValue()).getIdentity());
+			List<Annotation> annotations = new ArrayList<>();
+			for (NamedProperty<QName> namedProperty : ((NestedDocument<QName>) value.getValue()).getProperties()) {
+				annotations.add(new Annotation(namedProperty));
+			}
+			setAnnotations(annotations);
+		}	
 	}
 
 	private Annotation(Annotation annotation) {
-		this.setValue(annotation.getValue());
+		setQName(annotation.getQName());
+		if (annotation.isBooleanValue()) {
+			setBooleanValue(annotation.getBooleanValue());
+		} else if (annotation.isDoubleValue()) {
+			setDoubleValue(annotation.getDoubleValue());
+		} else if (annotation.isIntegerValue()) {
+			setIntegerValue(annotation.getIntegerValue());
+		} else if (annotation.isStringValue()) {
+			setStringValue(annotation.getStringValue());
+		} else if (annotation.isURIValue()) {
+			setURIValue(annotation.getURIValue());
+		} else if (annotation.isNestedAnnotations()) {
+			setNestedQName(annotation.getNestedQName());
+			setNestedIdentity(annotation.getNestedIdentity());
+			setAnnotations(annotation.getAnnotations());
+		}
 	}
 
 	/**
@@ -121,7 +171,17 @@ public class Annotation {
 	 * @return the QName of this Annotation instance
 	 */
 	public QName getQName() {
-		return value.getName();
+		return new QName(namespaceURI, localPart, prefix);
+	}
+	
+	/**
+	 * Sets the QName of this annotation.
+	 * @param qName the QName for this annotation.
+	 */
+	public void setQName(QName qName) {
+		namespaceURI = qName.getNamespaceURI();
+		localPart = qName.getLocalPart();
+		prefix = qName.getPrefix();
 	}
 
 	/**
@@ -129,8 +189,8 @@ public class Annotation {
 	 * @param literal the boolean representation of the value property
 	 */
 	public void setBooleanValue(boolean literal) {
-		QName qName = value.getName();
-		value = NamedProperty(qName,literal);
+		type = "Boolean";
+		boolValue = literal;
 	}
 
 	/**
@@ -139,7 +199,7 @@ public class Annotation {
 	 * @return {@code true} if the value property is a boolean, {@code false} otherwise. 
 	 */
 	public boolean isBooleanValue() {
-		if (value.getValue() instanceof BooleanLiteral<?>) {
+		if (type.equals("Boolean")) {
 			return true;
 		}
 		return false;
@@ -152,8 +212,8 @@ public class Annotation {
 	 * value is a Boolean, {@code null} otherwise.
 	 */
 	public Boolean getBooleanValue() {
-		if (value.getValue() instanceof BooleanLiteral) {
-			return ((BooleanLiteral<QName>) value.getValue()).getValue();
+		if (isBooleanValue()) {
+			return boolValue;
 		}
 		return null;
 	}
@@ -163,8 +223,8 @@ public class Annotation {
 	 * @param literal the double representation of the value property
 	 */
 	public void setDoubleValue(double literal) {
-		QName qName = value.getName();
-		value = NamedProperty(qName,literal);
+		type = "Double";
+		doubleValue = literal;
 	}
 
 	/**
@@ -173,7 +233,7 @@ public class Annotation {
 	 * @return true if the value property is a double integer, {@code false} otherwise
 	 */
 	public boolean isDoubleValue() {
-		if (value.getValue() instanceof DoubleLiteral<?>) {
+		if (type.equals("Double")) {
 			return true;
 		}
 		return false;
@@ -186,8 +246,8 @@ public class Annotation {
 	 * value is a Double integer, {@code null} otherwise.
 	 */
 	public Double getDoubleValue() {
-		if (value.getValue() instanceof DoubleLiteral) {
-			return ((DoubleLiteral<QName>) value.getValue()).getValue();
+		if (isDoubleValue()) {
+			return doubleValue;
 		}
 		return null;
 	}
@@ -197,8 +257,8 @@ public class Annotation {
 	 * @param literal the integer representation of the value property
 	 */
 	public void setIntegerValue(int literal) {
-		QName qName = value.getName();
-		value = NamedProperty(qName,literal);
+		type = "Integer";
+		intValue = literal;
 	}
 
 	/**
@@ -207,7 +267,7 @@ public class Annotation {
 	 * @return {@code true} if the value property is an integer, {@code false} otherwise
 	 */
 	public boolean isIntegerValue() {
-		if (value.getValue() instanceof IntegerLiteral<?>) {
+		if (type.equals("Integer")) {
 			return true;
 		}
 		return false;
@@ -220,8 +280,8 @@ public class Annotation {
 	 * value is an Integer, {@code null} otherwise.
 	 */
 	public Integer getIntegerValue() {
-		if (value.getValue() instanceof IntegerLiteral) {
-			return ((IntegerLiteral<QName>) value.getValue()).getValue();
+		if (isIntegerValue()) {
+			return intValue;
 		}
 		return null;
 	}
@@ -231,8 +291,8 @@ public class Annotation {
 	 * @param literal the string representation of the value property
 	 */
 	public void setStringValue(String literal) {
-		QName qName = value.getName();
-		value = NamedProperty(qName,literal);
+		type = "String";
+		stringValue = literal;
 	}
 
 	/**
@@ -241,7 +301,7 @@ public class Annotation {
 	 * @return true if the value property is string type, {@code false} otherwise
 	 */
 	public boolean isStringValue() {
-		if (value.getValue() instanceof StringLiteral<?>) {
+		if (type.equals("String")) {
 			return true;
 		}
 		return false;
@@ -254,8 +314,8 @@ public class Annotation {
 	 * {@code null} otherwise.
 	 */
 	public String getStringValue() {
-		if (value.getValue() instanceof StringLiteral) {
-			return ((Literal<QName>) value.getValue()).getValue().toString();
+		if (isStringValue()) {
+			return stringValue;
 		}
 		return null;
 	}
@@ -265,8 +325,8 @@ public class Annotation {
 	 * @param literal the URI representation of the value property
 	 */
 	public void setURIValue(URI literal) {
-		QName qName = value.getName();
-		value = NamedProperty(qName,literal);
+		type = "URI";
+		URIValue = literal;
 	}
 	
 	/**
@@ -275,7 +335,7 @@ public class Annotation {
 	 * @return true if the annotation is a URI {@code value} property.
 	 */
 	public boolean isURIValue() {
-		if (value.getValue() instanceof UriLiteral<?>) {
+		if (type.equals("URI")) {
 			return true;
 		}
 		return false;
@@ -289,27 +349,21 @@ public class Annotation {
 	 * {@code null} otherwise.
 	 */
 	public URI getURIValue() {
-		if (value.getValue() instanceof UriLiteral) {
-			return ((UriLiteral<QName>) value.getValue()).getValue();
+		if (isURIValue()) {
+			return URIValue;
 		}
 		return null;
 	}
 
 	/**
-	 * Sets the value property to nested Annotations that include the given list of annotations.
+	 * Sets the nested QName for this annotation.
 	 * 
-	 * @param annotations list of annotations
+	 * @param qName the nested QName for this annotation.
 	 */
-	public void setNestedAnnotations(List<Annotation> annotations) {
-		List<NamedProperty<QName>> list = new ArrayList<>();
-		for(Annotation a : annotations)
-		{
-			list.add(a.getValue());
-		}
-		QName qName = value.getName();
-		QName nestedQName = getNestedQName();
-		URI nestedURI = getNestedIdentity();
-		value = NamedProperty(qName, NestedDocument(nestedQName, nestedURI, NamedProperties(list)));
+	public void setNestedQName(QName qName) {
+		nestedNamespaceURI = qName.getNamespaceURI();
+		nestedLocalPart = qName.getLocalPart();
+		nestedPrefix = qName.getPrefix();
 	}
 
 	/**
@@ -318,8 +372,8 @@ public class Annotation {
 	 * @return the nested QName if its value is nested Annotations, {@code null} otherwise.
 	 */
 	public QName getNestedQName() {
-		if (value.getValue() instanceof NestedDocument<?>) {
-			return ((NestedDocument<QName>) value.getValue()).getType();
+		if (isNestedAnnotations()) {
+			return new QName(nestedNamespaceURI,nestedLocalPart,nestedPrefix);
 		}
 		return null;
 	}
@@ -330,10 +384,19 @@ public class Annotation {
 	 * @return the nested identity URI of the nested nested Annotations if its value is nested Annotations, {@code null} otherwise.
 	 */
 	public URI getNestedIdentity() {
-		if (value.getValue() instanceof NestedDocument<?>) {
-			return ((NestedDocument<QName>) value.getValue()).getIdentity();
+		if (isNestedAnnotations()) {
+			return nestedURI;
 		}
 		return null;
+	}
+
+	/**
+	 * Sets the nested URI for this annotation.
+	 * 
+	 * @param uri the nested uri for this annotation.
+	 */
+	public void setNestedIdentity(URI uri) {
+		nestedURI = uri;
 	}
 
 	/**
@@ -342,24 +405,34 @@ public class Annotation {
 	 * @return true if the value property is nested Annotations, {@code false} otherwise
 	 */
 	public boolean isNestedAnnotations() {
-		if (value.getValue() instanceof NestedDocument<?>) {
+		if (type.equals("NestedAnnotation")) {
 			return true;
 		}
 		return false;
 	}
 
 	/**
+	 * Sets the list of Annotations of the nested value property.
+	 *
+	 * @param annotations the list of Annotations for the nested value property.
+	 */
+	public void setAnnotations(List<Annotation> annotations) {
+		type = "NestedAnnotation";
+		nestedAnnotations = new ArrayList<>();
+		for(Annotation a : annotations)
+		{
+			nestedAnnotations.add(a);
+		}
+	}
+	
+	/**
 	 * Returns the list of Annotations of the nested value property.
 	 *
 	 * @return the list of Annotations if its value is nested Annotations, {@code null} otherwise.
 	 */
 	public List<Annotation> getAnnotations() {
-		if (value.getValue() instanceof NestedDocument<?>) {
-			List<Annotation> annotations = new ArrayList<>();
-			for (NamedProperty<QName> namedProperty : ((NestedDocument<QName>) value.getValue()).getProperties()) {
-				annotations.add(new Annotation(namedProperty));
-			}
-			return annotations;
+		if (isNestedAnnotations()) {
+			return nestedAnnotations;
 		}
 		return null;
 	}
@@ -370,14 +443,25 @@ public class Annotation {
 	 * @return the value of this Annotation instance.
 	 */
 	NamedProperty<QName> getValue() {
-		return value;
-	}
-
-	/**
-	 * Sets the value of this Annotation instance to the specified argument.
-	 */
-	private void setValue(NamedProperty<QName> value) {
-		this.value = value;
+		if (isBooleanValue()) {
+			return NamedProperty(getQName(),getBooleanValue());
+		} else if (isDoubleValue()) {
+			return NamedProperty(getQName(),getDoubleValue());
+		} else if (isIntegerValue()) {
+			return NamedProperty(getQName(),getIntegerValue());
+		} else if (isStringValue()) {
+			return NamedProperty(getQName(),getStringValue());
+		} else if (isURIValue()) {
+			return NamedProperty(getQName(),getURIValue());
+		} else if (isNestedAnnotations()) {
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			for(Annotation a : getAnnotations())
+			{
+				list.add(a.getValue());
+			}
+			return NamedProperty(getQName(), NestedDocument(getNestedQName(), getNestedIdentity(), NamedProperties(list)));
+		}
+		return null;
 	}
 
 	/**
@@ -397,18 +481,32 @@ public class Annotation {
 	}
 
 	/* (non-Javadoc)
-	 * @see java.lang.Instance#hashCode()
+	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		result = prime * result + ((URIValue == null) ? 0 : URIValue.hashCode());
+		result = prime * result + ((boolValue == null) ? 0 : boolValue.hashCode());
+		result = prime * result + ((doubleValue == null) ? 0 : doubleValue.hashCode());
+		result = prime * result + ((intValue == null) ? 0 : intValue.hashCode());
+		result = prime * result + ((localPart == null) ? 0 : localPart.hashCode());
+		result = prime * result + ((namespaceURI == null) ? 0 : namespaceURI.hashCode());
+		result = prime * result + ((nestedAnnotations == null) ? 0 : nestedAnnotations.hashCode());
+		result = prime * result + ((nestedLocalPart == null) ? 0 : nestedLocalPart.hashCode());
+		result = prime * result
+				+ ((nestedNamespaceURI == null) ? 0 : nestedNamespaceURI.hashCode());
+		result = prime * result + ((nestedPrefix == null) ? 0 : nestedPrefix.hashCode());
+		result = prime * result + ((nestedURI == null) ? 0 : nestedURI.hashCode());
+		result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
+		result = prime * result + ((stringValue == null) ? 0 : stringValue.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
 
 	/* (non-Javadoc)
-	 * @see java.lang.Instance#equals(java.lang.Instance)
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -419,75 +517,108 @@ public class Annotation {
 		if (getClass() != obj.getClass())
 			return false;
 		Annotation other = (Annotation) obj;
-		if (value == null) {
-			if (other.value != null)
+		if (URIValue == null) {
+			if (other.URIValue != null)
 				return false;
-		} else if (!value.equals(other.value)) {
-			return false;
-//			if (!this.getQName().equals(other.getQName())) {
-//				return false;
-//			} else if ((this.getValue().getValue() instanceof StringLiteral<?>) &&
-//					(other.getValue().getValue() instanceof StringLiteral<?>)) {
-//				if (!this.getStringValue().equals(other.getStringValue())) {
-//					return false;
-//				}
-//			} else if ((this.getValue().getValue() instanceof BooleanLiteral<?>) &&
-//					(other.getValue().getValue() instanceof BooleanLiteral<?>)) {
-//				if (!this.getBooleanValue().equals(other.getBooleanValue())) {
-//					return false;
-//				}
-//			} else if ((this.getValue().getValue() instanceof DoubleLiteral<?>) &&
-//					(other.getValue().getValue() instanceof DoubleLiteral<?>)) {
-//				if (!this.getDoubleValue().equals(other.getDoubleValue())) {
-//					return false;
-//				}
-//			} else if ((this.getValue().getValue() instanceof IntegerLiteral<?>) &&
-//					(other.getValue().getValue() instanceof IntegerLiteral<?>)) {
-//				if (!this.getIntegerValue().equals(other.getIntegerValue())) {
-//					return false;
-//				}
-//			} else if ((this.getValue().getValue() instanceof UriLiteral<?>) &&
-//					(other.getValue().getValue() instanceof UriLiteral<?>)) {
-//				if (!this.getURIValue().equals(other.getURIValue())) {
-//					return false;
-//				}
-//			} else if ((this.getValue().getValue() instanceof NestedDocument<?>) &&
-//					(other.getValue().getValue() instanceof NestedDocument<?>)) {
-//				if (!this.getNestedQName().equals(other.getNestedQName())) {
-//					return false;
-//				}
-//				if (!this.getNestedIdentity().equals(other.getNestedIdentity())) {
-//					return false;
-//				}
-//				if (this.getAnnotations().size()!=other.getAnnotations().size()) {
-//					return false;
-//				}
-//				boolean equal = true;
-//				for (Annotation annotation1 : this.getAnnotations()) {
-//					boolean foundIt = false;
-//					for (Annotation annotation2 : other.getAnnotations()) {
-//						if (annotation1.equals(annotation2)) {
-//							foundIt = true;
-//							break;
-//						}
-//					}
-//					if (foundIt==false) {
-//						equal = false;
-//						break;
-//					}
-//				}
-//				return equal;
-//			} else {
-//				return false;
-//			}
-//			return true;
 		}
+		else if (!URIValue.equals(other.URIValue))
+			return false;
+		if (boolValue == null) {
+			if (other.boolValue != null)
+				return false;
+		}
+		else if (!boolValue.equals(other.boolValue))
+			return false;
+		if (doubleValue == null) {
+			if (other.doubleValue != null)
+				return false;
+		}
+		else if (!doubleValue.equals(other.doubleValue))
+			return false;
+		if (intValue == null) {
+			if (other.intValue != null)
+				return false;
+		}
+		else if (!intValue.equals(other.intValue))
+			return false;
+		if (localPart == null) {
+			if (other.localPart != null)
+				return false;
+		}
+		else if (!localPart.equals(other.localPart))
+			return false;
+		if (namespaceURI == null) {
+			if (other.namespaceURI != null)
+				return false;
+		}
+		else if (!namespaceURI.equals(other.namespaceURI))
+			return false;
+		if (nestedAnnotations == null) {
+			if (other.nestedAnnotations != null)
+				return false;
+		}
+		else if (!nestedAnnotations.equals(other.nestedAnnotations))
+			return false;
+		if (nestedLocalPart == null) {
+			if (other.nestedLocalPart != null)
+				return false;
+		}
+		else if (!nestedLocalPart.equals(other.nestedLocalPart))
+			return false;
+		if (nestedNamespaceURI == null) {
+			if (other.nestedNamespaceURI != null)
+				return false;
+		}
+		else if (!nestedNamespaceURI.equals(other.nestedNamespaceURI))
+			return false;
+		if (nestedPrefix == null) {
+			if (other.nestedPrefix != null)
+				return false;
+		}
+		else if (!nestedPrefix.equals(other.nestedPrefix))
+			return false;
+		if (nestedURI == null) {
+			if (other.nestedURI != null)
+				return false;
+		}
+		else if (!nestedURI.equals(other.nestedURI))
+			return false;
+		if (prefix == null) {
+			if (other.prefix != null)
+				return false;
+		}
+		else if (!prefix.equals(other.prefix))
+			return false;
+		if (stringValue == null) {
+			if (other.stringValue != null)
+				return false;
+		}
+		else if (!stringValue.equals(other.stringValue))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		}
+		else if (!type.equals(other.type))
+			return false;
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "Annotation [value=" + value + "]";
+		return "Annotation [(" + prefix + ":" + namespaceURI + ":" + localPart + ")"
+				+ ", type=" + type + ", value=" 
+				+ (isBooleanValue()?boolValue:"") 
+				+ (isDoubleValue()?doubleValue:"") 
+				+ (isIntegerValue()?intValue:"") 
+				+ (isStringValue()?stringValue:"")
+				+ (isURIValue()?URIValue:"")
+				+ (isNestedAnnotations()?("("+nestedPrefix+":"+nestedNamespaceURI+":"+nestedLocalPart+":"+
+						nestedURI + ")" + nestedAnnotations.toString()):"")
+				+ "]";
 	}
 
 }

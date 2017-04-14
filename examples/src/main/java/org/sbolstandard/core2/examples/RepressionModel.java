@@ -46,7 +46,7 @@ public class RepressionModel {
 		doc.setComplete(true);
 		doc.setCreateDefaults(true);
 		
-		String version = "1.0";
+		String version = "1.0.0";
 		
 		// Create ComponentDefinition for cas9_generic protein
 		doc.createComponentDefinition("cas9_generic", version, ComponentDefinition.PROTEIN);
@@ -224,7 +224,7 @@ public class RepressionModel {
 		doc.createComponentDefinition("EYFP", version, ComponentDefinition.PROTEIN);
 
 		// Create ModuleDefintion for CRISPR Repression
-		ModuleDefinition CRPb_circuit = doc.createModuleDefinition("CRPb_characterization_Circuit", version);
+		ModuleDefinition CRPb_circuit = doc.createModuleDefinition("CRPb_characterization_circuit", version);
 		
 		// Create the FunctionalComponents for the ModuleDefinition CRISPR_Repression
 		CRPb_circuit.createFunctionalComponent("cas9m_BFP", AccessType.PRIVATE, "cas9m_BFP", version, DirectionType.NONE);
@@ -350,13 +350,13 @@ public class RepressionModel {
 //		CRP_b.addSequence(
 //				  URI.create("http://partsregistry.org/seq/partseq_154")
 //				  );
-		String prURI = "http://partsregistry.org"; 
+		String prURI = "http://partsregistry.org/"; 
 		String prPrefix = "pr";
 		doc.addNamespace(URI.create(prURI) , prPrefix);
 		ComponentDefinition pConst = doc.getComponentDefinition("pConst", version);
 		pConst.createAnnotation(new QName(prURI, "experience", prPrefix),
 				URI.create("http://parts.igem.org/Part:BBa_J23119:Experience"));		
-		String myersLabURI = "http://www.async.ece.utah.edu";
+		String myersLabURI = "http://www.async.ece.utah.edu/";
 		String myersLabPrefix = "myersLab";	
 		doc.addNamespace(URI.create(myersLabURI) , myersLabPrefix);
 		GenericTopLevel datasheet=doc.createGenericTopLevel(

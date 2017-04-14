@@ -38,7 +38,7 @@ if (CRISPR_Template.isSetName()) { // always true in this case
 }
 CRISPR_Template.setDescription(
         "Authors: S. Kiani, J. Beal, M. Ebrahimkhani, J. Huh, R. Hall, Z. Xie, Y. Li, and R. Weiss," + 
-        "Titel: Crispr transcriptional repression devices and layered circuits in mammalian cells," + 
+        "Title: Crispr transcriptional repression devices and layered circuits in mammalian cells," + 
         "Journal: Nature Methods, vol. 11, no. 7, pp. 723–726, 2014."
         );
 \end{lstlisting}
@@ -197,8 +197,8 @@ the~\href{http://sbolstandard.org/downloads/specification-data-model-2-0/}{SBOL
 machine-chackable have been encoded in the library. This enables users
 of the library to automatically validate an SBOL file on reading
 and/or during construction of SBOL objects using the library's API
-call. The code below validates the complete model we created in this
-tutorial. 
+call. The code lines [1-7] below validates the complete modesl we created in this
+tutorial. Once the user has created the Repression Model, they can use lines [10-11] to check against a \href{https://github.com/SynBioDex/libSBOLj/blob/master/core2/src/test/resources/SBOL2/RepressionModel.rdf}{completed version} of this tutorial to ensure correctness. 
 
 \vspace{\abovedisplayskip}
 \begin{minipage}{0.95\textwidth} 
@@ -210,6 +210,11 @@ if (SBOLValidate.getNumErrors() > 0) {
   }
   return;
 }
+
+// TODO: uncomment to compare with a "golden" version of the RepressionModel.xml
+	SBOLDocument doc2 = SBOLReader.read(<path of RepressionModel.xml>);
+	SBOLValidate.compareDocuments("Mine", doc, "Solution", doc2);
+    
 \end{lstlisting}
 \end{minipage}
 
@@ -259,7 +264,7 @@ and then reads it back to a new \sbol{SBOLDocument} object.
 \begin{minipage}{0.95\textwidth} 
 \begin{lstlisting}
 public static SBOLDocument writeThenRead(SBOLDocument doc)
-	               throws SBOLValidationException, IOException, XMLStreamException, FactoryConfigurationError, CoreIoException
+	               throws SBOLValidationException, IOException, FactoryConfigurationError
 {
   ByteArrayOutputStream out = new ByteArrayOutputStream();
   SBOLWriter.write(doc, out);
@@ -268,7 +273,8 @@ public static SBOLDocument writeThenRead(SBOLDocument doc)
 \end{lstlisting}
 \end{minipage}
 
-The complete repression model described in this tutorial is provided as ``RepressionModel.java'' under the {\tt libSBOLj} examples directory. This example is self-contained in that you can run it to generate the RDF/XML output. Note that SBOL does not provide the specification of a mathematical model directly. It is possible, however, to generate a mathematical model using SBML~\cite{SBML} and the procedure described in~\cite{roehner2015generating}. Then, the SBOL document can reference this generated SBML model.
+The complete repression model described in this tutorial is provided as ``RepressionModel.java'' under the {\tt libSBOLj} \href{https://github.com/SynBioDex/libSBOLj/tree/master/examples/src/main/java/org/sbolstandard/core2/examples}{examples}
+directory. This example is self-contained in that you can run it to generate the RDF/XML output. Note that SBOL does not provide the specification of a mathematical model directly. It is possible, however, to generate a mathematical model using SBML~\cite{SBML} and the procedure described in~\cite{roehner2015generating}. Then, the SBOL document can reference this generated SBML model.
 
 % The RDF serialization for the SBOLDocument object created in this
 % tutorial is shown below. Note that we only show the beginning of the

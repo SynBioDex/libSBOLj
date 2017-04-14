@@ -15,10 +15,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-
-
-
-
 //import javax.sound.midi.Sequence;
 import javax.xml.namespace.QName;
 
@@ -46,7 +42,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_Model_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -61,7 +57,7 @@ public abstract class SBOLAbstractTests {
 		Model M1 = document.createModel(M1_ID, M1_Version, M1_URISource, EDAMOntology.SBML,
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 		document.removeModel(M1);
-		runTest("/SBOL2/test_Model_remove.rdf", document, "rdf", true);
+		runTest("/SBOL2/test_Model_remove.xml", document, "xml", true);
 	}
 
 	/**
@@ -73,7 +69,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_Sequence_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -86,7 +82,7 @@ public abstract class SBOLAbstractTests {
 		URI SeqEncoding = URI.create("www.example.com");
 		Sequence Seq = document.createSequence(SeqID, SeqVersion, SeqElements, SeqEncoding);
 		document.removeSequence(Seq);
-		runTest("/SBOL2/test_Sequence_remove.rdf", document, "rdf", true);
+		runTest("/SBOL2/test_Sequence_remove.xml", document, "xml", true);
 	}
 
 	/**
@@ -98,7 +94,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_Collection_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -109,7 +105,7 @@ public abstract class SBOLAbstractTests {
 		String Col1_Version = "1.0";
 		Collection Col1 = document.createCollection(Col1_ID, Col1_Version);
 		document.removeCollection(Col1);
-		runTest("/SBOL2/test_Collection_remove.rdf", document, "rdf", true);
+		runTest("/SBOL2/test_Collection_remove.xml", document, "xml", true);
 	}
 
 	/**
@@ -121,7 +117,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_ModuleDefinition_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -132,7 +128,7 @@ public abstract class SBOLAbstractTests {
 		String MD_Version = "1.0";
 		ModuleDefinition MD = document.createModuleDefinition(MD_ID, MD_Version);
 		document.removeModuleDefinition(MD);
-		runTest("/SBOL2/test_ModuleDefinition_remove.rdf", document, "rdf", true);
+		runTest("/SBOL2/test_ModuleDefinition_remove.xml", document, "xml", true);
 	}
 
 	/**
@@ -144,7 +140,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_ComponentDefinition_remove() throws SBOLValidationException, SBOLConversionException, IOException 
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -157,7 +153,7 @@ public abstract class SBOLAbstractTests {
 		CD_Types.add(URI.create("www.example.com"));
 		ComponentDefinition CD = document.createComponentDefinition(CD_ID, CD_Version, CD_Types);
 		document.removeComponentDefinition(CD);
-		runTest("/SBOL2/test_ComponentDefinition_remove.rdf", document, "rdf", true);
+		runTest("/SBOL2/test_ComponentDefinition_remove.xml", document, "xml", true);
 	}
 
 	/**
@@ -169,7 +165,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_GenericTopLevel_remove() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -179,9 +175,9 @@ public abstract class SBOLAbstractTests {
 		String GTL_ID = "ID";
 		String GTL_Version = "1.0";
 		String GTL_Qname = "name";
-		GenericTopLevel GTL = document.createGenericTopLevel(GTL_ID, GTL_Version, QName.valueOf(GTL_Qname));
+		GenericTopLevel GTL = document.createGenericTopLevel(GTL_ID, GTL_Version, new QName(prURI, "group", prPrefix));
 		document.removeGenericTopLevel(GTL);
-		runTest("/SBOL2/test_GenericTopLevel_remove.rdf", document, "rdf", true);
+		runTest("/SBOL2/test_GenericTopLevel_remove.xml", document, "xml", true);
 	}
 
 
@@ -194,7 +190,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_AnnotationOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 
@@ -227,11 +223,11 @@ public abstract class SBOLAbstractTests {
 		promoter.createAnnotation(
 				new QName(prURI, "information", prPrefix),
 				new QName(prURI, "Information", prPrefix),
-				URI.create("http://parts.igem.org/cgi/partsdb/part_info.cgi?part_name=BBa_J23119"),
+				URI.create("http://partsregistry.org/cd/BBa_J23119/information"),
 				new ArrayList<Annotation>(Arrays.asList(sigmaFactor,regulation)));
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/AnnotationOutput.rdf", document, "rdf", true);
+		runTest("/SBOL2/AnnotationOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -256,7 +252,7 @@ public abstract class SBOLAbstractTests {
 		col.addMember(URI.create("http://partsregistry.org/Part:BBa_J23118"));
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/CollectionOutput.rdf", document, "rdf", true);
+		runTest("/SBOL2/CollectionOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -268,7 +264,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_ComponentDefinitionOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 
 		String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
@@ -411,7 +407,7 @@ public abstract class SBOLAbstractTests {
 		anno5.setComponent(comPluxR.getIdentity());
 
 		//			SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/ComponentDefinitionOutput.rdf", document, "rdf", true);
+		runTest("/SBOL2/ComponentDefinitionOutput.xml", document, "xml", true);
 	}
 
 
@@ -424,7 +420,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_CutExample() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
 		document.setTypesInURIs(true);
@@ -437,7 +433,7 @@ public abstract class SBOLAbstractTests {
 
 		promoter.setName("J23119 promoter");
 		promoter.setDescription("Constitutive promoter");
-		promoter.setWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
+		promoter.addWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
 
 		document.setDefaultURIprefix(prURI);
 		Sequence seq=document.createSequence(
@@ -446,7 +442,7 @@ public abstract class SBOLAbstractTests {
 				"ttgacagctagctcagtcctaggtataatgctagc",
 				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
 				);
-		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
+		seq.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		promoter.addSequence(seq.getIdentity());
 
 		//promoter.createSequenceAnnotation("cut", 10);
@@ -454,7 +450,7 @@ public abstract class SBOLAbstractTests {
 		promoter.createSequenceAnnotation("cutat12", "cut", 12, OrientationType.INLINE);
 
 		//			SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/CutExample.rdf", document, "rdf", true);
+		runTest("/SBOL2/CutExample.xml", document, "xml", true);
 	}
 
 	/**
@@ -466,9 +462,9 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_GenericTopLevelOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String myAppURI="http://www.myapp.org";
+		String myAppURI="http://www.myapp.org/";
 		String myAppPrefix="myapp";
-		String prURI="http://www.partsregistry.org";
+		String prURI="http://www.partsregistry.org/";
 
 		SBOLDocument document = new SBOLDocument();
 		document.addNamespace(URI.create(myAppURI) , myAppPrefix);
@@ -479,7 +475,7 @@ public abstract class SBOLAbstractTests {
 		GenericTopLevel topLevel=document.createGenericTopLevel(
 				"datasheet1",
 				"",
-				new QName("http://www.myapp.org", "Datasheet", myAppPrefix)
+				new QName("http://www.myapp.org/", "Datasheet", myAppPrefix)
 				);
 		topLevel.setName("Datasheet 1");
 
@@ -500,9 +496,9 @@ public abstract class SBOLAbstractTests {
 		promoter.setDescription("Constitutive promoter");
 
 		promoter.createAnnotation(new QName(myAppURI, "datasheet", myAppPrefix), topLevel.getIdentity());
-		promoter.setWasDerivedFrom(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));
+		promoter.addWasDerivedFrom(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));
 
-		runTest("/SBOL2/GenericTopLevelOutput.rdf", document, "rdf", true);
+		runTest("/SBOL2/GenericTopLevelOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -530,7 +526,7 @@ public abstract class SBOLAbstractTests {
 
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/ModelOutput.rdf", document, "rdf", true);
+		runTest("/SBOL2/ModelOutput.xml", document, "xml", true);
 	}
 
 
@@ -648,7 +644,7 @@ public abstract class SBOLAbstractTests {
 		toggleSwitchModuleDef.addModel(model.getIdentity());
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/ModuleDefinitionOutput.rdf", document, "rdf", true);
+		runTest("/SBOL2/ModuleDefinitionOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -662,7 +658,7 @@ public abstract class SBOLAbstractTests {
 	{
 		SBOLDocument document = new SBOLDocument();
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/SBOLDocumentOutput.rdf", document, "rdf", true);
+		runTest("/SBOL2/SBOLDocumentOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -674,7 +670,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_SequenceConstraintOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 		//String prPrefix="pr";
 		SBOLDocument document = new SBOLDocument();
 		/*
@@ -723,7 +719,7 @@ public abstract class SBOLAbstractTests {
 		//promoter.setSequence(seq.getIdentity());
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/SequenceConstraintOutput.rdf", document, "rdf", true);
+		runTest("/SBOL2/SequenceConstraintOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -735,7 +731,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_SequenceOutput() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 
 		SBOLDocument document = new SBOLDocument();
 		document.setDefaultURIprefix(prURI);
@@ -746,9 +742,9 @@ public abstract class SBOLAbstractTests {
 				"ttgacagctagctcagtcctaggtataatgctagc",
 				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
 				);
-		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
+		seq.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/SequenceOutput.rdf", document, "rdf", true);
+		runTest("/SBOL2/SequenceOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -760,7 +756,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_SimpleComponentDefinitionExample() throws SBOLValidationException, SBOLConversionException, IOException
 	{
-		String prURI="http://partsregistry.org";
+		String prURI="http://partsregistry.org/";
 
 
 		SBOLDocument document = new SBOLDocument();
@@ -778,7 +774,7 @@ public abstract class SBOLAbstractTests {
 
 		promoter.setName("J23119 promoter");
 		promoter.setDescription("Constitutive promoter");
-		promoter.setWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
+		promoter.addWasDerivedFrom(URI.create("http://partsregistry.org/Part:BBa_J23119"));
 
 		document.setDefaultURIprefix(prURI);
 		Sequence seq=document.createSequence(
@@ -787,10 +783,10 @@ public abstract class SBOLAbstractTests {
 				"ttgacagctagctcagtcctaggtataatgctagc",
 				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
 				);
-		seq.setWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
+		seq.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		promoter.addSequence(seq.getIdentity());
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/SimpleComponentDefinitionExample.rdf", document, "rdf", true);
+		runTest("/SBOL2/SimpleComponentDefinitionExample.xml", document, "xml", true);
 	}
 
 	/**
@@ -826,7 +822,7 @@ public abstract class SBOLAbstractTests {
 		module.createInteraction("express_GFP", new HashSet<URI>(Arrays.asList(SystemsBiologyOntology.TRANSCRIPTION)));
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/SimpleModuleDefinition.rdf", document, "rdf", true);
+		runTest("/SBOL2/SimpleModuleDefinition.xml", document, "xml", true);
 	}
 
 	private static void setDefaultNameSpace(SBOLDocument document, String uri)
@@ -849,10 +845,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "rdf", false);
-			runTest("/SBOL2/BBa_I0462.rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileName, null, "rdf", false);
-			runTest("/SBOL2/BBa_I0462_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "xml", false);
+			runTest("/SBOL2/BBa_I0462.xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileName, null, "xml", false);
+			runTest("/SBOL2/BBa_I0462_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -867,7 +863,7 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_SBOL1andSBOL2Test_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "SBOL1and2Test.rdf";
+		String fileName = "SBOL1and2Test.xml";
 
 		try
 		{
@@ -879,7 +875,7 @@ public abstract class SBOLAbstractTests {
 			SBOLDocument actual = null;
 			SBOLReader.setURIPrefix(URIprefix);
 			actual = SBOLReader.read(resourceAsStream);
-			runTest("/SBOL2/SBOL1and2Test.rdf", actual, "rdf", false);
+			runTest("/SBOL2/SBOL1and2Test.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -900,7 +896,7 @@ public abstract class SBOLAbstractTests {
 		catch (URISyntaxException e1) {
 			e1.printStackTrace();
 		}
-		File file;
+		File file; 
 		for (File f : file_base.listFiles()){
 			
 			// ignore sub-directories for the time being
@@ -913,7 +909,7 @@ public abstract class SBOLAbstractTests {
 				SBOLDocument actual = SBOLReader.read(file);
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				SBOLWriter.write(actual, out, SBOLDocument.GENBANK);
-				runTest("/SBOL2/"+f.getName().replace(".gb", ".rdf"), actual, "rdf", true);
+				runTest("/SBOL2/"+f.getName().replace(".gb", ".xml"), actual, "xml", true);
 			}
 			catch (Exception e)
 			{
@@ -933,8 +929,8 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf", false);
-			runTest("/SBOL2/igem1.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "xml", false);
+			runTest("/SBOL2/igem1.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -953,8 +949,8 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf", false);
-			runTest("/SBOL2/igem2.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "xml", false);
+			runTest("/SBOL2/igem2.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -973,8 +969,8 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf", false);
-			runTest("/SBOL2/igem3.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "xml", false);
+			runTest("/SBOL2/igem3.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -993,8 +989,8 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "rdf", false);
-			runTest("/SBOL2/toggle.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "xml", false);
+			runTest("/SBOL2/toggle.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1013,10 +1009,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "rdf", true);
-			runTest("/SBOL2/BBa_T9002.rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileName, null, "rdf", true);
-			runTest("/SBOL2/BBa_T9002_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "xml", true);
+			runTest("/SBOL2/BBa_T9002.xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileName, null, "xml", true);
+			runTest("/SBOL2/BBa_T9002_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1035,10 +1031,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "rdf", false);
-			runTest("/SBOL2/labhost_All.rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileName, null, "rdf", false);
-			runTest("/SBOL2/labhost_All_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "xml", false);
+			runTest("/SBOL2/labhost_All.xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileName, null, "xml", false);
+			runTest("/SBOL2/labhost_All_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1058,10 +1054,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1081,10 +1077,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1104,10 +1100,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1127,10 +1123,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1150,10 +1146,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1173,10 +1169,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1196,10 +1192,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1219,10 +1215,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1242,10 +1238,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1265,10 +1261,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1288,10 +1284,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1311,10 +1307,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1334,10 +1330,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1357,10 +1353,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1380,10 +1376,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1403,10 +1399,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1426,10 +1422,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1449,10 +1445,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1472,10 +1468,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", true);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", true);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", true);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", true);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1495,10 +1491,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", true);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", true);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", true);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", true);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1518,10 +1514,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", true);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", true);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", true);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", true);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1541,10 +1537,10 @@ public abstract class SBOLAbstractTests {
 
 		try
 		{
-			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "rdf", false);
-			runTest("/SBOL2/" + filename + ".rdf", actual, "rdf", true);
-			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "rdf", false);
-			runTest("/SBOL2/" + filename + "_orig.rdf", actual, "rdf", false);
+			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
+			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
+			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1564,20 +1560,20 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		String id    	= "someModel";
 		URI source 		= URI.create(id + "_source");
 
 		Collection myParts = document.createCollection("myParts", VERSION_1_0);
-		myParts.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		myParts.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 		Model someModel = document.createModel(id, VERSION_1_0, source, EDAMOntology.SBML, SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
-		someModel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someModel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 		ModuleDefinition someModDef = document.createModuleDefinition("someModuleDef", VERSION_1_0);
-		someModDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someModDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 		document.createModuleDefinition("someModuleDefSub", VERSION_1_0);
 
 		Set<URI> interactionType = new HashSet<URI>();
@@ -1594,32 +1590,32 @@ public abstract class SBOLAbstractTests {
 
 		String seq_id = "someSeq";
 		Sequence someSeq = document.createSequence(seq_id, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
-		someSeq.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someSeq.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 		Set<URI> types = new HashSet<URI>();
 		types.add(ComponentDefinition.DNA);
 		ComponentDefinition someCompDef = document.createComponentDefinition("someCompDef", VERSION_1_0, types);
-		someCompDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someCompDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 		someCompDef.addRole(SequenceOntology.PROMOTER);
 		ComponentDefinition someCompDefCDS = document.createComponentDefinition("someCompDefCDS", VERSION_1_0, types);
 		someCompDefCDS.addRole(SequenceOntology.CDS);
 		Component someComponent = someCompDef.createComponent("someComponent", AccessType.PUBLIC, "someCompDefCDS", VERSION_1_0);
 		someCompDef.createComponent("someOtherComponent", AccessType.PUBLIC, "someCompDefCDS", VERSION_1_0);
-		someComponent.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someComponent.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 		SequenceAnnotation someSequenceAnnotation = someCompDef.createSequenceAnnotation("someSequenceAnnotation", "cut", 1, 10);
-		someSequenceAnnotation.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someSequenceAnnotation.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 		//SequenceAnnotation someSequenceAnnotation2 =
 		someCompDef.createSequenceAnnotation("someSequenceAnnotation2", "cut", 1, OrientationType.INLINE);
 
 		SequenceConstraint someSequenceConstraint = someCompDef.createSequenceConstraint("someSequenceConstraint", RestrictionType.PRECEDES, "someComponent", "someOtherComponent");
-		someSequenceConstraint.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		someSequenceConstraint.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
-		GenericTopLevel someGenericTopLevel = document.createGenericTopLevel("someGenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
-		someGenericTopLevel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org", "thisAnnotation", "annot"), "turtleString")));
+		GenericTopLevel someGenericTopLevel = document.createGenericTopLevel("someGenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
+		someGenericTopLevel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 
-		runTest("/SBOL2/memberAnnotations.rdf", document, "rdf", true);
+		runTest("/SBOL2/memberAnnotations.xml", document, "xml", true);
 	}
 
 
@@ -1635,8 +1631,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Collection c = document.createCollection("myParts", VERSION_1_0);
 		document.removeCollection(c);
@@ -1648,7 +1644,7 @@ public abstract class SBOLAbstractTests {
 
 		document.clearCollections();
 		document.createCollection("myParts", VERSION_1_0);
-		runTest("/SBOL2/CreateAndRemoveCollections.rdf", document, "rdf", true);
+		runTest("/SBOL2/CreateAndRemoveCollections.xml", document, "xml", true);
 	}
 
 	/**
@@ -1661,10 +1657,10 @@ public abstract class SBOLAbstractTests {
 	{
 		SBOLDocument document = new SBOLDocument();
 		document.setComplete(true);
-		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu/");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> types = new HashSet<URI>();
 		types.add(ComponentDefinition.PROTEIN);
@@ -1678,7 +1674,7 @@ public abstract class SBOLAbstractTests {
 
 		document.clearComponentDefinitions();
 		document.createComponentDefinition("someCompDef", VERSION_1_0, types);
-		runTest("/SBOL2/CreateAndRemoveComponentDefinition.rdf", document, "rdf", true);
+		runTest("/SBOL2/CreateAndRemoveComponentDefinition.xml", document, "xml", true);
 	}
 
 	/**
@@ -1693,8 +1689,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		ModuleDefinition md = document.createModuleDefinition("someModDef", VERSION_1_0);
 		document.removeModuleDefinition(md);
@@ -1707,7 +1703,7 @@ public abstract class SBOLAbstractTests {
 		document.clearModuleDefinitions();
 		document.createModuleDefinition("someModDef", VERSION_1_0);
 
-		runTest("/SBOL2/CreateAndRemoveModuleDefinition.rdf", document, "rdf", true);
+		runTest("/SBOL2/CreateAndRemoveModuleDefinition.xml", document, "xml", true);
 	}
 
 	/**
@@ -1722,21 +1718,21 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
-		GenericTopLevel gen = document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+		GenericTopLevel gen = document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
 		document.removeGenericTopLevel(gen);
 
 		for(int i = 1; i < 4; i++)
 		{
-			document.createGenericTopLevel("someGenTopLev"+i, VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+			document.createGenericTopLevel("someGenTopLev"+i, VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
 		}
 
 		document.clearGenericTopLevels();
-		document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
+		document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
 
-		runTest("/SBOL2/CreateAndRemoveGenericTopLevel.rdf", document, "rdf", true);
+		runTest("/SBOL2/CreateAndRemoveGenericTopLevel.xml", document, "xml", true);
 	}
 
 	/**
@@ -1751,8 +1747,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Sequence s = document.createSequence("someSequence", VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 		document.removeSequence(s);
@@ -1765,7 +1761,7 @@ public abstract class SBOLAbstractTests {
 
 		document.clearSequences();
 		document.createSequence("someSequence", VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
-		runTest("/SBOL2/CreateAndRemoveModel.rdf", document, "rdf", true);
+		runTest("/SBOL2/CreateAndRemoveModel.xml", document, "xml", true);
 	}
 
 	/**
@@ -1780,11 +1776,11 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		document.createCollection("myParts", VERSION_1_0);
-		runTest("/SBOL2/singleCollection.rdf", document, "rdf", true);
+		runTest("/SBOL2/singleCollection.xml", document, "xml", true);
 	}
 
 
@@ -1800,14 +1796,14 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		document.createCollection("myPart1", VERSION_1_0);
 		document.createCollection("myPart2", VERSION_1_0);
 		document.createCollection("myPart3", VERSION_1_0);
 
-		runTest("/SBOL2/multipleCollections_no_Members.rdf", document, "rdf", true);
+		runTest("/SBOL2/multipleCollections_no_Members.xml", document, "xml", true);
 	}
 
 	/**
@@ -1822,11 +1818,11 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
-		document.createGenericTopLevel("GenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction", "grn"));
-		runTest("/SBOL2/singleGenericTopLevel.rdf", document, "rdf", true);
+		document.createGenericTopLevel("GenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
+		runTest("/SBOL2/singleGenericTopLevel.xml", document, "xml", true);
 	}
 
 	/**
@@ -1841,14 +1837,14 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
-		document.createGenericTopLevel("GenericTopLevel1", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction1", "grn"));
-		document.createGenericTopLevel("GenericTopLevel2", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction2", "grn"));
-		document.createGenericTopLevel("GenericTopLevel3", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn", "RegulatoryReaction3", "grn"));
+		document.createGenericTopLevel("GenericTopLevel1", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction1", "grn"));
+		document.createGenericTopLevel("GenericTopLevel2", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction2", "grn"));
+		document.createGenericTopLevel("GenericTopLevel3", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction3", "grn"));
 
-		runTest("/SBOL2/multipleGenericTopLevel.rdf", document, "rdf", true);
+		runTest("/SBOL2/multipleGenericTopLevel.xml", document, "xml", true);
 	}
 
 	/**
@@ -1863,14 +1859,14 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		String id = "ToggleModel";
 		document.createModel( id, VERSION_1_0, URI.create(id + "_source"), EDAMOntology.SBML,
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 
-		runTest("/SBOL2/singleModel.rdf", document, "rdf", true);
+		runTest("/SBOL2/singleModel.xml", document, "xml", true);
 	}
 
 
@@ -1886,13 +1882,13 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		String id = "pLacSeq";
 		document.createSequence(id, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 
-		runTest("/SBOL2/singleSequence.rdf", document, "rdf", true);
+		runTest("/SBOL2/singleSequence.xml", document, "xml", true);
 	}
 
 	/**
@@ -1907,8 +1903,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		String id = "pLacSeq";
 		String id2 = "tetRSeq";
@@ -1918,7 +1914,7 @@ public abstract class SBOLAbstractTests {
 		document.createSequence(id2, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 		document.createSequence(id3, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 
-		runTest("/SBOL2/multipleSequences.rdf", document, "rdf", true);
+		runTest("/SBOL2/multipleSequences.xml", document, "xml", true);
 	}
 
 	/**
@@ -1933,15 +1929,15 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> roles = SBOLTestUtils.getSetPropertyURI("Inverter");
 		ModuleDefinition LacI_Inv = document.createModuleDefinition("LacI_Inv", VERSION_1_0);
 		LacI_Inv.setRoles(roles);
 		//		LacI_Inv.addRole(URI.create("Inverter"));
 
-		runTest("/SBOL2/singleModuleDefinition.rdf", document, "rdf", true);
+		runTest("/SBOL2/singleModuleDefinition.xml", document, "xml", true);
 	}
 
 	/**
@@ -1956,8 +1952,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> type = new HashSet<URI>();
 		type.add(ComponentDefinition.DNA);
@@ -1967,7 +1963,7 @@ public abstract class SBOLAbstractTests {
 		pLac.setRoles(role);
 		//		pLac.addRole(URI.create("Promoter"));
 
-		runTest("/SBOL2/singleComponentDefinition.rdf", document, "rdf", true);
+		runTest("/SBOL2/singleComponentDefinition.xml", document, "xml", true);
 	}
 
 	/**
@@ -1982,8 +1978,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> type = new HashSet<URI>();
 		type.add(ComponentDefinition.DNA);
@@ -1994,7 +1990,7 @@ public abstract class SBOLAbstractTests {
 		document.createSequence("pLacSeq", VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 		pLac.addSequence("pLacSeq", VERSION_1_0);
 
-		runTest("/SBOL2/singleCompDef_withSeq.rdf", document, "rdf", true);
+		runTest("/SBOL2/singleCompDef_withSeq.xml", document, "xml", true);
 	}
 
 	/**
@@ -2009,8 +2005,8 @@ public abstract class SBOLAbstractTests {
 		document.setComplete(true);
 		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn", "grn"));
+		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
+		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> type = new HashSet<URI>();
 		type.add(ComponentDefinition.PROTEIN);
@@ -2021,7 +2017,7 @@ public abstract class SBOLAbstractTests {
 		LacIIn.createComponent("funcComp", AccessType.PUBLIC, compDef_id, VERSION_1_0);
 
 
-		runTest("/SBOL2/singleFunctionalComponent.rdf", document, "rdf", true);
+		runTest("/SBOL2/singleFunctionalComponent.xml", document, "xml", true);
 	}
 
 	/**

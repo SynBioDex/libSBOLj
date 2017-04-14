@@ -20,7 +20,7 @@ public class AnnotationTest {
 
 	private SBOLDocument doc = null;
 	private ComponentDefinition gRNA_b_gene = null;
-	private String prURI="http://partsregistry.org";
+	private String prURI="http://partsregistry.org/";
 
 	@Before
 	public void setUp() throws Exception {
@@ -102,6 +102,7 @@ public class AnnotationTest {
 	{
 		Annotation CD_annot = gRNA_b_gene.createAnnotation(new QName(prURI, "protein", "pr"),
 				true);	
+		//System.out.println(CD_annot.toString());
 		assertTrue(CD_annot.toString().contains("value=" + true));
 	}
 	
