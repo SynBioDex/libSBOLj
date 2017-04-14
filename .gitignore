@@ -2,7 +2,6 @@
 **/target
 *~
 *.swp
-javadocs
 *.jar
 *.zip
 .idea
@@ -12,7 +11,6 @@ javadocs
 /target
 /sand
 /nbproject/
-/javadoc
 **/.settings
 **/.classpath
 **/.project
