@@ -14,7 +14,7 @@ First, consider the CRISPR-based Repression Template \sbol{ModuleDefinition} sho
 \caption{\label{fig:fig-CRPb} Illustration of a hierarchical CRISPR-based repression module represented in SBOL 2.0 (adapted from Figure~1a in \cite{kiani2014crispr}). The CRISPR-based Repression Template \sbol{ModuleDefinition} describes a generic CRISPR repression circuit that combines a Cas9 protein with a gRNA to form a complex (represented by the dashed arrows) that represses a target gene (represented by the arrow with the tee arrowhead).  These relationships between these \sbol{FunctionalComponents} (instances of \sbol{ComponentDefinitions}) are represented in SBOL 2.0 using \sbol{Interactions}.  This \sbol{Module} is instantiated in the outer CRPb Characterization Circuit \sbol{ModuleDefinition} in order to specify the precise (including \sbol{Sequences} when provided) \sbol{FunctionalComponents}  used for each generic \sbol{FunctionalComponent}. The undirected dashed lines going into the template \sbol{Module} represent \sbol{MapsTo} objects that specify how specific \sbol{FunctionalComponents} replace the generic ones.}
 \end{figure}
 \newpage
-\section*{Modeling CRISPR repression using {\tt libSBOLj 2.1.0}}
+\section*{Modeling CRISPR repression using {\tt libSBOLj 2.0}}
 
 \subsection*{Setting up the CRISPR repression model}
 Now we are ready to create the CRISPR model to our project. When the ``crispr'' project was created, two template Java class files ``App.java'' and ``AppTest.java'' were automatically created as shown below. 
