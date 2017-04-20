@@ -1382,18 +1382,6 @@ public class SBOLDocument {
 	 */
 	private void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
 		if (document.getTopLevel(topLevel.getIdentity())!=null) return;
-		for (Annotation annotation : topLevel.getAnnotations()) {
-			if (annotation.isURIValue()) {
-				TopLevel gtl = getTopLevel(annotation.getURIValue());
-				if (gtl != null) 
-					createRecursiveCopy(document,gtl);
-			} else if (annotation.isNestedAnnotations()) {
-				for (Annotation nestedAnnotation : annotation.getAnnotations()) {
-					createRecursiveCopy(document,nestedAnnotation);
-				}
-			}
-			// TODO: need to handle nested annotations
-		}
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model) {
 			document.createCopy(topLevel);
 		} else if (topLevel instanceof Collection) {
@@ -1427,6 +1415,17 @@ public class SBOLDocument {
 				document.createCopy(model);
 			}
 			document.createCopy(topLevel);
+		}
+		for (Annotation annotation : topLevel.getAnnotations()) {
+			if (annotation.isURIValue()) {
+				TopLevel gtl = getTopLevel(annotation.getURIValue());
+				if (gtl != null) 
+					createRecursiveCopy(document,gtl);
+			} else if (annotation.isNestedAnnotations()) {
+				for (Annotation nestedAnnotation : annotation.getAnnotations()) {
+					createRecursiveCopy(document,nestedAnnotation);
+				}
+			}
 		}
 	}
 	
