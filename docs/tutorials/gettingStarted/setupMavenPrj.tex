@@ -1,6 +1,6 @@
 \noindent In this tutorial, we describe steps for setting up a Maven
 project that uses {\tt libSBOLj} in Eclipse. Another tutorial follows this one which explains how we use SBOL
-2.0 to represent the function of a state-of-the-art design, namely a
+2 to represent the function of a state-of-the-art design, namely a
 CRISPR-based repression module Kiani~\textit{et
   al.}~\cite{kiani2014crispr} using the Java library. 
 
@@ -92,12 +92,12 @@ We are now ready to add libSBOLj as a Maven dependency. This can be easily done 
 % \begin{center}
 %   \includegraphics[width=0.55\textwidth]{figures/addMavenDependency1}
 % \end{center}
-In the popup window shown below, fill in the information for the {\tt libSBOLj} library. The group ID is {\bf org.sbolstandard}, and the artifact ID is {\bf libSBOLj} and the version is {\bf 2.1.0}. 
+In the popup window shown below, fill in the information for the {\tt libSBOLj} library. The group ID is {\bf org.sbolstandard}, and the artifact ID is {\bf libSBOLj} and the version is {\bf 2.2.0}. 
 \begin{center}
   \includegraphics[width=0.55\textwidth]{figures/addMavenDependency2}
 \end{center}
 
-After this dependency is added, Maven automatically brings in the  {\tt libSBOLj-2.1.0.jar} and its dependencies from the Maven Central Repository, and places them under the {\bf Maven Dependencies} directory. The user will need to right click on the project directory and select {\bf Maven $\rightarrow$ Update Project}. Within this window, the user needs to ensure that {\bf Force Update of Snapshots/Releases} is checked. 
+After this dependency is added, Maven automatically brings in the  {\tt libSBOLj-2.2.0.jar} and its dependencies from the Maven Central Repository, and places them under the {\bf Maven Dependencies} directory. The user will need to right click on the project directory and select {\bf Maven $\rightarrow$ Update Project}. Within this window, the user needs to ensure that {\bf Force Update of Snapshots/Releases} is checked. 
 \begin{center}
   \includegraphics[width=0.8\textwidth]{figures/addMavenDependency3}
 \end{center}

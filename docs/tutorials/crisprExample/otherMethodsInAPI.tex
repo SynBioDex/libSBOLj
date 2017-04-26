@@ -26,7 +26,7 @@ gRNA_b_gene.getSequenceConstraint("gRNA_b_gene_constraint1");
 For any optional field that is not a set or list, the library provides methods to set its value, unset its value to \lstinline+null+, and check its value. The only exceptions where these methods are not available are the following three fields in the \lstinline+Identified+ class: \lstinline+persistentIdentity+, \lstinline+displayId+, and
 \lstinline+version+.  These fields cannot be edited, since they are crucial to maintaining
 compliant SBOL objects (see Section~11.2 ``Compliant SBOL Objects'' of the~\href{http://sbolstandard.org/downloads/specification-data-model-2-0/}{Specification
-  (Data Model 2.0)} for more details).  The example code below first sets the name of the \lstinline+CRISPR_Template+ \sbol{ModuleDefinition} with some garbage characters, it then unsets the name and rename it with a clear one. The code then sets the description of this object to the source of its bibliographic information. 
+  (Data Model 2)} for more details).  The example code below first sets the name of the \lstinline+CRISPR_Template+ \sbol{ModuleDefinition} with some garbage characters, it then unsets the name and rename it with a clear one. The code then sets the description of this object to the source of its bibliographic information. 
 
 \vspace{\abovedisplayskip}
 \begin{minipage}{0.95\textwidth} 
@@ -93,9 +93,9 @@ In order to allow representation of data that can not currently be represented
 by the SBOL data model or data that are outside the scope of SBOL,
 SBOL offers developers the ability to embed custom data as annotations
 of SBOL objects and as generic top-level objects. These data are exchanged unmodified between
-software tools that adopt {\tt libSBOLj 2.0}. 
+software tools that adopt {\tt libSBOLj 2}. 
 
-Each object in SBOL 2.0 can be annotated by having any number of
+Each object in SBOL 2 can be annotated by having any number of
 \lstinline+Annotation+ objects that store data in the form of name/value 
 property pairs. The name of an annotation must be a \lstinline+QName+
 object, which is composed of a namespace, a
@@ -160,7 +160,7 @@ pConst.createAnnotation(
 \end{minipage}
 
 \subsection*{Creating and Editing Child Objects}
-Certain classes in the SBOL 2.0 data model are allowed to own non-\sbol{TopLevel} child
+Certain classes in the SBOL 2 data model are allowed to own non-\sbol{TopLevel} child
 objects that are also part of the data model. For example, all
 \sbol{SequenceConstraints} we created previously are child objects of
 their corresponding parent \sbol{ComponentDefinitions}, and all
@@ -192,8 +192,8 @@ pConst_alt.addSequence(pConst_alt_seq);
 
 \subsection*{Validation}
 Since version 2.1.0 of {\tt libSBOLj}, validation rules defined in
-the~\href{http://sbolstandard.org/downloads/specification-data-model-2-0/}{SBOL
-  Version 2.0.1 specification} that are at least partially
+the~\href{http://sbolstandard.org/wp-content/uploads/2016/10/BBF-RFC112-SBOL2.1.0.pdf}{SBOL
+  Version 2.1.0 specification} that are at least partially
 machine-chackable have been encoded in the library. This enables users
 of the library to automatically validate an SBOL file on reading
 and/or during construction of SBOL objects using the library's API
@@ -231,8 +231,8 @@ dereference to objects that exist in the same document. A
 all SBOL objects' identity URIs in the given SBOL document are
 compliant. Lastly, setting \lstinline+bestPractice+ to
 \lstinline+true+ enables the validator to check rules with the
-RECOMMENDED condition in the~\href{http://sbolstandard.org/downloads/specification-data-model-2-0/}{SBOL
-  Version 2.0.1 specification}.
+RECOMMENDED condition in the~\href{http://sbolstandard.org/wp-content/uploads/2016/10/BBF-RFC112-SBOL2.1.0.pdf}{SBOL
+  Version 2.1.0 specification}.
 
 \subsection*{Serialization}
 The library supports reading and writing data encoded in RDF/XML
