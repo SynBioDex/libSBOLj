@@ -1678,6 +1678,11 @@ public class SBOLDocument {
 	 * </ul>
 	 */
 	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
+		if ((URIprefix==null || URIcompliance.extractURIprefix(topLevel.getIdentity()).equals(URIprefix)) &&
+			(displayId==null || topLevel.getDisplayId().equals(displayId)) &&
+			(version==null || topLevel.getVersion().equals(version))) {
+			return topLevel;
+		}
 		TopLevel renamedTopLevel = createCopy(topLevel,URIprefix,displayId,version);
 		removeTopLevel(topLevel);
 		updateReferences(topLevel.getIdentity(),renamedTopLevel.getIdentity());
