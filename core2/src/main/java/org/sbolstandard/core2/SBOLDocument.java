@@ -1382,18 +1382,6 @@ public class SBOLDocument {
 	 */
 	private void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
 		if (document.getTopLevel(topLevel.getIdentity())!=null) return;
-		for (Annotation annotation : topLevel.getAnnotations()) {
-			if (annotation.isURIValue()) {
-				TopLevel gtl = getTopLevel(annotation.getURIValue());
-				if (gtl != null) 
-					createRecursiveCopy(document,gtl);
-			} else if (annotation.isNestedAnnotations()) {
-				for (Annotation nestedAnnotation : annotation.getAnnotations()) {
-					createRecursiveCopy(document,nestedAnnotation);
-				}
-			}
-			// TODO: need to handle nested annotations
-		}
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model) {
 			document.createCopy(topLevel);
 		} else if (topLevel instanceof Collection) {
@@ -1427,6 +1415,17 @@ public class SBOLDocument {
 				document.createCopy(model);
 			}
 			document.createCopy(topLevel);
+		}
+		for (Annotation annotation : topLevel.getAnnotations()) {
+			if (annotation.isURIValue()) {
+				TopLevel gtl = getTopLevel(annotation.getURIValue());
+				if (gtl != null) 
+					createRecursiveCopy(document,gtl);
+			} else if (annotation.isNestedAnnotations()) {
+				for (Annotation nestedAnnotation : annotation.getAnnotations()) {
+					createRecursiveCopy(document,nestedAnnotation);
+				}
+			}
 		}
 	}
 	
@@ -1679,6 +1678,11 @@ public class SBOLDocument {
 	 * </ul>
 	 */
 	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
+		if ((URIprefix==null || URIcompliance.extractURIprefix(topLevel.getIdentity()).equals(URIprefix)) &&
+			(displayId==null || topLevel.getDisplayId().equals(displayId)) &&
+			(version==null || topLevel.getVersion().equals(version))) {
+			return topLevel;
+		}
 		TopLevel renamedTopLevel = createCopy(topLevel,URIprefix,displayId,version);
 		removeTopLevel(topLevel);
 		updateReferences(topLevel.getIdentity(),renamedTopLevel.getIdentity());

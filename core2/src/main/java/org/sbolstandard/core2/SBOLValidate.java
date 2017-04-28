@@ -1616,7 +1616,7 @@ public class SBOLValidate {
 					doc = newDoc;
 				}
 			}
-			if (!URIPrefix.equals("")) {
+			if (!URIPrefix.equals("") && doc.getTopLevels().size() > 0) {
 				System.out.println("Updating URI prefix to: " + URIPrefix);
 				if (version != null) {
 					System.out.println("Updating Version to: " + version);
