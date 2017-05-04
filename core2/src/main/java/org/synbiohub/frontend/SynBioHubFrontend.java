@@ -254,7 +254,13 @@ public class SynBioHubFrontend
         	}
         }
         url += encodeUri(textQuery);
-       	url += "/?offset="+query.getOffset() + "&" + "limit="+query.getLimit();
+        if (query.getOffset()!=null && query.getLimit()!=null) {
+        	url += "/?offset="+query.getOffset() + "&" + "limit="+query.getLimit();
+        } else if (query.getOffset()!=null) {
+        	url += "/?offset="+query.getOffset();
+        } else if (query.getLimit()!=null) {
+        	url += "/?limit="+query.getLimit();
+        }
 
        	//System.out.println(url);
         Gson gson = new Gson();
