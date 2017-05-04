@@ -54,29 +54,31 @@ class readTester {
 			//doc.createSequence("test_U49845_seq", "1", "AGCT", Sequence.IUPAC_DNA);
 			//System.out.println("BEFORE");
 			//doc.write(System.out);
-			SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/GenTog.xml");
-			for (TopLevel topLevel : doc.getTopLevels()) {
-				if (topLevel.getIdentity().toString().startsWith("http://synbiohub.org")) {
-					doc.removeTopLevel(topLevel);
-				}
-			}
-			SBOLDocument doc2 = doc.changeURIPrefixVersion("http://newUri.org", "2.0");
-			SBOLValidate.validateSBOL(doc2, true, true, true);	
-			if (SBOLValidate.getNumErrors() > 0) {
-				for (String error : SBOLValidate.getErrors()) {
-					System.out.println(error+"\n");
-				}
-			}
+//			SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/GenTog.xml");
+//			for (TopLevel topLevel : doc.getTopLevels()) {
+//				if (topLevel.getIdentity().toString().startsWith("http://synbiohub.org")) {
+//					doc.removeTopLevel(topLevel);
+//				}
+//			}
+//			SBOLDocument doc2 = doc.changeURIPrefixVersion("http://newUri.org", "2.0");
+//			SBOLValidate.validateSBOL(doc2, true, true, true);	
+//			if (SBOLValidate.getNumErrors() > 0) {
+//				for (String error : SBOLValidate.getErrors()) {
+//					System.out.println(error+"\n");
+//				}
+//			}
 			//doc2.write(System.out);
 //						
-//			SBOLDocument doc2 = new SBOLDocument();
-//			doc2.setDefaultURIprefix("http://dummy.org");
-//			//doc2.setComplete(true);
+			SBOLDocument doc2 = new SBOLDocument();
+			doc2.setDefaultURIprefix("http://dummy.org");
+			doc2.setComplete(true);
 //			ComponentDefinition cd = doc2.createComponentDefinition("testCD", "1", ComponentDefinition.DNA);
 //			//cd.addSequence(URI.create("http://myfakesequence.com"));
 //			
-//			SynBioHubFrontend sfe = doc2.addRegistry("http://localhost:7777","http://synbiohub.org");
-			//System.out.println(sfe.getRootCollectionMetadata());
+			SynBioHubFrontend sfe = doc2.addRegistry("https://synbiohub.cidarlab.org","http://synbiohub.cidarlab.org");
+			HashSet<URI> collections = new HashSet<URI>();
+			collections.add(URI.create("http://synbiohub.cidarlab.org/public/cidar_ice/cidarlab_ice_folder_5/current"));
+			System.out.println(sfe.getMatchingComponentDefinitionMetadata(null, null, null, collections, 0, 10));
 //			HashSet<URI> types = new HashSet<URI>();
 //			types.add(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"));
 //			HashSet<URI> roles = new HashSet<URI>();
