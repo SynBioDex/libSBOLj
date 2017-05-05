@@ -38,7 +38,9 @@ class readTester {
 	public static void main(String[] args) {
 
 		try {
-			//SBOLDocument doc3 = SBOLReader.read("/Users/myers/repressionModel.xml");
+			SBOLReader.setURIPrefix("http://dummy.org");
+			SBOLDocument doc3 = SBOLReader.read("/Users/myers/Downloads/R0040B22");
+			doc3.write(System.out);
 			//ModuleDefinition md = doc3.getModuleDefinition(URI.create("http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/1.0"));
 			//System.out.println(md.getWasDerivedFrom());
 			//SBOLValidate.validate("/Users/myers/Downloads/GTTest.xml", "http://www.async.ece.utah.edu", true, true, true,

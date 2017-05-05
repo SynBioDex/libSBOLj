@@ -1,5 +1,63 @@
 <?xml version="1.0" ?>
 <rdf:RDF xmlns:prov="http://www.w3.org/ns/prov#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sbol="http://sbols.org/v2#" xmlns:dcterms="http://purl.org/dc/terms/">
+  <sbol:ComponentDefinition rdf:about="urn:3b787f85-3d90-4519-a124-d0041b7da66b">
+    <sbol:persistentIdentity rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b"/>
+    <sbol:displayId>Reporter</sbol:displayId>
+    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000110"/>
+    <sbol:component>
+      <sbol:Component rdf:about="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component1">
+        <sbol:persistentIdentity rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component1"/>
+        <sbol:displayId>component1</sbol:displayId>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://partsregistry.org/part/BBa_E0040"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:component>
+      <sbol:Component rdf:about="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component0">
+        <sbol:persistentIdentity rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component0"/>
+        <sbol:displayId>component0</sbol:displayId>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="urn:a8ebdf89-b8ad-48d5-a7e2-6cba33225e17"/>
+      </sbol:Component>
+    </sbol:component>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="urn:3aec1249-b602-47e1-b919-8826ee71d6be">
+        <sbol:persistentIdentity rdf:resource="urn:3aec1249-b602-47e1-b919-8826ee71d6be"/>
+        <sbol:displayId>annotation2</sbol:displayId>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="urn:3aec1249-b602-47e1-b919-8826ee71d6be/genericLocation">
+            <sbol:persistentIdentity rdf:resource="urn:3aec1249-b602-47e1-b919-8826ee71d6be/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:GenericLocation>
+        </sbol:location>
+        <sbol:component rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component1"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceAnnotation>
+      <sbol:SequenceAnnotation rdf:about="urn:f6071601-1d80-4bd1-9142-21cd931cc545">
+        <sbol:persistentIdentity rdf:resource="urn:f6071601-1d80-4bd1-9142-21cd931cc545"/>
+        <sbol:displayId>annotation1</sbol:displayId>
+        <sbol:location>
+          <sbol:GenericLocation rdf:about="urn:f6071601-1d80-4bd1-9142-21cd931cc545/genericLocation">
+            <sbol:persistentIdentity rdf:resource="urn:f6071601-1d80-4bd1-9142-21cd931cc545/genericLocation"/>
+            <sbol:displayId>genericLocation</sbol:displayId>
+            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
+          </sbol:GenericLocation>
+        </sbol:location>
+        <sbol:component rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component0"/>
+      </sbol:SequenceAnnotation>
+    </sbol:sequenceAnnotation>
+    <sbol:sequenceConstraint>
+      <sbol:SequenceConstraint rdf:about="urn:3b787f85-3d90-4519-a124-d0041b7da66b/sequenceConstraint1">
+        <sbol:restriction rdf:resource="http://sbols.org/v2#precedes"/>
+        <sbol:subject rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component0"/>
+        <sbol:object rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component1"/>
+      </sbol:SequenceConstraint>
+    </sbol:sequenceConstraint>
+  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="urn:c951c2cc-8caa-46eb-9439-4680574ee169">
     <sbol:persistentIdentity rdf:resource="urn:c951c2cc-8caa-46eb-9439-4680574ee169"/>
     <sbol:displayId>Repressor1</sbol:displayId>
@@ -75,26 +133,6 @@
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000141"/>
   </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_E0040">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_E0040"/>
-    <sbol:displayId>BBa_E0040</sbol:displayId>
-    <dcterms:title>GFP</dcterms:title>
-    <dcterms:description>green fluorescent protein derived from jellyfish Aequeora victoria wild-type GFP (SwissProt: P42212</dcterms:description>
-    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000104"/>
-    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_5309"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_C0040">
-    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_C0040"/>
-    <sbol:displayId>BBa_C0040</sbol:displayId>
-    <dcterms:title>tetR</dcterms:title>
-    <dcterms:description>tetracycline repressor from transposon Tn10 (+LVA)</dcterms:description>
-    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
-    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_154"/>
-  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="urn:da0805ac-06ea-4de8-98dc-fc731d9c37a8">
     <sbol:persistentIdentity rdf:resource="urn:da0805ac-06ea-4de8-98dc-fc731d9c37a8"/>
     <sbol:displayId>pIKERightCasette</sbol:displayId>
@@ -102,6 +140,14 @@
     <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000110"/>
+    <sbol:component>
+      <sbol:Component rdf:about="urn:da0805ac-06ea-4de8-98dc-fc731d9c37a8/component0">
+        <sbol:persistentIdentity rdf:resource="urn:da0805ac-06ea-4de8-98dc-fc731d9c37a8/component0"/>
+        <sbol:displayId>component0</sbol:displayId>
+        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
+        <sbol:definition rdf:resource="http://partsregistry.org/part/BBa_R0010"/>
+      </sbol:Component>
+    </sbol:component>
     <sbol:component>
       <sbol:Component rdf:about="urn:da0805ac-06ea-4de8-98dc-fc731d9c37a8/component3">
         <sbol:persistentIdentity rdf:resource="urn:da0805ac-06ea-4de8-98dc-fc731d9c37a8/component3"/>
@@ -124,14 +170,6 @@
         <sbol:displayId>component2</sbol:displayId>
         <sbol:access rdf:resource="http://sbols.org/v2#public"/>
         <sbol:definition rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
-      <sbol:Component rdf:about="urn:da0805ac-06ea-4de8-98dc-fc731d9c37a8/component0">
-        <sbol:persistentIdentity rdf:resource="urn:da0805ac-06ea-4de8-98dc-fc731d9c37a8/component0"/>
-        <sbol:displayId>component0</sbol:displayId>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://partsregistry.org/part/BBa_R0010"/>
       </sbol:Component>
     </sbol:component>
     <sbol:sequenceAnnotation>
@@ -214,6 +252,26 @@
       </sbol:SequenceConstraint>
     </sbol:sequenceConstraint>
   </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_E0040">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_E0040"/>
+    <sbol:displayId>BBa_E0040</sbol:displayId>
+    <dcterms:title>GFP</dcterms:title>
+    <dcterms:description>green fluorescent protein derived from jellyfish Aequeora victoria wild-type GFP (SwissProt: P42212</dcterms:description>
+    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000104"/>
+    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_5309"/>
+  </sbol:ComponentDefinition>
+  <sbol:ComponentDefinition rdf:about="http://partsregistry.org/part/BBa_C0040">
+    <sbol:persistentIdentity rdf:resource="http://partsregistry.org/part/BBa_C0040"/>
+    <sbol:displayId>BBa_C0040</sbol:displayId>
+    <dcterms:title>tetR</dcterms:title>
+    <dcterms:description>tetracycline repressor from transposon Tn10 (+LVA)</dcterms:description>
+    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
+    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
+    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000316"/>
+    <sbol:sequence rdf:resource="http://partsregistry.org/seq/partseq_154"/>
+  </sbol:ComponentDefinition>
   <sbol:ComponentDefinition rdf:about="urn:a8ebdf89-b8ad-48d5-a7e2-6cba33225e17">
     <sbol:persistentIdentity rdf:resource="urn:a8ebdf89-b8ad-48d5-a7e2-6cba33225e17"/>
     <sbol:displayId>rbsB</sbol:displayId>
@@ -227,64 +285,6 @@
     <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
     <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
     <sbol:role rdf:resource="http://identifiers.org/so/SO:0000139"/>
-  </sbol:ComponentDefinition>
-  <sbol:ComponentDefinition rdf:about="urn:3b787f85-3d90-4519-a124-d0041b7da66b">
-    <sbol:persistentIdentity rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b"/>
-    <sbol:displayId>Reporter</sbol:displayId>
-    <sbol:type rdf:resource="http://identifiers.org/so/SO:0000987"/>
-    <sbol:type rdf:resource="http://www.biopax.org/release/biopax-level3.owl#DnaRegion"/>
-    <sbol:role rdf:resource="http://identifiers.org/so/SO:0000110"/>
-    <sbol:component>
-      <sbol:Component rdf:about="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component0">
-        <sbol:persistentIdentity rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component0"/>
-        <sbol:displayId>component0</sbol:displayId>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="urn:a8ebdf89-b8ad-48d5-a7e2-6cba33225e17"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:component>
-      <sbol:Component rdf:about="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component1">
-        <sbol:persistentIdentity rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component1"/>
-        <sbol:displayId>component1</sbol:displayId>
-        <sbol:access rdf:resource="http://sbols.org/v2#public"/>
-        <sbol:definition rdf:resource="http://partsregistry.org/part/BBa_E0040"/>
-      </sbol:Component>
-    </sbol:component>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="urn:3aec1249-b602-47e1-b919-8826ee71d6be">
-        <sbol:persistentIdentity rdf:resource="urn:3aec1249-b602-47e1-b919-8826ee71d6be"/>
-        <sbol:displayId>annotation2</sbol:displayId>
-        <sbol:location>
-          <sbol:GenericLocation rdf:about="urn:3aec1249-b602-47e1-b919-8826ee71d6be/genericLocation">
-            <sbol:persistentIdentity rdf:resource="urn:3aec1249-b602-47e1-b919-8826ee71d6be/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:GenericLocation>
-        </sbol:location>
-        <sbol:component rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component1"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceAnnotation>
-      <sbol:SequenceAnnotation rdf:about="urn:f6071601-1d80-4bd1-9142-21cd931cc545">
-        <sbol:persistentIdentity rdf:resource="urn:f6071601-1d80-4bd1-9142-21cd931cc545"/>
-        <sbol:displayId>annotation1</sbol:displayId>
-        <sbol:location>
-          <sbol:GenericLocation rdf:about="urn:f6071601-1d80-4bd1-9142-21cd931cc545/genericLocation">
-            <sbol:persistentIdentity rdf:resource="urn:f6071601-1d80-4bd1-9142-21cd931cc545/genericLocation"/>
-            <sbol:displayId>genericLocation</sbol:displayId>
-            <sbol:Orientation rdf:resource="http://sbols.org/v2#inline"/>
-          </sbol:GenericLocation>
-        </sbol:location>
-        <sbol:component rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component0"/>
-      </sbol:SequenceAnnotation>
-    </sbol:sequenceAnnotation>
-    <sbol:sequenceConstraint>
-      <sbol:SequenceConstraint rdf:about="urn:3b787f85-3d90-4519-a124-d0041b7da66b/sequenceConstraint1">
-        <sbol:restriction rdf:resource="http://sbols.org/v2#precedes"/>
-        <sbol:subject rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component0"/>
-        <sbol:object rdf:resource="urn:3b787f85-3d90-4519-a124-d0041b7da66b/component1"/>
-      </sbol:SequenceConstraint>
-    </sbol:sequenceConstraint>
   </sbol:ComponentDefinition>
   <sbol:Sequence rdf:about="http://partsregistry.org/seq/partseq_185">
     <sbol:persistentIdentity rdf:resource="http://partsregistry.org/seq/partseq_185"/>
