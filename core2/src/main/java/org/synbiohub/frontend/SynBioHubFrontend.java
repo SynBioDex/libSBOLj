@@ -254,7 +254,13 @@ public class SynBioHubFrontend
         	}
         }
         url += encodeUri(textQuery);
-       	url += "/?offset="+query.getOffset() + "&" + "limit="+query.getLimit();
+        if (query.getOffset()!=null && query.getLimit()!=null) {
+        	url += "/?offset="+query.getOffset() + "&" + "limit="+query.getLimit();
+        } else if (query.getOffset()!=null) {
+        	url += "/?offset="+query.getOffset();
+        } else if (query.getLimit()!=null) {
+        	url += "/?limit="+query.getLimit();
+        }
 
        	//System.out.println(url);
         Gson gson = new Gson();
@@ -473,7 +479,7 @@ public class SynBioHubFrontend
      * @param name The submission name
      * @param description The submission description
      * @param citations The pubMedIds for this submission
-     * @param collections A comma separated list of keywords
+     * @param collections A comma separated list of collections
      * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge
      * @param document the SBOL document to submit
      * 

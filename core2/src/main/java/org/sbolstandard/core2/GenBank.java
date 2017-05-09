@@ -892,11 +892,11 @@ class GenBank {
 		String strLine;
 		int featureCnt = 0;
 		int refCnt = 0;
+		nextLine = null;
 		while (true) {
 			boolean cont = false;
 			String id = "";
 			String version = "";
-			nextLine = null;
 			featureMode = false;
 			originMode = false;
 			StringBuilder sbSequence = new StringBuilder();
@@ -960,13 +960,17 @@ class GenBank {
 					id = accession;
 				} else if (strLine.startsWith("VERSION")) {
 					String[] strSplit = strLine.split("\\s+");
-					if (strSplit[1].split("\\.").length > 1) {
-						version = strSplit[1].split("\\.")[1];
-					}
-					if (!id.equals(strSplit[1]) && !id.equals(strSplit[1].split("\\.")[0])) {
-						throw new SBOLConversionException("Warning: id in version does not match id in accession");
-					}
-					id = id.replaceAll("\\.", "_");
+					id = URIcompliance.fixDisplayId(id);
+					if (!id.equals(URIcompliance.fixDisplayId(strSplit[1]))) {
+						if (strSplit[1].split("\\.").length > 1) {
+							version = strSplit[1].split("\\.")[strSplit[1].split("\\.").length-1];
+						}
+						String vId = URIcompliance.fixDisplayId(strSplit[1].split("\\.")[0]);
+						if (!id.equals(vId)) {
+							throw new SBOLConversionException("Warning: id in version does not match id in accession");
+						}
+					} 
+					//id = id.replaceAll("\\.", "_");
 					if (strSplit.length > 2) {
 						annotation = new Annotation(new QName(GBNAMESPACE,GINUMBER,GBPREFIX),strSplit[2]);
 						annotations.add(annotation);
