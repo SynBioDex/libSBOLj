@@ -892,11 +892,11 @@ class GenBank {
 		String strLine;
 		int featureCnt = 0;
 		int refCnt = 0;
+		nextLine = null;
 		while (true) {
 			boolean cont = false;
 			String id = "";
 			String version = "";
-			nextLine = null;
 			featureMode = false;
 			originMode = false;
 			StringBuilder sbSequence = new StringBuilder();
