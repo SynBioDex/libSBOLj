@@ -111,7 +111,7 @@ class GenBank {
 			}
 		}
 		if (seq == null) {
-			throw new SBOLConversionException("ComponentDefintion " + componentDefinition.getIdentity() +
+			throw new SBOLConversionException("ComponentDefinition " + componentDefinition.getIdentity() +
 								" does not have an IUPAC sequence.");
 		}
 		int size = seq.getElements().length();
@@ -394,7 +394,7 @@ class GenBank {
 			}
 		}
 		if (type == null) {
-			throw new SBOLConversionException("ComponentDefintion " + componentDefinition.getIdentity() +
+			throw new SBOLConversionException("ComponentDefinition " + componentDefinition.getIdentity() +
 							" is not DNA or RNA type.");
 		}
 		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,MOLECULE,GBPREFIX));
