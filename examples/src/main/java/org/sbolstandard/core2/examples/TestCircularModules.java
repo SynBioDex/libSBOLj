@@ -14,13 +14,14 @@ public class TestCircularModules {
 		tree.setRandomSeed(12);
 		for (int i = 0; i < numOfRuns ; i++) {
 			boolean exceptionCaught = false;
-			String expectedError = null;
+			//String expectedError = null;
 			try {
-				 expectedError = tree.generateModel();
+				 tree.generateModel();				 
 			} catch (SBOLValidationException e) {
-				exceptionCaught = true;
-				
-				if (!e.getMessage().contains(expectedError)) {
+				exceptionCaught = true;				
+				//System.out.println("expectedError = " + expectedError);
+				//System.out.println("validation exception e = " + e);
+				if (!e.getMessage().contains(tree.getExpectedError())) {
 					throw new Exception("Unexpected exception!");
 				}
 			}  

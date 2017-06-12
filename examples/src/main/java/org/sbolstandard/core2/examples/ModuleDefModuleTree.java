@@ -16,11 +16,12 @@ public class ModuleDefModuleTree {
 	private Random rand = new Random();
 	private int maxDepth;
 	private int numOfModules;
-	private String expectedError = null;
+	private String expectedError;
 	
 	public ModuleDefModuleTree(int maxDepth, int numOfModules) {
 		this.maxDepth = maxDepth;
 		this.numOfModules = numOfModules;
+		this.expectedError = null;
 	}
 
 	public void setRandomSeed(long seed) {
@@ -46,7 +47,8 @@ public class ModuleDefModuleTree {
 		for (int i=0; i<selectedDepth; i++) {
 			addrSelfRef.add(randInt(1, numOfModules));
 		}
-		String expectedError = createModuleMDGraph(doc, depth, mdNames, address, md1, addrSelfRef);
+		//String expectedError = 
+		createModuleMDGraph(doc, depth, mdNames, address, md1, addrSelfRef);
 		SBOLWriter.write(doc, "TestCircularModules.rdf");
 		System.out.println("Finished writing.");
 		//SBOLReader.read("/Users/zhangz/libSBOLproject/libSBOLj/examples/TestCircularModules.rdf");
@@ -54,13 +56,22 @@ public class ModuleDefModuleTree {
 		SBOLValidate.validateSBOL(doc, true, true, true);
 		if (SBOLValidate.getNumErrors() > 0) {
 			for (String error : SBOLValidate.getErrors()) {
-				System.out.println(error);
+				System.out.println("TEST: error = " + error);
 			}			
 		}
+		System.out.println("@ModuleDefModuleTree expectedError = " + expectedError);
 		return expectedError;
 	}
 	
-	public String createModuleMDGraph(SBOLDocument doc, int depth, ArrayList<String> mdNames, ArrayList<Integer> address, 
+	public String getExpectedError() {
+		return expectedError;
+	}
+
+	public void setExpectedError(String expectedError) {
+		this.expectedError = expectedError;
+	}
+
+	public void createModuleMDGraph(SBOLDocument doc, int depth, ArrayList<String> mdNames, ArrayList<Integer> address, 
 			ModuleDefinition parentMd, ArrayList<Integer> addrSelfRef) throws SBOLValidationException {
 		//System.out.println("depth = " + depth);		
 		if (depth > 0) {
@@ -74,11 +85,11 @@ public class ModuleDefModuleTree {
 					System.out.println("address = " + intArrayListToString(address));
 					System.out.println("addrSelfRef = " + intArrayListToString(addrSelfRef));
 					if (circleRefIndex == mdNames.size() -1 ) {
-						//System.out.println("Expect 11704");
+						System.out.println("Expect 11704");
 						expectedError = "11704";
 					}
 					else {
-						//System.out.println("Expect 11705");
+						System.out.println("Expect 11705");
 						expectedError = "11705";
 					}
 					System.out.println("Last module displayId = " + mId);
@@ -99,7 +110,7 @@ public class ModuleDefModuleTree {
 				address.remove(address.size()-1);				
 			}
 		}
-		return expectedError;
+		//return expectedError;
 	}
 
 	private static String intArrayListToString(ArrayList<Integer> address) {
