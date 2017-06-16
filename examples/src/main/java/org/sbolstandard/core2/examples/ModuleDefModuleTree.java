@@ -18,10 +18,16 @@ public class ModuleDefModuleTree {
 	private int numOfModules;
 	private String expectedError;
 	
+	/**
+	 * Address (depth and location on a layer) of the module designated to create a circular reference to 
+	 */
+	private ArrayList<Integer> addrCirfRef;
+	
 	public ModuleDefModuleTree(int maxDepth, int numOfModules) {
 		this.maxDepth = maxDepth;
 		this.numOfModules = numOfModules;
 		this.expectedError = null;
+		this.addrCirfRef = new ArrayList<Integer>();
 	}
 
 	public void setRandomSeed(long seed) {
@@ -36,19 +42,21 @@ public class ModuleDefModuleTree {
 		doc.setComplete(true);
 		doc.setCreateDefaults(true);
 
-		ModuleDefinition md1;
-		md1 = doc.createModuleDefinition("md1", version);
+		ModuleDefinition md1 = doc.createModuleDefinition("md_top", version);
 		ArrayList<String> mdNames = new ArrayList<String>();
-		mdNames.add("md1");
+		mdNames.add("md_top");
 		int depth = maxDepth;
 		ArrayList<Integer> address = new ArrayList<Integer>();
 		int selectedDepth = randInt(1, maxDepth);
-		ArrayList<Integer> addrSelfRef = new ArrayList<Integer>();
+		
 		for (int i=0; i<selectedDepth; i++) {
-			addrSelfRef.add(randInt(1, numOfModules));
+			addrCirfRef.add(randInt(1, numOfModules));
 		}
-		//String expectedError = 
-		createModuleMDGraph(doc, depth, mdNames, address, md1, addrSelfRef);
+		System.out.println("depth = " + depth);
+		System.out.println("mdNames = " + mdNames);
+		System.out.println("address = " + address);
+		System.out.println("addrSelfRef = " + addrCirfRef);
+		createModuleMDGraph(doc, depth, mdNames, address, md1);
 		SBOLWriter.write(doc, "TestCircularModules.rdf");
 		System.out.println("Finished writing.");
 		//SBOLReader.read("/Users/zhangz/libSBOLproject/libSBOLj/examples/TestCircularModules.rdf");
@@ -59,7 +67,6 @@ public class ModuleDefModuleTree {
 				System.out.println("TEST: error = " + error);
 			}			
 		}
-		System.out.println("@ModuleDefModuleTree expectedError = " + expectedError);
 		return expectedError;
 	}
 	
@@ -72,19 +79,25 @@ public class ModuleDefModuleTree {
 	}
 
 	public void createModuleMDGraph(SBOLDocument doc, int depth, ArrayList<String> mdNames, ArrayList<Integer> address, 
-			ModuleDefinition parentMd, ArrayList<Integer> addrSelfRef) throws SBOLValidationException {
+			ModuleDefinition parentMd) throws SBOLValidationException {
 		//System.out.println("depth = " + depth);		
 		if (depth > 0) {
 			for (int i=1; i<=numOfModules; i++) {				
 				address.add(i);
+				System.out.println("address = " + intArrayListToString(address));
+				System.out.println("addrSelfRef = " + intArrayListToString(addrCirfRef));
 				String mdId ="md_" + intArrayListToString(address);			
 				String mId = "m_" + intArrayListToString(address);
-				if (intArrayListToString(address).equals(intArrayListToString(addrSelfRef))) {
-					int circleRefIndex = randInt(0,mdNames.size()-1);
-					System.out.println("circleRefIndex = " + circleRefIndex);
+				System.out.println("mdId = " + mdId);
+				//System.out.println("mId = " + mId);
+				if (intArrayListToString(address).equals(intArrayListToString(addrCirfRef))) {
+					int circularRefIndex = randInt(0, mdNames.size()-1);
+					// int circleRefIndex = mdNames.size()-1; // Force 10704 to occur. 
+					System.out.println("circleRefIndex = " + circularRefIndex);
 					System.out.println("address = " + intArrayListToString(address));
-					System.out.println("addrSelfRef = " + intArrayListToString(addrSelfRef));
-					if (circleRefIndex == mdNames.size() -1 ) {
+					System.out.println("addrCirRef = " + intArrayListToString(addrCirfRef));
+					System.out.println("mdNames = " + mdNames);
+					if (circularRefIndex == mdNames.size() -1 ) {
 						System.out.println("Expect 11704");
 						expectedError = "11704";
 					}
@@ -92,10 +105,12 @@ public class ModuleDefModuleTree {
 						System.out.println("Expect 11705");
 						expectedError = "11705";
 					}
-					System.out.println("Last module displayId = " + mId);
-					System.out.println(mdNames);
-					System.out.println("mdName = " + mdNames.get(circleRefIndex));
-					parentMd.createModule(mId, mdNames.get(circleRefIndex));
+					System.out.println("Last module displayId (mId) = " + mId);
+					System.out.println("parentMd displayId = " + parentMd.getDisplayId());
+					System.out.println("mdName = " + mdNames.get(circularRefIndex));
+					// create the circular reference from module with mId to module definition selected by mdNames.get(circularRefIndex).
+					parentMd.createModule(mId, mdNames.get(circularRefIndex)); 
+					
 				}
 				else {
 					ModuleDefinition childMd = doc.createModuleDefinition(mdId);
@@ -103,14 +118,14 @@ public class ModuleDefModuleTree {
 					mdNames.add(mdId);
 					//System.out.println(mdId);
 					//System.out.println("Interm. Module displayId = " + m.getDisplayId());
-					createModuleMDGraph(doc, depth-1, mdNames, address, childMd, addrSelfRef);
+					System.out.println("mdNames = " + mdNames);
+					createModuleMDGraph(doc, depth-1, mdNames, address, childMd);
 					mdNames.remove(mdId);
 				}
 				
 				address.remove(address.size()-1);				
 			}
 		}
-		//return expectedError;
 	}
 
 	private static String intArrayListToString(ArrayList<Integer> address) {
