@@ -1602,7 +1602,133 @@ public class SBOLDocument {
 		}
 	}
 
-	private void changeURIPrefixVersion(List<Annotation> annotations,String URIPrefix,String version) throws SBOLValidationException {
+	private void updateReferences(List<Annotation> annotations,HashMap<URI,URI> uriMap) {
+		for (Annotation annotation : annotations) {
+			if (annotation.isURIValue()) {
+				if (uriMap.get(annotation.getURIValue())!=null) {
+					annotation.setURIValue(uriMap.get(annotation.getURIValue()));
+				}
+			} else if (annotation.isNestedAnnotations()) {
+				updateReferences(annotation.getAnnotations(),uriMap);
+			}
+		}
+	}
+	
+	private void updateReferences(Identified identified,HashMap<URI,URI> uriMap) {
+		updateReferences(identified.getAnnotations(),uriMap);
+	}
+	
+	// TODO: need to update persistentIdentities too
+	private void updateReferences(HashMap<URI,URI> uriMap) throws SBOLValidationException {
+		for (Collection collection : getCollections()) {
+			for (URI memberURI : collection.getMemberURIs()) {
+				if (uriMap.get(memberURI)!=null) {
+					collection.removeMember(memberURI);
+					collection.addMember(uriMap.get(memberURI));
+				}
+			}
+			updateReferences(collection,uriMap);
+		}
+		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
+			updateReferences(componentDefinition,uriMap);
+			for (Component component : componentDefinition.getComponents()) {
+				if (uriMap.get(component.getDefinitionURI())!=null) {
+					component.setDefinition(uriMap.get(component.getDefinitionURI()));
+					for (MapsTo mapsTo : component.getMapsTos()) {
+						ComponentDefinition cd = getComponentDefinition(uriMap.get(component.getDefinitionURI()));
+						if (cd!=null) {
+							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
+							URI newURI = URIcompliance.createCompliantURI(cd.getPersistentIdentity().toString(),
+									displayId, cd.getVersion());
+							mapsTo.setRemote(newURI);
+						}
+					}
+				}
+				updateReferences(component,uriMap);
+				for (MapsTo mapsTo : component.getMapsTos()) {
+					updateReferences(mapsTo,uriMap);
+				}
+			}
+			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
+				for (Location loc : sa.getLocations()) {
+					updateReferences(loc,uriMap);
+				}
+				updateReferences(sa,uriMap);
+			}
+			for (SequenceConstraint sc : componentDefinition.getSequenceConstraints()) {
+				updateReferences(sc,uriMap);
+			}
+			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
+				if (uriMap.get(sequenceURI)!=null) {
+					componentDefinition.removeSequence(sequenceURI);
+					componentDefinition.addSequence(uriMap.get(sequenceURI));
+				}	
+			}
+		}
+		for (ModuleDefinition moduleDefinition : getModuleDefinitions()) {
+			updateReferences(moduleDefinition,uriMap);
+			for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
+				if (uriMap.get(functionalComponent.getDefinitionURI())!=null) {
+					functionalComponent.setDefinition(uriMap.get(functionalComponent.getDefinitionURI()));
+					for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+						ComponentDefinition cd = getComponentDefinition(uriMap.get(functionalComponent.getDefinitionURI()));
+						if (cd!=null) {
+							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
+							URI newURI = URIcompliance.createCompliantURI(cd.getPersistentIdentity().toString(),
+									displayId, cd.getVersion());
+							mapsTo.setRemote(newURI);
+						}
+					}
+				}
+				updateReferences(functionalComponent,uriMap);
+				for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
+					updateReferences(mapsTo,uriMap);
+				}
+			}
+			for (Module module : moduleDefinition.getModules()) {
+				if (uriMap.get(module.getDefinitionURI())!=null) {
+					module.setDefinition(uriMap.get(module.getDefinitionURI()));
+					for (MapsTo mapsTo : module.getMapsTos()) {
+						ModuleDefinition md = getModuleDefinition(uriMap.get(module.getDefinitionURI()));
+						if (md!=null) {
+							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
+							URI newURI = URIcompliance.createCompliantURI(md.getPersistentIdentity().toString(),
+									displayId, md.getVersion());
+							mapsTo.setRemote(newURI);
+						}
+					}
+				}
+				updateReferences(module,uriMap);
+				for (MapsTo mapsTo : module.getMapsTos()) {
+					updateReferences(mapsTo,uriMap);
+				}
+			}
+			for (Interaction interaction : moduleDefinition.getInteractions()) {
+				updateReferences(interaction,uriMap);
+				for (Participation participation : interaction.getParticipations()) {
+					updateReferences(participation,uriMap);
+				}		
+			}
+			for (URI modelURI : moduleDefinition.getModelURIs()) {
+				if (uriMap.get(modelURI)!=null) {
+					moduleDefinition.removeModel(modelURI);
+					moduleDefinition.addModel(uriMap.get(modelURI));
+				}	
+			}
+		}
+		for (Model model : getModels()) {
+			updateReferences(model,uriMap);
+		}
+		for (Sequence sequence : getSequences()) {
+			updateReferences(sequence,uriMap);
+		}
+		for (GenericTopLevel genericTopLevel : getGenericTopLevels()) {
+			updateReferences(genericTopLevel,uriMap);
+		}
+	}
+
+	private void changeURIPrefixVersion(List<Annotation> annotations,String URIPrefix,String version,
+			String documentURIPrefix) throws SBOLValidationException {
 		for (Annotation annotation : annotations) {
 			if (annotation.isURIValue()) {
 				TopLevel topLevel = getTopLevel(annotation.getURIValue());
@@ -1617,22 +1743,26 @@ public class SBOLDocument {
 				if (nestedURI.toString().startsWith(URIPrefix)) {
 					newURI = URI.create(nestedURI.toString()+"/"+version);
 				} else {
-					newURI = URI.create(nestedURI.toString().replace("http://",URIPrefix)+"/"+version);
+					String displayId = nestedURI.toString().replace(documentURIPrefix,"")
+							.replace("http://","").replace("https://","");
+					displayId = displayId.replace("/","_");
+					newURI = URI.create(URIPrefix+displayId+"/"+version);
 				}
 				annotation.setNestedIdentity(newURI);
 				List<Annotation> nestedAnnotations = annotation.getAnnotations();
-				changeURIPrefixVersion(nestedAnnotations,URIPrefix,version);
+				changeURIPrefixVersion(nestedAnnotations,URIPrefix,version,documentURIPrefix);
 				annotation.setAnnotations(nestedAnnotations);
 			}
 		}
 	}
 	
-	private void changeURIPrefixVersion(Identified identified,String URIPrefix,String version) throws SBOLValidationException {
+	private void changeURIPrefixVersion(Identified identified,String URIPrefix,String version,
+			String documentURIPrefix) throws SBOLValidationException {
 		if (URIPrefix == null) {
 			URIPrefix = extractURIprefix(identified.getIdentity());
 			URIPrefix = URIcompliance.checkURIprefix(URIPrefix);
 		} 
-		changeURIPrefixVersion(identified.getAnnotations(),URIPrefix,version);
+		changeURIPrefixVersion(identified.getAnnotations(),URIPrefix,version,documentURIPrefix);
 	}
 	
 	/**
@@ -1644,14 +1774,20 @@ public class SBOLDocument {
 	 */
 	public SBOLDocument changeURIPrefixVersion(String URIPrefix,String version) throws SBOLValidationException {
 		SBOLDocument document = new SBOLDocument();
-		document.createCopy(this);
-		document.fixDocumentURIPrefix();
-		for (TopLevel topLevel : document.getTopLevels()) {
-			document.rename(topLevel, URIPrefix, null, version);
+		//document.createCopy(this);
+		//document.fixDocumentURIPrefix();
+		String documentURIPrefix = extractDocumentURIPrefix();
+		HashMap<URI,URI> uriMap = new HashMap<URI,URI>();
+		for (TopLevel topLevel : this.getTopLevels()) {
+		//for (TopLevel topLevel : document.getTopLevels()) {
+			//document.rename(topLevel, URIPrefix, null, version);
+			TopLevel newTL = document.createCopy(topLevel, URIPrefix, null, version);
+			uriMap.put(topLevel.getIdentity(), newTL.getIdentity());
 		}
+		document.updateReferences(uriMap);
 		for (TopLevel topLevel : document.getTopLevels()) {
 			// TODO: this is stop-gap, needs to be over all identified
-			document.changeURIPrefixVersion(topLevel, URIPrefix, version);
+			document.changeURIPrefixVersion(topLevel, URIPrefix, version, documentURIPrefix);
 		}
 		document.setDefaultURIprefix(URIPrefix);
 		return document;

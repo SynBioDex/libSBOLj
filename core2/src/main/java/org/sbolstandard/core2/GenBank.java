@@ -919,6 +919,7 @@ class GenBank {
 
 					// ID of the sequence
 					id = strSplit[1];
+					id = URIcompliance.fixDisplayId(id);
 					annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), strSplit[1]);
 					annotations.add(annotation);
 
@@ -958,6 +959,7 @@ class GenBank {
 					String[] strSplit = strLine.split("\\s+");
 					String accession = strSplit[1];
 					id = accession;
+					id = URIcompliance.fixDisplayId(id);
 				} else if (strLine.startsWith("VERSION")) {
 					String[] strSplit = strLine.split("\\s+");
 					id = URIcompliance.fixDisplayId(id);
@@ -1241,7 +1243,7 @@ class GenBank {
 									sa.addRole(role);
 									annotation = new Annotation(new QName(GBCONVNAMESPACE,STRADLESORIGIN,GBCONVPREFIX),"true");
 									sa.addAnnotation(annotation);
-									Range newRange = (Range)sa.getLocation("range");
+									Range newRange = (Range)sa.getLocation("range0");
 									if (startLessThan) {
 										annotation = new Annotation(new QName(GBCONVNAMESPACE,STARTLESSTHAN,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
