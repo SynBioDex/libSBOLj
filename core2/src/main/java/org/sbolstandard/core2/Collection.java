@@ -117,7 +117,9 @@ public class Collection extends TopLevel{
 		Set<TopLevel> result = new HashSet<>();
 		for (URI memberURI : members) {
 			TopLevel member = this.getDocument().getTopLevel(memberURI);
-			result.add(member);
+			if(member != null) {
+				result.add(member);
+			}
 		}
 		return result;
 	}

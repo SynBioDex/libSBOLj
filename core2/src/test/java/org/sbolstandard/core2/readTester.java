@@ -38,8 +38,11 @@ class readTester {
 	public static void main(String[] args) {
 
 		try {
-			SBOLReader.setURIPrefix("http://dummy.org");
-			SBOLDocument doc3 = SBOLReader.read("/Users/myers/Downloads/R0040B22");
+			SBOLReader.setURIPrefix("http://dummy.org/");
+			SBOLReader.setVersion("1");
+			//SBOLDocument doc3 = SBOLReader.read("/Users/myers/Downloads/GenBankEx/sequence1.gb");
+			SBOLDocument doc3 = SBOLReader.read("/Users/myers/Downloads/test.xml");
+			doc3 = doc3.changeURIPrefixVersion("https://synbiohub.org/public/", "1");
 			doc3.write(System.out);
 			//ModuleDefinition md = doc3.getModuleDefinition(URI.create("http://sbols.org/CRISPR_Example/CRPb_characterization_Circuit/1.0"));
 			//System.out.println(md.getWasDerivedFrom());
@@ -58,7 +61,7 @@ class readTester {
 			//doc.write(System.out);
 //			SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/GenTog.xml");
 //			for (TopLevel topLevel : doc.getTopLevels()) {
-//				if (topLevel.getIdentity().toString().startsWith("http://synbiohub.org")) {
+//				if (topLevel.getIdentity().toString().startsWith("https://synbiohub.org")) {
 //					doc.removeTopLevel(topLevel);
 //				}
 //			}
@@ -71,22 +74,22 @@ class readTester {
 //			}
 			//doc2.write(System.out);
 //						
-			SBOLDocument doc2 = new SBOLDocument();
-			doc2.setDefaultURIprefix("http://dummy.org");
-			doc2.setComplete(true);
+//			SBOLDocument doc2 = new SBOLDocument();
+//			doc2.setDefaultURIprefix("http://dummy.org");
+//			doc2.setComplete(true);
 //			ComponentDefinition cd = doc2.createComponentDefinition("testCD", "1", ComponentDefinition.DNA);
 //			//cd.addSequence(URI.create("http://myfakesequence.com"));
 //			
-			SynBioHubFrontend sfe = doc2.addRegistry("https://synbiohub.cidarlab.org","http://synbiohub.cidarlab.org");
-			HashSet<URI> collections = new HashSet<URI>();
-			collections.add(URI.create("http://synbiohub.cidarlab.org/public/cidar_ice/cidarlab_ice_folder_5/current"));
-			System.out.println(sfe.getMatchingComponentDefinitionMetadata(null, null, null, collections, 0, 10));
+//			SynBioHubFrontend sfe = doc2.addRegistry("https://synbiohub.cidarlab.org","http://synbiohub.cidarlab.org");
+//			HashSet<URI> collections = new HashSet<URI>();
+//			collections.add(URI.create("http://synbiohub.cidarlab.org/public/cidar_ice/cidarlab_ice_folder_5/current"));
+//			System.out.println(sfe.getMatchingComponentDefinitionMetadata(null, null, null, collections, 0, 10));
 //			HashSet<URI> types = new HashSet<URI>();
 //			types.add(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"));
 //			HashSet<URI> roles = new HashSet<URI>();
 //			roles.add(URI.create("http://identifiers.org/so/SO:0000167"));
 //			HashSet<URI> collections = new HashSet<URI>();
-//			collections.add(URI.create("http://synbiohub.org/public/igem/category/regulation/constitutive_collection/1"));
+//			collections.add(URI.create("https://synbiohub.org/public/igem/category/regulation/constitutive_collection/1"));
 //			System.out.println(sfe.getMatchingComponentDefinitionMetadata("", roles, types, collections, 1, 10));
 			
 			//doc2.read("/Users/myers/Downloads/MyPartTest.xml");
@@ -95,13 +98,13 @@ class readTester {
 			
 			
 			//System.out.println(sfe.getCountTopLevels("Collection"));
-			//doc2.getComponentDefinition(URI.create("http://synbiohub.org/public/igem/BBa_J18935/1"));
+			//doc2.getComponentDefinition(URI.create("https://synbiohub.org/public/igem/BBa_J18935/1"));
 			//SBOLWriter.write(doc2, System.out);
 //			sfe.login("myers@ece.utah.edu", "test");
 //			sfe.submit("testCDCol", "1", "testName", "testDescription", "", "http://dummy.org/foo/foo_collection,http://dummy.org/foo2/foo2_collection", "1", doc2);
-			//ArrayList<IdentifiedMetadata> imd = doc2.getRegistry("http://synbiohub.org:9090").searchRootCollectionMetadata();
+			//ArrayList<IdentifiedMetadata> imd = doc2.getRegistry("https://synbiohub.org:9090").searchRootCollectionMetadata();
 			//System.out.println(imd.toString());
-			//doc2.getTopLevel(new URI("http://synbiohub.org/public/igem/BBa_K136042/1"));
+			//doc2.getTopLevel(new URI("https://synbiohub.org/public/igem/BBa_K136042/1"));
 			//doc2.write(System.out);
 			
 //			InputStream file = readTester.class.getResourceAsStream(path +filenameV1_19);
