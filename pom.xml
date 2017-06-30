@@ -46,6 +46,7 @@
     <modules>
          <module>core</module>
          <module>core2</module>
+         <module>examples</module>
     </modules>
 
     <build>
