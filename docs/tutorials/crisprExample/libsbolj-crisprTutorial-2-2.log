@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  18 APR 2017 10:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  11 AUG 2017 10:49
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
-**top.tex
-(./top.tex
+**libsbolj-crisprTutorial-2-2.tex
+(./libsbolj-crisprTutorial-2-2.tex
 LaTeX2e <2016/03/31>
 Babel <3.9r> and hyphenation patterns for 83 language(s) loaded.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/article.cls
@@ -500,8 +500,8 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 Package hyperref Info: Option `colorlinks' set `true' on input line 57.
 
-(./top.aux)
-\openout1 = `top.aux'.
+(./libsbolj-crisprTutorial-2-2.aux)
+\openout1 = `libsbolj-crisprTutorial-2-2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 60.
 LaTeX Font Info:    ... okay on input line 60.
@@ -518,7 +518,8 @@ LaTeX Font Info:    ... okay on input line 60.
 LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 60.
 LaTeX Font Info:    ... okay on input line 60.
 LaTeX Font Info:    Try loading font information for OT1+ptm on input line 60.
- (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/ot1ptm.fd
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/ot1ptm.fd
 File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
 )
 (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -576,135 +577,146 @@ LaTeX Info: Redefining \ref on input line 60.
 LaTeX Info: Redefining \pageref on input line 60.
 LaTeX Info: Redefining \nameref on input line 60.
 
-(./top.out) (./top.out)
+(./libsbolj-crisprTutorial-2-2.out) (./libsbolj-crisprTutorial-2-2.out)
 \@outlinefile=\write4
-\openout4 = `top.out'.
+\openout4 = `libsbolj-crisprTutorial-2-2.out'.
 
- (./setupMavenPrj.tex
-LaTeX Font Info:    Try loading font information for OT1+pcr on input line 2.
+
+(./buildCRISPR.tex
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 3.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 7.
+
+<figures/crispr_repression2.png, id=7, 650.43pt x 542.025pt>
+File: figures/crispr_repression2.png Graphic file (type png)
+
+<use figures/crispr_repression2.png>
+Package pdftex.def Info: figures/crispr_repression2.png used on input line 10.
+(pdftex.def)             Requested size: 399.2946pt x 332.75204pt.
+
+
+Package natbib Warning: Citation `kiani2014crispr' on page 1 undefined on input
+ line 14.
+
+
+Package natbib Warning: Citation `kiani2014crispr' on page 1 undefined on input
+ line 14.
+
+[1
+
+{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./figur
+es/crispr_repression2.png (PNG copy)>]
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 17.
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
 )
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 7.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 16.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 19.
 
-Overfull \hbox (15.32251pt too wide) in paragraph at lines 18--19
-[]\OT1/ptm/m/n/10 Add a new soft-ware site: Name = Maven Plu-g-ins, URL = [][]$
-\OT1/pcr/m/n/10 http : / / download . eclipse . org / technology /
- []
+<figures/addCrisprModel1.png, id=18, 482.80376pt x 243.91125pt>
+File: figures/addCrisprModel1.png Graphic file (type png)
 
-<figures/createNewMavenProject1.png, id=7, 660.4675pt x 452.18938pt>
-File: figures/createNewMavenProject1.png Graphic file (type png)
+<use figures/addCrisprModel1.png>
+Package pdftex.def Info: figures/addCrisprModel1.png used on input line 22.
+(pdftex.def)             Requested size: 375.80542pt x 189.86293pt.
+LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <9> not available
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 29.
+ [2 <./figures/addCrisprModel1.png>]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 66.
 
-<use figures/createNewMavenProject1.png>
-Package pdftex.def Info: figures/createNewMavenProject1.png used on input line 
-28.
-(pdftex.def)             Requested size: 375.80542pt x 257.30212pt.
- [1
-
-{/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<figures/createNewMavenProject2.png, id=31, 528.97626pt x 501.875pt>
-File: figures/createNewMavenProject2.png Graphic file (type png)
-
-<use figures/createNewMavenProject2.png>
-Package pdftex.def Info: figures/createNewMavenProject2.png used on input line 
-33.
-(pdftex.def)             Requested size: 352.31624pt x 334.26341pt.
-
-<figures/createNewMavenProject4.png, id=32, 691.58376pt x 541.02126pt>
-File: figures/createNewMavenProject4.png Graphic file (type png)
-
-<use figures/createNewMavenProject4.png>
-Package pdftex.def Info: figures/createNewMavenProject4.png used on input line 
-41.
-(pdftex.def)             Requested size: 352.31624pt x 275.62pt.
- [2 <./figures/createNewMavenProject1.png> <./figures/createNewMavenProject2.pn
-g>]
-<figures/createNewMavenProject5.png, id=39, 692.5875pt x 543.02875pt>
-File: figures/createNewMavenProject5.png Graphic file (type png)
-
-<use figures/createNewMavenProject5.png>
-Package pdftex.def Info: figures/createNewMavenProject5.png used on input line 
-46.
-(pdftex.def)             Requested size: 375.80542pt x 294.65633pt.
-
-<figures/createNewMavenProject6.png, id=40, 668.4975pt x 229.85875pt>
-File: figures/createNewMavenProject6.png Graphic file (type png)
-
-<use figures/createNewMavenProject6.png>
-Package pdftex.def Info: figures/createNewMavenProject6.png used on input line 
-51.
-(pdftex.def)             Requested size: 375.80542pt x 129.22156pt.
- [3 <./figures/createNewMavenProject4.png> <./figures/createNewMavenProject5.pn
-g>]
-<figures/createNewMavenProject10.png, id=47, 822.07124pt x 739.76375pt>
-File: figures/createNewMavenProject10.png Graphic file (type png)
-
-<use figures/createNewMavenProject10.png>
-Package pdftex.def Info: figures/createNewMavenProject10.png used on input line
- 56.
-(pdftex.def)             Requested size: 375.80542pt x 338.17332pt.
-
-Overfull \hbox (10.0pt too wide) in paragraph at lines 61--83
-[]$[]$ 
- []
-
-[4 <./figures/createNewMavenProject6.png> <./figures/createNewMavenProject10.pn
-g>] (/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2015/06/04 1.6 listings language file
+(/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
 )
-(/usr/local/texlive/2016/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
-) (./pom.xml
-LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <8> not available
-(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 7.
-)
-Overfull \hbox (10.0pt too wide) in paragraph at lines 86--89
-[]$[]$ 
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 66.
+ [3]
+
+Package natbib Warning: Citation `Courtot2011' on page 4 undefined on input lin
+e 148.
+
+[4]
+
+Package natbib Warning: Citation `kiani2014crispr' on page 5 undefined on input
+ line 217.
+
+[5] [6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 371--372
+
  []
 
-[5] <figures/addMavenDependency2.png, id=118, 484.81125pt x 493.845pt>
-File: figures/addMavenDependency2.png Graphic file (type png)
+[8] [9] [10]
 
-<use figures/addMavenDependency2.png>
-Package pdftex.def Info: figures/addMavenDependency2.png used on input line 97.
+Package natbib Warning: Citation `SBML' on page 11 undefined on input line 480.
 
-(pdftex.def)             Requested size: 258.36667pt x 263.19093pt.
 
-<figures/addMavenDependency3.png, id=119, 658.46pt x 651.43375pt>
-File: figures/addMavenDependency3.png Graphic file (type png)
 
-<use figures/addMavenDependency3.png>
-Package pdftex.def Info: figures/addMavenDependency3.png used on input line 102
-.
-(pdftex.def)             Requested size: 375.80542pt x 371.7982pt.
- [6 <./figures/addMavenDependency2.png>])
-(./top.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 72.
- [7 <./figures/addMavenDependency3.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 72.
- (./top.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 72.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 72.
-Package rerunfilecheck Info: File `top.out' has not changed.
+Package natbib Warning: Citation `roehner2015generating' on page 11 undefined o
+n input line 480.
+
+) (./otherMethodsInAPI.tex
+
+Package natbib Warning: Citation `kiani2014crispr' on page 11 undefined on inpu
+t line 2.
+
+[11]
+Missing character: There is no â in font pcrr7t!
+Missing character: There is no € in font pcrr7t!
+Missing character: There is no “ in font pcrr7t!
+ [12] [13] [14]
+Overfull \hbox (10.79424pt too wide) in paragraph at lines 221--236
+[]\OT1/ptm/m/n/10 The method [][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][]
+ []
+
+
+Package natbib Warning: Citation `SBML' on page 15 undefined on input line 277.
+
+
+
+Package natbib Warning: Citation `roehner2015generating' on page 15 undefined o
+n input line 277.
+
+
+Overfull \hbox (6.12068pt too wide) in paragraph at lines 276--278
+[]\OT1/ptm/m/n/10 The com-plete re-pres-sion model de-scribed in this tu-to-ria
+l is pro-vided as ``Re-pres-sion-Model.java'' un-der the \OT1/pcr/m/n/10 libSBO
+Lj
+ []
+
+) (./libsbolj-crisprTutorial-2-2.bbl [15])
+
+Package natbib Warning: There were undefined citations.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 73.
+[16]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 73.
+ (./libsbolj-crisprTutorial-2-2.aux
+
+Package natbib Warning: Citation(s) may have changed.
+(natbib)                Rerun to get citations correct.
+
+)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 73.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 73.
+Package rerunfilecheck Info: File `libsbolj-crisprTutorial-2-2.out' has not cha
+nged.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 72.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 73.
  )
 (\end occurred inside a group at level 1)
 
 ### simple group (level 1) entered at line 1061 ({)
 ### bottom level 
 Here is how much of TeX's memory you used:
- 12120 strings out of 493014
- 170422 string characters out of 6133351
- 492784 words of memory out of 5000000
- 15367 multiletter control sequences out of 15000+600000
- 19561 words of font info for 54 fonts, out of 8000000 for 9000
+ 12558 strings out of 493014
+ 176669 string characters out of 6133351
+ 489906 words of memory out of 5000000
+ 15491 multiletter control sequences out of 15000+600000
+ 27964 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 30i,6n,52p,3235b,7534s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 29i,19n,40p,3259b,7477s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc
 }</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/lo
@@ -712,10 +724,10 @@ cal/texlive/2016/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texl
 ive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/t
 exmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/
 fonts/type1/urw/times/utmri8a.pfb>
-Output written on top.pdf (7 pages, 1166108 bytes).
+Output written on libsbolj-crisprTutorial-2-2.pdf (16 pages, 248726 bytes).
 PDF statistics:
- 175 PDF objects out of 1000 (max. 8388607)
- 142 compressed objects within 2 object streams
- 80 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 589 PDF objects out of 1000 (max. 8388607)
+ 556 compressed objects within 6 object streams
+ 391 named destinations out of 1000 (max. 500000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
