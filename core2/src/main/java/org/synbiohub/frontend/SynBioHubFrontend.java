@@ -45,7 +45,7 @@ public class SynBioHubFrontend
     HttpClient client;
     String backendUrl;
     String uriPrefix;
-    String user = null;
+    String user = "";
 
     /**
      * Creates an instance of the SynBioHub API.
@@ -266,7 +266,8 @@ public class SynBioHubFrontend
         Gson gson = new Gson();
 
         HttpGet request = new HttpGet(url);
-
+        request.setHeader("X-authorization", user);
+        
         try
         {
             HttpResponse response = client.execute(request);
@@ -306,6 +307,7 @@ public class SynBioHubFrontend
         Gson gson = new Gson();
 
         HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
 
         try
         {
@@ -350,6 +352,7 @@ public class SynBioHubFrontend
 
         Gson gson = new Gson();
         HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
 
         try
         {
@@ -412,7 +415,7 @@ public class SynBioHubFrontend
      */
     public void logout() 
     {
-    	user = null;
+    	user = "";
     }
 
     /**
@@ -488,7 +491,7 @@ public class SynBioHubFrontend
     public void submit(String id, String version, String name, String description, String citations,
     		String collections, String overwrite_merge, SBOLDocument document) throws SynBioHubException
     {
-    	if (user==null) {
+    	if (user.equals("")) {
     		Exception e = new Exception("Must be logged in to submit.");
     		throw new SynBioHubException(e);
     	}
@@ -633,6 +636,7 @@ public class SynBioHubFrontend
     private HttpStream fetchContentAsInputStream(String url) throws SynBioHubException, IOException
     {
 		HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
 		
     	try
     	{

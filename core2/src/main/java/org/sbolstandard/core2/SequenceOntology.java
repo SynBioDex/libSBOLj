@@ -471,7 +471,7 @@ public class SequenceOntology {
 
 	/**
 	 * Region in mRNA where ribosome assembles (<a
-	 * href="http://identifiers.org/so/SO:0000139">SO:0000193</a>)
+	 * href="http://identifiers.org/so/SO:0000139">SO:0000139</a>)
 	 */
 	public static final URI RIBOSOME_ENTRY_SITE = type("SO:0000139");
 
