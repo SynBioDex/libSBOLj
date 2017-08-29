@@ -206,6 +206,7 @@ class GenBank {
 		if (soTerm.equals("SO:0000274")) {return String.format("%-15s", "snRNA");}
 		if (soTerm.equals("SO:0000149")) {return String.format("%-15s", "source");}
 		if (soTerm.equals("SO:0000019")) {return String.format("%-15s", "stem_loop");}
+		if (soTerm.equals("SO:0000313")) {return String.format("%-15s", "stem_loop");}
 		if (soTerm.equals("SO:0000331")) {return String.format("%-15s", "STS");}
 		if (soTerm.equals("SO:0000174")) {return String.format("%-15s", "TATA_signal");}
 		if (soTerm.equals("SO:0000141")) {return String.format("%-15s", "terminator");}
@@ -330,7 +331,7 @@ class GenBank {
 		if (genBankTerm.equals("source")) {
 			return so.getURIbyId("SO:0000149");}
 		if (genBankTerm.equals("stem_loop")) {
-			return so.getURIbyId("SO:0000019");}
+			return so.getURIbyId("SO:0000313");}
 		if (genBankTerm.equals("STS")) {
 			return so.getURIbyId("SO:0000331");}
 		if (genBankTerm.equals("TATA_signal")) {
