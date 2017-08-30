@@ -894,6 +894,8 @@ class GenBank {
 		int featureCnt = 0;
 		int refCnt = 0;
 		nextLine = null;
+		String labelType = "";
+		URI lastRole = null;
 		while (true) {
 			boolean cont = false;
 			String id = "";
@@ -958,21 +960,25 @@ class GenBank {
 					description = strLine.replaceFirst("DEFINITION  ", "");
 				} else if (strLine.startsWith("ACCESSION")) {
 					String[] strSplit = strLine.split("\\s+");
-					String accession = strSplit[1];
-					id = accession;
-					id = URIcompliance.fixDisplayId(id);
+					if (strSplit.length > 1) {
+						String accession = strSplit[1];
+						id = accession;
+						id = URIcompliance.fixDisplayId(id);
+					}
 				} else if (strLine.startsWith("VERSION")) {
 					String[] strSplit = strLine.split("\\s+");
-					id = URIcompliance.fixDisplayId(id);
-					if (!id.equals(URIcompliance.fixDisplayId(strSplit[1]))) {
-						if (strSplit[1].split("\\.").length > 1) {
-							version = strSplit[1].split("\\.")[strSplit[1].split("\\.").length-1];
+					//id = URIcompliance.fixDisplayId(id);
+					if (strSplit.length > 1) {
+						if (!id.equals(URIcompliance.fixDisplayId(strSplit[1]))) {
+							if (strSplit[1].split("\\.").length > 1) {
+								version = strSplit[1].split("\\.")[strSplit[1].split("\\.").length-1];
+							}	
+							String vId = URIcompliance.fixDisplayId(strSplit[1].split("\\.")[0]);
+							if (!id.equals(vId)) {
+								throw new SBOLConversionException("Warning: id in version does not match id in accession");
+							}
 						}
-						String vId = URIcompliance.fixDisplayId(strSplit[1].split("\\.")[0]);
-						if (!id.equals(vId)) {
-							throw new SBOLConversionException("Warning: id in version does not match id in accession");
-						}
-					} 
+					}
 					//id = id.replaceAll("\\.", "_");
 					if (strSplit.length > 2) {
 						annotation = new Annotation(new QName(GBNAMESPACE,GINUMBER,GBPREFIX),strSplit[2]);
@@ -1104,7 +1110,47 @@ class GenBank {
 
 							// a Genbank feature label is mapped to an SBOL SequenceAnnotation
 							SequenceAnnotation sa = topCD.getSequenceAnnotation("annotation" + (featureCnt - 1));
-							if(null != sa) {
+							if(sa != null) {
+								if (tag.equals("Apeinfo_label")) {
+									sa.setName(value.replace("\"", ""));
+									labelType = "Apeinfo_label";
+								} else if (tag.equals("label")) {
+									if (!labelType.equals("Apeinfo_label")) {
+										sa.setName(value.replace("\"", ""));
+										labelType = "label";
+									}
+								} else if (tag.equals("product")) {
+									if (!labelType.equals("Apeinfo_label")&&
+											!labelType.equals("label")) {
+										sa.setName(value.replace("\"", ""));
+										labelType = "product";
+									}
+								} else if (tag.equals("gene")) {
+									if (!labelType.equals("Apeinfo_label")&&
+											!labelType.equals("label")&&
+											!labelType.equals("product")) {
+										sa.setName(value.replace("\"", ""));
+										labelType = "gene";
+									}
+								} else if (tag.equals("note")) {
+									if (!labelType.equals("Apeinfo_label")&&
+											!labelType.equals("label")&&
+											!labelType.equals("product")&&
+											!labelType.equals("gene")) {
+										sa.setName(value.replace("\"", ""));
+										labelType = "note";
+									}
+								} else if (tag.equals("organism")) {
+									if (!labelType.equals("Apeinfo_label")&&
+											!labelType.equals("label")&&
+											!labelType.equals("product")&&
+											!labelType.equals("gene")&&
+											!labelType.equals("note")) {
+										sa.setName(value.replace("\"", ""));
+										labelType = "organism";
+									}
+								}
+								
 								if (value.startsWith("\"")) {
 									value = value.replaceAll("\"", "");
 									annotation = new Annotation(new QName(GBCONVNAMESPACE,tag,GBCONVPREFIX),value);
@@ -1121,10 +1167,11 @@ class GenBank {
 
 							strLine = strLine.replace(", ",",");
 							String[] strSplit = strLine.split("\\s+");
+							String featureType = strSplit[0];
 
 							// a Genbank feature is mapped to a SBOL role
 							// documented by an SO term
-							URI role = convertGenBanktoSO(strSplit[0]);
+							URI role = convertGenBanktoSO(featureType);
 //							ComponentDefinition feature =
 //									doc.createComponentDefinition("feature"+featureCnt, version, type);
 //							feature.addRole(role);
@@ -1179,6 +1226,7 @@ class GenBank {
 										sa = topCD.createSequenceAnnotation("annotation"+featureCnt,"range"+rangeCnt,
 												start,end,orientation);
 										//sa.setComponent("feature"+featureCnt);
+										sa.setName(featureType);
 										sa.addRole(role);
 										annotation = new Annotation(new QName(GBCONVNAMESPACE,MULTIRANGETYPE,GBCONVPREFIX),multiType);
 										sa.addAnnotation(annotation);
@@ -1213,6 +1261,7 @@ class GenBank {
 										topCD.createSequenceAnnotation("annotation"+featureCnt,"cut",at,orientation);
 								//sa.setComponent("feature"+featureCnt);
 								sa.addRole(role);
+								sa.setName(featureType);
 							} else {
 								boolean startLessThan=false;
 								boolean endGreaterThan=false;
@@ -1242,6 +1291,7 @@ class GenBank {
 											topCD.createSequenceAnnotation("annotation"+featureCnt,"range0",start,baseCount,orientation);
 									//sa.setComponent("feature"+featureCnt);
 									sa.addRole(role);
+									sa.setName(featureType);
 									annotation = new Annotation(new QName(GBCONVNAMESPACE,STRADLESORIGIN,GBCONVPREFIX),"true");
 									sa.addAnnotation(annotation);
 									Range newRange = (Range)sa.getLocation("range0");
@@ -1267,6 +1317,7 @@ class GenBank {
 											topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
 									//sa.setComponent("feature"+featureCnt);
 									sa.addRole(role);
+									sa.setName(featureType);
 									Range newRange = (Range)sa.getLocation("range");
 									if (startLessThan) {
 										annotation = new Annotation(new QName(GBCONVNAMESPACE,STARTLESSTHAN,GBCONVPREFIX),"true");
@@ -1282,7 +1333,8 @@ class GenBank {
 									}
 								}
 							}
-
+							labelType = "";
+							lastRole = role;
 							featureCnt++;
 
 						}
@@ -1292,6 +1344,10 @@ class GenBank {
 						 * SEQUENCE MODE
 						 *---------------------*/
 					} else if (originMode) {
+						if (featureCnt==1) {
+							topCD.clearRoles();
+							topCD.addRole(lastRole);
+						}
 						if(elements == null) { elements = new String(""); }
 						if (strLine.startsWith("//")) {
 							cont = true;
