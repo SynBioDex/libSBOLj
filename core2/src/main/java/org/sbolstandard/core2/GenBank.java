@@ -881,7 +881,7 @@ class GenBank {
 	 * <li>{@link #createSubComponentDefinitions(SBOLDocument, ComponentDefinition, URI, String, String)}.</li>
 	 * </ul>
 	 */
-	static void read(SBOLDocument doc,String stringBuffer,String URIPrefix) throws IOException, SBOLConversionException, SBOLValidationException {
+	static void read(SBOLDocument doc,String stringBuffer,String URIPrefix,String defaultVersion) throws IOException, SBOLConversionException, SBOLValidationException {
 		so = new SequenceOntology();
 
 		// reset the global static variables needed for parsing
@@ -899,7 +899,7 @@ class GenBank {
 		while (true) {
 			boolean cont = false;
 			String id = "";
-			String version = "";
+			String version = defaultVersion;
 			featureMode = false;
 			originMode = false;
 			StringBuilder sbSequence = new StringBuilder();

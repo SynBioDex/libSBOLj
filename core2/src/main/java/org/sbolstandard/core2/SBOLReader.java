@@ -618,7 +618,7 @@ public class SBOLReader
 					throw new SBOLConversionException("No URI prefix has been provided.");
 				}
 				SBOLDoc.setDefaultURIprefix(URIPrefix);
-				GenBank.read(SBOLDoc, inputStreamString, URIPrefix);
+				GenBank.read(SBOLDoc, inputStreamString, URIPrefix, version);
 				scanner.close();
 				return;
 			} else if (fileType.equals(SBOLDocument.JSON)) {
