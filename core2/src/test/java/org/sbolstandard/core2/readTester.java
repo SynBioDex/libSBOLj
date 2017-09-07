@@ -50,7 +50,7 @@ class readTester {
 			myset.add(URI.create("https://synbiohub.org/user/myers/test/test_collection/1"));
 			System.out.println(sbh.getMatchingComponentDefinitionMetadata(null, null, null, myset, 0, 50));
 			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu/");
-			doc = SBOLReader.read("/Users/myers/Downloads/pBW842_pCAG-pExpr-FP-DECODER.seq");
+			doc = SBOLReader.read("/Users/myers/Downloads/QUAS_Promoter_Test.gb");
 			doc.write(System.out);
 //			SBOLReader.setURIPrefix("http://dummy.org/");
 //			SBOLReader.setVersion("1");
