@@ -899,6 +899,7 @@ class GenBank {
 		while (true) {
 			boolean cont = false;
 			String id = "";
+			String accession = "";
 			String version = defaultVersion;
 			featureMode = false;
 			originMode = false;
@@ -959,20 +960,22 @@ class GenBank {
 				} else if (strLine.startsWith("ACCESSION")) {
 					String[] strSplit = strLine.split("\\s+");
 					if (strSplit.length > 1) {
-						String accession = strSplit[1];
-						id = accession;
-						id = URIcompliance.fixDisplayId(id);
+						accession = strSplit[1];
+						if (accession.length()>1) {
+							id = accession;
+							id = URIcompliance.fixDisplayId(id);
+						}
 					}
 				} else if (strLine.startsWith("VERSION")) {
 					String[] strSplit = strLine.split("\\s+");
 					//id = URIcompliance.fixDisplayId(id);
 					if (strSplit.length > 1) {
-						if (!id.equals(URIcompliance.fixDisplayId(strSplit[1]))) {
+						if (!accession.equals(strSplit[1])) {
 							if (strSplit[1].split("\\.").length > 1) {
 								version = strSplit[1].split("\\.")[strSplit[1].split("\\.").length-1];
 							}	
-							String vId = URIcompliance.fixDisplayId(strSplit[1].split("\\.")[0]);
-							if (!id.equals(vId)) {
+							String vId = strSplit[1].split("\\.")[0];
+							if (!accession.equals(vId)) {
 								throw new SBOLConversionException("Warning: id in version does not match id in accession");
 							}
 						}
