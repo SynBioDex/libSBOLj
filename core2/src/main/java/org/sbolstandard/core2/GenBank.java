@@ -918,43 +918,41 @@ class GenBank {
 				// Example:
 				// LOCUS       AF123456                1510 bp    mRNA    linear   VRT 12-APR-2012
 				if (strLine.startsWith("LOCUS")) {
-					String[] strSplit = strLine.split("\\s+");
+					//String[] strSplit = strLine.split("\\s+");
 
 					// ID of the sequence
-					id = strSplit[1];
+					id = strLine.substring(12, 28).trim();
+					annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), id);
 					id = URIcompliance.fixDisplayId(id);
-					annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), strSplit[1]);
 					annotations.add(annotation);
 
 					// Base count of the sequence
-					baseCount = Integer.parseInt(strSplit[2]);
+					baseCount = Integer.parseInt(strLine.substring(29,40).trim());
 					
 					// type of sequence
-					if (strSplit[4].toUpperCase().contains("RNA")) {
+					String seqType = strLine.substring(44,53).trim();
+					if (seqType.toUpperCase().contains("RNA")) {
 						type = ComponentDefinition.RNA;
 
 					}
-					annotation = new Annotation(new QName(GBNAMESPACE, MOLECULE, GBPREFIX), strSplit[4]);
+					annotation = new Annotation(new QName(GBNAMESPACE, MOLECULE, GBPREFIX), seqType);
 					annotations.add(annotation);
 
-					for (int i = 5; i < strSplit.length; i++) {
-
-						// linear vs. circular construct
-						if (strSplit[i].startsWith("linear") || strSplit[i].startsWith("circular")) {
-							if (strSplit[i].startsWith("circular")) circular = true;
-							//annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
-
-						} else if (strSplit[i].length()==3) {
-							annotation = new Annotation(new QName(GBNAMESPACE, DIVISION, GBPREFIX), strSplit[i]);
-
-							// date
-						} else {
-							annotation = new Annotation(new QName(GBNAMESPACE, DATE, GBPREFIX), strSplit[i]);
-						}
-
-						annotations.add(annotation);
-
+					String topology = strLine.substring(55,63).trim();
+					// linear vs. circular construct
+					if (topology.startsWith("linear") || topology.startsWith("circular")) {
+						if (topology.startsWith("circular")) circular = true;
+						//annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
 					}
+					
+					String division = strLine.substring(64,67).trim();
+					annotation = new Annotation(new QName(GBNAMESPACE, DIVISION, GBPREFIX), division);
+					annotations.add(annotation);
+
+					// date
+					String date = strLine.substring(68,79).trim();
+					annotation = new Annotation(new QName(GBNAMESPACE, DATE, GBPREFIX), date);
+					annotations.add(annotation);
 
 				} else if (strLine.startsWith("DEFINITION")) {
 					description = strLine.replaceFirst("DEFINITION  ", "");
