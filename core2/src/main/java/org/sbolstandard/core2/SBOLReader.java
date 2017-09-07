@@ -618,7 +618,7 @@ public class SBOLReader
 					throw new SBOLConversionException("No URI prefix has been provided.");
 				}
 				SBOLDoc.setDefaultURIprefix(URIPrefix);
-				GenBank.read(SBOLDoc, inputStreamString, URIPrefix);
+				GenBank.read(SBOLDoc, inputStreamString, URIPrefix, version);
 				scanner.close();
 				return;
 			} else if (fileType.equals(SBOLDocument.JSON)) {
@@ -2350,7 +2350,8 @@ public class SBOLReader
 
 		for (NamedProperty<QName> namedProperty : typeGenLoc.getProperties())
 		{
-			if (namedProperty.getName().equals(Sbol2Terms.GenericLocation.orientation))
+			if (namedProperty.getName().equals(Sbol2Terms.GenericLocation.orientation)||
+					namedProperty.getName().equals(Sbol2Terms.GenericLocation.Orientation))
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || orientation != null ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {

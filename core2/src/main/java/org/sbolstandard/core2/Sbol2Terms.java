@@ -107,7 +107,9 @@ class Sbol2Terms
 
 	static final class GenericLocation {
 		static final QName GenericLocation = sbol2.withLocalPart("GenericLocation");
-		static final QName orientation = sbol2.withLocalPart("Orientation");
+		static final QName orientation = sbol2.withLocalPart("orientation");
+		// TODO: this is only here for backwards compatibility with a bug
+		static final QName Orientation = sbol2.withLocalPart("Orientation");
 	}
 
 	/**
