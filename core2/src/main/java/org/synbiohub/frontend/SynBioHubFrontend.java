@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -224,7 +225,7 @@ public class SynBioHubFrontend
      */
     public ArrayList<IdentifiedMetadata> search(SearchQuery query) throws SynBioHubException
     {
-        String url = backendUrl + "/remoteSearch/";
+        String url = backendUrl + "/search/";
 
         //query.offset = offset;
         //query.limit = limit;
@@ -267,7 +268,8 @@ public class SynBioHubFrontend
 
         HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
-        
+        request.setHeader("Accept", "text/plain");
+
         try
         {
             HttpResponse response = client.execute(request);
@@ -308,6 +310,7 @@ public class SynBioHubFrontend
 
         HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
 
         try
         {
@@ -353,6 +356,7 @@ public class SynBioHubFrontend
         Gson gson = new Gson();
         HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
 
         try
         {
@@ -427,10 +431,11 @@ public class SynBioHubFrontend
      */
     public void login(String email, String password) throws SynBioHubException
     {    	
-        String url = backendUrl + "/remoteLogin";
+        String url = backendUrl + "/login";
 
         HttpPost request = new HttpPost(url);
-        
+        request.setHeader("Accept", "text/plain");
+
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("email", email));
         params.add(new BasicNameValuePair("password", password));
@@ -439,7 +444,7 @@ public class SynBioHubFrontend
         {
             request.setEntity(new UrlEncodedFormEntity(params));
             request.setHeader("Content-Type", "application/x-www-form-urlencoded");
-            
+             
             HttpResponse response = client.execute(request);
             checkResponseCode(response);
 
@@ -498,7 +503,8 @@ public class SynBioHubFrontend
         String url = backendUrl + "/remoteSubmit";
 
         HttpPost request = new HttpPost(url);
-        
+        request.setHeader("Accept", "text/plain");
+
         MultipartEntity params = new MultipartEntity();
         try {
 			params.addPart("id", new StringBody(id));
@@ -509,7 +515,11 @@ public class SynBioHubFrontend
 	        params.addPart("collectionChoices", new StringBody(collections));
 	        params.addPart("overwrite_merge", new StringBody(overwrite_merge));
 	        params.addPart("user", new StringBody(user));
-	        params.addPart("file", new StringBody(serializeDocument(document)));
+	        if (document != null) {
+	        	params.addPart("file", new StringBody(serializeDocument(document)));
+	        } else {
+	        	params.addPart("file", new StringBody(""));
+	        }
 		}
 		catch (UnsupportedEncodingException e1) {
 			throw new SynBioHubException(e1);
@@ -637,7 +647,8 @@ public class SynBioHubFrontend
     {
 		HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
-		
+        request.setHeader("Accept", "text/plain");
+
     	try
     	{
 			HttpResponse response = client.execute(request);
