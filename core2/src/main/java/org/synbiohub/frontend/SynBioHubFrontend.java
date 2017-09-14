@@ -500,9 +500,10 @@ public class SynBioHubFrontend
     		Exception e = new Exception("Must be logged in to submit.");
     		throw new SynBioHubException(e);
     	}
-        String url = backendUrl + "/remoteSubmit";
+        String url = backendUrl + "/submit";
 
         HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
         request.setHeader("Accept", "text/plain");
 
         MultipartEntity params = new MultipartEntity();

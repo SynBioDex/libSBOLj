@@ -115,7 +115,7 @@ class readTester {
 //			//doc2.getComponentDefinition(URI.create("https://synbiohub.org/public/igem/BBa_J18935/1"));
 //			//SBOLWriter.write(doc2, System.out);
 			sbh.login("myers@ece.utah.edu", "test");
-			sbh.submit("testCD Col", "1", "testName", "testDescription", "", "http://dummy.org/foo/foo_collection,http://dummy.org/foo2/foo2_collection", "1", null);
+			sbh.submit("testCDCol", "1", "testName", "testDescription", "", "http://dummy.org/foo/foo_collection,http://dummy.org/foo2/foo2_collection", "1", null);
 //			//ArrayList<IdentifiedMetadata> imd = doc2.getRegistry("https://synbiohub.org:9090").searchRootCollectionMetadata();
 //			//System.out.println(imd.toString());
 //			//doc2.getTopLevel(new URI("https://synbiohub.org/public/igem/BBa_K136042/1"));
