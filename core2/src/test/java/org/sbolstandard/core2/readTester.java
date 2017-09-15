@@ -40,6 +40,8 @@ class readTester {
 
 		try {
 			SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
+			String result = sbh.sparqlQuery("select ?s ?p ?o where { ?s ?p ?o . FILTER(?s = <https://synbiohub.org/public/igem/BBa_B0015/1>) }");
+			System.out.println(result);
 //			SBOLDocument doc = sbh.getSBOL(URI.create("https://synbiohub.org/public/igem/BBa_J23070/1"));
 //			doc.write(System.out);
 //			System.out.println(sbh.getRootCollectionMetadata());
@@ -114,8 +116,8 @@ class readTester {
 //			//System.out.println(sfe.getCountTopLevels("Collection"));
 //			//doc2.getComponentDefinition(URI.create("https://synbiohub.org/public/igem/BBa_J18935/1"));
 //			//SBOLWriter.write(doc2, System.out);
-			sbh.login("myers@ece.utah.edu", "test");
-			sbh.submit("testCDCol", "1", "testName", "testDescription", "", "http://dummy.org/foo/foo_collection,http://dummy.org/foo2/foo2_collection", "1", null);
+//			sbh.login("myers@ece.utah.edu", "test");
+//			sbh.submit("testCDCol", "1", "testName", "testDescription", "", "http://dummy.org/foo/foo_collection,http://dummy.org/foo2/foo2_collection", "1", null);
 //			//ArrayList<IdentifiedMetadata> imd = doc2.getRegistry("https://synbiohub.org:9090").searchRootCollectionMetadata();
 //			//System.out.println(imd.toString());
 //			//doc2.getTopLevel(new URI("https://synbiohub.org/public/igem/BBa_K136042/1"));
