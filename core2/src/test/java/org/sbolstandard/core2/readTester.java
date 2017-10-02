@@ -39,9 +39,16 @@ class readTester {
 	public static void main(String[] args) {
 
 		try {
-			SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
-			String result = sbh.sparqlQuery("select ?s ?p ?o where { ?s ?p ?o . FILTER(?s = <https://synbiohub.org/public/igem/BBa_B0015/1>) }");
-			System.out.println(result);
+			SBOLReader.setURIPrefix("http://dummy.org");
+			SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/JL7_PV1-PBP-VCre-N172-L1-GID1-NLS-BGHpA (1).gb");
+			SBOLValidate.validateSBOL(doc, true, true, true);
+			for(String error : SBOLValidate.getErrors()) {
+				System.out.println(error);
+			}
+			doc.write("/Users/myers/Downloads/tmpGB.xml");
+			//SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
+			//String result = sbh.sparqlQuery("select ?s ?p ?o where { ?s ?p ?o . FILTER(?s = <https://synbiohub.org/public/igem/BBa_B0015/1>) }");
+			//System.out.println(result);
 //			SBOLDocument doc = sbh.getSBOL(URI.create("https://synbiohub.org/public/igem/BBa_J23070/1"));
 //			doc.write(System.out);
 //			System.out.println(sbh.getRootCollectionMetadata());

@@ -1993,8 +1993,8 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
-				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
+		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI())/* ||
+				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())*/) {
 			throw new SBOLValidationException("sbol-12302");
 		}
 //		QName qNameInNamespace = getNamespace(URI.create(rdfType.getNamespaceURI()));

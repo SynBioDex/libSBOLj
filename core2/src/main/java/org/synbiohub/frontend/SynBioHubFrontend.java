@@ -528,7 +528,7 @@ public class SynBioHubFrontend
      * @param description The submission description
      * @param citations The pubMedIds for this submission
      * @param collections A comma separated list of collections
-     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge
+     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
      * @param document the SBOL document to submit
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub

@@ -2974,7 +2974,36 @@ public class SBOLReader
 				String typeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				String nameSpace = URIcompliance.extractNamespace(URI.create(typeStr));
 				String localPart = URIcompliance.extractDisplayId(URI.create(typeStr));
-				String prefix = SBOLDoc.getNamespacePrefix(URI.create(nameSpace));
+				String prefix = null;
+				if (nameSpace == null) {
+					if (typeStr.lastIndexOf('/') > typeStr.lastIndexOf('#')) {
+						if (typeStr.lastIndexOf('/') > typeStr.lastIndexOf(':')) {
+							nameSpace = typeStr.substring(0, typeStr.lastIndexOf('/'));
+							localPart = typeStr.substring(typeStr.lastIndexOf('/')+1);
+						} else {
+							nameSpace = typeStr.substring(0, typeStr.lastIndexOf(':'));
+							localPart = typeStr.substring(typeStr.lastIndexOf(':')+1);
+						}
+					} else if (typeStr.lastIndexOf('#') > typeStr.lastIndexOf(':')) {
+						nameSpace = typeStr.substring(0, typeStr.lastIndexOf('#'));
+						localPart = typeStr.substring(typeStr.lastIndexOf('#')+1);
+					} else {
+						nameSpace = typeStr.substring(0, typeStr.lastIndexOf(':'));
+						localPart = typeStr.substring(typeStr.lastIndexOf(':')+1);
+					}
+					prefix = SBOLDoc.getNamespacePrefix(URI.create(nameSpace));
+					if (prefix == null) {
+						prefix = "ns0";
+						int prefixCnt = 0;
+						while (SBOLDoc.getNamespace(prefix) != null) {
+							prefixCnt++;
+							prefix = "ns" + prefixCnt;
+						}
+						SBOLDoc.addNamespace(new QName(nameSpace,localPart,prefix));
+					}
+				} else {
+					prefix = SBOLDoc.getNamespacePrefix(URI.create(nameSpace));
+				}
 				type = new QName(nameSpace,localPart,prefix);
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
