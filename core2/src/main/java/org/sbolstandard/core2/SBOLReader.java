@@ -2978,17 +2978,17 @@ public class SBOLReader
 				if (nameSpace == null) {
 					if (typeStr.lastIndexOf('/') > typeStr.lastIndexOf('#')) {
 						if (typeStr.lastIndexOf('/') > typeStr.lastIndexOf(':')) {
-							nameSpace = typeStr.substring(0, typeStr.lastIndexOf('/'));
+							nameSpace = typeStr.substring(0, typeStr.lastIndexOf('/')+1);
 							localPart = typeStr.substring(typeStr.lastIndexOf('/')+1);
 						} else {
-							nameSpace = typeStr.substring(0, typeStr.lastIndexOf(':'));
+							nameSpace = typeStr.substring(0, typeStr.lastIndexOf(':')+1);
 							localPart = typeStr.substring(typeStr.lastIndexOf(':')+1);
 						}
 					} else if (typeStr.lastIndexOf('#') > typeStr.lastIndexOf(':')) {
-						nameSpace = typeStr.substring(0, typeStr.lastIndexOf('#'));
+						nameSpace = typeStr.substring(0, typeStr.lastIndexOf('#')+1);
 						localPart = typeStr.substring(typeStr.lastIndexOf('#')+1);
 					} else {
-						nameSpace = typeStr.substring(0, typeStr.lastIndexOf(':'));
+						nameSpace = typeStr.substring(0, typeStr.lastIndexOf(':')+1);
 						localPart = typeStr.substring(typeStr.lastIndexOf(':')+1);
 					}
 					prefix = SBOLDoc.getNamespacePrefix(URI.create(nameSpace));
