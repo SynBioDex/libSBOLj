@@ -928,7 +928,8 @@ class GenBank {
 					annotations.add(annotation);
 
 					// Base count of the sequence
-					baseCount = Integer.parseInt(strLine.substring(29,40).trim());
+					int startBaseCount = strLine.substring(29,40).lastIndexOf(" ");
+					baseCount = Integer.parseInt(strLine.substring(29+startBaseCount,40).trim());
 					
 					// type of sequence
 					String seqType = strLine.substring(44,53).trim();

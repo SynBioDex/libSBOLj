@@ -39,19 +39,28 @@ class readTester {
 	public static void main(String[] args) {
 
 		try {
-			SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
-			SBOLDocument doc = sbh.getSBOL(URI.create("https://synbiohub.org/public/igem/BBa_J23070/1"));
-			doc.write(System.out);
-			System.out.println(sbh.getRootCollectionMetadata());
-			sbh.login("myers@ece.utah.edu", "test");
-			System.out.println(sbh.getRootCollectionMetadata());
-			System.out.println(sbh.getSubCollectionMetadata(URI.create("https://synbiohub.org/user/myers/NewTest/NewTest_collection/1")));
-			HashSet<URI> myset = new HashSet<URI>();
-			myset.add(URI.create("https://synbiohub.org/user/myers/test/test_collection/1"));
-			System.out.println(sbh.getMatchingComponentDefinitionMetadata(null, null, null, myset, 0, 50));
-			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu/");
-			doc = SBOLReader.read("/Users/myers/Downloads/pBW842_pCAG-pExpr-FP-DECODER.seq");
-			doc.write(System.out);
+			SBOLReader.setURIPrefix("http://dummy.org");
+			SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/JL7_PV1-PBP-VCre-N172-L1-GID1-NLS-BGHpA (1).gb");
+			SBOLValidate.validateSBOL(doc, true, true, true);
+			for(String error : SBOLValidate.getErrors()) {
+				System.out.println(error);
+			}
+			doc.write("/Users/myers/Downloads/tmpGB.xml");
+			//SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
+			//String result = sbh.sparqlQuery("select ?s ?p ?o where { ?s ?p ?o . FILTER(?s = <https://synbiohub.org/public/igem/BBa_B0015/1>) }");
+			//System.out.println(result);
+//			SBOLDocument doc = sbh.getSBOL(URI.create("https://synbiohub.org/public/igem/BBa_J23070/1"));
+//			doc.write(System.out);
+//			System.out.println(sbh.getRootCollectionMetadata());
+//			sbh.login("myers@ece.utah.edu", "test2");
+//			System.out.println(sbh.getRootCollectionMetadata());
+//			System.out.println(sbh.getSubCollectionMetadata(URI.create("https://synbiohub.org/user/myers/NewTest/NewTest_collection/1")));
+//			HashSet<URI> myset = new HashSet<URI>();
+//			myset.add(URI.create("https://synbiohub.org/user/myers/test/test_collection/1"));
+//			System.out.println(sbh.getMatchingComponentDefinitionMetadata(null, null, null, null, 0, 50));
+//			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu/");
+//			doc = SBOLReader.read("/Users/myers/Downloads/QUAS_Promoter_Test.gb");
+//			doc.write(System.out);
 //			SBOLReader.setURIPrefix("http://dummy.org/");
 //			SBOLReader.setVersion("1");
 //			//SBOLDocument doc3 = SBOLReader.read("/Users/myers/Downloads/GenBankEx/sequence1.gb");
@@ -114,8 +123,8 @@ class readTester {
 //			//System.out.println(sfe.getCountTopLevels("Collection"));
 //			//doc2.getComponentDefinition(URI.create("https://synbiohub.org/public/igem/BBa_J18935/1"));
 //			//SBOLWriter.write(doc2, System.out);
-////			sfe.login("myers@ece.utah.edu", "test");
-////			sfe.submit("testCDCol", "1", "testName", "testDescription", "", "http://dummy.org/foo/foo_collection,http://dummy.org/foo2/foo2_collection", "1", doc2);
+//			sbh.login("myers@ece.utah.edu", "test");
+//			sbh.submit("testCDCol", "1", "testName", "testDescription", "", "http://dummy.org/foo/foo_collection,http://dummy.org/foo2/foo2_collection", "1", null);
 //			//ArrayList<IdentifiedMetadata> imd = doc2.getRegistry("https://synbiohub.org:9090").searchRootCollectionMetadata();
 //			//System.out.println(imd.toString());
 //			//doc2.getTopLevel(new URI("https://synbiohub.org/public/igem/BBa_K136042/1"));

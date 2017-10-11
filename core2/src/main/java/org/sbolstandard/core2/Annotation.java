@@ -497,9 +497,11 @@ public class Annotation {
 		result = prime * result + ((nestedLocalPart == null) ? 0 : nestedLocalPart.hashCode());
 		result = prime * result
 				+ ((nestedNamespaceURI == null) ? 0 : nestedNamespaceURI.hashCode());
-		result = prime * result + ((nestedPrefix == null) ? 0 : nestedPrefix.hashCode());
+		// TODO: removed, not needed to be equal
+		//result = prime * result + ((nestedPrefix == null) ? 0 : nestedPrefix.hashCode());
 		result = prime * result + ((nestedURI == null) ? 0 : nestedURI.hashCode());
-		result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
+		// TODO: removed, not needed to be equal
+		//result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
 		result = prime * result + ((stringValue == null) ? 0 : stringValue.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
@@ -571,24 +573,30 @@ public class Annotation {
 		}
 		else if (!nestedNamespaceURI.equals(other.nestedNamespaceURI))
 			return false;
+		// TODO: removed since do not need to be equal
+		/*
 		if (nestedPrefix == null) {
 			if (other.nestedPrefix != null)
 				return false;
 		}
 		else if (!nestedPrefix.equals(other.nestedPrefix))
 			return false;
+			*/
 		if (nestedURI == null) {
 			if (other.nestedURI != null)
 				return false;
 		}
 		else if (!nestedURI.equals(other.nestedURI))
 			return false;
+		// TODO: removed since do not need to be equal
+		/*
 		if (prefix == null) {
 			if (other.prefix != null)
 				return false;
 		}
 		else if (!prefix.equals(other.prefix))
 			return false;
+			*/
 		if (stringValue == null) {
 			if (other.stringValue != null)
 				return false;

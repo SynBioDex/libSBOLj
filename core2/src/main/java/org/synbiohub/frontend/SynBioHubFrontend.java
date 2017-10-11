@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -224,7 +225,7 @@ public class SynBioHubFrontend
      */
     public ArrayList<IdentifiedMetadata> search(SearchQuery query) throws SynBioHubException
     {
-        String url = backendUrl + "/remoteSearch/";
+        String url = backendUrl + "/search/";
 
         //query.offset = offset;
         //query.limit = limit;
@@ -267,7 +268,8 @@ public class SynBioHubFrontend
 
         HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
-        
+        request.setHeader("Accept", "text/plain");
+
         try
         {
             HttpResponse response = client.execute(request);
@@ -308,6 +310,7 @@ public class SynBioHubFrontend
 
         HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
 
         try
         {
@@ -322,6 +325,46 @@ public class SynBioHubFrontend
             			new TypeToken<ArrayList<IdentifiedMetadata>>(){}.getType());
             
             return metadataList;
+        }
+        catch (Exception e)
+        {
+            throw new SynBioHubException(e);
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }
+    
+    /**
+     * Perform a SPARQL query
+     * @param query SPARQL query string
+     *
+     * @return result as a JSON string
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */    
+    public String sparqlQuery(String query) throws SynBioHubException
+    {
+        String url = backendUrl + "/sparql";
+
+        url	+= "?query="+encodeUri(query);
+        
+        HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "application/json");
+
+        try
+        {
+            HttpResponse response = client.execute(request);
+
+            checkResponseCode(response);
+
+            InputStream inputStream = response.getEntity().getContent();
+            
+            String result = inputStreamToString(inputStream);
+
+            return result;
         }
         catch (Exception e)
         {
@@ -353,6 +396,7 @@ public class SynBioHubFrontend
         Gson gson = new Gson();
         HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
 
         try
         {
@@ -427,10 +471,11 @@ public class SynBioHubFrontend
      */
     public void login(String email, String password) throws SynBioHubException
     {    	
-        String url = backendUrl + "/remoteLogin";
+        String url = backendUrl + "/login";
 
         HttpPost request = new HttpPost(url);
-        
+        request.setHeader("Accept", "text/plain");
+
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("email", email));
         params.add(new BasicNameValuePair("password", password));
@@ -439,7 +484,7 @@ public class SynBioHubFrontend
         {
             request.setEntity(new UrlEncodedFormEntity(params));
             request.setHeader("Content-Type", "application/x-www-form-urlencoded");
-            
+             
             HttpResponse response = client.execute(request);
             checkResponseCode(response);
 
@@ -483,7 +528,7 @@ public class SynBioHubFrontend
      * @param description The submission description
      * @param citations The pubMedIds for this submission
      * @param collections A comma separated list of collections
-     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge
+     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
      * @param document the SBOL document to submit
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
@@ -495,10 +540,12 @@ public class SynBioHubFrontend
     		Exception e = new Exception("Must be logged in to submit.");
     		throw new SynBioHubException(e);
     	}
-        String url = backendUrl + "/remoteSubmit";
+        String url = backendUrl + "/submit";
 
         HttpPost request = new HttpPost(url);
-        
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+
         MultipartEntity params = new MultipartEntity();
         try {
 			params.addPart("id", new StringBody(id));
@@ -509,7 +556,11 @@ public class SynBioHubFrontend
 	        params.addPart("collectionChoices", new StringBody(collections));
 	        params.addPart("overwrite_merge", new StringBody(overwrite_merge));
 	        params.addPart("user", new StringBody(user));
-	        params.addPart("file", new StringBody(serializeDocument(document)));
+	        if (document != null) {
+	        	params.addPart("file", new StringBody(serializeDocument(document)));
+	        } else {
+	        	params.addPart("file", new StringBody(""));
+	        }
 		}
 		catch (UnsupportedEncodingException e1) {
 			throw new SynBioHubException(e1);
@@ -637,7 +688,8 @@ public class SynBioHubFrontend
     {
 		HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
-		
+        request.setHeader("Accept", "text/plain");
+
     	try
     	{
 			HttpResponse response = client.execute(request);

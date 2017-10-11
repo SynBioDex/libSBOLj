@@ -1635,7 +1635,7 @@ public class SBOLDocument {
 				if (uriMap.get(component.getDefinitionURI())!=null) {
 					component.setDefinition(uriMap.get(component.getDefinitionURI()));
 					for (MapsTo mapsTo : component.getMapsTos()) {
-						ComponentDefinition cd = getComponentDefinition(uriMap.get(component.getDefinitionURI()));
+						ComponentDefinition cd = getComponentDefinition(component.getDefinitionURI());
 						if (cd!=null) {
 							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
 							URI newURI = URIcompliance.createCompliantURI(cd.getPersistentIdentity().toString(),
@@ -1671,7 +1671,7 @@ public class SBOLDocument {
 				if (uriMap.get(functionalComponent.getDefinitionURI())!=null) {
 					functionalComponent.setDefinition(uriMap.get(functionalComponent.getDefinitionURI()));
 					for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
-						ComponentDefinition cd = getComponentDefinition(uriMap.get(functionalComponent.getDefinitionURI()));
+						ComponentDefinition cd = getComponentDefinition(functionalComponent.getDefinitionURI());
 						if (cd!=null) {
 							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
 							URI newURI = URIcompliance.createCompliantURI(cd.getPersistentIdentity().toString(),
@@ -1689,7 +1689,7 @@ public class SBOLDocument {
 				if (uriMap.get(module.getDefinitionURI())!=null) {
 					module.setDefinition(uriMap.get(module.getDefinitionURI()));
 					for (MapsTo mapsTo : module.getMapsTos()) {
-						ModuleDefinition md = getModuleDefinition(uriMap.get(module.getDefinitionURI()));
+						ModuleDefinition md = getModuleDefinition(module.getDefinitionURI());
 						if (md!=null) {
 							String displayId = URIcompliance.extractDisplayId(mapsTo.getRemoteURI());
 							URI newURI = URIcompliance.createCompliantURI(md.getPersistentIdentity().toString(),
@@ -1783,6 +1783,7 @@ public class SBOLDocument {
 			//document.rename(topLevel, URIPrefix, null, version);
 			TopLevel newTL = document.createCopy(topLevel, URIPrefix, null, version);
 			uriMap.put(topLevel.getIdentity(), newTL.getIdentity());
+			uriMap.put(topLevel.getPersistentIdentity(), newTL.getPersistentIdentity());
 		}
 		document.updateReferences(uriMap);
 		for (TopLevel topLevel : document.getTopLevels()) {
@@ -1993,8 +1994,8 @@ public class SBOLDocument {
 	 */
 	public GenericTopLevel createGenericTopLevel(String URIprefix, String displayId, String version, QName rdfType) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
-		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
-				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
+		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI())/* ||
+				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())*/) {
 			throw new SBOLValidationException("sbol-12302");
 		}
 //		QName qNameInNamespace = getNamespace(URI.create(rdfType.getNamespaceURI()));
