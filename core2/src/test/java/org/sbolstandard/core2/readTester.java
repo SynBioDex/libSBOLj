@@ -39,8 +39,10 @@ class readTester {
 	public static void main(String[] args) {
 
 		try {
-			SBOLReader.setURIPrefix("http://dummy.org");
-			SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/JL7_PV1-PBP-VCre-N172-L1-GID1-NLS-BGHpA (1).gb");
+			SBOLReader.setURIPrefix("http://dummy.org/");
+			SBOLDocument doc = SBOLReader.read("/Users/myers/git/libSBOLj/core2/src/test/resources/SBOL2/CutExample.xml");
+			doc = doc.changeURIPrefixVersion("http://dummy.org/", null);
+			doc.write("/Users/myers/Downloads/out.xml");
 			SBOLValidate.validateSBOL(doc, true, true, true);
 			for(String error : SBOLValidate.getErrors()) {
 				System.out.println(error);
