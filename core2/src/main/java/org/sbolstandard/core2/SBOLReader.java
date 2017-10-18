@@ -15,6 +15,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -33,6 +34,10 @@ import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 import uk.ac.intbio.core.io.turtle.TurtleIo;
 import uk.ac.ncl.intbio.core.datatree.Datatree;
@@ -3229,8 +3234,8 @@ public class SBOLReader
 		String version 		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
-		Date startedAtTime	= null;
-		Date endedAtTime = null;
+		DateTime startedAtTime	= null;
+		DateTime endedAtTime = null;
 		Set<URI> wasInformedBys = new HashSet<>();
 		Set<Association> qualifiedAssociations = new HashSet<>();
 		Set<Usage> qualifiedUsages = new HashSet<>();
@@ -3301,13 +3306,8 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
 					//throw new SBOLValidationException("sbol-10208", topLevel.getIdentity());
 				}
-				try {
-					startedAtTime = DateFormat.getDateInstance().parse(((Literal<QName>) namedProperty.getValue()).getValue().toString());
-				}
-				catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+				startedAtTime = fmt.parseDateTime(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Activity.endedAtTime))
 			{
@@ -3315,13 +3315,8 @@ public class SBOLReader
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
 					//throw new SBOLValidationException("sbol-10208", topLevel.getIdentity());
 				}
-				try {
-					endedAtTime = DateFormat.getDateInstance().parse(((Literal<QName>) namedProperty.getValue()).getValue().toString());
-				}
-				catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+				endedAtTime = fmt.parseDateTime(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Activity.wasInformedBy))
 			{
@@ -3441,7 +3436,7 @@ public class SBOLReader
 		String description 	   = null;
 		URI persistentIdentity = null;
 		String version 		   = null;
-		URI hadRoleURI		   = null;
+		URI hadRoleURI		   = URI.create("http://sbols.org/v2#unknown"); // TODO: temp hack as this should be required
 		URI hadPlanURI		   = null;
 		URI agentURI		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();

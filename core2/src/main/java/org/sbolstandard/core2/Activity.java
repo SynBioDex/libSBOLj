@@ -10,6 +10,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.joda.time.DateTime;
+
 /**
  * Represents a Activity object in the SBOL data model.
  * 
@@ -19,8 +21,8 @@ import javax.xml.namespace.QName;
 
 public class Activity extends TopLevel{
 
-	private Date startedAtTime;
-	private Date endedAtTime;
+	private DateTime startedAtTime;
+	private DateTime endedAtTime;
 	private Set<URI> wasInformedBys;
 	private HashMap<URI, Association> qualifiedAssociations;
 	private HashMap<URI, Usage> qualifiedUsages;
@@ -277,14 +279,14 @@ public class Activity extends TopLevel{
 	/**
 	 * @return the startedAtTime
 	 */
-	public Date getStartedAtTime() {
+	public DateTime getStartedAtTime() {
 		return startedAtTime;
 	}
 
 	/**
 	 * @param startedAtTime the startedAtTime to set
 	 */
-	public void setStartedAtTime(Date startedAtTime) {
+	public void setStartedAtTime(DateTime startedAtTime) {
 		this.startedAtTime = startedAtTime;
 	}
 	
@@ -300,14 +302,14 @@ public class Activity extends TopLevel{
 	/**
 	 * @return the endedAtTime
 	 */
-	public Date getEndedAtTime() {
+	public DateTime getEndedAtTime() {
 		return endedAtTime;
 	}
 
 	/**
 	 * @param endedAtTime the endedAtTime to set
 	 */
-	public void setEndedAtTime(Date endedAtTime) {
+	public void setEndedAtTime(DateTime endedAtTime) {
 		this.endedAtTime = endedAtTime;
 	}
 	
@@ -319,7 +321,7 @@ public class Activity extends TopLevel{
 	 * @return {@code true} if this set did not already contain the identity URI of the given Activity, {@code false} otherwise.
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: ?????.
 	 */
-	public boolean addWasInformedBy(Activity activity) throws SBOLValidationException {
+	public boolean addWasInformedBy(Activity activity) {
 		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			//if (this.getSBOLDocument().getActivity(activity.getIdentity())==null) {
 				// TODO
@@ -336,7 +338,7 @@ public class Activity extends TopLevel{
 	 * @return {@code true} if this set did not already contain the given activity's URI, {@code false} otherwise.
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: ?????. 
 	 */
-	public boolean addWasInformedBy(URI activityURI) throws SBOLValidationException {
+	public boolean addWasInformedBy(URI activityURI) {
 		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			//if (this.getSBOLDocument().getActivity(activityURI)==null) {
 				// TODO:
