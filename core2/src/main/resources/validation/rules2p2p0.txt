@@ -53,7 +53,7 @@ reference: Section 7.4 on page 17
 [Identified]
 id: sbol-10208
 condition: strong required
-description: The wasDerivedFrom property of an Identified object is
+description: The wasDerivedFroms property of an Identified object is
 OPTIONAL and MAY contain a URI.
 reference: Section 7.4 on page 17
 
@@ -128,36 +128,51 @@ condition: strong required
 description: Objects with the same persistentIdentity MUST be instances of the same class.
 reference: Section 7.4 on page 17
 
+[Identified]
+id: sbol-10221
+condition: strong required
+description: The wasGeneratedBys property of an Identified object is OPTIONAL and MAY contain a
+set of URIs.
+reference: Section 12.8 on page 63
+
+[Identified]
+id: sbol-10222
+condition: weak required
+description: Each URI contained by the wasGeneratedBys property of an Identified object MUST refer to an Activity object.
+reference: Section 12.8 on page 63
+
 [TopLevel]
 id: sbol-10302
 condition: recommended
-description: If the wasDerivedFrom property of one TopLevel object refers to another TopLevel 
+description: If the wasDerivedFroms property of one TopLevel object refers to another TopLevel 
 object with the same persistentIdentity property, then the version property of the second TopLevel object SHOULD precede that of the first if both objects have a version and it is assumed that these versions follow the conventions of semantic versioning.
 reference: Section 7.4 on page 17
 
 [TopLevel]
 id: sbol-10303
 condition: strong required
-description: The wasDerivedFrom property of an TopLevel object MUST
+description: The wasDerivedFroms property of an TopLevel object MUST
 NOT contain a URI reference to the TopLevel object itself.
 reference: Section 7.4 on page 17
 
 [TopLevel]
 id: sbol-10304
 condition: weak required
-description: TopLevel objects MUST NOT form circular reference chains via their wasDerivedFrom properties.
+description: TopLevel objects MUST NOT form circular reference chains via their wasDerivedFroms properties.
 reference: Section 7.4 on page 17
 
 [TopLevel]
 id: sbol-10305
 condition: weak required (not machine checkable)
-description: If the wasDerivedFrom property of one TopLevel object refers to another TopLevel object with the same persistentIdentity property, then version property of the second TopLevel object MUST precede that of the first if both objects have a version.
+description: If the wasDerivedFroms property of one TopLevel object refers to another TopLevel object with the same persistentIdentity property, then version property of the second TopLevel object MUST precede that of the first if both objects have a version.
 reference: Section 7.4 on page 17
 
 [Sequence]
 id: sbol-10401
 condition: strong required
-description: A Sequence MUST NOT have properties other than the following: identity, persistentIdentity, displayId, version, wasDerivedFrom, name, description, annotations, elements, and encoding.
+description: A Sequence MUST NOT have properties other than the following: identity,
+persistentIdentity, displayId, version, wasDerivedFroms , wasGeneratedBys , name, 
+description, annotations, elements, and encoding.  
 reference: Section 7.6 on page 20
 
 [Sequence]
@@ -201,7 +216,9 @@ reference: Section 7.6 on page 20
 [ComponentDefinition]
 id: sbol-10501
 condition: strong required
-description: A ComponentDefinition MUST NOT have properties other than the following: identity, persistentIdentity, displayId, version, wasDerivedFrom, name, description, annotations, types, roles, components, sequences, sequenceAnnotations, and sequenceConstraints.
+description: A ComponentDefinition MUST NOT have properties other than the following: identity, 
+persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, description, annotations, types, 
+roles, components, sequences, sequenceAnnotations, and sequenceConstraints.
 reference: Section 7.7 on page 22
 
 [ComponentDefinition]
@@ -452,7 +469,8 @@ reference: Section 7.7.1 on page 26
 id: sbol-10701
 condition: strong required
 description: A Component MUST NOT have properties other than the following: identity, persistentIdentity, 
-displayId,version,wasDerivedFrom,name,description,annotations,access,definition, mapsTos, roles, and roleIntegration.
+displayId, version, wasDerivedFroms, wasGeneratedBys, name, description, annotations, access, definition, 
+mapsTos, roles, and roleIntegration.
 reference: Section 7.7.1 on page 27
 
 [Component]
@@ -516,7 +534,8 @@ reference: Section 7.7.2 on page 27
 id: sbol-10801
 condition: strong required
 description: A MapsTo MUST NOT have properties other than the
-following: identity, persistentIdentity, displayId, version, wasDerivedFrom, name, description, annotations, refinement, local, and remote.
+following: identity, persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys,
+name, description, annotations, refinement, local, and remote.
 reference: Section 7.7.3 on page 29
 
 [MapsTo]
@@ -586,7 +605,7 @@ id: sbol-10901
 condition: strong required
 description: A SequenceAnnotation MUST NOT have properties other than
 the following: identity, persistentIdentity, displayId, version,
-wasDerivedFrom, name, description, annotations, component, locations, and roles.
+wasDerivedFroms, wasGeneratedBys, name, description, annotations, component, locations, and roles.
 reference: Section 7.7.4 on page 32
 
 [SequenceAnnotation]
@@ -650,7 +669,7 @@ id: sbol-11101
 condition: strong required
 description: A Range MUST NOT have properties other than the
 following: identity, persistentIdentity, displayId, version,
-wasDerivedFrom, name, description, annotations, orientation, start, and end.
+wasDerivedFroms, wasGeneratedBys, name, description, annotations, orientation, start, and end.
 reference: Section 7.7.5 on page 34
 
 [Range]
@@ -677,7 +696,9 @@ reference: Section 7.7.5 on page 35
 [Cut]
 id: sbol-11201
 condition: strong required
-description: A Cut MUST NOT have properties other than the following: identity, persistentIdentity, displayId, version, wasDerivedFrom, name, description, annotations, orientation, and at.
+description: A Cut MUST NOT have properties other than the following: identity, 
+persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, description, 
+annotations, orientation, and at.
 reference: Section 7.7.5 on page 35
 
 [Cut]
@@ -691,15 +712,16 @@ reference: Section 7.7.5 on page 35
 id: sbol-11301
 condition: strong required
 description: A GenericLocation MUST NOT have properties other than the
-following:identity, persistentIdentity, displayId, version,
-wasDerivedFrom, name, description, annotations, and orientation.
+following: identity, persistentIdentity, displayId, version,
+wasDerivedFroms, wasGeneratedBys, name, description, annotations, and orientation.
 reference: Section 7.7.5 on page 35
 
 [SequenceConstraint]
 id: sbol-11401
 condition: strong required
 description: A SequenceConstraint MUST NOT have properties other than
-the following: identity, persistentIdentity, displayId, version, wasDerivedFrom, name, description, annotations,19 restriction, subject, and object.
+the following: identity, persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys,
+name, description, annotations, restriction, subject, and object.
 reference: Section 7.7.6 on page 36
 
 [SequenceConstraint]
@@ -792,7 +814,8 @@ reference: Section 7.7.6 on page 36
 id: sbol-11501
 condition: strong required
 description: A Model MUST NOT have properties other than the following: identity, persistentIdentity,
-displayId, version, wasDerivedFrom, name, description, annotations, source, language, and framework.
+displayId, version, wasDerivedFroms, wasGeneratedBys, name, description, annotations, source, language, 
+and framework.
 reference: Section 7.8 on page 37
 
 [Model]
@@ -863,7 +886,7 @@ id: sbol-11601
 condition: strong required
 description: A ModuleDefinition MUST NOT have properties other than
 the following: identity, persistentIdentity, displayId, version,
-wasDerivedFrom, name, description, annotations, roles, modules,
+wasDerivedFroms, wasGeneratedBys, name, description, annotations, roles, modules,
 interactions, functionalComponents, and models.
 reference: Section 7.9 on page 39
 
@@ -923,7 +946,8 @@ reference: Section 7.7.3 on page 29
 id: sbol-11701
 condition: strong required
 description: A Module MUST NOT have properties other than the
-following: identity, persistentIdentity, displayId, version, wasDerivedFrom, name, description, annotations, definition, and 35 mapsTos.
+following: identity, persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys,
+name, description, annotations, definition, and mapsTos.
 reference: Section 7.9.1 on page 41
 
 [Module]
@@ -964,7 +988,8 @@ id: sbol-11801
 condition: strong required
 description: A FunctionalComponent MUST NOT have properties other than
 the following: identity, persistentIdentity, displayId, version,
-wasDerivedFrom, name, description, annotations, access, definition, and mapsTos, and direction.
+wasDerivedFroms, wasGeneratedBys, name, description, annotations, access, 
+definition, and mapsTos, and direction.
 reference: Section 7.7.1 on page 26
 
 [FunctionalComponent]
@@ -979,7 +1004,7 @@ id: sbol-11901
 condition: strong required
 description: An Interaction MUST NOT have properties other than the
 following: identity, persistentIdentity, displayId, version,
-wasDerivedFrom, name, description, annotations, types, and
+wasDerivedFroms, wasGeneratedBys, name, description, annotations, types, and
 participations.
 reference: Section 7.9.3 on page 43
 
@@ -1030,7 +1055,7 @@ id: sbol-12001
 condition: strong required
 description: A Participation MUST NOT have properties other than the
 following: identity, persistentIdentity, displayId, version,
-wasDerivedFrom, name, description, annotations, roles, and participant.
+wasDerivedFroms, wasGeneratedBys, name, description, annotations, roles, and participant.
 reference: Section 7.9.4 on page 44
 
 [Participation]
@@ -1077,7 +1102,9 @@ reference: Section 7.9.4 on page 44
 [Collection]
 id: sbol-12101 
 condition: strong required
-description: A Collection MUST NOT have properties other than the following: identity, persistentIdentity, displayId, version, wasDerivedFrom, name, description, annotations, and members.
+description: A Collection MUST NOT have properties other than the following: 
+identity, persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys,
+name, description, annotations, and members.
 reference: Section 7.10 on page 46
 
 [Collection]
@@ -1124,7 +1151,7 @@ reference: Section 7.11 on page 47
 id: sbol-12301
 condition: strong required
 description: A GenericTopLevel MUST NOT have properties other than the following:
-identity, persistentIdentity, displayId, version, wasDerivedFrom,
+identity, persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys,
 name, description, and annotations.
 reference: Section 7.11.2 on page 48
 
@@ -1134,3 +1161,112 @@ condition: strong required
 description: The rdfType property of a GenericTopLevel object is
 REQUIRED and MUST contain a QName.
 reference: Section 7.11.2 on page 48
+
+[Activity]
+id: sbol-12401
+condition: strong required
+description: An Activity MUST NOT have properties other than the following: identity, 
+persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, 
+description, annotations, startedAtTime, endedAtTime, wasInformedBys, qualifiedUsages, 
+and qualifiedAssociations.
+reference: Section 12.8 on page 63
+
+[Activity]
+id: sbol-12403
+condition: strong required
+description: The endedAtTime property of an Activity object is OPTIONAL and MAY contain a DateTime.
+reference: Section 12.8 on page 63
+
+[Activity]
+id: sbol-12404
+condition: strong required
+description: The qualifiedAssociations property of an Activity is OPTIONAL and MAY contain a set 
+of Association objects.
+reference: Section 12.8 on page 63
+
+[Activity]
+id: sbol-12405
+condition: strong required
+description: The qualifiedUsages property of an Activity is OPTIONAL and MAY contain a set 
+of Usage objects.
+reference: Section 12.8 on page 63
+
+[Activity]
+id: sbol-12407
+condition: weak required
+description: Each URI contained by the wasInformedBys property of an Activity MUST refer to a Activity object.
+reference: Section 12.8 on page 63
+
+[Usage]
+id: sbol-12501
+condition: strong required
+description: An Usage MUST NOT have properties other than the following: identity, 
+persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, 
+description, annotations, entity, and hadRole.
+reference: Section 12.8 on page 63
+
+[Usage]
+id: sbol-12502
+condition: strong required
+description: The entity property of an Usage is REQUIRED and MUST contain a URI.
+reference: Section 12.8 on page 63
+
+[Usage]
+id: sbol-12503
+condition: strong required
+description: The hadRole property of an Usage is REQUIRED and MUST contain a URI.
+reference: Section 12.8 on page 63
+
+[Association]
+id: sbol-12601
+condition: strong required
+description: An Association MUST NOT have properties other than the following: identity, 
+persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, 
+description, annotations, hadRole, hadPlan, and agent.
+reference: Section 12.8 on page 63
+
+[Association]
+id: sbol-12602
+condition: strong required
+description: The hadRole property of an Association is REQUIRED and MUST contain a URI.
+reference: Section 12.8 on page 63
+
+[Association]
+id: sbol-12603
+condition: strong required
+description: The hadPlan property of an Association is OPTIONAL and MAY contain a URI.
+reference: Section 12.8 on page 63
+
+[Association]
+id: sbol-12604
+condition: weak required
+description: The URI contained by the hadPlan property MUST refer to a Plan object.
+reference: Section 12.8 on page 63
+
+[Association]
+id: sbol-12605
+condition: strong required
+description: The agent property of an Association is REQUIRED and MUST contain a URI.
+reference: Section 12.8 on page 63
+
+[Association]
+id: sbol-12606
+condition: weak required
+description: The URI contained by the agent property MUST refer to an Agent object.
+reference: Section 12.8 on page 63
+
+[Plan]
+id: sbol-12701
+condition: strong required
+description: A Plan MUST NOT have properties other than the following: identity, 
+persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, 
+description, and annotations.
+reference: Section 12.8 on page 63
+
+[Agent]
+id: sbol-12801
+condition: strong required
+description: An Agent MUST NOT have properties other than the following: identity, 
+persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, 
+description, and annotations.
+reference: Section 12.8 on page 63

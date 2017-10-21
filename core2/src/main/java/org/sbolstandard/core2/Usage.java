@@ -22,6 +22,7 @@ public class Usage extends Identified {
 	 * @param hadRole
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
 	 * <ul>
+	 * <li>an SBOL validation rule violation occurred in {@link #setEntity(URI)}.</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #setHadRole(URI)}.</li>
 	 * </ul>
 	 */
@@ -54,8 +55,12 @@ public class Usage extends Identified {
 
 	/**
 	 * @param entity the entity to set
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12502.
 	 */
-	public void setEntity(URI entity) {
+	public void setEntity(URI entity) throws SBOLValidationException {
+		if (entity==null) {
+			throw new SBOLValidationException("sbol-12502",this);
+		}
 		this.entity = entity;
 	}
 
@@ -68,8 +73,12 @@ public class Usage extends Identified {
 
 	/**
 	 * @param hadRole the hadRole to set
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12503.
 	 */
-	public void setHadRole(URI hadRole) {
+	public void setHadRole(URI hadRole) throws SBOLValidationException {
+		if (hadRole==null) {
+			throw new SBOLValidationException("sbol-12503",this);
+		}
 		this.hadRole = hadRole;
 	}
 

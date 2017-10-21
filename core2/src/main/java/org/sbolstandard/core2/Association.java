@@ -24,6 +24,7 @@ public class Association extends Identified {
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
 	 * <ul>
 	 * <li>an SBOL validation rule violation occurred in {@link #setHadRole(URI)}.</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setAgent(URI)}.</li>
 	 * </ul>
 	 */
 	Association(URI identity, URI hadRole, URI agent) throws SBOLValidationException {
@@ -57,8 +58,12 @@ public class Association extends Identified {
 
 	/**
 	 * @param hadRole the hadRole to set
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12602.
 	 */
-	public void setHadRole(URI hadRole) {
+	public void setHadRole(URI hadRole) throws SBOLValidationException {
+		if (hadRole==null) {
+			throw new SBOLValidationException("sbol-12602",this);
+		}
 		this.hadRole = hadRole;
 	}
 	
@@ -72,9 +77,17 @@ public class Association extends Identified {
 
 	/**
 	 * @param agent the agent to set
+	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 12605, 12606. 
 	 */
-	public void setAgent(URI agent) {
-		// TODO: throw exception if null
+	public void setAgent(URI agent) throws SBOLValidationException {
+		if (agent==null) {
+			throw new SBOLValidationException("sbol-12605",this);
+		}
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getAgent(agent)==null) {
+				throw new SBOLValidationException("sbol-12606",this);
+			}
+		}
 		this.agent = agent;
 	}
 	
@@ -96,8 +109,14 @@ public class Association extends Identified {
 
 	/**
 	 * @param hadPlan the hadPlan to set
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12604.
 	 */
-	public void setHadPlan(URI hadPlan) {
+	public void setHadPlan(URI hadPlan) throws SBOLValidationException {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getPlan(hadPlan)==null) {
+				throw new SBOLValidationException("sbol-12604",this);
+			}
+		}
 		this.hadPlan = hadPlan;
 	}
 

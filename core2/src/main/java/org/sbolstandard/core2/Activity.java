@@ -3,7 +3,6 @@ package org.sbolstandard.core2;
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 
 import java.net.URI;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -81,15 +80,9 @@ public class Activity extends TopLevel{
 	 * @param agent 
 	 * @return the created association
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
-	 * TODO
+	 * 12602, 12604, 12605, 12606
 	 */
 	public Association createAssociation(String displayId, URI hadRole, URI agent) throws SBOLValidationException {
-		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-//			if (this.getSBOLDocument().getAgent(agent)==null) {
-//				// TODO
-//				//throw new SBOLValidationException("sbol-10604",this);
-//			}
-		}
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		Association a = createAssociation(createCompliantURI(URIprefix, displayId, version),hadRole,agent);
@@ -101,8 +94,6 @@ public class Activity extends TopLevel{
 	
 	private void addAssociation(Association association) throws SBOLValidationException {
 		association.setSBOLDocument(this.getSBOLDocument());
-		//association.setActivity(this);
-		// TODO: validation rules
 		addChildSafely(association, qualifiedAssociations, "association", qualifiedUsages); 
 	}
 
@@ -125,15 +116,9 @@ public class Activity extends TopLevel{
 	 * @param hadRole 
 	 * @return the created usage
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
-	 * TODO
+	 * 12502, 12503
 	 */
 	public Usage createUsage(String displayId, URI entity, URI hadRole) throws SBOLValidationException {
-		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-//			if (this.getSBOLDocument().getAgent(agent)==null) {
-//				// TODO
-//				//throw new SBOLValidationException("sbol-10604",this);
-//			}
-		}
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		Usage u = createUsage(createCompliantURI(URIprefix, displayId, version),entity,hadRole);
@@ -145,8 +130,6 @@ public class Activity extends TopLevel{
 	
 	private void addUsage(Usage usage) throws SBOLValidationException {
 		usage.setSBOLDocument(this.getSBOLDocument());
-		//association.setActivity(this);
-		// TODO: validation rules
 		addChildSafely(usage, qualifiedUsages, "usage", qualifiedAssociations); 
 	}
 
@@ -319,14 +302,13 @@ public class Activity extends TopLevel{
 	 *
 	 * @param activity the Activity instance whose identity URI to be added
 	 * @return {@code true} if this set did not already contain the identity URI of the given Activity, {@code false} otherwise.
-	 * @throws SBOLValidationException if the following SBOL validation rule was violated: ?????.
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12407.
 	 */
-	public boolean addWasInformedBy(Activity activity) {
+	public boolean addWasInformedBy(Activity activity) throws SBOLValidationException {
 		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-			//if (this.getSBOLDocument().getActivity(activity.getIdentity())==null) {
-				// TODO
-				//throw new SBOLValidationException("sbol-10513", sequence);
-			//}
+			if (this.getSBOLDocument().getActivity(activity.getIdentity())==null) {
+				throw new SBOLValidationException("sbol-12407", this);
+			}
 		}
 		return this.addWasInformedBy(activity.getIdentity());
 	}
@@ -336,14 +318,13 @@ public class Activity extends TopLevel{
 	 *
 	 * @param activityURI the identity URI of the Activity to be added
 	 * @return {@code true} if this set did not already contain the given activity's URI, {@code false} otherwise.
-	 * @throws SBOLValidationException if the following SBOL validation rule was violated: ?????. 
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12407. 
 	 */
-	public boolean addWasInformedBy(URI activityURI) {
+	public boolean addWasInformedBy(URI activityURI) throws SBOLValidationException {
 		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-			//if (this.getSBOLDocument().getActivity(activityURI)==null) {
-				// TODO:
-				//throw new SBOLValidationException("sbol-10513",this);
-			//}
+			if (this.getSBOLDocument().getActivity(activityURI)==null) {
+				throw new SBOLValidationException("sbol-12407",this);
+			}
 		}
 		return wasInformedBys.add(activityURI);
 	}
@@ -386,11 +367,26 @@ public class Activity extends TopLevel{
 	public Set<URI> getWasInformedBys() {
 		return wasInformedBys;
 	}
+	
+	/**
+	 * Removes all entries of this activity's set of reference
+	 * wasInformedBy URIs. The set will be empty after this call returns.
+	 */
+	public void clearWasInformedBys() {
+		wasInformedBys.clear();
+	}
+
 
 	/**
 	 * @param wasInformedBys the wasInformedBys to set
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #addWasInformedBy(URI)}
 	 */
-	public void setWasInformedBys(Set<URI> wasInformedBys) {
+	public void setWasInformedBys(Set<URI> wasInformedBys) throws SBOLValidationException {
+		clearWasInformedBys();
+		if (wasInformedBys==null) return;
+		for (URI wasInformedBy : wasInformedBys) {
+			addWasInformedBy(wasInformedBy);
+		}
 		this.wasInformedBys = wasInformedBys;
 	}
 	

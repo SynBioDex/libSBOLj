@@ -350,8 +350,14 @@ public abstract class Identified {
 	 *
 	 * @param wasGeneratedByURI the wasGeneratedBy URI to be added
 	 * @return {@code true} if this set did not already contain the specified wasGeneratedBy, {@code false} otherwise.
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10222
 	 */
-	public boolean addWasGeneratedBy(URI wasGeneratedByURI) {
+	public boolean addWasGeneratedBy(URI wasGeneratedByURI) throws SBOLValidationException {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getActivity(wasGeneratedByURI)==null) {
+				throw new SBOLValidationException("sbol-10222",this);
+			}
+		}
 		return wasGeneratedBys.add(wasGeneratedByURI);
 	}
 	
@@ -399,8 +405,9 @@ public abstract class Identified {
 	 * set of the wasGeneratedBys.
 	 *
 	 * @param wasGeneratedBys the set of wasGeneratedBys to set to
+	 * @throws SBOLValidationException if the following SBOL validation rules was violated: 10222
 	 */
-	public void setWasGeneratedBys(Set<URI> wasGeneratedBys) {
+	public void setWasGeneratedBys(Set<URI> wasGeneratedBys) throws SBOLValidationException {
 		clearWasGeneratedBys();
 		if (wasGeneratedBys==null) return;
 		for (URI wasGeneratedBy : wasGeneratedBys) {
@@ -591,6 +598,16 @@ public abstract class Identified {
 				throw new SBOLValidationException("sbol-12101");
 			} else if (this instanceof GenericTopLevel) {
 				throw new SBOLValidationException("sbol-12301");
+			} else if (this instanceof Activity) {
+				throw new SBOLValidationException("sbol-12401");
+			} else if (this instanceof Usage) {
+				throw new SBOLValidationException("sbol-12501");
+			} else if (this instanceof Association) {
+				throw new SBOLValidationException("sbol-12601");
+			} else if (this instanceof Plan) {
+				throw new SBOLValidationException("sbol-12701");
+			} else if (this instanceof Agent) {
+				throw new SBOLValidationException("sbol-12801");
 			}
 		}
 		addNamespace(annotation);
