@@ -1167,8 +1167,8 @@ id: sbol-12401
 condition: strong required
 description: An Activity MUST NOT have properties other than the following: identity, 
 persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, 
-description, annotations, startedAtTime, endedAtTime, wasInformedBys, qualifiedUsages, 
-and qualifiedAssociations.
+description, annotations, startedAtTime, endedAtTime, wasInformedBys, usages, 
+and associations.
 reference: Section 12.8 on page 63
 
 [Activity]
@@ -1180,14 +1180,14 @@ reference: Section 12.8 on page 63
 [Activity]
 id: sbol-12404
 condition: strong required
-description: The qualifiedAssociations property of an Activity is OPTIONAL and MAY contain a set 
+description: The associations property of an Activity is OPTIONAL and MAY contain a set 
 of Association objects.
 reference: Section 12.8 on page 63
 
 [Activity]
 id: sbol-12405
 condition: strong required
-description: The qualifiedUsages property of an Activity is OPTIONAL and MAY contain a set 
+description: The usages property of an Activity is OPTIONAL and MAY contain a set 
 of Usage objects.
 reference: Section 12.8 on page 63
 
@@ -1202,7 +1202,7 @@ id: sbol-12501
 condition: strong required
 description: An Usage MUST NOT have properties other than the following: identity, 
 persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, 
-description, annotations, entity, and hadRole.
+description, annotations, entity, and roles.
 reference: Section 12.8 on page 63
 
 [Usage]
@@ -1214,7 +1214,7 @@ reference: Section 12.8 on page 63
 [Usage]
 id: sbol-12503
 condition: strong required
-description: The hadRole property of an Usage is REQUIRED and MUST contain a URI.
+description: The roles property of an Usage is OPTIONAL and MAY contain a set of URIs.
 reference: Section 12.8 on page 63
 
 [Association]
@@ -1222,25 +1222,25 @@ id: sbol-12601
 condition: strong required
 description: An Association MUST NOT have properties other than the following: identity, 
 persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, 
-description, annotations, hadRole, hadPlan, and agent.
+description, annotations, roles, pan, and agent.
 reference: Section 12.8 on page 63
 
 [Association]
 id: sbol-12602
 condition: strong required
-description: The hadRole property of an Association is REQUIRED and MUST contain a URI.
+description: The roles property of an Association is OPTIONAL and MAY contain a set of URIs.
 reference: Section 12.8 on page 63
 
 [Association]
 id: sbol-12603
 condition: strong required
-description: The hadPlan property of an Association is OPTIONAL and MAY contain a URI.
+description: The plan property of an Association is OPTIONAL and MAY contain a URI.
 reference: Section 12.8 on page 63
 
 [Association]
 id: sbol-12604
 condition: weak required
-description: The URI contained by the hadPlan property MUST refer to a Plan object.
+description: The URI contained by the plan property MUST refer to a Plan object.
 reference: Section 12.8 on page 63
 
 [Association]
