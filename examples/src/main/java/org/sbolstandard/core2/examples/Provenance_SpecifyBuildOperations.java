@@ -3,9 +3,11 @@ package org.sbolstandard.core2.examples;
 import java.net.URI;
 
 import org.sbolstandard.core2.Activity;
+import org.sbolstandard.core2.Association;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLWriter;
+import org.sbolstandard.core2.SequenceOntology;
 import org.sbolstandard.core2.Usage;
 
 /**
@@ -25,6 +27,22 @@ import org.sbolstandard.core2.Usage;
  */
 public class Provenance_SpecifyBuildOperations {
 	
+	public static final SequenceOntology so = new SequenceOntology();
+
+	public static final URI LINEAR_SINGLE_STRANDED_DNA = so.getURIbyId("SO:0000956");
+	public static final URI LINEAR_DOUBLE_STRANDED_DNA = so.getURIbyId("SO:0000957");
+	public static final URI CIRCULAR_DOUBLE_STRANDED_DNA = so.getURIbyId("SO:0000958");
+	public static final URI CIRCULAR_SINGLE_STRANDED_DNA = so.getURIbyId("SO:0000960");
+	
+	public static final URI AMPLICON = so.getURIbyId("SO:0000006");
+	public static final URI FORWARD_PRIMER = so.getURIbyId("SO:0000121");
+	public static final URI REVERSE_PRIMER = so.getURIbyId("SO:0000132");
+	
+	public static final URI RESTRICTION_ENZYME_CUT_SITE = so.getURIbyId("SO:0000168");
+	public static final URI VECTOR_PLASMID = so.getURIbyId("SO:0000755");
+	public static final URI UPSTREAM = so.getURIbyId("SO:0001631");
+	public static final URI DOWNSTREAM = so.getURIbyId("SO:0001632");
+
 	public static final String BUILD_PREFIX = "http://sbolstandard.org/build/";
 	
 	/**
@@ -36,7 +54,7 @@ public class Provenance_SpecifyBuildOperations {
 	 */
 	public static void main(String[] args) 
 			throws Exception {
-		
+
 		// exemplify the cut operation
 		specifyCutOperation();
 		
@@ -60,11 +78,11 @@ public class Provenance_SpecifyBuildOperations {
 		document.setDefaultURIprefix(BUILD_PREFIX);
 		
 		ComponentDefinition vector = document.createComponentDefinition(
-				"vector", Ontologies.CIRCULAR_DOUBLE_STRANDED_DNA.getURI());
+				"vector", CIRCULAR_DOUBLE_STRANDED_DNA);
 		vector.setName("vector");
 		
 		ComponentDefinition enzyme = document.createComponentDefinition(
-				"restriction_enzyme", Ontologies.RESTRICTION_ENZYME_CUT_SITE.getURI());
+				"restriction_enzyme", RESTRICTION_ENZYME_CUT_SITE);
 		enzyme.setName("restriction_enzyme");
 
 		//Create the generic top level entity for the cut operation
@@ -72,12 +90,12 @@ public class Provenance_SpecifyBuildOperations {
 		activity.setName("cut(" + vector.getName() + ", " + enzyme.getName() + ")");
 
 		//Create the qualifiedUsage annotation to describe the inputs of the cut operation
-		activity.createUsage("vector", vector.getIdentity()).addRole(Ontologies.VECTOR_PLASMID.getURI());
-		activity.createUsage("enzyme", enzyme.getIdentity()).addRole(Ontologies.RESTRICTION_ENZYME_CUT_SITE.getURI());
+		activity.createUsage("vector", vector.getIdentity()).addRole(VECTOR_PLASMID);
+		activity.createUsage("enzyme", enzyme.getIdentity()).addRole(RESTRICTION_ENZYME_CUT_SITE);
 
 		// the result of the cut operation
 		ComponentDefinition linearized_vector = document.createComponentDefinition(
-				"linearized_vector", Ontologies.LINEAR_DOUBLE_STRANDED_DNA.getURI());
+				"linearized_vector", LINEAR_DOUBLE_STRANDED_DNA);
 		linearized_vector.setName("linearized_vector");
 		linearized_vector.addWasGeneratedBy(activity.getIdentity());
 		
@@ -101,17 +119,17 @@ public class Provenance_SpecifyBuildOperations {
 		
 		// the linear DNA construct
 		ComponentDefinition dnaConstruct = document.createComponentDefinition(
-				"dna_construct", Ontologies.LINEAR_SINGLE_STRANDED_DNA.getURI());
+				"dna_construct", LINEAR_SINGLE_STRANDED_DNA);
 		dnaConstruct.setName("dna_construct");
 		
 		// the 5' primer for amplification
 		ComponentDefinition fivePrimer = document.createComponentDefinition(
-				"five_primer", Ontologies.FORWARD_PRIMER.getURI());
+				"five_primer", FORWARD_PRIMER);
 		fivePrimer.setName("five_primer");
 		
 		// the 3' primer for amplification
 		ComponentDefinition threePrimer = document.createComponentDefinition(
-				"three_primer", Ontologies.REVERSE_PRIMER.getURI());
+				"three_primer", REVERSE_PRIMER);
 		threePrimer.setName("three_primer");
 		
 		
@@ -124,24 +142,24 @@ public class Provenance_SpecifyBuildOperations {
 		amplifyOperation.setName("amplify(" + dnaConstruct.getName() + ", " + 
 				fivePrimer.getName() + ", " + 
 				threePrimer.getName() +")");
-		
+
 		// create the qualifiedUsage annotation to describe the inputs of the amplification operation
 		// -- the amplicon
 		Usage usageDNAConstruct = amplifyOperation.createUsage("dna_construct", dnaConstruct.getIdentity());
 		usageDNAConstruct.addRole(URI.create("http://sbols.org/v2#source"));
-		usageDNAConstruct.addRole(Ontologies.AMPLICON.getURI());
+		usageDNAConstruct.addRole(AMPLICON);
 		// -- the forward primer
 		Usage usageFwdPrimer = amplifyOperation.createUsage("forward_primer", fivePrimer.getIdentity());
-		usageFwdPrimer.addRole(Ontologies.FORWARD_PRIMER.getURI());
-		usageFwdPrimer.addRole(Ontologies.FORWARD_PRIMER.getURI());
+		usageFwdPrimer.addRole(FORWARD_PRIMER);
+		usageFwdPrimer.addRole(FORWARD_PRIMER);
 		// -- the reverse primer
 		Usage usageRevPrimer = amplifyOperation.createUsage("reverse_primer", threePrimer.getIdentity());
-		usageRevPrimer.addRole(Ontologies.REVERSE_PRIMER.getURI());
-		usageRevPrimer.addRole(Ontologies.REVERSE_PRIMER.getURI());
+		usageRevPrimer.addRole(REVERSE_PRIMER);
+		usageRevPrimer.addRole(REVERSE_PRIMER);
 
 		// the result of the amplification operation
 		ComponentDefinition amplified_construct = document.createComponentDefinition(
-				"amplified_construct", Ontologies.LINEAR_DOUBLE_STRANDED_DNA.getURI());
+				"amplified_construct", LINEAR_DOUBLE_STRANDED_DNA);
 		amplified_construct.setName("my_amplified_dna");
 		amplified_construct.addWasGeneratedBy(amplifyOperation.getIdentity());
 		
@@ -168,12 +186,12 @@ public class Provenance_SpecifyBuildOperations {
 
 		// the first linear DNA construct
 		ComponentDefinition cdPart1 = document.createComponentDefinition(
-				"dna_part_1", Ontologies.LINEAR_DOUBLE_STRANDED_DNA.getURI());
+				"dna_part_1", LINEAR_DOUBLE_STRANDED_DNA);
 		cdPart1.setName("dna_part_1");
 
 		// the second linear DNA construct
 		ComponentDefinition cdPart2 = document.createComponentDefinition(
-				"dna_part_2", Ontologies.LINEAR_DOUBLE_STRANDED_DNA.getURI());
+				"dna_part_2", LINEAR_DOUBLE_STRANDED_DNA);
 		cdPart2.setName("dna_part_2");
 
 		//Create the generic top level entity for the join operation
@@ -184,12 +202,12 @@ public class Provenance_SpecifyBuildOperations {
 		joinOperation.setName("join(" + cdPart1.getName() + ", " + cdPart2.getName() + ")");
 		
 		// specify the "inputs" to the join operation
-		joinOperation.createUsage("dna_part_1", cdPart1.getIdentity()).addRole(Ontologies.UPSTREAM.getURI());
-		joinOperation.createUsage("dna_part_2", cdPart1.getIdentity()).addRole(Ontologies.DOWNSTREAM.getURI());
+		joinOperation.createUsage("dna_part_1", cdPart1.getIdentity()).addRole(UPSTREAM);
+		joinOperation.createUsage("dna_part_2", cdPart1.getIdentity()).addRole(DOWNSTREAM);
 		
 		// specify the "output" of the join operation
 		ComponentDefinition cdJoinedPart = document.createComponentDefinition(
-				"joined_dna_part", Ontologies.LINEAR_DOUBLE_STRANDED_DNA.getURI());
+				"joined_dna_part", LINEAR_DOUBLE_STRANDED_DNA);
 		cdJoinedPart.setName("joined_dna_part");
 		
 		cdJoinedPart.addWasGeneratedBy(joinOperation.getIdentity());
@@ -199,92 +217,5 @@ public class Provenance_SpecifyBuildOperations {
 	}
 }
 
-//------------------------------------------------------------
-enum Ontologies {
-	
-	LINEAR_DOUBLE_STRANDED_DNA {
-		@Override
-		public URI getURI() {
-			return URI.create("http://purl.obolibrary.org/obo/SO_0000957");
-		}
-		
-	},
-	
-	LINEAR_SINGLE_STRANDED_DNA {
-		@Override
-		public URI getURI() {
-			return URI.create("http://purl.obolibrary.org/obo/SO_0000956");
-		}
-	},
-	
-	CIRCULAR_DOUBLE_STRANDED_DNA {
-		@Override
-		public URI getURI() {
-			return URI.create("http://purl.obolibrary.org/obo/SO_0000958");
-		}
-	},
-	
-	CIRCULAR_SINGLE_STRANDED_DNA {
-		@Override
-		public URI getURI() {
-			return URI.create("http://purl.obolibrary.org/obo/SO_0000960");
-		}
-	},
-
-	AMPLICON {
-		@Override
-		public URI getURI() {
-			return URI.create("http://purl.obolibrary.org/obo/SO_0000006");
-		}
-	},
-	
-	FORWARD_PRIMER {
-		@Override
-		public URI getURI() {
-			return URI.create("http://purl.obolibrary.org/obo/SO_0000121");
-		}
-	},
-	
-	REVERSE_PRIMER {
-		@Override
-		public URI getURI() {
-			return URI.create("http://purl.obolibrary.org/obo/SO_0000132");
-		}
-	},
-	
-	RESTRICTION_ENZYME_CUT_SITE {
-		@Override
-		public URI getURI() {
-			return URI.create("http://purl.obolibrary.org/obo/SO:0000168");
-		}
-	},
-	
-	VECTOR_PLASMID {
-		@Override
-		public URI getURI() {
-			return URI.create("http://purl.obolibrary.org/obo/SO:0000755");
-		}
-	},
-	
-	UPSTREAM {
-		@Override
-		public URI getURI() {
-			return URI.create("http://purl.obolibrary.org/obo/SO_0001631");
-		}
-	},
-	
-	DOWNSTREAM {
-		@Override
-		public URI getURI() {
-			return URI.create("http://purl.obolibrary.org/obo/SO_0001632");
-		}
-		
-	}
-	
-	;
-	
-	public abstract URI getURI();
-}
-//------------------------------------------------------------
 
 
