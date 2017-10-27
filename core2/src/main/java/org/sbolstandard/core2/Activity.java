@@ -23,8 +23,8 @@ public class Activity extends TopLevel{
 	private DateTime startedAtTime;
 	private DateTime endedAtTime;
 	private Set<URI> wasInformedBys;
-	private HashMap<URI, Association> qualifiedAssociations;
-	private HashMap<URI, Usage> qualifiedUsages;
+	private HashMap<URI, Association> associations;
+	private HashMap<URI, Usage> usages;
 
 	/**
 	 * @param identity
@@ -39,8 +39,8 @@ public class Activity extends TopLevel{
 		startedAtTime = null;
 		endedAtTime = null;
 		wasInformedBys = new HashSet<>();
-		qualifiedAssociations = new HashMap<>();
-		qualifiedUsages = new HashMap<>();
+		associations = new HashMap<>();
+		usages = new HashMap<>();
 	}
 
 	/**
@@ -61,12 +61,12 @@ public class Activity extends TopLevel{
 		((TopLevel)this).copy((TopLevel)activity);
 	}
 
-	private Association createAssociation(URI identity, URI hadRole, URI agent) throws SBOLValidationException {
-		Association association = new Association(identity, hadRole, agent);
+	private Association createAssociation(URI identity, URI agent) throws SBOLValidationException {
+		Association association = new Association(identity, agent);
 		addAssociation(association);
 		return association;
 	}
-
+	
 	/**
 	 * Creates a child association for this activity with the given arguments, 
 	 * and then adds to this activity's list of associations.
@@ -76,29 +76,23 @@ public class Activity extends TopLevel{
 	 * followed by the given display ID and ends with this activity's version. 
 	 * 
 	 * @param displayId the display ID for the association to be created
-	 * @param hadRole 
 	 * @param agent 
 	 * @return the created association
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
 	 * 12602, 12604, 12605, 12606
 	 */
-	public Association createAssociation(String displayId, URI hadRole, URI agent) throws SBOLValidationException {
+	public Association createAssociation(String displayId, URI agent) throws SBOLValidationException {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		Association a = createAssociation(createCompliantURI(URIprefix, displayId, version),hadRole,agent);
+		Association a = createAssociation(createCompliantURI(URIprefix, displayId, version),agent);
 		a.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		a.setDisplayId(displayId);
 		a.setVersion(version);
 		return a;
 	}
-	
-	private void addAssociation(Association association) throws SBOLValidationException {
-		association.setSBOLDocument(this.getSBOLDocument());
-		addChildSafely(association, qualifiedAssociations, "association", qualifiedUsages); 
-	}
 
-	private Usage createUsage(URI identity, URI entity, URI hadRole) throws SBOLValidationException {
-		Usage usage = new Usage(identity, entity, hadRole);
+	private Usage createUsage(URI identity, URI entity) throws SBOLValidationException {
+		Usage usage = new Usage(identity, entity);
 		addUsage(usage);
 		return usage;
 	}
@@ -113,24 +107,18 @@ public class Activity extends TopLevel{
 	 * 
 	 * @param displayId the display ID for the usage to be created
 	 * @param entity 
-	 * @param hadRole 
 	 * @return the created usage
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
 	 * 12502, 12503
 	 */
-	public Usage createUsage(String displayId, URI entity, URI hadRole) throws SBOLValidationException {
+	public Usage createUsage(String displayId, URI entity) throws SBOLValidationException {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		Usage u = createUsage(createCompliantURI(URIprefix, displayId, version),entity,hadRole);
+		Usage u = createUsage(createCompliantURI(URIprefix, displayId, version),entity);
 		u.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		u.setDisplayId(displayId);
 		u.setVersion(version);
 		return u;
-	}
-	
-	private void addUsage(Usage usage) throws SBOLValidationException {
-		usage.setSBOLDocument(this.getSBOLDocument());
-		addChildSafely(usage, qualifiedUsages, "usage", qualifiedAssociations); 
 	}
 
 	@Override
@@ -140,8 +128,8 @@ public class Activity extends TopLevel{
 		result = prime * result + ((startedAtTime == null) ? 0 : startedAtTime.hashCode());
 		result = prime * result + ((endedAtTime == null) ? 0 : endedAtTime.hashCode());
 		result = prime * result + ((wasInformedBys == null) ? 0 : wasInformedBys.hashCode());
-		result = prime * result + ((qualifiedAssociations == null) ? 0 : qualifiedAssociations.hashCode());
-		result = prime * result + ((qualifiedUsages == null) ? 0 : qualifiedUsages.hashCode());
+		result = prime * result + ((associations == null) ? 0 : associations.hashCode());
+		result = prime * result + ((usages == null) ? 0 : usages.hashCode());
 		return result;
 	}
 
@@ -169,15 +157,15 @@ public class Activity extends TopLevel{
 				return false;
 		} else if (!wasInformedBys.equals(other.wasInformedBys))
 			return false;
-		if (qualifiedAssociations == null) {
-			if (other.qualifiedAssociations != null)
+		if (associations == null) {
+			if (other.associations != null)
 				return false;
-		} else if (!qualifiedAssociations.equals(other.qualifiedAssociations))
+		} else if (!associations.equals(other.associations))
 			return false;
-		if (qualifiedUsages == null) {
-			if (other.qualifiedUsages != null)
+		if (usages == null) {
+			if (other.usages != null)
 				return false;
-		} else if (!qualifiedUsages.equals(other.qualifiedUsages))
+		} else if (!usages.equals(other.usages))
 			return false;
 		return true;
 	}
@@ -244,8 +232,8 @@ public class Activity extends TopLevel{
 				+ super.toString()
 				+ (this.isSetStartedAtTime()?", startedAtTime =" + startedAtTime:"")
 				+ (this.isSetEndedAtTime()?", endedAtTime =" + endedAtTime:"")
-				+ (qualifiedAssociations.size()>0?", qualifiedAssociations=" + qualifiedAssociations:"")	  
-				+ (qualifiedUsages.size()>0?", qualifiedUsages=" + qualifiedUsages:"")	  
+				+ (associations.size()>0?", associations=" + associations:"")	  
+				+ (usages.size()>0?", usages=" + usages:"")	  
 				+ (wasInformedBys.size()>0?", wasInformedBys=" + wasInformedBys:"")	  
 				+ "]";
 	}
@@ -391,18 +379,18 @@ public class Activity extends TopLevel{
 	}
 	
 	/**
-	 * Returns the qualifiedAssociation matching the given qualifiedAssociation's display ID.
+	 * Returns the association matching the given association's display ID.
 	 * <p>
-	 * This method first creates a compliant URI for the qualifiedAssociation to be retrieved. It starts with
-	 * this activity's persistent identity, followed by the given qualifiedAssociation's display ID,
+	 * This method first creates a compliant URI for the association to be retrieved. It starts with
+	 * this activity's persistent identity, followed by the given association's display ID,
 	 * and ends with this activity's version.
 	 * 
-	 * @param displayId the display ID of the qualifiedAssociation to be retrieved
-	 * @return the matching qualifiedAssociation if present, or {@code null} otherwise.
+	 * @param displayId the display ID of the association to be retrieved
+	 * @return the matching association if present, or {@code null} otherwise.
 	 */
-	public Association getQualifiedAssociation(String displayId) {
+	public Association getAssociation(String displayId) {
 		try {
-			return qualifiedAssociations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+			return associations.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
 		}
 		catch (SBOLValidationException e) {
 			return null;
@@ -410,13 +398,13 @@ public class Activity extends TopLevel{
 	}
 
 	/**
-	 * Returns the instance matching the given qualifiedAssociation's identity URI.
+	 * Returns the instance matching the given association's identity URI.
 	 *
-	 * @param qualifiedAssociationURI the identity URI of the qualifiedAssociation to be retrieved
-	 * @return the matching qualifiedAssociation if present, or {@code null} otherwise.
+	 * @param associationURI the identity URI of the association to be retrieved
+	 * @return the matching association if present, or {@code null} otherwise.
 	 */
-	public Association getQualifiedAssociation(URI qualifiedAssociationURI) {
-		return qualifiedAssociations.get(qualifiedAssociationURI);
+	public Association getAssociation(URI associationURI) {
+		return associations.get(associationURI);
 	}
 
 	/**
@@ -424,74 +412,74 @@ public class Activity extends TopLevel{
 	 *
 	 * @return the set of associations owned by this activity.
 	 */
-	public Set<Association> getQualifiedAssociations() {
+	public Set<Association> getAssociations() {
 		Set<Association> associations = new HashSet<>();
-		associations.addAll(this.qualifiedAssociations.values());
+		associations.addAll(this.associations.values());
 		return associations;
 	}
 	
 	/**
-	 * Adds the given association to the list of qualifiedAssociations.
+	 * Adds the given association to the list of associations.
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
 	 * <ul>
 	 * <li>any of the following SBOL validation rules was violated: 10604, 10605, 10803</li>
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
 	 * </ul>
 	 */
-	private void addQualifiedAssociation(Association association) throws SBOLValidationException {
+	private void addAssociation(Association association) throws SBOLValidationException {
 		association.setSBOLDocument(this.getSBOLDocument());
-		addChildSafely(association, qualifiedAssociations, "qualifiedAssociation", qualifiedUsages);
+		addChildSafely(association, associations, "association", usages);
 	}
 	
 	/**
-	 * Removes the given association from the list of qualifiedAssociations.
+	 * Removes the given association from the list of associations.
 	 * 
 	 * @param association the given association
 	 * @return {@code true} if the matching association was removed successfully,
 	 *         {@code false} otherwise.
 	 */
-	public boolean removeQualifiedAssociation(Association association) {
-		return removeChildSafely(association, qualifiedAssociations);
+	public boolean removeAssociation(Association association) {
+		return removeChildSafely(association, associations);
 	}
 
 	/**
-	 * Removes all entries of this activity's list of qualifiedAssociations.
+	 * Removes all entries of this activity's list of associations.
 	 * The list will be empty after this call returns.
 	 * <p>
-	 * This method calls {@link #removeQualifiedAssociation(Association association)} to iteratively remove
+	 * This method calls {@link #removeAssociation(Association association)} to iteratively remove
 	 * each association.
 	 *
 	 */
-	public void clearQualifiedAssociations() {
-		Object[] valueSetArray = qualifiedAssociations.values().toArray();
+	public void clearAssociations() {
+		Object[] valueSetArray = associations.values().toArray();
 		for (Object association : valueSetArray) {
-			removeQualifiedAssociation((Association)association);
+			removeAssociation((Association)association);
 		}
 	}
 	
 	/**
 	 * @param associations the associations to set
 	 */
-	void setQualifiedAssociations(Set<Association> associations) throws SBOLValidationException {
-		clearQualifiedAssociations();
+	void setAssociations(Set<Association> associations) throws SBOLValidationException {
+		clearAssociations();
 		for (Association association : associations) {
-			addQualifiedAssociation(association);
+			addAssociation(association);
 		}
 	}
 
 	/**
-	 * Returns the qualifiedUsage matching the given qualifiedUsage's display ID.
+	 * Returns the usage matching the given usage's display ID.
 	 * <p>
-	 * This method first creates a compliant URI for the qualifiedUsage to be retrieved. It starts with
-	 * this activity's persistent identity, followed by the given qualifiedUsage's display ID,
+	 * This method first creates a compliant URI for the usage to be retrieved. It starts with
+	 * this activity's persistent identity, followed by the given usage's display ID,
 	 * and ends with this activity's version.
 	 * 
-	 * @param displayId the display ID of the qualifiedUsage to be retrieved
-	 * @return the matching qualifiedUsage if present, or {@code null} otherwise.
+	 * @param displayId the display ID of the usage to be retrieved
+	 * @return the matching usage if present, or {@code null} otherwise.
 	 */
-	public Usage getQualifiedUsage(String displayId) {
+	public Usage getUsage(String displayId) {
 		try {
-			return qualifiedUsages.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
+			return usages.get(createCompliantURI(this.getPersistentIdentity().toString(),displayId,this.getVersion()));
 		}
 		catch (SBOLValidationException e) {
 			return null;
@@ -499,13 +487,13 @@ public class Activity extends TopLevel{
 	}
 
 	/**
-	 * Returns the instance matching the given qualifiedUsage's identity URI.
+	 * Returns the instance matching the given usage's identity URI.
 	 *
-	 * @param qualifiedUsageURI the identity URI of the qualifiedUsage to be retrieved
-	 * @return the matching qualifiedUsage if present, or {@code null} otherwise.
+	 * @param usageURI the identity URI of the usage to be retrieved
+	 * @return the matching usage if present, or {@code null} otherwise.
 	 */
-	public Usage getQualifiedUsage(URI qualifiedUsageURI) {
-		return qualifiedUsages.get(qualifiedUsageURI);
+	public Usage getUsage(URI usageURI) {
+		return usages.get(usageURI);
 	}
 	
 	/**
@@ -513,58 +501,58 @@ public class Activity extends TopLevel{
 	 *
 	 * @return the set of usages owned by this activity.
 	 */
-	public Set<Usage> getQualifiedUsages() {
+	public Set<Usage> getUsages() {
 		Set<Usage> usages = new HashSet<>();
-		usages.addAll(this.qualifiedUsages.values());
+		usages.addAll(this.usages.values());
 		return usages;
 	}
 	
 	/**
-	 * Adds the given usage to the list of qualifiedUsages.
+	 * Adds the given usage to the list of usages.
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
 	 * <ul>
 	 * <li>any of the following SBOL validation rules was violated: 10604, 10605, 10803</li>
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
 	 * </ul>
 	 */
-	private void addQualifiedUsage(Usage usage) throws SBOLValidationException {
+	private void addUsage(Usage usage) throws SBOLValidationException {
 		usage.setSBOLDocument(this.getSBOLDocument());
-		addChildSafely(usage, qualifiedUsages, "qualifiedUsage", qualifiedAssociations);
+		addChildSafely(usage, usages, "usage", associations);
 	}
 	
 	/**
-	 * Removes the given usage from the list of qualifiedUsages.
+	 * Removes the given usage from the list of usages.
 	 * 
 	 * @param usage the given usage
 	 * @return {@code true} if the matching usage was removed successfully,
 	 *         {@code false} otherwise.
 	 */
-	public boolean removeQualifiedUsages(Usage usage) {
-		return removeChildSafely(usage, qualifiedUsages);
+	public boolean removeUsages(Usage usage) {
+		return removeChildSafely(usage, usages);
 	}
 	
 	/**
-	 * Removes all entries of this activity's list of qualifiedUsages.
+	 * Removes all entries of this activity's list of usages.
 	 * The list will be empty after this call returns.
 	 * <p>
-	 * This method calls {@link #removeQualifiedUsage(Usage usage)} to iteratively remove
+	 * This method calls {@link #removeUsage(Usage usage)} to iteratively remove
 	 * each usage.
 	 *
 	 */
-	public void clearQualifiedUsages() {
-		Object[] valueSetArray = qualifiedUsages.values().toArray();
+	public void clearUsages() {
+		Object[] valueSetArray = usages.values().toArray();
 		for (Object usage : valueSetArray) {
-			removeQualifiedUsages((Usage)usage);
+			removeUsages((Usage)usage);
 		}
 	}
 	
 	/**
 	 * @param usages the usages to set
 	 */
-	void setQualifiedUsages(Set<Usage> usages) throws SBOLValidationException {
-		clearQualifiedUsages();
+	void setUsages(Set<Usage> usages) throws SBOLValidationException {
+		clearUsages();
 		for (Usage usage : usages) {
-			addQualifiedUsage(usage);
+			addUsage(usage);
 		}
 	}
 

@@ -1330,16 +1330,16 @@ public class SBOLValidate {
 	}
 	
 	private static void compareAssociations(String file1, Activity activity1, String file2, Activity activity2) {
-		for (Association association1 : activity1.getQualifiedAssociations()) {
-			Association association2 = activity2.getQualifiedAssociation(association1.getIdentity());
+		for (Association association1 : activity1.getAssociations()) {
+			Association association2 = activity2.getAssociation(association1.getIdentity());
 			if (association2==null) {
 				errors.add("Association " + association1.getIdentity() + " not found in " + file2);
 			} else if (!association1.equals(association2)) {
 				errors.add("Association " + association1.getIdentity() + " differ.");
 			}
 		}
-		for (Association association2 : activity2.getQualifiedAssociations()) {
-			Association association1 = activity1.getQualifiedAssociation(association2.getIdentity());
+		for (Association association2 : activity2.getAssociations()) {
+			Association association1 = activity1.getAssociation(association2.getIdentity());
 			if (association1==null) {
 				errors.add("Association " + association2.getIdentity() + " not found in " + file1);
 			}
@@ -1347,16 +1347,16 @@ public class SBOLValidate {
 	}
 	
 	private static void compareUsages(String file1, Activity activity1, String file2, Activity activity2) {
-		for (Usage usage1 : activity1.getQualifiedUsages()) {
-			Usage usage2 = activity2.getQualifiedUsage(usage1.getIdentity());
+		for (Usage usage1 : activity1.getUsages()) {
+			Usage usage2 = activity2.getUsage(usage1.getIdentity());
 			if (usage2==null) {
 				errors.add("Usage " + usage1.getIdentity() + " not found in " + file2);
 			} else if (!usage1.equals(usage2)) {
 				errors.add("Usage " + usage1.getIdentity() + " differ.");
 			}
 		}
-		for (Usage usage2 : activity2.getQualifiedUsages()) {
-			Usage usage1 = activity1.getQualifiedUsage(usage2.getIdentity());
+		for (Usage usage2 : activity2.getUsages()) {
+			Usage usage1 = activity1.getUsage(usage2.getIdentity());
 			if (usage1==null) {
 				errors.add("Usage " + usage2.getIdentity() + " not found in " + file1);
 			}

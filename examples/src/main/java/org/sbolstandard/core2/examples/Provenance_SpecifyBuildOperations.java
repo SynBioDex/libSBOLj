@@ -72,8 +72,8 @@ public class Provenance_SpecifyBuildOperations {
 		activity.setName("cut(" + vector.getName() + ", " + enzyme.getName() + ")");
 
 		//Create the qualifiedUsage annotation to describe the inputs of the cut operation
-		activity.createUsage("vector", vector.getIdentity(), Ontologies.VECTOR_PLASMID.getURI());
-		activity.createUsage("enzyme", enzyme.getIdentity(), Ontologies.RESTRICTION_ENZYME_CUT_SITE.getURI());
+		activity.createUsage("vector", vector.getIdentity()).addRole(Ontologies.VECTOR_PLASMID.getURI());
+		activity.createUsage("enzyme", enzyme.getIdentity()).addRole(Ontologies.RESTRICTION_ENZYME_CUT_SITE.getURI());
 
 		// the result of the cut operation
 		ComponentDefinition linearized_vector = document.createComponentDefinition(
@@ -127,17 +127,17 @@ public class Provenance_SpecifyBuildOperations {
 		
 		// create the qualifiedUsage annotation to describe the inputs of the amplification operation
 		// -- the amplicon
-		Usage usageDNAConstruct = amplifyOperation.createUsage(
-				"dna_construct", dnaConstruct.getIdentity(), URI.create("http://sbols.org/v2#source"));
-		usageDNAConstruct.setHadRole(Ontologies.AMPLICON.getURI());
+		Usage usageDNAConstruct = amplifyOperation.createUsage("dna_construct", dnaConstruct.getIdentity());
+		usageDNAConstruct.addRole(URI.create("http://sbols.org/v2#source"));
+		usageDNAConstruct.addRole(Ontologies.AMPLICON.getURI());
 		// -- the forward primer
-		Usage usageFwdPrimer = amplifyOperation.createUsage(
-				"forward_primer", fivePrimer.getIdentity(), Ontologies.FORWARD_PRIMER.getURI());
-		usageFwdPrimer.setHadRole(Ontologies.FORWARD_PRIMER.getURI());
+		Usage usageFwdPrimer = amplifyOperation.createUsage("forward_primer", fivePrimer.getIdentity());
+		usageFwdPrimer.addRole(Ontologies.FORWARD_PRIMER.getURI());
+		usageFwdPrimer.addRole(Ontologies.FORWARD_PRIMER.getURI());
 		// -- the reverse primer
-		Usage usageRevPrimer = amplifyOperation.createUsage(
-				"reverse_primer", threePrimer.getIdentity(), Ontologies.REVERSE_PRIMER.getURI());
-		usageRevPrimer.setHadRole(Ontologies.REVERSE_PRIMER.getURI());
+		Usage usageRevPrimer = amplifyOperation.createUsage("reverse_primer", threePrimer.getIdentity());
+		usageRevPrimer.addRole(Ontologies.REVERSE_PRIMER.getURI());
+		usageRevPrimer.addRole(Ontologies.REVERSE_PRIMER.getURI());
 
 		// the result of the amplification operation
 		ComponentDefinition amplified_construct = document.createComponentDefinition(
@@ -184,8 +184,8 @@ public class Provenance_SpecifyBuildOperations {
 		joinOperation.setName("join(" + cdPart1.getName() + ", " + cdPart2.getName() + ")");
 		
 		// specify the "inputs" to the join operation
-		joinOperation.createUsage("dna_part_1", cdPart1.getIdentity(), Ontologies.UPSTREAM.getURI());
-		joinOperation.createUsage("dna_part_2", cdPart1.getIdentity(), Ontologies.DOWNSTREAM.getURI());
+		joinOperation.createUsage("dna_part_1", cdPart1.getIdentity()).addRole(Ontologies.UPSTREAM.getURI());
+		joinOperation.createUsage("dna_part_2", cdPart1.getIdentity()).addRole(Ontologies.DOWNSTREAM.getURI());
 		
 		// specify the "output" of the join operation
 		ComponentDefinition cdJoinedPart = document.createComponentDefinition(

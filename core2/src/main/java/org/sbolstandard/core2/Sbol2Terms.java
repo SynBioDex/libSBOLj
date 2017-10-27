@@ -67,8 +67,8 @@ class Sbol2Terms
 	 */
 	static final class Association {
 		static final QName Association = prov.withLocalPart("Association");
-		static final QName hadRole = prov.withLocalPart("hadRole");
-		static final QName hadPlan = prov.withLocalPart("hadPlan");
+		static final QName role = prov.withLocalPart("hadRole");
+		static final QName plan = prov.withLocalPart("hadPlan");
 		static final QName agent = prov.withLocalPart("agent");
 	}
 
@@ -322,7 +322,7 @@ class Sbol2Terms
 	static final class Usage {
 		static final QName Usage = prov.withLocalPart("Usage");
 		static final QName entity = prov.withLocalPart("entity");
-		static final QName hadRole = prov.withLocalPart("hadRole");
+		static final QName role = prov.withLocalPart("hadRole");
 	}
 
 //	static final class SequenceURI {

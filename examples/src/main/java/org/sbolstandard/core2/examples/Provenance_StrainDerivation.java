@@ -55,10 +55,10 @@ public class Provenance_StrainDerivation {
 		activity.setName("X-ray mutagenesis");		
 		
 		//Create the qualifiedUsage annotation to describe the use of the parent strain 
-		activity.createUsage("usage", b3610.getIdentity(), URI.create("http://sbols.org/v2#source"));
+		activity.createUsage("usage", b3610.getIdentity()).addRole(URI.create("http://sbols.org/v2#source"));
 		
 		//Create the qualifiedAssociation annotation to describe the use of the agent used in the activity
-		activity.createAssociation("association", myAppNs.namespacedUri("mutagen"), agent.getIdentity());
+		activity.createAssociation("association",agent.getIdentity()).addRole( myAppNs.namespacedUri("mutagen"));
 		
 		b168.addWasGeneratedBy(activity.getIdentity());
 		

@@ -363,23 +363,25 @@ public class SBOLWriter
 			if (activity.isSetEndedAtTime()) {
 				list.add(NamedProperty(Sbol2Terms.Activity.endedAtTime, activity.getEndedAtTime().toString()));
 			}
-			formatQualifiedAssociations(activity.getQualifiedAssociations(),list);
-			formatQualifiedUsages(activity.getQualifiedUsages(),list);
+			formatAssociations(activity.getAssociations(),list);
+			formatUsages(activity.getUsages(),list);
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Activity.Activity, activity.getIdentity(), NamedProperties(list)));
 		}
 	}
 	
-	private static void formatQualifiedAssociations(Set<Association> associations,
-			List<NamedProperty<QName>> properties)
+	private static void formatAssociations(Set<Association> associations, List<NamedProperty<QName>> properties)
 	{
 		for(Association association : associations)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, association);
-			list.add(NamedProperty(Sbol2Terms.Association.hadRole, association.getHadRole()));
+			for (URI role : association.getRoles())
+			{
+				list.add(NamedProperty(Sbol2Terms.Association.role, role));
+			}
 			list.add(NamedProperty(Sbol2Terms.Association.agent, association.getAgent()));
-			if (association.isSetHadPlan()) {
-				list.add(NamedProperty(Sbol2Terms.Association.hadPlan, association.getHadPlan()));
+			if (association.isSetPlan()) {
+				list.add(NamedProperty(Sbol2Terms.Association.plan, association.getPlan()));
 			}
 			properties.add(NamedProperty(Sbol2Terms.Activity.qualifiedAssociation,
 					NestedDocument( Sbol2Terms.Association.Association,
@@ -387,14 +389,16 @@ public class SBOLWriter
 		}
 	}
 	
-	private static void formatQualifiedUsages(Set<Usage> usages,
-			List<NamedProperty<QName>> properties)
+	private static void formatUsages(Set<Usage> usages, List<NamedProperty<QName>> properties)
 	{
 		for(Usage usage : usages)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, usage);
-			list.add(NamedProperty(Sbol2Terms.Usage.hadRole, usage.getHadRole()));
+			for (URI role : usage.getRoles())
+			{
+				list.add(NamedProperty(Sbol2Terms.Usage.role, role));
+			}
 			list.add(NamedProperty(Sbol2Terms.Usage.entity, usage.getEntity()));
 			properties.add(NamedProperty(Sbol2Terms.Activity.qualifiedUsage,
 					NestedDocument( Sbol2Terms.Usage.Usage,

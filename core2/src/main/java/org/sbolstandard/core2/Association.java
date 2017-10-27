@@ -3,6 +3,8 @@ package org.sbolstandard.core2;
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents an Association object in the SBOL data model.
@@ -13,25 +15,24 @@ import java.net.URI;
 
 public class Association extends Identified {
 
-	private URI hadRole;
+	private Set<URI> roles;
 	private URI agent;
-	private URI hadPlan;
+	private URI plan;
 
 	/**
 	 * @param identity
-	 * @param hadRole
 	 * @param agent
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
 	 * <ul>
-	 * <li>an SBOL validation rule violation occurred in {@link #setHadRole(URI)}.</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setRole(URI)}.</li>
 	 * <li>an SBOL validation rule violation occurred in {@link #setAgent(URI)}.</li>
 	 * </ul>
 	 */
-	Association(URI identity, URI hadRole, URI agent) throws SBOLValidationException {
+	Association(URI identity, URI agent) throws SBOLValidationException {
 		super(identity);
-		setHadRole(hadRole);
+		this.roles = new HashSet<>();
 		setAgent(agent);
-		hadPlan = null;
+		plan = null;
 	}
 
 	/**
@@ -40,34 +41,78 @@ public class Association extends Identified {
 	 */
 	private Association(Association association) throws SBOLValidationException {
 		super(association);
-		this.setHadRole(association.getHadRole());
+		this.setRoles(association.getRoles());
 		this.setAgent(association.getAgent());
-		this.setHadPlan(association.getHadPlan());
+		this.setPlan(association.getPlan());
 	}
 
 	void copy(Association association) throws SBOLValidationException {
 		((Identified)this).copy((Identified)association);
 	}
-
+	
 	/**
-	 * @return the hadRole
+	 * Adds the given role URI to this association's set of role URIs.
+	 *
+	 * @param roleURI the role URI to be added
+	 * @return {@code true} if this set did not already contain the specified role, {@code false} otherwise.
 	 */
-	public URI getHadRole() {
-		return hadRole;
+	public boolean addRole(URI roleURI) {
+		return roles.add(roleURI);
 	}
 
 	/**
-	 * @param hadRole the hadRole to set
-	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12602.
+	 * Removes the given role URI from the set of roles.
+	 *
+	 * @param roleURI the given role URI to be removed
+	 * @return {@code true} if the matching role reference was removed successfully, {@code false} otherwise.
 	 */
-	public void setHadRole(URI hadRole) throws SBOLValidationException {
-		if (hadRole==null) {
-			throw new SBOLValidationException("sbol-12602",this);
+	public boolean removeRole(URI roleURI) {
+		return roles.remove(roleURI);
+	}
+
+	/**
+	 * Returns the set of role URIs owned by this association.
+	 *
+	 * @return the set of role URIs owned by this association.
+	 */
+	public Set<URI> getRoles() {
+		Set<URI> result = new HashSet<>();
+		result.addAll(roles);
+		return result;
+	}
+
+	/**
+	 * Clears the existing set of roles first, and then adds the given
+	 * set of the roles to this association.
+	 *
+	 * @param roles the set of roles to set to
+	 */
+	public void setRoles(Set<URI> roles) {
+		clearRoles();
+		if (roles==null) return;
+		for (URI role : roles) {
+			addRole(role);
 		}
-		this.hadRole = hadRole;
 	}
 	
-
+	/**
+	 * Checks if the given role URI is included in this association's set of role URIs.
+	 *
+	 * @param roleURI the role URI to be checked
+	 * @return {@code true} if this set contains the given role URI, {@code false} otherwise.
+	 */
+	public boolean containsRole(URI roleURI) {
+		return roles.contains(roleURI);
+	}
+	
+	/**
+	 * Removes all entries of this associations's set of role URIs.
+	 * The set will be empty after this call returns.	 
+	 */
+	public void clearRoles() {
+		roles.clear();
+	}
+	
 	/**
 	 * @return the agent
 	 */
@@ -92,32 +137,32 @@ public class Association extends Identified {
 	}
 	
 	/**
-	 * Test if the hadPlan is set.
+	 * Test if the plan is set.
 	 *
 	 * @return {@code true} if it is not {@code null}, or {@code false} otherwise
 	 */
-	public boolean isSetHadPlan() {
-		return hadPlan != null;
+	public boolean isSetPlan() {
+		return plan != null;
 	}
 
 	/**
-	 * @return the hadPlan
+	 * @return the plan
 	 */
-	public URI getHadPlan() {
-		return hadPlan;
+	public URI getPlan() {
+		return plan;
 	}
 
 	/**
-	 * @param hadPlan the hadPlan to set
+	 * @param plan the plan to set
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12604.
 	 */
-	public void setHadPlan(URI hadPlan) throws SBOLValidationException {
+	public void setPlan(URI plan) throws SBOLValidationException {
 		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-			if (this.getSBOLDocument().getPlan(hadPlan)==null) {
+			if (this.getSBOLDocument().getPlan(plan)==null) {
 				throw new SBOLValidationException("sbol-12604",this);
 			}
 		}
-		this.hadPlan = hadPlan;
+		this.plan = plan;
 	}
 
 	@Override
@@ -151,9 +196,9 @@ public class Association extends Identified {
 	public String toString() {
 		return "Association ["
 				+ super.toString()
-				+ ", hadRole=" + hadRole 
+				+ ", roles=" + roles 
 				+ ", agent=" + agent
-				+ ", hadPlan=" + hadPlan
+				+ ", plan=" + plan
 				+ "]";
 	}
 

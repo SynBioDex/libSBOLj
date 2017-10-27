@@ -3,6 +3,8 @@ package org.sbolstandard.core2;
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents an Association object in the SBOL data model.
@@ -14,22 +16,23 @@ import java.net.URI;
 public class Usage extends Identified {
 
 	private URI entity;
-	private URI hadRole;
+	private Set<URI> roles;
 
 	/**
 	 * @param identity
 	 * @param entity
-	 * @param hadRole
+	 * @param roles
 	 * @throws SBOLValidationException if any of the following condition is satisfied:
 	 * <ul>
 	 * <li>an SBOL validation rule violation occurred in {@link #setEntity(URI)}.</li>
-	 * <li>an SBOL validation rule violation occurred in {@link #setHadRole(URI)}.</li>
+	 * <li>an SBOL validation rule violation occurred in {@link #setRoles(URI)}.</li>
 	 * </ul>
 	 */
-	Usage(URI identity, URI entity, URI hadRole) throws SBOLValidationException {
+	Usage(URI identity, URI entity) throws SBOLValidationException {
 		super(identity);
 		setEntity(entity);
-		setHadRole(hadRole);
+		this.roles = new HashSet<>();
+		setRoles(roles);
 	}
 
 	/**
@@ -39,11 +42,11 @@ public class Usage extends Identified {
 	private Usage(Usage usage) throws SBOLValidationException {
 		super(usage);
 		this.setEntity(usage.getEntity());
-		this.setHadRole(usage.getHadRole());
+		this.setRoles(usage.getRoles());
 	}
 
-	void copy(Usage association) throws SBOLValidationException {
-		((Identified)this).copy((Identified)association);
+	void copy(Usage usage) throws SBOLValidationException {
+		((Identified)this).copy((Identified)usage);
 	}
 
 	/**
@@ -65,21 +68,66 @@ public class Usage extends Identified {
 	}
 
 	/**
-	 * @return the hadRole
+	 * Adds the given role URI to this usage's set of role URIs.
+	 *
+	 * @param roleURI the role URI to be added
+	 * @return {@code true} if this set did not already contain the specified role, {@code false} otherwise.
 	 */
-	public URI getHadRole() {
-		return hadRole;
+	public boolean addRole(URI roleURI) {
+		return roles.add(roleURI);
 	}
 
 	/**
-	 * @param hadRole the hadRole to set
-	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 12503.
+	 * Removes the given role URI from the set of roles.
+	 *
+	 * @param roleURI the given role URI to be removed
+	 * @return {@code true} if the matching role reference was removed successfully, {@code false} otherwise.
 	 */
-	public void setHadRole(URI hadRole) throws SBOLValidationException {
-		if (hadRole==null) {
-			throw new SBOLValidationException("sbol-12503",this);
+	public boolean removeRole(URI roleURI) {
+		return roles.remove(roleURI);
+	}
+
+	/**
+	 * Returns the set of role URIs owned by this usage.
+	 *
+	 * @return the set of role URIs owned by this usage.
+	 */
+	public Set<URI> getRoles() {
+		Set<URI> result = new HashSet<>();
+		result.addAll(roles);
+		return result;
+	}
+
+	/**
+	 * Clears the existing set of roles first, and then adds the given
+	 * set of the roles to this usage.
+	 *
+	 * @param roles the set of roles to set to
+	 */
+	public void setRoles(Set<URI> roles) {
+		clearRoles();
+		if (roles==null) return;
+		for (URI role : roles) {
+			addRole(role);
 		}
-		this.hadRole = hadRole;
+	}
+	
+	/**
+	 * Checks if the given role URI is included in this usage's set of role URIs.
+	 *
+	 * @param roleURI the role URI to be checked
+	 * @return {@code true} if this set contains the given role URI, {@code false} otherwise.
+	 */
+	public boolean containsRole(URI roleURI) {
+		return roles.contains(roleURI);
+	}
+	
+	/**
+	 * Removes all entries of this usage's set of role URIs.
+	 * The set will be empty after this call returns.	 
+	 */
+	public void clearRoles() {
+		roles.clear();
 	}
 
 	@Override
@@ -114,7 +162,7 @@ public class Usage extends Identified {
 		return "Usage ["
 				+ super.toString()
 				+ ", entity=" + entity
-				+ ", hadRole=" + hadRole 
+				+ ", roles=" + roles 
 				+ "]";
 	}
 

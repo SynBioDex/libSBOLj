@@ -3397,9 +3397,9 @@ public class SBOLReader
 		if (endedAtTime != null) 
 			t.setEndedAtTime(endedAtTime);
 		if (!qualifiedAssociations.isEmpty())
-			t.setQualifiedAssociations(qualifiedAssociations);
+			t.setAssociations(qualifiedAssociations);
 		if (!qualifiedUsages.isEmpty())
-			t.setQualifiedUsages(qualifiedUsages);
+			t.setUsages(qualifiedUsages);
 		if (!wasInformedBys.isEmpty())
 			t.setWasInformedBys(wasInformedBys);
 
@@ -3422,8 +3422,8 @@ public class SBOLReader
 		String description 	   = null;
 		URI persistentIdentity = null;
 		String version 		   = null;
-		URI hadRoleURI		   = URI.create("http://sbols.org/v2#unknown"); // TODO: temp hack as this should be required
-		URI hadPlanURI		   = null;
+		Set<URI> roles		   = new HashSet<>();
+		URI planURI			   = null;
 		URI agentURI		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
@@ -3487,13 +3487,13 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Association.hadRole))
+			else if (namedProperty.getName().equals(Sbol2Terms.Association.role))
 			{
-				if (!(namedProperty.getValue() instanceof Literal) || hadRoleURI != null ||
+				if (!(namedProperty.getValue() instanceof Literal) || 
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-12602", association.getIdentity());
 				}
-				hadRoleURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Association.agent))
 			{
@@ -3503,13 +3503,13 @@ public class SBOLReader
 				}
 				agentURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Association.hadPlan))
+			else if (namedProperty.getName().equals(Sbol2Terms.Association.plan))
 			{
-				if (!(namedProperty.getValue() instanceof Literal) || hadPlanURI != null ||
+				if (!(namedProperty.getValue() instanceof Literal) || planURI != null ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-12603", association.getIdentity());
 				}
-				hadPlanURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				planURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
 			else
 			{
@@ -3517,7 +3517,7 @@ public class SBOLReader
 			}
 		}
 
-		Association a = new Association(association.getIdentity(), hadRoleURI, agentURI);
+		Association a = new Association(association.getIdentity(), agentURI);
 		if (persistentIdentity != null)
 			a.setPersistentIdentity(persistentIdentity);
 		if(version != null)
@@ -3532,10 +3532,10 @@ public class SBOLReader
 		a.setWasGeneratedBys(wasGeneratedBys);
 		if (!annotations.isEmpty())
 			a.setAnnotations(annotations);
-		if (hadRoleURI != null) 
-			a.setHadRole(hadRoleURI);
-		if (hadPlanURI != null) 
-			a.setHadPlan(hadPlanURI);
+		if (!roles.isEmpty()) 
+			a.setRoles(roles);
+		if (planURI != null) 
+			a.setPlan(planURI);
 
 		return a;
 	}
@@ -3548,8 +3548,8 @@ public class SBOLReader
 		String description 	   = null;
 		URI persistentIdentity = null;
 		String version 		   = null;
-		URI hadRoleURI		   = null;
 		URI entityURI		   = null;
+		Set<URI> roles		   = new HashSet<>();
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
@@ -3612,13 +3612,13 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.Usage.hadRole))
+			else if (namedProperty.getName().equals(Sbol2Terms.Usage.role))
 			{
-				if (!(namedProperty.getValue() instanceof Literal) || hadRoleURI != null ||
+				if (!(namedProperty.getValue() instanceof Literal) || 
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-12502", usage.getIdentity());
 				}
-				hadRoleURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				roles.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Usage.entity))
 			{
@@ -3634,7 +3634,7 @@ public class SBOLReader
 			}
 		}
 
-		Usage u = new Usage(usage.getIdentity(), entityURI, hadRoleURI);
+		Usage u = new Usage(usage.getIdentity(), entityURI);
 		if (persistentIdentity != null)
 			u.setPersistentIdentity(persistentIdentity);
 		if(version != null)
@@ -3649,6 +3649,8 @@ public class SBOLReader
 		u.setWasGeneratedBys(wasGeneratedBys);
 		if (!annotations.isEmpty())
 			u.setAnnotations(annotations);
+		if (!roles.isEmpty()) 
+			u.setRoles(roles);
 
 		return u;
 	}

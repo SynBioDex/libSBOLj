@@ -51,10 +51,10 @@ public class Provenance_CodonOptimization {
 		activity.setName("Codon Optimization Activity");		
 		
 		//Create the qualifiedUsage annotation to describe the use of the non codon optimized CDS component
-		activity.createUsage("usage", sourceCds.getIdentity(), URI.create("http://sbols.org/v2#source"));
+		activity.createUsage("usage", sourceCds.getIdentity()).addRole(URI.create("http://sbols.org/v2#source"));
 		
 		//Create the qualifiedAssociation annotation to describe the use of the software agent used in the activity
-		activity.createAssociation("association", myAppNs.namespacedUri("codonoptimiser"), agent.getIdentity());
+		activity.createAssociation("association", agent.getIdentity()).addRole(myAppNs.namespacedUri("codonoptimiser"));
 								
 		optimizedCds.addWasGeneratedBy(activity.getIdentity());
 		SBOLWriter.write(document,System.out);	
