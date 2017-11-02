@@ -76,7 +76,7 @@ public class Activity extends TopLevel{
 	 * followed by the given display ID and ends with this activity's version. 
 	 * 
 	 * @param displayId the display ID for the association to be created
-	 * @param agent 
+	 * @param agent URI for the agent associated with this activity
 	 * @return the created association
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
 	 * 12602, 12604, 12605, 12606
@@ -106,7 +106,7 @@ public class Activity extends TopLevel{
 	 * followed by the given display ID and ends with this activity's version. 
 	 * 
 	 * @param displayId the display ID for the usage to be created
-	 * @param entity 
+	 * @param entity URI reference to the entity used 
 	 * @return the created usage
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
 	 * 12502, 12503
@@ -535,7 +535,7 @@ public class Activity extends TopLevel{
 	 * Removes all entries of this activity's list of usages.
 	 * The list will be empty after this call returns.
 	 * <p>
-	 * This method calls {@link #removeUsage(Usage usage)} to iteratively remove
+	 * This method calls {@link #removeUsages(Usage usage)} to iteratively remove
 	 * each usage.
 	 *
 	 */
