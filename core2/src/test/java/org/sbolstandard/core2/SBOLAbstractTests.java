@@ -57,7 +57,7 @@ public abstract class SBOLAbstractTests {
 		Model M1 = document.createModel(M1_ID, M1_Version, M1_URISource, EDAMOntology.SBML,
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 		document.removeModel(M1);
-		runTest("/SBOL2/test_Model_remove.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/test_Model_remove.xml", document, "xml", true);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public abstract class SBOLAbstractTests {
 		URI SeqEncoding = URI.create("www.example.com");
 		Sequence Seq = document.createSequence(SeqID, SeqVersion, SeqElements, SeqEncoding);
 		document.removeSequence(Seq);
-		runTest("/SBOL2/test_Sequence_remove.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/test_Sequence_remove.xml", document, "xml", true);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public abstract class SBOLAbstractTests {
 		String Col1_Version = "1.0";
 		Collection Col1 = document.createCollection(Col1_ID, Col1_Version);
 		document.removeCollection(Col1);
-		runTest("/SBOL2/test_Collection_remove.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/test_Collection_remove.xml", document, "xml", true);
 	}
 
 	/**
@@ -128,7 +128,7 @@ public abstract class SBOLAbstractTests {
 		String MD_Version = "1.0";
 		ModuleDefinition MD = document.createModuleDefinition(MD_ID, MD_Version);
 		document.removeModuleDefinition(MD);
-		runTest("/SBOL2/test_ModuleDefinition_remove.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/test_ModuleDefinition_remove.xml", document, "xml", true);
 	}
 
 	/**
@@ -153,7 +153,7 @@ public abstract class SBOLAbstractTests {
 		CD_Types.add(URI.create("www.example.com"));
 		ComponentDefinition CD = document.createComponentDefinition(CD_ID, CD_Version, CD_Types);
 		document.removeComponentDefinition(CD);
-		runTest("/SBOL2/test_ComponentDefinition_remove.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/test_ComponentDefinition_remove.xml", document, "xml", true);
 	}
 
 	/**
@@ -177,7 +177,7 @@ public abstract class SBOLAbstractTests {
 		String GTL_Qname = "name";
 		GenericTopLevel GTL = document.createGenericTopLevel(GTL_ID, GTL_Version, new QName(prURI, "group", prPrefix));
 		document.removeGenericTopLevel(GTL);
-		runTest("/SBOL2/test_GenericTopLevel_remove.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/test_GenericTopLevel_remove.xml", document, "xml", true);
 	}
 
 
@@ -227,7 +227,7 @@ public abstract class SBOLAbstractTests {
 				new ArrayList<Annotation>(Arrays.asList(sigmaFactor,regulation)));
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/AnnotationOutput.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/AnnotationOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -252,7 +252,7 @@ public abstract class SBOLAbstractTests {
 		col.addMember(URI.create("http://partsregistry.org/Part:BBa_J23118"));
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/CollectionOutput.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/CollectionOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -407,7 +407,7 @@ public abstract class SBOLAbstractTests {
 		anno5.setComponent(comPluxR.getIdentity());
 
 		//			SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/ComponentDefinitionOutput.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/ComponentDefinitionOutput.xml", document, "xml", true);
 	}
 
 
@@ -450,7 +450,7 @@ public abstract class SBOLAbstractTests {
 		promoter.createSequenceAnnotation("cutat12", "cut", 12, OrientationType.INLINE);
 
 		//			SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/CutExample.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/CutExample.xml", document, "xml", true);
 	}
 
 	/**
@@ -498,7 +498,7 @@ public abstract class SBOLAbstractTests {
 		promoter.createAnnotation(new QName(myAppURI, "datasheet", myAppPrefix), topLevel.getIdentity());
 		promoter.addWasDerivedFrom(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));
 
-		runTest("/SBOL2/GenericTopLevelOutput.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/GenericTopLevelOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -526,7 +526,7 @@ public abstract class SBOLAbstractTests {
 
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/ModelOutput.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/ModelOutput.xml", document, "xml", true);
 	}
 
 
@@ -644,7 +644,7 @@ public abstract class SBOLAbstractTests {
 		toggleSwitchModuleDef.addModel(model.getIdentity());
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/ModuleDefinitionOutput.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/ModuleDefinitionOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -658,7 +658,7 @@ public abstract class SBOLAbstractTests {
 	{
 		SBOLDocument document = new SBOLDocument();
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/SBOLDocumentOutput.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/SBOLDocumentOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -719,7 +719,7 @@ public abstract class SBOLAbstractTests {
 		//promoter.setSequence(seq.getIdentity());
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/SequenceConstraintOutput.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/SequenceConstraintOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -744,7 +744,7 @@ public abstract class SBOLAbstractTests {
 				);
 		seq.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/SequenceOutput.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/SequenceOutput.xml", document, "xml", true);
 	}
 
 	/**
@@ -786,7 +786,7 @@ public abstract class SBOLAbstractTests {
 		seq.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23119:Design"));
 		promoter.addSequence(seq.getIdentity());
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/SimpleComponentDefinitionExample.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/SimpleComponentDefinitionExample.xml", document, "xml", true);
 	}
 
 	/**
@@ -822,7 +822,7 @@ public abstract class SBOLAbstractTests {
 		module.createInteraction("express_GFP", new HashSet<URI>(Arrays.asList(SystemsBiologyOntology.TRANSCRIPTION)));
 
 		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOL2/SimpleModuleDefinition.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/SimpleModuleDefinition.xml", document, "xml", true);
 	}
 
 	private static void setDefaultNameSpace(SBOLDocument document, String uri)
@@ -841,14 +841,14 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_BBa_I0462_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "SBOL1/BBa_I0462.xml";
+		String fileName = "SBOLTestSuite/SBOL1/BBa_I0462.xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "xml", false);
-			runTest("/SBOL2/BBa_I0462.xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/BBa_I0462.xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileName, null, "xml", false);
-			runTest("/SBOL2/BBa_I0462_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/BBa_I0462_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -869,13 +869,13 @@ public abstract class SBOLAbstractTests {
 		{
 			InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 			if (resourceAsStream == null)
-				resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/SBOL2/" + fileName);
+				resourceAsStream = SBOLReaderTest.class.getResourceAsStream("/SBOLTestSuite/SBOL2/" + fileName);
 
 			assert resourceAsStream != null : "Failed to find test resource '" + fileName + "'";
 			SBOLDocument actual = null;
 			SBOLReader.setURIPrefix(URIprefix);
 			actual = SBOLReader.read(resourceAsStream);
-			runTest("/SBOL2/SBOL1and2Test.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/SBOL1and2Test.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -891,7 +891,7 @@ public abstract class SBOLAbstractTests {
 	{
 		File file_base = null ;
 		try {
-			file_base = new File(ValidationTest.class.getResource("/GenBank/").toURI());
+			file_base = new File(ValidationTest.class.getResource("/SBOLTestSuite/GenBank/").toURI());
 		}
 		catch (URISyntaxException e1) {
 			e1.printStackTrace();
@@ -909,7 +909,7 @@ public abstract class SBOLAbstractTests {
 				SBOLDocument actual = SBOLReader.read(file);
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				SBOLWriter.write(actual, out, SBOLDocument.GENBANK);
-				runTest("/SBOL2/"+f.getName().replace(".gb", ".xml"), actual, "xml", true);
+				runTest("/SBOLTestSuite/SBOL2/"+f.getName().replace(".gb", ".xml"), actual, "xml", true);
 			}
 			catch (Exception e)
 			{
@@ -925,12 +925,12 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_igem1_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "RDF/igem1.xml";
+		String fileName = "SBOLTestSuite/RDF/igem1.xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "xml", false);
-			runTest("/SBOL2/igem1.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/igem1.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -945,12 +945,12 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_igem2_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "RDF/igem2.xml";
+		String fileName = "SBOLTestSuite/RDF/igem2.xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "xml", false);
-			runTest("/SBOL2/igem2.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/igem2.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -965,12 +965,12 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_igem3_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "RDF/igem3.xml";
+		String fileName = "SBOLTestSuite/RDF/igem3.xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "xml", false);
-			runTest("/SBOL2/igem3.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/igem3.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -985,12 +985,12 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_toggle_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "RDF/toggle.xml";
+		String fileName = "SBOLTestSuite/RDF/toggle.xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertRDFTripleStore(fileName, "xml", false);
-			runTest("/SBOL2/toggle.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/toggle.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1005,14 +1005,14 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_BBa_T9002_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "SBOL1/BBa_T9002.xml";
+		String fileName = "SBOLTestSuite/SBOL1/BBa_T9002.xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "xml", true);
-			runTest("/SBOL2/BBa_T9002.xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/BBa_T9002.xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileName, null, "xml", true);
-			runTest("/SBOL2/BBa_T9002_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/BBa_T9002_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1027,14 +1027,14 @@ public abstract class SBOLAbstractTests {
 	@Test
 	public void test_labhost_All_File() throws SBOLConversionException, IOException
 	{
-		String fileName = "SBOL1/labhost_All.xml";
+		String fileName = "SBOLTestSuite/SBOL1/labhost_All.xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileName, URIprefix, "xml", false);
-			runTest("/SBOL2/labhost_All.xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/labhost_All.xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileName, null, "xml", false);
-			runTest("/SBOL2/labhost_All_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/labhost_All_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1050,14 +1050,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Aspergillus_nidulans() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Aspergillus_nidulans";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1073,14 +1073,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Bacillus_subtilis() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Bacillus_subtilis";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1096,14 +1096,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Drosophila_melanogaster() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Drosophila_melanogaster";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1119,14 +1119,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Escherichia_Coli() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Escherichia_Coli";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1142,14 +1142,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Gramnegative_bacteria() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Gram-negative_bacteria";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1165,14 +1165,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Insect_Cells() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Insect_Cells";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1188,14 +1188,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Kluyveromyces_lactis() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Kluyveromyces_lactis";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1211,14 +1211,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Mammalian_Cells() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Mammalian_Cells";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1234,14 +1234,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Pichia_pastoris() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Pichia_pastoris";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1257,14 +1257,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Plant_Cells() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Plant_Cells";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1280,14 +1280,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Saccharomyces_cerevisiae() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Saccharomyces_cerevisiae";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1303,14 +1303,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Schizosaccharomyces_pombe() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Schizosaccharomyces_pombe";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1326,14 +1326,14 @@ public abstract class SBOLAbstractTests {
 	public void test_labhost_Unspecified() throws SBOLConversionException, IOException
 	{
 		String filename = "labhost_Unspecified";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1349,14 +1349,14 @@ public abstract class SBOLAbstractTests {
 	public void test_partial_pIKE_left_cassette() throws SBOLConversionException, IOException
 	{
 		String filename = "partial_pIKE_left_cassette";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1372,14 +1372,14 @@ public abstract class SBOLAbstractTests {
 	public void test_partial_pIKE_right_casette() throws SBOLConversionException, IOException
 	{
 		String filename = "partial_pIKE_right_casette";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1395,14 +1395,14 @@ public abstract class SBOLAbstractTests {
 	public void test_partial_pIKE_right_cassette() throws SBOLConversionException, IOException
 	{
 		String filename = "partial_pIKE_right_cassette";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1418,14 +1418,14 @@ public abstract class SBOLAbstractTests {
 	public void test_partial_pTAK_left_cassette() throws SBOLConversionException, IOException
 	{
 		String filename = "partial_pTAK_left_cassette";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1441,14 +1441,14 @@ public abstract class SBOLAbstractTests {
 	public void test_partial_pTAK_right_cassette() throws SBOLConversionException, IOException
 	{
 		String filename = "partial_pTAK_right_cassette";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1464,14 +1464,14 @@ public abstract class SBOLAbstractTests {
 	public void test_pIKE_pTAK_cassettes_2() throws SBOLConversionException, IOException
 	{
 		String filename = "pIKE_pTAK_cassettes 2";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", true);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", true);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1487,14 +1487,14 @@ public abstract class SBOLAbstractTests {
 	public void test_pIKE_pTAK_cassettes() throws SBOLConversionException, IOException
 	{
 		String filename = "pIKE_pTAK_cassettes";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", true);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", true);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1510,14 +1510,14 @@ public abstract class SBOLAbstractTests {
 	public void test_pIKE_pTAK_left_right_cassettes() throws SBOLConversionException, IOException
 	{
 		String filename = "pIKE_pTAK_left_right_cassettes";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", true);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", true);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1533,14 +1533,14 @@ public abstract class SBOLAbstractTests {
 	public void test_pIKE_pTAK_toggle_switches() throws SBOLConversionException, IOException
 	{
 		String filename = "pIKE_pTAK_toggle_switches";
-		String fileDirectory = "SBOL1/" + filename + ".xml";
+		String fileDirectory = "SBOLTestSuite/SBOL1/" + filename + ".xml";
 
 		try
 		{
 			SBOLDocument actual = SBOLTestUtils.convertSBOL1(fileDirectory, URIprefix, "xml", false);
-			runTest("/SBOL2/" + filename + ".xml", actual, "xml", true);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + ".xml", actual, "xml", true);
 			actual = SBOLTestUtils.convertSBOL1(fileDirectory, null, "xml", false);
-			runTest("/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
+			runTest("/SBOLTestSuite/SBOL2/" + filename + "_orig.xml", actual, "xml", false);
 		}
 		catch (SBOLValidationException e)
 		{
@@ -1615,7 +1615,7 @@ public abstract class SBOLAbstractTests {
 		someGenericTopLevel.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 
-		runTest("/SBOL2/memberAnnotations.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/memberAnnotations.xml", document, "xml", true);
 	}
 
 
@@ -1644,7 +1644,7 @@ public abstract class SBOLAbstractTests {
 
 		document.clearCollections();
 		document.createCollection("myParts", VERSION_1_0);
-		runTest("/SBOL2/CreateAndRemoveCollections.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/CreateAndRemoveCollections.xml", document, "xml", true);
 	}
 
 	/**
@@ -1674,7 +1674,7 @@ public abstract class SBOLAbstractTests {
 
 		document.clearComponentDefinitions();
 		document.createComponentDefinition("someCompDef", VERSION_1_0, types);
-		runTest("/SBOL2/CreateAndRemoveComponentDefinition.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/CreateAndRemoveComponentDefinition.xml", document, "xml", true);
 	}
 
 	/**
@@ -1703,7 +1703,7 @@ public abstract class SBOLAbstractTests {
 		document.clearModuleDefinitions();
 		document.createModuleDefinition("someModDef", VERSION_1_0);
 
-		runTest("/SBOL2/CreateAndRemoveModuleDefinition.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/CreateAndRemoveModuleDefinition.xml", document, "xml", true);
 	}
 
 	/**
@@ -1732,7 +1732,7 @@ public abstract class SBOLAbstractTests {
 		document.clearGenericTopLevels();
 		document.createGenericTopLevel("someGenTopLev", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
 
-		runTest("/SBOL2/CreateAndRemoveGenericTopLevel.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/CreateAndRemoveGenericTopLevel.xml", document, "xml", true);
 	}
 
 	/**
@@ -1761,7 +1761,7 @@ public abstract class SBOLAbstractTests {
 
 		document.clearSequences();
 		document.createSequence("someSequence", VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
-		runTest("/SBOL2/CreateAndRemoveModel.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/CreateAndRemoveModel.xml", document, "xml", true);
 	}
 
 	/**
@@ -1780,7 +1780,7 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		document.createCollection("myParts", VERSION_1_0);
-		runTest("/SBOL2/singleCollection.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/singleCollection.xml", document, "xml", true);
 	}
 
 
@@ -1803,7 +1803,7 @@ public abstract class SBOLAbstractTests {
 		document.createCollection("myPart2", VERSION_1_0);
 		document.createCollection("myPart3", VERSION_1_0);
 
-		runTest("/SBOL2/multipleCollections_no_Members.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/multipleCollections_no_Members.xml", document, "xml", true);
 	}
 
 	/**
@@ -1822,7 +1822,7 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		document.createGenericTopLevel("GenericTopLevel", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
-		runTest("/SBOL2/singleGenericTopLevel.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/singleGenericTopLevel.xml", document, "xml", true);
 	}
 
 	/**
@@ -1844,7 +1844,7 @@ public abstract class SBOLAbstractTests {
 		document.createGenericTopLevel("GenericTopLevel2", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction2", "grn"));
 		document.createGenericTopLevel("GenericTopLevel3", VERSION_1_0, new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction3", "grn"));
 
-		runTest("/SBOL2/multipleGenericTopLevel.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/multipleGenericTopLevel.xml", document, "xml", true);
 	}
 
 	/**
@@ -1866,7 +1866,7 @@ public abstract class SBOLAbstractTests {
 		document.createModel( id, VERSION_1_0, URI.create(id + "_source"), EDAMOntology.SBML,
 				SystemsBiologyOntology.CONTINUOUS_FRAMEWORK);
 
-		runTest("/SBOL2/singleModel.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/singleModel.xml", document, "xml", true);
 	}
 
 
@@ -1888,7 +1888,7 @@ public abstract class SBOLAbstractTests {
 		String id = "pLacSeq";
 		document.createSequence(id, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 
-		runTest("/SBOL2/singleSequence.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/singleSequence.xml", document, "xml", true);
 	}
 
 	/**
@@ -1914,7 +1914,7 @@ public abstract class SBOLAbstractTests {
 		document.createSequence(id2, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 		document.createSequence(id3, VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 
-		runTest("/SBOL2/multipleSequences.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/multipleSequences.xml", document, "xml", true);
 	}
 
 	/**
@@ -1937,7 +1937,7 @@ public abstract class SBOLAbstractTests {
 		LacI_Inv.setRoles(roles);
 		//		LacI_Inv.addRole(URI.create("Inverter"));
 
-		runTest("/SBOL2/singleModuleDefinition.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/singleModuleDefinition.xml", document, "xml", true);
 	}
 
 	/**
@@ -1963,7 +1963,7 @@ public abstract class SBOLAbstractTests {
 		pLac.setRoles(role);
 		//		pLac.addRole(URI.create("Promoter"));
 
-		runTest("/SBOL2/singleComponentDefinition.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/singleComponentDefinition.xml", document, "xml", true);
 	}
 
 	/**
@@ -1990,7 +1990,7 @@ public abstract class SBOLAbstractTests {
 		document.createSequence("pLacSeq", VERSION_1_0, "ACGTURYSWKMBDHVN-.", Sequence.IUPAC_DNA);
 		pLac.addSequence("pLacSeq", VERSION_1_0);
 
-		runTest("/SBOL2/singleCompDef_withSeq.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/singleCompDef_withSeq.xml", document, "xml", true);
 	}
 
 	/**
@@ -2017,7 +2017,7 @@ public abstract class SBOLAbstractTests {
 		LacIIn.createComponent("funcComp", AccessType.PUBLIC, compDef_id, VERSION_1_0);
 
 
-		runTest("/SBOL2/singleFunctionalComponent.xml", document, "xml", true);
+		runTest("/SBOLTestSuite/SBOL2/singleFunctionalComponent.xml", document, "xml", true);
 	}
 
 	/**
