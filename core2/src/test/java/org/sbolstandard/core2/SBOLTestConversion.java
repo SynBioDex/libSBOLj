@@ -39,7 +39,7 @@ public class SBOLTestConversion {
 		File file_base = null ;
 		java.util.Collection<File> col = new HashSet<File>();
 		try {
-			file_base = new File(ValidationTest.class.getResource("/SBOL1/").toURI());
+			file_base = new File(ValidationTest.class.getResource("/SBOLTestSuite/SBOL1/").toURI());
 		}
 		catch (URISyntaxException e1) {
 			e1.printStackTrace();
@@ -48,7 +48,7 @@ public class SBOLTestConversion {
 			col.add(f);
 		}
 		try {
-			file_base = new File(ValidationTest.class.getResource("/GenBank/").toURI());
+			file_base = new File(ValidationTest.class.getResource("/SBOLTestSuite/GenBank/").toURI());
 		}
 		catch (URISyntaxException e1) {
 			e1.printStackTrace();

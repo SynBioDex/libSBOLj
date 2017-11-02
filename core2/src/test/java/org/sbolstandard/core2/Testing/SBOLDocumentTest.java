@@ -133,7 +133,7 @@ public class SBOLDocumentTest {
 		//copied_doc.setComplete(true);
 		
 		///core2/src/test/java/org/sbolstandard/core2/Testing/RepressionModel.xml"
-		InputStream docAsStream = SequenceConstraintTest.class.getResourceAsStream("/SBOL2/RepressionModel.xml");
+		InputStream docAsStream = SequenceConstraintTest.class.getResourceAsStream("/SBOLTestSuite/SBOL2/RepressionModel.xml");
 		repression_doc.read(docAsStream);
 		//repression_doc.read("C:/Users/meher/Documents/workspace/libSBOLj/core2/src/test/resources/SBOL2/RepressionModel.xml");
 		copied_doc.createCopy(repression_doc);
