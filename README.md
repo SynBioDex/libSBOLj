@@ -62,6 +62,18 @@ java -jar libSBOLj-<version>-withDependencies.jar <firstSBOLFile> -e <secondSBOL
 2. [Setup](https://help.github.com/articles/set-up-git) Git on your machine.
 3. [Clone](https://help.github.com/articles/cloning-a-repository/) the libSBOLj GitHub repository to your machine.
 
+### Retrieving SBOLTestSuite Submodule
+1. If the repository was freshly cloned, in the command line, locate to the SBOLTestSuite directory (e.g. cd /path/to/SBOLTestSuite) and execute the following commands
+
+```
+git submodule init
+git submodule update --remote
+```
+2. Otherwise, for latest updates, in the command line, locate to the SBOLTestSuite diretory and execute the following commands
+```
+git submodule update --remote
+```
+
 ### Compiling and Packaging libSBOLj 
 
 1. [Setup](http://maven.apache.org/download.cgi) Apache Maven. A tutorial on using Apache Maven is provided [here](http://maven.apache.org/guides/getting-started/index.html).
@@ -73,4 +85,5 @@ mvn package
 ```
 
 This will compile the libSBOLj source files, package the compiled source into a libSBOLj JAR file (```libSBOLj-<version>-SNAPSHOT-withDependencies.jar```), and place the JAR file into the ```core2/target``` sub-directory. 
+
 
