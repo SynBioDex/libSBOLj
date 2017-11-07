@@ -330,6 +330,9 @@ public class SBOLWriter
 		for (URI wasDerivedFrom : t.getWasDerivedFroms()) {
 			list.add(NamedProperty(Sbol2Terms.Identified.wasDerivedFrom, wasDerivedFrom));
 		}
+		for (URI wasGeneratedBy : t.getWasGeneratedBys()) {
+			list.add(NamedProperty(Sbol2Terms.Identified.wasGeneratedBy, wasGeneratedBy));
+		}
 		if(t.isSetName())
 			list.add(NamedProperty(Sbol2Terms.Identified.title, t.getName()));
 		if(t.isSetDescription())
@@ -346,6 +349,87 @@ public class SBOLWriter
 		formatCommonIdentifiedData(list,t);
 	}
 
+	private static void formatActivities (Set<Activity> activities, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+
+		for(Activity activity : activities)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+
+			formatCommonTopLevelData(list,activity);
+			if (activity.isSetStartedAtTime()) {
+				list.add(NamedProperty(Sbol2Terms.Activity.startedAtTime, activity.getStartedAtTime().toString()));
+			}
+			if (activity.isSetEndedAtTime()) {
+				list.add(NamedProperty(Sbol2Terms.Activity.endedAtTime, activity.getEndedAtTime().toString()));
+			}
+			formatAssociations(activity.getAssociations(),list);
+			formatUsages(activity.getUsages(),list);
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Activity.Activity, activity.getIdentity(), NamedProperties(list)));
+		}
+	}
+	
+	private static void formatAssociations(Set<Association> associations, List<NamedProperty<QName>> properties)
+	{
+		for(Association association : associations)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonIdentifiedData(list, association);
+			for (URI role : association.getRoles())
+			{
+				list.add(NamedProperty(Sbol2Terms.Association.role, role));
+			}
+			list.add(NamedProperty(Sbol2Terms.Association.agent, association.getAgent()));
+			if (association.isSetPlan()) {
+				list.add(NamedProperty(Sbol2Terms.Association.plan, association.getPlan()));
+			}
+			properties.add(NamedProperty(Sbol2Terms.Activity.qualifiedAssociation,
+					NestedDocument( Sbol2Terms.Association.Association,
+							association.getIdentity(), NamedProperties(list))));
+		}
+	}
+	
+	private static void formatUsages(Set<Usage> usages, List<NamedProperty<QName>> properties)
+	{
+		for(Usage usage : usages)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonIdentifiedData(list, usage);
+			for (URI role : usage.getRoles())
+			{
+				list.add(NamedProperty(Sbol2Terms.Usage.role, role));
+			}
+			list.add(NamedProperty(Sbol2Terms.Usage.entity, usage.getEntity()));
+			properties.add(NamedProperty(Sbol2Terms.Activity.qualifiedUsage,
+					NestedDocument( Sbol2Terms.Usage.Usage,
+							usage.getIdentity(), NamedProperties(list))));
+		}
+	}
+	
+	private static void formatPlans (Set<Plan> plans, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+
+		for(Plan plan : plans)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+
+			formatCommonTopLevelData(list,plan);
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Plan.Plan, plan.getIdentity(), NamedProperties(list)));
+		}
+	}
+	
+	private static void formatAgents (Set<Agent> agents, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+
+		for(Agent agent : agents)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+
+			formatCommonTopLevelData(list,agent);
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Agent.Agent, agent.getIdentity(), NamedProperties(list)));
+		}
+	}
+	
 	private static void formatComponentDefinitions (Set<ComponentDefinition> componentDefinitions, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 
@@ -968,6 +1052,9 @@ public class SBOLWriter
 		formatModels(doc.getModels(), topLevelDoc);
 		formatComponentDefinitions(doc.getComponentDefinitions(), topLevelDoc);
 		formatSequences(doc.getSequences(), topLevelDoc);
+		formatActivities(doc.getActivities(), topLevelDoc);
+		formatAgents(doc.getAgents(), topLevelDoc);
+		formatPlans(doc.getPlans(), topLevelDoc);
 		formatGenericTopLevel(doc.getGenericTopLevels(), topLevelDoc);
 		return topLevelDoc;
 	}

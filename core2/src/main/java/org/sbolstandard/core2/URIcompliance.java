@@ -40,6 +40,9 @@ final class URIcompliance {
 		if (prefix == null) {
 			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");
 		}
+		if (displayId==null) {
+			throw new SBOLValidationException("sbol-10204");
+		}
 		validateIdVersion(displayId, version);
 		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
 			prefix += "/";
@@ -66,6 +69,9 @@ final class URIcompliance {
 	static URI createCompliantURI(String prefix, String type, String displayId, String version, boolean useType) throws SBOLValidationException {
 		if (prefix == null) {
 			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");
+		}
+		if (displayId==null) {
+			throw new SBOLValidationException("sbol-10204");
 		}
 		validateIdVersion(displayId, version);
 		if (!useType) return createCompliantURI(prefix,displayId,version);

@@ -37,7 +37,19 @@ public abstract class TopLevel extends Identified {
 	 * The abbreviation for the GenericTopLevel type in URI
 	 */
 	public static final String GENERIC_TOP_LEVEL = "gen";
-		
+	/**
+	 * The abbreviation for the Activity type in URI
+	 */
+	public static final String ACTIVITY = "act";
+	/**
+	 * The abbreviation for the Agent type in URI
+	 */
+	public static final String AGENT = "agent";
+	/**
+	 * The abbreviation for the Plan type in URI
+	 */
+	public static final String PLAN = "plan";
+	
 	/**
 	 * @param identity
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link Identified#Identified(URI)}.

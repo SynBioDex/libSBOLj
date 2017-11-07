@@ -32,6 +32,7 @@ public abstract class Identified {
 	private String version;
 	private List<Annotation> annotations;
 	private Set<URI> wasDerivedFroms;
+	private Set<URI> wasGeneratedBys;
 	private String displayId;
 	private SBOLDocument sbolDocument = null;
 	private String name;
@@ -43,6 +44,7 @@ public abstract class Identified {
 	 */
 	Identified(URI identity) throws SBOLValidationException {
 		wasDerivedFroms = new HashSet<URI>();
+		wasGeneratedBys = new HashSet<URI>();
 		setIdentity(identity);
 		this.annotations = new ArrayList<>();
 	}
@@ -64,6 +66,7 @@ public abstract class Identified {
 	Identified(Identified identified) throws SBOLValidationException {
 		this.setIdentity(identified.getIdentity());
 		this.wasDerivedFroms = new HashSet<URI>();
+		this.wasGeneratedBys = new HashSet<URI>();
 		this.annotations = new ArrayList<>();
 		if (identified.hasAnnotations()) {
 			List<Annotation> clonedAnnotations = new ArrayList<>();
@@ -341,6 +344,76 @@ public abstract class Identified {
 			addWasDerivedFrom(wasDerivedFrom);
 		}
 	}
+	
+	/**
+	 * Adds the given wasGeneratedBy URI to the set of wasGeneratedBy URIs.
+	 *
+	 * @param wasGeneratedByURI the wasGeneratedBy URI to be added
+	 * @return {@code true} if this set did not already contain the specified wasGeneratedBy, {@code false} otherwise.
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10222
+	 */
+	public boolean addWasGeneratedBy(URI wasGeneratedByURI) throws SBOLValidationException {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getActivity(wasGeneratedByURI)==null) {
+				throw new SBOLValidationException("sbol-10222",this);
+			}
+		}
+		return wasGeneratedBys.add(wasGeneratedByURI);
+	}
+	
+	/**
+	 * Removes the given wasGeneratedBy URI from the set of wasGeneratedBys.
+	 *
+	 * @param wasGeneratedByURI the given wasGeneratedBy URI to be removed
+	 * @return {@code true} if the matching wasGeneratedBy reference was removed successfully, {@code false} otherwise.
+	 */
+	public boolean removeWasGeneratedBy(URI wasGeneratedByURI) {
+		return wasGeneratedBys.remove(wasGeneratedByURI);
+	}
+
+	/**
+	 * Checks if the given wasGeneratedBy URI is included in the set of wasGeneratedBy URIs.
+	 *
+	 * @param wasGeneratedByURI the wasGeneratedBy URI to be checked
+	 * @return {@code true} if this set contains the given wasGeneratedBy URI, {@code false} otherwise.
+	 */
+	public boolean containsWasGeneratedBy(URI wasGeneratedByURI) {
+		return wasGeneratedBys.contains(wasGeneratedByURI);
+	}
+
+	/**
+	 * Removes all entries from the set of wasGeneratedBy URIs.
+	 * The set will be empty after this call returns.	 
+	 */
+	public void clearWasGeneratedBys() {
+		wasGeneratedBys.clear();
+	}
+	
+	/**
+	 * Returns the set of wasGeneratedBy URIs.
+	 *
+	 * @return the set of wasGeneratedBy URIs.
+	 */
+	public Set<URI> getWasGeneratedBys() {
+		Set<URI> result = new HashSet<>();
+		result.addAll(wasGeneratedBys);
+		return result;
+	}
+
+	/**
+	 * Clears the existing set of wasGeneratedBys first, and then adds the given
+	 * set of the wasGeneratedBys.
+	 *
+	 * @param wasGeneratedBys the set of wasGeneratedBys to set to
+	 * @throws SBOLValidationException if the following SBOL validation rules was violated: 10222
+	 */
+	public void setWasGeneratedBys(Set<URI> wasGeneratedBys) throws SBOLValidationException {
+		clearWasGeneratedBys();
+		if (wasGeneratedBys==null) return;
+		for (URI wasGeneratedBy : wasGeneratedBys) {
+			addWasGeneratedBy(wasGeneratedBy);
+		}
+	}
 
 	/**
 	 * Test if this instance has any annotations.
@@ -525,6 +598,16 @@ public abstract class Identified {
 				throw new SBOLValidationException("sbol-12101");
 			} else if (this instanceof GenericTopLevel) {
 				throw new SBOLValidationException("sbol-12301");
+			} else if (this instanceof Activity) {
+				throw new SBOLValidationException("sbol-12401");
+			} else if (this instanceof Usage) {
+				throw new SBOLValidationException("sbol-12501");
+			} else if (this instanceof Association) {
+				throw new SBOLValidationException("sbol-12601");
+			} else if (this instanceof Plan) {
+				throw new SBOLValidationException("sbol-12701");
+			} else if (this instanceof Agent) {
+				throw new SBOLValidationException("sbol-12801");
 			}
 		}
 		addNamespace(annotation);
@@ -627,6 +710,7 @@ public abstract class Identified {
 		result = prime * result + ((version == null) ? 0 : version.hashCode());
 		// wasDerivedFrom differences are not considered
 		//result = prime * result + ((wasDerivedFroms == null) ? 0 : wasDerivedFroms.hashCode());
+		//result = prime * result + ((wasGeneratedBys == null) ? 0 : wasGeneratedBys.hashCode());
 		result = prime * result + ((displayId == null) ? 0 : displayId.hashCode());
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
@@ -668,6 +752,13 @@ public abstract class Identified {
 			if (other.wasDerivedFroms != null)
 				return false;
 		} else if (!wasDerivedFroms.equals(other.wasDerivedFroms))
+			return false;
+			*/
+		/*
+		if (wasGeneratedBys == null) {
+			if (other.wasGeneratedBys != null)
+				return false;
+		} else if (!wasGeneratedBys.equals(other.wasGeneratedBys))
 			return false;
 			*/
 		if (description == null) {
@@ -811,7 +902,8 @@ public abstract class Identified {
 				+ (this.isSetName()?", name=" + name:"")
 				+ (this.isSetDescription()?", description=" + description:"") 
 				+ (annotations.size()>0?", annotations=" + annotations:"") 
-				+ (wasDerivedFroms.size()>0?", wasDerivedFroms=" + wasDerivedFroms:"");  
+				+ (wasDerivedFroms.size()>0?", wasDerivedFroms=" + wasDerivedFroms:"")	  
+				+ (wasGeneratedBys.size()>0?", wasGeneratedBys=" + wasGeneratedBys:"");  
 	}
 
 	//	/**
