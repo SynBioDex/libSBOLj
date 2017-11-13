@@ -63,15 +63,10 @@ java -jar libSBOLj-<version>-withDependencies.jar <firstSBOLFile> -e <secondSBOL
 3. [Clone](https://help.github.com/articles/cloning-a-repository/) the libSBOLj GitHub repository to your machine.
 
 ### Retrieving SBOLTestSuite Submodule
-1. If the repository was freshly cloned, in the command line, locate to the SBOLTestSuite directory (e.g. cd /path/to/SBOLTestSuite) and execute the following commands
+1. Locate to the SBOLTestSuite directory (e.g. cd /path/to/SBOLTestSuite) and execute the following commands
 
-```
-git submodule init
-git submodule update --remote
-```
-2. Otherwise, for latest updates, in the command line, locate to the SBOLTestSuite diretory and execute the following commands
-```
-git submodule update --remote
+git submodule update --init —recursive
+
 ```
 
 ### Compiling and Packaging libSBOLj 
