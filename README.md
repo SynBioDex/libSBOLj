@@ -61,6 +61,7 @@ java -jar libSBOLj-<version>-withDependencies.jar <firstSBOLFile> -e <secondSBOL
 1. [Create](https://github.com/) a GitHub account.
 2. [Setup](https://help.github.com/articles/set-up-git) Git on your machine.
 3. [Clone](https://help.github.com/articles/cloning-a-repository/) the libSBOLj GitHub repository to your machine.
+4. Retrieve the SBOLTestSuite Submodule using the instructions below. 
 
 ### Retrieving SBOLTestSuite Submodule
 1. Locate to the SBOLTestSuite directory (e.g. cd /path/to/SBOLTestSuite) and execute the following commands
