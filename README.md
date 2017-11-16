@@ -64,7 +64,6 @@ java -jar libSBOLj-<version>-withDependencies.jar <firstSBOLFile> -e <secondSBOL
 4. Retrieve the SBOLTestSuite Submodule using the instructions below. 
 
 ### Retrieving SBOLTestSuite Submodule
-1. Locate to the SBOLTestSuite directory (e.g. cd /path/to/SBOLTestSuite) and execute the following commands
 
 ```
 git submodule update --init —recursive
