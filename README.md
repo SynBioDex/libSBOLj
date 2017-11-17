@@ -67,7 +67,6 @@ java -jar libSBOLj-<version>-withDependencies.jar <firstSBOLFile> -e <secondSBOL
 
 ```
 git submodule update --init —recursive
-
 ```
 
 ### Compiling and Packaging libSBOLj 
