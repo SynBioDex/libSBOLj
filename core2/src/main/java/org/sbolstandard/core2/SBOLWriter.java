@@ -20,6 +20,7 @@ import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -381,7 +382,7 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.template, combinatorialDerivation.getTemplate()));
 			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.strategy, combinatorialDerivation.getStrategy()));
 			
-			formatVariableComponents(combinatorialDerivation.getVariableComponents(), list);
+			formatVariableComponents(new HashSet<VariableComponent>(combinatorialDerivation.getVariableComponents().values()), list);
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation, 
 					combinatorialDerivation.getIdentity(), NamedProperties(list)));
@@ -1014,6 +1015,7 @@ public class SBOLWriter
 		formatComponentDefinitions(doc.getComponentDefinitions(), topLevelDoc);
 		formatSequences(doc.getSequences(), topLevelDoc);
 		formatGenericTopLevel(doc.getGenericTopLevels(), topLevelDoc);
+		formatCombinatorialDerivation(doc.getCombinatorialDerivations(), topLevelDoc);
 		return topLevelDoc;
 	}
 

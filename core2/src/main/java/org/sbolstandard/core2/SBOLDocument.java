@@ -967,6 +967,12 @@ public class SBOLDocument {
 		combinatorialDerivations.put(combinatorialDerivation.getIdentity(), combinatorialDerivation);
 	}
 
+	public Set<CombinatorialDerivation> getCombinatorialDerivations() {
+		Set<CombinatorialDerivation> combinatorialDerivations = new HashSet<>();
+		combinatorialDerivations.addAll(this.combinatorialDerivations.values());
+		return combinatorialDerivations;
+	}
+
 	/**
 	 * Returns the set of component definitions owned by this SBOL document.
 	 *
