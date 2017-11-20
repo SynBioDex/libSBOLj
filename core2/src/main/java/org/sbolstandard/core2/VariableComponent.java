@@ -20,19 +20,22 @@ public class VariableComponent extends Identified {
 	HashSet<URI> variantCollections;
 	HashSet<URI> variantDerivations;
 	URI variable;
+	URI operator;
 	
-	public VariableComponent(URI identity, URI variable) throws SBOLValidationException {
+	public VariableComponent(URI identity, URI variable, URI operator) throws SBOLValidationException {
 		super(identity);
 		this.variable = variable;
+		this.operator = operator;
 		this.variants = new HashSet<>();
 		this.variantCollections = new HashSet<>();
 		this.variantDerivations = new HashSet<>();
 	}
 	
-	private VariableComponent(VariableComponent variableComponent) throws {
+	private VariableComponent(VariableComponent variableComponent) throws SBOLValidationException {
 		super(variableComponent.getIdentity());
 		
 		this.variable = variableComponent.variable;
+		this.operator = variableComponent.operator;
 		this.variants = variableComponent.variants;
 		this.variantCollections = variableComponent.variantCollections;
 		this.variantDerivations = variableComponent.variantDerivations;
@@ -48,6 +51,26 @@ public class VariableComponent extends Identified {
 	
 	public void addVariantDerivation(URI variantDerivation) {
 		variantDerivations.add(variantDerivation);
+	}
+	
+	public URI getVariable() {
+		return this.variable;
+	}
+	
+	public URI getOperator() {
+		return this.operator;
+	}
+	
+	public Set<URI> getVariants() {
+		return this.variants;
+	}
+	
+	public Set<URI> getVariantCollections () {
+		return this.variantCollections;
+	}
+	
+	public Set<URI> getVariantDerivations () {
+		return this.variantDerivations;
 	}
 	
 	public void addVariant(String uriPrefix, String displayId, String version) throws SBOLValidationException {
