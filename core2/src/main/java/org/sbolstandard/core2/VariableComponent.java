@@ -73,6 +73,18 @@ public class VariableComponent extends Identified {
 		return this.variantDerivations;
 	}
 	
+	public void setVariants(Set<URI> variants) {
+		this.variants = (HashSet<URI>) variants;
+	}
+	
+	public void setVariantCollections(Set<URI> variantCollections) {
+		this.variantCollections = (HashSet<URI>) variantCollections;
+	}
+	
+	public void setVariantDerivations(Set<URI> variantDerivations) {
+		this.variantDerivations = (HashSet<URI>) variantDerivations;
+	}
+	
 	public void addVariant(String uriPrefix, String displayId, String version) throws SBOLValidationException {
 		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
 		
