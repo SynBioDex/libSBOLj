@@ -172,6 +172,8 @@ public class CombinatorialDerivation extends TopLevel {
 	Identified copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		CombinatorialDerivation combinatorialDerivation = 
 				this.getDocument().getCombinatorialDerivation(URIprefix, displayId, version);
+		
+		return new CombinatorialDerivation(combinatorialDerivation);
 	}
 
 	@Override
