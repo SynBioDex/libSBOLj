@@ -5,10 +5,15 @@ import java.net.URI;
 import java.sql.NClob;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.sbolstandard.core2.Activity;
+import org.sbolstandard.core2.Agent;
 import org.sbolstandard.core2.Annotation;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.GenericTopLevel;
 import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLReader;
+import org.sbolstandard.core2.SBOLValidate;
 import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.SequenceOntology;
@@ -31,11 +36,9 @@ public class Provenance_StrainDerivation {
 	
 	public static void main( String[] args ) throws Exception
     {		
-		NamespaceBinding provNs = NamespaceBinding("http://www.w3.org/ns/prov#", "prov");
 		NamespaceBinding myAppNs = NamespaceBinding("http://myapp.com/", "myapp");
 		
-		SBOLDocument document = new SBOLDocument();				
-		document.setTypesInURIs(true);		
+		SBOLDocument document = new SBOLDocument();
 		document.addNamespace(URI.create(myAppNs.getNamespaceURI()),myAppNs.getPrefix());		
 		document.setDefaultURIprefix(myAppNs.getNamespaceURI());						
 		
@@ -44,35 +47,22 @@ public class Provenance_StrainDerivation {
 		b168.addWasDerivedFrom(b3610.getIdentity());
 				
 		//Create the agent definition to represent X-ray		
-		GenericTopLevel agent=document.createGenericTopLevel("x_ray", provNs.withLocalPart("Agent"));
+		Agent agent=document.createAgent("x_ray");
 		agent.setName("X-ray");		
 				
 		//Create the generic top level entity for the X-ray mutagenesis activity
-		GenericTopLevel activity=document.createGenericTopLevel("xraymutagenesis", provNs.withLocalPart("Activity"));
+		Activity activity=document.createActivity("xraymutagenesis");
 		activity.setName("X-ray mutagenesis");		
 		
 		//Create the qualifiedUsage annotation to describe the use of the parent strain 
-		activity.createAnnotation(provNs.withLocalPart("qualifiedUsage"), 
-				provNs.withLocalPart("Usage"), 
-				URI.create(activity.getIdentity().toString() + "/" + "usage"), 
-				new ArrayList<Annotation>(
-						Arrays.asList(
-								new Annotation(provNs.withLocalPart("entity"), b3610.getIdentity()),
-								new Annotation(provNs.withLocalPart("hadRole"), URI.create("http://sbols.org/v2#source"))								
-								)));
+		activity.createUsage("usage", b3610.getIdentity()).addRole(URI.create("http://sbols.org/v2#source"));
 		
 		//Create the qualifiedAssociation annotation to describe the use of the agent used in the activity
-		activity.createAnnotation(provNs.withLocalPart("qualifiedAssociation"), 
-				provNs.withLocalPart("Association"), 
-				URI.create(activity.getIdentity().toString() + "/" + "association"), 
-				new ArrayList<Annotation>(
-						Arrays.asList(
-								new Annotation(provNs.withLocalPart("agent"), agent.getIdentity()),
-								new Annotation(provNs.withLocalPart("hadRole"), myAppNs.namespacedUri("mutagen"))
-								)));
+		activity.createAssociation("association",agent.getIdentity()).addRole( myAppNs.namespacedUri("mutagen"));
 		
-		b168.createAnnotation(provNs.withLocalPart("wasGeneratedBy"), activity.getIdentity());
+		b168.addWasGeneratedBy(activity.getIdentity());
 		
-		SBOLWriter.write(document,"/Users/myers/Provenance_StrainDerivation.xml");		
+		SBOLWriter.write(document,System.out);	
+
     }
 }

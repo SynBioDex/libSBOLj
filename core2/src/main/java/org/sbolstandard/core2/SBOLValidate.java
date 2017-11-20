@@ -1330,7 +1330,7 @@ public class SBOLValidate {
 			}
 		}		
 	}
-	
+  
 	private static void compareCombinatorialDerivations(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
 		for(CombinatorialDerivation combinatorialDerivation1 : doc1.getCombinatorialDerivations()) {
 			CombinatorialDerivation combinatorialDerivation2 = doc2.getCombinatorialDerivation(combinatorialDerivation1.getIdentity());
@@ -1352,6 +1352,93 @@ public class SBOLValidate {
 		}
 	}
 
+	private static void compareActivities(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
+		for (Activity activity1 : doc1.getActivities()) {
+			Activity activity2 = doc2.getActivity(activity1.getIdentity());
+			if (activity2==null) {
+				errors.add("Activity " + activity1.getIdentity() + " not found in " + file2);
+			} else if (!activity1.equals(activity2)) {
+				errors.add("Activity " + activity1.getIdentity() + " differ.");
+				compareAssociations(file1,activity1,file2,activity2);
+				compareUsages(file1,activity1,file2,activity2);
+			}
+		}
+		for (Activity activity2 : doc2.getActivities()) {
+			Activity activity1 = doc1.getActivity(activity2.getIdentity());
+			if (activity1==null) {
+				errors.add("Activity " + activity2.getIdentity() + " not found in " + file1);
+			}
+		}		
+	}
+	
+	private static void compareAssociations(String file1, Activity activity1, String file2, Activity activity2) {
+		for (Association association1 : activity1.getAssociations()) {
+			Association association2 = activity2.getAssociation(association1.getIdentity());
+			if (association2==null) {
+				errors.add("Association " + association1.getIdentity() + " not found in " + file2);
+			} else if (!association1.equals(association2)) {
+				errors.add("Association " + association1.getIdentity() + " differ.");
+			}
+		}
+		for (Association association2 : activity2.getAssociations()) {
+			Association association1 = activity1.getAssociation(association2.getIdentity());
+			if (association1==null) {
+				errors.add("Association " + association2.getIdentity() + " not found in " + file1);
+			}
+		}		
+	}
+	
+	private static void compareUsages(String file1, Activity activity1, String file2, Activity activity2) {
+		for (Usage usage1 : activity1.getUsages()) {
+			Usage usage2 = activity2.getUsage(usage1.getIdentity());
+			if (usage2==null) {
+				errors.add("Usage " + usage1.getIdentity() + " not found in " + file2);
+			} else if (!usage1.equals(usage2)) {
+				errors.add("Usage " + usage1.getIdentity() + " differ.");
+			}
+		}
+		for (Usage usage2 : activity2.getUsages()) {
+			Usage usage1 = activity1.getUsage(usage2.getIdentity());
+			if (usage1==null) {
+				errors.add("Usage " + usage2.getIdentity() + " not found in " + file1);
+			}
+		}		
+	}
+
+	private static void comparePlans(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
+		for (Plan plan1 : doc1.getPlans()) {
+			Plan plan2 = doc2.getPlan(plan1.getIdentity());
+			if (plan2==null) {
+				errors.add("Plan " + plan1.getIdentity() + " not found in " + file2);
+			} else if (!plan1.equals(plan2)) {
+				errors.add("Plan " + plan1.getIdentity() + " differ.");
+			}
+		}
+		for (Plan plan2 : doc2.getPlans()) {
+			Plan plan1 = doc1.getPlan(plan2.getIdentity());
+			if (plan1==null) {
+				errors.add("Plan " + plan2.getIdentity() + " not found in " + file1);
+			}
+		}		
+	}
+	
+	private static void compareAgents(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
+		for (Agent plan1 : doc1.getAgents()) {
+			Agent plan2 = doc2.getAgent(plan1.getIdentity());
+			if (plan2==null) {
+				errors.add("Agent " + plan1.getIdentity() + " not found in " + file2);
+			} else if (!plan1.equals(plan2)) {
+				errors.add("Agent " + plan1.getIdentity() + " differ.");
+			}
+		}
+		for (Agent activity2 : doc2.getAgents()) {
+			Agent activity1 = doc1.getAgent(activity2.getIdentity());
+			if (activity1==null) {
+				errors.add("Agent " + activity2.getIdentity() + " not found in " + file1);
+			}
+		}		
+	}
+	
 	private static void compareSequences(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
 		for (Sequence sequence1 : doc1.getSequences()) {
 			Sequence sequence2 = doc2.getSequence(sequence1.getIdentity());
@@ -1553,6 +1640,9 @@ public class SBOLValidate {
 		compareSequences(file1,doc1,file2,doc2);
 		compareModuleDefinitions(file1,doc1,file2,doc2);
 		compareModels(file1,doc1,file2,doc2);
+		compareActivities(file1,doc1,file2,doc2);
+		comparePlans(file1,doc1,file2,doc2);
+		compareAgents(file1,doc1,file2,doc2);
 		compareGenericTopLevels(file1,doc1,file2,doc2);
 		compareCombinatorialDerivations(file1,doc1,file2,doc2);
 	}

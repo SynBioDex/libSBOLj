@@ -29,6 +29,27 @@ class Sbol2Terms
 		static final QName Description = rdf.withLocalPart("Description");
 		static final QName type = rdf.withLocalPart("type");
 	}
+	
+	/**
+	 * A group of qualified terms for Activity related SBOL objects
+	 *
+	 */
+	static final class Activity {
+		static final QName Activity = prov.withLocalPart("Activity");
+		static final QName startedAtTime   = prov.withLocalPart("startedAtTime");
+		static final QName endedAtTime	   = prov.withLocalPart("endedAtTime");
+		static final QName wasInformedBy   = prov.withLocalPart("wasInformedBy");
+		static final QName qualifiedAssociation = prov.withLocalPart("qualifiedAssociation");
+		static final QName qualifiedUsage  = prov.withLocalPart("qualifiedUsage");
+	}
+	
+	/**
+	 * A group of qualified terms for Agent related SBOL objects
+	 *
+	 */
+	static final class Agent {
+		static final QName Agent = prov.withLocalPart("Agent");
+	}
 
 	/**
 	 * A group of qualified terms for Annotation related SBOL objects
@@ -38,6 +59,17 @@ class Sbol2Terms
 		static final QName Annotation = sbol2.withLocalPart("Annotation");
 		static final QName relation   = sbol2.withLocalPart("relation");
 		static final QName value	     = sbol2.withLocalPart("value");
+	}
+	
+	/**
+	 * A group of qualified terms for Association related SBOL objects
+	 *
+	 */
+	static final class Association {
+		static final QName Association = prov.withLocalPart("Association");
+		static final QName role = prov.withLocalPart("hadRole");
+		static final QName plan = prov.withLocalPart("hadPlan");
+		static final QName agent = prov.withLocalPart("agent");
 	}
 
 	/**
@@ -130,6 +162,15 @@ class Sbol2Terms
 	}
 
 	/**
+	 * A group of qualified terms for TopLevel related SBOL objects
+	 *
+	 */
+	static final class GenericTopLevel {
+		static final QName GenericTopLevel = sbol2.withLocalPart("GenericTopLevel");
+		static final QName rdfType 		  = sbol2.withLocalPart("rdfType");
+	}
+
+	/**
 	 * A group of qualified terms for Identified related SBOL objects
 	 *
 	 */
@@ -141,6 +182,7 @@ class Sbol2Terms
 		static final QName timeStamp   	     = sbol2.withLocalPart("timeStamp");
 		static final QName hasAnnotations 	 = sbol2.withLocalPart("annotation");
 		static final QName wasDerivedFrom	 = prov.withLocalPart("wasDerivedFrom");
+		static final QName wasGeneratedBy	 = prov.withLocalPart("wasGeneratedBy");
 		static final QName displayId   = sbol2.withLocalPart("displayId");
 		static final QName title 	  = dc.withLocalPart("title");
 		static final QName description = dc.withLocalPart("description");
@@ -235,6 +277,14 @@ class Sbol2Terms
 		static final QName hasParticipant = sbol2.withLocalPart("participant");
 
 	}
+	
+	/**
+	 * A group of qualified terms for Plan related SBOL objects
+	 *
+	 */
+	static final class Plan {
+		static final QName Plan = prov.withLocalPart("Plan");
+	}
 
 	/**
 	 * A group of qualified terms for Range related SBOL objects
@@ -281,16 +331,16 @@ class Sbol2Terms
 		static final QName hasSubject 		 = sbol2.withLocalPart("subject");
 		static final QName hasObject 		 = sbol2.withLocalPart("object");
 	}
-
+	
 	/**
-	 * A group of qualified terms for TopLevel related SBOL objects
+	 * A group of qualified terms for Plan related SBOL objects
 	 *
 	 */
-	static final class GenericTopLevel {
-		static final QName GenericTopLevel = sbol2.withLocalPart("GenericTopLevel");
-		static final QName rdfType 		  = sbol2.withLocalPart("rdfType");
+	static final class Usage {
+		static final QName Usage = prov.withLocalPart("Usage");
+		static final QName entity = prov.withLocalPart("entity");
+		static final QName role = prov.withLocalPart("hadRole");
 	}
-
 
 //	static final class SequenceURI {
 //		static final URI encoding 	  = URI.create(sbol2.getNamespaceURI() + "encoding");

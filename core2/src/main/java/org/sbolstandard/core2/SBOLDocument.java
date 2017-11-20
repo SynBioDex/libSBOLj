@@ -50,6 +50,9 @@ public class SBOLDocument {
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
 	private HashMap<URI, CombinatorialDerivation> combinatorialDerivations;
+	private HashMap<URI, Activity> activities;
+	private HashMap<URI, Plan> plans;
+	private HashMap<URI, Agent> agents;
 	private HashMap<String, NamespaceBinding> nameSpaces;
 	private HashMap<String, SynBioHubFrontend> registries;
 	private Set<String> prefixes;
@@ -96,6 +99,9 @@ public class SBOLDocument {
 		models = new HashMap<>();
 		moduleDefinitions = new HashMap<>();
 		sequences = new HashMap<>();
+		activities = new HashMap<>();
+		plans = new HashMap<>();
+		agents = new HashMap<>();
 		nameSpaces = new HashMap<>();
 		combinatorialDerivations = new HashMap<>();
 		try {
@@ -186,7 +192,7 @@ public class SBOLDocument {
 	 */
 	void addModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
 		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition",
-				collections, componentDefinitions, genericTopLevels, models, sequences);
+				collections, componentDefinitions, genericTopLevels, activities, plans, agents, models, sequences);
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			functionalComponent.setSBOLDocument(this);
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
@@ -395,7 +401,7 @@ public class SBOLDocument {
 	 */
 	void addCollection(Collection collection) throws SBOLValidationException {
 		addTopLevel(collection, collections, "collection",
-				componentDefinitions, genericTopLevels, models, moduleDefinitions, sequences);
+				componentDefinitions, genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences);
 	}
 
 	/**
@@ -589,7 +595,7 @@ public class SBOLDocument {
 	 */
 	void addModel(Model model) throws SBOLValidationException {
 		addTopLevel(model, models, "model",
-				collections, componentDefinitions, genericTopLevels, moduleDefinitions, sequences);
+				collections, componentDefinitions, genericTopLevels, activities, plans, agents, moduleDefinitions, sequences);
 	}
 
 	/**
@@ -844,7 +850,7 @@ public class SBOLDocument {
 	 */
 	void addComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
 		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition",
-				collections, genericTopLevels, models, moduleDefinitions, sequences);
+				collections, genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences);
 		for (Component component : componentDefinition.getComponents()) {
 			component.setSBOLDocument(this);
 			for (MapsTo mapsTo : component.getMapsTos()) {
@@ -1336,10 +1342,10 @@ public class SBOLDocument {
 			URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		}
 		if (displayId == null) {
-			displayId = topLevel.getDisplayId();
-			if (displayId == null) {
-				displayId = URIcompliance.extractDisplayId(topLevel.getIdentity());
-			}
+			//displayId = topLevel.getDisplayId();
+			//if (displayId == null) {
+			displayId = URIcompliance.extractDisplayId(topLevel.getIdentity());
+			//}
 		}
 		if (version == null) {
 			version = topLevel.getVersion();
@@ -1504,8 +1510,13 @@ public class SBOLDocument {
 	
 	private void fixDocumentURIPrefix() throws SBOLValidationException {
 		String documentURIPrefix = extractDocumentURIPrefix();
-		setDefaultURIprefix(documentURIPrefix);
+		if (documentURIPrefix.length() >= 9) {
+			setDefaultURIprefix(documentURIPrefix);
+		}
 		for (TopLevel topLevel : getTopLevels()) {
+			if (documentURIPrefix.length() < 9) {
+				documentURIPrefix = URIcompliance.extractURIprefix(topLevel.getIdentity());
+			}
 			if (!topLevel.getIdentity()
 					.equals(URIcompliance.createCompliantURI(documentURIPrefix, topLevel.getDisplayId(), topLevel.getVersion()))) {
 				String newDisplayId = topLevel.getIdentity().toString().replaceAll(documentURIPrefix, "");
@@ -1514,7 +1525,7 @@ public class SBOLDocument {
 					newDisplayId = newDisplayId.replace("/"+topLevel.getVersion(), "");
 					newVersion = topLevel.getVersion();
 				}
-				newDisplayId = newDisplayId.replaceAll("/","_");
+				newDisplayId = URIcompliance.fixDisplayId(newDisplayId);
 				while (getTopLevel(URIcompliance.createCompliantURI(documentURIPrefix, 
 						newDisplayId, newVersion))!=null) {
 					newDisplayId = newDisplayId.replaceAll("_","__");
@@ -1824,13 +1835,14 @@ public class SBOLDocument {
 	 */
 	public SBOLDocument changeURIPrefixVersion(String URIPrefix,String version) throws SBOLValidationException {
 		SBOLDocument document = new SBOLDocument();
-		//document.createCopy(this);
-		//document.fixDocumentURIPrefix();
+		SBOLDocument fixed = new SBOLDocument();
+		fixed.createCopy(this);
+		fixed.fixDocumentURIPrefix();
 		String documentURIPrefix = extractDocumentURIPrefix();
 		HashMap<URI,URI> uriMap = new HashMap<URI,URI>();
-		for (TopLevel topLevel : this.getTopLevels()) {
-		//for (TopLevel topLevel : document.getTopLevels()) {
-			//document.rename(topLevel, URIPrefix, null, version);
+		//for (TopLevel topLevel : this.getTopLevels()) {
+		for (TopLevel topLevel : fixed.getTopLevels()) {
+			fixed.rename(topLevel, URIPrefix, null, version);
 			TopLevel newTL = document.createCopy(topLevel, URIPrefix, null, version);
 			uriMap.put(topLevel.getIdentity(), newTL.getIdentity());
 			uriMap.put(topLevel.getPersistentIdentity(), newTL.getPersistentIdentity());
@@ -1886,7 +1898,7 @@ public class SBOLDocument {
 	 */
 	void addSequence(Sequence sequence) throws SBOLValidationException {
 		addTopLevel(sequence, sequences, "sequence",
-				collections, componentDefinitions, genericTopLevels, models, moduleDefinitions);
+				collections, componentDefinitions, genericTopLevels, activities, plans, agents, models, moduleDefinitions);
 	}
 
 	/**
@@ -1983,17 +1995,6 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Clears the existing list <code>structures</code>, then appends all of the elements in the specified collection to the end of this list.
-	 * @throws SBOLValidationException see {@link SBOLValidationException} 
-	 */
-	/*void setSequences(Set<Sequence> sequences) throws SBOLValidationException {
-		clearSequences();
-		for (Sequence sequence : sequences) {
-			addSequence(sequence);
-		}
-	}*/
-
-	/**
  	 * Creates a generic top-level, and then adds it to this SBOL document's list of generic top-levels.
 	 * <p>
 	 * This method calls {@link #createGenericTopLevel(String, String, String, QName)} with the default URI
@@ -2060,27 +2061,6 @@ public class SBOLDocument {
 		return g;
 	}
 
-//	/**
-//	 * @param identity a given identifier for this object
-//	 * @param rdfType a given QName for this annotated GenericTopLevel object
-//	 * @return the new generic top level
-//	 * @throws SBOLValidationException if any of the following condition is satisfied:
-//	 * <ul>
-//	 * <li>the following SBOL validation rule was violated: 12302;</li>
-//	 * <li>an SBOL validation rule violation occurred in {@link GenericTopLevel#GenericTopLevel(URI, QName)}; or </li>
-//	 * <li>an SBOL validation rule violation occurred in {@link #addGenericTopLevel(GenericTopLevel)}.</li>
-//	 * </ul>
-//	 */
-//	private GenericTopLevel createGenericTopLevel(URI identity, QName rdfType) throws SBOLValidationException {
-//		if (rdfType.getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
-//				rdfType.getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
-//			throw new SBOLValidationException("sbol-12302");
-//		}
-//		GenericTopLevel newGenericTopLevel = new GenericTopLevel(identity,rdfType);
-//		addGenericTopLevel(newGenericTopLevel);
-//		return newGenericTopLevel;
-//	}
-
 	/**
 	 * Appends the specified {@code genericTopLevel} object to the end of the list of generic top levels.
 	 *
@@ -2104,7 +2084,7 @@ public class SBOLDocument {
 					genericTopLevel.getRDFType().getLocalPart(),qNameInNamespace.getPrefix()));
 		}
 		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel",
-				collections, componentDefinitions, models, moduleDefinitions, sequences);
+				collections, componentDefinitions, models, activities, plans, agents, moduleDefinitions, sequences);
 	}
 
 	/**
@@ -2193,16 +2173,461 @@ public class SBOLDocument {
 		}
 	}
 
-//	/**
-//	 * Clears the existing list <code>topLevels</code>, then appends all of the elements in the specified topLevels to the end of this list.
-//	 * @throws SBOLValidationException see {@link SBOLValidationException} 
-//	 */
-	/*void setGenericTopLevels(Set<GenericTopLevel> topLevels) throws SBOLValidationException {
-		clearGenericTopLevels();
-		for (GenericTopLevel topLevel : topLevels) {
-			addGenericTopLevel(topLevel);
+	/**
+ 	 * Creates an activity, and then adds it to this SBOL document's list of activities.
+	 * <p>
+	 * This method calls {@link #createActivity(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given display ID, and an empty version string.
+	 *
+	 * @param displayId the display ID of the activity to be created
+	 * @return the created activity
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link #createActivity(String, String, String)}. 
+	 */
+	public Activity createActivity(String displayId) throws SBOLValidationException {
+		return createActivity(defaultURIprefix,displayId,"");
+	}
+
+	/**
+	 * Creates an activity, and then adds it to this SBOL document's list of activities.
+	 * <p>
+	 * This method calls {@link #createActivity(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given display ID, and version.
+	 *
+	 * @param displayId the display ID of the activity to be created
+	 * @param version the version of the activity to be created
+	 * @return the created activity
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link #createActivity(String, String, String)}. 
+	 */
+	public Activity createActivity(String displayId, String version) throws SBOLValidationException {
+		return createActivity(defaultURIprefix,displayId,version);
+	}
+
+	/**
+	 * Creates an activity, and then adds it to this SBOL document's list of activities.
+	 * <p>
+	 * This method calls {@link #createActivity(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given display ID, and version. 
+	 * 
+	 * @param URIprefix the given URI prefix used to create a compliant URI for the activity to be created 
+	 * @param displayId the display ID of the activity to be created
+	 * @param version the version of the activity to be created
+	 * @return the created activity
+	 * @throws SBOLValidationException if an SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 
+	 * 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12301, 12302. // TODO: Check?
+	 */
+	public Activity createActivity(String URIprefix, String displayId, String version) throws SBOLValidationException {
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
+		Activity g = new Activity(createCompliantURI(URIprefix, TopLevel.ACTIVITY, displayId, version, typesInURIs));
+		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.ACTIVITY, displayId, "", typesInURIs));
+		g.setDisplayId(displayId);
+		g.setVersion(version);
+		addActivity(g);
+		return g;
+	}
+
+	/**
+	 * Appends the specified {@code activity} object to the end of the list of activity top levels.
+	 *
+	 * @param activity Adds the given Activity object to this document
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in
+	 * {@link #addTopLevel(TopLevel, Map, String, Map...)}.
+	 */
+	void addActivity(Activity activity) throws SBOLValidationException {
+		addTopLevel(activity, activities, "activity",
+				collections, componentDefinitions, models, genericTopLevels, plans, agents, moduleDefinitions, sequences);
+	}
+
+	/**
+	 * Removes the given activity from this SBOL document's list of activities.
+	 *
+	 * @param activity the given activity to be removed
+	 * @return {@code true} if the given activity was successfully removed, {@code false} otherwise
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: ?????.
+	 */
+	public boolean removeActivity(Activity activity) throws SBOLValidationException {
+		return removeTopLevel(activity,activities);
+	}
+
+	/**
+	 * Returns the activity matching the given display ID and version from this SBOL document's list of
+	 * activities.
+	 * <p>
+	 * A compliant activity URI is created first. It starts with this SBOL document's default URI prefix
+	 * after its been successfully validated, optionally followed by its type, namely {@link TopLevel#ACTIVITY}, 
+	 * followed by the given display ID, and ends with the given version. This URI is used to look up the activity
+	 * in this SBOL document.
+	 *
+	 * @param displayId the display ID of the activity to be retrieved
+	 * @param version the version of the activity to be retrieved
+	 * @return the matching activity if present, or {@code null} otherwise.
+	 */
+	public Activity getActivity(String displayId, String version) {
+		try {
+			return getActivity(createCompliantURI(defaultURIprefix,TopLevel.ACTIVITY,displayId,version, typesInURIs));
+		} catch (SBOLValidationException e) {
+			return null;
 		}
-	}*/
+	}
+
+	/**
+	 * Returns the activity matching the given display identity URI from this SBOL document's list of
+	 * activities.
+	 *
+	 * @param activityURI the identity URI of the top-level to be retrieved
+	 * @return the matching activity if present, or {@code null} otherwise.
+	 */
+	public Activity getActivity(URI activityURI) {
+		Activity activity = activities.get(activityURI);
+		if (activity==null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(activityURI);
+					if (document != null) {
+						activity = document.getActivity(activityURI);
+						createCopy(document);
+					}
+				}
+				catch (SynBioHubException | SBOLValidationException e) {
+					activity = null;
+				}
+			}
+		} 
+		return activity;
+	}
+
+	/**
+	 * Returns the set of activities owned by this SBOL document.
+	 *
+	 * @return the set of activities owned by this SBOL document.
+	 */
+	public Set<Activity> getActivities() {
+		Set<Activity> topLevels = new HashSet<>();
+		topLevels.addAll(this.activities.values());
+		return topLevels;
+	}
+
+	/**
+	 * Removes all entries in the list of activities
+	 * owned by this SBOL document. The list will be empty after this call returns.
+	 * <p>
+	 * This method calls {@link #removeActivity(Activity)} to iteratively
+	 * remove each activity.
+	 * 
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #removeActivity(Activity)}.
+	 */
+	public void clearActivitys() throws SBOLValidationException {
+		Object[] valueSetArray = activities.values().toArray();
+		for (Object activity : valueSetArray) {
+			removeActivity((Activity)activity);
+		}
+	}
+	
+	/**
+ 	 * Creates an agent, and then adds it to this SBOL document's list of agents.
+	 * <p>
+	 * This method calls {@link #createAgent(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given display ID, and an empty version string.
+	 *
+	 * @param displayId the display ID of the agent to be created
+	 * @return the created agent
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link #createAgent(String, String, String)}. 
+	 */
+	public Agent createAgent(String displayId) throws SBOLValidationException {
+		return createAgent(defaultURIprefix,displayId,"");
+	}
+
+	/**
+	 * Creates an agent, and then adds it to this SBOL document's list of agents.
+	 * <p>
+	 * This method calls {@link #createAgent(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given display ID, and version.
+	 *
+	 * @param displayId the display ID of the agent to be created
+	 * @param version the version of the agent to be created
+	 * @return the created agent
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link #createAgent(String, String, String)}. 
+	 */
+	public Agent createAgent(String displayId, String version) throws SBOLValidationException {
+		return createAgent(defaultURIprefix,displayId,version);
+	}
+
+	/**
+	 * Creates an agent, and then adds it to this SBOL document's list of agents.
+	 * <p>
+	 * This method calls {@link #createAgent(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given display ID, and version. 
+	 * 
+	 * @param URIprefix the given URI prefix used to create a compliant URI for the agent to be created 
+	 * @param displayId the display ID of the agent to be created
+	 * @param version the version of the agent to be created
+	 * @return the created agent
+	 * @throws SBOLValidationException if an SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 
+	 * 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12301, 12302. // TODO: Check?
+	 */
+	public Agent createAgent(String URIprefix, String displayId, String version) throws SBOLValidationException {
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
+		Agent g = new Agent(createCompliantURI(URIprefix, TopLevel.AGENT, displayId, version, typesInURIs));
+		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.AGENT, displayId, "", typesInURIs));
+		g.setDisplayId(displayId);
+		g.setVersion(version);
+		addAgent(g);
+		return g;
+	}
+
+	/**
+	 * Appends the specified {@code agentTopLevel} object to the end of the list of agent top levels.
+	 *
+	 * @param agent Adds the given Agent object to this document
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in
+	 * {@link #addTopLevel(TopLevel, Map, String, Map...)}.
+	 */
+	void addAgent(Agent agent) throws SBOLValidationException {
+		addTopLevel(agent, agents, "agent",
+				collections, componentDefinitions, models, genericTopLevels, plans, activities, moduleDefinitions, sequences);
+	}
+
+	/**
+	 * Removes the given agent from this SBOL document's list of agents.
+	 *
+	 * @param agent the given agent to be removed
+	 * @return {@code true} if the given agent was successfully removed, {@code false} otherwise
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: ?????.
+	 */
+	public boolean removeAgent(Agent agent) throws SBOLValidationException {
+		return removeTopLevel(agent,agents);
+	}
+
+	/**
+	 * Returns the agent matching the given display ID and version from this SBOL document's list of
+	 * agents.
+	 * <p>
+	 * A compliant agent URI is created first. It starts with this SBOL document's default URI prefix
+	 * after its been successfully validated, optionally followed by its type, namely {@link TopLevel#AGENT}, 
+	 * followed by the given display ID, and ends with the given version. This URI is used to look up the agent
+	 * in this SBOL document.
+	 *
+	 * @param displayId the display ID of the agent to be retrieved
+	 * @param version the version of the agent to be retrieved
+	 * @return the matching agent if present, or {@code null} otherwise.
+	 */
+	public Agent getAgent(String displayId, String version) {
+		try {
+			return getAgent(createCompliantURI(defaultURIprefix,TopLevel.AGENT,displayId,version, typesInURIs));
+		} catch (SBOLValidationException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the agent matching the given display identity URI from this SBOL document's list of
+	 * agents.
+	 *
+	 * @param agentURI the identity URI of the top-level to be retrieved
+	 * @return the matching agent if present, or {@code null} otherwise.
+	 */
+	public Agent getAgent(URI agentURI) {
+		Agent agent = agents.get(agentURI);
+		if (agent==null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(agentURI);
+					if (document != null) {
+						agent = document.getAgent(agentURI);
+						createCopy(document);
+					}
+				}
+				catch (SynBioHubException | SBOLValidationException e) {
+					agent = null;
+				}
+			}
+		} 
+		return agent;
+	}
+
+	/**
+	 * Returns the set of agents owned by this SBOL document.
+	 *
+	 * @return the set of agents owned by this SBOL document.
+	 */
+	public Set<Agent> getAgents() {
+		Set<Agent> topLevels = new HashSet<>();
+		topLevels.addAll(this.agents.values());
+		return topLevels;
+	}
+
+	/**
+	 * Removes all entries in the list of agents
+	 * owned by this SBOL document. The list will be empty after this call returns.
+	 * <p>
+	 * This method calls {@link #removeAgent(Agent)} to iteratively
+	 * remove each agent.
+	 * 
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #removeAgent(Agent)}.
+	 */
+	public void clearAgents() throws SBOLValidationException {
+		Object[] valueSetArray = agents.values().toArray();
+		for (Object agent : valueSetArray) {
+			removeAgent((Agent)agent);
+		}
+	}
+	
+	/**
+ 	 * Creates an plan, and then adds it to this SBOL document's list of plans.
+	 * <p>
+	 * This method calls {@link #createPlan(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given display ID, and an empty version string.
+	 *
+	 * @param displayId the display ID of the plan to be created
+	 * @return the created plan
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link #createPlan(String, String, String)}. 
+	 */
+	public Plan createPlan(String displayId) throws SBOLValidationException {
+		return createPlan(defaultURIprefix,displayId,"");
+	}
+
+	/**
+	 * Creates an plan, and then adds it to this SBOL document's list of plans.
+	 * <p>
+	 * This method calls {@link #createPlan(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given display ID, and version.
+	 *
+	 * @param displayId the display ID of the plan to be created
+	 * @param version the version of the plan to be created
+	 * @return the created plan
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in 
+	 * {@link #createPlan(String, String, String)}. 
+	 */
+	public Plan createPlan(String displayId, String version) throws SBOLValidationException {
+		return createPlan(defaultURIprefix,displayId,version);
+	}
+
+	/**
+	 * Creates an plan, and then adds it to this SBOL document's list of plans.
+	 * <p>
+	 * This method calls {@link #createPlan(String, String, String)} with the default URI
+	 * prefix of this SBOL document, the given display ID, and version. 
+	 * 
+	 * @param URIprefix the given URI prefix used to create a compliant URI for the plan to be created 
+	 * @param displayId the display ID of the plan to be created
+	 * @param version the version of the plan to be created
+	 * @return the created plan
+	 * @throws SBOLValidationException if an SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 
+	 * 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12301, 12302. // TODO: Check?
+	 */
+	public Plan createPlan(String URIprefix, String displayId, String version) throws SBOLValidationException {
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
+		Plan g = new Plan(createCompliantURI(URIprefix, TopLevel.PLAN, displayId, version, typesInURIs));
+		g.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.PLAN, displayId, "", typesInURIs));
+		g.setDisplayId(displayId);
+		g.setVersion(version);
+		addPlan(g);
+		return g;
+	}
+
+	/**
+	 * Appends the specified {@code planTopLevel} object to the end of the list of plan top levels.
+	 *
+	 * @param plan Adds the given Plan object to this document
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in
+	 * {@link #addTopLevel(TopLevel, Map, String, Map...)}.
+	 */
+	void addPlan(Plan plan) throws SBOLValidationException {
+		addTopLevel(plan, plans, "plan",
+				collections, componentDefinitions, models, genericTopLevels, agents, activities, moduleDefinitions, sequences);
+	}
+
+	/**
+	 * Removes the given plan from this SBOL document's list of plans.
+	 *
+	 * @param plan the given plan to be removed
+	 * @return {@code true} if the given plan was successfully removed, {@code false} otherwise
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: ?????.
+	 */
+	public boolean removePlan(Plan plan) throws SBOLValidationException {
+		return removeTopLevel(plan,plans);
+	}
+
+	/**
+	 * Returns the plan matching the given display ID and version from this SBOL document's list of
+	 * plans.
+	 * <p>
+	 * A compliant plan URI is created first. It starts with this SBOL document's default URI prefix
+	 * after its been successfully validated, optionally followed by its type, namely {@link TopLevel#PLAN}, 
+	 * followed by the given display ID, and ends with the given version. This URI is used to look up the plan
+	 * in this SBOL document.
+	 *
+	 * @param displayId the display ID of the plan to be retrieved
+	 * @param version the version of the plan to be retrieved
+	 * @return the matching plan if present, or {@code null} otherwise.
+	 */
+	public Plan getPlan(String displayId, String version) {
+		try {
+			return getPlan(createCompliantURI(defaultURIprefix,TopLevel.PLAN,displayId,version, typesInURIs));
+		} catch (SBOLValidationException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the plan matching the given display identity URI from this SBOL document's list of
+	 * plans.
+	 *
+	 * @param planURI the identity URI of the top-level to be retrieved
+	 * @return the matching plan if present, or {@code null} otherwise.
+	 */
+	public Plan getPlan(URI planURI) {
+		Plan plan = plans.get(planURI);
+		if (plan==null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(planURI);
+					if (document != null) {
+						plan = document.getPlan(planURI);
+						createCopy(document);
+					}
+				}
+				catch (SynBioHubException | SBOLValidationException e) {
+					plan = null;
+				}
+			}
+		} 
+		return plan;
+	}
+
+	/**
+	 * Returns the set of plans owned by this SBOL document.
+	 *
+	 * @return the set of plans owned by this SBOL document.
+	 */
+	public Set<Plan> getPlans() {
+		Set<Plan> topLevels = new HashSet<>();
+		topLevels.addAll(this.plans.values());
+		return topLevels;
+	}
+
+	/**
+	 * Removes all entries in the list of plans
+	 * owned by this SBOL document. The list will be empty after this call returns.
+	 * <p>
+	 * This method calls {@link #removePlan(Plan)} to iteratively
+	 * remove each plan.
+	 * 
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #removePlan(Plan)}.
+	 */
+	public void clearPlans() throws SBOLValidationException {
+		Object[] valueSetArray = plans.values().toArray();
+		for (Object plan : valueSetArray) {
+			removePlan((Plan)plan);
+		}
+	}
 
 	/**
 	 * Returns the top-level matching the given identity URI from this
@@ -2233,6 +2658,18 @@ public class SBOLDocument {
 			return topLevel;
 		}
 		topLevel = genericTopLevels.get(topLevelURI);
+		if (topLevel!=null) {
+			return topLevel;
+		}
+		topLevel = activities.get(topLevelURI);
+		if (topLevel!=null) {
+			return topLevel;
+		}
+		topLevel = agents.get(topLevelURI);
+		if (topLevel!=null) {
+			return topLevel;
+		}
+		topLevel = plans.get(topLevelURI);
 		if (topLevel!=null) {
 			return topLevel;
 		}
@@ -2270,6 +2707,15 @@ public class SBOLDocument {
 			topLevels.add(topLevel);
 		}
 		for (GenericTopLevel topLevel : genericTopLevels.values()) {
+			topLevels.add(topLevel);
+		}
+		for (Activity topLevel : activities.values()) {
+			topLevels.add(topLevel);
+		}
+		for (Agent topLevel : agents.values()) {
+			topLevels.add(topLevel);
+		}
+		for (Plan topLevel : plans.values()) {
 			topLevels.add(topLevel);
 		}
 		for (ComponentDefinition topLevel : componentDefinitions.values()) {
@@ -2528,6 +2974,9 @@ public class SBOLDocument {
 		result = prime * result
 				+ ((componentDefinitions == null) ? 0 : componentDefinitions.hashCode());
 		result = prime * result + ((genericTopLevels == null) ? 0 : genericTopLevels.hashCode());
+		result = prime * result + ((activities == null) ? 0 : activities.hashCode());
+		result = prime * result + ((agents == null) ? 0 : agents.hashCode());
+		result = prime * result + ((plans == null) ? 0 : plans.hashCode());
 		result = prime * result + ((models == null) ? 0 : models.hashCode());
 		result = prime * result + ((moduleDefinitions == null) ? 0 : moduleDefinitions.hashCode());
 		result = prime * result + ((nameSpaces == null) ? 0 : nameSpaces.hashCode());
@@ -2559,6 +3008,21 @@ public class SBOLDocument {
 			if (other.genericTopLevels != null)
 				return false;
 		} else if (!genericTopLevels.equals(other.genericTopLevels))
+			return false;
+		if (activities == null) {
+			if (other.activities != null)
+				return false;
+		} else if (!activities.equals(other.activities))
+			return false;
+		if (agents == null) {
+			if (other.agents != null)
+				return false;
+		} else if (!agents.equals(other.agents))
+			return false;
+		if (plans == null) {
+			if (other.plans != null)
+				return false;
+		} else if (!plans.equals(other.plans))
 			return false;
 		if (models == null) {
 			if (other.models != null)
@@ -2699,6 +3163,9 @@ public class SBOLDocument {
 	 * @param topLevel the TopLevel object to remove
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
 	 * <ul>
+	 * <li>{@link #removeActivity(Activity)},</li>
+	 * <li>{@link #removeAgent(Agent)},</li>
+	 * <li>{@link #removePlan(Plan)},</li>
 	 * <li>{@link #removeGenericTopLevel(GenericTopLevel)},</li>
 	 * <li>{@link #removeCollection(Collection)},</li>
 	 * <li>{@link #removeSequence(Sequence)},</li>
@@ -2709,6 +3176,9 @@ public class SBOLDocument {
 	 */
 	public void removeTopLevel(TopLevel topLevel) throws SBOLValidationException {
 		if (topLevel instanceof GenericTopLevel) removeGenericTopLevel((GenericTopLevel) topLevel);
+		else if (topLevel instanceof Activity) removeActivity((Activity) topLevel);
+		else if (topLevel instanceof Agent) removeAgent((Agent) topLevel);
+		else if (topLevel instanceof Plan) removePlan((Plan) topLevel);
 		else if (topLevel instanceof Collection) removeCollection((Collection) topLevel);
 		else if (topLevel instanceof Sequence) removeSequence((Sequence) topLevel);
 		else if (topLevel instanceof ComponentDefinition) removeComponentDefinition((ComponentDefinition) topLevel);
@@ -2996,7 +3466,8 @@ public class SBOLDocument {
 
 	@Override
 	public String toString() {
-		return "SBOLDocument [genericTopLevels=" + genericTopLevels + ", collections="
+		return "SBOLDocument [activities=" + activities + "agents=" + agents  + "plans=" + plans 
+				+ "genericTopLevels=" + genericTopLevels + ", collections="
 				+ collections + ", componentDefinitions=" + componentDefinitions + ", models="
 				+ models + ", moduleDefinitions=" + moduleDefinitions + ", sequences=" + sequences
 				+ ", nameSpaces=" + nameSpaces + ", defaultURIprefix=" + defaultURIprefix

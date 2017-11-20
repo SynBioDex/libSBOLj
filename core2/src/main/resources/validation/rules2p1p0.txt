@@ -792,7 +792,7 @@ reference: Section 7.7.6 on page 36
 id: sbol-11501
 condition: strong required
 description: A Model MUST NOT have properties other than the following: identity, persistentIdentity,
-18 displayId, version, wasDerivedFrom, name, description, annotations, source, language, and framework.
+displayId, version, wasDerivedFrom, name, description, annotations, source, language, and framework.
 reference: Section 7.8 on page 37
 
 [Model]
