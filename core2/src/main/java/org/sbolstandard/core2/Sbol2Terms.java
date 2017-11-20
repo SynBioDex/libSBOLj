@@ -89,16 +89,18 @@ class Sbol2Terms
 	static final class CombinatorialDerivation {
 		static final QName CombinatorialDerivation = sbol2.withLocalPart("CombinatorialDerivation");
 		static final QName template                = sbol2.withLocalPart("template");
+		static final QName strategy                = sbol2.withLocalPart("strategy");
 		static final QName variableComponents      = sbol2.withLocalPart("variableComponents");
+		static final QName hasVariableComponent  = sbol2.withLocalPart("variableComponent");
 	}
 	
 	static final class VariableComponent {
 		static final QName VariableComponent  = sbol2.withLocalPart("VariableComponent");
-		static final QName operator           = sbol2.withLocalPart("operator");
-		static final QName variable           = sbol2.withLocalPart("variable");
-		static final QName variants           = sbol2.withLocalPart("variants");
-		static final QName variantCollections = sbol2.withLocalPart("variantCollections");
-		static final QName variantDerivations = sbol2.withLocalPart("variantDerivations");
+		static final QName hasOperator           = sbol2.withLocalPart("operator");
+		static final QName hasVariable           = sbol2.withLocalPart("variable");
+		static final QName hasVariants           = sbol2.withLocalPart("variants");
+		static final QName hasVariantCollections = sbol2.withLocalPart("variantCollections");
+		static final QName hasVariantDerivations = sbol2.withLocalPart("variantDerivations");
 	}
 	
 	/**
