@@ -49,6 +49,7 @@ public class SBOLDocument {
 	private HashMap<URI, Model> models;
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
+	private HashMap<URI, CombinatorialDerivation> combinatorialDerivations;
 	private HashMap<String, NamespaceBinding> nameSpaces;
 	private HashMap<String, SynBioHubFrontend> registries;
 	private Set<String> prefixes;
@@ -96,6 +97,7 @@ public class SBOLDocument {
 		moduleDefinitions = new HashMap<>();
 		sequences = new HashMap<>();
 		nameSpaces = new HashMap<>();
+		combinatorialDerivations = new HashMap<>();
 		try {
 			addNamespaceBinding(Sbol2Terms.sbol2);
 			addNamespaceBinding(Sbol1Terms.rdf);
@@ -933,6 +935,36 @@ public class SBOLDocument {
 			}
 		} 
 		return componentDefinition;
+	}
+	
+	public CombinatorialDerivation getCombinatorialDerivation(URI uri) {
+		CombinatorialDerivation combinatorialDerivation = combinatorialDerivations.get(uri);
+		
+		if (combinatorialDerivation == null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(uri);
+					if (document != null) {
+						combinatorialDerivation = document.getCombinatorialDerivation(uri);
+						createCopy(document);
+					}
+				} catch (SynBioHubException | SBOLValidationException e) {
+					combinatorialDerivation = null;
+				}
+			}
+		}
+		
+		return combinatorialDerivation;
+	}
+	
+	public CombinatorialDerivation getCombinatorialDerivation(String URIprefix, String displayId, String version) throws SBOLValidationException {
+		URI uri = URIcompliance.createCompliantURI(URIprefix, displayId, version);
+		
+		return getCombinatorialDerivation(uri);
+	}
+	
+	void addCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) {
+		combinatorialDerivations.put(combinatorialDerivation.getIdentity(), combinatorialDerivation);
 	}
 
 	/**
@@ -2954,4 +2986,8 @@ public class SBOLDocument {
 				+ typesInURIs + ", createDefaults=" + createDefaults + "]";
 
 	}
+
+
+
+
 }

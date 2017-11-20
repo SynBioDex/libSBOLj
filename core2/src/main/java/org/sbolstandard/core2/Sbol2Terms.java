@@ -83,9 +83,24 @@ class Sbol2Terms
 		static final QName ComponentInstance 	   = sbol2.withLocalPart("componentInstance");
 		static final QName access 				   = sbol2.withLocalPart("access");
 		static final QName hasMapsTo 		   	   = sbol2.withLocalPart("mapsTo");
-		static final QName hasComponentDefinition   = sbol2.withLocalPart("definition");
+		static final QName hasComponentDefinition  = sbol2.withLocalPart("definition");
 	}
 
+	static final class CombinatorialDerivation {
+		static final QName CombinatorialDerivation = sbol2.withLocalPart("CombinatorialDerivation");
+		static final QName template                = sbol2.withLocalPart("template");
+		static final QName variableComponents      = sbol2.withLocalPart("variableComponents");
+	}
+	
+	static final class VariableComponent {
+		static final QName VariableComponent  = sbol2.withLocalPart("VariableComponent");
+		static final QName operator           = sbol2.withLocalPart("operator");
+		static final QName variable           = sbol2.withLocalPart("variable");
+		static final QName variants           = sbol2.withLocalPart("variants");
+		static final QName variantCollections = sbol2.withLocalPart("variantCollections");
+		static final QName variantDerivations = sbol2.withLocalPart("variantDerivations");
+	}
+	
 	/**
 	 * A group of qualified terms for Cut related SBOL objects
 	 *
