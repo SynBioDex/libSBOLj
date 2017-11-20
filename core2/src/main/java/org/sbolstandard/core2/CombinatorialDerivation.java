@@ -25,6 +25,9 @@ public class CombinatorialDerivation extends TopLevel {
 	private URI template;
 	private URI strategy;
 	private HashMap<URI, VariableComponent> variableComponents;
+	
+	public static final URI ENUMERATE 	= URI.create("http://sbols.org/v2#enumerate");
+	public static final URI SAMPLE 		= URI.create("http://sbols.org/v2#sample");
 
 	/**
 	 * @param identity
@@ -35,12 +38,12 @@ public class CombinatorialDerivation extends TopLevel {
 	 * <li>{@link #setTypes(Set)}.</li>
 	 * </ul>
 	 */
-	public CombinatorialDerivation(URI identity, URI template) throws SBOLValidationException {
+	public CombinatorialDerivation(URI identity, URI template, URI strategy) throws SBOLValidationException {
 		super(identity);
 
         this.template = template;
 
-        this.strategy = null;
+        this.strategy = strategy;
 		this.variableComponents = new HashMap<>();
 	}
 
@@ -58,6 +61,14 @@ public class CombinatorialDerivation extends TopLevel {
 
 	private void addVariableComponent(URI uri, VariableComponent variableComponent) {
 		this.variableComponents.put(uri, variableComponent);		
+	}
+	
+	public VariableComponent getVariableComponent(URI uri) {
+		if(this.variableComponents.containsKey(uri)) {
+			return this.variableComponents.get(uri);
+		} else {
+			return null;
+		}
 	}
 
 	public HashMap<URI, VariableComponent> getVariableComponents() {
@@ -143,8 +154,8 @@ public class CombinatorialDerivation extends TopLevel {
 	        	result *= entry.getKey().hashCode();
         }
         
-        result *= this.template.hashCode();
-        result *= this.strategy.hashCode();
+        result *= this.template != null ? this.template.hashCode() : 1;
+        result *= this.strategy != null ? this.strategy.hashCode() : 1;
 
 		return result;
 	}

@@ -963,6 +963,18 @@ public class SBOLDocument {
 		return getCombinatorialDerivation(uri);
 	}
 	
+	public CombinatorialDerivation createCombinatorialDerivation(String displayID, String version, String templateDisplayID, 
+			String templateVersion, URI strategy) throws SBOLValidationException {
+		ComponentDefinition templateCD = this.getComponentDefinition(templateDisplayID, templateVersion);
+		URI uri = URIcompliance.createCompliantURI(this.defaultURIprefix, displayID, version);
+		
+		CombinatorialDerivation combinatorialDerivation = new CombinatorialDerivation(uri, templateCD.getIdentity(), strategy);
+		this.addCombinatorialDerivation(combinatorialDerivation);
+		
+		return combinatorialDerivation;
+		
+	}
+	
 	void addCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) {
 		combinatorialDerivations.put(combinatorialDerivation.getIdentity(), combinatorialDerivation);
 	}

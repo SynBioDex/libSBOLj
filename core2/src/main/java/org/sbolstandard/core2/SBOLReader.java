@@ -2119,7 +2119,7 @@ public class SBOLReader
 			}
 		}
 
-		CombinatorialDerivation c = new CombinatorialDerivation(topLevel.getIdentity(), template);
+		CombinatorialDerivation c = new CombinatorialDerivation(topLevel.getIdentity(), template, strategy);
 
 		if (displayId != null)
 			c.setDisplayId(displayId);
@@ -2135,8 +2135,6 @@ public class SBOLReader
 			c.setAnnotations(annotations);
 		if (version != null)
 			c.setVersion(version);
-		if(strategy != null)
-			c.setStrategy(strategy);
 		c.setWasDerivedFroms(wasDerivedFroms);
 
 		CombinatorialDerivation oldC = SBOLDoc.getCombinatorialDerivation(topLevel.getIdentity());
