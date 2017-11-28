@@ -1334,6 +1334,21 @@ public class SBOLDocument {
 			newGenericTopLevel.copy((GenericTopLevel)topLevel);
 			return newGenericTopLevel;
 		}
+		else if (topLevel instanceof Activity) {
+			Activity newActivity = this.createActivity(URIprefix, displayId, version);
+			newActivity.copy((Activity)topLevel);
+			return newActivity;
+		}
+		else if (topLevel instanceof Agent) {
+			Agent newAgent = this.createAgent(URIprefix, displayId, version);
+			newAgent.copy((Agent)topLevel);
+			return newAgent;
+		}
+		else if (topLevel instanceof Plan) {
+			Plan newPlan = this.createPlan(URIprefix, displayId, version);
+			newPlan.copy((Activity)topLevel);
+			return newPlan;
+		}
 		else {
 			throw new IllegalArgumentException("Unable to copy " + topLevel.getIdentity());
 		}
@@ -1735,6 +1750,30 @@ public class SBOLDocument {
 		}
 		for (GenericTopLevel genericTopLevel : getGenericTopLevels()) {
 			updateReferences(genericTopLevel,uriMap);
+		}
+		for (Activity activity : getActivities()) {
+			updateReferences(activity,uriMap);
+			for (Association association : activity.getAssociations()) {
+				if (uriMap.get(association.getAgent())!=null) {
+					association.setAgent(uriMap.get(association.getAgent()));
+				}	
+				if (uriMap.get(association.getPlan())!=null) {
+					association.setPlan(uriMap.get(association.getPlan()));
+				}	
+				updateReferences(association,uriMap);
+			}
+			for (Usage usage : activity.getUsages()) {
+				if (uriMap.get(usage.getEntity())!=null) {
+					usage.setEntity(uriMap.get(usage.getEntity()));
+				}	
+				updateReferences(usage,uriMap);
+			}
+		}
+		for (Agent agent : getAgents()) {
+			updateReferences(agent,uriMap);
+		}
+		for (Plan plan : getPlans()) {
+			updateReferences(plan,uriMap);
 		}
 	}
 
