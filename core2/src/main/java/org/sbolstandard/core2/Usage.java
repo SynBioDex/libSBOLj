@@ -41,19 +41,36 @@ public class Usage extends Identified {
 	 */
 	private Usage(Usage usage) throws SBOLValidationException {
 		super(usage);
-		this.setEntity(usage.getEntity());
+		this.setEntity(usage.getEntityURI());
 		this.setRoles(usage.getRoles());
 	}
 
 	void copy(Usage usage) throws SBOLValidationException {
 		((Identified)this).copy((Identified)usage);
+		for (URI role : usage.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
+	}
+	
+	/**
+	 * Returns the reference entity URI.
+	 *
+	 * @return the reference entity URI
+	 */
+	public URI getEntityURI() {
+		return entity;
 	}
 
 	/**
-	 * @return the entity
+	 * Returns the entity referenced by this usage.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * entity referenced by this usage exists; 
+	 * or the matching plan otherwise.
 	 */
-	public URI getEntity() {
-		return entity;
+	public TopLevel getEntity() {
+		if (this.getSBOLDocument()==null) return null;
+		return this.getSBOLDocument().getTopLevel(entity);
 	}
 
 	/**

@@ -59,6 +59,31 @@ public class Activity extends TopLevel{
 	
 	void copy(Activity activity) throws SBOLValidationException {
 		((TopLevel)this).copy((TopLevel)activity);
+		if (activity.isSetStartedAtTime()) {
+			this.setStartedAtTime(activity.getStartedAtTime());
+		}
+		if (activity.isSetEndedAtTime()) {
+			this.setEndedAtTime(activity.getEndedAtTime());
+		}
+		for (Association association : activity.getAssociations()) {
+			String displayId = association.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(association.getIdentity());
+			}
+			Association newAssociation = this.createAssociation(displayId, association.getAgentURI());
+			newAssociation.copy(association);
+		}
+		for (Usage usage : activity.getUsages()) {
+			String displayId = usage.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(usage.getIdentity());
+			}
+			Usage newUsage = this.createUsage(displayId, usage.getEntityURI());
+			newUsage.copy(usage);
+		}
+		for (URI wasInformedBy : activity.getWasInformedBys()) {
+			this.addWasInformedBy(URI.create(wasInformedBy.toString()));
+		}
 	}
 
 	private Association createAssociation(URI identity, URI agent) throws SBOLValidationException {

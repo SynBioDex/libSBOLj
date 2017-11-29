@@ -87,7 +87,7 @@ public abstract class ComponentInstance extends Identified {
 	 * Returns the component definition referenced by this component or functional component. 
 	 *
 	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
-	 * component definition referenced by this component or functional component exits; 
+	 * component definition referenced by this component or functional component exists; 
 	 * or the matching component definition otherwise.
 	 */
 	public ComponentDefinition getDefinition() {

@@ -379,9 +379,9 @@ public class SBOLWriter
 			{
 				list.add(NamedProperty(Sbol2Terms.Association.role, role));
 			}
-			list.add(NamedProperty(Sbol2Terms.Association.agent, association.getAgent()));
+			list.add(NamedProperty(Sbol2Terms.Association.agent, association.getAgentURI()));
 			if (association.isSetPlan()) {
-				list.add(NamedProperty(Sbol2Terms.Association.plan, association.getPlan()));
+				list.add(NamedProperty(Sbol2Terms.Association.plan, association.getPlanURI()));
 			}
 			properties.add(NamedProperty(Sbol2Terms.Activity.qualifiedAssociation,
 					NestedDocument( Sbol2Terms.Association.Association,
@@ -399,7 +399,7 @@ public class SBOLWriter
 			{
 				list.add(NamedProperty(Sbol2Terms.Usage.role, role));
 			}
-			list.add(NamedProperty(Sbol2Terms.Usage.entity, usage.getEntity()));
+			list.add(NamedProperty(Sbol2Terms.Usage.entity, usage.getEntityURI()));
 			properties.add(NamedProperty(Sbol2Terms.Activity.qualifiedUsage,
 					NestedDocument( Sbol2Terms.Usage.Usage,
 							usage.getIdentity(), NamedProperties(list))));

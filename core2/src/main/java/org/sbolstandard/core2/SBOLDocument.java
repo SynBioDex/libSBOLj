@@ -1403,7 +1403,8 @@ public class SBOLDocument {
 	 */
 	private void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
 		if (document.getTopLevel(topLevel.getIdentity())!=null) return;
-		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model) {
+		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || 
+				topLevel instanceof Model || topLevel instanceof Plan || topLevel instanceof Agent) {
 			document.createCopy(topLevel);
 		} else if (topLevel instanceof Collection) {
 			for (TopLevel member : ((Collection)topLevel).getMembers()) {
@@ -1436,6 +1437,20 @@ public class SBOLDocument {
 				document.createCopy(model);
 			}
 			document.createCopy(topLevel);
+		} else if (topLevel instanceof Activity) {
+			for (Association association : ((Activity)topLevel).getAssociations()) {
+				if (association.getAgent()!=null) {
+					createRecursiveCopy(document,association.getAgent());
+				}
+				if (association.getPlan()!=null) {
+					createRecursiveCopy(document,association.getPlan());
+				}
+			}
+			for (Usage usage : ((Activity)topLevel).getUsages()) {
+				if (usage.getEntity()!=null) {
+					createRecursiveCopy(document,usage.getEntity());
+				}
+			}
 		}
 		for (Annotation annotation : topLevel.getAnnotations()) {
 			if (annotation.isURIValue()) {
