@@ -110,6 +110,9 @@ public abstract class Identified {
 		for (URI wasDerivedFrom : identified.getWasDerivedFroms()) {
 			this.addWasDerivedFrom(URI.create(wasDerivedFrom.toString()));
 		}
+		for (URI wasGeneratedBy : identified.getWasGeneratedBys()) {
+			this.addWasGeneratedBy(URI.create(wasGeneratedBy.toString()));
+		}
 		if (identified.isSetName()) {
 			this.setName(identified.getName());
 		}
