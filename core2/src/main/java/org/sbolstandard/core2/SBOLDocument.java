@@ -1451,6 +1451,7 @@ public class SBOLDocument {
 					createRecursiveCopy(document,usage.getEntity());
 				}
 			}
+			document.createCopy(topLevel);
 		}
 		for (Annotation annotation : topLevel.getAnnotations()) {
 			if (annotation.isURIValue()) {
