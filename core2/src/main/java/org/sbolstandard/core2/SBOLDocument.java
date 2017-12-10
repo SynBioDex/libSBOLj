@@ -1300,6 +1300,10 @@ public class SBOLDocument {
 		if (version == null) {
 			version = topLevel.getVersion();
 		}
+		TopLevel oldTopLevel = this.getTopLevel(URIcompliance.createCompliantURI(URIprefix, displayId, version));
+		if (oldTopLevel != null) {
+			if (oldTopLevel.equals(topLevel)) return oldTopLevel; 
+		}
 		if (topLevel instanceof Collection) {
 			Collection newCollection = this.createCollection(URIprefix, displayId, version);
 			newCollection.copy((Collection)topLevel);
