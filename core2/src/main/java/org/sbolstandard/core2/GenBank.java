@@ -19,6 +19,8 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 /**
  * This class provides methods for converting GenBank files to and from SBOL 2.0 files.
  * @author Chris Myers
@@ -638,14 +640,17 @@ class GenBank {
 			if (a.isStringValue()) {
 				try {
 					int aInt = Integer.parseInt(a.getStringValue());
-					writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
+					writeGenBankLine(w,"                     /"+
+							StringEscapeUtils.unescapeXml(a.getQName().getLocalPart())+"="+
 							aInt,80,21);
 				} catch (NumberFormatException e) {
-					writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
+					writeGenBankLine(w,"                     /"+
+							StringEscapeUtils.unescapeXml(a.getQName().getLocalPart())+"="+
 							"\"" + a.getStringValue() + "\"",80,21);
 				}
 			} else if (a.isIntegerValue()) {
-				writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
+				writeGenBankLine(w,"                     /"+
+						StringEscapeUtils.unescapeXml(a.getQName().getLocalPart())+"="+
 						a.getIntegerValue(),80,21);
 			}
 		}
@@ -858,6 +863,15 @@ class GenBank {
 				subCompDef.addSequence(subSequence);
 			}
 		}
+	}
+	
+	private static String fixTag(String tag) {
+		tag = tag.replaceAll("[^a-zA-Z0-9_\\-]", "_");
+		tag = tag.replace(" ", "_");
+		if (Character.isDigit(tag.charAt(0))|| tag.charAt(0)=='-') {
+			tag = "_" + tag;
+		}
+		return tag;
 	}
 
 	/**
@@ -1152,7 +1166,11 @@ class GenBank {
 										labelType = "organism";
 									}
 								}
-								
+								String oldTag = tag;
+								tag = fixTag(tag);
+								if (!tag.equals(oldTag)) {
+									System.out.println("tag="+tag+" oldTag="+oldTag);
+								}
 								if (value.startsWith("\"")) {
 									value = value.replaceAll("\"", "");
 									annotation = new Annotation(new QName(GBCONVNAMESPACE,tag,GBCONVPREFIX),value);
