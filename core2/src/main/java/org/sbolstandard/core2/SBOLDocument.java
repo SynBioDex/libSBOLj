@@ -1523,7 +1523,7 @@ public class SBOLDocument {
 		}
 	}
 	
-	private void updateReferences(List<Annotation> annotations,URI originalIdentity,URI newIdentity) {
+	private void updateReferences(List<Annotation> annotations,URI originalIdentity,URI newIdentity) throws SBOLValidationException {
 		for (Annotation annotation : annotations) {
 			if (annotation.isURIValue()) {
 				if (annotation.getURIValue().equals(originalIdentity)) {
@@ -1535,7 +1535,7 @@ public class SBOLDocument {
 		}
 	}
 	
-	private void updateReferences(Identified identified,URI originalIdentity,URI newIdentity) {
+	private void updateReferences(Identified identified,URI originalIdentity,URI newIdentity) throws SBOLValidationException {
 		updateReferences(identified.getAnnotations(),originalIdentity,newIdentity);
 	}
 	
@@ -1648,7 +1648,7 @@ public class SBOLDocument {
 		}
 	}
 
-	private void updateReferences(List<Annotation> annotations,HashMap<URI,URI> uriMap) {
+	private void updateReferences(List<Annotation> annotations,HashMap<URI,URI> uriMap) throws SBOLValidationException {
 		for (Annotation annotation : annotations) {
 			if (annotation.isURIValue()) {
 				if (uriMap.get(annotation.getURIValue())!=null) {
@@ -1660,7 +1660,7 @@ public class SBOLDocument {
 		}
 	}
 	
-	private void updateReferences(Identified identified,HashMap<URI,URI> uriMap) {
+	private void updateReferences(Identified identified,HashMap<URI,URI> uriMap) throws SBOLValidationException {
 		updateReferences(identified.getAnnotations(),uriMap);
 	}
 	

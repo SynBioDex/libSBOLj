@@ -51,8 +51,10 @@ public class Annotation {
 	 *
 	 * @param qName the QName of this annotation
 	 * @param literal a string type value
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12201, 12203 
 	 */
-	public Annotation(QName qName, String literal) {
+	public Annotation(QName qName, String literal) throws SBOLValidationException {
 		setQName(qName);
 		setStringValue(literal);
 	}
@@ -62,8 +64,10 @@ public class Annotation {
 	 *
 	 * @param qName the QName of this annotation
 	 * @param literal an integer type value
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12201, 12203 
 	 */
-	public Annotation(QName qName, int literal) {
+	public Annotation(QName qName, int literal) throws SBOLValidationException {
 		setQName(qName);
 		setIntegerValue(literal);
 	}
@@ -73,8 +77,10 @@ public class Annotation {
 	 *
 	 * @param qName the QName of this annotation
 	 * @param literal a double type value
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12201, 12203  
 	 */
-	public Annotation(QName qName, double literal) {
+	public Annotation(QName qName, double literal) throws SBOLValidationException {
 		setQName(qName);
 		setDoubleValue(literal);
 	}
@@ -84,8 +90,10 @@ public class Annotation {
 	 *
 	 * @param qName the QName of this annotation
 	 * @param literal a boolean type value
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12201, 12203  
 	 */
-	public Annotation(QName qName, boolean literal) {
+	public Annotation(QName qName, boolean literal) throws SBOLValidationException {
 		setQName(qName);
 		setBooleanValue(literal);
 	}
@@ -95,8 +103,10 @@ public class Annotation {
 	 *
 	 * @param qName the QName of this annotation
 	 * @param literal a URI type value
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12201, 12203  
 	 */
-	public Annotation(QName qName, URI literal) {
+	public Annotation(QName qName, URI literal) throws SBOLValidationException {
 		setQName(qName);
 		setURIValue(literal);
 	}
@@ -109,15 +119,17 @@ public class Annotation {
 	 * @param nestedQName the QName of the nested annotation
 	 * @param nestedURI the identity URI for the nested annotation
 	 * @param annotations the list of annotations to construct the nested annotation
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12201, 12203, 12204, 12205, 12206
 	 */
-	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) {
+	public Annotation(QName qName, QName nestedQName, URI nestedURI, List<Annotation> annotations) throws SBOLValidationException {
 		setQName(qName);
 		setNestedQName(nestedQName);
 		setNestedIdentity(nestedURI);
 		setAnnotations(annotations);
 	}
 
-	Annotation(NamedProperty<QName> value) {
+	Annotation(NamedProperty<QName> value) throws SBOLValidationException {
 		if (value.getName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				value.getName().getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			if (value.getName().equals(Sbol2Terms.Identified.timeStamp)) {
@@ -143,10 +155,12 @@ public class Annotation {
 				annotations.add(new Annotation(namedProperty));
 			}
 			setAnnotations(annotations);
-		}	
+		} else {
+			throw new SBOLValidationException("sbol-12203");
+		}
 	}
 
-	private Annotation(Annotation annotation) {
+	private Annotation(Annotation annotation) throws SBOLValidationException {
 		setQName(annotation.getQName());
 		if (annotation.isBooleanValue()) {
 			setBooleanValue(annotation.getBooleanValue());
@@ -162,6 +176,8 @@ public class Annotation {
 			setNestedQName(annotation.getNestedQName());
 			setNestedIdentity(annotation.getNestedIdentity());
 			setAnnotations(annotation.getAnnotations());
+		} else {
+			throw new SBOLValidationException("sbol-12203");
 		}
 	}
 
@@ -177,8 +193,13 @@ public class Annotation {
 	/**
 	 * Sets the QName of this annotation.
 	 * @param qName the QName for this annotation.
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12201
 	 */
-	public void setQName(QName qName) {
+	public void setQName(QName qName) throws SBOLValidationException {
+		if (qName==null) {
+			throw new SBOLValidationException("sbol-12201");			
+		}
 		namespaceURI = qName.getNamespaceURI();
 		localPart = qName.getLocalPart();
 		prefix = qName.getPrefix();
@@ -289,8 +310,13 @@ public class Annotation {
 	/**
 	 * Sets the string representation of the value property.
 	 * @param literal the string representation of the value property
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12203  
 	 */
-	public void setStringValue(String literal) {
+	public void setStringValue(String literal) throws SBOLValidationException {
+		if (literal==null) {
+			throw new SBOLValidationException("sbol-12203");			
+		}
 		type = "String";
 		stringValue = literal;
 	}
@@ -323,8 +349,13 @@ public class Annotation {
 	/**
 	 * Sets the string representation of the value property.
 	 * @param literal the URI representation of the value property
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12203  
 	 */
-	public void setURIValue(URI literal) {
+	public void setURIValue(URI literal) throws SBOLValidationException {
+		if (literal==null) {
+			throw new SBOLValidationException("sbol-12203");			
+		}
 		type = "URI";
 		URIValue = literal;
 	}
@@ -359,8 +390,13 @@ public class Annotation {
 	 * Sets the nested QName for this annotation.
 	 * 
 	 * @param qName the nested QName for this annotation.
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12204  
 	 */
-	public void setNestedQName(QName qName) {
+	public void setNestedQName(QName qName) throws SBOLValidationException {
+		if (qName==null) {
+			throw new SBOLValidationException("sbol-12204");			
+		}
 		nestedNamespaceURI = qName.getNamespaceURI();
 		nestedLocalPart = qName.getLocalPart();
 		nestedPrefix = qName.getPrefix();
@@ -394,8 +430,13 @@ public class Annotation {
 	 * Sets the nested URI for this annotation.
 	 * 
 	 * @param uri the nested uri for this annotation.
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12205  
 	 */
-	public void setNestedIdentity(URI uri) {
+	public void setNestedIdentity(URI uri) throws SBOLValidationException {
+		if (uri==null) {
+			throw new SBOLValidationException("sbol-12205");			
+		}
 		nestedURI = uri;
 	}
 
@@ -415,8 +456,13 @@ public class Annotation {
 	 * Sets the list of Annotations of the nested value property.
 	 *
 	 * @param annotations the list of Annotations for the nested value property.
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12206
 	 */
-	public void setAnnotations(List<Annotation> annotations) {
+	public void setAnnotations(List<Annotation> annotations) throws SBOLValidationException {
+		if (annotations==null) {
+			throw new SBOLValidationException("sbol-12206");			
+		}
 		type = "NestedAnnotation";
 		nestedAnnotations = new ArrayList<>();
 		for(Annotation a : annotations)
@@ -467,16 +513,20 @@ public class Annotation {
 	/**
 	 * Makes a deep copy of this Annotation instance.
 	 * @return an Annotation instance that is the exact copy of this instance.
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12201, 12203, 12204, 12205, 12206  
 	 */
-	private Annotation deepCopy() {
+	private Annotation deepCopy() throws SBOLValidationException {
 		return new Annotation(this);
 	}
 
 	/**
 	 * Makes a deep copy of this Annotation instance.
 	 * @return an Annotation instance that is the exact copy of this instance.
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 12201, 12203, 12204, 12205, 12206 
 	 */
-	Annotation copy() {
+	Annotation copy() throws SBOLValidationException {
 		return this.deepCopy();
 	}
 

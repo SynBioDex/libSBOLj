@@ -1166,9 +1166,6 @@ class GenBank {
 								}
 								String oldTag = tag;
 								tag = fixTag(tag);
-								if (!tag.equals(oldTag)) {
-									System.out.println("tag="+tag+" oldTag="+oldTag);
-								}
 								if (value.startsWith("\"")) {
 									value = value.replaceAll("\"", "");
 									annotation = new Annotation(new QName(GBCONVNAMESPACE,tag,GBCONVPREFIX),value);
