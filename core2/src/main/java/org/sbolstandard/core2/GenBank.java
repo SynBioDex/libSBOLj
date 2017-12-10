@@ -19,8 +19,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.text.StringEscapeUtils;
-
 /**
  * This class provides methods for converting GenBank files to and from SBOL 2.0 files.
  * @author Chris Myers
@@ -641,16 +639,16 @@ class GenBank {
 				try {
 					int aInt = Integer.parseInt(a.getStringValue());
 					writeGenBankLine(w,"                     /"+
-							StringEscapeUtils.unescapeXml(a.getQName().getLocalPart())+"="+
+							a.getQName().getLocalPart()+"="+
 							aInt,80,21);
 				} catch (NumberFormatException e) {
 					writeGenBankLine(w,"                     /"+
-							StringEscapeUtils.unescapeXml(a.getQName().getLocalPart())+"="+
+							a.getQName().getLocalPart()+"="+
 							"\"" + a.getStringValue() + "\"",80,21);
 				}
 			} else if (a.isIntegerValue()) {
 				writeGenBankLine(w,"                     /"+
-						StringEscapeUtils.unescapeXml(a.getQName().getLocalPart())+"="+
+						a.getQName().getLocalPart()+"="+
 						a.getIntegerValue(),80,21);
 			}
 		}
