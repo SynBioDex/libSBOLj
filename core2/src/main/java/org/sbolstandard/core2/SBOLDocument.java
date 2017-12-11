@@ -1845,9 +1845,19 @@ public class SBOLDocument {
 	public SBOLDocument changeURIPrefixVersion(String URIPrefix,String version) throws SBOLValidationException {
 		SBOLDocument document = new SBOLDocument();
 		SBOLDocument fixed = new SBOLDocument();
-		fixed.createCopy(this);
-		fixed.fixDocumentURIPrefix();
-		String documentURIPrefix = extractDocumentURIPrefix();
+		if (!this.isCompliant()) {
+			for (TopLevel toplevel : this.getTopLevels()) {
+				String displayId = toplevel.getDisplayId();
+				if (displayId==null) {
+					displayId = URIcompliance.findDisplayId(toplevel.getIdentity().toString());
+				}
+				fixed.createCopy(toplevel,URIPrefix,displayId,version);
+			}
+		} else {
+			fixed.createCopy(this);
+			fixed.fixDocumentURIPrefix();
+		}
+		String documentURIPrefix = fixed.extractDocumentURIPrefix();
 		HashMap<URI,URI> uriMap = new HashMap<URI,URI>();
 		//for (TopLevel topLevel : this.getTopLevels()) {
 		for (TopLevel topLevel : fixed.getTopLevels()) {

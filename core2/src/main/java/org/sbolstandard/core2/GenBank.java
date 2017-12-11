@@ -1164,7 +1164,6 @@ class GenBank {
 										labelType = "organism";
 									}
 								}
-								String oldTag = tag;
 								tag = fixTag(tag);
 								if (value.startsWith("\"")) {
 									value = value.replaceAll("\"", "");

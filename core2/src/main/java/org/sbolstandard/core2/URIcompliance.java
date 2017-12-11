@@ -401,8 +401,10 @@ final class URIcompliance {
 	//static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
 	
 	private static final String delimiter = "[/|#|:]";
+	
+	private static final String protocol = "(?:https?|ftp|file)://";
 			
-	private static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+	private static final String URIprefixPattern = "\\b(?:"+protocol+")?[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
 	private static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]*";//"[a-zA-Z0-9_]+";
 
@@ -477,6 +479,34 @@ final class URIcompliance {
 		if (Character.isDigit(displayId.charAt(0))) {
 			displayId = "_" + displayId;
 		}
+		return displayId;
+	}
+
+	static String findDisplayId(String topLevelIdentity) {
+		String displayId = null;
+	
+		topLevelIdentity = topLevelIdentity.trim();
+		while (topLevelIdentity.endsWith("/")||
+				topLevelIdentity.endsWith("#")||
+				topLevelIdentity.endsWith(":")) {
+			topLevelIdentity = topLevelIdentity.replaceAll("/$","");
+			topLevelIdentity = topLevelIdentity.replaceAll("#$","");
+			topLevelIdentity = topLevelIdentity.replaceAll(":$","");
+		}
+		int slash = topLevelIdentity.lastIndexOf('/');
+		int pound = topLevelIdentity.lastIndexOf('#');
+		int colon = topLevelIdentity.lastIndexOf(':');
+	
+		if (slash!=-1 /*&& slash > pound && slash > colon*/) {
+			displayId = topLevelIdentity.substring(slash + 1);
+		} else if (pound!=-1 && pound > colon) {
+			displayId = topLevelIdentity.substring(pound + 1);
+		} else if (colon!=-1) {
+			displayId = topLevelIdentity.substring(colon + 1);
+		} else {
+			displayId = topLevelIdentity.toString();
+		}
+		displayId = fixDisplayId(displayId);
 		return displayId;
 	}
 }

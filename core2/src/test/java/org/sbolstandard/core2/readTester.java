@@ -40,9 +40,9 @@ class readTester {
 
 		try {
 			SBOLReader.setURIPrefix("http://dummy.org/");
-			SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/pJT79.gb");
-			System.out.println("DONE");
-			//doc.write(System.out);
+			SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/bug.xml");
+			doc = doc.changeURIPrefixVersion("http://new.org/", "1.0");
+			doc.write(System.out);
 			//SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
 			//String result = sbh.sparqlQuery("select ?s ?p ?o where { ?s ?p ?o . FILTER(?s = <https://synbiohub.org/public/igem/BBa_B0015/1>) }");
 			//System.out.println(result);
