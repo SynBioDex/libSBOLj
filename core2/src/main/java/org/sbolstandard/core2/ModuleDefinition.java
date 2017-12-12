@@ -1018,8 +1018,13 @@ public class ModuleDefinition extends TopLevel {
 		if (models == null) {
 			if (other.models != null)
 				return false;
-		} else if (!models.equals(other.models))
-			return false;
+		} else if (!models.equals(other.models)) {
+			if (getModels().size()!=getModelURIs().size() ||
+					other.getModels().size()!=other.getModelURIs().size() ||
+					!getModels().equals(other.getModels())) {
+				return false;
+			}
+		}
 		if (roles == null) {
 			if (other.roles != null)
 				return false;

@@ -52,6 +52,41 @@ public class Usage extends Identified {
 		}
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((entity == null) ? 0 : entity.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usage other = (Usage) obj;
+		if (entity == null) {
+			if (other.entity != null)
+				return false;
+		} else if (!entity.equals(other.entity)) {
+			if (getEntity() == null || other.getEntity() == null 
+					|| !getEntity().equals(other.getEntity())) {
+				return false;
+			}
+		}
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		return true;
+	}
+		
 	/**
 	 * Returns the reference entity URI.
 	 *

@@ -276,17 +276,25 @@ public class SequenceConstraint extends Identified {
 		if (getClass() != obj.getClass())
 			return false;
 		SequenceConstraint other = (SequenceConstraint) obj;
-		if (object == null) {
-			if (other.object != null)
-				return false;
-		} else if (!object.equals(other.object))
-			return false;
-		if (!restriction.equals(other.restriction))
-			return false;
 		if (subject == null) {
 			if (other.subject != null)
 				return false;
-		} else if (!subject.equals(other.subject))
+		} else if (!subject.equals(other.subject)) {
+			if (getSubject() == null || other.getSubject() == null 
+					|| !getSubject().equals(other.getSubject())) {
+				return false;
+			}
+		}
+		if (object == null) {
+			if (other.object != null)
+				return false;
+		} else if (!object.equals(other.object)) {
+			if (getObject() == null || other.getObject() == null 
+					|| !getObject().equals(other.getObject())) {
+				return false;
+			}
+		}
+		if (!restriction.equals(other.restriction))
 			return false;
 		return true;
 	}

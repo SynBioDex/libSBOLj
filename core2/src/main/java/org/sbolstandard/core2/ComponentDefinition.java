@@ -389,7 +389,9 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the set of sequence URIs referenced by this component definition
 	 */
 	public Set<URI> getSequenceURIs() {
-		return sequences;
+		Set<URI> result = new HashSet<>();
+		result.addAll(sequences);
+		return result;
 	}
 
 	/**
@@ -1758,8 +1760,13 @@ public class ComponentDefinition extends TopLevel {
 		if (sequences == null) {
 			if (other.sequences != null)
 				return false;
-		} else if (!sequences.equals(other.sequences))
-			return false;
+		} else if (!sequences.equals(other.sequences)) {
+			if (getSequences().size()!=getSequenceURIs().size() ||
+					other.getSequences().size()!=other.getSequenceURIs().size() ||
+					!getSequences().equals(other.getSequences())) {
+				return false;
+			}
+		}
 		if (sequenceAnnotations == null) {
 			if (other.sequenceAnnotations != null)
 				return false;

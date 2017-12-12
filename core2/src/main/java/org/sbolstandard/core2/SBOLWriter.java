@@ -348,6 +348,14 @@ public class SBOLWriter
 	{
 		formatCommonIdentifiedData(list,t);
 	}
+	
+	private static void formatWasInformedByProperties(Set<URI> wasInformedBys, List<NamedProperty<QName>> list)
+	{
+		for(URI wib : wasInformedBys)
+		{
+			list.add(NamedProperty(Sbol2Terms.Activity.wasInformedBy, wib));
+		}
+	}
 
 	private static void formatActivities (Set<Activity> activities, List<TopLevelDocument<QName>> topLevelDoc)
 	{
@@ -365,6 +373,7 @@ public class SBOLWriter
 			}
 			formatAssociations(activity.getAssociations(),list);
 			formatUsages(activity.getUsages(),list);
+			formatWasInformedByProperties(activity.getWasInformedByURIs(),list);
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Activity.Activity, activity.getIdentity(), NamedProperties(list)));
 		}
 	}

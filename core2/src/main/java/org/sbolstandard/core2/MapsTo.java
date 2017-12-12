@@ -246,14 +246,22 @@ public class MapsTo extends Identified{
 		if (local == null) {
 			if (other.local != null)
 				return false;
-		} else if (!local.equals(other.local))
-			return false;
-		if (refinement != other.refinement)
-			return false;
+		} else if (!local.equals(other.local)) {
+			if (getLocal() == null || other.getLocal() == null 
+					|| !getLocal().equals(other.getLocal())) {
+				return false;
+			}
+		}
 		if (remote == null) {
 			if (other.remote != null)
 				return false;
-		} else if (!remote.equals(other.remote))
+		} else if (!remote.equals(other.remote)) {
+			if (getRemote() == null || other.getRemote() == null 
+					|| !getRemote().equals(other.getRemote())) {
+				return false;
+			}
+		}
+		if (refinement != other.refinement)
 			return false;
 		return true;
 	}

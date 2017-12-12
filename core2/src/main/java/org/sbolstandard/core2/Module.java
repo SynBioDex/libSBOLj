@@ -375,8 +375,12 @@ public class Module extends Identified {
 		if (definition == null) {
 			if (other.definition != null)
 				return false;
-		} else if (!definition.equals(other.definition))
-			return false;
+		} else if (!definition.equals(other.definition)) {
+			if (getDefinition() == null || other.getDefinition() == null 
+					|| !getDefinition().equals(other.getDefinition())) {
+				return false;
+			}
+		}
 		if (mapsTos == null) {
 			if (other.mapsTos != null)
 				return false;

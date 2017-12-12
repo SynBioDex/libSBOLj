@@ -54,6 +54,51 @@ public class Association extends Identified {
 		}
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((agent == null) ? 0 : agent.hashCode());
+		result = prime * result + ((plan == null) ? 0 : plan.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Association other = (Association) obj;
+		if (agent == null) {
+			if (other.agent != null)
+				return false;
+		} else if (!agent.equals(other.agent)) {
+			if (getAgent() == null || other.getAgent() == null 
+					|| !getAgent().equals(other.getAgent())) {
+				return false;
+			}
+		}
+		if (plan == null) {
+			if (other.plan != null)
+				return false;
+		} else if (!plan.equals(other.plan)) {
+			if (getPlan() == null || other.getPlan() == null 
+					|| !getPlan().equals(other.getPlan())) {
+				return false;
+			}
+		}
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		return true;
+	}
+	
 	/**
 	 * Adds the given role URI to this association's set of role URIs.
 	 *

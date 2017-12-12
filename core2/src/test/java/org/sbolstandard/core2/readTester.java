@@ -40,8 +40,8 @@ class readTester {
 
 		try {
 			SBOLReader.setURIPrefix("http://dummy.org/");
-			SBOLDocument doc = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/Emulated/BBa_I0462.xml_Emulated.xml");
-			SBOLDocument doc2 = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/Retrieved/BBa_I0462.xml_Retrieved.xml");
+			SBOLDocument doc = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/Emulated/toggle.xml_Emulated.xml");
+			SBOLDocument doc2 = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/Retrieved/toggle.xml_Retrieved.xml");
 			SBOLValidate.compareDocuments("em", doc, "re", doc2);
 			if (SBOLValidate.getNumErrors() > 0) {
 				for (String error : SBOLValidate.getErrors()) {

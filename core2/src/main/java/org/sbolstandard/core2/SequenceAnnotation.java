@@ -673,8 +673,12 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		if (component == null) {
 			if (other.component != null)
 				return false;
-		} else if (!component.equals(other.component))
-			return false;
+		} else if (!component.equals(other.component)) {
+			if (getComponent() == null || other.getComponent() == null 
+					|| !getComponent().equals(other.getComponent())) {
+				return false;
+			}
+		}
 		if (roles == null) {
 			if (other.roles != null)
 				return false;

@@ -225,8 +225,12 @@ public class Participation extends Identified {
 		if (participant == null) {
 			if (other.participant != null)
 				return false;
-		} else if (!participant.equals(other.participant))
-			return false;
+		} else if (!participant.equals(other.participant)) {
+			if (getParticipant() == null || other.getParticipant() == null 
+					|| !getParticipant().equals(other.getParticipant())) {
+				return false;
+			}
+		}
 		if (roles == null) {
 			if (other.roles != null)
 				return false;

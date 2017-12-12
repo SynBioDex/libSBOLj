@@ -75,7 +75,7 @@ public class Activity extends TopLevel{
 			Usage newUsage = this.createUsage(displayId, usage.getEntityURI());
 			newUsage.copy(usage);
 		}
-		for (URI wasInformedBy : activity.getWasInformedBys()) {
+		for (URI wasInformedBy : activity.getWasInformedByURIs()) {
 			this.addWasInformedBy(URI.create(wasInformedBy.toString()));
 		}
 	}
@@ -174,8 +174,13 @@ public class Activity extends TopLevel{
 		if (wasInformedBys == null) {
 			if (other.wasInformedBys != null)
 				return false;
-		} else if (!wasInformedBys.equals(other.wasInformedBys))
-			return false;
+		} else if (!wasInformedBys.equals(other.wasInformedBys)) {
+			if (getWasInformedBys().size()!=getWasInformedByURIs().size() ||
+					other.getWasInformedBys().size()!=other.getWasInformedByURIs().size() ||
+					!getWasInformedBys().equals(other.getWasInformedBys())) {
+				return false;
+			}
+		}	
 		if (associations == null) {
 			if (other.associations != null)
 				return false;
@@ -189,8 +194,6 @@ public class Activity extends TopLevel{
 		return true;
 	}
 	
-	
-
 	/* (non-Javadoc)
 	 * @see org.sbolstandard.core2.TopLevel#deepCopy()
 	 */
@@ -369,10 +372,31 @@ public class Activity extends TopLevel{
 	}
 
 	/**
-	 * @return the wasInformedBy
+	 * Returns the set of wasInformedBy URIs referenced by this activity.
+	 *
+	 * @return the set of wasInformedBy URIs referenced by this activity
 	 */
-	public Set<URI> getWasInformedBys() {
-		return wasInformedBys;
+	public Set<URI> getWasInformedByURIs() {
+		Set<URI> result = new HashSet<>();
+		result.addAll(wasInformedBys);
+		return result;
+	}
+
+	/**
+	 * Returns the set of wasInformedBys referenced by this activity.
+	 *
+	 * @return the set of wasInformedBys referenced by this activity
+	 */
+	public Set<Activity> getWasInformedBys() {
+		if (this.getSBOLDocument()==null) return null;
+		Set<Activity> resolved = new HashSet<>();
+		for(URI wib : wasInformedBys) {
+			Activity activity = this.getSBOLDocument().getActivity(wib);
+			if(activity != null) {
+				resolved.add(activity);
+			}
+		}
+		return resolved;
 	}
 	
 	/**

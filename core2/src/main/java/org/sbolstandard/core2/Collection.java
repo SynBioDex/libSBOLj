@@ -169,6 +169,16 @@ public class Collection extends TopLevel{
 		if (members == null) {
 			if (other.members != null)
 				return false;
+		} else if (!members.equals(other.members)) {
+			if (getMembers().size()!=getMemberURIs().size() ||
+					other.getMembers().size()!=other.getMemberURIs().size() ||
+					!getMembers().equals(other.getMembers())) {
+				return false;
+			}
+		}
+		if (members == null) {
+			if (other.members != null)
+				return false;
 		} else if (!members.equals(other.members))
 			return false;
 		return true;
