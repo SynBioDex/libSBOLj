@@ -26,7 +26,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -544,30 +546,29 @@ public class SynBioHubFrontend
         HttpPost request = new HttpPost(url);
         request.setHeader("X-authorization", user);
         request.setHeader("Accept", "text/plain");
+        
+        MultipartEntityBuilder params = MultipartEntityBuilder.create();        
 
-        MultipartEntity params = new MultipartEntity();
-        try {
-			params.addPart("id", new StringBody(id));
-	        params.addPart("version", new StringBody(version));
-	        params.addPart("name", new StringBody(name));
-	        params.addPart("description", new StringBody(description));
-	        params.addPart("citations", new StringBody(citations));
-	        params.addPart("collectionChoices", new StringBody(collections));
-	        params.addPart("overwrite_merge", new StringBody(overwrite_merge));
-	        params.addPart("user", new StringBody(user));
-	        if (document != null) {
-	        	params.addPart("file", new StringBody(serializeDocument(document)));
-	        } else {
-	        	params.addPart("file", new StringBody(""));
-	        }
-		}
-		catch (UnsupportedEncodingException e1) {
-			throw new SynBioHubException(e1);
-		}
+        /* example for setting a HttpMultipartMode */
+        params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+        params.addTextBody("id", id);
+        params.addTextBody("version", version);
+        params.addTextBody("name", name);
+        params.addTextBody("description", description);
+        params.addTextBody("citations", citations);
+        params.addTextBody("collectionChoices", collections);
+        params.addTextBody("overwrite_merge", overwrite_merge);
+        params.addTextBody("user", user);
+        if (document != null) {
+        	params.addTextBody("file", serializeDocument(document));
+        } else {
+        	params.addTextBody("file", "");
+        }
 	        
         try
         {
-            request.setEntity(params);
+            request.setEntity(params.build());
             HttpResponse response = client.execute(request);
             checkResponseCode(response);
         }
