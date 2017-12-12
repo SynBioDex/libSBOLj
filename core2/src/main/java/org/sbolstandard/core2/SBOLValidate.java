@@ -1713,12 +1713,14 @@ public class SBOLValidate {
 					doc = newDoc;
 				}
 			}
-			if (!URIPrefix.equals("") && doc.getTopLevels().size() > 0) {
-				System.out.println("Updating URI prefix to: " + URIPrefix);
-				if (version != null) {
-					System.out.println("Updating Version to: " + version);
+			if (!URIPrefix.equals("")) {
+				if (doc.getTopLevels().size() > 0) {
+					System.out.println("Updating URI prefix to: " + URIPrefix);
+					if (version != null) {
+						System.out.println("Updating Version to: " + version);
+					}
+					doc = doc.changeURIPrefixVersion(URIPrefix,version);
 				}
-				doc = doc.changeURIPrefixVersion(URIPrefix,version);
 			} else if (version != null) {
 				System.err.println("Cannot change version without also changing the URI prefix.");
 				return;

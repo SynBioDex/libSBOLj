@@ -541,6 +541,7 @@ public class Annotation {
 		result = prime * result + ((boolValue == null) ? 0 : boolValue.hashCode());
 		result = prime * result + ((doubleValue == null) ? 0 : doubleValue.hashCode());
 		result = prime * result + ((intValue == null) ? 0 : intValue.hashCode());
+		result = prime * result + ((stringValue == null) ? 0 : stringValue.hashCode());
 		result = prime * result + ((localPart == null) ? 0 : localPart.hashCode());
 		result = prime * result + ((namespaceURI == null) ? 0 : namespaceURI.hashCode());
 		result = prime * result + ((nestedAnnotations == null) ? 0 : nestedAnnotations.hashCode());
@@ -552,7 +553,6 @@ public class Annotation {
 		result = prime * result + ((nestedURI == null) ? 0 : nestedURI.hashCode());
 		// TODO: removed, not needed to be equal
 		//result = prime * result + ((prefix == null) ? 0 : prefix.hashCode());
-		result = prime * result + ((stringValue == null) ? 0 : stringValue.hashCode());
 		result = prime * result + ((type == null) ? 0 : type.hashCode());
 		return result;
 	}
@@ -609,7 +609,7 @@ public class Annotation {
 			if (other.nestedAnnotations != null)
 				return false;
 		}
-		else if (!nestedAnnotations.equals(other.nestedAnnotations))
+		else if (!nestedAnnotations.containsAll(other.nestedAnnotations))
 			return false;
 		if (nestedLocalPart == null) {
 			if (other.nestedLocalPart != null)

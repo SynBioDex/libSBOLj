@@ -40,9 +40,17 @@ class readTester {
 
 		try {
 			SBOLReader.setURIPrefix("http://dummy.org/");
-			SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/bug.xml");
-			doc = doc.changeURIPrefixVersion("http://new.org/", "1.0");
-			doc.write(System.out);
+			SBOLDocument doc = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/Emulated/BBa_I0462.xml_Emulated.xml");
+			SBOLDocument doc2 = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/Retrieved/BBa_I0462.xml_Retrieved.xml");
+			SBOLValidate.compareDocuments("em", doc, "re", doc2);
+			if (SBOLValidate.getNumErrors() > 0) {
+				for (String error : SBOLValidate.getErrors()) {
+					System.out.println(error+"\n");
+				}	
+			}
+			//SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/bug.xml");
+			//doc = doc.changeURIPrefixVersion("http://new.org/", "1.0");
+			//doc.write(System.out);
 			//SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
 			//String result = sbh.sparqlQuery("select ?s ?p ?o where { ?s ?p ?o . FILTER(?s = <https://synbiohub.org/public/igem/BBa_B0015/1>) }");
 			//System.out.println(result);

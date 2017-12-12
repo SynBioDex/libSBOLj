@@ -66,18 +66,12 @@ public class Activity extends TopLevel{
 			this.setEndedAtTime(activity.getEndedAtTime());
 		}
 		for (Association association : activity.getAssociations()) {
-			String displayId = association.getDisplayId();
-			if (displayId==null) {
-				displayId = URIcompliance.extractDisplayId(association.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(association);
 			Association newAssociation = this.createAssociation(displayId, association.getAgentURI());
 			newAssociation.copy(association);
 		}
 		for (Usage usage : activity.getUsages()) {
-			String displayId = usage.getDisplayId();
-			if (displayId==null) {
-				displayId = URIcompliance.extractDisplayId(usage.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(usage);
 			Usage newUsage = this.createUsage(displayId, usage.getEntityURI());
 			newUsage.copy(usage);
 		}

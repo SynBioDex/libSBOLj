@@ -74,10 +74,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	void copy(SequenceAnnotation sequenceAnnotation) throws SBOLValidationException {
 		((Identified)this).copy((Identified)sequenceAnnotation);
 		for (Location location : sequenceAnnotation.getLocations()) {
-			String displayId = location.getDisplayId();
-			if (displayId==null) {
-				displayId = URIcompliance.extractDisplayId(location.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(location);
 			if (location instanceof Range) {
 				Range range = (Range)location;
 				Range newRange;
@@ -114,7 +111,8 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 			this.removeLocation(location);
 		}
 		if (sequenceAnnotation.isSetComponent()) {
-			this.setComponent(sequenceAnnotation.getComponent().getDisplayId());
+			String componentDisplayId = URIcompliance.findDisplayId(sequenceAnnotation.getComponent());
+			this.setComponent(componentDisplayId);
 		}
 		this.roles = new HashSet<>();
 		for (URI role : sequenceAnnotation.getRoles()) {

@@ -109,7 +109,6 @@ public class SBOLDocument {
 			addNamespaceBinding(Sbol2Terms.prov);
 		}
 		catch (SBOLValidationException e) {
-			// TODO: this should never happen
 			e.printStackTrace();
 		}
 		prefixes = new HashSet<>();
@@ -1287,6 +1286,9 @@ public class SBOLDocument {
 		// topLevel.isURIcompliant();
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
+			if (URIprefix==null) {
+				URIprefix = this.getDefaultURIprefix();
+			}
 			URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		} else {
 			URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -1295,6 +1297,11 @@ public class SBOLDocument {
 			//displayId = topLevel.getDisplayId();
 			//if (displayId == null) {
 			displayId = URIcompliance.extractDisplayId(topLevel.getIdentity());
+			if (displayId==null) {
+				displayId = URIcompliance.findDisplayId(topLevel.getIdentity().toString());
+			} else {
+				displayId = URIcompliance.fixDisplayId(displayId);
+			}
 			//}
 		}
 		if (version == null) {
@@ -1853,6 +1860,7 @@ public class SBOLDocument {
 				}
 				fixed.createCopy(toplevel,URIPrefix,displayId,version);
 			}
+			fixed.fixDocumentURIPrefix();
 		} else {
 			fixed.createCopy(this);
 			fixed.fixDocumentURIPrefix();
@@ -2234,8 +2242,7 @@ public class SBOLDocument {
 	 * @param version the version of the activity to be created
 	 * @return the created activity
 	 * @throws SBOLValidationException if an SBOL validation rules was violated:
-	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 
-	 * 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12301, 12302. // TODO: Check?
+	 * 10201, 10202, 10204, 10206, 10220.
 	 */
 	public Activity createActivity(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -2386,8 +2393,7 @@ public class SBOLDocument {
 	 * @param version the version of the agent to be created
 	 * @return the created agent
 	 * @throws SBOLValidationException if an SBOL validation rules was violated:
-	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 
-	 * 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12301, 12302. // TODO: Check?
+	 * 10201, 10202, 10204, 10206, 10220.
 	 */
 	public Agent createAgent(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -2538,8 +2544,7 @@ public class SBOLDocument {
 	 * @param version the version of the plan to be created
 	 * @return the created plan
 	 * @throws SBOLValidationException if an SBOL validation rules was violated:
-	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 
-	 * 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12301, 12302. // TODO: Check?
+	 * 10201, 10202, 10204, 10206, 10220.
 	 */
 	public Plan createPlan(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);

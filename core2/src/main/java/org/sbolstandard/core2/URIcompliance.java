@@ -481,6 +481,13 @@ final class URIcompliance {
 		}
 		return displayId;
 	}
+	
+	static String findDisplayId(Identified identified) {
+		String displayId = extractDisplayId(identified.getIdentity());
+		if (displayId!=null) return displayId;
+		if (identified.isSetDisplayId()) return identified.getDisplayId();
+		return findDisplayId(identified.getIdentity().toString());
+	}
 
 	static String findDisplayId(String topLevelIdentity) {
 		String displayId = null;
