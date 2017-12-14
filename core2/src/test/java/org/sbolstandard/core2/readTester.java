@@ -41,7 +41,7 @@ class readTester {
 		try {
 			SBOLReader.setURIPrefix("http://dummy.org/");
 			SBOLReader.setCompliant(true);
-			SBOLDocument doc = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/SBOLTestSuite/SBOL2/labhost_Bacillus_subtilis_orig.xml");
+			SBOLDocument doc = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/SBOLTestSuite/SBOL2/partial_pTAK_right_cassette_orig.xml");
 			//SBOLDocument doc2 = new SBOLDocument();
 			doc.setDefaultURIprefix("http://dummy.org/");
 			//doc2.createCopy(doc);
