@@ -470,6 +470,20 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	public URI getComponentURI() {
 		return component;
 	}
+	
+	/**
+	 * Returns the component identity this sequence annotation refers to.
+	 * <p>
+	 * If this sequence annotation's parent component definition is {@code null}, this method returns {@code null}.
+	 * Otherwise, it returns its child component which is also referenced by this sequence annotation.   
+	 * 
+	 * @return the component identity this sequence annotation refers to  
+	 */
+	public URI getComponentIdentity() {
+		if (componentDefinition==null) return null;
+		if (componentDefinition.getComponent(component)==null) return null;
+		return componentDefinition.getComponent(component).getIdentity();
+	}
 
 	/**
 	 * Returns the component this sequence annotation refers to.
@@ -674,8 +688,8 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 			if (other.component != null)
 				return false;
 		} else if (!component.equals(other.component)) {
-			if (getComponent() == null || other.getComponent() == null 
-					|| !getComponent().equals(other.getComponent())) {
+			if (getComponentIdentity() == null || other.getComponentIdentity() == null 
+					|| !getComponentIdentity().equals(other.getComponentIdentity())) {
 				return false;
 			}
 		}

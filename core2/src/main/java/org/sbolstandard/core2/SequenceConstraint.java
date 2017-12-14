@@ -149,7 +149,19 @@ public class SequenceConstraint extends Identified {
 	public URI getSubjectURI() {
 		return subject;
 	}
-
+	
+	/**
+	 * Returns the subject component identity this sequence constraint refers to.
+	 * <p>
+	 * If this sequence constraint's parent component definition is {@code null}, this method returns {@code null}.
+	 * Otherwise, it returns its child component which is also referenced by this sequence constraint.
+	 * @return the subject component identity this sequence constraint refers to
+	 */
+	public URI getSubjectIdentity() {
+		if (componentDefinition==null) return null;
+		if (componentDefinition.getComponent(subject)==null) return null;
+		return componentDefinition.getComponent(subject).getIdentity();
+	}
 
 	/**
 	 * Returns the subject component this sequence constraint refers to.
@@ -206,6 +218,20 @@ public class SequenceConstraint extends Identified {
 	 */
 	public URI getObjectURI() {
 		return object;
+	}
+	
+	/**
+	 * Returns the object component identity this sequence constraint refers to.
+	 * <p>
+	 * If this sequence constraint's parent component definition is {@code null}, this method returns {@code null}.
+	 * Otherwise, it returns its child component which is also referenced by this sequence constraint.
+	 * 
+	 * @return the object component identity this sequence constraint refers to
+	 */
+	public URI getObjectIdentity() {
+		if (componentDefinition==null) return null;
+		if (componentDefinition.getComponent(object)==null) return null;
+		return componentDefinition.getComponent(object).getIdentity();
 	}
 	
 	/**
@@ -280,8 +306,8 @@ public class SequenceConstraint extends Identified {
 			if (other.subject != null)
 				return false;
 		} else if (!subject.equals(other.subject)) {
-			if (getSubject() == null || other.getSubject() == null 
-					|| !getSubject().equals(other.getSubject())) {
+			if (getSubjectIdentity() == null || other.getSubjectIdentity() == null 
+					|| !getSubjectIdentity().equals(other.getSubjectIdentity())) {
 				return false;
 			}
 		}
@@ -289,8 +315,8 @@ public class SequenceConstraint extends Identified {
 			if (other.object != null)
 				return false;
 		} else if (!object.equals(other.object)) {
-			if (getObject() == null || other.getObject() == null 
-					|| !getObject().equals(other.getObject())) {
+			if (getObjectIdentity() == null || other.getObjectIdentity() == null 
+					|| !getObjectIdentity().equals(other.getObjectIdentity())) {
 				return false;
 			}
 		}

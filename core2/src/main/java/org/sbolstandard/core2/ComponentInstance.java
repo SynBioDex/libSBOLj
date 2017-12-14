@@ -82,6 +82,19 @@ public abstract class ComponentInstance extends Identified {
 	public URI getDefinitionURI() {
 		return definition;
 	}
+	
+	/**
+	 * Returns the component definition identity referenced by this component or functional component. 
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * component definition referenced by this component or functional component exists; 
+	 * or the matching component definition otherwise.
+	 */
+	public URI getDefinitionIdentity() {
+		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument().getComponentDefinition(definition)==null) return null;
+		return this.getSBOLDocument().getComponentDefinition(definition).getIdentity();
+	}
 
 	/**
 	 * Returns the component definition referenced by this component or functional component. 
@@ -138,8 +151,8 @@ public abstract class ComponentInstance extends Identified {
 			if (other.definition != null)
 				return false;
 		} else if (!definition.equals(other.definition)) {
-			if (getDefinition() == null || other.getDefinition() == null 
-					|| !getDefinition().equals(other.getDefinition())) {
+			if (getDefinitionIdentity() == null || other.getDefinitionIdentity() == null 
+					|| !getDefinitionIdentity().equals(other.getDefinitionIdentity())) {
 				return false;
 			}
 		}

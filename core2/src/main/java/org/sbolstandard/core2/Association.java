@@ -77,8 +77,8 @@ public class Association extends Identified {
 			if (other.agent != null)
 				return false;
 		} else if (!agent.equals(other.agent)) {
-			if (getAgent() == null || other.getAgent() == null 
-					|| !getAgent().equals(other.getAgent())) {
+			if (getAgentIdentity() == null || other.getAgentIdentity() == null 
+					|| !getAgentIdentity().equals(other.getAgentIdentity())) {
 				return false;
 			}
 		}
@@ -86,8 +86,8 @@ public class Association extends Identified {
 			if (other.plan != null)
 				return false;
 		} else if (!plan.equals(other.plan)) {
-			if (getPlan() == null || other.getPlan() == null 
-					|| !getPlan().equals(other.getPlan())) {
+			if (getPlanIdentity() == null || other.getPlanIdentity() == null 
+					|| !getPlanIdentity().equals(other.getPlanIdentity())) {
 				return false;
 			}
 		}
@@ -172,6 +172,19 @@ public class Association extends Identified {
 	}
 
 	/**
+	 * Returns the agent identity referenced by this association.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * agent referenced by this association exists; 
+	 * or the matching agent otherwise.
+	 */
+	public URI getAgentIdentity() {
+		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument().getAgent(agent)==null) return null;
+		return this.getSBOLDocument().getAgent(agent).getIdentity();
+	}
+	
+	/**
 	 * Returns the agent referenced by this association.
 	 *
 	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
@@ -215,6 +228,19 @@ public class Association extends Identified {
 	 */
 	public URI getPlanURI() {
 		return plan;
+	}
+	
+	/**
+	 * Returns the plan identity referenced by this association.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * plan referenced by this association exists; 
+	 * or the matching plan otherwise.
+	 */
+	public URI getPlanIdentity() {
+		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument().getPlan(plan)==null) return null;
+		return this.getSBOLDocument().getPlan(plan).getIdentity();
 	}
 
 	/**

@@ -73,6 +73,17 @@ public class Module extends Identified {
 	public URI getDefinitionURI() {
 		return definition;
 	}
+	
+	/**
+	 * Returns the module definition identity that this module refers to.
+	 *
+	 * @return the the module definition identity that this module refers to
+	 */
+	public URI getDefinitionIdentity() {
+		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument().getModuleDefinition(definition)==null) return null;
+		return this.getSBOLDocument().getModuleDefinition(definition).getIdentity();
+	}
 
 	/**
 	 * Returns the module definition that this module refers to.
@@ -376,8 +387,8 @@ public class Module extends Identified {
 			if (other.definition != null)
 				return false;
 		} else if (!definition.equals(other.definition)) {
-			if (getDefinition() == null || other.getDefinition() == null 
-					|| !getDefinition().equals(other.getDefinition())) {
+			if (getDefinitionIdentity() == null || other.getDefinitionIdentity() == null 
+					|| !getDefinitionIdentity().equals(other.getDefinitionIdentity())) {
 				return false;
 			}
 		}

@@ -109,9 +109,25 @@ public class Collection extends TopLevel{
 	}
 
 	/**
-	 * Returns the set instances referenced by this Collection instance's members.
+	 * Returns the set of member identities referenced by this Collection instance.
 	 *
-	 * @return the set instances referenced by this Collection instance's members.
+	 * @return the set of member identities referenced by this Collection instance.
+	 */
+	public Set<URI> getMemberIdentities() {
+		Set<URI> result = new HashSet<>();
+		for (URI memberURI : members) {
+			TopLevel member = this.getDocument().getTopLevel(memberURI);
+			if(member != null) {
+				result.add(member.getIdentity());
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Returns the set of objects referenced by this Collection instance's members.
+	 *
+	 * @return the set of objects referenced by this Collection instance's members.
 	 */
 	public Set<TopLevel> getMembers() {
 		Set<TopLevel> result = new HashSet<>();
@@ -170,17 +186,12 @@ public class Collection extends TopLevel{
 			if (other.members != null)
 				return false;
 		} else if (!members.equals(other.members)) {
-			if (getMembers().size()!=getMemberURIs().size() ||
-					other.getMembers().size()!=other.getMemberURIs().size() ||
-					!getMembers().equals(other.getMembers())) {
+			if (getMemberIdentities().size()!=getMemberURIs().size() ||
+					other.getMemberIdentities().size()!=other.getMemberURIs().size() ||
+					!getMemberIdentities().equals(other.getMemberIdentities())) {
 				return false;
 			}
 		}
-		if (members == null) {
-			if (other.members != null)
-				return false;
-		} else if (!members.equals(other.members))
-			return false;
 		return true;
 	}
 

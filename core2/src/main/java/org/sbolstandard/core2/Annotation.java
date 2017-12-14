@@ -28,7 +28,7 @@ import uk.ac.ncl.intbio.core.datatree.NestedDocument;
  * @version 2.1
  */
 
-public class Annotation {
+public class Annotation implements Comparable<Annotation>  {
 
 	//private NamedProperty<QName> value;
 	private String namespaceURI = null;
@@ -179,6 +179,18 @@ public class Annotation {
 		} else {
 			throw new SBOLValidationException("sbol-12203");
 		}
+	}
+		
+	@Override
+	public int compareTo(Annotation annotation) {
+		int result = this.getQName().getNamespaceURI().compareTo(annotation.getQName().getNamespaceURI());
+		if (result==0) {
+			result = this.getQName().getLocalPart().compareTo(annotation.getQName().getLocalPart());
+		}
+		if (result==0) {
+			result = this.hashCode() - annotation.hashCode();
+		}
+		return result;
 	}
 
 	/**

@@ -74,8 +74,8 @@ public class Usage extends Identified {
 			if (other.entity != null)
 				return false;
 		} else if (!entity.equals(other.entity)) {
-			if (getEntity() == null || other.getEntity() == null 
-					|| !getEntity().equals(other.getEntity())) {
+			if (getEntityIdentity() == null || other.getEntityIdentity() == null 
+					|| !getEntityIdentity().equals(other.getEntityIdentity())) {
 				return false;
 			}
 		}
@@ -94,6 +94,19 @@ public class Usage extends Identified {
 	 */
 	public URI getEntityURI() {
 		return entity;
+	}
+	
+	/**
+	 * Returns the entity identity referenced by this usage.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * entity identity referenced by this usage exists; 
+	 * or the matching plan otherwise.
+	 */
+	public URI getEntityIdentity() {
+		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument().getTopLevel(entity)==null) return null;
+		return this.getSBOLDocument().getTopLevel(entity).getIdentity();
 	}
 
 	/**

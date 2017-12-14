@@ -395,6 +395,23 @@ public class ComponentDefinition extends TopLevel {
 	}
 
 	/**
+	 * Returns the set of sequences identities referenced by this component definition.
+	 *
+	 * @return the set of sequences identities referenced by this component definition
+	 */
+	public Set<URI> getSequenceIdentities() {
+		if (this.getSBOLDocument()==null) return null;
+		Set<URI> resolved = new HashSet<>();
+		for(URI su : sequences) {
+			Sequence seq = this.getSBOLDocument().getSequence(su);
+			if(seq != null) {
+				resolved.add(seq.getIdentity());
+			}
+		}
+		return resolved;
+	}
+	
+	/**
 	 * Returns the set of sequences referenced by this component definition.
 	 *
 	 * @return the set of sequences referenced by this component definition
@@ -1761,9 +1778,9 @@ public class ComponentDefinition extends TopLevel {
 			if (other.sequences != null)
 				return false;
 		} else if (!sequences.equals(other.sequences)) {
-			if (getSequences().size()!=getSequenceURIs().size() ||
-					other.getSequences().size()!=other.getSequenceURIs().size() ||
-					!getSequences().equals(other.getSequences())) {
+			if (getSequenceIdentities().size()!=getSequenceURIs().size() ||
+					other.getSequenceIdentities().size()!=other.getSequenceURIs().size() ||
+					!getSequenceIdentities().equals(other.getSequenceIdentities())) {
 				return false;
 			}
 		}

@@ -122,6 +122,21 @@ final class URIcompliance {
 	 * 
 	 * @return the extracted URI prefix
 	 */
+	static String extractSimpleNamespace(URI objURI) {
+		String URIstr = objURI.toString();
+		Pattern r = Pattern.compile(genericURIpattern1);
+		Matcher m = r.matcher(URIstr);
+		if (m.matches())
+			return m.group(2);
+		else
+			return null;
+	}
+	
+	/**
+	 * Extract the URI prefix from this object's identity URI.
+	 * 
+	 * @return the extracted URI prefix
+	 */
 	static String extractNamespace(URI objURI) {
 		String URIstr = objURI.toString();
 		Pattern r = Pattern.compile(namespacePattern);

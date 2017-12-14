@@ -951,6 +951,20 @@ public class ModuleDefinition extends TopLevel {
 		result.addAll(models);
 		return result;
 	}
+	
+	/**
+	 * Returns the set of models identities referenced by this module definition.
+	 *
+	 * @return the set of models identities referenced by this module definition
+	 */
+	public Set<URI> getModelIdentities() {
+		Set<URI> result = new HashSet<>();
+		for (URI modelURI : models) {
+			Model model = this.getSBOLDocument().getModel(modelURI);
+			result.add(model.getIdentity());
+		}
+		return result;
+	}
 
 	/**
 	 * Returns the set of models referenced by this module definition.
@@ -1019,9 +1033,9 @@ public class ModuleDefinition extends TopLevel {
 			if (other.models != null)
 				return false;
 		} else if (!models.equals(other.models)) {
-			if (getModels().size()!=getModelURIs().size() ||
-					other.getModels().size()!=other.getModelURIs().size() ||
-					!getModels().equals(other.getModels())) {
+			if (getModelIdentities().size()!=getModelURIs().size() ||
+					other.getModelIdentities().size()!=other.getModelURIs().size() ||
+					!getModelIdentities().equals(other.getModelIdentities())) {
 				return false;
 			}
 		}

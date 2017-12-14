@@ -3100,7 +3100,8 @@ public class SBOLReader
 				} else {
 					prefix = SBOLDoc.getNamespacePrefix(URI.create(nameSpace));
 				}
-				type = new QName(nameSpace,localPart,prefix);
+				if (!nameSpace.equals(Sbol2Terms.sbol2.getNamespaceURI()))
+					type = new QName(nameSpace,localPart,prefix);
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
