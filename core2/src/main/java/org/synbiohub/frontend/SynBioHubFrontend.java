@@ -1,6 +1,7 @@
 
 package org.synbiohub.frontend;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import java.io.IOException;
@@ -26,10 +27,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
@@ -561,7 +561,8 @@ public class SynBioHubFrontend
         params.addTextBody("overwrite_merge", overwrite_merge);
         params.addTextBody("user", user);
         if (document != null) {
-        	params.addTextBody("file", serializeDocument(document));
+        	InputStream stream = new ByteArrayInputStream(serializeDocument(document).getBytes());
+        	params.addBinaryBody("file", stream, ContentType.APPLICATION_XML, "file");
         } else {
         	params.addTextBody("file", "");
         }

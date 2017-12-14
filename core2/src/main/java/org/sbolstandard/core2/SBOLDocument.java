@@ -1478,9 +1478,9 @@ public class SBOLDocument {
 	}
 	
 	private String extractDocumentURIPrefix() {
-		String documentURIPrefix = "";
+		String documentURIPrefix = null;
 		for (TopLevel topLevel : getTopLevels()) {
-			if (documentURIPrefix.equals("")) {
+			if (documentURIPrefix == null || documentURIPrefix.equals("")) {
 				documentURIPrefix = URIcompliance.extractURIprefix(topLevel.getIdentity());
 			} else {
 				for (int i=0; i < documentURIPrefix.length(); i++) {
@@ -1502,20 +1502,27 @@ public class SBOLDocument {
 	
 	private void fixDocumentURIPrefix() throws SBOLValidationException {
 		String documentURIPrefixAll = extractDocumentURIPrefix();
-		if (documentURIPrefixAll.length() >= 9) {
+		if (documentURIPrefixAll!=null && documentURIPrefixAll.length() >= 9) {
 			setDefaultURIprefix(documentURIPrefixAll);
 		}
 		String documentURIPrefix = documentURIPrefixAll;
 		for (TopLevel topLevel : getTopLevels()) {
 			if (documentURIPrefixAll.length() < 9) {
 				documentURIPrefix = URIcompliance.extractURIprefix(topLevel.getIdentity());
-				String documentURIPrefix2 = URIcompliance.extractURIprefix(URI.create(URIcompliance.extractSimpleNamespace(topLevel.getIdentity())));
-				if (documentURIPrefix2!=null) {
-					documentURIPrefix = documentURIPrefix2;
+				String simpleNamespace = URIcompliance.extractSimpleNamespace(topLevel.getIdentity());
+				if (simpleNamespace!=null) {
+					String documentURIPrefix2 = URIcompliance.extractURIprefix(URI.create(simpleNamespace));
+					if (documentURIPrefix2!=null) {
+						documentURIPrefix = documentURIPrefix2;
+					}
+				}
+				if (documentURIPrefix==null) {
+					documentURIPrefix = this.getDefaultURIprefix();
 				}
 			}
 			if (!topLevel.getIdentity()
-					.equals(URIcompliance.createCompliantURI(documentURIPrefix, topLevel.getDisplayId(), topLevel.getVersion()))) {
+					.equals(URIcompliance.createCompliantURI(documentURIPrefix, 
+							URIcompliance.findDisplayId(topLevel), topLevel.getVersion()))) {
 				String newDisplayId = topLevel.getIdentity().toString().replaceAll(documentURIPrefix, "");
 				String newVersion = "";
 				if (topLevel.isSetVersion()) {
@@ -1871,8 +1878,8 @@ public class SBOLDocument {
 //			fixed.createCopy(this);
 //			fixed.fixDocumentURIPrefix();
 //		}
+		this.fixDocumentURIPrefix();
 		fixed.createCopy(this);
-		fixed.fixDocumentURIPrefix();
 		String documentURIPrefix = fixed.extractDocumentURIPrefix();
 		HashMap<URI,URI> uriMap = new HashMap<URI,URI>();
 		//for (TopLevel topLevel : this.getTopLevels()) {
