@@ -1309,6 +1309,7 @@ public class SBOLDocument {
 		}
 		TopLevel oldTopLevel = this.getTopLevel(URIcompliance.createCompliantURI(URIprefix, displayId, version));
 		if (oldTopLevel != null) {
+			// TODO: should check if they are same or different, if different throw exception
 			if (oldTopLevel.equals(topLevel)) return oldTopLevel; 
 		}
 		if (topLevel instanceof Collection) {
