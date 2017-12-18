@@ -49,6 +49,7 @@ public class SynBioHubFrontend
     String backendUrl;
     String uriPrefix;
     String user = "";
+    String username = null;
 
     /**
      * Creates an instance of the SynBioHub API.
@@ -482,6 +483,17 @@ public class SynBioHubFrontend
     public void logout() 
     {
     	user = "";
+    	username = null;
+    }
+    
+    /**
+     * Returns the username of the logged in user
+     * 
+     * @return the username of the logged in user
+     */
+    public String getUsername()
+    {
+    	return username;
     }
 
     /**
@@ -512,6 +524,7 @@ public class SynBioHubFrontend
 
             HttpEntity entity = response.getEntity();
             user = inputStreamToString(entity.getContent());
+            username = email;
         }
         catch (Exception e)
         {
