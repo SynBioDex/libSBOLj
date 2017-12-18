@@ -4,6 +4,7 @@ package org.synbiohub.frontend;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,6 +49,7 @@ public class SynBioHubFrontend
     String backendUrl;
     String uriPrefix;
     String user = "";
+    String username = null;
 
     /**
      * Creates an instance of the SynBioHub API.
@@ -120,6 +122,26 @@ public class SynBioHubFrontend
         SBOLDocument document = fetchFromSynBioHub(url);
 
         return document;
+    }
+    
+    /**
+     * Retrieve an attachment from a SynBioHub instance using its URI.
+     *
+     * @param attachmentUri The URI of the SBOL Attachment object
+     * @param path Directory path to save the attachment
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public void getAttachment(URI attachmentUri, String path) throws SynBioHubException, IOException
+    {
+        if (!attachmentUri.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = attachmentUri + "/download";
+        url = url.replace(uriPrefix, backendUrl);
+
+        fetchContentSaveToFile(url,path);
     }
     
     /**
@@ -461,6 +483,17 @@ public class SynBioHubFrontend
     public void logout() 
     {
     	user = "";
+    	username = null;
+    }
+    
+    /**
+     * Returns the username of the logged in user
+     * 
+     * @return the username of the logged in user
+     */
+    public String getUsername()
+    {
+    	return username;
     }
 
     /**
@@ -491,6 +524,7 @@ public class SynBioHubFrontend
 
             HttpEntity entity = response.getEntity();
             user = inputStreamToString(entity.getContent());
+            username = email;
         }
         catch (Exception e)
         {
@@ -708,6 +742,47 @@ public class SynBioHubFrontend
         {
             throw new SynBioHubException(e);    
         }
+    }
+    
+    private void fetchContentSaveToFile(String url,String path) throws SynBioHubException, IOException
+    {
+		HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+
+    	try
+    	{
+			HttpResponse response = client.execute(request);
+	
+			checkResponseCode(response);
+			
+			String filename = "default";
+			String dispositionValue = response.getFirstHeader("Content-Disposition").getValue();
+			int index = dispositionValue.indexOf("filename=");
+            if (index > 0) {
+                filename = dispositionValue.substring(index + 10, dispositionValue.length() - 1);
+            }
+            File file = new File(path + filename);
+            
+		    HttpEntity entity = response.getEntity();
+		    if (entity != null) {
+		        try (FileOutputStream outstream = new FileOutputStream(file)) {
+		            entity.writeTo(outstream);
+		        }
+		    }
+    	}
+    	catch(SynBioHubException e)
+    	{
+    		request.releaseConnection();
+    		
+    		throw e;
+    	}
+    	catch(IOException e)
+    	{
+    		request.releaseConnection();
+    		
+    		throw e;
+    	}
     }
     
     private String fetchContentAsString(String url) throws SynBioHubException, IOException
