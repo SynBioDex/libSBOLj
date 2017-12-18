@@ -64,6 +64,17 @@ public class Participation extends Identified {
 	public URI getParticipantURI() {
 		return participant;
 	}
+	
+	/**
+	 * Returns the functional component identity this participation refers to.
+	 *
+	 * @return the functional component identity this participation refers to
+	 */
+	public URI getParticipantIdentity() {
+		if (moduleDefinition==null) return null;
+		if (moduleDefinition.getFunctionalComponent(participant)==null) return null;
+		return moduleDefinition.getFunctionalComponent(participant).getIdentity();
+	}
 
 	/**
 	 * Returns the functional component this participation refers to.
@@ -225,8 +236,12 @@ public class Participation extends Identified {
 		if (participant == null) {
 			if (other.participant != null)
 				return false;
-		} else if (!participant.equals(other.participant))
-			return false;
+		} else if (!participant.equals(other.participant)) {
+			if (getParticipantIdentity() == null || other.getParticipantIdentity() == null 
+					|| !getParticipantIdentity().equals(other.getParticipantIdentity())) {
+				return false;
+			}
+		}
 		if (roles == null) {
 			if (other.roles != null)
 				return false;

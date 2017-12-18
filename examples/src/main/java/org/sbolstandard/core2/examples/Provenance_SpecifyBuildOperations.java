@@ -1,9 +1,12 @@
 package org.sbolstandard.core2.examples;
 
 import java.net.URI;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.sbolstandard.core2.Activity;
-import org.sbolstandard.core2.Association;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLWriter;
@@ -11,35 +14,62 @@ import org.sbolstandard.core2.SequenceOntology;
 import org.sbolstandard.core2.Usage;
 
 /**
- * Here, we exemplify how to specify a build operations using SBOL's PROV-O support.
- * 
- * The build operations are:
- * -- cut     ... linearize a (circular) vector using a restriction enzyme.
- * -- amplify ... amplification of a linear or circular construct using 5' and 3' primers
- * -- join    ... assembly of two construct using a ligase  
- * 
- * 
- * NOTE! All operations are protocol-agnostic. That is, we do not specify HOW
- *       these operations should be executed in the lab.
- *       
- * @author Ernst Oberortner
- * 
- */
+* Here, we exemplify how to specify a build operations using SBOL's PROV-O support.
+* 
+* The build operations are:
+* -- cut     ... linearize a (circular) vector using a restriction enzyme.
+* -- amplify ... amplification of a linear or circular construct using 5' and 3' primers
+* -- join    ... assembly of two construct using a ligase  
+* 
+* 
+* NOTE! All operations are protocol-agnostic. That is, we do not specify HOW
+*       these operations should be executed in the lab.
+*       
+* @author Ernst Oberortner
+* 
+*/
 public class Provenance_SpecifyBuildOperations {
 	
-	public static final SequenceOntology so = new SequenceOntology();
-
-	public static final URI LINEAR_SINGLE_STRANDED_DNA = so.getURIbyId("SO:0000956");
-	public static final URI LINEAR_DOUBLE_STRANDED_DNA = so.getURIbyId("SO:0000957");
-	public static final URI CIRCULAR_DOUBLE_STRANDED_DNA = so.getURIbyId("SO:0000958");
-	public static final URI CIRCULAR_SINGLE_STRANDED_DNA = so.getURIbyId("SO:0000960");
+	// TODO:
+	// add "Build" ontology term to (at least) operations
 	
-	public static final URI AMPLICON = so.getURIbyId("SO:0000006");
+	public static final SequenceOntology so;
+	static {
+		 so = new SequenceOntology();
+	}
+
+	public static final URI DNA = ComponentDefinition.DNA;
+	
+	public static final Set<URI> LINEAR_SINGLE_STRANDED_DNA = 
+			new HashSet<>(Arrays.asList(
+					so.getURIbyId("SO:0000987"),	// linear
+					so.getURIbyId("SO:0000984"),	// single-stranded
+					ComponentDefinition.DNA));		// DNA
+			
+	public static final Set<URI> LINEAR_DOUBLE_STRANDED_DNA = 
+			new HashSet<>(Arrays.asList(
+					so.getURIbyId("SO:0000987"),	// linear
+					so.getURIbyId("SO:0000985"),	// double-stranded
+					ComponentDefinition.DNA));		// DNA
+
+	public static final URI VECTOR_PLASMID = so.getURIbyId("SO:0000755");
+
+	public static final URI PCR_PRODUCT = so.getURIbyId("SO:0000006");
+	
+	// the result of an amplification/PCR is a linear double-stranded DNA construct
+	// we add also that an amplified construct is the product of a PCR reaction
+	public static Set<URI> AMPLIFIED_CONSTRUCT = new HashSet<> (Arrays.asList(PCR_PRODUCT));
+	static {
+		AMPLIFIED_CONSTRUCT.addAll(LINEAR_DOUBLE_STRANDED_DNA);
+	}
+
 	public static final URI FORWARD_PRIMER = so.getURIbyId("SO:0000121");
 	public static final URI REVERSE_PRIMER = so.getURIbyId("SO:0000132");
 	
-	public static final URI RESTRICTION_ENZYME_CUT_SITE = so.getURIbyId("SO:0000168");
-	public static final URI VECTOR_PLASMID = so.getURIbyId("SO:0000755");
+	// GeneOntology
+	// "Type II site-specific deoxyribonuclease activity"
+	public static final URI RESTRICTION_ENZYME = URI.create("http://purl.obolibrary.org/obo/GO_0009036");
+	
 	public static final URI UPSTREAM = so.getURIbyId("SO:0001631");
 	public static final URI DOWNSTREAM = so.getURIbyId("SO:0001632");
 
@@ -78,11 +108,11 @@ public class Provenance_SpecifyBuildOperations {
 		document.setDefaultURIprefix(BUILD_PREFIX);
 		
 		ComponentDefinition vector = document.createComponentDefinition(
-				"vector", CIRCULAR_DOUBLE_STRANDED_DNA);
+				"vector", VECTOR_PLASMID);
 		vector.setName("vector");
 		
 		ComponentDefinition enzyme = document.createComponentDefinition(
-				"restriction_enzyme", RESTRICTION_ENZYME_CUT_SITE);
+				"restriction_enzyme", RESTRICTION_ENZYME);
 		enzyme.setName("restriction_enzyme");
 
 		//Create the generic top level entity for the cut operation
@@ -91,7 +121,7 @@ public class Provenance_SpecifyBuildOperations {
 
 		//Create the qualifiedUsage annotation to describe the inputs of the cut operation
 		activity.createUsage("vector", vector.getIdentity()).addRole(VECTOR_PLASMID);
-		activity.createUsage("enzyme", enzyme.getIdentity()).addRole(RESTRICTION_ENZYME_CUT_SITE);
+		activity.createUsage("enzyme", enzyme.getIdentity()).addRole(RESTRICTION_ENZYME);
 
 		// the result of the cut operation
 		ComponentDefinition linearized_vector = document.createComponentDefinition(
@@ -99,9 +129,9 @@ public class Provenance_SpecifyBuildOperations {
 		linearized_vector.setName("linearized_vector");
 		linearized_vector.addWasGeneratedBy(activity.getIdentity());
 		
-		// serialize the document to System.out
-		SBOLWriter.write(document,System.out);	
-    }
+		// serialize the document to a file
+		SBOLWriter.write(document, Paths.get("./data/cut_operation.sbol.xml").toFile());
+   }
 	
 	
 	/**
@@ -147,7 +177,7 @@ public class Provenance_SpecifyBuildOperations {
 		// -- the amplicon
 		Usage usageDNAConstruct = amplifyOperation.createUsage("dna_construct", dnaConstruct.getIdentity());
 		usageDNAConstruct.addRole(URI.create("http://sbols.org/v2#source"));
-		usageDNAConstruct.addRole(AMPLICON);
+		usageDNAConstruct.addRole(PCR_PRODUCT);
 		// -- the forward primer
 		Usage usageFwdPrimer = amplifyOperation.createUsage("forward_primer", fivePrimer.getIdentity());
 		usageFwdPrimer.addRole(FORWARD_PRIMER);
@@ -159,13 +189,12 @@ public class Provenance_SpecifyBuildOperations {
 
 		// the result of the amplification operation
 		ComponentDefinition amplified_construct = document.createComponentDefinition(
-				"amplified_construct", LINEAR_DOUBLE_STRANDED_DNA);
+				"my_amplified_dna", AMPLIFIED_CONSTRUCT);
 		amplified_construct.setName("my_amplified_dna");
 		amplified_construct.addWasGeneratedBy(amplifyOperation.getIdentity());
 		
-		// serialize the document to System.out
-		SBOLWriter.write(document,System.out);	
-
+		// serialize the document to a file
+		SBOLWriter.write(document, Paths.get("./data/amplify_operation.sbol.xml").toFile());
 	}
 
 
@@ -212,10 +241,7 @@ public class Provenance_SpecifyBuildOperations {
 		
 		cdJoinedPart.addWasGeneratedBy(joinOperation.getIdentity());
 		
-		// serialize the document to System.out
-		SBOLWriter.write(document,System.out);	
+		// serialize the document to a file
+		SBOLWriter.write(document, Paths.get("./data/join_operation.sbol.xml").toFile());
 	}
 }
-
-
-

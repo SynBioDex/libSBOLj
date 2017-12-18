@@ -1145,7 +1145,7 @@ public class SBOLReader
 
 		if (URIPrefix != null)
 		{
-			displayId = findDisplayId(componentDef.getIdentity().toString());
+			displayId = URIcompliance.findDisplayId(componentDef.getIdentity().toString());
 			identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
 			persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
 		}
@@ -1328,9 +1328,10 @@ public class SBOLReader
 		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(identity);
 		if (oldC == null) {
 			SBOLDoc.addComponentDefinition(c);
-		} else if (c.isSetWasDerivedFrom() && oldC.isSetWasDerivedFrom() &&
-				!c.getWasDerivedFrom().equals(oldC.getWasDerivedFrom())) {
-			Set<TopLevel> topLevels = SBOLDoc.getByWasDerivedFrom(c.getWasDerivedFrom());
+		} else if (c.getWasDerivedFroms().size()>0 && oldC.getWasDerivedFroms().size()>0 &&
+				!c.getWasDerivedFroms().equals(oldC.getWasDerivedFroms())) {
+			URI wasDerivedFrom = (URI)c.getWasDerivedFroms().toArray()[0];
+			Set<TopLevel> topLevels = SBOLDoc.getByWasDerivedFrom(wasDerivedFrom);
 			for (TopLevel topLevel : topLevels) {
 				if (topLevel instanceof ComponentDefinition) {
 					return (ComponentDefinition) topLevel;
@@ -1342,8 +1343,10 @@ public class SBOLReader
 				persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
 			} while (SBOLDoc.getComponentDefinition(identity)!=null);
 			c = c.copy(URIPrefix, displayId, version);
-			if(identity != componentDef.getIdentity())
-				c.setWasDerivedFrom(componentDef.getIdentity());
+			if(identity != componentDef.getIdentity()) {
+				c.clearWasDerivedFroms();
+				c.addWasDerivedFrom(componentDef.getIdentity());
+			}
 			SBOLDoc.addComponentDefinition(c);
 		} else if (dropObjectsWithDuplicateURIs) {
 			return oldC;
@@ -1389,7 +1392,7 @@ public class SBOLReader
 
 		if (URIPrefix != null)
 		{
-			displayId = findDisplayId(topLevel.getIdentity().toString());
+			displayId = URIcompliance.findDisplayId(topLevel.getIdentity().toString());
 			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
 			persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
 		}
@@ -1440,7 +1443,7 @@ public class SBOLReader
 			sequence.setVersion(version);
 		}
 		if(identity != topLevel.getIdentity())
-			sequence.setWasDerivedFrom(topLevel.getIdentity());
+			sequence.addWasDerivedFrom(topLevel.getIdentity());
 		if (displayId != null)
 			sequence.setDisplayId(displayId);
 		if (name != null)
@@ -1453,9 +1456,10 @@ public class SBOLReader
 		Sequence oldS = SBOLDoc.getSequence(identity);
 		if (oldS == null) {
 			SBOLDoc.addSequence(sequence);
-		} else if (sequence.isSetWasDerivedFrom() && oldS.isSetWasDerivedFrom() &&
-				!sequence.getWasDerivedFrom().equals(oldS.getWasDerivedFrom())) {
-			Set<TopLevel> topLevels = SBOLDoc.getByWasDerivedFrom(sequence.getWasDerivedFrom());
+		} else if (sequence.getWasDerivedFroms().size()>0 && oldS.getWasDerivedFroms().size()>0 &&
+				!sequence.getWasDerivedFroms().equals(oldS.getWasDerivedFroms())) {
+			URI wasDerivedFrom = (URI)sequence.getWasDerivedFroms().toArray()[0];
+			Set<TopLevel> topLevels = SBOLDoc.getByWasDerivedFrom(wasDerivedFrom);
 			for (TopLevel top : topLevels) {
 				if (top instanceof Sequence) {
 					return (Sequence) top;
@@ -1478,34 +1482,6 @@ public class SBOLReader
 			}
 		}
 		return sequence;
-	}
-
-	private static String findDisplayId(String topLevelIdentity) {
-		String displayId = null;
-
-		topLevelIdentity = topLevelIdentity.trim();
-		while (topLevelIdentity.endsWith("/")||
-				topLevelIdentity.endsWith("#")||
-				topLevelIdentity.endsWith(":")) {
-			topLevelIdentity = topLevelIdentity.replaceAll("/$","");
-			topLevelIdentity = topLevelIdentity.replaceAll("#$","");
-			topLevelIdentity = topLevelIdentity.replaceAll(":$","");
-		}
-		int slash = topLevelIdentity.lastIndexOf('/');
-		int pound = topLevelIdentity.lastIndexOf('#');
-		int colon = topLevelIdentity.lastIndexOf(':');
-
-		if (slash!=-1 /*&& slash > pound && slash > colon*/) {
-			displayId = topLevelIdentity.substring(slash + 1);
-		} else if (pound!=-1 && pound > colon) {
-			displayId = topLevelIdentity.substring(pound + 1);
-		} else if (colon!=-1) {
-			displayId = topLevelIdentity.substring(colon + 1);
-		} else {
-			displayId = topLevelIdentity.toString();
-		}
-		displayId = URIcompliance.fixDisplayId(displayId);
-		return displayId;
 	}
 
 	/**
@@ -1543,7 +1519,7 @@ public class SBOLReader
 
 		if (URIPrefix != null)
 		{
-			displayId = findDisplayId(topLevel.getIdentity().toString());
+			displayId = URIcompliance.findDisplayId(topLevel.getIdentity().toString());
 			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
 			persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
 		}
@@ -3396,7 +3372,8 @@ public class SBOLReader
 				} else {
 					prefix = SBOLDoc.getNamespacePrefix(URI.create(nameSpace));
 				}
-				type = new QName(nameSpace,localPart,prefix);
+				if (!nameSpace.equals(Sbol2Terms.sbol2.getNamespaceURI()))
+					type = new QName(nameSpace,localPart,prefix);
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{

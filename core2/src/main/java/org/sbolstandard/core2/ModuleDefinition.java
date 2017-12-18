@@ -78,27 +78,18 @@ public class ModuleDefinition extends TopLevel {
 			this.addRole(role);
 		}
 		for (FunctionalComponent component : moduleDefinition.getFunctionalComponents()) {
-			String displayId = component.getDisplayId();
-			if (displayId==null) {
-				displayId = URIcompliance.extractDisplayId(component.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(component);
 			FunctionalComponent newComponent = this.createFunctionalComponent(displayId, 
 					component.getAccess(), component.getDefinitionURI(), component.getDirection());
 			newComponent.copy(component);
 		}
 		for (Module subModule : moduleDefinition.getModules()) {
-			String displayId = subModule.getDisplayId();
-			if (displayId==null) {
-				displayId = URIcompliance.extractDisplayId(subModule.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(subModule);
 			Module newModule = this.createModule(displayId, subModule.getDefinitionURI());
 			newModule.copy(subModule);
 		}
 		for (Interaction interaction : moduleDefinition.getInteractions()) {
-			String displayId = interaction.getDisplayId();
-			if (displayId==null) {
-				displayId = URIcompliance.extractDisplayId(interaction.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(interaction);
 			Interaction newInteraction = this.createInteraction(displayId, 
 					interaction.getTypes());
 			newInteraction.copy(interaction);
@@ -960,6 +951,20 @@ public class ModuleDefinition extends TopLevel {
 		result.addAll(models);
 		return result;
 	}
+	
+	/**
+	 * Returns the set of models identities referenced by this module definition.
+	 *
+	 * @return the set of models identities referenced by this module definition
+	 */
+	public Set<URI> getModelIdentities() {
+		Set<URI> result = new HashSet<>();
+		for (URI modelURI : models) {
+			Model model = this.getSBOLDocument().getModel(modelURI);
+			result.add(model.getIdentity());
+		}
+		return result;
+	}
 
 	/**
 	 * Returns the set of models referenced by this module definition.
@@ -1027,8 +1032,13 @@ public class ModuleDefinition extends TopLevel {
 		if (models == null) {
 			if (other.models != null)
 				return false;
-		} else if (!models.equals(other.models))
-			return false;
+		} else if (!models.equals(other.models)) {
+			if (getModelIdentities().size()!=getModelURIs().size() ||
+					other.getModelIdentities().size()!=other.getModelURIs().size() ||
+					!getModelIdentities().equals(other.getModelIdentities())) {
+				return false;
+			}
+		}
 		if (roles == null) {
 			if (other.roles != null)
 				return false;

@@ -65,12 +65,10 @@ public class Interaction extends Identified {
 	void copy(Interaction interaction) throws SBOLValidationException {
 		((Identified)this).copy(interaction);
 		for (Participation participation : interaction.getParticipations()) {
-			String displayId = participation.getDisplayId();
-			if (displayId==null) {
-				displayId = URIcompliance.extractDisplayId(participation.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(participation);
+			String participantDisplayId = URIcompliance.findDisplayId(participation.getParticipant());
 			Participation newParticipation = this.createParticipation(displayId, 
-					participation.getParticipant().getDisplayId(), participation.getRoles());
+					participantDisplayId, participation.getRoles());
 			newParticipation.copy(participation);
 		}		
 	}

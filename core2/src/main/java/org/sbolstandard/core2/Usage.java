@@ -41,19 +41,84 @@ public class Usage extends Identified {
 	 */
 	private Usage(Usage usage) throws SBOLValidationException {
 		super(usage);
-		this.setEntity(usage.getEntity());
+		this.setEntity(usage.getEntityURI());
 		this.setRoles(usage.getRoles());
 	}
 
 	void copy(Usage usage) throws SBOLValidationException {
 		((Identified)this).copy((Identified)usage);
+		for (URI role : usage.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((entity == null) ? 0 : entity.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usage other = (Usage) obj;
+		if (entity == null) {
+			if (other.entity != null)
+				return false;
+		} else if (!entity.equals(other.entity)) {
+			if (getEntityIdentity() == null || other.getEntityIdentity() == null 
+					|| !getEntityIdentity().equals(other.getEntityIdentity())) {
+				return false;
+			}
+		}
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		return true;
+	}
+		
+	/**
+	 * Returns the reference entity URI.
+	 *
+	 * @return the reference entity URI
+	 */
+	public URI getEntityURI() {
+		return entity;
+	}
+	
+	/**
+	 * Returns the entity identity referenced by this usage.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * entity identity referenced by this usage exists; 
+	 * or the matching plan otherwise.
+	 */
+	public URI getEntityIdentity() {
+		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument().getTopLevel(entity)==null) return null;
+		return this.getSBOLDocument().getTopLevel(entity).getIdentity();
 	}
 
 	/**
-	 * @return the entity
+	 * Returns the entity referenced by this usage.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * entity referenced by this usage exists; 
+	 * or the matching plan otherwise.
 	 */
-	public URI getEntity() {
-		return entity;
+	public TopLevel getEntity() {
+		if (this.getSBOLDocument()==null) return null;
+		return this.getSBOLDocument().getTopLevel(entity);
 	}
 
 	/**

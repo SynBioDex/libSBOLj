@@ -42,12 +42,61 @@ public class Association extends Identified {
 	private Association(Association association) throws SBOLValidationException {
 		super(association);
 		this.setRoles(association.getRoles());
-		this.setAgent(association.getAgent());
-		this.setPlan(association.getPlan());
+		this.setAgent(association.getAgentURI());
+		this.setPlan(association.getPlanURI());
 	}
 
 	void copy(Association association) throws SBOLValidationException {
 		((Identified)this).copy((Identified)association);
+		this.setPlan(association.getPlanURI());
+		for (URI role : association.getRoles()) {
+			this.addRole(URI.create(role.toString()));
+		}
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((agent == null) ? 0 : agent.hashCode());
+		result = prime * result + ((plan == null) ? 0 : plan.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Association other = (Association) obj;
+		if (agent == null) {
+			if (other.agent != null)
+				return false;
+		} else if (!agent.equals(other.agent)) {
+			if (getAgentIdentity() == null || other.getAgentIdentity() == null 
+					|| !getAgentIdentity().equals(other.getAgentIdentity())) {
+				return false;
+			}
+		}
+		if (plan == null) {
+			if (other.plan != null)
+				return false;
+		} else if (!plan.equals(other.plan)) {
+			if (getPlanIdentity() == null || other.getPlanIdentity() == null 
+					|| !getPlanIdentity().equals(other.getPlanIdentity())) {
+				return false;
+			}
+		}
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		return true;
 	}
 	
 	/**
@@ -114,12 +163,39 @@ public class Association extends Identified {
 	}
 	
 	/**
-	 * @return the agent
+	 * Returns the reference agent URI.
+	 *
+	 * @return the reference agent URI
 	 */
-	public URI getAgent() {
+	public URI getAgentURI() {
 		return agent;
 	}
 
+	/**
+	 * Returns the agent identity referenced by this association.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * agent referenced by this association exists; 
+	 * or the matching agent otherwise.
+	 */
+	public URI getAgentIdentity() {
+		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument().getAgent(agent)==null) return null;
+		return this.getSBOLDocument().getAgent(agent).getIdentity();
+	}
+	
+	/**
+	 * Returns the agent referenced by this association.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * agent referenced by this association exists; 
+	 * or the matching agent otherwise.
+	 */
+	public Agent getAgent() {
+		if (this.getSBOLDocument()==null) return null;
+		return this.getSBOLDocument().getAgent(agent);
+	}
+	
 	/**
 	 * @param agent the agent to set
 	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 12605, 12606. 
@@ -144,12 +220,39 @@ public class Association extends Identified {
 	public boolean isSetPlan() {
 		return plan != null;
 	}
+	
+	/**
+	 * Returns the reference plan URI.
+	 *
+	 * @return the reference plan URI
+	 */
+	public URI getPlanURI() {
+		return plan;
+	}
+	
+	/**
+	 * Returns the plan identity referenced by this association.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * plan referenced by this association exists; 
+	 * or the matching plan otherwise.
+	 */
+	public URI getPlanIdentity() {
+		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument().getPlan(plan)==null) return null;
+		return this.getSBOLDocument().getPlan(plan).getIdentity();
+	}
 
 	/**
-	 * @return the plan
+	 * Returns the plan referenced by this association.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * plan referenced by this association exists; 
+	 * or the matching plan otherwise.
 	 */
-	public URI getPlan() {
-		return plan;
+	public Plan getPlan() {
+		if (this.getSBOLDocument()==null) return null;
+		return this.getSBOLDocument().getPlan(plan);
 	}
 
 	/**

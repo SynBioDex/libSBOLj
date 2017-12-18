@@ -610,13 +610,13 @@ class writeTester {
 		return collection;
 	}
 
-	private static Annotation createAnnotation(QName relation, String literal) 
+	private static Annotation createAnnotation(QName relation, String literal) throws SBOLValidationException 
 	{
 		return new Annotation(NamedProperty(relation, literal));
 
 	}
 
-	private static Annotation createAnnotation(QName relation, URI value) 
+	private static Annotation createAnnotation(QName relation, URI value) throws SBOLValidationException 
 	{
 		return new Annotation(NamedProperty(relation, value));
 
