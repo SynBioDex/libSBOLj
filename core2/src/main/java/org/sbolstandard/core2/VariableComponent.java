@@ -20,9 +20,9 @@ public class VariableComponent extends Identified {
 	HashSet<URI> variantCollections;
 	HashSet<URI> variantDerivations;
 	URI variable;
-	URI operator;
+	OperatorType operator;
 	
-	public VariableComponent(URI identity, URI variable, URI operator) throws SBOLValidationException {
+	public VariableComponent(URI identity, URI variable, OperatorType operator) throws SBOLValidationException {
 		super(identity);
 		this.variable = variable;
 		this.operator = operator;
@@ -57,20 +57,20 @@ public class VariableComponent extends Identified {
 		return this.variable;
 	}
 	
-	public URI getOperator() {
+	public OperatorType getOperator() {
 		return this.operator;
 	}
 	
 	public Set<URI> getVariants() {
-		return this.variants;
+		return new HashSet<URI>(this.variants);
 	}
 	
 	public Set<URI> getVariantCollections () {
-		return this.variantCollections;
+		return new HashSet<URI>(this.variantCollections);
 	}
 	
 	public Set<URI> getVariantDerivations () {
-		return this.variantDerivations;
+		return new HashSet<URI>(this.variantDerivations);
 	}
 	
 	public void setVariants(Set<URI> variants) {

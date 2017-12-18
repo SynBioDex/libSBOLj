@@ -18,18 +18,19 @@ import java.util.Set;
  * Represents a CombinatorialDerivation object in the SBOL data model.
  * 
  * @author Zach Zundel
+ * @author Igor Durovic
  * @version 2.1
  */
 public class CombinatorialDerivation extends TopLevel {
 
 	private URI template;
-	private URI strategy;
-	private HashMap<URI, VariableComponent> variableComponents;
+	//private URI strategy;
 	
-	public static final URI ENUMERATE 	= URI.create("http://sbols.org/v2#enumerate");
-	public static final URI SAMPLE 		= URI.create("http://sbols.org/v2#sample");
+	private StrategyType strategy;
+	
+	private HashMap<URI, VariableComponent> variableComponents;
 
-	/**
+	/**getComponents
 	 * @param identity
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following
 	 * constructor or method: 
@@ -38,7 +39,7 @@ public class CombinatorialDerivation extends TopLevel {
 	 * <li>{@link #setTypes(Set)}.</li>
 	 * </ul>
 	 */
-	public CombinatorialDerivation(URI identity, URI template, URI strategy) throws SBOLValidationException {
+	public CombinatorialDerivation(URI identity, URI template, StrategyType strategy) throws SBOLValidationException {
 		super(identity);
 
         this.template = template;
@@ -58,21 +59,38 @@ public class CombinatorialDerivation extends TopLevel {
         this.copy(combinatorialDerivation);
 	}
 
-
+	/**
+	 * Adds the given variable component to the list of variable components.
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>any of the following SBOL validation rules was violated: 10604, 10605, 10803</li>
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
+	 * </ul>
+	 */
 	private void addVariableComponent(URI uri, VariableComponent variableComponent) {
-		this.variableComponents.put(uri, variableComponent);		
+		this.variableComponents.put(uri, variableComponent);
 	}
 	
-	public VariableComponent getVariableComponent(URI uri) {
-		if(this.variableComponents.containsKey(uri)) {
-			return this.variableComponents.get(uri);
-		} else {
-			return null;
-		}
+	/**
+	 * Returns the instance matching the given variable component's identity URI.
+	 *
+	 * @param variableComponentURI the identity URI of the variable component to be retrieved
+	 * @return the matching variable component if present, or {@code null} otherwise.
+	 */
+	public VariableComponent getVariableComponent(URI variableComponentURI) {
+		return this.variableComponents.get(variableComponentURI);
 	}
 
-	public HashMap<URI, VariableComponent> getVariableComponents() {
-		return this.variableComponents;
+	/**
+	 * Returns the set of variable components owned by this combinatorial derivation.
+	 *
+	 * @return the set of variable components owned by this
+	 *         combinatorial derivation.
+	 */
+	public Set<VariableComponent> getVariableComponents() {
+		Set<VariableComponent> variableComponents = new HashSet<>();
+		variableComponents.addAll(this.variableComponents.values());
+		return variableComponents;
 	}
 
 	/**
@@ -81,23 +99,80 @@ public class CombinatorialDerivation extends TopLevel {
 	void copy(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
 		((TopLevel)this).copy((TopLevel)combinatorialDerivation);
 
-		this.variableComponents = new HashMap<>();
-        HashMap<URI, VariableComponent> sourceVariableComponents = combinatorialDerivation.getVariableComponents();
-     
-
-		for (URI variableComponentUri : sourceVariableComponents.keySet()) {
-			this.addVariableComponent(variableComponentUri, 
-					(VariableComponent)sourceVariableComponents.get(variableComponentUri).deepCopy());
+        Set<VariableComponent> sourceVariableComponents = combinatorialDerivation.getVariableComponents();
+        
+        for (VariableComponent variableComponent : sourceVariableComponents) {
+			String displayId = variableComponent.getDisplayId();
+			if (displayId==null) {
+				displayId = URIcompliance.extractDisplayId(variableComponent.getIdentity());
+			}
+			
+			this.createVariableComponent(variableComponent.getIdentity(), variableComponent.getVariable(),
+					variableComponent.getOperator());
 		}
 
-        this.setTemplate(combinatorialDerivation.getTemplate());
+        this.setTemplate(combinatorialDerivation.getTemplateURI());
         this.setStrategy(combinatorialDerivation.getStrategy());
 	}
 
 
-    public URI getTemplate() {
+    private VariableComponent createVariableComponent(URI identity, URI variable, OperatorType operator) throws SBOLValidationException {
+		VariableComponent newVariableComponent = new VariableComponent(identity, variable, operator);
+    	this.addVariableComponent(identity, newVariableComponent);
+    	return null;
+	}
+    
+    /**
+	 * Creates a child component for this component definition with the given arguments, 
+	 * and then adds it to this component definition's list of components.
+	 * <p>
+	 * This method first creates a compliant URI for the component definition that is referenced by
+	 * the child component to be created, i.e., the child component's definition property. 
+	 * This URI starts with the default
+	 * URI prefix, which was set in the SBOLDocument instance hosting this component definition, 
+	 * followed by the given display ID and ends with {@code version}. 
+	 * It then calls {@link #createComponent(String, AccessType, URI)}
+	 * with this compliant component URI.
+	 *
+	 * @param displayId the display ID for the component to be created
+	 * @param access the access property for the component to be created
+	 * @param definitionId the display ID of the component definition referenced by the component to be created
+	 * @param version the version for the component to be created
+	 * @return the created component
+	 * @throws SBOLValidationException if either of the following condition is satisfied: 
+	 * <ul>
+	 * <li>if either of the following SBOL validation rules was violated: 10204, 10206; or</li>
+	 * <li>an SBOL validation exception occurred in {@link #createComponent(String, AccessType, URI)}</li>
+	 * </ul>
+	 */
+	//TODO
+    /*public VariableComponent createVariableComponent(String displayId, OperatorType operator,
+			String variableId, String version) throws SBOLValidationException {
+		URI variableURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
+				TopLevel.COMPONENT_DEFINITION, variableId, version, this.getSBOLDocument().isTypesInURIs());
+		return createVariableComponent(displayId, variableURI, operator);
+	}*/
+
+    /**
+	 * Returns the template URI for this combinatorial derivation
+	 *
+	 * @return the template component definition URI
+	 */
+	public URI getTemplateURI() {
         return this.template;
     }
+	
+	/**
+	 * Returns the template referenced by this combinatorial derivation. 
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * component definition referenced by this template exits; 
+	 * or the matching component definition otherwise.
+	 */
+	public ComponentDefinition getTemplate() {
+		if (this.getSBOLDocument()==null) return null;
+		return this.getSBOLDocument().getComponentDefinition(template);
+	}
 
     public void setTemplate(String displayId, String version) throws SBOLValidationException {
 		URI templateURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
@@ -117,11 +192,11 @@ public class CombinatorialDerivation extends TopLevel {
         this.template = template;
     }
 
-    public URI getStrategy() {
+    public StrategyType getStrategy() {
         return this.strategy;
     }
 
-    public void setStrategy(URI strategy) {
+    public void setStrategy(StrategyType strategy) {
         this.strategy = strategy;
     }
 
@@ -200,3 +275,4 @@ public class CombinatorialDerivation extends TopLevel {
 		}
 	}
 }
+
