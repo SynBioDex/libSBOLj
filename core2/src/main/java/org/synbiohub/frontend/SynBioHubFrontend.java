@@ -3,7 +3,7 @@ package org.synbiohub.frontend;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -520,6 +520,64 @@ public class SynBioHubFrontend
 			}	
 		}
 	}
+	
+    /**
+     * Attach a file to an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param filename the name of the file to attach
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void attachFile(URI topLevelUri, String filename) throws SynBioHubException
+    {
+    	attachFile(topLevelUri,new File(filename));
+    }
+	
+    /**
+     * Attach a file to an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param file the file to attach
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void attachFile(URI topLevelUri, File file) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to submit.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = topLevelUri + "/attach";
+        url = url.replace(uriPrefix, backendUrl);
+
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        MultipartEntityBuilder params = MultipartEntityBuilder.create();        
+
+        /* example for setting a HttpMultipartMode */
+        params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+        params.addTextBody("user", user);	
+        params.addBinaryBody("file", file);
+	        
+        try
+        {
+            request.setEntity(params.build());
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
     
     /**
      * Submit to the SynBioHub.
