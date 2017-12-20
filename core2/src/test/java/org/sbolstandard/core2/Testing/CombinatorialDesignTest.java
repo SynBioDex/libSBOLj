@@ -293,7 +293,7 @@ public class CombinatorialDesignTest {
 		
 		// Create CombinatorialDerivations
 		CombinatorialDerivation Combinatorial_Derivation = doc.createCombinatorialDerivation("combDev", version, 
-				"Gal4VP16", version, CombinatorialDerivation.SAMPLE);
+				"Gal4VP16", version, StrategyType.SAMPLE);
 		 
 		
 		SBOLValidate.validateSBOL(doc, true, true, true);
