@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,8 +25,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
@@ -51,6 +53,7 @@ public class SynBioHubFrontend
     String backendUrl;
     String uriPrefix;
     String user = "";
+    String username = null;
 
     /**
      * Creates an instance of the SynBioHub API.
@@ -123,6 +126,26 @@ public class SynBioHubFrontend
         SBOLDocument document = fetchFromSynBioHub(url);
 
         return document;
+    }
+    
+    /**
+     * Retrieve an attachment from a SynBioHub instance using its URI.
+     *
+     * @param attachmentUri The URI of the SBOL Attachment object
+     * @param path Directory path to save the attachment
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public void getAttachment(URI attachmentUri, String path) throws SynBioHubException, IOException
+    {
+        if (!attachmentUri.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = attachmentUri + "/download";
+        url = url.replace(uriPrefix, backendUrl);
+
+        fetchContentSaveToFile(url,path);
     }
     
     /**
@@ -464,6 +487,17 @@ public class SynBioHubFrontend
     public void logout() 
     {
     	user = "";
+    	username = null;
+    }
+    
+    /**
+     * Returns the username of the logged in user
+     * 
+     * @return the username of the logged in user
+     */
+    public String getUsername()
+    {
+    	return username;
     }
 
     /**
@@ -494,6 +528,7 @@ public class SynBioHubFrontend
 
             HttpEntity entity = response.getEntity();
             user = inputStreamToString(entity.getContent());
+            username = email;
         }
         catch (Exception e)
         {
@@ -523,6 +558,64 @@ public class SynBioHubFrontend
 			}	
 		}
 	}
+	
+    /**
+     * Attach a file to an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param filename the name of the file to attach
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void attachFile(URI topLevelUri, String filename) throws SynBioHubException
+    {
+    	attachFile(topLevelUri,new File(filename));
+    }
+	
+    /**
+     * Attach a file to an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param file the file to attach
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void attachFile(URI topLevelUri, File file) throws SynBioHubException
+    {
+    	if (user.equals("")) {
+    		Exception e = new Exception("Must be logged in to submit.");
+    		throw new SynBioHubException(e);
+    	}
+        String url = topLevelUri + "/attach";
+        url = url.replace(uriPrefix, backendUrl);
+
+        HttpPost request = new HttpPost(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+        
+        MultipartEntityBuilder params = MultipartEntityBuilder.create();        
+
+        /* example for setting a HttpMultipartMode */
+        params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+        params.addTextBody("user", user);	
+        params.addBinaryBody("file", file);
+	        
+        try
+        {
+            request.setEntity(params.build());
+            HttpResponse response = client.execute(request);
+            checkResponseCode(response);
+        }
+        catch (Exception e)
+        {
+        	//e.printStackTrace();
+            throw new SynBioHubException(e);
+            
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }   
     
     /**
      * Submit to the SynBioHub.
@@ -575,31 +668,31 @@ public class SynBioHubFrontend
         HttpPost request = new HttpPost(url);
         request.setHeader("X-authorization", user);
         request.setHeader("Accept", "text/plain");
+        
+        MultipartEntityBuilder params = MultipartEntityBuilder.create();        
 
-        MultipartEntity params = new MultipartEntity();
-        StringBody filebody = null; 
-        try {
-			params.addPart("id", new StringBody(id));
-	        params.addPart("version", new StringBody(version));
-	        params.addPart("name", new StringBody(name));
-	        params.addPart("description", new StringBody(description));
-	        params.addPart("citations", new StringBody(citations));
-	        params.addPart("collectionChoices", new StringBody(collections));
-	        params.addPart("overwrite_merge", new StringBody(overwrite_merge));
-	        params.addPart("user", new StringBody(user));
-	        if (fileToUpload != null) {
-	        	params.addPart("file", submitData(fileToUpload));
-	        } else {
-	        	params.addPart("file", new StringBody(""));
-	        }
-		}
-		catch (UnsupportedEncodingException e1) {
-			throw new SynBioHubException(e1);
-		}
+        /* example for setting a HttpMultipartMode */
+        params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+        params.addTextBody("id", id);
+        params.addTextBody("version", version);
+        params.addTextBody("name", name);
+        params.addTextBody("description", description);
+        params.addTextBody("citations", citations);
+        params.addTextBody("collectionChoices", collections);
+        params.addTextBody("overwrite_merge", overwrite_merge);
+        params.addTextBody("user", user);
+      
+        if (document != null) {
+        	InputStream stream = new ByteArrayInputStream(serializeDocument(document).getBytes());
+        	params.addBinaryBody("file", stream, ContentType.APPLICATION_XML, "file");
+        } else {
+        	params.addTextBody("file", "");
+        }
 	        
         try
         {
-            request.setEntity(params);
+            request.setEntity(params.build());
             HttpResponse response = client.execute(request);
             checkResponseCode(response);
         }
@@ -693,6 +786,47 @@ public class SynBioHubFrontend
         {
             throw new SynBioHubException(e);    
         }
+    }
+    
+    private void fetchContentSaveToFile(String url,String path) throws SynBioHubException, IOException
+    {
+		HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+
+    	try
+    	{
+			HttpResponse response = client.execute(request);
+	
+			checkResponseCode(response);
+			
+			String filename = "default";
+			String dispositionValue = response.getFirstHeader("Content-Disposition").getValue();
+			int index = dispositionValue.indexOf("filename=");
+            if (index > 0) {
+                filename = dispositionValue.substring(index + 10, dispositionValue.length() - 1);
+            }
+            File file = new File(path + filename);
+            
+		    HttpEntity entity = response.getEntity();
+		    if (entity != null) {
+		        try (FileOutputStream outstream = new FileOutputStream(file)) {
+		            entity.writeTo(outstream);
+		        }
+		    }
+    	}
+    	catch(SynBioHubException e)
+    	{
+    		request.releaseConnection();
+    		
+    		throw e;
+    	}
+    	catch(IOException e)
+    	{
+    		request.releaseConnection();
+    		
+    		throw e;
+    	}
     }
     
     private String fetchContentAsString(String url) throws SynBioHubException, IOException

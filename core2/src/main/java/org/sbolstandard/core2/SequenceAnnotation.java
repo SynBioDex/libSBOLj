@@ -74,10 +74,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	void copy(SequenceAnnotation sequenceAnnotation) throws SBOLValidationException {
 		((Identified)this).copy((Identified)sequenceAnnotation);
 		for (Location location : sequenceAnnotation.getLocations()) {
-			String displayId = location.getDisplayId();
-			if (displayId==null) {
-				displayId = URIcompliance.extractDisplayId(location.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(location);
 			if (location instanceof Range) {
 				Range range = (Range)location;
 				Range newRange;
@@ -114,7 +111,8 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 			this.removeLocation(location);
 		}
 		if (sequenceAnnotation.isSetComponent()) {
-			this.setComponent(sequenceAnnotation.getComponent().getDisplayId());
+			String componentDisplayId = URIcompliance.findDisplayId(sequenceAnnotation.getComponent());
+			this.setComponent(componentDisplayId);
 		}
 		this.roles = new HashSet<>();
 		for (URI role : sequenceAnnotation.getRoles()) {
@@ -472,6 +470,20 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	public URI getComponentURI() {
 		return component;
 	}
+	
+	/**
+	 * Returns the component identity this sequence annotation refers to.
+	 * <p>
+	 * If this sequence annotation's parent component definition is {@code null}, this method returns {@code null}.
+	 * Otherwise, it returns its child component which is also referenced by this sequence annotation.   
+	 * 
+	 * @return the component identity this sequence annotation refers to  
+	 */
+	public URI getComponentIdentity() {
+		if (componentDefinition==null) return null;
+		if (componentDefinition.getComponent(component)==null) return null;
+		return componentDefinition.getComponent(component).getIdentity();
+	}
 
 	/**
 	 * Returns the component this sequence annotation refers to.
@@ -675,8 +687,12 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		if (component == null) {
 			if (other.component != null)
 				return false;
-		} else if (!component.equals(other.component))
-			return false;
+		} else if (!component.equals(other.component)) {
+			if (getComponentIdentity() == null || other.getComponentIdentity() == null 
+					|| !getComponentIdentity().equals(other.getComponentIdentity())) {
+				return false;
+			}
+		}
 		if (roles == null) {
 			if (other.roles != null)
 				return false;

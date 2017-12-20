@@ -40,14 +40,25 @@ class readTester {
 
 		try {
 			SBOLReader.setURIPrefix("http://dummy.org/");
-			SBOLDocument doc = SBOLReader.read("/Users/myers/git/libSBOLj/core2/src/test/resources/SBOL2/CutExample.xml");
-			doc = doc.changeURIPrefixVersion("http://dummy.org/", null);
-			doc.write("/Users/myers/Downloads/out.xml");
-			SBOLValidate.validateSBOL(doc, true, true, true);
-			for(String error : SBOLValidate.getErrors()) {
-				System.out.println(error);
-			}
-			doc.write("/Users/myers/Downloads/tmpGB.xml");
+			SBOLReader.setCompliant(true);
+			SBOLDocument doc = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/SBOLTestSuite/SBOL2/partial_pTAK_right_cassette_orig.xml");
+			//SBOLDocument doc2 = new SBOLDocument();
+			doc.setDefaultURIprefix("http://dummy.org/");
+			//doc2.createCopy(doc);
+			//doc2.write(System.out);
+			doc = doc.changeURIPrefixVersion("http://dummy.org/", "1");
+			doc.write(System.out);
+//			SBOLDocument doc = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/Emulated/toggle.xml_Emulated.xml");
+//			SBOLDocument doc2 = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/Retrieved/toggle.xml_Retrieved.xml");
+//			SBOLValidate.compareDocuments("em", doc, "re", doc2);
+//			if (SBOLValidate.getNumErrors() > 0) {
+//				for (String error : SBOLValidate.getErrors()) {
+//					System.out.println(error);
+//				}	
+//			}
+			//SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/bug.xml");
+			//doc = doc.changeURIPrefixVersion("http://new.org/", "1.0");
+			//doc.write(System.out);
 			//SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
 			//String result = sbh.sparqlQuery("select ?s ?p ?o where { ?s ?p ?o . FILTER(?s = <https://synbiohub.org/public/igem/BBa_B0015/1>) }");
 			//System.out.println(result);

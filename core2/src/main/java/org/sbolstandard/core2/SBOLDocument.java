@@ -109,7 +109,6 @@ public class SBOLDocument {
 			addNamespaceBinding(Sbol2Terms.prov);
 		}
 		catch (SBOLValidationException e) {
-			// TODO: this should never happen
 			e.printStackTrace();
 		}
 		prefixes = new HashSet<>();
@@ -1287,6 +1286,9 @@ public class SBOLDocument {
 		// topLevel.isURIcompliant();
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
+			if (URIprefix==null) {
+				URIprefix = this.getDefaultURIprefix();
+			}
 			URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		} else {
 			URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -1295,10 +1297,20 @@ public class SBOLDocument {
 			//displayId = topLevel.getDisplayId();
 			//if (displayId == null) {
 			displayId = URIcompliance.extractDisplayId(topLevel.getIdentity());
+			if (displayId==null) {
+				displayId = URIcompliance.findDisplayId(topLevel.getIdentity().toString());
+			} else {
+				displayId = URIcompliance.fixDisplayId(displayId);
+			}
 			//}
 		}
 		if (version == null) {
 			version = topLevel.getVersion();
+		}
+		TopLevel oldTopLevel = this.getTopLevel(URIcompliance.createCompliantURI(URIprefix, displayId, version));
+		if (oldTopLevel != null) {
+			// TODO: should check if they are same or different, if different throw exception
+			if (oldTopLevel.equals(topLevel)) return oldTopLevel; 
 		}
 		if (topLevel instanceof Collection) {
 			Collection newCollection = this.createCollection(URIprefix, displayId, version);
@@ -1403,7 +1415,8 @@ public class SBOLDocument {
 	 */
 	private void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
 		if (document.getTopLevel(topLevel.getIdentity())!=null) return;
-		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model) {
+		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || 
+				topLevel instanceof Model || topLevel instanceof Plan || topLevel instanceof Agent) {
 			document.createCopy(topLevel);
 		} else if (topLevel instanceof Collection) {
 			for (TopLevel member : ((Collection)topLevel).getMembers()) {
@@ -1436,6 +1449,21 @@ public class SBOLDocument {
 				document.createCopy(model);
 			}
 			document.createCopy(topLevel);
+		} else if (topLevel instanceof Activity) {
+			for (Association association : ((Activity)topLevel).getAssociations()) {
+				if (association.getAgent()!=null) {
+					createRecursiveCopy(document,association.getAgent());
+				}
+				if (association.getPlan()!=null) {
+					createRecursiveCopy(document,association.getPlan());
+				}
+			}
+			for (Usage usage : ((Activity)topLevel).getUsages()) {
+				if (usage.getEntity()!=null) {
+					createRecursiveCopy(document,usage.getEntity());
+				}
+			}
+			document.createCopy(topLevel);
 		}
 		for (Annotation annotation : topLevel.getAnnotations()) {
 			if (annotation.isURIValue()) {
@@ -1451,9 +1479,9 @@ public class SBOLDocument {
 	}
 	
 	private String extractDocumentURIPrefix() {
-		String documentURIPrefix = "";
+		String documentURIPrefix = null;
 		for (TopLevel topLevel : getTopLevels()) {
-			if (documentURIPrefix.equals("")) {
+			if (documentURIPrefix == null || documentURIPrefix.equals("")) {
 				documentURIPrefix = URIcompliance.extractURIprefix(topLevel.getIdentity());
 			} else {
 				for (int i=0; i < documentURIPrefix.length(); i++) {
@@ -1474,16 +1502,28 @@ public class SBOLDocument {
 	}
 	
 	private void fixDocumentURIPrefix() throws SBOLValidationException {
-		String documentURIPrefix = extractDocumentURIPrefix();
-		if (documentURIPrefix.length() >= 9) {
-			setDefaultURIprefix(documentURIPrefix);
+		String documentURIPrefixAll = extractDocumentURIPrefix();
+		if (documentURIPrefixAll!=null && documentURIPrefixAll.length() >= 9) {
+			setDefaultURIprefix(documentURIPrefixAll);
 		}
+		String documentURIPrefix = documentURIPrefixAll;
 		for (TopLevel topLevel : getTopLevels()) {
-			if (documentURIPrefix.length() < 9) {
+			if (documentURIPrefixAll.length() < 9) {
 				documentURIPrefix = URIcompliance.extractURIprefix(topLevel.getIdentity());
+				String simpleNamespace = URIcompliance.extractSimpleNamespace(topLevel.getIdentity());
+				if (simpleNamespace!=null) {
+					String documentURIPrefix2 = URIcompliance.extractURIprefix(URI.create(simpleNamespace));
+					if (documentURIPrefix2!=null) {
+						documentURIPrefix = documentURIPrefix2;
+					}
+				}
+				if (documentURIPrefix==null) {
+					documentURIPrefix = this.getDefaultURIprefix();
+				}
 			}
 			if (!topLevel.getIdentity()
-					.equals(URIcompliance.createCompliantURI(documentURIPrefix, topLevel.getDisplayId(), topLevel.getVersion()))) {
+					.equals(URIcompliance.createCompliantURI(documentURIPrefix, 
+							URIcompliance.findDisplayId(topLevel), topLevel.getVersion()))) {
 				String newDisplayId = topLevel.getIdentity().toString().replaceAll(documentURIPrefix, "");
 				String newVersion = "";
 				if (topLevel.isSetVersion()) {
@@ -1503,7 +1543,7 @@ public class SBOLDocument {
 		}
 	}
 	
-	private void updateReferences(List<Annotation> annotations,URI originalIdentity,URI newIdentity) {
+	private void updateReferences(List<Annotation> annotations,URI originalIdentity,URI newIdentity) throws SBOLValidationException {
 		for (Annotation annotation : annotations) {
 			if (annotation.isURIValue()) {
 				if (annotation.getURIValue().equals(originalIdentity)) {
@@ -1515,7 +1555,7 @@ public class SBOLDocument {
 		}
 	}
 	
-	private void updateReferences(Identified identified,URI originalIdentity,URI newIdentity) {
+	private void updateReferences(Identified identified,URI originalIdentity,URI newIdentity) throws SBOLValidationException {
 		updateReferences(identified.getAnnotations(),originalIdentity,newIdentity);
 	}
 	
@@ -1628,7 +1668,7 @@ public class SBOLDocument {
 		}
 	}
 
-	private void updateReferences(List<Annotation> annotations,HashMap<URI,URI> uriMap) {
+	private void updateReferences(List<Annotation> annotations,HashMap<URI,URI> uriMap) throws SBOLValidationException {
 		for (Annotation annotation : annotations) {
 			if (annotation.isURIValue()) {
 				if (uriMap.get(annotation.getURIValue())!=null) {
@@ -1640,7 +1680,7 @@ public class SBOLDocument {
 		}
 	}
 	
-	private void updateReferences(Identified identified,HashMap<URI,URI> uriMap) {
+	private void updateReferences(Identified identified,HashMap<URI,URI> uriMap) throws SBOLValidationException {
 		updateReferences(identified.getAnnotations(),uriMap);
 	}
 	
@@ -1825,9 +1865,23 @@ public class SBOLDocument {
 	public SBOLDocument changeURIPrefixVersion(String URIPrefix,String version) throws SBOLValidationException {
 		SBOLDocument document = new SBOLDocument();
 		SBOLDocument fixed = new SBOLDocument();
+		fixed.setDefaultURIprefix(URIPrefix);
+//		if (!this.isCompliant()) {
+//			for (TopLevel toplevel : this.getTopLevels()) {
+//				String displayId = toplevel.getDisplayId();
+//				if (displayId==null) {
+//					displayId = URIcompliance.findDisplayId(toplevel.getIdentity().toString());
+//				}
+//				fixed.createCopy(toplevel,URIPrefix,displayId,version);
+//			}
+//			fixed.fixDocumentURIPrefix();
+//		} else {
+//			fixed.createCopy(this);
+//			fixed.fixDocumentURIPrefix();
+//		}
+		this.fixDocumentURIPrefix();
 		fixed.createCopy(this);
-		fixed.fixDocumentURIPrefix();
-		String documentURIPrefix = extractDocumentURIPrefix();
+		String documentURIPrefix = fixed.extractDocumentURIPrefix();
 		HashMap<URI,URI> uriMap = new HashMap<URI,URI>();
 		//for (TopLevel topLevel : this.getTopLevels()) {
 		for (TopLevel topLevel : fixed.getTopLevels()) {
@@ -1866,9 +1920,9 @@ public class SBOLDocument {
 	 * </ul>
 	 */
 	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
-		if ((URIprefix==null || URIcompliance.extractURIprefix(topLevel.getIdentity()).equals(URIprefix)) &&
-			(displayId==null || topLevel.getDisplayId().equals(displayId)) &&
-			(version==null || topLevel.getVersion().equals(version))) {
+		if ((URIprefix==null || URIprefix.equals(URIcompliance.extractURIprefix(topLevel.getIdentity()))) &&
+			(displayId==null || displayId.equals(topLevel.getDisplayId())) &&
+			(version==null || version.equals(topLevel.getVersion()))) {
 			return topLevel;
 		}
 		TopLevel renamedTopLevel = createCopy(topLevel,URIprefix,displayId,version);
@@ -2204,8 +2258,7 @@ public class SBOLDocument {
 	 * @param version the version of the activity to be created
 	 * @return the created activity
 	 * @throws SBOLValidationException if an SBOL validation rules was violated:
-	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 
-	 * 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12301, 12302. // TODO: Check?
+	 * 10201, 10202, 10204, 10206, 10220.
 	 */
 	public Activity createActivity(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -2356,8 +2409,7 @@ public class SBOLDocument {
 	 * @param version the version of the agent to be created
 	 * @return the created agent
 	 * @throws SBOLValidationException if an SBOL validation rules was violated:
-	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 
-	 * 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12301, 12302. // TODO: Check?
+	 * 10201, 10202, 10204, 10206, 10220.
 	 */
 	public Agent createAgent(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -2508,8 +2560,7 @@ public class SBOLDocument {
 	 * @param version the version of the plan to be created
 	 * @return the created plan
 	 * @throws SBOLValidationException if an SBOL validation rules was violated:
-	 * 10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 
-	 * 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12301, 12302. // TODO: Check?
+	 * 10201, 10202, 10204, 10206, 10220.
 	 */
 	public Plan createPlan(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);

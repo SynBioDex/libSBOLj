@@ -615,6 +615,7 @@ public abstract class Identified {
 		}
 		addNamespace(annotation);
 		annotations.add(annotation);
+		//Collections.sort(annotations);
 	}
 
 	/**
