@@ -146,12 +146,60 @@ public class CombinatorialDerivation extends TopLevel {
 	 * </ul>
 	 */
 	//TODO
-    /*public VariableComponent createVariableComponent(String displayId, OperatorType operator,
+    public VariableComponent createVariableComponent(String displayId, OperatorType operator,
 			String variableId, String version) throws SBOLValidationException {
 		URI variableURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
 				TopLevel.COMPONENT_DEFINITION, variableId, version, this.getSBOLDocument().isTypesInURIs());
 		return createVariableComponent(displayId, variableURI, operator);
-	}*/
+	}
+
+	/**
+	 * Creates a child component for this component definition with the given arguments, 
+	 * and then adds it to this component definition's list of components.
+	 * <p>
+	 * This method calls {@link #createComponent(String, AccessType, URI)}
+	 * with the given arguments and an empty string for version.
+	 *
+	 * @param displayId the display ID for the component to be created
+	 * @param access the access property for the component to be created
+	 * @param definitionId the display ID of the component definition referenced by the component to be created
+	 * @return the created component
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in {@link #createComponent(String, AccessType, String, String)}
+	 */
+	public VariableComponent createVariableComponent(String displayId, OperatorType operator, String variableId) throws SBOLValidationException {
+		return createVariableComponent(displayId, operator, variableId, "");
+	}
+
+	/**
+	 * Creates a child component for this component definition with the given arguments, 
+	 * and then adds to this component definition's list of components.
+	 * <p>
+	 * This method first creates a compliant URI for the child component to be created. 
+	 * This URI starts with this component definition's persistent identity, 
+	 * followed by the given display ID and ends with this component defintion's version. 
+	 * 
+	 * @param displayId the display ID for the component to be created
+	 * @param access the access property for the component to be created
+	 * @param definitionURI the URI of the component definition referenced by the component to be created
+	 * @return the created component
+	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
+	 * 10201, 10202, 10204, 10206, 10602, 10604, 10605, 10607, 10803.
+	 */
+	public VariableComponent createVariableComponent(String displayId, URI variableURI, OperatorType operator) throws SBOLValidationException {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getVariableComponent(variableURI)==null) {
+				throw new SBOLValidationException("sbol-XXXXX",this);
+			}
+		}
+		String URIprefix = this.getPersistentIdentity().toString();
+		String version = this.getVersion();
+		VariableComponent c = createVariableComponent(createCompliantURI(URIprefix, displayId, version),
+				variableURI, operator);
+		c.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
+		c.setDisplayId(displayId);
+		c.setVersion(version);
+		return c;
+	}
 
     /**
 	 * Returns the template URI for this combinatorial derivation
@@ -275,4 +323,5 @@ public class CombinatorialDerivation extends TopLevel {
 		}
 	}
 }
+
 
