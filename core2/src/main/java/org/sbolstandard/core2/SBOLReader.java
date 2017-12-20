@@ -2054,7 +2054,7 @@ public class SBOLReader
 		String description 	   = null;
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
 		URI template 		   = null;
-		URI strategy           = null;
+		StrategyType strategy  = null;
 		String version 		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 
@@ -2089,11 +2089,21 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.CombinatorialDerivation.strategy))
 			{
-				if (!(namedProperty.getValue() instanceof Literal) || persistentIdentity != null ||
+				if (!(namedProperty.getValue() instanceof Literal) || strategy != null ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
 				}
-				strategy  = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				String strategyTypeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				if (strategyTypeStr.startsWith("http://www.sbolstandard.org/")) {
+					System.out.println("Warning: namespace for strategy types should be http://sbols.org/v2#");
+					strategyTypeStr = strategyTypeStr.replace("http://www.sbolstandard.org/", "http://sbols.org/v2#");
+				}
+				try {
+					strategy = StrategyType.convertToStrategyType(URI.create(strategyTypeStr));
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
@@ -2186,13 +2196,13 @@ public class SBOLReader
 	private static VariableComponent parseVariableComponent(SBOLDocument SBOLDoc, NestedDocument<QName> variableComponent,
 			Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException {
 		String displayId 	   			= null;
-		String name 	 	   				= null;
-		String description 	    		 	= null;
+		String name 	 	   			= null;
+		String description 	    		= null;
 		URI persistentIdentity			= null;
 		String version					= null;
 		List<Annotation> annotations 	= new ArrayList<>();
-		URI variable						= null;
-		URI operator						= null;
+		URI variable					= null;
+		OperatorType operator			= null;
 		HashSet<URI> variants			= new HashSet<>();
 		HashSet<URI> variantCollections	= new HashSet<>();
 		HashSet<URI> variantDerivations	= new HashSet<>();
@@ -2264,13 +2274,31 @@ public class SBOLReader
 				}
 				variantDerivations.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
-			else if(namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasOperator))
+			/*else if(namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasOperator))
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || description != null ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
-					throw new SBOLValidationException("sbol-XXXXX",variableComponent.getIdentity());
+					throw new SBOLValidationException("sbol-XXXXX", variableComponent.getIdentity());
 				}
 				operator = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}*/
+			else if (namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasOperator))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || operator != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-10607", variableComponent.getIdentity());
+				}
+				String operatorTypeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				if (operatorTypeStr.startsWith("http://www.sbolstandard.org/")) {
+					System.out.println("Warning: namespace for operator types should be http://sbols.org/v2#");
+					operatorTypeStr = operatorTypeStr.replace("http://www.sbolstandard.org/", "http://sbols.org/v2#");
+				}
+				try {
+					operator = OperatorType.convertToOperatorType(URI.create(operatorTypeStr));
+				}
+				catch (SBOLValidationException e) {
+					throw new SBOLValidationException("sbol-10607", variableComponent.getIdentity());
+				}
 			}
 			else if(namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasVariable))
 			{
@@ -5607,3 +5635,4 @@ public class SBOLReader
 		return sequence;
 	}
 }
+
