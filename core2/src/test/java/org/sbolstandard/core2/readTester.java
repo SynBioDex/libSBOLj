@@ -1,5 +1,6 @@
 package org.sbolstandard.core2;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
@@ -39,15 +40,22 @@ class readTester {
 	public static void main(String[] args) {
 
 		try {
-			SBOLReader.setURIPrefix("http://dummy.org/");
-			SBOLReader.setCompliant(true);
-			SBOLDocument doc = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/SBOLTestSuite/SBOL2/partial_pTAK_right_cassette_orig.xml");
+			SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
+			sbh.login("myers@ece.utah.edu", "test");
+			//sbh.attachFile(URI.create("https://synbiohub.org/user/myers/Tester_1/BBa_J61101/1"), "/Users/myers/Downloads/pc_logo_400.png");
+			sbh.getAttachment(URI.create("https://synbiohub.org/user/myers/Tester_1/attachment_00009Rh5j0pvezwyVBNeU4/1"),"/Users/myers/");
+//			SBOLReader.setURIPrefix("http://dummy.org/");
+//			SBOLReader.setCompliant(true);
+//			long startTime = System.nanoTime();
+//			SBOLDocument doc = SBOLReader.read("/Users/myers/Documents/Projects/acs_2017_vpr/acs_2017_vpr.sbol");
+//			long endTime = System.nanoTime();
+//			System.out.println("Read time = "+ (endTime - startTime)); 
 			//SBOLDocument doc2 = new SBOLDocument();
-			doc.setDefaultURIprefix("http://dummy.org/");
+			//doc.setDefaultURIprefix("http://dummy.org/");
 			//doc2.createCopy(doc);
 			//doc2.write(System.out);
-			doc = doc.changeURIPrefixVersion("http://dummy.org/", "1");
-			doc.write(System.out);
+			//doc = doc.changeURIPrefixVersion("http://dummy.org/", "1");
+			//doc.write(System.out);
 //			SBOLDocument doc = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/Emulated/toggle.xml_Emulated.xml");
 //			SBOLDocument doc2 = SBOLReader.read("/Users/myers/git/SBOLTestRunner/SB_Tester/Retrieved/toggle.xml_Retrieved.xml");
 //			SBOLValidate.compareDocuments("em", doc, "re", doc2);
@@ -59,7 +67,6 @@ class readTester {
 			//SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/bug.xml");
 			//doc = doc.changeURIPrefixVersion("http://new.org/", "1.0");
 			//doc.write(System.out);
-			//SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
 			//String result = sbh.sparqlQuery("select ?s ?p ?o where { ?s ?p ?o . FILTER(?s = <https://synbiohub.org/public/igem/BBa_B0015/1>) }");
 			//System.out.println(result);
 //			SBOLDocument doc = sbh.getSBOL(URI.create("https://synbiohub.org/public/igem/BBa_J23070/1"));
