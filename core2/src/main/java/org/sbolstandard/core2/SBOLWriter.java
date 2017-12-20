@@ -471,11 +471,11 @@ public class SBOLWriter
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			
 			formatCommonTopLevelData(list, combinatorialDerivation);
+						
+			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.template, combinatorialDerivation.getTemplateURI()));
+			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.strategy, StrategyType.convertToURI(combinatorialDerivation.getStrategy())));
 			
-			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.template, combinatorialDerivation.getTemplate()));
-			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.strategy, combinatorialDerivation.getStrategy()));
-			
-			formatVariableComponents(new HashSet<VariableComponent>(combinatorialDerivation.getVariableComponents().values()), list);
+			formatVariableComponents(new HashSet<VariableComponent>(combinatorialDerivation.getVariableComponents()), list);
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation, 
 					combinatorialDerivation.getIdentity(), NamedProperties(list)));
@@ -714,7 +714,7 @@ public class SBOLWriter
 			formatCommonIdentifiedData(list, variableComponent);
 
 			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariable, variableComponent.getVariable()));
-			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasOperator, variableComponent.getOperator()));
+			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasOperator, OperatorType.convertToURI(variableComponent.getOperator())));
 			
 			for(URI variant : variableComponent.getVariants()) {
 				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariants, variant));
@@ -1116,3 +1116,4 @@ public class SBOLWriter
 	}
 
 }
+
