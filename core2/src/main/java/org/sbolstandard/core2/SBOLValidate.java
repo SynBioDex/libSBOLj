@@ -1238,7 +1238,8 @@ public class SBOLValidate {
 	
 	private static void compareVariableComponents(String file1, CombinatorialDerivation combinatorialDerivation1,
 			String file2, CombinatorialDerivation combinatorialDerivation2) {
-		for(VariableComponent variableComponent1 : combinatorialDerivation1.getVariableComponents().values()) {
+
+		for(VariableComponent variableComponent1 : combinatorialDerivation1.getVariableComponents()) {
 			VariableComponent variableComponent2 = combinatorialDerivation2.getVariableComponent(variableComponent1.getIdentity());
 			
 			if(variableComponent2 == null) {
@@ -1248,7 +1249,7 @@ public class SBOLValidate {
 			}
 		}
 		
-		for(VariableComponent variableComponent2 : combinatorialDerivation2.getVariableComponents().values()) {
+		for(VariableComponent variableComponent2 : combinatorialDerivation2.getVariableComponents()) {
 			VariableComponent variableComponent1 = combinatorialDerivation1.getVariableComponent(variableComponent2.getIdentity());
 			
 			if(variableComponent1 == null) {
@@ -2020,3 +2021,4 @@ public class SBOLValidate {
 	}
 
 }
+
