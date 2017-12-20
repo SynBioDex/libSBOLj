@@ -1162,76 +1162,16 @@ public class SBOLDocument {
 
 	}
 
-	/**
-	 * Creates a component definition, and then adds it to this SBOL document's list
-	 * of component definitions.
-	 * <p>
-	 * This method calls
-	 * {@link #createComponentDefinition(String, String, String, Set)} with the
-	 * default URI prefix of this SBOL document, the given component definition
-	 * display ID, and an empty version string. given types.
-	 *
-	 * @param displayId
-	 *            the display ID of the component definition to be created
-	 * @param types
-	 *            the types of the component definition to be created
-	 * @return the created component definition
-	 * @throws SBOLValidationException
-	 *             if an SBOL validation rule was violated in
-	 *             {@link #createComponentDefinition(String, String, String, Set)}.
-	 */
 	public CombinatorialDerivation createCombinatorialDerivation(String displayId, URI template, StrategyType strategy)
 			throws SBOLValidationException {
 		return createCombinatorialDerivation(defaultURIprefix, displayId, "", template, strategy);
 	}
 
-	/**
-	 * Creates a component definition, and then adds it to this SBOL document's list
-	 * of component definitions.
-	 * <p>
-	 * This method calls
-	 * {@link #createComponentDefinition(String, String, String, Set)} with the
-	 * given component definition display ID, version, and the given types.
-	 *
-	 * @param displayId
-	 *            the display ID of the component definition to be created
-	 * @param version
-	 *            the version of the component definition to be created
-	 * @param types
-	 *            the types of the component definition to be created
-	 * @return the created component definition
-	 * @throws SBOLValidationException
-	 *             if an SBOL validation rule was violated in
-	 *             {@link #createComponentDefinition(String, String, String, Set)}.
-	 */
 	public CombinatorialDerivation createCombinatorialDerivation(String displayId, String version, URI template,
 			StrategyType strategy) throws SBOLValidationException {
 		return createCombinatorialDerivation(defaultURIprefix, displayId, version, template, strategy);
 	}
 
-	/**
-	 * Creates a component definition, and then adds it to this SBOL document's list
-	 * of component definitions.
-	 * <p>
-	 * This method creates a compliant URI for the component definition to be
-	 * created first. It starts with the given URI prefix after its been
-	 * successfully validated, followed by the given display ID, and ends with the
-	 * given version.
-	 *
-	 * @param URIprefix
-	 *            the URI prefix used to construct the compliant URI for the
-	 *            component definition to be created
-	 * @param displayId
-	 *            the display ID of the component definition to be created
-	 * @param version
-	 *            the version of the component definition to be created
-	 * @param types
-	 *            the types of the component definition to be created
-	 * @return the created component definition
-	 * @throws SBOLValidationException
-	 *             if any of the following SBOL validation rules was violated:
-	 *             10201, 10202, 10204, 10206, 10220, 10502, 10503.
-	 */
 	public CombinatorialDerivation createCombinatorialDerivation(String URIprefix, String displayId, String version,
 			URI template, StrategyType strategy) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
