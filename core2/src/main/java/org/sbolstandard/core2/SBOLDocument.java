@@ -2842,19 +2842,8 @@ public class SBOLDocument {
 	 * @param version
 	 *            the version of the agent to be created
 	 * @return the created agent
-<<<<<<< HEAD
-	 * @throws SBOLValidationException
-	 *             if an SBOL validation rules was violated: 10201, 10202, 10204,
-	 *             10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801,
-	 *             10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801,
-	 *             11901, 12001, 12301, 12302. // TODO: Check?
-=======
 	 * @throws SBOLValidationException if an SBOL validation rules was violated:
 	 * 10201, 10202, 10204, 10206, 10220.
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> 90fdf40cd278243ebeb7996b0bbbb86a6e528ea2
 	 */
 	public Agent createAgent(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -3025,19 +3014,8 @@ public class SBOLDocument {
 	 * @param version
 	 *            the version of the plan to be created
 	 * @return the created plan
-<<<<<<< HEAD
-	 * @throws SBOLValidationException
-	 *             if an SBOL validation rules was violated: 10201, 10202, 10204,
-	 *             10206, 10220, 10303, 10304, 10305, 10401, 10501, 10701, 10801,
-	 *             10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801,
-	 *             11901, 12001, 12301, 12302. // TODO: Check?
-=======
 	 * @throws SBOLValidationException if an SBOL validation rules was violated:
 	 * 10201, 10202, 10204, 10206, 10220.
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> 90fdf40cd278243ebeb7996b0bbbb86a6e528ea2
 	 */
 	public Plan createPlan(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
