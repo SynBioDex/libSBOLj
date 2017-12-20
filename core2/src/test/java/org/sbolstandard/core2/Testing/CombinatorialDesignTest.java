@@ -8,6 +8,7 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 import org.sbolstandard.core2.AccessType;
+import org.sbolstandard.core2.StrategyType;
 import org.sbolstandard.core2.CombinatorialDerivation;
 import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.DirectionType;
