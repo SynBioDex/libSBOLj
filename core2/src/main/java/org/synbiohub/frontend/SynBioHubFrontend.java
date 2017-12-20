@@ -1,4 +1,3 @@
-
 package org.synbiohub.frontend;
 
 import java.io.ByteArrayInputStream;
