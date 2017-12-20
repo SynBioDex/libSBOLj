@@ -81,3 +81,4 @@ public enum StrategyType {
 	private static final URI	sample		= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "sample");
 
 }
+
