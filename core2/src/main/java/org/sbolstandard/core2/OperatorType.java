@@ -103,3 +103,4 @@ public enum OperatorType {
 	private static final URI	oneOrMore	= URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "oneOrMore");
 
 }
+
