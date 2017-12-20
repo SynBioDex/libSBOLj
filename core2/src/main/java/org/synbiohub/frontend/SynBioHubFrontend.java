@@ -60,7 +60,7 @@ public class SynBioHubFrontend
      * @param backendUrl - URL for the SynBioHub instance.
      * @param uriPrefix - prefix for all URIs stored in this repository
      */
-    public SynBioHubFrontend(String backendUrl,String uriPrefix)
+    public SynBioHubFrontend(String backendUrl, String uriPrefix)
     {
         this.backendUrl = backendUrl;
         this.uriPrefix = uriPrefix;
@@ -634,25 +634,27 @@ public class SynBioHubFrontend
     		String collections, String overwrite_merge, SBOLDocument document) throws SynBioHubException
     {
     	InputStream sbolDoc = new ByteArrayInputStream(serializeDocument(document).getBytes());
-    	submit(id, version, name, description, citations, collections, overwrite_merge, sbolDoc);
+    	
+    	submit(id, version, name, description, citations, 
+    			collections, overwrite_merge, sbolDoc);
     }   
     
     public void submit(String id, String version, String name, String description, String citations,
     		String collections, String overwrite_merge, String fileToUpload) throws SynBioHubException, IOException
     {
     	if(fileToUpload != null){
-    		submit(id, version, name, description, citations, collections, overwrite_merge, new File(fileToUpload));  
+    		submit(id, version, name, description, citations, 
+    				collections, overwrite_merge, new FileReader(fileToUpload));  
     	}
     }
     
     public void submit(String id, String version, String name, String description, String citations,
     		String collections, String overwrite_merge, File fileToUpload) throws SynBioHubException, IOException
     {
-
-        	InputStream stream = new FileInputStream(fileToUpload);	  
-        	submit(id, version, name, description, 
-        			citations, collections, overwrite_merge, stream); 
-    	    stream.close();
+    		if(fileToUpload != null) {
+    			submit(id, version, name, description, citations, 
+    					collections, overwrite_merge, new FileReader(fileToUpload)); 
+    		}
     }   
     
     public void submit(String id, String version, String name, String description, String citations,
