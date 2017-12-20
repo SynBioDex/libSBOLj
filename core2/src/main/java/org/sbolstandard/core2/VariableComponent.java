@@ -111,3 +111,4 @@ public class VariableComponent extends Identified {
 		return new VariableComponent(this);
 	}
 }
+
