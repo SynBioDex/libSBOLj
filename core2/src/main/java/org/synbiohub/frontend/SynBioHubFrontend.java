@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +29,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
@@ -644,7 +646,7 @@ public class SynBioHubFrontend
     {
     	if(fileToUpload != null){
     		submit(id, version, name, description, citations, 
-    				collections, overwrite_merge, new FileReader(fileToUpload));  
+    				collections, overwrite_merge, new FileInputStream(fileToUpload));  
     	}
     }
     
@@ -653,12 +655,12 @@ public class SynBioHubFrontend
     {
     		if(fileToUpload != null) {
     			submit(id, version, name, description, citations, 
-    					collections, overwrite_merge, new FileReader(fileToUpload)); 
+    					collections, overwrite_merge, new FileInputStream(fileToUpload)); 
     		}
     }   
     
     public void submit(String id, String version, String name, String description, String citations,
-    		String collections, String overwrite_merge, InputStream fileToUpload) throws SynBioHubException
+    		String collections, String overwrite_merge, InputStream upload) throws SynBioHubException
     {
     	if (user.equals("")) 
     	{
@@ -685,9 +687,8 @@ public class SynBioHubFrontend
         params.addTextBody("overwrite_merge", overwrite_merge);
         params.addTextBody("user", user);
       
-        if (document != null) {
-        	InputStream stream = new ByteArrayInputStream(serializeDocument(document).getBytes());
-        	params.addBinaryBody("file", stream, ContentType.APPLICATION_XML, "file");
+        if (upload != null) {
+        	params.addBinaryBody("file", upload, ContentType.APPLICATION_XML, "file");
         } else {
         	params.addTextBody("file", "");
         }
