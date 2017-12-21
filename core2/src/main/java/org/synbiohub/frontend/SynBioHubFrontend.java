@@ -731,7 +731,6 @@ public class SynBioHubFrontend
      * @param overwrite if object exists in collection, overwrite it
      * @param inputStream inputStream to submit to SynBioHub
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
-     * @throws IOException if there is an I/O error
      */
     public void submit(String id, String version, boolean overwrite, InputStream inputStream) throws SynBioHubException
     {
