@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +28,6 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
@@ -620,7 +618,7 @@ public class SynBioHubFrontend
     }   
     
     /**
-     * Submit to the SynBioHub.
+     * Submit SBOL document to SynBioHub.
      * @param id The submission identifier
      * @param version The submission version
      * @param name The submission name
@@ -641,26 +639,82 @@ public class SynBioHubFrontend
     			collections, overwrite_merge, sbolDoc);
     }   
     
+    /**
+     * Submit file to SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param name The submission name
+     * @param description The submission description
+     * @param citations The pubMedIds for this submission
+     * @param collections A comma separated list of collections
+     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
+     * @param filename filename to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
     public void submit(String id, String version, String name, String description, String citations,
-    		String collections, String overwrite_merge, String fileToUpload) throws SynBioHubException, IOException
+    		String collections, String overwrite_merge, String filename) throws SynBioHubException, IOException
     {
-    	if(fileToUpload != null){
+    	if(filename != null){
     		submit(id, version, name, description, citations, 
-    				collections, overwrite_merge, new FileInputStream(fileToUpload));  
+    				collections, overwrite_merge, new FileInputStream(filename));  
     	}
     }
     
+    /**
+     * Submit file to SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param name The submission name
+     * @param description The submission description
+     * @param citations The pubMedIds for this submission
+     * @param collections A comma separated list of collections
+     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
+     * @param file file to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
     public void submit(String id, String version, String name, String description, String citations,
-    		String collections, String overwrite_merge, File fileToUpload) throws SynBioHubException, IOException
+    		String collections, String overwrite_merge, File file) throws SynBioHubException, IOException
     {
-    		if(fileToUpload != null) {
+    		if(file != null) {
     			submit(id, version, name, description, citations, 
-    					collections, overwrite_merge, new FileInputStream(fileToUpload)); 
+    					collections, overwrite_merge, new FileInputStream(file)); 
     		}
     }   
     
+    /**
+     * Create a new private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param name The submission name
+     * @param description The submission description
+     * @param citations The pubMedIds for this submission
+     * @param collections A comma separated list of collections
+     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
     public void submit(String id, String version, String name, String description, String citations,
-    		String collections, String overwrite_merge, InputStream upload) throws SynBioHubException
+    		String collections, String overwrite_merge) throws SynBioHubException
+    {
+    	submit(id,version,name,description,citations,collections,overwrite_merge,(InputStream)null);
+	}
+
+    /**
+     * Submit file to SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param name The submission name
+     * @param description The submission description
+     * @param citations The pubMedIds for this submission
+     * @param collections A comma separated list of collections
+     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
+     * @param inputStream inputStream to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public void submit(String id, String version, String name, String description, String citations,
+    		String collections, String overwrite_merge, InputStream inputStream) throws SynBioHubException
     {
     	if (user.equals("")) 
     	{
@@ -687,8 +741,8 @@ public class SynBioHubFrontend
         params.addTextBody("overwrite_merge", overwrite_merge);
         params.addTextBody("user", user);
       
-        if (upload != null) {
-        	params.addBinaryBody("file", upload, ContentType.APPLICATION_XML, "file");
+        if (inputStream != null) {
+        	params.addBinaryBody("file", inputStream, ContentType.APPLICATION_XML, "file");
         } else {
         	params.addTextBody("file", "");
         }
@@ -724,21 +778,6 @@ public class SynBioHubFrontend
         {
             throw new SynBioHubException("Error serializing SBOL document", e);
         }
-    }
-    
-    private StringBody submitData(InputStream fileToUpload) throws SynBioHubException
-    {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-  
-        try
-        {
-        	IOUtils.copy(fileToUpload, outputStream);
-            return new StringBody(outputStream.toString("UTF-8"));
-        }
-        catch(Exception e)
-        {
-            throw new SynBioHubException("Error serializing data", e);
-        }        
     }
 
     private SBOLDocument fetchFromSynBioHub(String url) throws SynBioHubException
