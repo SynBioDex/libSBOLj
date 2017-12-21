@@ -618,70 +618,144 @@ public class SynBioHubFrontend
     }   
     
     /**
-     * Submit SBOL document to SynBioHub.
+     * Submit file to an existing private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param overwrite if object exists in collection, overwrite it
+     * @param document the SBOL document to submit
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void submit(String id, String version, boolean overwrite, SBOLDocument document) throws SynBioHubException
+    {
+    	InputStream sbolDoc = new ByteArrayInputStream(serializeDocument(document).getBytes());
+    	
+       	// TODO: check if collection exists
+    	submit(id, version, "", "", "", overwrite?"3":"2", sbolDoc);
+    }   
+ 
+    /**
+     * Submit file to a new private collection on SynBioHub
      * @param id The submission identifier
      * @param version The submission version
      * @param name The submission name
      * @param description The submission description
      * @param citations The pubMedIds for this submission
-     * @param collections A comma separated list of collections
-     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
+     * @param overwrite if collection exists, overwrite it
      * @param document the SBOL document to submit
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */
     public void submit(String id, String version, String name, String description, String citations,
-    		String collections, String overwrite_merge, SBOLDocument document) throws SynBioHubException
+    		boolean overwrite, SBOLDocument document) throws SynBioHubException
     {
     	InputStream sbolDoc = new ByteArrayInputStream(serializeDocument(document).getBytes());
     	
-    	submit(id, version, name, description, citations, 
-    			collections, overwrite_merge, sbolDoc);
+    	submit(id, version, name, description, citations, overwrite?"1":"0", sbolDoc);
     }   
+ 
+    /**
+     * Submit file to an existing private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param overwrite if object exists in collection, overwrite it
+     * @param filename filename to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public void submit(String id, String version, boolean overwrite, String filename) throws SynBioHubException, IOException
+    {
+       	// TODO: check if collection exists
+    	submit(id, version, "", "", "", overwrite?"3":"2", new FileInputStream(filename));  
+    }
     
     /**
-     * Submit file to SynBioHub
+     * Submit file to a new private collection on SynBioHub
      * @param id The submission identifier
      * @param version The submission version
      * @param name The submission name
      * @param description The submission description
      * @param citations The pubMedIds for this submission
-     * @param collections A comma separated list of collections
-     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
+     * @param overwrite if collection exists, overwrite it
      * @param filename filename to submit to SynBioHub
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      * @throws IOException if there is an I/O error
      */
     public void submit(String id, String version, String name, String description, String citations,
-    		String collections, String overwrite_merge, String filename) throws SynBioHubException, IOException
+    		boolean overwrite, String filename) throws SynBioHubException, IOException
     {
     	if(filename != null){
-    		submit(id, version, name, description, citations, 
-    				collections, overwrite_merge, new FileInputStream(filename));  
+    		submit(id, version, name, description, citations, overwrite?"1":"0", new FileInputStream(filename));  
     	}
     }
     
     /**
-     * Submit file to SynBioHub
+     * Submit file to an existing private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param overwrite if object exists in collection, overwrite it
+     * @param file file to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public void submit(String id, String version, boolean overwrite, File file) throws SynBioHubException, IOException
+    {
+      	// TODO: check if collection exists
+    	submit(id, version, "", "", "", overwrite?"3":"2", new FileInputStream(file)); 
+    }   
+    
+    /**
+     * Submit file to a new private collection on SynBioHub
      * @param id The submission identifier
      * @param version The submission version
      * @param name The submission name
      * @param description The submission description
      * @param citations The pubMedIds for this submission
-     * @param collections A comma separated list of collections
-     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
+     * @param overwrite if collection exists, overwrite it
      * @param file file to submit to SynBioHub
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      * @throws IOException if there is an I/O error
      */
     public void submit(String id, String version, String name, String description, String citations,
-    		String collections, String overwrite_merge, File file) throws SynBioHubException, IOException
+    		boolean overwrite, File file) throws SynBioHubException, IOException
     {
     		if(file != null) {
-    			submit(id, version, name, description, citations, 
-    					collections, overwrite_merge, new FileInputStream(file)); 
+    			submit(id, version, name, description, citations, overwrite?"1":"0", new FileInputStream(file)); 
     		}
     }   
+
+    /**
+     * Submit file to an existing private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param overwrite if object exists in collection, overwrite it
+     * @param inputStream inputStream to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public void submit(String id, String version, boolean overwrite, InputStream inputStream) throws SynBioHubException
+    {
+    	// TODO: check if valid collection
+    	submit(id,version,"","","",overwrite?"3":"2",inputStream);
+    }
+    
+    /**
+     * Submit file to a new private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param name The submission name
+     * @param description The submission description
+     * @param citations The pubMedIds for this submission
+     * @param overwrite if collection exists, overwrite it
+     * @param inputStream inputStream to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public void submit(String id, String version, String name, String description, String citations,
+    		boolean overwrite, InputStream inputStream) throws SynBioHubException
+    {
+    	submit(id,version,name,description,citations,overwrite?"1":"0",inputStream);
+    }
     
     /**
      * Create a new private collection on SynBioHub
@@ -690,31 +764,29 @@ public class SynBioHubFrontend
      * @param name The submission name
      * @param description The submission description
      * @param citations The pubMedIds for this submission
-     * @param collections A comma separated list of collections
-     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
+     * @param overwrite if collection exists, overwrite it
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */
     public void submit(String id, String version, String name, String description, String citations,
-    		String collections, String overwrite_merge) throws SynBioHubException
+    		boolean overwrite) throws SynBioHubException
     {
-    	submit(id,version,name,description,citations,collections,overwrite_merge,(InputStream)null);
+    	submit(id,version,name,description,citations,overwrite?"1":"0",(InputStream)null);
 	}
-
+    
     /**
-     * Submit file to SynBioHub
+     * Submit file to a new private collection on SynBioHub
      * @param id The submission identifier
      * @param version The submission version
      * @param name The submission name
      * @param description The submission description
      * @param citations The pubMedIds for this submission
-     * @param collections A comma separated list of collections
      * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
      * @param inputStream inputStream to submit to SynBioHub
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      * @throws IOException if there is an I/O error
      */
-    public void submit(String id, String version, String name, String description, String citations,
-    		String collections, String overwrite_merge, InputStream inputStream) throws SynBioHubException
+    private void submit(String id, String version, String name, String description, String citations,
+    		String overwrite_merge, InputStream inputStream) throws SynBioHubException
     {
     	if (user.equals("")) 
     	{
@@ -737,7 +809,7 @@ public class SynBioHubFrontend
         params.addTextBody("name", name);
         params.addTextBody("description", description);
         params.addTextBody("citations", citations);
-        params.addTextBody("collectionChoices", collections);
+        params.addTextBody("collectionChoices", "");
         params.addTextBody("overwrite_merge", overwrite_merge);
         params.addTextBody("user", user);
       
