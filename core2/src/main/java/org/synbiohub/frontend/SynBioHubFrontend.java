@@ -749,7 +749,6 @@ public class SynBioHubFrontend
      * @param overwrite if collection exists, overwrite it
      * @param inputStream inputStream to submit to SynBioHub
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
-     * @throws IOException if there is an I/O error
      */
     public void submit(String id, String version, String name, String description, String citations,
     		boolean overwrite, InputStream inputStream) throws SynBioHubException
@@ -783,7 +782,6 @@ public class SynBioHubFrontend
      * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
      * @param inputStream inputStream to submit to SynBioHub
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
-     * @throws IOException if there is an I/O error
      */
     private void submit(String id, String version, String name, String description, String citations,
     		String overwrite_merge, InputStream inputStream) throws SynBioHubException
