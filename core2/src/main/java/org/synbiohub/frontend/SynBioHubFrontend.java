@@ -1,9 +1,10 @@
-
 package org.synbiohub.frontend;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,9 +16,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -31,10 +29,18 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.sbolstandard.core2.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLReader;
+import org.sbolstandard.core2.SBOLValidationException;
+import org.sbolstandard.core2.SBOLWriter;
+import org.sbolstandard.core2.TopLevel;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * Provides a Java API to SynBioHub instances.
@@ -56,7 +62,7 @@ public class SynBioHubFrontend
      * @param backendUrl - URL for the SynBioHub instance.
      * @param uriPrefix - prefix for all URIs stored in this repository
      */
-    public SynBioHubFrontend(String backendUrl,String uriPrefix)
+    public SynBioHubFrontend(String backendUrl, String uriPrefix)
     {
         this.backendUrl = backendUrl;
         this.uriPrefix = uriPrefix;
@@ -629,12 +635,40 @@ public class SynBioHubFrontend
     public void submit(String id, String version, String name, String description, String citations,
     		String collections, String overwrite_merge, SBOLDocument document) throws SynBioHubException
     {
-    	if (user.equals("")) {
+    	InputStream sbolDoc = new ByteArrayInputStream(serializeDocument(document).getBytes());
+    	
+    	submit(id, version, name, description, citations, 
+    			collections, overwrite_merge, sbolDoc);
+    }   
+    
+    public void submit(String id, String version, String name, String description, String citations,
+    		String collections, String overwrite_merge, String fileToUpload) throws SynBioHubException, IOException
+    {
+    	if(fileToUpload != null){
+    		submit(id, version, name, description, citations, 
+    				collections, overwrite_merge, new FileInputStream(fileToUpload));  
+    	}
+    }
+    
+    public void submit(String id, String version, String name, String description, String citations,
+    		String collections, String overwrite_merge, File fileToUpload) throws SynBioHubException, IOException
+    {
+    		if(fileToUpload != null) {
+    			submit(id, version, name, description, citations, 
+    					collections, overwrite_merge, new FileInputStream(fileToUpload)); 
+    		}
+    }   
+    
+    public void submit(String id, String version, String name, String description, String citations,
+    		String collections, String overwrite_merge, InputStream upload) throws SynBioHubException
+    {
+    	if (user.equals("")) 
+    	{
     		Exception e = new Exception("Must be logged in to submit.");
     		throw new SynBioHubException(e);
     	}
+    	
         String url = backendUrl + "/submit";
-
         HttpPost request = new HttpPost(url);
         request.setHeader("X-authorization", user);
         request.setHeader("Accept", "text/plain");
@@ -652,9 +686,9 @@ public class SynBioHubFrontend
         params.addTextBody("collectionChoices", collections);
         params.addTextBody("overwrite_merge", overwrite_merge);
         params.addTextBody("user", user);
-        if (document != null) {
-        	InputStream stream = new ByteArrayInputStream(serializeDocument(document).getBytes());
-        	params.addBinaryBody("file", stream, ContentType.APPLICATION_XML, "file");
+      
+        if (upload != null) {
+        	params.addBinaryBody("file", upload, ContentType.APPLICATION_XML, "file");
         } else {
         	params.addTextBody("file", "");
         }
@@ -683,15 +717,28 @@ public class SynBioHubFrontend
         
         try
         {
-            SBOLWriter.write(document,  outputStream);
-            
+            SBOLWriter.write(document,  outputStream); 
             return outputStream.toString("UTF-8");
         }
         catch(Exception e)
         {
             throw new SynBioHubException("Error serializing SBOL document", e);
         }
-        
+    }
+    
+    private StringBody submitData(InputStream fileToUpload) throws SynBioHubException
+    {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+  
+        try
+        {
+        	IOUtils.copy(fileToUpload, outputStream);
+            return new StringBody(outputStream.toString("UTF-8"));
+        }
+        catch(Exception e)
+        {
+            throw new SynBioHubException("Error serializing data", e);
+        }        
     }
 
     private SBOLDocument fetchFromSynBioHub(String url) throws SynBioHubException
