@@ -1358,7 +1358,7 @@ public class SBOLDocument {
 		}
 		else if (topLevel instanceof Plan) {
 			Plan newPlan = this.createPlan(URIprefix, displayId, version);
-			newPlan.copy((Activity)topLevel);
+			newPlan.copy((Plan)topLevel);
 			return newPlan;
 		}
 		else {
