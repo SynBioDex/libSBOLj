@@ -1,9 +1,9 @@
-
 package org.synbiohub.frontend;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,9 +15,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -32,9 +29,16 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.sbolstandard.core2.*;
+import org.apache.http.message.BasicNameValuePair;
+import org.sbolstandard.core2.SBOLDocument;
+import org.sbolstandard.core2.SBOLReader;
+import org.sbolstandard.core2.SBOLValidationException;
+import org.sbolstandard.core2.SBOLWriter;
+import org.sbolstandard.core2.TopLevel;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * Provides a Java API to SynBioHub instances.
@@ -56,7 +60,7 @@ public class SynBioHubFrontend
      * @param backendUrl - URL for the SynBioHub instance.
      * @param uriPrefix - prefix for all URIs stored in this repository
      */
-    public SynBioHubFrontend(String backendUrl,String uriPrefix)
+    public SynBioHubFrontend(String backendUrl, String uriPrefix)
     {
         this.backendUrl = backendUrl;
         this.uriPrefix = uriPrefix;
@@ -614,27 +618,180 @@ public class SynBioHubFrontend
     }   
     
     /**
-     * Submit to the SynBioHub.
+     * Submit file to an existing private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param overwrite if object exists in collection, overwrite it
+     * @param document the SBOL document to submit
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void submit(String id, String version, boolean overwrite, SBOLDocument document) throws SynBioHubException
+    {
+    	InputStream sbolDoc = new ByteArrayInputStream(serializeDocument(document).getBytes());
+    	
+       	// TODO: check if collection exists
+    	submit(id, version, "", "", "", overwrite?"3":"2", sbolDoc);
+    }   
+ 
+    /**
+     * Submit file to a new private collection on SynBioHub
      * @param id The submission identifier
      * @param version The submission version
      * @param name The submission name
      * @param description The submission description
      * @param citations The pubMedIds for this submission
-     * @param collections A comma separated list of collections
-     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
+     * @param overwrite if collection exists, overwrite it
      * @param document the SBOL document to submit
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */
     public void submit(String id, String version, String name, String description, String citations,
-    		String collections, String overwrite_merge, SBOLDocument document) throws SynBioHubException
+    		boolean overwrite, SBOLDocument document) throws SynBioHubException
     {
-    	if (user.equals("")) {
+    	InputStream sbolDoc = new ByteArrayInputStream(serializeDocument(document).getBytes());
+    	
+    	submit(id, version, name, description, citations, overwrite?"1":"0", sbolDoc);
+    }   
+ 
+    /**
+     * Submit file to an existing private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param overwrite if object exists in collection, overwrite it
+     * @param filename filename to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public void submit(String id, String version, boolean overwrite, String filename) throws SynBioHubException, IOException
+    {
+       	// TODO: check if collection exists
+    	submit(id, version, "", "", "", overwrite?"3":"2", new FileInputStream(filename));  
+    }
+    
+    /**
+     * Submit file to a new private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param name The submission name
+     * @param description The submission description
+     * @param citations The pubMedIds for this submission
+     * @param overwrite if collection exists, overwrite it
+     * @param filename filename to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public void submit(String id, String version, String name, String description, String citations,
+    		boolean overwrite, String filename) throws SynBioHubException, IOException
+    {
+    	if(filename != null){
+    		submit(id, version, name, description, citations, overwrite?"1":"0", new FileInputStream(filename));  
+    	}
+    }
+    
+    /**
+     * Submit file to an existing private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param overwrite if object exists in collection, overwrite it
+     * @param file file to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public void submit(String id, String version, boolean overwrite, File file) throws SynBioHubException, IOException
+    {
+      	// TODO: check if collection exists
+    	submit(id, version, "", "", "", overwrite?"3":"2", new FileInputStream(file)); 
+    }   
+    
+    /**
+     * Submit file to a new private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param name The submission name
+     * @param description The submission description
+     * @param citations The pubMedIds for this submission
+     * @param overwrite if collection exists, overwrite it
+     * @param file file to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public void submit(String id, String version, String name, String description, String citations,
+    		boolean overwrite, File file) throws SynBioHubException, IOException
+    {
+    		if(file != null) {
+    			submit(id, version, name, description, citations, overwrite?"1":"0", new FileInputStream(file)); 
+    		}
+    }   
+
+    /**
+     * Submit file to an existing private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param overwrite if object exists in collection, overwrite it
+     * @param inputStream inputStream to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void submit(String id, String version, boolean overwrite, InputStream inputStream) throws SynBioHubException
+    {
+    	// TODO: check if valid collection
+    	submit(id,version,"","","",overwrite?"3":"2",inputStream);
+    }
+    
+    /**
+     * Submit file to a new private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param name The submission name
+     * @param description The submission description
+     * @param citations The pubMedIds for this submission
+     * @param overwrite if collection exists, overwrite it
+     * @param inputStream inputStream to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void submit(String id, String version, String name, String description, String citations,
+    		boolean overwrite, InputStream inputStream) throws SynBioHubException
+    {
+    	submit(id,version,name,description,citations,overwrite?"1":"0",inputStream);
+    }
+    
+    /**
+     * Create a new private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param name The submission name
+     * @param description The submission description
+     * @param citations The pubMedIds for this submission
+     * @param overwrite if collection exists, overwrite it
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void submit(String id, String version, String name, String description, String citations,
+    		boolean overwrite) throws SynBioHubException
+    {
+    	submit(id,version,name,description,citations,overwrite?"1":"0",(InputStream)null);
+	}
+    
+    /**
+     * Submit file to a new private collection on SynBioHub
+     * @param id The submission identifier
+     * @param version The submission version
+     * @param name The submission name
+     * @param description The submission description
+     * @param citations The pubMedIds for this submission
+     * @param overwrite_merge '0' prevent, '1' overwrite, '2' merge and prevent, '3' merge and overwrite
+     * @param inputStream inputStream to submit to SynBioHub
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    private void submit(String id, String version, String name, String description, String citations,
+    		String overwrite_merge, InputStream inputStream) throws SynBioHubException
+    {
+    	if (user.equals("")) 
+    	{
     		Exception e = new Exception("Must be logged in to submit.");
     		throw new SynBioHubException(e);
     	}
+    	
         String url = backendUrl + "/submit";
-
         HttpPost request = new HttpPost(url);
         request.setHeader("X-authorization", user);
         request.setHeader("Accept", "text/plain");
@@ -649,12 +806,12 @@ public class SynBioHubFrontend
         params.addTextBody("name", name);
         params.addTextBody("description", description);
         params.addTextBody("citations", citations);
-        params.addTextBody("collectionChoices", collections);
+        params.addTextBody("collectionChoices", "");
         params.addTextBody("overwrite_merge", overwrite_merge);
         params.addTextBody("user", user);
-        if (document != null) {
-        	InputStream stream = new ByteArrayInputStream(serializeDocument(document).getBytes());
-        	params.addBinaryBody("file", stream, ContentType.APPLICATION_XML, "file");
+      
+        if (inputStream != null) {
+        	params.addBinaryBody("file", inputStream, ContentType.APPLICATION_XML, "file");
         } else {
         	params.addTextBody("file", "");
         }
@@ -683,15 +840,13 @@ public class SynBioHubFrontend
         
         try
         {
-            SBOLWriter.write(document,  outputStream);
-            
+            SBOLWriter.write(document,  outputStream); 
             return outputStream.toString("UTF-8");
         }
         catch(Exception e)
         {
             throw new SynBioHubException("Error serializing SBOL document", e);
         }
-        
     }
 
     private SBOLDocument fetchFromSynBioHub(String url) throws SynBioHubException
