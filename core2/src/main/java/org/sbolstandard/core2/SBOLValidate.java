@@ -1341,6 +1341,8 @@ public class SBOLValidate {
 				errors.add("CombinatorialDerivation " + combinatorialDerivation1.getIdentity() + " not found in " + file2);
 			} else if(!combinatorialDerivation1.equals(combinatorialDerivation2)) {
 				errors.add("CombinatorialDerivation " + combinatorialDerivation1.getIdentity() + " differ.");
+				System.out.println(combinatorialDerivation1.toString());
+				System.out.println(combinatorialDerivation2.toString());
 				compareVariableComponents(file1, combinatorialDerivation1, file2, combinatorialDerivation2);
 			}
 		}

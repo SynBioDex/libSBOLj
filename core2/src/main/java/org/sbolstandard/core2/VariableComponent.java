@@ -110,5 +110,15 @@ public class VariableComponent extends Identified {
 	Identified deepCopy() throws SBOLValidationException {
 		return new VariableComponent(this);
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() 
+				+ ", operator=" + this.getOperator()
+				+ ", variable=" + this.getVariable()
+				+ (variants.size()>0?", variants=" + variants:"")
+				+ (variantCollections.size()>0?", variantCollections=" + variantCollections:"")
+				+ (variantDerivations.size()>0?", variantDeriviations=" + variantDerivations:"");
+	}
 }
 

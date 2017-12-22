@@ -2081,9 +2081,9 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.CombinatorialDerivation.template))
 			{
-				if (!(namedProperty.getValue() instanceof Literal) || persistentIdentity != null ||
+				if (!(namedProperty.getValue() instanceof Literal) || template != null ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
-					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					throw new SBOLValidationException("sbol-12904", topLevel.getIdentity());
 				}
 				template  = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -2091,7 +2091,7 @@ public class SBOLReader
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || strategy != null ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
-					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					throw new SBOLValidationException("sbol-12902", topLevel.getIdentity());
 				}
 				String strategyTypeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (strategyTypeStr.startsWith("http://www.sbolstandard.org/")) {
@@ -2102,7 +2102,7 @@ public class SBOLReader
 					strategy = StrategyType.convertToStrategyType(URI.create(strategyTypeStr));
 				}
 				catch (SBOLValidationException e) {
-					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					throw new SBOLValidationException("sbol-12902", topLevel.getIdentity());
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
@@ -2120,7 +2120,7 @@ public class SBOLReader
 					
 					if (nestedDocument.getType() == null || 
 							!nestedDocument.getType().equals(Sbol2Terms.VariableComponent.VariableComponent)) {
-						throw new SBOLValidationException("sbol-XXXXX",topLevel.getIdentity());
+						throw new SBOLValidationException("sbol-12906",topLevel.getIdentity());
 					}
 					variableComponents.add(parseVariableComponent(SBOLDoc,((NestedDocument<QName>) namedProperty.getValue()), nested));
 				}
@@ -2129,7 +2129,7 @@ public class SBOLReader
 					NestedDocument<QName> nestedDocument = nested.get(uri);
 					if (nestedDocument == null || nestedDocument.getType() == null || 
 							!nestedDocument.getType().equals(Sbol2Terms.VariableComponent.VariableComponent)) {
-						throw new SBOLValidationException("sbol-XXXXX",topLevel.getIdentity());
+						throw new SBOLValidationException("sbol-12906",topLevel.getIdentity());
 					}
 					variableComponents.add(parseVariableComponent(SBOLDoc,nested.get(uri), nested));
 				}

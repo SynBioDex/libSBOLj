@@ -193,12 +193,26 @@ public class CombinatorialDerivation extends TopLevel {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-
 		CombinatorialDerivation other = (CombinatorialDerivation) obj;
-
-        return other.getStrategy().equals(this.strategy) &&
-        		other.getTemplate().equals(this.template) &&
-        		other.getVariableComponents().equals(this.variableComponents);
+		if (strategy != other.strategy)
+			return false;
+		if (template == null) {
+			if (other.template != null)
+				return false;
+		} else if (!template.equals(other.template)) {
+			/* TODO: add getTemplateIdentity method 
+			if (getTemplateIdentity() == null || other.getTemplateIdentity() == null 
+					|| !getTemplateIdentity().equals(other.getTemplateIdentity())) {*/
+				return false;
+			/*}*/
+			
+		}
+		if (variableComponents == null) {
+			if (other.variableComponents != null)
+				return false;
+		} else if (!variableComponents.equals(other.variableComponents))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -220,6 +234,16 @@ public class CombinatorialDerivation extends TopLevel {
 		for(VariableComponent variableComponent : variableComponents) {
 			this.variableComponents.put(variableComponent.getIdentity(), variableComponent);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return "CombinatorialDerivation ["
+				+ super.toString()
+				+ (this.getStrategy()!=null?", strategy=" + this.getStrategy():"")
+				+ ", template=" + this.getTemplateURI()
+				+ (this.getVariableComponents().size()>0?", variableComponents=" + this.getVariableComponents():"") 
+				+ "]";
 	}
 }
 
