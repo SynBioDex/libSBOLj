@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -128,10 +130,31 @@ public class SynBioHubFrontend
         return document;
     }
     
-    // TODO: getAttachment with file, path
+    /**
+     * Retrieve an attachment from a SynBioHub instance using its URI,
+     * and save to the path provided.
+     *
+     * @param attachmentUri The URI of the SBOL Attachment object
+     * @param path The path to store the downloaded attachment
+     * @return the name of the file being downloaded
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws IOException if there is an I/O error
+     */
+    public String getAttachment(URI attachmentUri, String path) throws SynBioHubException, IOException
+    {
+        if (!attachmentUri.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
+        }
+        String url = attachmentUri + "/download";
+        url = url.replace(uriPrefix, backendUrl);
+
+        return fetchContentSaveToFile(url,null,path);
+    }
     
     /**
-     * Retrieve an attachment from a SynBioHub instance using its URI.
+     * Retrieve an attachment from a SynBioHub instance using its URI,
+     * and save into the provided output stream.
      *
      * @param attachmentUri The URI of the SBOL Attachment object
      * @param outputStream The output stream to store the downloaded attachment
@@ -148,7 +171,7 @@ public class SynBioHubFrontend
         String url = attachmentUri + "/download";
         url = url.replace(uriPrefix, backendUrl);
 
-        return fetchContentSaveToFile(url,outputStream);
+        return fetchContentSaveToFile(url,outputStream,null);
     }
     
     /**
@@ -493,7 +516,15 @@ public class SynBioHubFrontend
     	username = null;
     }
     
-    // TODO: add isSetUsername
+    /**
+     * Returns if a user is logged in
+     * 
+     * @return true if a user is logged in
+     */
+    public boolean isSetUsername()
+    {
+    	return (username!=null);
+    }
     
     /**
      * Returns the username of the logged in user
@@ -570,22 +601,35 @@ public class SynBioHubFrontend
      * @param filename the name of the file to attach
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws FileNotFoundException  if the file is not found
      */
-    public void attachFile(URI topLevelUri, String filename) throws SynBioHubException
+    public void attachFile(URI topLevelUri, String filename) throws SynBioHubException, FileNotFoundException
     {
     	attachFile(topLevelUri,new File(filename));
     }
     
-    // TODO: inputstream version
-	
     /**
      * Attach a file to an object in SynBioHub.
      * @param topLevelUri identity of the object to attach the file to
      * @param file the file to attach
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     * @throws FileNotFoundException if the file is not found
      */
-    public void attachFile(URI topLevelUri, File file) throws SynBioHubException
+    public void attachFile(URI topLevelUri, File file) throws SynBioHubException, FileNotFoundException
+    {
+    	InputStream inputStream = new FileInputStream(file);
+    	attachFile(topLevelUri,inputStream);
+    }
+    
+    /**
+     * Attach a file to an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param inputStream the inputStream to attach
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void attachFile(URI topLevelUri, InputStream inputStream) throws SynBioHubException
     {
     	if (user.equals("")) {
     		Exception e = new Exception("Must be logged in to submit.");
@@ -604,7 +648,7 @@ public class SynBioHubFrontend
         params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
         params.addTextBody("user", user);	
-        params.addBinaryBody("file", file);
+        params.addBinaryBody("file", inputStream, ContentType.DEFAULT_BINARY, "file");
 	        
         try
         {
@@ -626,62 +670,68 @@ public class SynBioHubFrontend
     
     /**
      * Add SBOL document to an existing private collection on SynBioHub
-     * @param uri Identity of the private collection
+     * @param collectionUri Identity of the private collection
      * @param overwrite if object exists in collection, overwrite it
      * @param document the SBOL document to submit
      * 
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */
-    public void addToCollection(URI uri, boolean overwrite, SBOLDocument document) throws SynBioHubException
+    public void addToCollection(URI collectionUri, boolean overwrite, SBOLDocument document) throws SynBioHubException
     {
     	InputStream sbolDoc = new ByteArrayInputStream(serializeDocument(document).getBytes());
     	
-       	// TODO: check if collection exists
-    	submit(uri, "", "", "", "", "", overwrite?"3":"2", sbolDoc);
+        if (!collectionUri.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Collection URI does not start with correct URI prefix for this repository.");
+        }
+    	submit(collectionUri, "", "", "", "", "", overwrite?"3":"2", sbolDoc);
     }   
  
     /**
      * Add file to an existing private collection on SynBioHub
-     * @param uri Identity of the private collection
+     * @param collectionUri Identity of the private collection
      * @param overwrite if object exists in collection, overwrite it
      * @param filename filename to submit to SynBioHub
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      * @throws IOException if there is an I/O error
      */
-    public void addToCollection(URI uri, boolean overwrite, String filename) throws SynBioHubException, IOException
+    public void addToCollection(URI collectionUri, boolean overwrite, String filename) throws SynBioHubException, IOException
     {
-       	// TODO: check if collection exists
-    	submit(uri, "", "", "", "", "", overwrite?"3":"2", new FileInputStream(filename));  
+        if (!collectionUri.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Collection URI does not start with correct URI prefix for this repository.");
+        }
+    	submit(collectionUri, "", "", "", "", "", overwrite?"3":"2", new FileInputStream(filename));  
     }
-    
-    // TODO: change to take a URI
     
     /**
      * Add file to an existing private collection on SynBioHub
-     * @param uri Identity of the private collection
+     * @param collectionUri Identity of the private collection
      * @param overwrite if object exists in collection, overwrite it
      * @param file file to submit to SynBioHub
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      * @throws IOException if there is an I/O error
      */
-    public void addToCollection(URI uri, boolean overwrite, File file) throws SynBioHubException, IOException
+    public void addToCollection(URI collectionUri, boolean overwrite, File file) throws SynBioHubException, IOException
     {
-      	// TODO: check if collection exists
-    	submit(uri, "", "", "", "", "", overwrite?"3":"2", new FileInputStream(file)); 
+        if (!collectionUri.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Collection URI does not start with correct URI prefix for this repository.");
+        }
+    	submit(collectionUri, "", "", "", "", "", overwrite?"3":"2", new FileInputStream(file)); 
     }   
     
 
     /**
      * Add file to an existing private collection on SynBioHub
-     * @param uri Identity of the private collection
+     * @param collectionUri Identity of the private collection
      * @param overwrite if object exists in collection, overwrite it
      * @param inputStream inputStream to submit to SynBioHub
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */
-    public void addToCollection(URI uri, boolean overwrite, InputStream inputStream) throws SynBioHubException
+    public void addToCollection(URI collectionUri, boolean overwrite, InputStream inputStream) throws SynBioHubException
     {
-    	// TODO: check if valid collection
-    	submit(uri,"","","","","",overwrite?"3":"2",inputStream);
+        if (!collectionUri.toString().startsWith(uriPrefix)) {
+        	throw new SynBioHubException("Collection URI does not start with correct URI prefix for this repository.");
+        }
+    	submit(collectionUri,"","","","","",overwrite?"3":"2",inputStream);
     }
     
     /**
@@ -909,7 +959,7 @@ public class SynBioHubFrontend
         }
     }
     
-    private String fetchContentSaveToFile(String url,OutputStream outputStream) throws SynBioHubException, IOException
+    private String fetchContentSaveToFile(String url,OutputStream outputStream,String path) throws SynBioHubException, IOException
     {
 		HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
@@ -926,6 +976,9 @@ public class SynBioHubFrontend
 			int index = dispositionValue.indexOf("filename=");
             if (index > 0) {
                 filename = dispositionValue.substring(index + 10, dispositionValue.length() - 1);
+            }
+            if (outputStream==null) {
+            	outputStream = new FileOutputStream(path+filename);
             }
 		    HttpEntity entity = response.getEntity();
 		    if (entity != null) {
