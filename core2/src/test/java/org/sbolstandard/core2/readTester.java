@@ -51,8 +51,8 @@ class readTester {
 			//FileOutputStream fileOutputStream = new FileOutputStream(file);
 			//fileOutputStream.write(outputStream.toByteArray());
 			//fileOutputStream.close();
-			sbh.createCollection("testCDCol", "1", "testName", "testDescription", "", true,"/Users/myers/Downloads/images.zip");
-			sbh.addToCollection(URI.create("https://synbiohub.org/user/myers/testCDCol/testCDCol_collection/1"), false, "/Users/myers/gb.zip");
+			sbh.createCollection("testCDCol", "1", "testName", "testDescription", "", true,"/Users/myers/Downloads/crispr_archive.omex");
+			//sbh.addToCollection(URI.create("https://synbiohub.org/user/myers/testCDCol/testCDCol_collection/1"), false, "/Users/myers/gb.zip");
 			//sbh.attachFile(URI.create("https://synbiohub.org/user/myers/Tester_1/BBa_J61101/1"), "/Users/myers/Downloads/pc_logo_400.png");
 //			sbh.getAttachment(URI.create("https://synbiohub.org/user/myers/Tester_1/attachment_00009Rh5j0pvezwyVBNeU4/1"),"/Users/myers/");
 //			SBOLReader.setURIPrefix("http://dummy.org/");
