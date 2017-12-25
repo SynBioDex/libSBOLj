@@ -49,6 +49,10 @@ public abstract class TopLevel extends Identified {
 	 * The abbreviation for the Plan type in URI
 	 */
 	public static final String PLAN = "plan";
+	/**
+	 * The abbreviation for the CombinatorialDerivation type in URI
+	 */
+	public static final String COMBINATORIAL_DERIVATION = "comb";
 	
 	/**
 	 * @param identity
@@ -125,3 +129,4 @@ public abstract class TopLevel extends Identified {
 	abstract void checkDescendantsURIcompliance() throws SBOLValidationException;
 
 }
+

@@ -20,6 +20,7 @@ import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -464,6 +465,22 @@ public class SBOLWriter
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ComponentDefinition.ComponentDefinition, c.getIdentity(), NamedProperties(list)));
 		}
 	}
+	
+	private static void formatCombinatorialDerivation(Set<CombinatorialDerivation> combinatorialDerivations, List<TopLevelDocument<QName>> topLevelDoc) {
+		for(CombinatorialDerivation combinatorialDerivation : combinatorialDerivations) {
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			
+			formatCommonTopLevelData(list, combinatorialDerivation);
+						
+			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.template, combinatorialDerivation.getTemplateURI()));
+			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.strategy, StrategyType.convertToURI(combinatorialDerivation.getStrategy())));
+			
+			formatVariableComponents(new HashSet<VariableComponent>(combinatorialDerivation.getVariableComponents()), list);
+			
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation, 
+					combinatorialDerivation.getIdentity(), NamedProperties(list)));
+		}
+	}
 
 	/**
 	 * formatFunctionalComponents for Module
@@ -685,6 +702,35 @@ public class SBOLWriter
 			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasComponent,
 					NestedDocument( Sbol2Terms.Component.Component,
 							s.getIdentity(), NamedProperties(list))));
+		}
+	}
+	
+	private static void formatVariableComponents(Set<VariableComponent> variableComponents,
+			List<NamedProperty<QName>> properties)
+	{
+		for(VariableComponent variableComponent : variableComponents)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonIdentifiedData(list, variableComponent);
+
+			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariable, variableComponent.getVariable()));
+			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasOperator, OperatorType.convertToURI(variableComponent.getOperator())));
+			
+			for(URI variant : variableComponent.getVariants()) {
+				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariants, variant));
+			}
+			
+			for(URI variantCollection : variableComponent.getVariantCollections()) {
+				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariantCollections, variantCollection));
+			}
+			
+			for(URI variantDerivation : variableComponent.getVariantDerivations()) {
+				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariantDerivations, variantDerivation));
+			}
+			
+			properties.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.hasVariableComponent,
+					NestedDocument( Sbol2Terms.VariableComponent.VariableComponent,
+							variableComponent.getIdentity(), NamedProperties(list))));
 		}
 	}
 
@@ -1065,7 +1111,9 @@ public class SBOLWriter
 		formatAgents(doc.getAgents(), topLevelDoc);
 		formatPlans(doc.getPlans(), topLevelDoc);
 		formatGenericTopLevel(doc.getGenericTopLevels(), topLevelDoc);
+		formatCombinatorialDerivation(doc.getCombinatorialDerivations(), topLevelDoc);
 		return topLevelDoc;
 	}
 
 }
+

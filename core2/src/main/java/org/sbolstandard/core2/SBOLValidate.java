@@ -1235,6 +1235,28 @@ public class SBOLValidate {
 			}
 		}
 	}
+	
+	private static void compareVariableComponents(String file1, CombinatorialDerivation combinatorialDerivation1,
+			String file2, CombinatorialDerivation combinatorialDerivation2) {
+
+		for(VariableComponent variableComponent1 : combinatorialDerivation1.getVariableComponents()) {
+			VariableComponent variableComponent2 = combinatorialDerivation2.getVariableComponent(variableComponent1.getIdentity());
+			
+			if(variableComponent2 == null) {
+				errors.add("->VariableComponent " + variableComponent1.getIdentity() + " not found in " + file2);
+			} else if(!variableComponent1.equals(variableComponent2)) {
+				errors.add("->VariableComponent " + variableComponent1.getIdentity() + " differ.");
+			}
+		}
+		
+		for(VariableComponent variableComponent2 : combinatorialDerivation2.getVariableComponents()) {
+			VariableComponent variableComponent1 = combinatorialDerivation1.getVariableComponent(variableComponent2.getIdentity());
+			
+			if(variableComponent1 == null) {
+				errors.add("->VariableComponent " + variableComponent2.getIdentity() + " not found in " + file1);
+			}
+		}
+	}
 
 	private static void compareLocations(String file1, SequenceAnnotation sequenceAnnotation1, 
 			String file2, SequenceAnnotation sequenceAnnotation2) {
@@ -1310,7 +1332,30 @@ public class SBOLValidate {
 			}
 		}		
 	}
-	
+  
+	private static void compareCombinatorialDerivations(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
+		for(CombinatorialDerivation combinatorialDerivation1 : doc1.getCombinatorialDerivations()) {
+			CombinatorialDerivation combinatorialDerivation2 = doc2.getCombinatorialDerivation(combinatorialDerivation1.getIdentity());
+			
+			if(combinatorialDerivation2 == null) {
+				errors.add("CombinatorialDerivation " + combinatorialDerivation1.getIdentity() + " not found in " + file2);
+			} else if(!combinatorialDerivation1.equals(combinatorialDerivation2)) {
+				errors.add("CombinatorialDerivation " + combinatorialDerivation1.getIdentity() + " differ.");
+				System.out.println(combinatorialDerivation1.toString());
+				System.out.println(combinatorialDerivation2.toString());
+				compareVariableComponents(file1, combinatorialDerivation1, file2, combinatorialDerivation2);
+			}
+		}
+		
+		for(CombinatorialDerivation combinatorialDerivation2 : doc2.getCombinatorialDerivations()) {
+			CombinatorialDerivation combinatorialDerivation1 = doc1.getCombinatorialDerivation(combinatorialDerivation2.getIdentity());
+			
+			if(combinatorialDerivation1 == null) {
+				errors.add("CombinatorialDerivation " + combinatorialDerivation2.getIdentity() + " not found in " + file2);
+			}
+		}
+	}
+
 	private static void compareActivities(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
 		for (Activity activity1 : doc1.getActivities()) {
 			Activity activity2 = doc2.getActivity(activity1.getIdentity());
@@ -1363,7 +1408,6 @@ public class SBOLValidate {
 			}
 		}		
 	}
-
 
 	private static void comparePlans(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
 		for (Plan plan1 : doc1.getPlans()) {
@@ -1604,6 +1648,7 @@ public class SBOLValidate {
 		comparePlans(file1,doc1,file2,doc2);
 		compareAgents(file1,doc1,file2,doc2);
 		compareGenericTopLevels(file1,doc1,file2,doc2);
+		compareCombinatorialDerivations(file1,doc1,file2,doc2);
 	}
 	
 
@@ -1983,3 +2028,4 @@ public class SBOLValidate {
 	}
 
 }
+

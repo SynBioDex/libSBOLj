@@ -1355,3 +1355,4 @@ public final class SBOLFactory {
 		return document.toString();
 	}
 }
+
