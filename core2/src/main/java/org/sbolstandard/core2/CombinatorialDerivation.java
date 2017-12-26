@@ -67,7 +67,12 @@ public class CombinatorialDerivation extends TopLevel {
 		}
 	}
 	
-	public boolean isStrategySet() {
+	/**
+	 * Checks if the strategy property is set.
+	 * 
+	 * @return {@code true} if it is not {@code null}, {@code false} otherwise
+	 */
+	public boolean isSetStrategy() {
 		return strategy != null;
 	}
 
