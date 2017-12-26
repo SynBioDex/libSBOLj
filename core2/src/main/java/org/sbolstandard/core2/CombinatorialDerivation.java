@@ -24,12 +24,21 @@ import java.util.Set;
 public class CombinatorialDerivation extends TopLevel {
 
 	private URI template;
-	//private URI strategy;
 	
 	private StrategyType strategy;
 	
 	private HashMap<URI, VariableComponent> variableComponents;
 
+	/**
+	 * @param identity
+	 * @param template
+	 * @param strategy
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following
+	 * constructor or method: 
+	 * <ul>
+	 * <li>{@link TopLevel#TopLevel(URI)}, or</li>
+	 * </ul>
+	 */
 	public CombinatorialDerivation(URI identity, URI template, StrategyType strategy) throws SBOLValidationException {
 		super(identity);
 
@@ -39,10 +48,27 @@ public class CombinatorialDerivation extends TopLevel {
 		this.variableComponents = new HashMap<>();
 	}
 
+	/**
+	 * @param componentDefinition
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following
+	 * constructors or methods:
+	 * <ul>
+	 * <li>{@link TopLevel#TopLevel(TopLevel)},</li>
+	 * <li>{@link #addSVariableComponent(VariableComponent)},</li>
+	 * <li>{@link VariableComponent#deepCopy()}</li>
+	 * </ul>
+	 */
 	private CombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
 		super(combinatorialDerivation);
-        
-        this.copy(combinatorialDerivation);
+		
+		this.variableComponents = new HashMap<>();
+		for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+			this.addVariableComponent(variableComponent.deepCopy());
+		}
+	}
+	
+	public boolean isStrategySet() {
+		return strategy != null;
 	}
 
 	private void addVariableComponent(URI uri, VariableComponent variableComponent) {
