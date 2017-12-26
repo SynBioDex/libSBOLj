@@ -80,18 +80,45 @@ public class CombinatorialDerivation extends TopLevel {
 
 	/**
 	 * Adds the given variable component to the list of variable components.
-	 * @throws SBOLValidationException if either of the following condition is satisfied:
-	 * <ul>
-	 * <li>any of the following SBOL validation rules was violated: XXXXX</li>
-	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
-	 * </ul>
+	 * 
+	 * @param variableComponent
 	 */
 	private void addVariableComponent(VariableComponent variableComponent) {
 		this.variableComponents.put(variableComponent.getIdentity(), variableComponent);
 	}
 
+	/**
+	 * Returns the instance matching the given variable component's identity URI.
+	 *
+	 * @param variableComponentURI
+	 *            the identity URI of the variable component to be retrieved
+	 * @return the matching variable component if present, or {@code null}
+	 *         otherwise.
+	 */
 	public VariableComponent getVariableComponent(URI variableComponentURI) {
 		return this.variableComponents.get(variableComponentURI);
+	}
+
+	/**
+	 * Returns the variable component matching the given variable component's
+	 * display ID.
+	 * <p>
+	 * This method first creates a compliant URI for the variable component to be
+	 * retrieved. It starts with this combinatorial derivation's persistent
+	 * identity, followed by the given variable component's display ID, and ends with this
+	 * combinatorial derivation's version.
+	 * 
+	 * @param displayId
+	 *            the display ID of the variable component to be retrieved
+	 * @return the matching variable component if present, or {@code null} otherwise.
+	 */
+	public VariableComponent getVariableComponent(String displayId) {
+		try {
+			return variableComponents
+					.get(createCompliantURI(this.getPersistentIdentity().toString(), displayId, this.getVersion()));
+		} catch (SBOLValidationException e) {
+			return null;
+		}
 	}
 
 	public Set<VariableComponent> getVariableComponents() {
