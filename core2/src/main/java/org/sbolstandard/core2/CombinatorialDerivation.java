@@ -1,5 +1,6 @@
 
 package org.sbolstandard.core2;
+
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static org.sbolstandard.core2.URIcompliance.isChildURIcompliant;
 
@@ -13,7 +14,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-
 /**
  * Represents a CombinatorialDerivation object in the SBOL data model.
  * 
@@ -24,49 +24,51 @@ import java.util.Set;
 public class CombinatorialDerivation extends TopLevel {
 
 	private URI template;
-	
+
 	private StrategyType strategy;
-	
+
 	private HashMap<URI, VariableComponent> variableComponents;
 
 	/**
 	 * @param identity
 	 * @param template
 	 * @param strategy
-	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in the following
-	 * constructor or method: 
-	 * <ul>
-	 * <li>{@link TopLevel#TopLevel(URI)}, or</li>
-	 * </ul>
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in the following
+	 *             constructor or method:
+	 *             <ul>
+	 *             <li>{@link TopLevel#TopLevel(URI)}, or</li>
+	 *             </ul>
 	 */
 	public CombinatorialDerivation(URI identity, URI template, StrategyType strategy) throws SBOLValidationException {
 		super(identity);
 
-        this.template = template;
+		this.template = template;
 
-        this.strategy = strategy;
+		this.strategy = strategy;
 		this.variableComponents = new HashMap<>();
 	}
 
 	/**
 	 * @param componentDefinition
-	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following
-	 * constructors or methods:
-	 * <ul>
-	 * <li>{@link TopLevel#TopLevel(TopLevel)},</li>
-	 * <li>{@link #addSVariableComponent(VariableComponent)},</li>
-	 * <li>{@link VariableComponent#deepCopy()}</li>
-	 * </ul>
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in any of the
+	 *             following constructors or methods:
+	 *             <ul>
+	 *             <li>{@link TopLevel#TopLevel(TopLevel)},</li>
+	 *             <li>{@link #addSVariableComponent(VariableComponent)},</li>
+	 *             <li>{@link VariableComponent#deepCopy()}</li>
+	 *             </ul>
 	 */
 	private CombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
 		super(combinatorialDerivation);
-		
+
 		this.variableComponents = new HashMap<>();
 		for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
 			this.addVariableComponent(variableComponent.deepCopy());
 		}
 	}
-	
+
 	/**
 	 * Checks if the strategy property is set.
 	 * 
@@ -76,10 +78,18 @@ public class CombinatorialDerivation extends TopLevel {
 		return strategy != null;
 	}
 
-	private void addVariableComponent(URI uri, VariableComponent variableComponent) {
-		this.variableComponents.put(uri, variableComponent);
+	/**
+	 * Adds the given variable component to the list of variable components.
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
+	 * <ul>
+	 * <li>any of the following SBOL validation rules was violated: XXXXX</li>
+	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
+	 * </ul>
+	 */
+	private void addVariableComponent(VariableComponent variableComponent) {
+		this.variableComponents.put(variableComponent.getIdentity(), variableComponent);
 	}
-	
+
 	public VariableComponent getVariableComponent(URI variableComponentURI) {
 		return this.variableComponents.get(variableComponentURI);
 	}
@@ -91,52 +101,54 @@ public class CombinatorialDerivation extends TopLevel {
 	}
 
 	void copy(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
-		((TopLevel)this).copy((TopLevel)combinatorialDerivation);
+		((TopLevel) this).copy((TopLevel) combinatorialDerivation);
 
-        Set<VariableComponent> sourceVariableComponents = combinatorialDerivation.getVariableComponents();
-        
-        for (VariableComponent variableComponent : sourceVariableComponents) {
+		Set<VariableComponent> sourceVariableComponents = combinatorialDerivation.getVariableComponents();
+
+		for (VariableComponent variableComponent : sourceVariableComponents) {
 			String displayId = variableComponent.getDisplayId();
-			if (displayId==null) {
+			if (displayId == null) {
 				displayId = URIcompliance.extractDisplayId(variableComponent.getIdentity());
 			}
-			
+
 			this.createVariableComponent(variableComponent.getIdentity(), variableComponent.getVariable(),
 					variableComponent.getOperator());
 		}
 
-        this.setTemplate(combinatorialDerivation.getTemplateURI());
-        this.setStrategy(combinatorialDerivation.getStrategy());
+		this.setTemplate(combinatorialDerivation.getTemplateURI());
+		this.setStrategy(combinatorialDerivation.getStrategy());
 	}
 
-
-    private VariableComponent createVariableComponent(URI identity, URI variable, OperatorType operator) throws SBOLValidationException {
+	private VariableComponent createVariableComponent(URI identity, URI variable, OperatorType operator)
+			throws SBOLValidationException {
 		VariableComponent newVariableComponent = new VariableComponent(identity, variable, operator);
-    	this.addVariableComponent(identity, newVariableComponent);
-    	return null;
+		this.addVariableComponent(identity, newVariableComponent);
+		return null;
 	}
-    
-    public VariableComponent createVariableComponent(String displayId, OperatorType operator,
-			String variableId, String version) throws SBOLValidationException {
+
+	public VariableComponent createVariableComponent(String displayId, OperatorType operator, String variableId,
+			String version) throws SBOLValidationException {
 		URI variableURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
 				TopLevel.COMPONENT_DEFINITION, variableId, version, this.getSBOLDocument().isTypesInURIs());
 		return createVariableComponent(displayId, variableURI, operator);
 	}
 
-	public VariableComponent createVariableComponent(String displayId, OperatorType operator, String variableId) throws SBOLValidationException {
+	public VariableComponent createVariableComponent(String displayId, OperatorType operator, String variableId)
+			throws SBOLValidationException {
 		return createVariableComponent(displayId, operator, variableId, "");
 	}
 
-	public VariableComponent createVariableComponent(String displayId, URI variableURI, OperatorType operator) throws SBOLValidationException {
+	public VariableComponent createVariableComponent(String displayId, URI variableURI, OperatorType operator)
+			throws SBOLValidationException {
 		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-			if (this.getVariableComponent(variableURI)==null) {
-				throw new SBOLValidationException("sbol-XXXXX",this);
+			if (this.getVariableComponent(variableURI) == null) {
+				throw new SBOLValidationException("sbol-XXXXX", this);
 			}
 		}
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
-		VariableComponent c = createVariableComponent(createCompliantURI(URIprefix, displayId, version),
-				variableURI, operator);
+		VariableComponent c = createVariableComponent(createCompliantURI(URIprefix, displayId, version), variableURI,
+				operator);
 		c.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		c.setDisplayId(displayId);
 		c.setVersion(version);
@@ -144,77 +156,75 @@ public class CombinatorialDerivation extends TopLevel {
 	}
 
 	public URI getTemplateURI() {
-        return this.template;
-    }
-	
+		return this.template;
+	}
+
 	public ComponentDefinition getTemplate() {
-		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument() == null)
+			return null;
 		return this.getSBOLDocument().getComponentDefinition(template);
 	}
 
-    public void setTemplate(String displayId, String version) throws SBOLValidationException {
+	public void setTemplate(String displayId, String version) throws SBOLValidationException {
 		URI templateURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
-                                                           TopLevel.COMPONENT_DEFINITION, 
-                                                           displayId, 
-                                                           version, 
-                                                           this.getSBOLDocument().isTypesInURIs());
+				TopLevel.COMPONENT_DEFINITION, displayId, version, this.getSBOLDocument().isTypesInURIs());
 
-        this.setTemplate(templateURI);
-    }
+		this.setTemplate(templateURI);
+	}
 
-    public void setTemplate(ComponentDefinition template) {
-        this.setTemplate(template.getIdentity());
-    }
+	public void setTemplate(ComponentDefinition template) {
+		this.setTemplate(template.getIdentity());
+	}
 
-    public void setTemplate(URI template) {
-        this.template = template;
-    }
+	public void setTemplate(URI template) {
+		this.template = template;
+	}
 
-    public StrategyType getStrategy() {
-        return this.strategy;
-    }
+	public StrategyType getStrategy() {
+		return this.strategy;
+	}
 
-    public void setStrategy(StrategyType strategy) {
-        this.strategy = strategy;
-    }
+	public void setStrategy(StrategyType strategy) {
+		this.strategy = strategy;
+	}
 
-    public void clearStrategy() {
-        this.strategy = null;
-    }
+	public void clearStrategy() {
+		this.strategy = null;
+	}
 
-    public void checkDescendantsURIcompliance() throws SBOLValidationException {
-        if(!variableComponents.isEmpty()) {
-        		for(VariableComponent variableComponent : variableComponents.values()) {
-        			try {
-    					isChildURIcompliant(this, variableComponent);
-    				}
-    				catch (SBOLValidationException e) {
-    					throw new SBOLValidationException(e.getRule(), variableComponent);
-    				}
-        		}
-        }
-    }
-
-    
+	public void checkDescendantsURIcompliance() throws SBOLValidationException {
+		if (!variableComponents.isEmpty()) {
+			for (VariableComponent variableComponent : variableComponents.values()) {
+				try {
+					isChildURIcompliant(this, variableComponent);
+				} catch (SBOLValidationException e) {
+					throw new SBOLValidationException(e.getRule(), variableComponent);
+				}
+			}
+		}
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode() * prime;
 
-        for(Entry<URI, VariableComponent> entry : this.variableComponents.entrySet()) {
-	        	result *= entry.getValue().hashCode();
-	        	result *= entry.getKey().hashCode();
-        }
-        
-        result *= this.template != null ? this.template.hashCode() : 1;
-        result *= this.strategy != null ? this.strategy.hashCode() : 1;
+		for (Entry<URI, VariableComponent> entry : this.variableComponents.entrySet()) {
+			result *= entry.getValue().hashCode();
+			result *= entry.getKey().hashCode();
+		}
+
+		result *= this.template != null ? this.template.hashCode() : 1;
+		result *= this.strategy != null ? this.strategy.hashCode() : 1;
 
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.sbolstandard.core2.abstract_classes.Documented#equals(java.lang.Instance)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.sbolstandard.core2.abstract_classes.Documented#equals(java.lang.Instance)
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -231,12 +241,14 @@ public class CombinatorialDerivation extends TopLevel {
 			if (other.template != null)
 				return false;
 		} else if (!template.equals(other.template)) {
-			/* TODO: add getTemplateIdentity method 
-			if (getTemplateIdentity() == null || other.getTemplateIdentity() == null 
-					|| !getTemplateIdentity().equals(other.getTemplateIdentity())) {*/
-				return false;
-			/*}*/
-			
+			/*
+			 * TODO: add getTemplateIdentity method if (getTemplateIdentity() == null ||
+			 * other.getTemplateIdentity() == null ||
+			 * !getTemplateIdentity().equals(other.getTemplateIdentity())) {
+			 */
+			return false;
+			/* } */
+
 		}
 		if (variableComponents == null) {
 			if (other.variableComponents != null)
@@ -248,9 +260,9 @@ public class CombinatorialDerivation extends TopLevel {
 
 	@Override
 	Identified copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
-		CombinatorialDerivation combinatorialDerivation = 
-				this.getDocument().getCombinatorialDerivation(URIprefix, displayId, version);
-		
+		CombinatorialDerivation combinatorialDerivation = this.getDocument().getCombinatorialDerivation(URIprefix,
+				displayId, version);
+
 		return new CombinatorialDerivation(combinatorialDerivation);
 	}
 
@@ -261,21 +273,19 @@ public class CombinatorialDerivation extends TopLevel {
 
 	public void setVariableComponents(Set<VariableComponent> variableComponents) {
 		this.variableComponents.clear();
-		
-		for(VariableComponent variableComponent : variableComponents) {
+
+		for (VariableComponent variableComponent : variableComponents) {
 			this.variableComponents.put(variableComponent.getIdentity(), variableComponent);
 		}
 	}
-	
+
 	@Override
 	public String toString() {
-		return "CombinatorialDerivation ["
-				+ super.toString()
-				+ (this.getStrategy()!=null?", strategy=" + this.getStrategy():"")
-				+ ", template=" + this.getTemplateURI()
-				+ (this.getVariableComponents().size()>0?", variableComponents=" + this.getVariableComponents():"") 
+		return "CombinatorialDerivation [" + super.toString()
+				+ (this.getStrategy() != null ? ", strategy=" + this.getStrategy() : "") + ", template="
+				+ this.getTemplateURI()
+				+ (this.getVariableComponents().size() > 0 ? ", variableComponents=" + this.getVariableComponents()
+						: "")
 				+ "]";
 	}
 }
-
-
