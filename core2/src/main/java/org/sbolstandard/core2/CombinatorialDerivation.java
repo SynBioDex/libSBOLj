@@ -316,11 +316,11 @@ public class CombinatorialDerivation extends TopLevel {
 	}
 
 	/**
-	 * Returns the component definition referenced by this combinatorial derivation. 
+	 * Returns the component definition referenced by this combinatorial derivation.
 	 *
-	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
-	 * component definition referenced by this combinatorial derivation; 
-	 * or the matching component definition otherwise.
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null}
+	 *         or no matching component definition referenced by this combinatorial
+	 *         derivation; or the matching component definition otherwise.
 	 */
 	public ComponentDefinition getTemplate() {
 		if (this.getSBOLDocument() == null)
@@ -328,18 +328,28 @@ public class CombinatorialDerivation extends TopLevel {
 		return this.getSBOLDocument().getComponentDefinition(template);
 	}
 
-	public void setTemplate(String displayId, String version) throws SBOLValidationException {
-		URI templateURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
-				TopLevel.COMPONENT_DEFINITION, displayId, version, this.getSBOLDocument().isTypesInURIs());
+	/**
+	 * Sets the template property to the given one.
+	 *
+	 * @param template
+	 *            the given template URI to set to
+	 * @throws SBOLValidationException
+	 *             if either of the following SBOL validation rules was violated:
+	 *             TODO: 10602, 10604.
+	 */
+	public void setTemplate(URI template) throws SBOLValidationException {
+		this.template = template;
 
-		this.setTemplate(templateURI);
-	}
+		if (template == null) {
+			throw new SBOLValidationException("sbol-XXXXX", this);
+		}
 
-	public void setTemplate(ComponentDefinition template) {
-		this.setTemplate(template.getIdentity());
-	}
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getComponentDefinition(template) == null) {
+				throw new SBOLValidationException("sbol-XXXXX", this);
+			}
+		}
 
-	public void setTemplate(URI template) {
 		this.template = template;
 	}
 
