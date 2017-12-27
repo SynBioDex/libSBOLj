@@ -199,8 +199,8 @@ public class CombinatorialDerivation extends TopLevel {
 	 * @param operator
 	 *            the operator property for the variable component to be created
 	 * @param variableId
-	 *            the display ID of the component referenced by the
-	 *            variable component to be created
+	 *            the display ID of the component referenced by the variable
+	 *            component to be created
 	 * @param version
 	 *            the version for the component to be created
 	 * @return the created variable component
@@ -249,30 +249,37 @@ public class CombinatorialDerivation extends TopLevel {
 	}
 
 	/**
-	 * Creates a child variable component for this combinatorial derivation with the given arguments, 
-	 * and then adds to this combinatorial derivation's list of variable components.
+	 * Creates a child variable component for this combinatorial derivation with the
+	 * given arguments, and then adds to this combinatorial derivation's list of
+	 * variable components.
 	 * <p>
-	 * This method first creates a compliant URI for the child variable component to be created. 
-	 * This URI starts with this combinatorial derivation's persistent identity, 
-	 * followed by the given display ID and ends with this combinatorial derivation's version. 
+	 * This method first creates a compliant URI for the child variable component to
+	 * be created. This URI starts with this combinatorial derivation's persistent
+	 * identity, followed by the given display ID and ends with this combinatorial
+	 * derivation's version.
 	 * 
-	 * @param displayId the display ID for the variable component to be created
-	 * @param operator the operator property for the variable component to be created
-	 * @param variableURI the URI of the component referenced by the variable component to be created
+	 * @param displayId
+	 *            the display ID for the variable component to be created
+	 * @param operator
+	 *            the operator property for the variable component to be created
+	 * @param variableURI
+	 *            the URI of the component referenced by the variable component to
+	 *            be created
 	 * @return the created variable component
-	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated:
-	 * TODO: 10201, 10202, 10204, 10206, 10602, 10604, 10605, 10607, 10803.
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules was violated: TODO:
+	 *             10201, 10202, 10204, 10206, 10602, 10604, 10605, 10607, 10803.
 	 */
 	public VariableComponent createVariableComponent(String displayId, OperatorType operator, URI variableURI)
 			throws SBOLValidationException {
-		
-		//TODO:
-		/*if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-			if (this.getSBOLDocument().getComponent(variableURI) == null) {
-				throw new SBOLValidationException("sbol-XXXXX", this);
-			}
-		}*/
-		
+
+		// TODO:
+		/*
+		 * if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+		 * if (this.getSBOLDocument().getComponent(variableURI) == null) { throw new
+		 * SBOLValidationException("sbol-XXXXX", this); } }
+		 */
+
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		VariableComponent c = createVariableComponent(createCompliantURI(URIprefix, displayId, version), operator,
@@ -283,10 +290,38 @@ public class CombinatorialDerivation extends TopLevel {
 		return c;
 	}
 
+	/**
+	 * Returns the reference component definition URI.
+	 *
+	 * @return the reference component definition URI
+	 */
 	public URI getTemplateURI() {
-		return this.template;
+		return template;
 	}
 
+	/**
+	 * Returns the component definition identity referenced by this combinatorial
+	 * derivation.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null}
+	 *         or no matching component definition referenced by this combinatorial
+	 *         derivation exists; or the matching component definition otherwise.
+	 */
+	public URI getTemplateIdentity() {
+		if (this.getSBOLDocument() == null)
+			return null;
+		if (this.getSBOLDocument().getComponentDefinition(template) == null)
+			return null;
+		return this.getSBOLDocument().getComponentDefinition(template).getIdentity();
+	}
+
+	/**
+	 * Returns the component definition referenced by this combinatorial derivation. 
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * component definition referenced by this combinatorial derivation; 
+	 * or the matching component definition otherwise.
+	 */
 	public ComponentDefinition getTemplate() {
 		if (this.getSBOLDocument() == null)
 			return null;
