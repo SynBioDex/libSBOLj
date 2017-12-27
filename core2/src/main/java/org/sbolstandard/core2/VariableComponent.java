@@ -61,7 +61,7 @@ public class VariableComponent extends Identified {
 		return this.operator;
 	}
 	
-	public Set<URI> getVariants() {
+	public Set<URI> getVariantURIs() {
 		return new HashSet<URI>(this.variants);
 	}
 	

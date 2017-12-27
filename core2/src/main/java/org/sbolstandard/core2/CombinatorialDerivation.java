@@ -84,7 +84,69 @@ public class CombinatorialDerivation extends TopLevel {
 	 * @param variableComponent
 	 */
 	private void addVariableComponent(VariableComponent variableComponent) {
-		this.variableComponents.put(variableComponent.getIdentity(), variableComponent);
+		variableComponent.setSBOLDocument(this.getSBOLDocument());
+		variableComponent.setCombinatorialDerivation(this);
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (variableComponent.getVariable() == null) {
+				throw new SBOLValidationException("sbol-XXXXX", variableComponent);
+			}
+		}
+
+		for (CombinatorialDerivation cd : variableComponent.getVariants()) {
+			Set<URI> visited = new HashSet<>();
+			visited.add(this.getIdentity());
+			try {
+				SBOLValidate.checkCombinatorialDerivationCycle(this.getSBOLDocument(), cd, visited);
+			} catch (SBOLValidationException e) {
+				throw new SBOLValidationException("sbol-XXXXX", variableComponent);
+			}
+		}
+
+		addChildSafely(variableComponent, variableComponents, "variableComponent");
+	}
+
+	/**
+	 * @param variableComponent
+	 * @throws SBOLValidationException
+	 *             if any of the following conditions is satisfied:
+	 *             <ul>
+	 *             <li>if the following SBOL validation rules was violated: 10603,
+	 *             10604;</li>
+	 *             <li>if an SBOL validation rule violation occurred in
+	 *             {@link SBOLValidate#checkCombinatorialDerivationCycle}; or</li>
+	 *             <li>if an SBOL validation rule violation occurred in
+	 *             {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
+	 *             </ul>
+	 */
+	private void addVariableComponentNoCheck(VariableComponent variableComponent) throws SBOLValidationException {
+		variableComponent.setSBOLDocument(this.getSBOLDocument());
+		variableComponent.setCombinatorialDerivation(this);
+
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			for (CombinatorialDerivation cd : variableComponent.getVariants()) {
+				if (cd == null) {
+					throw new SBOLValidationException("sbol-10604", variableComponent);
+				}
+			}
+		}
+
+		for (URI cd : variableComponent.getVariantURIs()) {
+			if (this.getIdentity().equals(cd)) {
+				throw new SBOLValidationException("sbol-10603", variableComponent);
+			}
+		}
+
+		for (CombinatorialDerivation cd : variableComponent.getVariants()) {
+			Set<URI> visited = new HashSet<>();
+			visited.add(this.getIdentity());
+			try {
+				SBOLValidate.checkCombinatorialDerivationCycle(this.getSBOLDocument(), cd, visited);
+			} catch (SBOLValidationException e) {
+				throw new SBOLValidationException("sbol-XXXXX", variableComponent);
+			}
+		}
+		
+		addChildSafely(variableComponent, variableComponents, "component");
 	}
 
 	/**
@@ -134,7 +196,19 @@ public class CombinatorialDerivation extends TopLevel {
 		variableComponents.addAll(this.variableComponents.values());
 		return variableComponents;
 	}
-	
+
+	/**
+	 * @param variableComponents
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in any of the
+	 *             following methods:
+	 *             <ul>
+	 *             <li>{@link #clearVariableComponents()}</li>
+	 *             <li>{@link #addVariableComponentNoCheck(VariableComponent)},
+	 *             or</li>
+	 *             <li>{@link #checkMapsTosLocalURIs()}.</li>
+	 *             </ul>
+	 */
 	public void setVariableComponents(Set<VariableComponent> variableComponents) {
 		this.variableComponents.clear();
 
@@ -467,16 +541,68 @@ public class CombinatorialDerivation extends TopLevel {
 		return true;
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in any of the
+	 *             following constructors or methods:
+	 *             <ul>
+	 *             <li>{@link #deepCopy()},</li>
+	 *             <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 *             <li>{@link #setDisplayId(String)},</li>
+	 *             <li>{@link #setVersion(String)},</li>
+	 *             <li>{@link #setWasDerivedFrom(URI)},</li>
+	 *             <li>{@link #setIdentity(URI)}</li>
+	 *             <li>{@link Component#setDisplayId(String)}</li>
+	 *             <li>{@link Component#updateCompliantURI(String, String, String)},</li>
+	 *             <li>{@link #addComponent(Component)},</li>
+	 *             <li>{@link SequenceConstraint#setDisplayId(String)}</li>
+	 *             <li>{@link SequenceConstraint#updateCompliantURI(String, String, String)},</li>
+	 *             <li>{@link #addSequenceConstraint(SequenceConstraint)},</li>
+	 *             <li>{@link SequenceAnnotation#setDisplayId(String)}</li>
+	 *             <li>{@link SequenceAnnotation#updateCompliantURI(String, String, String)},
+	 *             or</li>
+	 *             <li>{@link #addSequenceAnnotation(SequenceAnnotation)},</li>
+	 *             </ul>
+	 */
 	@Override
-	Identified copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
+	CombinatorialDerivation copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		CombinatorialDerivation combinatorialDerivation = this.getDocument().getCombinatorialDerivation(URIprefix,
 				displayId, version);
 
-		return new CombinatorialDerivation(combinatorialDerivation);
+		CombinatorialDerivation cloned = this.deepCopy();
+		cloned.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
+		cloned.setDisplayId(displayId);
+		cloned.setVersion(version);
+		URI newIdentity = createCompliantURI(URIprefix, displayId, version);
+
+		if (!this.getIdentity().equals(newIdentity)) {
+			cloned.addWasDerivedFrom(this.getIdentity());
+		} else {
+			cloned.setWasDerivedFroms(this.getWasDerivedFroms());
+		}
+
+		cloned.setIdentity(newIdentity);
+		int count = 0;
+		for (VariableComponent variableComponent : cloned.getVariableComponents()) {
+			if (!variableComponent.isSetDisplayId())
+				variableComponent.setDisplayId("variableComponent" + ++count);
+			// TODO: does VariableComponent need updateCompliantURI()?
+			variableComponent.updateCompliantURI(cloned.getPersistentIdentity().toString(),
+					variableComponent.getDisplayId(), version);
+			cloned.removeChildSafely(variableComponent, cloned.variableComponents);
+			cloned.addVariableComponent(variableComponent);
+		}
+
+		return cloned;
 	}
 
 	@Override
-	Identified deepCopy() throws SBOLValidationException {
+	/**
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #CombinatorialDerivation(CombinatorialDerivation)}.
+	 */
+	CombinatorialDerivation deepCopy() throws SBOLValidationException {
 		return new CombinatorialDerivation(this);
 	}
 
