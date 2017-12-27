@@ -378,10 +378,24 @@ public class CombinatorialDerivation extends TopLevel {
 		this.strategy = strategy;
 	}
 
-	public void clearStrategy() {
+	/**
+	 * Sets the strategy property of this combinatorial derivation to {@code null}.
+	 */
+	public void unsetStrategy() {
 		this.strategy = null;
 	}
 
+	/**
+	 * @throws SBOLValidationException
+	 *             an SBOL validation rule violation occurred in either of the
+	 *             following methods:
+	 *             <ul>
+	 *             <li>{@link URIcompliance#isTopLevelURIformCompliant(URI)},
+	 *             or</li>
+	 *             <li>{@link URIcompliance#isChildURIcompliant(Identified, Identified)}.</li>
+	 *             </ul>
+	 */
+	@Override
 	public void checkDescendantsURIcompliance() throws SBOLValidationException {
 		if (!variableComponents.isEmpty()) {
 			for (VariableComponent variableComponent : variableComponents.values()) {
