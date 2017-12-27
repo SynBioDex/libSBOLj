@@ -134,6 +134,14 @@ public class CombinatorialDerivation extends TopLevel {
 		variableComponents.addAll(this.variableComponents.values());
 		return variableComponents;
 	}
+	
+	public void setVariableComponents(Set<VariableComponent> variableComponents) {
+		this.variableComponents.clear();
+
+		for (VariableComponent variableComponent : variableComponents) {
+			this.variableComponents.put(variableComponent.getIdentity(), variableComponent);
+		}
+	}
 
 	void copy(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
 		((TopLevel) this).copy((TopLevel) combinatorialDerivation);
@@ -445,13 +453,10 @@ public class CombinatorialDerivation extends TopLevel {
 			if (other.template != null)
 				return false;
 		} else if (!template.equals(other.template)) {
-			/*
-			 * TODO: add getTemplateIdentity method if (getTemplateIdentity() == null ||
-			 * other.getTemplateIdentity() == null ||
-			 * !getTemplateIdentity().equals(other.getTemplateIdentity())) {
-			 */
-			return false;
-			/* } */
+			if (getTemplateIdentity() == null || other.getTemplateIdentity() == null
+					|| !getTemplateIdentity().equals(other.getTemplateIdentity())) {
+				return false;
+			}
 
 		}
 		if (variableComponents == null) {
@@ -473,14 +478,6 @@ public class CombinatorialDerivation extends TopLevel {
 	@Override
 	Identified deepCopy() throws SBOLValidationException {
 		return new CombinatorialDerivation(this);
-	}
-
-	public void setVariableComponents(Set<VariableComponent> variableComponents) {
-		this.variableComponents.clear();
-
-		for (VariableComponent variableComponent : variableComponents) {
-			this.variableComponents.put(variableComponent.getIdentity(), variableComponent);
-		}
 	}
 
 	@Override
