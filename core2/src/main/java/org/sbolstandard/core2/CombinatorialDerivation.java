@@ -353,11 +353,28 @@ public class CombinatorialDerivation extends TopLevel {
 		this.template = template;
 	}
 
+	/**
+	 * Returns the strategy property.
+	 *
+	 * @return the strategy property
+	 */
 	public StrategyType getStrategy() {
 		return this.strategy;
 	}
 
-	public void setStrategy(StrategyType strategy) {
+	/**
+	 * Sets the strategy property to the given one.
+	 *
+	 * @param strategy
+	 *            the given strategy type to set to
+	 * @throws SBOLValidationException
+	 *             if the following SBOL validation rule was violated: TODO: 10607
+	 */
+	public void setStrategy(StrategyType strategy) throws SBOLValidationException {
+		if (strategy == null) {
+			throw new SBOLValidationException("sbol-XXXXX", this);
+		}
+
 		this.strategy = strategy;
 	}
 
