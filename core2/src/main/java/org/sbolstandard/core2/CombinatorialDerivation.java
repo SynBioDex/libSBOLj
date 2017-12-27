@@ -145,8 +145,21 @@ public class CombinatorialDerivation extends TopLevel {
 				throw new SBOLValidationException("sbol-XXXXX", variableComponent);
 			}
 		}
-		
+
 		addChildSafely(variableComponent, variableComponents, "component");
+	}
+	
+	/**
+	 * Removes the given variable component from the list of variable components.
+	 * 
+	 * @param variableComponent the given variable component
+	 * @return {@code true} if the matching variable component was removed successfully,
+	 *         {@code false} otherwise.
+	 * @throws SBOLValidationException if any of the following SBOL validation rules were violated:
+	 * 10803, 10808, 10905, 11402, 11404, 
+	 */
+	public boolean removeVariableComponent(VariableComponent variableComponent) throws SBOLValidationException {
+		return removeChildSafely(variableComponent, variableComponents);
 	}
 
 	/**
@@ -195,6 +208,25 @@ public class CombinatorialDerivation extends TopLevel {
 		Set<VariableComponent> variableComponents = new HashSet<>();
 		variableComponents.addAll(this.variableComponents.values());
 		return variableComponents;
+	}
+
+	/**
+	 * Removes all entries of this combinatorial derivation's list of variable
+	 * components. The list will be empty after this call returns.
+	 * <p>
+	 * This method calls
+	 * {@link #removeVariableComponent(VariableComponent variableComponent)} to
+	 * iteratively remove each variable component.
+	 *
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #removeVariableComponent(VariableComponent)}.
+	 */
+	public void clearVariableComponents() throws SBOLValidationException {
+		Object[] valueSetArray = variableComponents.values().toArray();
+		for (Object variableComponent : valueSetArray) {
+			removeVariableComponent((VariableComponent) variableComponent);
+		}
 	}
 
 	/**
