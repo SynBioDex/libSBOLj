@@ -1979,6 +1979,30 @@ public class SBOLDocument {
 		for (GenericTopLevel genericTopLevel : getGenericTopLevels()) {
 			updateReferences(genericTopLevel, originalIdentity, newIdentity);
 		}
+		for (Activity activity : getActivities()) {
+			updateReferences(activity, originalIdentity, newIdentity);
+			for (Association association : activity.getAssociations()) {
+				if (association.getAgent().equals(originalIdentity)) {
+					association.setAgent(newIdentity);
+				}	
+				if (association.getPlan().equals(originalIdentity)) {
+					association.setPlan(newIdentity);
+				}	
+				updateReferences(association, originalIdentity, newIdentity);
+			}
+			for (Usage usage : activity.getUsages()) {
+				if (usage.getEntity().equals(originalIdentity)) {
+					usage.setEntity(newIdentity);
+				}	
+				updateReferences(usage, originalIdentity, newIdentity);
+			}
+		}
+		for (Agent agent : getAgents()) {
+			updateReferences(agent, originalIdentity, newIdentity);
+		}
+		for (Plan plan : getPlans()) {
+			updateReferences(plan, originalIdentity, newIdentity);
+		}
 	}
 
 	private void updateReferences(List<Annotation> annotations,HashMap<URI,URI> uriMap) throws SBOLValidationException {
@@ -2103,30 +2127,6 @@ public class SBOLDocument {
 		}
 		for (GenericTopLevel genericTopLevel : getGenericTopLevels()) {
 			updateReferences(genericTopLevel, uriMap);
-		}
-		for (Activity activity : getActivities()) {
-			updateReferences(activity,uriMap);
-			for (Association association : activity.getAssociations()) {
-				if (uriMap.get(association.getAgent())!=null) {
-					association.setAgent(uriMap.get(association.getAgent()));
-				}	
-				if (uriMap.get(association.getPlan())!=null) {
-					association.setPlan(uriMap.get(association.getPlan()));
-				}	
-				updateReferences(association,uriMap);
-			}
-			for (Usage usage : activity.getUsages()) {
-				if (uriMap.get(usage.getEntity())!=null) {
-					usage.setEntity(uriMap.get(usage.getEntity()));
-				}	
-				updateReferences(usage,uriMap);
-			}
-		}
-		for (Agent agent : getAgents()) {
-			updateReferences(agent,uriMap);
-		}
-		for (Plan plan : getPlans()) {
-			updateReferences(plan,uriMap);
 		}
 		for (Activity activity : getActivities()) {
 			updateReferences(activity,uriMap);
