@@ -1982,16 +1982,16 @@ public class SBOLDocument {
 		for (Activity activity : getActivities()) {
 			updateReferences(activity, originalIdentity, newIdentity);
 			for (Association association : activity.getAssociations()) {
-				if (association.getAgent().equals(originalIdentity)) {
+				if (association.getAgentURI().equals(originalIdentity)) {
 					association.setAgent(newIdentity);
 				}	
-				if (association.getPlan().equals(originalIdentity)) {
+				if (association.getPlanURI().equals(originalIdentity)) {
 					association.setPlan(newIdentity);
 				}	
 				updateReferences(association, originalIdentity, newIdentity);
 			}
 			for (Usage usage : activity.getUsages()) {
-				if (usage.getEntity().equals(originalIdentity)) {
+				if (usage.getEntityURI().equals(originalIdentity)) {
 					usage.setEntity(newIdentity);
 				}	
 				updateReferences(usage, originalIdentity, newIdentity);
