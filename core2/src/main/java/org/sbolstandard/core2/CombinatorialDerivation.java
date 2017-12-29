@@ -86,20 +86,20 @@ public class CombinatorialDerivation extends TopLevel {
 	private void addVariableComponent(VariableComponent variableComponent) throws SBOLValidationException {
 		variableComponent.setSBOLDocument(this.getSBOLDocument());
 		variableComponent.setCombinatorialDerivation(this);
-		
-		//TODO:
-		/*if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-			if (variableComponent.getVariable() == null) {
-				
-				throw new SBOLValidationException("sbol-XXXXX", variableComponent);
-			}
-		}*/
+
+		// TODO:
+		/*
+		 * if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+		 * if (variableComponent.getVariable() == null) {
+		 * 
+		 * throw new SBOLValidationException("sbol-XXXXX", variableComponent); } }
+		 */
 
 		for (CombinatorialDerivation cd : variableComponent.getVariants()) {
 			Set<URI> visited = new HashSet<>();
 			visited.add(this.getIdentity());
 			try {
-				//TODO:
+				// TODO:
 				SBOLValidate.checkCombinatorialDerivationCycle(this.getSBOLDocument(), cd, visited);
 			} catch (SBOLValidationException e) {
 				throw new SBOLValidationException("sbol-XXXXX", variableComponent);
@@ -108,15 +108,17 @@ public class CombinatorialDerivation extends TopLevel {
 
 		addChildSafely(variableComponent, variableComponents, "variableComponent");
 	}
-	
+
 	/**
 	 * Removes the given variable component from the list of variable components.
 	 * 
-	 * @param variableComponent the given variable component
-	 * @return {@code true} if the matching variable component was removed successfully,
-	 *         {@code false} otherwise.
-	 * @throws SBOLValidationException if any of the following SBOL validation rules were violated:
-	 * 10803, 10808, 10905, 11402, 11404, 
+	 * @param variableComponent
+	 *            the given variable component
+	 * @return {@code true} if the matching variable component was removed
+	 *         successfully, {@code false} otherwise.
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules were violated:
+	 *             10803, 10808, 10905, 11402, 11404,
 	 */
 	public boolean removeVariableComponent(VariableComponent variableComponent) throws SBOLValidationException {
 		return removeChildSafely(variableComponent, variableComponents);
@@ -279,12 +281,11 @@ public class CombinatorialDerivation extends TopLevel {
 	public VariableComponent createVariableComponent(String displayId, OperatorType operator, Component variable)
 			throws SBOLValidationException {
 
-		// TODO:
-		/*
-		 * if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-		 * if (this.getSBOLDocument().getComponentDefintion(template).getComponent(variableURI) == null) { throw new
-		 * SBOLValidationException("sbol-XXXXX", this); } }
-		 */
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (variable == null) {
+				throw new SBOLValidationException("sbol-XXXXX", this);
+			}
+		}
 
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
