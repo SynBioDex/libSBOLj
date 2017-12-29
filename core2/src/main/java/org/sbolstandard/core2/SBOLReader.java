@@ -3625,7 +3625,7 @@ public class SBOLReader
 							!nestedDocument.getType().equals(Sbol2Terms.Association.Association)) {
 						throw new SBOLValidationException("sbol-12404",topLevel.getIdentity());
 					}
-					qualifiedAssociations.add(parseAssociation(SBOLDoc,((NestedDocument<QName>) namedProperty.getValue()), nested));
+					qualifiedAssociations.add(parseAssociation(SBOLDoc, nestedDocument, nested));
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Activity.qualifiedUsage))
@@ -3645,7 +3645,7 @@ public class SBOLReader
 							!nestedDocument.getType().equals(Sbol2Terms.Usage.Usage)) {
 						throw new SBOLValidationException("sbol-12405",topLevel.getIdentity());
 					}
-					qualifiedUsages.add(parseUsage(SBOLDoc,((NestedDocument<QName>) namedProperty.getValue()), nested));
+					qualifiedUsages.add(parseUsage(SBOLDoc, nestedDocument, nested));
 				}
 			}
 			else
