@@ -1718,13 +1718,13 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * @param document
-	 * @param topLevel
+	 * @param document document to copy recursively into
+	 * @param topLevel topLevel that is being recursively copied from
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
 	 *             {@link SBOLDocument#createCopy(TopLevel)}.
 	 */
-	private void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
+	public void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
 		if (document.getTopLevel(topLevel.getIdentity())!=null) return;
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || 
 				topLevel instanceof Model || topLevel instanceof Plan || topLevel instanceof Agent) {
@@ -1979,6 +1979,30 @@ public class SBOLDocument {
 		for (GenericTopLevel genericTopLevel : getGenericTopLevels()) {
 			updateReferences(genericTopLevel, originalIdentity, newIdentity);
 		}
+		for (Activity activity : getActivities()) {
+			updateReferences(activity, originalIdentity, newIdentity);
+			for (Association association : activity.getAssociations()) {
+				if (association.getAgentURI().equals(originalIdentity)) {
+					association.setAgent(newIdentity);
+				}	
+				if (association.getPlanURI().equals(originalIdentity)) {
+					association.setPlan(newIdentity);
+				}	
+				updateReferences(association, originalIdentity, newIdentity);
+			}
+			for (Usage usage : activity.getUsages()) {
+				if (usage.getEntityURI().equals(originalIdentity)) {
+					usage.setEntity(newIdentity);
+				}	
+				updateReferences(usage, originalIdentity, newIdentity);
+			}
+		}
+		for (Agent agent : getAgents()) {
+			updateReferences(agent, originalIdentity, newIdentity);
+		}
+		for (Plan plan : getPlans()) {
+			updateReferences(plan, originalIdentity, newIdentity);
+		}
 	}
 
 	private void updateReferences(List<Annotation> annotations,HashMap<URI,URI> uriMap) throws SBOLValidationException {
@@ -2107,40 +2131,16 @@ public class SBOLDocument {
 		for (Activity activity : getActivities()) {
 			updateReferences(activity,uriMap);
 			for (Association association : activity.getAssociations()) {
-				if (uriMap.get(association.getAgent())!=null) {
-					association.setAgent(uriMap.get(association.getAgent()));
+				if (uriMap.get(association.getAgentURI())!=null) {
+					association.setAgent(uriMap.get(association.getAgentURI()));
 				}	
-				if (uriMap.get(association.getPlan())!=null) {
-					association.setPlan(uriMap.get(association.getPlan()));
-				}	
-				updateReferences(association,uriMap);
-			}
-			for (Usage usage : activity.getUsages()) {
-				if (uriMap.get(usage.getEntity())!=null) {
-					usage.setEntity(uriMap.get(usage.getEntity()));
-				}	
-				updateReferences(usage,uriMap);
-			}
-		}
-		for (Agent agent : getAgents()) {
-			updateReferences(agent,uriMap);
-		}
-		for (Plan plan : getPlans()) {
-			updateReferences(plan,uriMap);
-		}
-		for (Activity activity : getActivities()) {
-			updateReferences(activity,uriMap);
-			for (Association association : activity.getAssociations()) {
-				if (uriMap.get(association.getAgent())!=null) {
-					association.setAgent(uriMap.get(association.getAgent()));
-				}	
-				if (uriMap.get(association.getPlan())!=null) {
-					association.setPlan(uriMap.get(association.getPlan()));
+				if (uriMap.get(association.getPlanURI())!=null) {
+					association.setPlan(uriMap.get(association.getPlanURI()));
 				}	
 				updateReferences(association,uriMap);
 			}
 			for (Usage usage : activity.getUsages()) {
-				if (uriMap.get(usage.getEntity())!=null) {
+				if (uriMap.get(usage.getEntityURI())!=null) {
 					usage.setEntity(uriMap.get(usage.getEntity()));
 				}	
 				updateReferences(usage,uriMap);
