@@ -713,10 +713,10 @@ public class SBOLWriter
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, variableComponent);
 
-			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariable, variableComponent.getVariable()));
+			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariable, variableComponent.getVariable().getIdentity()));
 			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasOperator, OperatorType.convertToURI(variableComponent.getOperator())));
 			
-			for(URI variant : variableComponent.getVariants()) {
+			for(URI variant : variableComponent.getVariantURIs()) {
 				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariants, variant));
 			}
 			
