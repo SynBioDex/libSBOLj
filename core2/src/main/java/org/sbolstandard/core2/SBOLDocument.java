@@ -2131,17 +2131,17 @@ public class SBOLDocument {
 		for (Activity activity : getActivities()) {
 			updateReferences(activity,uriMap);
 			for (Association association : activity.getAssociations()) {
-				if (uriMap.get(association.getAgent())!=null) {
-					association.setAgent(uriMap.get(association.getAgent()));
+				if (uriMap.get(association.getAgentURI())!=null) {
+					association.setAgent(uriMap.get(association.getAgentURI()));
 				}	
-				if (uriMap.get(association.getPlan())!=null) {
-					association.setPlan(uriMap.get(association.getPlan()));
+				if (uriMap.get(association.getPlanURI())!=null) {
+					association.setPlan(uriMap.get(association.getPlanURI()));
 				}	
 				updateReferences(association,uriMap);
 			}
 			for (Usage usage : activity.getUsages()) {
-				if (uriMap.get(usage.getEntity())!=null) {
-					usage.setEntity(uriMap.get(usage.getEntity()));
+				if (uriMap.get(usage.getEntityURI())!=null) {
+					usage.setEntity(uriMap.get(usage.getEntityURI()));
 				}	
 				updateReferences(usage,uriMap);
 			}
