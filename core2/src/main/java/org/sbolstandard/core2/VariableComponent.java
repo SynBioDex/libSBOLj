@@ -22,7 +22,7 @@ public class VariableComponent extends Identified {
 	private HashSet<URI> variantDerivations;
 	private URI variable;
 	private OperatorType operator;
-	
+
 	/**
 	 * Parent combinatorial derivation of this variable component
 	 */
@@ -31,9 +31,11 @@ public class VariableComponent extends Identified {
 	/**
 	 * @param identity
 	 * @param access
-	 * @param definition the referenced component definition
-	 * @throws SBOLValidationException if an SBOL validation rule violation occurred 
-	 * in {@link ComponentInstance#ComponentInstance(URI, AccessType, URI)}
+	 * @param definition
+	 *            the referenced component definition
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link ComponentInstance#ComponentInstance(URI, AccessType, URI)}
 	 */
 	public VariableComponent(URI identity, OperatorType operator, URI variable) throws SBOLValidationException {
 		super(identity);
@@ -53,7 +55,7 @@ public class VariableComponent extends Identified {
 		this.variantCollections = variableComponent.variantCollections;
 		this.variantDerivations = variableComponent.variantDerivations;
 	}
-	
+
 	public void setCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) {
 		this.combinatorialDerivation = combinatorialDerivation;
 	}
@@ -77,7 +79,7 @@ public class VariableComponent extends Identified {
 	public OperatorType getOperator() {
 		return this.operator;
 	}
-	
+
 	/**
 	 * Sets the operator property to the given one.
 	 *
@@ -87,10 +89,10 @@ public class VariableComponent extends Identified {
 	 *             if the following SBOL validation rule was violated: TODO: 10607
 	 */
 	public void setOperator(OperatorType operator) throws SBOLValidationException {
-		if(operator == null) {
+		if (operator == null) {
 			throw new SBOLValidationException("sbol-XXXXX", this);
 		}
-		
+
 		this.operator = operator;
 	}
 
@@ -151,27 +153,78 @@ public class VariableComponent extends Identified {
 		variants.add(combinatorialDerivation.getIdentity());
 	}
 
-	public void removeVariant(String uriPrefix, String displayId, String version) throws SBOLValidationException {
-		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
-
-		ComponentDefinition componentDefinition = this.getSBOLDocument().getComponentDefinition(uri);
-		variants.add(componentDefinition.getIdentity());
+	/**
+	 * Removes the given component definition from the list of variants.
+	 *
+	 * @param variant
+	 *            a component definition be removed
+	 * @return {@code true} if the matching component definition is removed
+	 *         successfully, {@code false} otherwise.
+	 */
+	public boolean removeVariant(ComponentDefinition variant) {
+		return variants.remove(variant.getIdentity());
+	}
+	
+	/**
+	 * Removes the component definition with the given URI from the list of variants.
+	 *
+	 * @param variantURI
+	 *            a component definition URI be removed
+	 * @return {@code true} if the matching component definition is removed
+	 *         successfully, {@code false} otherwise.
+	 */
+	public boolean removeVariantURI(URI variantURI) {
+		return variants.remove(variantURI);
 	}
 
-	public void removeVariantCollection(String uriPrefix, String displayId, String version)
-			throws SBOLValidationException {
-		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
-
-		Collection collection = this.getSBOLDocument().getCollection(uri);
-		variantCollections.add(collection.getIdentity());
+	/**
+	 * Removes the given collection from the list of variantCollections.
+	 *
+	 * @param variantCollection
+	 *            a collection to be removed
+	 * @return {@code true} if the matching collection is removed successfully,
+	 *         {@code false} otherwise.
+	 */
+	public boolean removeVariantCollection(Collection variantCollection) {
+		return variantCollections.remove(variantCollection.getIdentity());
+	}
+	
+	/**
+	 * Removes the collection with the given URI from the list of variantCollections.
+	 *
+	 * @param variantCollectionURI
+	 *            a collection URI to be removed
+	 * @return {@code true} if the matching collection is removed successfully,
+	 *         {@code false} otherwise.
+	 */
+	public boolean removeVariantCollectionURI(URI variantCollectionURI) {
+		return variantCollections.remove(variantCollectionURI);
 	}
 
-	public void removeVariantDerivation(String uriPrefix, String displayId, String version)
-			throws SBOLValidationException {
-		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
-
-		CombinatorialDerivation combinatorialDerivation = this.getSBOLDocument().getCombinatorialDerivation(uri);
-		variants.add(combinatorialDerivation.getIdentity());
+	/**
+	 * Removes the given combinatorial derivation from the list of variant
+	 * derivations.
+	 *
+	 * @param variantDerivation
+	 *            a combinatorial derivation to be removed
+	 * @return {@code true} if the matching combinatorial derivation is removed
+	 *         successfully, {@code false} otherwise.
+	 */
+	public boolean removeVariantDerivation(CombinatorialDerivation variantDerivation) {
+		return variantDerivations.remove(variantDerivation.getIdentity());
+	}
+	
+	/**
+	 * Removes the combinatorial derivation with the given URI from the list of variant
+	 * derivations.
+	 *
+	 * @param variantDerivationURI
+	 *            a combinatorial derivation URI to be removed
+	 * @return {@code true} if the matching combinatorial derivation is removed
+	 *         successfully, {@code false} otherwise.
+	 */
+	public boolean removeVariantDerivationURI(URI variantDerivationURI) {
+		return variantDerivations.remove(variantDerivationURI);
 	}
 
 	/**

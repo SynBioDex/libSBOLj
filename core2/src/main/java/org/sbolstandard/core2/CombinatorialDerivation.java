@@ -249,7 +249,7 @@ public class CombinatorialDerivation extends TopLevel {
 	 */
 	private VariableComponent createVariableComponent(URI identity, OperatorType operator, URI variable)
 			throws SBOLValidationException {
-		VariableComponent newVariableComponent = new VariableComponent(identity, variable, operator);
+		VariableComponent newVariableComponent = new VariableComponent(identity, operator, variable);
 		this.addVariableComponent(newVariableComponent);
 		return null;
 	}
