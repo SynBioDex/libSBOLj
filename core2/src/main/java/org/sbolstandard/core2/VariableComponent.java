@@ -193,6 +193,14 @@ public class VariableComponent extends Identified {
 	}
 
 	/**
+	 * removes all entries of this variable component's set of variant URIs.
+	 *
+	 */
+	public void clearVariants() {
+		variants.clear();
+	}
+	
+	/**
 	 * Removes the given collection from the list of variantCollections.
 	 *
 	 * @param variantCollection
@@ -215,6 +223,14 @@ public class VariableComponent extends Identified {
 	 */
 	public boolean removeVariantCollectionURI(URI variantCollectionURI) {
 		return variantCollections.remove(variantCollectionURI);
+	}
+	
+	/**
+	 * removes all entries of this variable component's set of variant collection URIs.
+	 *
+	 */
+	public void clearVariantCollections() {
+		variantCollections.clear();
 	}
 
 	/**
@@ -241,6 +257,14 @@ public class VariableComponent extends Identified {
 	 */
 	public boolean removeVariantDerivationURI(URI variantDerivationURI) {
 		return variantDerivations.remove(variantDerivationURI);
+	}
+	
+	/**
+	 * removes all entries of this variable component's set of variant derivation URIs.
+	 *
+	 */
+	public void clearVariantDerivations() {
+		variantDerivations.clear();
 	}
 
 	/**
