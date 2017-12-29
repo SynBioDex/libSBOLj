@@ -12,6 +12,7 @@ import java.util.Set;
  * Represents a VariableComponent in the SBOL data model
  * 
  * @author Zach Zundel
+ * @author Igor Durovic
  * @version 2.1
  */
 
@@ -47,7 +48,7 @@ public class VariableComponent extends Identified {
 	}
 	
 	public void setCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) {
-		this.CombinatorialDerivation = combinatorialDerivation;
+		this.combinatorialDerivation = combinatorialDerivation;
 	}
 
 	public void addVariant(URI variant) {

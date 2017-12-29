@@ -83,7 +83,7 @@ public class CombinatorialDerivation extends TopLevel {
 	 * 
 	 * @param variableComponent
 	 */
-	private void addVariableComponent(VariableComponent variableComponent) {
+	private void addVariableComponent(VariableComponent variableComponent) throws SBOLValidationException {
 		variableComponent.setSBOLDocument(this.getSBOLDocument());
 		variableComponent.setCombinatorialDerivation(this);
 		
@@ -100,57 +100,13 @@ public class CombinatorialDerivation extends TopLevel {
 			visited.add(this.getIdentity());
 			try {
 				//TODO:
-				//SBOLValidate.checkCombinatorialDerivationCycle(this.getSBOLDocument(), cd, visited);
-			} catch (SBOLValidationException e) {
-				throw new SBOLValidationException("sbol-XXXXX", variableComponent);
-			}
-		}
-
-		addChildSafely(variableComponent, variableComponents, "variableComponent");
-	}
-
-	/**
-	 * @param variableComponent
-	 * @throws SBOLValidationException
-	 *             if any of the following conditions is satisfied:
-	 *             <ul>
-	 *             <li>if the following SBOL validation rules was violated: 10603,
-	 *             10604;</li>
-	 *             <li>if an SBOL validation rule violation occurred in
-	 *             {@link SBOLValidate#checkCombinatorialDerivationCycle}; or</li>
-	 *             <li>if an SBOL validation rule violation occurred in
-	 *             {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
-	 *             </ul>
-	 */
-	private void addVariableComponentNoCheck(VariableComponent variableComponent) throws SBOLValidationException {
-		variableComponent.setSBOLDocument(this.getSBOLDocument());
-		variableComponent.setCombinatorialDerivation(this);
-
-		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-			for (CombinatorialDerivation cd : variableComponent.getVariants()) {
-				if (cd == null) {
-					throw new SBOLValidationException("sbol-10604", variableComponent);
-				}
-			}
-		}
-
-		for (URI cd : variableComponent.getVariantURIs()) {
-			if (this.getIdentity().equals(cd)) {
-				throw new SBOLValidationException("sbol-10603", variableComponent);
-			}
-		}
-
-		for (CombinatorialDerivation cd : variableComponent.getVariants()) {
-			Set<URI> visited = new HashSet<>();
-			visited.add(this.getIdentity());
-			try {
 				SBOLValidate.checkCombinatorialDerivationCycle(this.getSBOLDocument(), cd, visited);
 			} catch (SBOLValidationException e) {
 				throw new SBOLValidationException("sbol-XXXXX", variableComponent);
 			}
 		}
 
-		addChildSafely(variableComponent, variableComponents, "component");
+		addChildSafely(variableComponent, variableComponents, "variableComponent");
 	}
 	
 	/**
