@@ -70,9 +70,6 @@ public class VariableComponent extends Identified {
 	 *
 	 * @param combinatorialDerivation
 	 *            the given combinatorial derivation to set to
-	 * @throws SBOLValidationException
-	 *             if either of the following SBOL validation rules was violated:
-	 *             TODO: 10604, 10605.
 	 */
 	public void setCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) {
 		this.combinatorialDerivation = combinatorialDerivation;
@@ -82,6 +79,7 @@ public class VariableComponent extends Identified {
 	 * Adds the given variant URI to the list of variant URIs.
 	 * 
 	 * @param variant
+	 * 			variant to be added
 	 */
 	public void addVariant(URI variant) {
 		variants.add(variant);
@@ -91,6 +89,7 @@ public class VariableComponent extends Identified {
 	 * Adds the given variant collection URI to the list of variant collection URIs.
 	 * 
 	 * @param variantCollection
+	 * 			variant collection to be added
 	 */
 	public void addVariantCollection(URI variantCollection) {
 		variantCollections.add(variantCollection);
@@ -100,7 +99,8 @@ public class VariableComponent extends Identified {
 	 * Adds the given variant derivation URI to the list of variant derivations
 	 * URIs.
 	 * 
-	 * @param variant
+	 * @param variantDerivation
+	 * 			variant derivation to be added
 	 */
 	public void addVariantDerivation(URI variantDerivation) {
 		variantDerivations.add(variantDerivation);
@@ -226,7 +226,9 @@ public class VariableComponent extends Identified {
 	 * @param uriPrefix
 	 * 			TODO: change variable name
 	 * @param displayId
+	 * 			display id for variant
 	 * @param version
+	 * 			version for variant
 	 */
 	public void addVariant(String uriPrefix, String displayId, String version) throws SBOLValidationException {
 		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);

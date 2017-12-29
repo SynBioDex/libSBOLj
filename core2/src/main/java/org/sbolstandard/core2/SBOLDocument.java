@@ -1130,7 +1130,7 @@ public class SBOLDocument {
 	 *            the version of the combinatorial derivation to be retrieved
 	 * @return the matching combinatorial derivation if present, or {@code null}
 	 *         otherwise
-	 * @throws SBOLValidtionException
+	 * @throws SBOLValidationException
 	 * 			validation error
 	 */
 	public CombinatorialDerivation getCombinatorialDerivation(String displayId, String version)
