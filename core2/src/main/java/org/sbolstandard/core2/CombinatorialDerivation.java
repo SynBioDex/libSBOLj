@@ -192,17 +192,9 @@ public class CombinatorialDerivation extends TopLevel {
 		}
 	}
 
+	//TODO: validation
 	/**
 	 * @param variableComponents
-	 * @throws SBOLValidationException
-	 *             if an SBOL validation rule violation occurred in any of the
-	 *             following methods:
-	 *             <ul>
-	 *             <li>{@link #clearVariableComponents()}</li>
-	 *             <li>{@link #addVariableComponentNoCheck(VariableComponent)},
-	 *             or</li>
-	 *             <li>{@link #checkMapsTosLocalURIs()}.</li>
-	 *             </ul>
 	 */
 	public void setVariableComponents(Set<VariableComponent> variableComponents) {
 		this.variableComponents.clear();
@@ -271,8 +263,8 @@ public class CombinatorialDerivation extends TopLevel {
 	 *            the display ID for the variable component to be created
 	 * @param operator
 	 *            the operator property for the variable component to be created
-	 * @param variableURI
-	 *            the URI of the component referenced by the variable component to
+	 * @param variable
+	 *            the component referenced by the variable component to
 	 *            be created
 	 * @return the created variable component
 	 * @throws SBOLValidationException
@@ -398,8 +390,6 @@ public class CombinatorialDerivation extends TopLevel {
 	 *             an SBOL validation rule violation occurred in either of the
 	 *             following methods:
 	 *             <ul>
-	 *             <li>{@link URIcompliance#isTopLevelURIformCompliant(URI)},
-	 *             or</li>
 	 *             <li>{@link URIcompliance#isChildURIcompliant(Identified, Identified)}.</li>
 	 *             </ul>
 	 */
