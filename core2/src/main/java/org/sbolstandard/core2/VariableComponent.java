@@ -70,6 +70,22 @@ public class VariableComponent extends Identified {
 	public OperatorType getOperator() {
 		return this.operator;
 	}
+	
+	/**
+	 * Sets the operator property to the given one.
+	 *
+	 * @param operator
+	 *            the given operator type to set to
+	 * @throws SBOLValidationException
+	 *             if the following SBOL validation rule was violated: TODO: 10607
+	 */
+	public void setOperator(OperatorType operator) throws SBOLValidationException {
+		if(operator == null) {
+			throw new SBOLValidationException("sbol-XXXXX", this);
+		}
+		
+		this.operator = operator;
+	}
 
 	public Set<CombinatorialDerivation> getVariants() {
 		HashSet<CombinatorialDerivation> tempVariants = new HashSet<>();
