@@ -307,9 +307,9 @@ public class CombinatorialDesignTest {
 		}
 	}
 	
-	@Test
+	/*@Test
 	public void ReadWriteTest() throws SBOLValidationException, IOException, SBOLConversionException {
-		/*doc.write("CombinatorialDesign.rdf");
+		doc.write("CombinatorialDesign.rdf");
 
 		SBOLDocument in = SBOLReader.read("CombinatorialDesign.rdf");
 		
@@ -317,7 +317,7 @@ public class CombinatorialDesignTest {
 		
 		System.out.println(SBOLValidate.getErrors());
 		
-		assertTrue(SBOLValidate.getErrors().isEmpty());*/
-	}
+		assertTrue(SBOLValidate.getErrors().isEmpty());
+	}*/
 	
 }
