@@ -720,11 +720,11 @@ public class SBOLWriter
 				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariants, variant));
 			}
 			
-			for(URI variantCollection : variableComponent.getVariantCollections()) {
+			for(URI variantCollection : variableComponent.getVariantCollectionURIs()) {
 				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariantCollections, variantCollection));
 			}
 			
-			for(URI variantDerivation : variableComponent.getVariantDerivations()) {
+			for(URI variantDerivation : variableComponent.getVariantDerivationURIs()) {
 				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariantDerivations, variantDerivation));
 			}
 			

@@ -1204,7 +1204,7 @@ public class SBOLDocument {
 		if (complete) {
 			for (CombinatorialDerivation cd : combinatorialDerivations.values()) {
 				for (VariableComponent vc : cd.getVariableComponents()) {
-					for(URI variantURI : vc.getVariantDerivations())
+					for(URI variantURI : vc.getVariantURIs())
 					if (variantURI.equals(combinatorialDerivation.getIdentity())) {
 						//TODO;
 						throw new SBOLValidationException("sbol-XXXXX", vc);

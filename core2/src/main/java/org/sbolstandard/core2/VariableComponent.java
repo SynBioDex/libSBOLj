@@ -46,6 +46,15 @@ public class VariableComponent extends Identified {
 		this.variantDerivations = new HashSet<>();
 	}
 
+	/**
+	 * @param variableComponent
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in any of the
+	 *             following constructors or methods:
+	 * 
+	 *             TODO: copy over objects instead of references like in
+	 *             combinatorial derivation
+	 */
 	private VariableComponent(VariableComponent variableComponent) throws SBOLValidationException {
 		super(variableComponent.getIdentity());
 
@@ -56,22 +65,52 @@ public class VariableComponent extends Identified {
 		this.variantDerivations = variableComponent.variantDerivations;
 	}
 
+	/**
+	 * Sets the parent combinatorial derivation to the given one.
+	 *
+	 * @param combinatorialDerivation
+	 *            the given combinatorial derivation to set to
+	 * @throws SBOLValidationException
+	 *             if either of the following SBOL validation rules was violated:
+	 *             TODO: 10604, 10605.
+	 */
 	public void setCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) {
 		this.combinatorialDerivation = combinatorialDerivation;
 	}
 
+	/**
+	 * Adds the given variant URI to the list of variant URIs.
+	 * 
+	 * @param variant
+	 */
 	public void addVariant(URI variant) {
 		variants.add(variant);
 	}
 
+	/**
+	 * Adds the given variant collection URI to the list of variant collection URIs.
+	 * 
+	 * @param variantCollection
+	 */
 	public void addVariantCollection(URI variantCollection) {
 		variantCollections.add(variantCollection);
 	}
 
+	/**
+	 * Adds the given variant derivation URI to the list of variant derivations
+	 * URIs.
+	 * 
+	 * @param variant
+	 */
 	public void addVariantDerivation(URI variantDerivation) {
 		variantDerivations.add(variantDerivation);
 	}
 
+	/**
+	 * Returns the instance matching the given variable component's variable.
+	 *
+	 * @return the matching component if present, or {@code null} otherwise.
+	 */
 	public Component getVariable() {
 		return this.variable;
 	}
@@ -86,10 +125,15 @@ public class VariableComponent extends Identified {
 	 *             TODO: 10604, 10605.
 	 */
 	public void setVariable(Component variable) throws SBOLValidationException {
-		//TODO: validation
+		// TODO: validation
 		this.variable = variable;
 	}
 
+	/**
+	 * Returns the operator of the given variable component.
+	 *
+	 * @return the matching operator if present, or {@code null} otherwise.
+	 */
 	public OperatorType getOperator() {
 		return this.operator;
 	}
@@ -110,40 +154,80 @@ public class VariableComponent extends Identified {
 		this.operator = operator;
 	}
 
-	public Set<CombinatorialDerivation> getVariants() {
-		HashSet<CombinatorialDerivation> tempVariants = new HashSet<>();
+	/**
+	 * Returns a set of component definitions belonging to the variable component.
+	 *
+	 * @return the matching set of component definitions
+	 */
+	public Set<ComponentDefinition> getVariants() {
+		HashSet<ComponentDefinition> tempVariants = new HashSet<>();
 
 		for (URI variantURI : variants) {
-			variants.add(this.getSBOLDocument().getCombinatorialDerivation(variantURI).getIdentity());
+			variants.add(this.getSBOLDocument().getComponentDefinition(variantURI).getIdentity());
 		}
 
 		return tempVariants;
 	}
 
+	/**
+	 * Returns a set of component definition URIs belonging to the variable component.
+	 *
+	 * @return the matching set of component definition URIs
+	 */
 	public Set<URI> getVariantURIs() {
 		return new HashSet<URI>(this.variants);
 	}
 
-	public Set<URI> getVariantCollections() {
+	/**
+	 * Returns a set of collection URIs belonging to the variable component.
+	 *
+	 * @return the matching set of collection URIs
+	 */
+	public Set<URI> getVariantCollectionURIs() {
 		return new HashSet<URI>(this.variantCollections);
 	}
 
-	public Set<URI> getVariantDerivations() {
+	/**
+	 * Returns a set of combinatorial derivation URIs belonging to the variable component.
+	 *
+	 * @return the matching set of combinatorial derivation URIs
+	 */
+	public Set<URI> getVariantDerivationURIs() {
 		return new HashSet<URI>(this.variantDerivations);
 	}
 
+	/**
+	 * @param variants
+	 * TODO: validation (null check)
+	 */
 	public void setVariants(Set<URI> variants) {
 		this.variants = (HashSet<URI>) variants;
 	}
 
+	/**
+	 * @param variantCollections
+	 * TODO: validation (null check)
+	 */
 	public void setVariantCollections(Set<URI> variantCollections) {
 		this.variantCollections = (HashSet<URI>) variantCollections;
 	}
 
+	/**
+	 * @param variantDerivations
+	 * TODO: validation (null check)
+	 */
 	public void setVariantDerivations(Set<URI> variantDerivations) {
 		this.variantDerivations = (HashSet<URI>) variantDerivations;
 	}
 
+	/**
+	 * Adds the given variant to the list of variants.
+	 * 
+	 * @param uriPrefix
+	 * 			TODO: change variable name
+	 * @param displayId
+	 * @param version
+	 */
 	public void addVariant(String uriPrefix, String displayId, String version) throws SBOLValidationException {
 		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
 
@@ -151,6 +235,14 @@ public class VariableComponent extends Identified {
 		variants.add(componentDefinition.getIdentity());
 	}
 
+	/**
+	 * Adds the given variant collection to the list of variant collections.
+	 * 
+	 * @param uriPrefix
+	 * 			TODO: change variable name
+	 * @param displayId
+	 * @param version
+	 */
 	public void addVariantCollection(String uriPrefix, String displayId, String version)
 			throws SBOLValidationException {
 		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
@@ -159,6 +251,14 @@ public class VariableComponent extends Identified {
 		variantCollections.add(collection.getIdentity());
 	}
 
+	/**
+	 * Adds the given variant derivation to the list of variant derivations.
+	 * 
+	 * @param uriPrefix
+	 * 			TODO: change variable name
+	 * @param displayId
+	 * @param version
+	 */
 	public void addVariantDerivation(String uriPrefix, String displayId, String version)
 			throws SBOLValidationException {
 		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
@@ -199,7 +299,7 @@ public class VariableComponent extends Identified {
 	public void clearVariants() {
 		variants.clear();
 	}
-	
+
 	/**
 	 * Removes the given collection from the list of variantCollections.
 	 *
@@ -224,9 +324,10 @@ public class VariableComponent extends Identified {
 	public boolean removeVariantCollectionURI(URI variantCollectionURI) {
 		return variantCollections.remove(variantCollectionURI);
 	}
-	
+
 	/**
-	 * removes all entries of this variable component's set of variant collection URIs.
+	 * removes all entries of this variable component's set of variant collection
+	 * URIs.
 	 *
 	 */
 	public void clearVariantCollections() {
@@ -258,9 +359,10 @@ public class VariableComponent extends Identified {
 	public boolean removeVariantDerivationURI(URI variantDerivationURI) {
 		return variantDerivations.remove(variantDerivationURI);
 	}
-	
+
 	/**
-	 * removes all entries of this variable component's set of variant derivation URIs.
+	 * removes all entries of this variable component's set of variant derivation
+	 * URIs.
 	 *
 	 */
 	public void clearVariantDerivations() {

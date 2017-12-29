@@ -334,7 +334,7 @@ public class SBOLValidate {
 			return;
 		visited.add(combinatorialDerivation.getIdentity());
 		for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
-			for (URI variantDerivationURI : variableComponent.getVariantDerivations()) {
+			for (URI variantDerivationURI : variableComponent.getVariantDerivationURIs()) {
 				CombinatorialDerivation variantDerivation = combinatorialDerivation.getSBOLDocument()
 						.getCombinatorialDerivation(variantDerivationURI);
 				if (variantDerivation == null)

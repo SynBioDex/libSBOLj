@@ -50,7 +50,7 @@ public class CombinatorialDerivation extends TopLevel {
 	}
 
 	/**
-	 * @param componentDefinition
+	 * @param combinatorialDerivation
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in any of the
 	 *             following constructors or methods:
@@ -95,7 +95,8 @@ public class CombinatorialDerivation extends TopLevel {
 		 * throw new SBOLValidationException("sbol-XXXXX", variableComponent); } }
 		 */
 
-		for (CombinatorialDerivation cd : variableComponent.getVariants()) {
+		for (URI cdURI : variableComponent.getVariantDerivationURIs()) {
+			CombinatorialDerivation cd = this.getSBOLDocument().getCombinatorialDerivation(cdURI);
 			Set<URI> visited = new HashSet<>();
 			visited.add(this.getIdentity());
 			try {
