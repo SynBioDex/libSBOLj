@@ -2164,7 +2164,7 @@ public class SBOLReader
 			}
 		}
 
-		CombinatorialDerivation c = new CombinatorialDerivation(topLevel.getIdentity(), template, strategy);
+		CombinatorialDerivation c = new CombinatorialDerivation(topLevel.getIdentity(), strategy, template);
 
 		if (displayId != null)
 			c.setDisplayId(displayId);
@@ -2193,6 +2193,7 @@ public class SBOLReader
 		return c;
 	}
 
+	//TODO: FIX COMMENTED SECTION
 	private static VariableComponent parseVariableComponent(SBOLDocument SBOLDoc, NestedDocument<QName> variableComponent,
 			Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException {
 		String displayId 	   			= null;
@@ -2201,7 +2202,7 @@ public class SBOLReader
 		URI persistentIdentity			= null;
 		String version					= null;
 		List<Annotation> annotations 	= new ArrayList<>();
-		URI variable					= null;
+		Component variable					= null;
 		OperatorType operator			= null;
 		HashSet<URI> variants			= new HashSet<>();
 		HashSet<URI> variantCollections	= new HashSet<>();
@@ -2300,21 +2301,21 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10607", variableComponent.getIdentity());
 				}
 			}
-			else if(namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasVariable))
+			/*else if(namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasVariable))
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || description != null ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
 					throw new SBOLValidationException("sbol-XXXXX",variableComponent.getIdentity());
 				}
 				variable = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
-			}
+			}*/
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
 			}
 		}
 
-		VariableComponent c = new VariableComponent(variableComponent.getIdentity(), variable, operator);
+		VariableComponent c = new VariableComponent(variableComponent.getIdentity(), operator, variable);
 		
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
