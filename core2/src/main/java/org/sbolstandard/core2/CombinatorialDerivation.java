@@ -40,7 +40,7 @@ public class CombinatorialDerivation extends TopLevel {
 	 *             <li>{@link TopLevel#TopLevel(URI)}, or</li>
 	 *             </ul>
 	 */
-	public CombinatorialDerivation(URI identity, URI template, StrategyType strategy) throws SBOLValidationException {
+	public CombinatorialDerivation(URI identity, StrategyType strategy, URI template) throws SBOLValidationException {
 		super(identity);
 
 		this.template = template;

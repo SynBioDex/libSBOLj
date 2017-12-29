@@ -28,7 +28,14 @@ public class VariableComponent extends Identified {
 	 */
 	private CombinatorialDerivation combinatorialDerivation = null;
 
-	public VariableComponent(URI identity, URI variable, OperatorType operator) throws SBOLValidationException {
+	/**
+	 * @param identity
+	 * @param access
+	 * @param definition the referenced component definition
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred 
+	 * in {@link ComponentInstance#ComponentInstance(URI, AccessType, URI)}
+	 */
+	public VariableComponent(URI identity, OperatorType operator, URI variable) throws SBOLValidationException {
 		super(identity);
 		this.variable = variable;
 		this.operator = operator;
