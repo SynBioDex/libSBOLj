@@ -112,8 +112,7 @@ public class SBOLDocument {
 			addNamespaceBinding(Sbol1Terms.rdf);
 			addNamespaceBinding(Sbol2Terms.dc);
 			addNamespaceBinding(Sbol2Terms.prov);
-		}
-		catch (SBOLValidationException e) {
+		} catch (SBOLValidationException e) {
 			e.printStackTrace();
 		}
 		prefixes = new HashSet<>();
@@ -1113,16 +1112,52 @@ public class SBOLDocument {
 		}
 		return componentDefinition;
 	}
-	
-	public CombinatorialDerivation getCombinatorialDerivation(URI uri) {
-		CombinatorialDerivation combinatorialDerivation = combinatorialDerivations.get(uri);
-		
+
+	/**
+	 * Returns the combinatorial derivation matching the given display ID and
+	 * version from this SBOL document's list of combinatorial derivations.
+	 * <p>
+	 * A compliant combinatorialDerivation URI is created first. It starts with this
+	 * SBOL document's default URI prefix after its been successfully validated,
+	 * optionally followed by its type, namely
+	 * {@link TopLevel#COMBINATORIAL_DERIVATION}, followed by the given display ID,
+	 * and ends with the given version. This URI is used to look up the module
+	 * definition in this SBOL document.
+	 *
+	 * @param displayId
+	 *            the display ID of the combinatorial derivation to be retrieved
+	 * @param version
+	 *            the version of the combinatorial derivation to be retrieved
+	 * @return the matching combinatorial derivation if present, or {@code null}
+	 *         otherwise
+	 */
+	public CombinatorialDerivation getCombinatorialDerivation(String displayId, String version)
+			throws SBOLValidationException {
+		URI uri = URIcompliance.createCompliantURI(defaultURIprefix, TopLevel.COMBINATORIAL_DERIVATION, displayId,
+				version, typesInURIs);
+
+		return getCombinatorialDerivation(uri);
+	}
+
+	/**
+	 * Returns the combinatorial derivation matching the given identity URI from
+	 * this SBOL document's list of combinatorial derivations.
+	 *
+	 * @param combinatorialDerivationURI
+	 *            the given identity URI of the combinatorial derivation to be
+	 *            retrieved
+	 * @return the matching combinatorial derivation if present, or {@code null}
+	 *         otherwise.
+	 */
+	public CombinatorialDerivation getCombinatorialDerivation(URI combinatorialDerivationURI) {
+		CombinatorialDerivation combinatorialDerivation = combinatorialDerivations.get(combinatorialDerivationURI);
+
 		if (combinatorialDerivation == null) {
 			for (SynBioHubFrontend frontend : getRegistries()) {
 				try {
-					SBOLDocument document = frontend.getSBOL(uri);
+					SBOLDocument document = frontend.getSBOL(combinatorialDerivationURI);
 					if (document != null) {
-						combinatorialDerivation = document.getCombinatorialDerivation(uri);
+						combinatorialDerivation = document.getCombinatorialDerivation(combinatorialDerivationURI);
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
@@ -1130,57 +1165,143 @@ public class SBOLDocument {
 				}
 			}
 		}
-		
+
 		return combinatorialDerivation;
 	}
-	
-	public CombinatorialDerivation getCombinatorialDerivation(String URIprefix, String displayId, String version) throws SBOLValidationException {
-		URI uri = URIcompliance.createCompliantURI(URIprefix, displayId, version);
-		
-		return getCombinatorialDerivation(uri);
-	}
-	
-	void addCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) {
-		combinatorialDerivations.put(combinatorialDerivation.getIdentity(), combinatorialDerivation);
+
+	/**
+	 * Adds the given combinatorial derivation to this SBOL document's list of
+	 * combinatorial derivations
+	 *
+	 * @param combinatorialDerivation
+	 *            the combinatorial derivation to be added
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
+	 */
+	void addCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
+		addTopLevel(combinatorialDerivation, combinatorialDerivations, "combinatorialDerivation", collections,
+				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences);
+		for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+			variableComponent.setSBOLDocument(this);
+			variableComponent.getVariable().setSBOLDocument(this);
+		}
 	}
 
-	public Set<CombinatorialDerivation> getCombinatorialDerivations() {
-		Set<CombinatorialDerivation> combinatorialDerivations = new HashSet<>();
-		combinatorialDerivations.addAll(this.combinatorialDerivations.values());
-		return combinatorialDerivations;
-	}
+	/**
+	 * Creates a combinatorial derivation, and then adds it to this SBOL document's list
+	 * of combinatorial derivations.
+	 * <p>
+	 * {@link #createCombinatorialDerivation(String, String, URI, StrategyType)} with the
+	 * default URI prefix of this SBOL document, display ID, and version.
+	 *
+	 * @param displayId
+	 *            the display ID of the combinatorial derivation to be created
+	 * @param version
+	 *            the version of the combinatorial derivation to be created
+	 * @param templateDisplayId
+	 *            the display ID of the template of the combinatorial derivation to be created
+	 * @param templateVersion
+	 * 			  the version of the template of the combinatorial derivation to be created
+	 *  @param strategy
+	 *  		  the strategy of the combinatorial derivation to be created
+	 * @return the created combinatorial derivation
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createCombinatorialDerivation(String, String, URI, StrategyType)}.
+	 */
+	public CombinatorialDerivation createCombinatorialDerivation(String displayId, String version,
+			String templateDisplayId, String templateVersion, StrategyType strategy) throws SBOLValidationException {
+		ComponentDefinition templateCD = this.getComponentDefinition(templateDisplayId, templateVersion);
 
-	public CombinatorialDerivation createCombinatorialDerivation(String displayID, String version,
-			String templateDisplayID, String templateVersion, StrategyType strategy) throws SBOLValidationException {
-		ComponentDefinition templateCD = this.getComponentDefinition(templateDisplayID, templateVersion);
-
-		CombinatorialDerivation combinatorialDerivation = createCombinatorialDerivation(displayID, version, templateCD.getIdentity(),
-				strategy);
+		CombinatorialDerivation combinatorialDerivation = createCombinatorialDerivation(displayId, version,
+				templateCD.getIdentity(), strategy);
 		this.addCombinatorialDerivation(combinatorialDerivation);
 
 		return combinatorialDerivation;
 
 	}
 
+	/**
+	 * Creates a combinatorial derivation, and then adds it to this SBOL document's list
+	 * of combinatorial derivations.
+	 * <p>
+	 * {@link #createCombinatorialDerivation(String, URI, StrategyType)} with the
+	 * default URI prefix of this SBOL document, display ID, and version.
+	 *
+	 * @param displayId
+	 *            the display ID of the combinatorial derivation to be created
+	 * @param template
+	 *            the URI of the template of the combinatorial derivation to be created
+	 * @param strategy
+	 * 			  the strategy of the combinatorial derivation to be created
+	 * @return the created combinatorial derivation
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createCombinatorialDerivation(String, URI, StrategyType)}.
+	 */
 	public CombinatorialDerivation createCombinatorialDerivation(String displayId, URI template, StrategyType strategy)
 			throws SBOLValidationException {
 		return createCombinatorialDerivation(defaultURIprefix, displayId, "", template, strategy);
 	}
 
+	/**
+	 * Creates a combinatorial derivation, and then adds it to this SBOL document's list
+	 * of combinatorial derivations.
+	 * <p>
+	 * {@link #createCombinatorialDerivation(String, String, String, URI, StrategyType)} with the
+	 * default URI prefix of this SBOL document, display ID, and version.
+	 *
+	 * @param displayId
+	 *            the display ID of the combinatorial derivation to be created
+	 * @param version
+	 * 			  the version of the combinatorial derivation to be created
+	 * @param template
+	 *            the URI of the template of the combinatorial derivation to be created
+	 * @param strategy
+	 * 			  the strategy of the combinatorial derivation to be created
+	 * @return the created combinatorial derivation
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createCombinatorialDerivation(String, String, String, URI, StrategyType)}.
+	 */
 	public CombinatorialDerivation createCombinatorialDerivation(String displayId, String version, URI template,
 			StrategyType strategy) throws SBOLValidationException {
 		return createCombinatorialDerivation(defaultURIprefix, displayId, version, template, strategy);
 	}
 
+	/**
+	 * Creates a combinatorial derivation, and then adds it to this SBOL document's list
+	 * of combinatorial derivations.
+	 * <p>
+	 * This method creates a compliant URI for the combinatorial derivation to be
+	 * created first. It starts with the given URI prefix after its been
+	 * successfully validated, followed by the given display ID, and ends with the
+	 * given version.
+	 *
+	 * @param URIprefix
+	 *            the URI prefix used to construct the compliant URI for the
+	 *            combinatorial derivation to be created
+	 * @param displayId
+	 *            the display ID of the combinatorial derivation to be created
+	 * @param version
+	 *            the version of the combinatorial derivation to be created
+	 * @param template
+	 *            the template URI of the combinatorial derivation to be created
+	 * @return the created combinatorial derivation
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules was violated:
+	 *             TODO: 10201, 10202, 10204, 10206, 10220, 10502, 10503.
+	 */
 	public CombinatorialDerivation createCombinatorialDerivation(String URIprefix, String displayId, String version,
 			URI template, StrategyType strategy) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		CombinatorialDerivation cd = new CombinatorialDerivation(
 				createCompliantURI(URIprefix, TopLevel.COMBINATORIAL_DERIVATION, displayId, version, typesInURIs),
-				template, strategy);
+				strategy, template);
 		cd.setDisplayId(displayId);
 		cd.setPersistentIdentity(
-				createCompliantURI(URIprefix, TopLevel.COMPONENT_DEFINITION, displayId, "", typesInURIs));
+				createCompliantURI(URIprefix, TopLevel.COMBINATORIAL_DERIVATION, displayId, "", typesInURIs));
 		cd.setVersion(version);
 		addCombinatorialDerivation(cd);
 		return cd;
@@ -1604,7 +1725,7 @@ public class SBOLDocument {
 		// topLevel.isURIcompliant();
 		if (URIprefix == null) {
 			URIprefix = extractURIprefix(topLevel.getIdentity());
-			if (URIprefix==null) {
+			if (URIprefix == null) {
 				URIprefix = this.getDefaultURIprefix();
 			}
 			URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -1615,20 +1736,22 @@ public class SBOLDocument {
 			// displayId = topLevel.getDisplayId();
 			// if (displayId == null) {
 			displayId = URIcompliance.extractDisplayId(topLevel.getIdentity());
-			if (displayId==null) {
+			if (displayId == null) {
 				displayId = URIcompliance.findDisplayId(topLevel.getIdentity().toString());
 			} else {
 				displayId = URIcompliance.fixDisplayId(displayId);
 			}
-			//}
+			// }
 		}
 		if (version == null) {
 			version = topLevel.getVersion();
 		}
 		TopLevel oldTopLevel = this.getTopLevel(URIcompliance.createCompliantURI(URIprefix, displayId, version));
 		if (oldTopLevel != null) {
-			// TODO: should check if they are same or different, if different throw exception
-			if (oldTopLevel.equals(topLevel)) return oldTopLevel; 
+			// TODO: should check if they are same or different, if different throw
+			// exception
+			if (oldTopLevel.equals(topLevel))
+				return oldTopLevel;
 		}
 		if (topLevel instanceof Collection) {
 			Collection newCollection = this.createCollection(URIprefix, displayId, version);
@@ -1658,23 +1781,19 @@ public class SBOLDocument {
 					((GenericTopLevel) topLevel).getRDFType());
 			newGenericTopLevel.copy((GenericTopLevel) topLevel);
 			return newGenericTopLevel;
-		}
-		else if (topLevel instanceof Activity) {
+		} else if (topLevel instanceof Activity) {
 			Activity newActivity = this.createActivity(URIprefix, displayId, version);
-			newActivity.copy((Activity)topLevel);
+			newActivity.copy((Activity) topLevel);
 			return newActivity;
-		}
-		else if (topLevel instanceof Agent) {
+		} else if (topLevel instanceof Agent) {
 			Agent newAgent = this.createAgent(URIprefix, displayId, version);
-			newAgent.copy((Agent)topLevel);
+			newAgent.copy((Agent) topLevel);
 			return newAgent;
-		}
-		else if (topLevel instanceof Plan) {
+		} else if (topLevel instanceof Plan) {
 			Plan newPlan = this.createPlan(URIprefix, displayId, version);
-			newPlan.copy((Plan)topLevel);
+			newPlan.copy((Plan) topLevel);
 			return newPlan;
-		}
-		else {
+		} else {
 			throw new IllegalArgumentException("Unable to copy " + topLevel.getIdentity());
 		}
 	}
@@ -1725,9 +1844,10 @@ public class SBOLDocument {
 	 *             {@link SBOLDocument#createCopy(TopLevel)}.
 	 */
 	private void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
-		if (document.getTopLevel(topLevel.getIdentity())!=null) return;
-		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || 
-				topLevel instanceof Model || topLevel instanceof Plan || topLevel instanceof Agent) {
+		if (document.getTopLevel(topLevel.getIdentity()) != null)
+			return;
+		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model
+				|| topLevel instanceof Plan || topLevel instanceof Agent) {
 			document.createCopy(topLevel);
 		} else if (topLevel instanceof Collection) {
 			for (TopLevel member : ((Collection) topLevel).getMembers()) {
@@ -1762,17 +1882,17 @@ public class SBOLDocument {
 			}
 			document.createCopy(topLevel);
 		} else if (topLevel instanceof Activity) {
-			for (Association association : ((Activity)topLevel).getAssociations()) {
-				if (association.getAgent()!=null) {
-					createRecursiveCopy(document,association.getAgent());
+			for (Association association : ((Activity) topLevel).getAssociations()) {
+				if (association.getAgent() != null) {
+					createRecursiveCopy(document, association.getAgent());
 				}
-				if (association.getPlan()!=null) {
-					createRecursiveCopy(document,association.getPlan());
+				if (association.getPlan() != null) {
+					createRecursiveCopy(document, association.getPlan());
 				}
 			}
-			for (Usage usage : ((Activity)topLevel).getUsages()) {
-				if (usage.getEntity()!=null) {
-					createRecursiveCopy(document,usage.getEntity());
+			for (Usage usage : ((Activity) topLevel).getUsages()) {
+				if (usage.getEntity() != null) {
+					createRecursiveCopy(document, usage.getEntity());
 				}
 			}
 			document.createCopy(topLevel);
@@ -1816,7 +1936,7 @@ public class SBOLDocument {
 
 	private void fixDocumentURIPrefix() throws SBOLValidationException {
 		String documentURIPrefixAll = extractDocumentURIPrefix();
-		if (documentURIPrefixAll!=null && documentURIPrefixAll.length() >= 9) {
+		if (documentURIPrefixAll != null && documentURIPrefixAll.length() >= 9) {
 			setDefaultURIprefix(documentURIPrefixAll);
 		}
 		String documentURIPrefix = documentURIPrefixAll;
@@ -1824,19 +1944,18 @@ public class SBOLDocument {
 			if (documentURIPrefixAll.length() < 9) {
 				documentURIPrefix = URIcompliance.extractURIprefix(topLevel.getIdentity());
 				String simpleNamespace = URIcompliance.extractSimpleNamespace(topLevel.getIdentity());
-				if (simpleNamespace!=null) {
+				if (simpleNamespace != null) {
 					String documentURIPrefix2 = URIcompliance.extractURIprefix(URI.create(simpleNamespace));
-					if (documentURIPrefix2!=null) {
+					if (documentURIPrefix2 != null) {
 						documentURIPrefix = documentURIPrefix2;
 					}
 				}
-				if (documentURIPrefix==null) {
+				if (documentURIPrefix == null) {
 					documentURIPrefix = this.getDefaultURIprefix();
 				}
 			}
-			if (!topLevel.getIdentity()
-					.equals(URIcompliance.createCompliantURI(documentURIPrefix, 
-							URIcompliance.findDisplayId(topLevel), topLevel.getVersion()))) {
+			if (!topLevel.getIdentity().equals(URIcompliance.createCompliantURI(documentURIPrefix,
+					URIcompliance.findDisplayId(topLevel), topLevel.getVersion()))) {
 				String newDisplayId = topLevel.getIdentity().toString().replaceAll(documentURIPrefix, "");
 				String newVersion = "";
 				if (topLevel.isSetVersion()) {
@@ -1855,8 +1974,9 @@ public class SBOLDocument {
 			}
 		}
 	}
-	
-	private void updateReferences(List<Annotation> annotations,URI originalIdentity,URI newIdentity) throws SBOLValidationException {
+
+	private void updateReferences(List<Annotation> annotations, URI originalIdentity, URI newIdentity)
+			throws SBOLValidationException {
 		for (Annotation annotation : annotations) {
 			if (annotation.isURIValue()) {
 				if (annotation.getURIValue().equals(originalIdentity)) {
@@ -1867,9 +1987,10 @@ public class SBOLDocument {
 			}
 		}
 	}
-	
-	private void updateReferences(Identified identified,URI originalIdentity,URI newIdentity) throws SBOLValidationException {
-		updateReferences(identified.getAnnotations(),originalIdentity,newIdentity);
+
+	private void updateReferences(Identified identified, URI originalIdentity, URI newIdentity)
+			throws SBOLValidationException {
+		updateReferences(identified.getAnnotations(), originalIdentity, newIdentity);
 	}
 
 	// TODO: need to update persistentIdentities too
@@ -1981,7 +2102,8 @@ public class SBOLDocument {
 		}
 	}
 
-	private void updateReferences(List<Annotation> annotations,HashMap<URI,URI> uriMap) throws SBOLValidationException {
+	private void updateReferences(List<Annotation> annotations, HashMap<URI, URI> uriMap)
+			throws SBOLValidationException {
 		for (Annotation annotation : annotations) {
 			if (annotation.isURIValue()) {
 				if (uriMap.get(annotation.getURIValue()) != null) {
@@ -1992,9 +2114,9 @@ public class SBOLDocument {
 			}
 		}
 	}
-	
-	private void updateReferences(Identified identified,HashMap<URI,URI> uriMap) throws SBOLValidationException {
-		updateReferences(identified.getAnnotations(),uriMap);
+
+	private void updateReferences(Identified identified, HashMap<URI, URI> uriMap) throws SBOLValidationException {
+		updateReferences(identified.getAnnotations(), uriMap);
 	}
 
 	// TODO: need to update persistentIdentities too
@@ -2105,52 +2227,52 @@ public class SBOLDocument {
 			updateReferences(genericTopLevel, uriMap);
 		}
 		for (Activity activity : getActivities()) {
-			updateReferences(activity,uriMap);
+			updateReferences(activity, uriMap);
 			for (Association association : activity.getAssociations()) {
-				if (uriMap.get(association.getAgent())!=null) {
+				if (uriMap.get(association.getAgent()) != null) {
 					association.setAgent(uriMap.get(association.getAgent()));
-				}	
-				if (uriMap.get(association.getPlan())!=null) {
+				}
+				if (uriMap.get(association.getPlan()) != null) {
 					association.setPlan(uriMap.get(association.getPlan()));
-				}	
-				updateReferences(association,uriMap);
+				}
+				updateReferences(association, uriMap);
 			}
 			for (Usage usage : activity.getUsages()) {
-				if (uriMap.get(usage.getEntity())!=null) {
+				if (uriMap.get(usage.getEntity()) != null) {
 					usage.setEntity(uriMap.get(usage.getEntity()));
-				}	
-				updateReferences(usage,uriMap);
+				}
+				updateReferences(usage, uriMap);
 			}
 		}
 		for (Agent agent : getAgents()) {
-			updateReferences(agent,uriMap);
+			updateReferences(agent, uriMap);
 		}
 		for (Plan plan : getPlans()) {
-			updateReferences(plan,uriMap);
+			updateReferences(plan, uriMap);
 		}
 		for (Activity activity : getActivities()) {
-			updateReferences(activity,uriMap);
+			updateReferences(activity, uriMap);
 			for (Association association : activity.getAssociations()) {
-				if (uriMap.get(association.getAgent())!=null) {
+				if (uriMap.get(association.getAgent()) != null) {
 					association.setAgent(uriMap.get(association.getAgent()));
-				}	
-				if (uriMap.get(association.getPlan())!=null) {
+				}
+				if (uriMap.get(association.getPlan()) != null) {
 					association.setPlan(uriMap.get(association.getPlan()));
-				}	
-				updateReferences(association,uriMap);
+				}
+				updateReferences(association, uriMap);
 			}
 			for (Usage usage : activity.getUsages()) {
-				if (uriMap.get(usage.getEntity())!=null) {
+				if (uriMap.get(usage.getEntity()) != null) {
 					usage.setEntity(uriMap.get(usage.getEntity()));
-				}	
-				updateReferences(usage,uriMap);
+				}
+				updateReferences(usage, uriMap);
 			}
 		}
 		for (Agent agent : getAgents()) {
-			updateReferences(agent,uriMap);
+			updateReferences(agent, uriMap);
 		}
 		for (Plan plan : getPlans()) {
-			updateReferences(plan,uriMap);
+			updateReferences(plan, uriMap);
 		}
 	}
 
@@ -2209,24 +2331,24 @@ public class SBOLDocument {
 		SBOLDocument document = new SBOLDocument();
 		SBOLDocument fixed = new SBOLDocument();
 		fixed.setDefaultURIprefix(URIPrefix);
-//		if (!this.isCompliant()) {
-//			for (TopLevel toplevel : this.getTopLevels()) {
-//				String displayId = toplevel.getDisplayId();
-//				if (displayId==null) {
-//					displayId = URIcompliance.findDisplayId(toplevel.getIdentity().toString());
-//				}
-//				fixed.createCopy(toplevel,URIPrefix,displayId,version);
-//			}
-//			fixed.fixDocumentURIPrefix();
-//		} else {
-//			fixed.createCopy(this);
-//			fixed.fixDocumentURIPrefix();
-//		}
+		// if (!this.isCompliant()) {
+		// for (TopLevel toplevel : this.getTopLevels()) {
+		// String displayId = toplevel.getDisplayId();
+		// if (displayId==null) {
+		// displayId = URIcompliance.findDisplayId(toplevel.getIdentity().toString());
+		// }
+		// fixed.createCopy(toplevel,URIPrefix,displayId,version);
+		// }
+		// fixed.fixDocumentURIPrefix();
+		// } else {
+		// fixed.createCopy(this);
+		// fixed.fixDocumentURIPrefix();
+		// }
 		this.fixDocumentURIPrefix();
 		fixed.createCopy(this);
 		String documentURIPrefix = fixed.extractDocumentURIPrefix();
-		HashMap<URI,URI> uriMap = new HashMap<URI,URI>();
-		//for (TopLevel topLevel : this.getTopLevels()) {
+		HashMap<URI, URI> uriMap = new HashMap<URI, URI>();
+		// for (TopLevel topLevel : this.getTopLevels()) {
 		for (TopLevel topLevel : fixed.getTopLevels()) {
 			fixed.rename(topLevel, URIPrefix, null, version);
 			TopLevel newTL = document.createCopy(topLevel, URIPrefix, null, version);
@@ -2241,31 +2363,40 @@ public class SBOLDocument {
 		document.setDefaultURIprefix(URIPrefix);
 		return document;
 	}
-	
+
 	/**
-	 * Renames the given top-level's URI prefix, display ID, and version with the given ones.  
+	 * Renames the given top-level's URI prefix, display ID, and version with the
+	 * given ones.
 	 * <p>
-	 * This method first calls {@link #createCopy(TopLevel, String, String, String)} to make a copy of
-	 * the given top-level with the URI prefix, display ID, and version.
-	 * It then removes the given top-level and then returns the newly-copied top-level. 
+	 * This method first calls {@link #createCopy(TopLevel, String, String, String)}
+	 * to make a copy of the given top-level with the URI prefix, display ID, and
+	 * version. It then removes the given top-level and then returns the
+	 * newly-copied top-level.
 	 *
-	 * @param topLevel the top-level to be renamed
-	 * @param URIprefix the given URI prefix to be rename to 
-	 * @param displayId the given display ID to be renamed to  
-	 * @param version the given version to be renamed to
-	 * @return the renamed top-level 
-	 * @throws SBOLValidationException if either of the following conditions is satisfied:
-	 * <ul>
-	 * <li>any of the following SBOL validation rules was violated: 
-	 * 10513, 10604, 11608, 11703, 12103; or</li>
-	 * <li>an SBOL validation rule violation occurred in the following method: 
-	 * {@link #createCopy(TopLevel, String, String, String)}.</li>
-	 * </ul>
+	 * @param topLevel
+	 *            the top-level to be renamed
+	 * @param URIprefix
+	 *            the given URI prefix to be rename to
+	 * @param displayId
+	 *            the given display ID to be renamed to
+	 * @param version
+	 *            the given version to be renamed to
+	 * @return the renamed top-level
+	 * @throws SBOLValidationException
+	 *             if either of the following conditions is satisfied:
+	 *             <ul>
+	 *             <li>any of the following SBOL validation rules was violated:
+	 *             10513, 10604, 11608, 11703, 12103; or</li>
+	 *             <li>an SBOL validation rule violation occurred in the following
+	 *             method:
+	 *             {@link #createCopy(TopLevel, String, String, String)}.</li>
+	 *             </ul>
 	 */
-	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version) throws SBOLValidationException {
-		if ((URIprefix==null || URIprefix.equals(URIcompliance.extractURIprefix(topLevel.getIdentity()))) &&
-			(displayId==null || displayId.equals(topLevel.getDisplayId())) &&
-			(version==null || version.equals(topLevel.getVersion()))) {
+	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version)
+			throws SBOLValidationException {
+		if ((URIprefix == null || URIprefix.equals(URIcompliance.extractURIprefix(topLevel.getIdentity())))
+				&& (displayId == null || displayId.equals(topLevel.getDisplayId()))
+				&& (version == null || version.equals(topLevel.getVersion()))) {
 			return topLevel;
 		}
 		TopLevel renamedTopLevel = createCopy(topLevel, URIprefix, displayId, version);
@@ -2669,8 +2800,9 @@ public class SBOLDocument {
 	 * @param version
 	 *            the version of the activity to be created
 	 * @return the created activity
-	 * @throws SBOLValidationException if an SBOL validation rules was violated:
-	 * 10201, 10202, 10204, 10206, 10220.
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rules was violated: 10201, 10202, 10204,
+	 *             10206, 10220.
 	 */
 	public Activity createActivity(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -2842,8 +2974,9 @@ public class SBOLDocument {
 	 * @param version
 	 *            the version of the agent to be created
 	 * @return the created agent
-	 * @throws SBOLValidationException if an SBOL validation rules was violated:
-	 * 10201, 10202, 10204, 10206, 10220.
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rules was violated: 10201, 10202, 10204,
+	 *             10206, 10220.
 	 */
 	public Agent createAgent(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -3014,8 +3147,9 @@ public class SBOLDocument {
 	 * @param version
 	 *            the version of the plan to be created
 	 * @return the created plan
-	 * @throws SBOLValidationException if an SBOL validation rules was violated:
-	 * 10201, 10202, 10204, 10206, 10220.
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rules was violated: 10201, 10202, 10204,
+	 *             10206, 10220.
 	 */
 	public Plan createPlan(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
@@ -4052,4 +4186,3 @@ public class SBOLDocument {
 	}
 
 }
-
