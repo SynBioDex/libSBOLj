@@ -1187,6 +1187,34 @@ public class SBOLDocument {
 			variableComponent.getVariable().setSBOLDocument(this);
 		}
 	}
+	
+	/**
+	 * Removes the given combinatorial derivation from this SBOL document's list of
+	 * combinatorial derivations.
+	 *
+	 * @param combinatorialDerivation
+	 *            the combinatorialDerivation to be removed
+	 * @return {@code true} if the given combinatorial derivation was successfully
+	 *         removed, {@code false} otherwise
+	 * @throws SBOLValidationException
+	 *             if either of the following SBOL validation rules was violated:
+	 *             TODO: 10604, 12103.
+	 */
+	public boolean removeCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
+		if (complete) {
+			for (CombinatorialDerivation cd : combinatorialDerivations.values()) {
+				for (VariableComponent vc : cd.getVariableComponents()) {
+					for(URI variantURI : vc.getVariantDerivations())
+					if (variantURI.equals(combinatorialDerivation.getIdentity())) {
+						//TODO;
+						throw new SBOLValidationException("sbol-XXXXX", vc);
+					}
+				}
+			}
+		}
+		
+		return removeTopLevel(combinatorialDerivation, combinatorialDerivations);
+	}
 
 	/**
 	 * Creates a combinatorial derivation, and then adds it to this SBOL document's list
@@ -1305,6 +1333,17 @@ public class SBOLDocument {
 		cd.setVersion(version);
 		addCombinatorialDerivation(cd);
 		return cd;
+	}
+	
+	/**
+	 * Returns the set of combinatorial derivations owned by this SBOL document.
+	 *
+	 * @return the set of combinatorial derivation owned by this SBOL document.
+	 */
+	public Set<CombinatorialDerivation> getCombinatorialDerivations() {
+		Set<CombinatorialDerivation> combinatorialDerivations = new HashSet<>();
+		combinatorialDerivations.addAll(this.combinatorialDerivations.values());
+		return combinatorialDerivations;
 	}
 
 	/**
