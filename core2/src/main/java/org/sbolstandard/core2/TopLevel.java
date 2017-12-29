@@ -125,6 +125,7 @@ public abstract class TopLevel extends Identified {
 	/**
 	 * Check if this top-level object's and all of its descendants' URIs are all compliant. 
 	 * @throws SBOLValidationException 
+	 * 			validation error
 	 */
 	abstract void checkDescendantsURIcompliance() throws SBOLValidationException;
 

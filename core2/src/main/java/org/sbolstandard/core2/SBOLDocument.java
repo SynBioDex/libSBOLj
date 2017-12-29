@@ -1130,6 +1130,8 @@ public class SBOLDocument {
 	 *            the version of the combinatorial derivation to be retrieved
 	 * @return the matching combinatorial derivation if present, or {@code null}
 	 *         otherwise
+	 * @throws SBOLValidtionException
+	 * 			validation error
 	 */
 	public CombinatorialDerivation getCombinatorialDerivation(String displayId, String version)
 			throws SBOLValidationException {
@@ -1316,6 +1318,8 @@ public class SBOLDocument {
 	 *            the version of the combinatorial derivation to be created
 	 * @param template
 	 *            the template URI of the combinatorial derivation to be created
+	 * @param strategy
+	 * 			  strategy of the combinatorial derivation to be created
 	 * @return the created combinatorial derivation
 	 * @throws SBOLValidationException
 	 *             if any of the following SBOL validation rules was violated:

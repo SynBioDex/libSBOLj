@@ -31,8 +31,11 @@ public class CombinatorialDerivation extends TopLevel {
 
 	/**
 	 * @param identity
+	 * 			identity of the combinatorial derivation
 	 * @param template
+	 * 			template of the combinatorial derivation
 	 * @param strategy
+	 * 			strategy of the combinatorial derivation
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in the following
 	 *             constructor or method:
@@ -195,6 +198,7 @@ public class CombinatorialDerivation extends TopLevel {
 	//TODO: validation
 	/**
 	 * @param variableComponents
+	 * 			variable components to set to
 	 */
 	public void setVariableComponents(Set<VariableComponent> variableComponents) {
 		this.variableComponents.clear();
