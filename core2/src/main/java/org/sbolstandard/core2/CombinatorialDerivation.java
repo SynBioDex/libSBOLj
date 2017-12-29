@@ -342,7 +342,6 @@ public class CombinatorialDerivation extends TopLevel {
 	 *             TODO: 10602, 10604.
 	 */
 	public void setTemplate(URI template) throws SBOLValidationException {
-		this.template = template;
 
 		if (template == null) {
 			throw new SBOLValidationException("sbol-XXXXX", this);
