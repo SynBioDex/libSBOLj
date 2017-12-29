@@ -484,9 +484,6 @@ public class CombinatorialDerivation extends TopLevel {
 	 */
 	@Override
 	CombinatorialDerivation copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
-		CombinatorialDerivation combinatorialDerivation = this.getDocument().getCombinatorialDerivation(URIprefix,
-				displayId, version);
-
 		CombinatorialDerivation cloned = this.deepCopy();
 		cloned.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		cloned.setDisplayId(displayId);
