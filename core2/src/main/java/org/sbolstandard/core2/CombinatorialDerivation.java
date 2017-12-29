@@ -247,7 +247,7 @@ public class CombinatorialDerivation extends TopLevel {
 	 *             {@link #addVariableComponent(VariableComponent)}</li>
 	 *             </ul>
 	 */
-	private VariableComponent createVariableComponent(URI identity, OperatorType operator, URI variable)
+	private VariableComponent createVariableComponent(URI identity, OperatorType operator, Component variable)
 			throws SBOLValidationException {
 		VariableComponent newVariableComponent = new VariableComponent(identity, operator, variable);
 		this.addVariableComponent(newVariableComponent);
@@ -276,7 +276,7 @@ public class CombinatorialDerivation extends TopLevel {
 	 *             if any of the following SBOL validation rules was violated: TODO:
 	 *             10201, 10202, 10204, 10206, 10602, 10604, 10605, 10607, 10803.
 	 */
-	public VariableComponent createVariableComponent(String displayId, OperatorType operator, URI variableURI)
+	public VariableComponent createVariableComponent(String displayId, OperatorType operator, Component variable)
 			throws SBOLValidationException {
 
 		// TODO:
@@ -289,7 +289,7 @@ public class CombinatorialDerivation extends TopLevel {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
 		VariableComponent c = createVariableComponent(createCompliantURI(URIprefix, displayId, version), operator,
-				variableURI);
+				variable);
 		c.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		c.setDisplayId(displayId);
 		c.setVersion(version);

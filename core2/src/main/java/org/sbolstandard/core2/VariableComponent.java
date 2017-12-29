@@ -20,7 +20,7 @@ public class VariableComponent extends Identified {
 	private HashSet<URI> variants;
 	private HashSet<URI> variantCollections;
 	private HashSet<URI> variantDerivations;
-	private URI variable;
+	private Component variable;
 	private OperatorType operator;
 
 	/**
@@ -30,14 +30,14 @@ public class VariableComponent extends Identified {
 
 	/**
 	 * @param identity
-	 * @param access
-	 * @param definition
-	 *            the referenced component definition
+	 * @param operator
+	 * @param variable
+	 *            the referenced component
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
-	 *             {@link ComponentInstance#ComponentInstance(URI, AccessType, URI)}
+	 *             {@link Identified#Identified(URI)}
 	 */
-	public VariableComponent(URI identity, OperatorType operator, URI variable) throws SBOLValidationException {
+	public VariableComponent(URI identity, OperatorType operator, Component variable) throws SBOLValidationException {
 		super(identity);
 		this.variable = variable;
 		this.operator = operator;
@@ -72,8 +72,22 @@ public class VariableComponent extends Identified {
 		variantDerivations.add(variantDerivation);
 	}
 
-	public URI getVariable() {
+	public Component getVariable() {
 		return this.variable;
+	}
+
+	/**
+	 * Sets the variable property to the given one.
+	 *
+	 * @param variable
+	 *            the given component to set to
+	 * @throws SBOLValidationException
+	 *             if either of the following SBOL validation rules was violated:
+	 *             TODO: 10604, 10605.
+	 */
+	public void setVariable(Component variable) throws SBOLValidationException {
+		//TODO: validation
+		this.variable = variable;
 	}
 
 	public OperatorType getOperator() {
@@ -164,9 +178,10 @@ public class VariableComponent extends Identified {
 	public boolean removeVariant(ComponentDefinition variant) {
 		return variants.remove(variant.getIdentity());
 	}
-	
+
 	/**
-	 * Removes the component definition with the given URI from the list of variants.
+	 * Removes the component definition with the given URI from the list of
+	 * variants.
 	 *
 	 * @param variantURI
 	 *            a component definition URI be removed
@@ -188,9 +203,10 @@ public class VariableComponent extends Identified {
 	public boolean removeVariantCollection(Collection variantCollection) {
 		return variantCollections.remove(variantCollection.getIdentity());
 	}
-	
+
 	/**
-	 * Removes the collection with the given URI from the list of variantCollections.
+	 * Removes the collection with the given URI from the list of
+	 * variantCollections.
 	 *
 	 * @param variantCollectionURI
 	 *            a collection URI to be removed
@@ -213,10 +229,10 @@ public class VariableComponent extends Identified {
 	public boolean removeVariantDerivation(CombinatorialDerivation variantDerivation) {
 		return variantDerivations.remove(variantDerivation.getIdentity());
 	}
-	
+
 	/**
-	 * Removes the combinatorial derivation with the given URI from the list of variant
-	 * derivations.
+	 * Removes the combinatorial derivation with the given URI from the list of
+	 * variant derivations.
 	 *
 	 * @param variantDerivationURI
 	 *            a combinatorial derivation URI to be removed
