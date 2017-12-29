@@ -56,7 +56,7 @@ public class CombinatorialDerivation extends TopLevel {
 	 *             following constructors or methods:
 	 *             <ul>
 	 *             <li>{@link TopLevel#TopLevel(TopLevel)},</li>
-	 *             <li>{@link #addSVariableComponent(VariableComponent)},</li>
+	 *             <li>{@link #addVariableComponent(VariableComponent)},</li>
 	 *             <li>{@link VariableComponent#deepCopy()}</li>
 	 *             </ul>
 	 */
@@ -86,17 +86,21 @@ public class CombinatorialDerivation extends TopLevel {
 	private void addVariableComponent(VariableComponent variableComponent) {
 		variableComponent.setSBOLDocument(this.getSBOLDocument());
 		variableComponent.setCombinatorialDerivation(this);
-		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+		
+		//TODO:
+		/*if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (variableComponent.getVariable() == null) {
+				
 				throw new SBOLValidationException("sbol-XXXXX", variableComponent);
 			}
-		}
+		}*/
 
 		for (CombinatorialDerivation cd : variableComponent.getVariants()) {
 			Set<URI> visited = new HashSet<>();
 			visited.add(this.getIdentity());
 			try {
-				SBOLValidate.checkCombinatorialDerivationCycle(this.getSBOLDocument(), cd, visited);
+				//TODO:
+				//SBOLValidate.checkCombinatorialDerivationCycle(this.getSBOLDocument(), cd, visited);
 			} catch (SBOLValidationException e) {
 				throw new SBOLValidationException("sbol-XXXXX", variableComponent);
 			}
@@ -390,7 +394,7 @@ public class CombinatorialDerivation extends TopLevel {
 		// TODO:
 		/*
 		 * if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-		 * if (this.getSBOLDocument().getComponent(variableURI) == null) { throw new
+		 * if (this.getSBOLDocument().getComponentDefintion(template).getComponent(variableURI) == null) { throw new
 		 * SBOLValidationException("sbol-XXXXX", this); } }
 		 */
 
@@ -584,16 +588,9 @@ public class CombinatorialDerivation extends TopLevel {
 	 *             <li>{@link #setVersion(String)},</li>
 	 *             <li>{@link #setWasDerivedFrom(URI)},</li>
 	 *             <li>{@link #setIdentity(URI)}</li>
-	 *             <li>{@link Component#setDisplayId(String)}</li>
-	 *             <li>{@link Component#updateCompliantURI(String, String, String)},</li>
-	 *             <li>{@link #addComponent(Component)},</li>
-	 *             <li>{@link SequenceConstraint#setDisplayId(String)}</li>
-	 *             <li>{@link SequenceConstraint#updateCompliantURI(String, String, String)},</li>
-	 *             <li>{@link #addSequenceConstraint(SequenceConstraint)},</li>
-	 *             <li>{@link SequenceAnnotation#setDisplayId(String)}</li>
-	 *             <li>{@link SequenceAnnotation#updateCompliantURI(String, String, String)},
-	 *             or</li>
-	 *             <li>{@link #addSequenceAnnotation(SequenceAnnotation)},</li>
+	 *             <li>{@link VariableComponent#setDisplayId(String)}</li>
+	 *             <li>{@link VariableComponent#updateCompliantURI(String, String, String)},</li>
+	 *             <li>{@link #addVariableComponent(VariableComponent)},</li>
 	 *             </ul>
 	 */
 	@Override

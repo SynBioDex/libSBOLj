@@ -16,12 +16,17 @@ import java.util.Set;
  */
 
 public class VariableComponent extends Identified {
-	HashSet<URI> variants;
-	HashSet<URI> variantCollections;
-	HashSet<URI> variantDerivations;
-	URI variable;
-	OperatorType operator;
+	private HashSet<URI> variants;
+	private HashSet<URI> variantCollections;
+	private HashSet<URI> variantDerivations;
+	private URI variable;
+	private OperatorType operator;
 	
+	/**
+	 * Parent combinatorial derivation of this variable component
+	 */
+	private CombinatorialDerivation combinatorialDerivation = null;
+
 	public VariableComponent(URI identity, URI variable, OperatorType operator) throws SBOLValidationException {
 		super(identity);
 		this.variable = variable;
@@ -30,95 +35,162 @@ public class VariableComponent extends Identified {
 		this.variantCollections = new HashSet<>();
 		this.variantDerivations = new HashSet<>();
 	}
-	
+
 	private VariableComponent(VariableComponent variableComponent) throws SBOLValidationException {
 		super(variableComponent.getIdentity());
-		
+
 		this.variable = variableComponent.variable;
 		this.operator = variableComponent.operator;
 		this.variants = variableComponent.variants;
 		this.variantCollections = variableComponent.variantCollections;
 		this.variantDerivations = variableComponent.variantDerivations;
 	}
+	
+	public void setCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) {
+		this.CombinatorialDerivation = combinatorialDerivation;
+	}
 
 	public void addVariant(URI variant) {
 		variants.add(variant);
 	}
-	
+
 	public void addVariantCollection(URI variantCollection) {
 		variantCollections.add(variantCollection);
 	}
-	
+
 	public void addVariantDerivation(URI variantDerivation) {
 		variantDerivations.add(variantDerivation);
 	}
-	
+
 	public URI getVariable() {
 		return this.variable;
 	}
-	
+
 	public OperatorType getOperator() {
 		return this.operator;
 	}
-	
+
+	public Set<CombinatorialDerivation> getVariants() {
+		HashSet<CombinatorialDerivation> tempVariants = new HashSet<>();
+
+		for (URI variantURI : variants) {
+			variants.add(this.getSBOLDocument().getCombinatorialDerivation(variantURI).getIdentity());
+		}
+
+		return tempVariants;
+	}
+
 	public Set<URI> getVariantURIs() {
 		return new HashSet<URI>(this.variants);
 	}
-	
-	public Set<URI> getVariantCollections () {
+
+	public Set<URI> getVariantCollections() {
 		return new HashSet<URI>(this.variantCollections);
 	}
-	
-	public Set<URI> getVariantDerivations () {
+
+	public Set<URI> getVariantDerivations() {
 		return new HashSet<URI>(this.variantDerivations);
 	}
-	
+
 	public void setVariants(Set<URI> variants) {
 		this.variants = (HashSet<URI>) variants;
 	}
-	
+
 	public void setVariantCollections(Set<URI> variantCollections) {
 		this.variantCollections = (HashSet<URI>) variantCollections;
 	}
-	
+
 	public void setVariantDerivations(Set<URI> variantDerivations) {
 		this.variantDerivations = (HashSet<URI>) variantDerivations;
 	}
-	
+
 	public void addVariant(String uriPrefix, String displayId, String version) throws SBOLValidationException {
 		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
-		
+
 		ComponentDefinition componentDefinition = this.getSBOLDocument().getComponentDefinition(uri);
-		variants.add(componentDefinition.getIdentity());		
-	}
-	
-	public void addVariantCollection(String uriPrefix, String displayId, String version) throws SBOLValidationException {
-		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
-		
-		Collection collection = this.getSBOLDocument().getCollection(uri);
-		variantCollections.add(collection.getIdentity());		
-	}
-	
-	public void addVariantDerivation(String uriPrefix, String displayId, String version) throws SBOLValidationException {
-		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
-		
-		CombinatorialDerivation combinatorialDerivation = this.getSBOLDocument().getCombinatorialDerivation(uri);
-		variants.add(combinatorialDerivation.getIdentity());		
+		variants.add(componentDefinition.getIdentity());
 	}
 
-	@Override
-	Identified deepCopy() throws SBOLValidationException {
+	public void addVariantCollection(String uriPrefix, String displayId, String version)
+			throws SBOLValidationException {
+		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
+
+		Collection collection = this.getSBOLDocument().getCollection(uri);
+		variantCollections.add(collection.getIdentity());
+	}
+
+	public void addVariantDerivation(String uriPrefix, String displayId, String version)
+			throws SBOLValidationException {
+		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
+
+		CombinatorialDerivation combinatorialDerivation = this.getSBOLDocument().getCombinatorialDerivation(uri);
+		variants.add(combinatorialDerivation.getIdentity());
+	}
+
+	public void removeVariant(String uriPrefix, String displayId, String version) throws SBOLValidationException {
+		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
+
+		ComponentDefinition componentDefinition = this.getSBOLDocument().getComponentDefinition(uri);
+		variants.add(componentDefinition.getIdentity());
+	}
+
+	public void removeVariantCollection(String uriPrefix, String displayId, String version)
+			throws SBOLValidationException {
+		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
+
+		Collection collection = this.getSBOLDocument().getCollection(uri);
+		variantCollections.add(collection.getIdentity());
+	}
+
+	public void removeVariantDerivation(String uriPrefix, String displayId, String version)
+			throws SBOLValidationException {
+		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
+
+		CombinatorialDerivation combinatorialDerivation = this.getSBOLDocument().getCombinatorialDerivation(uri);
+		variants.add(combinatorialDerivation.getIdentity());
+	}
+
+	/**
+	 * Updates this variable component's and each of its member identity URIs with
+	 * compliant URIs.
+	 * 
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules was violated:
+	 *             <ul>
+	 *             <li>{@link URIcompliance#createCompliantURI(String, String, String)};</li>
+	 *             <li>{@link #setWasDerivedFrom(URI)};</li>
+	 *             <li>{@link #setIdentity(URI)};</li>
+	 *             <li>{@link #setDisplayId(String)};</li>
+	 *             <li>{@link #setVersion(String)};</li>
+	 *             </ul>
+	 */
+	void updateCompliantURI(String URIprefix, String displayId, String version) throws SBOLValidationException {
+		if (!this.getIdentity().equals(createCompliantURI(URIprefix, displayId, version))) {
+			this.addWasDerivedFrom(this.getIdentity());
+		}
+		this.setIdentity(createCompliantURI(URIprefix, displayId, version));
+		this.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
+		this.setDisplayId(displayId);
+		this.setVersion(version);
+
+		// TODO: update URIs for variants, variantCollections, variantDerivations,
+		// and/or variable?
+	}
+
+	/**
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #VariableComponent(VariableComponent)}.
+	 */
+	VariableComponent deepCopy() throws SBOLValidationException {
 		return new VariableComponent(this);
 	}
-	
+
 	@Override
 	public String toString() {
-		return super.toString() 
-				+ ", operator=" + this.getOperator()
-				+ ", variable=" + this.getVariable()
-				+ (variants.size()>0?", variants=" + variants:"")
-				+ (variantCollections.size()>0?", variantCollections=" + variantCollections:"")
-				+ (variantDerivations.size()>0?", variantDeriviations=" + variantDerivations:"");
+		return super.toString() + ", operator=" + this.getOperator() + ", variable=" + this.getVariable()
+				+ (variants.size() > 0 ? ", variants=" + variants : "")
+				+ (variantCollections.size() > 0 ? ", variantCollections=" + variantCollections : "")
+				+ (variantDerivations.size() > 0 ? ", variantDeriviations=" + variantDerivations : "");
 	}
 }
-
