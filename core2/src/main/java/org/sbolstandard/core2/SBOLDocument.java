@@ -1718,13 +1718,13 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * @param document
-	 * @param topLevel
+	 * @param document document to copy recursively into
+	 * @param topLevel topLevel that is being recursively copied from
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
 	 *             {@link SBOLDocument#createCopy(TopLevel)}.
 	 */
-	private void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
+	public void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
 		if (document.getTopLevel(topLevel.getIdentity())!=null) return;
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || 
 				topLevel instanceof Model || topLevel instanceof Plan || topLevel instanceof Agent) {
@@ -2141,7 +2141,7 @@ public class SBOLDocument {
 			}
 			for (Usage usage : activity.getUsages()) {
 				if (uriMap.get(usage.getEntityURI())!=null) {
-					usage.setEntity(uriMap.get(usage.getEntityURI()));
+					usage.setEntity(uriMap.get(usage.getEntity()));
 				}	
 				updateReferences(usage,uriMap);
 			}
