@@ -1186,7 +1186,6 @@ public class SBOLDocument {
 				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences);
 		for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
 			variableComponent.setSBOLDocument(this);
-			variableComponent.getVariable().setSBOLDocument(this);
 		}
 	}
 

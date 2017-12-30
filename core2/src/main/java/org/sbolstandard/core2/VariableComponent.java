@@ -20,7 +20,7 @@ public class VariableComponent extends Identified {
 	private HashSet<URI> variants;
 	private HashSet<URI> variantCollections;
 	private HashSet<URI> variantDerivations;
-	private Component variable;
+	private URI variable;
 	private OperatorType operator;
 
 	/**
@@ -37,7 +37,7 @@ public class VariableComponent extends Identified {
 	 *             if an SBOL validation rule violation occurred in
 	 *             {@link Identified#Identified(URI)}
 	 */
-	public VariableComponent(URI identity, OperatorType operator, Component variable) throws SBOLValidationException {
+	VariableComponent(URI identity, OperatorType operator, URI variable) throws SBOLValidationException {
 		super(identity);
 		this.variable = variable;
 		this.operator = operator;
@@ -112,6 +112,16 @@ public class VariableComponent extends Identified {
 	 * @return the matching component if present, or {@code null} otherwise.
 	 */
 	public Component getVariable() {
+		if (combinatorialDerivation==null) return null;
+		return combinatorialDerivation.getTemplate().getComponent(variable);
+	}
+	
+	/**
+	 * Returns the URI of the instance matching the given variable component's variable.
+	 *
+	 * @return the matching component if present, or {@code null} otherwise.
+	 */
+	public URI getVariableURI() {
 		return this.variable;
 	}
 
@@ -124,7 +134,7 @@ public class VariableComponent extends Identified {
 	 *             if either of the following SBOL validation rules was violated:
 	 *             TODO: 10604, 10605.
 	 */
-	public void setVariable(Component variable) throws SBOLValidationException {
+	public void setVariable(URI variable) throws SBOLValidationException {
 		// TODO: validation
 		this.variable = variable;
 	}
@@ -439,9 +449,11 @@ public class VariableComponent extends Identified {
 
 	@Override
 	public String toString() {
-		return super.toString() + ", operator=" + this.getOperator() + ", variable=" + this.getVariable()
+		return "VariableComponent [" +
+				super.toString() + ", operator=" + this.getOperator() + ", variable=" + this.getVariableURI()
 				+ (variants.size() > 0 ? ", variants=" + variants : "")
 				+ (variantCollections.size() > 0 ? ", variantCollections=" + variantCollections : "")
-				+ (variantDerivations.size() > 0 ? ", variantDeriviations=" + variantDerivations : "");
+				+ (variantDerivations.size() > 0 ? ", variantDeriviations=" + variantDerivations : "")
+				+ "]" + (combinatorialDerivation==null? combinatorialDerivation.getIdentity() + " " + combinatorialDerivation.getTemplateURI():"");
 	}
 }

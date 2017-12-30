@@ -195,16 +195,18 @@ public class CombinatorialDerivation extends TopLevel {
 		}
 	}
 
-	// TODO: validation
 	/**
 	 * @param variableComponents
-	 *            variable components to set to
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link #clearVariableComponents()} or</li>
+	 * <li>{@link #addVariableComponent(VariableComponent)}</li>
+	 * </ul>
 	 */
-	public void setVariableComponents(Set<VariableComponent> variableComponents) {
-		this.variableComponents.clear();
-
+	public void setVariableComponents(Set<VariableComponent> variableComponents) throws SBOLValidationException {
+		clearVariableComponents();
 		for (VariableComponent variableComponent : variableComponents) {
-			this.variableComponents.put(variableComponent.getIdentity(), variableComponent);
+			addVariableComponent(variableComponent);
 		}
 	}
 
@@ -260,7 +262,7 @@ public class CombinatorialDerivation extends TopLevel {
 	 */
 	private VariableComponent createVariableComponent(URI identity, OperatorType operator, Component variable)
 			throws SBOLValidationException {
-		VariableComponent newVariableComponent = new VariableComponent(identity, operator, variable);
+		VariableComponent newVariableComponent = new VariableComponent(identity, operator, variable.getIdentity());
 		this.addVariableComponent(newVariableComponent);
 		return newVariableComponent;
 	}
