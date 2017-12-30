@@ -3,13 +3,8 @@ package org.sbolstandard.core2;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.HashSet;
 
-import org.synbiohub.frontend.IdentifiedMetadata;
 import org.synbiohub.frontend.SynBioHubFrontend;
 
 class readTester {
@@ -43,15 +38,32 @@ class readTester {
 	public static void main(String[] args) {
 
 		try {
+//			SBOLDocument doc = new SBOLDocument();
+//			doc.setDefaultURIprefix("http://dummy.org");
+//			ComponentDefinition cd = doc.createComponentDefinition("CD1", ComponentDefinition.DNA);
+//			ComponentDefinition variant = doc.createComponentDefinition("Variant", ComponentDefinition.DNA);
+//			doc.createComponentDefinition("dummyCD", ComponentDefinition.DNA);
+//			Component comp = cd.createComponent("comp", AccessType.PUBLIC, "dummyCD");
+//			CombinatorialDerivation combDeriv = doc.createCombinatorialDerivation("testCombo", cd.getIdentity());
+//			VariableComponent vc = combDeriv.createVariableComponent("vc", OperatorType.ONE, comp);
+//			vc.addVariant(variant.getIdentity());
+//			doc.write("/Users/myers/combo.xml");
+//			SBOLDocument doc2 = SBOLReader.read("/Users/myers/combo.xml");
+//			SBOLValidate.compareDocuments("doc", doc, "doc2", doc2);
+//			if (SBOLValidate.getNumErrors() > 0) {
+//				for (String error : SBOLValidate.getErrors()) {
+//					System.out.println(error);
+//				}	
+//			}
 			SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
 			sbh.login("myers@ece.utah.edu", "test");
-			//ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			//String filename = sbh.getAttachment(URI.create("https://synbiohub.org/user/myers/testCDCol/attachment_00009RpVaEQbuRpl6XNncm/1"), outputStream);
-			//File file = new File("/Users/myers/"+filename);
-			//FileOutputStream fileOutputStream = new FileOutputStream(file);
-			//fileOutputStream.write(outputStream.toByteArray());
-			//fileOutputStream.close();
-			sbh.createCollection("testCDCol", "1", "testName", "testDescription", "", true,"/Users/myers/Downloads/crispr_archive.omex");
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			String filename = sbh.getAttachment(URI.create("https://synbiohub.org/user/myers/testSBML/attachment_00009S03IDsWYRzOri742C/1"), outputStream);
+			File file = new File("/Users/myers/"+filename);
+			FileOutputStream fileOutputStream = new FileOutputStream(file);
+			fileOutputStream.write(outputStream.toByteArray());
+			fileOutputStream.close();
+//			sbh.createCollection("testCDCol", "1", "testName", "testDescription", "", true,"/Users/myers/Downloads/crispr_archive.omex");
 			//sbh.addToCollection(URI.create("https://synbiohub.org/user/myers/testCDCol/testCDCol_collection/1"), false, "/Users/myers/gb.zip");
 			//sbh.attachFile(URI.create("https://synbiohub.org/user/myers/Tester_1/BBa_J61101/1"), "/Users/myers/Downloads/pc_logo_400.png");
 //			sbh.getAttachment(URI.create("https://synbiohub.org/user/myers/Tester_1/attachment_00009Rh5j0pvezwyVBNeU4/1"),"/Users/myers/");

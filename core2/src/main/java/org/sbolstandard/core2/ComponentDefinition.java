@@ -1087,7 +1087,7 @@ public class ComponentDefinition extends TopLevel {
 	 *
 	 * @param identity the identifier for this instance
 	 * @param access indicates whether the ComponentInstance can be referred to remotely
-	 * @param componentDefinitionURI parent ComponentDefinition
+	 * @param componentDefinitionURI definition
 	 * @return a Component instance
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
 	 * <ul>

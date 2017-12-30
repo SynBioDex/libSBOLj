@@ -475,7 +475,7 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.template, combinatorialDerivation.getTemplateURI()));
 			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.strategy, StrategyType.convertToURI(combinatorialDerivation.getStrategy())));
 			
-			formatVariableComponents(new HashSet<VariableComponent>(combinatorialDerivation.getVariableComponents()), list);
+			formatVariableComponents(combinatorialDerivation.getVariableComponents(), list);
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation, 
 					combinatorialDerivation.getIdentity(), NamedProperties(list)));
@@ -686,7 +686,7 @@ public class SBOLWriter
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, s);
 			for (URI roles : s.getRoles())
-			{
+			{ 
 				list.add(NamedProperty(Sbol2Terms.Component.roles, roles));
 			}
 			if (s.isSetRoleIntegration()) {
@@ -713,23 +713,23 @@ public class SBOLWriter
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, variableComponent);
 
-			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariable, variableComponent.getVariable()));
+			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariable, variableComponent.getVariable().getIdentity()));
 			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasOperator, OperatorType.convertToURI(variableComponent.getOperator())));
 			
-			for(URI variant : variableComponent.getVariants()) {
+			for(URI variant : variableComponent.getVariantURIs()) {
 				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariants, variant));
 			}
 			
-			for(URI variantCollection : variableComponent.getVariantCollections()) {
+			for(URI variantCollection : variableComponent.getVariantCollectionURIs()) {
 				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariantCollections, variantCollection));
 			}
 			
-			for(URI variantDerivation : variableComponent.getVariantDerivations()) {
+			for(URI variantDerivation : variableComponent.getVariantDerivationURIs()) {
 				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariantDerivations, variantDerivation));
 			}
 			
 			properties.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.hasVariableComponent,
-					NestedDocument( Sbol2Terms.VariableComponent.VariableComponent,
+					NestedDocument(Sbol2Terms.VariableComponent.VariableComponent,
 							variableComponent.getIdentity(), NamedProperties(list))));
 		}
 	}

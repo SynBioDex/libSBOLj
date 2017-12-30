@@ -2113,7 +2113,7 @@ public class SBOLReader
 				}
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
-			else if (namedProperty.getName().equals(Sbol2Terms.CombinatorialDerivation.variableComponents))
+			else if (namedProperty.getName().equals(Sbol2Terms.CombinatorialDerivation.hasVariableComponent))
 			{
 				if (namedProperty.getValue() instanceof NestedDocument) {
 					NestedDocument<QName> nestedDocument = ((NestedDocument<QName>) namedProperty.getValue());
@@ -2164,8 +2164,11 @@ public class SBOLReader
 			}
 		}
 
-		CombinatorialDerivation c = new CombinatorialDerivation(topLevel.getIdentity(), template, strategy);
+		CombinatorialDerivation c = new CombinatorialDerivation(topLevel.getIdentity(), template);
 
+		if (strategy != null) {
+			c.setStrategy(strategy);
+		}
 		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (persistentIdentity != null)
@@ -2193,6 +2196,7 @@ public class SBOLReader
 		return c;
 	}
 
+	//TODO: FIX COMMENTED SECTION
 	private static VariableComponent parseVariableComponent(SBOLDocument SBOLDoc, NestedDocument<QName> variableComponent,
 			Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException {
 		String displayId 	   			= null;
@@ -2250,10 +2254,18 @@ public class SBOLReader
 				}
 				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 			}
+			else if(namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasVariable))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || description != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-XXXXX",variableComponent.getIdentity());
+				}
+				variable = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
 			else if(namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasVariants))
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || description != null ||
-						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-XXXXX",variableComponent.getIdentity());
 				}
 				variants.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
@@ -2261,7 +2273,7 @@ public class SBOLReader
 			else if(namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasVariantCollections))
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || description != null ||
-						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-XXXXX",variableComponent.getIdentity());
 				}
 				variantCollections.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
@@ -2269,7 +2281,7 @@ public class SBOLReader
 			else if(namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasVariantDerivations))
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || description != null ||
-						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
 					throw new SBOLValidationException("sbol-XXXXX",variableComponent.getIdentity());
 				}
 				variantDerivations.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
@@ -2300,21 +2312,21 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10607", variableComponent.getIdentity());
 				}
 			}
-			else if(namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasVariable))
+			/*else if(namedProperty.getName().equals(Sbol2Terms.VariableComponent.hasVariable))
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || description != null ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
 					throw new SBOLValidationException("sbol-XXXXX",variableComponent.getIdentity());
 				}
 				variable = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
-			}
+			}*/
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
 			}
 		}
 
-		VariableComponent c = new VariableComponent(variableComponent.getIdentity(), variable, operator);
+		VariableComponent c = new VariableComponent(variableComponent.getIdentity(), operator, variable);
 		
 		if (persistentIdentity != null)
 			c.setPersistentIdentity(persistentIdentity);
