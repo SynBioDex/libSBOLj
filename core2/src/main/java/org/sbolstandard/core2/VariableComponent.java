@@ -163,7 +163,7 @@ public class VariableComponent extends Identified {
 		HashSet<ComponentDefinition> tempVariants = new HashSet<>();
 
 		for (URI variantURI : variants) {
-			variants.add(this.getSBOLDocument().getComponentDefinition(variantURI).getIdentity());
+			tempVariants.add(this.getSBOLDocument().getComponentDefinition(variantURI));
 		}
 
 		return tempVariants;
@@ -179,6 +179,21 @@ public class VariableComponent extends Identified {
 	}
 
 	/**
+	 * Returns a set of collections belonging to the variable component.
+	 *
+	 * @return the matching set of collections
+	 */
+	public Set<Collection> getVariantCollections() {
+		HashSet<Collection> tempVariantCollections = new HashSet<>();
+
+		for (URI variantCollectionURI : variantCollections) {
+			tempVariantCollections.add(this.getSBOLDocument().getCollection(variantCollectionURI));
+		}
+
+		return tempVariantCollections;
+	}
+	
+	/**
 	 * Returns a set of collection URIs belonging to the variable component.
 	 *
 	 * @return the matching set of collection URIs
@@ -187,6 +202,21 @@ public class VariableComponent extends Identified {
 		return new HashSet<URI>(this.variantCollections);
 	}
 
+	/**
+	 * Returns a set of combinatorial derivations belonging to the variable component.
+	 *
+	 * @return the matching set of combinatorial derivations
+	 */
+	public Set<CombinatorialDerivation> getVariantDerivations() {
+		HashSet<CombinatorialDerivation> tempVariantDerivations = new HashSet<>();
+
+		for (URI variantDerivationURI : variantDerivations) {
+			tempVariantDerivations.add(this.getSBOLDocument().getCombinatorialDerivation(variantDerivationURI));
+		}
+
+		return tempVariantDerivations;
+	}
+	
 	/**
 	 * Returns a set of combinatorial derivation URIs belonging to the variable component.
 	 *
