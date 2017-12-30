@@ -259,12 +259,12 @@ public class VariableComponent extends Identified {
 	 * Adds the given variant to the list of variants.
 	 * 
 	 * @param uriPrefix
-	 * 			TODO: change variable name
+	 * 			URI prefix for variant
 	 * @param displayId
 	 * 			display id for variant
 	 * @param version
 	 * 			version for variant
-	 * @throws SBOLValidationException 
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated:
 	 */
 	public void addVariant(String uriPrefix, String displayId, String version) throws SBOLValidationException {
 		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
@@ -277,10 +277,12 @@ public class VariableComponent extends Identified {
 	 * Adds the given variant collection to the list of variant collections.
 	 * 
 	 * @param uriPrefix
-	 * 			TODO: change variable name
+	 * 			URI prefix for variant collection
 	 * @param displayId
+	 * 	        display id for variant collection
 	 * @param version
-	 * @throws SBOLValidationException 
+	 *          version for variant collection
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 
 	 */
 	public void addVariantCollection(String uriPrefix, String displayId, String version)
 			throws SBOLValidationException {
@@ -294,10 +296,12 @@ public class VariableComponent extends Identified {
 	 * Adds the given variant derivation to the list of variant derivations.
 	 * 
 	 * @param uriPrefix
-	 * 			TODO: change variable name
+	 * 			URI prefix for variant derivation
 	 * @param displayId
+	 *          display id for variant derivation 
 	 * @param version
-	 * @throws SBOLValidationException 
+	 *          version for variant derivation
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 
 	 */
 	public void addVariantDerivation(String uriPrefix, String displayId, String version)
 			throws SBOLValidationException {

@@ -43,7 +43,7 @@ public class Provenance_StrainDerivation {
 		document.setDefaultURIprefix(myAppNs.getNamespaceURI());						
 		
 		ComponentDefinition b168 = getCds(document, "bsubtilis168","Bacillus subtilis 168");
-		ComponentDefinition b3610 = getCds(document,"bsubtilisncib3610", "Bacillus subtilis Ncbi 3610");		
+		ComponentDefinition b3610 = getCds(document,"bsubtilisncimb3610", "Bacillus subtilis NCIMB 3610");		
 		b168.addWasDerivedFrom(b3610.getIdentity());
 				
 		//Create the agent definition to represent X-ray		

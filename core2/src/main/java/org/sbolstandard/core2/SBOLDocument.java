@@ -1222,7 +1222,7 @@ public class SBOLDocument {
 	 * Creates a combinatorial derivation, and then adds it to this SBOL document's
 	 * list of combinatorial derivations.
 	 * <p>
-	 * {@link #createCombinatorialDerivation(String, String, URI, StrategyType)}
+	 * {@link #createCombinatorialDerivation(String, String, URI)}
 	 * with the default URI prefix of this SBOL document, display ID, and version.
 	 *
 	 * @param displayId
@@ -1238,7 +1238,7 @@ public class SBOLDocument {
 	 * @return the created combinatorial derivation
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
-	 *             {@link #createCombinatorialDerivation(String, String, URI, StrategyType)}.
+	 *             {@link #createCombinatorialDerivation(String, String, URI)}.
 	 */
 	public CombinatorialDerivation createCombinatorialDerivation(String displayId, String version,
 			String templateDisplayId, String templateVersion) throws SBOLValidationException {
@@ -1256,7 +1256,7 @@ public class SBOLDocument {
 	 * Creates a combinatorial derivation, and then adds it to this SBOL document's
 	 * list of combinatorial derivations.
 	 * <p>
-	 * {@link #createCombinatorialDerivation(String, URI, StrategyType)} with the
+	 * {@link #createCombinatorialDerivation(String, URI)} with the
 	 * default URI prefix of this SBOL document, display ID, and version.
 	 *
 	 * @param displayId
@@ -1267,7 +1267,7 @@ public class SBOLDocument {
 	 * @return the created combinatorial derivation
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
-	 *             {@link #createCombinatorialDerivation(String, URI, StrategyType)}.
+	 *             {@link #createCombinatorialDerivation(String, URI)}.
 	 */
 	public CombinatorialDerivation createCombinatorialDerivation(String displayId, URI template)
 			throws SBOLValidationException {
@@ -1278,7 +1278,7 @@ public class SBOLDocument {
 	 * Creates a combinatorial derivation, and then adds it to this SBOL document's
 	 * list of combinatorial derivations.
 	 * <p>
-	 * {@link #createCombinatorialDerivation(String, String, String, URI, StrategyType)}
+	 * {@link #createCombinatorialDerivation(String, String, String, URI)}
 	 * with the default URI prefix of this SBOL document, display ID, and version.
 	 *
 	 * @param displayId
@@ -1291,7 +1291,7 @@ public class SBOLDocument {
 	 * @return the created combinatorial derivation
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
-	 *             {@link #createCombinatorialDerivation(String, String, String, URI, StrategyType)}.
+	 *             {@link #createCombinatorialDerivation(String, String, String, URI)}.
 	 */
 	public CombinatorialDerivation createCombinatorialDerivation(String displayId, String version, URI template) throws SBOLValidationException {
 		return createCombinatorialDerivation(defaultURIprefix, displayId, version, template);
@@ -2168,7 +2168,8 @@ public class SBOLDocument {
 				if (association.getAgentURI().equals(originalIdentity)) {
 					association.setAgent(newIdentity);
 				}
-				if (association.getPlanURI().equals(originalIdentity)) {
+				if (association.isSetPlan() && 
+						association.getPlanURI().equals(originalIdentity)) {
 					association.setPlan(newIdentity);
 				}
 				updateReferences(association, originalIdentity, newIdentity);
