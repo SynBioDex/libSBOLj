@@ -294,7 +294,8 @@ public class CombinatorialDesignTest {
 		
 		// Create CombinatorialDerivations
 		CombinatorialDerivation Combinatorial_Derivation = doc.createCombinatorialDerivation("combDev", version, 
-				"Gal4VP16", version, StrategyType.SAMPLE);
+				"Gal4VP16", version);
+		Combinatorial_Derivation.setStrategy(StrategyType.SAMPLE);
 		 
 		
 		SBOLValidate.validateSBOL(doc, true, true, true);
