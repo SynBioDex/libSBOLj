@@ -475,7 +475,7 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.template, combinatorialDerivation.getTemplateURI()));
 			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.strategy, StrategyType.convertToURI(combinatorialDerivation.getStrategy())));
 			
-			formatVariableComponents(new HashSet<VariableComponent>(combinatorialDerivation.getVariableComponents()), list);
+			formatVariableComponents(combinatorialDerivation.getVariableComponents(), list);
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation, 
 					combinatorialDerivation.getIdentity(), NamedProperties(list)));
@@ -686,7 +686,7 @@ public class SBOLWriter
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, s);
 			for (URI roles : s.getRoles())
-			{
+			{ 
 				list.add(NamedProperty(Sbol2Terms.Component.roles, roles));
 			}
 			if (s.isSetRoleIntegration()) {
@@ -729,7 +729,7 @@ public class SBOLWriter
 			}
 			
 			properties.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.hasVariableComponent,
-					NestedDocument( Sbol2Terms.VariableComponent.VariableComponent,
+					NestedDocument(Sbol2Terms.VariableComponent.VariableComponent,
 							variableComponent.getIdentity(), NamedProperties(list))));
 		}
 	}

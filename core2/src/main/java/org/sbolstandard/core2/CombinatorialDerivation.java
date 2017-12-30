@@ -222,13 +222,13 @@ public class CombinatorialDerivation extends TopLevel {
 
 			VariableComponent copyVariableComponent = combinatorialDerivation.getVariableComponent(displayId);
 
-			for (ComponentDefinition cd : variableComponent.getVariants()) {
+			for (ComponentDefinition cd: variableComponent.getVariants()) {
 				copyVariableComponent.addVariant(cd.getIdentity());
 			}
-			for (Collection collection : variableComponent.getVariantCollections()) {
+			for (Collection collection: variableComponent.getVariantCollections()) {
 				copyVariableComponent.addVariantCollection(collection.getIdentity());
 			}
-			for (CombinatorialDerivation cd : variableComponent.getVariantDerivations()) {
+			for (CombinatorialDerivation cd: variableComponent.getVariantDerivations()) {
 				copyVariableComponent.addVariantDerivation(cd.getIdentity());
 			}
 		}
