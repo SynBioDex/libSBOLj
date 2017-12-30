@@ -1235,19 +1235,17 @@ public class SBOLDocument {
 	 * @param templateVersion
 	 *            the version of the template of the combinatorial derivation to be
 	 *            created
-	 * @param strategy
-	 *            the strategy of the combinatorial derivation to be created
 	 * @return the created combinatorial derivation
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
 	 *             {@link #createCombinatorialDerivation(String, String, URI, StrategyType)}.
 	 */
 	public CombinatorialDerivation createCombinatorialDerivation(String displayId, String version,
-			String templateDisplayId, String templateVersion, StrategyType strategy) throws SBOLValidationException {
+			String templateDisplayId, String templateVersion) throws SBOLValidationException {
 		ComponentDefinition templateCD = this.getComponentDefinition(templateDisplayId, templateVersion);
 
 		CombinatorialDerivation combinatorialDerivation = createCombinatorialDerivation(displayId, version,
-				templateCD.getIdentity(), strategy);
+				templateCD.getIdentity());
 		this.addCombinatorialDerivation(combinatorialDerivation);
 
 		return combinatorialDerivation;
@@ -1266,16 +1264,14 @@ public class SBOLDocument {
 	 * @param template
 	 *            the URI of the template of the combinatorial derivation to be
 	 *            created
-	 * @param strategy
-	 *            the strategy of the combinatorial derivation to be created
 	 * @return the created combinatorial derivation
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
 	 *             {@link #createCombinatorialDerivation(String, URI, StrategyType)}.
 	 */
-	public CombinatorialDerivation createCombinatorialDerivation(String displayId, URI template, StrategyType strategy)
+	public CombinatorialDerivation createCombinatorialDerivation(String displayId, URI template)
 			throws SBOLValidationException {
-		return createCombinatorialDerivation(defaultURIprefix, displayId, "", template, strategy);
+		return createCombinatorialDerivation(defaultURIprefix, displayId, "", template);
 	}
 
 	/**
@@ -1292,16 +1288,13 @@ public class SBOLDocument {
 	 * @param template
 	 *            the URI of the template of the combinatorial derivation to be
 	 *            created
-	 * @param strategy
-	 *            the strategy of the combinatorial derivation to be created
 	 * @return the created combinatorial derivation
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
 	 *             {@link #createCombinatorialDerivation(String, String, String, URI, StrategyType)}.
 	 */
-	public CombinatorialDerivation createCombinatorialDerivation(String displayId, String version, URI template,
-			StrategyType strategy) throws SBOLValidationException {
-		return createCombinatorialDerivation(defaultURIprefix, displayId, version, template, strategy);
+	public CombinatorialDerivation createCombinatorialDerivation(String displayId, String version, URI template) throws SBOLValidationException {
+		return createCombinatorialDerivation(defaultURIprefix, displayId, version, template);
 	}
 
 	/**
@@ -1322,19 +1315,17 @@ public class SBOLDocument {
 	 *            the version of the combinatorial derivation to be created
 	 * @param template
 	 *            the template URI of the combinatorial derivation to be created
-	 * @param strategy
-	 *            strategy of the combinatorial derivation to be created
 	 * @return the created combinatorial derivation
 	 * @throws SBOLValidationException
 	 *             if any of the following SBOL validation rules was violated: TODO:
 	 *             10201, 10202, 10204, 10206, 10220, 10502, 10503.
 	 */
 	public CombinatorialDerivation createCombinatorialDerivation(String URIprefix, String displayId, String version,
-			URI template, StrategyType strategy) throws SBOLValidationException {
+			URI template) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		CombinatorialDerivation cd = new CombinatorialDerivation(
 				createCompliantURI(URIprefix, TopLevel.COMBINATORIAL_DERIVATION, displayId, version, typesInURIs),
-				strategy, template);
+				template);
 		cd.setDisplayId(displayId);
 		cd.setPersistentIdentity(
 				createCompliantURI(URIprefix, TopLevel.COMBINATORIAL_DERIVATION, displayId, "", typesInURIs));
@@ -1811,8 +1802,7 @@ public class SBOLDocument {
 			return newComponentDefinition;
 		} else if (topLevel instanceof CombinatorialDerivation) {
 			CombinatorialDerivation newCombinatorialDerivation = this.createCombinatorialDerivation(URIprefix,
-					displayId, version, ((CombinatorialDerivation) topLevel).getTemplateURI(),
-					((CombinatorialDerivation) topLevel).getStrategy());
+					displayId, version, ((CombinatorialDerivation) topLevel).getTemplateURI());
 			newCombinatorialDerivation.copy((CombinatorialDerivation) topLevel);
 			return newCombinatorialDerivation;
 		} else if (topLevel instanceof Model) {

@@ -5,12 +5,8 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static org.sbolstandard.core2.URIcompliance.isChildURIcompliant;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -34,8 +30,6 @@ public class CombinatorialDerivation extends TopLevel {
 	 *            identity of the combinatorial derivation
 	 * @param template
 	 *            template of the combinatorial derivation
-	 * @param strategy
-	 *            strategy of the combinatorial derivation
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in the following
 	 *             constructor or method:
@@ -43,12 +37,10 @@ public class CombinatorialDerivation extends TopLevel {
 	 *             <li>{@link TopLevel#TopLevel(URI)}, or</li>
 	 *             </ul>
 	 */
-	public CombinatorialDerivation(URI identity, StrategyType strategy, URI template) throws SBOLValidationException {
+	CombinatorialDerivation(URI identity, URI template) throws SBOLValidationException {
 		super(identity);
 
 		this.template = template;
-
-		this.strategy = strategy;
 		this.variableComponents = new HashMap<>();
 	}
 
@@ -120,11 +112,8 @@ public class CombinatorialDerivation extends TopLevel {
 	 *            the given variable component
 	 * @return {@code true} if the matching variable component was removed
 	 *         successfully, {@code false} otherwise.
-	 * @throws SBOLValidationException
-	 *             if any of the following SBOL validation rules were violated:
-	 *             10803, 10808, 10905, 11402, 11404,
 	 */
-	public boolean removeVariableComponent(VariableComponent variableComponent) throws SBOLValidationException {
+	public boolean removeVariableComponent(VariableComponent variableComponent) {
 		return removeChildSafely(variableComponent, variableComponents);
 	}
 
@@ -183,12 +172,8 @@ public class CombinatorialDerivation extends TopLevel {
 	 * This method calls
 	 * {@link #removeVariableComponent(VariableComponent variableComponent)} to
 	 * iteratively remove each variable component.
-	 *
-	 * @throws SBOLValidationException
-	 *             if an SBOL validation rule violation occurred in
-	 *             {@link #removeVariableComponent(VariableComponent)}.
-	 */
-	public void clearVariableComponents() throws SBOLValidationException {
+	 */	
+	public void clearVariableComponents(){
 		Object[] valueSetArray = variableComponents.values().toArray();
 		for (Object variableComponent : valueSetArray) {
 			removeVariableComponent((VariableComponent) variableComponent);

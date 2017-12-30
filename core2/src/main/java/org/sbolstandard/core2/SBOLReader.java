@@ -2164,8 +2164,11 @@ public class SBOLReader
 			}
 		}
 
-		CombinatorialDerivation c = new CombinatorialDerivation(topLevel.getIdentity(), strategy, template);
+		CombinatorialDerivation c = new CombinatorialDerivation(topLevel.getIdentity(), template);
 
+		if (strategy != null) {
+			c.setStrategy(strategy);
+		}
 		if (displayId != null)
 			c.setDisplayId(displayId);
 		if (persistentIdentity != null)

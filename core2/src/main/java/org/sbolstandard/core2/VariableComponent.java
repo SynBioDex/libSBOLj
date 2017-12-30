@@ -1,10 +1,8 @@
 package org.sbolstandard.core2;
 
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static org.sbolstandard.core2.URIcompliance.extractDisplayId;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -130,11 +128,8 @@ public class VariableComponent extends Identified {
 	 *
 	 * @param variable
 	 *            the given component to set to
-	 * @throws SBOLValidationException
-	 *             if either of the following SBOL validation rules was violated:
-	 *             TODO: 10604, 10605.
 	 */
-	public void setVariable(URI variable) throws SBOLValidationException {
+	public void setVariable(URI variable) {
 		// TODO: validation
 		this.variable = variable;
 	}
@@ -269,6 +264,7 @@ public class VariableComponent extends Identified {
 	 * 			display id for variant
 	 * @param version
 	 * 			version for variant
+	 * @throws SBOLValidationException 
 	 */
 	public void addVariant(String uriPrefix, String displayId, String version) throws SBOLValidationException {
 		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
@@ -284,6 +280,7 @@ public class VariableComponent extends Identified {
 	 * 			TODO: change variable name
 	 * @param displayId
 	 * @param version
+	 * @throws SBOLValidationException 
 	 */
 	public void addVariantCollection(String uriPrefix, String displayId, String version)
 			throws SBOLValidationException {
@@ -300,6 +297,7 @@ public class VariableComponent extends Identified {
 	 * 			TODO: change variable name
 	 * @param displayId
 	 * @param version
+	 * @throws SBOLValidationException 
 	 */
 	public void addVariantDerivation(String uriPrefix, String displayId, String version)
 			throws SBOLValidationException {

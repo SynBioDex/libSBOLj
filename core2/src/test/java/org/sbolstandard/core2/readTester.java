@@ -1,17 +1,5 @@
 package org.sbolstandard.core2;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.HashSet;
-
-import org.synbiohub.frontend.IdentifiedMetadata;
-import org.synbiohub.frontend.SynBioHubFrontend;
-
 class readTester {
 	static String filenameXml 	= "writeTesterString_v1.3.xml";
 	static String filenameJson   = "writeTesterString_v1.3.json";
@@ -49,12 +37,17 @@ class readTester {
 			ComponentDefinition variant = doc.createComponentDefinition("Variant", ComponentDefinition.DNA);
 			doc.createComponentDefinition("dummyCD", ComponentDefinition.DNA);
 			Component comp = cd.createComponent("comp", AccessType.PUBLIC, "dummyCD");
-			CombinatorialDerivation combDeriv = doc.createCombinatorialDerivation("testCombo", cd.getIdentity(), StrategyType.ENUMERATE);
+			CombinatorialDerivation combDeriv = doc.createCombinatorialDerivation("testCombo", cd.getIdentity());
 			VariableComponent vc = combDeriv.createVariableComponent("vc", OperatorType.ONE, comp);
 			vc.addVariant(variant.getIdentity());
 			doc.write("/Users/myers/combo.xml");
-			doc = SBOLReader.read("/Users/myers/combo.xml");
-			doc.write(System.out);
+			SBOLDocument doc2 = SBOLReader.read("/Users/myers/combo.xml");
+			SBOLValidate.compareDocuments("doc", doc, "doc2", doc2);
+			if (SBOLValidate.getNumErrors() > 0) {
+				for (String error : SBOLValidate.getErrors()) {
+					System.out.println(error);
+				}	
+			}
 //			SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
 //			sbh.login("myers@ece.utah.edu", "test");
 			//ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
