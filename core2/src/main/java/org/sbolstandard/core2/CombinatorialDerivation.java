@@ -31,11 +31,11 @@ public class CombinatorialDerivation extends TopLevel {
 
 	/**
 	 * @param identity
-	 * 			identity of the combinatorial derivation
+	 *            identity of the combinatorial derivation
 	 * @param template
-	 * 			template of the combinatorial derivation
+	 *            template of the combinatorial derivation
 	 * @param strategy
-	 * 			strategy of the combinatorial derivation
+	 *            strategy of the combinatorial derivation
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in the following
 	 *             constructor or method:
@@ -195,10 +195,10 @@ public class CombinatorialDerivation extends TopLevel {
 		}
 	}
 
-	//TODO: validation
+	// TODO: validation
 	/**
 	 * @param variableComponents
-	 * 			variable components to set to
+	 *            variable components to set to
 	 */
 	public void setVariableComponents(Set<VariableComponent> variableComponents) {
 		this.variableComponents.clear();
@@ -219,6 +219,18 @@ public class CombinatorialDerivation extends TopLevel {
 
 			this.createVariableComponent(variableComponent.getIdentity(), variableComponent.getOperator(),
 					variableComponent.getVariable());
+
+			VariableComponent copyVariableComponent = combinatorialDerivation.getVariableComponent(displayId);
+
+			for (ComponentDefinition cd : variableComponent.getVariants()) {
+				copyVariableComponent.addVariant(cd.getIdentity());
+			}
+			for (Collection collection : variableComponent.getVariantCollections()) {
+				copyVariableComponent.addVariantCollection(collection.getIdentity());
+			}
+			for (CombinatorialDerivation cd : variableComponent.getVariantDerivations()) {
+				copyVariableComponent.addVariantDerivation(cd.getIdentity());
+			}
 		}
 
 		this.setTemplate(combinatorialDerivation.getTemplateURI());
@@ -268,8 +280,7 @@ public class CombinatorialDerivation extends TopLevel {
 	 * @param operator
 	 *            the operator property for the variable component to be created
 	 * @param variable
-	 *            the component referenced by the variable component to
-	 *            be created
+	 *            the component referenced by the variable component to be created
 	 * @return the created variable component
 	 * @throws SBOLValidationException
 	 *             if any of the following SBOL validation rules was violated: TODO:
