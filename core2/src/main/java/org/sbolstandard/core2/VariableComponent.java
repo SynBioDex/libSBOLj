@@ -439,6 +439,19 @@ public class VariableComponent extends Identified {
 		// TODO: update URIs for variants, variantCollections, variantDerivations,
 		// and/or variable?
 	}
+	
+	void copy(VariableComponent variableComponent) throws SBOLValidationException {
+		((Identified)this).copy((Identified)variableComponent);
+		for (URI variant : variableComponent.getVariantURIs()) {
+			this.addVariant(URI.create(variant.toString()));
+		}
+		for (URI variantCollection : variableComponent.getVariantCollectionURIs()) {
+			this.addVariantCollection(URI.create(variantCollection.toString()));
+		}
+		for (URI variantDerivation : variableComponent.getVariantDerivationURIs()) {
+			this.addVariantDerivation(URI.create(variantDerivation.toString()));
+		}
+	}
 
 	/**
 	 * @throws SBOLValidationException

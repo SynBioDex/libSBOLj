@@ -197,31 +197,15 @@ public class CombinatorialDerivation extends TopLevel {
 
 	void copy(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
 		((TopLevel) this).copy((TopLevel) combinatorialDerivation);
+		
+		this.setStrategy(combinatorialDerivation.getStrategy());
 
 		for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
-			String displayId = variableComponent.getDisplayId();
-			if (displayId == null) {
-				displayId = URIcompliance.extractDisplayId(variableComponent.getIdentity());
-			}
-
-			this.createVariableComponent(variableComponent.getIdentity(), variableComponent.getOperator(),
-					variableComponent.getVariable());
-
-			VariableComponent copyVariableComponent = combinatorialDerivation.getVariableComponent(displayId);
-
-			for (ComponentDefinition cd: variableComponent.getVariants()) {
-				copyVariableComponent.addVariant(cd.getIdentity());
-			}
-			for (Collection collection: variableComponent.getVariantCollections()) {
-				copyVariableComponent.addVariantCollection(collection.getIdentity());
-			}
-			for (CombinatorialDerivation cd: variableComponent.getVariantDerivations()) {
-				copyVariableComponent.addVariantDerivation(cd.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(variableComponent);
+			VariableComponent newVariableComponent = this.createVariableComponent(
+					displayId, variableComponent.getOperator(), variableComponent.getVariable());
+			newVariableComponent.copy(variableComponent);
 		}
-
-		this.setTemplate(combinatorialDerivation.getTemplateURI());
-		this.setStrategy(combinatorialDerivation.getStrategy());
 	}
 
 	/**
