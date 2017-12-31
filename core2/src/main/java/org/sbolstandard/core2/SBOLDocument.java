@@ -3376,6 +3376,10 @@ public class SBOLDocument {
 		if (topLevel != null) {
 			return topLevel;
 		}
+		topLevel = combinatorialDerivations.get(topLevelURI);
+		if (topLevel != null) {
+			return topLevel;
+		}
 		if (topLevel == null) {
 			for (SynBioHubFrontend frontend : getRegistries()) {
 				try {
