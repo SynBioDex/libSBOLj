@@ -3933,6 +3933,8 @@ public class SBOLDocument {
 			removeModel((Model) topLevel);
 		else if (topLevel instanceof ModuleDefinition)
 			removeModuleDefinition((ModuleDefinition) topLevel);
+		else if (topLevel instanceof CombinatorialDerivation)
+			removeCombinatorialDerivation((CombinatorialDerivation) topLevel);
 	}
 
 	/**
