@@ -473,8 +473,9 @@ public class SBOLWriter
 			formatCommonTopLevelData(list, combinatorialDerivation);
 						
 			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.template, combinatorialDerivation.getTemplateURI()));
-			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.strategy, StrategyType.convertToURI(combinatorialDerivation.getStrategy())));
-			
+			if (combinatorialDerivation.isSetStrategy()) {
+				list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.strategy, StrategyType.convertToURI(combinatorialDerivation.getStrategy())));
+			}
 			formatVariableComponents(combinatorialDerivation.getVariableComponents(), list);
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation, 

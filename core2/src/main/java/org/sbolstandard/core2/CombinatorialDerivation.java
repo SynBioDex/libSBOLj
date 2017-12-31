@@ -198,8 +198,9 @@ public class CombinatorialDerivation extends TopLevel {
 	void copy(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
 		((TopLevel) this).copy((TopLevel) combinatorialDerivation);
 		
-		this.setStrategy(combinatorialDerivation.getStrategy());
-
+		if (combinatorialDerivation.isSetStrategy()) {
+			this.setStrategy(combinatorialDerivation.getStrategy());
+		}
 		for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
 			String displayId = URIcompliance.findDisplayId(variableComponent);
 			VariableComponent newVariableComponent = this.createVariableComponent(
