@@ -218,7 +218,7 @@ public class SBOLDocument {
 	 */
 	void addModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
 		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition", collections, componentDefinitions,
-				genericTopLevels, activities, plans, agents, models, sequences);
+				genericTopLevels, activities, plans, agents, models, sequences, combinatorialDerivations);
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			functionalComponent.setSBOLDocument(this);
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
@@ -458,7 +458,7 @@ public class SBOLDocument {
 	 */
 	void addCollection(Collection collection) throws SBOLValidationException {
 		addTopLevel(collection, collections, "collection", componentDefinitions, genericTopLevels, activities, plans,
-				agents, models, moduleDefinitions, sequences);
+				agents, models, moduleDefinitions, sequences, combinatorialDerivations);
 	}
 
 	/**
@@ -691,7 +691,7 @@ public class SBOLDocument {
 	 */
 	void addModel(Model model) throws SBOLValidationException {
 		addTopLevel(model, models, "model", collections, componentDefinitions, genericTopLevels, activities, plans,
-				agents, moduleDefinitions, sequences);
+				agents, moduleDefinitions, sequences, combinatorialDerivations);
 	}
 
 	/**
@@ -1007,7 +1007,7 @@ public class SBOLDocument {
 	 */
 	void addComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
 		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition", collections, genericTopLevels,
-				activities, plans, agents, models, moduleDefinitions, sequences);
+				activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations);
 		for (Component component : componentDefinition.getComponents()) {
 			component.setSBOLDocument(this);
 			for (MapsTo mapsTo : component.getMapsTos()) {
@@ -2481,7 +2481,7 @@ public class SBOLDocument {
 	 */
 	void addSequence(Sequence sequence) throws SBOLValidationException {
 		addTopLevel(sequence, sequences, "sequence", collections, componentDefinitions, genericTopLevels, activities,
-				plans, agents, models, moduleDefinitions);
+				plans, agents, models, moduleDefinitions, combinatorialDerivations);
 	}
 
 	/**
@@ -2710,7 +2710,7 @@ public class SBOLDocument {
 					genericTopLevel.getRDFType().getLocalPart(), qNameInNamespace.getPrefix()));
 		}
 		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel", collections, componentDefinitions, models,
-				activities, plans, agents, moduleDefinitions, sequences);
+				activities, plans, agents, moduleDefinitions, sequences, combinatorialDerivations);
 	}
 
 	/**
@@ -2889,7 +2889,7 @@ public class SBOLDocument {
 	 */
 	void addActivity(Activity activity) throws SBOLValidationException {
 		addTopLevel(activity, activities, "activity", collections, componentDefinitions, models, genericTopLevels,
-				plans, agents, moduleDefinitions, sequences);
+				plans, agents, moduleDefinitions, sequences, combinatorialDerivations);
 	}
 
 	/**
@@ -3063,7 +3063,7 @@ public class SBOLDocument {
 	 */
 	void addAgent(Agent agent) throws SBOLValidationException {
 		addTopLevel(agent, agents, "agent", collections, componentDefinitions, models, genericTopLevels, plans,
-				activities, moduleDefinitions, sequences);
+				activities, moduleDefinitions, sequences, combinatorialDerivations);
 	}
 
 	/**
@@ -3236,7 +3236,7 @@ public class SBOLDocument {
 	 */
 	void addPlan(Plan plan) throws SBOLValidationException {
 		addTopLevel(plan, plans, "plan", collections, componentDefinitions, models, genericTopLevels, agents,
-				activities, moduleDefinitions, sequences);
+				activities, moduleDefinitions, sequences, combinatorialDerivations);
 	}
 
 	/**
