@@ -972,11 +972,13 @@ public class SynBioHubFrontend
 			checkResponseCode(response);
 			
 			String filename = "default";
-			String dispositionValue = response.getFirstHeader("Content-Disposition").getValue();
-			int index = dispositionValue.indexOf("filename=");
-            if (index > 0) {
-                filename = dispositionValue.substring(index + 10, dispositionValue.length() - 1);
-            }
+			if (response.getFirstHeader("Content-Disposition")!=null) {
+				String dispositionValue = response.getFirstHeader("Content-Disposition").getValue();
+				int index = dispositionValue.indexOf("filename=");
+				if (index > 0) {
+					filename = dispositionValue.substring(index + 10, dispositionValue.length() - 1);
+				}
+			}
             if (outputStream==null) {
             	outputStream = new FileOutputStream(path+filename);
             }
