@@ -106,6 +106,26 @@ public class CombinatorialDerivation extends TopLevel {
 	}
 
 	/**
+	 * Adds the given variable component to the list of variable components.
+	 * 
+	 * @param variableComponent
+	 */
+	private void addVariableComponentNoCheck(VariableComponent variableComponent) throws SBOLValidationException {
+		variableComponent.setSBOLDocument(this.getSBOLDocument());
+		variableComponent.setCombinatorialDerivation(this);
+
+		// TODO:
+		/*
+		 * if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+		 * if (variableComponent.getVariable() == null) {
+		 * 
+		 * throw new SBOLValidationException("sbol-XXXXX", variableComponent); } }
+		 */
+
+		addChildSafely(variableComponent, variableComponents, "variableComponent");
+	}
+	
+	/**
 	 * Removes the given variable component from the list of variable components.
 	 * 
 	 * @param variableComponent
@@ -191,7 +211,7 @@ public class CombinatorialDerivation extends TopLevel {
 	public void setVariableComponents(Set<VariableComponent> variableComponents) throws SBOLValidationException {
 		clearVariableComponents();
 		for (VariableComponent variableComponent : variableComponents) {
-			addVariableComponent(variableComponent);
+			addVariableComponentNoCheck(variableComponent);
 		}
 	}
 
