@@ -1784,7 +1784,7 @@ public class SBOLDocument {
 		if (version == null) {
 			version = topLevel.getVersion();
 		}
-		TopLevel oldTopLevel = this.getTopLevel(URIcompliance.createCompliantURI(URIprefix, displayId, version));
+		TopLevel oldTopLevel = this.getTopLevelLocalOnly(URIcompliance.createCompliantURI(URIprefix, displayId, version));
 		if (oldTopLevel != null) {
 			// TODO: should check if they are same or different, if different throw
 			// exception
@@ -1869,7 +1869,7 @@ public class SBOLDocument {
 
 	private void createRecursiveCopy(SBOLDocument document, Annotation annotation) throws SBOLValidationException {
 		if (annotation.isURIValue()) {
-			TopLevel gtl = getTopLevel(annotation.getURIValue());
+			TopLevel gtl = getTopLevelLocalOnly(annotation.getURIValue());
 			if (gtl != null)
 				createRecursiveCopy(document, gtl);
 		} else if (annotation.isNestedAnnotations()) {
@@ -1889,7 +1889,7 @@ public class SBOLDocument {
 	 *             {@link SBOLDocument#createCopy(TopLevel)}.
 	 */
 	public void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
-		if (document.getTopLevel(topLevel.getIdentity()) != null)
+		if (document.getTopLevelLocalOnly(topLevel.getIdentity()) != null)
 			return;
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model
 				|| topLevel instanceof Plan || topLevel instanceof Agent) {
@@ -1961,7 +1961,7 @@ public class SBOLDocument {
 		}
 		for (Annotation annotation : topLevel.getAnnotations()) {
 			if (annotation.isURIValue()) {
-				TopLevel gtl = getTopLevel(annotation.getURIValue());
+				TopLevel gtl = getTopLevelLocalOnly(annotation.getURIValue());
 				if (gtl != null)
 					createRecursiveCopy(document, gtl);
 			} else if (annotation.isNestedAnnotations()) {
@@ -2025,7 +2025,7 @@ public class SBOLDocument {
 					newVersion = topLevel.getVersion();
 				}
 				newDisplayId = URIcompliance.fixDisplayId(newDisplayId);
-				while (getTopLevel(
+				while (getTopLevelLocalOnly(
 						URIcompliance.createCompliantURI(documentURIPrefix, newDisplayId, newVersion)) != null) {
 					newDisplayId = newDisplayId.replaceAll("_", "__");
 				}
@@ -3129,6 +3129,7 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
+					e.printStackTrace();
 					agent = null;
 				}
 			}
@@ -3336,16 +3337,8 @@ public class SBOLDocument {
 			removePlan((Plan) plan);
 		}
 	}
-
-	/**
-	 * Returns the top-level matching the given identity URI from this SBOL
-	 * document's lists of top-levels.
-	 *
-	 * @param topLevelURI
-	 *            the identity URI of the top-level to be retrieved
-	 * @return the matching top-level if present, or {@code null} otherwise.
-	 */
-	public TopLevel getTopLevel(URI topLevelURI) {
+	
+	private TopLevel getTopLevelLocalOnly(URI topLevelURI) {
 		TopLevel topLevel = collections.get(topLevelURI);
 		if (topLevel != null) {
 			return topLevel;
@@ -3386,6 +3379,19 @@ public class SBOLDocument {
 		if (topLevel != null) {
 			return topLevel;
 		}
+		return null;
+	}
+
+	/**
+	 * Returns the top-level matching the given identity URI from this SBOL
+	 * document's lists of top-levels.
+	 *
+	 * @param topLevelURI
+	 *            the identity URI of the top-level to be retrieved
+	 * @return the matching top-level if present, or {@code null} otherwise.
+	 */
+	public TopLevel getTopLevel(URI topLevelURI) {
+		TopLevel topLevel = getTopLevelLocalOnly(topLevelURI);
 		if (topLevel == null) {
 			for (SynBioHubFrontend frontend : getRegistries()) {
 				try {
