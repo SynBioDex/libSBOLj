@@ -2890,6 +2890,12 @@ public class SBOLDocument {
 	void addActivity(Activity activity) throws SBOLValidationException {
 		addTopLevel(activity, activities, "activity", collections, componentDefinitions, models, genericTopLevels,
 				plans, agents, moduleDefinitions, sequences, combinatorialDerivations);
+		for (Usage usage : activity.getUsages()) {
+			usage.setSBOLDocument(this);
+		}
+		for (Association association: activity.getAssociations()) {
+			association.setSBOLDocument(this);
+		}
 	}
 
 	/**
