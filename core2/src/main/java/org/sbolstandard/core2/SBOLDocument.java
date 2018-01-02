@@ -3404,8 +3404,8 @@ public class SBOLDocument {
 					topLevel = null;
 				}
 			}
-		}
-		return null;
+		} 
+		return topLevel;
 	}
 
 	/**
