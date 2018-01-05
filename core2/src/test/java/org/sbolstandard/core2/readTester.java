@@ -39,28 +39,35 @@ class readTester {
 
 		try {
 			SBOLDocument doc = new SBOLDocument();
-			doc.setDefaultURIprefix("http://dummy.org");
-			ComponentDefinition cd = doc.createComponentDefinition("CD1", ComponentDefinition.DNA);
-			ComponentDefinition variant = doc.createComponentDefinition("Variant", ComponentDefinition.DNA);
-			ComponentDefinition variant2 = doc.createComponentDefinition("Variant2", ComponentDefinition.DNA);
-			doc.createComponentDefinition("dummyCD", ComponentDefinition.DNA);
-			Component comp = cd.createComponent("comp", AccessType.PUBLIC, "dummyCD");
-			Component comp2 = cd.createComponent("comp2", AccessType.PUBLIC, "dummyCD");
-			CombinatorialDerivation combDeriv = doc.createCombinatorialDerivation("testCombo", cd.getIdentity());
-			VariableComponent vc = combDeriv.createVariableComponent("vc", OperatorType.ONE, comp);
-			vc.addVariant(variant.getIdentity());
-			VariableComponent vc2 = combDeriv.createVariableComponent("vc2", OperatorType.ONE, comp2);
-			vc2.addVariant(variant2.getIdentity());
-			SBOLDocument doc2 = doc.createRecursiveCopy(combDeriv);
-			//doc.write("/Users/myers/combo.xml");
-			//SBOLDocument doc2 = SBOLReader.read("/Users/myers/combo.xml");
-			doc2.write(System.out);
-			SBOLValidate.compareDocuments("doc", doc, "doc2", doc2);
-			if (SBOLValidate.getNumErrors() > 0) {
-				for (String error : SBOLValidate.getErrors()) {
-					System.out.println(error);
-				}	
+			doc.read("/Users/myers/Downloads/test.xml");
+			doc.addRegistry("https://synbiohub.org");
+			Activity activity = doc.getActivity(URI.create("http://michael.zhang/UnnamedPart_SBOLDesignerActivity/1"));
+			for (Association association : activity.getAssociations()) {
+				System.out.println(association.getAgentURI());
+				System.out.println(association.getAgent());
 			}
+//			doc.setDefaultURIprefix("http://dummy.org");
+//			ComponentDefinition cd = doc.createComponentDefinition("CD1", ComponentDefinition.DNA);
+//			ComponentDefinition variant = doc.createComponentDefinition("Variant", ComponentDefinition.DNA);
+//			ComponentDefinition variant2 = doc.createComponentDefinition("Variant2", ComponentDefinition.DNA);
+//			doc.createComponentDefinition("dummyCD", ComponentDefinition.DNA);
+//			Component comp = cd.createComponent("comp", AccessType.PUBLIC, "dummyCD");
+//			Component comp2 = cd.createComponent("comp2", AccessType.PUBLIC, "dummyCD");
+//			CombinatorialDerivation combDeriv = doc.createCombinatorialDerivation("testCombo", cd.getIdentity());
+//			VariableComponent vc = combDeriv.createVariableComponent("vc", OperatorType.ONE, comp);
+//			vc.addVariant(variant.getIdentity());
+//			VariableComponent vc2 = combDeriv.createVariableComponent("vc2", OperatorType.ONE, comp2);
+//			vc2.addVariant(variant2.getIdentity());
+//			SBOLDocument doc2 = doc.createRecursiveCopy(combDeriv);
+//			//doc.write("/Users/myers/combo.xml");
+//			//SBOLDocument doc2 = SBOLReader.read("/Users/myers/combo.xml");
+//			doc2.write(System.out);
+//			SBOLValidate.compareDocuments("doc", doc, "doc2", doc2);
+//			if (SBOLValidate.getNumErrors() > 0) {
+//				for (String error : SBOLValidate.getErrors()) {
+//					System.out.println(error);
+//				}	
+//			}
 //			SynBioHubFrontend sbh = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
 //			sbh.login("myers@ece.utah.edu", "test");
 //			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
