@@ -611,7 +611,15 @@ public abstract class Identified {
 				throw new SBOLValidationException("sbol-12701");
 			} else if (this instanceof Agent) {
 				throw new SBOLValidationException("sbol-12801");
-			}
+			} else if (this instanceof CombinatorialDerivation) {
+				throw new SBOLValidationException("sbol-12901");
+			} else if (this instanceof VariableComponent) {
+				throw new SBOLValidationException("sbol-13001");
+			} /* else if (this instanceof Implementation) {
+				throw new SBOLValidationException("sbol-13101");
+			} else if (this instanceof Attachment) {
+				throw new SBOLValidationException("sbol-13201");
+			} */ // TODO: uncomment when added
 		}
 		addNamespace(annotation);
 		annotations.add(annotation);
