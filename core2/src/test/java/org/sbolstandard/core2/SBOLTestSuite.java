@@ -39,6 +39,7 @@ import org.sbolstandard.core2.Testing.SystemsBiologyOntologyTest;
 //						SBOLGenerateFile.class,
 			SBOLReaderTest.class,
 			SBOLWriterTest.class,
+			SBOLReadWriteTest.class,
 			SBOLTestConversion.class,
 			URIcomplianceTest.class,
 			SBOLDocumentTest.class,
