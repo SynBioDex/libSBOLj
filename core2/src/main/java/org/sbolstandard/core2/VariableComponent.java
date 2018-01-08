@@ -321,7 +321,7 @@ public class VariableComponent extends Identified {
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
 	 * <ul>
 	 * <li>{@link #clearVariantDerivations()}</li>
-	 * <li>{@link #addVariantDerivations(URI)}, or</li>
+	 * <li>{@link #addVariantDerivation(URI)}, or</li>
 	 * </ul>
 	 */
 	public void setVariantDerivations(Set<URI> variantDerivations) throws SBOLValidationException {
