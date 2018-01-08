@@ -398,13 +398,26 @@ public class SynBioHubFrontend
      */    
     public static ArrayList<WebOfRegistriesData> getRegistries() throws SynBioHubException
     {
+    	return getRegistries("https://wor.synbiohub.org");
+    }
+    
+    /**
+     * Fetch data about all registries in the web of registries.
+     * @param webOfRegistriesUrl The URL for the web-of-registries.
+     *
+     * @return An ArrayList of WebOfRegistriesData describing each registry in the web of registries.
+     *
+     * @throws SynBioHubException if there was an error communicating with the web-of-registries
+     */    
+    public static ArrayList<WebOfRegistriesData> getRegistries(String webOfRegistriesUrl) throws SynBioHubException
+    {
         PoolingHttpClientConnectionManager connectionManager;
         HttpClient client;
         
         connectionManager = new PoolingHttpClientConnectionManager();
         client = HttpClients.custom().setConnectionManager(connectionManager).build();
         
-        String url = "https://wor.synbiohub.org/instances/";
+        String url = webOfRegistriesUrl + "/instances/";
 
         Gson gson = new Gson();
 
