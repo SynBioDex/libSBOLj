@@ -33,12 +33,15 @@ public class VariableComponent extends Identified {
 	 *            the referenced component
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
-	 *             {@link Identified#Identified(URI)}
+	 * <li>{@link Identified#Identified(URI)}</li>
+	 * <li>{@link #setVariable(URI)}, or</li>
+     * <li>{@link #setOperator(URI)}</li>
+	 * </ul>	
 	 */
 	VariableComponent(URI identity, OperatorType operator, URI variable) throws SBOLValidationException {
 		super(identity);
-		this.variable = variable;
-		this.operator = operator;
+		setVariable(variable);
+		setOperator(operator);
 		this.variants = new HashSet<>();
 		this.variantCollections = new HashSet<>();
 		this.variantDerivations = new HashSet<>();
@@ -49,18 +52,22 @@ public class VariableComponent extends Identified {
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in any of the
 	 *             following constructors or methods:
-	 * 
-	 *             TODO: copy over objects instead of references like in
-	 *             combinatorial derivation
+	 * <li>{@link Identified#Identified(Identified)}</li>
+	 * <li>{@link #setVariable(URI)},</li>
+     * <li>{@link #setOperator(URI)},</li>
+     * <li>{@link #setVariants(HashSet)},</li>
+     * <li>{@link #setVariantCollections(HashSet)},</li>
+     * <li>{@link #setVariantDerivations(HashSet)},</li>
+	 * </ul>	
 	 */
 	private VariableComponent(VariableComponent variableComponent) throws SBOLValidationException {
 		super(variableComponent.getIdentity());
 
-		this.variable = variableComponent.variable;
-		this.operator = variableComponent.operator;
-		this.variants = variableComponent.variants;
-		this.variantCollections = variableComponent.variantCollections;
-		this.variantDerivations = variableComponent.variantDerivations;
+		setVariable(variableComponent.variable);
+		setOperator(variableComponent.operator);
+		setVariants(variableComponent.variants);
+		setVariantCollections(variableComponent.variantCollections);
+		setVariantDerivations(variableComponent.variantDerivations);
 	}
 
 	/**
@@ -78,8 +85,15 @@ public class VariableComponent extends Identified {
 	 * 
 	 * @param variant
 	 * 			variant to be added
+	 * @throws SBOLValidationException 
+	 *              if the following SBOL validation rule was violated: 13008
 	 */
-	public void addVariant(URI variant) {
+	public void addVariant(URI variant) throws SBOLValidationException {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getComponentDefinition(variant) == null) {
+				throw new SBOLValidationException("sbol-13008", this);
+			}
+		}
 		variants.add(variant);
 	}
 
@@ -88,19 +102,41 @@ public class VariableComponent extends Identified {
 	 * 
 	 * @param variantCollection
 	 * 			variant collection to be added
+	 * @throws SBOLValidationException 
+	 *              if the following SBOL validation rule was violated: 13010
 	 */
-	public void addVariantCollection(URI variantCollection) {
+	public void addVariantCollection(URI variantCollection) throws SBOLValidationException {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			Collection collection = this.getSBOLDocument().getCollection(variantCollection);
+			if (collection == null) {
+				throw new SBOLValidationException("sbol-13010", this);
+			}
+			if (collection.getMemberURIs().size()==0) {
+				throw new SBOLValidationException("sbol-13011", this);
+			}
+			for (TopLevel topLevel : collection.getMembers()) {
+				if (!(topLevel instanceof ComponentDefinition)) {
+					throw new SBOLValidationException("sbol-13012", this);
+				}
+			}
+		}
 		variantCollections.add(variantCollection);
 	}
 
 	/**
-	 * Adds the given variant derivation URI to the list of variant derivations
-	 * URIs.
+	 * Adds the given variant derivation URI to the list of variant derivations URIs.
 	 * 
 	 * @param variantDerivation
 	 * 			variant derivation to be added
+	 * @throws SBOLValidationException 
+	 *              if the following SBOL validation rule was violated: 13014
 	 */
-	public void addVariantDerivation(URI variantDerivation) {
+	public void addVariantDerivation(URI variantDerivation) throws SBOLValidationException {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getCombinatorialDerivation(variantDerivation) == null) {
+				throw new SBOLValidationException("sbol-13014", this);
+			}
+		}
 		variantDerivations.add(variantDerivation);
 	}
 
@@ -128,9 +164,21 @@ public class VariableComponent extends Identified {
 	 *
 	 * @param variable
 	 *            the given component to set to
+	 * @throws SBOLValidationException 
+	 *              if the following SBOL validation rule was violated: 13004, 13005
 	 */
-	public void setVariable(URI variable) {
-		// TODO: validation
+	public void setVariable(URI variable) throws SBOLValidationException {
+		if (variable == null) {
+			throw new SBOLValidationException("sbol-13004", this);
+		}
+		if (combinatorialDerivation != null) {
+			ComponentDefinition template = combinatorialDerivation.getTemplate();
+			if (template !=null) {
+				if (template.getComponent(variable)==null) {
+					throw new SBOLValidationException("sbol-13005",this);
+				}
+			}
+		}
 		this.variable = variable;
 	}
 
@@ -149,13 +197,12 @@ public class VariableComponent extends Identified {
 	 * @param operator
 	 *            the given operator type to set to
 	 * @throws SBOLValidationException
-	 *             if the following SBOL validation rule was violated: TODO: 10607
+	 *             if the following SBOL validation rule was violated: 13002
 	 */
 	public void setOperator(OperatorType operator) throws SBOLValidationException {
 		if (operator == null) {
-			throw new SBOLValidationException("sbol-XXXXX", this);
+			throw new SBOLValidationException("sbol-13002", this);
 		}
-
 		this.operator = operator;
 	}
 
@@ -235,10 +282,14 @@ public class VariableComponent extends Identified {
 	 * Clears the existing set of variants first, and then adds the given
 	 * set of the variants to this variable component.
 	 * 
-	 * @param variants
-	 * TODO: validation (null check)
+	 * @param variants The set of variants
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link #clearVariants()}</li>
+	 * <li>{@link #addVariant(URI)}, or</li>
+	 * </ul>
 	 */
-	public void setVariants(Set<URI> variants) {
+	public void setVariants(Set<URI> variants) throws SBOLValidationException {
 		clearVariants();
 		for (URI uri : variants) {
 			addVariant(uri);
@@ -246,26 +297,34 @@ public class VariableComponent extends Identified {
 	}
 
 	/**
-	 * Clears the existing set of variants first, and then adds the given
-	 * set of the variants to this variable component.
+	 * Clears the existing set of variant collections first, and then adds the given
+	 * set of the variant collections to this variable component.
 	 * 
-	 * @param variantCollections
-	 * TODO: validation (null check)
+	 * @param variantCollections The set of variant collections
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link #clearVariantCollections()}</li>
+	 * <li>{@link #addVariantCollection(URI)}, or</li>
+	 * </ul>
 	 */
-	public void setVariantCollections(Set<URI> variantCollections) {
+	public void setVariantCollections(Set<URI> variantCollections) throws SBOLValidationException {
 		clearVariantCollections();
 		for (URI uri : variantCollections) {
 			addVariantCollection(uri);
 		}	}
 
 	/**
-	 * Clears the existing set of variants first, and then adds the given
-	 * set of the variants to this variable component.
+	 * Clears the existing set of variant derivations first, and then adds the given
+	 * set of the variant derivations to this variable component.
 	 * 
-	 * @param variantDerivations
-	 * TODO: validation (null check)
+	 * @param variantDerivations The set of variant derivations
+	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
+	 * <ul>
+	 * <li>{@link #clearVariantDerivations()}</li>
+	 * <li>{@link #addVariantDerivations(URI)}, or</li>
+	 * </ul>
 	 */
-	public void setVariantDerivations(Set<URI> variantDerivations) {
+	public void setVariantDerivations(Set<URI> variantDerivations) throws SBOLValidationException {
 		clearVariantDerivations();
 		for (URI uri : variantDerivations) {
 			addVariantDerivation(uri);
@@ -287,7 +346,7 @@ public class VariableComponent extends Identified {
 		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
 
 		ComponentDefinition componentDefinition = this.getSBOLDocument().getComponentDefinition(uri);
-		variants.add(componentDefinition.getIdentity());
+		addVariant(componentDefinition.getIdentity());
 	}
 
 	/**
@@ -306,7 +365,7 @@ public class VariableComponent extends Identified {
 		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
 
 		Collection collection = this.getSBOLDocument().getCollection(uri);
-		variantCollections.add(collection.getIdentity());
+		addVariantCollection(collection.getIdentity());
 	}
 
 	/**
@@ -325,7 +384,7 @@ public class VariableComponent extends Identified {
 		URI uri = URIcompliance.createCompliantURI(uriPrefix, displayId, version);
 
 		CombinatorialDerivation combinatorialDerivation = this.getSBOLDocument().getCombinatorialDerivation(uri);
-		variants.add(combinatorialDerivation.getIdentity());
+		addVariantDerivation(combinatorialDerivation.getIdentity());
 	}
 
 	/**
@@ -452,9 +511,6 @@ public class VariableComponent extends Identified {
 		this.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
 		this.setDisplayId(displayId);
 		this.setVersion(version);
-
-		// TODO: update URIs for variants, variantCollections, variantDerivations,
-		// and/or variable?
 	}
 	
 	void copy(VariableComponent variableComponent) throws SBOLValidationException {

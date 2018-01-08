@@ -340,14 +340,12 @@ public class SBOLValidate {
 				if (variantDerivation == null)
 					continue;
 				if (visited.contains(variantDerivation.getIdentity())) {
-					//TODO:
-					throw new SBOLValidationException("sbol-XXXXX", variableComponent);
+					throw new SBOLValidationException("sbol-13015", variableComponent);
 				}
 				try {
 					checkCombinatorialDerivationCycle(sbolDocument, variantDerivation, visited);
 				} catch (SBOLValidationException e) {
-					//TODO:
-					throw new SBOLValidationException("sbol-XXXXX", variableComponent);
+					throw new SBOLValidationException("sbol-13015", variableComponent);
 				}
 			}
 		}
