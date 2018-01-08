@@ -232,27 +232,44 @@ public class VariableComponent extends Identified {
 	}
 
 	/**
+	 * Clears the existing set of variants first, and then adds the given
+	 * set of the variants to this variable component.
+	 * 
 	 * @param variants
 	 * TODO: validation (null check)
 	 */
 	public void setVariants(Set<URI> variants) {
-		this.variants = (HashSet<URI>) variants;
+		clearVariants();
+		for (URI uri : variants) {
+			addVariant(uri);
+		}
 	}
 
 	/**
+	 * Clears the existing set of variants first, and then adds the given
+	 * set of the variants to this variable component.
+	 * 
 	 * @param variantCollections
 	 * TODO: validation (null check)
 	 */
 	public void setVariantCollections(Set<URI> variantCollections) {
-		this.variantCollections = (HashSet<URI>) variantCollections;
-	}
+		clearVariantCollections();
+		for (URI uri : variantCollections) {
+			addVariantCollection(uri);
+		}	}
 
 	/**
+	 * Clears the existing set of variants first, and then adds the given
+	 * set of the variants to this variable component.
+	 * 
 	 * @param variantDerivations
 	 * TODO: validation (null check)
 	 */
 	public void setVariantDerivations(Set<URI> variantDerivations) {
-		this.variantDerivations = (HashSet<URI>) variantDerivations;
+		clearVariantDerivations();
+		for (URI uri : variantDerivations) {
+			addVariantDerivation(uri);
+		}
 	}
 
 	/**

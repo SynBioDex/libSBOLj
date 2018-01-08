@@ -201,7 +201,10 @@ public class CombinatorialDerivation extends TopLevel {
 	}
 
 	/**
-	 * @param variableComponents
+	 * Clears the existing set of variable components first, and then adds the given
+	 * set of the variable components to this combinatorial derivation.
+	 *
+	 * @param variableComponents The set of variable components for this combinatorial derivation.
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
 	 * <ul>
 	 * <li>{@link #clearVariableComponents()} or</li>
