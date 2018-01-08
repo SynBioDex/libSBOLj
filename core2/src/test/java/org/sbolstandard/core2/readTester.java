@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
 
+import org.synbiohub.frontend.SynBioHubException;
 import org.synbiohub.frontend.SynBioHubFrontend;
 
 class readTester {
@@ -36,16 +37,24 @@ class readTester {
 	static String path = "/Users/myers/git/libSBOLj/core2/src/test/resources/";
 
 	public static void main(String[] args) {
-
+		
 		try {
-			SBOLDocument doc = new SBOLDocument();
-			doc.read("/Users/myers/Downloads/test.xml");
-			doc.addRegistry("https://synbiohub.org");
-			Activity activity = doc.getActivity(URI.create("http://michael.zhang/UnnamedPart_SBOLDesignerActivity/1"));
-			for (Association association : activity.getAssociations()) {
-				System.out.println(association.getAgentURI());
-				System.out.println(association.getAgent());
-			}
+			System.out.println(SynBioHubFrontend.getRegistries());
+		}
+		catch (SynBioHubException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+//		try {
+//			SBOLDocument doc = new SBOLDocument();
+//			doc.read("/Users/myers/Downloads/test.xml");
+//			doc.addRegistry("https://synbiohub.org");
+//			Activity activity = doc.getActivity(URI.create("http://michael.zhang/UnnamedPart_SBOLDesignerActivity/1"));
+//			for (Association association : activity.getAssociations()) {
+//				System.out.println(association.getAgentURI());
+//				System.out.println(association.getAgent());
+//			}
 //			doc.setDefaultURIprefix("http://dummy.org");
 //			ComponentDefinition cd = doc.createComponentDefinition("CD1", ComponentDefinition.DNA);
 //			ComponentDefinition variant = doc.createComponentDefinition("Variant", ComponentDefinition.DNA);
@@ -292,9 +301,9 @@ class readTester {
 //			//			URI identity = URI.create("http://www.async.ece.utah.edu/pLactetRSeq/2/0");
 //			//			System.out.println(SBOLReader.getParentURI(identity));
 
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
+//		} catch (Throwable e) {
+//			e.printStackTrace();
+//		}
 
 	}
 }

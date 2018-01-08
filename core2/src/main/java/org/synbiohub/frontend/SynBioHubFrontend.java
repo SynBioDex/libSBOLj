@@ -390,6 +390,52 @@ public class SynBioHubFrontend
     }
     
     /**
+     * Fetch data about all registries in the web of registries.
+     *
+     * @return An ArrayList of WebOfRegistriesData describing each registry in the web of registries.
+     *
+     * @throws SynBioHubException if there was an error communicating with the WebOfRegistries
+     */    
+    public static ArrayList<WebOfRegistriesData> getRegistries() throws SynBioHubException
+    {
+        PoolingHttpClientConnectionManager connectionManager;
+        HttpClient client;
+        
+        connectionManager = new PoolingHttpClientConnectionManager();
+        client = HttpClients.custom().setConnectionManager(connectionManager).build();
+        
+        String url = "https://wor.synbiohub.org/instances/";
+
+        Gson gson = new Gson();
+
+        HttpGet request = new HttpGet(url);
+        request.setHeader("Accept", "text/plain");
+
+        try
+        {
+            HttpResponse response = client.execute(request);
+
+            checkResponseCode(response);
+
+            InputStream inputStream = response.getEntity().getContent();
+
+            ArrayList<WebOfRegistriesData> metadataList = gson.fromJson(
+            		new InputStreamReader(inputStream),
+            			new TypeToken<ArrayList<WebOfRegistriesData>>(){}.getType());
+
+            return metadataList;
+         }
+        catch (Exception e)
+        {
+            throw new SynBioHubException(e);
+        }
+        finally
+        {
+            request.releaseConnection();
+        }
+    }
+    
+    /**
      * Perform a SPARQL query
      * @param query SPARQL query string
      *
@@ -1020,7 +1066,7 @@ public class SynBioHubFrontend
     	return str;
     }
 
-    private String inputStreamToString(InputStream inputStream) throws IOException
+    private static String inputStreamToString(InputStream inputStream) throws IOException
     {
         StringWriter writer = new StringWriter();
 
@@ -1080,7 +1126,7 @@ public class SynBioHubFrontend
         }
     }
     
-    private void checkResponseCode(HttpResponse response) throws SynBioHubException
+    private static void checkResponseCode(HttpResponse response) throws SynBioHubException
     {
         int statusCode = response.getStatusLine().getStatusCode();
                 
