@@ -63,10 +63,10 @@ public enum OperatorType {
 				return OperatorType.ONEORMORE;
 			}
 			else {
-				throw new SBOLValidationException("sbol-11802");
+				throw new SBOLValidationException("sbol-13003");
 			}
 		} else {
-			throw new SBOLValidationException("sbol-11802");
+			throw new SBOLValidationException("sbol-13003");
 		}
 	}
 	

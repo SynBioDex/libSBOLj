@@ -49,10 +49,10 @@ public enum StrategyType {
 				return StrategyType.SAMPLE;
 			}
 			else {
-				throw new SBOLValidationException("sbol-11802");
+				throw new SBOLValidationException("sbol-12902");
 			}
 		} else {
-			throw new SBOLValidationException("sbol-11802");
+			throw new SBOLValidationException("sbol-12902");
 		}
 	}
 	

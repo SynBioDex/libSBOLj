@@ -92,11 +92,11 @@ public enum RestrictionType {
 				return differentFrom;
 			} 
 			else {
-				throw new SBOLValidationException("sbol-11412");
+				return null;
 			}
 		}
 		else {
-			throw new SBOLValidationException("sbol-11412");
+			return null;
 		}
 	}
 	
