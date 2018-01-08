@@ -121,6 +121,15 @@ public class SequenceConstraint extends Identified {
 		if (restriction==null) {
 			throw new SBOLValidationException("sbol-11407",this);
 		}
+		if (restriction.equals(RestrictionType.DIFFERENT_FROM)) {
+			if (componentDefinition != null && subject != null && object != null) {
+				if (componentDefinition.getComponent(object).getDefinitionURI()
+						.equals(componentDefinition.getComponent(subject).getDefinitionURI())) {
+					throw new SBOLValidationException("sbol-11413", this);
+				}
+			}
+		}
+
 		try {
 			this.restriction = RestrictionType.convertToURI(restriction);
 		} catch (SBOLValidationException e) {
@@ -208,6 +217,14 @@ public class SequenceConstraint extends Identified {
 		if (subjectURI.equals(object)) {
 			throw new SBOLValidationException("sbol-11406", this);
 		}
+		if (RestrictionType.convertToRestrictionType(restriction).equals(RestrictionType.DIFFERENT_FROM)) {
+			if (componentDefinition != null && object != null) {
+				if (componentDefinition.getComponent(subjectURI).getDefinitionURI()
+						.equals(componentDefinition.getComponent(object).getDefinitionURI())) {
+					throw new SBOLValidationException("sbol-11413", this);
+				}
+			}
+		}
 		this.subject = subjectURI;
 	}
 
@@ -279,6 +296,14 @@ public class SequenceConstraint extends Identified {
 		}
 		if (objectURI==subject) {
 			throw new SBOLValidationException("sbol-11402", this);
+		}
+		if (RestrictionType.convertToRestrictionType(restriction).equals(RestrictionType.DIFFERENT_FROM)) {
+			if (componentDefinition != null && subject != null) {
+				if (componentDefinition.getComponent(objectURI).getDefinitionURI()
+						.equals(componentDefinition.getComponent(subject).getDefinitionURI())) {
+					throw new SBOLValidationException("sbol-11413", this);
+				}
+			}
 		}
 		this.object = objectURI;
 	}
