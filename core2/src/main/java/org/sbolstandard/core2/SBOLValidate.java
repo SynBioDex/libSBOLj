@@ -1823,23 +1823,6 @@ public class SBOLValidate {
 			}
 			doc = SBOLReader.read(fileName);
 			doc.setTypesInURIs(typesInURI);
-			if (!compareFile.equals("")) {
-				SBOLDocument doc2 = SBOLReader.read(compareFile);
-				if (mainFileName.equals("")) {
-					File f = new File(fileName);
-					mainFileName = f.getName();
-				}
-				if (compareFileName.equals("")) {
-					File f = new File(compareFile);
-					compareFileName = f.getName();
-				}
-				compareDocuments(mainFileName, doc, compareFileName, doc2);
-				if (getNumErrors() != 0) {
-					for (String error : getErrors()) {
-						errorStream.println(error);
-					}
-				}
-			}
 			if (!topLevelURIStr.equals("")) {
 				TopLevel topLevel = doc.getTopLevel(URI.create(topLevelURIStr));
 				if (topLevel == null) {
@@ -1922,6 +1905,23 @@ public class SBOLValidate {
 					}
 				}
 				errorStream.println("Validation failed.\n");
+			}
+			if (!compareFile.equals("")) {
+				SBOLDocument doc2 = SBOLReader.read(compareFile);
+				if (mainFileName.equals("")) {
+					File f = new File(fileName);
+					mainFileName = f.getName();
+				}
+				if (compareFileName.equals("")) {
+					File f = new File(compareFile);
+					compareFileName = f.getName();
+				}
+				compareDocuments(mainFileName, doc, compareFileName, doc2);
+				if (getNumErrors() != 0) {
+					for (String error : getErrors()) {
+						errorStream.println(error);
+					}
+				}
 			}
 			return doc;
 		} catch (SBOLValidationException e) {
