@@ -143,6 +143,16 @@ public class Usage extends Identified {
 	}
 
 	/**
+	 * Adds the given role to this usage's set of roles.
+	 *
+	 * @param role the role to be added
+	 * @return {@code true} if this set did not already contain the specified role, {@code false} otherwise.
+	 */
+	public boolean addRole(ActivityRoleType role) {
+		return addRole(ActivityRoleType.convertToURI(role));
+	}
+	
+	/**
 	 * Removes the given role URI from the set of roles.
 	 *
 	 * @param roleURI the given role URI to be removed
