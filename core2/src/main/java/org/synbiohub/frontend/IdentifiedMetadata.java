@@ -12,10 +12,11 @@ public class IdentifiedMetadata
 	 */
 	@Override
 	public String toString() {
-		return "IdentifiedMetadata [uri=" + uri + ", name=" + name + ", displayId=" + displayId
+		return "IdentifiedMetadata [type =" + type + ", uri=" + uri + ", name=" + name + ", displayId=" + displayId
 				+ ", description=" + description + ", version=" + version + "]";
 	}
 
+	private String type;
 	private String uri;
 	private String name;
 	private String displayId;
@@ -90,6 +91,14 @@ public class IdentifiedMetadata
 	 */
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }
 
