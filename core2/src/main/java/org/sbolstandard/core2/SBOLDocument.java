@@ -2057,6 +2057,20 @@ public class SBOLDocument {
 
 	// TODO: need to update persistentIdentities too
 	private void updateReferences(URI originalIdentity, URI newIdentity) throws SBOLValidationException {
+		for (TopLevel topLevel : getTopLevels()) {
+			for (URI wasDerivedFrom : topLevel.getWasDerivedFroms()) {
+				if (wasDerivedFrom.equals(originalIdentity)) {
+					topLevel.removeWasDerivedFrom(originalIdentity);
+					topLevel.addWasDerivedFrom(newIdentity);	
+				}
+			}
+			for (URI wasGeneratedBy : topLevel.getWasGeneratedBys()) {
+				if (wasGeneratedBy.equals(originalIdentity)) {
+					topLevel.removeWasGeneratedBy(originalIdentity);
+					topLevel.addWasGeneratedBy(newIdentity);	
+				}
+			}
+		}
 		for (Collection collection : getCollections()) {
 			for (URI memberURI : collection.getMemberURIs()) {
 				if (memberURI.equals(originalIdentity)) {
@@ -2208,6 +2222,20 @@ public class SBOLDocument {
 
 	// TODO: need to update persistentIdentities too
 	private void updateReferences(HashMap<URI, URI> uriMap) throws SBOLValidationException {
+		for (TopLevel topLevel : getTopLevels()) {
+			for (URI wasDerivedFrom : topLevel.getWasDerivedFroms()) {
+				if (uriMap.get(wasDerivedFrom) != null) {
+					topLevel.removeWasDerivedFrom(wasDerivedFrom);
+					topLevel.addWasDerivedFrom(uriMap.get(wasDerivedFrom));	
+				}
+			}
+			for (URI wasGeneratedBy : topLevel.getWasGeneratedBys()) {
+				if (uriMap.get(wasGeneratedBy) != null) {
+					topLevel.removeWasGeneratedBy(wasGeneratedBy);
+					topLevel.addWasGeneratedBy(uriMap.get(wasGeneratedBy));	
+				}
+			}
+		}
 		for (Collection collection : getCollections()) {
 			for (URI memberURI : collection.getMemberURIs()) {
 				if (uriMap.get(memberURI) != null) {
