@@ -2354,7 +2354,7 @@ public class SBOLDocument {
 			}
 			for (Usage usage : activity.getUsages()) {
 				if (uriMap.get(usage.getEntityURI()) != null) {
-					usage.setEntity(uriMap.get(usage.getEntity()));
+					usage.setEntity(uriMap.get(usage.getEntityURI()));
 				}
 				updateReferences(usage, uriMap);
 			}
@@ -2444,7 +2444,9 @@ public class SBOLDocument {
 			fixed.rename(topLevel, URIPrefix, null, version);
 			TopLevel newTL = document.createCopy(topLevel, URIPrefix, null, version);
 			uriMap.put(topLevel.getIdentity(), newTL.getIdentity());
-			uriMap.put(topLevel.getPersistentIdentity(), newTL.getPersistentIdentity());
+			if (!topLevel.getIdentity().equals(topLevel.getPersistentIdentity())) {
+				uriMap.put(topLevel.getPersistentIdentity(), newTL.getPersistentIdentity());
+			}
 		}
 		document.updateReferences(uriMap);
 		for (TopLevel topLevel : document.getTopLevels()) {
