@@ -203,6 +203,13 @@ public class VariableComponent extends Identified {
 		if (operator == null) {
 			throw new SBOLValidationException("sbol-13002", this);
 		}
+		if (combinatorialDerivation != null && combinatorialDerivation.isSetStrategy() &&
+				combinatorialDerivation.getStrategy().equals(StrategyType.ENUMERATE)) {
+			if (operator.equals(OperatorType.ZEROORMORE) ||
+					operator.equals(OperatorType.ONEORMORE)) {
+				throw new SBOLValidationException("sbol-12903",this);
+			}
+		}
 		this.operator = operator;
 	}
 

@@ -374,8 +374,18 @@ public class CombinatorialDerivation extends TopLevel {
 	 *
 	 * @param strategy
 	 *            the given strategy type to set to
+	 * @throws SBOLValidationException 
+	 * 				on SBOL validation rule violation 12903.
 	 */
-	public void setStrategy(StrategyType strategy) {
+	public void setStrategy(StrategyType strategy) throws SBOLValidationException {
+		if (strategy.equals(StrategyType.ENUMERATE)) {
+			for (VariableComponent variableComponent : variableComponents.values()) {
+				if (variableComponent.getOperator().equals(OperatorType.ONEORMORE) ||
+						variableComponent.getOperator().equals(OperatorType.ZEROORMORE)) {
+					throw new SBOLValidationException("sbol-12903",this);
+				}
+			}
+		}
 		this.strategy = strategy;
 	}
 
