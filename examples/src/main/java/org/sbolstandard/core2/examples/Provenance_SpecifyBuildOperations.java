@@ -242,6 +242,6 @@ public class Provenance_SpecifyBuildOperations {
 		cdJoinedPart.addWasGeneratedBy(joinOperation.getIdentity());
 		
 		// serialize the document to a file
-		SBOLWriter.write(document, Paths.get("./data/join_operation.sbol.xml").toFile());
+		SBOLWriter.write(document, System.out);
 	}
 }
