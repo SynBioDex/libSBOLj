@@ -130,7 +130,7 @@ public class Provenance_SpecifyBuildOperations {
 		linearized_vector.addWasGeneratedBy(activity.getIdentity());
 		
 		// serialize the document to a file
-		SBOLWriter.write(document, Paths.get("./data/cut_operation.sbol.xml").toFile());
+		SBOLWriter.write(document, System.out);
    }
 	
 	
@@ -194,7 +194,7 @@ public class Provenance_SpecifyBuildOperations {
 		amplified_construct.addWasGeneratedBy(amplifyOperation.getIdentity());
 		
 		// serialize the document to a file
-		SBOLWriter.write(document, Paths.get("./data/amplify_operation.sbol.xml").toFile());
+		SBOLWriter.write(document, System.out);
 	}
 
 
@@ -232,7 +232,7 @@ public class Provenance_SpecifyBuildOperations {
 		
 		// specify the "inputs" to the join operation
 		joinOperation.createUsage("dna_part_1", cdPart1.getIdentity()).addRole(UPSTREAM);
-		joinOperation.createUsage("dna_part_2", cdPart1.getIdentity()).addRole(DOWNSTREAM);
+		joinOperation.createUsage("dna_part_2", cdPart2.getIdentity()).addRole(DOWNSTREAM);
 		
 		// specify the "output" of the join operation
 		ComponentDefinition cdJoinedPart = document.createComponentDefinition(
