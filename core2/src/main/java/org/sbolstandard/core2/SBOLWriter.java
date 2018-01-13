@@ -714,7 +714,7 @@ public class SBOLWriter
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, variableComponent);
 
-			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariable, variableComponent.getVariable().getIdentity()));
+			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariable, variableComponent.getVariableURI()));
 			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasOperator, OperatorType.convertToURI(variableComponent.getOperator())));
 			
 			for(URI variant : variableComponent.getVariantURIs()) {

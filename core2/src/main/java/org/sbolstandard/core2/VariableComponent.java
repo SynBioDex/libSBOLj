@@ -147,6 +147,7 @@ public class VariableComponent extends Identified {
 	 */
 	public Component getVariable() {
 		if (combinatorialDerivation==null) return null;
+		if (combinatorialDerivation.getTemplate()==null) return null;
 		return combinatorialDerivation.getTemplate().getComponent(variable);
 	}
 	

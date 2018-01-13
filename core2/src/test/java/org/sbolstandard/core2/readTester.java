@@ -3,6 +3,7 @@ package org.sbolstandard.core2;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URI;
 
 import org.synbiohub.frontend.SynBioHubException;
@@ -36,15 +37,18 @@ class readTester {
 
 	static String path = "/Users/myers/git/libSBOLj/core2/src/test/resources/";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SBOLValidationException, IOException, SBOLConversionException {
 		
-		try {
-			System.out.println(SynBioHubFrontend.getRegistries());
-		}
-		catch (SynBioHubException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		SBOLDocument doc = SBOLReader.read("/Users/myers/git/libSBOLj/core2/src/test/resources/SBOLTestSuite/SBOL2/Provenance_SpecifyJoinOperation.xml");
+		doc = doc.createRecursiveCopy(doc.getTopLevel(URI.create("http://sbolstandard.org/build/joined_dna_part")));
+		doc.write(System.out);
+//		try {
+//			System.out.println(SynBioHubFrontend.getRegistries());
+//		}
+//		catch (SynBioHubException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 //		try {
 //			SBOLDocument doc = new SBOLDocument();
