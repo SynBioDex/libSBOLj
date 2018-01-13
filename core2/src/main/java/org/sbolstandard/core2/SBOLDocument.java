@@ -1892,13 +1892,13 @@ public class SBOLDocument {
 		if (document.getTopLevelLocalOnly(topLevel.getIdentity()) != null)
 			return;
 		for (URI wasDerivedFromURI : topLevel.getWasDerivedFroms()) {
-			TopLevel wasDerivedFrom = document.getTopLevelLocalOnly(wasDerivedFromURI);
+			TopLevel wasDerivedFrom = getTopLevelLocalOnly(wasDerivedFromURI);
 			if (wasDerivedFrom != null) {
 				createRecursiveCopy(document, wasDerivedFrom);
 			}
 		}
 		for (URI wasGeneratedByURI : topLevel.getWasGeneratedBys()) {
-			TopLevel wasGeneratedBy = document.getTopLevelLocalOnly(wasGeneratedByURI);
+			TopLevel wasGeneratedBy = getTopLevelLocalOnly(wasGeneratedByURI);
 			if (wasGeneratedBy != null) {
 				createRecursiveCopy(document, wasGeneratedBy);
 			}
