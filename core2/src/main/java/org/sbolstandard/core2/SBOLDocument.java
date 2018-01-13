@@ -1891,6 +1891,18 @@ public class SBOLDocument {
 	public void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
 		if (document.getTopLevelLocalOnly(topLevel.getIdentity()) != null)
 			return;
+		for (URI wasDerivedFromURI : topLevel.getWasDerivedFroms()) {
+			TopLevel wasDerivedFrom = document.getTopLevelLocalOnly(wasDerivedFromURI);
+			if (wasDerivedFrom != null) {
+				createRecursiveCopy(document, wasDerivedFrom);
+			}
+		}
+		for (URI wasGeneratedByURI : topLevel.getWasGeneratedBys()) {
+			TopLevel wasGeneratedBy = document.getTopLevelLocalOnly(wasGeneratedByURI);
+			if (wasGeneratedBy != null) {
+				createRecursiveCopy(document, wasGeneratedBy);
+			}
+		}
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model
 				|| topLevel instanceof Plan || topLevel instanceof Agent) {
 			document.createCopy(topLevel);
