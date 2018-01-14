@@ -1889,7 +1889,7 @@ public class SBOLDocument {
 	 *             {@link SBOLDocument#createCopy(TopLevel)}.
 	 */
 	public void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
-		if (document.getTopLevelLocalOnly(topLevel.getIdentity()) != null)
+		if (topLevel == null || document.getTopLevelLocalOnly(topLevel.getIdentity()) != null)
 			return;
 		document.createCopy(topLevel);
 		for (URI wasDerivedFromURI : topLevel.getWasDerivedFroms()) {
