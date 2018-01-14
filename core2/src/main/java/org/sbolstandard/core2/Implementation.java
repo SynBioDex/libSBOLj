@@ -20,6 +20,73 @@ public class Implementation extends TopLevel {
 	public boolean isSetBuilt() {
 		return built != null;
 	}
+	
+	/**
+	 * Returns the URI of the component definition or module definition built
+	 *
+	 * @return the URI of built
+	 */
+	public URI getBuiltURI() {
+		return this.built;
+	}
+	
+	/**
+	 * Returns the component definition or module definition referenced by the built field.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null}
+	 *         or no matching component definition or module definition referenced;
+	 *         or the matching component definition or module definition otherwise.
+	 */
+	public TopLevel getBuilt() {
+		if (this.getSBOLDocument() == null)
+			return null;
+		
+		if(this.getSBOLDocument().getComponentDefinition(built) == null) {
+			return this.getSBOLDocument().getModuleDefinition(built);
+		}
+		
+		return this.getSBOLDocument().getComponentDefinition(built);
+	}
+
+	/**
+	 * Sets the URI of the built property to the given one.
+	 *
+	 * @param builtURI
+	 *            the given URI to set to
+	 * @throws SBOLValidationException 
+	 * 				on SBOL validation rule violation XXXXX.
+	 */
+	public void setBuiltURI(URI builtURI) throws SBOLValidationException {
+		if(this.getSBOLDocument().getComponentDefinition(builtURI) == null &&
+				this.getSBOLDocument().getModuleDefinition(builtURI) == null) {
+			throw new SBOLValidationException("sbol-XXXXX", this);
+		}
+		
+		this.built = builtURI;
+	}
+	
+	/**
+	 * Sets the the built property to the given one.
+	 *
+	 * @param built
+	 *            the given component definition or module definition to set to
+	 * @throws SBOLValidationException 
+	 * 				on SBOL validation rule violation XXXXX.
+	 */
+	public void setBuilt(TopLevel built) throws SBOLValidationException {
+		if(!(built instanceof ComponentDefinition) && !(built instanceof ModuleDefinition)) {
+			throw new SBOLValidationException("sbol-XXXXX", this);
+		}
+		
+		this.built = built.getIdentity();
+	}
+
+	/**
+	 * Sets the built property of the Implementation to {@code null}.
+	 */
+	public void unsetBuilt() {
+		this.built = null;
+	}
 
 	@Override
 	Identified deepCopy() throws SBOLValidationException {
