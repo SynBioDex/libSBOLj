@@ -1891,6 +1891,7 @@ public class SBOLDocument {
 	public void createRecursiveCopy(SBOLDocument document, TopLevel topLevel) throws SBOLValidationException {
 		if (document.getTopLevelLocalOnly(topLevel.getIdentity()) != null)
 			return;
+		document.createCopy(topLevel);
 		for (URI wasDerivedFromURI : topLevel.getWasDerivedFroms()) {
 			TopLevel wasDerivedFrom = getTopLevelLocalOnly(wasDerivedFromURI);
 			if (wasDerivedFrom != null) {
@@ -1905,12 +1906,11 @@ public class SBOLDocument {
 		}
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model
 				|| topLevel instanceof Plan || topLevel instanceof Agent) {
-			document.createCopy(topLevel);
+			// Do nothing
 		} else if (topLevel instanceof Collection) {
 			for (TopLevel member : ((Collection) topLevel).getMembers()) {
 				createRecursiveCopy(document, member);
 			}
-			document.createCopy(topLevel);
 		} else if (topLevel instanceof ComponentDefinition) {
 			for (Component component : ((ComponentDefinition) topLevel).getComponents()) {
 				if (component.getDefinition() != null) {
@@ -1920,7 +1920,6 @@ public class SBOLDocument {
 			for (TopLevel sequence : ((ComponentDefinition) topLevel).getSequences()) {
 				createRecursiveCopy(document, sequence);
 			}
-			document.createCopy(topLevel);
 		} else if (topLevel instanceof CombinatorialDerivation) {
 			if(((CombinatorialDerivation) topLevel).getTemplate() != null) {
 				createRecursiveCopy(document, ((CombinatorialDerivation) topLevel).getTemplate());
@@ -1936,7 +1935,6 @@ public class SBOLDocument {
 					createRecursiveCopy(document, combinatorialDerivation);
 				}
 			}
-			document.createCopy(topLevel);
 		}
 		else if (topLevel instanceof ModuleDefinition) {
 			for (FunctionalComponent functionalComponent : ((ModuleDefinition) topLevel).getFunctionalComponents()) {
@@ -1950,11 +1948,8 @@ public class SBOLDocument {
 				}
 			}
 			for (Model model : ((ModuleDefinition) topLevel).getModels()) {
-				if (document.getModel(model.getIdentity()) != null)
-					continue;
-				document.createCopy(model);
+				createRecursiveCopy(document,model);
 			}
-			document.createCopy(topLevel);
 		} else if (topLevel instanceof Activity) {
 			for (Association association : ((Activity) topLevel).getAssociations()) {
 				if (association.getAgent() != null) {
@@ -1969,7 +1964,6 @@ public class SBOLDocument {
 					createRecursiveCopy(document, usage.getEntity());
 				}
 			}
-			document.createCopy(topLevel);
 		}
 		for (Annotation annotation : topLevel.getAnnotations()) {
 			if (annotation.isURIValue()) {
