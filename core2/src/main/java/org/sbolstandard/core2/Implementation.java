@@ -130,6 +130,27 @@ public class Implementation extends TopLevel {
 		
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.sbolstandard.core2.abstract_classes.Documented#equals(java.lang.Instance)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Implementation other = (Implementation) obj;
+		if (!this.built.equals(other.getBuiltURI()))
+			return false;
+
+		return true;
+	}
+	
 	@Override
 	public String toString() {
 		return "Implementation [" + super.toString()
