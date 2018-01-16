@@ -2,6 +2,7 @@ package org.sbolstandard.core2;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 public class Implementation extends TopLevel {
 	
@@ -128,6 +129,16 @@ public class Implementation extends TopLevel {
 	void checkDescendantsURIcompliance() throws SBOLValidationException {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode() * prime;
+
+		result *= this.built != null ? this.built.hashCode() : 1;
+
+		return result;
 	}
 	
 	/*
