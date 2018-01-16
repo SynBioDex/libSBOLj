@@ -1348,6 +1348,21 @@ public class SBOLDocument {
 	}
 	
 	/**
+	 * Adds the given implementation to this SBOL document's list of
+	 * implementations
+	 *
+	 * @param implementation
+	 *            the implementation to be added
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
+	 */
+	void addImplementation(Implementation implementation) throws SBOLValidationException {
+		addTopLevel(implementation, implementations, "implementation", collections,
+				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences);
+	}
+	
+	/**
 	 * Removes the given implementation from this SBOL document's list of
 	 * implementations.
 	 *
