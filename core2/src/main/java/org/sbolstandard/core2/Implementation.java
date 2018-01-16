@@ -1,5 +1,7 @@
 package org.sbolstandard.core2;
 
+import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -114,7 +116,7 @@ public class Implementation extends TopLevel {
 	}
 
 	@Override
-	Identified deepCopy() throws SBOLValidationException {
+	Implementation deepCopy() throws SBOLValidationException {
 		return new Implementation(this);
 	}
 
@@ -126,10 +128,36 @@ public class Implementation extends TopLevel {
 		}
 	}
 	
+	/**
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in any of the
+	 *             following constructors or methods:
+	 *             <ul>
+	 *             <li>{@link #deepCopy()},</li>
+	 *             <li>{@link URIcompliance#createCompliantURI(String, String, String)},</li>
+	 *             <li>{@link #setDisplayId(String)},</li>
+	 *             <li>{@link #setVersion(String)},</li>
+	 *             <li>{@link #setWasDerivedFrom(URI)},</li>
+	 *             <li>{@link #setIdentity(URI)}</li>
+	 *             </ul>
+	 */
 	@Override
-	Identified copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
-		// TODO Auto-generated method stub
-		return null;
+	Implementation copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
+		Implementation cloned = this.deepCopy();
+		cloned.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));
+		cloned.setDisplayId(displayId);
+		cloned.setVersion(version);
+		URI newIdentity = createCompliantURI(URIprefix, displayId, version);
+
+		if (!this.getIdentity().equals(newIdentity)) {
+			cloned.addWasDerivedFrom(this.getIdentity());
+		} else {
+			cloned.setWasDerivedFroms(this.getWasDerivedFroms());
+		}
+
+		cloned.setIdentity(newIdentity);
+
+		return cloned;
 	}
 
 	@Override
