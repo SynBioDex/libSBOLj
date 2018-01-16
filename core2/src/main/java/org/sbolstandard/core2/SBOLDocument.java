@@ -51,6 +51,7 @@ public class SBOLDocument {
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
 	private HashMap<URI, CombinatorialDerivation> combinatorialDerivations;
+	private HashMap<URI, Implementation> implementations;
 	private HashMap<URI, Activity> activities;
 	private HashMap<URI, Plan> plans;
 	private HashMap<URI, Agent> agents;
