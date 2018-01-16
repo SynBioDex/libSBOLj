@@ -2700,7 +2700,7 @@ public class SBOLDocument {
 	 */
 	void addSequence(Sequence sequence) throws SBOLValidationException {
 		addTopLevel(sequence, sequences, "sequence", collections, componentDefinitions, genericTopLevels, activities,
-				plans, agents, models, moduleDefinitions, combinatorialDerivations);
+				plans, agents, models, moduleDefinitions, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -2929,7 +2929,7 @@ public class SBOLDocument {
 					genericTopLevel.getRDFType().getLocalPart(), qNameInNamespace.getPrefix()));
 		}
 		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel", collections, componentDefinitions, models,
-				activities, plans, agents, moduleDefinitions, sequences, combinatorialDerivations);
+				activities, plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -3108,7 +3108,7 @@ public class SBOLDocument {
 	 */
 	void addActivity(Activity activity) throws SBOLValidationException {
 		addTopLevel(activity, activities, "activity", collections, componentDefinitions, models, genericTopLevels,
-				plans, agents, moduleDefinitions, sequences, combinatorialDerivations);
+				plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 		for (Usage usage : activity.getUsages()) {
 			usage.setSBOLDocument(this);
 		}
@@ -3288,7 +3288,7 @@ public class SBOLDocument {
 	 */
 	void addAgent(Agent agent) throws SBOLValidationException {
 		addTopLevel(agent, agents, "agent", collections, componentDefinitions, models, genericTopLevels, plans,
-				activities, moduleDefinitions, sequences, combinatorialDerivations);
+				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -3462,7 +3462,7 @@ public class SBOLDocument {
 	 */
 	void addPlan(Plan plan) throws SBOLValidationException {
 		addTopLevel(plan, plans, "plan", collections, componentDefinitions, models, genericTopLevels, agents,
-				activities, moduleDefinitions, sequences, combinatorialDerivations);
+				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -3596,6 +3596,10 @@ public class SBOLDocument {
 		}
 		topLevel = combinatorialDerivations.get(topLevelURI);
 		if (topLevel != null) {
+			return topLevel;
+		}
+		topLevel = implementations.get(topLevelURI);
+		if(topLevel != null) {
 			return topLevel;
 		}
 		return null;
