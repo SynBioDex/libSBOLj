@@ -1346,9 +1346,48 @@ public class SBOLDocument {
 		combinatorialDerivations.addAll(this.combinatorialDerivations.values());
 		return combinatorialDerivations;
 	}
+
+	/**
+	 * Creates an implementation, and then adds it to this SBOL document's
+	 * list of implementations.
+	 * <p>
+	 * {@link #createImplementation(String)} with the
+	 * default URI prefix of this SBOL document, display ID, and version.
+	 *
+	 * @param displayId
+	 *            the display ID of the implementation to be created
+	 * @return the created implementation
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createImplementation(String, String, String)}.
+	 */
+	public Implementation createImplementation(String displayId)
+			throws SBOLValidationException {
+		return createImplementation(defaultURIprefix, displayId, "");
+	}
+
+	/**
+	 * Creates an implementation, and then adds it to this SBOL document's
+	 * list of implementations.
+	 * <p>
+	 * {@link #createImplementation(String, String)}
+	 * with the default URI prefix of this SBOL document, display ID, and version.
+	 *
+	 * @param displayId
+	 *            the display ID of the implementation to be created
+	 * @param version
+	 *            the version of the implementation to be created
+	 * @return the created implementation
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createCombinatorialDerivation(String, String, String)}.
+	 */
+	public Implementation createImplementation(String displayId, String version) throws SBOLValidationException {
+		return createImplementation(defaultURIprefix, displayId, version);
+	}
 	
 	/**
-	 * Creates a implementation, and then adds it to this SBOL document's
+	 * Creates an implementation, and then adds it to this SBOL document's
 	 * list of implementations.
 	 * <p>
 	 * This method creates a compliant URI for the implementation to be
