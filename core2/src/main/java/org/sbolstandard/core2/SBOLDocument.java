@@ -3668,6 +3668,9 @@ public class SBOLDocument {
 		for (CombinatorialDerivation topLevel : combinatorialDerivations.values()) {
 			topLevels.add(topLevel);
 		}
+		for (Implementation topLevel : implementations.values()) {
+			topLevels.add(topLevel);
+		}
 		return topLevels;
 	}
 
