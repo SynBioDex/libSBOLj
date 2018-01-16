@@ -53,6 +53,10 @@ public abstract class TopLevel extends Identified {
 	 * The abbreviation for the CombinatorialDerivation type in URI
 	 */
 	public static final String COMBINATORIAL_DERIVATION = "comb";
+	/**
+	 * The abbreviation for the Implementation type in URI
+	 */
+	public static final String Implementation = "imp";
 	
 	/**
 	 * @param identity
