@@ -1346,6 +1346,24 @@ public class SBOLDocument {
 		combinatorialDerivations.addAll(this.combinatorialDerivations.values());
 		return combinatorialDerivations;
 	}
+	
+	/**
+	 * Removes the given implementation from this SBOL document's list of
+	 * implementations.
+	 *
+	 * @param implementation
+	 *            the implementation to be removed
+	 * @return {@code true} if the given implementation was successfully
+	 *         removed, {@code false} otherwise
+	 * @throws SBOLValidationException
+	 *             if either of the following SBOL validation rules was violated:
+	 *             TODO: 10604, 12103.
+	 */
+	public boolean removeImplementation(Implementation implementation)
+			throws SBOLValidationException {
+
+		return removeTopLevel(implementation, implementations);
+	}
 
 	/**
 	 * Creates an implementation, and then adds it to this SBOL document's
