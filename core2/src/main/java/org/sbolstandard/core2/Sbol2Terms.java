@@ -135,6 +135,7 @@ class Sbol2Terms
 	}
 	
 	static final class Implementation {
+		static final QName Implementation		 = sbol2.withLocalPart("Implementation");
 		static final QName built				 = sbol2.withLocalPart("built");
 	}
 	

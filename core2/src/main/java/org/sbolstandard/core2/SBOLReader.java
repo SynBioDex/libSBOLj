@@ -1063,6 +1063,8 @@ public class SBOLReader
 					parseComponentDefinitions(SBOLDoc, topLevel, nested);
 				else if (topLevel.getType().equals(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation))
 					parseCombinatorialDerivation(SBOLDoc, topLevel, nested);
+				else if (topLevel.getType().equals(Sbol2Terms.Implementation.Implementation))
+					parseImplementation(SBOLDoc, topLevel, nested);
 				else if (topLevel.getType().equals(Sbol2Terms.Activity.Activity))
 					parseActivity(SBOLDoc, topLevel, nested);
 				else if (topLevel.getType().equals(Sbol2Terms.Agent.Agent))
