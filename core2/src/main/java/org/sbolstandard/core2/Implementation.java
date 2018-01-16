@@ -1,15 +1,39 @@
 package org.sbolstandard.core2;
 
 import java.net.URI;
+import java.util.HashMap;
 
 public class Implementation extends TopLevel {
 	
 	private URI built;
 
+	/**
+	 * @param identity
+	 *            identity of the implementation
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in the following
+	 *             constructor or method:
+	 *             <ul>
+	 *             <li>{@link TopLevel#TopLevel(URI)}, or</li>
+	 *             </ul>
+	 */
 	Implementation(URI identity) throws SBOLValidationException {
 		super(identity);
-		
-		// TODO Auto-generated constructor stub
+	}
+	
+	/**
+	 * @param implementation
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in any of the
+	 *             following constructors or methods:
+	 *             <ul>
+	 *             <li>{@link TopLevel#TopLevel(TopLevel)},</li>
+	 *             </ul>
+	 */
+	private Implementation(Implementation implementation) throws SBOLValidationException {
+		super(implementation);
+
+		this.built = implementation.getBuiltURI();
 	}
 	
 	/**
