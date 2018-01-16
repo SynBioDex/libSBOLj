@@ -1346,6 +1346,17 @@ public class SBOLDocument {
 		combinatorialDerivations.addAll(this.combinatorialDerivations.values());
 		return combinatorialDerivations;
 	}
+	
+	/**
+	 * Returns the set of implementations owned by this SBOL document.
+	 *
+	 * @return the set of implementations owned by this SBOL document.
+	 */
+	public Set<Implementation> getImplementations() {
+		Set<Implementation> implementations = new HashSet<>();
+		implementations.addAll(this.implementations.values());
+		return implementations;
+	}
 
 	/**
 	 * Returns the set of component definitions owned by this SBOL document.
