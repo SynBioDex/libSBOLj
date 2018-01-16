@@ -115,8 +115,7 @@ public class Implementation extends TopLevel {
 
 	@Override
 	Identified deepCopy() throws SBOLValidationException {
-		// TODO Auto-generated method stub
-		return null;
+		return new Implementation(this);
 	}
 
 	@Override
