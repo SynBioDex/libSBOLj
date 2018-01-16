@@ -1348,6 +1348,41 @@ public class SBOLDocument {
 	}
 	
 	/**
+	 * Creates a implementation, and then adds it to this SBOL document's
+	 * list of implementations.
+	 * <p>
+	 * This method creates a compliant URI for the implementation to be
+	 * created first. It starts with the given URI prefix after its been
+	 * successfully validated, followed by the given display ID, and ends with the
+	 * given version.
+	 *
+	 * @param URIprefix
+	 *            the URI prefix used to construct the compliant URI for the
+	 *            implementation to be created
+	 * @param displayId
+	 *            the display ID of the implementation to be created
+	 * @param version
+	 *            the version of the implementation to be created
+	 * @param template
+	 *            the template URI of the implementation to be created
+	 * @return the created implementation
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules was violated: TODO:
+	 *             10201, 10202, 10204, 10206, 10220, 10502, 10503.
+	 */
+	public Implementation createImplementation(String URIprefix, String displayId, String version) throws SBOLValidationException {
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
+		Implementation cd = new Implementation(
+				createCompliantURI(URIprefix, TopLevel.Implementation, displayId, version, typesInURIs));
+		cd.setDisplayId(displayId);
+		cd.setPersistentIdentity(
+				createCompliantURI(URIprefix, TopLevel.Implementation, displayId, "", typesInURIs));
+		cd.setVersion(version);
+		addImplementation(cd);
+		return cd;
+	}
+	
+	/**
 	 * Returns the set of implementations owned by this SBOL document.
 	 *
 	 * @return the set of implementations owned by this SBOL document.
