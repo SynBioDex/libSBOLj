@@ -1471,7 +1471,7 @@ public class SBOLDocument {
 	 * @return the created implementation
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
-	 *             {@link #createCombinatorialDerivation(String, String, String)}.
+	 *             {@link #createImplementation(String, String, String)}.
 	 */
 	public Implementation createImplementation(String displayId, String version) throws SBOLValidationException {
 		return createImplementation(defaultURIprefix, displayId, version);
@@ -1983,6 +1983,11 @@ public class SBOLDocument {
 					displayId, version, ((CombinatorialDerivation) topLevel).getTemplateURI());
 			newCombinatorialDerivation.copy((CombinatorialDerivation) topLevel);
 			return newCombinatorialDerivation;
+		} else if (topLevel instanceof Implementation) {
+			Implementation newImplementation = this.createImplementation(URIprefix,
+					displayId, version);
+			newImplementation.copy((Implementation) topLevel);
+			return newImplementation;
 		} else if (topLevel instanceof Model) {
 			Model newModel = this.createModel(URIprefix, displayId, version, ((Model) topLevel).getSource(),
 					((Model) topLevel).getLanguage(), ((Model) topLevel).getFramework());
