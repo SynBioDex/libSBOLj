@@ -482,6 +482,19 @@ public class SBOLWriter
 					combinatorialDerivation.getIdentity(), NamedProperties(list)));
 		}
 	}
+	
+	private static void formatImplementation(Set<Implementation> implementations, List<TopLevelDocument<QName>> topLevelDoc) {
+		for(Implementation implementation : implementations) {
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			
+			formatCommonTopLevelData(list, implementation);
+						
+			list.add(NamedProperty(Sbol2Terms.Implementation.built, implementation.getBuiltURI()));
+			
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Implementation.Implementation, 
+					implementation.getIdentity(), NamedProperties(list)));
+		}
+	}
 
 	/**
 	 * formatFunctionalComponents for Module
