@@ -56,7 +56,7 @@ public abstract class TopLevel extends Identified {
 	/**
 	 * The abbreviation for the Implementation type in URI
 	 */
-	public static final String Implementation = "imp";
+	public static final String IMPLEMENTATION = "imp";
 	
 	/**
 	 * @param identity

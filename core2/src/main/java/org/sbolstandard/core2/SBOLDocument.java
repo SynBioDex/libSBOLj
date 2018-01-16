@@ -1348,6 +1348,64 @@ public class SBOLDocument {
 	}
 	
 	/**
+	 * Returns the implementation matching the given display ID and
+	 * version from this SBOL document's list of implementations.
+	 * <p>
+	 * A compliant implementation URI is created first. It starts with this
+	 * SBOL document's default URI prefix after its been successfully validated,
+	 * optionally followed by its type, namely
+	 * {@link TopLevel#IMPLEMENTATION}, followed by the given display ID,
+	 * and ends with the given version. This URI is used to look up the module
+	 * definition in this SBOL document.
+	 *
+	 * @param displayId
+	 *            the display ID of the implementation to be retrieved
+	 * @param version
+	 *            the version of the implementation to be retrieved
+	 * @return the matching implementation if present, or {@code null}
+	 *         otherwise
+	 * @throws SBOLValidationException
+	 *             validation error
+	 */
+	public Implementation getImplementation(String displayId, String version)
+			throws SBOLValidationException {
+		URI uri = URIcompliance.createCompliantURI(defaultURIprefix, TopLevel.IMPLEMENTATION, displayId,
+				version, typesInURIs);
+
+		return getImplementation(uri);
+	}
+
+	/**
+	 * Returns the implementation matching the given identity URI from
+	 * this SBOL document's list of implementations.
+	 *
+	 * @param implementationURI
+	 *            the given identity URI of the implementation to be
+	 *            retrieved
+	 * @return the matching implementation if present, or {@code null}
+	 *         otherwise.
+	 */
+	public Implementation getImplementation(URI implementationURI) {
+		Implementation implementation = implementations.get(implementationURI);
+
+		if (implementation == null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(implementationURI);
+					if (document != null) {
+						implementation = document.getImplementation(implementationURI);
+						createCopy(document);
+					}
+				} catch (SynBioHubException | SBOLValidationException e) {
+					implementation = null;
+				}
+			}
+		}
+
+		return implementation;
+	}
+	
+	/**
 	 * Adds the given implementation to this SBOL document's list of
 	 * implementations
 	 *
@@ -1445,10 +1503,10 @@ public class SBOLDocument {
 	public Implementation createImplementation(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		URIprefix = URIcompliance.checkURIprefix(URIprefix);
 		Implementation cd = new Implementation(
-				createCompliantURI(URIprefix, TopLevel.Implementation, displayId, version, typesInURIs));
+				createCompliantURI(URIprefix, TopLevel.IMPLEMENTATION, displayId, version, typesInURIs));
 		cd.setDisplayId(displayId);
 		cd.setPersistentIdentity(
-				createCompliantURI(URIprefix, TopLevel.Implementation, displayId, "", typesInURIs));
+				createCompliantURI(URIprefix, TopLevel.IMPLEMENTATION, displayId, "", typesInURIs));
 		cd.setVersion(version);
 		addImplementation(cd);
 		return cd;
