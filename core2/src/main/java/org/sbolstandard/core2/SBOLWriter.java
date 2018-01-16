@@ -1126,6 +1126,7 @@ public class SBOLWriter
 		formatPlans(doc.getPlans(), topLevelDoc);
 		formatGenericTopLevel(doc.getGenericTopLevels(), topLevelDoc);
 		formatCombinatorialDerivation(doc.getCombinatorialDerivations(), topLevelDoc);
+		formatImplementation(doc.getImplementations(), topLevelDoc);
 		return topLevelDoc;
 	}
 
