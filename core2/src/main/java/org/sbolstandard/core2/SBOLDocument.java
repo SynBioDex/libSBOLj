@@ -4150,6 +4150,7 @@ public class SBOLDocument {
 	 *             <li>{@link #removeComponentDefinition(ComponentDefinition)},</li>
 	 *             <li>{@link #removeModel(Model)}, or</li>
 	 *             <li>{@link #removeModuleDefinition(ModuleDefinition)}.</li>
+	 *             <li>{@link #removeImplementation(Implementation)}.</li>
 	 *             </ul>
 	 */
 	public void removeTopLevel(TopLevel topLevel) throws SBOLValidationException {
@@ -4173,6 +4174,8 @@ public class SBOLDocument {
 			removeModuleDefinition((ModuleDefinition) topLevel);
 		else if (topLevel instanceof CombinatorialDerivation)
 			removeCombinatorialDerivation((CombinatorialDerivation) topLevel);
+		else if (topLevel instanceof Implementation)
+			removeImplementation((Implementation) topLevel);
 	}
 
 	/**
