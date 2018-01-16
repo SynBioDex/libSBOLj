@@ -489,7 +489,9 @@ public class SBOLWriter
 			
 			formatCommonTopLevelData(list, implementation);
 						
-			list.add(NamedProperty(Sbol2Terms.Implementation.built, implementation.getBuiltURI()));
+			if (implementation.isSetBuilt()) {
+				list.add(NamedProperty(Sbol2Terms.Implementation.built, implementation.getBuiltURI()));
+			}
 			
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Implementation.Implementation, 
 					implementation.getIdentity(), NamedProperties(list)));

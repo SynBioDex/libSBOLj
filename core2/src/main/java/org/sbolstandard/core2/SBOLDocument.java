@@ -460,7 +460,7 @@ public class SBOLDocument {
 	 */
 	void addCollection(Collection collection) throws SBOLValidationException {
 		addTopLevel(collection, collections, "collection", componentDefinitions, genericTopLevels, activities, plans,
-				agents, models, moduleDefinitions, sequences, combinatorialDerivations);
+				agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -2088,7 +2088,7 @@ public class SBOLDocument {
 			}
 		}
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model
-				|| topLevel instanceof Plan || topLevel instanceof Agent) {
+				|| topLevel instanceof Plan || topLevel instanceof Agent || topLevel instanceof Implementation) {
 			// Do nothing
 		} else if (topLevel instanceof Collection) {
 			for (TopLevel member : ((Collection) topLevel).getMembers()) {
@@ -4489,8 +4489,8 @@ public class SBOLDocument {
 
 	@Override
 	public String toString() {
-		return "SBOLDocument [activities=" + activities + "agents=" + agents + "plans=" + plans + "genericTopLevels="
-				+ genericTopLevels + ", collections=" + collections + ", componentDefinitions=" + componentDefinitions
+		return "SBOLDocument [activities=" + activities + "agents=" + agents + "plans=" + plans + "implementations=" + implementations
+				+ "genericTopLevels=" + genericTopLevels + ", collections=" + collections + ", componentDefinitions=" + componentDefinitions
 				+ ", models=" + models + ", moduleDefinitions=" + moduleDefinitions + ", sequences=" + sequences
 				+ ", nameSpaces=" + nameSpaces + ", defaultURIprefix=" + defaultURIprefix + ", complete=" + complete
 				+ ", compliant=" + compliant + ", typesInURIs=" + typesInURIs + ", createDefaults=" + createDefaults

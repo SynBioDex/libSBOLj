@@ -84,9 +84,10 @@ public class Implementation extends TopLevel {
 	 * 				on SBOL validation rule violation XXXXX.
 	 */
 	public void setBuiltURI(URI builtURI) throws SBOLValidationException {
-		if(this.getSBOLDocument().getComponentDefinition(builtURI) == null &&
+		if(this.getSBOLDocument() != null && 
+				this.getSBOLDocument().getComponentDefinition(builtURI) == null &&
 				this.getSBOLDocument().getModuleDefinition(builtURI) == null) {
-			throw new SBOLValidationException("sbol-XXXXX", this);
+			throw new SBOLValidationException("sbol-13103", this);
 		}
 		
 		this.built = builtURI;

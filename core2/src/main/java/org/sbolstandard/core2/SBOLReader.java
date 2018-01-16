@@ -2419,7 +2419,7 @@ public class SBOLReader
 			{
 				if (namedProperty.getValue() instanceof Literal) {
 					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
-						throw new SBOLValidationException("sbol-12904", topLevel.getIdentity());
+						throw new SBOLValidationException("sbol-13102", topLevel.getIdentity());
 					}
 					built = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 				}
@@ -2428,11 +2428,11 @@ public class SBOLReader
 						Implementation imp = parseImplementation(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
 						built = imp.getIdentity();
 					} else {
-						throw new SBOLValidationException("sbol-12904", topLevel.getIdentity());
+						throw new SBOLValidationException("sbol-13102", topLevel.getIdentity());
 					}
 				}
 				else {
-					throw new SBOLValidationException("sbol-12904", topLevel.getIdentity());
+					throw new SBOLValidationException("sbol-13102", topLevel.getIdentity());
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
@@ -2487,6 +2487,8 @@ public class SBOLReader
 			i.setAnnotations(annotations);
 		if (version != null)
 			i.setVersion(version);
+		if (built != null) 
+			i.setBuiltURI(built);
 		i.setWasDerivedFroms(wasDerivedFroms);
 
 		Implementation oldI = SBOLDoc.getImplementation(topLevel.getIdentity());
