@@ -108,6 +108,7 @@ public class SBOLDocument {
 		agents = new HashMap<>();
 		nameSpaces = new HashMap<>();
 		combinatorialDerivations = new HashMap<>();
+		implementations = new HashMap<>();
 		try {
 			addNamespaceBinding(Sbol2Terms.sbol2);
 			addNamespaceBinding(Sbol1Terms.rdf);
@@ -219,7 +220,7 @@ public class SBOLDocument {
 	 */
 	void addModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
 		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition", collections, componentDefinitions,
-				genericTopLevels, activities, plans, agents, models, sequences, combinatorialDerivations);
+				genericTopLevels, activities, plans, agents, models, sequences, combinatorialDerivations, implementations);
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			functionalComponent.setSBOLDocument(this);
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
