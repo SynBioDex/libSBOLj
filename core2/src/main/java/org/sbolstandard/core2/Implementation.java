@@ -129,5 +129,12 @@ public class Implementation extends TopLevel {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public String toString() {
+		return "Implementation [" + super.toString()
+				+ (this.isSetBuilt() ? ", built=" + this.getBuiltURI() : "")
+				+ "]";
+	}
 
 }
