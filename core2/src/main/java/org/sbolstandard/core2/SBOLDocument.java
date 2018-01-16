@@ -693,7 +693,7 @@ public class SBOLDocument {
 	 */
 	void addModel(Model model) throws SBOLValidationException {
 		addTopLevel(model, models, "model", collections, componentDefinitions, genericTopLevels, activities, plans,
-				agents, moduleDefinitions, sequences, combinatorialDerivations);
+				agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -1009,7 +1009,7 @@ public class SBOLDocument {
 	 */
 	void addComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
 		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition", collections, genericTopLevels,
-				activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations);
+				activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 		for (Component component : componentDefinition.getComponents()) {
 			component.setSBOLDocument(this);
 			for (MapsTo mapsTo : component.getMapsTos()) {
