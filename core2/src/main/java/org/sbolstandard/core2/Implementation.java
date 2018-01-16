@@ -118,6 +118,14 @@ public class Implementation extends TopLevel {
 		return new Implementation(this);
 	}
 
+	void copy(Implementation implementation) throws SBOLValidationException {
+		((TopLevel) this).copy((TopLevel) implementation);
+		
+		if (implementation.isSetBuilt()) {
+			this.setBuiltURI(implementation.getBuiltURI());
+		}
+	}
+	
 	@Override
 	Identified copy(String URIprefix, String displayId, String version) throws SBOLValidationException {
 		// TODO Auto-generated method stub
@@ -125,9 +133,16 @@ public class Implementation extends TopLevel {
 	}
 
 	@Override
+	/**
+	 * @throws SBOLValidationException
+	 *             an SBOL validation rule violation occurred in either of the
+	 *             following methods:
+	 *             <ul>
+	 *             <li>{@link URIcompliance#isChildURIcompliant(Identified, Identified)}.</li>
+	 *             </ul>
+	 */
 	void checkDescendantsURIcompliance() throws SBOLValidationException {
-		// TODO Auto-generated method stub
-		
+		// TODO is this needed?
 	}
 	
 	@Override
