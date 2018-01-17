@@ -155,4 +155,12 @@
 			</plugin>
 		</plugins>
 	</build>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/synbiodex/libsbolj</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/SynBioDex/libSBOLj</url>
+	</ciManagement>
 </project>
