@@ -51,6 +51,7 @@ public class SBOLDocument {
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
 	private HashMap<URI, CombinatorialDerivation> combinatorialDerivations;
+	private HashMap<URI, Implementation> implementations;
 	private HashMap<URI, Activity> activities;
 	private HashMap<URI, Plan> plans;
 	private HashMap<URI, Agent> agents;
@@ -107,6 +108,7 @@ public class SBOLDocument {
 		agents = new HashMap<>();
 		nameSpaces = new HashMap<>();
 		combinatorialDerivations = new HashMap<>();
+		implementations = new HashMap<>();
 		try {
 			addNamespaceBinding(Sbol2Terms.sbol2);
 			addNamespaceBinding(Sbol1Terms.rdf);
@@ -218,7 +220,7 @@ public class SBOLDocument {
 	 */
 	void addModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
 		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition", collections, componentDefinitions,
-				genericTopLevels, activities, plans, agents, models, sequences, combinatorialDerivations);
+				genericTopLevels, activities, plans, agents, models, sequences, combinatorialDerivations, implementations);
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			functionalComponent.setSBOLDocument(this);
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
@@ -458,7 +460,7 @@ public class SBOLDocument {
 	 */
 	void addCollection(Collection collection) throws SBOLValidationException {
 		addTopLevel(collection, collections, "collection", componentDefinitions, genericTopLevels, activities, plans,
-				agents, models, moduleDefinitions, sequences, combinatorialDerivations);
+				agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -691,7 +693,7 @@ public class SBOLDocument {
 	 */
 	void addModel(Model model) throws SBOLValidationException {
 		addTopLevel(model, models, "model", collections, componentDefinitions, genericTopLevels, activities, plans,
-				agents, moduleDefinitions, sequences, combinatorialDerivations);
+				agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -1007,7 +1009,7 @@ public class SBOLDocument {
 	 */
 	void addComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
 		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition", collections, genericTopLevels,
-				activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations);
+				activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 		for (Component component : componentDefinition.getComponents()) {
 			component.setSBOLDocument(this);
 			for (MapsTo mapsTo : component.getMapsTos()) {
@@ -1343,6 +1345,182 @@ public class SBOLDocument {
 		Set<CombinatorialDerivation> combinatorialDerivations = new HashSet<>();
 		combinatorialDerivations.addAll(this.combinatorialDerivations.values());
 		return combinatorialDerivations;
+	}
+	
+	/**
+	 * Returns the implementation matching the given display ID and
+	 * version from this SBOL document's list of implementations.
+	 * <p>
+	 * A compliant implementation URI is created first. It starts with this
+	 * SBOL document's default URI prefix after its been successfully validated,
+	 * optionally followed by its type, namely
+	 * {@link TopLevel#IMPLEMENTATION}, followed by the given display ID,
+	 * and ends with the given version. This URI is used to look up the module
+	 * definition in this SBOL document.
+	 *
+	 * @param displayId
+	 *            the display ID of the implementation to be retrieved
+	 * @param version
+	 *            the version of the implementation to be retrieved
+	 * @return the matching implementation if present, or {@code null}
+	 *         otherwise
+	 * @throws SBOLValidationException
+	 *             validation error
+	 */
+	public Implementation getImplementation(String displayId, String version)
+			throws SBOLValidationException {
+		URI uri = URIcompliance.createCompliantURI(defaultURIprefix, TopLevel.IMPLEMENTATION, displayId,
+				version, typesInURIs);
+
+		return getImplementation(uri);
+	}
+
+	/**
+	 * Returns the implementation matching the given identity URI from
+	 * this SBOL document's list of implementations.
+	 *
+	 * @param implementationURI
+	 *            the given identity URI of the implementation to be
+	 *            retrieved
+	 * @return the matching implementation if present, or {@code null}
+	 *         otherwise.
+	 */
+	public Implementation getImplementation(URI implementationURI) {
+		Implementation implementation = implementations.get(implementationURI);
+
+		if (implementation == null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(implementationURI);
+					if (document != null) {
+						implementation = document.getImplementation(implementationURI);
+						createCopy(document);
+					}
+				} catch (SynBioHubException | SBOLValidationException e) {
+					implementation = null;
+				}
+			}
+		}
+
+		return implementation;
+	}
+	
+	/**
+	 * Adds the given implementation to this SBOL document's list of
+	 * implementations
+	 *
+	 * @param implementation
+	 *            the implementation to be added
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
+	 */
+	void addImplementation(Implementation implementation) throws SBOLValidationException {
+		addTopLevel(implementation, implementations, "implementation", collections,
+				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences);
+	}
+	
+	/**
+	 * Removes the given implementation from this SBOL document's list of
+	 * implementations.
+	 *
+	 * @param implementation
+	 *            the implementation to be removed
+	 * @return {@code true} if the given implementation was successfully
+	 *         removed, {@code false} otherwise
+	 * @throws SBOLValidationException
+	 *             if either of the following SBOL validation rules was violated:
+	 *             TODO: 10604, 12103.
+	 */
+	public boolean removeImplementation(Implementation implementation)
+			throws SBOLValidationException {
+
+		return removeTopLevel(implementation, implementations);
+	}
+
+	/**
+	 * Creates an implementation, and then adds it to this SBOL document's
+	 * list of implementations.
+	 * <p>
+	 * {@link #createImplementation(String)} with the
+	 * default URI prefix of this SBOL document, display ID, and version.
+	 *
+	 * @param displayId
+	 *            the display ID of the implementation to be created
+	 * @return the created implementation
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createImplementation(String, String, String)}.
+	 */
+	public Implementation createImplementation(String displayId)
+			throws SBOLValidationException {
+		return createImplementation(defaultURIprefix, displayId, "");
+	}
+
+	/**
+	 * Creates an implementation, and then adds it to this SBOL document's
+	 * list of implementations.
+	 * <p>
+	 * {@link #createImplementation(String, String)}
+	 * with the default URI prefix of this SBOL document, display ID, and version.
+	 *
+	 * @param displayId
+	 *            the display ID of the implementation to be created
+	 * @param version
+	 *            the version of the implementation to be created
+	 * @return the created implementation
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createImplementation(String, String, String)}.
+	 */
+	public Implementation createImplementation(String displayId, String version) throws SBOLValidationException {
+		return createImplementation(defaultURIprefix, displayId, version);
+	}
+	
+	/**
+	 * Creates an implementation, and then adds it to this SBOL document's
+	 * list of implementations.
+	 * <p>
+	 * This method creates a compliant URI for the implementation to be
+	 * created first. It starts with the given URI prefix after its been
+	 * successfully validated, followed by the given display ID, and ends with the
+	 * given version.
+	 *
+	 * @param URIprefix
+	 *            the URI prefix used to construct the compliant URI for the
+	 *            implementation to be created
+	 * @param displayId
+	 *            the display ID of the implementation to be created
+	 * @param version
+	 *            the version of the implementation to be created
+	 * @param template
+	 *            the template URI of the implementation to be created
+	 * @return the created implementation
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules was violated: TODO:
+	 *             10201, 10202, 10204, 10206, 10220, 10502, 10503.
+	 */
+	public Implementation createImplementation(String URIprefix, String displayId, String version) throws SBOLValidationException {
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
+		Implementation cd = new Implementation(
+				createCompliantURI(URIprefix, TopLevel.IMPLEMENTATION, displayId, version, typesInURIs));
+		cd.setDisplayId(displayId);
+		cd.setPersistentIdentity(
+				createCompliantURI(URIprefix, TopLevel.IMPLEMENTATION, displayId, "", typesInURIs));
+		cd.setVersion(version);
+		addImplementation(cd);
+		return cd;
+	}
+	
+	/**
+	 * Returns the set of implementations owned by this SBOL document.
+	 *
+	 * @return the set of implementations owned by this SBOL document.
+	 */
+	public Set<Implementation> getImplementations() {
+		Set<Implementation> implementations = new HashSet<>();
+		implementations.addAll(this.implementations.values());
+		return implementations;
 	}
 
 	/**
@@ -1805,6 +1983,11 @@ public class SBOLDocument {
 					displayId, version, ((CombinatorialDerivation) topLevel).getTemplateURI());
 			newCombinatorialDerivation.copy((CombinatorialDerivation) topLevel);
 			return newCombinatorialDerivation;
+		} else if (topLevel instanceof Implementation) {
+			Implementation newImplementation = this.createImplementation(URIprefix,
+					displayId, version);
+			newImplementation.copy((Implementation) topLevel);
+			return newImplementation;
 		} else if (topLevel instanceof Model) {
 			Model newModel = this.createModel(URIprefix, displayId, version, ((Model) topLevel).getSource(),
 					((Model) topLevel).getLanguage(), ((Model) topLevel).getFramework());
@@ -1905,7 +2088,7 @@ public class SBOLDocument {
 			}
 		}
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model
-				|| topLevel instanceof Plan || topLevel instanceof Agent) {
+				|| topLevel instanceof Plan || topLevel instanceof Agent || topLevel instanceof Implementation) {
 			// Do nothing
 		} else if (topLevel instanceof Collection) {
 			for (TopLevel member : ((Collection) topLevel).getMembers()) {
@@ -2517,7 +2700,7 @@ public class SBOLDocument {
 	 */
 	void addSequence(Sequence sequence) throws SBOLValidationException {
 		addTopLevel(sequence, sequences, "sequence", collections, componentDefinitions, genericTopLevels, activities,
-				plans, agents, models, moduleDefinitions, combinatorialDerivations);
+				plans, agents, models, moduleDefinitions, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -2746,7 +2929,7 @@ public class SBOLDocument {
 					genericTopLevel.getRDFType().getLocalPart(), qNameInNamespace.getPrefix()));
 		}
 		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel", collections, componentDefinitions, models,
-				activities, plans, agents, moduleDefinitions, sequences, combinatorialDerivations);
+				activities, plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -2925,7 +3108,7 @@ public class SBOLDocument {
 	 */
 	void addActivity(Activity activity) throws SBOLValidationException {
 		addTopLevel(activity, activities, "activity", collections, componentDefinitions, models, genericTopLevels,
-				plans, agents, moduleDefinitions, sequences, combinatorialDerivations);
+				plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 		for (Usage usage : activity.getUsages()) {
 			usage.setSBOLDocument(this);
 		}
@@ -3105,7 +3288,7 @@ public class SBOLDocument {
 	 */
 	void addAgent(Agent agent) throws SBOLValidationException {
 		addTopLevel(agent, agents, "agent", collections, componentDefinitions, models, genericTopLevels, plans,
-				activities, moduleDefinitions, sequences, combinatorialDerivations);
+				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -3279,7 +3462,7 @@ public class SBOLDocument {
 	 */
 	void addPlan(Plan plan) throws SBOLValidationException {
 		addTopLevel(plan, plans, "plan", collections, componentDefinitions, models, genericTopLevels, agents,
-				activities, moduleDefinitions, sequences, combinatorialDerivations);
+				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -3415,6 +3598,10 @@ public class SBOLDocument {
 		if (topLevel != null) {
 			return topLevel;
 		}
+		topLevel = implementations.get(topLevelURI);
+		if(topLevel != null) {
+			return topLevel;
+		}
 		return null;
 	}
 
@@ -3479,6 +3666,9 @@ public class SBOLDocument {
 			topLevels.add(topLevel);
 		}
 		for (CombinatorialDerivation topLevel : combinatorialDerivations.values()) {
+			topLevels.add(topLevel);
+		}
+		for (Implementation topLevel : implementations.values()) {
 			topLevels.add(topLevel);
 		}
 		return topLevels;
@@ -3960,6 +4150,7 @@ public class SBOLDocument {
 	 *             <li>{@link #removeComponentDefinition(ComponentDefinition)},</li>
 	 *             <li>{@link #removeModel(Model)}, or</li>
 	 *             <li>{@link #removeModuleDefinition(ModuleDefinition)}.</li>
+	 *             <li>{@link #removeImplementation(Implementation)}.</li>
 	 *             </ul>
 	 */
 	public void removeTopLevel(TopLevel topLevel) throws SBOLValidationException {
@@ -3983,6 +4174,8 @@ public class SBOLDocument {
 			removeModuleDefinition((ModuleDefinition) topLevel);
 		else if (topLevel instanceof CombinatorialDerivation)
 			removeCombinatorialDerivation((CombinatorialDerivation) topLevel);
+		else if (topLevel instanceof Implementation)
+			removeImplementation((Implementation) topLevel);
 	}
 
 	/**
@@ -4296,8 +4489,8 @@ public class SBOLDocument {
 
 	@Override
 	public String toString() {
-		return "SBOLDocument [activities=" + activities + "agents=" + agents + "plans=" + plans + "genericTopLevels="
-				+ genericTopLevels + ", collections=" + collections + ", componentDefinitions=" + componentDefinitions
+		return "SBOLDocument [activities=" + activities + "agents=" + agents + "plans=" + plans + "implementations=" + implementations
+				+ "genericTopLevels=" + genericTopLevels + ", collections=" + collections + ", componentDefinitions=" + componentDefinitions
 				+ ", models=" + models + ", moduleDefinitions=" + moduleDefinitions + ", sequences=" + sequences
 				+ ", nameSpaces=" + nameSpaces + ", defaultURIprefix=" + defaultURIprefix + ", complete=" + complete
 				+ ", compliant=" + compliant + ", typesInURIs=" + typesInURIs + ", createDefaults=" + createDefaults

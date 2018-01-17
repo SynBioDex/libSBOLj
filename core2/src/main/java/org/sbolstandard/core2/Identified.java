@@ -615,9 +615,9 @@ public abstract class Identified {
 				throw new SBOLValidationException("sbol-12901");
 			} else if (this instanceof VariableComponent) {
 				throw new SBOLValidationException("sbol-13001");
-			} /* else if (this instanceof Implementation) {
+			} else if (this instanceof Implementation) {
 				throw new SBOLValidationException("sbol-13101");
-			} else if (this instanceof Attachment) {
+			} /*else if (this instanceof Attachment) {
 				throw new SBOLValidationException("sbol-13201");
 			} */ // TODO: uncomment when added
 		}

@@ -554,7 +554,7 @@ public class CombinatorialDerivation extends TopLevel {
 	@Override
 	public String toString() {
 		return "CombinatorialDerivation [" + super.toString()
-				+ (this.getStrategy() != null ? ", strategy=" + this.getStrategy() : "") + ", template="
+				+ (this.isSetStrategy() ? ", strategy=" + this.getStrategy() : "") + ", template="
 				+ this.getTemplateURI()
 				+ (this.getVariableComponents().size() > 0 ? ", variableComponents=" + this.getVariableComponents()
 						: "")

@@ -134,6 +134,11 @@ class Sbol2Terms
 		static final QName hasVariantDerivations = sbol2.withLocalPart("variantDerivation");
 	}
 	
+	static final class Implementation {
+		static final QName Implementation		 = sbol2.withLocalPart("Implementation");
+		static final QName built				 = sbol2.withLocalPart("built");
+	}
+	
 	/**
 	 * A group of qualified terms for Cut related SBOL objects
 	 *
