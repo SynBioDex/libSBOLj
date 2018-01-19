@@ -1493,8 +1493,6 @@ public class SBOLDocument {
 	 *            the display ID of the implementation to be created
 	 * @param version
 	 *            the version of the implementation to be created
-	 * @param template
-	 *            the template URI of the implementation to be created
 	 * @return the created implementation
 	 * @throws SBOLValidationException
 	 *             if any of the following SBOL validation rules was violated: TODO:
