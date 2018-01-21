@@ -3,8 +3,14 @@ package org.sbolstandard.core2;
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map.Entry;
+
+/**
+ * Represents an Implementation object in the SBOL data model.
+ * 
+ * @author Igor Durovic
+ * @author Chris Myers
+ * @version 2.3
+ */
 
 public class Implementation extends TopLevel {
 	
@@ -83,7 +89,7 @@ public class Implementation extends TopLevel {
 	 * @throws SBOLValidationException 
 	 * 				on SBOL validation rule violation XXXXX.
 	 */
-	public void setBuiltURI(URI builtURI) throws SBOLValidationException {
+	public void setBuilt(URI builtURI) throws SBOLValidationException {
 		if(this.getSBOLDocument() != null && 
 				this.getSBOLDocument().getComponentDefinition(builtURI) == null &&
 				this.getSBOLDocument().getModuleDefinition(builtURI) == null) {
@@ -125,7 +131,7 @@ public class Implementation extends TopLevel {
 		((TopLevel) this).copy((TopLevel) implementation);
 		
 		if (implementation.isSetBuilt()) {
-			this.setBuiltURI(implementation.getBuiltURI());
+			this.setBuilt(implementation.getBuiltURI());
 		}
 	}
 	

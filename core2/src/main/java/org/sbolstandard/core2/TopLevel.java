@@ -201,7 +201,7 @@ public abstract class TopLevel extends Identified {
 	 * @throws SBOLValidationException 
 	 *              if the following SBOL validation rule was violated: XXXXX
 	 */
-	private boolean addAttachment(URI attachmentURI) throws SBOLValidationException {
+	boolean addAttachment(URI attachmentURI) throws SBOLValidationException {
 		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (this.getSBOLDocument().getAttachment(attachmentURI) == null) {
 				throw new SBOLValidationException("sbol-XXXXX", this);

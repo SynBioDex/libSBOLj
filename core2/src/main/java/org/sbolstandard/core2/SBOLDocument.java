@@ -561,19 +561,6 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Clears the existing list <code>collections</code>, then appends all of the
-	 * elements in the specified collection to the end of this list.
-	 * 
-	 * @throws SBOLValidationException
-	 *             see {@link SBOLValidationException}
-	 */
-	/*
-	 * void setCollections(Set<Collection> collections) throws
-	 * SBOLValidationException { clearCollections(); for (Collection collection :
-	 * collections) { addCollection(collection); } }
-	 */
-
-	/**
 	 * Creates a model, and then adds it to this SBOL document's list of models.
 	 * <p>
 	 * This method calls {@link #createModel(String, String, String, URI, URI, URI)}
@@ -663,28 +650,6 @@ public class SBOLDocument {
 		return model;
 	}
 
-	// /**
-	// * @param identity a given identifier for this object
-	// * @param version The given version for this object
-	// * @param source location of the actual content of the model
-	// * @param language the language in which the model is implemented
-	// * @param framework the framework in which the model is implemented
-	// * @return the new model
-	// * @throws SBOLValidationException if an SBOL validation rule violation
-	// occurred in either of the following
-	// * constructor or method:
-	// * <ul>
-	// * <li>{@link Model#Model(URI, URI, URI, URI)}, or</li>
-	// * <li>{@link #addModel(Model)}.</li>
-	// * </ul>
-	// */
-	// private Model createModel(URI identity, URI source, URI language, URI
-	// framework) throws SBOLValidationException {
-	// Model newModel = new Model(identity, source, language, framework);
-	// addModel(newModel);
-	// return newModel;
-	// }
-
 	/**
 	 *
 	 * @param model
@@ -696,19 +661,6 @@ public class SBOLDocument {
 	void addModel(Model model) throws SBOLValidationException {
 		addTopLevel(model, models, "model", collections, componentDefinitions, genericTopLevels, activities, plans,
 				agents, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
-	}
-
-	/**
-	 *
-	 * @param attachment
-	 *            The attachment to be added to the document
-	 * @throws SBOLValidationException
-	 *             if an SBOL validation rule violation occurred in
-	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
-	 */
-	void addAttachment(Attachment attachment) throws SBOLValidationException {
-		addTopLevel(attachment, attachments, "attachment", collections, componentDefinitions, genericTopLevels, activities, plans,
-				agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
 	/**
@@ -733,6 +685,28 @@ public class SBOLDocument {
 		return removeTopLevel(model, models);
 	}
 
+	/**
+	 * Removes the given attachment from this SBOL document's list of attachments.
+	 *
+	 * @param attachment
+	 *            the given attachment to be removed
+	 * @return {@code true} if the given {@code attachment} was successfully removed,
+	 *         {@code false} otherwise
+	 * @throws SBOLValidationException
+	 *             if either of the following SBOL validation rules was violated:
+	 *             11608, 12103. // TODO
+	 */
+	public boolean removeAttachment(Attachment attachment) throws SBOLValidationException {
+		if (complete) {
+			for (TopLevel top : attachments.values()) {
+				if (top.containsAttachment(attachment.getIdentity())) {
+					throw new SBOLValidationException("sbol-XXXXX", top);
+				}
+			}
+		}
+		return removeTopLevel(attachment, attachments);
+	}
+	
 	/**
 	 * Returns the model matching the given display ID and version from this SBOL
 	 * document's list of models.
@@ -793,6 +767,113 @@ public class SBOLDocument {
 		Set<Model> models = new HashSet<>();
 		models.addAll(this.models.values());
 		return models;
+	}
+
+	/**
+	 * Removes all entries in the list of models owned by this SBOL document. The
+	 * list will be empty after this call returns.
+	 * <p>
+	 * This method calls {@link #removeModel(Model)} to iteratively remove each
+	 * model.
+	 * 
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #removeModel(Model)}.
+	 */
+	public void clearModels() throws SBOLValidationException {
+		Object[] valueSetArray = models.values().toArray();
+		for (Object model : valueSetArray) {
+			removeModel((Model) model);
+		}
+	}
+
+	/**
+	 * Creates an attachment, and then adds it to this SBOL document's list of attachments.
+	 * <p>
+	 * This method calls {@link #createAttachment(String, String, String, URI)}
+	 * with this SBOL document's default URI prefix, an empty version string, and
+	 * all given arguments.
+	 * 
+	 * @param displayId
+	 *            the display ID of the attachment to be created
+	 * @param source
+	 *            the source of the attachment to be created
+	 * @return the created attachment
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createAttachment(String, String, String, URI)};
+	 */
+	public Attachment createAttachment(String displayId, URI source) throws SBOLValidationException {
+		return createAttachment(defaultURIprefix, displayId, "", source);
+	}
+
+	/**
+	 * Creates an attachment, and then adds it to this SBOL document's list of attachments.
+	 * <p>
+	 * This method calls {@link #createAttachment(String, String, String, URI)}
+	 * with this SBOL document's default URI prefix, and all given arguments.
+	 * 
+	 * @param displayId
+	 *            the display ID of the attachment to be created
+	 * @param version
+	 *            the version of the attachment to be created
+	 * @param source
+	 *            the source of the attachment to be created
+	 * @return the created attachment
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createAttachment(String, String, String, URI)};
+	 * 
+	 */
+	public Attachment createAttachment(String displayId, String version, URI source)
+			throws SBOLValidationException {
+		return createAttachment(defaultURIprefix, displayId, version, source);
+	}
+
+	/**
+	 * Creates an attachment, and then adds it to this SBOL document's list of attachments.
+	 * <p>
+	 * This method first creates a compliant URI for the attachment to be created. It
+	 * starts with the given URI prefix, followed by the given display ID, and ends
+	 * with the given version.
+	 *
+	 * @param URIprefix
+	 *            the URI prefix used to construct the compliant URI for the attachment
+	 *            to be created
+	 * @param displayId
+	 *            the display ID of the attachment to be created
+	 * @param version
+	 *            the version of the attachment to be created
+	 * @param source
+	 *            the source of the attachment to be created
+	 * @return the created attachment
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules was violated:
+	 *             10201, 10202, 10204, 10206, 10220, 10303, 10304, 10305, 10401,
+	 *             10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501,
+	 *             11502, 11504, 11508, 11601, 11701, 11801, 11901, 12001, 12301. // TODO
+	 */
+	public Attachment createAttachment(String URIprefix, String displayId, String version, URI source) throws SBOLValidationException {
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
+		Attachment attachment = new Attachment(createCompliantURI(URIprefix, TopLevel.ATTACHMENT, displayId, version, typesInURIs), source);
+		attachment.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.ATTACHMENT, displayId, "", typesInURIs));
+		attachment.setDisplayId(displayId);
+		attachment.setVersion(version);
+		addAttachment(attachment);
+		return attachment;
+	}
+
+	/**
+	 *
+	 * @param attachment
+	 *            The attachment to be added to the document
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
+	 */
+	void addAttachment(Attachment attachment) throws SBOLValidationException {
+		addTopLevel(attachment, attachments, "attachment", collections, componentDefinitions, genericTopLevels, activities, plans,
+				agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 	
 	/**
@@ -857,56 +938,22 @@ public class SBOLDocument {
 	}
 
 	/**
-	 * Removes all entries in the list of models owned by this SBOL document. The
+	 * Removes all entries in the list of attachments owned by this SBOL document. The
 	 * list will be empty after this call returns.
 	 * <p>
-	 * This method calls {@link #removeModel(Model)} to iteratively remove each
-	 * model.
+	 * This method calls {@link #removeAttachment(Attachment)} to iteratively remove each
+	 * attachment.
 	 * 
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
-	 *             {@link #removeModel(Model)}.
+	 *             {@link #removeAttachment(Attachment)}.
 	 */
-	public void clearModels() throws SBOLValidationException {
-		Object[] valueSetArray = models.values().toArray();
-		for (Object model : valueSetArray) {
-			removeModel((Model) model);
+	public void clearAttachments() throws SBOLValidationException {
+		Object[] valueSetArray = attachments.values().toArray();
+		for (Object attachment : valueSetArray) {
+			removeAttachment((Attachment) attachment);
 		}
 	}
-
-	/**
-	 * Clears the existing list <code>models</code>, then appends all of the
-	 * elements in the specified model to the end of this list.
-	 * 
-	 * @throws SBOLValidationException
-	 *             see {@link SBOLValidationException}
-	 */
-	/*
-	 * void setModels(Set<Model> models) throws SBOLValidationException {
-	 * clearModels(); for (Model model : models) { addModel(model); } }
-	 */
-
-	// /**
-	// * @param identity
-	// * @param types
-	// * @return the created component definition
-	// * @throws SBOLValidationException if an SBOL validation rule violation
-	// occurred in the following constructor
-	// * or method:
-	// * <ul>
-	// * <li>{@link ComponentDefinition#ComponentDefinition(URI, Set)}, or</li>
-	// * <li>{@link #addComponentDefinition(ComponentDefinition)}.</li>
-	// * </ul>
-	// */
-	// private ComponentDefinition createComponentDefinition(URI identity, Set<URI>
-	// types) throws SBOLValidationException {
-	// //ComponentDefinition newComponentDefinition = new
-	// ComponentDefinition(identity, types, roles);
-	// ComponentDefinition newComponentDefinition = new
-	// ComponentDefinition(identity, types);
-	// addComponentDefinition(newComponentDefinition);
-	// return newComponentDefinition;
-	// }
 
 	/**
 	 * Creates a component definition, and then adds it to this SBOL document's list
@@ -1422,6 +1469,24 @@ public class SBOLDocument {
 		combinatorialDerivations.addAll(this.combinatorialDerivations.values());
 		return combinatorialDerivations;
 	}
+
+	/**
+	 * Removes all entries in the list of combinatorial derivations owned by this SBOL document. The
+	 * list will be empty after this call returns.
+	 * <p>
+	 * This method calls {@link #removeCombinatorialDerivation(CombinatorialDerivation)} to iteratively remove each
+	 * combinatorialDerivation.
+	 * 
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #removeCombinatorialDerivation(CombinatorialDerivation)}.
+	 */
+	public void clearCombinatorialDerivations() throws SBOLValidationException {
+		Object[] valueSetArray = combinatorialDerivations.values().toArray();
+		for (Object combinatorialDerivation : valueSetArray) {
+			removeCombinatorialDerivation((CombinatorialDerivation) combinatorialDerivation);
+		}
+	}
 	
 	/**
 	 * Returns the implementation matching the given display ID and
@@ -1595,6 +1660,24 @@ public class SBOLDocument {
 		Set<Implementation> implementations = new HashSet<>();
 		implementations.addAll(this.implementations.values());
 		return implementations;
+	}
+
+	/**
+	 * Removes all entries in the list of implementations owned by this SBOL document. The
+	 * list will be empty after this call returns.
+	 * <p>
+	 * This method calls {@link #removeImplementation(Implementation)} to iteratively remove each
+	 * implementation.
+	 * 
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #removeImplementation(Implementation)}.
+	 */
+	public void clearImplementations() throws SBOLValidationException {
+		Object[] valueSetArray = implementations.values().toArray();
+		for (Object implementation : valueSetArray) {
+			removeImplementation((Implementation) implementation);
+		}
 	}
 
 	/**
@@ -2058,10 +2141,13 @@ public class SBOLDocument {
 			newCombinatorialDerivation.copy((CombinatorialDerivation) topLevel);
 			return newCombinatorialDerivation;
 		} else if (topLevel instanceof Implementation) {
-			Implementation newImplementation = this.createImplementation(URIprefix,
-					displayId, version);
+			Implementation newImplementation = this.createImplementation(URIprefix,	displayId, version);
 			newImplementation.copy((Implementation) topLevel);
 			return newImplementation;
+		} else if (topLevel instanceof Attachment) {
+			Attachment newAttachment = this.createAttachment(URIprefix,	displayId, version, ((Attachment) topLevel).getSource());
+			newAttachment.copy((Attachment) topLevel);
+			return newAttachment;
 		} else if (topLevel instanceof Model) {
 			Model newModel = this.createModel(URIprefix, displayId, version, ((Model) topLevel).getSource(),
 					((Model) topLevel).getLanguage(), ((Model) topLevel).getFramework());
@@ -2161,8 +2247,15 @@ public class SBOLDocument {
 				createRecursiveCopy(document, wasGeneratedBy);
 			}
 		}
+		for (URI attachmentURI : topLevel.getAttachmentURIs()) {
+			TopLevel attachment = getTopLevelLocalOnly(attachmentURI);
+			if (attachment != null) {
+				createRecursiveCopy(document, attachment);
+			}
+		}
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model
-				|| topLevel instanceof Plan || topLevel instanceof Agent || topLevel instanceof Implementation) {
+				|| topLevel instanceof Plan || topLevel instanceof Agent || topLevel instanceof Implementation
+				|| topLevel instanceof Attachment) {
 			// Do nothing
 		} else if (topLevel instanceof Collection) {
 			for (TopLevel member : ((Collection) topLevel).getMembers()) {
@@ -2333,6 +2426,12 @@ public class SBOLDocument {
 					topLevel.addWasGeneratedBy(newIdentity);	
 				}
 			}
+			for (URI attachmentURI : topLevel.getAttachmentURIs()) {
+				if (attachmentURI.equals(originalIdentity)) {
+					topLevel.removeAttachment(originalIdentity);
+					topLevel.addAttachment(newIdentity);	
+				}
+			}
 		}
 		for (Collection collection : getCollections()) {
 			for (URI memberURI : collection.getMemberURIs()) {
@@ -2433,11 +2532,39 @@ public class SBOLDocument {
 		for (Model model : getModels()) {
 			updateReferences(model, originalIdentity, newIdentity);
 		}
+		for (Attachment attachment : getAttachments()) {
+			updateReferences(attachment, originalIdentity, newIdentity);
+		}
+		for (Implementation implementation : getImplementations()) {
+			if (implementation.isSetBuilt() && implementation.getBuiltURI().equals(originalIdentity)) {
+				implementation.setBuilt(newIdentity);
+			}
+			updateReferences(implementation, originalIdentity, newIdentity);
+		}
 		for (Sequence sequence : getSequences()) {
 			updateReferences(sequence, originalIdentity, newIdentity);
 		}
 		for (GenericTopLevel genericTopLevel : getGenericTopLevels()) {
 			updateReferences(genericTopLevel, originalIdentity, newIdentity);
+		}
+		for (CombinatorialDerivation combinatorialDerivation : getCombinatorialDerivations()) {
+			updateReferences(combinatorialDerivation, originalIdentity, newIdentity);
+			if (combinatorialDerivation.getTemplate().equals(originalIdentity)) {
+				combinatorialDerivation.setTemplate(newIdentity);
+				ComponentDefinition cd = getComponentDefinition(newIdentity);
+				if (cd != null) {
+					for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+						String displayId = URIcompliance.extractDisplayId(variableComponent.getVariableURI());
+						URI newURI = URIcompliance.createCompliantURI(cd.getPersistentIdentity().toString(),
+								displayId, cd.getVersion());
+						variableComponent.setVariable(newURI);
+					}
+					
+				}
+			}
+			for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+				updateReferences(variableComponent,originalIdentity,newIdentity);
+			}
 		}
 		for (Activity activity : getActivities()) {
 			updateReferences(activity, originalIdentity, newIdentity);
@@ -2496,6 +2623,12 @@ public class SBOLDocument {
 				if (uriMap.get(wasGeneratedBy) != null) {
 					topLevel.removeWasGeneratedBy(wasGeneratedBy);
 					topLevel.addWasGeneratedBy(uriMap.get(wasGeneratedBy));	
+				}
+			}
+			for (URI attachmentURI : topLevel.getAttachmentURIs()) {
+				if (uriMap.get(attachmentURI) != null) {
+					topLevel.removeAttachment(attachmentURI);
+					topLevel.addAttachment(uriMap.get(attachmentURI));	
 				}
 			}
 		}
@@ -2601,8 +2734,39 @@ public class SBOLDocument {
 		for (Sequence sequence : getSequences()) {
 			updateReferences(sequence, uriMap);
 		}
+		for (Attachment attachment : getAttachments()) {
+			updateReferences(attachment, uriMap);
+		}
+		for (Implementation implementation : getImplementations()) {
+			if (implementation.isSetBuilt()) {
+				URI built = implementation.getBuiltURI();
+				if (uriMap.get(built) != null) {
+					implementation.setBuilt(uriMap.get(built));
+				}
+			}
+			updateReferences(implementation, uriMap);
+		}
 		for (GenericTopLevel genericTopLevel : getGenericTopLevels()) {
 			updateReferences(genericTopLevel, uriMap);
+		}
+		for (CombinatorialDerivation combinatorialDerivation : getCombinatorialDerivations()) {
+			updateReferences(combinatorialDerivation, uriMap);
+			if (uriMap.get(combinatorialDerivation.getTemplate())!=null) {
+				combinatorialDerivation.setTemplate(uriMap.get(combinatorialDerivation.getTemplate()));
+				ComponentDefinition cd = getComponentDefinition(uriMap.get(combinatorialDerivation.getTemplate()));
+				if (cd != null) {
+					for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+						String displayId = URIcompliance.extractDisplayId(variableComponent.getVariableURI());
+						URI newURI = URIcompliance.createCompliantURI(cd.getPersistentIdentity().toString(),
+								displayId, cd.getVersion());
+						variableComponent.setVariable(newURI);
+					}
+					
+				}
+			}
+			for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+				updateReferences(variableComponent,uriMap);
+			}
 		}
 		for (Activity activity : getActivities()) {
 			updateReferences(activity, uriMap);
@@ -3676,6 +3840,10 @@ public class SBOLDocument {
 		if(topLevel != null) {
 			return topLevel;
 		}
+		topLevel = attachments.get(topLevelURI);
+		if(topLevel != null) {
+			return topLevel;
+		}
 		return null;
 	}
 
@@ -3743,6 +3911,9 @@ public class SBOLDocument {
 			topLevels.add(topLevel);
 		}
 		for (Implementation topLevel : implementations.values()) {
+			topLevels.add(topLevel);
+		}
+		for (Attachment topLevel : attachments.values()) {
 			topLevels.add(topLevel);
 		}
 		return topLevels;
@@ -4028,6 +4199,9 @@ public class SBOLDocument {
 		result = prime * result + ((moduleDefinitions == null) ? 0 : moduleDefinitions.hashCode());
 		result = prime * result + ((nameSpaces == null) ? 0 : nameSpaces.hashCode());
 		result = prime * result + ((sequences == null) ? 0 : sequences.hashCode());
+		result = prime * result + ((combinatorialDerivations == null) ? 0 : combinatorialDerivations.hashCode());
+		result = prime * result + ((implementations == null) ? 0 : implementations.hashCode());
+		result = prime * result + ((attachments == null) ? 0 : attachments.hashCode());
 		return result;
 	}
 
@@ -4089,6 +4263,21 @@ public class SBOLDocument {
 			if (other.sequences != null)
 				return false;
 		} else if (!sequences.equals(other.sequences))
+			return false;
+		if (combinatorialDerivations == null) {
+			if (other.combinatorialDerivations != null)
+				return false;
+		} else if (!combinatorialDerivations.equals(other.combinatorialDerivations))
+			return false;
+		if (attachments == null) {
+			if (other.attachments != null)
+				return false;
+		} else if (!attachments.equals(other.attachments))
+			return false;
+		if (implementations == null) {
+			if (other.implementations != null)
+				return false;
+		} else if (!implementations.equals(other.implementations))
 			return false;
 		return true;
 	}
@@ -4250,6 +4439,8 @@ public class SBOLDocument {
 			removeCombinatorialDerivation((CombinatorialDerivation) topLevel);
 		else if (topLevel instanceof Implementation)
 			removeImplementation((Implementation) topLevel);
+		else if (topLevel instanceof Attachment)
+			removeAttachment((Attachment) topLevel);
 	}
 
 	/**
@@ -4564,6 +4755,7 @@ public class SBOLDocument {
 	@Override
 	public String toString() {
 		return "SBOLDocument [activities=" + activities + "agents=" + agents + "plans=" + plans + "implementations=" + implementations
+				+ "attachments=" + attachments + "combinatorialDerivations=" + combinatorialDerivations
 				+ "genericTopLevels=" + genericTopLevels + ", collections=" + collections + ", componentDefinitions=" + componentDefinitions
 				+ ", models=" + models + ", moduleDefinitions=" + moduleDefinitions + ", sequences=" + sequences
 				+ ", nameSpaces=" + nameSpaces + ", defaultURIprefix=" + defaultURIprefix + ", complete=" + complete

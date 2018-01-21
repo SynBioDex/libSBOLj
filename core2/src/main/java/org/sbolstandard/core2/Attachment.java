@@ -5,7 +5,7 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import java.net.URI;
 
 /**
- * Represents a Model object in the SBOL data model.
+ * Represents a Attachment object in the SBOL data model.
  * 
  * @author Igor Durovic
  * @author Chris Myers

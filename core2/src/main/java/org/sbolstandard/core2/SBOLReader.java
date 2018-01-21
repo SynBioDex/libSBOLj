@@ -2592,7 +2592,7 @@ public class SBOLReader
 		if (version != null)
 			i.setVersion(version);
 		if (built != null) 
-			i.setBuiltURI(built);
+			i.setBuilt(built);
 		i.setWasDerivedFroms(wasDerivedFroms);
 
 		Implementation oldI = SBOLDoc.getImplementation(topLevel.getIdentity());
