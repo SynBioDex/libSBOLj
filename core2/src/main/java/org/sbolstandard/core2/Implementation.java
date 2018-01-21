@@ -199,7 +199,7 @@ public class Implementation extends TopLevel {
 		if (getClass() != obj.getClass())
 			return false;
 		Implementation other = (Implementation) obj;
-		if (!this.built.equals(other.getBuiltURI()))
+		if (!this.isSetBuilt() || !this.built.equals(other.getBuiltURI()))
 			return false;
 
 		return true;

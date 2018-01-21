@@ -118,6 +118,10 @@ class Sbol2Terms
 		static final QName hasComponentDefinition  = sbol2.withLocalPart("definition");
 	}
 
+	/**
+	 * A group of qualified terms for Combinatorial Derivation related SBOL objects
+	 *
+	 */
 	static final class CombinatorialDerivation {
 		static final QName CombinatorialDerivation = sbol2.withLocalPart("CombinatorialDerivation");
 		static final QName template                = sbol2.withLocalPart("template");
@@ -125,6 +129,10 @@ class Sbol2Terms
 		static final QName hasVariableComponent  = sbol2.withLocalPart("variableComponent");
 	}
 	
+	/**
+	 * A group of qualified terms for Variable Component related SBOL objects
+	 *
+	 */
 	static final class VariableComponent {
 		static final QName VariableComponent  = sbol2.withLocalPart("VariableComponent");
 		static final QName hasOperator           = sbol2.withLocalPart("operator");
@@ -134,9 +142,25 @@ class Sbol2Terms
 		static final QName hasVariantDerivations = sbol2.withLocalPart("variantDerivation");
 	}
 	
+	/**
+	 * A group of qualified terms for Implementation related SBOL objects
+	 *
+	 */
 	static final class Implementation {
 		static final QName Implementation		 = sbol2.withLocalPart("Implementation");
 		static final QName built				 = sbol2.withLocalPart("built");
+	}
+	
+	/**
+	 * A group of qualified terms for Attachment related SBOL objects
+	 *
+	 */
+	static final class Attachment {
+		static final QName Attachment		 	 = sbol2.withLocalPart("Attachment");
+		static final QName source				 = sbol2.withLocalPart("source");
+		static final QName format				 = sbol2.withLocalPart("format");
+		static final QName size					 = sbol2.withLocalPart("size");
+		static final QName hash					 = sbol2.withLocalPart("hash");
 	}
 	
 	/**
