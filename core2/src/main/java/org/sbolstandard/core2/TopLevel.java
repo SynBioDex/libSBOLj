@@ -1,7 +1,5 @@
 package org.sbolstandard.core2;
 
-import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
@@ -88,14 +86,14 @@ public abstract class TopLevel extends Identified {
 	TopLevel(TopLevel topLevel) throws SBOLValidationException {
 		super(topLevel);
 		attachments = new HashSet<URI>();
-		for (URI attachment : topLevel.getAttachments()) {
+		for (URI attachment : topLevel.getAttachmentURIs()) {
 			this.addAttachment(URI.create(attachment.toString()));
 		}
 	}
 
 	void copy(TopLevel topLevel) throws SBOLValidationException {
 		((Identified) this).copy((Identified) topLevel);
-		for (URI attachment : topLevel.getAttachments()) {
+		for (URI attachment : topLevel.getAttachmentURIs()) {
 			this.addAttachment(URI.create(attachment.toString()));
 		}
 	}

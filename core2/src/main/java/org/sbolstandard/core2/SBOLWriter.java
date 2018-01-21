@@ -20,7 +20,6 @@ import java.io.Writer;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -349,7 +348,7 @@ public class SBOLWriter
 	{
 		formatCommonIdentifiedData(list,t);
 		for(URI attachment : t.getAttachmentURIs()) {
-			list.add(NamedProperty(Sbol2Terms.TopLevel.attachment, attachment));
+			list.add(NamedProperty(Sbol2Terms.TopLevel.hasAttachment, attachment));
 		}
 	}
 	

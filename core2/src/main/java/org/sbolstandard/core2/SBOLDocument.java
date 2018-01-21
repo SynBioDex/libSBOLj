@@ -52,6 +52,7 @@ public class SBOLDocument {
 	private HashMap<URI, Sequence> sequences;
 	private HashMap<URI, CombinatorialDerivation> combinatorialDerivations;
 	private HashMap<URI, Implementation> implementations;
+	private HashMap<URI, Attachment> attachments;
 	private HashMap<URI, Activity> activities;
 	private HashMap<URI, Plan> plans;
 	private HashMap<URI, Agent> agents;
@@ -109,6 +110,7 @@ public class SBOLDocument {
 		nameSpaces = new HashMap<>();
 		combinatorialDerivations = new HashMap<>();
 		implementations = new HashMap<>();
+		attachments = new HashMap<>();
 		try {
 			addNamespaceBinding(Sbol2Terms.sbol2);
 			addNamespaceBinding(Sbol1Terms.rdf);
@@ -220,7 +222,7 @@ public class SBOLDocument {
 	 */
 	void addModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
 		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition", collections, componentDefinitions,
-				genericTopLevels, activities, plans, agents, models, sequences, combinatorialDerivations, implementations);
+				genericTopLevels, activities, plans, agents, models, sequences, combinatorialDerivations, implementations, attachments);
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			functionalComponent.setSBOLDocument(this);
 			for (MapsTo mapsTo : functionalComponent.getMapsTos()) {
@@ -460,7 +462,7 @@ public class SBOLDocument {
 	 */
 	void addCollection(Collection collection) throws SBOLValidationException {
 		addTopLevel(collection, collections, "collection", componentDefinitions, genericTopLevels, activities, plans,
-				agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations);
+				agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
 	/**
@@ -693,6 +695,19 @@ public class SBOLDocument {
 	 */
 	void addModel(Model model) throws SBOLValidationException {
 		addTopLevel(model, models, "model", collections, componentDefinitions, genericTopLevels, activities, plans,
+				agents, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
+	}
+
+	/**
+	 *
+	 * @param attachment
+	 *            The attachment to be added to the document
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
+	 */
+	void addAttachment(Attachment attachment) throws SBOLValidationException {
+		addTopLevel(attachment, attachments, "attachment", collections, componentDefinitions, genericTopLevels, activities, plans,
 				agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 
@@ -726,7 +741,7 @@ public class SBOLDocument {
 	 * starts with the given URI prefix after its been successfully validated,
 	 * optionally followed by its type, namely {@link TopLevel#MODEL}, followed by
 	 * the given display ID, and ends with the given version. This URI is used to
-	 * look up the module definition in this SBOL document.
+	 * look up the model in this SBOL document.
 	 *
 	 * @param displayId
 	 *            the display ID of the model to be retrieved
@@ -778,6 +793,67 @@ public class SBOLDocument {
 		Set<Model> models = new HashSet<>();
 		models.addAll(this.models.values());
 		return models;
+	}
+	
+	/**
+	 * Returns the attachment matching the given display ID and version from this SBOL
+	 * document's list of attachments.
+	 * <p>
+	 * This method first creates a compliant URI for the attachment to be retrieved. It
+	 * starts with the given URI prefix after its been successfully validated,
+	 * optionally followed by its type, namely {@link TopLevel#ATTACHMENT}, followed by
+	 * the given display ID, and ends with the given version. This URI is used to
+	 * look up the attachment in this SBOL document.
+	 *
+	 * @param displayId
+	 *            the display ID of the attachment to be retrieved
+	 * @param version
+	 *            the version of the attachment to be retrieved
+	 * @return the matching attachment if present, or {@code null} otherwise
+	 */
+	public Attachment getAttachment(String displayId, String version) {
+		try {
+			return getAttachment(createCompliantURI(defaultURIprefix, TopLevel.ATTACHMENT, displayId, version, typesInURIs));
+		} catch (SBOLValidationException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the attachment matching the given identity URI from this SBOL document's
+	 * list of attachments.
+	 *
+	 * @param attachmentURI
+	 *            the identity URI of the attachment to be retrieved
+	 * @return the matching attachment if present, or {@code null} otherwise
+	 */
+	public Attachment getAttachment(URI attachmentURI) {
+		Attachment attachment = attachments.get(attachmentURI);
+		if (attachment == null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(attachmentURI);
+					if (document != null) {
+						attachment = document.getAttachment(attachmentURI);
+						createCopy(document);
+					}
+				} catch (SynBioHubException | SBOLValidationException e) {
+					attachment = null;
+				}
+			}
+		}
+		return attachment;
+	}
+
+	/**
+	 * Returns the set of attachments owned by this SBOL document.
+	 *
+	 * @return the set of attachments owned by this SBOL document.
+	 */
+	public Set<Attachment> getAttachments() {
+		Set<Attachment> attachments = new HashSet<>();
+		attachments.addAll(this.attachments.values());
+		return attachments;
 	}
 
 	/**
@@ -1009,7 +1085,7 @@ public class SBOLDocument {
 	 */
 	void addComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
 		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition", collections, genericTopLevels,
-				activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations);
+				activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 		for (Component component : componentDefinition.getComponents()) {
 			component.setSBOLDocument(this);
 			for (MapsTo mapsTo : component.getMapsTos()) {
@@ -1185,7 +1261,7 @@ public class SBOLDocument {
 	 */
 	void addCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
 		addTopLevel(combinatorialDerivation, combinatorialDerivations, "combinatorialDerivation", collections,
-				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences);
+				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences, implementations, attachments);
 		for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
 			variableComponent.setSBOLDocument(this);
 		}
@@ -1417,7 +1493,7 @@ public class SBOLDocument {
 	 */
 	void addImplementation(Implementation implementation) throws SBOLValidationException {
 		addTopLevel(implementation, implementations, "implementation", collections,
-				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences);
+				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations, attachments);
 	}
 	
 	/**
@@ -2698,7 +2774,7 @@ public class SBOLDocument {
 	 */
 	void addSequence(Sequence sequence) throws SBOLValidationException {
 		addTopLevel(sequence, sequences, "sequence", collections, componentDefinitions, genericTopLevels, activities,
-				plans, agents, models, moduleDefinitions, combinatorialDerivations, implementations);
+				plans, agents, models, moduleDefinitions, combinatorialDerivations, implementations, attachments);
 	}
 
 	/**
@@ -2927,7 +3003,7 @@ public class SBOLDocument {
 					genericTopLevel.getRDFType().getLocalPart(), qNameInNamespace.getPrefix()));
 		}
 		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel", collections, componentDefinitions, models,
-				activities, plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
+				activities, plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
 	/**
@@ -3106,7 +3182,7 @@ public class SBOLDocument {
 	 */
 	void addActivity(Activity activity) throws SBOLValidationException {
 		addTopLevel(activity, activities, "activity", collections, componentDefinitions, models, genericTopLevels,
-				plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
+				plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 		for (Usage usage : activity.getUsages()) {
 			usage.setSBOLDocument(this);
 		}
@@ -3286,7 +3362,7 @@ public class SBOLDocument {
 	 */
 	void addAgent(Agent agent) throws SBOLValidationException {
 		addTopLevel(agent, agents, "agent", collections, componentDefinitions, models, genericTopLevels, plans,
-				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations);
+				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
 	/**
@@ -3460,7 +3536,7 @@ public class SBOLDocument {
 	 */
 	void addPlan(Plan plan) throws SBOLValidationException {
 		addTopLevel(plan, plans, "plan", collections, componentDefinitions, models, genericTopLevels, agents,
-				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations);
+				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
 	/**
