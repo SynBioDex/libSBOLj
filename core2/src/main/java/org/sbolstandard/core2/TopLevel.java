@@ -60,11 +60,11 @@ public abstract class TopLevel extends Identified {
 	/**
 	 * The abbreviation for the Implementation type in URI
 	 */
-	public static final String IMPLEMENTATION = "imp";
+	public static final String IMPLEMENTATION = "impl";
 	/**
 	 * The abbreviation for the Attachment type in URI
 	 */
-	public static final String ATTACHMENT = "atch";
+	public static final String ATTACHMENT = "attach";
 
 	private HashSet<URI> attachments;
 
@@ -76,20 +76,28 @@ public abstract class TopLevel extends Identified {
 	 */
 	TopLevel(URI identity) throws SBOLValidationException {
 		super(identity);
+		attachments = new HashSet<URI>();
 	}
 
 	/**
-	 * @param toplevel
+	 * @param topLevel
 	 * @throws SBOLValidationException
 	 *             if an SBOL validation rule violation occurred in
 	 *             {@link Identified#Identified(Identified)}.
 	 */
-	TopLevel(TopLevel toplevel) throws SBOLValidationException {
-		super(toplevel);
+	TopLevel(TopLevel topLevel) throws SBOLValidationException {
+		super(topLevel);
+		attachments = new HashSet<URI>();
+		for (URI attachment : topLevel.getAttachments()) {
+			this.addAttachment(URI.create(attachment.toString()));
+		}
 	}
 
 	void copy(TopLevel topLevel) throws SBOLValidationException {
 		((Identified) this).copy((Identified) topLevel);
+		for (URI attachment : topLevel.getAttachments()) {
+			this.addAttachment(URI.create(attachment.toString()));
+		}
 	}
 
 	/*
@@ -99,7 +107,7 @@ public abstract class TopLevel extends Identified {
 	 */
 	@Override
 	abstract Identified deepCopy() throws SBOLValidationException;
-
+	
 	/**
 	 * Make a copy of a top-level object whose URI and its descendants' URIs
 	 * (children, grandchildren, etc) are all compliant. It first makes a deep copy
@@ -113,6 +121,31 @@ public abstract class TopLevel extends Identified {
 	 */
 	abstract Identified copy(String URIprefix, String displayId, String version) throws SBOLValidationException;
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((attachments == null) ? 0 : attachments.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TopLevel other = (TopLevel) obj;
+		if (attachments == null) {
+			if (other.attachments != null)
+				return false;
+		} else if (!attachments.equals(other.attachments))
+			return false;
+		return true;
+	}
+	
 	/**
 	 * Test if the given object's identity URI is compliant.
 	 * 
@@ -137,16 +170,6 @@ public abstract class TopLevel extends Identified {
 	}
 
 	/**
-	 * Returns the SBOL document that hosts this top-level.
-	 * 
-	 * @return the SBOL document that hosts this top-level
-	 */
-	public SBOLDocument getDocument() {
-		// return this.sbolDocument;
-		return this.getSBOLDocument();
-	}
-
-	/**
 	 * Check if this top-level object's and all of its descendants' URIs are all
 	 * compliant.
 	 * 
@@ -156,56 +179,117 @@ public abstract class TopLevel extends Identified {
 	abstract void checkDescendantsURIcompliance() throws SBOLValidationException;
 
 	/**
-	 * Adds the given attachment to the list of attachments.
+	 * Adds the URI of the given Attachment instance to this top level's 
+	 * set of attachment URIs. This method calls {@link #addAttachment(URI)} with this Attachment URI.
+	 *
+	 * @param attachment the Attachment instance whose identity URI to be added
+	 * @return {@code true} if this set did not already contain the identity URI of the given Attachment, {@code false} otherwise.
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: TODO
+	 */
+	public boolean addAttachment(Attachment attachment) throws SBOLValidationException {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getAttachment(attachment.getIdentity())==null) {
+				throw new SBOLValidationException("sbol-XXXXX", attachment);
+			}
+		}
+		return this.addAttachment(attachment.getIdentity());
+	}
+	
+	/**
+	 * Adds the given attachment URI to this top level's list of attachments.
 	 * 
-	 * @param attachment
-	 * 
+	 * @param attachmentURI
+	 * @return {@code true} if this set did not already contain the identity URI of the given Attachment, {@code false} otherwise.
 	 * @throws SBOLValidationException 
 	 *              if the following SBOL validation rule was violated: XXXXX
 	 */
-	private void addAttachment(URI attachment) throws SBOLValidationException {
+	private boolean addAttachment(URI attachmentURI) throws SBOLValidationException {
 		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-			if (getAttachment(attachment) == null) {
+			if (this.getSBOLDocument().getAttachment(attachmentURI) == null) {
 				throw new SBOLValidationException("sbol-XXXXX", this);
 			}
 		}
-		
-		attachments.add(attachment);
+		return attachments.add(attachmentURI);
+	}
+	
+	/**
+	 * Constructs a compliant attachment URI with the given display ID and version, and then adds this URI
+	 * to this top level's set of attachment URIs.
+	 * <p>
+	 * This method creates a compliant sequence URI with the default
+	 * URI prefix, which was set in the SBOLDocument instance hosting this top level, the given 
+	 * display ID and version. It then calls {@link #addAttachment(URI)} with this Attachment URI.
+	 *
+	 * @param displayId the display ID of the attachment whose identity URI is to be added
+	 * @param version version of the attachment whose identity URI is to be added
+	 * @return {@code true} if this set did not already contain the given attachment's URI, {@code false} otherwise. 
+	 * @throws SBOLValidationException see {@link #addAttachment(URI)} 
+	 */
+	public boolean addAttachment(String displayId,String version) throws SBOLValidationException {
+		URI attachmentURI = URIcompliance.createCompliantURI(this.getSBOLDocument().getDefaultURIprefix(),
+				TopLevel.ATTACHMENT, displayId, version, this.getSBOLDocument().isTypesInURIs());
+		return addAttachment(attachmentURI);
 	}
 
 	/**
-	 * Returns the attachment matching the given URI.
+	 * Constructs a compliant sequence URI using the given attachment display ID, and then adds this URI to 
+	 * this top level's set of attachment URIs. This method calls {@link #addAttachment(String, String)} with
+	 * the given attachment display ID and an empty string as its version. 
 	 *
-	 * @param attachmentURI
-	 *            the identity URI of the attachment to be retrieved
-	 * @return the matching attachment if present, or {@code null} otherwise.
+	 * @param displayId the display ID of the attachment whose identity URI is to be added
+	 * @return {@code true} if this set did not already contain the given attachment's URI, {@code false} otherwise.
+	 * @throws SBOLValidationException see {@link #addAttachment(String, String)}
 	 */
-	public Attachment getAttachment(URI attachmentURI) {
-		return this.getSBOLDocument().getAttachment(attachmentURI);
+	public boolean addAttachment(String displayId) throws SBOLValidationException {
+		return addAttachment(displayId,"");
 	}
 
+	
 	/**
-	 * Returns the set of attachments owned by this top level.
+	 * Returns the set of attachments referenced by this top level.
 	 *
-	 * @return the set of attachments owned by this top level.
+	 * @return the set of attachments referenced by this top level
 	 */
-	public Set<URI> getAttachments() {
-		Set<URI> attachments = new HashSet<>(this.attachments);
-		return attachments;
+	public Set<Attachment> getAttachments() {
+		if (this.getSBOLDocument()==null) return null;
+		Set<Attachment> resolved = new HashSet<>();
+		for(URI su : attachments) {
+			Attachment attachment = this.getSBOLDocument().getAttachment(su);
+			if(attachment != null) {
+				resolved.add(attachment);
+			}
+		}
+		return resolved;
+	}
+	
+	/**
+	 * Returns the set of attachment URIs referenced by this top level.
+	 *
+	 * @return the set of attachment URIs referenced by this top level
+	 */
+	public Set<URI> getAttachmentURIs() {
+		Set<URI> result = new HashSet<>();
+		result.addAll(attachments);
+		return result;
 	}
 
 	/**
 	 * Removes all entries of this top level's list of attachments. The list will be
 	 * empty after this call returns.
-	 * <p>
-	 * This method calls {@link #removeAttachment(URI attachmentURI)} to iteratively
-	 * remove each attachment.
 	 */
 	public void clearAttachments() {
-		Object[] valueSetArray = attachments.toArray();
-		for (Object attachment : valueSetArray) {
-			removeAttachmentURI((URI) attachment);
-		}
+		attachments.clear();
+	}
+	
+	/**
+	 * Checks if the given attachment URI is included in this top level's
+	 * set of attachment URIs.
+	 *
+	 * @param attachmentURI the attachment URI to be checked
+	 * @return {@code true} if this set contains the given attachment URI, {@code false} otherwise.
+	 */
+	public boolean containsAttachment(URI attachmentURI) {
+		return attachments.contains(attachmentURI);
 	}
 	
 	/**
@@ -216,7 +300,7 @@ public abstract class TopLevel extends Identified {
 	 * @return {@code true} if the matching attachment is removed
 	 *         successfully, {@code false} otherwise.
 	 */
-	public boolean removeAttachmentURI(URI attachment) {
+	public boolean removeAttachment(URI attachment) {
 		return attachments.remove(attachment);
 	}
 
