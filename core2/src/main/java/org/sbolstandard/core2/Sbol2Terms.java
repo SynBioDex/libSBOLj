@@ -222,7 +222,7 @@ class Sbol2Terms
 	 */
 	static final class TopLevel {
 		static final QName TopLevel 	   	 = sbol2.withLocalPart("TopLevel");
-		static final QName attachment   	 = sbol2.withLocalPart("attachment");
+		static final QName hasAttachment   	 = sbol2.withLocalPart("attachment");
 	}
 
 	/**
