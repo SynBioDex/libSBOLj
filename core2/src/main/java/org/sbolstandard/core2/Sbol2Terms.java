@@ -215,6 +215,15 @@ class Sbol2Terms
 		static final QName title 	  = dc.withLocalPart("title");
 		static final QName description = dc.withLocalPart("description");
 	}
+	
+	/**
+	 * A group of qualified terms for TopLevel related SBOL objects
+	 *
+	 */
+	static final class TopLevel {
+		static final QName TopLevel 	   	 = sbol2.withLocalPart("TopLevel");
+		static final QName attachment   	 = sbol2.withLocalPart("attachment");
+	}
 
 	/**
 	 * A group of qualified terms for Interaction related SBOL objects

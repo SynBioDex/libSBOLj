@@ -348,6 +348,9 @@ public class SBOLWriter
 	private static void formatCommonTopLevelData (List<NamedProperty<QName>> list, TopLevel t)
 	{
 		formatCommonIdentifiedData(list,t);
+		for(URI attachment : t.getAttachmentURIs()) {
+			list.add(NamedProperty(Sbol2Terms.TopLevel.attachment, attachment));
+		}
 	}
 	
 	private static void formatWasInformedByProperties(Set<URI> wasInformedBys, List<NamedProperty<QName>> list)
@@ -565,6 +568,26 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol2Terms.Model.language, m.getLanguage()));
 			list.add(NamedProperty(Sbol2Terms.Model.framework, m.getFramework()));
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Model.Model, m.getIdentity(), NamedProperties(list)));
+		}
+	}
+
+	private static void formatAttachments (Set<Attachment> attachments, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+		for(Attachment attachment : attachments)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonTopLevelData(list,attachment);
+			list.add(NamedProperty(Sbol2Terms.Attachment.source, attachment.getSource()));
+			if (attachment.isSetFormat()) {
+				list.add(NamedProperty(Sbol2Terms.Attachment.format, attachment.getFormat()));
+			}
+			if (attachment.isSetSize()) {
+				list.add(NamedProperty(Sbol2Terms.Attachment.size, String.valueOf(attachment.getSize())));
+			}
+			if (attachment.isSetHash()) {
+				list.add(NamedProperty(Sbol2Terms.Attachment.hash, attachment.getHash()));
+			}
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Attachment.Attachment, attachment.getIdentity(), NamedProperties(list)));
 		}
 	}
 
@@ -1129,6 +1152,7 @@ public class SBOLWriter
 		formatGenericTopLevel(doc.getGenericTopLevels(), topLevelDoc);
 		formatCombinatorialDerivation(doc.getCombinatorialDerivations(), topLevelDoc);
 		formatImplementation(doc.getImplementations(), topLevelDoc);
+		formatAttachments(doc.getAttachments(), topLevelDoc);
 		return topLevelDoc;
 	}
 
