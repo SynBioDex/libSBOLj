@@ -842,11 +842,11 @@ public class SBOLReader
 	 * 	<li>the following SBOL validation rule was violated: 12302; or</li>
 	 * 	<li>an SBOL validation rule violation occurred in any of the following methods:
 	 * 		<ul>
-	 * 			<li>{@link #parseCollections(SBOLDocument, TopLevelDocument)},</li>
+	 * 			<li>{@link #parseCollection(SBOLDocument, TopLevelDocument)},</li>
 	 * 			<li>{@link #parseModuleDefinition(SBOLDocument, TopLevelDocument, Map)},</li>
-	 * 			<li>{@link #parseModels(SBOLDocument, TopLevelDocument)},</li>
-	 * 			<li>{@link #parseSequences(SBOLDocument, TopLevelDocument)}, </li>
-	 * 			<li>{@link #parseComponentDefinitions(SBOLDocument, TopLevelDocument, Map)}, or</li>
+	 * 			<li>{@link #parseModel(SBOLDocument, TopLevelDocument)},</li>
+	 * 			<li>{@link #parseSequence(SBOLDocument, TopLevelDocument)}, </li>
+	 * 			<li>{@link #parseComponentDefinition(SBOLDocument, TopLevelDocument, Map)}, or</li>
 	 * 			<li>{@link #parseGenericTopLevel(SBOLDocument, TopLevelDocument)}.</li>
 	 * 		</ul>
 	 * 	</li>
@@ -1052,19 +1052,21 @@ public class SBOLReader
 		for (TopLevelDocument<QName> topLevel : topLevels) {
 			try {
 				if (topLevel.getType().equals(Sbol2Terms.Collection.Collection))
-					parseCollections(SBOLDoc, topLevel, nested);
+					parseCollection(SBOLDoc, topLevel, nested);
 				else if (topLevel.getType().equals(Sbol2Terms.ModuleDefinition.ModuleDefinition))
 					parseModuleDefinition(SBOLDoc, topLevel, nested);
 				else if (topLevel.getType().equals(Sbol2Terms.Model.Model))
-					parseModels(SBOLDoc, topLevel);
+					parseModel(SBOLDoc, topLevel);
 				else if (topLevel.getType().equals(Sbol2Terms.Sequence.Sequence))
-					parseSequences(SBOLDoc, topLevel);
+					parseSequence(SBOLDoc, topLevel);
 				else if (topLevel.getType().equals(Sbol2Terms.ComponentDefinition.ComponentDefinition))
-					parseComponentDefinitions(SBOLDoc, topLevel, nested);
+					parseComponentDefinition(SBOLDoc, topLevel, nested);
 				else if (topLevel.getType().equals(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation))
 					parseCombinatorialDerivation(SBOLDoc, topLevel, nested);
 				else if (topLevel.getType().equals(Sbol2Terms.Implementation.Implementation))
 					parseImplementation(SBOLDoc, topLevel, nested);
+				else if (topLevel.getType().equals(Sbol2Terms.Attachment.Attachment))
+					parseAttachment(SBOLDoc, topLevel);
 				else if (topLevel.getType().equals(Sbol2Terms.Activity.Activity))
 					parseActivity(SBOLDoc, topLevel, nested);
 				else if (topLevel.getType().equals(Sbol2Terms.Agent.Agent))
@@ -1822,7 +1824,7 @@ public class SBOLReader
 	 * </ul>
 	 */
 	@SuppressWarnings("unchecked")
-	private static ComponentDefinition parseComponentDefinitions(SBOLDocument SBOLDoc, 
+	private static ComponentDefinition parseComponentDefinition(SBOLDocument SBOLDoc, 
 			IdentifiableDocument<QName> topLevel, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
@@ -1832,6 +1834,7 @@ public class SBOLReader
 		String version 		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
 		Set<URI> type 		   = new HashSet<>();
 		Set<URI> roles 	  	   = new HashSet<>();
 		Set<URI> sequences	   = new HashSet<>();
@@ -1914,7 +1917,7 @@ public class SBOLReader
 				}
 				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
 					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Sequence.Sequence)) {
-						Sequence sequence = parseSequences(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						Sequence sequence = parseSequence(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
 						sequences.add(sequence.getIdentity());
 					} else {
 						throw new SBOLValidationException("sbol-10512", topLevel.getIdentity());
@@ -1996,6 +1999,26 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -2060,6 +2083,8 @@ public class SBOLReader
 		StrategyType strategy  = null;
 		String version 		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
+		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
 
 		Set<VariableComponent> variableComponents    = new HashSet<>();
 		List<Annotation> annotations 				 = new ArrayList<>();
@@ -2092,7 +2117,7 @@ public class SBOLReader
 				}
 				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
 					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.ComponentDefinition.ComponentDefinition)) {
-						ComponentDefinition cd = parseComponentDefinitions(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
+						ComponentDefinition cd = parseComponentDefinition(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
 						template = cd.getIdentity();
 					} else {
 						throw new SBOLValidationException("sbol-12904", topLevel.getIdentity());
@@ -2169,6 +2194,34 @@ public class SBOLReader
 				}
 				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasGeneratedBy))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-10221",topLevel.getIdentity());
+				}
+				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -2221,6 +2274,8 @@ public class SBOLReader
 		HashSet<URI> variants			= new HashSet<>();
 		HashSet<URI> variantCollections	= new HashSet<>();
 		HashSet<URI> variantDerivations	= new HashSet<>();
+		Set<URI> wasDerivedFroms = new HashSet<>();
+		Set<URI> wasGeneratedBys = new HashSet<>();
 		
 
 		for (NamedProperty<QName> namedProperty : variableComponent.getProperties())
@@ -2283,7 +2338,7 @@ public class SBOLReader
 				}
 				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
 					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.ComponentDefinition.ComponentDefinition)) {
-						ComponentDefinition cd = parseComponentDefinitions(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
+						ComponentDefinition cd = parseComponentDefinition(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
 						variants.add(cd.getIdentity());
 					} else {
 						throw new SBOLValidationException("sbol-13007", variableComponent.getIdentity());
@@ -2303,7 +2358,7 @@ public class SBOLReader
 				}
 				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
 					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Collection.Collection)) {
-						Collection cd = parseCollections(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
+						Collection cd = parseCollection(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
 						variantCollections.add(cd.getIdentity());
 					} else {
 						throw new SBOLValidationException("sbol-13009", variableComponent.getIdentity());
@@ -2346,6 +2401,22 @@ public class SBOLReader
 				catch (SBOLValidationException e) {
 					throw new SBOLValidationException("sbol-13003", variableComponent.getIdentity());
 				}
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || 
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-10208", variableComponent.getIdentity());
+				}
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasGeneratedBy))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-10221",variableComponent.getIdentity());
+				}
+				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else
 			{
@@ -2394,6 +2465,8 @@ public class SBOLReader
 		URI built 		   = null;
 		String version 		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
+		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
 
 		List<Annotation> annotations 				 = new ArrayList<>();
 
@@ -2424,9 +2497,12 @@ public class SBOLReader
 					built = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 				}
 				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
-					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Implementation.Implementation)) {
-						Implementation imp = parseImplementation(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
-						built = imp.getIdentity();
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.ModuleDefinition.ModuleDefinition)) {
+						ModuleDefinition md = parseModuleDefinition(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
+						built = md.getIdentity();
+					} else if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.ComponentDefinition.ComponentDefinition)) {
+						ComponentDefinition md = parseComponentDefinition(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
+						built = md.getIdentity();
 					} else {
 						throw new SBOLValidationException("sbol-13102", topLevel.getIdentity());
 					}
@@ -2467,6 +2543,34 @@ public class SBOLReader
 				}
 				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasGeneratedBy))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-10221",topLevel.getIdentity());
+				}
+				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -2488,7 +2592,7 @@ public class SBOLReader
 		if (version != null)
 			i.setVersion(version);
 		if (built != null) 
-			i.setBuiltURI(built);
+			i.setBuilt(built);
 		i.setWasDerivedFroms(wasDerivedFroms);
 
 		Implementation oldI = SBOLDoc.getImplementation(topLevel.getIdentity());
@@ -3412,7 +3516,7 @@ public class SBOLReader
 				}
 				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
 					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.ComponentDefinition.ComponentDefinition)) {
-						ComponentDefinition componentDefinition = parseComponentDefinitions(SBOLDoc,
+						ComponentDefinition componentDefinition = parseComponentDefinition(SBOLDoc,
 								(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
 						subComponentURI = componentDefinition.getIdentity();
 					} else {
@@ -3514,6 +3618,7 @@ public class SBOLReader
 	 * </li>
 	 * </ul>
 	 */
+	@SuppressWarnings("unchecked")
 	private static GenericTopLevel parseGenericTopLevel(SBOLDocument SBOLDoc,
 			IdentifiableDocument<QName> topLevel) throws SBOLValidationException
 	{
@@ -3524,6 +3629,7 @@ public class SBOLReader
 		String version 		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
 		QName type 			   = topLevel.getType();
 
 		List<Annotation> annotations = new ArrayList<>();
@@ -3623,6 +3729,26 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -3668,6 +3794,7 @@ public class SBOLReader
 		String version 		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
 		DateTime startedAtTime	= null;
 		DateTime endedAtTime = null;
 		Set<URI> wasInformedBys = new HashSet<>();
@@ -3732,6 +3859,26 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",topLevel.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Activity.startedAtTime))
 			{
@@ -3843,6 +3990,8 @@ public class SBOLReader
 			t.setUsages(qualifiedUsages);
 		if (!wasInformedBys.isEmpty())
 			t.setWasInformedBys(wasInformedBys);
+		if (!attachments.isEmpty())
+			t.setAttachments(attachments);
 
 		Activity oldA = SBOLDoc.getActivity(topLevel.getIdentity());
 		if (oldA == null) {
@@ -4096,6 +4245,7 @@ public class SBOLReader
 		return u;
 	}
 
+	@SuppressWarnings("unchecked")
 	private static Agent parseAgent(SBOLDocument SBOLDoc,IdentifiableDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String displayId 	   = null;
@@ -4105,6 +4255,7 @@ public class SBOLReader
 		String version 		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
@@ -4164,6 +4315,26 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",topLevel.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
 			}
 			else
 			{
@@ -4198,6 +4369,7 @@ public class SBOLReader
 		return t;
 	}
 	
+	@SuppressWarnings("unchecked")
 	private static Plan parsePlan(SBOLDocument SBOLDoc,IdentifiableDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String displayId 	   = null;
@@ -4207,6 +4379,7 @@ public class SBOLReader
 		String version 		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
@@ -4266,6 +4439,26 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",topLevel.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
 			}
 			else
 			{
@@ -4320,7 +4513,8 @@ public class SBOLReader
 	 * </li>
 	 * </ul>
 	 */
-	private static Model parseModels(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel) throws SBOLValidationException
+	@SuppressWarnings("unchecked")
+	private static Model parseModel(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
@@ -4332,6 +4526,7 @@ public class SBOLReader
 		URI framework 	 	   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
 
 		List<Annotation> annotations = new ArrayList<>();
 
@@ -4417,6 +4612,26 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -4450,6 +4665,173 @@ public class SBOLReader
 		}
 		return m;
 	}
+	
+	@SuppressWarnings("unchecked")
+	private static Attachment parseAttachment(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel) throws SBOLValidationException
+	{
+		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
+		String name 	 	   = null;
+		String description 	   = null;
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(topLevel.getIdentity()));
+		String version 		   = null;
+		URI source 			   = null;
+		URI format	 		   = null;
+		Long size	 	 	   = null;
+		String hash	 	 	   = null;
+		Set<URI> wasDerivedFroms = new HashSet<>();
+		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
+
+		List<Annotation> annotations = new ArrayList<>();
+
+		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
+		{
+			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || persistentIdentity != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-10203", topLevel.getIdentity());
+				}
+				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || version != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+					throw new SBOLValidationException("sbol-10206", topLevel.getIdentity());
+				}
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || displayId != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+					throw new SBOLValidationException("sbol-10204", topLevel.getIdentity());
+				}
+				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Attachment.source))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || source != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-13202", topLevel.getIdentity());
+				}
+				source = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Attachment.format))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || format != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-13204", topLevel.getIdentity());
+				}
+				format = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Attachment.size))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || size != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+					throw new SBOLValidationException("sbol-13207", topLevel.getIdentity());
+				}
+				size = Long.valueOf(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Attachment.hash))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || hash != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+					throw new SBOLValidationException("sbol-13208", topLevel.getIdentity());
+				}
+				hash = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || name != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+					throw new SBOLValidationException("sbol-10212", topLevel.getIdentity());
+				}
+				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || description != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+					throw new SBOLValidationException("sbol-10213",topLevel.getIdentity());
+				}
+				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-10208", topLevel.getIdentity());
+				}
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasGeneratedBy))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-10221",topLevel.getIdentity());
+				}
+				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
+			}
+			else
+			{
+				annotations.add(new Annotation(namedProperty));
+			}
+		}
+
+		Attachment a = new Attachment(topLevel.getIdentity(), source);
+		if (persistentIdentity != null)
+			a.setPersistentIdentity(persistentIdentity);
+		if (version != null)
+			a.setVersion(version);
+		if (displayId != null)
+			a.setDisplayId(displayId);
+		if (name != null)
+			a.setName(name);
+		if (description != null)
+			a.setDescription(description);
+		a.setWasDerivedFroms(wasDerivedFroms);
+		a.setWasGeneratedBys(wasGeneratedBys);
+		if (!annotations.isEmpty())
+			a.setAnnotations(annotations);
+		if (format != null) 
+			a.setFormat(format);
+		if (size != null)
+			a.setSize(size);
+		if (hash != null)
+			a.setHash(hash);
+
+		Attachment oldA = SBOLDoc.getAttachment(topLevel.getIdentity());
+		if (oldA == null) {
+			SBOLDoc.addAttachment(a);
+		} else {
+			if (!a.equals(oldA)) {
+				throw new SBOLValidationException("sbol-10202",a);
+			}
+		}
+		return a;
+	}
 
 	/**
 	 * @param SBOLDoc
@@ -4473,7 +4855,7 @@ public class SBOLReader
 	 * </ul>
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private static Collection parseCollections(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel,
+	private static Collection parseCollection(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel,
 			Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(topLevel.getIdentity());
@@ -4483,6 +4865,7 @@ public class SBOLReader
 		String version 		   = null;
 		Set<URI> wasDerivedFroms	 = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
 		Set<URI> members 			 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
@@ -4521,15 +4904,27 @@ public class SBOLReader
 					members.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 				} else if (namedProperty.getValue() instanceof NestedDocument) {
 					if (((IdentifiableDocument)namedProperty).getType().equals(Sbol2Terms.Collection.Collection))
-						parseCollections(SBOLDoc, (IdentifiableDocument)namedProperty, nested);
+						parseCollection(SBOLDoc, (IdentifiableDocument)namedProperty, nested);
 					else if (((IdentifiableDocument)namedProperty).equals(Sbol2Terms.ModuleDefinition.ModuleDefinition))
 						parseModuleDefinition(SBOLDoc, (IdentifiableDocument)namedProperty, nested);
 					else if (((IdentifiableDocument)namedProperty).equals(Sbol2Terms.Model.Model))
-						parseModels(SBOLDoc, (IdentifiableDocument)namedProperty);
+						parseModel(SBOLDoc, (IdentifiableDocument)namedProperty);
 					else if (((IdentifiableDocument)namedProperty).equals(Sbol2Terms.Sequence.Sequence))
-						parseSequences(SBOLDoc, (IdentifiableDocument)namedProperty);
+						parseSequence(SBOLDoc, (IdentifiableDocument)namedProperty);
 					else if (((IdentifiableDocument)namedProperty).equals(Sbol2Terms.ComponentDefinition.ComponentDefinition))
-						parseComponentDefinitions(SBOLDoc, (IdentifiableDocument)namedProperty, nested);
+						parseComponentDefinition(SBOLDoc, (IdentifiableDocument)namedProperty, nested);
+					else if (((IdentifiableDocument)namedProperty).equals(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation))
+						parseCombinatorialDerivation(SBOLDoc, (IdentifiableDocument)namedProperty, nested);
+					else if (((IdentifiableDocument)namedProperty).equals(Sbol2Terms.Implementation.Implementation))
+						parseImplementation(SBOLDoc, (IdentifiableDocument)namedProperty, nested);
+					else if (((IdentifiableDocument)namedProperty).equals(Sbol2Terms.Attachment.Attachment))
+						parseAttachment(SBOLDoc, (IdentifiableDocument)namedProperty);
+					else if (((IdentifiableDocument)namedProperty).equals(Sbol2Terms.Activity.Activity))
+						parseActivity(SBOLDoc, (IdentifiableDocument)namedProperty, nested);
+					else if (((IdentifiableDocument)namedProperty).equals(Sbol2Terms.Agent.Agent))
+						parseAgent(SBOLDoc, (IdentifiableDocument)namedProperty);
+					else if (((IdentifiableDocument)namedProperty).equals(Sbol2Terms.Plan.Plan))
+						parsePlan(SBOLDoc, (IdentifiableDocument)namedProperty);
 					else
 						parseGenericTopLevel(SBOLDoc, (IdentifiableDocument)namedProperty);
 				} else {
@@ -4567,6 +4962,26 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",topLevel.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
 			}
 			else
 			{
@@ -4643,6 +5058,7 @@ public class SBOLReader
 		String version 	       = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
 		Set<URI> roles 		   = new HashSet<>();
 		Set<URI> models 	   = new HashSet<>();
 
@@ -4758,7 +5174,7 @@ public class SBOLReader
 				}
 				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
 					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Model.Model)) {
-						Model model = parseModels(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						Model model = parseModel(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
 						models.add(model.getIdentity());
 					} else {
 						throw new SBOLValidationException("sbol-11607", topLevel.getIdentity());
@@ -4799,6 +5215,26 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",topLevel.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
 			}
 			else
 			{
@@ -5584,7 +6020,7 @@ public class SBOLReader
 				}
 				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
 					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.ComponentDefinition.ComponentDefinition)) {
-						ComponentDefinition componentDefinition = parseComponentDefinitions(SBOLDoc,
+						ComponentDefinition componentDefinition = parseComponentDefinition(SBOLDoc,
 								(IdentifiableDocument<QName>)namedProperty.getValue(),nested);
 						functionalComponentURI = componentDefinition.getIdentity();
 					} else {
@@ -5675,7 +6111,8 @@ public class SBOLReader
 	 * </li>
 	 * </ul>
 	 */
-	private static Sequence parseSequences(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel) throws SBOLValidationException
+	@SuppressWarnings("unchecked")
+	private static Sequence parseSequence(SBOLDocument SBOLDoc, IdentifiableDocument<QName> topLevel) throws SBOLValidationException
 	{
 		String displayId 	   = null; //URIcompliance.extractDisplayId(topLevel.getIdentity());
 		String name 	 	   = null;
@@ -5686,6 +6123,7 @@ public class SBOLReader
 		URI encoding 		   = null;
 		Set<URI> wasDerivedFroms	 = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<URI> attachments = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
@@ -5764,6 +6202,26 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",topLevel.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
+			{
+				if (namedProperty.getValue() instanceof Literal) {
+					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+					attachments.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+				}
+				else if (namedProperty.getValue() instanceof IdentifiableDocument) {
+					if (((IdentifiableDocument<QName>)namedProperty).getType().equals(Sbol2Terms.Attachment.Attachment)) {
+						Attachment attachment = parseAttachment(SBOLDoc,(IdentifiableDocument<QName>)namedProperty.getValue());
+						attachments.add(attachment.getIdentity());
+					} else {
+						throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+					}
+				}
+				else {
+					throw new SBOLValidationException("sbol-XXXXX", topLevel.getIdentity());
+				}
 			}
 			else
 			{

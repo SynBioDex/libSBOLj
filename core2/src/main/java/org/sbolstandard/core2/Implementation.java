@@ -3,8 +3,14 @@ package org.sbolstandard.core2;
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map.Entry;
+
+/**
+ * Represents an Implementation object in the SBOL data model.
+ * 
+ * @author Igor Durovic
+ * @author Chris Myers
+ * @version 2.3
+ */
 
 public class Implementation extends TopLevel {
 	
@@ -83,7 +89,7 @@ public class Implementation extends TopLevel {
 	 * @throws SBOLValidationException 
 	 * 				on SBOL validation rule violation XXXXX.
 	 */
-	public void setBuiltURI(URI builtURI) throws SBOLValidationException {
+	public void setBuilt(URI builtURI) throws SBOLValidationException {
 		if(this.getSBOLDocument() != null && 
 				this.getSBOLDocument().getComponentDefinition(builtURI) == null &&
 				this.getSBOLDocument().getModuleDefinition(builtURI) == null) {
@@ -125,7 +131,7 @@ public class Implementation extends TopLevel {
 		((TopLevel) this).copy((TopLevel) implementation);
 		
 		if (implementation.isSetBuilt()) {
-			this.setBuiltURI(implementation.getBuiltURI());
+			this.setBuilt(implementation.getBuiltURI());
 		}
 	}
 	
@@ -161,17 +167,12 @@ public class Implementation extends TopLevel {
 		return cloned;
 	}
 
-	@Override
-	/**
-	 * @throws SBOLValidationException
-	 *             an SBOL validation rule violation occurred in either of the
-	 *             following methods:
-	 *             <ul>
-	 *             <li>{@link URIcompliance#isChildURIcompliant(Identified, Identified)}.</li>
-	 *             </ul>
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
-	void checkDescendantsURIcompliance() throws SBOLValidationException {
-		// TODO is this needed?
+	@Override
+	void checkDescendantsURIcompliance() {//throws SBOLValidationException {
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 	
 	@Override
@@ -179,7 +180,7 @@ public class Implementation extends TopLevel {
 		final int prime = 31;
 		int result = super.hashCode() * prime;
 
-		result *= this.built != null ? this.built.hashCode() : 1;
+		result = prime * result + (this.isSetBuilt() ? this.built.hashCode() : 0);
 
 		return result;
 	}
@@ -199,9 +200,11 @@ public class Implementation extends TopLevel {
 		if (getClass() != obj.getClass())
 			return false;
 		Implementation other = (Implementation) obj;
-		if (!this.built.equals(other.getBuiltURI()))
+		if (built == null) {
+			if (other.built != null)
+				return false;
+		} else if (!built.equals(other.built))
 			return false;
-
 		return true;
 	}
 	

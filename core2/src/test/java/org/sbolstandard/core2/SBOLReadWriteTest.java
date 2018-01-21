@@ -57,7 +57,6 @@ public class SBOLReadWriteTest {
 	@Test
 	public void test_SBOL2_Files() throws Exception
 	{
-		if (file.getAbsolutePath().contains("design-build-test-learn.xml")) return;
 		try
 		{
 			SBOLReader.setURIPrefix("http://www.async.ece.utah.edu");

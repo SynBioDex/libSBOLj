@@ -116,7 +116,7 @@ public class Collection extends TopLevel{
 	public Set<URI> getMemberIdentities() {
 		Set<URI> result = new HashSet<>();
 		for (URI memberURI : members) {
-			TopLevel member = this.getDocument().getTopLevel(memberURI);
+			TopLevel member = this.getSBOLDocument().getTopLevel(memberURI);
 			if(member != null) {
 				result.add(member.getIdentity());
 			}
@@ -132,7 +132,7 @@ public class Collection extends TopLevel{
 	public Set<TopLevel> getMembers() {
 		Set<TopLevel> result = new HashSet<>();
 		for (URI memberURI : members) {
-			TopLevel member = this.getDocument().getTopLevel(memberURI);
+			TopLevel member = this.getSBOLDocument().getTopLevel(memberURI);
 			if(member != null) {
 				result.add(member);
 			}
