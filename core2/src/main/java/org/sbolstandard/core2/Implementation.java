@@ -161,17 +161,12 @@ public class Implementation extends TopLevel {
 		return cloned;
 	}
 
-	@Override
-	/**
-	 * @throws SBOLValidationException
-	 *             an SBOL validation rule violation occurred in either of the
-	 *             following methods:
-	 *             <ul>
-	 *             <li>{@link URIcompliance#isChildURIcompliant(Identified, Identified)}.</li>
-	 *             </ul>
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
-	void checkDescendantsURIcompliance() throws SBOLValidationException {
-		// TODO is this needed?
+	@Override
+	void checkDescendantsURIcompliance() {//throws SBOLValidationException {
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 	
 	@Override
@@ -179,7 +174,7 @@ public class Implementation extends TopLevel {
 		final int prime = 31;
 		int result = super.hashCode() * prime;
 
-		result *= this.built != null ? this.built.hashCode() : 1;
+		result = prime * result + (this.isSetBuilt() ? this.built.hashCode() : 0);
 
 		return result;
 	}
@@ -199,9 +194,11 @@ public class Implementation extends TopLevel {
 		if (getClass() != obj.getClass())
 			return false;
 		Implementation other = (Implementation) obj;
-		if (!this.isSetBuilt() || !this.built.equals(other.getBuiltURI()))
+		if (built == null) {
+			if (other.built != null)
+				return false;
+		} else if (!built.equals(other.built))
 			return false;
-
 		return true;
 	}
 	

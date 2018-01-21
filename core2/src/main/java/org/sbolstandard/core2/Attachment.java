@@ -4,6 +4,14 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 
 import java.net.URI;
 
+/**
+ * Represents a Model object in the SBOL data model.
+ * 
+ * @author Igor Durovic
+ * @author Chris Myers
+ * @version 2.3
+ */
+
 public class Attachment extends TopLevel {
 	
 	/**
@@ -25,7 +33,7 @@ public class Attachment extends TopLevel {
 	 * This field is OPTIONAL.
 	 * 
 	 */
-	private long size;
+	private Long size;
 	
 	/**
 	 * The hash is a string used to retrieve files from a cache. This field
@@ -35,8 +43,7 @@ public class Attachment extends TopLevel {
 
 	Attachment(URI identity, URI source) throws SBOLValidationException {
 		super(identity);
-		
-		this.source = source;
+		setSource(source);
 	}
 	
 	/**
@@ -51,10 +58,10 @@ public class Attachment extends TopLevel {
 	private Attachment(Attachment attachment) throws SBOLValidationException {
 		super(attachment);
 
-		this.source = attachment.getSource();
-		this.format = attachment.getFormat();
-		this.size = attachment.getSize();
-		this.hash = attachment.getHash();
+		this.setSource(attachment.getSource());
+		this.setFormat(attachment.getFormat());
+		this.setSize(attachment.getSize());
+		this.setHash(attachment.getHash());
 	}
 	
 	/**
@@ -67,10 +74,15 @@ public class Attachment extends TopLevel {
 	}
 	
 	/**
-	 * Sets the source property to the given URI
+	 * Sets the source property to the given one.
+	 * 
+	 * @param source the source property to set
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 11502.
 	 */
-	//TODO: validation?
-	public void setSource(URI source) {
+	public void setSource(URI source) throws SBOLValidationException {
+		if (source==null) {
+			throw new SBOLValidationException("sbol-13202", this);
+		}
 		this.source = source;
 	}
 	
@@ -97,10 +109,8 @@ public class Attachment extends TopLevel {
 	 *
 	 * @param format
 	 *            the given URI to set to
-	 * @throws SBOLValidationException 
-	 * 				on SBOL validation rule violation XXXXX.
 	 */
-	public void setFormat(URI format) throws SBOLValidationException {
+	public void setFormat(URI format) {
 		this.format = format;
 	}
 	
@@ -117,8 +127,7 @@ public class Attachment extends TopLevel {
 	 * @return {@code true} if it is not {@code null}, {@code false} otherwise
 	 */
 	public boolean isSetSize() {
-		//TODO: what should the default value be?
-		return size != -1;
+		return (size != null);
 	}
 	
 	/**
@@ -126,7 +135,7 @@ public class Attachment extends TopLevel {
 	 *
 	 * @return the size property
 	 */
-	public long getSize() {
+	public Long getSize() {
 		return this.size;
 	}
 
@@ -135,10 +144,8 @@ public class Attachment extends TopLevel {
 	 *
 	 * @param size
 	 *            the given size to set to
-	 * @throws SBOLValidationException 
-	 * 				on SBOL validation rule violation XXXXX.
 	 */
-	public void setSize(long size) throws SBOLValidationException {
+	public void setSize(long size) {
 		this.size = size;
 	}
 	
@@ -146,7 +153,7 @@ public class Attachment extends TopLevel {
 	 * Sets the size property of the attachment to -1.
 	 */
 	public void unsetSize() {
-		this.size = -1;
+		this.size = null;
 	}
 	
 	/**
@@ -172,10 +179,8 @@ public class Attachment extends TopLevel {
 	 *
 	 * @param hash
 	 *            the given hash to set to
-	 * @throws SBOLValidationException 
-	 * 				on SBOL validation rule violation XXXXX.
 	 */
-	public void setHash(String hash) throws SBOLValidationException {
+	public void setHash(String hash) {
 		this.hash = hash;
 	}
 	
@@ -239,17 +244,12 @@ public class Attachment extends TopLevel {
 		return cloned;
 	}
 	
-	@Override
-	/**
-	 * @throws SBOLValidationException
-	 *             an SBOL validation rule violation occurred in either of the
-	 *             following methods:
-	 *             <ul>
-	 *             <li>{@link URIcompliance#isChildURIcompliant(Identified, Identified)}.</li>
-	 *             </ul>
+	/* (non-Javadoc)
+	 * @see org.sbolstandard.core2.abstract_classes.TopLevel#checkDescendantsURIcompliance()
 	 */
-	void checkDescendantsURIcompliance() throws SBOLValidationException {
-		// TODO probably not needed but I'll leave it here in case I'm wrong
+	@Override
+	void checkDescendantsURIcompliance() {//throws SBOLValidationException {
+		//URIcompliance.isTopLevelURIformCompliant(this.getIdentity());
 	}
 	
 	@Override
@@ -257,10 +257,10 @@ public class Attachment extends TopLevel {
 		final int prime = 31;
 		int result = super.hashCode() * prime;
 
-		result *= this.source.hashCode();
-		result *= this.format != null ? this.format.hashCode() : 1;
-		result *= this.size >= 0 ? new Long(this.size).hashCode() : 1;
-		result *= this.hash != null ? this.hash.hashCode() : 1;
+		result = prime * result + this.source.hashCode();
+		result = prime * result + (this.isSetFormat() ? this.format.hashCode() : 0);
+		result = prime * result + (this.isSetSize() ? this.size.hashCode() : 0);
+		result = prime * result + (this.isSetHash() ? this.hash.hashCode() : 0);
 
 		return result;
 	}
@@ -281,15 +281,26 @@ public class Attachment extends TopLevel {
 			return false;
 		
 		Attachment other = (Attachment) obj;
-		if (!this.source.equals(other.getSource()))
+		if (source == null) {
+			if (other.source != null)
+				return false;
+		} else if (!source.equals(other.source))
 			return false;
-		if (!this.isSetFormat() || !this.format.equals(other.getFormat()))
+		if (format == null) {
+			if (other.format != null)
+				return false;
+		} else if (!format.equals(other.format))
 			return false;
-		if (this.size != other.size)
+		if (size == null) {
+			if (other.size != null)
+				return false;
+		} else if (!size.equals(other.size))
 			return false;
-		if (!this.isSetHash() || !this.hash.equals(other.getHash()))
+		if (hash == null) {
+			if (other.hash != null)
+				return false;
+		} else if (!hash.equals(other.hash))
 			return false;
-
 		return true;
 	}
 	
