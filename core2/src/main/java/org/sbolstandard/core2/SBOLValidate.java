@@ -33,8 +33,8 @@ public class SBOLValidate {
 	/**
 	 * the current SBOL version
 	 */
-	private static final String SBOLVersion = "2.0";
-	private static final String libSBOLj_Version = "2.1.2";
+	private static final String SBOLVersion = "2.2.0";
+	private static final String libSBOLj_Version = "2.3.0";
 	private static List<String> errors = null;
 
 	/**
@@ -1696,6 +1696,40 @@ public class SBOLValidate {
 		}
 	}
 
+	private static void compareAttachments(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
+		for (Attachment attachment1 : doc1.getAttachments()) {
+			Attachment attachment2 = doc2.getAttachment(attachment1.getIdentity());
+			if (attachment2 == null) {
+				errors.add("Attachment " + attachment1.getIdentity() + " not found in " + file2);
+			} else if (!attachment1.equals(attachment2)) {
+				errors.add("Attachment " + attachment1.getIdentity() + " differ.");
+			}
+		}
+		for (Attachment attachment2 : doc2.getAttachments()) {
+			Attachment attachment1 = doc1.getAttachment(attachment2.getIdentity());
+			if (attachment1 == null) {
+				errors.add("Attachment " + attachment2.getIdentity() + " not found in " + file1);
+			}
+		}
+	}
+
+	private static void compareImplementations(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
+		for (Implementation implementation1 : doc1.getImplementations()) {
+			Implementation implementation2 = doc2.getImplementation(implementation1.getIdentity());
+			if (implementation2 == null) {
+				errors.add("Implementation " + implementation1.getIdentity() + " not found in " + file2);
+			} else if (!implementation1.equals(implementation2)) {
+				errors.add("Implementation " + implementation1.getIdentity() + " differ.");
+			}
+		}
+		for (Implementation implementation2 : doc2.getImplementations()) {
+			Implementation implementation1 = doc1.getImplementation(implementation2.getIdentity());
+			if (implementation1 == null) {
+				errors.add("Implementation " + implementation2.getIdentity() + " not found in " + file1);
+			}
+		}
+	}
+
 	private static void compareGenericTopLevels(String file1, SBOLDocument doc1, String file2, SBOLDocument doc2) {
 		for (GenericTopLevel genericTopLevel1 : doc1.getGenericTopLevels()) {
 			GenericTopLevel genericTopLevel2 = doc2.getGenericTopLevel(genericTopLevel1.getIdentity());
@@ -1741,6 +1775,8 @@ public class SBOLValidate {
 		compareAgents(file1, doc1, file2, doc2);
 		compareGenericTopLevels(file1, doc1, file2, doc2);
 		compareCombinatorialDerivations(file1, doc1, file2, doc2);
+		compareImplementations(file1, doc1, file2, doc2);
+		compareAttachments(file1, doc1, file2, doc2);
 	}
 
 	private static void usage() {
