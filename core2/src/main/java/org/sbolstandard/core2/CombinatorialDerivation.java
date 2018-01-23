@@ -82,7 +82,7 @@ public class CombinatorialDerivation extends TopLevel {
 		variableComponent.setSBOLDocument(this.getSBOLDocument());
 		variableComponent.setCombinatorialDerivation(this);
 		ComponentDefinition template = this.getTemplate();
-		if (template !=null) {
+		if (template != null) {
 			if (template.getComponent(variableComponent.getVariableURI())==null) {
 				throw new SBOLValidationException("sbol-13005",this);
 			}

@@ -2121,10 +2121,16 @@ public class SBOLDocument {
 		}
 		TopLevel oldTopLevel = this.getTopLevelLocalOnly(URIcompliance.createCompliantURI(URIprefix, displayId, version));
 		if (oldTopLevel != null) {
-			// TODO: should check if they are same or different, if different throw
-			// exception
-			if (oldTopLevel.equals(topLevel))
+			if (oldTopLevel.equals(topLevel)) {
 				return oldTopLevel;
+			} else if (oldTopLevel instanceof GenericTopLevel) {
+				// TODO: need to make sure they are okay enough
+				// This is done because copy makes compliant which changes object
+				// See AnnotationOutput example and sequenceX examples
+				return oldTopLevel;
+			} else {
+				throw new SBOLValidationException("sbol-10202",oldTopLevel.getIdentity());
+			}
 		}
 		if (topLevel instanceof Collection) {
 			Collection newCollection = this.createCollection(URIprefix, displayId, version);
@@ -2140,10 +2146,6 @@ public class SBOLDocument {
 					displayId, version, ((CombinatorialDerivation) topLevel).getTemplateURI());
 			newCombinatorialDerivation.copy((CombinatorialDerivation) topLevel);
 			return newCombinatorialDerivation;
-		} else if (topLevel instanceof Implementation) {
-			Implementation newImplementation = this.createImplementation(URIprefix,	displayId, version);
-			newImplementation.copy((Implementation) topLevel);
-			return newImplementation;
 		} else if (topLevel instanceof Attachment) {
 			Attachment newAttachment = this.createAttachment(URIprefix,	displayId, version, ((Attachment) topLevel).getSource());
 			newAttachment.copy((Attachment) topLevel);
@@ -2157,6 +2159,10 @@ public class SBOLDocument {
 			ModuleDefinition newModuleDefinition = this.createModuleDefinition(URIprefix, displayId, version);
 			newModuleDefinition.copy((ModuleDefinition) topLevel);
 			return newModuleDefinition;
+		} else if (topLevel instanceof Implementation) {
+			Implementation newImplementation = this.createImplementation(URIprefix,	displayId, version);
+			newImplementation.copy((Implementation) topLevel);
+			return newImplementation;
 		} else if (topLevel instanceof Sequence) {
 			Sequence newSequence = this.createSequence(URIprefix, displayId, version,
 					((Sequence) topLevel).getElements(), ((Sequence) topLevel).getEncoding());
@@ -2236,19 +2242,19 @@ public class SBOLDocument {
 			return;
 		document.createCopy(topLevel);
 		for (URI wasDerivedFromURI : topLevel.getWasDerivedFroms()) {
-			TopLevel wasDerivedFrom = getTopLevelLocalOnly(wasDerivedFromURI);
+			TopLevel wasDerivedFrom = getTopLevel(wasDerivedFromURI);
 			if (wasDerivedFrom != null) {
 				createRecursiveCopy(document, wasDerivedFrom);
 			}
 		}
 		for (URI wasGeneratedByURI : topLevel.getWasGeneratedBys()) {
-			TopLevel wasGeneratedBy = getTopLevelLocalOnly(wasGeneratedByURI);
+			TopLevel wasGeneratedBy = getTopLevel(wasGeneratedByURI);
 			if (wasGeneratedBy != null) {
 				createRecursiveCopy(document, wasGeneratedBy);
 			}
 		}
 		for (URI attachmentURI : topLevel.getAttachmentURIs()) {
-			TopLevel attachment = getTopLevelLocalOnly(attachmentURI);
+			TopLevel attachment = getTopLevel(attachmentURI);
 			if (attachment != null) {
 				createRecursiveCopy(document, attachment);
 			}
@@ -2305,7 +2311,7 @@ public class SBOLDocument {
 				if (association.getAgent() != null) {
 					createRecursiveCopy(document, association.getAgent());
 				}
-				if (association.getPlan() != null) {
+				if (association.isSetPlan() && association.getPlan() != null) {
 					createRecursiveCopy(document, association.getPlan());
 				}
 			}
@@ -2549,7 +2555,7 @@ public class SBOLDocument {
 		}
 		for (CombinatorialDerivation combinatorialDerivation : getCombinatorialDerivations()) {
 			updateReferences(combinatorialDerivation, originalIdentity, newIdentity);
-			if (combinatorialDerivation.getTemplate().equals(originalIdentity)) {
+			if (combinatorialDerivation.getTemplateURI().equals(originalIdentity)) {
 				combinatorialDerivation.setTemplate(newIdentity);
 				ComponentDefinition cd = getComponentDefinition(newIdentity);
 				if (cd != null) {
@@ -2751,9 +2757,9 @@ public class SBOLDocument {
 		}
 		for (CombinatorialDerivation combinatorialDerivation : getCombinatorialDerivations()) {
 			updateReferences(combinatorialDerivation, uriMap);
-			if (uriMap.get(combinatorialDerivation.getTemplate())!=null) {
-				combinatorialDerivation.setTemplate(uriMap.get(combinatorialDerivation.getTemplate()));
-				ComponentDefinition cd = getComponentDefinition(uriMap.get(combinatorialDerivation.getTemplate()));
+			if (uriMap.get(combinatorialDerivation.getTemplateURI())!=null) {
+				combinatorialDerivation.setTemplate(uriMap.get(combinatorialDerivation.getTemplateURI()));
+				ComponentDefinition cd = getComponentDefinition(combinatorialDerivation.getTemplateURI());
 				if (cd != null) {
 					for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
 						String displayId = URIcompliance.extractDisplayId(variableComponent.getVariableURI());
@@ -3586,7 +3592,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					e.printStackTrace();
 					agent = null;
 				}
 			}

@@ -119,6 +119,7 @@ public class SynBioHubFrontend
      */
     public SBOLDocument getSBOL(URI topLevelUri) throws SynBioHubException
     {
+    	if (topLevelUri==null) return null;
         if (!topLevelUri.toString().startsWith(uriPrefix)) {
         	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
         }

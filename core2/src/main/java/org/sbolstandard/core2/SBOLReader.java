@@ -196,6 +196,9 @@ public class SBOLReader
 	 */
 	public static void setURIPrefix(String URIprefix)
 	{
+		if (URIprefix!=null && !URIprefix.endsWith("/") && !URIprefix.endsWith(":") && !URIprefix.endsWith("#")) {
+			URIprefix += "/";
+		}
 		SBOLReader.URIPrefix = URIprefix;
 	}
 
@@ -1013,13 +1016,35 @@ public class SBOLReader
 										Sbol2Terms.Usage.Usage, topLevel.getIdentity(),
 										Datatree.NamedProperties(topLevel.getProperties())));
 					}
-					else if (type
-							.getValue()
-							.toString()
-							.equals(Sbol2Terms.ComponentDefinition.ComponentDefinition.toString().replaceAll("\\{|\\}",
-									""))) {
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.ComponentDefinition.ComponentDefinition.toString().replaceAll("\\{|\\}",""))) {
 						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
 								Sbol2Terms.ComponentDefinition.ComponentDefinition, topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation.toString().replaceAll("\\{|\\}",""))) {
+						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation, topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.VariableComponent.VariableComponent.toString().replaceAll("\\{|\\}", ""))) {
+						nested.put(topLevel.getIdentity(),
+								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+										Sbol2Terms.VariableComponent.VariableComponent, topLevel.getIdentity(),
+										Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Implementation.Implementation.toString().replaceAll("\\{|\\}",""))) {
+						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								Sbol2Terms.Implementation.Implementation, topLevel.getIdentity(),
+								Datatree.NamedProperties(topLevel.getProperties())));
+					}
+					else if (type.getValue().toString()
+							.equals(Sbol2Terms.Attachment.Attachment.toString().replaceAll("\\{|\\}",""))) {
+						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+								Sbol2Terms.Attachment.Attachment, topLevel.getIdentity(),
 								Datatree.NamedProperties(topLevel.getProperties())));
 					}
 					else {
@@ -1038,6 +1063,7 @@ public class SBOLReader
 					|| topLevel.getType().equals(Sbol2Terms.Range.Range)
 					|| topLevel.getType().equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation)
 					|| topLevel.getType().equals(Sbol2Terms.SequenceConstraint.SequenceConstraint)
+					|| topLevel.getType().equals(Sbol2Terms.VariableComponent.VariableComponent)
 					|| topLevel.getType().equals(Sbol2Terms.Association.Association)
 					|| topLevel.getType().equals(Sbol2Terms.Usage.Usage)) {
 				nested.put(topLevel.getIdentity(),

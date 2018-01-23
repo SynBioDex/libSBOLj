@@ -85,6 +85,10 @@ public abstract class IdentifiedVisitor
 				for (Usage u : ((Activity)topLevel).getUsages()) {
 					visit(u,topLevel);
 				}
+			} else if (topLevel instanceof CombinatorialDerivation) {
+				for (VariableComponent v : ((CombinatorialDerivation)topLevel).getVariableComponents()) {
+					visit(v,topLevel);
+				}
 			}
 		}
 	}
