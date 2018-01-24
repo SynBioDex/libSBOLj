@@ -1878,7 +1878,7 @@ public class SBOLValidate {
 						if (version != null) {
 							outputStream.println("Updating Version to: " + version);
 						}
-						doc = doc.changeURIPrefixVersion(URIPrefix, version);
+						doc = doc.changeURIPrefixVersion(URIPrefix, version, version);
 					}
 				} else if (version != null) {
 					errorStream.println("Cannot change version without also changing the URI prefix.");

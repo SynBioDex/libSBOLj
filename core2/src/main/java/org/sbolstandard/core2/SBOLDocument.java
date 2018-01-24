@@ -2846,36 +2846,32 @@ public class SBOLDocument {
 	 * @param URIPrefix
 	 *            new URI prefix
 	 * @param version
-	 *            new version
+	 *            new version for all objects
+	 * @param defaultVersion 
+	 *            if version is null, then this version is used for only for objects without a version
 	 * @return new SBOL document with changed URI prefix
 	 * @throws SBOLValidationException
 	 *             if URIprefix or version provided is invalid
 	 */
-	public SBOLDocument changeURIPrefixVersion(String URIPrefix, String version) throws SBOLValidationException {
+	public SBOLDocument changeURIPrefixVersion(String URIPrefix, String version, String defaultVersion) throws SBOLValidationException {
 		SBOLDocument document = new SBOLDocument();
 		SBOLDocument fixed = new SBOLDocument();
 		fixed.setDefaultURIprefix(URIPrefix);
-		// if (!this.isCompliant()) {
-		// for (TopLevel toplevel : this.getTopLevels()) {
-		// String displayId = toplevel.getDisplayId();
-		// if (displayId==null) {
-		// displayId = URIcompliance.findDisplayId(toplevel.getIdentity().toString());
-		// }
-		// fixed.createCopy(toplevel,URIPrefix,displayId,version);
-		// }
-		// fixed.fixDocumentURIPrefix();
-		// } else {
-		// fixed.createCopy(this);
-		// fixed.fixDocumentURIPrefix();
-		// }
 		this.fixDocumentURIPrefix();
 		fixed.createCopy(this);
 		String documentURIPrefix = fixed.extractDocumentURIPrefix();
 		HashMap<URI, URI> uriMap = new HashMap<URI, URI>();
-		// for (TopLevel topLevel : this.getTopLevels()) {
 		for (TopLevel topLevel : fixed.getTopLevels()) {
-			fixed.rename(topLevel, URIPrefix, null, version);
-			TopLevel newTL = document.createCopy(topLevel, URIPrefix, null, version);
+			String newVersion = version;
+			if (newVersion==null) {
+				if (topLevel.isSetVersion()) {
+					newVersion = topLevel.getVersion();
+				} else {
+					newVersion = defaultVersion;
+				}
+			}
+			fixed.rename(topLevel, URIPrefix, null, newVersion);
+			TopLevel newTL = document.createCopy(topLevel, URIPrefix, null, newVersion);
 			uriMap.put(topLevel.getIdentity(), newTL.getIdentity());
 			if (!topLevel.getIdentity().equals(topLevel.getPersistentIdentity())) {
 				uriMap.put(topLevel.getPersistentIdentity(), newTL.getPersistentIdentity());
@@ -2884,7 +2880,15 @@ public class SBOLDocument {
 		document.updateReferences(uriMap);
 		for (TopLevel topLevel : document.getTopLevels()) {
 			// TODO: this is stop-gap, needs to be over all identified
-			document.changeURIPrefixVersion(topLevel, URIPrefix, version, documentURIPrefix);
+			String newVersion = version;
+			if (newVersion==null) {
+				if (topLevel.isSetVersion()) {
+					newVersion = topLevel.getVersion();
+				} else {
+					newVersion = defaultVersion;
+				}
+			}
+			document.changeURIPrefixVersion(topLevel, URIPrefix, newVersion, documentURIPrefix);
 		}
 		document.setDefaultURIprefix(URIPrefix);
 		return document;
