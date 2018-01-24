@@ -152,29 +152,21 @@ public class ComponentDefinition extends TopLevel {
 			this.addRole(URI.create(role.toString()));
 		}
 		for (Component component : componentDefinition.getComponents()) {
-			String displayId = component.getDisplayId();
-			if (displayId==null) {
-				displayId = URIcompliance.extractDisplayId(component.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(component);
 			Component newComponent = this.createComponent(displayId, 
 					component.getAccess(), component.getDefinitionURI());
 			newComponent.copy(component);
 		}
 		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
-			String displayId = sequenceConstraint.getDisplayId();
-			if (displayId==null) {
-				displayId = URIcompliance.extractDisplayId(sequenceConstraint.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(sequenceConstraint);
+			String subjectDisplayId = URIcompliance.findDisplayId(sequenceConstraint.getSubject());
+			String objectDisplayId = URIcompliance.findDisplayId(sequenceConstraint.getObject());
 			SequenceConstraint newSequenceConstraint = this.createSequenceConstraint(displayId, 
-					sequenceConstraint.getRestriction(), sequenceConstraint.getSubject().getDisplayId(),
-					sequenceConstraint.getObject().getDisplayId());
+					sequenceConstraint.getRestriction(), subjectDisplayId, objectDisplayId);
 			newSequenceConstraint.copy(sequenceConstraint);
 		}
 		for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
-			String displayId = sequenceAnnotation.getDisplayId();
-			if (displayId==null) {
-				displayId = URIcompliance.extractDisplayId(sequenceAnnotation.getIdentity());
-			}
+			String displayId = URIcompliance.findDisplayId(sequenceAnnotation);
 			SequenceAnnotation newSequenceAnnotation = this.createSequenceAnnotation(
 				displayId,"DUMMY__LOCATION");
 			newSequenceAnnotation.copy(sequenceAnnotation);
@@ -397,9 +389,28 @@ public class ComponentDefinition extends TopLevel {
 	 * @return the set of sequence URIs referenced by this component definition
 	 */
 	public Set<URI> getSequenceURIs() {
-		return sequences;
+		Set<URI> result = new HashSet<>();
+		result.addAll(sequences);
+		return result;
 	}
 
+	/**
+	 * Returns the set of sequences identities referenced by this component definition.
+	 *
+	 * @return the set of sequences identities referenced by this component definition
+	 */
+	public Set<URI> getSequenceIdentities() {
+		if (this.getSBOLDocument()==null) return null;
+		Set<URI> resolved = new HashSet<>();
+		for(URI su : sequences) {
+			Sequence seq = this.getSBOLDocument().getSequence(su);
+			if(seq != null) {
+				resolved.add(seq.getIdentity());
+			}
+		}
+		return resolved;
+	}
+	
 	/**
 	 * Returns the set of sequences referenced by this component definition.
 	 *
@@ -1076,7 +1087,7 @@ public class ComponentDefinition extends TopLevel {
 	 *
 	 * @param identity the identifier for this instance
 	 * @param access indicates whether the ComponentInstance can be referred to remotely
-	 * @param componentDefinitionURI parent ComponentDefinition
+	 * @param componentDefinitionURI definition
 	 * @return a Component instance
 	 * @throws SBOLValidationException if either of the following condition is satisfied:
 	 * <ul>
@@ -1766,8 +1777,13 @@ public class ComponentDefinition extends TopLevel {
 		if (sequences == null) {
 			if (other.sequences != null)
 				return false;
-		} else if (!sequences.equals(other.sequences))
-			return false;
+		} else if (!sequences.equals(other.sequences)) {
+			if (getSequenceIdentities().size()!=getSequenceURIs().size() ||
+					other.getSequenceIdentities().size()!=other.getSequenceURIs().size() ||
+					!getSequenceIdentities().equals(other.getSequenceIdentities())) {
+				return false;
+			}
+		}
 		if (sequenceAnnotations == null) {
 			if (other.sequenceAnnotations != null)
 				return false;

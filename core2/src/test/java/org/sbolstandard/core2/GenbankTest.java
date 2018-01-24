@@ -52,7 +52,7 @@ public class GenbankTest {
 	@Test
 	public void testParseMultilineLabelContainsSOTerm() {
 		String genbank = 
-				"LOCUS       simple      56 bp      DNA circular      29-MAR-2016" + NEWLINE +
+				"LOCUS       simple                    56 bp    DNA     circular      29-MAR-2016" + NEWLINE +
 				"FEATURES             Location/Qualifiers                        " + NEWLINE +
 				"     CDS             1..56                                      " + NEWLINE +
 				"                     /note=\"this is a very interesting and yet not studied " + NEWLINE +
@@ -81,6 +81,7 @@ public class GenbankTest {
 			assertTrue(null != doc.getSequences());
 			//assertTrue(doc.getSequences().size() == 2);
 		} catch(Exception e) {
+			e.printStackTrace();
 			assertTrue(false);
 		}
 	}
@@ -91,7 +92,8 @@ public class GenbankTest {
 	@Test
 	public void testParseMultilineLabels() {
 		String genbank = 
-				"LOCUS       simple      60 bp      DNA circular      29-MAR-2016" + NEWLINE +
+				"LOCUS       simple                    56 bp    DNA     circular      29-MAR-2016" + NEWLINE +
+				"LOCUS       simple                    60 bp    DNA     circular      29-MAR-2016" + NEWLINE +
 				"FEATURES             Location/Qualifiers                        " + NEWLINE +
 				"     CDS             1..60                                      " + NEWLINE +
 				"                     /gene=\"dnaN\"                             " + NEWLINE +

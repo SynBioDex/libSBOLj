@@ -56,11 +56,9 @@ public class Module extends Identified {
 		((Identified)this).copy((Identified)module);
 		if (!module.getMapsTos().isEmpty()) {
 			for (MapsTo mapsTo : module.getMapsTos()) {
-				String displayId = mapsTo.getDisplayId();
-				if (displayId==null) {
-					displayId = URIcompliance.extractDisplayId(mapsTo.getIdentity());
-				}
-				MapsTo newMapsTo = this.createMapsTo(displayId, mapsTo.getRefinement(), mapsTo.getLocal().getDisplayId(), 
+				String displayId = URIcompliance.findDisplayId(mapsTo);
+				String localDisplayId = URIcompliance.findDisplayId(mapsTo.getLocal());
+				MapsTo newMapsTo = this.createMapsTo(displayId, mapsTo.getRefinement(), localDisplayId, 
 						mapsTo.getRemoteURI());
 				newMapsTo.copy(mapsTo);
 			}
@@ -74,6 +72,17 @@ public class Module extends Identified {
 	 */
 	public URI getDefinitionURI() {
 		return definition;
+	}
+	
+	/**
+	 * Returns the module definition identity that this module refers to.
+	 *
+	 * @return the the module definition identity that this module refers to
+	 */
+	public URI getDefinitionIdentity() {
+		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument().getModuleDefinition(definition)==null) return null;
+		return this.getSBOLDocument().getModuleDefinition(definition).getIdentity();
 	}
 
 	/**
@@ -377,8 +386,12 @@ public class Module extends Identified {
 		if (definition == null) {
 			if (other.definition != null)
 				return false;
-		} else if (!definition.equals(other.definition))
-			return false;
+		} else if (!definition.equals(other.definition)) {
+			if (getDefinitionIdentity() == null || other.getDefinitionIdentity() == null 
+					|| !getDefinitionIdentity().equals(other.getDefinitionIdentity())) {
+				return false;
+			}
+		}
 		if (mapsTos == null) {
 			if (other.mapsTos != null)
 				return false;

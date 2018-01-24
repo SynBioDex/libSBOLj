@@ -111,7 +111,7 @@ class GenBank {
 			}
 		}
 		if (seq == null) {
-			throw new SBOLConversionException("ComponentDefintion " + componentDefinition.getIdentity() +
+			throw new SBOLConversionException("ComponentDefinition " + componentDefinition.getIdentity() +
 								" does not have an IUPAC sequence.");
 		}
 		int size = seq.getElements().length();
@@ -206,6 +206,7 @@ class GenBank {
 		if (soTerm.equals("SO:0000274")) {return String.format("%-15s", "snRNA");}
 		if (soTerm.equals("SO:0000149")) {return String.format("%-15s", "source");}
 		if (soTerm.equals("SO:0000019")) {return String.format("%-15s", "stem_loop");}
+		if (soTerm.equals("SO:0000313")) {return String.format("%-15s", "stem_loop");}
 		if (soTerm.equals("SO:0000331")) {return String.format("%-15s", "STS");}
 		if (soTerm.equals("SO:0000174")) {return String.format("%-15s", "TATA_signal");}
 		if (soTerm.equals("SO:0000141")) {return String.format("%-15s", "terminator");}
@@ -330,7 +331,7 @@ class GenBank {
 		if (genBankTerm.equals("source")) {
 			return so.getURIbyId("SO:0000149");}
 		if (genBankTerm.equals("stem_loop")) {
-			return so.getURIbyId("SO:0000019");}
+			return so.getURIbyId("SO:0000313");}
 		if (genBankTerm.equals("STS")) {
 			return so.getURIbyId("SO:0000331");}
 		if (genBankTerm.equals("TATA_signal")) {
@@ -394,7 +395,7 @@ class GenBank {
 			}
 		}
 		if (type == null) {
-			throw new SBOLConversionException("ComponentDefintion " + componentDefinition.getIdentity() +
+			throw new SBOLConversionException("ComponentDefinition " + componentDefinition.getIdentity() +
 							" is not DNA or RNA type.");
 		}
 		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,MOLECULE,GBPREFIX));
@@ -637,14 +638,17 @@ class GenBank {
 			if (a.isStringValue()) {
 				try {
 					int aInt = Integer.parseInt(a.getStringValue());
-					writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
+					writeGenBankLine(w,"                     /"+
+							a.getQName().getLocalPart()+"="+
 							aInt,80,21);
 				} catch (NumberFormatException e) {
-					writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
+					writeGenBankLine(w,"                     /"+
+							a.getQName().getLocalPart()+"="+
 							"\"" + a.getStringValue() + "\"",80,21);
 				}
 			} else if (a.isIntegerValue()) {
-				writeGenBankLine(w,"                     /"+a.getQName().getLocalPart()+"="+
+				writeGenBankLine(w,"                     /"+
+						a.getQName().getLocalPart()+"="+
 						a.getIntegerValue(),80,21);
 			}
 		}
@@ -858,6 +862,15 @@ class GenBank {
 			}
 		}
 	}
+	
+	private static String fixTag(String tag) {
+		tag = tag.replaceAll("[^a-zA-Z0-9_\\-]", "_");
+		tag = tag.replace(" ", "_");
+		if (Character.isDigit(tag.charAt(0))|| tag.charAt(0)=='-') {
+			tag = "_" + tag;
+		}
+		return tag;
+	}
 
 	/**
 	 * @param doc
@@ -880,7 +893,7 @@ class GenBank {
 	 * <li>{@link #createSubComponentDefinitions(SBOLDocument, ComponentDefinition, URI, String, String)}.</li>
 	 * </ul>
 	 */
-	static void read(SBOLDocument doc,String stringBuffer,String URIPrefix) throws IOException, SBOLConversionException, SBOLValidationException {
+	static void read(SBOLDocument doc,String stringBuffer,String URIPrefix,String defaultVersion) throws IOException, SBOLConversionException, SBOLValidationException {
 		so = new SequenceOntology();
 
 		// reset the global static variables needed for parsing
@@ -893,10 +906,13 @@ class GenBank {
 		int featureCnt = 0;
 		int refCnt = 0;
 		nextLine = null;
+		String labelType = "";
+		URI lastRole = null;
 		while (true) {
 			boolean cont = false;
 			String id = "";
-			String version = "";
+			String accession = "";
+			String version = defaultVersion;
 			featureMode = false;
 			originMode = false;
 			StringBuilder sbSequence = new StringBuilder();
@@ -915,61 +931,68 @@ class GenBank {
 				// Example:
 				// LOCUS       AF123456                1510 bp    mRNA    linear   VRT 12-APR-2012
 				if (strLine.startsWith("LOCUS")) {
-					String[] strSplit = strLine.split("\\s+");
+					//String[] strSplit = strLine.split("\\s+");
 
 					// ID of the sequence
-					id = strSplit[1];
-					annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), strSplit[1]);
+					id = strLine.substring(12, 28).trim();
+					annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), id);
+					id = URIcompliance.fixDisplayId(id);
 					annotations.add(annotation);
 
 					// Base count of the sequence
-					baseCount = Integer.parseInt(strSplit[2]);
+					int startBaseCount = strLine.substring(29,40).lastIndexOf(" ");
+					baseCount = Integer.parseInt(strLine.substring(29+startBaseCount,40).trim());
 					
 					// type of sequence
-					if (strSplit[4].toUpperCase().contains("RNA")) {
+					String seqType = strLine.substring(44,53).trim();
+					if (seqType.toUpperCase().contains("RNA")) {
 						type = ComponentDefinition.RNA;
 
 					}
-					annotation = new Annotation(new QName(GBNAMESPACE, MOLECULE, GBPREFIX), strSplit[4]);
+					annotation = new Annotation(new QName(GBNAMESPACE, MOLECULE, GBPREFIX), seqType);
 					annotations.add(annotation);
 
-					for (int i = 5; i < strSplit.length; i++) {
-
-						// linear vs. circular construct
-						if (strSplit[i].startsWith("linear") || strSplit[i].startsWith("circular")) {
-							if (strSplit[i].startsWith("circular")) circular = true;
-							//annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
-
-						} else if (strSplit[i].length()==3) {
-							annotation = new Annotation(new QName(GBNAMESPACE, DIVISION, GBPREFIX), strSplit[i]);
-
-							// date
-						} else {
-							annotation = new Annotation(new QName(GBNAMESPACE, DATE, GBPREFIX), strSplit[i]);
-						}
-
-						annotations.add(annotation);
-
+					String topology = strLine.substring(55,63).trim();
+					// linear vs. circular construct
+					if (topology.startsWith("linear") || topology.startsWith("circular")) {
+						if (topology.startsWith("circular")) circular = true;
+						//annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
 					}
+					
+					String division = strLine.substring(64,67).trim();
+					annotation = new Annotation(new QName(GBNAMESPACE, DIVISION, GBPREFIX), division);
+					annotations.add(annotation);
+
+					// date
+					String date = strLine.substring(68,79).trim();
+					annotation = new Annotation(new QName(GBNAMESPACE, DATE, GBPREFIX), date);
+					annotations.add(annotation);
 
 				} else if (strLine.startsWith("DEFINITION")) {
 					description = strLine.replaceFirst("DEFINITION  ", "");
 				} else if (strLine.startsWith("ACCESSION")) {
 					String[] strSplit = strLine.split("\\s+");
-					String accession = strSplit[1];
-					id = accession;
+					if (strSplit.length > 1) {
+						accession = strSplit[1];
+						if (accession.length()>1) {
+							id = accession;
+							id = URIcompliance.fixDisplayId(id);
+						}
+					}
 				} else if (strLine.startsWith("VERSION")) {
 					String[] strSplit = strLine.split("\\s+");
-					id = URIcompliance.fixDisplayId(id);
-					if (!id.equals(URIcompliance.fixDisplayId(strSplit[1]))) {
-						if (strSplit[1].split("\\.").length > 1) {
-							version = strSplit[1].split("\\.")[strSplit[1].split("\\.").length-1];
+					//id = URIcompliance.fixDisplayId(id);
+					if (strSplit.length > 1) {
+						if (!accession.equals(strSplit[1])) {
+							if (strSplit[1].split("\\.").length > 1) {
+								version = strSplit[1].split("\\.")[strSplit[1].split("\\.").length-1];
+							}	
+							String vId = strSplit[1].split("\\.")[0];
+							if (!accession.equals(vId)) {
+								throw new SBOLConversionException("Warning: id in version does not match id in accession");
+							}
 						}
-						String vId = URIcompliance.fixDisplayId(strSplit[1].split("\\.")[0]);
-						if (!id.equals(vId)) {
-							throw new SBOLConversionException("Warning: id in version does not match id in accession");
-						}
-					} 
+					}
 					//id = id.replaceAll("\\.", "_");
 					if (strSplit.length > 2) {
 						annotation = new Annotation(new QName(GBNAMESPACE,GINUMBER,GBPREFIX),strSplit[2]);
@@ -1101,7 +1124,47 @@ class GenBank {
 
 							// a Genbank feature label is mapped to an SBOL SequenceAnnotation
 							SequenceAnnotation sa = topCD.getSequenceAnnotation("annotation" + (featureCnt - 1));
-							if(null != sa) {
+							if(sa != null) {
+								if (tag.equals("Apeinfo_label")) {
+									sa.setName(value.replace("\"", ""));
+									labelType = "Apeinfo_label";
+								} else if (tag.equals("label")) {
+									if (!labelType.equals("Apeinfo_label")) {
+										sa.setName(value.replace("\"", ""));
+										labelType = "label";
+									}
+								} else if (tag.equals("product")) {
+									if (!labelType.equals("Apeinfo_label")&&
+											!labelType.equals("label")) {
+										sa.setName(value.replace("\"", ""));
+										labelType = "product";
+									}
+								} else if (tag.equals("gene")) {
+									if (!labelType.equals("Apeinfo_label")&&
+											!labelType.equals("label")&&
+											!labelType.equals("product")) {
+										sa.setName(value.replace("\"", ""));
+										labelType = "gene";
+									}
+								} else if (tag.equals("note")) {
+									if (!labelType.equals("Apeinfo_label")&&
+											!labelType.equals("label")&&
+											!labelType.equals("product")&&
+											!labelType.equals("gene")) {
+										sa.setName(value.replace("\"", ""));
+										labelType = "note";
+									}
+								} else if (tag.equals("organism")) {
+									if (!labelType.equals("Apeinfo_label")&&
+											!labelType.equals("label")&&
+											!labelType.equals("product")&&
+											!labelType.equals("gene")&&
+											!labelType.equals("note")) {
+										sa.setName(value.replace("\"", ""));
+										labelType = "organism";
+									}
+								}
+								tag = fixTag(tag);
 								if (value.startsWith("\"")) {
 									value = value.replaceAll("\"", "");
 									annotation = new Annotation(new QName(GBCONVNAMESPACE,tag,GBCONVPREFIX),value);
@@ -1118,10 +1181,11 @@ class GenBank {
 
 							strLine = strLine.replace(", ",",");
 							String[] strSplit = strLine.split("\\s+");
+							String featureType = strSplit[0];
 
 							// a Genbank feature is mapped to a SBOL role
 							// documented by an SO term
-							URI role = convertGenBanktoSO(strSplit[0]);
+							URI role = convertGenBanktoSO(featureType);
 //							ComponentDefinition feature =
 //									doc.createComponentDefinition("feature"+featureCnt, version, type);
 //							feature.addRole(role);
@@ -1176,6 +1240,7 @@ class GenBank {
 										sa = topCD.createSequenceAnnotation("annotation"+featureCnt,"range"+rangeCnt,
 												start,end,orientation);
 										//sa.setComponent("feature"+featureCnt);
+										sa.setName(featureType);
 										sa.addRole(role);
 										annotation = new Annotation(new QName(GBCONVNAMESPACE,MULTIRANGETYPE,GBCONVPREFIX),multiType);
 										sa.addAnnotation(annotation);
@@ -1210,6 +1275,7 @@ class GenBank {
 										topCD.createSequenceAnnotation("annotation"+featureCnt,"cut",at,orientation);
 								//sa.setComponent("feature"+featureCnt);
 								sa.addRole(role);
+								sa.setName(featureType);
 							} else {
 								boolean startLessThan=false;
 								boolean endGreaterThan=false;
@@ -1239,9 +1305,10 @@ class GenBank {
 											topCD.createSequenceAnnotation("annotation"+featureCnt,"range0",start,baseCount,orientation);
 									//sa.setComponent("feature"+featureCnt);
 									sa.addRole(role);
+									sa.setName(featureType);
 									annotation = new Annotation(new QName(GBCONVNAMESPACE,STRADLESORIGIN,GBCONVPREFIX),"true");
 									sa.addAnnotation(annotation);
-									Range newRange = (Range)sa.getLocation("range");
+									Range newRange = (Range)sa.getLocation("range0");
 									if (startLessThan) {
 										annotation = new Annotation(new QName(GBCONVNAMESPACE,STARTLESSTHAN,GBCONVPREFIX),"true");
 										newRange.addAnnotation(annotation);
@@ -1264,6 +1331,7 @@ class GenBank {
 											topCD.createSequenceAnnotation("annotation"+featureCnt,"range",start,end,orientation);
 									//sa.setComponent("feature"+featureCnt);
 									sa.addRole(role);
+									sa.setName(featureType);
 									Range newRange = (Range)sa.getLocation("range");
 									if (startLessThan) {
 										annotation = new Annotation(new QName(GBCONVNAMESPACE,STARTLESSTHAN,GBCONVPREFIX),"true");
@@ -1279,7 +1347,8 @@ class GenBank {
 									}
 								}
 							}
-
+							labelType = "";
+							lastRole = role;
 							featureCnt++;
 
 						}
@@ -1289,6 +1358,10 @@ class GenBank {
 						 * SEQUENCE MODE
 						 *---------------------*/
 					} else if (originMode) {
+						if (featureCnt==1) {
+							topCD.clearRoles();
+							topCD.addRole(lastRole);
+						}
 						if(elements == null) { elements = new String(""); }
 						if (strLine.startsWith("//")) {
 							cont = true;

@@ -1,7 +1,6 @@
 package org.sbolstandard.core2;
 
 import static org.junit.Assert.assertTrue;
-
 import java.io.ByteArrayInputStream;
 
 import org.junit.Test;

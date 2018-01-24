@@ -41,68 +41,6 @@ public class SequenceOntology {
 	 */
 	public static final URI NAMESPACE = URI.create(URI_PREFIX);
 
-	/*
-	public static String getTerm(URI uri) {
-
-		// if the SO terms have not been loaded,
-		// then load them now
-		if(null == so) {
-			loadSO();
-		}
-
-
-		// EO: is there a more efficient solution?
-		// the answer will depend on the answer to the question above
-		if(so.containsValue(uri) && null != uri) {
-			// here, we need to iterate over the SO terms
-			for(String term : so.keySet()) {
-				// if the URI of the current SO term matches the provided URI,
-				// then we return the term
-				if(so.get(term).toString().equalsIgnoreCase(uri.toString())) {
-					return term;
-				}
-			}
-		}
-
-		return null;
-	}
-
-	public static URI getURI(String term) {
-		// if the SO terms have not been loaded,
-		// then load them now
-		if(null == so) {
-			loadSO();
-		}
-
-		if(null != term) {
-			return so.get(term.toUpperCase());
-		}
-
-		return null;
-	}
-
-	private static void loadSO() {
-
-		// this needs to be enhanced, of course
-		so = new HashMap<>();
-
-		// types
-		so.put("DNA", URI.create(URI_PREFIX + "SO:0000352"));
-		so.put("PROTEIN", URI.create(URI_PREFIX + "SO:0001217"));
-		so.put("COMPLEX", URI.create(URI_PREFIX + "SO:0001784"));
-		so.put("GENE", URI.create(URI_PREFIX + "SO:0000704"));
-		so.put("SMALL MOLECULE", URI.create(URI_PREFIX + "SO:0001854"));
-
-
-		// sequence types
-		so.put("PROMOTER", PROMOTER);
-		so.put("RBS", URI.create(URI_PREFIX + "SO:0000139"));
-		so.put("TRANSCRIPT", URI.create(URI_PREFIX + "SO:0000673"));
-		so.put("CDS", URI.create(URI_PREFIX + "SO:0000673"));
-		so.put("TERMINATOR", URI.create(URI_PREFIX + "SO:0000673"));
-
-	}
-	 */
 	private static OBOOntology sequenceOntology = null;
 	
 	/**
@@ -471,7 +409,7 @@ public class SequenceOntology {
 
 	/**
 	 * Region in mRNA where ribosome assembles (<a
-	 * href="http://identifiers.org/so/SO:0000139">SO:0000193</a>)
+	 * href="http://identifiers.org/so/SO:0000139">SO:0000139</a>)
 	 */
 	public static final URI RIBOSOME_ENTRY_SITE = type("SO:0000139");
 

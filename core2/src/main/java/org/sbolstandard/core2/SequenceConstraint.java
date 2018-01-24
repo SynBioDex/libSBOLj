@@ -121,6 +121,15 @@ public class SequenceConstraint extends Identified {
 		if (restriction==null) {
 			throw new SBOLValidationException("sbol-11407",this);
 		}
+		if (restriction.equals(RestrictionType.DIFFERENT_FROM)) {
+			if (componentDefinition != null && subject != null && object != null) {
+				if (componentDefinition.getComponent(object).getDefinitionURI()
+						.equals(componentDefinition.getComponent(subject).getDefinitionURI())) {
+					throw new SBOLValidationException("sbol-11413", this);
+				}
+			}
+		}
+
 		try {
 			this.restriction = RestrictionType.convertToURI(restriction);
 		} catch (SBOLValidationException e) {
@@ -149,7 +158,19 @@ public class SequenceConstraint extends Identified {
 	public URI getSubjectURI() {
 		return subject;
 	}
-
+	
+	/**
+	 * Returns the subject component identity this sequence constraint refers to.
+	 * <p>
+	 * If this sequence constraint's parent component definition is {@code null}, this method returns {@code null}.
+	 * Otherwise, it returns its child component which is also referenced by this sequence constraint.
+	 * @return the subject component identity this sequence constraint refers to
+	 */
+	public URI getSubjectIdentity() {
+		if (componentDefinition==null) return null;
+		if (componentDefinition.getComponent(subject)==null) return null;
+		return componentDefinition.getComponent(subject).getIdentity();
+	}
 
 	/**
 	 * Returns the subject component this sequence constraint refers to.
@@ -196,6 +217,14 @@ public class SequenceConstraint extends Identified {
 		if (subjectURI.equals(object)) {
 			throw new SBOLValidationException("sbol-11406", this);
 		}
+		if (RestrictionType.convertToRestrictionType(restriction).equals(RestrictionType.DIFFERENT_FROM)) {
+			if (componentDefinition != null && object != null) {
+				if (componentDefinition.getComponent(subjectURI).getDefinitionURI()
+						.equals(componentDefinition.getComponent(object).getDefinitionURI())) {
+					throw new SBOLValidationException("sbol-11413", this);
+				}
+			}
+		}
 		this.subject = subjectURI;
 	}
 
@@ -206,6 +235,20 @@ public class SequenceConstraint extends Identified {
 	 */
 	public URI getObjectURI() {
 		return object;
+	}
+	
+	/**
+	 * Returns the object component identity this sequence constraint refers to.
+	 * <p>
+	 * If this sequence constraint's parent component definition is {@code null}, this method returns {@code null}.
+	 * Otherwise, it returns its child component which is also referenced by this sequence constraint.
+	 * 
+	 * @return the object component identity this sequence constraint refers to
+	 */
+	public URI getObjectIdentity() {
+		if (componentDefinition==null) return null;
+		if (componentDefinition.getComponent(object)==null) return null;
+		return componentDefinition.getComponent(object).getIdentity();
 	}
 	
 	/**
@@ -254,6 +297,14 @@ public class SequenceConstraint extends Identified {
 		if (objectURI==subject) {
 			throw new SBOLValidationException("sbol-11402", this);
 		}
+		if (RestrictionType.convertToRestrictionType(restriction).equals(RestrictionType.DIFFERENT_FROM)) {
+			if (componentDefinition != null && subject != null) {
+				if (componentDefinition.getComponent(objectURI).getDefinitionURI()
+						.equals(componentDefinition.getComponent(subject).getDefinitionURI())) {
+					throw new SBOLValidationException("sbol-11413", this);
+				}
+			}
+		}
 		this.object = objectURI;
 	}
 
@@ -276,17 +327,25 @@ public class SequenceConstraint extends Identified {
 		if (getClass() != obj.getClass())
 			return false;
 		SequenceConstraint other = (SequenceConstraint) obj;
-		if (object == null) {
-			if (other.object != null)
-				return false;
-		} else if (!object.equals(other.object))
-			return false;
-		if (!restriction.equals(other.restriction))
-			return false;
 		if (subject == null) {
 			if (other.subject != null)
 				return false;
-		} else if (!subject.equals(other.subject))
+		} else if (!subject.equals(other.subject)) {
+			if (getSubjectIdentity() == null || other.getSubjectIdentity() == null 
+					|| !getSubjectIdentity().equals(other.getSubjectIdentity())) {
+				return false;
+			}
+		}
+		if (object == null) {
+			if (other.object != null)
+				return false;
+		} else if (!object.equals(other.object)) {
+			if (getObjectIdentity() == null || other.getObjectIdentity() == null 
+					|| !getObjectIdentity().equals(other.getObjectIdentity())) {
+				return false;
+			}
+		}
+		if (!restriction.equals(other.restriction))
 			return false;
 		return true;
 	}

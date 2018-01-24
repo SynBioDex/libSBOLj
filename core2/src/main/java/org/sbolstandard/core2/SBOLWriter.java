@@ -330,6 +330,9 @@ public class SBOLWriter
 		for (URI wasDerivedFrom : t.getWasDerivedFroms()) {
 			list.add(NamedProperty(Sbol2Terms.Identified.wasDerivedFrom, wasDerivedFrom));
 		}
+		for (URI wasGeneratedBy : t.getWasGeneratedBys()) {
+			list.add(NamedProperty(Sbol2Terms.Identified.wasGeneratedBy, wasGeneratedBy));
+		}
 		if(t.isSetName())
 			list.add(NamedProperty(Sbol2Terms.Identified.title, t.getName()));
 		if(t.isSetDescription())
@@ -344,8 +347,101 @@ public class SBOLWriter
 	private static void formatCommonTopLevelData (List<NamedProperty<QName>> list, TopLevel t)
 	{
 		formatCommonIdentifiedData(list,t);
+		for(URI attachment : t.getAttachmentURIs()) {
+			list.add(NamedProperty(Sbol2Terms.TopLevel.hasAttachment, attachment));
+		}
+	}
+	
+	private static void formatWasInformedByProperties(Set<URI> wasInformedBys, List<NamedProperty<QName>> list)
+	{
+		for(URI wib : wasInformedBys)
+		{
+			list.add(NamedProperty(Sbol2Terms.Activity.wasInformedBy, wib));
+		}
 	}
 
+	private static void formatActivities (Set<Activity> activities, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+
+		for(Activity activity : activities)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+
+			formatCommonTopLevelData(list,activity);
+			if (activity.isSetStartedAtTime()) {
+				list.add(NamedProperty(Sbol2Terms.Activity.startedAtTime, activity.getStartedAtTime().toString()));
+			}
+			if (activity.isSetEndedAtTime()) {
+				list.add(NamedProperty(Sbol2Terms.Activity.endedAtTime, activity.getEndedAtTime().toString()));
+			}
+			formatAssociations(activity.getAssociations(),list);
+			formatUsages(activity.getUsages(),list);
+			formatWasInformedByProperties(activity.getWasInformedByURIs(),list);
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Activity.Activity, activity.getIdentity(), NamedProperties(list)));
+		}
+	}
+	
+	private static void formatAssociations(Set<Association> associations, List<NamedProperty<QName>> properties)
+	{
+		for(Association association : associations)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonIdentifiedData(list, association);
+			for (URI role : association.getRoles())
+			{
+				list.add(NamedProperty(Sbol2Terms.Association.role, role));
+			}
+			list.add(NamedProperty(Sbol2Terms.Association.agent, association.getAgentURI()));
+			if (association.isSetPlan()) {
+				list.add(NamedProperty(Sbol2Terms.Association.plan, association.getPlanURI()));
+			}
+			properties.add(NamedProperty(Sbol2Terms.Activity.qualifiedAssociation,
+					NestedDocument( Sbol2Terms.Association.Association,
+							association.getIdentity(), NamedProperties(list))));
+		}
+	}
+	
+	private static void formatUsages(Set<Usage> usages, List<NamedProperty<QName>> properties)
+	{
+		for(Usage usage : usages)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonIdentifiedData(list, usage);
+			for (URI role : usage.getRoles())
+			{
+				list.add(NamedProperty(Sbol2Terms.Usage.role, role));
+			}
+			list.add(NamedProperty(Sbol2Terms.Usage.entity, usage.getEntityURI()));
+			properties.add(NamedProperty(Sbol2Terms.Activity.qualifiedUsage,
+					NestedDocument( Sbol2Terms.Usage.Usage,
+							usage.getIdentity(), NamedProperties(list))));
+		}
+	}
+	
+	private static void formatPlans (Set<Plan> plans, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+
+		for(Plan plan : plans)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+
+			formatCommonTopLevelData(list,plan);
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Plan.Plan, plan.getIdentity(), NamedProperties(list)));
+		}
+	}
+	
+	private static void formatAgents (Set<Agent> agents, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+
+		for(Agent agent : agents)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+
+			formatCommonTopLevelData(list,agent);
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Agent.Agent, agent.getIdentity(), NamedProperties(list)));
+		}
+	}
+	
 	private static void formatComponentDefinitions (Set<ComponentDefinition> componentDefinitions, List<TopLevelDocument<QName>> topLevelDoc)
 	{
 
@@ -369,6 +465,38 @@ public class SBOLWriter
 				formatSequence(sUri, list);
 
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ComponentDefinition.ComponentDefinition, c.getIdentity(), NamedProperties(list)));
+		}
+	}
+	
+	private static void formatCombinatorialDerivation(Set<CombinatorialDerivation> combinatorialDerivations, List<TopLevelDocument<QName>> topLevelDoc) {
+		for(CombinatorialDerivation combinatorialDerivation : combinatorialDerivations) {
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			
+			formatCommonTopLevelData(list, combinatorialDerivation);
+						
+			list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.template, combinatorialDerivation.getTemplateURI()));
+			if (combinatorialDerivation.isSetStrategy()) {
+				list.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.strategy, StrategyType.convertToURI(combinatorialDerivation.getStrategy())));
+			}
+			formatVariableComponents(combinatorialDerivation.getVariableComponents(), list);
+			
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation, 
+					combinatorialDerivation.getIdentity(), NamedProperties(list)));
+		}
+	}
+	
+	private static void formatImplementation(Set<Implementation> implementations, List<TopLevelDocument<QName>> topLevelDoc) {
+		for(Implementation implementation : implementations) {
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			
+			formatCommonTopLevelData(list, implementation);
+						
+			if (implementation.isSetBuilt()) {
+				list.add(NamedProperty(Sbol2Terms.Implementation.built, implementation.getBuiltURI()));
+			}
+			
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Implementation.Implementation, 
+					implementation.getIdentity(), NamedProperties(list)));
 		}
 	}
 
@@ -439,6 +567,26 @@ public class SBOLWriter
 			list.add(NamedProperty(Sbol2Terms.Model.language, m.getLanguage()));
 			list.add(NamedProperty(Sbol2Terms.Model.framework, m.getFramework()));
 			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Model.Model, m.getIdentity(), NamedProperties(list)));
+		}
+	}
+
+	private static void formatAttachments (Set<Attachment> attachments, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+		for(Attachment attachment : attachments)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonTopLevelData(list,attachment);
+			list.add(NamedProperty(Sbol2Terms.Attachment.source, attachment.getSource()));
+			if (attachment.isSetFormat()) {
+				list.add(NamedProperty(Sbol2Terms.Attachment.format, attachment.getFormat()));
+			}
+			if (attachment.isSetSize()) {
+				list.add(NamedProperty(Sbol2Terms.Attachment.size, String.valueOf(attachment.getSize())));
+			}
+			if (attachment.isSetHash()) {
+				list.add(NamedProperty(Sbol2Terms.Attachment.hash, attachment.getHash()));
+			}
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Attachment.Attachment, attachment.getIdentity(), NamedProperties(list)));
 		}
 	}
 
@@ -576,7 +724,7 @@ public class SBOLWriter
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, s);
 			for (URI roles : s.getRoles())
-			{
+			{ 
 				list.add(NamedProperty(Sbol2Terms.Component.roles, roles));
 			}
 			if (s.isSetRoleIntegration()) {
@@ -592,6 +740,35 @@ public class SBOLWriter
 			properties.add(NamedProperty(Sbol2Terms.ComponentDefinition.hasComponent,
 					NestedDocument( Sbol2Terms.Component.Component,
 							s.getIdentity(), NamedProperties(list))));
+		}
+	}
+	
+	private static void formatVariableComponents(Set<VariableComponent> variableComponents,
+			List<NamedProperty<QName>> properties)
+	{
+		for(VariableComponent variableComponent : variableComponents)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonIdentifiedData(list, variableComponent);
+
+			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariable, variableComponent.getVariableURI()));
+			list.add(NamedProperty(Sbol2Terms.VariableComponent.hasOperator, OperatorType.convertToURI(variableComponent.getOperator())));
+			
+			for(URI variant : variableComponent.getVariantURIs()) {
+				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariants, variant));
+			}
+			
+			for(URI variantCollection : variableComponent.getVariantCollectionURIs()) {
+				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariantCollections, variantCollection));
+			}
+			
+			for(URI variantDerivation : variableComponent.getVariantDerivationURIs()) {
+				list.add(NamedProperty(Sbol2Terms.VariableComponent.hasVariantDerivations, variantDerivation));
+			}
+			
+			properties.add(NamedProperty(Sbol2Terms.CombinatorialDerivation.hasVariableComponent,
+					NestedDocument(Sbol2Terms.VariableComponent.VariableComponent,
+							variableComponent.getIdentity(), NamedProperties(list))));
 		}
 	}
 
@@ -968,8 +1145,15 @@ public class SBOLWriter
 		formatModels(doc.getModels(), topLevelDoc);
 		formatComponentDefinitions(doc.getComponentDefinitions(), topLevelDoc);
 		formatSequences(doc.getSequences(), topLevelDoc);
+		formatActivities(doc.getActivities(), topLevelDoc);
+		formatAgents(doc.getAgents(), topLevelDoc);
+		formatPlans(doc.getPlans(), topLevelDoc);
 		formatGenericTopLevel(doc.getGenericTopLevels(), topLevelDoc);
+		formatCombinatorialDerivation(doc.getCombinatorialDerivations(), topLevelDoc);
+		formatImplementation(doc.getImplementations(), topLevelDoc);
+		formatAttachments(doc.getAttachments(), topLevelDoc);
 		return topLevelDoc;
 	}
 
 }
+

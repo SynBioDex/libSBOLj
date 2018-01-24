@@ -64,6 +64,17 @@ public class Participation extends Identified {
 	public URI getParticipantURI() {
 		return participant;
 	}
+	
+	/**
+	 * Returns the functional component identity this participation refers to.
+	 *
+	 * @return the functional component identity this participation refers to
+	 */
+	public URI getParticipantIdentity() {
+		if (moduleDefinition==null) return null;
+		if (moduleDefinition.getFunctionalComponent(participant)==null) return null;
+		return moduleDefinition.getFunctionalComponent(participant).getIdentity();
+	}
 
 	/**
 	 * Returns the functional component this participation refers to.
@@ -211,6 +222,41 @@ public class Participation extends Identified {
 	 */
 	void setModuleDefinition(ModuleDefinition moduleDefinition) {
 		this.moduleDefinition = moduleDefinition;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Participation other = (Participation) obj;
+		if (participant == null) {
+			if (other.participant != null)
+				return false;
+		} else if (!participant.equals(other.participant)) {
+			if (getParticipantIdentity() == null || other.getParticipantIdentity() == null 
+					|| !getParticipantIdentity().equals(other.getParticipantIdentity())) {
+				return false;
+			}
+		}
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
+			return false;
+		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((participant == null) ? 0 : participant.hashCode());
+		result = prime * result + ((roles == null) ? 0 : roles.hashCode());
+		return result;
 	}
 
 	@Override

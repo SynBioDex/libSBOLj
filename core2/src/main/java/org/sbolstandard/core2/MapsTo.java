@@ -98,6 +98,22 @@ public class MapsTo extends Identified{
 	public URI getLocalURI() {
 		return local;
 	}
+	
+	/**
+	 * Returns this mapsTo's local component instance identity. 
+	 *
+	 * @return the this mapsTo's local component instance identity
+	 */
+	public URI getLocalIdentity() {
+		if (moduleDefinition!=null) {
+			if (moduleDefinition.getFunctionalComponent(local)==null) return null;
+			return moduleDefinition.getFunctionalComponent(local).getIdentity();
+		} else if (componentDefinition!=null) {
+			if (componentDefinition.getComponent(local)==null) return null;
+			return componentDefinition.getComponent(local).getIdentity();
+		}
+		return null;
+	}
 
 	/**
 	 * Returns this mapsTo's local component instance. 
@@ -157,6 +173,24 @@ public class MapsTo extends Identified{
 
 	public URI getRemoteURI() {
 		return remote;
+	}
+	
+	/**
+	 * Returns this mapsTo's remote component instance identity.
+	 *
+	 * @return this mapsTo's remote component instance identity
+	 */
+	public URI getRemoteIdentity() {
+		if (module!=null) {
+			if (module.getDefinition()==null) return null;
+			if (module.getDefinition().getFunctionalComponent(remote)==null) return null;
+			return module.getDefinition().getFunctionalComponent(remote).getIdentity();
+		} else if (componentInstance!=null) {
+			if (componentInstance.getDefinition()==null) return null;
+			if (componentInstance.getDefinition().getComponent(remote)==null) return null;
+			return componentInstance.getDefinition().getComponent(remote).getIdentity();
+		}
+		return null;
 	}
 
 	/**
@@ -246,14 +280,22 @@ public class MapsTo extends Identified{
 		if (local == null) {
 			if (other.local != null)
 				return false;
-		} else if (!local.equals(other.local))
-			return false;
-		if (refinement != other.refinement)
-			return false;
+		} else if (!local.equals(other.local)) {
+			if (getLocalIdentity() == null || other.getLocalIdentity() == null 
+					|| !getLocalIdentity().equals(other.getLocalIdentity())) {
+				return false;
+			}
+		}
 		if (remote == null) {
 			if (other.remote != null)
 				return false;
-		} else if (!remote.equals(other.remote))
+		} else if (!remote.equals(other.remote)) {
+			if (getRemoteIdentity() == null || other.getRemoteIdentity() == null 
+					|| !getRemoteIdentity().equals(other.getRemoteIdentity())) {
+				return false;
+			}
+		}
+		if (refinement != other.refinement)
 			return false;
 		return true;
 	}

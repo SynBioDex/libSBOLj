@@ -32,7 +32,12 @@ public enum RestrictionType {
 	 * of the Location objects of one SequenceAnnotation MUST NOT be represented
 	 * among those of the other SequenceAnnotation.  
 	 */
-	OPPOSITE_ORIENTATION_AS("oppositeOrienationAs");
+	OPPOSITE_ORIENTATION_AS("oppositeOrienationAs"),
+	/**
+	 * The definition property of the subject Component MUST NOT refer to the same 
+	 * ComponentDefinition as that of the object Component.
+	 */
+	DIFFERENT_FROM("differentFrom");
 	
 	private final String restrictionType;
 
@@ -59,6 +64,8 @@ public enum RestrictionType {
 				return RestrictionType.SAME_ORIENTATION_AS;
 			} else if (restriction.equals(oppositeOrientationAs)) {
 				return RestrictionType.OPPOSITE_ORIENTATION_AS;
+			} else if (restriction.equals(differentFrom)) {
+				return RestrictionType.DIFFERENT_FROM;
 			} 
 			else {
 				throw new SBOLValidationException("sbol-11412");
@@ -81,18 +88,21 @@ public enum RestrictionType {
 				return sameOrientationAs;
 			} else if (restriction.equals(RestrictionType.OPPOSITE_ORIENTATION_AS)) {
 				return oppositeOrientationAs;
+			} else if (restriction.equals(RestrictionType.DIFFERENT_FROM)) {
+				return differentFrom;
 			} 
 			else {
-				throw new SBOLValidationException("sbol-11412");
+				return null;
 			}
 		}
 		else {
-			throw new SBOLValidationException("sbol-11412");
+			return null;
 		}
 	}
 	
 	private static final URI precedes = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "precedes");
 	private static final URI sameOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "sameOrientationAs");
 	private static final URI oppositeOrientationAs = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "oppositeOrientationAs");
+	private static final URI differentFrom = URI.create(Sbol2Terms.sbol2.getNamespaceURI() + "differentFrom");
 
 }

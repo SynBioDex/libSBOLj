@@ -40,6 +40,9 @@ final class URIcompliance {
 		if (prefix == null) {
 			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");
 		}
+		if (displayId==null) {
+			throw new SBOLValidationException("sbol-10204");
+		}
 		validateIdVersion(displayId, version);
 		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
 			prefix += "/";
@@ -67,6 +70,9 @@ final class URIcompliance {
 		if (prefix == null) {
 			throw new IllegalArgumentException("The defaultURIprefix is not set. Please set it to a non-null value");
 		}
+		if (displayId==null) {
+			throw new SBOLValidationException("sbol-10204");
+		}
 		validateIdVersion(displayId, version);
 		if (!useType) return createCompliantURI(prefix,displayId,version);
 		if (!prefix.endsWith("/") && !prefix.endsWith(":") && !prefix.endsWith("#")) {
@@ -85,8 +91,7 @@ final class URIcompliance {
 	 */
 	static String extractPersistentId(URI objURI) {
 		String URIstr = objURI.toString();
-		Pattern r = Pattern.compile(genericURIpattern1);
-		Matcher m = r.matcher(URIstr);
+		Matcher m = genericURIpattern1Pat.matcher(URIstr);
 		if (m.matches()) {
 			return m.group(1);
 		}
@@ -103,8 +108,7 @@ final class URIcompliance {
 	 */
 	static String extractURIprefix(URI objURI) {
 		String URIstr = objURI.toString();
-		Pattern r = Pattern.compile(genericURIpattern1b);
-		Matcher m = r.matcher(URIstr);
+		Matcher m = genericURIpattern1bPat.matcher(URIstr);
 		if (m.matches())
 			return m.group(2);
 		else
@@ -116,10 +120,23 @@ final class URIcompliance {
 	 * 
 	 * @return the extracted URI prefix
 	 */
+	static String extractSimpleNamespace(URI objURI) {
+		String URIstr = objURI.toString();
+		Matcher m = genericURIpattern1Pat.matcher(URIstr);
+		if (m.matches())
+			return m.group(2);
+		else
+			return null;
+	}
+	
+	/**
+	 * Extract the URI prefix from this object's identity URI.
+	 * 
+	 * @return the extracted URI prefix
+	 */
 	static String extractNamespace(URI objURI) {
 		String URIstr = objURI.toString();
-		Pattern r = Pattern.compile(namespacePattern);
-		Matcher m = r.matcher(URIstr);
+		Matcher m = namespacePatternPat.matcher(URIstr);
 		if (m.matches())
 			return m.group(2);
 		else
@@ -134,8 +151,7 @@ final class URIcompliance {
 	 */
 	static String extractDisplayId(URI objURI) {
 		String URIstr = objURI.toString();
-		Pattern r = Pattern.compile(genericURIpattern1);
-		Matcher m = r.matcher(URIstr);
+		Matcher m = genericURIpattern1Pat.matcher(URIstr);
 		if (m.matches()) {
 			return m.group(4);
 		}
@@ -150,8 +166,7 @@ final class URIcompliance {
 	 */
 	static String extractVersion(URI objURI) {
 		String URIstr = objURI.toString();
-		Pattern r = Pattern.compile(genericURIpattern1);
-		Matcher m = r.matcher(URIstr);
+		Matcher m = genericURIpattern1Pat.matcher(URIstr);
 		if (m.matches() && m.groupCount()>=6)
 			return m.group(6);
 		else
@@ -362,21 +377,18 @@ final class URIcompliance {
 
 	static boolean isDisplayIdValid(String newDisplayId) {
 		if (newDisplayId==null) return false;
-		Pattern r = Pattern.compile(displayIDpattern);
-		Matcher m = r.matcher(newDisplayId);
+		Matcher m = displayIDpatternPat.matcher(newDisplayId);
 		return m.matches();
 	}
 
 	static boolean isVersionValid(String version) {
 		if (version.equals("")) return true;
-		Pattern r = Pattern.compile(versionPattern);
-		Matcher m = r.matcher(version);
+		Matcher m = versionPatternPat.matcher(version);
 		return m.matches();
 	}
 
 	static boolean isURIprefixCompliant(String URIprefix) {
-		Pattern r = Pattern.compile(URIprefixPattern+delimiter);
-		Matcher m = r.matcher(URIprefix);
+		Matcher m = URIprefixPatternPat.matcher(URIprefix);
 		return m.matches();
 	}
 	
@@ -395,23 +407,37 @@ final class URIcompliance {
 	//static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#%?=~_|!:,.;]*[-a-zA-Z0-9+&@#%=~_|]";
 	
 	private static final String delimiter = "[/|#|:]";
-			
-	private static final String URIprefixPattern = "\\b(?:https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+	
+	private static final String protocol = "(?:https?|ftp|file)://";
+
+	private static final String URIprefixPattern = "\\b(?:"+protocol+")?[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
+	private static final Pattern URIprefixPatternPat = Pattern.compile(URIprefixPattern + delimiter);
 
 	private static final String displayIDpattern = "[a-zA-Z_]+[a-zA-Z0-9_]*";//"[a-zA-Z0-9_]+";
 
+	private static final Pattern displayIDpatternPat = Pattern.compile(displayIDpattern);
+
 	private static final String versionPattern = "[0-9]+[a-zA-Z0-9_\\.-]*"; // ^ and $ are the beginning and end of the string anchors respectively. 
 															// | is used to denote alternates. 
+
+	private static final Pattern versionPatternPat = Pattern.compile(versionPattern);
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: persistent ID
 	// group 2: URI prefix
 	// group 3: version
-	private static final String genericURIpattern1 = "((" + URIprefixPattern + ")(" + delimiter+"(" + displayIDpattern + ")){1,3})(/(" + versionPattern + "))?";
+	private static final String genericURIpattern1 = "((" + URIprefixPattern + ")(" + delimiter+"(" + displayIDpattern + ")))(/(" + versionPattern + "))?";
 
-	private static final String genericURIpattern1b = "((" + URIprefixPattern + delimiter+")(" + displayIDpattern + "){1,3})(/(" + versionPattern + "))?";
+	private static final Pattern genericURIpattern1Pat = Pattern.compile(genericURIpattern1);
+	
+	private static final String genericURIpattern1b = "((" + URIprefixPattern + delimiter+")(" + displayIDpattern + "))(/(" + versionPattern + "))?";
 
-	private static final String namespacePattern = "((" + URIprefixPattern + delimiter + ")(" + displayIDpattern + "){1,3})(/(" + versionPattern + "))?";
+	private static final Pattern genericURIpattern1bPat = Pattern.compile(genericURIpattern1b);
+
+	private static final String namespacePattern = "((" + URIprefixPattern + delimiter + ")(" + displayIDpattern + "))(/(" + versionPattern + "))?";
+
+	private static final Pattern namespacePatternPat = Pattern.compile(namespacePattern);
 
 	// A URI can have up to 4 display IDs. The one with 4 display IDs can be ComponentDefinition -> SequenceAnnotation -> (Location) MultiRange -> Range.
 	// group 1: top-level display ID
@@ -471,6 +497,41 @@ final class URIcompliance {
 		if (Character.isDigit(displayId.charAt(0))) {
 			displayId = "_" + displayId;
 		}
+		return displayId;
+	}
+	
+	static String findDisplayId(Identified identified) {
+		String displayId = extractDisplayId(identified.getIdentity());
+		if (displayId!=null) return displayId;
+		if (identified.isSetDisplayId()) return identified.getDisplayId();
+		return findDisplayId(identified.getIdentity().toString());
+	}
+
+	static String findDisplayId(String topLevelIdentity) {
+		String displayId = null;
+	
+		topLevelIdentity = topLevelIdentity.trim();
+		while (topLevelIdentity.endsWith("/")||
+				topLevelIdentity.endsWith("#")||
+				topLevelIdentity.endsWith(":")) {
+			topLevelIdentity = topLevelIdentity.replaceAll("/$","");
+			topLevelIdentity = topLevelIdentity.replaceAll("#$","");
+			topLevelIdentity = topLevelIdentity.replaceAll(":$","");
+		}
+		int slash = topLevelIdentity.lastIndexOf('/');
+		int pound = topLevelIdentity.lastIndexOf('#');
+		int colon = topLevelIdentity.lastIndexOf(':');
+	
+		if (slash!=-1 /*&& slash > pound && slash > colon*/) {
+			displayId = topLevelIdentity.substring(slash + 1);
+		} else if (pound!=-1 && pound > colon) {
+			displayId = topLevelIdentity.substring(pound + 1);
+		} else if (colon!=-1) {
+			displayId = topLevelIdentity.substring(colon + 1);
+		} else {
+			displayId = topLevelIdentity.toString();
+		}
+		displayId = fixDisplayId(displayId);
 		return displayId;
 	}
 }

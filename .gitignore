@@ -17,3 +17,5 @@
 **/.project
 .git
 .project
+.DS_Store
+docs/.DS_Store

@@ -29,6 +29,27 @@ class Sbol2Terms
 		static final QName Description = rdf.withLocalPart("Description");
 		static final QName type = rdf.withLocalPart("type");
 	}
+	
+	/**
+	 * A group of qualified terms for Activity related SBOL objects
+	 *
+	 */
+	static final class Activity {
+		static final QName Activity = prov.withLocalPart("Activity");
+		static final QName startedAtTime   = prov.withLocalPart("startedAtTime");
+		static final QName endedAtTime	   = prov.withLocalPart("endedAtTime");
+		static final QName wasInformedBy   = prov.withLocalPart("wasInformedBy");
+		static final QName qualifiedAssociation = prov.withLocalPart("qualifiedAssociation");
+		static final QName qualifiedUsage  = prov.withLocalPart("qualifiedUsage");
+	}
+	
+	/**
+	 * A group of qualified terms for Agent related SBOL objects
+	 *
+	 */
+	static final class Agent {
+		static final QName Agent = prov.withLocalPart("Agent");
+	}
 
 	/**
 	 * A group of qualified terms for Annotation related SBOL objects
@@ -38,6 +59,17 @@ class Sbol2Terms
 		static final QName Annotation = sbol2.withLocalPart("Annotation");
 		static final QName relation   = sbol2.withLocalPart("relation");
 		static final QName value	     = sbol2.withLocalPart("value");
+	}
+	
+	/**
+	 * A group of qualified terms for Association related SBOL objects
+	 *
+	 */
+	static final class Association {
+		static final QName Association = prov.withLocalPart("Association");
+		static final QName role = prov.withLocalPart("hadRole");
+		static final QName plan = prov.withLocalPart("hadPlan");
+		static final QName agent = prov.withLocalPart("agent");
 	}
 
 	/**
@@ -83,9 +115,54 @@ class Sbol2Terms
 		static final QName ComponentInstance 	   = sbol2.withLocalPart("componentInstance");
 		static final QName access 				   = sbol2.withLocalPart("access");
 		static final QName hasMapsTo 		   	   = sbol2.withLocalPart("mapsTo");
-		static final QName hasComponentDefinition   = sbol2.withLocalPart("definition");
+		static final QName hasComponentDefinition  = sbol2.withLocalPart("definition");
 	}
 
+	/**
+	 * A group of qualified terms for Combinatorial Derivation related SBOL objects
+	 *
+	 */
+	static final class CombinatorialDerivation {
+		static final QName CombinatorialDerivation = sbol2.withLocalPart("CombinatorialDerivation");
+		static final QName template                = sbol2.withLocalPart("template");
+		static final QName strategy                = sbol2.withLocalPart("strategy");
+		static final QName hasVariableComponent  = sbol2.withLocalPart("variableComponent");
+	}
+	
+	/**
+	 * A group of qualified terms for Variable Component related SBOL objects
+	 *
+	 */
+	static final class VariableComponent {
+		static final QName VariableComponent  = sbol2.withLocalPart("VariableComponent");
+		static final QName hasOperator           = sbol2.withLocalPart("operator");
+		static final QName hasVariable           = sbol2.withLocalPart("variable");
+		static final QName hasVariants           = sbol2.withLocalPart("variant");
+		static final QName hasVariantCollections = sbol2.withLocalPart("variantCollection");
+		static final QName hasVariantDerivations = sbol2.withLocalPart("variantDerivation");
+	}
+	
+	/**
+	 * A group of qualified terms for Implementation related SBOL objects
+	 *
+	 */
+	static final class Implementation {
+		static final QName Implementation		 = sbol2.withLocalPart("Implementation");
+		static final QName built				 = sbol2.withLocalPart("built");
+	}
+	
+	/**
+	 * A group of qualified terms for Attachment related SBOL objects
+	 *
+	 */
+	static final class Attachment {
+		static final QName Attachment		 	 = sbol2.withLocalPart("Attachment");
+		static final QName source				 = sbol2.withLocalPart("source");
+		static final QName format				 = sbol2.withLocalPart("format");
+		static final QName size					 = sbol2.withLocalPart("size");
+		static final QName hash					 = sbol2.withLocalPart("hash");
+	}
+	
 	/**
 	 * A group of qualified terms for Cut related SBOL objects
 	 *
@@ -107,7 +184,18 @@ class Sbol2Terms
 
 	static final class GenericLocation {
 		static final QName GenericLocation = sbol2.withLocalPart("GenericLocation");
-		static final QName orientation = sbol2.withLocalPart("Orientation");
+		static final QName orientation = sbol2.withLocalPart("orientation");
+		// TODO: this is only here for backwards compatibility with a bug
+		static final QName Orientation = sbol2.withLocalPart("Orientation");
+	}
+
+	/**
+	 * A group of qualified terms for TopLevel related SBOL objects
+	 *
+	 */
+	static final class GenericTopLevel {
+		static final QName GenericTopLevel = sbol2.withLocalPart("GenericTopLevel");
+		static final QName rdfType 		  = sbol2.withLocalPart("rdfType");
 	}
 
 	/**
@@ -122,9 +210,19 @@ class Sbol2Terms
 		static final QName timeStamp   	     = sbol2.withLocalPart("timeStamp");
 		static final QName hasAnnotations 	 = sbol2.withLocalPart("annotation");
 		static final QName wasDerivedFrom	 = prov.withLocalPart("wasDerivedFrom");
+		static final QName wasGeneratedBy	 = prov.withLocalPart("wasGeneratedBy");
 		static final QName displayId   = sbol2.withLocalPart("displayId");
 		static final QName title 	  = dc.withLocalPart("title");
 		static final QName description = dc.withLocalPart("description");
+	}
+	
+	/**
+	 * A group of qualified terms for TopLevel related SBOL objects
+	 *
+	 */
+	static final class TopLevel {
+		static final QName TopLevel 	   	 = sbol2.withLocalPart("TopLevel");
+		static final QName hasAttachment   	 = sbol2.withLocalPart("attachment");
 	}
 
 	/**
@@ -216,6 +314,14 @@ class Sbol2Terms
 		static final QName hasParticipant = sbol2.withLocalPart("participant");
 
 	}
+	
+	/**
+	 * A group of qualified terms for Plan related SBOL objects
+	 *
+	 */
+	static final class Plan {
+		static final QName Plan = prov.withLocalPart("Plan");
+	}
 
 	/**
 	 * A group of qualified terms for Range related SBOL objects
@@ -262,16 +368,16 @@ class Sbol2Terms
 		static final QName hasSubject 		 = sbol2.withLocalPart("subject");
 		static final QName hasObject 		 = sbol2.withLocalPart("object");
 	}
-
+	
 	/**
-	 * A group of qualified terms for TopLevel related SBOL objects
+	 * A group of qualified terms for Plan related SBOL objects
 	 *
 	 */
-	static final class GenericTopLevel {
-		static final QName GenericTopLevel = sbol2.withLocalPart("GenericTopLevel");
-		static final QName rdfType 		  = sbol2.withLocalPart("rdfType");
+	static final class Usage {
+		static final QName Usage = prov.withLocalPart("Usage");
+		static final QName entity = prov.withLocalPart("entity");
+		static final QName role = prov.withLocalPart("hadRole");
 	}
-
 
 //	static final class SequenceURI {
 //		static final URI encoding 	  = URI.create(sbol2.getNamespaceURI() + "encoding");
