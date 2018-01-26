@@ -13,7 +13,7 @@ In a Maven project that utilizes the libSBOLj library, add a dependency in the M
 <dependency>
 	<groupId>org.sbolstandard</groupId>
 	<artifactId>libSBOLj</artifactId>
-	<version>2.1.1</version>
+	<version>2.3.0</version>
 </dependency>
 ```
  
