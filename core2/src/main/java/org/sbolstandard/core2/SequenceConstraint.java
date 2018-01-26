@@ -130,11 +130,7 @@ public class SequenceConstraint extends Identified {
 			}
 		}
 
-		try {
-			this.restriction = RestrictionType.convertToURI(restriction);
-		} catch (SBOLValidationException e) {
-			throw new SBOLValidationException("sbol-11412",this);
-		}
+		this.restriction = RestrictionType.convertToURI(restriction);
 	}
 	
 	/**
