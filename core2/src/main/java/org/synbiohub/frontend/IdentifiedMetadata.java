@@ -93,10 +93,18 @@ public class IdentifiedMetadata
 		this.version = version;
 	}
 
+	/**
+	 * Return the type
+	 * @return type
+	 */
 	public String getType() {
 		return type;
 	}
 
+	/**
+	 * Set the type
+	 * @param type set the type
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
