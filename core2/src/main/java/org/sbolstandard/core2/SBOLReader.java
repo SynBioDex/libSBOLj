@@ -2079,6 +2079,7 @@ public class SBOLReader
 			c.setVersion(version);
 		c.setWasDerivedFroms(wasDerivedFroms);
 		c.setWasGeneratedBys(wasGeneratedBys);
+		c.setAttachments(attachments);
 
 		ComponentDefinition oldC = SBOLDoc.getComponentDefinition(topLevel.getIdentity());
 		if (oldC == null) {
@@ -2273,6 +2274,8 @@ public class SBOLReader
 		if (version != null)
 			c.setVersion(version);
 		c.setWasDerivedFroms(wasDerivedFroms);
+		c.setWasGeneratedBys(wasGeneratedBys);
+		c.setAttachments(attachments);
 
 		CombinatorialDerivation oldC = SBOLDoc.getCombinatorialDerivation(topLevel.getIdentity());
 		if (oldC == null) {
@@ -2620,6 +2623,8 @@ public class SBOLReader
 		if (built != null) 
 			i.setBuilt(built);
 		i.setWasDerivedFroms(wasDerivedFroms);
+		i.setWasGeneratedBys(wasGeneratedBys);
+		i.setAttachments(attachments);
 
 		Implementation oldI = SBOLDoc.getImplementation(topLevel.getIdentity());
 		if (oldI == null) {
@@ -3795,6 +3800,7 @@ public class SBOLReader
 			t.setDescription(description);
 		t.setWasDerivedFroms(wasDerivedFroms);
 		t.setWasGeneratedBys(wasGeneratedBys);
+		t.setAttachments(attachments);
 		if (!annotations.isEmpty())
 			t.setAnnotations(annotations);
 
@@ -4381,6 +4387,7 @@ public class SBOLReader
 			t.setDescription(description);
 		t.setWasDerivedFroms(wasDerivedFroms);
 		t.setWasGeneratedBys(wasGeneratedBys);
+		t.setAttachments(attachments);
 		if (!annotations.isEmpty())
 			t.setAnnotations(annotations);
 
@@ -4505,6 +4512,7 @@ public class SBOLReader
 			t.setDescription(description);
 		t.setWasDerivedFroms(wasDerivedFroms);
 		t.setWasGeneratedBys(wasGeneratedBys);
+		t.setAttachments(attachments);
 		if (!annotations.isEmpty())
 			t.setAnnotations(annotations);
 
@@ -4678,6 +4686,7 @@ public class SBOLReader
 			m.setDescription(description);
 		m.setWasDerivedFroms(wasDerivedFroms);
 		m.setWasGeneratedBys(wasGeneratedBys);
+		m.setAttachments(attachments);
 		if (!annotations.isEmpty())
 			m.setAnnotations(annotations);
 
@@ -4839,6 +4848,7 @@ public class SBOLReader
 			a.setDescription(description);
 		a.setWasDerivedFroms(wasDerivedFroms);
 		a.setWasGeneratedBys(wasGeneratedBys);
+		a.setAttachments(attachments);
 		if (!annotations.isEmpty())
 			a.setAnnotations(annotations);
 		if (format != null) 
@@ -5030,6 +5040,7 @@ public class SBOLReader
 			c.setDescription(description);
 		c.setWasDerivedFroms(wasDerivedFroms);
 		c.setWasGeneratedBys(wasGeneratedBys);
+		c.setAttachments(attachments);
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
 
@@ -5292,6 +5303,7 @@ public class SBOLReader
 			moduleDefinition.setDescription(description);
 		moduleDefinition.setWasDerivedFroms(wasDerivedFroms);
 		moduleDefinition.setWasGeneratedBys(wasGeneratedBys);
+		moduleDefinition.setAttachments(attachments);
 		if (!annotations.isEmpty())
 			moduleDefinition.setAnnotations(annotations);
 
@@ -6269,6 +6281,7 @@ public class SBOLReader
 			sequence.setDescription(description);
 		sequence.setWasDerivedFroms(wasDerivedFroms);
 		sequence.setWasGeneratedBys(wasGeneratedBys);
+		sequence.setAttachments(attachments);
 		if (!annotations.isEmpty())
 			sequence.setAnnotations(annotations);
 
