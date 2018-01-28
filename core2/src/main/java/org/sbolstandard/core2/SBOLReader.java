@@ -1243,7 +1243,6 @@ public class SBOLReader
 						component_displayId = instantiatedDef.getDisplayId();
 						instantiatedComponents.add(instantiatedDef.getDisplayId());
 					} else {
-						//System.out.println("Repeated: " + instantiatedDef.getDisplayId());
 						component_num++;
 					}
 
@@ -3504,7 +3503,7 @@ public class SBOLReader
 				}
 				String accessTypeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (accessTypeStr.startsWith("http://www.sbolstandard.org/")) {
-					System.out.println("Warning: namespace for access types should be http://sbols.org/v2#");
+					System.err.println("Warning: namespace for access types should be http://sbols.org/v2#");
 					accessTypeStr = accessTypeStr.replace("http://www.sbolstandard.org/", "http://sbols.org/v2#");
 				}
 				try {
@@ -5403,7 +5402,7 @@ public class SBOLReader
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasMapping))
 			{
-				System.out.println("Warning: tag should be sbol:mapTo, not sbol:mapping.");
+				System.err.println("Warning: tag should be sbol:mapTo, not sbol:mapping.");
 				if (namedProperty.getValue() instanceof NestedDocument) {
 					mappings.add(parseMapsTo(((NestedDocument<QName>) namedProperty.getValue()),true));
 				}
@@ -5579,7 +5578,7 @@ public class SBOLReader
 				}
 				String refinementStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (!refinementStr.startsWith("http://sbols.org/v2#")) {
-					System.out.println("Warning: namespace for refinement types should be http://sbols.org/v2#");
+					System.err.println("Warning: namespace for refinement types should be http://sbols.org/v2#");
 					refinementStr = "http://sbols.org/v2#" + refinementStr;
 				}
 				try {
@@ -5996,7 +5995,7 @@ public class SBOLReader
 				}
 				String accessTypeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (accessTypeStr.startsWith("http://www.sbolstandard.org/")) {
-					System.out.println("Warning: namespace for access types should be http://sbols.org/v2#");
+					System.err.println("Warning: namespace for access types should be http://sbols.org/v2#");
 					accessTypeStr = accessTypeStr.replace("http://www.sbolstandard.org/", "http://sbols.org/v2#");
 				}
 				try {
@@ -6014,7 +6013,7 @@ public class SBOLReader
 				}
 				String directionTypeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (directionTypeStr.startsWith("http://www.sbolstandard.org/")) {
-					System.out.println("Warning: namespace for direction types should be http://sbols.org/v2#");
+					System.err.println("Warning: namespace for direction types should be http://sbols.org/v2#");
 					directionTypeStr = directionTypeStr.replace("http://www.sbolstandard.org/", "http://sbols.org/v2#");
 					directionTypeStr = directionTypeStr.replace("input","in");
 					directionTypeStr = directionTypeStr.replace("output","out");

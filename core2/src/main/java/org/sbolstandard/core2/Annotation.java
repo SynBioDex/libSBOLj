@@ -133,7 +133,7 @@ public class Annotation implements Comparable<Annotation>  {
 		if (value.getName().getNamespaceURI().equals(Sbol2Terms.sbol2.getNamespaceURI()) ||
 				value.getName().getNamespaceURI().equals(Sbol1Terms.sbol1.getNamespaceURI())) {
 			if (value.getName().equals(Sbol2Terms.Identified.timeStamp)) {
-				System.out.println("Warning: sbol:timeStamp is deprecated");
+				System.err.println("Warning: sbol:timeStamp is deprecated");
 			}
 		}
 		setQName(value.getName());
