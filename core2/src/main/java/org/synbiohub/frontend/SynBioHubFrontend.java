@@ -678,8 +678,9 @@ public class SynBioHubFrontend
      */
     public void attachFile(URI topLevelUri, File file) throws SynBioHubException, FileNotFoundException
     {
+    	String name = file.getName();
     	InputStream inputStream = new FileInputStream(file);
-    	attachFile(topLevelUri,inputStream);
+    	attachFile(topLevelUri,inputStream,name);
     }
     
     /**
@@ -690,6 +691,19 @@ public class SynBioHubFrontend
      * @throws SynBioHubException if there was an error communicating with the SynBioHub
      */
     public void attachFile(URI topLevelUri, InputStream inputStream) throws SynBioHubException
+    {
+    	attachFile(topLevelUri,inputStream,"file");
+    }
+    
+    /**
+     * Attach a file to an object in SynBioHub.
+     * @param topLevelUri identity of the object to attach the file to
+     * @param inputStream the inputStream to attach
+     * @param filename name of file to attach
+     * 
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public void attachFile(URI topLevelUri, InputStream inputStream, String filename) throws SynBioHubException
     {
     	if (user.equals("")) {
     		Exception e = new Exception("Must be logged in to submit.");
@@ -708,7 +722,7 @@ public class SynBioHubFrontend
         params.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
 
         params.addTextBody("user", user);	
-        params.addBinaryBody("file", inputStream, ContentType.DEFAULT_BINARY, "file");
+        params.addBinaryBody("file", inputStream, ContentType.DEFAULT_BINARY, filename);
 	        
         try
         {
