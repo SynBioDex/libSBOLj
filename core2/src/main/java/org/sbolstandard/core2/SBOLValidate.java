@@ -77,6 +77,15 @@ public class SBOLValidate {
 			}
 		}
 	}
+	
+	private static void checkIdentifiedCompleteness(SBOLDocument sbolDocument,
+			Identified identified) {
+		for (URI wasGeneratedBy : identified.getWasGeneratedBys()) {
+			if (sbolDocument.getActivity(wasGeneratedBy) == null) {
+				errors.add(new SBOLValidationException("sbol-10222", identified).getMessage());
+			}
+		}
+	}
 
 	private static void checkCollectionCompleteness(SBOLDocument sbolDocument, Collection collection) {
 		for (URI member : collection.getMemberURIs()) {
@@ -257,6 +266,9 @@ public class SBOLValidate {
 	 *            the given SBOL document to be validated for completeness
 	 */
 	private static void validateCompleteness(SBOLDocument sbolDocument) {
+		for (Identified identified : sbolDocument.getTopLevels()) {
+			checkIdentifiedCompleteness(sbolDocument, identified);
+		}
 		for (Collection collection : sbolDocument.getCollections()) {
 			checkCollectionCompleteness(sbolDocument, collection);
 		}
