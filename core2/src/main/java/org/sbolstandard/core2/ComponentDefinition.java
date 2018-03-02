@@ -1271,7 +1271,7 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public boolean removeComponent(Component component) throws SBOLValidationException {
 		for (SequenceAnnotation sa : sequenceAnnotations.values()) {
-			if (sa.getComponentURI().equals(component.getIdentity())) {
+			if (sa.isSetComponent() && sa.getComponentURI().equals(component.getIdentity())) {
 				throw new SBOLValidationException("sbol-10905",sa);
 			}
 		}
