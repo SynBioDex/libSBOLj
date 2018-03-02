@@ -475,6 +475,14 @@ public class SBOLValidate {
 					}
 				}
 			}
+		} else if (sequenceConstraint.getRestriction().equals(RestrictionType.DIFFERENT_FROM)) {
+			if (componentDefinition != null && sequenceConstraint.getSubject() != null && 
+					sequenceConstraint.getObject() != null) {
+				if (componentDefinition.getComponent(sequenceConstraint.getObjectURI()).getDefinitionURI()
+						.equals(componentDefinition.getComponent(sequenceConstraint.getSubjectURI()).getDefinitionURI())) {
+					throw new SBOLValidationException("sbol-11413", sequenceConstraint);
+				}
+			}
 		}
 	}
 
