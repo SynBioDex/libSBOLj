@@ -4,11 +4,13 @@ import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
 import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
@@ -611,7 +613,7 @@ public class SBOLReader
 
 		DocumentRoot<QName> document = null;
 		try {
-			if (FASTA.isFastaString(inputStreamString)) {
+			if (SBOLReader.isFastaString(inputStreamString)) {
 				SBOLDoc.setCreateDefaults(true);
 				SBOLDoc.setCompliant(true);
 				if (URIPrefix==null) {
@@ -622,7 +624,7 @@ public class SBOLReader
 				FASTA.read(SBOLDoc, inputStreamString, URIPrefix, version, defaultSequenceEncoding);
 				scanner.close();
 				return;
-			} else if (GenBank.isGenBankString(inputStreamString)) {
+			} else if (SBOLReader.isGenBankString(inputStreamString)) {
 				SBOLDoc.setCreateDefaults(true);
 				SBOLDoc.setCompliant(true);
 				if (URIPrefix==null) {
@@ -6293,6 +6295,64 @@ public class SBOLReader
 			}
 		}
 		return sequence;
+	}
+
+	/**
+	 * Check if a string begins with LOCUS indicating that it is GenBank file string
+	 *
+	 * @param inputString input string to check if it is a GenBank file string
+	 * @return true if the string begins with LOCUS indicating that it is a GenBank file string
+	 */
+	public static boolean isGenBankString(String inputString) {
+		if (inputString!=null && inputString.startsWith("LOCUS")) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a file begins with LOCUS indicating that it is GenBank file
+	 *
+	 * @param fileName file name of file to check if it is a GenBank file
+	 * @return true if the string begins with LOCUS indicating that it is a GenBank file
+	 * @throws IOException if there is an I/O exception reading the file
+	 */
+	public static boolean isGenBankFile(String fileName) throws IOException {
+		File file = new File(fileName);
+		FileInputStream stream     = new FileInputStream(file);
+		BufferedInputStream buffer = new BufferedInputStream(stream);
+		String strLine;
+		BufferedReader br = new BufferedReader(new InputStreamReader(buffer));
+		strLine = br.readLine();
+		br.close();
+		return isGenBankString(strLine);
+	}
+	
+	/**
+	 * Check if a string begins with ">" or ";" indicating that it is Fasta file string
+	 *
+	 * @param inputString input string to check if it is a Fasta file string
+	 * @return true if the string begins with ">" or ";" indicating that it is a Fasta file string
+	 */
+	public static boolean isFastaString(String inputString) {
+		if (inputString!=null && (inputString.startsWith(">")||inputString.startsWith(";"))) return true;
+		return false;
+	}
+	
+	/**
+	 * Check if a file begins with ">" or ";" indicating that it is Fasta file
+	 *
+	 * @param fileName file name of file to check if it is a Fasta file
+	 * @return true if the string begins with ">" or ";" indicating that it is a Fasta file
+	 * @throws IOException if there is an I/O exception reading the file
+	 */
+	public static boolean isFastaFile(String fileName) throws IOException {
+		File file = new File(fileName);
+		FileInputStream stream     = new FileInputStream(file);
+		BufferedInputStream buffer = new BufferedInputStream(stream);
+		String strLine;
+		BufferedReader br = new BufferedReader(new InputStreamReader(buffer));
+		strLine = br.readLine();
+		br.close();
+		return isFastaString(strLine);
 	}
 }
 

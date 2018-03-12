@@ -1,11 +1,7 @@
 package org.sbolstandard.core2;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
@@ -59,22 +55,6 @@ class GenBank {
 	public static final String ENDGREATERTHAN = "endGreaterThan";
 	public static final String SINGLEBASERANGE = "singleBaseRange";
 	public static final String MULTIRANGETYPE = "multiRangeType";
-	
-	static boolean isGenBankFile(String fileName) throws IOException {
-		File file = new File(fileName);
-		FileInputStream stream     = new FileInputStream(file);
-		BufferedInputStream buffer = new BufferedInputStream(stream);
-		String strLine;
-		BufferedReader br = new BufferedReader(new InputStreamReader(buffer));
-		strLine = br.readLine();
-		br.close();
-		return isGenBankString(strLine);
-	}
-
-	static boolean isGenBankString(String inputString) {
-		if (inputString!=null && inputString.startsWith("LOCUS")) return true;
-		return false;
-	}
 	
 	private static void writeGenBankLine(Writer w, String line, int margin, int indent) throws IOException {
 		if (line.length() < margin) {

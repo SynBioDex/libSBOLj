@@ -1869,9 +1869,9 @@ public class SBOLValidate {
 			SBOLReader.setVersion(version);
 			SBOLReader.setKeepGoing(keepGoing);
 			SBOLWriter.setKeepGoing(keepGoing);
-			if (FASTA.isFastaFile(fileName)) {
+			if (SBOLReader.isFastaFile(fileName)) {
 				outputStream.println("Converting FASTA to SBOL Version 2");
-			} else if (GenBank.isGenBankFile(fileName)) {
+			} else if (SBOLReader.isGenBankFile(fileName)) {
 				outputStream.println("Converting GenBank to SBOL Version 2");
 			} else if (SBOLReader.getSBOLVersion(fileName).equals(SBOLReader.SBOLVERSION1)) {
 				outputStream.println("Converting SBOL Version 1 to SBOL Version 2");

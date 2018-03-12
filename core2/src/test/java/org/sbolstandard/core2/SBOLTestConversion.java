@@ -81,7 +81,7 @@ public class SBOLTestConversion {
 			SBOLReader.setCompliant(true);
 			SBOLDocument expected = SBOLReader.read(file);
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			if (GenBank.isGenBankFile(file.getAbsolutePath())) {
+			if (SBOLReader.isGenBankFile(file.getAbsolutePath())) {
 				SBOLWriter.write(expected, out, SBOLDocument.GENBANK);
 			} else {
 				SBOLWriter.write(expected, out, SBOLDocument.RDFV1);

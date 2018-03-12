@@ -37,11 +37,15 @@ class readTester {
 
 	static String path = "/Users/myers/git/libSBOLj/core2/src/test/resources/";
 
-	public static void main(String[] args) throws SBOLValidationException, IOException, SBOLConversionException {
+	public static void main(String[] args) throws SBOLValidationException, IOException, SBOLConversionException, SynBioHubException {
 		
-		SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/doc.xml");
-		doc = doc.createRecursiveCopy(doc.getTopLevel(URI.create("http://michael.zhang/Eukaryotic_Promoters_GeneratedInstance6/1")));
+		SynBioHubFrontend sbh = new SynBioHubFrontend("https://synbiohub.org");
+		sbh.login("jakebeal@gmail.com", "facets");
+		SBOLDocument doc = sbh.getSBOL(URI.create("https://synbiohub.org/user/FACETS/Reporters/foo_md/1"));
 		doc.write(System.out);
+		//SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/doc.xml");
+		//doc = doc.createRecursiveCopy(doc.getTopLevel(URI.create("http://michael.zhang/Eukaryotic_Promoters_GeneratedInstance6/1")));
+		//doc.write(System.out);
 //		try {
 //			System.out.println(SynBioHubFrontend.getRegistries());
 //		}
