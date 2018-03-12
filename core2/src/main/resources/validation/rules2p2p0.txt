@@ -1213,6 +1213,12 @@ and associations.
 reference: Section 12.8.1 on page 72
 
 [Activity]
+id: sbol-12402
+condition: strong required
+description: The startedAtTime property of an Activity object is OPTIONAL and MAY contain a DateTime.
+reference: Section 12.8.1 on page 72
+
+[Activity]
 id: sbol-12403
 condition: strong required
 description: The endedAtTime property of an Activity object is OPTIONAL and MAY contain a DateTime.

@@ -3920,7 +3920,11 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-12402", topLevel.getIdentity());
 				}
 				DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
-				startedAtTime = fmt.parseDateTime(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				try {
+					startedAtTime = fmt.parseDateTime(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				} catch (IllegalArgumentException e) {
+					throw new SBOLValidationException("sbol-12402", topLevel.getIdentity());
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Activity.endedAtTime))
 			{
@@ -3929,7 +3933,11 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-12403", topLevel.getIdentity());
 				}
 				DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
-				endedAtTime = fmt.parseDateTime(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				try {
+					endedAtTime = fmt.parseDateTime(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				} catch (IllegalArgumentException e) {
+					throw new SBOLValidationException("sbol-12403", topLevel.getIdentity());
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Activity.wasInformedBy))
 			{

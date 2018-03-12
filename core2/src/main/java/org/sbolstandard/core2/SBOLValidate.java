@@ -95,6 +95,16 @@ public class SBOLValidate {
 			}
 		}
 	}
+	
+
+	private static void checkActivityCompleteness(SBOLDocument sbolDocument,
+			Activity activity) {
+		for (URI wasInformedByURI : activity.getWasInformedByURIs()) {
+			if (sbolDocument.getActivity(wasInformedByURI) == null) {
+				errors.add(new SBOLValidationException("sbol-12407", activity).getMessage());
+			}
+		}
+	}
 
 	private static void checkComponentDefinitionCompleteness(SBOLDocument sbolDocument,
 			ComponentDefinition componentDefinition) {
@@ -277,6 +287,9 @@ public class SBOLValidate {
 		}
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
 			checkModuleDefinitionCompleteness(sbolDocument, moduleDefinition);
+		}
+		for (Activity activity : sbolDocument.getActivities()) {
+			checkActivityCompleteness(sbolDocument, activity);
 		}
 	}
 
