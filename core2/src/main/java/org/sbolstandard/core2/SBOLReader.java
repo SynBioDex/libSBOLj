@@ -6335,10 +6335,10 @@ public class SBOLReader
 	}
 	
 	/**
-	 * Check if a string begins with ">" or ";" indicating that it is Fasta file string
+	 * Check if a string begins with "&gt;" or ";" indicating that it is Fasta file string
 	 *
 	 * @param inputString input string to check if it is a Fasta file string
-	 * @return true if the string begins with ">" or ";" indicating that it is a Fasta file string
+	 * @return true if the string begins with "&gt;" or ";" indicating that it is a Fasta file string
 	 */
 	public static boolean isFastaString(String inputString) {
 		if (inputString!=null && (inputString.startsWith(">")||inputString.startsWith(";"))) return true;
@@ -6346,10 +6346,10 @@ public class SBOLReader
 	}
 	
 	/**
-	 * Check if a file begins with ">" or ";" indicating that it is Fasta file
+	 * Check if a file begins with "&gt;" or ";" indicating that it is Fasta file
 	 *
 	 * @param fileName file name of file to check if it is a Fasta file
-	 * @return true if the string begins with ">" or ";" indicating that it is a Fasta file
+	 * @return true if the string begins with "&gt;" or ";" indicating that it is a Fasta file
 	 * @throws IOException if there is an I/O exception reading the file
 	 */
 	public static boolean isFastaFile(String fileName) throws IOException {
