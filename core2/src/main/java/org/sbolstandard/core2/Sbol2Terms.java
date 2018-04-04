@@ -1,10 +1,10 @@
 package org.sbolstandard.core2;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
 
 import javax.xml.namespace.QName;
 
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import org.sbolstandard.core.datatree.NamespaceBinding;
 /**
  * Provides qualified names for SBOL2.0 objects.
  * 

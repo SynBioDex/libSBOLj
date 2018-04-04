@@ -1,6 +1,6 @@
 package org.sbolstandard.core2;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,7 +15,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import org.sbolstandard.core.datatree.NamespaceBinding;
 
 /**
  * Construction of TopLevel objects along with any of its' sub-parts.

@@ -27,8 +27,8 @@ import org.sbolstandard.core2.Sequence;
 import org.sbolstandard.core2.SequenceAnnotation;
 import org.sbolstandard.core2.SystemsBiologyOntology;
 
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+import org.sbolstandard.core.datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
 
 /**
  * This example shows how to use  {@link org.sbolstandard.core2.ModuleDefinition} entities. 

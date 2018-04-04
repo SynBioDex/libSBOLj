@@ -11,7 +11,7 @@
 	<artifactId>libSBOLj</artifactId>
 	
 	<properties>
-		<sbol-data.version>0.1.3</sbol-data.version>
+		<sbol-data.version>0.2.0-SNAPSHOT</sbol-data.version>
 	</properties>
 
 
@@ -22,22 +22,22 @@
 
 		<!-- test dependencies -->
 		<dependency>
-			<groupId>uk.ac.ncl.intbio</groupId>
+			<groupId>org.sbolstandard</groupId>
 			<artifactId>sbol-data-core</artifactId>
 			<version>${sbol-data.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>uk.ac.ncl.intbio</groupId>
+			<groupId>org.sbolstandard</groupId>
 			<artifactId>sbol-data-examples</artifactId>
 			<version>${sbol-data.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>uk.ac.ncl.intbio</groupId>
+			<groupId>org.sbolstandard</groupId>
 			<artifactId>sbol-data-io-RDF</artifactId>
 			<version>${sbol-data.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>uk.ac.ncl.intbio</groupId>
+			<groupId>org.sbolstandard</groupId>
 			<artifactId>sbol-data-nativeSbol</artifactId>
 			<version>${sbol-data.version}</version>
 		</dependency>
