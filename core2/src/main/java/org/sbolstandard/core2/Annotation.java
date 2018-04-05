@@ -1,8 +1,8 @@
 package org.sbolstandard.core2;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperties;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NestedDocument;
+import static org.sbolstandard.core.datatree.Datatree.NamedProperties;
+import static org.sbolstandard.core.datatree.Datatree.NamedProperty;
+import static org.sbolstandard.core.datatree.Datatree.NestedDocument;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -10,13 +10,13 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import uk.ac.ncl.intbio.core.datatree.Literal.BooleanLiteral;
-import uk.ac.ncl.intbio.core.datatree.Literal.DoubleLiteral;
-import uk.ac.ncl.intbio.core.datatree.Literal.IntegerLiteral;
-import uk.ac.ncl.intbio.core.datatree.Literal.StringLiteral;
-import uk.ac.ncl.intbio.core.datatree.Literal.UriLiteral;
-import uk.ac.ncl.intbio.core.datatree.NamedProperty;
-import uk.ac.ncl.intbio.core.datatree.NestedDocument;
+import org.sbolstandard.core.datatree.Literal.BooleanLiteral;
+import org.sbolstandard.core.datatree.Literal.DoubleLiteral;
+import org.sbolstandard.core.datatree.Literal.IntegerLiteral;
+import org.sbolstandard.core.datatree.Literal.StringLiteral;
+import org.sbolstandard.core.datatree.Literal.UriLiteral;
+import org.sbolstandard.core.datatree.NamedProperty;
+import org.sbolstandard.core.datatree.NestedDocument;
 
 /**
  * Represents an Annotation object in the cSBOL data model.

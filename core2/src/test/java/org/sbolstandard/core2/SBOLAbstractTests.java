@@ -1,8 +1,8 @@
 package org.sbolstandard.core2;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.QName;
+import static org.sbolstandard.core.datatree.Datatree.NamedProperty;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.QName;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

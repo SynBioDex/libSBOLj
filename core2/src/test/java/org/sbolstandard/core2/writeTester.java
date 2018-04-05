@@ -1,6 +1,6 @@
 package org.sbolstandard.core2;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
+import static org.sbolstandard.core.datatree.Datatree.NamedProperty;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

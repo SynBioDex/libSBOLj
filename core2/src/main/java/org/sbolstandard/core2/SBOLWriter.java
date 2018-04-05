@@ -1,13 +1,13 @@
 package org.sbolstandard.core2;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.DocumentRoot;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperties;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamedProperty;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBindings;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NestedDocument;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.TopLevelDocument;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.TopLevelDocuments;
+import static org.sbolstandard.core.datatree.Datatree.DocumentRoot;
+import static org.sbolstandard.core.datatree.Datatree.NamedProperties;
+import static org.sbolstandard.core.datatree.Datatree.NamedProperty;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBindings;
+import static org.sbolstandard.core.datatree.Datatree.NestedDocument;
+import static org.sbolstandard.core.datatree.Datatree.TopLevelDocument;
+import static org.sbolstandard.core.datatree.Datatree.TopLevelDocuments;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -33,16 +33,16 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import uk.ac.intbio.core.io.turtle.TurtleIo;
-import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
-import uk.ac.ncl.intbio.core.datatree.NamedProperty;
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
-import uk.ac.ncl.intbio.core.datatree.NestedDocument;
-import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
-import uk.ac.ncl.intbio.core.io.CoreIoException;
-import uk.ac.ncl.intbio.core.io.json.JsonIo;
-import uk.ac.ncl.intbio.core.io.json.StringifyQName;
-import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
+import org.sbolstandard.core.io.turtle.TurtleIo;
+import org.sbolstandard.core.datatree.DocumentRoot;
+import org.sbolstandard.core.datatree.NamedProperty;
+import org.sbolstandard.core.datatree.NamespaceBinding;
+import org.sbolstandard.core.datatree.NestedDocument;
+import org.sbolstandard.core.datatree.TopLevelDocument;
+import org.sbolstandard.core.io.CoreIoException;
+import org.sbolstandard.core.io.json.JsonIo;
+import org.sbolstandard.core.io.json.StringifyQName;
+import org.sbolstandard.core.io.rdf.RdfIo;
 
 /**
  * Provides methods to output SBOL files in XML/RDF format.
