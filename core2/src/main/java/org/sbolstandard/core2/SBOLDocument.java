@@ -7,7 +7,7 @@ import static org.sbolstandard.core2.URIcompliance.extractVersion;
 import static org.sbolstandard.core2.URIcompliance.isURIprefixCompliant;
 import static org.sbolstandard.core2.URIcompliance.keyExistsInAnyMap;
 import static org.sbolstandard.core2.Version.isFirstVersionNewer;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -30,7 +30,7 @@ import javax.xml.namespace.QName;
 import org.synbiohub.frontend.SynBioHubException;
 import org.synbiohub.frontend.SynBioHubFrontend;
 
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import org.sbolstandard.core.datatree.NamespaceBinding;
 
 /**
  * Represents the SBOL document where all top-level instances can be created and

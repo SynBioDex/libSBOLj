@@ -1,7 +1,7 @@
 package org.sbolstandard.core2;
 
 import static org.sbolstandard.core2.URIcompliance.createCompliantURI;
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -37,21 +37,21 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
-import uk.ac.intbio.core.io.turtle.TurtleIo;
-import uk.ac.ncl.intbio.core.datatree.Datatree;
-import uk.ac.ncl.intbio.core.datatree.DocumentRoot;
-import uk.ac.ncl.intbio.core.datatree.IdentifiableDocument;
-import uk.ac.ncl.intbio.core.datatree.Literal;
-import uk.ac.ncl.intbio.core.datatree.NamedProperty;
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
-import uk.ac.ncl.intbio.core.datatree.NestedDocument;
-import uk.ac.ncl.intbio.core.datatree.PropertyValue;
-import uk.ac.ncl.intbio.core.datatree.TopLevelDocument;
-import uk.ac.ncl.intbio.core.io.CoreIoException;
-import uk.ac.ncl.intbio.core.io.IoReader;
-import uk.ac.ncl.intbio.core.io.json.JsonIo;
-import uk.ac.ncl.intbio.core.io.json.StringifyQName;
-import uk.ac.ncl.intbio.core.io.rdf.RdfIo;
+import org.sbolstandard.core.io.turtle.TurtleIo;
+import org.sbolstandard.core.datatree.Datatree;
+import org.sbolstandard.core.datatree.DocumentRoot;
+import org.sbolstandard.core.datatree.IdentifiableDocument;
+import org.sbolstandard.core.datatree.Literal;
+import org.sbolstandard.core.datatree.NamedProperty;
+import org.sbolstandard.core.datatree.NamespaceBinding;
+import org.sbolstandard.core.datatree.NestedDocument;
+import org.sbolstandard.core.datatree.PropertyValue;
+import org.sbolstandard.core.datatree.TopLevelDocument;
+import org.sbolstandard.core.io.CoreIoException;
+import org.sbolstandard.core.io.IoReader;
+import org.sbolstandard.core.io.json.JsonIo;
+import org.sbolstandard.core.io.json.StringifyQName;
+import org.sbolstandard.core.io.rdf.RdfIo;
 
 /**
  * Provides methods to read input SBOL files. 

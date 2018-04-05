@@ -1,6 +1,6 @@
 package org.sbolstandard.core2.examples;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.SequenceOntology;
 
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import org.sbolstandard.core.datatree.NamespaceBinding;
 
 /**
  * This example shows how to add provenance information using generic top level entities and custom annotations.

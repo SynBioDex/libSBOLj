@@ -1,6 +1,6 @@
 package org.sbolstandard.core2.examples;
 
-import static uk.ac.ncl.intbio.core.datatree.Datatree.NamespaceBinding;
+import static org.sbolstandard.core.datatree.Datatree.NamespaceBinding;
 
 import java.net.URI;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import org.sbolstandard.core2.SBOLValidationException;
 import org.sbolstandard.core2.SBOLWriter;
 import org.sbolstandard.core2.SystemsBiologyOntology;
 
-import uk.ac.ncl.intbio.core.datatree.NamespaceBinding;
+import org.sbolstandard.core.datatree.NamespaceBinding;
 
 /**
  * This example shows to create simple {@link org.sbolstandard.core2.ModuleDefinition} entities. 
