@@ -2536,7 +2536,10 @@ public class SBOLDocument {
 			}
 		}
 		for (Model model : getModels()) {
-			updateReferences(model, originalIdentity, newIdentity);
+			if (model.getSource().equals(originalIdentity)) {
+				model.setSource(newIdentity);
+			}
+ 			updateReferences(model, originalIdentity, newIdentity);
 		}
 		for (Attachment attachment : getAttachments()) {
 			updateReferences(attachment, originalIdentity, newIdentity);
@@ -2735,6 +2738,9 @@ public class SBOLDocument {
 			}
 		}
 		for (Model model : getModels()) {
+			if (uriMap.get(model.getSource()) != null) {
+				model.setSource(uriMap.get(model.getSource()));
+			}
 			updateReferences(model, uriMap);
 		}
 		for (Sequence sequence : getSequences()) {
