@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashSet;
 
 import org.synbiohub.frontend.SynBioHubException;
 import org.synbiohub.frontend.SynBioHubFrontend;
@@ -38,11 +40,53 @@ class readTester {
 	static String path = "/Users/myers/git/libSBOLj/core2/src/test/resources/";
 
 	public static void main(String[] args) throws SBOLValidationException, IOException, SBOLConversionException, SynBioHubException {
+	
+		SBOLReader.read("/Users/myers/Downloads/empty.xml");
+//		File file_base = null;
+//		file_base = new File("/Users/myers/Downloads/cello_sbol/");
+//		for (File f : file_base.listFiles()) {
+//			SBOLDocument doc = SBOLReader.read(f.getAbsoluteFile());
+//			for (ModuleDefinition md : doc.getModuleDefinitions()) {
+//				if (md.getDisplayId().contains("_circuit")) {
+//					String id;
+//					if (md.getDisplayId().contains("_alt_")) {
+//						id = md.getDisplayId().substring(0,md.getDisplayId().indexOf("_alt_",8)+4);
+//					} else {
+//						id = md.getDisplayId().substring(0,md.getDisplayId().indexOf("_",8));
+//					}
+//					md = (ModuleDefinition)doc.rename(md, id);
+//					for (Module mod : md.getModules()) {
+//						String original = mod.getIdentity().toString().substring(mod.getIdentity().toString().lastIndexOf("/")+1);
+//						String swap = original.substring(original.lastIndexOf("_circuit_")+1);
+//						mod.setIdentity(URI.create(mod.getIdentity().toString().replace(original,swap)));
+//						mod.setPersistentIdentity(mod.getIdentity());
+//						mod.setDisplayId(swap);
+//						//System.out.println("module original:"+original);
+//						//System.out.println("module swap:"+swap);
+//						for (MapsTo mapsTo : mod.getMapsTos()) {
+//							String originalMap = mapsTo.getIdentity().toString().substring(mapsTo.getIdentity().toString().lastIndexOf("/")+1);
+//							String swapMap = originalMap.substring(originalMap.lastIndexOf("_protein_")+9);
+//							//System.out.println("mapsTo original:"+originalMap);
+//							//System.out.println("mapsTo swap:"+swapMap);
+//							String newIdentity = mapsTo.getIdentity().toString().replace(originalMap,swapMap);
+//							newIdentity = newIdentity.replace(original,swap);
+//							//System.out.println("Old:"+mapsTo.getIdentity());
+//							mapsTo.setIdentity(URI.create(newIdentity));
+//							mapsTo.setPersistentIdentity(mapsTo.getIdentity());
+//							mapsTo.setDisplayId(swapMap);
+//							//System.out.println("New:"+mapsTo.getIdentity());
+//						}
+//					}
+//				}
+//			}
+//			doc.write("/Users/myers/Downloads/cello_sbol2/"+f.getName());
+//		}
 		
-		SynBioHubFrontend sbh = new SynBioHubFrontend("https://synbiohub.org");
-		sbh.login("jakebeal@gmail.com", "facets");
-		SBOLDocument doc = sbh.getSBOL(URI.create("https://synbiohub.org/user/FACETS/Reporters/foo_md/1"));
-		doc.write(System.out);
+		
+//		SynBioHubFrontend sbh = new SynBioHubFrontend("https://synbiohub.org");
+//		sbh.login("jakebeal@gmail.com", "facets");
+//		SBOLDocument doc = sbh.getSBOL(URI.create("https://synbiohub.org/user/FACETS/Reporters/foo_md/1"));
+//		doc.write(System.out);
 		//SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/doc.xml");
 		//doc = doc.createRecursiveCopy(doc.getTopLevel(URI.create("http://michael.zhang/Eukaryotic_Promoters_GeneratedInstance6/1")));
 		//doc.write(System.out);
