@@ -316,7 +316,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					moduleDefinition = null;
 				}
 			}
 		}
@@ -750,7 +749,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					model = null;
 				}
 			}
 		}
@@ -1231,7 +1229,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					componentDefinition = null;
 				}
 			}
 		}
@@ -1288,7 +1285,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					combinatorialDerivation = null;
 				}
 			}
 		}
@@ -1538,7 +1534,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					implementation = null;
 				}
 			}
 		}
@@ -3024,7 +3019,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					sequence = null;
 				}
 			}
 		}
@@ -3245,7 +3239,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					genericTopLevel = null;
 				}
 			}
 		}
@@ -3775,7 +3768,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					plan = null;
 				}
 			}
 		}
@@ -3881,7 +3873,6 @@ public class SBOLDocument {
 						createCopy(document);
 					}
 				} catch (SynBioHubException | SBOLValidationException e) {
-					topLevel = null;
 				}
 			}
 		} 
