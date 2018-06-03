@@ -123,6 +123,90 @@ public class SBOLValidate {
 			}
 		}
 	}
+	
+	// TODO: change get...URI with get...Identity, here and all validation checks
+	// TODO: does this make sense to run if not complete, if so make sure it does not error due to incompleteness
+	private static void validateDerivedComponentDefinitions(SBOLDocument sbolDocument) {
+		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
+			for (URI wasDerivedFrom : componentDefinition.getWasDerivedFroms()) {
+				TopLevel topLevel = sbolDocument.getTopLevel(wasDerivedFrom);
+				if (topLevel instanceof CombinatorialDerivation) {
+					CombinatorialDerivation combinatorialDerivation = (CombinatorialDerivation)topLevel;
+					ComponentDefinition template = combinatorialDerivation.getTemplate();
+					
+					// Check sbol-13016
+					for (Component component : componentDefinition.getComponents()) {
+						for (URI templateComponentURI : component.getWasDerivedFroms()) {
+							if (combinatorialDerivation.getTemplate() != null &&
+									combinatorialDerivation.getTemplate().getComponent(templateComponentURI) != null) {
+								boolean replaced = false;
+								for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+									if (variableComponent.getVariableURI().equals(templateComponentURI)) {
+										replaced = true;
+										boolean foundIt = false;
+										for (URI variantURI : variableComponent.getVariantURIs()) {
+											if (variantURI.equals(component.getDefinitionURI())) {
+												foundIt = true;
+												break;
+											}
+										}
+										if (!foundIt) {
+											for (Collection variantCollection : variableComponent.getVariantCollections()) {
+												for (URI variantURI : variantCollection.getMemberURIs()) {
+													if (variantURI.equals(component.getDefinitionURI())) {
+														foundIt = true;
+														break;
+													}
+												}
+												if (foundIt) break;
+											}
+										}
+										// TODO: check derivations
+										if (!foundIt) {
+											errors.add(new SBOLValidationException("sbol-13016", componentDefinition).getMessage());
+										}
+									}
+								}
+								if (!replaced) {
+									if (!component.getDefinitionURI().equals(template.getComponent(templateComponentURI).getDefinitionURI())) {
+										errors.add(new SBOLValidationException("sbol-13017", componentDefinition).getMessage());
+									}
+								}
+							}
+						}
+					}
+					
+					// Check sbol-12908
+					for (SequenceConstraint constraint : template.getSequenceConstraints()) {
+						URI mappedSubject = null;
+						URI mappedObject = null;
+						for (Component component : componentDefinition.getComponents()) {
+							if (component.getWasDerivedFroms().contains(constraint.getSubjectURI())) {
+								mappedSubject = component.getIdentity();
+							}
+							if (component.getWasDerivedFroms().contains(constraint.getObjectURI())) {
+								mappedObject = component.getIdentity();
+							}
+						}
+						if (mappedSubject != null && mappedObject != null) {
+							boolean foundIt = false;
+							for (SequenceConstraint constraint2 : componentDefinition.getSequenceConstraints()) {
+								if (constraint2.getSubjectURI().equals(mappedSubject) && 
+										constraint2.getObjectURI().equals(mappedObject) &&
+										constraint2.getRestrictionURI().equals(constraint.getRestrictionURI())) {
+									foundIt = true;
+									break;
+								}
+							}
+							if (!foundIt) {
+								errors.add(new SBOLValidationException("sbol-12908", componentDefinition).getMessage());
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 	private static void checkCombinatorialDerivationCompleteness(SBOLDocument sbolDocument,
 			CombinatorialDerivation combinatorialDerivation) {
@@ -416,8 +500,7 @@ public class SBOLValidate {
 	 * @param combinatorialDerivation
 	 * @param visited
 	 * @throws SBOLValidationException
-	 *             if either of the following SBOL validation rule was violated:
-	 *             TODO: 10603, 10605.
+	 *             if either of the following SBOL validation rule was violated: 13015
 	 */
 	static void checkCombinatorialDerivationCycle(SBOLDocument sbolDocument,
 			CombinatorialDerivation combinatorialDerivation, Set<URI> visited) throws SBOLValidationException {
@@ -756,6 +839,136 @@ public class SBOLValidate {
 						}
 						if (association.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.BUILD))) {
 							errors.add(new SBOLValidationException("sbol-12409", activity).getMessage());
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private static void validateCombinatorialBestPractices(SBOLDocument sbolDocument) {
+		for (CombinatorialDerivation combinatorialDerivation : sbolDocument.getCombinatorialDerivations()) {
+			ComponentDefinition template = combinatorialDerivation.getTemplate();
+			if (template != null && template.getComponents().size() == 0) {
+				errors.add(new SBOLValidationException("sbol-12909", combinatorialDerivation).getMessage());
+			}
+			for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+				if (variableComponent.getVariants().size()==0 &&
+						variableComponent.getVariantCollections().size()==0 &&
+						variableComponent.getVariantDerivations().size()==0) {
+					errors.add(new SBOLValidationException("sbol-13006", variableComponent).getMessage());
+				}
+			}
+		}
+		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
+			for (URI wasDerivedFrom : componentDefinition.getWasDerivedFroms()) {
+				TopLevel topLevel = sbolDocument.getTopLevel(wasDerivedFrom);
+				if (topLevel instanceof CombinatorialDerivation) {
+					CombinatorialDerivation combinatorialDerivation = (CombinatorialDerivation)topLevel;
+					ComponentDefinition template = combinatorialDerivation.getTemplate();										
+					if (template != null) {
+						if (!componentDefinition.getTypes().equals(template.getTypes())) {
+							errors.add(new SBOLValidationException("sbol-12910", componentDefinition).getMessage());
+						}
+						if (!componentDefinition.getRoles().equals(template.getRoles())) {
+							errors.add(new SBOLValidationException("sbol-12911", componentDefinition).getMessage());
+						}
+						
+						for (Component component : componentDefinition.getComponents()) {
+							for (URI templateComponentURI : component.getWasDerivedFroms()) {
+								Component templateComponent = template.getComponent(templateComponentURI);
+								if (templateComponent != null) {
+									if (!component.getRoles().equals(templateComponent.getRoles())) {
+										errors.add(new SBOLValidationException("sbol-13018", componentDefinition).getMessage());
+									}
+								}
+							}
+						}
+						for (Component templateComponent : template.getComponents()) {
+							boolean replaced = false;
+							for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+								if (variableComponent.getVariableURI().equals(templateComponent.getIdentity())) {
+									replaced = true;
+								}
+							}
+							if (!replaced) {
+								boolean foundIt = false;
+								for (Component component : componentDefinition.getComponents()) {
+									if (component.getWasDerivedFroms().contains(templateComponent.getIdentity())) {
+										if (foundIt) {
+											errors.add(new SBOLValidationException("sbol-13022", componentDefinition).getMessage());
+										} else {
+											foundIt = true;
+										}
+									}
+								}
+								if (!foundIt) {
+									errors.add(new SBOLValidationException("sbol-13022", componentDefinition).getMessage());
+								}
+							}
+						}
+						for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+							if (variableComponent.getOperator().equals(OperatorType.ZEROORONE)) {
+								boolean foundIt = false;
+								for (Component component : componentDefinition.getComponents()) {
+									if (component.getWasDerivedFroms().contains(variableComponent.getVariableURI())) {
+										if (foundIt) {
+											errors.add(new SBOLValidationException("sbol-13019", componentDefinition).getMessage());
+											break;
+										} else {
+											foundIt = true;
+										}
+									}
+								}								
+							} else if  (variableComponent.getOperator().equals(OperatorType.ONE)) {
+								boolean foundIt = false;
+								for (Component component : componentDefinition.getComponents()) {
+									if (component.getWasDerivedFroms().contains(variableComponent.getVariableURI())) {
+										if (foundIt) {
+											errors.add(new SBOLValidationException("sbol-13020", componentDefinition).getMessage());
+											break;
+										} else {
+											foundIt = true;
+										}
+									}
+								}
+								if (!foundIt) {
+									errors.add(new SBOLValidationException("sbol-13020", componentDefinition).getMessage());
+								}
+							} else if  (variableComponent.getOperator().equals(OperatorType.ONEORMORE)) {
+								boolean foundIt = false;
+								for (Component component : componentDefinition.getComponents()) {
+									if (component.getWasDerivedFroms().contains(variableComponent.getVariableURI())) {
+										foundIt = true;
+										break;
+									}
+								}
+								if (!foundIt) {
+									errors.add(new SBOLValidationException("sbol-13021", componentDefinition).getMessage());
+								}
+							} 
+						}
+					}
+				}
+			}
+		}
+		for (Collection collection : sbolDocument.getCollections()) {
+			for (URI wasDerivedFrom : collection.getWasDerivedFroms()) {
+				TopLevel topLevel = sbolDocument.getTopLevel(wasDerivedFrom);
+				if (topLevel instanceof CombinatorialDerivation) {
+					for (TopLevel member : collection.getMembers()) {
+						if (!member.getWasDerivedFroms().contains(wasDerivedFrom)) {
+							errors.add(new SBOLValidationException("sbol-12913", collection).getMessage());
+						}
+					}
+				}
+			}
+			for (TopLevel member : collection.getMembers()) {
+				for (URI wasDerivedFrom : member.getWasDerivedFroms()) {
+					TopLevel topLevel = sbolDocument.getTopLevel(wasDerivedFrom);
+					if (topLevel instanceof CombinatorialDerivation) {
+						if (!collection.getWasDerivedFroms().contains(wasDerivedFrom)) {
+							errors.add(new SBOLValidationException("sbol-12912", collection).getMessage());
 						}
 					}
 				}
@@ -1196,11 +1409,6 @@ public class SBOLValidate {
 		} else if (sequence.getEncoding().equals(Sequence.SMILES)) {
 			return checkSmilesEncoding(sequence.getElements());
 		}
-		// TODO: removed tempoarily until smiles parser is fixed
-		/*
-		 * else if (sequence.getEncoding().equals(Sequence.SMILES)) { return
-		 * openSmilesParser.check(sequence.getElements()); }
-		 */
 		return true;
 	}
 
@@ -1495,15 +1703,18 @@ public class SBOLValidate {
 		validateURIuniqueness(sbolDocument);
 		validatePersistentIdentityUniqueness(sbolDocument);
 		validateMapsTos(sbolDocument);
+		validateDerivedComponentDefinitions(sbolDocument);
 		if (compliant)
 			validateCompliance(sbolDocument);
-		if (complete)
+		if (complete) {
 			validateCompleteness(sbolDocument);
+		}
 		if (bestPractice) {
 			validateOntologyUsage(sbolDocument);
 			validateSequenceAnnotations(sbolDocument);
 			validateComponentDefinitionSequences(sbolDocument);
 			validateActivityRoleTypeUsage(sbolDocument);
+			validateCombinatorialBestPractices(sbolDocument);
 		}
 	}
 

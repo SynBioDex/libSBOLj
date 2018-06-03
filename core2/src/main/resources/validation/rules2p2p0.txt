@@ -384,8 +384,7 @@ reference: Section 7.7 on page 22
 [ComponentDefinition]
 id: sbol-10520
 condition: recommended
-description: 
-If a ComponentDefinition in a ComponentDefinition-Component hierarchy
+description: If a ComponentDefinition in a ComponentDefinition-Component hierarchy
 refers to one or more Sequence objects, and there exist
 ComponentDefinition objects lower in the hierarchy that refer to
 Sequence objects with the same encoding, then the elements properties
@@ -565,7 +564,7 @@ reference: Section 7.7.2 on page 27
 id: sbol-10709
 condition: strong required
 description: The roleIntegration property of a Component is REQUIRED, if roles property includes one
-or more rules. 
+or more roles. 
 reference: Section 7.7.2 on page 27
 
 [MapsTo]
@@ -1581,16 +1580,14 @@ reference: Section 7.11.1 on page 49
 [VariableComponent]
 id: sbol-13015
 condition: weak required
-description: 
-VariableComponent objects MUST NOT form circular reference chains via their variantDerivations properties
+description: VariableComponent objects MUST NOT form circular reference chains via their variantDerivations properties
 and parent CombinatorialDerivation objects.
 reference: Section 7.11.1 on page 49
 
 [VariableComponent]
 id: sbol-13016
 condition: weak required
-description: 
-If the wasDerivedFroms property of a Component refers to the same Component as the variable property of a 
+description: If the wasDerivedFroms property of a Component refers to the same Component as the variable property of a 
 VariableComponent, then the definition property of the first Component MUST refer to a ComponentDefinition
 specified by the variants property, variantCollections property, or variantDerivations property of the 
 VariableComponent.
@@ -1599,8 +1596,7 @@ reference: Section 7.11.1 on page 49
 [VariableComponent]
 id: sbol-13017
 condition: weak required
-description: 
-If the wasDerivedFroms property of a Component refers to a Component in the template ComponentDefinition 
+description: If the wasDerivedFroms property of a Component refers to a Component in the template ComponentDefinition 
 of a CombinatorialDerivation, and the second Component is not referred to by the variable property of any
 VariableComponent in the CombinatorialDerivation, then the definition property of the first Component MUST
 refer to the same ComponentDefinition as the definition property of the second Component.
@@ -1609,8 +1605,7 @@ reference: Section 7.11.1 on page 49
 [VariableComponent]
 id: sbol-13018
 condition: recommended
-description: 
-If the wasDerivedFroms property of a ComponentDefinition refers to a CombinatorialDerivation and the 
+description: If the wasDerivedFroms property of a ComponentDefinition refers to a CombinatorialDerivation and the 
 wasDerivedFroms property of a Component contained by the ComponentDefinition refers to a Component 
 contained by the template ComponentDefinition of the CombinatorialDerivation, then the roles property 
 of the first Component SHOULD contain all URIs contained by the roles property of the second Component.
@@ -1619,8 +1614,7 @@ reference: Section 7.11.1 on page 49
 [VariableComponent]
 id: sbol-13019
 condition: recommended
-description: 
-If the wasDerivedFroms property of a ComponentDefinition refers to a CombinatorialDerivation and the 
+description: If the wasDerivedFroms property of a ComponentDefinition refers to a CombinatorialDerivation and the 
 CombinatorialDerivation contains a VariableComponent with an operator property that contains the URI 
 http://sbols.org/v2#zeroOrOne, then the components property of the ComponentDefinition SHOULD NOT 
 contain more than one Component with a wasDerivedFroms property that refers to the same Component as the 
@@ -1630,8 +1624,7 @@ reference: Section 7.11.1 on page 49
 [VariableComponent]
 id: sbol-13020
 condition: recommended
-description: 
-If the wasDerivedFroms property of a ComponentDefinition refers to a CombinatorialDerivation and the
+description: If the wasDerivedFroms property of a ComponentDefinition refers to a CombinatorialDerivation and the
 CombinatorialDerivation contains a VariableComponent with an operator property that contains the URI 
 http://sbols.org/v2#one, then the components property of the ComponentDefinition SHOULD contain exactly 
 one Component with a wasDerivedFroms property that refers to the same Component as the variable property 
@@ -1641,8 +1634,7 @@ reference: Section 7.11.1 on page 49
 [VariableComponent]
 id: sbol-13021
 condition: recommended
-description: 
-If the wasDerivedFroms property of a ComponentDefinition refers to a CombinatorialDerivation and the
+description: If the wasDerivedFroms property of a ComponentDefinition refers to a CombinatorialDerivation and the
 CombinatorialDerivation contains a VariableComponent with an operator property that contains the URI 
 http://sbols.org/v2#oneOrMore, then the components property of the ComponentDefinition SHOULD contain 
 at least one Component with a wasDerivedFroms property that refers to the same Component as the variable 
@@ -1652,8 +1644,7 @@ reference: Section 7.11.1 on page 49
 [VariableComponent]
 id: sbol-13022
 condition: recommended
-description: 
-If the wasDerivedFroms property of a ComponentDefinition refers to a CombinatorialDerivation and the 
+description: If the wasDerivedFroms property of a ComponentDefinition refers to a CombinatorialDerivation and the 
 template ComponentDefinition of the CombinatorialDerivation contains a Component that is not referred to 
 by the variable property of any VariableComponent contained by the CombinatorialDerivation, then the first
 ComponentDefinition SHOULD contain exactly one Component with a wasDerivedFroms property that refers to 
@@ -1677,8 +1668,7 @@ reference: Section 7.12 on page 51
 [Implementation]
 id: sbol-13103
 condition: weak required
-description: 
-The built property URI, if specified, MUST refer to either a ComponentDefinition or a ModuleDefinition.
+description: The built property URI, if specified, MUST refer to either a ComponentDefinition or a ModuleDefinition.
 reference: Section 7.12 on page 51
 
 [Attachment]
