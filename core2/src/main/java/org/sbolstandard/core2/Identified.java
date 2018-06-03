@@ -258,8 +258,15 @@ public abstract class Identified {
 	 *
 	 * @param wasDerivedFromURI the wasDerivedFrom URI to be added
 	 * @return {@code true} if this set did not already contain the specified wasDerivedFrom, {@code false} otherwise.
+	 * @throws SBOLValidationException if the following SBOL validation rules was violated: 10305. 
 	 */
-	public boolean addWasDerivedFrom(URI wasDerivedFromURI) {
+	public boolean addWasDerivedFrom(URI wasDerivedFromURI) throws SBOLValidationException {
+		if (sbolDocument!=null) {
+			if (!SBOLValidate.checkWasDerivedFromVersion(sbolDocument, this, wasDerivedFromURI)) {
+				throw new SBOLValidationException("sbol-10305", this);
+			}
+			SBOLValidate.checkWasDerivedFromCycle(sbolDocument, this, wasDerivedFromURI, new HashSet<URI>());
+		}
 		return wasDerivedFroms.add(wasDerivedFromURI);
 	}
 	
@@ -339,8 +346,9 @@ public abstract class Identified {
 	 * set of the wasDerivedFroms.
 	 *
 	 * @param wasDerivedFroms the set of wasDerivedFroms to set to
+	 * @throws SBOLValidationException if the following SBOL validation rules was violated: 10305. 
 	 */
-	public void setWasDerivedFroms(Set<URI> wasDerivedFroms) {
+	public void setWasDerivedFroms(Set<URI> wasDerivedFroms) throws SBOLValidationException {
 		clearWasDerivedFroms();
 		if (wasDerivedFroms==null) return;
 		for (URI wasDerivedFrom : wasDerivedFroms) {
@@ -360,6 +368,9 @@ public abstract class Identified {
 			if (this.getSBOLDocument().getActivity(wasGeneratedByURI)==null) {
 				throw new SBOLValidationException("sbol-10222",this);
 			}
+		}
+		if (sbolDocument!=null) {
+			SBOLValidate.checkWasGeneratedByCycle(sbolDocument, this, wasGeneratedByURI, new HashSet<URI>());
 		}
 		return wasGeneratedBys.add(wasGeneratedByURI);
 	}

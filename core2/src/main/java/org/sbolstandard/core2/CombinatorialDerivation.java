@@ -87,6 +87,17 @@ public class CombinatorialDerivation extends TopLevel {
 				throw new SBOLValidationException("sbol-13005",this);
 			}
 		}
+		if (strategy == StrategyType.ENUMERATE) {
+			if (variableComponent.getOperator().equals(OperatorType.ONEORMORE) ||
+					variableComponent.getOperator().equals(OperatorType.ZEROORMORE)) {
+				throw new SBOLValidationException("sbol-12903",this);
+			}
+		}
+		for (VariableComponent varComp : this.getVariableComponents()) {
+			if (varComp.getVariableURI().equals(variableComponent.getVariableURI())) {
+				throw new SBOLValidationException("sbol-12907",this);
+			}
+		}
 		for (URI cdURI : variableComponent.getVariantDerivationURIs()) {
 			if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 				CombinatorialDerivation cd = this.getSBOLDocument().getCombinatorialDerivation(cdURI);
@@ -117,6 +128,17 @@ public class CombinatorialDerivation extends TopLevel {
 		if (template !=null) {
 			if (template.getComponent(variableComponent.getVariableURI())==null) {
 				throw new SBOLValidationException("sbol-13005",this);
+			}
+		}
+		if (strategy == StrategyType.ENUMERATE) {
+			if (variableComponent.getOperator().equals(OperatorType.ONEORMORE) ||
+					variableComponent.getOperator().equals(OperatorType.ZEROORMORE)) {
+				throw new SBOLValidationException("sbol-12903",this);
+			}
+		}
+		for (VariableComponent varComp : this.getVariableComponents()) {
+			if (varComp.getVariableURI().equals(variableComponent.getVariableURI())) {
+				throw new SBOLValidationException("sbol-12907",this);
 			}
 		}
 		for (URI cdURI : variableComponent.getVariantDerivationURIs()) {
@@ -377,7 +399,7 @@ public class CombinatorialDerivation extends TopLevel {
 	public void setTemplate(URI template) throws SBOLValidationException {
 
 		if (template == null) {
-			throw new SBOLValidationException("sbol-12905", this);
+			throw new SBOLValidationException("sbol-12904", this);
 		}
 
 		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {

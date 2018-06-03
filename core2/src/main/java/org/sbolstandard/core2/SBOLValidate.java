@@ -95,13 +95,73 @@ public class SBOLValidate {
 			}
 		}
 	}
-	
+
+	private static void checkImplementationCompleteness(SBOLDocument sbolDocument,
+			Implementation implementation) {
+		URI builtURI = implementation.getBuiltURI();
+		if (builtURI != null && sbolDocument.getComponentDefinition(builtURI) == null &&
+				sbolDocument.getModuleDefinition(builtURI) == null) {
+			errors.add(new SBOLValidationException("sbol-13103", implementation).getMessage());
+		}
+	}
 
 	private static void checkActivityCompleteness(SBOLDocument sbolDocument,
 			Activity activity) {
 		for (URI wasInformedByURI : activity.getWasInformedByURIs()) {
 			if (sbolDocument.getActivity(wasInformedByURI) == null) {
 				errors.add(new SBOLValidationException("sbol-12407", activity).getMessage());
+			}
+		}
+		for (Association association : activity.getAssociations()) {
+			URI planURI = association.getPlanURI();
+			if (planURI != null && sbolDocument.getPlan(planURI) == null) {
+				errors.add(new SBOLValidationException("sbol-12604", activity).getMessage());
+			}
+			URI agentURI = association.getAgentURI();
+			if (agentURI != null && sbolDocument.getAgent(agentURI) == null) {
+				errors.add(new SBOLValidationException("sbol-12606", activity).getMessage());
+			}
+		}
+	}
+
+	private static void checkCombinatorialDerivationCompleteness(SBOLDocument sbolDocument,
+			CombinatorialDerivation combinatorialDerivation) {
+		URI templateURI = combinatorialDerivation.getTemplateURI();
+		if (templateURI == null) {
+			errors.add(new SBOLValidationException("sbol-12905", combinatorialDerivation).getMessage());
+		}
+		if (sbolDocument.getComponentDefinition(templateURI) == null) {
+			errors.add(new SBOLValidationException("sbol-12905", combinatorialDerivation).getMessage());
+		}
+		for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+			if (combinatorialDerivation.getTemplate() != null &&
+					combinatorialDerivation.getTemplate().getComponent(variableComponent.getVariableURI())==null) {
+				errors.add(new SBOLValidationException("sbol-13005",combinatorialDerivation).getMessage());
+			}
+			for (URI variantURI : variableComponent.getVariantURIs()) {
+				if (sbolDocument.getComponentDefinition(variantURI)==null) {
+					errors.add(new SBOLValidationException("sbol-13008",combinatorialDerivation).getMessage());
+				}
+			}
+			for (URI variantCollectionURI : variableComponent.getVariantCollectionURIs()) {
+				Collection variantCollection = sbolDocument.getCollection(variantCollectionURI);
+				if (variantCollection==null) {
+					errors.add(new SBOLValidationException("sbol-13010",combinatorialDerivation).getMessage());
+				} else {
+					if (variantCollection.getMemberURIs().size()==0) {
+						errors.add(new SBOLValidationException("sbol-13011",combinatorialDerivation).getMessage());
+					}
+					for (URI memberURI : variantCollection.getMemberURIs()) {
+						if (sbolDocument.getComponentDefinition(memberURI)==null) {
+							errors.add(new SBOLValidationException("sbol-13012",combinatorialDerivation).getMessage());
+						}
+					}
+				}
+			}
+			for (URI variantDerivationURI : variableComponent.getVariantDerivationURIs()) {
+				if (sbolDocument.getCombinatorialDerivation(variantDerivationURI)==null) {
+					errors.add(new SBOLValidationException("sbol-13014",combinatorialDerivation).getMessage());
+				}
 			}
 		}
 	}
@@ -288,6 +348,12 @@ public class SBOLValidate {
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
 			checkModuleDefinitionCompleteness(sbolDocument, moduleDefinition);
 		}
+		for (CombinatorialDerivation combinatorialDerivation : sbolDocument.getCombinatorialDerivations()) {
+			checkCombinatorialDerivationCompleteness(sbolDocument, combinatorialDerivation);
+		}
+		for (Implementation implementation : sbolDocument.getImplementations()) {
+			checkImplementationCompleteness(sbolDocument, implementation);
+		}
 		for (Activity activity : sbolDocument.getActivities()) {
 			checkActivityCompleteness(sbolDocument, activity);
 		}
@@ -434,6 +500,45 @@ public class SBOLValidate {
 		visited.remove(identified.getIdentity());
 		return;
 	}
+	
+	/**
+	 * @param sbolDocument
+	 * @param identified
+	 * @param wasGeneratedBy
+	 * @param visited
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rule was violated: 10303,
+	 *             10304.
+	 */
+	static void checkWasGeneratedByCycle(SBOLDocument sbolDocument, Identified identified, URI wasGeneratedBy,
+			Set<URI> visited) throws SBOLValidationException {
+		visited.add(identified.getIdentity());
+		Activity activity = sbolDocument.getActivity(wasGeneratedBy);
+		if (activity != null) {
+			if (visited.contains(activity.getIdentity())) {
+				throw new SBOLValidationException("sbol-10223", identified);
+			}
+			visited.add(activity.getIdentity());
+			for (Usage usage : activity.getUsages()) {
+				TopLevel topLevel = sbolDocument.getTopLevel(usage.getEntityURI());
+				if (topLevel != null) {
+					if (visited.contains(topLevel.getIdentity())) {
+						throw new SBOLValidationException("sbol-10223", identified);
+					}
+					for (URI wgb : topLevel.getWasGeneratedBys()) {
+						try {
+							checkWasGeneratedByCycle(sbolDocument, topLevel, wgb, visited);
+						} catch (SBOLValidationException e) {
+							throw new SBOLValidationException("sbol-10223", identified);
+						}
+					}
+				}
+			}
+			visited.remove(activity.getIdentity());
+		}
+		visited.remove(identified.getIdentity());
+		return;
+	}
 
 	/**
 	 * Validates if there are circular references in the given SBOL document.
@@ -450,6 +555,13 @@ public class SBOLValidate {
 					errors.add(e.getMessage());
 				}
 			}
+			for (URI wasGeneratedBy : topLevel.getWasGeneratedBys()) {
+				try {
+					checkWasGeneratedByCycle(sbolDocument, topLevel, wasGeneratedBy, new HashSet<URI>());
+				} catch (SBOLValidationException e) {
+					errors.add(e.getMessage());
+				}
+			}
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			try {
@@ -461,6 +573,13 @@ public class SBOLValidate {
 		for (ModuleDefinition moduleDefinition : sbolDocument.getModuleDefinitions()) {
 			try {
 				checkModuleDefinitionCycle(sbolDocument, moduleDefinition, new HashSet<URI>());
+			} catch (SBOLValidationException e) {
+				errors.add(e.getMessage());
+			}
+		}
+		for (CombinatorialDerivation combinatorialDerivation : sbolDocument.getCombinatorialDerivations()) {
+			try {
+				checkCombinatorialDerivationCycle(sbolDocument, combinatorialDerivation, new HashSet<URI>());
 			} catch (SBOLValidationException e) {
 				errors.add(e.getMessage());
 			}
@@ -544,6 +663,102 @@ public class SBOLValidate {
 		} else if (type.equals(SystemsBiologyOntology.CONTROL)) {
 			if (!role.equals(SystemsBiologyOntology.MODIFIER) && !role.equals(SystemsBiologyOntology.MODIFIED)) {
 				errors.add(new SBOLValidationException("sbol-11907", interaction).getMessage());
+			}
+		}
+	}
+	
+	private static void validateActivityRoleTypeUsage(SBOLDocument sbolDocument) {
+		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
+			for (URI wasGeneratedBy : topLevel.getWasGeneratedBys()) {
+				Activity activity = sbolDocument.getActivity(wasGeneratedBy);
+				if (activity != null) {
+					for (Association association : activity.getAssociations()) {
+						for (URI role : association.getRoles()) {
+							if (role.equals(ActivityRoleType.convertToURI(ActivityRoleType.DESIGN))) {
+								if (topLevel instanceof Implementation) {
+									errors.add(new SBOLValidationException("sbol-10224", topLevel).getMessage());
+								}
+							}
+							if (role.equals(ActivityRoleType.convertToURI(ActivityRoleType.BUILD))) {
+								if (!(topLevel instanceof Implementation)) {
+									errors.add(new SBOLValidationException("sbol-10225", topLevel).getMessage());
+								}
+							}
+							// TODO: should check if collection is just attachment objects
+							if (role.equals(ActivityRoleType.convertToURI(ActivityRoleType.TEST))) {
+								if (!(topLevel instanceof Attachment) && !(topLevel instanceof Collection)) {
+									errors.add(new SBOLValidationException("sbol-10226", topLevel).getMessage());
+								}
+							}
+							if (role.equals(ActivityRoleType.convertToURI(ActivityRoleType.LEARN))) {
+								if (topLevel instanceof Implementation) {
+									errors.add(new SBOLValidationException("sbol-10227", topLevel).getMessage());
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		for (Activity activity : sbolDocument.getActivities()) {
+			for (Usage usage : activity.getUsages()) {
+				if (usage.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.DESIGN))) {
+					TopLevel topLevel = usage.getEntity();
+					if (topLevel != null && topLevel instanceof Implementation) {
+						errors.add(new SBOLValidationException("sbol-12504", activity).getMessage());
+					}
+					for (Association association : activity.getAssociations()) {
+						if (association.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.TEST))) {
+							errors.add(new SBOLValidationException("sbol-12410", activity).getMessage());
+						}
+						if (association.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.LEARN))) {
+							errors.add(new SBOLValidationException("sbol-12411", activity).getMessage());
+						}
+					}
+				}
+				if (usage.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.BUILD))) {
+					TopLevel topLevel = usage.getEntity();
+					if (topLevel != null && !(topLevel instanceof Implementation)) {
+						errors.add(new SBOLValidationException("sbol-12505", activity).getMessage());
+					}
+					for (Association association : activity.getAssociations()) {
+						if (association.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.DESIGN))) {
+							errors.add(new SBOLValidationException("sbol-12408", activity).getMessage());
+						}
+						if (association.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.LEARN))) {
+							errors.add(new SBOLValidationException("sbol-12411", activity).getMessage());
+						}
+					}
+				}
+				if (usage.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.TEST))) {
+					TopLevel topLevel = usage.getEntity();
+					if (topLevel != null && !(topLevel instanceof Attachment) &&
+							!(topLevel instanceof Collection)) {
+						errors.add(new SBOLValidationException("sbol-12506", activity).getMessage());
+					}
+					for (Association association : activity.getAssociations()) {
+						if (association.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.DESIGN))) {
+							errors.add(new SBOLValidationException("sbol-12408", activity).getMessage());
+						}
+						if (association.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.BUILD))) {
+							errors.add(new SBOLValidationException("sbol-12409", activity).getMessage());
+						}
+					}
+				}
+				if (usage.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.LEARN))) {
+					TopLevel topLevel = usage.getEntity();
+					if (topLevel != null && topLevel instanceof Implementation) {
+						errors.add(new SBOLValidationException("sbol-12507", activity).getMessage());
+					}
+					for (Association association : activity.getAssociations()) {
+						if (association.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.TEST))) {
+							errors.add(new SBOLValidationException("sbol-12410", activity).getMessage());
+						}
+						if (association.getRoles().contains(ActivityRoleType.convertToURI(ActivityRoleType.BUILD))) {
+							errors.add(new SBOLValidationException("sbol-12409", activity).getMessage());
+						}
+					}
+				}
 			}
 		}
 	}
@@ -706,6 +921,15 @@ public class SBOLValidate {
 						checkInteractionTypeParticipationRole(interaction, SBOtype, SBOrole);
 					}
 				}
+			}
+		}
+		for (Attachment attachment : sbolDocument.getAttachments()) {
+			try {
+				if (attachment.isSetFormat() && !edam.isDescendantOf(attachment.getFormat(), EDAMOntology.FORMAT)) {
+					errors.add(new SBOLValidationException("sbol-13206", attachment).getMessage());
+				}
+			} catch (Exception e) {
+				errors.add(new SBOLValidationException("sbol-13206", attachment).getMessage());
 			}
 		}
 	}
@@ -1279,6 +1503,7 @@ public class SBOLValidate {
 			validateOntologyUsage(sbolDocument);
 			validateSequenceAnnotations(sbolDocument);
 			validateComponentDefinitionSequences(sbolDocument);
+			validateActivityRoleTypeUsage(sbolDocument);
 		}
 	}
 

@@ -1417,7 +1417,8 @@ reference: Section 7.11 on page 47
 [CombinatorialDerivation]
 id: sbol-12905
 condition: weak required
-description: The template property of a CombinatorialDerivation is REQUIRED and MUST contain a URI.
+description: The URI contained by the template property of a CombinatorialDerivation MUST refer to 
+a ComponentDefinition.
 reference: Section 7.11 on page 47
 
 [CombinatorialDerivation]
