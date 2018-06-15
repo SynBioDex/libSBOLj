@@ -147,8 +147,8 @@ public class SBOLWriter
 		FileOutputStream stream = new FileOutputStream(file);
 		BufferedOutputStream buffer = new BufferedOutputStream(stream);
 		write(doc, buffer, fileType);
-		stream.close();
 		buffer.close();
+		stream.close();
 	}
 
 	/**
@@ -226,6 +226,8 @@ public class SBOLWriter
 			FASTA.write(doc, out);
 		} else if (fileType.equals(SBOLDocument.GENBANK)) {
 			GenBank.write(doc, out);
+		} else if (fileType.equals(SBOLDocument.SNAPGENE)) {
+			SnapGene.write(doc, out);
 		} else if (fileType.equals(SBOLDocument.JSON)) {
 			try {
 				writeJSON(new OutputStreamWriter(out),

@@ -873,7 +873,7 @@ class GenBank {
 	 * <li>{@link #createSubComponentDefinitions(SBOLDocument, ComponentDefinition, URI, String, String)}.</li>
 	 * </ul>
 	 */
-	static void read(SBOLDocument doc,String stringBuffer,String URIPrefix,String defaultVersion) throws IOException, SBOLConversionException, SBOLValidationException {
+	static void read(SBOLDocument doc,String stringBuffer,String URIPrefix,String displayId,String defaultVersion) throws IOException, SBOLConversionException, SBOLValidationException {
 		so = new SequenceOntology();
 
 		// reset the global static variables needed for parsing
@@ -890,7 +890,7 @@ class GenBank {
 		URI lastRole = null;
 		while (true) {
 			boolean cont = false;
-			String id = "";
+			String id = displayId;
 			String accession = "";
 			String version = defaultVersion;
 			featureMode = false;
@@ -914,14 +914,16 @@ class GenBank {
 					//String[] strSplit = strLine.split("\\s+");
 
 					// ID of the sequence
-					if (strLine.length() > 28) {
-						id = strLine.substring(12, 28).trim();
-						annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), id);
-						id = URIcompliance.fixDisplayId(id);
-						annotations.add(annotation);
-					} else {
-						// TODO: Exception?
-						id = "id_is_missing";
+					if (id == null || id.equals("")) {
+						if (strLine.length() > 28) {
+							id = strLine.substring(12, 28).trim();
+							annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), id);
+							id = URIcompliance.fixDisplayId(id);
+							annotations.add(annotation);
+						} else {
+							// TODO: Exception?
+							id = "id_is_missing";
+						}
 					}
 					
 					// Base count of the sequence

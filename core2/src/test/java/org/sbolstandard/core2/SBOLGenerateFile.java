@@ -14,7 +14,7 @@ import java.io.IOException;
 public class SBOLGenerateFile extends SBOLAbstractTests {
 
 	@Override
-	public void runTest(final String fileName, final SBOLDocument expected, String fileType, boolean compliant) throws SBOLValidationException, SBOLConversionException, IOException 
+	public void runTest(final String fileName, final SBOLDocument expected, boolean compliant) throws SBOLValidationException, SBOLConversionException, IOException 
 	{
 		SBOLValidate.validateSBOL(expected, false, compliant, false);
 		if (SBOLValidate.getNumErrors()>0) {
@@ -37,14 +37,14 @@ public class SBOLGenerateFile extends SBOLAbstractTests {
 		}
 		assertTrue(actual.equals(expected));
 		String PATH = "src/test/resources/";
-		if(fileType.equals("rdf"))
-			writeRdfFile(expected, PATH + fileName);
-		else if (fileType.equals("json"))
-			writeJsonFile(expected, PATH + fileName);
-		else if (fileType.equals("turtle"))
-			writeTurtleFile(expected, PATH + fileName);
-		else
-			writeRdfFile(expected, PATH + fileName);
+//		if(fileType.equals("rdf"))
+//			writeRdfFile(expected, PATH + fileName);
+//		else if (fileType.equals("json"))
+//			writeJsonFile(expected, PATH + fileName);
+//		else if (fileType.equals("turtle"))
+//			writeTurtleFile(expected, PATH + fileName);
+//		else
+		writeRdfFile(expected, PATH + fileName);
 	}
 
 	//	public static void writeRdfFile(SBOLDocument document, File fileName)

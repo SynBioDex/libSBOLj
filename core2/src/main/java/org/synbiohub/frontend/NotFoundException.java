@@ -1,7 +1,7 @@
 package org.synbiohub.frontend;
 
 /**
- * Thrown when SBOL Stack cannot be found.
+ * Thrown when SynBioHub cannot be found.
  * @author James McLaughlin
  *
  */

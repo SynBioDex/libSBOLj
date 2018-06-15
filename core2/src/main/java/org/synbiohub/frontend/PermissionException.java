@@ -1,7 +1,7 @@
 package org.synbiohub.frontend;
 
 /**
- * Thrown when user does not have permission to perform a selected operation on an SBOL Stack
+ * Thrown when user does not have permission to perform a selected operation on a SynBioHub
  * @author James McLaughlin
  *
  */

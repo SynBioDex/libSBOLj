@@ -54,7 +54,7 @@ class SBOLTestUtils {
 		}
 	}
 
-	static SBOLDocument convertSBOL1(String fileName, String URIprefix, String fileType, boolean dropDuplicates)
+	static SBOLDocument convertSBOL1(String fileName, String URIprefix, boolean dropDuplicates)
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
@@ -72,14 +72,14 @@ class SBOLTestUtils {
 		}
 
 		try {
-			if(fileType.equals("rdf"))
-				actual = SBOLReader.read(resourceAsStream);
-			else if(fileType.equals("json"))
-				actual = SBOLReader.read(resourceAsStream,SBOLDocument.JSON);
-			else if(fileType.equals("turtle"))
-				actual = SBOLReader.read(resourceAsStream,SBOLDocument.TURTLE);
-			else
-				actual = SBOLReader.read(resourceAsStream);
+//			if(fileType.equals("rdf"))
+//				actual = SBOLReader.read(resourceAsStream);
+//			else if(fileType.equals("json"))
+//				actual = SBOLReader.read(resourceAsStream,SBOLDocument.JSON);
+//			else if(fileType.equals("turtle"))
+//				actual = SBOLReader.read(resourceAsStream,SBOLDocument.TURTLE);
+//			else
+			actual = SBOLReader.read(resourceAsStream);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -88,7 +88,7 @@ class SBOLTestUtils {
 
 	}
 
-	static SBOLDocument convertRDFTripleStore(String fileName, String fileType, boolean compliant)
+	static SBOLDocument convertRDFTripleStore(String fileName, boolean compliant)
 	{
 		InputStream resourceAsStream = SBOLReaderTest.class.getResourceAsStream(fileName);
 		if (resourceAsStream == null)
@@ -98,14 +98,14 @@ class SBOLTestUtils {
 		SBOLReader.setCompliant(false);
 		SBOLDocument actual = null;
 		try {
-			if(fileType.equals("rdf"))
-				actual = SBOLReader.read(resourceAsStream);
-			else if(fileType.equals("json"))
-				actual = SBOLReader.read(resourceAsStream,SBOLDocument.JSON);
-			else if(fileType.equals("turtle"))
-				actual = SBOLReader.read(resourceAsStream,SBOLDocument.TURTLE);
-			else
-				actual = SBOLReader.read(resourceAsStream);
+//			if(fileType.equals("rdf"))
+//				actual = SBOLReader.read(resourceAsStream);
+//			else if(fileType.equals("json"))
+//				actual = SBOLReader.read(resourceAsStream,SBOLDocument.JSON);
+//			else if(fileType.equals("turtle"))
+//				actual = SBOLReader.read(resourceAsStream,SBOLDocument.TURTLE);
+//			else
+			actual = SBOLReader.read(resourceAsStream);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

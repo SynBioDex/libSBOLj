@@ -90,6 +90,10 @@ public class SBOLDocument {
 	 * Constant representing GenBank file format
 	 */
 	public static final String GENBANK = "GENBANK";
+	/**
+	 * Constant representing SnapGene file format
+	 */
+	public static final String SNAPGENE = "SNAPGENE";
 
 	/**
 	 * Creates a new SBOLDocument instance with one empty list for the namespaces

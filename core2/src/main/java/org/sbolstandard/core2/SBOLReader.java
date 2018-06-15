@@ -164,7 +164,8 @@ public class SBOLReader
 	} //end of SBOLPair class
 
 	private static String URIPrefix	= null;
-	private static String version = "";
+	private static String defaultDisplayId = "";
+	private static String defaultVersion = "";
 	private static boolean typesInURI = false;
 	private static boolean dropObjectsWithDuplicateURIs = false;
 	private static boolean compliant = true;
@@ -190,6 +191,16 @@ public class SBOLReader
 	public static void setCompliant(boolean compliant) {
 		SBOLReader.compliant = compliant;
 	}
+	
+	/**
+	 * Returns the specified authority prefix.
+	 * 
+	 * @return the specified authority prefix.
+	 */
+	public static String getURIPrefix()
+	{
+		return URIPrefix;
+	}
 
 	/**
 	 * Sets the specified authority as the prefix.
@@ -211,15 +222,45 @@ public class SBOLReader
 	{
 		SBOLReader.URIPrefix = null;
 	}
+	
+	/**
+	 * Get the SBOL default displayId for this reader. 
+	 * 
+	 * @return the SBOL default displayId for this reader.
+	 */
+	public static String getDisplayId()
+	{
+		return defaultDisplayId;
+	}
 
 	/**
-	 * Sets the SBOL version for this reader. 
+	 * Sets the SBOL default displayId for this reader. 
+	 *
+	 * @param displayId the given displayId
+	 */
+	public static void setDisplayId(String displayId)
+	{
+		SBOLReader.defaultDisplayId = displayId;
+	}
+	
+	/**
+	 * Get the SBOL default version for this reader. 
+	 *
+	 * @return the SBOL default version for this reader.
+	 */
+	public static String getVersion()
+	{
+		return defaultVersion;
+	}
+
+	/**
+	 * Sets the SBOL default version for this reader. 
 	 *
 	 * @param version the given version
 	 */
 	public static void setVersion(String version)
 	{
-		SBOLReader.version = version;
+		SBOLReader.defaultVersion = version;
 	}
 
 	/**
@@ -370,6 +411,13 @@ public class SBOLReader
 	 */
 	public static SBOLDocument read(String fileName) throws SBOLValidationException, IOException, SBOLConversionException
 	{
+		if (fileName.endsWith(".dna")) {
+			return read(fileName,SBOLDocument.SNAPGENE);
+		} else if (fileName.endsWith(".json")) {
+			return read(fileName,SBOLDocument.JSON);
+		} else if (fileName.endsWith(".ttl")) {
+			return read(fileName,SBOLDocument.TURTLE);
+		} 
 		return read(fileName,SBOLDocument.RDF);
 	}
 
@@ -447,6 +495,7 @@ public class SBOLReader
 	 * Takes in the given file and fileType, and convert the file to an SBOLDocument.
 	 *
 	 * @param file
+	 * @param fileType a given file type
 	 * @return the converted SBOLDocument instance
 	 * @throws FactoryConfigurationError
 	 * @throws XMLStreamException
@@ -565,7 +614,7 @@ public class SBOLReader
 	 * @throws SBOLConversionException if file is empty
 	 * @throws IOException see {@link IOException} 
 	 */
-	public static SBOLDocument read(InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
+	private static SBOLDocument read(InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
 		SBOLDocument SBOLDoc     = new SBOLDocument();
 		SBOLDoc.setCompliant(compliant);
@@ -600,6 +649,10 @@ public class SBOLReader
 	 */
 	static void read(SBOLDocument SBOLDoc,InputStream in,String fileType) throws SBOLValidationException, IOException, SBOLConversionException
 	{
+		if (fileType.equals(SBOLDocument.SNAPGENE)) {
+			SnapGene.read(SBOLDoc, in, URIPrefix, defaultDisplayId, defaultVersion);
+			return;
+		} 
 		compliant = SBOLDoc.isCompliant();
 		Scanner scanner = new Scanner(in, "UTF-8");
 		String inputStreamString;
@@ -621,7 +674,7 @@ public class SBOLReader
 					throw new SBOLConversionException("No URI prefix has been provided.");
 				}
 				SBOLDoc.setDefaultURIprefix(URIPrefix);
-				FASTA.read(SBOLDoc, inputStreamString, URIPrefix, version, defaultSequenceEncoding);
+				FASTA.read(SBOLDoc, inputStreamString, URIPrefix, defaultDisplayId, defaultVersion, defaultSequenceEncoding);
 				scanner.close();
 				return;
 			} else if (SBOLReader.isGenBankString(inputStreamString)) {
@@ -632,7 +685,7 @@ public class SBOLReader
 					throw new SBOLConversionException("No URI prefix has been provided.");
 				}
 				SBOLDoc.setDefaultURIprefix(URIPrefix);
-				GenBank.read(SBOLDoc, inputStreamString, URIPrefix, version);
+				GenBank.read(SBOLDoc, inputStreamString, URIPrefix, defaultDisplayId, defaultVersion);
 				scanner.close();
 				return;
 			} else if (fileType.equals(SBOLDocument.JSON)) {
@@ -1178,7 +1231,7 @@ public class SBOLReader
 		if (URIPrefix != null)
 		{
 			displayId = URIcompliance.findDisplayId(componentDef.getIdentity().toString());
-			identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
+			identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,defaultVersion,typesInURI);
 			persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
 		}
 
@@ -1195,7 +1248,7 @@ public class SBOLReader
 				if (URIPrefix != null )
 				{
 					persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
-					identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
+					identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,defaultVersion,typesInURI);
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol1Terms.DNAComponent.name))
@@ -1232,7 +1285,7 @@ public class SBOLReader
 
 					sequenceAnnotations.add(sa);
 
-					URI component_identity    = createCompliantURI(persIdentity,"component" + component_num,version);
+					URI component_identity    = createCompliantURI(persIdentity,"component" + component_num,defaultVersion);
 					URI component_persIdentity = createCompliantURI(persIdentity,"component" + component_num,"");
 					String component_displayId = "component"+component_num;
 					AccessType access 		  = AccessType.PUBLIC;
@@ -1240,7 +1293,7 @@ public class SBOLReader
 					ComponentDefinition instantiatedDef = SBOLDoc.getComponentDefinition(instantiatedComponent);
 					if (compliant && instantiatedDef != null && instantiatedDef.isSetDisplayId() &&
 							!instantiatedComponents.contains(instantiatedDef.getDisplayId())) {
-						component_identity = createCompliantURI(persIdentity, instantiatedDef.getDisplayId(),version);
+						component_identity = createCompliantURI(persIdentity, instantiatedDef.getDisplayId(),defaultVersion);
 						component_persIdentity = createCompliantURI(persIdentity, instantiatedDef.getDisplayId(),"");
 						component_displayId = instantiatedDef.getDisplayId();
 						instantiatedComponents.add(instantiatedDef.getDisplayId());
@@ -1252,7 +1305,7 @@ public class SBOLReader
 					if (!persIdentity.equals("")) {
 						component.setPersistentIdentity(component_persIdentity);
 						component.setDisplayId(component_displayId);
-						component.setVersion(version);
+						component.setVersion(defaultVersion);
 					}
 					components.add(component);
 
@@ -1291,7 +1344,7 @@ public class SBOLReader
 
 		for (SBOLPair pair : precedePairs)
 		{
-			URI sc_identity    	= createCompliantURI(persIdentity,"sequenceConstraint" + ++sc_number,version);
+			URI sc_identity    	= createCompliantURI(persIdentity,"sequenceConstraint" + ++sc_number,defaultVersion);
 			URI restrictionURI 	= RestrictionType.convertToURI(RestrictionType.PRECEDES);
 			//RestrictionType restriction = RestrictionType.convertToRestrictionType(restrictionURI);
 
@@ -1314,11 +1367,11 @@ public class SBOLReader
 			if (compliant && !persIdentity.equals("")) {
 				String subjectId = URIcompliance.extractDisplayId(subject);
 				String objectId = URIcompliance.extractDisplayId(object);
-				sc_identity = createCompliantURI(persIdentity,subjectId+"_cons_"+objectId,version);
+				sc_identity = createCompliantURI(persIdentity,subjectId+"_cons_"+objectId,defaultVersion);
 				sc = new SequenceConstraint(sc_identity, restrictionURI, subject, object);
 				sc.setPersistentIdentity(createCompliantURI(persIdentity,subjectId+"_cons_"+objectId,""));
 				sc.setDisplayId(subjectId+"_cons_"+objectId);
-				sc.setVersion(version);
+				sc.setVersion(defaultVersion);
 			} else {
 				sc = new SequenceConstraint(sc_identity, restrictionURI, subject, object);
 			}
@@ -1328,7 +1381,7 @@ public class SBOLReader
 		ComponentDefinition c = new ComponentDefinition(identity, type);
 		if (!persIdentity.equals("")) {
 			c.setPersistentIdentity(URI.create(persIdentity));
-			c.setVersion(version);
+			c.setVersion(defaultVersion);
 		}
 		if(roles != null)
 			c.setRoles(roles);
@@ -1370,10 +1423,10 @@ public class SBOLReader
 			}
 			do {
 				displayId = displayId + "_";
-				identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,version,typesInURI);
+				identity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,defaultVersion,typesInURI);
 				persIdentity = createCompliantURI(URIPrefix,TopLevel.COMPONENT_DEFINITION,displayId,"",typesInURI).toString();
 			} while (SBOLDoc.getComponentDefinition(identity)!=null);
-			c = c.copy(URIPrefix, displayId, version);
+			c = c.copy(URIPrefix, displayId, defaultVersion);
 			if(identity != componentDef.getIdentity()) {
 				c.clearWasDerivedFroms();
 				c.addWasDerivedFrom(componentDef.getIdentity());
@@ -1424,7 +1477,7 @@ public class SBOLReader
 		if (URIPrefix != null)
 		{
 			displayId = URIcompliance.findDisplayId(topLevel.getIdentity().toString());
-			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,defaultVersion,typesInURI);
 			persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
 		}
 
@@ -1443,7 +1496,7 @@ public class SBOLReader
 				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
 				if (URIPrefix != null)
 				{
-					identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+					identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,defaultVersion,typesInURI);
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
@@ -1471,7 +1524,7 @@ public class SBOLReader
 		Sequence sequence = new Sequence(identity, elements, encoding);
 		if(persistentIdentity!=null) {
 			sequence.setPersistentIdentity(persistentIdentity);
-			sequence.setVersion(version);
+			sequence.setVersion(defaultVersion);
 		}
 		if(identity != topLevel.getIdentity())
 			sequence.addWasDerivedFrom(topLevel.getIdentity());
@@ -1498,7 +1551,7 @@ public class SBOLReader
 			}
 			do {
 				displayId = displayId + "_";
-				identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+				identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,defaultVersion,typesInURI);
 				persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
 			} while (SBOLDoc.getSequence(identity)!=null);
 			sequence.setIdentity(identity);
@@ -1551,7 +1604,7 @@ public class SBOLReader
 		if (URIPrefix != null)
 		{
 			displayId = URIcompliance.findDisplayId(topLevel.getIdentity().toString());
-			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,version,typesInURI);
+			identity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,defaultVersion,typesInURI);
 			persistentIdentity = createCompliantURI(URIPrefix,TopLevel.SEQUENCE,displayId,"",typesInURI);
 		}
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
@@ -1566,7 +1619,7 @@ public class SBOLReader
 				displayId = URIcompliance.fixDisplayId(displayId);
 				if (URIPrefix != null)
 				{
-					identity = createCompliantURI(URIPrefix,TopLevel.COLLECTION,displayId,version,typesInURI);
+					identity = createCompliantURI(URIPrefix,TopLevel.COLLECTION,displayId,defaultVersion,typesInURI);
 					persistentIdentity = createCompliantURI(URIPrefix,TopLevel.COLLECTION,displayId,"",typesInURI);
 				}
 			}
@@ -1605,7 +1658,7 @@ public class SBOLReader
 		Collection c = new Collection(identity);
 		if (persistentIdentity!=null) {
 			c.setPersistentIdentity(persistentIdentity);
-			c.setVersion(version);
+			c.setVersion(defaultVersion);
 		}
 		if(identity != topLevel.getIdentity())
 			c.addWasDerivedFrom(topLevel.getIdentity());
@@ -1677,7 +1730,7 @@ public class SBOLReader
 		if (URIPrefix != null)
 		{
 			persIdentity = createCompliantURI(parentURI,"annotation"+sa_num,"").toString();
-			identity = createCompliantURI(parentURI,"annotation"+sa_num,version);
+			identity = createCompliantURI(parentURI,"annotation"+sa_num,defaultVersion);
 		}
 
 		if (!sequenceAnnotation.getType().equals(Sbol1Terms.SequenceAnnotations.SequenceAnnotation))
@@ -1756,7 +1809,7 @@ public class SBOLReader
 		String displayId = "annotation" + sa_num;
 		if (compliant && componentDisplayId!=null && 
 				!instantiatedComponents.contains(componentDisplayId)) {
-			identity = createCompliantURI(parentURI,componentDisplayId+"_annotation",version);
+			identity = createCompliantURI(parentURI,componentDisplayId+"_annotation",defaultVersion);
 			persIdentity = createCompliantURI(parentURI,componentDisplayId+"_annotation","").toString();
 			displayId = componentDisplayId + "_annotation";
 		}
@@ -1765,12 +1818,12 @@ public class SBOLReader
 
 		if (start != null && end != null) // create SequenceAnnotation & Component
 		{
-			URI range_identity = createCompliantURI(persIdentity,"range",version);
+			URI range_identity = createCompliantURI(persIdentity,"range",defaultVersion);
 			location = new Range(range_identity, start, end);
 			if (!persIdentity.equals("")) {
 				location.setPersistentIdentity(createCompliantURI(persIdentity,"range",""));
 				location.setDisplayId("range");
-				location.setVersion(version);
+				location.setVersion(defaultVersion);
 			}
 			if (strand != null)
 			{
@@ -1786,12 +1839,12 @@ public class SBOLReader
 		}
 		else
 		{
-			URI dummyGenericLoc_id = createCompliantURI(persIdentity,"genericLocation",version);
+			URI dummyGenericLoc_id = createCompliantURI(persIdentity,"genericLocation",defaultVersion);
 			location = new GenericLocation(dummyGenericLoc_id);
 			if (!persIdentity.equals("")) {
 				location.setPersistentIdentity(createCompliantURI(persIdentity,"genericLocation",""));
 				location.setDisplayId("genericLocation");
-				location.setVersion(version);
+				location.setVersion(defaultVersion);
 			}
 			if (strand != null)
 			{
@@ -1812,7 +1865,7 @@ public class SBOLReader
 		if(!persIdentity.equals("")) {
 			s.setPersistentIdentity(URI.create(persIdentity));
 			s.setDisplayId(displayId);
-			s.setVersion(version);
+			s.setVersion(defaultVersion);
 		}
 		if(identity != sequenceAnnotation.getIdentity())
 			s.addWasDerivedFrom(sequenceAnnotation.getIdentity());
