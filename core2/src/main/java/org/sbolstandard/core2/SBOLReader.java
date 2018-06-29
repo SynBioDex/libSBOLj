@@ -16,6 +16,7 @@ import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6414,6 +6415,34 @@ public class SBOLReader
 		strLine = br.readLine();
 		br.close();
 		return isFastaString(strLine);
+	}
+    
+	/**
+	 * Check if a file begins with the byte sequence indicating it is a SnapGene file
+	 *
+	 * @param fileName file name of file to check if it is a Fasta file
+	 * @return true if the string begins with "&gt;" or ";" indicating that it is a Fasta file
+	 * @throws IOException if there is an I/O exception reading the file
+	 */
+	public static boolean isSnapGeneFile(String fileName) throws IOException {
+		File file = new File(fileName);
+		FileInputStream stream = new FileInputStream(file);
+        byte[] magicNumber = new byte[13];
+
+        // \9\0\0\0\13SnapGene is the magic number
+        byte[] expectedMagicNumber = {0x09, 0x00, 0x00, 0x00, 0x0e, 0x53,
+                                      0x6e, 0x61, 0x70, 0x47, 0x65, 0x6e, 0x65};
+
+
+        int bytesRead = stream.read(magicNumber);
+
+        if(bytesRead != 13) {
+            // There should be at least 13 bytes in the file, so if we didn't read that many, 
+            // we know that it can't be a SnapGene file. 
+            return false;
+        }
+
+        return Arrays.equals(magicNumber, expectedMagicNumber);
 	}
 }
 
