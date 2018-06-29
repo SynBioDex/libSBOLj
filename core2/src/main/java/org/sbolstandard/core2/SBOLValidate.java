@@ -2419,7 +2419,7 @@ public class SBOLValidate {
 			SBOLReader.setVersion(version);
 			SBOLReader.setKeepGoing(keepGoing);
 			SBOLWriter.setKeepGoing(keepGoing);
-			if (fileName.endsWith(".dna")) {
+			if (SBOLReader.isSnapGeneFile(fileName)) {
 				outputStream.println("Converting SnapGene to SBOL Version 2");
 			} else if (SBOLReader.isFastaFile(fileName)) {
 				outputStream.println("Converting FASTA to SBOL Version 2");
