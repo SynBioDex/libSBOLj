@@ -6442,12 +6442,6 @@ public class SBOLReader
             return false;
         }
 
-        if(Arrays.equals(magicNumber, expectedMagicNumber)) {
-            System.out.println("they're equal");
-        } else { 
-            System.out.println("they're not equal");
-        }
-
         return Arrays.equals(magicNumber, expectedMagicNumber);
 	}
 }
