@@ -157,6 +157,18 @@ public class ComponentDefinition extends TopLevel {
 					component.getAccess(), component.getDefinitionURI());
 			newComponent.copy(component);
 		}
+		for (Component component : componentDefinition.getComponents()) {
+			if (!component.getMapsTos().isEmpty()) {
+				Component copyComponent = this.getComponent(component.getDisplayId());
+				for (MapsTo mapsTo : component.getMapsTos()) {
+					String displayId = URIcompliance.findDisplayId(mapsTo);
+					String localDisplayId = URIcompliance.findDisplayId(mapsTo.getLocal());
+					MapsTo newMapsTo = copyComponent.createMapsTo(displayId, mapsTo.getRefinement(), localDisplayId, 
+							mapsTo.getRemoteURI());
+					newMapsTo.copy(mapsTo);
+				}
+			}	
+		}
 		for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
 			String displayId = URIcompliance.findDisplayId(sequenceConstraint);
 			String subjectDisplayId = URIcompliance.findDisplayId(sequenceConstraint.getSubject());

@@ -4015,7 +4015,7 @@ public class SBOLDocument {
 	void addNamespaceBinding(NamespaceBinding namespaceBinding) throws SBOLValidationException {
 		if (!namespaceBinding.getNamespaceURI().endsWith("#") && !namespaceBinding.getNamespaceURI().endsWith(":")
 				&& !namespaceBinding.getNamespaceURI().endsWith("/")) {
-			throw new SBOLValidationException("sbol-10105");
+			throw new SBOLValidationException("sbol-10106");
 		}
 		nameSpaces.put(namespaceBinding.getPrefix(), namespaceBinding);
 	}

@@ -11,6 +11,12 @@ description: An SBOL document MUST be serialized as a well-formed
 RDF/XML file that adheres to the grammar defined by: “https://www.w3.org/TR/rdf-syntax-grammar/” 
 reference: Section 10 on page 58
 
+[SBOLDocument]
+id: sbol-10106
+condition: strong required
+description: All namespaces specified in an SBOL document MUST end with a valid delimiter (’/’, ’#’, or ’:’).
+reference: Section 10 on page 58
+
 [Identified]
 id: sbol-10201
 condition: strong required
@@ -144,7 +150,8 @@ reference: Section 12.8 on page 70
 [Identified]
 id: sbol-10223
 condition: weak required
-description: Identified objects MUST NOT form circular reference chains via their wasGeneratedBys properties.
+description: Provenance history formed by wasGeneratedBy properties of Identified objects and entity 
+references in Usage objects MUST NOT form circular reference chains.
 reference: Section 12.8 on page 70
 
 [Identified]
@@ -204,6 +211,18 @@ id: sbol-10305
 condition: weak required (not machine checkable)
 description: If the wasDerivedFroms property of one TopLevel object refers to another TopLevel object with the same persistentIdentity property, then version property of the second TopLevel object MUST precede that of the first if both objects have a version.
 reference: Section 7.4 on page 17
+
+[TopLevel]
+id: sbol-10306
+condition: strong required
+description: The attachments property of a TopLevel is OPTIONAL and MAY contain a set of URIs.
+reference: Section 7.5 on page 20
+
+[TopLevel]
+id: sbol-10307
+condition: weak required
+description: Each URI contained by the attachments property of a TopLevel MUST refer to an Attachment object.
+reference: Section 7.5 on page 20
 
 [Sequence]
 id: sbol-10401
@@ -843,7 +862,8 @@ reference: Section 7.7.6 on page 36
 [SequenceConstraint]
 id: sbol-11412
 condition: recommended
-description: The URI contained by the restriction property SHOULD come from Table 7.
+description: The URI contained by the restriction property SHOULD come
+from Table 7.
 reference: Section 7.7.6 on page 36
 
 [SequenceConstraint]
@@ -852,6 +872,14 @@ condition: strong required
 description: If the restriction property of a SequenceConstraint contains the URI http://sbols.org/v2\#differentFrom, 
 then the definition property of the subject Component of the SequenceConstraint MUST NOT contain the same 
 URI as the definition property of the object Component of the SequenceConstraint.
+reference: Section 7.7.6 on page 36
+
+[SequenceConstraint]
+id: sbol-11414
+condition: weak required
+description: If the restriction property of a SequenceConstraint contains the URI http://sbols.org/v2\#differentFrom, 
+then the definition property of the subject Component of the SequenceConstraint MUST NOT refer to the same 
+object as the definition property of the object Component of the SequenceConstraint.
 reference: Section 7.7.6 on page 36
 
 [Model]
@@ -1209,6 +1237,14 @@ condition: strong required
 description: The rdfType property of a GenericTopLevel object is REQUIRED and MUST contain a QName.
 reference: Section 7.14.2 on page 55
 
+
+[GenericTopLevel]
+id: sbol-12303
+condition: strong required
+description: The rdfType property of a GenericTopLevel object MUST NOT contain a QName in the
+“http://sbols.org/v2#” namespace.
+reference: Section 7.14.2 on page 55
+
 [Activity]
 id: sbol-12401
 condition: strong required
@@ -1490,6 +1526,12 @@ the wasDerivedFroms properties of the objects that are referred to by its member
 refer to the CombinatorialDerivation.
 reference: Section 7.11 on page 47
 
+[CombinatorialDerivation]
+id: sbol-12914
+condition: strong required
+description: The strategy property of an CombinatorialDerivation is OPTIONAL and MAY contain a URI.
+reference: Section 7.11 on page 47
+
 [VariableComponent]
 id: sbol-13001
 condition: strong required
@@ -1526,7 +1568,7 @@ reference: Section 7.11.1 on page 49
 
 [VariableComponent]
 id: sbol-13006
-condition: required
+condition: recommended
 description: At least one of the variants property, variantCollections property, or variantDerivations 
 property of a VariableComponent MUST NOT be empty.
 reference: Section 7.11.1 on page 49
@@ -1594,10 +1636,14 @@ reference: Section 7.11.1 on page 49
 [VariableComponent]
 id: sbol-13016
 condition: weak required
-description: If the wasDerivedFroms property of a Component refers to the same Component as the variable property of a 
-VariableComponent, then the definition property of the first Component MUST refer to a ComponentDefinition
-specified by the variants property, variantCollections property, or variantDerivations property of the 
-VariableComponent.
+description: 
+If the wasDerivedFroms property of a Component refers to a Component in the template ComponentDefinition 
+of a CombinatorialDerivation, and the second Component is referred to by the variable property of any 
+VariableComponent in the CombinatorialDerivation, then the definition property of the first Component
+MUST refer to a ComponentDefinition specified by the variants property, a ComponentDefinition that is one of the 
+members of a Collection specified by the variantCollections property, or a ComponentDefinition with a 
+wasDerivedFroms property that refers to a CombinatorialDerivation specified by the variantDerivations 
+property of the VariableComponent.
 reference: Section 7.11.1 on page 49
 
 [VariableComponent]

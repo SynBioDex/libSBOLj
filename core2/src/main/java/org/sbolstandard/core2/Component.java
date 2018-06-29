@@ -70,15 +70,17 @@ public class Component extends ComponentInstance{
 	
 	void copy(Component component) throws SBOLValidationException {
 		((ComponentInstance)this).copy((ComponentInstance)component);
-		if (!component.getMapsTos().isEmpty()) {
-			for (MapsTo mapsTo : component.getMapsTos()) {
-				String displayId = URIcompliance.findDisplayId(mapsTo);
-				String localDisplayId = URIcompliance.findDisplayId(mapsTo.getLocal());
-				MapsTo newMapsTo = this.createMapsTo(displayId, mapsTo.getRefinement(), localDisplayId, 
-						mapsTo.getRemoteURI());
-				newMapsTo.copy(mapsTo);
-			}
-		}
+		this.mapsTos = new HashMap<>();
+		// TODO: moved up a level since need to copy components before mapstos
+//		if (!component.getMapsTos().isEmpty()) {
+//			for (MapsTo mapsTo : component.getMapsTos()) {
+//				String displayId = URIcompliance.findDisplayId(mapsTo);
+//				String localDisplayId = URIcompliance.findDisplayId(mapsTo.getLocal());
+//				MapsTo newMapsTo = this.createMapsTo(displayId, mapsTo.getRefinement(), localDisplayId, 
+//						mapsTo.getRemoteURI());
+//				newMapsTo.copy(mapsTo);
+//			}
+//		}
 		for (URI role : component.getRoles()) {
 			this.addRole(URI.create(role.toString()));
 		}

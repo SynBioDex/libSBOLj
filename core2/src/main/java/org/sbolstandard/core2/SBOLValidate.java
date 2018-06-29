@@ -86,6 +86,15 @@ public class SBOLValidate {
 			}
 		}
 	}
+	
+	private static void checkTopLevelCompleteness(SBOLDocument sbolDocument,
+			TopLevel topLevel) {
+		for (URI attachmentURI : topLevel.getAttachmentURIs()) {
+			if (sbolDocument.getAttachment(attachmentURI) == null) {
+				errors.add(new SBOLValidationException("sbol-10307", topLevel).getMessage());
+			}
+		}
+	}
 
 	private static void checkCollectionCompleteness(SBOLDocument sbolDocument, Collection collection) {
 		for (URI member : collection.getMemberURIs()) {
@@ -427,8 +436,12 @@ public class SBOLValidate {
 	 *            the given SBOL document to be validated for completeness
 	 */
 	private static void validateCompleteness(SBOLDocument sbolDocument) {
+		// TODO: not actually checking all identified objects
 		for (Identified identified : sbolDocument.getTopLevels()) {
 			checkIdentifiedCompleteness(sbolDocument, identified);
+		}
+		for (TopLevel topLevel : sbolDocument.getTopLevels()) {
+			checkTopLevelCompleteness(sbolDocument, topLevel);
 		}
 		for (Collection collection : sbolDocument.getCollections()) {
 			checkCollectionCompleteness(sbolDocument, collection);
@@ -675,6 +688,44 @@ public class SBOLValidate {
 			}
 		}
 	}
+	
+	/**
+	 * @param componentDefinition
+	 * @param sequenceConstraint
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules was violated:
+	 *             11409, 11410, 11411.
+	 */
+	static void checkSequenceConstraintDifferentFrom(ComponentDefinition componentDefinition, SequenceConstraint sequenceConstraint)
+			throws SBOLValidationException {
+		if (sequenceConstraint.getRestriction().equals(RestrictionType.DIFFERENT_FROM)) {
+			if (componentDefinition != null && sequenceConstraint.getSubject() != null && 
+					sequenceConstraint.getObject() != null) {
+				if (componentDefinition.getComponent(sequenceConstraint.getObjectURI()).getDefinitionURI()
+						.equals(componentDefinition.getComponent(sequenceConstraint.getSubjectURI()).getDefinitionURI())) {
+					throw new SBOLValidationException("sbol-11413", sequenceConstraint);
+				}
+				ComponentDefinition subjectCD = sequenceConstraint.getSubjectDefinition();
+				ComponentDefinition objectCD = sequenceConstraint.getObjectDefinition();
+				if (subjectCD != null && objectCD != null && subjectCD.getIdentity().equals(objectCD.getIdentity())) {
+					throw new SBOLValidationException("sbol-11414", sequenceConstraint);
+				}
+			}
+		}
+	}
+	
+	static void validateSequenceConstraintDifferentFrom(SBOLDocument sbolDocument) {
+		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
+			for (SequenceConstraint sequenceConstraint : componentDefinition.getSequenceConstraints()) {
+				try {
+					checkSequenceConstraintDifferentFrom(componentDefinition,sequenceConstraint);
+				}
+				catch (SBOLValidationException e) {
+					errors.add(e.getMessage());
+				}
+			}
+		}
+	}
 
 	/**
 	 * @param componentDefinition
@@ -685,15 +736,7 @@ public class SBOLValidate {
 	 */
 	static void checkSequenceConstraint(ComponentDefinition componentDefinition, SequenceConstraint sequenceConstraint)
 			throws SBOLValidationException {
-		if (sequenceConstraint.getRestriction().equals(RestrictionType.DIFFERENT_FROM)) {
-			if (componentDefinition != null && sequenceConstraint.getSubject() != null && 
-					sequenceConstraint.getObject() != null) {
-				if (componentDefinition.getComponent(sequenceConstraint.getObjectURI()).getDefinitionURI()
-						.equals(componentDefinition.getComponent(sequenceConstraint.getSubjectURI()).getDefinitionURI())) {
-					throw new SBOLValidationException("sbol-11413", sequenceConstraint);
-				}
-			}
-		}
+		checkSequenceConstraintDifferentFrom(componentDefinition,sequenceConstraint);
 		SequenceAnnotation saSubject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getSubject());
 		SequenceAnnotation saObject = componentDefinition.getSequenceAnnotation(sequenceConstraint.getObject());
 		if (saSubject == null || saObject == null)
@@ -1758,6 +1801,7 @@ public class SBOLValidate {
 		validateURIuniqueness(sbolDocument);
 		validatePersistentIdentityUniqueness(sbolDocument);
 		validateMapsTos(sbolDocument);
+		validateSequenceConstraintDifferentFrom(sbolDocument);
 		if (compliant)
 			validateCompliance(sbolDocument);
 		if (complete) {
