@@ -128,7 +128,7 @@ public class SBOLValidationException extends Exception {
 			if (validationRules == null) {
 				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
 				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
-						getResourceAsStream("/validation/rules2p2p0.txt"));
+						getResourceAsStream("/validation/rules2p2p1.txt"));
 				try {					
 					parse(new BufferedReader(f));
 					//writeRulesToXML("rules.xml");
@@ -142,7 +142,7 @@ public class SBOLValidationException extends Exception {
 			sb.append(":\0 ");
 			if (rule != null) {
 				sb.append(rule.getDescription());
-				sb.append("\nReference: SBOL Version 2.2.0 "+rule.getReference());
+				sb.append("\nReference: SBOL Version 2.2.1 "+rule.getReference());
 			} 
 			if (!objects.isEmpty()) {
 				sb.append("\n: ");
