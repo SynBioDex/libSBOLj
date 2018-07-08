@@ -412,7 +412,7 @@ public class SBOLReader
 	 */
 	public static SBOLDocument read(String fileName) throws SBOLValidationException, IOException, SBOLConversionException
 	{
-		if (fileName.endsWith(".dna")) {
+		if (isSnapGeneFile(fileName)) {
 			return read(fileName,SBOLDocument.SNAPGENE);
 		} else if (fileName.endsWith(".json")) {
 			return read(fileName,SBOLDocument.JSON);
@@ -6439,9 +6439,10 @@ public class SBOLReader
         if(bytesRead != 13) {
             // There should be at least 13 bytes in the file, so if we didn't read that many, 
             // we know that it can't be a SnapGene file. 
+        	stream.close();
             return false;
         }
-
+        stream.close();
         return Arrays.equals(magicNumber, expectedMagicNumber);
 	}
 }
