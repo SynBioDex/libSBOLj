@@ -112,12 +112,12 @@ public class SBOLValidationException extends Exception {
 			if (rule == null) {
 				throw new RuntimeException("Rule ID does not exist.");
 			}
-			sb.append(": " + rule.getDescription() + "\n");
+			sb.append(":\0 " +rule.getCondition()+ ":\0\n"+ rule.getDescription() + "\n\0");
 			sb.append("Reference: SBOL Version 2.2.1 " + rule.getReference() + "\n");
-			sb.append(": " + identity.toString());
+			sb.append(":\0 " + identity.toString());
 		}
 		else {		
-			sb.append(": " + identity.toString());
+			sb.append(":\0 " + identity.toString());
 		}
 		return sb.toString();
 	}
@@ -141,11 +141,12 @@ public class SBOLValidationException extends Exception {
 			SBOLValidationRule rule = validationRules.get(key);
 			sb.append(":\0 ");
 			if (rule != null) {
+				sb.append(rule.getCondition()+":\0\n");
 				sb.append(rule.getDescription());
-				sb.append("\nReference: SBOL Version 2.2.1 "+rule.getReference());
+				sb.append("\n\0Reference: SBOL Version 2.2.1 "+rule.getReference());
 			} 
 			if (!objects.isEmpty()) {
-				sb.append("\n: ");
+				sb.append("\n:\0 ");
 				boolean first = true;
 				for (Identified obj : objects) {
 					if (first) {
@@ -163,7 +164,7 @@ public class SBOLValidationException extends Exception {
 		else {		
 			//final StringBuilder sb = new StringBuilder(message);
 			if (!objects.isEmpty()) {
-				sb.append(": ");
+				sb.append(":\0 ");
 				boolean first = true;
 				for (Identified obj : objects) {
 					if (first) {

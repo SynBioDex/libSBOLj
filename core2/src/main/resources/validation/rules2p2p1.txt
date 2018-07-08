@@ -85,14 +85,14 @@ reference: Section 7.4 on page 17
 
 [Identified]
 id: sbol-10215
-condition: recommended
+condition: compliance
 description: The displayId property of a compliant Identified object
 is REQUIRED.
 reference: Section 12.3 on page 61
 
 [Identified]
 id: sbol-10216
-condition: recommended
+condition: compliance
 description: The persistentIdentity property of a compliant TopLevel
 object is REQUIRED and MUST contain a URI that ends with a delimiter
 (’/’, ’#’, or ’:’) followed by the displayId of the TopLevel object.
@@ -100,7 +100,7 @@ reference: Section 12.3 on page 61
 
 [Identified]
 id: sbol-10217
-condition: recommended
+condition: compliance
 description: The persistentIdentity property of a compliant Identified
 object that is not also a 
 TopLevel object is REQUIRED and MUST contain a URI that begins with the
@@ -111,7 +111,7 @@ reference: Section 12.3 on page 61
 
 [Identified]
 id: sbol-10218
-condition: recommended
+condition: compliance
 description: If a compliant Identified object has no version property,
 then its identity property MUST contain the same URI as its
 persistentIdentity property. Otherwise, the compliant object’s
@@ -122,7 +122,7 @@ reference: Section 12.3 on page 61
 
 [Identified]
 id: sbol-10219
-condition: recommended
+condition: compliance
 description: The version property of a compliant Identified object
 that is not also a TopLevel object is REQUIRED to contain the same
 String as the version property of the compliant object’s parent.

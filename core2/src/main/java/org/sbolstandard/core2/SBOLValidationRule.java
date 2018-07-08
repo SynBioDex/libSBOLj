@@ -38,7 +38,17 @@ class SBOLValidationRule {
 	}
 
 	void setCondition(String condition) {
-		this.condition = condition;
+		if (condition.equals("strong required")) {
+			this.condition = "Validation Error";
+		} else if (condition.equals("weak required")) {
+			this.condition = "Completeness Warning";
+		} else if (condition.equals("recommended")) {
+			this.condition = "Best Practice Warning";
+		} else if (condition.equals("compliance")) {
+			this.condition = "URI Compliance Warning";
+		} else {
+			this.condition = condition;
+		}
 	}
 
 	String getDescription() {
