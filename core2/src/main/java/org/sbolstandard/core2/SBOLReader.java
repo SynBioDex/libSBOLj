@@ -927,184 +927,63 @@ public class SBOLReader
 						throw new SBOLValidationException("sbol-12302",topLevel.getIdentity());
 					}
 				}
+				int sbolProvCount = 0;
 				for (PropertyValue<QName> value : topLevel.getPropertyValues(Sbol2Terms.Description.type)) {
-					Literal<QName> type = ((Literal<QName>) value);
-					if (type.getValue().toString()
-							.equals(Sbol2Terms.Component.Component.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.Component.Component, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
+					String type = ((Literal<QName>) value).getValue().toString();
+					if (type.startsWith(Sbol2Terms.prov.getNamespaceURI())) sbolProvCount++;
+					else if (type.startsWith(Sbol2Terms.sbol2.getNamespaceURI())) sbolProvCount++;
+				}
+				if (sbolProvCount > 1) {
+					if (keepGoing) {
+						errors.add(new SBOLValidationException("sbol-10228",topLevel.getIdentity()).getMessage());
+					} else {
+						throw new SBOLValidationException("sbol-10228",topLevel.getIdentity());
 					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Cut.Cut.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.Cut.Cut, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
+				} else if (sbolProvCount==0 && topLevel.getPropertyValues(Sbol2Terms.Description.type).size() > 1) {
+					if (keepGoing) {
+						errors.add(new SBOLValidationException("sbol-12302",topLevel.getIdentity()).getMessage());
+					} else {
+						throw new SBOLValidationException("sbol-12302",topLevel.getIdentity());
 					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.FunctionalComponent.FunctionalComponent.toString()
-									.replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.FunctionalComponent.FunctionalComponent, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.GenericLocation.GenericLocation.toString().replaceAll("\\{|\\}",
-									""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.GenericLocation.GenericLocation, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Interaction.Interaction.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.Interaction.Interaction, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Location.Location.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.Location.Location, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.MapsTo.MapsTo.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.MapsTo.MapsTo, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Module.Module.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.Module.Module, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Participation.Participation.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.Participation.Participation, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Range.Range.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.Range.Range, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation.toString()
-									.replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.SequenceAnnotation.SequenceAnnotation, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString().equals(Sbol2Terms.SequenceConstraint.SequenceConstraint
-							.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.SequenceConstraint.SequenceConstraint, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Collection.Collection.toString().replaceAll("\\{|\\}", ""))) {
-						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-								Sbol2Terms.Collection.Collection, topLevel.getIdentity(),
-								Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.ModuleDefinition.ModuleDefinition.toString().replaceAll("\\{|\\}", ""))) {
-						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-								Sbol2Terms.ModuleDefinition.ModuleDefinition, topLevel.getIdentity(),
-								Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Model.Model.toString().replaceAll("\\{|\\}", ""))) {
-						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-								Sbol2Terms.Model.Model, topLevel.getIdentity(),
-								Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Sequence.Sequence.toString().replaceAll("\\{|\\}", ""))) {
-						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-								Sbol2Terms.Sequence.Sequence, topLevel.getIdentity(),
-								Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Activity.Activity.toString().replaceAll("\\{|\\}", ""))) {
-						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-								Sbol2Terms.Activity.Activity, topLevel.getIdentity(),
-								Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Agent.Agent.toString().replaceAll("\\{|\\}", ""))) {
-						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-								Sbol2Terms.Agent.Agent, topLevel.getIdentity(),
-								Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Plan.Plan.toString().replaceAll("\\{|\\}", ""))) {
-						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-								Sbol2Terms.Plan.Plan, topLevel.getIdentity(),
-								Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Association.Association.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.Association.Association, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Usage.Usage.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.Usage.Usage, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.ComponentDefinition.ComponentDefinition.toString().replaceAll("\\{|\\}",""))) {
-						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-								Sbol2Terms.ComponentDefinition.ComponentDefinition, topLevel.getIdentity(),
-								Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation.toString().replaceAll("\\{|\\}",""))) {
-						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-								Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation, topLevel.getIdentity(),
-								Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.VariableComponent.VariableComponent.toString().replaceAll("\\{|\\}", ""))) {
-						nested.put(topLevel.getIdentity(),
-								Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-										Sbol2Terms.VariableComponent.VariableComponent, topLevel.getIdentity(),
-										Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Implementation.Implementation.toString().replaceAll("\\{|\\}",""))) {
-						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-								Sbol2Terms.Implementation.Implementation, topLevel.getIdentity(),
-								Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else if (type.getValue().toString()
-							.equals(Sbol2Terms.Attachment.Attachment.toString().replaceAll("\\{|\\}",""))) {
-						topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
-								Sbol2Terms.Attachment.Attachment, topLevel.getIdentity(),
-								Datatree.NamedProperties(topLevel.getProperties())));
-					}
-					else {
-						topLevels.add(topLevel);
+				} else if (sbolProvCount==0 && topLevel.getPropertyValues(Sbol2Terms.Description.type).size()==1) {
+					topLevels.add(topLevel);
+				} else if (sbolProvCount==1) {
+					for (PropertyValue<QName> value : topLevel.getPropertyValues(Sbol2Terms.Description.type)) {
+						String typeStr = ((Literal<QName>) value).getValue().toString();
+						QName type = null;
+						if (typeStr.startsWith(Sbol2Terms.prov.getNamespaceURI())) {
+							String localPart = typeStr.replace(Sbol2Terms.prov.getNamespaceURI(), "");
+							type = Sbol2Terms.prov.withLocalPart(localPart);
+						} else if (typeStr.startsWith(Sbol2Terms.sbol2.getNamespaceURI())) {
+							String localPart = typeStr.replace(Sbol2Terms.sbol2.getNamespaceURI(), "");
+							type = Sbol2Terms.sbol2.withLocalPart(localPart);
+						} else {
+							continue;
+						}
+						if (type.equals(Sbol2Terms.Component.Component)
+								|| type.equals(Sbol2Terms.Cut.Cut)
+								|| type.equals(Sbol2Terms.FunctionalComponent.FunctionalComponent)
+								|| type.equals(Sbol2Terms.GenericLocation.GenericLocation)
+								|| type.equals(Sbol2Terms.Interaction.Interaction)
+								|| type.equals(Sbol2Terms.Location.Location)
+								|| type.equals(Sbol2Terms.MapsTo.MapsTo)
+								|| type.equals(Sbol2Terms.Module.Module)
+								|| type.equals(Sbol2Terms.Participation.Participation)
+								|| type.equals(Sbol2Terms.Range.Range)
+								|| type.equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation)
+								|| type.equals(Sbol2Terms.SequenceConstraint.SequenceConstraint)
+								|| type.equals(Sbol2Terms.VariableComponent.VariableComponent)
+								|| type.equals(Sbol2Terms.Association.Association)
+								|| type.equals(Sbol2Terms.Usage.Usage)) {
+							nested.put(topLevel.getIdentity(),
+									Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+											type, topLevel.getIdentity(),
+											Datatree.NamedProperties(topLevel.getProperties())));
+						} else {
+							topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+									type, topLevel.getIdentity(),
+									Datatree.NamedProperties(topLevel.getProperties())));
+						}
 					}
 				}
 			} else if (topLevel.getType().equals(Sbol2Terms.Component.Component)
