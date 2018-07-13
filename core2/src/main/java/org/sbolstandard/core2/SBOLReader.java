@@ -927,34 +927,35 @@ public class SBOLReader
 						throw new SBOLValidationException("sbol-12302",topLevel.getIdentity());
 					}
 				}
-				int sbolProvCount = 0;
+				int sbolCount = 0;
+				int provCount = 0;
 				for (PropertyValue<QName> value : topLevel.getPropertyValues(Sbol2Terms.Description.type)) {
 					String type = ((Literal<QName>) value).getValue().toString();
-					if (type.startsWith(Sbol2Terms.prov.getNamespaceURI())) sbolProvCount++;
-					else if (type.startsWith(Sbol2Terms.sbol2.getNamespaceURI())) sbolProvCount++;
+					if (type.startsWith(Sbol2Terms.prov.getNamespaceURI())) provCount++;
+					else if (type.startsWith(Sbol2Terms.sbol2.getNamespaceURI())) sbolCount++;
 				}
-				if (sbolProvCount > 1) {
+				if (sbolCount > 1 || provCount > 1) {
 					if (keepGoing) {
 						errors.add(new SBOLValidationException("sbol-10228",topLevel.getIdentity()).getMessage());
 					} else {
 						throw new SBOLValidationException("sbol-10228",topLevel.getIdentity());
 					}
-				} else if (sbolProvCount==0 && topLevel.getPropertyValues(Sbol2Terms.Description.type).size() > 1) {
+				} else if (sbolCount==0 && provCount==0 && topLevel.getPropertyValues(Sbol2Terms.Description.type).size() > 1) {
 					if (keepGoing) {
 						errors.add(new SBOLValidationException("sbol-12302",topLevel.getIdentity()).getMessage());
 					} else {
 						throw new SBOLValidationException("sbol-12302",topLevel.getIdentity());
 					}
-				} else if (sbolProvCount==0 && topLevel.getPropertyValues(Sbol2Terms.Description.type).size()==1) {
+				} else if (sbolCount==0 && provCount==0 && topLevel.getPropertyValues(Sbol2Terms.Description.type).size()==1) {
 					topLevels.add(topLevel);
-				} else if (sbolProvCount==1) {
+				} else if (sbolCount==1 || provCount==1) {
 					for (PropertyValue<QName> value : topLevel.getPropertyValues(Sbol2Terms.Description.type)) {
 						String typeStr = ((Literal<QName>) value).getValue().toString();
 						QName type = null;
 						if (typeStr.startsWith(Sbol2Terms.prov.getNamespaceURI())) {
 							String localPart = typeStr.replace(Sbol2Terms.prov.getNamespaceURI(), "");
 							type = Sbol2Terms.prov.withLocalPart(localPart);
-						} else if (typeStr.startsWith(Sbol2Terms.sbol2.getNamespaceURI())) {
+						} else if (provCount==0 && typeStr.startsWith(Sbol2Terms.sbol2.getNamespaceURI())) {
 							String localPart = typeStr.replace(Sbol2Terms.sbol2.getNamespaceURI(), "");
 							type = Sbol2Terms.sbol2.withLocalPart(localPart);
 						} else {

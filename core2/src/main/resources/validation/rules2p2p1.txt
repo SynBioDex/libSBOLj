@@ -186,6 +186,13 @@ with a child Association that has a roles property that contains the URI http://
 SHOULD not be an Implementation.
 reference: Section 12.8 on page 70
 
+[Identified]
+id: sbol-10228
+condition: strong required
+description: An Identified object must have no more than one rdfType property in each of the 
+http://sbols.org/v2# and http://www.w3.org/ns/prov# namespaces.
+reference: Section 7.4 on page 17
+
 [TopLevel]
 id: sbol-10302
 condition: recommended

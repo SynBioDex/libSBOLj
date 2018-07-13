@@ -39,9 +39,9 @@ class SBOLValidationRule {
 
 	void setCondition(String condition) {
 		if (condition.equals("strong required")) {
-			this.condition = "Validation Error";
+			this.condition = "Strong Validation Error";
 		} else if (condition.equals("weak required")) {
-			this.condition = "Completeness Warning";
+			this.condition = "Weak Validation Error";
 		} else if (condition.equals("recommended")) {
 			this.condition = "Best Practice Warning";
 		} else if (condition.equals("compliance")) {
