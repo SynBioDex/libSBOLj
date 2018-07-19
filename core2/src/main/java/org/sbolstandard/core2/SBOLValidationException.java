@@ -160,6 +160,8 @@ public class SBOLValidationException extends Exception {
 						sb.append(obj.getIdentity());
 					}
 				}
+			} else {
+				sb.append("\0");
 			}
 			sb.append("\0");
 		}
@@ -179,6 +181,8 @@ public class SBOLValidationException extends Exception {
 						sb.append(obj.getIdentity());
 					}
 				}
+			} else {
+				sb.append("\0");
 			}
 			sb.append("\0");
 			//return sb.toString();		
