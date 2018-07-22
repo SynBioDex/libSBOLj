@@ -320,7 +320,7 @@ public class Module extends Identified {
 	}
 
 	/**
-	 * Returns the MapsTo instance owned by this Module object that matches the given {@code displayId}
+	 * Returns the MapsTo instance owned by this Module object that matches the given {@code referenceURI}
 	 *
 	 * @param referenceURI The MapsTo URI object
 	 * @return the matching MapsTo instance URI

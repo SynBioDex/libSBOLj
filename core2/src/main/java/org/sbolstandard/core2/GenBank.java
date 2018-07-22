@@ -28,6 +28,7 @@ class GenBank {
 	public static final String GBPREFIX = "genbank";
 	public static final String GBNAMESPACE = "http://www.ncbi.nlm.nih.gov/genbank#";
 	public static final String LOCUS = "locus";
+	public static final String REGION = "region";
 	public static final String MOLECULE = "molecule";
 	public static final String TOPOLOGY = "topology"; // Only used for backward compatiblity with 2.1.0
 	public static final String DIVISION = "division";
@@ -413,7 +414,14 @@ class GenBank {
 		if (componentDefinition.isSetDescription()) {
 			writeGenBankLine(w,"DEFINITION  " + componentDefinition.getDescription(),80,12);
 		}
-		w.write("ACCESSION   " + componentDefinition.getDisplayId() + "\n");
+		String region = "";
+		annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,REGION,GBPREFIX));
+		if (annotation!=null) {
+			region = annotation.getStringValue();
+			w.write("ACCESSION   " + componentDefinition.getDisplayId() + " REGION: " + region + "\n");
+		} else {
+			w.write("ACCESSION   " + componentDefinition.getDisplayId() + "\n");
+		}
 		if (componentDefinition.isSetVersion()) {
 			String giNumber = "";
 			annotation = componentDefinition.getAnnotation(new QName(GBNAMESPACE,GINUMBER,GBPREFIX));
@@ -971,6 +979,12 @@ class GenBank {
 						if (accession.length()>1) {
 							id = accession;
 							id = URIcompliance.fixDisplayId(id);
+						}
+					}
+					if (strSplit.length > 3) {
+						if (strSplit[2].equals("REGION:")) {
+							annotation = new Annotation(new QName(GBNAMESPACE, REGION, GBPREFIX), strSplit[3]);
+							annotations.add(annotation);
 						}
 					}
 				} else if (strLine.startsWith("VERSION")) {
