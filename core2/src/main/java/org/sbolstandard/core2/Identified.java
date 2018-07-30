@@ -752,7 +752,9 @@ public abstract class Identified {
 		if (annotations == null) {
 			if (other.annotations != null)
 				return false;
-		} else if (!annotations.containsAll(other.annotations))
+		} else if (!annotations.containsAll(other.annotations)) 
+			return false;
+		else if (!other.annotations.containsAll(annotations))
 			return false;
 		if (identity == null) {
 			if (other.identity != null)
