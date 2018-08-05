@@ -1489,6 +1489,24 @@ public class ComponentDefinition extends TopLevel {
 			RestrictionType restriction, URI subjectURI, URI objectURI) throws SBOLValidationException {
 		String URIprefix = this.getPersistentIdentity().toString();
 		String version = this.getVersion();
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() &&
+				this.getComponent(subjectURI)==null && this.getSBOLDocument().getComponentDefinition(subjectURI)!=null) {
+			ComponentDefinition subject = this.getSBOLDocument().getComponentDefinition(subjectURI);
+			Component subjectComp = this.getComponent(subject.getDisplayId());
+			if (subjectComp==null) {
+				subjectComp = this.createComponent(subject.getDisplayId(),AccessType.PUBLIC,subjectURI);
+			}
+			subjectURI = subjectComp.getIdentity();
+		}
+		if (this.getSBOLDocument()!=null && this.getSBOLDocument().isCreateDefaults() &&
+				this.getComponent(objectURI)==null && this.getSBOLDocument().getComponentDefinition(objectURI)!=null) {
+			ComponentDefinition object = this.getSBOLDocument().getComponentDefinition(objectURI);
+			Component objectComp = this.getComponent(object.getDisplayId());
+			if (objectComp==null) {
+				objectComp = this.createComponent(object.getDisplayId(),AccessType.PUBLIC,objectURI);
+			}
+			objectURI = objectComp.getIdentity();	
+		}
 		SequenceConstraint sc = createSequenceConstraint(createCompliantURI(URIprefix, displayId, version),
 				restriction, subjectURI, objectURI);
 		sc.setPersistentIdentity(createCompliantURI(URIprefix, displayId, ""));

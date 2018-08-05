@@ -105,7 +105,7 @@ public class SBOLWorkshop2018 {
 
 		// Load some genetic parts taken from the Cello paper
 		// TODO: need to fill in path
-		SBOLDocument cello_parts = SBOLReader.read("<PATH>/parts.xml");
+		SBOLDocument cello_parts = SBOLReader.read("/Users/myers/Downloads/parts.xml");
 		System.out.println(len(cello_parts));
 		printCounts(cello_parts);
 		System.out.println("");
@@ -245,8 +245,8 @@ public class SBOLWorkshop2018 {
 		/* Uploading the Device back to SynBioHub */
 
 		// TODO: Need to provide your credentials
-		String user_name = "<USERNAME>";
-		String password = "<PASSWORD>";
+		String user_name = "myers";
+		String password = "MaWen69!";
 		part_shop.login(user_name, password);
 
 		// Upon submission, the Document will be converted to a Collection with the following properties
@@ -258,7 +258,7 @@ public class SBOLWorkshop2018 {
 		part_shop.createCollection(displayId, version, name, description, "", true, doc);
 
 		// TODO: need to fill in your path
-		String attachment_path = "<PATH>/results.txt";
+		String attachment_path = "/Users/myers/Downloads/results.txt";
 
 		// Attach raw experimental data to the Test object here. Note the pattern
 		URI test_uri = URI.create("https://synbiohub.org/user/" + user_name + "/" + displayId + "/experiment1/1");
@@ -266,7 +266,7 @@ public class SBOLWorkshop2018 {
 
 		// Attach processed experimental data here
 		// TODO: need to fill in your path
-		String other_attachement_path = "<PATH>/results.txt";
+		String other_attachement_path = "/Users/myers/Downloads/results.txt";
 		URI analysis_uri = URI.create("https://synbiohub.org/user/" + user_name + "/" + displayId + "/analysis1/1");
 		part_shop.attachFile(analysis_uri, other_attachement_path);
 
