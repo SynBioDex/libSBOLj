@@ -995,9 +995,11 @@ class GenBank {
 							if (strSplit[1].split("\\.").length > 1) {
 								version = strSplit[1].split("\\.")[strSplit[1].split("\\.").length-1];
 							}	
-							String vId = strSplit[1].split("\\.")[0];
-							if (!accession.equals(vId)) {
-								throw new SBOLConversionException("Warning: id in version does not match id in accession");
+							if (strSplit[1].split("\\.").length > 0) {
+								String vId = strSplit[1].split("\\.")[0];
+								if (!accession.equals(vId)) {
+									throw new SBOLConversionException("Warning: id in version does not match id in accession");
+								}
 							}
 						}
 					}
