@@ -40,6 +40,10 @@ public class SBOLReaderTest extends SBOLAbstractTests
 		actual = SBOLReader.read(resourceAsStream);
 		if (!actual.equals(expected)) {
 			SBOLValidate.compareDocuments("actual", actual, "expected", expected);
+			for (String error : SBOLValidate.getErrors()) {
+				System.out.println(error);
+			}
+			
 		}
 		assertTrue(actual.equals(expected));
 	}
