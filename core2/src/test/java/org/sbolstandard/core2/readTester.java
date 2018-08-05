@@ -8,6 +8,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
 
+import javax.xml.namespace.QName;
+
 import org.synbiohub.frontend.SynBioHubException;
 import org.synbiohub.frontend.SynBioHubFrontend;
 
@@ -41,7 +43,24 @@ class readTester {
 
 	public static void main(String[] args) throws SBOLValidationException, IOException, SBOLConversionException, SynBioHubException {
 	
-		SBOLReader.read("/Users/myers/Downloads/empty.xml");
+		SBOLDocument doc = new SBOLDocument();
+		ComponentDefinition cd = doc.createComponentDefinition("http://dummy.org","L0x2DTryptophan","1",ComponentDefinition.SMALL_MOLECULE);
+		//cd.setName("first");
+		SynBioHubFrontend sbh = new SynBioHubFrontend("https://synbiohub.utah.edu");
+		sbh.login("myers@ece.utah.edu", "MaWen69!");
+		sbh.createCollection("scratch", "1", "name", "description", "", true, doc);
+		doc = sbh.getSBOL(URI.create("https://synbiohub.utah.edu/user/myers/scratch/L0x2DTryptophan/1"));
+		doc = doc.changeURIPrefixVersion("http://localhost/", null, "1");
+		cd = doc.getComponentDefinition("L0x2DTryptophan","1");
+		//cd.setName("second");
+		//SBOLDocument copyDoc = new SBOLDocument();
+		//ComponentDefinition cdOld = (ComponentDefinition)copyDoc.createCopy(cd);
+		cd.createAnnotation(new QName("http://sd2e.org#","BioFAB_UID","sd2"), "tryptophan");
+		//if (cd.equals(cdOld)) System.out.println("equal");
+		//else System.out.println("not equal");
+		sbh.addToCollection(URI.create("https://synbiohub.utah.edu/user/myers/scratch/scratch_collection/1"), true, doc);
+		
+//		SBOLReader.read("/Users/myers/Downloads/empty.xml");
 //		File file_base = null;
 //		file_base = new File("/Users/myers/Downloads/cello_sbol/");
 //		for (File f : file_base.listFiles()) {
