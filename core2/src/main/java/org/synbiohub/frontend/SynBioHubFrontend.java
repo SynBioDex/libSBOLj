@@ -119,11 +119,29 @@ public class SynBioHubFrontend
      */
     public SBOLDocument getSBOL(URI topLevelUri) throws SynBioHubException
     {
+         return getSBOL(topLevelUri,true);
+    }
+    
+    /**
+     * Retrieve SBOL TopLevel object from a SynBioHub instance using its URI.
+     *
+     * @param topLevelUri The URI of the SBOL TopLevel
+     * @param recursive indicates if the complete SBOL document should be fetched recursively
+     *
+     * @return A libSBOLj TopLevel instance corresponding to the TopLevel
+     *
+     * @throws SynBioHubException if there was an error communicating with the SynBioHub
+     */
+    public SBOLDocument getSBOL(URI topLevelUri,boolean recursive) throws SynBioHubException
+    {
     	if (topLevelUri==null) return null;
         if (!topLevelUri.toString().startsWith(uriPrefix)) {
         	throw new SynBioHubException("Object URI does not start with correct URI prefix for this repository.");
         }
         String url = topLevelUri + "/sbol";
+        if (!recursive) {
+        	url = topLevelUri + "/sbolnr";
+        }
         url = url.replace(uriPrefix, backendUrl);
 
         SBOLDocument document = fetchFromSynBioHub(url);
