@@ -1980,6 +1980,10 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10306", topLevel.getIdentity());
 				}
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+						.equals(Sbol2Terms.ComponentDefinition.ComponentDefinition.getNamespaceURI()+Sbol2Terms.ComponentDefinition.ComponentDefinition.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -2184,6 +2188,10 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10306", topLevel.getIdentity());
 				}
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation.getNamespaceURI()+Sbol2Terms.CombinatorialDerivation.CombinatorialDerivation.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -2382,6 +2390,10 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.VariableComponent.VariableComponent.getNamespaceURI()+Sbol2Terms.VariableComponent.VariableComponent.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -2535,6 +2547,10 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Implementation.Implementation.getNamespaceURI()+Sbol2Terms.Implementation.Implementation.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -2673,6 +2689,10 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",sequenceConstraint.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.SequenceConstraint.SequenceConstraint.getNamespaceURI()+Sbol2Terms.SequenceConstraint.SequenceConstraint.getLocalPart())) {
 			}
 			else
 			{
@@ -2835,6 +2855,10 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",sequenceAnnotation.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation.getNamespaceURI()+Sbol2Terms.SequenceAnnotation.SequenceAnnotation.getLocalPart())) {
 			}
 			else
 			{
@@ -3005,6 +3029,10 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.GenericLocation.GenericLocation.getNamespaceURI()+Sbol2Terms.GenericLocation.GenericLocation.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -3149,6 +3177,10 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",typeCut.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Cut.Cut.getNamespaceURI()+Sbol2Terms.Cut.Cut.getLocalPart())) {
 			}
 			else
 			{
@@ -3316,6 +3348,10 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",typeRange.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Range.Range.getNamespaceURI()+Sbol2Terms.Range.Range.getLocalPart())) {
 			}
 			else
 			{
@@ -3524,6 +3560,10 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",component.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Component.Component.getNamespaceURI()+Sbol2Terms.Component.Component.getLocalPart())) {
 			}
 			else
 			{
@@ -3933,6 +3973,10 @@ public class SBOLReader
 					qualifiedUsages.add(parseUsage(SBOLDoc, nestedDocument, nested));
 				}
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Activity.Activity.getNamespaceURI()+Sbol2Terms.Activity.Activity.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -4076,6 +4120,10 @@ public class SBOLReader
 				}
 				planURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Association.Association.getNamespaceURI()+Sbol2Terms.Association.Association.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -4192,6 +4240,10 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-12502", usage.getIdentity());
 				}
 				entityURI = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Usage.Usage.getNamespaceURI()+Sbol2Terms.Usage.Usage.getLocalPart())) {
 			}
 			else
 			{
@@ -4310,6 +4362,10 @@ public class SBOLReader
 				else {
 					throw new SBOLValidationException("sbol-10306", topLevel.getIdentity());
 				}
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Agent.Agent.getNamespaceURI()+Sbol2Terms.Agent.Agent.getLocalPart())) {
 			}
 			else
 			{
@@ -4435,6 +4491,10 @@ public class SBOLReader
 				else {
 					throw new SBOLValidationException("sbol-10306", topLevel.getIdentity());
 				}
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Plan.Plan.getNamespaceURI()+Sbol2Terms.Plan.Plan.getLocalPart())) {
 			}
 			else
 			{
@@ -4609,6 +4669,10 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10306", topLevel.getIdentity());
 				}
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Model.Model.getNamespaceURI()+Sbol2Terms.Model.Model.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -4771,6 +4835,10 @@ public class SBOLReader
 				else {
 					throw new SBOLValidationException("sbol-10306", topLevel.getIdentity());
 				}
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Attachment.Attachment.getNamespaceURI()+Sbol2Terms.Attachment.Attachment.getLocalPart())) {
 			}
 			else
 			{
@@ -4961,6 +5029,10 @@ public class SBOLReader
 				else {
 					throw new SBOLValidationException("sbol-10306", topLevel.getIdentity());
 				}
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Collection.Collection.getNamespaceURI()+Sbol2Terms.Collection.Collection.getLocalPart())) {
 			}
 			else
 			{
@@ -5216,6 +5288,10 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10306", topLevel.getIdentity());
 				}
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.ModuleDefinition.ModuleDefinition.getNamespaceURI()+Sbol2Terms.ModuleDefinition.ModuleDefinition.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -5411,6 +5487,10 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Module.Module.getNamespaceURI()+Sbol2Terms.Module.Module.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -5563,6 +5643,10 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.MapsTo.MapsTo.getNamespaceURI()+Sbol2Terms.MapsTo.MapsTo.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -5708,6 +5792,10 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Interaction.Interaction.getNamespaceURI()+Sbol2Terms.Interaction.Interaction.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -5840,6 +5928,10 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",participation.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Participation.Participation.getNamespaceURI()+Sbol2Terms.Participation.Participation.getLocalPart())) {
 			}
 			else
 			{
@@ -6044,6 +6136,10 @@ public class SBOLReader
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.FunctionalComponent.FunctionalComponent.getNamespaceURI()+Sbol2Terms.FunctionalComponent.FunctionalComponent.getLocalPart())) {
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -6203,6 +6299,10 @@ public class SBOLReader
 				else {
 					throw new SBOLValidationException("sbol-10306", topLevel.getIdentity());
 				}
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Sequence.Sequence.getNamespaceURI()+Sbol2Terms.Sequence.Sequence.getLocalPart())) {
 			}
 			else
 			{
