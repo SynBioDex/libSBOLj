@@ -208,7 +208,7 @@ public class SynBioHubFrontend
         String url = topLevelUri + "/remove";
         url = url.replace(uriPrefix, backendUrl);
 
-        fetchFromSynBioHub(url);
+        removeFromSynBioHub(url);
     }
     
     /**
@@ -227,7 +227,7 @@ public class SynBioHubFrontend
         String url = topLevelUri + "/replace";
         url = url.replace(uriPrefix, backendUrl);
 
-        fetchFromSynBioHub(url);
+        removeFromSynBioHub(url);
     }
 
    /**
@@ -1018,6 +1018,31 @@ public class SynBioHubFrontend
         {
             throw new SynBioHubException("Error serializing SBOL document", e);
         }
+    }
+    
+    private void removeFromSynBioHub(String url) throws SynBioHubException
+    {
+		HttpGet request = new HttpGet(url);
+        request.setHeader("X-authorization", user);
+        request.setHeader("Accept", "text/plain");
+
+    	try
+    	{
+			HttpResponse response = client.execute(request);
+	
+			checkResponseCode(response);
+	        
+			HttpStream res = new HttpStream();
+			
+			res.inputStream = response.getEntity().getContent();
+			res.request = request;
+    	}
+    	catch(Exception e)
+    	{
+    		request.releaseConnection();
+
+    		throw new SynBioHubException("Error connecting to SynBioHub endpoint", e);    		
+    	}
     }
 
     private SBOLDocument fetchFromSynBioHub(String url) throws SynBioHubException

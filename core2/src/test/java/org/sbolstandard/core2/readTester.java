@@ -42,10 +42,74 @@ class readTester {
 	static String path = "/Users/myers/git/libSBOLj/core2/src/test/resources/";
 
 	public static void main(String[] args) throws SBOLValidationException, IOException, SBOLConversionException, SynBioHubException {
-	
-		SynBioHubFrontend sbh = new SynBioHubFrontend("https://synbiohub.utah.edu");
-		SBOLDocument doc = sbh.getSBOL(URI.create("https://synbiohub.utah.edu/public/Cello_Parts/A1_AmtR/1"), false);
+		SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/typeError.xml");
 		doc.write(System.out);
+//		String user = "cmyers_admin";
+//        String password = "MaWen69!";
+//        String uriPrefix = "https://hub.sd2e.org";
+//        String url = "https://hub-staging.sd2e.org";
+//        String localNamespace = "http://localhost/";
+//        SynBioHubFrontend repository = new SynBioHubFrontend(url, uriPrefix);
+//        repository.login(user, password);
+//        SBOLDocument doc = new SBOLDocument();
+//        doc.setDefaultURIprefix(localNamespace);
+//        QName DUMMY_ANNOTATION = new QName("http://sd2e.org#","dummy","sd2");
+//        ModuleDefinition m = doc.createModuleDefinition("Annotation_test", "1");
+//        m.setName("test1");
+//        m.createAnnotation(DUMMY_ANNOTATION, "foo");
+//        repository.createCollection("scratch_test", "1", "test", "test", "", true);
+//        repository.addToCollection(URI.create(uriPrefix + "/user/" + user + "/scratch_test/scratch_test_collection/1"), true, doc);        
+//        doc = repository.getSBOL(URI.create(uriPrefix + "/user/" + user + "/scratch_test/Annotation_test/1"));
+//         doc = doc.changeURIPrefixVersion(localNamespace, "1", "1");
+//        doc.write(System.out);
+//        m = doc.getModuleDefinitions().iterator().next();
+//        m.setName("test2");
+//        // Clear annotations
+//        while(m.getAnnotation(DUMMY_ANNOTATION)!=null) { 
+//            m.removeAnnotation(m.getAnnotation(DUMMY_ANNOTATION));
+//        }
+//        doc.write(System.out);
+//        repository.addToCollection(URI.create(uriPrefix + "/user/" + user +"/scratch_test/scratch_test_collection/1"), true, doc);        
+//        doc = repository.getSBOL(URI.create(uriPrefix + "/user/" + user + "/scratch_test/Annotation_test/1"));
+//        doc.write(System.out);
+        /*
+        String localNamespace = "http://localhost/";
+        SynBioHubFrontend repository = new SynBioHubFrontend("http://localhost:7777","https://synbiohub.org");
+        repository.login(user, password);
+        SBOLDocument doc = new SBOLDocument();
+        doc.setDefaultURIprefix(localNamespace);
+        QName DUMMY_ANNOTATION = new QName("http://sd2e.org#","dummy","sd2");
+        ModuleDefinition m = doc.createModuleDefinition("Annotation_test", "1");
+        m.createAnnotation(DUMMY_ANNOTATION, "foo");
+        repository.createCollection("test", "1", "test", "test", "", true, doc);
+        doc = repository.getSBOL(URI.create("https://synbiohub.org/user/myers/test/Annotation_test/1"));
+        doc = doc.changeURIPrefixVersion(localNamespace, "1", "1");
+        doc.write(System.out);
+        m = doc.getModuleDefinitions().iterator().next();
+        // Clear annotations
+        while(m.getAnnotation(DUMMY_ANNOTATION)!=null) { 
+            m.removeAnnotation(m.getAnnotation(DUMMY_ANNOTATION));
+        }
+        doc.write(System.out);
+        repository.addToCollection(URI.create("https://synbiohub.org/user/myers/test/test_collection/1"), true, doc);        
+        doc = repository.getSBOL(URI.create("https://synbiohub.org/user/myers/test/Annotation_test/1"));
+        doc.write(System.out);
+*/
+        //assert(m.getAnnotation(DUMMY_ANNOTATION) == null);
+//		SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/W303.xml");
+//		SynBioHubFrontend.getRegistries();
+		//SynBioHubFrontend sbh = new SynBioHubFrontend("https://hub-staging.sd2e.org","https://hub.sd2e.org");
+		//sbh.login("sd2_service@sd2e.org", "jWJ1yztJl2f7RaePHMtXmxBBHwNt");
+		//SBOLDocument doc = sbh.getSBOL(URI.create("https://hub.sd2e.org/user/sd2e/design/W303/1"));
+//		for (ModuleDefinition md : doc.getRootModuleDefinitions()) {
+//			for (FunctionalComponent fc : md.getFunctionalComponents()) {
+//				System.out.println("Fetching: " + fc.getDefinitionURI());
+//				SBOLDocument tmp = sbh.getSBOL(fc.getDefinitionURI());
+//				//tmp.write(System.out);
+//				doc.createCopy(tmp);
+//			}
+//		}
+	//	SBOLWriter.write(doc,"/Users/myers/Downloads/W303_full.xml");
 //		SBOLDocument doc = new SBOLDocument();
 //		ComponentDefinition cd = doc.createComponentDefinition("http://dummy.org","L0x2DTryptophan","1",ComponentDefinition.SMALL_MOLECULE);
 //		//cd.setName("first");

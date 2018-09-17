@@ -929,18 +929,21 @@ public class SBOLReader
 				}
 				int sbolCount = 0;
 				int provCount = 0;
+				int sbol1Count = 0;
 				for (PropertyValue<QName> value : topLevel.getPropertyValues(Sbol2Terms.Description.type)) {
 					String type = ((Literal<QName>) value).getValue().toString();
 					if (type.startsWith(Sbol2Terms.prov.getNamespaceURI())) provCount++;
 					else if (type.startsWith(Sbol2Terms.sbol2.getNamespaceURI())) sbolCount++;
+					else if (type.startsWith(Sbol1Terms.sbol1.getNamespaceURI())) sbol1Count++;
 				}
-				if (sbolCount > 1 || provCount > 1) {
+				if (sbolCount > 1 || provCount > 1 || sbol1Count > 1) {
 					if (keepGoing) {
 						errors.add(new SBOLValidationException("sbol-10228",topLevel.getIdentity()).getMessage());
 					} else {
 						throw new SBOLValidationException("sbol-10228",topLevel.getIdentity());
 					}
-				} else if (sbolCount==0 && provCount==0 && topLevel.getPropertyValues(Sbol2Terms.Description.type).size() > 1) {
+				} else if (sbolCount==0 && provCount==0 && sbol1Count==0 &&
+						topLevel.getPropertyValues(Sbol2Terms.Description.type).size() > 1) {
 					if (keepGoing) {
 						errors.add(new SBOLValidationException("sbol-12302",topLevel.getIdentity()).getMessage());
 					} else {
@@ -986,6 +989,27 @@ public class SBOLReader
 									Datatree.NamedProperties(topLevel.getProperties())));
 						}
 					}
+				} else if (sbol1Count == 1) {
+					for (PropertyValue<QName> value : topLevel.getPropertyValues(Sbol2Terms.Description.type)) {
+						String typeStr = ((Literal<QName>) value).getValue().toString();
+						QName type = null;
+						if (typeStr.startsWith(Sbol1Terms.sbol1.getNamespaceURI())) {
+							String localPart = typeStr.replace(Sbol1Terms.sbol1.getNamespaceURI(), "");
+							type = Sbol1Terms.sbol1.withLocalPart(localPart);
+						} else {
+							continue;
+						}
+						if (type.equals(Sbol1Terms.SequenceAnnotations.SequenceAnnotation)) {
+							nested.put(topLevel.getIdentity(),
+									Datatree.NestedDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+											type, topLevel.getIdentity(),
+											Datatree.NamedProperties(topLevel.getProperties())));
+						} else {
+							topLevels.add(Datatree.TopLevelDocument(Datatree.NamespaceBindings(topLevel.getNamespaceBindings()),
+									type, topLevel.getIdentity(),
+									Datatree.NamedProperties(topLevel.getProperties())));
+						}
+					}					
 				}
 			} else if (topLevel.getType().equals(Sbol2Terms.Component.Component)
 					|| topLevel.getType().equals(Sbol2Terms.Cut.Cut)
@@ -3639,7 +3663,19 @@ public class SBOLReader
 		QName type 			   = topLevel.getType();
 
 		List<Annotation> annotations = new ArrayList<>();
-
+		
+		int sbol1TypeCount=0;
+		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
+		{
+			if (namedProperty.getName().equals(Sbol2Terms.Description.type)) {
+				String typeStr = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+				String nameSpace = URIcompliance.extractNamespace(URI.create(typeStr));
+				if (nameSpace.equals(Sbol1Terms.sbol1.getNamespaceURI())) {
+					sbol1TypeCount++;
+				}	
+			}
+		}
+		
 		for (NamedProperty<QName> namedProperty : topLevel.getProperties())
 		{
 			if (namedProperty.getName().equals(Sbol2Terms.Description.type)) {
@@ -3678,6 +3714,13 @@ public class SBOLReader
 				}
 				if (!nameSpace.equals(Sbol2Terms.sbol2.getNamespaceURI()))
 					type = new QName(nameSpace,localPart,prefix);
+				if (sbol1TypeCount==1) {
+					if (nameSpace.equals(Sbol1Terms.sbol1.getNamespaceURI())) {
+						type = new QName(nameSpace,localPart,prefix);
+					} else {
+						annotations.add(new Annotation(namedProperty));
+					}
+				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
 			{
