@@ -42,10 +42,8 @@ class readTester {
 	static String path = "/Users/myers/git/libSBOLj/core2/src/test/resources/";
 
 	public static void main(String[] args) throws SBOLValidationException, IOException, SBOLConversionException, SynBioHubException {
-		SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/typeError.xml");
-		doc.write(System.out);
-//		String user = "cmyers_admin";
-//        String password = "MaWen69!";
+//		SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/typeError.xml");
+//		doc.write(System.out);
 //        String uriPrefix = "https://hub.sd2e.org";
 //        String url = "https://hub-staging.sd2e.org";
 //        String localNamespace = "http://localhost/";
