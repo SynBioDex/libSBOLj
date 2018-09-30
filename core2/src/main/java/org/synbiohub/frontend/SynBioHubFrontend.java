@@ -23,6 +23,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -30,6 +31,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
@@ -82,6 +84,25 @@ public class SynBioHubFrontend
 
         connectionManager = new PoolingHttpClientConnectionManager();
         client = HttpClients.custom().setConnectionManager(connectionManager).build();
+    }
+    
+    /**
+     * Creates an instance of the SynBioHub API.
+     * @param backendUrl - URL for the SynBioHub instance.
+     * @param timeout - timeout for connections in seconds
+     */
+    public SynBioHubFrontend(String backendUrl,int timeout)
+    {
+        this.backendUrl = backendUrl;
+        this.uriPrefix = backendUrl;
+
+        connectionManager = new PoolingHttpClientConnectionManager();
+//        client = HttpClients.custom().setConnectionManager(connectionManager).build();
+    	RequestConfig config = RequestConfig.custom()
+    			.setConnectTimeout(timeout * 1000)
+    			.setConnectionRequestTimeout(timeout * 1000)
+    			.setSocketTimeout(timeout * 1000).build();
+    	client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
     }
 
     /**
@@ -1176,7 +1197,7 @@ public class SynBioHubFrontend
 		HttpGet request = new HttpGet(url);
         request.setHeader("X-authorization", user);
         request.setHeader("Accept", "text/plain");
-
+        
     	try
     	{
 			HttpResponse response = client.execute(request);
