@@ -106,6 +106,27 @@ public class SynBioHubFrontend
     }
 
     /**
+     * Creates an instance of the SynBioHub API.
+     * @param backendUrl - URL for the SynBioHub instance.
+     * @param uriPrefix - prefix for all URIs stored in this repository
+     * @param timeout - timeout for connections in seconds
+     */
+    public SynBioHubFrontend(String backendUrl, String uriPrefix, int timeout)
+    {
+        this.backendUrl = backendUrl;
+        this.uriPrefix = uriPrefix;
+
+        connectionManager = new PoolingHttpClientConnectionManager();
+
+        RequestConfig config = RequestConfig.custom()
+                .setConnectTimeout(timeout * 1000)
+                .setConnectionRequestTimeout(timeout * 1000)
+                .setSocketTimeout(timeout * 1000).build();
+        client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
+    }
+
+
+    /**
      * Returns the URL for the SynBioHub instance.
      * @return the URL for the SynBioHub instance.
      */
