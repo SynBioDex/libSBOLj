@@ -32,22 +32,70 @@ public class ComponentDefinition extends TopLevel {
 
 	/* Types */
 	/**
+	 * A physical entity consisting of a sequence of deoxyribonucleotide monophosphates; a deoxyribonucleic acid.
+     * Usage: DNA should be used for pools of individual DNA molecules. For describing subregions on those molecules 
+     * use DNARegion.  Examples: a chromosome, a plasmid. A specific example is chromosome 7 of Homo sapiens.
+	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">DNA</a>).
+	 * Aspects of the state of the DNA region, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
+	 * Deprecated - please use DNA_REGION instead.
+	 */
+	@Deprecated
+	public static final URI DNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
+	
+	/**
+	 * A physical entity consisting of a sequence of deoxyribonucleotide monophosphates; a deoxyribonucleic acid.
+     * Usage: DNA should be used for pools of individual DNA molecules. For describing subregions on those molecules 
+     * use DNARegion.  Examples: a chromosome, a plasmid. A specific example is chromosome 7 of Homo sapiens.
+	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">DNA</a>).
+	 * Aspects of the state of the DNA region, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
+	 */
+	public static final URI DNA_REGION = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
+	
+	/**
 	 * A physical entity consisting of a sequence of deoxyribonucleotide monophosphates; a deoxyribonucleic acid
 	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">DNA</a>).
+	 * Aspects of the state of the DNA molecule, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
 	 */
-	public static final URI DNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion");
+	public static final URI DNA_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#Dna");
 
 	/**
-	 * A physical entity consisting of a sequence of ribonucleotide monophosphates; a ribonucleic acid
+	 * A region on a RNA molecule. Usage: RNARegion is not a pool of independent molecules but a subregion 
+	 * on these molecules. As such, every RNARegion has a defining RNA molecule. Examples: CDS, 3'; UTR, Hairpin
+	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">RNA</a>).
+	 * Aspects of the state of the RNA region, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
+	 * Deprecated - please use RNA_REGION instead.
+	 */
+	@Deprecated
+	public static final URI RNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#RnaRegion");
+
+	/**
+	 * A region on a RNA molecule. Usage: RNARegion is not a pool of independent molecules but a subregion 
+	 * on these molecules. As such, every RNARegion has a defining RNA molecule. Examples: CDS, 3'; UTR, Hairpin
+	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">RNA</a>).
+	 * Aspects of the state of the RNA region, including cellular location and features, are defined here,
+	 * using properties inherited from PhysicalEntity.
+	 */
+	public static final URI RNA_REGION = URI.create("http://www.biopax.org/release/biopax-level3.owl#RnaRegion");
+	
+	/**
+	 * A physical entity consisting of a sequence of ribonucleotide monophosphates; a ribonucleic acid.
+	 * Usage: RNA should be used for pools of individual RNA molecules. For describing subregions on 
+	 * those molecules use RNARegion.  Examples: messengerRNA, microRNA, ribosomalRNA. A specific example 
+	 * is the let-7 microRNA.
 	 * (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">RNA</a>).
 	 * Aspects of the state of the RNA molecule, including cellular location and features, are defined here,
 	 * using properties inherited from PhysicalEntity.
 	 */
-	public static final URI RNA = URI.create("http://www.biopax.org/release/biopax-level3.owl#RnaRegion");
+	public static final URI RNA_MOLECULE = URI.create("http://www.biopax.org/release/biopax-level3.owl#Rna");
 
 	/**
 	 * A physical entity consisting of a sequence of amino acids; a protein monomer; a single polypeptide
-	 * chain (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">Protein</a>). Aspects of the state of the protein, including cellular location and features, are defined here,
+	 * chain (<a href="http://www.biopax.org/release/biopax-level3-documentation.pdf">Protein</a>). Aspects 
+	 * of the state of the protein, including cellular location and features, are defined here,
 	 * using properties inherited from PhysicalEntity.
 	 */
 	public static final URI PROTEIN = URI.create("http://www.biopax.org/release/biopax-level3.owl#Protein");

@@ -1048,7 +1048,8 @@ public class SBOLValidate {
 		for (ComponentDefinition compDef : sbolDocument.getComponentDefinitions()) {
 			int numBioPAXtypes = 0;
 			for (URI type : compDef.getTypes()) {
-				if (type.equals(ComponentDefinition.DNA) || type.equals(ComponentDefinition.RNA)
+				if (type.equals(ComponentDefinition.DNA_REGION) || type.equals(ComponentDefinition.RNA_REGION)
+						|| type.equals(ComponentDefinition.DNA_MOLECULE) || type.equals(ComponentDefinition.RNA_MOLECULE)
 						|| type.equals(ComponentDefinition.PROTEIN) || type.equals(ComponentDefinition.COMPLEX)
 						|| type.equals(ComponentDefinition.SMALL_MOLECULE)) {
 					numBioPAXtypes++;
@@ -1090,15 +1091,16 @@ public class SBOLValidate {
 				} catch (Exception e) {
 				}
 			}
-			if (compDef.getTypes().contains(ComponentDefinition.DNA)
-					|| compDef.getTypes().contains(ComponentDefinition.RNA)) {
+			if (compDef.getTypes().contains(ComponentDefinition.DNA_REGION)
+					|| compDef.getTypes().contains(ComponentDefinition.RNA_REGION)) {
 				if (numSO != 1) {
 					errors.add(new SBOLValidationException("sbol-10527", compDef).getMessage());
 				}
 				if (numTopo > 1) {
 					errors.add(new SBOLValidationException("sbol-10528", compDef).getMessage());
 				}
-			} else if (!compDef.getTypes().contains(ComponentDefinition.RNA)) {
+			} else if (!compDef.getTypes().contains(ComponentDefinition.RNA_MOLECULE) 
+					&& !compDef.getTypes().contains(ComponentDefinition.DNA_MOLECULE)) {
 				if (numSO != 0) {
 					errors.add(new SBOLValidationException("sbol-10511", compDef).getMessage());
 				}
@@ -1121,8 +1123,8 @@ public class SBOLValidate {
 					} catch (Exception e) {
 					}
 				}
-				if (!def.getTypes().contains(ComponentDefinition.DNA)
-						&& !def.getTypes().contains(ComponentDefinition.RNA)) {
+				if (!def.getTypes().contains(ComponentDefinition.DNA_REGION)
+						&& !def.getTypes().contains(ComponentDefinition.RNA_REGION)) {
 					if (numSO != 0) {
 						errors.add(new SBOLValidationException("sbol-10706", compDef).getMessage());
 					}
@@ -1262,9 +1264,9 @@ public class SBOLValidate {
 					}
 				}
 			}
-			if (componentDefinition.getTypes().contains(ComponentDefinition.DNA) && !foundNucleic) {
+			if (componentDefinition.getTypes().contains(ComponentDefinition.DNA_REGION) && !foundNucleic) {
 				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getMessage());
-			} else if (componentDefinition.getTypes().contains(ComponentDefinition.RNA) && !foundNucleic) {
+			} else if (componentDefinition.getTypes().contains(ComponentDefinition.RNA_REGION) && !foundNucleic) {
 				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getMessage());
 			} else if (componentDefinition.getTypes().contains(ComponentDefinition.PROTEIN) && !foundProtein) {
 				errors.add(new SBOLValidationException("sbol-10516", componentDefinition).getMessage());

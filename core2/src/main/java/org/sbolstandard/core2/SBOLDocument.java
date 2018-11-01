@@ -2875,7 +2875,7 @@ public class SBOLDocument {
 					newVersion = defaultVersion;
 				}
 			}
-			fixed.rename(topLevel, URIPrefix, null, newVersion);
+			fixed.rename(topLevel, URIPrefix, null, newVersion, false);
 			TopLevel newTL = document.createCopy(topLevel, URIPrefix, null, newVersion);
 			uriMap.put(topLevel.getIdentity(), newTL.getIdentity());
 			if (!topLevel.getIdentity().equals(topLevel.getPersistentIdentity())) {
@@ -2897,6 +2897,22 @@ public class SBOLDocument {
 		}
 		document.setDefaultURIprefix(URIPrefix);
 		return document;
+	}
+	
+	private TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version, boolean updateRefs)
+			throws SBOLValidationException {
+		if ((URIprefix == null || URIprefix.equals(URIcompliance.extractURIprefix(topLevel.getIdentity())))
+				&& (displayId == null || displayId.equals(topLevel.getDisplayId()))
+				&& (version == null || version.equals(topLevel.getVersion()))) {
+			return topLevel;
+		}
+		TopLevel renamedTopLevel = createCopy(topLevel, URIprefix, displayId, version);
+		removeTopLevel(topLevel);
+		if (updateRefs) {
+			updateReferences(topLevel.getIdentity(), renamedTopLevel.getIdentity());
+			updateReferences(topLevel.getPersistentIdentity(), renamedTopLevel.getPersistentIdentity());
+		}
+		return renamedTopLevel;
 	}
 
 	/**
@@ -2929,16 +2945,7 @@ public class SBOLDocument {
 	 */
 	public TopLevel rename(TopLevel topLevel, String URIprefix, String displayId, String version)
 			throws SBOLValidationException {
-		if ((URIprefix == null || URIprefix.equals(URIcompliance.extractURIprefix(topLevel.getIdentity())))
-				&& (displayId == null || displayId.equals(topLevel.getDisplayId()))
-				&& (version == null || version.equals(topLevel.getVersion()))) {
-			return topLevel;
-		}
-		TopLevel renamedTopLevel = createCopy(topLevel, URIprefix, displayId, version);
-		removeTopLevel(topLevel);
-		updateReferences(topLevel.getIdentity(), renamedTopLevel.getIdentity());
-		updateReferences(topLevel.getPersistentIdentity(), renamedTopLevel.getPersistentIdentity());
-		return renamedTopLevel;
+		return rename(topLevel,URIprefix,displayId,version,true);
 	}
 
 	/**

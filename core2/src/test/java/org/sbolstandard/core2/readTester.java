@@ -1,5 +1,7 @@
 package org.sbolstandard.core2;
 
+import java.io.IOException;
+
 import org.synbiohub.frontend.SynBioHubException;
 import org.synbiohub.frontend.SynBioHubFrontend;
 
@@ -31,7 +33,16 @@ class readTester {
 
 	static String path = "/Users/myers/git/libSBOLj/core2/src/test/resources/";
 
-	public static void main(String[] args) {
-		// TEST HERE
+	public static void main(String[] args) throws SBOLValidationException, IOException, SBOLConversionException {
+		SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/yeast_gates_plasmids_subcomponents_fixed.xml");
+		long submitStartTime = System.currentTimeMillis();
+
+		doc = doc.changeURIPrefixVersion("https://synbiohub.org", "1", "1");
+		
+		long submitEndTime = System.currentTimeMillis();
+		double submitDuration = (submitEndTime - submitStartTime) * 1.0 / 1000;
+
+		System.out.println("Change URI prefex Time (in sec): " + submitDuration);
+		doc.write(System.out);
 	}
 }

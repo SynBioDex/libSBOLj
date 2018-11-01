@@ -72,6 +72,7 @@ public class SBOLTestConversion {
 		if (file.getAbsolutePath().contains("multipleInstance.xml")) return;
 		if (file.getAbsolutePath().contains("sequence2.gb")) return;
 		if (file.getAbsolutePath().contains("sequence4.gb")) return;
+		if (file.getName().equals("manifest")) return;
 		if (file.isDirectory()) return;
 		//if (f.getAbsolutePath().contains("BBa_I0462.xml")) continue;
 		try
@@ -101,7 +102,7 @@ public class SBOLTestConversion {
 		}
 		catch (SBOLValidationException e)
 		{
-			//System.out.println("Failed for " + file.getName() + "\n" + e.getMessage());
+			System.out.println("Failed for " + file.getName() + "\n" + e.getMessage());
 			throw new AssertionError("Failed for " + file.getName());
 		}
 	}

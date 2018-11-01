@@ -45,6 +45,37 @@ public class SBOLReadWriteTest {
 			e1.printStackTrace();
 		}
 		for (File f : file_base.listFiles()) {
+			if (f.getName().equals("manifest")) continue;
+			col.add(f);
+		}
+		try {
+			file_base = new File(ValidationTest.class.getResource("/SBOLTestSuite/SBOL2_bp/").toURI());
+		}
+		catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		}
+		for (File f : file_base.listFiles()) {
+			if (f.getName().equals("manifest")) continue;
+			col.add(f);
+		}
+		try {
+			file_base = new File(ValidationTest.class.getResource("/SBOLTestSuite/SBOL2_ic/").toURI());
+		}
+		catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		}
+		for (File f : file_base.listFiles()) {
+			if (f.getName().equals("manifest")) continue;
+			col.add(f);
+		}
+		try {
+			file_base = new File(ValidationTest.class.getResource("/SBOLTestSuite/SBOL2_nc/").toURI());
+		}
+		catch (URISyntaxException e1) {
+			e1.printStackTrace();
+		}
+		for (File f : file_base.listFiles()) {
+			if (f.getName().equals("manifest")) continue;
 			col.add(f);
 		}
 		return col;
@@ -78,7 +109,7 @@ public class SBOLReadWriteTest {
 		}
 		catch (SBOLValidationException e)
 		{
-			//System.out.println("Failed for " + file.getName() + "\n" + e.getMessage());
+			//System.out.println("Failed for " + file.getAbsolutePath() + "\n" + e.getMessage());
 			throw new AssertionError("Failed for " + file.getName());
 		}
 	}

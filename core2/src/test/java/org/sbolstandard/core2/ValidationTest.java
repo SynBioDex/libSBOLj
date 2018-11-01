@@ -52,6 +52,7 @@ public class ValidationTest {
 			e1.printStackTrace();
 		}
 		for (File f : file_base.listFiles()) {
+			if (f.getName().equals("manifest")) continue;
 			col.add(f);
 		}
 		return col;
