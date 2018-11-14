@@ -21,9 +21,9 @@ public class CollectionTest {
 		doc = new SBOLDocument();
 		doc.setDefaultURIprefix(prURI);
 		doc.setComplete(true);
-		TetR_promoter = doc.createComponentDefinition("TetR_promoter","", ComponentDefinition.DNA); 
-		gRNA_b_promoter = doc.createComponentDefinition("gRNA_b_promoter","", ComponentDefinition.DNA); 
-		CRa_U6_promoter = doc.createComponentDefinition("CRa_U6","",ComponentDefinition.DNA);
+		TetR_promoter = doc.createComponentDefinition("TetR_promoter","", ComponentDefinition.DNA_REGION); 
+		gRNA_b_promoter = doc.createComponentDefinition("gRNA_b_promoter","", ComponentDefinition.DNA_REGION); 
+		CRa_U6_promoter = doc.createComponentDefinition("CRa_U6","",ComponentDefinition.DNA_REGION);
 		promoters = doc.createCollection("promoters");
 		promoters.addMember(TetR_promoter.getIdentity());
 		promoters.addMember(gRNA_b_promoter.getIdentity());

@@ -70,7 +70,7 @@ public class ComponentDefinitionOutput {
 		ComponentDefinition pTetR = document.createComponentDefinition(
 				"BBa_R0040",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		
 		pTetR.addRole(SequenceOntology.PROMOTER);
 		pTetR.setName("pTetR");
@@ -80,7 +80,7 @@ public class ComponentDefinitionOutput {
 		ComponentDefinition rbs = document.createComponentDefinition(
 				"BBa_B0034",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));				
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));				
 		rbs.addRole(SequenceOntology.RIBOSOME_ENTRY_SITE);
 		rbs.setName("BBa_B0034");
 		rbs.setDescription("RBS based on Elowitz repressilator");	
@@ -89,7 +89,7 @@ public class ComponentDefinitionOutput {
 		ComponentDefinition cds = document.createComponentDefinition(
 				"BBa_C0062",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		cds.addRole(SequenceOntology.CDS);
 		cds.setName("luxR");
 		cds.setDescription("luxR coding sequence");	
@@ -98,7 +98,7 @@ public class ComponentDefinitionOutput {
 		ComponentDefinition ter = document.createComponentDefinition(
 				"BBa_B0015",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));		
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));		
 		ter.addRole(URI.create("http://identifiers.org/so/SO:0000141"));
 		ter.setName("BBa_B0015");
 		ter.setDescription("Double terminator");	
@@ -107,7 +107,7 @@ public class ComponentDefinitionOutput {
 		ComponentDefinition pluxR = document.createComponentDefinition(
 				"BBa_R0062",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		pluxR.addRole(SequenceOntology.PROMOTER);//
 		pluxR.setName("pLuxR");
 		pluxR.setDescription("LuxR inducible promoter");	
@@ -116,7 +116,7 @@ public class ComponentDefinitionOutput {
 		ComponentDefinition device = document.createComponentDefinition(
 				"BBa_F2620",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 				device.addRole(URI.create("http://identifiers.org/so/SO:00001411"));//biological region							
 		device.setName("BBa_F2620");
 		device.setDescription("3OC6HSL -> PoPS Receiver");	

@@ -927,7 +927,7 @@ public class SBOLWriter
 		if (componentDefinition==null) {
 			throw new SBOLConversionException("ComponentDefinition not found.\n:");
 		}
-		if (!componentDefinition.getTypes().contains(ComponentDefinition.DNA)) {
+		if (!componentDefinition.getTypes().contains(ComponentDefinition.DNA_REGION)) {
 			throw new SBOLConversionException("SBOL 1.1 only supports DNA ComponentDefinitions.\n:"+componentDefinition.getIdentity());
 		}
 		if(componentDefinition.isSetDisplayId())
@@ -1106,7 +1106,7 @@ public class SBOLWriter
 			formatCollectionV1(collection, topLevelDoc);
 		}
 		for (ComponentDefinition componentDefinition : doc.getRootComponentDefinitions()) {
-			if (componentDefinition.getTypes().contains(ComponentDefinition.DNA)) {
+			if (componentDefinition.getTypes().contains(ComponentDefinition.DNA_REGION)) {
 				boolean skip = false;
 				for (Collection collection : doc.getCollections()) {
 					if (collection.getMemberURIs().contains(componentDefinition.getIdentity())) {

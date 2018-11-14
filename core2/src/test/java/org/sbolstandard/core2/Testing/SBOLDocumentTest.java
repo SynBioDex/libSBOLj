@@ -30,9 +30,9 @@ public class SBOLDocumentTest {
 		doc.setTypesInURIs(false);
 		doc.setComplete(true);
 		
-		 doc.createComponentDefinition("http://partsregistry.org", "gRNA_promoter", "", ComponentDefinition.DNA);
-		 doc.createComponentDefinition(prURI, "CRa_promoter", "", ComponentDefinition.DNA);
-		 doc.createComponentDefinition(prURI, "TetR_promoter","", ComponentDefinition.DNA); 
+		 doc.createComponentDefinition("http://partsregistry.org", "gRNA_promoter", "", ComponentDefinition.DNA_REGION);
+		 doc.createComponentDefinition(prURI, "CRa_promoter", "", ComponentDefinition.DNA_REGION);
+		 doc.createComponentDefinition(prURI, "TetR_promoter","", ComponentDefinition.DNA_REGION); 
 	}
 
 	@After
@@ -56,7 +56,7 @@ public class SBOLDocumentTest {
 	@Test
 	public void test_createTLmethods() throws SBOLValidationException
 	{
-		ComponentDefinition gRNA_b_gene = doc.createComponentDefinition("http://partsregistry.org", "gRNA_b_gene", "", ComponentDefinition.DNA);
+		ComponentDefinition gRNA_b_gene = doc.createComponentDefinition("http://partsregistry.org", "gRNA_b_gene", "", ComponentDefinition.DNA_REGION);
 		assertNotNull(gRNA_b_gene);
 		assertTrue(doc.getComponentDefinition("gRNA_b_gene", "").equals(gRNA_b_gene));
 	}
@@ -84,7 +84,7 @@ public class SBOLDocumentTest {
 	@Test
 	public void test_renameTopLevel() throws SBOLValidationException
 	{		 
-		gRNA_b_gene = doc.createComponentDefinition("http://partsregistry.org", "gRNA_b_gene", "", ComponentDefinition.DNA);
+		gRNA_b_gene = doc.createComponentDefinition("http://partsregistry.org", "gRNA_b_gene", "", ComponentDefinition.DNA_REGION);
 		doc.rename(gRNA_b_gene, "gRNA_b_gene2");
 		assertNotNull(doc.getComponentDefinition("gRNA_b_gene2", ""));
 		assertNull(doc.getComponentDefinition("gRNA_b_gene", ""));

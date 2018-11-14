@@ -221,7 +221,7 @@ class writeTester {
 	private static ComponentDefinition get_pLac (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.PROMOTER),
 				getData("pLac",version),
 				"pLacSeq");
@@ -230,7 +230,7 @@ class writeTester {
 	private static ComponentDefinition get_tetR (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.CDS),
 				getData("tetRCDS",version),
 				"tetRSeq");
@@ -258,7 +258,7 @@ class writeTester {
 	private static ComponentDefinition get_pLactetR (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.ENGINEERED_GENE),
 				getData("pLactetR",version),
 				"pLactetRSeq");
@@ -385,7 +385,7 @@ class writeTester {
 	private static ComponentDefinition get_ptet(SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.PROMOTER),
 				getData("ptet",version),
 				"ptetSeq");
@@ -394,7 +394,7 @@ class writeTester {
 	private static ComponentDefinition get_lacI (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		return createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.CDS),
 				getData("lacICDS",version),
 				"lacISeq");
@@ -423,7 +423,7 @@ class writeTester {
 	private static ComponentDefinition get_ptetlacI (SBOLDocument SBOL2Doc_test) throws SBOLValidationException
 	{
 		ComponentDefinition cd = createComponentDefinitionData(SBOL2Doc_test,
-				getSetURI(ComponentDefinition.DNA),
+				getSetURI(ComponentDefinition.DNA_REGION),
 				getSetURI(SequenceOntology.ENGINEERED_GENE),
 				getData("ptetlacI",version),
 				"ptetlacISeq");

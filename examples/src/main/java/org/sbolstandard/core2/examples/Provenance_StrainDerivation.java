@@ -28,7 +28,7 @@ public class Provenance_StrainDerivation {
 	
 	private static ComponentDefinition getCds(SBOLDocument document, String id, String name) throws SBOLValidationException
 	{
-		ComponentDefinition cds = document.createComponentDefinition(id, ComponentDefinition.DNA);
+		ComponentDefinition cds = document.createComponentDefinition(id, ComponentDefinition.DNA_REGION);
 		cds.addRole(SequenceOntology.CDS);
 		cds.setName(name);
 		return cds;

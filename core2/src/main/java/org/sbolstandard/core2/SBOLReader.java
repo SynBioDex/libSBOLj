@@ -1127,7 +1127,7 @@ public class SBOLReader
 		Map<URI, URI> componentDefMap 				 = new HashMap<>();
 
 		Set<URI> type = new HashSet<>();
-		type.add(ComponentDefinition.DNA);
+		type.add(ComponentDefinition.DNA_REGION);
 		type.add(SequenceOntology.LINEAR);
 
 		int component_num = 0;

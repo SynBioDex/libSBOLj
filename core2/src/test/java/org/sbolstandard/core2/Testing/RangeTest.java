@@ -23,7 +23,7 @@ public class RangeTest {
 		doc.setTypesInURIs(false);
 		doc.setComplete(true);
 		/*create CD's for main CD and sub-components*/
-		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA);
+		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", "", ComponentDefinition.DNA_REGION);
 		gene_SA = gRNA_b_gene.createSequenceAnnotation("gene_SA", "cutAt50");
 		
 		

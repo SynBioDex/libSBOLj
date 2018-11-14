@@ -29,7 +29,7 @@ public class AnnotationTest {
 		doc.setTypesInURIs(false);
 		doc.setComplete(true);
 		
-		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", ComponentDefinition.DNA);
+		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", ComponentDefinition.DNA_REGION);
 		gRNA_b_gene.addRole(SequenceOntology.ENGINEERED_GENE);
 		gRNA_b_gene.setName("gRNA_b_gene");
 		gRNA_b_gene.setDescription("protein");	

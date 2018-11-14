@@ -232,7 +232,7 @@ public class Sequence extends TopLevel{
 		String reverse = "";
 		for (int i = elements.length()-1; i >= 0; i--) {
 			if (elements.charAt(i)=='a') {
-				if (type.equals(ComponentDefinition.DNA)) {
+				if (type.equals(ComponentDefinition.DNA_REGION)) {
 					reverse += 't';
 				} else {
 					reverse += 'u';

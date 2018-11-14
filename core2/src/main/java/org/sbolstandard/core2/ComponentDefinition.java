@@ -242,8 +242,8 @@ public class ComponentDefinition extends TopLevel {
 	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 10503.
 	 */
 	public boolean addType(URI typeURI) throws SBOLValidationException {
-		if (typeURI.equals(DNA)||typeURI.equals(RNA)||typeURI.equals(PROTEIN)||typeURI.equals(SMALL_MOLECULE)) {
-			if (this.containsType(DNA)||this.containsType(RNA)||this.containsType(PROTEIN)||this.containsType(SMALL_MOLECULE)) {
+		if (typeURI.equals(DNA_REGION)||typeURI.equals(RNA_REGION)||typeURI.equals(PROTEIN)||typeURI.equals(SMALL_MOLECULE)) {
+			if (this.containsType(DNA_REGION)||this.containsType(RNA_REGION)||this.containsType(PROTEIN)||this.containsType(SMALL_MOLECULE)) {
 				throw new SBOLValidationException("sbol-10503", this);
 			}
 		}
@@ -517,10 +517,10 @@ public class ComponentDefinition extends TopLevel {
 	 */
 	public String getImpliedNucleicAcidSequence() {
 		URI type = null;
-		if (this.getTypes().contains(ComponentDefinition.DNA)) {
-			type = ComponentDefinition.DNA;
-		} else if (this.getTypes().contains(ComponentDefinition.RNA)) {
-			type = ComponentDefinition.RNA;
+		if (this.getTypes().contains(ComponentDefinition.DNA_REGION)) {
+			type = ComponentDefinition.DNA_REGION;
+		} else if (this.getTypes().contains(ComponentDefinition.RNA_REGION)) {
+			type = ComponentDefinition.RNA_REGION;
 		} else {
 			return null;
 		}

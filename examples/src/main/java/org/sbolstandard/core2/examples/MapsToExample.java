@@ -25,14 +25,14 @@ public class MapsToExample {
 		String version = "";
 		
 		ModuleDefinition md1 = doc.createModuleDefinition("md1", version);
-		ComponentDefinition fc1_def = doc.createComponentDefinition("fc1_def", version, ComponentDefinition.DNA);
-		ComponentDefinition fc2_def = doc.createComponentDefinition("fc2_def", version, ComponentDefinition.DNA);
+		ComponentDefinition fc1_def = doc.createComponentDefinition("fc1_def", version, ComponentDefinition.DNA_REGION);
+		ComponentDefinition fc2_def = doc.createComponentDefinition("fc2_def", version, ComponentDefinition.DNA_REGION);
 		FunctionalComponent fc1 = md1.createFunctionalComponent(
 					"fc1", AccessType.PUBLIC, "fc1_def", version, DirectionType.NONE);
 		FunctionalComponent fc2 = md1.createFunctionalComponent(
 				"fc2", AccessType.PUBLIC, "fc2_def", version, DirectionType.NONE);
 				
-		ComponentDefinition cd = doc.createComponentDefinition("cd", version, ComponentDefinition.DNA);
+		ComponentDefinition cd = doc.createComponentDefinition("cd", version, ComponentDefinition.DNA_REGION);
 		fc1_def.createComponent("component", AccessType.PUBLIC, "cd");
 		
 		fc1.createMapsTo("mapsTo", RefinementType.USELOCAL, "fc2", "component");

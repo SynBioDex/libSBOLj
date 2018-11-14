@@ -99,7 +99,7 @@ public class SBOLWorkshop2018 {
 		doc.setDefaultURIprefix(my_namespace);
 
 		// Create a new device
-		ComponentDefinition my_device = doc.createComponentDefinition("my_device", version, ComponentDefinition.DNA);
+		ComponentDefinition my_device = doc.createComponentDefinition("my_device", version, ComponentDefinition.DNA_REGION);
 		System.out.println(my_device.getIdentity());
 		System.out.println("");
 

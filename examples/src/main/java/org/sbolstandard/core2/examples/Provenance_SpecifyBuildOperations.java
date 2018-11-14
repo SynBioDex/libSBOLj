@@ -38,19 +38,19 @@ public class Provenance_SpecifyBuildOperations {
 		 so = new SequenceOntology();
 	}
 
-	public static final URI DNA = ComponentDefinition.DNA;
+	public static final URI DNA = ComponentDefinition.DNA_REGION;
 	
 	public static final Set<URI> LINEAR_SINGLE_STRANDED_DNA = 
 			new HashSet<>(Arrays.asList(
 					so.getURIbyId("SO:0000987"),	// linear
 					so.getURIbyId("SO:0000984"),	// single-stranded
-					ComponentDefinition.DNA));		// DNA
+					ComponentDefinition.DNA_REGION));		// DNA
 			
 	public static final Set<URI> LINEAR_DOUBLE_STRANDED_DNA = 
 			new HashSet<>(Arrays.asList(
 					so.getURIbyId("SO:0000987"),	// linear
 					so.getURIbyId("SO:0000985"),	// double-stranded
-					ComponentDefinition.DNA));		// DNA
+					ComponentDefinition.DNA_REGION));		// DNA
 
 	public static final URI VECTOR_PLASMID = so.getURIbyId("SO:0000755");
 

@@ -28,7 +28,7 @@ public class CutTest {
 		doc.setTypesInURIs(false);
 		doc.setComplete(true);
 		
-		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", ComponentDefinition.DNA);
+		gRNA_b_gene = doc.createComponentDefinition("gRNA_b_gene", ComponentDefinition.DNA_REGION);
 		promoter_annot = gRNA_b_gene.createSequenceAnnotation("promoter_annot", "cut1");
 		prom_cut = promoter_annot.addCut("cutAt5", 50, OrientationType.INLINE);
 		terminator_annot = gRNA_b_gene.createSequenceAnnotation("cutAt10", "cut2");

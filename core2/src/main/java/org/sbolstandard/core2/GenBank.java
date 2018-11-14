@@ -368,10 +368,10 @@ class GenBank {
 		}
 		String type = null;
 		for (URI typeURI : componentDefinition.getTypes()) {
-			if (typeURI.equals(ComponentDefinition.RNA)) {
+			if (typeURI.equals(ComponentDefinition.RNA_REGION)) {
 				type = "RNA";
 				break;
-			} else if (typeURI.equals(ComponentDefinition.DNA)) {
+			} else if (typeURI.equals(ComponentDefinition.DNA_REGION)) {
 				type = "DNA";
 			}
 		}
@@ -906,7 +906,7 @@ class GenBank {
 			StringBuilder sbSequence = new StringBuilder();
 			String elements = null;
 			String description = "";
-			URI type = ComponentDefinition.DNA;
+			URI type = ComponentDefinition.DNA_REGION;
 			ComponentDefinition topCD = null;
 			List<Annotation> annotations = new ArrayList<Annotation>();
 			List<Annotation> nestedAnnotations = null;
@@ -944,7 +944,7 @@ class GenBank {
 					if (strLine.length() > 53) {
 						String seqType = strLine.substring(44,53).trim();
 						if (seqType.toUpperCase().contains("RNA")) {
-							type = ComponentDefinition.RNA;
+							type = ComponentDefinition.RNA_REGION;
 
 						}
 						annotation = new Annotation(new QName(GBNAMESPACE, MOLECULE, GBPREFIX), seqType);

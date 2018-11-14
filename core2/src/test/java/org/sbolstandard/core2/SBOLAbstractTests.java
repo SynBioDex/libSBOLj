@@ -317,7 +317,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition pTetR = document.createComponentDefinition(
 				"BBa_R0040",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 
 		pTetR.addRole(SequenceOntology.PROMOTER);
 		pTetR.setName("BBa_R0040");
@@ -327,7 +327,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition rbs = document.createComponentDefinition(
 				"BBa_B0034",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 
 
 		rbs.addRole(SequenceOntology.RIBOSOME_ENTRY_SITE);
@@ -338,7 +338,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition cds = document.createComponentDefinition(
 				"BBa_C0062",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		cds.addRole(SequenceOntology.CDS);
 		cds.setName("BBa_C0062");
 		cds.setDescription("luxR coding sequence");
@@ -347,7 +347,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition ter = document.createComponentDefinition(
 				"BBa_B0015",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 
 		ter.addRole(URI.create("http://identifiers.org/so/SO:0000141"));
 		ter.setName("BBa_B0015");
@@ -357,7 +357,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition pluxR = document.createComponentDefinition(
 				"BBa_R0062",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		pluxR.addRole(SequenceOntology.PROMOTER);//
 		pluxR.setName("BBa_R0062");
 		pluxR.setDescription("LuxR inducible promoter");
@@ -367,7 +367,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition device = document.createComponentDefinition(
 				"BBa_F2620",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		device.addRole(URI.create("http://identifiers.org/so/SO:0001411"));//biological region
 		device.setName("BBa_F2620");
 		device.setDescription("3OC6HSL -> PoPS Receiver");
@@ -427,7 +427,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition promoter = document.createComponentDefinition(
 				"BBa_J23119",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		promoter.addRole(SequenceOntology.PROMOTER);
 		promoter.addRole(URI.create("http://identifiers.org/so/SO:0000613"));
 
@@ -489,7 +489,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition promoter = document.createComponentDefinition(
 				"BBa_J23119",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 
 		promoter.addRole(SequenceOntology.PROMOTER);
 		promoter.setName("J23119");
@@ -542,14 +542,14 @@ public abstract class SBOLAbstractTests {
 		SBOLDocument document = new SBOLDocument();
 
 		setDefaultNameSpace(document, SBOLTestUtils.pr.getNamespaceURI());
-		ComponentDefinition gfp     = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_E0040"),"gfp", ComponentDefinition.DNA, SequenceOntology.CDS, "gfp coding sequence");
-		ComponentDefinition tetR    = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_C0040"),"tetR", ComponentDefinition.DNA, SequenceOntology.CDS, "tetR coding sequence");
-		ComponentDefinition lacI    = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_C0012"),"lacI", ComponentDefinition.DNA, SequenceOntology.CDS, "lacI coding sequence");
-		ComponentDefinition placI   = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_R0010"), "pLacI", ComponentDefinition.DNA, SequenceOntology.PROMOTER, "pLacI promoter");
-		ComponentDefinition ptetR   = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_R0040"),"pTetR", ComponentDefinition.DNA, SequenceOntology.PROMOTER, "pTet promoter");
-		ComponentDefinition rbslacI = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61101"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS1");
-		ComponentDefinition rbstetR = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61120"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS2");
-		ComponentDefinition rbsgfp  = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61130"), "BBa_J61101 RBS",ComponentDefinition.DNA, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS2");
+		ComponentDefinition gfp     = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_E0040"),"gfp", ComponentDefinition.DNA_REGION, SequenceOntology.CDS, "gfp coding sequence");
+		ComponentDefinition tetR    = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_C0040"),"tetR", ComponentDefinition.DNA_REGION, SequenceOntology.CDS, "tetR coding sequence");
+		ComponentDefinition lacI    = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_C0012"),"lacI", ComponentDefinition.DNA_REGION, SequenceOntology.CDS, "lacI coding sequence");
+		ComponentDefinition placI   = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_R0010"), "pLacI", ComponentDefinition.DNA_REGION, SequenceOntology.PROMOTER, "pLacI promoter");
+		ComponentDefinition ptetR   = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_R0040"),"pTetR", ComponentDefinition.DNA_REGION, SequenceOntology.PROMOTER, "pTet promoter");
+		ComponentDefinition rbslacI = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61101"), "BBa_J61101 RBS",ComponentDefinition.DNA_REGION, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS1");
+		ComponentDefinition rbstetR = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61120"), "BBa_J61101 RBS",ComponentDefinition.DNA_REGION, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS2");
+		ComponentDefinition rbsgfp  = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("BBa_J61130"), "BBa_J61101 RBS",ComponentDefinition.DNA_REGION, SequenceOntology.RIBOSOME_ENTRY_SITE, "RBS2");
 
 		setDefaultNameSpace(document, SBOLTestUtils.uniprot.getNamespaceURI());
 		//ComponentDefinition GFP  =
@@ -558,13 +558,13 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition LacI = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.uniprot.withLocalPart("P03023"),"LacI", ComponentDefinition.PROTEIN, SystemsBiologyOntology.INHIBITOR, "LacI protein");
 
 		setDefaultNameSpace(document, SBOLTestUtils.pr.getNamespaceURI());
-		ComponentDefinition lacITerminator = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("ECK120029600"),"ECK120029600", ComponentDefinition.DNA, SequenceOntology.TERMINATOR, "Terminator1");
-		ComponentDefinition tetRTerminator = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("ECK120033736"), "ECK120033736",ComponentDefinition.DNA, SequenceOntology.TERMINATOR, "Terminator2");
+		ComponentDefinition lacITerminator = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("ECK120029600"),"ECK120029600", ComponentDefinition.DNA_REGION, SequenceOntology.TERMINATOR, "Terminator1");
+		ComponentDefinition tetRTerminator = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.pr.withLocalPart("ECK120033736"), "ECK120033736",ComponentDefinition.DNA_REGION, SequenceOntology.TERMINATOR, "Terminator2");
 
 		setDefaultNameSpace(document, SBOLTestUtils.vpr.getNamespaceURI());
-		ComponentDefinition tetRInverter = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.vpr.withLocalPart("pIKELeftCassette_1"), "TetR Inverter", ComponentDefinition.DNA, SequenceOntology.ENGINEERED_GENE, "TetR Inverter");
-		ComponentDefinition lacIInverter = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.vpr.withLocalPart("pIKERightCassette_1"), "LacI Inverter", ComponentDefinition.DNA, SequenceOntology.ENGINEERED_GENE, "LacI Inverter");
-		ComponentDefinition toggleSwitch = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.vpr.withLocalPart("pIKE_Toggle_1"), "LacI/TetR Toggle Swicth", ComponentDefinition.DNA, SequenceOntology.ENGINEERED_GENE, "LacI/TetR Toggle Swicth");
+		ComponentDefinition tetRInverter = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.vpr.withLocalPart("pIKELeftCassette_1"), "TetR Inverter", ComponentDefinition.DNA_REGION, SequenceOntology.ENGINEERED_GENE, "TetR Inverter");
+		ComponentDefinition lacIInverter = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.vpr.withLocalPart("pIKERightCassette_1"), "LacI Inverter", ComponentDefinition.DNA_REGION, SequenceOntology.ENGINEERED_GENE, "LacI Inverter");
+		ComponentDefinition toggleSwitch = SBOLTestUtils.createComponenDefinition(document, SBOLTestUtils.vpr.withLocalPart("pIKE_Toggle_1"), "LacI/TetR Toggle Swicth", ComponentDefinition.DNA_REGION, SequenceOntology.ENGINEERED_GENE, "LacI/TetR Toggle Swicth");
 
 		//tetR inverter sequences
 		SBOLTestUtils.addPRSequence(document, ptetR,"tccctatcagtgatagagattgacatccctatcagtgatagagatactgagcac");
@@ -687,7 +687,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition promoter = document.createComponentDefinition(
 				"BBa_K174004",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		promoter.addRole(SequenceOntology.PROMOTER);
 
 		promoter.setName("pspac promoter");
@@ -696,7 +696,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition constPromoter = document.createComponentDefinition(
 				"pspac",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 		constPromoter.addRole(SequenceOntology.PROMOTER);
 
 		promoter.setName("constitutive promoter");
@@ -705,7 +705,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition operator = document.createComponentDefinition(
 				"LacI_operator",
 				"",
-				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA)));
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
 
 		operator.addRole(SequenceOntology.OPERATOR);
 
@@ -766,7 +766,7 @@ public abstract class SBOLAbstractTests {
 				"BBa_J23119",
 				"",
 				new HashSet<URI>(Arrays.asList(
-						ComponentDefinition.DNA,
+						ComponentDefinition.DNA_REGION,
 						URI.create("http://identifiers.org/chebi/CHEBI:4705")
 						)));
 		promoter.addRole(SequenceOntology.PROMOTER);
@@ -1593,7 +1593,7 @@ public abstract class SBOLAbstractTests {
 		someSeq.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 
 		Set<URI> types = new HashSet<URI>();
-		types.add(ComponentDefinition.DNA);
+		types.add(ComponentDefinition.DNA_REGION);
 		ComponentDefinition someCompDef = document.createComponentDefinition("someCompDef", VERSION_1_0, types);
 		someCompDef.addAnnotation(new Annotation(NamedProperty(new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));
 		someCompDef.addRole(SequenceOntology.PROMOTER);
@@ -1956,7 +1956,7 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> type = new HashSet<URI>();
-		type.add(ComponentDefinition.DNA);
+		type.add(ComponentDefinition.DNA_REGION);
 		Set<URI> role = new HashSet<URI>();
 		role.add(SequenceOntology.PROMOTER);
 		ComponentDefinition pLac = document.createComponentDefinition("pLac", VERSION_1_0, type);
@@ -1982,7 +1982,7 @@ public abstract class SBOLAbstractTests {
 		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
 
 		Set<URI> type = new HashSet<URI>();
-		type.add(ComponentDefinition.DNA);
+		type.add(ComponentDefinition.DNA_REGION);
 		Set<URI> role = new HashSet<URI>();
 		role.add(SequenceOntology.PROMOTER);
 		ComponentDefinition pLac = document.createComponentDefinition("pLac", VERSION_1_0, type);
