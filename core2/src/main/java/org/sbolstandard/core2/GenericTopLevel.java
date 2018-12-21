@@ -54,7 +54,7 @@ public class GenericTopLevel extends TopLevel{
 	}
 	
 	void copy(GenericTopLevel genericTopLevel) throws SBOLValidationException {
-		((TopLevel)this).copy((Identified)genericTopLevel);
+		((TopLevel)this).copy((TopLevel)genericTopLevel);
 	}
 
 	/**
