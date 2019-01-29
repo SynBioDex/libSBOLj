@@ -30,9 +30,9 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
  */
 public class SnapGene {
 	
-	private static String SNAPGENE_POSTTEXTURL = "http://tang.ece.utah.edu/examples/pages/acceptNewText.php";	
-	private static String SNAPGENE_POSTFILEURL = "http://tang.ece.utah.edu/examples/pages/acceptNewFile.php";
-	private static String SNAPGENE_GETURLPREFIX = "http://tang.ece.utah.edu/dnafiles/";
+	private static String SNAPGENE_POSTTEXTURL = "http://song.ece.utah.edu/examples/pages/acceptNewText.php";	
+	private static String SNAPGENE_POSTFILEURL = "http://song.ece.utah.edu/examples/pages/acceptNewFile.php";
+	private static String SNAPGENE_GETURLPREFIX = "http://song.ece.utah.edu/dnafiles/";
 
 	static void read(SBOLDocument document, InputStream inputStream,
 			String uriPrefix,String displayId,String version) throws SBOLConversionException {
