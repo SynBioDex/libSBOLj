@@ -2393,6 +2393,7 @@ public class SBOLDocument {
 				TopLevel newTopLevel = this.createCopy(topLevel, newDisplayId, newVersion);
 				removeTopLevel(topLevel);
 				updateReferences(topLevel.getIdentity(), newTopLevel.getIdentity());
+				// TODO: should this be changing to newTopLevel.getIdentity(), rather than persistent identity
 				updateReferences(topLevel.getPersistentIdentity(), newTopLevel.getPersistentIdentity());
 			}
 		}
@@ -2416,7 +2417,6 @@ public class SBOLDocument {
 		updateReferences(identified.getAnnotations(), originalIdentity, newIdentity);
 	}
 
-	// TODO: need to update persistentIdentities too
 	private void updateReferences(URI originalIdentity, URI newIdentity) throws SBOLValidationException {
 		for (TopLevel topLevel : getTopLevels()) {
 			for (URI wasDerivedFrom : topLevel.getWasDerivedFroms()) {
@@ -2571,6 +2571,24 @@ public class SBOLDocument {
 				}
 			}
 			for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+				for (URI variantURI : variableComponent.getVariantURIs()) {
+					if (variantURI.equals(originalIdentity)) {
+						variableComponent.removeVariant(variantURI);
+						variableComponent.addVariant(newIdentity);
+					}
+				}
+				for (URI variantCollectionURI : variableComponent.getVariantCollectionURIs()) {
+					if (variantCollectionURI.equals(originalIdentity)) {
+						variableComponent.removeVariantCollection(variantCollectionURI);
+						variableComponent.addVariantCollection(newIdentity);
+					}
+				}
+				for (URI variantDerivationURI : variableComponent.getVariantDerivationURIs()) {
+					if (variantDerivationURI.equals(originalIdentity)) {
+						variableComponent.removeVariantDerivation(variantDerivationURI);
+						variableComponent.addVariantDerivation(newIdentity);
+					}
+				}
 				updateReferences(variableComponent,originalIdentity,newIdentity);
 			}
 		}
@@ -2618,7 +2636,6 @@ public class SBOLDocument {
 		updateReferences(identified.getAnnotations(), uriMap);
 	}
 
-	// TODO: need to update persistentIdentities too
 	private void updateReferences(HashMap<URI, URI> uriMap) throws SBOLValidationException {
 		for (TopLevel topLevel : getTopLevels()) {
 			for (URI wasDerivedFrom : topLevel.getWasDerivedFroms()) {
@@ -2776,6 +2793,24 @@ public class SBOLDocument {
 				}
 			}
 			for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
+				for (URI variantURI : variableComponent.getVariantURIs()) {
+					if (uriMap.get(variantURI) != null) {
+						variableComponent.removeVariant(variantURI);
+						variableComponent.addVariant(uriMap.get(variantURI));
+					}
+				}
+				for (URI variantCollectionURI : variableComponent.getVariantCollectionURIs()) {
+					if (uriMap.get(variantCollectionURI) != null) {
+						variableComponent.removeVariantCollection(variantCollectionURI);
+						variableComponent.addVariantCollection(uriMap.get(variantCollectionURI));
+					}
+				}
+				for (URI variantDerivationURI : variableComponent.getVariantDerivationURIs()) {
+					if (uriMap.get(variantDerivationURI) != null) {
+						variableComponent.removeVariantDerivation(variantDerivationURI);
+						variableComponent.addVariantDerivation(uriMap.get(variantDerivationURI));
+					}
+				}
 				updateReferences(variableComponent,uriMap);
 			}
 		}
@@ -2879,7 +2914,9 @@ public class SBOLDocument {
 			TopLevel newTL = document.createCopy(topLevel, URIPrefix, null, newVersion);
 			uriMap.put(topLevel.getIdentity(), newTL.getIdentity());
 			if (!topLevel.getIdentity().equals(topLevel.getPersistentIdentity())) {
-				uriMap.put(topLevel.getPersistentIdentity(), newTL.getPersistentIdentity());
+				// TODO: This means persistent identity references change to actual identity references,
+				// This was needed for SBH, but is it okay in general
+				uriMap.put(topLevel.getPersistentIdentity(), newTL.getIdentity());
 			}
 		}
 		document.updateReferences(uriMap);
@@ -2910,6 +2947,7 @@ public class SBOLDocument {
 		removeTopLevel(topLevel);
 		if (updateRefs) {
 			updateReferences(topLevel.getIdentity(), renamedTopLevel.getIdentity());
+			// TODO: should this be changing to newTopLevel.getIdentity(), rather than persistent identity
 			updateReferences(topLevel.getPersistentIdentity(), renamedTopLevel.getPersistentIdentity());
 		}
 		return renamedTopLevel;
