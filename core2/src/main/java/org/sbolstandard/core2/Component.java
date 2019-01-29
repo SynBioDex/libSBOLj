@@ -81,6 +81,7 @@ public class Component extends ComponentInstance{
 //				newMapsTo.copy(mapsTo);
 //			}
 //		}
+		this.setRoleIntegration(component.getRoleIntegration());
 		for (URI role : component.getRoles()) {
 			this.addRole(URI.create(role.toString()));
 		}
