@@ -416,7 +416,7 @@ public class VariableComponent extends Identified {
 	 * @return {@code true} if the matching component definition is removed
 	 *         successfully, {@code false} otherwise.
 	 */
-	public boolean removeVariantURI(URI variantURI) {
+	public boolean removeVariant(URI variantURI) {
 		return variants.remove(variantURI);
 	}
 
@@ -449,7 +449,7 @@ public class VariableComponent extends Identified {
 	 * @return {@code true} if the matching collection is removed successfully,
 	 *         {@code false} otherwise.
 	 */
-	public boolean removeVariantCollectionURI(URI variantCollectionURI) {
+	public boolean removeVariantCollection(URI variantCollectionURI) {
 		return variantCollections.remove(variantCollectionURI);
 	}
 
@@ -484,7 +484,7 @@ public class VariableComponent extends Identified {
 	 * @return {@code true} if the matching combinatorial derivation is removed
 	 *         successfully, {@code false} otherwise.
 	 */
-	public boolean removeVariantDerivationURI(URI variantDerivationURI) {
+	public boolean removeVariantDerivation(URI variantDerivationURI) {
 		return variantDerivations.remove(variantDerivationURI);
 	}
 
