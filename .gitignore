@@ -8,6 +8,7 @@
 *.iml
 .gitignore
 .gitattributes
+.classpath
 /target
 /sand
 /nbproject/
