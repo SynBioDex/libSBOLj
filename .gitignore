@@ -12,6 +12,7 @@
 /sand
 /nbproject/
 /javadoc
+.classpath
 **/.settings
 **/.classpath
 **/.project
