@@ -919,12 +919,15 @@ class GenBank {
 				// Example:
 				// LOCUS       AF123456                1510 bp    mRNA    linear   VRT 12-APR-2012
 				if (strLine.startsWith("LOCUS")) {
-					//String[] strSplit = strLine.split("\\s+");
+					String[] strSplit = strLine.split("\\s+");
 
 					// ID of the sequence
 					if (id == null || id.equals("")) {
 						if (strLine.length() > 28) {
 							id = strLine.substring(12, 28).trim();
+							if (strSplit.length > 1 && strSplit[1].length()>id.length() && strSplit[1].contains(id)) {
+								id = strSplit[1];
+							}
 							annotation = new Annotation(new QName(GBNAMESPACE, LOCUS, GBPREFIX), id);
 							id = URIcompliance.fixDisplayId(id);
 							annotations.add(annotation);
@@ -936,13 +939,23 @@ class GenBank {
 					
 					// Base count of the sequence
 					if (strLine.length() > 40) {
-						int startBaseCount = strLine.substring(29,40).lastIndexOf(" ");
-						baseCount = Integer.parseInt(strLine.substring(29+startBaseCount,40).trim());
+						int startBaseCount = 0;
+						if (strLine.substring(29,40).trim().contains(" ")) {
+							startBaseCount = strLine.substring(29,40).trim().lastIndexOf(" ");
+						}
+						String baseCountStr = strLine.substring(29+startBaseCount,40).trim();
+						if (strSplit.length > 2 && strSplit[2].length()>baseCountStr.length() && strSplit[2].contains(baseCountStr)) {
+							baseCountStr = strSplit[2];
+						}
+						baseCount = Integer.parseInt(baseCountStr);
 					}
 						
 					// type of sequence
 					if (strLine.length() > 53) {
 						String seqType = strLine.substring(44,53).trim();
+						if (strSplit.length > 4 && strSplit[4].length()>seqType.length() && strSplit[4].contains(seqType)) {
+							seqType = strSplit[4];
+						}
 						if (seqType.toUpperCase().contains("RNA")) {
 							type = ComponentDefinition.RNA_REGION;
 
@@ -953,12 +966,20 @@ class GenBank {
 					
 					if (strLine.length() > 63) {
 						String topology = strLine.substring(55,63).trim();
+						if (strSplit.length > 5 && strSplit[5].length()>topology.length() && strSplit[5].contains(topology)) {
+							topology = strSplit[5];
+						}
 						// linear vs. circular construct
 						if (topology.startsWith("linear") || topology.startsWith("circular")) {
 							if (topology.startsWith("circular")) circular = true;
 							//annotation = new Annotation(new QName(GBNAMESPACE, TOPOLOGY, GBPREFIX), strSplit[i]);
 						}
+					}
+					if (strLine.length() > 67) {
 						String division = strLine.substring(64,67).trim();
+						if (strSplit.length > 6 && strSplit[6].length()>division.length() && strSplit[6].contains(division)) {
+							division = strSplit[6];
+						}
 						annotation = new Annotation(new QName(GBNAMESPACE, DIVISION, GBPREFIX), division);
 						annotations.add(annotation);
 					}
@@ -966,6 +987,9 @@ class GenBank {
 					// date
 					if (strLine.length() > 79) {
 						String date = strLine.substring(68,79).trim();
+						if (strSplit.length > 7 && strSplit[7].length()>date.length() && strSplit[7].contains(date)) {
+							date = strSplit[7];
+						}
 						annotation = new Annotation(new QName(GBNAMESPACE, DATE, GBPREFIX), date);
 						annotations.add(annotation);
 					}
