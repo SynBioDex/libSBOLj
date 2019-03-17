@@ -560,7 +560,9 @@ public class ComponentDefinition extends TopLevel {
 							subElements = Sequence.reverseComplement(subElements, type);
 						}
 						for (int i = 0; i < subElements.length(); i++) {
-							// TODO: need to deal with when start index out of range
+							if(range.getStart()+i>elementsArray.length) {
+								return null;
+							}
 							elementsArray[(range.getStart()+i)-1] = subElements.charAt(i);
 						}
 					}
