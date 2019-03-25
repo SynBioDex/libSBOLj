@@ -87,6 +87,15 @@ public abstract class Location extends Identified implements Comparable<Location
 	public void unsetOrientation() {
 		orientation = null;
 	}
+	
+	/**
+	 * Checks if the sequence property is set.
+	 * 
+	 * @return {@code true} if it is not {@code null}, {@code false} otherwise
+	 */
+	public boolean isSetSequence() {
+		return sequence != null;
+	}
 
 	/**
 	 * Returns the sequence URI referenced by this location.
@@ -126,12 +135,12 @@ public abstract class Location extends Identified implements Comparable<Location
 	 * Sets the sequence property to the given one.
 	 *
 	 * @param sequence the given sequence URI to set to 
-	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 1xxxx, 1xxxx.
+	 * @throws SBOLValidationException if the following SBOL validation rules was violated: 11003.
 	 */
 	public void setSequence(URI sequence) throws SBOLValidationException {
 		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
 			if (this.getSBOLDocument().getSequence(sequence)==null) {
-				throw new SBOLValidationException("sbol-1xxxx",this);
+				throw new SBOLValidationException("sbol-11003",this);
 			}
 		}
 		this.sequence = sequence;
