@@ -16,6 +16,7 @@ import java.net.URI;
 public abstract class Location extends Identified implements Comparable<Location> {
 
 	private OrientationType orientation;
+	private URI sequence;
 
 	/**
 	 * @param identity
@@ -87,6 +88,62 @@ public abstract class Location extends Identified implements Comparable<Location
 		orientation = null;
 	}
 
+	/**
+	 * Returns the sequence URI referenced by this location.
+	 *
+	 * @return the sequence URI referenced by this location.
+	 */
+	public URI getSequenceURI() {
+		return sequence;
+	}
+	
+	/**
+	 * Returns the sequence identity referenced by this location.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * sequence referenced by this location exists; 
+	 * or the matching sequence otherwise.
+	 */
+	public URI getSequenceIdentity() {
+		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument().getSequence(sequence)==null) return null;
+		return this.getSBOLDocument().getSequence(sequence).getIdentity();
+	}
+
+	/**
+	 * Returns the sequence referenced by this location.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * sequence referenced by this location exists; 
+	 * or the matching sequence otherwise.
+	 */
+	public Sequence getSequence() {
+		if (this.getSBOLDocument()==null) return null;
+		return this.getSBOLDocument().getSequence(sequence);
+	}
+
+	/**
+	 * Sets the sequence property to the given one.
+	 *
+	 * @param sequence the given sequence URI to set to 
+	 * @throws SBOLValidationException if either of the following SBOL validation rules was violated: 1xxxx, 1xxxx.
+	 */
+	public void setSequence(URI sequence) throws SBOLValidationException {
+		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
+			if (this.getSBOLDocument().getSequence(sequence)==null) {
+				throw new SBOLValidationException("sbol-1xxxx",this);
+			}
+		}
+		this.sequence = sequence;
+	}
+	
+	/**
+	 * Sets the sequence property of this location to {@code null}.
+	 */
+	public void unsetSequence() {
+		sequence = null;
+	}
+	
 	/**
 	 * Updates this location's identity URI with a compliant URI. 
 	 * 
