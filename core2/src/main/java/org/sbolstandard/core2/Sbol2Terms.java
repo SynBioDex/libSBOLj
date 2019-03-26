@@ -36,6 +36,7 @@ class Sbol2Terms
 	 */
 	static final class Activity {
 		static final QName Activity = prov.withLocalPart("Activity");
+		static final QName type 	  	   = sbol2.withLocalPart("type");
 		static final QName startedAtTime   = prov.withLocalPart("startedAtTime");
 		static final QName endedAtTime	   = prov.withLocalPart("endedAtTime");
 		static final QName wasInformedBy   = prov.withLocalPart("wasInformedBy");

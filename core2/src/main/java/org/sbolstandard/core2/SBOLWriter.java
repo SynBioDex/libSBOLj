@@ -370,6 +370,10 @@ public class SBOLWriter
 			List<NamedProperty<QName>> list = new ArrayList<>();
 
 			formatCommonTopLevelData(list,activity);
+			for(URI types : activity.getTypes())
+			{
+				list.add(NamedProperty(Sbol2Terms.Activity.type, types));
+			}
 			if (activity.isSetStartedAtTime()) {
 				list.add(NamedProperty(Sbol2Terms.Activity.startedAtTime, activity.getStartedAtTime().toString()));
 			}
