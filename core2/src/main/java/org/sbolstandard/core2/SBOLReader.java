@@ -3951,7 +3951,7 @@ public class SBOLReader
 			{
 				if (!(namedProperty.getValue() instanceof Literal) ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
-					throw new SBOLValidationException("sbol-1xxxx", topLevel.getIdentity());
+					throw new SBOLValidationException("sbol-12412", topLevel.getIdentity());
 				}
 				type.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
