@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
 
 public class Activity extends TopLevel{
 
+	private Set<URI> types;
 	private DateTime startedAtTime;
 	private DateTime endedAtTime;
 	private Set<URI> wasInformedBys;
@@ -36,6 +37,7 @@ public class Activity extends TopLevel{
 	 */
 	Activity(URI identity) throws SBOLValidationException {
 		super(identity);
+		this.types = new HashSet<>();
 		startedAtTime = null;
 		endedAtTime = null;
 		wasInformedBys = new HashSet<>();
@@ -59,6 +61,9 @@ public class Activity extends TopLevel{
 	
 	void copy(Activity activity) throws SBOLValidationException {
 		((TopLevel)this).copy((TopLevel)activity);
+		for (URI type : activity.getTypes()) {
+			this.addType(URI.create(type.toString()));
+		}
 		if (activity.isSetStartedAtTime()) {
 			this.setStartedAtTime(activity.getStartedAtTime());
 		}
@@ -78,6 +83,69 @@ public class Activity extends TopLevel{
 		for (URI wasInformedBy : activity.getWasInformedByURIs()) {
 			this.addWasInformedBy(URI.create(wasInformedBy.toString()));
 		}
+	}
+	
+	/**
+	 * Adds the given type URI to this activity's set of type URIs.
+	 *
+	 * @param typeURI the given type URI
+	 * @return {@code true} if this set did not already contain the given type URI, {@code false} otherwise.
+	 */
+	public boolean addType(URI typeURI) {
+		return types.add(typeURI);
+	}
+
+	/**
+	 * Removes the given type URI from the set of types.
+	 *
+	 * @param typeURI the specified type URI
+	 * @return {@code true} if the matching type reference was removed successfully, {@code false} otherwise.
+	 */
+	public boolean removeType(URI typeURI) {
+		return types.remove(typeURI);
+	}
+
+	/**
+	 * Clears the existing set of types first, then adds the given 
+	 * set of the types to this activity.
+	 *
+	 * @param types the set of types to set to
+	 */
+	public void setTypes(Set<URI> types) {
+		clearTypes();
+		for (URI type : types) {
+			addType(type);
+		}
+	}
+
+	/**
+	 * Returns the set of type URIs owned by this activity.
+	 *
+	 * @return the set of type URIs owned by this actviity
+	 */
+	public Set<URI> getTypes() {
+		Set<URI> result = new HashSet<>();
+		result.addAll(types);
+		return result;
+	}
+
+	/**
+	 * Checks if the given type URI is included in this activity's
+	 * set of type URIs.
+	 *
+	 * @param typeURI the type URI to be checked
+	 * @return {@code true} if this set contains the given type URI, {@code false} otherwise.
+	 */
+	public boolean containsType(URI typeURI) {
+		return types.contains(typeURI);
+	}
+
+	/**
+	 * Removes all entries of the list of <code>type</code> instances owned by this instance.
+	 * The list will be empty after this call returns.
+	 */
+	private void clearTypes() {
+		types.clear();
 	}
 
 	private Association createAssociation(URI identity, URI agent) throws SBOLValidationException {
