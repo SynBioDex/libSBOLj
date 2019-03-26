@@ -217,6 +217,7 @@ public class Activity extends TopLevel{
 		result = prime * result + ((wasInformedBys == null) ? 0 : wasInformedBys.hashCode());
 		result = prime * result + ((associations == null) ? 0 : associations.hashCode());
 		result = prime * result + ((usages == null) ? 0 : usages.hashCode());
+		result = prime * result + ((types == null) ? 0 : types.hashCode());
 		return result;
 	}
 
@@ -258,6 +259,11 @@ public class Activity extends TopLevel{
 			if (other.usages != null)
 				return false;
 		} else if (!usages.equals(other.usages))
+			return false;
+		if (types == null) {
+			if (other.types != null)
+				return false;
+		} else if (!types.equals(other.types))
 			return false;
 		return true;
 	}

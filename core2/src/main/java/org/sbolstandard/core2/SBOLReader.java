@@ -3845,6 +3845,7 @@ public class SBOLReader
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
 		Set<URI> attachments = new HashSet<>();
+		Set<URI> types = new HashSet<>();
 		DateTime startedAtTime	= null;
 		DateTime endedAtTime = null;
 		Set<URI> wasInformedBys = new HashSet<>();
