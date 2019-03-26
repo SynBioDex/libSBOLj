@@ -502,6 +502,81 @@ public abstract class SBOLAbstractTests {
 	}
 
 	/**
+	 * Test locatio to sequence output.
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
+	@Test
+	public void test_LocationToSeqeunce() throws SBOLValidationException, SBOLConversionException, IOException
+	{
+		String prURI="http://partsregistry.org/";
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+
+		document.addNamespace(URI.create(prURI), prPrefix);
+
+
+
+		ComponentDefinition promoter = document.createComponentDefinition(
+				"BBa_J23119",
+				"",
+				new HashSet<URI>(Arrays.asList(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"))));
+
+		promoter.addRole(SequenceOntology.PROMOTER);
+		promoter.setName("J23119");
+		promoter.setDescription("Constitutive promoter");
+
+		promoter.createAnnotation(new QName(prURI, "group", prPrefix),
+				"iGEM2006_Berkeley");
+
+		promoter.createAnnotation(new QName(prURI, "experience", prPrefix),
+				URI.create("http://parts.igem.org/cgi/partsdb/part_info.cgi?part_name=BBa_J23119"));
+
+		Annotation sigmaFactor=new Annotation(QName(prURI, "sigmafactor", prPrefix),
+				"//rnap/prokaryote/ecoli/sigma70");
+		Annotation regulation=new Annotation(QName(prURI, "regulation", prPrefix),
+				"//regulation/constitutive");
+		promoter.createAnnotation(
+				new QName(prURI, "information", prPrefix),
+				new QName(prURI, "Information", prPrefix),
+				URI.create("http://partsregistry.org/cd/BBa_J23119/information"),
+				new ArrayList<Annotation>(Arrays.asList(sigmaFactor,regulation)));
+
+		SequenceAnnotation sa = promoter.createSequenceAnnotation("someSequenceAnnotation", "range", 1, 10);
+
+		sa.addGenericLocation("generic_location", OrientationType.INLINE);
+		Location loc = sa.getLocation("range");
+
+		// SBOLTestUtils.addPRSequence(document, promoter,"aaagacaggacc");
+		Sequence seq1 = document.createSequence(
+				"BBa_J23120",
+				"",
+				"ttgacagctagctcagtcctaggtataatgctagc",
+				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
+		);
+
+		Sequence seq2 = document.createSequence(
+				"BBa_J23121",
+				"",
+				"ttgacagctagctcagtcctaggtataatgctagttagcgc",
+				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html")
+		);
+
+		seq1.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23120:Design"));
+		seq2.addWasDerivedFrom(URI.create("http://parts.igem.org/Part:BBa_J23121:Design"));
+		promoter.addSequence(seq1.getIdentity());
+		promoter.addSequence(seq2.getIdentity());
+
+		loc.setSequence(seq1.getIdentity());
+
+		runTest("/SBOLTestSuite/SBOL2/LocationToSequenceOutput.xml", document, true);
+	}
+
+	/**
 	 * Test model output
 	 * @throws SBOLValidationException
 	 * @throws SBOLConversionException

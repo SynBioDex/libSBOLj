@@ -1146,6 +1146,7 @@ public class SBOLDocument {
 			sa.setComponentDefinition(componentDefinition);
 			for (Location location : sa.getLocations()) {
 				location.setSBOLDocument(this);
+				location.setComponentDefinition(componentDefinition);
 			}
 		}
 		for (SequenceConstraint sc : componentDefinition.getSequenceConstraints()) {

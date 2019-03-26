@@ -241,6 +241,7 @@ class Sbol2Terms
 	 */
 	static final class Location {
 		static final QName Location = sbol2.withLocalPart("location");
+		static final QName sequence = sbol2.withLocalPart("sequence");
 	}
 
 	/**

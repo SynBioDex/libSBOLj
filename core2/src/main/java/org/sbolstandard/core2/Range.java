@@ -125,6 +125,7 @@ public class Range extends Location {
 		int result = super.hashCode();
 		result = prime * result + end;
 		result = prime * result + ((this.getOrientation() == null) ? 0 : this.getOrientation().hashCode());
+		result = prime * result + ((this.isSetSequence()) ? this.getSequenceURI().hashCode() : 0);
 		result = prime * result + start;
 		return result;
 	}
@@ -142,6 +143,12 @@ public class Range extends Location {
 			return false;
 		if (this.getOrientation() != other.getOrientation())
 			return false;
+		if (!this.isSetSequence()) {
+			if (other.isSetSequence())
+				return false;
+		} else if (!this.getSequence().equals(other.getSequence())) {
+			return false;
+		}
 		return start == other.start;
 	}
 

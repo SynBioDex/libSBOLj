@@ -277,6 +277,11 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	void addLocation(Location location) throws SBOLValidationException {
 		addChildSafely(location, locations, "location");
 		location.setSBOLDocument(this.getSBOLDocument());
+		location.setComponentDefinition(componentDefinition);
+		if (location.isSetSequence() && componentDefinition != null && 
+				!componentDefinition.getSequenceURIs().contains(location.getSequenceURI())) {
+			throw new SBOLValidationException("sbol-11003",this);
+		}
 	}
 	
 	/**
