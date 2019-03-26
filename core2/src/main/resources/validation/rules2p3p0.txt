@@ -739,7 +739,7 @@ id: sbol-11101
 condition: strong required
 description: A Range MUST NOT have properties other than the
 following: identity, persistentIdentity, displayId, version,
-wasDerivedFroms, wasGeneratedBys, name, description, annotations, orientation, start, and end.
+wasDerivedFroms, wasGeneratedBys, name, description, sequence, annotations, orientation, start, and end.
 reference: Section 7.7.5 on page 34
 
 [Range]
@@ -768,7 +768,7 @@ id: sbol-11201
 condition: strong required
 description: A Cut MUST NOT have properties other than the following: identity, 
 persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, description, 
-annotations, orientation, and at.
+sequence, annotations, orientation, and at.
 reference: Section 7.7.5 on page 35
 
 [Cut]
@@ -783,7 +783,7 @@ id: sbol-11301
 condition: strong required
 description: A GenericLocation MUST NOT have properties other than the
 following: identity, persistentIdentity, displayId, version,
-wasDerivedFroms, wasGeneratedBys, name, description, annotations, and orientation.
+wasDerivedFroms, wasGeneratedBys, name, description, annotations, sequence, and orientation.
 reference: Section 7.7.5 on page 35
 
 [SequenceConstraint]
