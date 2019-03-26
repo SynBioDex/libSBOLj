@@ -546,20 +546,10 @@ public abstract class SBOLAbstractTests {
 				URI.create("http://partsregistry.org/cd/BBa_J23119/information"),
 				new ArrayList<Annotation>(Arrays.asList(sigmaFactor,regulation)));
 
-		////// jmeng:
-		// SequenceAnnotation sa = promoter.createSequenceAnnotation("cutat12", "cut", 12, OrientationType.INLINE);
-		//SequenceAnnotation sa = promoter.createSequenceAnnotation("sa", "locationId", OrientationType.INLINE);
-
 		SequenceAnnotation sa = promoter.createSequenceAnnotation("someSequenceAnnotation", "range", 1, 10);
-/*		sa.addAnnotation(new Annotation(NamedProperty(
-				new QName("http://myannotation.org/", "thisAnnotation", "annot"), "turtleString")));*/
 
 		sa.addGenericLocation("generic_location", OrientationType.INLINE);
 		Location loc = sa.getLocation("range");
-
-/*		for (Location loc : locs){
-			loc.setSequence();
-		}*/
 
 		// SBOLTestUtils.addPRSequence(document, promoter,"aaagacaggacc");
 		Sequence seq1 = document.createSequence(
@@ -583,8 +573,7 @@ public abstract class SBOLAbstractTests {
 
 		loc.setSequence(seq1.getIdentity());
 
-		//		SBOLWriter.write(document,(System.out));
-		runTest("/SBOLTestSuite/SBOL2/LocationToSeqenceOutput.xml", document, true);
+		runTest("/SBOLTestSuite/SBOL2/LocationToSequenceOutput.xml", document, true);
 	}
 
 	/**
