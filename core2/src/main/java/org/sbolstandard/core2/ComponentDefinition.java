@@ -888,7 +888,7 @@ public class ComponentDefinition extends TopLevel {
 		for (Location location : sequenceAnnotation.getLocations()) {
 			location.setSBOLDocument(this.getSBOLDocument());
 			location.setComponentDefinition(this);
-			if (location.isSetSequence() && !getSequenceURIs().contains(location.getSequence())) {
+			if (location.isSetSequence() && !getSequenceURIs().contains(location.getSequenceURI())) {
 				throw new SBOLValidationException("sbol-11003",this);
 			}
 		}

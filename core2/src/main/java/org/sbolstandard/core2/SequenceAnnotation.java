@@ -279,7 +279,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 		location.setSBOLDocument(this.getSBOLDocument());
 		location.setComponentDefinition(componentDefinition);
 		if (location.isSetSequence() && componentDefinition != null && 
-				!componentDefinition.getSequenceURIs().contains(location.getSequence())) {
+				!componentDefinition.getSequenceURIs().contains(location.getSequenceURI())) {
 			throw new SBOLValidationException("sbol-11003",this);
 		}
 	}
