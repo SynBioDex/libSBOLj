@@ -98,7 +98,7 @@ public class SBOLValidationException extends Exception {
 			if (validationRules == null) {
 				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
 				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
-						getResourceAsStream("/validation/rules2p2p1.txt"));
+						getResourceAsStream("/validation/rules2p3p0.txt"));
 				try {					
 					parse(new BufferedReader(f));
 					//writeRulesToXML("rules.xml");
@@ -113,7 +113,7 @@ public class SBOLValidationException extends Exception {
 				throw new RuntimeException("Rule ID does not exist.");
 			}
 			sb.append(":\0 " +rule.getCondition()+ ":\0\n"+ rule.getDescription() + "\n\0");
-			sb.append("Reference: SBOL Version 2.2.1 " + rule.getReference() + "\n");
+			sb.append("Reference: SBOL Version 2.3.0 " + rule.getReference() + "\n");
 			sb.append(":\0 " + identity.toString());
 		}
 		else {		
@@ -129,7 +129,7 @@ public class SBOLValidationException extends Exception {
 			if (validationRules == null) {
 				validationRules = new LinkedHashMap<String, SBOLValidationRule>();
 				InputStreamReader f = new InputStreamReader(SBOLValidationRule.class.
-						getResourceAsStream("/validation/rules2p2p1.txt"));
+						getResourceAsStream("/validation/rules2p3p0.txt"));
 				try {					
 					parse(new BufferedReader(f));
 					//writeRulesToXML("rules.xml");
@@ -144,7 +144,7 @@ public class SBOLValidationException extends Exception {
 			if (rule != null) {
 				sb.append(rule.getCondition()+":\0\n");
 				sb.append(rule.getDescription());
-				sb.append("\n\0Reference: SBOL Version 2.2.1 "+rule.getReference());
+				sb.append("\n\0Reference: SBOL Version 2.3.0 "+rule.getReference());
 			} 
 			if (!objects.isEmpty()) {
 				sb.append("\n:\0 ");

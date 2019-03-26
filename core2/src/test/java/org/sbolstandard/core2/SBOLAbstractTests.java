@@ -624,7 +624,7 @@ public abstract class SBOLAbstractTests {
 
 		loc.setSequence(seq1.getIdentity());
 
-		runTest("/SBOLTestSuite/SBOL2/LocationToSequenceOutput.xml", document, true);
+		runTest("/SBOLTestSuite/SBOL2_bp/LocationToSequenceOutput.xml", document, true);
 	}
 
 	/**
