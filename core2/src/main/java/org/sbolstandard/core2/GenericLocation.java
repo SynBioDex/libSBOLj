@@ -37,6 +37,7 @@ public class GenericLocation extends Location{
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((this.getOrientation() == null) ? 0 : this.getOrientation().hashCode());
+		result = prime * result + ((this.isSetSequence()) ? this.getSequenceURI().hashCode() : 0);
 		return result;
 	}
 
@@ -49,6 +50,12 @@ public class GenericLocation extends Location{
 		if (getClass() != obj.getClass())
 			return false;
 		GenericLocation other = (GenericLocation) obj;
+		if (!this.isSetSequence()) {
+			if (other.isSetSequence())
+				return false;
+		} else if (!this.getSequence().equals(other.getSequence())) {
+			return false;
+		}
 		return this.getOrientation() == other.getOrientation();
 	}
 

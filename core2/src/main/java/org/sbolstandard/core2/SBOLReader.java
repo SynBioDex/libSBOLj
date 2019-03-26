@@ -2981,6 +2981,7 @@ public class SBOLReader
 		String description 	   = null;
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(typeGenLoc.getIdentity()));
 		URI orientation 			 = null;
+		URI sequence	 			 = null;
 		String version        	     = null;
 		Set<URI> wasDerivedFroms	 = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
@@ -2996,6 +2997,14 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-11002", typeGenLoc.getIdentity());
 				}
 				orientation = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Location.sequence))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || orientation != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-11003", typeGenLoc.getIdentity());
+				}
+				sequence = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
 			{
@@ -3076,6 +3085,9 @@ public class SBOLReader
 			} catch (SBOLValidationException e) {
 				throw new SBOLValidationException("sbol-11002",gl);
 			}
+		if(sequence != null) {
+			gl.setSequence(sequence);
+		}
 		if(persistentIdentity != null)
 			gl.setPersistentIdentity(persistentIdentity);
 		if(version != null)
@@ -3116,6 +3128,7 @@ public class SBOLReader
 		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(typeCut.getIdentity()));
 		Integer at 			   = null;
 		URI orientation 	   = null;
+		URI sequence	 	   = null;
 		String version 		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
@@ -3178,6 +3191,14 @@ public class SBOLReader
 				}
 				orientation = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Location.sequence))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || orientation != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-11003", typeCut.getIdentity());
+				}
+				sequence = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || version != null ||
@@ -3232,6 +3253,9 @@ public class SBOLReader
 			} catch (SBOLValidationException e) {
 				throw new SBOLValidationException("sbol-11002",c);
 			}
+		if (sequence != null) {
+			c.setSequence(sequence);
+		}
 		if(version != null)
 			c.setVersion(version);
 		c.setWasDerivedFroms(wasDerivedFroms);
@@ -3270,6 +3294,7 @@ public class SBOLReader
 		Integer start 		   = null;
 		Integer end 		   = null;
 		URI orientation 	   = null;
+		URI sequence	 	   = null;
 		String version 		   = null;
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
@@ -3349,6 +3374,14 @@ public class SBOLReader
 				}
 				orientation = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Location.sequence))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || orientation != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-11003", typeRange.getIdentity());
+				}
+				sequence = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || version != null ||
@@ -3398,6 +3431,9 @@ public class SBOLReader
 			} catch (SBOLValidationException e) {
 				throw new SBOLValidationException("sbol-11002",r);
 			}
+		if (sequence != null) {
+			r.setSequence(sequence);
+		}
 		if(version != null)
 			r.setVersion(version);
 		r.setWasDerivedFroms(wasDerivedFroms);

@@ -86,6 +86,7 @@ public class Cut extends Location{
 		int result = super.hashCode();
 		result = prime * result + at;
 		result = prime * result + ((this.getOrientation() == null) ? 0 : this.getOrientation().hashCode());
+		result = prime * result + ((this.isSetSequence()) ? this.getSequenceURI().hashCode() : 0);
 		return result;
 	}
 
@@ -100,6 +101,12 @@ public class Cut extends Location{
 		Cut other = (Cut) obj;
 		if (at != other.at)
 			return false;
+		if (!this.isSetSequence()) {
+			if (other.isSetSequence())
+				return false;
+		} else if (!this.getSequence().equals(other.getSequence())) {
+			return false;
+		}
 		return this.getOrientation() == other.getOrientation();
 	}
 

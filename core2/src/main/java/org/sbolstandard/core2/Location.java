@@ -16,6 +16,8 @@ import java.net.URI;
 public abstract class Location extends Identified implements Comparable<Location> {
 
 	private OrientationType orientation;
+	private URI sequence;
+	private ComponentDefinition componentDefinition = null;
 
 	/**
 	 * @param identity
@@ -33,6 +35,9 @@ public abstract class Location extends Identified implements Comparable<Location
 	Location(Location location) throws SBOLValidationException {
 		super(location);
 		this.setOrientation(location.getOrientation());
+		if (isSetSequence()) {
+			this.setSequence(location.getSequenceURI());
+		}
 	}
 	
 	void copy(Location location) throws SBOLValidationException {
@@ -86,7 +91,77 @@ public abstract class Location extends Identified implements Comparable<Location
 	public void unsetOrientation() {
 		orientation = null;
 	}
+	
+	/**
+	 * Checks if the sequence property is set.
+	 * 
+	 * @return {@code true} if it is not {@code null}, {@code false} otherwise
+	 */
+	public boolean isSetSequence() {
+		return sequence != null;
+	}
 
+	/**
+	 * Returns the sequence URI referenced by this location.
+	 *
+	 * @return the sequence URI referenced by this location.
+	 */
+	public URI getSequenceURI() {
+		return sequence;
+	}
+	
+	/**
+	 * Returns the sequence identity referenced by this location.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * sequence referenced by this location exists; 
+	 * or the matching sequence otherwise.
+	 */
+	public URI getSequenceIdentity() {
+		if (this.getSBOLDocument()==null) return null;
+		if (this.getSBOLDocument().getSequence(sequence)==null) return null;
+		return this.getSBOLDocument().getSequence(sequence).getIdentity();
+	}
+
+	/**
+	 * Returns the sequence referenced by this location.
+	 *
+	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
+	 * sequence referenced by this location exists; 
+	 * or the matching sequence otherwise.
+	 */
+	public Sequence getSequence() {
+		if (this.getSBOLDocument()==null) return null;
+		return this.getSBOLDocument().getSequence(sequence);
+	}
+
+	/**
+	 * Sets the sequence property to the given one.
+	 *
+	 * @param sequence the given sequence URI to set to 
+	 * @throws SBOLValidationException if the following SBOL validation rules was violated: 11003.
+	 */
+	public void setSequence(URI sequence) throws SBOLValidationException {
+		if (componentDefinition != null && !componentDefinition.getSequenceURIs().contains(sequence)) {
+			throw new SBOLValidationException("sbol-11003",this);
+		}
+		this.sequence = sequence;
+	}
+	
+	/**
+	 * Sets the sequence property of this location to {@code null}.
+	 */
+	public void unsetSequence() {
+		sequence = null;
+	}
+
+	/**
+	 * @param componentDefinition
+	 */
+	void setComponentDefinition(ComponentDefinition componentDefinition) {
+		this.componentDefinition = componentDefinition;
+	}
+	
 	/**
 	 * Updates this location's identity URI with a compliant URI. 
 	 * 
