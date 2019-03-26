@@ -132,6 +132,57 @@ public abstract class SBOLAbstractTests {
 	}
 
 	/**
+	 * Test GenericTopLevel remove method
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
+	@Test
+	public void test_ActivityType() throws SBOLValidationException, SBOLConversionException, IOException
+	{
+		String actURI="http://www.myactivity.org/";
+		String actPrefix="activity";
+		String prURI="http://www.partsregistry.org/";
+
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		Activity act = document.createActivity("activityId");
+
+		//Activity act = new Activity(URI.create(actURI));
+		act.addType(URI.create("http://purl.obolibrary.org/obo/OBI_0000415"));
+		act.addType(URI.create("http://purl.obolibrary.org/obo/CHEBI_23924"));
+
+/*
+		GenericTopLevel topLevel=document.createGenericTopLevel(
+				"activity1",
+				"",
+				new QName("http://www.myactivity.org/", "activity", actPrefix)
+		);
+
+		topLevel.setName("activity 1");
+
+		topLevel.createAnnotation(new QName(actURI, "characterizationData", actPrefix),
+				URI.create(actURI + "/measurement/1"));
+
+		topLevel.createAnnotation(new QName(actURI, "transcriptionRate", actPrefix), "1");
+
+		ComponentDefinition promoter = document.createComponentDefinition(
+				"BBa_J23119",
+				"",
+				new HashSet<URI>(Arrays.asList(ComponentDefinition.DNA_REGION)));
+
+		promoter.addRole(SequenceOntology.PROMOTER);
+		promoter.setName("J23119");
+		promoter.setDescription("Constitutive promoter");
+
+		promoter.createAnnotation(new QName(actURI, "activity", actPrefix), topLevel.getIdentity());
+		promoter.(URI.create("http://www.partsregistry.org/Part:BBa_J23119"));
+*/
+		runTest("/SBOLTestSuite/SBOL2/ActivityTypeOutput.xml", document, true);
+	}
+
+	/**
 	 * Test ComponentDefinition remove method
 	 * @throws SBOLValidationException
 	 * @throws SBOLConversionException
