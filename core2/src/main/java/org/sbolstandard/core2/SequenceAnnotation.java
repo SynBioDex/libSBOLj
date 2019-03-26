@@ -277,6 +277,7 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 	void addLocation(Location location) throws SBOLValidationException {
 		addChildSafely(location, locations, "location");
 		location.setSBOLDocument(this.getSBOLDocument());
+		location.setComponentDefinition(componentDefinition);
 	}
 	
 	/**

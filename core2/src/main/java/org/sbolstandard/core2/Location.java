@@ -17,6 +17,7 @@ public abstract class Location extends Identified implements Comparable<Location
 
 	private OrientationType orientation;
 	private URI sequence;
+	private ComponentDefinition componentDefinition = null;
 
 	/**
 	 * @param identity
@@ -34,6 +35,9 @@ public abstract class Location extends Identified implements Comparable<Location
 	Location(Location location) throws SBOLValidationException {
 		super(location);
 		this.setOrientation(location.getOrientation());
+		if (isSetSequence()) {
+			this.setSequence(location.getSequenceURI());
+		}
 	}
 	
 	void copy(Location location) throws SBOLValidationException {
@@ -138,10 +142,8 @@ public abstract class Location extends Identified implements Comparable<Location
 	 * @throws SBOLValidationException if the following SBOL validation rules was violated: 11003.
 	 */
 	public void setSequence(URI sequence) throws SBOLValidationException {
-		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-			if (this.getSBOLDocument().getSequence(sequence)==null) {
-				throw new SBOLValidationException("sbol-11003",this);
-			}
+		if (componentDefinition != null && !componentDefinition.getSequenceURIs().contains(sequence)) {
+			throw new SBOLValidationException("sbol-11003",this);
 		}
 		this.sequence = sequence;
 	}
@@ -151,6 +153,13 @@ public abstract class Location extends Identified implements Comparable<Location
 	 */
 	public void unsetSequence() {
 		sequence = null;
+	}
+
+	/**
+	 * @param componentDefinition
+	 */
+	void setComponentDefinition(ComponentDefinition componentDefinition) {
+		this.componentDefinition = componentDefinition;
 	}
 	
 	/**
