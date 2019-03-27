@@ -734,6 +734,12 @@ public class SBOLWriter
 			}
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, AccessType.convertToURI(s.getAccess())));
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, s.getDefinitionURI()));
+			for (Location location : s.getLocations()) {
+				list.add(getLocation(location));
+			}
+			for (Location location : s.getSourceLocations()) {
+				list.add(getSourceLocation(location));
+			}
 			List<NestedDocument<QName>> referenceList = getMapsTo(s.getMapsTos());
 			for(NestedDocument<QName> n : referenceList)
 			{
@@ -820,6 +826,46 @@ public class SBOLWriter
 			if(genericLocation.isSetSequence())
 				property.add(NamedProperty(Sbol2Terms.Location.sequence, genericLocation.getSequenceURI()));
 			return NamedProperty(Sbol2Terms.Location.Location,
+					NestedDocument(Sbol2Terms.GenericLocation.GenericLocation, genericLocation.getIdentity(), NamedProperties(property)));
+		}
+	}
+	
+	private static NamedProperty<QName> getSourceLocation(Location location)
+	{
+		List<NamedProperty<QName>> property = new ArrayList<>();
+		formatCommonIdentifiedData(property, location);
+
+		if(location instanceof Range)
+		{
+			Range range = (Range) location;
+			property.add(NamedProperty(Sbol2Terms.Range.start, range.getStart()));
+			property.add(NamedProperty(Sbol2Terms.Range.end, range.getEnd()));
+			if(range.isSetOrientation())
+				property.add(NamedProperty(Sbol2Terms.Range.orientation, OrientationType.convertToURI(range.getOrientation())));
+			if(range.isSetSequence())
+				property.add(NamedProperty(Sbol2Terms.Location.sequence, range.getSequenceURI()));
+			return NamedProperty(Sbol2Terms.Component.sourceLocation,
+					NestedDocument(Sbol2Terms.Range.Range, range.getIdentity(), NamedProperties(property)));
+		}
+		else if(location instanceof Cut)
+		{
+			Cut cut = (Cut) location;
+			property.add(NamedProperty(Sbol2Terms.Cut.at, cut.getAt()));
+			if (cut.isSetOrientation())
+				property.add(NamedProperty(Sbol2Terms.Cut.orientation, OrientationType.convertToURI(cut.getOrientation())));
+			if(cut.isSetSequence())
+				property.add(NamedProperty(Sbol2Terms.Location.sequence, cut.getSequenceURI()));
+			return NamedProperty(Sbol2Terms.Component.sourceLocation,
+					NestedDocument(Sbol2Terms.Cut.Cut, cut.getIdentity(), NamedProperties(property)));
+		}
+		else 
+		{
+			GenericLocation genericLocation = (GenericLocation) location;
+			if (genericLocation.isSetOrientation())
+				property.add(NamedProperty(Sbol2Terms.GenericLocation.orientation, OrientationType.convertToURI(genericLocation.getOrientation())));
+			if(genericLocation.isSetSequence())
+				property.add(NamedProperty(Sbol2Terms.Location.sequence, genericLocation.getSequenceURI()));
+			return NamedProperty(Sbol2Terms.Component.sourceLocation,
 					NestedDocument(Sbol2Terms.GenericLocation.GenericLocation, genericLocation.getIdentity(), NamedProperties(property)));
 		}
 	}

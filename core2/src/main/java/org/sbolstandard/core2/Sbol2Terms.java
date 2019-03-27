@@ -80,6 +80,7 @@ class Sbol2Terms
 		static final QName Component = sbol2.withLocalPart("Component");
 		static final QName roles 	 = sbol2.withLocalPart("role");
 		static final QName roleIntegration = sbol2.withLocalPart("roleIntegration");
+		static final QName sourceLocation = sbol2.withLocalPart("sourceLocation");
 	}
 
 	/**
