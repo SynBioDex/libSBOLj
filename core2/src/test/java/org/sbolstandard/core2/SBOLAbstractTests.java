@@ -147,13 +147,22 @@ public abstract class SBOLAbstractTests {
 		cd_base1.addSequence(seq_base1.getIdentity());
 		cd_base2.addSequence(seq_base2.getIdentity());
 
-		Component base1_insert = cd_comp.createComponent("base1", AccessType.PUBLIC, cd_base1.getIdentity());
-		Component base2_insert = cd_comp.createComponent("base2", AccessType.PUBLIC, cd_base2.getIdentity());
+		Component base1_insert_c = cd_comp.createComponent("base1", AccessType.PUBLIC, cd_base1.getIdentity());
+		Component base2_insert_c = cd_comp.createComponent("base2", AccessType.PUBLIC, cd_base2.getIdentity());
 
-		base1_insert.addSourceRange("seq_base1", 4, 14, OrientationType.INLINE);
-		base2_insert.addSourceRange("seq_base2", 4, 14, OrientationType.INLINE);
+		base1_insert_c.addSourceRange("seq_base1", 4, 14, OrientationType.INLINE);
+		base2_insert_c.addSourceRange("seq_base2", 4, 14, OrientationType.INLINE);
 
 		cd_comp.addSequence(seq_comp);
+
+		SequenceAnnotation sa_base1 = cd_comp.createSequenceAnnotation("base_s1", "base_c1", 1, 11);
+		SequenceAnnotation sa_base2 = cd_comp.createSequenceAnnotation("base_s2", "base_c2", 12, 22);
+
+		Location seq_loc1 = sa_base1.getLocation("base_c1");
+		seq_loc1.setSequence(seq_comp.getIdentity());
+
+		Location seq_loc2 = sa_base2.getLocation("base_c2");
+		seq_loc2.setSequence(seq_comp.getIdentity());
 
 		runTest("/SBOLTestSuite/SBOL2/test_source_location.xml", document, true);
 	}
