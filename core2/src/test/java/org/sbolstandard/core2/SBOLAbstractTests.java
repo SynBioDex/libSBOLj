@@ -85,6 +85,80 @@ public abstract class SBOLAbstractTests {
 		runTest("/SBOLTestSuite/SBOL2/test_Sequence_remove.xml", document, true);
 	}
 
+
+	/**
+	 * Test source_location method.
+	 * @throws SBOLValidationException
+	 * @throws IOException
+	 * @throws SBOLConversionException
+	 */
+	@Test
+	public void test_source_location() throws SBOLValidationException, SBOLConversionException, IOException
+	{
+		String prURI="http://partsregistry.org/";
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		document.addNamespace(URI.create(prURI), prPrefix);
+
+		ComponentDefinition cd_comp = document.createComponentDefinition(
+				"cd_comp",
+				"",
+				new HashSet<URI>(Arrays.asList(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"))));
+
+		cd_comp.addRole(SequenceOntology.PROMOTER);
+		cd_comp.setName("cd_comp");
+		cd_comp.setDescription("Constitutive promoter");
+
+		ComponentDefinition cd_base1 = document.createComponentDefinition(
+				"cd_base_1",
+				         "",
+				new HashSet<URI>(Arrays.asList(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"))));
+
+		ComponentDefinition cd_base2 = document.createComponentDefinition(
+				"cd_base_2",
+				"",
+				new HashSet<URI>(Arrays.asList(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"))));
+
+
+		// SBOLTestUtils.addPRSequence(document, promoter,"aaagacaggacc");
+		Sequence seq_base1 = document.createSequence(
+				"seq_base1",
+				"",
+				"ttgacagctagctcagtcctaggtataatgctagc",
+				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq1.html")
+		);
+
+		Sequence seq_base2 = document.createSequence(
+				"seq_base2",
+				"",
+				"ttgacagctagctcagtcctaggtataatgctagttagcgc",
+				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq2.html")
+		);
+
+		Sequence seq_comp = document.createSequence(
+				"seq_comp",
+				"",
+				"acagctagctacagctagct",
+				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq3.html")
+		);
+
+		cd_base1.addSequence(seq_base1.getIdentity());
+		cd_base2.addSequence(seq_base2.getIdentity());
+
+		Component base1_insert = cd_comp.createComponent("base1", AccessType.PUBLIC, cd_base1.getIdentity());
+		Component base2_insert = cd_comp.createComponent("base2", AccessType.PUBLIC, cd_base2.getIdentity());
+
+		base1_insert.addSourceRange("seq_base1", 4, 14, OrientationType.INLINE);
+		base2_insert.addSourceRange("seq_base2", 4, 14, OrientationType.INLINE);
+
+		cd_comp.addSequence(seq_comp);
+
+		runTest("/SBOLTestSuite/SBOL2/test_source_location.xml", document, true);
+	}
+
+
 	/**
 	 * Test Collection remove method
 	 * @throws SBOLValidationException
