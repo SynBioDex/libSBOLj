@@ -206,6 +206,31 @@ public abstract class SBOLAbstractTests {
 	}
 
 	/**
+	 * Test GenericTopLevel remove method
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
+	@Test
+	public void test_ActivityType() throws SBOLValidationException, SBOLConversionException, IOException
+	{
+		String actURI="http://www.myactivity.org/";
+		String actPrefix="activity";
+		String prURI="http://www.partsregistry.org/";
+
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		Activity act = document.createActivity("activityId");
+
+		//Activity act = new Activity(URI.create(actURI));
+		act.addType(URI.create("http://purl.obolibrary.org/obo/OBI_0000415"));
+		act.addType(URI.create("http://purl.obolibrary.org/obo/CHEBI_23924"));
+		
+		runTest("/SBOLTestSuite/SBOL2/ActivityTypeOutput.xml", document, true);
+	}
+
+	/**
 	 * Test ComponentDefinition remove method
 	 * @throws SBOLValidationException
 	 * @throws SBOLConversionException
