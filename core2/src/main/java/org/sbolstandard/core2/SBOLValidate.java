@@ -1399,42 +1399,56 @@ public class SBOLValidate {
 		return true;
 	}
 
+	private static void validateOverlappingRegions(Location location1, Location location2, String error) {
+		if (location1.getIdentity().equals(location2.getIdentity())) return;
+		if (location1 instanceof Range && location2 instanceof Range) {
+			if (((((Range) location1).getStart() >= ((Range) location2).getStart())
+					&& (((Range) location1).getStart() <= ((Range) location2).getEnd()))
+					|| ((((Range) location2).getStart() >= ((Range) location1).getStart())
+							&& (((Range) location2).getStart() <= ((Range) location1).getEnd()))) {
+				errors.add(
+						new SBOLValidationException(error, location1, location2).getMessage());
+			}
+		} else if (location1 instanceof Range && location2 instanceof Cut) {
+			if ((((Range) location1).getEnd() > ((Cut) location2).getAt())
+					&& (((Cut) location2).getAt() >= ((Range) location1).getStart())) {
+				errors.add(
+						new SBOLValidationException(error, location1, location2).getMessage());
+			}
+		} else if (location2 instanceof Range && location1 instanceof Cut) {
+			if ((((Range) location2).getEnd() > ((Cut) location1).getAt())
+					&& (((Cut) location1).getAt() >= ((Range) location2).getStart())) {
+				errors.add(
+						new SBOLValidationException(error, location1, location2).getMessage());
+			}
+		} else if (location2 instanceof Cut && location1 instanceof Cut) {
+			if (((Cut) location2).getAt() == ((Cut) location1).getAt()) {
+				errors.add(
+						new SBOLValidationException(error, location1, location2).getMessage());
+			}
+		}
+	}
+	
 	private static void validateSequenceAnnotations(SBOLDocument sbolDocument) {
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			for (SequenceAnnotation sequenceAnnotation : componentDefinition.getSequenceAnnotations()) {
 				Object[] locations = sequenceAnnotation.getLocations().toArray();
 				for (int i = 0; i < locations.length - 1; i++) {
 					for (int j = i + 1; j < locations.length; j++) {
-						Location location1 = (Location) locations[i];
-						Location location2 = (Location) locations[j];
-						if (location1.getIdentity().equals(location2.getIdentity()))
-							continue;
-						if (location1 instanceof Range && location2 instanceof Range) {
-							if (((((Range) location1).getStart() >= ((Range) location2).getStart())
-									&& (((Range) location1).getStart() <= ((Range) location2).getEnd()))
-									|| ((((Range) location2).getStart() >= ((Range) location1).getStart())
-											&& (((Range) location2).getStart() <= ((Range) location1).getEnd()))) {
-								errors.add(
-										new SBOLValidationException("sbol-10903", location1, location2).getMessage());
-							}
-						} else if (location1 instanceof Range && location2 instanceof Cut) {
-							if ((((Range) location1).getEnd() > ((Cut) location2).getAt())
-									&& (((Cut) location2).getAt() >= ((Range) location1).getStart())) {
-								errors.add(
-										new SBOLValidationException("sbol-10903", location1, location2).getMessage());
-							}
-						} else if (location2 instanceof Range && location1 instanceof Cut) {
-							if ((((Range) location2).getEnd() > ((Cut) location1).getAt())
-									&& (((Cut) location1).getAt() >= ((Range) location2).getStart())) {
-								errors.add(
-										new SBOLValidationException("sbol-10903", location1, location2).getMessage());
-							}
-						} else if (location2 instanceof Cut && location1 instanceof Cut) {
-							if (((Cut) location2).getAt() == ((Cut) location1).getAt()) {
-								errors.add(
-										new SBOLValidationException("sbol-10903", location1, location2).getMessage());
-							}
-						}
+						validateOverlappingRegions((Location) locations[i], (Location) locations[j], "sbol-10903");
+					}
+				}
+			}
+		}
+	}
+	
+	private static void validateComponents(SBOLDocument sbolDocument) {
+		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
+			for (Component component : componentDefinition.getComponents()) {
+				Object[] locations = component.getSourceLocations().toArray();
+				for (int i = 0; i < locations.length - 1; i++) {
+					for (int j = i + 1; j < locations.length; j++) {
+						validateOverlappingRegions((Location) locations[i], (Location) locations[j], "sbol-10711");
 					}
 				}
 			}
@@ -1813,6 +1827,7 @@ public class SBOLValidate {
 		if (bestPractice) {
 			validateOntologyUsage(sbolDocument);
 			validateSequenceAnnotations(sbolDocument);
+			validateComponents(sbolDocument);
 			validateComponentDefinitionSequences(sbolDocument);
 			validateActivityRoleTypeUsage(sbolDocument);
 			validateCombinatorialBestPractices(sbolDocument);

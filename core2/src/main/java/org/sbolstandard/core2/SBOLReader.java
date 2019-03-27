@@ -3600,6 +3600,7 @@ public class SBOLReader
 							!(nestedDocument.getType().equals(Sbol2Terms.Range.Range) ||
 									nestedDocument.getType().equals(Sbol2Terms.Cut.Cut) ||
 									nestedDocument.getType().equals(Sbol2Terms.GenericLocation.GenericLocation))) {
+						// TODO: no rule for this yet
 						throw new SBOLValidationException("sbol-1xxxx",component.getIdentity());
 					}
 					location = parseLocation((NestedDocument<QName>) namedProperty.getValue());
@@ -3611,6 +3612,7 @@ public class SBOLReader
 							!(nestedDocument.getType().equals(Sbol2Terms.Range.Range) ||
 									nestedDocument.getType().equals(Sbol2Terms.Cut.Cut) ||
 									nestedDocument.getType().equals(Sbol2Terms.GenericLocation.GenericLocation))) {
+						// TODO: no rule for this yet
 						throw new SBOLValidationException("sbol-1xxxx",component.getIdentity());
 					}
 					location = parseLocation(nested.get(uri));
@@ -3625,7 +3627,7 @@ public class SBOLReader
 							!(nestedDocument.getType().equals(Sbol2Terms.Range.Range) ||
 									nestedDocument.getType().equals(Sbol2Terms.Cut.Cut) ||
 									nestedDocument.getType().equals(Sbol2Terms.GenericLocation.GenericLocation))) {
-						throw new SBOLValidationException("sbol-1xxxx",component.getIdentity());
+						throw new SBOLValidationException("sbol-10710",component.getIdentity());
 					}
 					location = parseLocation((NestedDocument<QName>) namedProperty.getValue());
 				}
@@ -3636,7 +3638,7 @@ public class SBOLReader
 							!(nestedDocument.getType().equals(Sbol2Terms.Range.Range) ||
 									nestedDocument.getType().equals(Sbol2Terms.Cut.Cut) ||
 									nestedDocument.getType().equals(Sbol2Terms.GenericLocation.GenericLocation))) {
-						throw new SBOLValidationException("sbol-1xxxx",component.getIdentity());
+						throw new SBOLValidationException("sbol-10710",component.getIdentity());
 					}
 					location = parseLocation(nested.get(uri));
 				}
