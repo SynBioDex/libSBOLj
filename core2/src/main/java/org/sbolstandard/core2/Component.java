@@ -789,7 +789,7 @@ public class Component extends ComponentInstance{
 	void setSourceLocations(Set<Location> sourceLocations) throws SBOLValidationException {
 		clearSourceLocations();	
 		for (Location location : sourceLocations) {
-			addLocation(location);
+			addSourceLocation(location);
 		}
 	}
 	
