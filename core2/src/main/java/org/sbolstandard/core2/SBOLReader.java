@@ -3881,6 +3881,7 @@ public class SBOLReader
 		Set<URI> wasDerivedFroms = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
 		Set<URI> attachments = new HashSet<>();
+		Set<URI> type = new HashSet<>();
 		DateTime startedAtTime	= null;
 		DateTime endedAtTime = null;
 		Set<URI> wasInformedBys = new HashSet<>();
@@ -3945,6 +3946,14 @@ public class SBOLReader
 					throw new SBOLValidationException("sbol-10221",topLevel.getIdentity());
 				}
 				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Activity.type))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-12412", topLevel.getIdentity());
+				}
+				type.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.TopLevel.hasAttachment))
 			{
@@ -4074,6 +4083,9 @@ public class SBOLReader
 			t.setName(name);
 		if (description != null)
 			t.setDescription(description);
+		if (!type.isEmpty()) {
+			t.setTypes(type);
+		}
 		t.setWasDerivedFroms(wasDerivedFroms);
 		t.setWasGeneratedBys(wasGeneratedBys);
 		if (!annotations.isEmpty())

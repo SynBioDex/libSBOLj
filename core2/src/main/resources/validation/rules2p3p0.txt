@@ -1266,45 +1266,45 @@ description: An Activity MUST NOT have properties other than the following: iden
 persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, 
 description, annotations, startedAtTime, endedAtTime, wasInformedBys, usages, 
 and associations.
-reference: Section 12.8.1 on page 72
+reference: Section 12.8.1 on page 73
 
 [Activity]
 id: sbol-12402
 condition: strong required
 description: The startedAtTime property of an Activity object is OPTIONAL and MAY contain a DateTime.
-reference: Section 12.8.1 on page 72
+reference: Section 12.8.1 on page 73
 
 [Activity]
 id: sbol-12403
 condition: strong required
 description: The endedAtTime property of an Activity object is OPTIONAL and MAY contain a DateTime.
-reference: Section 12.8.1 on page 72
+reference: Section 12.8.1 on page 73
 
 [Activity]
 id: sbol-12404
 condition: strong required
 description: The associations property of an Activity is OPTIONAL and MAY contain a set 
 of Association objects.
-reference: Section 12.8.1 on page 72
+reference: Section 12.8.1 on page 73
 
 [Activity]
 id: sbol-12405
 condition: strong required
 description: The usages property of an Activity is OPTIONAL and MAY contain a set 
 of Usage objects.
-reference: Section 12.8.1 on page 72
+reference: Section 12.8.1 on page 73
 
 [Activity]
 id: sbol-12406
 condition: strong required
 description: The wasInformedBys property of an Activity is OPTIONAL and MAY contain a set of URIs.
-reference: Section 12.8.1 on page 72
+reference: Section 12.8.1 on page 73
 
 [Activity]
 id: sbol-12407
 condition: weak required
 description: Each URI contained by the wasInformedBys property of an Activity MUST refer to a Activity object.
-reference: Section 12.8.1 on page 72
+reference: Section 12.8.1 on page 73
 
 [Activity]
 id: sbol-12408
@@ -1312,7 +1312,7 @@ condition: recommended
 description: An Activity with a child Association that has a roles property that contains the URI 
 http://sbols.org/v2#design SHOULD NOT have child Usage objects that have roles properties 
 that contain the URIs http://sbols.org/v2#build or http://sbols.org/v2#test.
-reference: Section 12.8.1 on page 72
+reference: Section 12.8.1 on page 73
 
 [Activity]
 id: sbol-12409
@@ -1320,7 +1320,7 @@ condition: recommended
 description: An Activity with a child Association that has a roles property that contains the URI 
 http://sbols.org/v2#build SHOULD NOT have child Usage objects that have roles properties that contain 
 the URIs http://sbols.org/v2#test or http://sbols.org/v2#learn.
-reference: Section 12.8.1 on page 72
+reference: Section 12.8.1 on page 73
 
 [Activity]
 id: sbol-12410
@@ -1328,7 +1328,7 @@ condition: recommended
 description: An Activity with a child Association that has a roles property that contains the URI 
 http://sbols.org/v2#test SHOULD NOT have child Usage objects that have roles properties that contain 
 the URIs http://sbols.org/v2#design or http://sbols.org/v2#learn.
-reference: Section 12.8.1 on page 72
+reference: Section 12.8.1 on page 73
 
 [Activity]
 id: sbol-12411
@@ -1336,7 +1336,13 @@ condition: recommended
 description: An Activity with a child Association that has a roles property that contains the URI 
 http://sbols.org/v2#learn SHOULD NOT have child Usage objects that have roles properties that contain 
 the URIs http://sbols.org/v2#design or http://sbols.org/v2#build.
-reference: Section 12.8.1 on page 72
+reference: Section 12.8.1 on page 73
+
+[Activity]
+id: sbol-12412
+condition: strong required
+description: The types property of an Activity object is OPTIONAL and MAY contain a set of URIs.
+reference: Section 12.8.1 on page 73
 
 [Usage]
 id: sbol-12501
