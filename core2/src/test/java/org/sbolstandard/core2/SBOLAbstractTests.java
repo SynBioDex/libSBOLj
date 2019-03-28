@@ -85,6 +85,93 @@ public abstract class SBOLAbstractTests {
 		runTest("/SBOLTestSuite/SBOL2/test_Sequence_remove.xml", document, true);
 	}
 
+
+	/**
+	 * Test source_location method.
+	 * @throws SBOLValidationException
+	 * @throws IOException
+	 * @throws SBOLConversionException
+	 */
+	@Test
+	public void test_source_location() throws SBOLValidationException, SBOLConversionException, IOException
+	{
+		String prURI="http://partsregistry.org/";
+		String prPrefix="pr";
+		SBOLDocument document = new SBOLDocument();
+		document.setDefaultURIprefix(prURI);
+		document.setTypesInURIs(true);
+		document.addNamespace(URI.create(prURI), prPrefix);
+
+		ComponentDefinition cd_comp = document.createComponentDefinition(
+				"cd_comp",
+				"",
+				ComponentDefinition.DNA_REGION);
+
+		cd_comp.addRole(SequenceOntology.PROMOTER);
+		cd_comp.setName("cd_comp");
+		cd_comp.setDescription("Constitutive promoter");
+
+		ComponentDefinition cd_base1 = document.createComponentDefinition(
+				"cd_base_1",
+				         "",
+				         ComponentDefinition.DNA_REGION);
+		cd_base1.addRole(SequenceOntology.PROMOTER);
+
+		ComponentDefinition cd_base2 = document.createComponentDefinition(
+				"cd_base_2",
+				"",
+				ComponentDefinition.DNA_REGION);
+		cd_base2.addRole(SequenceOntology.PROMOTER);
+
+
+		// SBOLTestUtils.addPRSequence(document, promoter,"aaagacaggacc");
+		Sequence seq_base1 = document.createSequence(
+				"seq_base1",
+				"",
+				"ttgacagctagctcagtcctaggtataatgctagc",
+				Sequence.IUPAC_DNA
+		);
+
+		Sequence seq_base2 = document.createSequence(
+				"seq_base2",
+				"",
+				"ttgacagctagctcagtcctaggtataatgctagttagcgc",
+				Sequence.IUPAC_DNA
+		);
+
+		Sequence seq_comp = document.createSequence(
+				"seq_comp",
+				"",
+				"acagctagctcacagctagctc",
+				Sequence.IUPAC_DNA
+		);
+
+		cd_base1.addSequence(seq_base1.getIdentity());
+		cd_base2.addSequence(seq_base2.getIdentity());
+
+		Component base1_insert_c = cd_comp.createComponent("base1", AccessType.PUBLIC, cd_base1.getIdentity());
+		Component base2_insert_c = cd_comp.createComponent("base2", AccessType.PUBLIC, cd_base2.getIdentity());
+
+		base1_insert_c.addSourceRange("seq_base1", 4, 14, OrientationType.INLINE);
+		base2_insert_c.addSourceRange("seq_base2", 4, 14, OrientationType.INLINE);
+
+		cd_comp.addSequence(seq_comp);
+
+		SequenceAnnotation sa_base1 = cd_comp.createSequenceAnnotation("base_s1", "base_c1", 1, 11);
+		sa_base1.setComponent(base1_insert_c.getIdentity());
+		SequenceAnnotation sa_base2 = cd_comp.createSequenceAnnotation("base_s2", "base_c2", 12, 22);
+		sa_base2.setComponent(base2_insert_c.getIdentity());
+
+		Location seq_loc1 = sa_base1.getLocation("base_c1");
+		seq_loc1.setSequence(seq_comp.getIdentity());
+
+		Location seq_loc2 = sa_base2.getLocation("base_c2");
+		seq_loc2.setSequence(seq_comp.getIdentity());
+
+		runTest("/SBOLTestSuite/SBOL2/test_source_location.xml", document, true);
+	}
+
+
 	/**
 	 * Test Collection remove method
 	 * @throws SBOLValidationException

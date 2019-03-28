@@ -553,17 +553,32 @@ public class ComponentDefinition extends TopLevel {
 				} else {
 					subElements = compDef.getImpliedNucleicAcidSequence();
 				}
-				for (Location location : sequenceAnnotation.getLocations()) {
+				String subElementsFinal = subElements;
+				for (Location sourceLocation : sequenceAnnotation.getComponent().getSortedSourceLocations()) {
+					subElementsFinal = "";
+					if (sourceLocation instanceof Range) {
+						Range range = (Range)sourceLocation;
+						for (int i = range.getStart()-1; i < range.getEnd(); i++) {
+							if (i < subElements.length()) {
+								subElementsFinal += subElements.charAt(i);
+							}
+						}
+						if (range.isSetOrientation() && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
+							subElementsFinal = Sequence.reverseComplement(subElementsFinal, type);
+						}
+					}
+				}
+				for (Location location : sequenceAnnotation.getSortedLocations()) {
 					if (location instanceof Range) {
 						Range range = (Range)location;
 						if (range.isSetOrientation() && range.getOrientation().equals(OrientationType.REVERSECOMPLEMENT)) {
-							subElements = Sequence.reverseComplement(subElements, type);
+							subElementsFinal = Sequence.reverseComplement(subElementsFinal, type);
 						}
-						for (int i = 0; i < subElements.length(); i++) {
+						for (int i = 0; i < subElementsFinal.length(); i++) {
 							if(range.getStart()+i>elementsArray.length) {
 								return null;
 							}
-							elementsArray[(range.getStart()+i)-1] = subElements.charAt(i);
+							elementsArray[(range.getStart()+i)-1] = subElementsFinal.charAt(i);
 						}
 					}
 				}
