@@ -1444,10 +1444,10 @@ public class SBOLValidate {
 				Object[] locations = component.getSourceLocations().toArray();
 				int sourceLength = 0;
 				boolean sourceHasRanges = false;
-				for (int i = 0; i < locations.length - 1; i++) {
+				for (int i = 0; i < locations.length; i++) {
 					Location location1 = (Location) locations[i];
-					Location location2 = (Location) locations[i];
 					for (int j = i + 1; j < locations.length; j++) {
+						Location location2 = (Location) locations[j];
 						validateOverlappingRegions(location1, location2, "sbol-10711");
 					}
 					if (location1 instanceof Range) {

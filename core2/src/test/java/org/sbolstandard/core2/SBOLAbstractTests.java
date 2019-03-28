@@ -105,7 +105,7 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition cd_comp = document.createComponentDefinition(
 				"cd_comp",
 				"",
-				new HashSet<URI>(Arrays.asList(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"))));
+				ComponentDefinition.DNA_REGION);
 
 		cd_comp.addRole(SequenceOntology.PROMOTER);
 		cd_comp.setName("cd_comp");
@@ -114,12 +114,14 @@ public abstract class SBOLAbstractTests {
 		ComponentDefinition cd_base1 = document.createComponentDefinition(
 				"cd_base_1",
 				         "",
-				new HashSet<URI>(Arrays.asList(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"))));
+				         ComponentDefinition.DNA_REGION);
+		cd_base1.addRole(SequenceOntology.PROMOTER);
 
 		ComponentDefinition cd_base2 = document.createComponentDefinition(
 				"cd_base_2",
 				"",
-				new HashSet<URI>(Arrays.asList(URI.create("http://www.biopax.org/release/biopax-level3.owl#DnaRegion"))));
+				ComponentDefinition.DNA_REGION);
+		cd_base2.addRole(SequenceOntology.PROMOTER);
 
 
 		// SBOLTestUtils.addPRSequence(document, promoter,"aaagacaggacc");
@@ -127,21 +129,21 @@ public abstract class SBOLAbstractTests {
 				"seq_base1",
 				"",
 				"ttgacagctagctcagtcctaggtataatgctagc",
-				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq1.html")
+				Sequence.IUPAC_DNA
 		);
 
 		Sequence seq_base2 = document.createSequence(
 				"seq_base2",
 				"",
 				"ttgacagctagctcagtcctaggtataatgctagttagcgc",
-				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq2.html")
+				Sequence.IUPAC_DNA
 		);
 
 		Sequence seq_comp = document.createSequence(
 				"seq_comp",
 				"",
-				"acagctagctacagctagct",
-				URI.create("http://www.chem.qmul.ac.uk/iubmb/misc/naseq3.html")
+				"acagctagctcacagctagctc",
+				Sequence.IUPAC_DNA
 		);
 
 		cd_base1.addSequence(seq_base1.getIdentity());
@@ -156,7 +158,9 @@ public abstract class SBOLAbstractTests {
 		cd_comp.addSequence(seq_comp);
 
 		SequenceAnnotation sa_base1 = cd_comp.createSequenceAnnotation("base_s1", "base_c1", 1, 11);
+		sa_base1.setComponent(base1_insert_c.getIdentity());
 		SequenceAnnotation sa_base2 = cd_comp.createSequenceAnnotation("base_s2", "base_c2", 12, 22);
+		sa_base2.setComponent(base2_insert_c.getIdentity());
 
 		Location seq_loc1 = sa_base1.getLocation("base_c1");
 		seq_loc1.setSequence(seq_comp.getIdentity());
