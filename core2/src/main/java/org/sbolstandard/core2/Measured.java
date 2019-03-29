@@ -115,7 +115,7 @@ public abstract class Measured extends Identified {
 	 * @param unit the unit of this measure
 	 * @return the created measure
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
-	 * 10201, 10202, 10204, 10206, 1xxxx, 1xxxx, 1xxxx, 
+	 * 10201, 10202, 10204, 10206, 13501, 13502, 13503, 13504, 13505, 
 	 */
 	public Measure createMeasure(String displayId, Double numericalValue, URI unit) throws SBOLValidationException {
 		String parentPersistentIdStr = this.getPersistentIdentity().toString();

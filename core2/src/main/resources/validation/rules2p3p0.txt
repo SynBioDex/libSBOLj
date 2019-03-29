@@ -528,6 +528,12 @@ condition: strong required
 description: The access property of a ComponentInstance is REQUIRED and MUST contain a URI from Table4.
 reference: Section 7.7.1 on page 26
 
+[ComponentInstance]
+id: sbol-10608
+condition: strong required
+description: TBD
+reference: Section 7.7.1 on page 26
+
 [Component]
 id: sbol-10701
 condition: strong required
@@ -1092,6 +1098,12 @@ description: The mapsTos property is OPTIONAL and MAY contain a set of
 MapsTo objects.
 reference: Section 7.9.1 on page 41
 
+[Module]
+id: sbol-11707
+condition: strong required
+description: TBD
+reference: Section 7.7.1 on page 26
+
 [FunctionalComponent]
 id: sbol-11801
 condition: strong required
@@ -1159,6 +1171,12 @@ condition: recommended
 description: If the participations property of an Interaction refers to one or more Participation objects, and one of the types of this Interaction comes from Table 11, then the Participation objects SHOULD have a role from the set of roles that is cross-listed with this type in Table 12.
 reference: Section 7.9.4 on page 44
 
+[Interaction]
+id: sbol-11908
+condition: strong required
+description: TBD
+reference: Section 7.7.1 on page 26
+
 [Participation]
 id: sbol-12001
 condition: strong required
@@ -1207,6 +1225,12 @@ condition: recommended
 description: Exactly one role in the set of roles SHOULD be a URI from
 the participant role branch of the SBO.
 reference: Section 7.9.4 on page 44
+
+[Participation]
+id: sbol-12008
+condition: strong required
+description: TBD
+reference: Section 7.7.1 on page 26
 
 [Collection]
 id: sbol-12101 
@@ -1848,3 +1872,33 @@ condition: weak required
 description: Each URI contained by the experimentalData property of a
 Experiment MUST reference an ExperimentalData object.
 reference: Section 7.15 on page 54
+
+[Measure]
+id: sbol-13501
+condition: strong required
+description: TBD
+reference: Section 7.15 on page 54
+
+[Measure]
+id: sbol-13502
+condition: strong required
+description: TBD
+reference: Section 7.15 on page 54
+
+[Measure]
+id: sbol-13503
+condition: strong required
+description: TBD
+reference: Section 7.15 on page 54
+
+[Measure]
+id: sbol-13504
+condition: strong required
+description: TBD
+reference: Section 7.15 on page 54
+
+[Measure]
+id: sbol-13505
+condition: recommended
+description: TBD
+reference: Section 7.13 on page 52

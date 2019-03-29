@@ -24,7 +24,7 @@ class Sbol2Terms
 	public static final NamespaceBinding sbol2 = NamespaceBinding("http://sbols.org/v2#", "sbol");
 	public static final NamespaceBinding dc = NamespaceBinding("http://purl.org/dc/terms/", "dcterms");
 	public static final NamespaceBinding prov = NamespaceBinding("http://www.w3.org/ns/prov#", "prov");
-	public static final NamespaceBinding om = NamespaceBinding("http://www.ontology-of-units-of-measure.org/page/om-2#", "om");
+	public static final NamespaceBinding om = NamespaceBinding("http://www.ontology-of-units-of-measure.org/resource/om-2/", "om");
 
 	static final class Description {
 		static final QName Description = rdf.withLocalPart("Description");

@@ -104,11 +104,11 @@ public class Measure extends Identified {
 
 	/**
 	 * @param hasNumericalValue the numerical value to set
-	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 1xxxx.
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 13502.
 	 */
 	public void setNumericalValue(Double hasNumericalValue) throws SBOLValidationException {
 		if (hasNumericalValue==null) {
-			throw new SBOLValidationException("sbol-1xxxx",this);
+			throw new SBOLValidationException("sbol-13502",this);
 		}
 		this.hasNumericalValue = hasNumericalValue;
 	}
@@ -149,11 +149,11 @@ public class Measure extends Identified {
 
 	/**
 	 * @param hasUnit the unit to set
-	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 1xxxx.
+	 * @throws SBOLValidationException if the following SBOL validation rule was violated: 13503.
 	 */
 	public void setUnit(URI hasUnit) throws SBOLValidationException {
 		if (hasUnit==null) {
-			throw new SBOLValidationException("sbol-1xxxx",this);
+			throw new SBOLValidationException("sbol-13503",this);
 		}
 		this.hasUnit = hasUnit;
 	}

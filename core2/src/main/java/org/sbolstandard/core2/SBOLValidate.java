@@ -1154,6 +1154,22 @@ public class SBOLValidate {
 					errors.add(new SBOLValidationException("sbol-11412", sc).getMessage());
 				}
 			}
+			for (Component component : compDef.getComponents()) {
+				for (Measure measure : component.getMeasures()) {
+					int numSBOtype = 0;
+					for (URI type : measure.getTypes()) {
+						try {
+							if (sbo.isDescendantOf(type, SystemsBiologyOntology.SYSTEMS_DESCRIPTION_PARAMETER)) {
+								numSBOtype++;
+							}
+						} catch (Exception e) {
+						}
+					}
+					if (numSBOtype != 1) {
+						errors.add(new SBOLValidationException("sbol-13505", measure).getMessage());
+					}
+				}
+			}
 		}
 		for (Model model : sbolDocument.getModels()) {
 			try {
@@ -1172,6 +1188,22 @@ public class SBOLValidate {
 			}
 		}
 		for (ModuleDefinition modDef : sbolDocument.getModuleDefinitions()) {
+			for (FunctionalComponent functionalComponent : modDef.getFunctionalComponents()) {
+				for (Measure measure : functionalComponent.getMeasures()) {
+					int numSBOtype = 0;
+					for (URI type : measure.getTypes()) {
+						try {
+							if (sbo.isDescendantOf(type, SystemsBiologyOntology.SYSTEMS_DESCRIPTION_PARAMETER)) {
+								numSBOtype++;
+							}
+						} catch (Exception e) {
+						}
+					}
+					if (numSBOtype != 1) {
+						errors.add(new SBOLValidationException("sbol-13505", measure).getMessage());
+					}
+				}
+			}
 			for (Interaction interaction : modDef.getInteractions()) {
 				int numSBOtype = 0;
 				URI SBOtype = null;
@@ -1186,6 +1218,20 @@ public class SBOLValidate {
 				}
 				if (numSBOtype != 1) {
 					errors.add(new SBOLValidationException("sbol-11905", interaction).getMessage());
+				}
+				for (Measure measure : interaction.getMeasures()) {
+					numSBOtype = 0;
+					for (URI type : measure.getTypes()) {
+						try {
+							if (sbo.isDescendantOf(type, SystemsBiologyOntology.SYSTEMS_DESCRIPTION_PARAMETER)) {
+								numSBOtype++;
+							}
+						} catch (Exception e) {
+						}
+					}
+					if (numSBOtype != 1) {
+						errors.add(new SBOLValidationException("sbol-13505", measure).getMessage());
+					}
 				}
 				for (Participation participation : interaction.getParticipations()) {
 					int numSBOrole = 0;
@@ -1203,6 +1249,20 @@ public class SBOLValidate {
 						errors.add(new SBOLValidationException("sbol-12007", participation).getMessage());
 					} else {
 						checkInteractionTypeParticipationRole(interaction, SBOtype, SBOrole);
+					}
+					for (Measure measureP : participation.getMeasures()) {
+						numSBOtype = 0;
+						for (URI type : measureP.getTypes()) {
+							try {
+								if (sbo.isDescendantOf(type, SystemsBiologyOntology.SYSTEMS_DESCRIPTION_PARAMETER)) {
+									numSBOtype++;
+								}
+							} catch (Exception e) {
+							}
+						}
+						if (numSBOtype != 1) {
+							errors.add(new SBOLValidationException("sbol-13505", measureP).getMessage());
+						} 
 					}
 				}
 			}

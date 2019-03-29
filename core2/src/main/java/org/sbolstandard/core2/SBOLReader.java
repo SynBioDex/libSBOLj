@@ -3454,7 +3454,7 @@ public class SBOLReader
 	 * @throws SBOLValidationException if either of the following conditions is satisfied:
 	 * <ul>
 	 * <li>any of the following SBOL validation rules was violated: 
-	 * 10203, 10204, 10206, 10208, 10212, 10213, 10519, 10602, 10607; or 
+	 * 10203, 10204, 10206, 10208, 10212, 10213, 10519, 10602, 10607, 10608; or 
 	 *</li>
 	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
 	 * 	<ul>
@@ -3606,7 +3606,7 @@ public class SBOLReader
 									nestedDocument.getType().equals(Sbol2Terms.Cut.Cut) ||
 									nestedDocument.getType().equals(Sbol2Terms.GenericLocation.GenericLocation))) {
 						// TODO: no rule for this yet
-						throw new SBOLValidationException("sbol-1xxxx",component.getIdentity());
+						throw new SBOLValidationException("sbol-10608",component.getIdentity());
 					}
 					location = parseLocation((NestedDocument<QName>) namedProperty.getValue());
 				}
@@ -3618,7 +3618,7 @@ public class SBOLReader
 									nestedDocument.getType().equals(Sbol2Terms.Cut.Cut) ||
 									nestedDocument.getType().equals(Sbol2Terms.GenericLocation.GenericLocation))) {
 						// TODO: no rule for this yet
-						throw new SBOLValidationException("sbol-1xxxx",component.getIdentity());
+						throw new SBOLValidationException("sbol-10608",component.getIdentity());
 					}
 					location = parseLocation(nested.get(uri));
 				}
@@ -3655,7 +3655,7 @@ public class SBOLReader
 					NestedDocument<QName> nestedDocument = ((NestedDocument<QName>) namedProperty.getValue());
 					if (nestedDocument.getType()==null || 
 							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
-						throw new SBOLValidationException("sbol-1xxxx",component.getIdentity());
+						throw new SBOLValidationException("sbol-10608",component.getIdentity());
 					}
 					measures.add(parseMeasure(((NestedDocument<QName>) namedProperty.getValue())));
 				}
@@ -3664,7 +3664,7 @@ public class SBOLReader
 					NestedDocument<QName> nestedDocument = nested.get(uri);
 					if (nestedDocument==null || nestedDocument.getType()==null || 
 							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
-						throw new SBOLValidationException("sbol-1xxxx",component.getIdentity());
+						throw new SBOLValidationException("sbol-10608",component.getIdentity());
 					}
 					measures.add(parseMeasure(nested.get(uri)));
 				}
@@ -5839,7 +5839,7 @@ public class SBOLReader
 	 * @throws SBOLValidationException if either of the following conditions is satisfied:
 	 * <ul>
 	 * <li>any of the following SBOL validation rules was violated: 
-	 * 10203, 10204, 10206, 10208, 10212, 10213, 11604, 11702; or 
+	 * 10203, 10204, 10206, 10208, 10212, 10213, 11604, 11702, 11707; or 
 	 *</li>
 	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
 	 * 	<ul>
@@ -5933,7 +5933,7 @@ public class SBOLReader
 					NestedDocument<QName> nestedDocument = ((NestedDocument<QName>) namedProperty.getValue());
 					if (nestedDocument.getType()==null || 
 							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
-						throw new SBOLValidationException("sbol-1xxxx",module.getIdentity());
+						throw new SBOLValidationException("sbol-11707",module.getIdentity());
 					}
 					measures.add(parseMeasure(((NestedDocument<QName>) namedProperty.getValue())));
 				}
@@ -5942,7 +5942,7 @@ public class SBOLReader
 					NestedDocument<QName> nestedDocument = nested.get(uri);
 					if (nestedDocument==null || nestedDocument.getType()==null || 
 							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
-						throw new SBOLValidationException("sbol-1xxxx",module.getIdentity());
+						throw new SBOLValidationException("sbol-11707",module.getIdentity());
 					}
 					measures.add(parseMeasure(nested.get(uri)));
 				}
@@ -6195,7 +6195,7 @@ public class SBOLReader
 	 * @throws SBOLValidationException if either of the following conditions is satisfied:
 	 * <ul>
 	 * <li>any of the following SBOL validation rules was violated:
-	 * 10203, 10204, 10206, 10208, 10212, 10213, 1xxxx, 1xxxx, 1xxxx; or  
+	 * 10203, 10204, 10206, 10208, 10212, 10213, 13502, 13503, 13504; or  
 	 *</li>
 	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
 	 * 	<ul>
@@ -6268,7 +6268,7 @@ public class SBOLReader
 			{
 				if (!(namedProperty.getValue() instanceof Literal) ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
-					throw new SBOLValidationException("sbol-1xxxx", measure.getIdentity());
+					throw new SBOLValidationException("sbol-13504", measure.getIdentity());
 				}
 				types.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue()
 						.toString()));
@@ -6277,19 +6277,19 @@ public class SBOLReader
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || hasNumericalValue != null ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
-					throw new SBOLValidationException("sbol-1xxxx", measure.getIdentity());
+					throw new SBOLValidationException("sbol-13502", measure.getIdentity());
 				}
 				try {
 					hasNumericalValue = Double.parseDouble(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 				} catch (Exception e) {
-					throw new SBOLValidationException("sbol-1xxxx", measure.getIdentity());
+					throw new SBOLValidationException("sbol-13502", measure.getIdentity());
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Measure.hasUnit))
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || hasUnit != null ||
 						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
-					throw new SBOLValidationException("sbol-1xxxx", measure.getIdentity());
+					throw new SBOLValidationException("sbol-13503", measure.getIdentity());
 				}
 				hasUnit = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
 			}
@@ -6347,7 +6347,7 @@ public class SBOLReader
 	 * @throws SBOLValidationException if either of the following conditions is satisfied:
 	 * <ul>
 	 * <li>any of the following SBOL validation rules was violated:
-	 * 10203, 10204, 10206, 10208,  10212, 10213, 11605, 11902; or 
+	 * 10203, 10204, 10206, 10208,  10212, 10213, 11605, 11902, 11908; or 
 	 *</li>
 	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
 	 * 	<ul>
@@ -6472,7 +6472,7 @@ public class SBOLReader
 					NestedDocument<QName> nestedDocument = ((NestedDocument<QName>) namedProperty.getValue());
 					if (nestedDocument.getType()==null || 
 							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
-						throw new SBOLValidationException("sbol-1xxxx",interaction.getIdentity());
+						throw new SBOLValidationException("sbol-11908",interaction.getIdentity());
 					}
 					measures.add(parseMeasure(((NestedDocument<QName>) namedProperty.getValue())));
 				}
@@ -6481,7 +6481,7 @@ public class SBOLReader
 					NestedDocument<QName> nestedDocument = nested.get(uri);
 					if (nestedDocument==null || nestedDocument.getType()==null || 
 							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
-						throw new SBOLValidationException("sbol-1xxxx",interaction.getIdentity());
+						throw new SBOLValidationException("sbol-11908",interaction.getIdentity());
 					}
 					measures.add(parseMeasure(nested.get(uri)));
 				}
@@ -6520,7 +6520,7 @@ public class SBOLReader
 	 * @throws SBOLValidationException if either of the following conditions is satisfied:
 	 * <ul>
 	 * <li>any of the following SBOL validation rules was violated:
-	 * 10203, 10204, 10206, 10208, 10212, 10213, 11906, 12002, 12004; or  
+	 * 10203, 10204, 10206, 10208, 10212, 10213, 11906, 12002, 12004, 12008; or  
 	 *</li>
 	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
 	 * 	<ul>
@@ -6632,7 +6632,7 @@ public class SBOLReader
 					NestedDocument<QName> nestedDocument = ((NestedDocument<QName>) namedProperty.getValue());
 					if (nestedDocument.getType()==null || 
 							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
-						throw new SBOLValidationException("sbol-1xxxx",participation.getIdentity());
+						throw new SBOLValidationException("sbol-12008",participation.getIdentity());
 					}
 					measures.add(parseMeasure(((NestedDocument<QName>) namedProperty.getValue())));
 				}
@@ -6641,7 +6641,7 @@ public class SBOLReader
 					NestedDocument<QName> nestedDocument = nested.get(uri);
 					if (nestedDocument==null || nestedDocument.getType()==null || 
 							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
-						throw new SBOLValidationException("sbol-1xxxx",participation.getIdentity());
+						throw new SBOLValidationException("sbol-12008",participation.getIdentity());
 					}
 					measures.add(parseMeasure(nested.get(uri)));
 				}
@@ -6679,7 +6679,7 @@ public class SBOLReader
 	 * @throws SBOLValidationException if either of the following conditions is satisfied:
 	 * <ul>
 	 * <li>any of the following SBOL validation rules was violated:
-	 * 10203, 10204, 10206, 10208, 10212, 10213, 10602, 10607, 11606, 11802; or  
+	 * 10203, 10204, 10206, 10208, 10212, 10213, 10602, 10607, 10608, 11606, 11802; or  
 	 * </li>
 	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
 	 * 	<ul>
@@ -6862,7 +6862,7 @@ public class SBOLReader
 					NestedDocument<QName> nestedDocument = ((NestedDocument<QName>) namedProperty.getValue());
 					if (nestedDocument.getType()==null || 
 							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
-						throw new SBOLValidationException("sbol-1xxxx",functionalComponent.getIdentity());
+						throw new SBOLValidationException("sbol-10608",functionalComponent.getIdentity());
 					}
 					measures.add(parseMeasure(((NestedDocument<QName>) namedProperty.getValue())));
 				}
@@ -6871,7 +6871,7 @@ public class SBOLReader
 					NestedDocument<QName> nestedDocument = nested.get(uri);
 					if (nestedDocument==null || nestedDocument.getType()==null || 
 							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
-						throw new SBOLValidationException("sbol-1xxxx",functionalComponent.getIdentity());
+						throw new SBOLValidationException("sbol-10608",functionalComponent.getIdentity());
 					}
 					measures.add(parseMeasure(nested.get(uri)));
 				}

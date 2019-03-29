@@ -373,7 +373,6 @@ public class SBOLWriter
 	private static void formatCommonMeasuredData (List<NamedProperty<QName>> comlist, Measured m)
 	{
 		formatCommonIdentifiedData(comlist,m);
-		List<NestedDocument<QName>> nestedDoc = new ArrayList<>();
 		for(Measure measure : m.getMeasures()) {
 			List<NamedProperty<QName>> list = new ArrayList<>();
 			formatCommonIdentifiedData(list, measure);
