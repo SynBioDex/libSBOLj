@@ -65,7 +65,7 @@ public class Experiment extends TopLevel{
 	 */
 	public boolean addExperimentalData(URI experimentalDataURI) throws SBOLValidationException {
 		if (this.getSBOLDocument() != null && this.getSBOLDocument().isComplete()) {
-			if (this.getSBOLDocument().getTopLevel(experimentalDataURI)==null) {
+			if (this.getSBOLDocument().getExperimentalData(experimentalDataURI)==null) {
 				throw new SBOLValidationException("sbol-13403", this);
 			}
 		}

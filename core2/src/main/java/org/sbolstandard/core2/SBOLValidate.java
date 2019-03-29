@@ -105,6 +105,15 @@ public class SBOLValidate {
 		}
 	}
 
+	private static void checkExperimentCompleteness(SBOLDocument sbolDocument, Experiment experiment) {
+		for (URI experimentalData : experiment.getExperimentalDataURIs()) {
+			if (sbolDocument.getExperimentalData(experimentalData) == null) {
+				SBOLValidationException e = new SBOLValidationException("sbol-13403", experiment);
+				errors.add(e.getMessage());
+			}
+		}
+	}
+
 	private static void checkImplementationCompleteness(SBOLDocument sbolDocument,
 			Implementation implementation) {
 		URI builtURI = implementation.getBuiltURI();
@@ -445,6 +454,9 @@ public class SBOLValidate {
 		}
 		for (Collection collection : sbolDocument.getCollections()) {
 			checkCollectionCompleteness(sbolDocument, collection);
+		}
+		for (Experiment experiment : sbolDocument.getExperiments()) {
+			checkExperimentCompleteness(sbolDocument, experiment);
 		}
 		for (ComponentDefinition componentDefinition : sbolDocument.getComponentDefinitions()) {
 			checkComponentDefinitionCompleteness(sbolDocument, componentDefinition);

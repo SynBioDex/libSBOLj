@@ -5290,7 +5290,7 @@ public class SBOLReader
 			{
 				if (namedProperty.getValue() instanceof Literal) {
 					if (!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI)) {
-						throw new SBOLValidationException("sbol-12102", topLevel.getIdentity());
+						throw new SBOLValidationException("sbol-13402", topLevel.getIdentity());
 					}
 					experimentalData.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
 				} else if (namedProperty.getValue() instanceof NestedDocument) {
