@@ -2233,14 +2233,23 @@ public abstract class SBOLAbstractTests {
 		// put an Interaction into the ModuleDefinition
 		Interaction i =
 				md.createInteraction("i", new HashSet<URI>(Arrays.asList(URI.create("http://purl.obolibrary.org/obo/NCIT_C64382"))));
-		
+		Participation p = 
+				i.createParticipation("p", fc.getDisplayId(), new HashSet<URI>(Arrays.asList(URI.create("http://purl.obolibrary.org/obo/NCIT_C154897"))));
+		p.createMeasure("pMeasure", 1.23, URI.create("http://purl.obolibrary.org/obo/UO_0000021"));
 		
 		// add a Measure to the FunctionalComponent
-		fc.createMeasure("fc_measure", 0.04, URI.create("http://purl.obolibrary.org/obo/UO_0000021"));
+		Measure fcMeasure = 
+				fc.createMeasure("fc_measure", 0.04, URI.create("http://purl.obolibrary.org/obo/UO_0000021"));
+		fcMeasure.addType(URI.create(""));
+		
 		// add a Measure to the Module
-		m.createMeasure("md_measure", 11.28, URI.create("http://purl.obolibrary.org/obo/UO_0000175"));
+		Measure mMeasure = 
+				m.createMeasure("md_measure", 11.28, URI.create("http://purl.obolibrary.org/obo/UO_0000175"));
+		mMeasure.addType(URI.create(""));
 		// add a Measure to the Interaction
-		i.createMeasure("i_measure", 0.04, URI.create("http://purl.obolibrary.org/obo/UO_0000077"));
+		Measure iMeasure = 
+				i.createMeasure("i_measure", 0.04, URI.create("http://purl.obolibrary.org/obo/UO_0000077"));
+		iMeasure.addType(URI.create(""));
 		
 		runTest("/SBOLTestSuite/SBOL2/Measure.xml", document, true);
 	}
