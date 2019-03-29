@@ -1820,3 +1820,31 @@ condition: strong required
 description: The hash property of an Attachment is OPTIONAL and MAY contain a String.
 reference: Section 7.13 on page 52
 
+[ExperimentalData]
+id: sbol-13301
+condition: strong required
+description: An ExperimentalData MUST NOT have properties other than the following: identity, 
+persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, description, 
+annotations, and attachments.
+reference: Section 7.14 on page 54
+
+[Experiment]
+id: sbol-13401
+condition: strong required
+description: An Experiment MUST NOT have properties other than the following: identity, 
+persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name, description, 
+annotations, attachments, and experimental data.
+reference: Section 7.15 on page 54
+
+[Experiment]
+id: sbol-13402
+condition: strong required
+description: The experimentalData property of an Experiment is OPTIONAL and MAY contain a set of URIs.
+reference: Section 7.15 on page 54
+
+[Experiment]
+id: sbol-13404 
+condition: weak required
+description: Each URI contained by the experimentalData property of a
+Experiment MUST reference an ExperimentalData object.
+reference: Section 7.15 on page 54
