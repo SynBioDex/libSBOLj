@@ -630,6 +630,10 @@ public abstract class Identified {
 				throw new SBOLValidationException("sbol-13101");
 			} else if (this instanceof Attachment) {
 				throw new SBOLValidationException("sbol-13201");
+			} else if (this instanceof ExperimentalData) {
+				throw new SBOLValidationException("sbol-13301");
+			} else if (this instanceof Experiment) {
+				throw new SBOLValidationException("sbol-13401");
 			}
 		}
 		addNamespace(annotation);
