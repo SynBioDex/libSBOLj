@@ -120,6 +120,7 @@ public class SBOLDocument {
 			addNamespaceBinding(Sbol1Terms.rdf);
 			addNamespaceBinding(Sbol2Terms.dc);
 			addNamespaceBinding(Sbol2Terms.prov);
+			addNamespaceBinding(Sbol2Terms.om);
 		} catch (SBOLValidationException e) {
 			e.printStackTrace();
 		}
