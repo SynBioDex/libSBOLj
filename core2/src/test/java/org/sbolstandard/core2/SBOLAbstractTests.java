@@ -2040,38 +2040,6 @@ public abstract class SBOLAbstractTests {
 	 * @throws IOException
 	 */
 	@Test
-	public void test_Experiment_ExperimentData() throws SBOLValidationException, SBOLConversionException, IOException
-	{
-		SBOLDocument document = new SBOLDocument();
-		document.setComplete(true);
-		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
-
-		document.addNamespaceBinding(NamespaceBinding("http://myannotation.org/", "annot"));
-		document.addNamespaceBinding(NamespaceBinding("urn:bbn.com:tasbe:grn/", "grn"));
-
-		GenericTopLevel topLevel = document.createGenericTopLevel("GenericTopLevel", VERSION_1_0,
-				new QName("urn:bbn.com:tasbe:grn/", "RegulatoryReaction", "grn"));
-		
-		Experiment expt = document.createExperiment("experiment", VERSION_1_0);
-
-		ExperimentalData expt_data1 = document.createExperimentalData( "experimental_data1", VERSION_1_0 );
-		ExperimentalData expt_data2 = document.createExperimentalData( "experimental_data2", VERSION_1_0 );
-		/*ExperimentalData expt_data_a = new ExperimentalData(topLevel.getIdentity());
-		document.addExperimentalData(expt_data_a);*/
-
-		expt.addExperimentalData(expt_data1.getIdentity());
-		expt.addExperimentalData(expt_data2.getIdentity());
-
-		runTest("/SBOLTestSuite/SBOL2/test_Experiment_ExperimentData.xml", document, true);
-	}
-
-
-	/**
-	 * @throws SBOLValidationException
-	 * @throws SBOLConversionException
-	 * @throws IOException
-	 */
-	@Test
 	public void test_singleModel() throws SBOLValidationException, SBOLConversionException, IOException
 	{
 		SBOLDocument document = new SBOLDocument();
