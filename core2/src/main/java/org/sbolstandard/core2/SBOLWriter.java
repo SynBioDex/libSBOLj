@@ -321,6 +321,30 @@ public class SBOLWriter
 		}
 	}
 
+	private static void formatExperiments (Set<Experiment> experiments, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+		for(Experiment expt : experiments)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonTopLevelData(list, expt);
+			for (URI experimentalData : expt.getExperimentalDataURIs())
+			{
+				list.add(NamedProperty(Sbol2Terms.Experiment.hasExperimentalData, experimentalData));
+			}
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.Experiment.Experiment, expt.getIdentity(), NamedProperties(list)));
+		}
+	}
+
+	private static void formatExperimentalData (Set<ExperimentalData> experimentalData, List<TopLevelDocument<QName>> topLevelDoc)
+	{
+		for(ExperimentalData exptData : experimentalData)
+		{
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonTopLevelData(list, exptData);
+			topLevelDoc.add(TopLevelDocument(Sbol2Terms.ExperimentalData.ExperimentalData, exptData.getIdentity(), NamedProperties(list)));
+		}
+	}
+
 	private static void formatCommonIdentifiedData (List<NamedProperty<QName>> list, Identified t)
 	{
 		if(t.isSetPersistentIdentity())
@@ -1210,6 +1234,8 @@ public class SBOLWriter
 		formatCombinatorialDerivation(doc.getCombinatorialDerivations(), topLevelDoc);
 		formatImplementation(doc.getImplementations(), topLevelDoc);
 		formatAttachments(doc.getAttachments(), topLevelDoc);
+		formatExperiments(doc.getExperiments(), topLevelDoc);
+		formatExperimentalData(doc.getExperimentalData(), topLevelDoc);
 		return topLevelDoc;
 	}
 
