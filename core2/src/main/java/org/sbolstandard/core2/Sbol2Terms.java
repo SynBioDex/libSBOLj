@@ -95,24 +95,6 @@ class Sbol2Terms
 	}
 
 	/**
-	 * A group of qualified terms for Experiment related SBOL objects
-	 *
-	 */
-	static final class Experiment {
-		static final QName Experiment = sbol2.withLocalPart("Experiment");
-		static final QName hasExperimentalData = sbol2.withLocalPart("experimentalData");
-		//		  static final QName access 	   = sbol2.withLocalPart("access");
-	}
-
-	/**
-	 * A group of qualified terms for ExperimentalData related SBOL objects
-	 *
-	 */
-	static final class ExperimentalData {
-		static final QName ExperimentalData = sbol2.withLocalPart("ExperimentalData");
-	}
-
-	/**
 	 * A group of qualified terms for ComponentDefinition related SBOL objects
 	 *
 	 */

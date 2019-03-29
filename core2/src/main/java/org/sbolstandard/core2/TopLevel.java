@@ -63,14 +63,6 @@ public abstract class TopLevel extends Identified {
 	 * The abbreviation for the Attachment type in URI
 	 */
 	public static final String ATTACHMENT = "attach";
-	/**
-	 * The abbreviation for the Experiment type in URI
-	 */
-	public static final String EXPERIMENT = "expt";
-	/**
-	 * The abbreviation for the Experimental_DATA type in URI
-	 */
-	public static final String EXPERIMENTAL_DATA = "data";
 
 	private HashSet<URI> attachments;
 
