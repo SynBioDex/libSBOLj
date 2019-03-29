@@ -2206,7 +2206,45 @@ public abstract class SBOLAbstractTests {
 
 		runTest("/SBOLTestSuite/SBOL2/singleFunctionalComponent.xml", document, true);
 	}
+	
+	
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
+	@Test
+	public void test_Measure() throws SBOLValidationException, SBOLConversionException, IOException
+	{
+		SBOLDocument document = new SBOLDocument();
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
+		ModuleDefinition md = document.createModuleDefinition("md");
+		
+		// put a FunctionalComponent into the ModuleDefinition
+		ComponentDefinition cd = 
+				document.createComponentDefinition("cd", new HashSet<URI>(Arrays.asList(URI.create("http://purl.obolibrary.org/obo/CHEBI_17634"))));
+		FunctionalComponent fc = 
+				md.createFunctionalComponent("fc", AccessType.PUBLIC, cd.getIdentity(), DirectionType.INOUT);
+		// put a Module into the ModuleDefinition
+		ModuleDefinition emptyMd = document.createModuleDefinition("empty_md");
+		Module m = md.createModule("m", emptyMd.getDisplayId());
+		// put an Interaction into the ModuleDefinition
+		Interaction i =
+				md.createInteraction("i", new HashSet<URI>(Arrays.asList(URI.create("http://purl.obolibrary.org/obo/NCIT_C64382"))));
+		
+		
+		// add a Measure to the FunctionalComponent
+		fc.createMeasure("fc_measure", 0.04, URI.create("http://purl.obolibrary.org/obo/UO_0000021"));
+		// add a Measure to the Module
+		m.createMeasure("md_measure", 11.28, URI.create("http://purl.obolibrary.org/obo/UO_0000175"));
+		// add a Measure to the Interaction
+		i.createMeasure("i_measure", 0.04, URI.create("http://purl.obolibrary.org/obo/UO_0000077"));
+		
+		runTest("/SBOLTestSuite/SBOL2/Measure.xml", document, true);
+	}
+	
 	/**
 	 * Abstract method to run a single test
 	 * @param fileName - "golden" file
