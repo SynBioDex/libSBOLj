@@ -47,6 +47,8 @@ public class SBOLDocument {
 	private HashMap<URI, GenericTopLevel> genericTopLevels;
 	private HashMap<URI, Collection> collections;
 	private HashMap<URI, ComponentDefinition> componentDefinitions;
+	private HashMap<URI, Experiment> experiments;
+	private HashMap<URI, ExperimentalData> experimentalData;
 	private HashMap<URI, Model> models;
 	private HashMap<URI, ModuleDefinition> moduleDefinitions;
 	private HashMap<URI, Sequence> sequences;
@@ -105,6 +107,8 @@ public class SBOLDocument {
 		genericTopLevels = new HashMap<>();
 		collections = new HashMap<>();
 		componentDefinitions = new HashMap<>();
+		experiments = new HashMap<>();
+		experimentalData = new HashMap<>();
 		models = new HashMap<>();
 		moduleDefinitions = new HashMap<>();
 		sequences = new HashMap<>();
@@ -225,7 +229,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addModuleDefinition(ModuleDefinition moduleDefinition) throws SBOLValidationException {
-		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition", collections, componentDefinitions,
+		addTopLevel(moduleDefinition, moduleDefinitions, "moduleDefinition", collections, componentDefinitions, experiments, experimentalData,
 				genericTopLevels, activities, plans, agents, models, sequences, combinatorialDerivations, implementations, attachments);
 		for (FunctionalComponent functionalComponent : moduleDefinition.getFunctionalComponents()) {
 			functionalComponent.setSBOLDocument(this);
@@ -354,34 +358,6 @@ public class SBOLDocument {
 			removeModuleDefinition((ModuleDefinition) moduleDefinition);
 		}
 	}
-
-	/**
-	 * Clears the existing list <code>modules</code>, then appends all of the
-	 * elements in the specified collection to the end of this list.
-	 * 
-	 * @throws SBOLValidationException
-	 *             see {@link SBOLValidationException}
-	 */
-	/*
-	 * void setModuleDefinitions(Set<ModuleDefinition> moduleDefinitions) throws
-	 * SBOLValidationException { clearModuleDefinitions(); for (ModuleDefinition
-	 * module : moduleDefinitions) { addModuleDefinition(module); } }
-	 */
-
-	// /**
-	// * Create a new collection by calling the constructor {@link
-	// Collection#Collection(URI)}, and then
-	// * adds it to the list of collections to this SBOL document.
-	// *
-	// * @return the created collection
-	// * @throws SBOLValidationException
-	// */
-	// private Collection createCollection(URI identity) throws
-	// SBOLValidationException {
-	// Collection newCollection = new Collection(identity);
-	// addCollection(newCollection);
-	// return newCollection;
-	// }
 
 	/**
 	 * Creates a collection first, and then adds to this SBOL document's list of
@@ -562,6 +538,366 @@ public class SBOLDocument {
 			removeCollection((Collection) collection);
 		}
 	}
+	
+	/**
+	 * Creates a experiment first, and then adds to this SBOL document's list of
+	 * experiments.
+	 * <p>
+	 * This method calls {@link #createExperiment(String, String, String)} with the
+	 * default URI prefix for this SOBL document, the given display ID of the
+	 * experiment to be created, and an empty version string.
+	 *
+	 * @param displayId
+	 *            the display ID of the experiment to be created
+	 * @return the created experiment
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createExperiment(String, String, String)}.
+	 */
+	public Experiment createExperiment(String displayId) throws SBOLValidationException {
+		return createExperiment(defaultURIprefix, displayId, "");
+	}
+
+	/**
+	 * Creates a experiment first, and then adds to this SBOL document's list of
+	 * experiments.
+	 * <p>
+	 * This method calls {@link #createExperiment(String, String, String)} with the
+	 * default URI prefix for this SOBL document, the given display ID and version
+	 * of the experiment to be created.
+	 *
+	 * @param displayId
+	 *            the display ID of the experiment to be created
+	 * @param version
+	 *            the version of the experiment to be created
+	 * @return the created experiment
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createExperiment(String, String, String)}.
+	 */
+	public Experiment createExperiment(String displayId, String version) throws SBOLValidationException {
+		return createExperiment(defaultURIprefix, displayId, version);
+	}
+
+	/**
+	 * Creates a experiment first, and then adds to this SBOL document's list of
+	 * experiments.
+	 * <p>
+	 * This method creates a compliant URI for the experiment to be created first.
+	 * It starts with the given URI prefix after its been successfully validated,
+	 * followed by the given display ID, and ends with the given version.
+	 * 
+	 * @param URIprefix
+	 *            the URI prefix for the experiment to be created
+	 * @param displayId
+	 *            the display ID of the experiment to be created
+	 * @param version
+	 *            the version of the experiment to be created
+	 * @return the created experiment
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules was violated:
+	 *             10201, 10204, 10206.
+	 */
+	public Experiment createExperiment(String URIprefix, String displayId, String version)
+			throws SBOLValidationException {
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
+		Experiment c = new Experiment(
+				createCompliantURI(URIprefix, TopLevel.EXPERIMENT, displayId, version, typesInURIs));
+		c.setDisplayId(displayId);
+		c.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.EXPERIMENT, displayId, "", typesInURIs));
+		c.setVersion(version);
+		addExperiment(c);
+		return c;
+	}
+
+	/**
+	 * Adds the given experiment to this SBOL document's list of experiments.
+	 *
+	 * @param experiment
+	 *            the experiment object to be added
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}
+	 */
+	void addExperiment(Experiment experiment) throws SBOLValidationException {
+		addTopLevel(experiment, experiments, "experiment", collections, experimentalData, componentDefinitions, genericTopLevels, activities, plans,
+				agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
+	}
+
+	/**
+	 * Removes the given experiment from this SBOL document's list of experiments.
+	 *
+	 * @param experiment
+	 *            the given experiment to be removed
+	 * @return {@code true} if the given experiment was successfully removed,
+	 *         {@code false} otherwise
+	 * @throws SBOLValidationException
+	 *             if the following SBOL validation rule was violated: 12103.
+	 */
+	public boolean removeExperiment(Experiment experiment) throws SBOLValidationException {
+		return removeTopLevel(experiment, experiments);
+	}
+
+	/**
+	 * Returns the experiment matching the given display ID and version from this
+	 * SBOL document's list of experiments.
+	 * <p>
+	 * A compliant Experiment URI is created first. It starts with the given URI
+	 * prefix after its been successfully validated, optionally followed by its
+	 * type, namely {@link TopLevel#EXPERIMENT}, followed by the given display ID,
+	 * and ends with the given version. This URI is used to look up the module
+	 * definition in this SBOL document.
+	 *
+	 * @param displayId
+	 *            the display ID of the experiment to be retrieved
+	 * @param version
+	 *            the version of the experiment to be retrieved
+	 * @return the matching experiment if present, or {@code null} otherwise
+	 */
+	public Experiment getExperiment(String displayId, String version) {
+		try {
+			return getExperiment(
+					createCompliantURI(defaultURIprefix, TopLevel.EXPERIMENT, displayId, version, typesInURIs));
+		} catch (SBOLValidationException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the experiment matching the given identity URI from this SBOL
+	 * document's list of experiments.
+	 *
+	 * @param experimentURI
+	 *            the given identity URI of the experiment to be retrieved
+	 * @return the matching experiment if present, or {@code null} otherwise
+	 *
+	 */
+	public Experiment getExperiment(URI experimentURI) {
+		Experiment experiment = experiments.get(experimentURI);
+		if (experiment == null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(experimentURI);
+					if (document != null) {
+						experiment = document.getExperiment(experimentURI);
+						createCopy(document);
+					}
+				} catch (SynBioHubException | SBOLValidationException e) {
+					experiment = null;
+				}
+			}
+		}
+		return experiment;
+	}
+
+	/**
+	 * Returns the set of {@code Experiment} instances owned by this SBOL document.
+	 *
+	 * @return the set of {@code Experiment} instances owned by this SBOL document.
+	 */
+	public Set<Experiment> getExperiments() {
+		Set<Experiment> experiments = new HashSet<>();
+		experiments.addAll(this.experiments.values());
+		return experiments;
+	}
+
+	/**
+	 * Removes all entries in the list of experiments owned by this SBOL document.
+	 * The list will be empty after this call returns.
+	 * <p>
+	 * This method calls {@link #removeExperiment(Experiment)} to iteratively remove
+	 * each experiment.
+	 * 
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #removeExperiment(Experiment)}.
+	 */
+	public void clearExperiments() throws SBOLValidationException {
+		Object[] valueSetArray = experiments.values().toArray();
+		for (Object experiment : valueSetArray) {
+			removeExperiment((Experiment) experiment);
+		}
+	}
+	
+	/**
+	 * Creates a experimentalData first, and then adds to this SBOL document's list of
+	 * experimentalDatas.
+	 * <p>
+	 * This method calls {@link #createExperimentalData(String, String, String)} with the
+	 * default URI prefix for this SOBL document, the given display ID of the
+	 * experimentalData to be created, and an empty version string.
+	 *
+	 * @param displayId
+	 *            the display ID of the experimentalData to be created
+	 * @return the created experimentalData
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createExperimentalData(String, String, String)}.
+	 */
+	public ExperimentalData createExperimentalData(String displayId) throws SBOLValidationException {
+		return createExperimentalData(defaultURIprefix, displayId, "");
+	}
+
+	/**
+	 * Creates a experimentalData first, and then adds to this SBOL document's list of
+	 * experimentalDatas.
+	 * <p>
+	 * This method calls {@link #createExperimentalData(String, String, String)} with the
+	 * default URI prefix for this SOBL document, the given display ID and version
+	 * of the experimentalData to be created.
+	 *
+	 * @param displayId
+	 *            the display ID of the experimentalData to be created
+	 * @param version
+	 *            the version of the experimentalData to be created
+	 * @return the created experimentalData
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #createExperimentalData(String, String, String)}.
+	 */
+	public ExperimentalData createExperimentalData(String displayId, String version) throws SBOLValidationException {
+		return createExperimentalData(defaultURIprefix, displayId, version);
+	}
+
+	/**
+	 * Creates a experimentalData first, and then adds to this SBOL document's list of
+	 * experimentalDatas.
+	 * <p>
+	 * This method creates a compliant URI for the experimentalData to be created first.
+	 * It starts with the given URI prefix after its been successfully validated,
+	 * followed by the given display ID, and ends with the given version.
+	 * 
+	 * @param URIprefix
+	 *            the URI prefix for the experimentalData to be created
+	 * @param displayId
+	 *            the display ID of the experimentalData to be created
+	 * @param version
+	 *            the version of the experimentalData to be created
+	 * @return the created experimentalData
+	 * @throws SBOLValidationException
+	 *             if any of the following SBOL validation rules was violated:
+	 *             10201, 10204, 10206.
+	 */
+	public ExperimentalData createExperimentalData(String URIprefix, String displayId, String version)
+			throws SBOLValidationException {
+		URIprefix = URIcompliance.checkURIprefix(URIprefix);
+		ExperimentalData c = new ExperimentalData(
+				createCompliantURI(URIprefix, TopLevel.EXPERIMENTAL_DATA, displayId, version, typesInURIs));
+		c.setDisplayId(displayId);
+		c.setPersistentIdentity(createCompliantURI(URIprefix, TopLevel.EXPERIMENTAL_DATA, displayId, "", typesInURIs));
+		c.setVersion(version);
+		addExperimentalData(c);
+		return c;
+	}
+
+	/**
+	 * Adds the given experimentalData to this SBOL document's list of experimentalData.
+	 *
+	 * @param experimentalDatum
+	 *            the experimentalData object to be added
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}
+	 */
+	void addExperimentalData(ExperimentalData experimentalDatum) throws SBOLValidationException {
+		addTopLevel(experimentalDatum, experimentalData, "experimentalData", collections, experiments, componentDefinitions, genericTopLevels, activities, plans,
+				agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
+	}
+
+	/**
+	 * Removes the given experimentalData from this SBOL document's list of experimentalData.
+	 *
+	 * @param experimentalDatum
+	 *            the given experimentalData to be removed
+	 * @return {@code true} if the given experimentalData was successfully removed,
+	 *         {@code false} otherwise
+	 * @throws SBOLValidationException
+	 *             if the following SBOL validation rule was violated: 12103.
+	 */
+	public boolean removeExperimentalData(ExperimentalData experimentalDatum) throws SBOLValidationException {
+		return removeTopLevel(experimentalDatum, experimentalData);
+	}
+
+	/**
+	 * Returns the experimentalData matching the given display ID and version from this
+	 * SBOL document's list of experimentalData.
+	 * <p>
+	 * A compliant ExperimentalData URI is created first. It starts with the given URI
+	 * prefix after its been successfully validated, optionally followed by its
+	 * type, namely {@link TopLevel#EXPERIMENTAL_DATA}, followed by the given display ID,
+	 * and ends with the given version. This URI is used to look up the module
+	 * definition in this SBOL document.
+	 *
+	 * @param displayId
+	 *            the display ID of the experimentalData to be retrieved
+	 * @param version
+	 *            the version of the experimentalData to be retrieved
+	 * @return the matching experimentalData if present, or {@code null} otherwise
+	 */
+	public ExperimentalData getExperimentalData(String displayId, String version) {
+		try {
+			return getExperimentalData(
+					createCompliantURI(defaultURIprefix, TopLevel.EXPERIMENTAL_DATA, displayId, version, typesInURIs));
+		} catch (SBOLValidationException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Returns the experimentalData matching the given identity URI from this SBOL
+	 * document's list of experimentalDatas.
+	 *
+	 * @param experimentalDataURI
+	 *            the given identity URI of the experimentalData to be retrieved
+	 * @return the matching experimentalData if present, or {@code null} otherwise
+	 *
+	 */
+	public ExperimentalData getExperimentalData(URI experimentalDataURI) {
+		ExperimentalData experimentalDatum = experimentalData.get(experimentalDataURI);
+		if (experimentalDatum == null) {
+			for (SynBioHubFrontend frontend : getRegistries()) {
+				try {
+					SBOLDocument document = frontend.getSBOL(experimentalDataURI);
+					if (document != null) {
+						experimentalDatum = document.getExperimentalData(experimentalDataURI);
+						createCopy(document);
+					}
+				} catch (SynBioHubException | SBOLValidationException e) {
+					experimentalDatum = null;
+				}
+			}
+		}
+		return experimentalDatum;
+	}
+
+	/**
+	 * Returns the set of {@code ExperimentalData} instances owned by this SBOL document.
+	 *
+	 * @return the set of {@code ExperimentalData} instances owned by this SBOL document.
+	 */
+	public Set<ExperimentalData> getExperimentalData() {
+		Set<ExperimentalData> experimentalDatas = new HashSet<>();
+		experimentalDatas.addAll(this.experimentalData.values());
+		return experimentalDatas;
+	}
+
+	/**
+	 * Removes all entries in the list of experimentalData owned by this SBOL document.
+	 * The list will be empty after this call returns.
+	 * <p>
+	 * This method calls {@link #removeExperimentalData(ExperimentalData)} to iteratively remove
+	 * each experimentalData.
+	 * 
+	 * @throws SBOLValidationException
+	 *             if an SBOL validation rule violation occurred in
+	 *             {@link #removeExperimentalData(ExperimentalData)}.
+	 */
+	public void clearExperimentalData() throws SBOLValidationException {
+		Object[] valueSetArray = experimentalData.values().toArray();
+		for (Object experimentalData : valueSetArray) {
+			removeExperimentalData((ExperimentalData) experimentalData);
+		}
+	}
 
 	/**
 	 * Creates a model, and then adds it to this SBOL document's list of models.
@@ -662,7 +998,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addModel(Model model) throws SBOLValidationException {
-		addTopLevel(model, models, "model", collections, componentDefinitions, genericTopLevels, activities, plans,
+		addTopLevel(model, models, "model", collections, componentDefinitions, experiments, experimentalData, genericTopLevels, activities, plans,
 				agents, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
@@ -874,7 +1210,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addAttachment(Attachment attachment) throws SBOLValidationException {
-		addTopLevel(attachment, attachments, "attachment", collections, componentDefinitions, genericTopLevels, activities, plans,
+		addTopLevel(attachment, attachments, "attachment", collections, componentDefinitions, experiments, experimentalData, genericTopLevels, activities, plans,
 				agents, moduleDefinitions, sequences, combinatorialDerivations, implementations);
 	}
 	
@@ -1133,7 +1469,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addComponentDefinition(ComponentDefinition componentDefinition) throws SBOLValidationException {
-		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition", collections, genericTopLevels,
+		addTopLevel(componentDefinition, componentDefinitions, "componentDefinition", collections, experiments, experimentalData, genericTopLevels,
 				activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 		for (Component component : componentDefinition.getComponents()) {
 			component.setSBOLDocument(this);
@@ -1308,7 +1644,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addCombinatorialDerivation(CombinatorialDerivation combinatorialDerivation) throws SBOLValidationException {
-		addTopLevel(combinatorialDerivation, combinatorialDerivations, "combinatorialDerivation", collections,
+		addTopLevel(combinatorialDerivation, combinatorialDerivations, "combinatorialDerivation", collections, experiments, experimentalData, 
 				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences, implementations, attachments);
 		for (VariableComponent variableComponent : combinatorialDerivation.getVariableComponents()) {
 			variableComponent.setSBOLDocument(this);
@@ -1557,7 +1893,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addImplementation(Implementation implementation) throws SBOLValidationException {
-		addTopLevel(implementation, implementations, "implementation", collections,
+		addTopLevel(implementation, implementations, "implementation", collections, experiments, experimentalData, 
 				genericTopLevels, activities, plans, agents, models, moduleDefinitions, sequences, combinatorialDerivations, attachments);
 	}
 	
@@ -2136,6 +2472,14 @@ public class SBOLDocument {
 			Collection newCollection = this.createCollection(URIprefix, displayId, version);
 			newCollection.copy((Collection) topLevel);
 			return newCollection;
+		} else if (topLevel instanceof Experiment) {
+			Experiment newExperiment = this.createExperiment(URIprefix, displayId, version);
+			newExperiment.copy((Experiment) topLevel);
+			return newExperiment;
+		} else if (topLevel instanceof ExperimentalData) {
+			ExperimentalData newExperimentalData = this.createExperimentalData(URIprefix, displayId, version);
+			newExperimentalData.copy((ExperimentalData) topLevel);
+			return newExperimentalData;
 		} else if (topLevel instanceof ComponentDefinition) {
 			ComponentDefinition newComponentDefinition = this.createComponentDefinition(URIprefix, displayId, version,
 					((ComponentDefinition) topLevel).getTypes());
@@ -2261,11 +2605,15 @@ public class SBOLDocument {
 		}
 		if (topLevel instanceof GenericTopLevel || topLevel instanceof Sequence || topLevel instanceof Model
 				|| topLevel instanceof Plan || topLevel instanceof Agent || topLevel instanceof Implementation
-				|| topLevel instanceof Attachment) {
+				|| topLevel instanceof Attachment || topLevel instanceof ExperimentalData) {
 			// Do nothing
 		} else if (topLevel instanceof Collection) {
 			for (TopLevel member : ((Collection) topLevel).getMembers()) {
 				createRecursiveCopy(document, member);
+			}
+		} else if (topLevel instanceof Experiment) {
+			for (TopLevel experimentalDatum : ((Experiment) topLevel).getExperimentalData()) {
+				createRecursiveCopy(document, experimentalDatum);
 			}
 		} else if (topLevel instanceof ComponentDefinition) {
 			for (Component component : ((ComponentDefinition) topLevel).getComponents()) {
@@ -2447,6 +2795,15 @@ public class SBOLDocument {
 				}
 			}
 			updateReferences(collection, originalIdentity, newIdentity);
+		}
+		for (Experiment experiment : getExperiments()) {
+			for (URI experimentalDataURI : experiment.getExperimentalDataURIs()) {
+				if (experimentalDataURI.equals(originalIdentity)) {
+					experiment.removeExperimentalData(originalIdentity);
+					experiment.addExperimentalData(newIdentity);
+				}
+			}
+			updateReferences(experiment, originalIdentity, newIdentity);
 		}
 		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
 			updateReferences(componentDefinition, originalIdentity, newIdentity);
@@ -2666,6 +3023,15 @@ public class SBOLDocument {
 				}
 			}
 			updateReferences(collection, uriMap);
+		}
+		for (Experiment experiment : getExperiments()) {
+			for (URI experimentalDatumURI : experiment.getExperimentalDataURIs()) {
+				if (uriMap.get(experimentalDatumURI) != null) {
+					experiment.removeExperimentalData(experimentalDatumURI);
+					experiment.addExperimentalData(uriMap.get(experimentalDatumURI));
+				}
+			}
+			updateReferences(experiment, uriMap);
 		}
 		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
 			updateReferences(componentDefinition, uriMap);
@@ -2998,7 +3364,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addSequence(Sequence sequence) throws SBOLValidationException {
-		addTopLevel(sequence, sequences, "sequence", collections, componentDefinitions, genericTopLevels, activities,
+		addTopLevel(sequence, sequences, "sequence", collections, componentDefinitions, experiments, experimentalData, genericTopLevels, activities,
 				plans, agents, models, moduleDefinitions, combinatorialDerivations, implementations, attachments);
 	}
 
@@ -3226,7 +3592,7 @@ public class SBOLDocument {
 			genericTopLevel.setRDFType(new QName(genericTopLevel.getRDFType().getNamespaceURI(),
 					genericTopLevel.getRDFType().getLocalPart(), qNameInNamespace.getPrefix()));
 		}
-		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel", collections, componentDefinitions, models,
+		addTopLevel(genericTopLevel, genericTopLevels, "genericTopLevel", collections, componentDefinitions, experiments, experimentalData, models,
 				activities, plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
@@ -3404,7 +3770,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addActivity(Activity activity) throws SBOLValidationException {
-		addTopLevel(activity, activities, "activity", collections, componentDefinitions, models, genericTopLevels,
+		addTopLevel(activity, activities, "activity", collections, componentDefinitions, experiments, experimentalData, models, genericTopLevels,
 				plans, agents, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 		for (Usage usage : activity.getUsages()) {
 			usage.setSBOLDocument(this);
@@ -3584,7 +3950,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addAgent(Agent agent) throws SBOLValidationException {
-		addTopLevel(agent, agents, "agent", collections, componentDefinitions, models, genericTopLevels, plans,
+		addTopLevel(agent, agents, "agent", collections, componentDefinitions, experiments, experimentalData, models, genericTopLevels, plans,
 				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
@@ -3757,7 +4123,7 @@ public class SBOLDocument {
 	 *             {@link #addTopLevel(TopLevel, Map, String, Map...)}.
 	 */
 	void addPlan(Plan plan) throws SBOLValidationException {
-		addTopLevel(plan, plans, "plan", collections, componentDefinitions, models, genericTopLevels, agents,
+		addTopLevel(plan, plans, "plan", collections, componentDefinitions, experiments, experimentalData, models, genericTopLevels, agents,
 				activities, moduleDefinitions, sequences, combinatorialDerivations, implementations, attachments);
 	}
 
@@ -3857,6 +4223,14 @@ public class SBOLDocument {
 		if (topLevel != null) {
 			return topLevel;
 		}
+		topLevel = experiments.get(topLevelURI);
+		if (topLevel != null) {
+			return topLevel;
+		}
+		topLevel = experimentalData.get(topLevelURI);
+		if (topLevel != null) {
+			return topLevel;
+		}
 		topLevel = moduleDefinitions.get(topLevelURI);
 		if (topLevel != null) {
 			return topLevel;
@@ -3937,6 +4311,12 @@ public class SBOLDocument {
 	public Set<TopLevel> getTopLevels() {
 		Set<TopLevel> topLevels = new HashSet<>();
 		for (Collection topLevel : collections.values()) {
+			topLevels.add(topLevel);
+		}
+		for (Experiment topLevel : experiments.values()) {
+			topLevels.add(topLevel);
+		}
+		for (ExperimentalData topLevel : experimentalData.values()) {
 			topLevels.add(topLevel);
 		}
 		for (Sequence topLevel : sequences.values()) {
@@ -4246,6 +4626,8 @@ public class SBOLDocument {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((collections == null) ? 0 : collections.hashCode());
+		result = prime * result + ((experiments == null) ? 0 : experiments.hashCode());
+		result = prime * result + ((experimentalData == null) ? 0 : experimentalData.hashCode());
 		result = prime * result + ((componentDefinitions == null) ? 0 : componentDefinitions.hashCode());
 		result = prime * result + ((genericTopLevels == null) ? 0 : genericTopLevels.hashCode());
 		result = prime * result + ((activities == null) ? 0 : activities.hashCode());
@@ -4274,6 +4656,16 @@ public class SBOLDocument {
 			if (other.collections != null)
 				return false;
 		} else if (!collections.equals(other.collections))
+			return false;
+		if (experiments == null) {
+			if (other.experiments != null)
+				return false;
+		} else if (!experiments.equals(other.experiments))
+			return false;
+		if (experimentalData == null) {
+			if (other.experimentalData != null)
+				return false;
+		} else if (!experimentalData.equals(other.experimentalData))
 			return false;
 		if (componentDefinitions == null) {
 			if (other.componentDefinitions != null)
@@ -4431,6 +4823,11 @@ public class SBOLDocument {
 					throw new SBOLValidationException("sbol-12103", c);
 				}
 			}
+			for (Experiment c : experiments.values()) {
+				if (c.containsExperimentalData(topLevel.getIdentity())) {
+					throw new SBOLValidationException("sbol-1xxxx", c);
+				}
+			}
 		}
 		Set<TopLevel> setToRemove = new HashSet<>();
 		setToRemove.add(topLevel);
@@ -4465,6 +4862,8 @@ public class SBOLDocument {
 	 *             <li>{@link #removePlan(Plan)},</li>
 	 *             <li>{@link #removeGenericTopLevel(GenericTopLevel)},</li>
 	 *             <li>{@link #removeCollection(Collection)},</li>
+	 *             <li>{@link #removeExperiment(Experiment)},</li>
+	 *             <li>{@link #removeExperimentalData(ExperimentalData)},</li>
 	 *             <li>{@link #removeSequence(Sequence)},</li>
 	 *             <li>{@link #removeComponentDefinition(ComponentDefinition)},</li>
 	 *             <li>{@link #removeModel(Model)}, or</li>
@@ -4483,6 +4882,10 @@ public class SBOLDocument {
 			removePlan((Plan) topLevel);
 		else if (topLevel instanceof Collection)
 			removeCollection((Collection) topLevel);
+		else if (topLevel instanceof Experiment)
+			removeExperiment((Experiment) topLevel);
+		else if (topLevel instanceof ExperimentalData)
+			removeExperimentalData((ExperimentalData) topLevel);
 		else if (topLevel instanceof Sequence)
 			removeSequence((Sequence) topLevel);
 		else if (topLevel instanceof ComponentDefinition)
@@ -4812,7 +5215,8 @@ public class SBOLDocument {
 	public String toString() {
 		return "SBOLDocument [activities=" + activities + "agents=" + agents + "plans=" + plans + "implementations=" + implementations
 				+ "attachments=" + attachments + "combinatorialDerivations=" + combinatorialDerivations
-				+ "genericTopLevels=" + genericTopLevels + ", collections=" + collections + ", componentDefinitions=" + componentDefinitions
+				+ "genericTopLevels=" + genericTopLevels + ", collections=" + collections + ", experiments=" + experiments + ", experimentalData =" + experimentalData 
+				+ ", componentDefinitions=" + componentDefinitions
 				+ ", models=" + models + ", moduleDefinitions=" + moduleDefinitions + ", sequences=" + sequences
 				+ ", nameSpaces=" + nameSpaces + ", defaultURIprefix=" + defaultURIprefix + ", complete=" + complete
 				+ ", compliant=" + compliant + ", typesInURIs=" + typesInURIs + ", createDefaults=" + createDefaults
