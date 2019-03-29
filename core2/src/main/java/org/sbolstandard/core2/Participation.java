@@ -15,7 +15,7 @@ import java.util.Set;
  * @version 2.1
  */
 
-public class Participation extends Identified {
+public class Participation extends Measured {
 
 	private Set<URI> roles;
 	private URI participant;

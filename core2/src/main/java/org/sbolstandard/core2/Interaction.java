@@ -18,7 +18,7 @@ import java.util.Set;
  * @version 2.1
  */
 
-public class Interaction extends Identified {
+public class Interaction extends Measured {
 
 	private Set<URI> types;
 	private HashMap<URI, Participation> participations;
@@ -302,7 +302,7 @@ public class Interaction extends Identified {
 	 * Adds the given participation to the list of participations owned by this interaction.
 	 *
 	 * @param participation the participation to be added
-	 * @throws SBOLValidationException if eitehr of the following condition is satisified:
+	 * @throws SBOLValidationException if either of the following condition is satisfied:
 	 * <ul>
 	 * <li>the following SBOL validation rule was violated: 12003; or</li>
 	 * <li>an SBOL validation rule violation occurred in {@link Identified#addChildSafely(Identified, java.util.Map, String, java.util.Map...)}</li>
@@ -371,7 +371,7 @@ public class Interaction extends Identified {
 	}
 
 	/**
-	 * Removes all entries of this interaction list of sequence annotations.
+	 * Removes all entries of this interaction list of participations.
 	 * The list will be empty after this call returns.
 	 * <p>
 	 * This method calls {@link #removeParticipation(Participation)} to iteratively remove

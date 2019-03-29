@@ -3487,6 +3487,7 @@ public class SBOLReader
 		Set<MapsTo> mapsTo 		 = new HashSet<>();
 		Set<Location> locations = new HashSet<>();
 		Set<Location> sourceLocations = new HashSet<>();
+		Set<Measure> measures = new HashSet<>();
 
 		for (NamedProperty<QName> namedProperty : component.getProperties())
 		{
@@ -3644,6 +3645,26 @@ public class SBOLReader
 				}
 				sourceLocations.add(location);
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Measured.hasMeasure))
+			{
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					NestedDocument<QName> nestedDocument = ((NestedDocument<QName>) namedProperty.getValue());
+					if (nestedDocument.getType()==null || 
+							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
+						throw new SBOLValidationException("sbol-1xxxx",component.getIdentity());
+					}
+					measures.add(parseMeasure(((NestedDocument<QName>) namedProperty.getValue())));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					NestedDocument<QName> nestedDocument = nested.get(uri);
+					if (nestedDocument==null || nestedDocument.getType()==null || 
+							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
+						throw new SBOLValidationException("sbol-1xxxx",component.getIdentity());
+					}
+					measures.add(parseMeasure(nested.get(uri)));
+				}
+			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
 			{
 				if (!(namedProperty.getValue() instanceof Literal) || name != null ||
@@ -3719,6 +3740,8 @@ public class SBOLReader
 			c.setSourceLocations(sourceLocations);
 		if (!annotations.isEmpty())
 			c.setAnnotations(annotations);
+		if (!measures.isEmpty()) 
+			c.setMeasures(measures);
 
 		return c;
 	}
@@ -5522,6 +5545,7 @@ public class SBOLReader
 		Set<URI> wasDerivedFroms     = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
 		Set<MapsTo> mappings 		 = new HashSet<>();
+		Set<Measure> measures 		 = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : module.getProperties())
@@ -5579,6 +5603,26 @@ public class SBOLReader
 				else {
 					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
 					mappings.add(parseMapsTo(nested.get(uri),true));
+				}
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Measured.hasMeasure))
+			{
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					NestedDocument<QName> nestedDocument = ((NestedDocument<QName>) namedProperty.getValue());
+					if (nestedDocument.getType()==null || 
+							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
+						throw new SBOLValidationException("sbol-1xxxx",module.getIdentity());
+					}
+					measures.add(parseMeasure(((NestedDocument<QName>) namedProperty.getValue())));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					NestedDocument<QName> nestedDocument = nested.get(uri);
+					if (nestedDocument==null || nestedDocument.getType()==null || 
+							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
+						throw new SBOLValidationException("sbol-1xxxx",module.getIdentity());
+					}
+					measures.add(parseMeasure(nested.get(uri)));
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Module.hasDefinition))
@@ -5662,6 +5706,8 @@ public class SBOLReader
 			submodule.setDescription(description);
 		submodule.setWasDerivedFroms(wasDerivedFroms);
 		submodule.setWasGeneratedBys(wasGeneratedBys);
+		if (!measures.isEmpty()) 
+			submodule.setMeasures(measures);
 		if (!annotations.isEmpty())
 			submodule.setAnnotations(annotations);
 		return submodule;
@@ -5820,6 +5866,157 @@ public class SBOLReader
 			map.setAnnotations(annotations);
 		return map;
 	}
+	
+	/**
+	 * @param measure
+	 * @return
+	 * @throws SBOLValidationException if either of the following conditions is satisfied:
+	 * <ul>
+	 * <li>any of the following SBOL validation rules was violated:
+	 * 10203, 10204, 10206, 10208, 10212, 10213, 1xxxx, 1xxxx, 1xxxx; or  
+	 *</li>
+	 * <li>an SBOL validation rule violation occurred in the following constructor or methods:
+	 * 	<ul>
+	 * 		<li>{@link Measure#Measure(URI, Double, URI)},</li>
+	 * 		<li>{@link Measure#setDisplayId(String)},</li>
+	 * 		<li>{@link Measure#setVersion(String)},</li>
+	 * 		<li>{@link Measure#setWasDerivedFrom(URI)}, or</li>
+	 * 		<li>{@link Identified#setAnnotations(List)}.</li>
+	 * 	</ul>
+	 * </li>
+	 * </ul>
+	 */
+	private static Measure parseMeasure(NestedDocument<QName> measure) throws SBOLValidationException
+	{
+		String displayId 	   = null;//URIcompliance.extractDisplayId(participation.getIdentity());
+		String name 	 	   = null;
+		String description 	   = null;
+		URI persistentIdentity = null;//URI.create(URIcompliance.extractPersistentId(participation.getIdentity()));
+		String version 		   = null;
+		Set<URI> types 		   = new HashSet<>();
+		Double hasNumericalValue = null;
+		URI hasUnit			   = null;
+		Set<URI> wasDerivedFroms	 = new HashSet<>();
+		Set<URI> wasGeneratedBys = new HashSet<>();
+		List<Annotation> annotations = new ArrayList<>();
+
+		for (NamedProperty<QName> namedProperty : measure.getProperties())
+		{
+			if (namedProperty.getName().equals(Sbol2Terms.Identified.persistentIdentity))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || persistentIdentity != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-10203", measure.getIdentity());
+				}
+				persistentIdentity = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.version))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || version != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+					throw new SBOLValidationException("sbol-10206", measure.getIdentity());
+				}
+				version  = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.displayId))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || displayId != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+					throw new SBOLValidationException("sbol-10204", measure.getIdentity());
+				}
+				displayId = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || name != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+					throw new SBOLValidationException("sbol-10212", measure.getIdentity());
+				}
+				name = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.description))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || description != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+					throw new SBOLValidationException("sbol-10213", measure.getIdentity());
+				}
+				description = ((Literal<QName>) namedProperty.getValue()).getValue().toString();
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Measure.type))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-1xxxx", measure.getIdentity());
+				}
+				types.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue()
+						.toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Measure.hasNumericalValue))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || hasNumericalValue != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof String))) {
+					throw new SBOLValidationException("sbol-1xxxx", measure.getIdentity());
+				}
+				try {
+					hasNumericalValue = Double.parseDouble(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+				} catch (Exception e) {
+					throw new SBOLValidationException("sbol-1xxxx", measure.getIdentity());
+				}
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Measure.hasUnit))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) || hasUnit != null ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-1xxxx", measure.getIdentity());
+				}
+				hasUnit = URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString());
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasDerivedFrom))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-10208", measure.getIdentity());
+				}
+				wasDerivedFroms.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Identified.wasGeneratedBy))
+			{
+				if (!(namedProperty.getValue() instanceof Literal) ||
+						(!(((Literal<QName>) namedProperty.getValue()).getValue() instanceof URI))) {
+					throw new SBOLValidationException("sbol-10221",measure.getIdentity());
+				}
+				wasGeneratedBys.add(URI.create(((Literal<QName>) namedProperty.getValue()).getValue().toString()));
+			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Description.type) && 
+					((Literal<QName>) namedProperty.getValue()).getValue().toString()
+					.equals(Sbol2Terms.Measure.Measure.getNamespaceURI()+Sbol2Terms.Measure.Measure.getLocalPart())) {
+			}
+			else
+			{
+				annotations.add(new Annotation(namedProperty));
+			}
+		}
+
+		Measure m = new Measure(measure.getIdentity(), hasNumericalValue, hasUnit);
+		if (displayId != null)
+			m.setDisplayId(displayId);
+		if (name != null)
+			m.setName(name);
+		if (description != null)
+			m.setDescription(description);
+		if (persistentIdentity != null)
+			m.setPersistentIdentity(persistentIdentity);
+		if (version != null)
+			m.setVersion(version);
+		m.setWasDerivedFroms(wasDerivedFroms);
+		m.setWasGeneratedBys(wasGeneratedBys);
+		if(!annotations.isEmpty())
+			m.setAnnotations(annotations);
+		if (!types.isEmpty()) {
+			m.setTypes(types);
+		}
+		return m;
+	}
 
 	/**
 	 * @param interaction
@@ -5854,6 +6051,7 @@ public class SBOLReader
 		Set<URI> wasGeneratedBys = new HashSet<>();
 		Set<URI> type 		   			   = new HashSet<>();
 		Set<Participation> participations = new HashSet<>();
+		Set<Measure> measures = new HashSet<>();
 		List<Annotation> annotations 	   = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : interaction.getProperties())
@@ -5898,7 +6096,7 @@ public class SBOLReader
 							!nestedDocument.getType().equals(Sbol2Terms.Participation.Participation)) {
 						throw new SBOLValidationException("sbol-11906",interaction.getIdentity());
 					}
-					participations.add(parseParticipation(((NestedDocument<QName>) namedProperty.getValue())));
+					participations.add(parseParticipation(((NestedDocument<QName>) namedProperty.getValue()),nested));
 				}
 				else {
 					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
@@ -5907,7 +6105,7 @@ public class SBOLReader
 							!nestedDocument.getType().equals(Sbol2Terms.Participation.Participation)) {
 						throw new SBOLValidationException("sbol-11906",interaction.getIdentity());
 					}
-					participations.add(parseParticipation(nested.get(uri)));
+					participations.add(parseParticipation(nested.get(uri),nested));
 				}
 			}
 			else if (namedProperty.getName().equals(Sbol2Terms.Identified.title))
@@ -5946,6 +6144,26 @@ public class SBOLReader
 					((Literal<QName>) namedProperty.getValue()).getValue().toString()
 					.equals(Sbol2Terms.Interaction.Interaction.getNamespaceURI()+Sbol2Terms.Interaction.Interaction.getLocalPart())) {
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Measured.hasMeasure))
+			{
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					NestedDocument<QName> nestedDocument = ((NestedDocument<QName>) namedProperty.getValue());
+					if (nestedDocument.getType()==null || 
+							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
+						throw new SBOLValidationException("sbol-1xxxx",interaction.getIdentity());
+					}
+					measures.add(parseMeasure(((NestedDocument<QName>) namedProperty.getValue())));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					NestedDocument<QName> nestedDocument = nested.get(uri);
+					if (nestedDocument==null || nestedDocument.getType()==null || 
+							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
+						throw new SBOLValidationException("sbol-1xxxx",interaction.getIdentity());
+					}
+					measures.add(parseMeasure(nested.get(uri)));
+				}
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -5969,6 +6187,8 @@ public class SBOLReader
 		i.setWasGeneratedBys(wasGeneratedBys);
 		if (!annotations.isEmpty())
 			i.setAnnotations(annotations);
+		if (!measures.isEmpty()) 
+			i.setMeasures(measures);
 		return i;
 	}
 
@@ -5991,7 +6211,7 @@ public class SBOLReader
 	 * </li>
 	 * </ul>
 	 */
-	private static Participation parseParticipation(NestedDocument<QName> participation) throws SBOLValidationException
+	private static Participation parseParticipation(NestedDocument<QName> participation, Map<URI, NestedDocument<QName>> nested) throws SBOLValidationException
 	{
 		String displayId 	   = null;//URIcompliance.extractDisplayId(participation.getIdentity());
 		String name 	 	   = null;
@@ -6002,6 +6222,7 @@ public class SBOLReader
 		URI participant        = null;
 		Set<URI> wasDerivedFroms	 = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<Measure> measures = new HashSet<>();
 		List<Annotation> annotations = new ArrayList<>();
 
 		for (NamedProperty<QName> namedProperty : participation.getProperties())
@@ -6083,6 +6304,26 @@ public class SBOLReader
 					((Literal<QName>) namedProperty.getValue()).getValue().toString()
 					.equals(Sbol2Terms.Participation.Participation.getNamespaceURI()+Sbol2Terms.Participation.Participation.getLocalPart())) {
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Measured.hasMeasure))
+			{
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					NestedDocument<QName> nestedDocument = ((NestedDocument<QName>) namedProperty.getValue());
+					if (nestedDocument.getType()==null || 
+							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
+						throw new SBOLValidationException("sbol-1xxxx",participation.getIdentity());
+					}
+					measures.add(parseMeasure(((NestedDocument<QName>) namedProperty.getValue())));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					NestedDocument<QName> nestedDocument = nested.get(uri);
+					if (nestedDocument==null || nestedDocument.getType()==null || 
+							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
+						throw new SBOLValidationException("sbol-1xxxx",participation.getIdentity());
+					}
+					measures.add(parseMeasure(nested.get(uri)));
+				}
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -6104,6 +6345,8 @@ public class SBOLReader
 		p.setWasGeneratedBys(wasGeneratedBys);
 		if(!annotations.isEmpty())
 			p.setAnnotations(annotations);
+		if (!measures.isEmpty()) 
+			p.setMeasures(measures);
 		return p;
 	}
 
@@ -6143,6 +6386,7 @@ public class SBOLReader
 		URI functionalComponentURI = null;
 		Set<URI> wasDerivedFroms	 = new HashSet<>();
 		Set<URI> wasGeneratedBys = new HashSet<>();
+		Set<Measure> measures = new HashSet<>();
 
 		List<Annotation> annotations = new ArrayList<>();
 		Set<MapsTo> mappings 		 = new HashSet<>();
@@ -6290,6 +6534,26 @@ public class SBOLReader
 					((Literal<QName>) namedProperty.getValue()).getValue().toString()
 					.equals(Sbol2Terms.FunctionalComponent.FunctionalComponent.getNamespaceURI()+Sbol2Terms.FunctionalComponent.FunctionalComponent.getLocalPart())) {
 			}
+			else if (namedProperty.getName().equals(Sbol2Terms.Measured.hasMeasure))
+			{
+				if (namedProperty.getValue() instanceof NestedDocument) {
+					NestedDocument<QName> nestedDocument = ((NestedDocument<QName>) namedProperty.getValue());
+					if (nestedDocument.getType()==null || 
+							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
+						throw new SBOLValidationException("sbol-1xxxx",functionalComponent.getIdentity());
+					}
+					measures.add(parseMeasure(((NestedDocument<QName>) namedProperty.getValue())));
+				}
+				else {
+					URI uri = (URI) ((Literal<QName>)namedProperty.getValue()).getValue();
+					NestedDocument<QName> nestedDocument = nested.get(uri);
+					if (nestedDocument==null || nestedDocument.getType()==null || 
+							!nestedDocument.getType().equals(Sbol2Terms.Measure.Measure)) {
+						throw new SBOLValidationException("sbol-1xxxx",functionalComponent.getIdentity());
+					}
+					measures.add(parseMeasure(nested.get(uri)));
+				}
+			}
 			else
 			{
 				annotations.add(new Annotation(namedProperty));
@@ -6315,6 +6579,8 @@ public class SBOLReader
 		fc.setWasGeneratedBys(wasGeneratedBys);
 		if (!annotations.isEmpty())
 			fc.setAnnotations(annotations);
+		if (!measures.isEmpty()) 
+			fc.setMeasures(measures);
 		return fc;
 	}
 
