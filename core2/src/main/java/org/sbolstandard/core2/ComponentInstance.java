@@ -12,7 +12,7 @@ import java.net.URI;
  * @version 2.1
  */
 
-public abstract class ComponentInstance extends Identified {
+public abstract class ComponentInstance extends Measured {
 
 	private AccessType access;
 	private URI definition;

@@ -2238,7 +2238,52 @@ public abstract class SBOLAbstractTests {
 
 		runTest("/SBOLTestSuite/SBOL2/singleFunctionalComponent.xml", document, true);
 	}
+	
+	
+	/**
+	 * @throws SBOLValidationException
+	 * @throws SBOLConversionException
+	 * @throws IOException
+	 */
+	@Test
+	public void test_Measure() throws SBOLValidationException, SBOLConversionException, IOException
+	{
+		SBOLDocument document = new SBOLDocument();
+		document.setComplete(true);
+		document.setDefaultURIprefix("http://www.async.ece.utah.edu");
 
+		ModuleDefinition md = document.createModuleDefinition("md");
+		
+		// put a FunctionalComponent into the ModuleDefinition
+		ComponentDefinition cd = 
+				document.createComponentDefinition("cd", new HashSet<URI>(Arrays.asList(URI.create("http://purl.obolibrary.org/obo/CHEBI_17634"))));
+		cd.addType(ComponentDefinition.SMALL_MOLECULE);
+		FunctionalComponent fc = 
+				md.createFunctionalComponent("fc", AccessType.PUBLIC, cd.getIdentity(), DirectionType.INOUT);
+		// put a Module into the ModuleDefinition
+		ModuleDefinition emptyMd = document.createModuleDefinition("empty_md");
+		Module m = md.createModule("m", emptyMd.getDisplayId());
+		// put an Interaction into the ModuleDefinition
+		Interaction i =
+				md.createInteraction("i", SystemsBiologyOntology.NON_COVALENT_BINDING);
+		Participation p = 
+				i.createParticipation("p", fc.getDisplayId(), SystemsBiologyOntology.PRODUCT);
+		p.createMeasure("pMeasure", 1.23, URI.create("http://purl.obolibrary.org/obo/UO_0000021"));
+		
+		// add a Measure to the FunctionalComponent
+		Measure fcMeasure = 
+				fc.createMeasure("fc_measure", 0.04, URI.create("http://purl.obolibrary.org/obo/UO_0000021"));
+		
+		// add a Measure to the Module
+		Measure mMeasure = 
+				m.createMeasure("md_measure", 11.28, URI.create("http://purl.obolibrary.org/obo/UO_0000175"));
+		// add a Measure to the Interaction
+		Measure iMeasure = 
+				i.createMeasure("i_measure", 0.04, URI.create("http://purl.obolibrary.org/obo/UO_0000077"));
+		
+		runTest("/SBOLTestSuite/SBOL2/Measure.xml", document, true);
+	}
+	
 	/**
 	 * Abstract method to run a single test
 	 * @param fileName - "golden" file

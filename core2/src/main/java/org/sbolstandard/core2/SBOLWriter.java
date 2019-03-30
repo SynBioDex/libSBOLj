@@ -370,6 +370,21 @@ public class SBOLWriter
 		}
 	}
 
+	private static void formatCommonMeasuredData (List<NamedProperty<QName>> comlist, Measured m)
+	{
+		formatCommonIdentifiedData(comlist,m);
+		for(Measure measure : m.getMeasures()) {
+			List<NamedProperty<QName>> list = new ArrayList<>();
+			formatCommonIdentifiedData(list, measure);
+			list.add(NamedProperty(Sbol2Terms.Measure.hasNumericalValue, measure.getNumericalValue()));
+			list.add(NamedProperty(Sbol2Terms.Measure.hasUnit, measure.getUnitURI()));
+			for(URI t : measure.getTypes())
+				list.add(NamedProperty(Sbol2Terms.Measure.type, t));
+			comlist.add(NamedProperty(Sbol2Terms.Measured.hasMeasure, 
+					NestedDocument(Sbol2Terms.Measure.Measure, measure.getIdentity(), NamedProperties(list))));
+		}
+	}
+
 	private static void formatCommonTopLevelData (List<NamedProperty<QName>> list, TopLevel t)
 	{
 		formatCommonIdentifiedData(list,t);
@@ -542,7 +557,7 @@ public class SBOLWriter
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
 
-			formatCommonIdentifiedData(list, f);
+			formatCommonMeasuredData(list, f);
 
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.hasComponentDefinition, f.getDefinitionURI()));
 			list.add(NamedProperty(Sbol2Terms.ComponentInstance.access, AccessType.convertToURI(f.getAccess())));
@@ -570,7 +585,7 @@ public class SBOLWriter
 		for(Interaction i : interactions)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonIdentifiedData(list, i);
+			formatCommonMeasuredData(list, i);
 			for(URI type : i.getTypes())
 			{
 				list.add(NamedProperty(Sbol2Terms.Interaction.type, type));
@@ -639,7 +654,7 @@ public class SBOLWriter
 		for(Module m : module)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonIdentifiedData(list, m);
+			formatCommonMeasuredData(list, m);
 			list.add(NamedProperty(Sbol2Terms.Module.hasDefinition, m.getDefinitionURI()));
 			List<NestedDocument<QName>> referenceList = getMapsTo(m.getMapsTos());
 			for(NestedDocument<QName> n : referenceList)
@@ -676,7 +691,7 @@ public class SBOLWriter
 		for(Participation p : participations)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonIdentifiedData(list, p);
+			formatCommonMeasuredData(list, p);
 			for(URI r : p.getRoles())
 				list.add(NamedProperty(Sbol2Terms.Participation.role, r));
 			list.add(NamedProperty(Sbol2Terms.Participation.hasParticipant, p.getParticipantURI()));
@@ -752,7 +767,7 @@ public class SBOLWriter
 		for(Component s : components)
 		{
 			List<NamedProperty<QName>> list = new ArrayList<>();
-			formatCommonIdentifiedData(list, s);
+			formatCommonMeasuredData(list, s);
 			for (URI roles : s.getRoles())
 			{ 
 				list.add(NamedProperty(Sbol2Terms.Component.roles, roles));

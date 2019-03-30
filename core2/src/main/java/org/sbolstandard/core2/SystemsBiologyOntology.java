@@ -1206,4 +1206,10 @@ public class SystemsBiologyOntology {
 	 * (<a href="http://identifiers.org/biomodels.sbo/SBO:0000645">SBO:0000645</a>). 
 	 */
 	public static final URI TEMPLATE 				 = type("SBO:0000645");
+	/**
+	 * A value, numerical or symbolic, that defines certain characteristics of systems 
+	 * or system functions, or is necessary in their derivation.
+	 * (<a href="http://identifiers.org/biomodels.sbo/SBO:0000545">SBO:0000545</a>). 
+	 */
+	public static final URI SYSTEMS_DESCRIPTION_PARAMETER = type("SBO:0000545");
 }

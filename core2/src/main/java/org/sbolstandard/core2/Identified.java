@@ -634,6 +634,8 @@ public abstract class Identified {
 				throw new SBOLValidationException("sbol-13301");
 			} else if (this instanceof Experiment) {
 				throw new SBOLValidationException("sbol-13401");
+			}else if (this instanceof Measure) {
+				throw new SBOLValidationException("sbol-13501");
 			}
 		}
 		addNamespace(annotation);

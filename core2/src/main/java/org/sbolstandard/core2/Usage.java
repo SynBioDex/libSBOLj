@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Represents an Association object in the SBOL data model.
+ * Represents an Usage object in the SBOL data model.
  * 
  * @author Chris Myers
  * @version 2.2
@@ -101,7 +101,7 @@ public class Usage extends Identified {
 	 *
 	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
 	 * entity identity referenced by this usage exists; 
-	 * or the matching plan otherwise.
+	 * or the matching entity otherwise.
 	 */
 	public URI getEntityIdentity() {
 		if (this.getSBOLDocument()==null) return null;
@@ -114,7 +114,7 @@ public class Usage extends Identified {
 	 *
 	 * @return {@code null} if the associated SBOLDocument instance is {@code null} or no matching
 	 * entity referenced by this usage exists; 
-	 * or the matching plan otherwise.
+	 * or the matching entity otherwise.
 	 */
 	public TopLevel getEntity() {
 		if (this.getSBOLDocument()==null) return null;
@@ -211,7 +211,7 @@ public class Usage extends Identified {
 	}
 
 	/**
-	 * Updates this participation with a compliant URI.
+	 * Updates this usage with a compliant URI.
 	 * 
 	 * @throws SBOLValidationException if an SBOL validation rule violation occurred in any of the following methods:
 	 * <ul>

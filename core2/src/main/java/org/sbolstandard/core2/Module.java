@@ -17,7 +17,7 @@ import java.util.Set;
  * @version 2.1
  */
 
-public class Module extends Identified {
+public class Module extends Measured {
 
 	private HashMap<URI, MapsTo> mapsTos;
 	private URI definition;
