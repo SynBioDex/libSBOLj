@@ -1165,7 +1165,7 @@ public class SBOLValidate {
 						} catch (Exception e) {
 						}
 					}
-					if (numSBOtype != 1) {
+					if (measure.getTypes().size() > 0 && numSBOtype != 1) {
 						errors.add(new SBOLValidationException("sbol-13505", measure).getMessage());
 					}
 				}
@@ -1188,6 +1188,22 @@ public class SBOLValidate {
 			}
 		}
 		for (ModuleDefinition modDef : sbolDocument.getModuleDefinitions()) {
+			for (Module module : modDef.getModules()) {
+				for (Measure measure : module.getMeasures()) {
+					int numSBOtype = 0;
+					for (URI type : measure.getTypes()) {
+						try {
+							if (sbo.isDescendantOf(type, SystemsBiologyOntology.SYSTEMS_DESCRIPTION_PARAMETER)) {
+								numSBOtype++;
+							}
+						} catch (Exception e) {
+						}
+					}
+					if (measure.getTypes().size() > 0 && numSBOtype != 1) {
+						errors.add(new SBOLValidationException("sbol-13505", measure).getMessage());
+					}
+				}
+			}
 			for (FunctionalComponent functionalComponent : modDef.getFunctionalComponents()) {
 				for (Measure measure : functionalComponent.getMeasures()) {
 					int numSBOtype = 0;
@@ -1199,7 +1215,7 @@ public class SBOLValidate {
 						} catch (Exception e) {
 						}
 					}
-					if (numSBOtype != 1) {
+					if (measure.getTypes().size() > 0 && numSBOtype != 1) {
 						errors.add(new SBOLValidationException("sbol-13505", measure).getMessage());
 					}
 				}
@@ -1229,7 +1245,7 @@ public class SBOLValidate {
 						} catch (Exception e) {
 						}
 					}
-					if (numSBOtype != 1) {
+					if (measure.getTypes().size() > 0 && numSBOtype != 1) {
 						errors.add(new SBOLValidationException("sbol-13505", measure).getMessage());
 					}
 				}
@@ -1260,7 +1276,7 @@ public class SBOLValidate {
 							} catch (Exception e) {
 							}
 						}
-						if (numSBOtype != 1) {
+						if (measureP.getTypes().size() > 0 && numSBOtype != 1) {
 							errors.add(new SBOLValidationException("sbol-13505", measureP).getMessage());
 						} 
 					}

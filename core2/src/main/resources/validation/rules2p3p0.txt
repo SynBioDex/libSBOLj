@@ -491,7 +491,7 @@ id: sbol-10602
 condition: strong required
 description: The definition property of a ComponentInstance is
 REQUIRED and MUST contain a URI.
-reference: Section 7.7.1 on page 26
+reference: Section 7.7.1 on page 27
 
 [ComponentInstance]
 id: sbol-10603
@@ -499,13 +499,13 @@ condition: strong required
 description: The definition property of a ComponentInstance MUST NOT
 contain a URI reference to the ComponentDefinition that contains the
 ComponentInstance. 
-reference: Section 7.7.1 on page 26
+reference: Section 7.7.1 on page 27
 
 [ComponentInstance]
 id: sbol-10604
 condition: weak required
 description: The URI contained by the definition property MUST refer to a ComponentDefinition object.
-reference: Section 7.7.1 on page 26
+reference: Section 7.7.1 on page 27
 
 [ComponentInstance]
 id: sbol-10605
@@ -513,26 +513,27 @@ condition: weak required
 description: ComponentInstance objects MUST NOT form circular
 reference chains via their definition properties and parent
 ComponentDefinition objects.
-reference: Section 7.7.1 on page 26
+reference: Section 7.7.1 on page 27
 
 [ComponentInstance]
 id: sbol-10606
 condition: strong required
 description: The mapsTos property of a ComponentInstance is OPTIONAL
 and MAY contain a set of MapsTo objects.
-reference: Section 7.7.1 on page 26
+reference: Section 7.7.1 on page 27
 
 [ComponentInstance]
 id: sbol-10607
 condition: strong required
 description: The access property of a ComponentInstance is REQUIRED and MUST contain a URI from Table4.
-reference: Section 7.7.1 on page 26
+reference: Section 7.7.1 on page 27
 
 [ComponentInstance]
 id: sbol-10608
 condition: strong required
-description: TBD
-reference: Section 7.7.1 on page 26
+description: The measures property of a ComponentInstance is OPTIONAL and may contain a set of
+Measure objects.
+reference: Section 7.7.1 on page 27
 
 [Component]
 id: sbol-10701
@@ -1101,8 +1102,8 @@ reference: Section 7.9.1 on page 41
 [Module]
 id: sbol-11707
 condition: strong required
-description: TBD
-reference: Section 7.7.1 on page 26
+description: The measures property of a Module is OPTIONAL andmay contain a set of Measure objects.
+reference: Section 7.9.1 on page 41
 
 [FunctionalComponent]
 id: sbol-11801
@@ -1169,13 +1170,13 @@ reference: Section 7.9.3 on page 43
 id: sbol-11907
 condition: recommended
 description: If the participations property of an Interaction refers to one or more Participation objects, and one of the types of this Interaction comes from Table 11, then the Participation objects SHOULD have a role from the set of roles that is cross-listed with this type in Table 12.
-reference: Section 7.9.4 on page 44
+reference: Section 7.9.4 on page 43
 
 [Interaction]
 id: sbol-11908
 condition: strong required
-description: TBD
-reference: Section 7.7.1 on page 26
+description: The measures property of an Interaction is OPTIONAL and may contain a set of Measure objects.
+reference: Section 7.7.1 on page 43
 
 [Participation]
 id: sbol-12001
@@ -1183,13 +1184,13 @@ condition: strong required
 description: A Participation MUST NOT have properties other than the
 following: identity, persistentIdentity, displayId, version,
 wasDerivedFroms, wasGeneratedBys, name, description, annotations, roles, and participant.
-reference: Section 7.9.4 on page 44
+reference: Section 7.9.4 on page 45
 
 [Participation]
 id: sbol-12002
 condition: strong required
 description: The participant property of a Participation is REQUIRED and MUST contain a URI reference to a FunctionalComponent.
-reference: Section 7.9.4 on page 44
+reference: Section 7.9.4 on page 45
 
 [Participation]
 id: sbol-12003
@@ -1197,40 +1198,40 @@ condition: strong required
 description: The FunctionalComponent referenced by the participant
 property of a Participation MUST be contained by the ModuleDefinition
 that contains the Interaction which contains the Participation.
-reference: Section 7.9.4 on page 44
+reference: Section 7.9.4 on page 45
 
 [Participation]
 id: sbol-12004
 condition: strong required
 description: The roles property of a Participation is REQUIRED and
 MUST contain a non-empty set of URIs.
-reference: Section 7.9.4 on page 44
+reference: Section 7.9.4 on page 45
 
 [Participation]
 id: sbol-12005
 condition: weak required (not machine checkable)
 description: Each URI contained by the roles property of an Participation MUST refer to an ontology term that describes the behavior represented by the Participation.
-reference: Section 7.9.4 on page 44
+reference: Section 7.9.4 on page 45
 
 [Participation]
 id: sbol-12006
 condition: weak required (not machine checkable)
 description: All URIs contained by the roles property of an
 Participation MUST refer to non-conflicting ontology terms.
-reference: Section 7.9.4 on page 44
+reference: Section 7.9.4 on page 45
 
 [Participation]
 id: sbol-12007
 condition: recommended
 description: Exactly one role in the set of roles SHOULD be a URI from
 the participant role branch of the SBO.
-reference: Section 7.9.4 on page 44
+reference: Section 7.9.4 on page 45
 
 [Participation]
 id: sbol-12008
 condition: strong required
-description: TBD
-reference: Section 7.7.1 on page 26
+description: The measures property of a Participation is OPTIONAL and may contain a set of Measure objects.
+reference: Section 7.9.4 on page 45
 
 [Collection]
 id: sbol-12101 
@@ -1876,29 +1877,39 @@ reference: Section 7.15 on page 54
 [Measure]
 id: sbol-13501
 condition: strong required
-description: TBD
-reference: Section 7.15 on page 54
+description: A Measure MUST NOT have properties other than the following: identity,
+persistentIdentity, displayId, version, wasDerivedFroms, wasGeneratedBys, name,
+description, annotations, hasNumericalValue, hasUnit, and types.
+reference: Section 13.2.1 on page 92
 
 [Measure]
 id: sbol-13502
 condition: strong required
-description: TBD
-reference: Section 7.15 on page 54
+description: The hasNumericalValue property of a Measure is REQUIRED and MUST contain an xsd:float.
+reference: Section 13.2.1 on page 92
 
 [Measure]
 id: sbol-13503
 condition: strong required
-description: TBD
-reference: Section 7.15 on page 54
+description: The hasUnit property of a Measure is REQUIRED and MUST contain a URI.
+reference: Section 13.2.1 on page 92
 
 [Measure]
 id: sbol-13504
 condition: strong required
-description: TBD
-reference: Section 7.15 on page 54
+description: The types property of a Measure is OPTIONAL and MAY contain a set of URIs.
+reference: Section 13.2.1 on page 92
 
 [Measure]
 id: sbol-13505
 condition: recommended
-description: TBD
-reference: Section 7.13 on page 52
+description: If the types property of a Measure is non-empty, then exactly one of the URIs that this property
+contains SHOULD refer to a term from the systems description parameter branch of the SBO.
+reference: Section 13.2.1 on page 92
+
+[Measure]
+id: sbol-13506 
+condition: weak required
+description: The URI contained by the hasUnit property of a MeasureMUST refer to a Unit.
+reference: Section 13.2.1 on page 92
+
