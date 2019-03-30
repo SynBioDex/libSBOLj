@@ -2273,6 +2273,7 @@ public abstract class SBOLAbstractTests {
 		// add a Measure to the FunctionalComponent
 		Measure fcMeasure = 
 				fc.createMeasure("fc_measure", 0.04, URI.create("http://purl.obolibrary.org/obo/UO_0000021"));
+		fcMeasure.addType(SystemsBiologyOntology.GROWTH_RATE);
 		
 		// add a Measure to the Module
 		Measure mMeasure = 
