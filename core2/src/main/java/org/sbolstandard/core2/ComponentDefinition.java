@@ -196,6 +196,7 @@ public class ComponentDefinition extends TopLevel {
 	
 	void copy(ComponentDefinition componentDefinition) throws SBOLValidationException {
 		((TopLevel)this).copy((TopLevel)componentDefinition);
+		this.setSequences(componentDefinition.getSequenceURIs());
 		for (URI role : componentDefinition.getRoles()) {
 			this.addRole(URI.create(role.toString()));
 		}
@@ -231,7 +232,6 @@ public class ComponentDefinition extends TopLevel {
 				displayId,"DUMMY__LOCATION");
 			newSequenceAnnotation.copy(sequenceAnnotation);
 		}
-		this.setSequences(componentDefinition.getSequenceURIs());
 	}
 
 	/**

@@ -84,6 +84,9 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 				} else {
 					newRange = this.addRange(displayId, range.getStart(), range.getEnd());
 				}
+				if (range.isSetSequence()) {
+					newRange.setSequence(range.getSequenceURI());
+				}
 				newRange.copy(range);
 			} else if (location instanceof Cut) {
 				Cut cut = (Cut)location;
@@ -92,6 +95,9 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 					newCut = this.addCut(displayId, cut.getAt(), cut.getOrientation());
 				} else {
 					newCut = this.addCut(displayId, cut.getAt());
+				}
+				if (cut.isSetSequence()) {
+					newCut.setSequence(cut.getSequenceURI());
 				}
 				newCut.copy(cut);
 			} else if (location instanceof GenericLocation) {
@@ -102,6 +108,9 @@ public class SequenceAnnotation extends Identified implements Comparable<Sequenc
 							genericLocation.getOrientation());
 				} else {
 					newGenericLocation = this.addGenericLocation(displayId);
+				}
+				if (genericLocation.isSetSequence()) {
+					newGenericLocation.setSequence(genericLocation.getSequenceURI());
 				}
 				newGenericLocation.copy(genericLocation);
 			}

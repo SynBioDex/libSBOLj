@@ -34,7 +34,7 @@ class readTester {
 	static String path = "/Users/myers/git/libSBOLj/core2/src/test/resources/";
 
 	public static void main(String[] args) throws SBOLValidationException, IOException, SBOLConversionException {
-		SBOLDocument doc = SBOLReader.read("/Users/myers/Downloads/bug756.xml");
+		SBOLDocument doc = SBOLReader.read("/Users/myers/git/libSBOLj/core2/src/test/resources/SBOLTestSuite/SBOL2_bp/LocationToSequenceOutput.xml");
 		long submitStartTime = System.currentTimeMillis();
 
 		doc = doc.changeURIPrefixVersion("https://synbiohub.org", "1", "1");

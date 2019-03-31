@@ -100,6 +100,98 @@ public class Component extends ComponentInstance{
 		for (URI role : component.getRoles()) {
 			this.addRole(URI.create(role.toString()));
 		}
+		for (Location location : component.getLocations()) {
+			String displayId = URIcompliance.findDisplayId(location);
+			if (location instanceof Range) {
+				Range range = (Range)location;
+				Range newRange;
+				if (range.isSetOrientation()) {
+					newRange = this.addRange(displayId, range.getStart(), range.getEnd(), 
+							range.getOrientation());
+				} else {
+					newRange = this.addRange(displayId, range.getStart(), range.getEnd());
+				}
+				if (range.isSetSequence()) {
+					newRange.setSequence(range.getSequenceURI());
+				}
+				newRange.copy(range);
+			} else if (location instanceof Cut) {
+				Cut cut = (Cut)location;
+				Cut newCut;
+				if (cut.isSetOrientation()) {
+					newCut = this.addCut(displayId, cut.getAt(), cut.getOrientation());
+				} else {
+					newCut = this.addCut(displayId, cut.getAt());
+				}
+				if (cut.isSetSequence()) {
+					newCut.setSequence(cut.getSequenceURI());
+				}
+				newCut.copy(cut);
+			} else if (location instanceof GenericLocation) {
+				GenericLocation genericLocation = (GenericLocation)location;
+				GenericLocation newGenericLocation;
+				if (genericLocation.isSetOrientation()) {
+					newGenericLocation = this.addGenericLocation(displayId,
+							genericLocation.getOrientation());
+				} else {
+					newGenericLocation = this.addGenericLocation(displayId);
+				}
+				if (genericLocation.isSetSequence()) {
+					newGenericLocation.setSequence(genericLocation.getSequenceURI());
+				}
+				newGenericLocation.copy(genericLocation);
+			}
+		}
+		Location location = this.getLocation("DUMMY__LOCATION");
+		if (location!=null) {
+			this.removeLocation(location);
+		}
+		for (Location sourceLocation : component.getSourceLocations()) {
+			String displayId = URIcompliance.findDisplayId(sourceLocation);
+			if (sourceLocation instanceof Range) {
+				Range range = (Range)sourceLocation;
+				Range newRange;
+				if (range.isSetOrientation()) {
+					newRange = this.addRange(displayId, range.getStart(), range.getEnd(), 
+							range.getOrientation());
+				} else {
+					newRange = this.addRange(displayId, range.getStart(), range.getEnd());
+				}
+				if (range.isSetSequence()) {
+					newRange.setSequence(range.getSequenceURI());
+				}
+				newRange.copy(range);
+			} else if (sourceLocation instanceof Cut) {
+				Cut cut = (Cut)sourceLocation;
+				Cut newCut;
+				if (cut.isSetOrientation()) {
+					newCut = this.addCut(displayId, cut.getAt(), cut.getOrientation());
+				} else {
+					newCut = this.addCut(displayId, cut.getAt());
+				}
+				if (cut.isSetSequence()) {
+					newCut.setSequence(cut.getSequenceURI());
+				}
+				newCut.copy(cut);
+			} else if (sourceLocation instanceof GenericLocation) {
+				GenericLocation genericLocation = (GenericLocation)sourceLocation;
+				GenericLocation newGenericLocation;
+				if (genericLocation.isSetOrientation()) {
+					newGenericLocation = this.addGenericLocation(displayId,
+							genericLocation.getOrientation());
+				} else {
+					newGenericLocation = this.addGenericLocation(displayId);
+				}
+				if (genericLocation.isSetSequence()) {
+					newGenericLocation.setSequence(genericLocation.getSequenceURI());
+				}
+				newGenericLocation.copy(genericLocation);
+			}
+		}
+		Location sourceLocation = this.getLocation("DUMMY__LOCATION");
+		if (sourceLocation!=null) {
+			this.removeLocation(sourceLocation);
+		}
 	}
 
 	/* (non-Javadoc)

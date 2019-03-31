@@ -2808,6 +2808,12 @@ public class SBOLDocument {
 		}
 		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
 			updateReferences(componentDefinition, originalIdentity, newIdentity);
+			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
+				if (sequenceURI.equals(originalIdentity)) {
+					componentDefinition.removeSequence(originalIdentity);
+					componentDefinition.addSequence(newIdentity);
+				}
+			}
 			for (Component component : componentDefinition.getComponents()) {
 				if (component.getDefinitionURI().equals(originalIdentity)) {
 					component.setDefinition(newIdentity);
@@ -2825,21 +2831,23 @@ public class SBOLDocument {
 				for (MapsTo mapsTo : component.getMapsTos()) {
 					updateReferences(mapsTo, originalIdentity, newIdentity);
 				}
+				for (Location sourceLocation : component.getSourceLocations()) {
+					if (sourceLocation.isSetSequence() && sourceLocation.getSequenceURI().equals(originalIdentity)) {
+						sourceLocation.setSequence(newIdentity);
+					}
+				}
 			}
 			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
 				for (Location loc : sa.getLocations()) {
+					if (loc.isSetSequence() && loc.getSequenceURI().equals(originalIdentity)) {
+						loc.setSequence(newIdentity);
+					}
 					updateReferences(loc, originalIdentity, newIdentity);
 				}
 				updateReferences(sa, originalIdentity, newIdentity);
 			}
 			for (SequenceConstraint sc : componentDefinition.getSequenceConstraints()) {
 				updateReferences(sc, originalIdentity, newIdentity);
-			}
-			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
-				if (sequenceURI.equals(originalIdentity)) {
-					componentDefinition.removeSequence(originalIdentity);
-					componentDefinition.addSequence(newIdentity);
-				}
 			}
 		}
 		for (ModuleDefinition moduleDefinition : getModuleDefinitions()) {
@@ -3036,6 +3044,12 @@ public class SBOLDocument {
 		}
 		for (ComponentDefinition componentDefinition : getComponentDefinitions()) {
 			updateReferences(componentDefinition, uriMap);
+			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
+				if (uriMap.get(sequenceURI) != null) {
+					componentDefinition.removeSequence(sequenceURI);
+					componentDefinition.addSequence(uriMap.get(sequenceURI));
+				}
+			}
 			for (Component component : componentDefinition.getComponents()) {
 				if (uriMap.get(component.getDefinitionURI()) != null) {
 					component.setDefinition(uriMap.get(component.getDefinitionURI()));
@@ -3053,21 +3067,23 @@ public class SBOLDocument {
 				for (MapsTo mapsTo : component.getMapsTos()) {
 					updateReferences(mapsTo, uriMap);
 				}
+				for (Location sourceLocation : component.getSourceLocations()) {
+					if (sourceLocation.isSetSequence() && uriMap.get(sourceLocation.getSequenceURI())!=null) {
+						sourceLocation.setSequence(uriMap.get(sourceLocation.getSequenceURI()));
+					}
+				}
 			}
 			for (SequenceAnnotation sa : componentDefinition.getSequenceAnnotations()) {
 				for (Location loc : sa.getLocations()) {
+					if (loc.isSetSequence() && uriMap.get(loc.getSequenceURI())!=null) {
+						loc.setSequence(uriMap.get(loc.getSequenceURI()));
+					}
 					updateReferences(loc, uriMap);
 				}
 				updateReferences(sa, uriMap);
 			}
 			for (SequenceConstraint sc : componentDefinition.getSequenceConstraints()) {
 				updateReferences(sc, uriMap);
-			}
-			for (URI sequenceURI : componentDefinition.getSequenceURIs()) {
-				if (uriMap.get(sequenceURI) != null) {
-					componentDefinition.removeSequence(sequenceURI);
-					componentDefinition.addSequence(uriMap.get(sequenceURI));
-				}
 			}
 		}
 		for (ModuleDefinition moduleDefinition : getModuleDefinitions()) {
