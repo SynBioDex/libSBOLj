@@ -63,7 +63,7 @@ public class Interaction extends Measured {
 	}
 	
 	void copy(Interaction interaction) throws SBOLValidationException {
-		((Identified)this).copy(interaction);
+		((Measured)this).copy(interaction);
 		for (Participation participation : interaction.getParticipations()) {
 			String displayId = URIcompliance.findDisplayId(participation);
 			String participantDisplayId = URIcompliance.findDisplayId(participation.getParticipant());

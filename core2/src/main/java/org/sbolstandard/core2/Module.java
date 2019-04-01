@@ -53,7 +53,7 @@ public class Module extends Measured {
 	}
 	
 	void copy(Module module) throws SBOLValidationException {
-		((Identified)this).copy((Identified)module);
+		((Measured)this).copy((Measured)module);
 		if (!module.getMapsTos().isEmpty()) {
 			for (MapsTo mapsTo : module.getMapsTos()) {
 				String displayId = URIcompliance.findDisplayId(mapsTo);

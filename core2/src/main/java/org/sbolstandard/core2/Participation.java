@@ -53,7 +53,7 @@ public class Participation extends Measured {
 	}
 
 	void copy(Participation participation) throws SBOLValidationException {
-		((Identified)this).copy((Identified)participation);
+		((Measured)this).copy((Measured)participation);
 	}
 	
 	/**

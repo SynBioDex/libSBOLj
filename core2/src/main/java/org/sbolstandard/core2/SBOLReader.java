@@ -930,28 +930,30 @@ public class SBOLReader
 				int sbolCount = 0;
 				int provCount = 0;
 				int sbol1Count = 0;
+				int omCount = 0;
 				for (PropertyValue<QName> value : topLevel.getPropertyValues(Sbol2Terms.Description.type)) {
 					String type = ((Literal<QName>) value).getValue().toString();
 					if (type.startsWith(Sbol2Terms.prov.getNamespaceURI())) provCount++;
 					else if (type.startsWith(Sbol2Terms.sbol2.getNamespaceURI())) sbolCount++;
 					else if (type.startsWith(Sbol1Terms.sbol1.getNamespaceURI())) sbol1Count++;
+					else if (type.startsWith(Sbol2Terms.om.getNamespaceURI())) omCount++;
 				}
-				if (sbolCount > 1 || provCount > 1 || sbol1Count > 1) {
+				if (sbolCount > 1 || provCount > 1 || sbol1Count > 1 || omCount > 1) {
 					if (keepGoing) {
 						errors.add(new SBOLValidationException("sbol-10228",topLevel.getIdentity()).getMessage());
 					} else {
 						throw new SBOLValidationException("sbol-10228",topLevel.getIdentity());
 					}
-				} else if (sbolCount==0 && provCount==0 && sbol1Count==0 &&
+				} else if (sbolCount==0 && provCount==0 && sbol1Count==0 && omCount == 0 &&
 						topLevel.getPropertyValues(Sbol2Terms.Description.type).size() > 1) {
 					if (keepGoing) {
 						errors.add(new SBOLValidationException("sbol-12302",topLevel.getIdentity()).getMessage());
 					} else {
 						throw new SBOLValidationException("sbol-12302",topLevel.getIdentity());
 					}
-				} else if (sbolCount==0 && provCount==0 && topLevel.getPropertyValues(Sbol2Terms.Description.type).size()==1) {
+				} else if (sbolCount==0 && provCount==0 && omCount==0 && topLevel.getPropertyValues(Sbol2Terms.Description.type).size()==1) {
 					topLevels.add(topLevel);
-				} else if (sbolCount==1 || provCount==1) {
+				} else if (sbolCount==1 || provCount==1 || omCount==1) {
 					for (PropertyValue<QName> value : topLevel.getPropertyValues(Sbol2Terms.Description.type)) {
 						String typeStr = ((Literal<QName>) value).getValue().toString();
 						QName type = null;
@@ -961,6 +963,9 @@ public class SBOLReader
 						} else if (provCount==0 && typeStr.startsWith(Sbol2Terms.sbol2.getNamespaceURI())) {
 							String localPart = typeStr.replace(Sbol2Terms.sbol2.getNamespaceURI(), "");
 							type = Sbol2Terms.sbol2.withLocalPart(localPart);
+						} else if (provCount==0 && typeStr.startsWith(Sbol2Terms.om.getNamespaceURI())) {
+							String localPart = typeStr.replace(Sbol2Terms.om.getNamespaceURI(), "");
+							type = Sbol2Terms.om.withLocalPart(localPart);
 						} else {
 							continue;
 						}
@@ -971,6 +976,7 @@ public class SBOLReader
 								|| type.equals(Sbol2Terms.Interaction.Interaction)
 								|| type.equals(Sbol2Terms.Location.Location)
 								|| type.equals(Sbol2Terms.MapsTo.MapsTo)
+								|| type.equals(Sbol2Terms.Measure.Measure)
 								|| type.equals(Sbol2Terms.Module.Module)
 								|| type.equals(Sbol2Terms.Participation.Participation)
 								|| type.equals(Sbol2Terms.Range.Range)
@@ -1019,6 +1025,7 @@ public class SBOLReader
 					|| topLevel.getType().equals(Sbol2Terms.Location.Location)
 					|| topLevel.getType().equals(Sbol2Terms.MapsTo.MapsTo)
 					|| topLevel.getType().equals(Sbol2Terms.Module.Module)
+					|| topLevel.getType().equals(Sbol2Terms.Measure.Measure)
 					|| topLevel.getType().equals(Sbol2Terms.Participation.Participation)
 					|| topLevel.getType().equals(Sbol2Terms.Range.Range)
 					|| topLevel.getType().equals(Sbol2Terms.SequenceAnnotation.SequenceAnnotation)

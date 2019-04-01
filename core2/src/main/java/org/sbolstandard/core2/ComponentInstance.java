@@ -49,7 +49,7 @@ public abstract class ComponentInstance extends Measured {
 	}
 	
 	void copy(ComponentInstance component) throws SBOLValidationException {
-		((Identified)this).copy(component);
+		((Measured)this).copy(component);
 	}
 
 	/**

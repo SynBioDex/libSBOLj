@@ -152,10 +152,10 @@ public class Component extends ComponentInstance{
 				Range range = (Range)sourceLocation;
 				Range newRange;
 				if (range.isSetOrientation()) {
-					newRange = this.addRange(displayId, range.getStart(), range.getEnd(), 
+					newRange = this.addSourceRange(displayId, range.getStart(), range.getEnd(), 
 							range.getOrientation());
 				} else {
-					newRange = this.addRange(displayId, range.getStart(), range.getEnd());
+					newRange = this.addSourceRange(displayId, range.getStart(), range.getEnd());
 				}
 				if (range.isSetSequence()) {
 					newRange.setSequence(range.getSequenceURI());
@@ -165,9 +165,9 @@ public class Component extends ComponentInstance{
 				Cut cut = (Cut)sourceLocation;
 				Cut newCut;
 				if (cut.isSetOrientation()) {
-					newCut = this.addCut(displayId, cut.getAt(), cut.getOrientation());
+					newCut = this.addSourceCut(displayId, cut.getAt(), cut.getOrientation());
 				} else {
-					newCut = this.addCut(displayId, cut.getAt());
+					newCut = this.addSourceCut(displayId, cut.getAt());
 				}
 				if (cut.isSetSequence()) {
 					newCut.setSequence(cut.getSequenceURI());
@@ -177,10 +177,10 @@ public class Component extends ComponentInstance{
 				GenericLocation genericLocation = (GenericLocation)sourceLocation;
 				GenericLocation newGenericLocation;
 				if (genericLocation.isSetOrientation()) {
-					newGenericLocation = this.addGenericLocation(displayId,
+					newGenericLocation = this.addGenericSourceLocation(displayId,
 							genericLocation.getOrientation());
 				} else {
-					newGenericLocation = this.addGenericLocation(displayId);
+					newGenericLocation = this.addGenericSourceLocation(displayId);
 				}
 				if (genericLocation.isSetSequence()) {
 					newGenericLocation.setSequence(genericLocation.getSequenceURI());
