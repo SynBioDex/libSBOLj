@@ -1998,6 +1998,7 @@ public class SBOLValidate {
 				errors.add("->Component " + component1.getIdentity() + " not found in " + file2);
 			} else if (!component1.equals(component2)) {
 				errors.add("->Component " + component1.getIdentity() + " differ.");
+				compareMeasures(file1, component1, file2, component2);
 				compareMapsTos(file1, component1, file2, component2);
 			}
 		}
@@ -2047,6 +2048,24 @@ public class SBOLValidate {
 			Location location1 = sequenceAnnotation1.getLocation(location2.getIdentity());
 			if (location1 == null) {
 				errors.add("--->Location " + location2.getIdentity() + " not found in " + file1);
+			}
+		}
+	}
+
+	private static void compareMeasures(String file1, Measured measured1, String file2,
+			Measured measured2) {
+		for (Measure measure1 : measured1.getMeasures()) {
+			Measure measure2 = measured2.getMeasure(measure1.getIdentity());
+			if (measure2 == null) {
+				errors.add("---->Measure " + measure1.getIdentity() + " not found in " + file2);
+			} else if (!measure1.equals(measure2)) {
+				errors.add("---->Measure " + measure1.getIdentity() + " differ.");
+			}
+		}
+		for (Measure measure2 : measured2.getMeasures()) {
+			Measure measure1 = measured1.getMeasure(measure2.getIdentity());
+			if (measure1 == null) {
+				errors.add("---->Measure " + measure2.getIdentity() + " not found in " + file1);
 			}
 		}
 	}
@@ -2269,6 +2288,7 @@ public class SBOLValidate {
 				errors.add("->FunctionalComponent " + functionalComponent1.getIdentity() + " not found in " + file2);
 			} else if (!functionalComponent1.equals(functionalComponent2)) {
 				errors.add("->FunctionalComponent " + functionalComponent1.getIdentity() + " differ.");
+				compareMeasures(file1, functionalComponent1, file2, functionalComponent2);
 				compareMapsTos(file1, functionalComponent1, file2, functionalComponent2);
 			}
 		}
@@ -2306,6 +2326,7 @@ public class SBOLValidate {
 				errors.add("->Module " + module1.getIdentity() + " not found in " + file2);
 			} else if (!module1.equals(module2)) {
 				errors.add("->Module " + module1.getIdentity() + " differ.");
+				compareMeasures(file1, module1, file2, module2);
 				compareMapsTos(file1, module1, file2, module2);
 			}
 		}
@@ -2325,6 +2346,7 @@ public class SBOLValidate {
 				errors.add("--->Participation " + participation1.getIdentity() + " not found in " + file2);
 			} else if (!participation1.equals(participation2)) {
 				errors.add("--->Participation " + participation1.getIdentity() + " differ.");
+				compareMeasures(file1, participation1, file2, participation2);
 			}
 		}
 		for (Participation participation2 : interaction2.getParticipations()) {
@@ -2343,7 +2365,8 @@ public class SBOLValidate {
 				errors.add("->Interaction " + interaction1.getIdentity() + " not found in " + file2);
 			} else if (!interaction1.equals(interaction2)) {
 				errors.add("->Interaction " + interaction1.getIdentity() + " differ.");
-				compareParticipations(file1, interaction1, file1, interaction2);
+				compareMeasures(file1, interaction1, file2, interaction2);
+				compareParticipations(file1, interaction1, file2, interaction2);
 			}
 		}
 		for (Interaction interaction2 : moduleDefinition2.getInteractions()) {
