@@ -48,6 +48,12 @@ public abstract class IdentifiedVisitor
 					for (MapsTo m : c.getMapsTos()) {
 						visit(m, topLevel);
 					}
+					for (Location l : c.getLocations()) {
+						visit(l, topLevel);
+					}
+					for (Location s : c.getSourceLocations()) {
+						visit(s, topLevel);
+					}
 					for (Measure m : c.getMeasures()) {
 						visit(m, topLevel);
 					}
