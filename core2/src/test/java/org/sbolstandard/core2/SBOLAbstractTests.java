@@ -335,7 +335,7 @@ public abstract class SBOLAbstractTests {
 		promoter.createAnnotation(
 				new QName(prURI, "information", prPrefix),
 				new QName(prURI, "Information", prPrefix),
-				URI.create("http://partsregistry.org/cd/BBa_J23119/information"),
+				"information",
 				new ArrayList<Annotation>(Arrays.asList(sigmaFactor,regulation)));
 
 		//		SBOLWriter.write(document,(System.out));
@@ -655,7 +655,7 @@ public abstract class SBOLAbstractTests {
 		promoter.createAnnotation(
 				new QName(prURI, "information", prPrefix),
 				new QName(prURI, "Information", prPrefix),
-				URI.create("http://partsregistry.org/cd/BBa_J23119/information"),
+				"information",
 				new ArrayList<Annotation>(Arrays.asList(sigmaFactor,regulation)));
 
 		SequenceAnnotation sa = promoter.createSequenceAnnotation("someSequenceAnnotation", "range", 1, 10);

@@ -64,6 +64,10 @@ public abstract class TopLevel extends Identified {
 	 */
 	public static final String ATTACHMENT = "attach";
 	/**
+	 * The abbreviation for the Annotation type in URI
+	 */
+	public static final String ANNOTATION = "anno";
+	/**
 	 * The abbreviation for the Experiment type in URI
 	 */
 	public static final String EXPERIMENT = "expt";
