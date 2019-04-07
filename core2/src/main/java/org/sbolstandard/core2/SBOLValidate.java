@@ -1754,6 +1754,17 @@ public class SBOLValidate {
 //			}
 //		}
 //	}
+	
+	private static void validateNestedAnnotationURIuniqueness(List<Annotation> annotations, HashMap<URI, Identified> elements) {
+		for (Annotation annotation : annotations) {
+			if (annotation.isNestedAnnotations()) {
+            	if (elements.get(annotation.getNestedIdentity()) != null) {
+            		errors.add(new SBOLValidationException("sbol-10202", annotation.getNestedIdentity()).getMessage());
+    			}
+    			elements.put(annotation.getNestedIdentity(), null);
+			}
+		}
+	}
 
 	private static void validateURIuniqueness(SBOLDocument sbolDocument) {
 		HashMap<URI, Identified> elements = new HashMap<>();
@@ -1769,7 +1780,7 @@ public class SBOLValidate {
     				}
     			}
     			elements.put(identified.getIdentity(), identified);
-            
+    			validateNestedAnnotationURIuniqueness(identified.getAnnotations(),elements);
             }
 
         }).visitDocument(sbolDocument);
