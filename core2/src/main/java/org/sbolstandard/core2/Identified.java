@@ -525,13 +525,15 @@ public abstract class Identified {
 	 * 
 	 * @param qName the QName of the annotation to be created
 	 * @param nestedQName the QName of the nested annotation
-	 * @param nestedURI the identity URI for the nested annotation
+	 * @param nestedId the id for the nested annotation
 	 * @param annotations the list of annotations used to construct the nested annotation
 	 * @return the created annotation
 	 * @throws SBOLValidationException if any of the following SBOL validation rules was violated: 
 	 * 10401, 10501, 10701, 10801, 10901, 11101, 11201, 11301, 11401, 11501, 11601, 11701, 11801, 11901, 12001, 12101, 12301.
 	 */
-	public Annotation createAnnotation(QName qName,QName nestedQName, URI nestedURI, List<Annotation> annotations) throws SBOLValidationException {
+	public Annotation createAnnotation(QName qName,QName nestedQName, String nestedId, List<Annotation> annotations) throws SBOLValidationException {
+		URI nestedURI = URIcompliance.createCompliantURI(persistentIdentity.toString(),
+				TopLevel.ANNOTATION, nestedId, version, this.getSBOLDocument().isTypesInURIs());
 		Annotation annotation = new Annotation(qName, nestedQName, nestedURI, annotations);
 		addAnnotation(annotation);
 		return annotation;

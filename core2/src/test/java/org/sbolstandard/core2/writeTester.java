@@ -47,11 +47,18 @@ class writeTester {
 		ArrayList<Annotation> anns = new ArrayList<>();
 		anns.add(ann);
 		seq.createAnnotation(new QName("http://dummy.org/","dumbTop","dumb"), 
-				new QName("http://dummy.org/","dumbNested","dumb"), 
-				URI.create("http://myuri.org/anno"), anns);
+				new QName("http://dummy.org/","dumbNested","dumb"), "anno", anns);
+		gtl.createAnnotation(new QName("http://dummy.org/","dumbTop","dumb"), 
+				new QName("http://dummy.org/","dumbNested","dumb"), "anno", anns);
 		//doc2 = doc2.createRecursiveCopy(seq);
-		doc2.createCopy(gtl0);
+		//doc2.createCopy(gtl0);
 		doc2.write(System.out);
+		SBOLValidate.validateSBOL(doc2,  true, true, true);
+		if (SBOLValidate.getNumErrors()>0) {
+			for (String error : SBOLValidate.getErrors()) {
+				System.out.println(error);
+			}
+		}
 //		SBOLTestUtils.writeAndRead(doc2,true);
 //		doc2.setDefaultURIprefix("http://dummy.org");
 //		Sequence seq = doc2.createSequence("id", "agct", Sequence.IUPAC_DNA);
@@ -582,7 +589,7 @@ class writeTester {
 		as.add(a);
 		a = toplevel.createAnnotation(new QName("urn:bbn.com:tasbe:grn", "theReaction", "grn"), 
 				new QName("urn:bbn.com:tasbe:grn","TheReaction","grn"), 
-				URI.create("http://www.async.ece.utah.edu/myAnnotation"), as);
+				"myAnnotation", as);
 		/*
 		as = a.getAnnotations();
 		System.out.println(a.getQName());

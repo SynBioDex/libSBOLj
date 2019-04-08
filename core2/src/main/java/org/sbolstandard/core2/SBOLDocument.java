@@ -4235,6 +4235,11 @@ public class SBOLDocument {
 		}
 	}
 	
+	Identified getIdentified(URI identifiedURI) {
+		Identified identified = getTopLevelLocalOnly(identifiedURI);
+		return identified;
+	}
+	
 	private TopLevel getTopLevelLocalOnly(URI topLevelURI) {
 		TopLevel topLevel = collections.get(topLevelURI);
 		if (topLevel != null) {
